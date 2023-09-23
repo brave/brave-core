@@ -342,7 +342,7 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A
   // business logic.
-  void RecordP2AEvents(base::Value::List events) override;
+  void RecordP2AEvents(const std::vector<std::string>& events) override;
 
   void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
                              training_sample) override;

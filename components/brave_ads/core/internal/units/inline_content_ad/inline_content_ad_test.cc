@@ -5,6 +5,7 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -69,10 +70,15 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, Serve) {
   // Arrange
   ForcePermissionRulesForTesting();
 
+  EXPECT_CALL(ads_client_mock_,
+              RecordP2AEvents(BuildP2AAdOpportunityEvents(
+                  AdType::kInlineContentAd, /*segments*/ {})));
+
+  // Act
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([](const std::string& dimensions,
-                   const absl::optional<InlineContentAdInfo>& ad) {
+      .WillOnce([=](const std::string& dimensions,
+                    const absl::optional<InlineContentAdInfo>& ad) {
         // Assert
         EXPECT_EQ(kDimensions, dimensions);
         EXPECT_TRUE(ad);
@@ -81,15 +87,12 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, Serve) {
                                                 ConfirmationType::kServed));
       });
 
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
-
-  // Act
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
 }
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, DoNotServe) {
   // Arrange
-  absl::optional<InlineContentAdInfo> ad;
+  const absl::optional<InlineContentAdInfo> ad;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(kDimensions, ad));
 
@@ -97,6 +100,8 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, DoNotServe) {
 
   // Act
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
@@ -107,7 +112,6 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   EXPECT_CALL(callback, Run)
       .WillOnce([=](const std::string& dimensions,
                     const absl::optional<InlineContentAdInfo>& ad) {
-        // Assert
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());

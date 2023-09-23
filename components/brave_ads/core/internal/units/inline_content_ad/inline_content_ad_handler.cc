@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
@@ -108,9 +109,10 @@ void InlineContentAdHandler::MaybeServeCallback(
                                           *ad, std::move(callback)));
 }
 
-void InlineContentAdHandler::OnOpportunityAroseToServeInlineContentAd(
-    const SegmentList& /*segments*/) {
+void InlineContentAdHandler::OnOpportunityAroseToServeInlineContentAd() {
   BLOG(1, "Opportunity arose to serve an inline content ad");
+
+  RecordP2AAdOpportunity(AdType::kInlineContentAd, /*segments*/ {});
 }
 
 void InlineContentAdHandler::OnDidServeInlineContentAd(

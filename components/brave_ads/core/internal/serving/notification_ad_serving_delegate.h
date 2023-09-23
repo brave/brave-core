@@ -14,8 +14,7 @@ struct NotificationAdInfo;
 
 class NotificationAdServingDelegate {
  public:
-  // Invoked when an opportunity arises to serve a notification ad for the
-  // |segments|.
+  // Invoked when an opportunity arises to serve a notification ad.
   virtual void OnOpportunityAroseToServeNotificationAd(
       const SegmentList& segments) {}
 

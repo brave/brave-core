@@ -6,21 +6,20 @@
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving.h"
 
 #include "base/functional/bind.h"
-#include "base/rand_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/serving/ad_serving_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ad_permission_rules.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/top_segments.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_builder.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
@@ -77,17 +76,9 @@ void NotificationAdServing::MaybeServeAd() {
 
   is_serving_ = true;
 
-  if (!IsNotificationAdServingFeatureEnabled()) {
-    BLOG(1, "Notification ad not served: Feature is disabled");
-    return FailedToServeAd();
-  }
-
-  if (!IsSupported()) {
-    BLOG(1, "Notification ad not served: Unsupported version");
-    return FailedToServeAd();
-  }
-
-  if (!NotificationAdPermissionRules::HasPermission()) {
+  const auto result = CanServeAd();
+  if (!result.has_value()) {
+    BLOG(1, result.error());
     return FailedToServeAd();
   }
 
@@ -97,24 +88,41 @@ void NotificationAdServing::MaybeServeAd() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+base::expected<void, std::string> NotificationAdServing::CanServeAd() const {
+  if (!IsNotificationAdServingFeatureEnabled()) {
+    return base::unexpected("Notification ad not served: Feature is disabled");
+  }
+
+  if (!IsSupported()) {
+    return base::unexpected("Notification ad not served: Unsupported version");
+  }
+
+  if (!NotificationAdPermissionRules::HasPermission()) {
+    return base::unexpected(
+        "Notification ad not served: Not allowed due to permission rules");
+  }
+
+  return base::ok();
+}
+
+void NotificationAdServing::GetEligibleAds() {
+  BuildUserModel(base::BindOnce(&NotificationAdServing::BuildUserModelCallback,
+                                weak_factory_.GetWeakPtr()));
+}
+
 void NotificationAdServing::BuildUserModelCallback(
     const UserModelInfo& user_model) {
+  NotifyOpportunityAroseToServeNotificationAd(user_model.interest.segments);
+
   CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model,
-      base::BindOnce(&NotificationAdServing::GetForUserModelCallback,
-                     weak_factory_.GetWeakPtr(), user_model));
+      base::BindOnce(&NotificationAdServing::GetEligibleAdsForUserModelCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void NotificationAdServing::GetForUserModelCallback(
-    const UserModelInfo& user_model,
-    const bool had_opportunity,
+void NotificationAdServing::GetEligibleAdsForUserModelCallback(
     const CreativeNotificationAdList& creative_ads) {
-  if (had_opportunity) {
-    NotifyOpportunityAroseToServeNotificationAd(
-        GetTopChildSegments(user_model));
-  }
-
   if (creative_ads.empty()) {
     BLOG(1, "Notification ad not served: No eligible ads found");
     return FailedToServeAd();
@@ -122,20 +130,14 @@ void NotificationAdServing::GetForUserModelCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  const int rand = base::RandInt(0, static_cast<int>(creative_ads.size()) - 1);
-  const CreativeNotificationAdInfo& creative_ad = creative_ads.at(rand);
-
-  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  ServeAd(ad);
+  ServeAd(BuildNotificationAd(ChooseCreativeAd(creative_ads)));
 }
 
 void NotificationAdServing::UpdateMaximumAdsPerHour() {
   BLOG(1, "Maximum notification ads per hour changed to "
               << GetMaximumNotificationAdsPerHour());
 
-  if (ShouldServeAdsAtRegularIntervals()) {
-    MaybeServeAdAtNextRegularInterval();
-  }
+  MaybeServeAdAtNextRegularInterval();
 }
 
 void NotificationAdServing::MaybeServeAdAtNextRegularInterval() {
@@ -173,10 +175,14 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
     return FailedToServeAd();
   }
 
-  is_serving_ = false;
-
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
+
+  SuccessfullyServedAd(ad);
+}
+
+void NotificationAdServing::SuccessfullyServedAd(const NotificationAdInfo& ad) {
+  is_serving_ = false;
 
   NotifyDidServeNotificationAd(ad);
 }

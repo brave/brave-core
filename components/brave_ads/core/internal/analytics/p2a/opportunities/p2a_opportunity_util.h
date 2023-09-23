@@ -11,10 +11,14 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace brave_ads::p2a {
+namespace brave_ads {
 
-std::vector<std::string> BuildAdOpportunityEvents(const SegmentList& segments);
+class AdType;
 
-}  // namespace brave_ads::p2a
+std::vector<std::string> BuildP2AAdOpportunityEvents(
+    const AdType& ad_type,
+    const SegmentList& segments);
+
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ANALYTICS_P2A_OPPORTUNITIES_P2A_OPPORTUNITY_UTIL_H_

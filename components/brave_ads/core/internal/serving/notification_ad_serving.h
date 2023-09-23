@@ -12,6 +12,7 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate.h"
@@ -55,12 +56,14 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   void MaybeServeAdAtNextRegularInterval();
 
  private:
+  base::expected<void, std::string> CanServeAd() const;
+
   bool IsSupported() const { return bool{eligible_ads_}; }
 
+  void GetEligibleAds();
   void BuildUserModelCallback(const UserModelInfo& user_model);
-  void GetForUserModelCallback(const UserModelInfo& user_model,
-                               bool had_opportunity,
-                               const CreativeNotificationAdList& creative_ads);
+  void GetEligibleAdsForUserModelCallback(
+      const CreativeNotificationAdList& creative_ads);
 
   void UpdateMaximumAdsPerHour();
 
@@ -68,6 +71,7 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   base::Time MaybeServeAdAfter(base::TimeDelta delay);
 
   void ServeAd(const NotificationAdInfo& ad);
+  void SuccessfullyServedAd(const NotificationAdInfo& ad);
   void FailedToServeAd();
 
   void NotifyOpportunityAroseToServeNotificationAd(

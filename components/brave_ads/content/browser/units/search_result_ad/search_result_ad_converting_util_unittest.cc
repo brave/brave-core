@@ -28,7 +28,6 @@ constexpr const char* kRequiredConversionAttributes[] = {
     "data-conversion-observation-window-value"};
 
 constexpr const char* kOptionalConversionAttributes[] = {
-    "data-conversion-extract-external-id-value",
     "data-conversion-advertiser-public-key-value"};
 
 void CheckRequiredAttributes(

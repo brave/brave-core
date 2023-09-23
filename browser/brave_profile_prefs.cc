@@ -16,7 +16,7 @@
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/browser/analytics/p2a/ads_p2a.h"
+#include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
@@ -199,6 +199,76 @@ void RegisterProfilePrefsForMigration(
 #if defined(TOOLKIT_VIEWS)
   registry->RegisterBooleanPref(sidebar::kSidebarAlignmentChangedTemporarily,
                                 false);
+#endif
+
+  // Added September 2023
+#if !BUILDFLAG(IS_IOS)
+  // TODO(https://github.com/brave/brave-browser/issues/33144): Remove after
+  // several browser releases.
+  constexpr const char* const kLegacyBraveP2AAdPrefs[] = {
+      "Brave.P2A.TotalAdOpportunities",
+      "Brave.P2A.AdOpportunitiesPerSegment.architecture",
+      "Brave.P2A.AdOpportunitiesPerSegment.artsentertainment",
+      "Brave.P2A.AdOpportunitiesPerSegment.automotive",
+      "Brave.P2A.AdOpportunitiesPerSegment.business",
+      "Brave.P2A.AdOpportunitiesPerSegment.careers",
+      "Brave.P2A.AdOpportunitiesPerSegment.cellphones",
+      "Brave.P2A.AdOpportunitiesPerSegment.crypto",
+      "Brave.P2A.AdOpportunitiesPerSegment.education",
+      "Brave.P2A.AdOpportunitiesPerSegment.familyparenting",
+      "Brave.P2A.AdOpportunitiesPerSegment.fashion",
+      "Brave.P2A.AdOpportunitiesPerSegment.folklore",
+      "Brave.P2A.AdOpportunitiesPerSegment.fooddrink",
+      "Brave.P2A.AdOpportunitiesPerSegment.gaming",
+      "Brave.P2A.AdOpportunitiesPerSegment.healthfitness",
+      "Brave.P2A.AdOpportunitiesPerSegment.history",
+      "Brave.P2A.AdOpportunitiesPerSegment.hobbiesinterests",
+      "Brave.P2A.AdOpportunitiesPerSegment.home",
+      "Brave.P2A.AdOpportunitiesPerSegment.law",
+      "Brave.P2A.AdOpportunitiesPerSegment.military",
+      "Brave.P2A.AdOpportunitiesPerSegment.other",
+      "Brave.P2A.AdOpportunitiesPerSegment.personalfinance",
+      "Brave.P2A.AdOpportunitiesPerSegment.pets",
+      "Brave.P2A.AdOpportunitiesPerSegment.realestate",
+      "Brave.P2A.AdOpportunitiesPerSegment.science",
+      "Brave.P2A.AdOpportunitiesPerSegment.sports",
+      "Brave.P2A.AdOpportunitiesPerSegment.technologycomputing",
+      "Brave.P2A.AdOpportunitiesPerSegment.travel",
+      "Brave.P2A.AdOpportunitiesPerSegment.weather",
+      "Brave.P2A.AdOpportunitiesPerSegment.untargeted",
+      "Brave.P2A.TotalAdImpressions",
+      "Brave.P2A.AdImpressionsPerSegment.architecture",
+      "Brave.P2A.AdImpressionsPerSegment.artsentertainment",
+      "Brave.P2A.AdImpressionsPerSegment.automotive",
+      "Brave.P2A.AdImpressionsPerSegment.business",
+      "Brave.P2A.AdImpressionsPerSegment.careers",
+      "Brave.P2A.AdImpressionsPerSegment.cellphones",
+      "Brave.P2A.AdImpressionsPerSegment.crypto",
+      "Brave.P2A.AdImpressionsPerSegment.education",
+      "Brave.P2A.AdImpressionsPerSegment.familyparenting",
+      "Brave.P2A.AdImpressionsPerSegment.fashion",
+      "Brave.P2A.AdImpressionsPerSegment.folklore",
+      "Brave.P2A.AdImpressionsPerSegment.fooddrink",
+      "Brave.P2A.AdImpressionsPerSegment.gaming",
+      "Brave.P2A.AdImpressionsPerSegment.healthfitness",
+      "Brave.P2A.AdImpressionsPerSegment.history",
+      "Brave.P2A.AdImpressionsPerSegment.hobbiesinterests",
+      "Brave.P2A.AdImpressionsPerSegment.home",
+      "Brave.P2A.AdImpressionsPerSegment.law",
+      "Brave.P2A.AdImpressionsPerSegment.military",
+      "Brave.P2A.AdImpressionsPerSegment.other",
+      "Brave.P2A.AdImpressionsPerSegment.personalfinance",
+      "Brave.P2A.AdImpressionsPerSegment.pets",
+      "Brave.P2A.AdImpressionsPerSegment.realestate",
+      "Brave.P2A.AdImpressionsPerSegment.science",
+      "Brave.P2A.AdImpressionsPerSegment.sports",
+      "Brave.P2A.AdImpressionsPerSegment.technologycomputing",
+      "Brave.P2A.AdImpressionsPerSegment.travel",
+      "Brave.P2A.AdImpressionsPerSegment.weather",
+      "Brave.P2A.AdImpressionsPerSegment.untargeted"};
+  for (const char* const pref : kLegacyBraveP2AAdPrefs) {
+    registry->RegisterListPref(pref);
+  }
 #endif
 }
 

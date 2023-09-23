@@ -1,6 +1,8 @@
 # Brave Ads
 
-Users earn tokens by viewing privacy-first Brave Ads. Ads presented are based on the user's interests, as inferred from the user's browsing behavior. No personal data or browsing history should ever leave the browser. For more details, refer to [GLOSSARY.md](../../../brave/components/brave_ads/GLOSSARY.md).
+Users earn tokens by viewing privacy-first Brave Ads. Ads presented are based on the user's interests, as inferred from the user's browsing behavior. No personal data or browsing history should ever leave the browser.
+
+For more details, refer to [glossary of terms](../../../brave/components/brave_ads/GLOSSARY.md).
 
 Brave Ads is a [layered component](https://sites.google.com/a/chromium.org/dev/developers/design-documents/layered-components-design). It has the following structure:
 

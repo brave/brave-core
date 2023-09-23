@@ -212,9 +212,10 @@ void BatAdsClientMojoBridge::GetBrowsingHistory(
   bat_ads_client_->GetBrowsingHistory(max_count, days_ago, std::move(callback));
 }
 
-void BatAdsClientMojoBridge::RecordP2AEvents(base::Value::List events) {
+void BatAdsClientMojoBridge::RecordP2AEvents(
+    const std::vector<std::string>& events) {
   if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->RecordP2AEvents(std::move(events));
+    bat_ads_client_->RecordP2AEvents(events);
   }
 }
 

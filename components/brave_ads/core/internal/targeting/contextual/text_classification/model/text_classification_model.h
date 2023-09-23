@@ -10,10 +10,7 @@
 
 namespace brave_ads {
 
-class TextClassificationModel final {
- public:
-  SegmentList GetSegments() const;
-};
+SegmentList GetTextClassificationSegments();
 
 }  // namespace brave_ads
 

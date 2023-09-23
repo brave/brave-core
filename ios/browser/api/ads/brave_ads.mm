@@ -2015,7 +2015,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return _paths;
 }
 
-- (void)recordP2AEvents:(base::Value::List)events {
+- (void)recordP2AEvents:(const std::vector<std::string>&)events {
   // Not needed on iOS
 }
 

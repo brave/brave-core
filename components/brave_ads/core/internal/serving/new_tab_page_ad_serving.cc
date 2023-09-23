@@ -8,17 +8,16 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/rand_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/serving/ad_serving_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/top_segments.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_builder.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -38,48 +37,57 @@ NewTabPageAdServing::~NewTabPageAdServing() {
 }
 
 void NewTabPageAdServing::MaybeServeAd(
-    MaybeServeNewTabPageAdCallback callback) {
-  if (!IsNewTabPageAdServingFeatureEnabled()) {
-    BLOG(1, "New tab page ad not served: Feature is disabled");
+    MaybeServeNewTabPageAdCallback callback) const {
+  const auto result = CanServeAd();
+  if (!result.has_value()) {
+    BLOG(1, result.error());
     return FailedToServeAd(std::move(callback));
+  }
+
+  NotifyOpportunityAroseToServeNewTabPageAd();
+
+  GetEligibleAds(std::move(callback));
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+base::expected<void, std::string> NewTabPageAdServing::CanServeAd() const {
+  if (!IsNewTabPageAdServingFeatureEnabled()) {
+    return base::unexpected("New tab page ad not served: Feature is disabled");
   }
 
   if (!IsSupported()) {
-    BLOG(1, "New tab page ad not served: Unsupported version");
-    return FailedToServeAd(std::move(callback));
+    return base::unexpected("New tab page ad not served: Unsupported version");
   }
 
   if (!NewTabPageAdPermissionRules::HasPermission()) {
-    BLOG(1, "New tab page ad not served: Not allowed due to permission rules");
-    return FailedToServeAd(std::move(callback));
+    return base::unexpected(
+        "New tab page ad not served: Not allowed due to permission rules");
   }
 
+  return base::ok();
+}
+
+void NewTabPageAdServing::GetEligibleAds(
+    MaybeServeNewTabPageAdCallback callback) const {
   BuildUserModel(base::BindOnce(&NewTabPageAdServing::BuildUserModelCallback,
                                 weak_factory_.GetWeakPtr(),
                                 std::move(callback)));
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 void NewTabPageAdServing::BuildUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,
-    const UserModelInfo& user_model) {
+    const UserModelInfo& user_model) const {
   CHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
-      user_model, base::BindOnce(&NewTabPageAdServing::GetForUserModelCallback,
-                                 weak_factory_.GetWeakPtr(),
-                                 std::move(callback), user_model));
+      user_model,
+      base::BindOnce(&NewTabPageAdServing::GetEligibleAdsForUserModelCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void NewTabPageAdServing::GetForUserModelCallback(
+void NewTabPageAdServing::GetEligibleAdsForUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,
-    const UserModelInfo& user_model,
-    const bool had_opportunity,
-    const CreativeNewTabPageAdList& creative_ads) {
-  if (had_opportunity) {
-    NotifyOpportunityAroseToServeNewTabPageAd(GetTopChildSegments(user_model));
-  }
-
+    const CreativeNewTabPageAdList& creative_ads) const {
   if (creative_ads.empty()) {
     BLOG(1, "New tab page ad not served: No eligible ads found");
     return FailedToServeAd(std::move(callback));
@@ -87,15 +95,13 @@ void NewTabPageAdServing::GetForUserModelCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  const int rand = base::RandInt(0, static_cast<int>(creative_ads.size()) - 1);
-  const CreativeNewTabPageAdInfo& creative_ad = creative_ads.at(rand);
-
-  const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
-  ServeAd(ad, std::move(callback));
+  ServeAd(BuildNewTabPageAd(ChooseCreativeAd(creative_ads)),
+          std::move(callback));
 }
 
-void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad,
-                                  MaybeServeNewTabPageAdCallback callback) {
+void NewTabPageAdServing::ServeAd(
+    const NewTabPageAdInfo& ad,
+    MaybeServeNewTabPageAdCallback callback) const {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve new tab page ad");
     return FailedToServeAd(std::move(callback));
@@ -104,22 +110,27 @@ void NewTabPageAdServing::ServeAd(const NewTabPageAdInfo& ad,
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
+  SuccessfullyServedAd(ad, std::move(callback));
+}
+
+void NewTabPageAdServing::SuccessfullyServedAd(
+    const NewTabPageAdInfo& ad,
+    MaybeServeNewTabPageAdCallback callback) const {
   NotifyDidServeNewTabPageAd(ad);
 
   std::move(callback).Run(ad);
 }
 
 void NewTabPageAdServing::FailedToServeAd(
-    MaybeServeNewTabPageAdCallback callback) {
+    MaybeServeNewTabPageAdCallback callback) const {
   NotifyFailedToServeNewTabPageAd();
 
   std::move(callback).Run(/*ad*/ absl::nullopt);
 }
 
-void NewTabPageAdServing::NotifyOpportunityAroseToServeNewTabPageAd(
-    const SegmentList& segments) const {
+void NewTabPageAdServing::NotifyOpportunityAroseToServeNewTabPageAd() const {
   if (delegate_) {
-    delegate_->OnOpportunityAroseToServeNewTabPageAd(segments);
+    delegate_->OnOpportunityAroseToServeNewTabPageAd();
   }
 }
 

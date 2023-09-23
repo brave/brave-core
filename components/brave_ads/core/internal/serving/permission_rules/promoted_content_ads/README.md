@@ -1,6 +1,6 @@
 # Promoted Content Ad Permission Rules
 
-Permission rules determine if users are allowed to see promoted content ads. Also see [global permission rules](../README.md).
+Permission rules determine if users are allowed to see promoted content ads. Also see [permission rules](../README.md).
 
 | permission rule  | explanation  |
 |---|---|

@@ -7,10 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_NEW_TAB_PAGE_AD_SERVING_H_
 
 #include <memory>
+#include <string>
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -41,24 +43,27 @@ class NewTabPageAdServing final {
     delegate_ = delegate;
   }
 
-  void MaybeServeAd(MaybeServeNewTabPageAdCallback callback);
+  void MaybeServeAd(MaybeServeNewTabPageAdCallback callback) const;
 
  private:
+  base::expected<void, std::string> CanServeAd() const;
+
   bool IsSupported() const { return bool{eligible_ads_}; }
 
+  void GetEligibleAds(MaybeServeNewTabPageAdCallback callback) const;
   void BuildUserModelCallback(MaybeServeNewTabPageAdCallback callback,
-                              const UserModelInfo& user_model);
-  void GetForUserModelCallback(MaybeServeNewTabPageAdCallback callback,
-                               const UserModelInfo& user_model,
-                               bool had_opportunity,
-                               const CreativeNewTabPageAdList& creative_ads);
+                              const UserModelInfo& user_model) const;
+  void GetEligibleAdsForUserModelCallback(
+      MaybeServeNewTabPageAdCallback callback,
+      const CreativeNewTabPageAdList& creative_ads) const;
 
   void ServeAd(const NewTabPageAdInfo& ad,
-               MaybeServeNewTabPageAdCallback callback);
-  void FailedToServeAd(MaybeServeNewTabPageAdCallback callback);
+               MaybeServeNewTabPageAdCallback callback) const;
+  void SuccessfullyServedAd(const NewTabPageAdInfo& ad,
+                            MaybeServeNewTabPageAdCallback callback) const;
+  void FailedToServeAd(MaybeServeNewTabPageAdCallback callback) const;
 
-  void NotifyOpportunityAroseToServeNewTabPageAd(
-      const SegmentList& segments) const;
+  void NotifyOpportunityAroseToServeNewTabPageAd() const;
   void NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const;
   void NotifyFailedToServeNewTabPageAd() const;
 

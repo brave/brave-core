@@ -108,7 +108,7 @@ interface BatAdsClient {
   RunDBTransaction(brave_ads.mojom.DBTransactionInfo transaction) =>
       (brave_ads.mojom.DBCommandResponseInfo response);
 
-  RecordP2AEvents(mojo_base.mojom.ListValue events);
+  RecordP2AEvents(array<string> events);
 
   AddTrainingSample(array<brave_federated.mojom.CovariateInfo>
                           training_sample);

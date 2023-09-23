@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_unittest_util.h"
@@ -42,8 +41,7 @@ class NewTabPageAdServingDelegateForTesting
 
  private:
   // NewTabPageAdServingDelegate:
-  void OnOpportunityAroseToServeNewTabPageAd(
-      const SegmentList& /*segments*/) override {
+  void OnOpportunityAroseToServeNewTabPageAd() override {
     opportunity_arose_to_serve_ad_ = true;
   }
 
@@ -141,7 +139,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
       .WillOnce([=](const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_FALSE(ad);
-        EXPECT_FALSE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
+        EXPECT_TRUE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
         EXPECT_FALSE(ad_serving_delegate_.did_serve_ad());
         EXPECT_TRUE(ad_serving_delegate_.failed_to_serve_ad());
       });
@@ -159,7 +157,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
       .WillOnce([=](const absl::optional<NewTabPageAdInfo>& ad) {
         // Assert
         EXPECT_FALSE(ad);
-        EXPECT_FALSE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
+        EXPECT_TRUE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
         EXPECT_FALSE(ad_serving_delegate_.did_serve_ad());
         EXPECT_TRUE(ad_serving_delegate_.failed_to_serve_ad());
       });

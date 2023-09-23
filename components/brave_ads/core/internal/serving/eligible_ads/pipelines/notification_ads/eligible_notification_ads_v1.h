@@ -32,7 +32,7 @@ class EligibleNotificationAdsV1 final : public EligibleNotificationAdsBase {
       EligibleAdsCallback<CreativeNotificationAdList> callback) override;
 
  private:
-  void GetForUserModelCallback(
+  void GetEligibleAdsForUserModelCallback(
       UserModelInfo user_model,
       EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,

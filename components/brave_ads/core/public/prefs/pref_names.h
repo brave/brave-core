@@ -12,7 +12,7 @@ namespace brave_ads::prefs {
 extern const char kVersion[];
 
 // p2a pref
-extern const char kP2AStoragePrefNamePrefix[];
+extern const char kP2APrefPathPrefix[];
 
 // Notification prefs
 extern const char kShouldShowOnboardingNotification[];

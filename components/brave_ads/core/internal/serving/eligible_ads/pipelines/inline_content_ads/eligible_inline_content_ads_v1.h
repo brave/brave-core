@@ -35,7 +35,7 @@ class EligibleInlineContentAdsV1 final : public EligibleInlineContentAdsBase {
       EligibleAdsCallback<CreativeInlineContentAdList> callback) override;
 
  private:
-  void GetForUserModelCallback(
+  void GetEligibleAdsForUserModelCallback(
       UserModelInfo user_model,
       const std::string& dimensions,
       EligibleAdsCallback<CreativeInlineContentAdList> callback,

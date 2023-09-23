@@ -23,4 +23,22 @@ TextEmbeddingHtmlEventInfo& TextEmbeddingHtmlEventInfo::operator=(
 
 TextEmbeddingHtmlEventInfo::~TextEmbeddingHtmlEventInfo() = default;
 
+bool operator==(const TextEmbeddingHtmlEventInfo& lhs,
+                const TextEmbeddingHtmlEventInfo& rhs) {
+  const auto tie =
+      [](const TextEmbeddingHtmlEventInfo& text_embedding_html_event) {
+        return std::tie(text_embedding_html_event.created_at,
+                        text_embedding_html_event.locale,
+                        text_embedding_html_event.hashed_text_base64,
+                        text_embedding_html_event.embedding);
+      };
+
+  return tie(lhs) == tie(rhs);
+}
+
+bool operator!=(const TextEmbeddingHtmlEventInfo& lhs,
+                const TextEmbeddingHtmlEventInfo& rhs) {
+  return !(lhs == rhs);
+}
+
 }  // namespace brave_ads

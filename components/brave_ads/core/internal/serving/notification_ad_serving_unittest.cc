@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_unittest_util.h"
@@ -128,7 +127,7 @@ TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   MaybeServeAd();
 
   // Assert
-  EXPECT_FALSE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
+  EXPECT_TRUE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
   EXPECT_FALSE(ad_serving_delegate_.did_serve_ad());
   EXPECT_TRUE(ad_serving_delegate_.failed_to_serve_ad());
 }

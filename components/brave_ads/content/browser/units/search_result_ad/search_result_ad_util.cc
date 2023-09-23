@@ -36,9 +36,9 @@ absl::optional<std::string> GetPlacementIdFromSearchResultAdClickedUrl(
     std::string_view key =
         url.query_piece().substr(query_key.begin, query_key.len);
     if (key == kPlacementIdQueryKey) {
-      std::string_view value =
+      const std::string_view value =
           url.query_piece().substr(query_value.begin, query_value.len);
-      return static_cast<std::string>(value);
+      return std::string(value);
     }
   }
 

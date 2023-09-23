@@ -1,6 +1,6 @@
 # New Tab Page Ad Permission Rules
 
-Permission rules determine if users are allowed to see new tab page ads. Also see [global permission rules](../README.md).
+Permission rules determine if users are allowed to see new tab page ads. Also see [permission rules](../README.md).
 
 | permission rule  | explanation  |
 |---|---|

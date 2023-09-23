@@ -102,8 +102,7 @@ class AdsClientNotifier {
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
-  virtual void NotifyUserGestureEventTriggered(
-      int32_t page_transition_type) const;
+  void NotifyUserGestureEventTriggered(int32_t page_transition_type) const;
 
   // Invoked when a user has been idle for the given threshold. NOTE: This
   // should not be called on mobile devices.

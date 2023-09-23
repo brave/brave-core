@@ -7,12 +7,12 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(kEpsilonGreedyBanditFeatures,
+BASE_FEATURE(kEpsilonGreedyBanditFeature,
              "EpsilonGreedyBandit",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsEpsilonGreedyBanditFeatureEnabled() {
-  return base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeatures);
+  return base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature);
 }
 
 }  // namespace brave_ads

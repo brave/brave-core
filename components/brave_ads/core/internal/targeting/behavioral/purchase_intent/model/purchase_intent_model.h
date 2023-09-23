@@ -10,10 +10,7 @@
 
 namespace brave_ads {
 
-class PurchaseIntentModel final {
- public:
-  SegmentList GetSegments() const;
-};
+SegmentList GetPurchaseIntentSegments();
 
 }  // namespace brave_ads
 

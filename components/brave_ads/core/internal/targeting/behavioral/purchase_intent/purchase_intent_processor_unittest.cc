@@ -76,10 +76,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
-  const PurchaseIntentModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetPurchaseIntentSegments();
 
   // Assert
   const PurchaseIntentSignalHistoryMap history =

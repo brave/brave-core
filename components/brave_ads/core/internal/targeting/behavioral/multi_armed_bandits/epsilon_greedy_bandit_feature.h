@@ -11,12 +11,12 @@
 
 namespace brave_ads {
 
-BASE_DECLARE_FEATURE(kEpsilonGreedyBanditFeatures);
+BASE_DECLARE_FEATURE(kEpsilonGreedyBanditFeature);
 
 bool IsEpsilonGreedyBanditFeatureEnabled();
 
 constexpr base::FeatureParam<double> kEpsilonGreedyBanditEpsilonValue{
-    &kEpsilonGreedyBanditFeatures, "epsilon_value", 0.25};
+    &kEpsilonGreedyBanditFeature, "epsilon_value", 0.25};
 
 }  // namespace brave_ads
 

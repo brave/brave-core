@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include "base/check_op.h"
@@ -37,8 +36,7 @@ bool DoesRequireResource() {
 }
 
 void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
-  for (const std::string_view value : GetSegments()) {
-    std::string segment = static_cast<std::string>(value);
+  for (const std::string& segment : SupportedEpsilonGreedyBanditSegments()) {
     if (base::Contains(arms, segment)) {
       BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
                                                               << " segment");
@@ -54,13 +52,13 @@ void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
     BLOG(2,
          "Epsilon greedy bandit arm was added for " << segment << " segment");
 
-    arms.insert_or_assign(std::move(segment), arm);
+    arms.insert_or_assign(segment, arm);
   }
 }
 
 void MaybeDeleteArms(EpsilonGreedyBanditArmMap& arms) {
   for (auto iter = arms.cbegin(); iter != arms.cend();) {
-    if (base::Contains(GetSegments(), iter->first)) {
+    if (base::Contains(SupportedEpsilonGreedyBanditSegments(), iter->first)) {
       ++iter;
       continue;
     }

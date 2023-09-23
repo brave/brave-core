@@ -10,10 +10,7 @@
 
 namespace brave_ads {
 
-class EpsilonGreedyBanditModel final {
- public:
-  SegmentList GetSegments() const;
-};
+SegmentList GetEpsilonGreedyBanditSegments();
 
 }  // namespace brave_ads
 
