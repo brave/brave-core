@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/metrics/field_trial_params.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -75,17 +74,15 @@ class BraveAdsInlineContentAdServingTest : public UnitTestBase {
 
 TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kInlineContentAdServingFeature, {{"version", "0"}});
+
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
-
-  base::FieldTrialParams params;
-  params["version"] = "0";
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kInlineContentAdServingFeature, params);
 
   // Act
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;

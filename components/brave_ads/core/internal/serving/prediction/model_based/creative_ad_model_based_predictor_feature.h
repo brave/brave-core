@@ -11,40 +11,41 @@
 
 namespace brave_ads {
 
-BASE_DECLARE_FEATURE(CreativeAdModelBasedPredictorFeature);
+BASE_DECLARE_FEATURE(kCreativeAdModelBasedPredictorFeature);
 
 constexpr base::FeatureParam<double> kChildIntentSegmentAdPredictorWeight{
-    &CreativeAdModelBasedPredictorFeature,
+    &kCreativeAdModelBasedPredictorFeature,
     "child_intent_segment_ad_predictor_weight", 1.0};
 constexpr base::FeatureParam<double> kParentIntentSegmentAdPredictorWeight{
-    &CreativeAdModelBasedPredictorFeature,
+    &kCreativeAdModelBasedPredictorFeature,
     "parent_intent_segment_ad_predictor_weight", 1.0};
 
 constexpr base::FeatureParam<double>
     kChildLatentInterestSegmentAdPredictorWeight{
-        &CreativeAdModelBasedPredictorFeature,
+        &kCreativeAdModelBasedPredictorFeature,
         "child_latent_interest_segment_ad_predictor_weight", 1.0};
 constexpr base::FeatureParam<double>
     kParentLatentInterestSegmentAdPredictorWeight{
-        &CreativeAdModelBasedPredictorFeature,
+        &kCreativeAdModelBasedPredictorFeature,
         "parent_latent_interest_segment_ad_predictor_weight", 1.0};
 
 constexpr base::FeatureParam<double> kChildInterestSegmentAdPredictorWeight{
-    &CreativeAdModelBasedPredictorFeature,
+    &kCreativeAdModelBasedPredictorFeature,
     "child_interest_segment_ad_predictor_weight", 1.0};
 constexpr base::FeatureParam<double> kParentInterestSegmentAdPredictorWeight{
-    &CreativeAdModelBasedPredictorFeature,
+    &kCreativeAdModelBasedPredictorFeature,
     "parent_interest_segment_ad_predictor_weight", 1.0};
 
 constexpr base::FeatureParam<double> kLastSeenAdPredictorWeight{
-    &CreativeAdModelBasedPredictorFeature, "last_seen_ad_predictor_weight",
+    &kCreativeAdModelBasedPredictorFeature, "last_seen_ad_predictor_weight",
     1.0};
 constexpr base::FeatureParam<double> kLastSeenAdvertiserAdPredictorWeight{
-    &CreativeAdModelBasedPredictorFeature,
+    &kCreativeAdModelBasedPredictorFeature,
     "last_seen_advertiser_ad_predictor_weight", 1.0};
 
 constexpr base::FeatureParam<double> kPriorityAdPredictorWeight{
-    &CreativeAdModelBasedPredictorFeature, "priority_ad_predictor_weight", 1.0};
+    &kCreativeAdModelBasedPredictorFeature, "priority_ad_predictor_weight",
+    1.0};
 
 }  // namespace brave_ads
 

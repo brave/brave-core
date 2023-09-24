@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsConversionsFeatureTest, IsEnabled) {
 
 TEST(BraveAdsConversionsFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversionsFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
   // Act
 
@@ -42,16 +34,9 @@ TEST(BraveAdsConversionsFeatureTest, IsDisabled) {
 
 TEST(BraveAdsConversionsFeatureTest, ConversionResourceVersion) {
   // Arrange
-  base::FieldTrialParams params;
-  params["resource_version"] = "0";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kConversionsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kConversionsFeature, {{"resource_version", "0"}});
 
   // Act
 
@@ -71,14 +56,8 @@ TEST(BraveAdsConversionsFeatureTest, DefaultConversionResourceVersion) {
 TEST(BraveAdsConversionsFeatureTest,
      DefaultConversionResourceVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversionsFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
   // Act
 
@@ -88,16 +67,9 @@ TEST(BraveAdsConversionsFeatureTest,
 
 TEST(BraveAdsConversionsFeatureTest, ConversionIdPattern) {
   // Arrange
-  base::FieldTrialParams params;
-  params["html_meta_tag_id_pattern"] = "*";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kConversionsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kConversionsFeature, {{"html_meta_tag_id_pattern", "*"}});
 
   // Act
 
@@ -117,14 +89,8 @@ TEST(BraveAdsConversionsFeatureTest, DefaultConversionIdPattern) {
 
 TEST(BraveAdsConversionsFeatureTest, DefaultConversionIdPatternWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversionsFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
   // Act
 

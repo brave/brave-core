@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsReminderFeatureTest, IsEnabled) {
 
 TEST(BraveAdsReminderFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kReminderFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kReminderFeature);
 
   // Act
 
@@ -42,16 +34,9 @@ TEST(BraveAdsReminderFeatureTest, IsDisabled) {
 
 TEST(BraveAdsReminderFeatureTest, RemindUserIfClickingTheSameAdAfter) {
   // Arrange
-  base::FieldTrialParams params;
-  params["remind_user_if_clicking_the_same_ad_after"] = "1";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kReminderFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kReminderFeature, {{"remind_user_if_clicking_the_same_ad_after", "1"}});
 
   // Act
 
@@ -71,14 +56,8 @@ TEST(BraveAdsReminderFeatureTest, DefaultRemindUserIfClickingTheSameAdAfter) {
 TEST(BraveAdsReminderFeatureTest,
      DefaultRemindUserIfClickingTheSameAdAfterWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kReminderFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kReminderFeature);
 
   // Act
 

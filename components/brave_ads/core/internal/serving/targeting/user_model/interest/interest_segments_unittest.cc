@@ -6,9 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_segments.h"
 
 #include <memory>
-#include <vector>
 
-#include "base/metrics/field_trial_params.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
@@ -40,22 +38,14 @@ class BraveAdsInterestSegmentsTest : public UnitTestBase {
     task_environment_.RunUntilIdle();
   }
 
-  base::test::ScopedFeatureList scoped_feature_list_;
-
   std::unique_ptr<TargetingHelperForTesting> targeting_;
 };
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(kTextClassificationFeature, params);
-  enabled_features.emplace_back(kTextEmbeddingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features,
-                                                     disabled_features);
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeatureStates(
+      {{kTextClassificationFeature, true}, {kTextEmbeddingFeature, true}});
 
   targeting_->MockInterest();
 
@@ -69,15 +59,9 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegmentsIfNoTargeting) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(kTextClassificationFeature, params);
-  enabled_features.emplace_back(kTextEmbeddingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features,
-                                                     disabled_features);
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeatureStates(
+      {{kTextClassificationFeature, true}, {kTextEmbeddingFeature, true}});
 
   // Act
   const SegmentList segments = BuildInterestSegments();
@@ -89,14 +73,9 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegmentsIfNoTargeting) {
 TEST_F(BraveAdsInterestSegmentsTest,
        DoNotBuildInterestSegmentsIfFeatureIsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTextClassificationFeature);
-  disabled_features.emplace_back(kTextEmbeddingFeature);
-
-  scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features,
-                                                     disabled_features);
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeatureStates(
+      {{kTextClassificationFeature, false}, {kTextEmbeddingFeature, false}});
 
   targeting_->MockInterest();
 

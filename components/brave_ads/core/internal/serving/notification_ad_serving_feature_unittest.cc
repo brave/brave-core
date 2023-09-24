@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsNotificationAdServingFeatureTest, IsEnabled) {
 
 TEST(BraveAdsNotificationAdServingFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
 
   // Act
 
@@ -42,16 +34,9 @@ TEST(BraveAdsNotificationAdServingFeatureTest, IsDisabled) {
 
 TEST(BraveAdsNotificationAdServingFeatureTest, ServingVersion) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "0";
-  enabled_features.emplace_back(kNotificationAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"version", "0"}});
 
   // Act
 
@@ -71,14 +56,8 @@ TEST(BraveAdsNotificationAdServingFeatureTest, DefaultServingVersion) {
 TEST(BraveAdsNotificationAdServingFeatureTest,
      DefaultServingVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
 
   // Act
 

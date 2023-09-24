@@ -15,17 +15,21 @@
 
 namespace brave_ads {
 
-class BraveAdsNextPaymentDateUtilTest : public UnitTestBase {};
+class BraveAdsNextPaymentDateUtilTest : public UnitTestBase {
+ protected:
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        kAccountStatementFeature, {{"next_payment_day", "5"}});
+  }
+
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
 
 TEST_F(BraveAdsNextPaymentDateUtilTest,
        TimeNowIsBeforeNextPaymentDayWithReconciledTransactionsLastMonth) {
   // Arrange
-  base::FieldTrialParams params;
-  params["next_payment_day"] = "5";
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAccountStatementFeature, params);
-
   AdvanceClockTo(TimeFromString("1 January 2020", /*is_local*/ false));
 
   TransactionList transactions;
@@ -52,12 +56,6 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
 TEST_F(BraveAdsNextPaymentDateUtilTest,
        TimeNowIsBeforeNextPaymentDayWithNoReconciledTransactionsLastMonth) {
   // Arrange
-  base::FieldTrialParams params;
-  params["next_payment_day"] = "5";
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAccountStatementFeature, params);
-
   AdvanceClockTo(TimeFromString("1 February 2020", /*is_local*/ false));
 
   const TransactionList transactions;
@@ -78,12 +76,6 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
 TEST_F(BraveAdsNextPaymentDateUtilTest,
        TimeNowIsAfterNextPaymentDayWithReconciledTransactionsThisMonth) {
   // Arrange
-  base::FieldTrialParams params;
-  params["next_payment_day"] = "5";
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAccountStatementFeature, params);
-
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 
   TransactionList transactions;
@@ -109,12 +101,6 @@ TEST_F(
     BraveAdsNextPaymentDateUtilTest,
     TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsThisMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
   // Arrange
-  base::FieldTrialParams params;
-  params["next_payment_day"] = "5";
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAccountStatementFeature, params);
-
   AdvanceClockTo(TimeFromString("11 January 2020", /*is_local*/ false));
 
   const TransactionList transactions;
@@ -136,12 +122,6 @@ TEST_F(
     BraveAdsNextPaymentDateUtilTest,
     TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsNextMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
   // Arrange
-  base::FieldTrialParams params;
-  params["next_payment_day"] = "5";
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAccountStatementFeature, params);
-
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 
   const TransactionList transactions;

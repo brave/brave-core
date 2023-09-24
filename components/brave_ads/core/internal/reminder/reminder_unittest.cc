@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
 
 #include <memory>
-#include <vector>
 
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
@@ -75,14 +74,8 @@ TEST_F(BraveAdsReminderTest,
 TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimesWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kReminderFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kReminderFeature);
 
   // Assert
   EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);

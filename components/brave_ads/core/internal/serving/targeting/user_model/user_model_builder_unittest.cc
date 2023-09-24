@@ -47,11 +47,19 @@ class BraveAdsUserModelBuilderTest : public UnitTestBase {
 
   void SetUpFeatures() {
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-    base::FieldTrialParams params;
-    enabled_features.emplace_back(kEpsilonGreedyBanditFeature, params);
-    enabled_features.emplace_back(kPurchaseIntentFeature, params);
-    enabled_features.emplace_back(kTextClassificationFeature, params);
-    enabled_features.emplace_back(kTextEmbeddingFeature, params);
+
+    enabled_features.emplace_back(
+        kEpsilonGreedyBanditFeature,
+        base::FieldTrialParams({{"epsilon_value", "0.0"}}));
+
+    enabled_features.emplace_back(kPurchaseIntentFeature,
+                                  base::FieldTrialParams({}));
+
+    enabled_features.emplace_back(kTextClassificationFeature,
+                                  base::FieldTrialParams({}));
+
+    enabled_features.emplace_back(kTextEmbeddingFeature,
+                                  base::FieldTrialParams({}));
 
     const std::vector<base::test::FeatureRef> disabled_features;
 

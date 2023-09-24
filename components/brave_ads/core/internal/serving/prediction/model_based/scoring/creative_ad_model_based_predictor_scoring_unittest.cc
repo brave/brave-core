@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/scoring/creative_ad_model_based_predictor_scoring.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -59,24 +57,18 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
 TEST_F(BraveAdsCreativeAdPredictorScoringTest,
        ComputeCreativeAdPredictorScoreForNonDefaultWeights) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["child_intent_segment_ad_predictor_weight"] = "0.9";
-  params["parent_intent_segment_ad_predictor_weight"] = "0.8";
-  params["child_latent_interest_segment_ad_predictor_weight"] = "0.7";
-  params["parent_latent_interest_segment_ad_predictor_weight"] = "0.6";
-  params["child_interest_segment_ad_predictor_weight"] = "0.5";
-  params["parent_interest_segment_ad_predictor_weight"] = "0.4";
-  params["last_seen_ad_predictor_weight"] = "0.3";
-  params["last_seen_advertiser_ad_predictor_weight"] = "0.2";
-  params["priority_ad_predictor_weight"] = "0.1";
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"child_intent_segment_ad_predictor_weight", "0.9"},
+       {"parent_intent_segment_ad_predictor_weight", "0.8"},
+       {"child_latent_interest_segment_ad_predictor_weight", "0.7"},
+       {"parent_latent_interest_segment_ad_predictor_weight", "0.6"},
+       {"child_interest_segment_ad_predictor_weight", "0.5"},
+       {"parent_interest_segment_ad_predictor_weight", "0.4"},
+       {"last_seen_ad_predictor_weight", "0.3"},
+       {"last_seen_advertiser_ad_predictor_weight", "0.2"},
+       {"priority_ad_predictor_weight", "0.1"}});
 
   CreativeAdInfo creative_ad =
       BuildCreativeAdForTesting(/*should_use_random_uuids*/ true);
@@ -110,24 +102,18 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
 TEST_F(BraveAdsCreativeAdPredictorScoringTest,
        ComputeCreativeAdPredictorScoreForZeroDefaultWeights) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["child_intent_segment_ad_predictor_weight"] = "0.0";
-  params["parent_intent_segment_ad_predictor_weight"] = "0.0";
-  params["child_latent_interest_segment_ad_predictor_weight"] = "0.0";
-  params["parent_latent_interest_segment_ad_predictor_weight"] = "0.0";
-  params["child_interest_segment_ad_predictor_weight"] = "0.0";
-  params["parent_interest_segment_ad_predictor_weight"] = "0.0";
-  params["last_seen_ad_predictor_weight"] = "0.0";
-  params["last_seen_advertiser_ad_predictor_weight"] = "0.0";
-  params["priority_ad_predictor_weight"] = "0.0";
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"child_intent_segment_ad_predictor_weight", "0.0"},
+       {"parent_intent_segment_ad_predictor_weight", "0.0"},
+       {"child_latent_interest_segment_ad_predictor_weight", "0.0"},
+       {"parent_latent_interest_segment_ad_predictor_weight", "0.0"},
+       {"child_interest_segment_ad_predictor_weight", "0.0"},
+       {"parent_interest_segment_ad_predictor_weight", "0.0"},
+       {"last_seen_ad_predictor_weight", "0.0"},
+       {"last_seen_advertiser_ad_predictor_weight", "0.0"},
+       {"priority_ad_predictor_weight", "0.0"}});
 
   CreativeAdInfo creative_ad =
       BuildCreativeAdForTesting(/*should_use_random_uuids*/ true);

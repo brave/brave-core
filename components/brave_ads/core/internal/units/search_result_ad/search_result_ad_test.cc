@@ -57,16 +57,8 @@ class BraveAdsSearchResultAdIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
   // Act
   TriggerSearchResultAdEvent(
@@ -90,16 +82,8 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
   SearchResultAd::DeferTriggeringOfAdViewedEvent();
 
@@ -137,16 +121,8 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
   const mojom::SearchResultAdInfoPtr search_result_ad =
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true);
@@ -174,18 +150,10 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
        TriggerViewedEventsForNonRewardsUser) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
+
   DisableBraveRewardsForTesting();
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
   TriggerSearchResultAdEvent(
@@ -231,18 +199,10 @@ TEST_F(
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
        TriggerQueuedViewedEventsForNonRewardsUser) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
+
   DisableBraveRewardsForTesting();
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   SearchResultAd::DeferTriggeringOfAdViewedEvent();
 
@@ -281,18 +241,10 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
        TriggerClickedEventForNonRewardsUser) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
+
   DisableBraveRewardsForTesting();
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   const mojom::SearchResultAdInfoPtr search_result_ad =
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true);

@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v3.h"
 
 #include <memory>
-#include <vector>
 
 #include "base/functional/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -105,16 +104,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
 TEST_F(BraveAdsEligibleNotificationAdsV3Test,
        GetAdsForCreativeWithoutEmbeddingProperty) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "3";
-  enabled_features.emplace_back(kNotificationAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"version", "3"}});
 
   const CreativeNotificationAdList creative_ads =
       BuildCreativeNotificationAdsForTesting(/*count*/ 2);

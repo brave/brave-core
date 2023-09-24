@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/transfer/transfer_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsTransferFeatureTest, IsEnabled) {
 
 TEST(BraveAdsTransferFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTransferFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kTransferFeature);
 
   // Act
 
@@ -42,16 +34,9 @@ TEST(BraveAdsTransferFeatureTest, IsDisabled) {
 
 TEST(BraveAdsTransferFeatureTest, TransferredAfter) {
   // Arrange
-  base::FieldTrialParams params;
-  params["transferred_after"] = "7s";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kTransferFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kTransferFeature, {{"transferred_after", "7s"}});
 
   // Act
 
@@ -70,14 +55,8 @@ TEST(BraveAdsTransferFeatureTest, DefaultTransferredAfter) {
 
 TEST(BraveAdsTransferFeatureTest, DefaultTransferredAfterWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTransferFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kTransferFeature);
 
   // Act
 

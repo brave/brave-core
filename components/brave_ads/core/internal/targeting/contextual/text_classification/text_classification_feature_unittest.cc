@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsTextClassificationFeatureTest, IsEnabled) {
 
 TEST(BraveAdsTextClassificationFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTextClassificationFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
   // Act
 
@@ -43,16 +35,9 @@ TEST(BraveAdsTextClassificationFeatureTest, IsDisabled) {
 TEST(BraveAdsTextClassificationFeatureTest,
      GetTextClassificationResourceVersion) {
   // Arrange
-  base::FieldTrialParams params;
-  params["resource_version"] = "0";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kTextClassificationFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kTextClassificationFeature, {{"resource_version", "0"}});
 
   // Act
 
@@ -73,14 +58,8 @@ TEST(BraveAdsTextClassificationFeatureTest,
 TEST(BraveAdsTextClassificationFeatureTest,
      DefaultTextClassificationResourceVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTextClassificationFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
   // Act
 
@@ -91,16 +70,9 @@ TEST(BraveAdsTextClassificationFeatureTest,
 TEST(BraveAdsTextClassificationFeatureTest,
      GetTextClassificationProbabilitiesHistorySize) {
   // Arrange
-  base::FieldTrialParams params;
-  params["page_probabilities_history_size"] = "3";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kTextClassificationFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kTextClassificationFeature, {{"page_probabilities_history_size", "3"}});
 
   // Act
 
@@ -121,14 +93,8 @@ TEST(BraveAdsTextClassificationFeatureTest,
 TEST(BraveAdsTextClassificationFeatureTest,
      DefaultTextClassificationProbabilitiesHistorySizeWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kTextClassificationFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
   // Act
 

@@ -52,24 +52,18 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["child_intent_segment_ad_predictor_weight"] = "0.0";
-  params["parent_intent_segment_ad_predictor_weight"] = "0.0";
-  params["child_latent_interest_segment_ad_predictor_weight"] = "0.0";
-  params["parent_latent_interest_segment_ad_predictor_weight"] = "0.0";
-  params["child_interest_segment_ad_predictor_weight"] = "0.0";
-  params["parent_interest_segment_ad_predictor_weight"] = "0.0";
-  params["last_seen_ad_predictor_weight"] = "0.0";
-  params["last_seen_advertiser_ad_predictor_weight"] = "0.0";
-  params["priority_ad_predictor_weight"] = "0.0";
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"child_intent_segment_ad_predictor_weight", "0.0"},
+       {"parent_intent_segment_ad_predictor_weight", "0.0"},
+       {"child_latent_interest_segment_ad_predictor_weight", "0.0"},
+       {"parent_latent_interest_segment_ad_predictor_weight", "0.0"},
+       {"child_interest_segment_ad_predictor_weight", "0.0"},
+       {"parent_interest_segment_ad_predictor_weight", "0.0"},
+       {"last_seen_ad_predictor_weight", "0.0"},
+       {"last_seen_advertiser_ad_predictor_weight", "0.0"},
+       {"priority_ad_predictor_weight", "0.0"}});
 
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =

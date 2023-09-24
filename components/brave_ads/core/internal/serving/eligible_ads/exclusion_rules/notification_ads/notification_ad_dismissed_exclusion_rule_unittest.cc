@@ -47,16 +47,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedOnce) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -88,16 +82,10 @@ TEST_F(
     BraveAdsDismissedExclusionRuleTest,
     ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedOnceForMultipleAdTypes) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -140,16 +128,10 @@ TEST_F(
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedThenClicked) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -179,16 +161,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdAfter2DaysIfDismissedThenClicked) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -221,16 +197,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdWithin2DaysIfClickedThenDismissed) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -260,16 +230,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdAfter2DaysIfClickedThenDismissed) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -302,16 +266,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdAfter2DaysIfClickedThenDismissedTwice) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -344,16 +302,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldExcludeWithSameCampaignIdWithin2DaysIfClickedThenDismissedTwice) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -384,16 +336,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdIfClickedThenDismissedTwiceWhenDisabled) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "0s";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "0s"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -423,16 +369,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdWithin2Days) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = kCreativeInstanceId;

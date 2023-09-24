@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -21,40 +19,29 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest, IsEnabled) {
 
   // Assert
   EXPECT_TRUE(
-      base::FeatureList::IsEnabled(CreativeAdModelBasedPredictorFeature));
+      base::FeatureList::IsEnabled(kCreativeAdModelBasedPredictorFeature));
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 
   // Assert
   EXPECT_FALSE(
-      base::FeatureList::IsEnabled(CreativeAdModelBasedPredictorFeature));
+      base::FeatureList::IsEnabled(kCreativeAdModelBasedPredictorFeature));
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      ChildIntentSegmentAdPredictorWeight) {
   // Arrange
-  base::FieldTrialParams params;
-  params["child_intent_segment_ad_predictor_weight"] = "0.5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"child_intent_segment_ad_predictor_weight", "0.5"}});
 
   // Act
 
@@ -75,14 +62,9 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultChildIntentSegmentAdPredictorWeightWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 
@@ -93,16 +75,10 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      ParentIntentSegmentAdPredictorWeight) {
   // Arrange
-  base::FieldTrialParams params;
-  params["parent_intent_segment_ad_predictor_weight"] = "0.5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"parent_intent_segment_ad_predictor_weight", "0.5"}});
 
   // Act
 
@@ -123,14 +99,9 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultParentIntentSegmentAdPredictorWeightWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 
@@ -141,16 +112,10 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      ChildLatentInterestSegmentAdPredictorWeight) {
   // Arrange
-  base::FieldTrialParams params;
-  params["child_latent_interest_segment_ad_predictor_weight"] = "0.5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"child_latent_interest_segment_ad_predictor_weight", "0.5"}});
 
   // Act
 
@@ -171,14 +136,9 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultChildLatentInterestSegmentAdPredictorWeightWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 
@@ -189,16 +149,10 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      ParentLatentInterestSegmentAdPredictorWeight) {
   // Arrange
-  base::FieldTrialParams params;
-  params["parent_latent_interest_segment_ad_predictor_weight"] = "0.5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"parent_latent_interest_segment_ad_predictor_weight", "0.5"}});
 
   // Act
 
@@ -219,14 +173,9 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultParentLatentInterestSegmentAdPredictorWeightWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 
@@ -237,16 +186,10 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      ChildInterestSegmentAdPredictorWeight) {
   // Arrange
-  base::FieldTrialParams params;
-  params["child_interest_segment_ad_predictor_weight"] = "0.5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"child_interest_segment_ad_predictor_weight", "0.5"}});
 
   // Act
 
@@ -267,14 +210,9 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultChildInterestSegmentAdPredictorWeightWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 
@@ -285,16 +223,10 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      ParentInterestSegmentAdPredictorWeight) {
   // Arrange
-  base::FieldTrialParams params;
-  params["parent_interest_segment_ad_predictor_weight"] = "0.5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"parent_interest_segment_ad_predictor_weight", "0.5"}});
 
   // Act
 
@@ -315,14 +247,9 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultParentInterestSegmentAdPredictorWeightWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 
@@ -333,16 +260,10 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      LastSeenAdAdPredictorWeight) {
   // Arrange
-  base::FieldTrialParams params;
-  params["last_seen_ad_predictor_weight"] = "0.5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"last_seen_ad_predictor_weight", "0.5"}});
 
   // Act
 
@@ -363,14 +284,9 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultLastSeenAdPredictorWeightWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 
@@ -381,16 +297,10 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      LastSeenAdvertiserAdPredictorWeight) {
   // Arrange
-  base::FieldTrialParams params;
-  params["last_seen_advertiser_ad_predictor_weight"] = "0.5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"last_seen_advertiser_ad_predictor_weight", "0.5"}});
 
   // Act
 
@@ -411,14 +321,9 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultLastSeenAdvertiserAdPredictorWeightWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 
@@ -429,16 +334,10 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      PriorityAdPredictorWeight) {
   // Arrange
-  base::FieldTrialParams params;
-  params["priority_ad_predictor_weight"] = "0.5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(CreativeAdModelBasedPredictorFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kCreativeAdModelBasedPredictorFeature,
+      {{"priority_ad_predictor_weight", "0.5"}});
 
   // Act
 
@@ -459,14 +358,9 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultPriorityAdPredictorWeightWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(CreativeAdModelBasedPredictorFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(
+      kCreativeAdModelBasedPredictorFeature);
 
   // Act
 

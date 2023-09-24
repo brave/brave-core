@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/user_activity_permission_rule.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
@@ -22,17 +20,10 @@ class BraveAdsUserActivityPermissionRuleTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    base::FieldTrialParams params;
-    params["triggers"] = "0D=1.0;0E=1.0;08=1.0";
-    params["time_window"] = "1h";
-    params["threshold"] = "2.0";
-    std::vector<base::test::FeatureRefAndParams> enabled_features;
-    enabled_features.emplace_back(kUserActivityFeature, params);
-
-    const std::vector<base::test::FeatureRef> disabled_features;
-
-    scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features,
-                                                       disabled_features);
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        kUserActivityFeature, {{"triggers", "0D=1.0;0E=1.0;08=1.0"},
+                               {"time_window", "1h"},
+                               {"threshold", "2.0"}});
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

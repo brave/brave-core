@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/units/new_tab_page_ad/new_tab_page_ad_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsNewTabPageAdFeatureTest, IsEnabled) {
 
 TEST(BraveAdsNewTabPageAdFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNewTabPageAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);
 
   // Act
 
@@ -42,16 +34,9 @@ TEST(BraveAdsNewTabPageAdFeatureTest, IsDisabled) {
 
 TEST(BraveAdsNewTabPageAdFeatureTest, MaximumAdsPerHour) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["maximum_ads_per_hour"] = "42";
-  enabled_features.emplace_back(kNewTabPageAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNewTabPageAdFeature, {{"maximum_ads_per_hour", "42"}});
 
   // Act
 
@@ -70,14 +55,8 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerHour) {
 
 TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNewTabPageAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);
 
   // Act
 
@@ -87,16 +66,9 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
 
 TEST(BraveAdsNewTabPageAdFeatureTest, MaximumAdsPerDay) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["maximum_ads_per_day"] = "24";
-  enabled_features.emplace_back(kNewTabPageAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNewTabPageAdFeature, {{"maximum_ads_per_day", "24"}});
 
   // Act
 
@@ -115,14 +87,8 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerDay) {
 
 TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNewTabPageAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);
 
   // Act
 
@@ -132,16 +98,9 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
 
 TEST(BraveAdsNewTabPageAdFeatureTest, MinimumWaitTime) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["minimum_wait_time"] = "10m";
-  enabled_features.emplace_back(kNewTabPageAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNewTabPageAdFeature, {{"minimum_wait_time", "10m"}});
 
   // Act
 
@@ -160,14 +119,8 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMinimumWaitTime) {
 
 TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMinimumWaitTimeWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNewTabPageAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);
 
   // Act
 

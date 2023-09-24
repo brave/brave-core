@@ -77,7 +77,8 @@ class ScopedTestingAdsServiceSetter {
 class SearchResultAdTest : public InProcessBrowserTest {
  public:
   SearchResultAdTest() {
-    feature_list_.InitAndEnableFeature(kShouldSupportSearchResultAdsFeature);
+    scoped_feature_list_.InitAndEnableFeature(
+        kShouldSupportSearchResultAdsFeature);
   }
 
   void SetUpOnMainThread() override {
@@ -146,7 +147,7 @@ class SearchResultAdTest : public InProcessBrowserTest {
   AdsServiceMock* ads_service() { return &ads_service_mock_; }
 
  private:
-  base::test::ScopedFeatureList feature_list_;
+  base::test::ScopedFeatureList scoped_feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   AdsServiceMock ads_service_mock_;

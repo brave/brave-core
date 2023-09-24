@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsExclusionRuleFeatureTest, IsEnabled) {
 
 TEST(BraveAdsExclusionRuleFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kExclusionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
   // Act
 
@@ -42,16 +34,9 @@ TEST(BraveAdsExclusionRuleFeatureTest, IsDisabled) {
 
 TEST(BraveAdsExclusionRuleFeatureTest, ShouldExcludeAdIfConverted) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_converted"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature, {{"should_exclude_ad_if_converted", "false"}});
 
   // Act
 
@@ -71,14 +56,8 @@ TEST(BraveAdsExclusionRuleFeatureTest, DefaultShouldExcludeAdIfConverted) {
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultShouldExcludeAdIfConvertedWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kExclusionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
   // Act
 
@@ -89,16 +68,10 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 TEST(BraveAdsExclusionRuleFeatureTest,
      GetExcludeAdIfDismissedWithinTimeWindow) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "24h";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "1d"}});
 
   // Act
 
@@ -119,14 +92,8 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultExcludeAdIfDismissedWithinTimeWindowWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kExclusionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
   // Act
 
@@ -137,16 +104,10 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 TEST(BraveAdsExclusionRuleFeatureTest,
      GetExcludeAdIfTransferredWithinTimeWindow) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_transferred_within_time_window"] = "24h";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_transferred_within_time_window", "1d"}});
 
   // Act
 
@@ -168,14 +129,8 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultExcludeAdIfTransferredWithinTimeWindowWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kExclusionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
   // Act
 
