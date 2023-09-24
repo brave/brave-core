@@ -67,6 +67,8 @@ const char kIsolatedAppScheme[] = "isolated-app";
 
 const char kChromeNativeScheme[] = "chrome-native";
 
+const char kChromeSafePageURL[] = "https://support.brave.com/";
+
 const char kChromeSearchLocalNtpHost[] = "local-ntp";
 
 const char kChromeSearchMostVisitedHost[] = "most-visited";
@@ -155,6 +157,8 @@ const char kHighEfficiencyModeLearnMoreUrl[] =
 const char kHighEfficiencyModeTabDiscardingHelpUrl[] =
     "https://support.brave.com/";
 
+const char kIncognitoHelpCenterURL[] = "https://support.brave.com";
+
 const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
 
 const char kInsecureDownloadBlockingLearnMoreUrl[] =
@@ -204,6 +208,8 @@ const char kSafeBrowsingHelpCenterURL[] =
 const char kSafeBrowsingHelpCenterUpdatedURL[] = "https://support.brave.com/";
 
 const char kSafeBrowsingInChromeHelpCenterURL[] = "https://support.brave.com/";
+
+const char kSafeBrowsingPTourURL[] = "https://support.brave.com/";
 
 const char kSafetyTipHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/17550072876045-Lookalike-URLs";
