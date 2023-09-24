@@ -46,7 +46,7 @@ export const NftContent = (props: Props) => {
   React.useEffect(() => {
     if (!wrapperRef?.current) return
     const observer = new IntersectionObserver(onIntersection, {})
-    observer.observe(wrapperRef?.current)
+    observer.observe(wrapperRef.current)
 
     // Clean up the observer when the component unmounts
     return () => observer.disconnect()
@@ -55,15 +55,15 @@ export const NftContent = (props: Props) => {
   return (
     <>
       <div ref={wrapperRef}>
-        {url && displayMode === 'icon' && isInView && (
+        {url && displayMode === 'icon' && isInView ? (
           <ImageWrapper>
             <Image src={url} />
           </ImageWrapper>
-        )}
+        ) : null}
       </div>
-      {displayMode === 'details' && nftMetadata && (
+      {displayMode === 'details' && nftMetadata ? (
         <NftMultimedia nftMetadata={nftMetadata} />
-      )}
+      ) : null}
     </>
   )
 }
