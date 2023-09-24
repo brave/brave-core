@@ -46,8 +46,7 @@ scoped_refptr<Image> ImageFromNode(const Node& node) {
 
   if (layout_object->IsCanvas()) {
     return To<HTMLCanvasElement>(const_cast<Node&>(node))
-        .Snapshot(CanvasResourceProvider::FlushReason::kNon2DCanvas,
-                  kFrontBuffer);
+        .Snapshot(FlushReason::kNon2DCanvas, kFrontBuffer);
   }
 
   if (!layout_object->IsImage())
