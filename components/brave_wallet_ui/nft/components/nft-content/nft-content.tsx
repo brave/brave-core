@@ -25,28 +25,45 @@ interface Props {
 }
 
 export const NftContent = (props: Props) => {
-  const {
-    nftMetadata,
-    imageUrl,
-    displayMode
-  } = props
+  const { nftMetadata, imageUrl, displayMode } = props
+  const wrapperRef = React.useRef<HTMLDivElement>(null)
+  const [isInView, setIsInView] = React.useState<boolean>(false)
 
   const url = React.useMemo(() => {
     return stripChromeImageURL(imageUrl) ?? Placeholder
   }, [imageUrl])
 
+  const onIntersection = React.useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries
+      if (entry.isIntersecting) {
+        setIsInView(true)
+      }
+    },
+    []
+  )
+
+  React.useEffect(() => {
+    if (!wrapperRef?.current) return
+    const observer = new IntersectionObserver(onIntersection, {})
+    observer.observe(wrapperRef.current)
+
+    // Clean up the observer when the component unmounts
+    return () => observer.disconnect()
+  }, [wrapperRef])
+
   return (
     <>
-      {url && displayMode === 'icon' &&
-        <ImageWrapper>
-          <Image
-            src={url}
-          />
-        </ImageWrapper>
-      }
-      {displayMode === 'details' && nftMetadata &&
+      <div ref={wrapperRef}>
+        {url && displayMode === 'icon' && isInView ? (
+          <ImageWrapper>
+            <Image src={url} />
+          </ImageWrapper>
+        ) : null}
+      </div>
+      {displayMode === 'details' && nftMetadata ? (
         <NftMultimedia nftMetadata={nftMetadata} />
-      }
+      ) : null}
     </>
   )
 }
