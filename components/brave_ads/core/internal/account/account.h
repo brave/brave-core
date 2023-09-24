@@ -94,8 +94,16 @@ class Account final : public AdsClientNotifierObserver,
   void InitializeConfirmations();
 
   void MaybeRewardUser();
+
   void InitializeUserRewards();
+  void InitializeIssuers();
+  void InitializeRefillConfirmationTokens();
+  void InitializeRedeemPaymentTokens();
+
   void ShutdownUserRewards();
+  void ShutdownIssuers();
+  void ShutdownRefillConfirmationTokens();
+  void ShutdownRedeemPaymentTokens();
 
   void MaybeFetchIssuers() const;
 
@@ -106,6 +114,7 @@ class Account final : public AdsClientNotifierObserver,
   void MaybeRefillConfirmationTokens() const;
 
   void MaybeReset();
+  void ResetAndFetchIssuers();
 
   void NotifyDidInitializeWallet(const WalletInfo& wallet) const;
   void NotifyFailedToInitializeWallet() const;
