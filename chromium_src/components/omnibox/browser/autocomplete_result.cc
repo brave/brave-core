@@ -68,6 +68,8 @@ void AutocompleteResult::ConvertOpenTabMatches(
           continue;
         }
         match.contents = action->GetLabelStrings().hint;
+        match.contents_class = {
+            ACMatchClassification(0, ACMatchClassification::Style::URL)};
         match.takeover_action = std::move(action);
         match.actions[i] =
             base::MakeRefCounted<OpenHereAction>(match.destination_url);
