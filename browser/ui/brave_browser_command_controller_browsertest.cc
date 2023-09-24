@@ -7,6 +7,7 @@
 
 #include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -17,8 +18,11 @@
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -183,10 +187,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   CheckBraveVPNCommands(browser());
 #endif
 
-  if (syncer::IsSyncAllowedByFlag())
+  if (syncer::IsSyncAllowedByFlag()) {
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  else
+  } else {
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  }
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
 
@@ -212,10 +217,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 #endif
 
-  if (syncer::IsSyncAllowedByFlag())
+  if (syncer::IsSyncAllowedByFlag()) {
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  else
+  } else {
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  }
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
@@ -271,10 +277,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 
-  if (syncer::IsSyncAllowedByFlag())
+  if (syncer::IsSyncAllowedByFlag()) {
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  else
+  } else {
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  }
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
@@ -291,3 +298,97 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 }
 #endif
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsCloseTabsToLeft) {
+  auto* command_controller = browser()->command_controller();
+
+  // Browser starts with a single about:blank page. Shouldn't be able to close
+  // tabs to the left because there's nothing to the left.
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT));
+
+  GURL t1 = GURL("https://example.com");
+  chrome::AddTabAt(browser(), t1, 1, true);
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT));
+  EXPECT_EQ(2, browser()->tab_strip_model()->count());
+
+  // Open a 3rd tab in the background, so t1 is still focused
+  GURL t2 = GURL("https://foo.com");
+  chrome::AddTabAt(browser(), t2, 2, false);
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT));
+  EXPECT_EQ(3, browser()->tab_strip_model()->count());
+
+  command_controller->ExecuteCommand(IDC_WINDOW_CLOSE_TABS_TO_LEFT);
+  EXPECT_EQ(2, browser()->tab_strip_model()->count());
+
+  EXPECT_EQ(t1,
+            browser()->tab_strip_model()->GetWebContentsAt(0)->GetVisibleURL());
+  EXPECT_EQ(t2,
+            browser()->tab_strip_model()->GetWebContentsAt(1)->GetVisibleURL());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsCloseUnpinnedTabs) {
+  auto* tsm = browser()->tab_strip_model();
+  auto* command_controller = browser()->command_controller();
+  // Should start with one open tab which isn't pinned.
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS));
+
+  tsm->SetTabPinned(0, true);
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS));
+
+  GURL unpinned("https://example.com");
+  chrome::AddTabAt(browser(), unpinned, 1, false);
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS));
+
+  GURL will_pin("https://will.pin");
+  chrome::AddTabAt(browser(), will_pin, 2, true);
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS));
+
+  tsm->SetTabPinned(2, true);
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS));
+
+  EXPECT_EQ(3, tsm->count());
+
+  command_controller->ExecuteCommand(IDC_WINDOW_CLOSE_UNPINNED_TABS);
+  EXPECT_EQ(2, tsm->count());
+
+  for (int i = 0; i < tsm->count(); ++i) {
+    EXPECT_TRUE(tsm->IsTabPinned(i));
+  }
+
+  EXPECT_EQ(GURL("about:blank"), tsm->GetWebContentsAt(0)->GetVisibleURL());
+  EXPECT_EQ(will_pin, tsm->GetWebContentsAt(1)->GetVisibleURL());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsAddAllToNewGroup) {
+  auto* command_controller = browser()->command_controller();
+  auto* tsm = browser()->tab_strip_model();
+
+  GURL url("https://example.com");
+  chrome::AddTabAt(browser(), url, 1, false);
+  chrome::AddTabAt(browser(), url, 2, false);
+  chrome::AddTabAt(browser(), url, 3, false);
+  chrome::AddTabAt(browser(), url, 4, false);
+
+  EXPECT_EQ(5, tsm->count());
+  command_controller->ExecuteCommand(IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP);
+  EXPECT_EQ(5, tsm->count());
+
+  // All tabs should have the same group.
+  auto group = tsm->GetTabGroupForTab(0);
+  EXPECT_TRUE(group.has_value());
+
+  for (int i = 1; i < tsm->count(); ++i) {
+    EXPECT_EQ(group, tsm->GetTabGroupForTab(i));
+  }
+}

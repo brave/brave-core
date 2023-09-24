@@ -16,7 +16,6 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
-#include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
@@ -36,7 +35,6 @@
 #include "chrome/browser/ui/commander/command_source.h"
 #include "chrome/browser/ui/commander/commander.h"
 #include "chrome/browser/ui/commander/commander_view_model.h"
-#include "chrome/browser/ui/commander/open_url_command_source.h"
 #include "chrome/browser/ui/commander/tab_command_source.h"
 #include "chrome/browser/ui/commander/window_command_source.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
@@ -54,8 +52,8 @@ CommandItemModel FromCommand(const std::unique_ptr<CommandItem>& item) {
 CommanderService::CommanderService(Profile* profile)
     : profile_(profile), ranker_(profile->GetPrefs()) {
   command_sources_.push_back(std::make_unique<BraveSimpleCommandSource>());
-  command_sources_.push_back(std::make_unique<BookmarkCommandSource>());
-  command_sources_.push_back(std::make_unique<WindowCommandSource>());
+  command_sources_.push_back(std::make_unique<BraveBookmarkCommandSource>());
+  command_sources_.push_back(std::make_unique<BraveWindowCommandSource>());
   command_sources_.push_back(std::make_unique<BraveTabCommandSource>());
 }
 
@@ -146,6 +144,7 @@ const std::u16string& CommanderService::GetPrompt() {
 
 void CommanderService::Shutdown() {
   weak_ptr_factory_.InvalidateWeakPtrs();
+  items_.clear();
 }
 
 void CommanderService::Toggle() {

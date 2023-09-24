@@ -187,11 +187,29 @@
   <message name="IDS_IDC_WINDOW_MUTE_SITE">
     Mute site
   </message>
+  <message name="IDS_IDC_WINDOW_MUTE_ALL_TABS">
+    Mute all tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_MUTE_OTHER_TABS">
+    Mute other tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_UNMUTE_ALL_TABS">
+    Unmute all tabs
+  </message>
   <message name="IDS_IDC_WINDOW_PIN_TAB">
     Pin tab
   </message>
+  <message name="IDS_IDC_WINDOW_CLOSE_UNPINNED_TABS">
+    Close unpinned tabs
+  </message>
   <message name="IDS_IDC_WINDOW_GROUP_TAB">
     Group tab
+  </message>
+  <message name="IDS_IDC_SCROLL_TAB_TO_TOP">
+    Scroll tab to top
+  </message>
+  <message name="IDS_IDC_SCROLL_TAB_TO_BOTTOM">
+    Scroll tab to bottom
   </message>
   <message name="IDS_IDC_QRCODE_GENERATOR">
     QR code generator
@@ -477,6 +495,35 @@
   </message>
   <message name="IDS_IDC_TOGGLE_VERTICAL_TABS_EXPANDED">
     Toggle vertical tabs expanded
+  </message>
+  <message name="IDS_IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP">
+    Add all tabs to new group
+  </message>
+  <message name="IDS_IDC_BRAVE_SEND_TAB_TO_SELF">
+    Send tab to self
+  </message>
+
+  <!-- Commander composite commands -->
+  <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">
+    Open bookmark...
+  </message>
+  <message name="IDS_COMMANDER_SWITCH_TO_WINDOW" desc="Text for the command to begin switching to another window">
+    Switch to window...
+  </message>
+  <message name="IDS_COMMANDER_MERGE_WINDOW_INTO" desc="Text for the command to begin merging the current window into another window">
+    Merge current window into...
+  </message>
+  <message name="IDS_COMMANDER_MOVE_TABS_TO_WINDOW" desc="Text for the command to begin moving selected tabs to a new window">
+    Move tabs to window...
+  </message>
+  <message name="IDS_COMMANDER_ADD_TABS_TO_EXISTING_GROUP" desc="Text for the command to begin adding tabs to an existing group">
+    Add tab to existing group...
+  </message>
+  <message name="IDS_COMMANDER_PIN_TAB" desc="Text for the command to select a tab to pin">
+    Pin tab...
+  </message>
+  <message name="IDS_COMMANDER_UNPIN_TAB" desc="Text for the command to select a tab to unpin">
+    Unpin tab...
   </message>
 
   <!-- Shortcuts Page UI Strings -->

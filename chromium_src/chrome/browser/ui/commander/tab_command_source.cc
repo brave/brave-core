@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/chrome/browser/ui/commander/tab_command_source.cc"  // IWYU pragma: export
+#include "chrome/browser/ui/commander/tab_command_source.h"
 
 #include <string>
 #include <vector>
@@ -11,7 +11,11 @@
 #include "base/functional/bind.h"
 #include "chrome/browser/ui/commander/command_source.h"
 #include "chrome/browser/ui/commander/fuzzy_finder.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/range/range.h"
+
+#include "src/chrome/browser/ui/commander/tab_command_source.cc"
 
 namespace commander {
 
@@ -27,99 +31,43 @@ CommandSource::CommandResults BraveTabCommandSource::GetCommands(
 
   TabStripModel* tab_strip_model = browser->tab_strip_model();
 
-  if (CanCloseTabsToLeft(tab_strip_model)) {
-    if (auto item = ItemForTitle(u"Close tabs to the left", finder, &ranges)) {
-      item->command =
-          base::BindOnce(&CloseTabsToLeft, base::Unretained(browser));
-      results.push_back(std::move(item));
-    }
-  }
-
-  if (HasUnpinnedTabs(tab_strip_model)) {
-    if (auto item = ItemForTitle(u"Close unpinned tabs", finder, &ranges)) {
-      item->command =
-          base::BindOnce(&CloseUnpinnedTabs, base::Unretained(browser));
-      results.push_back(std::move(item));
-    }
-  }
-
   if (CanMoveTabsToExistingWindow(browser)) {
-    if (auto item = ItemForTitle(u"Move tabs to window...", finder, &ranges)) {
+    auto text = l10n_util::GetStringUTF16(IDS_COMMANDER_MOVE_TABS_TO_WINDOW);
+    if (auto item = ItemForTitle(text, finder, &ranges)) {
       item->command = std::make_pair(
-          u"Move tabs to window...",
-          base::BindRepeating(&MoveTabsToWindowCommandsForWindowsMatching,
-                              base::Unretained(browser)));
+          text, base::BindRepeating(&MoveTabsToWindowCommandsForWindowsMatching,
+                                    base::Unretained(browser)));
       results.push_back(std::move(item));
     }
   }
 
-  if (CanAddAllToNewGroup(tab_strip_model)) {
-    if (auto item =
-            ItemForTitle(u"Move all tabs to new group", finder, &ranges)) {
-      item->command =
-          base::BindOnce(&AddAllToNewGroup, base::Unretained(browser));
-      results.push_back(std::move(item));
-    }
-  }
-
-  if (auto item =
-          ItemForTitle(u"Add tab to existing group...", finder, &ranges)) {
+  auto add_tab_to_existing_group =
+      l10n_util::GetStringUTF16(IDS_COMMANDER_ADD_TABS_TO_EXISTING_GROUP);
+  if (auto item = ItemForTitle(add_tab_to_existing_group, finder, &ranges)) {
     item->command = std::make_pair(
-        u"Add to existing group...",
+        add_tab_to_existing_group,
         base::BindRepeating(&AddTabsToGroupCommandsForGroupsMatching,
                             base::Unretained(browser)));
     results.push_back(std::move(item));
   }
 
-  if (auto item = ItemForTitle(u"Mute all tabs", finder, &ranges)) {
-    item->command =
-        base::BindOnce(&MuteAllTabs, base::Unretained(browser), false);
-    results.push_back(std::move(item));
-  }
-
-  if (auto item = ItemForTitle(u"Mute other tabs", finder, &ranges)) {
-    item->command =
-        base::BindOnce(&MuteAllTabs, base::Unretained(browser), false);
-    results.push_back(std::move(item));
-  }
-
   if (HasUnpinnedTabs(tab_strip_model)) {
-    if (auto item = ItemForTitle(u"Pin tab...", finder, &ranges)) {
+    auto text = l10n_util::GetStringUTF16(IDS_COMMANDER_PIN_TAB);
+    if (auto item = ItemForTitle(text, finder, &ranges)) {
       item->command = std::make_pair(
-          u"Pin tab...",
-          base::BindRepeating(&TogglePinTabCommandsForTabsMatching,
-                              base::Unretained(browser), true));
+          text, base::BindRepeating(&TogglePinTabCommandsForTabsMatching,
+                                    base::Unretained(browser), true));
       results.push_back((std::move(item)));
     }
   }
 
   if (HasPinnedTabs(tab_strip_model)) {
-    if (auto item = ItemForTitle(u"Unpin tab...", finder, &ranges)) {
+    auto text = l10n_util::GetStringUTF16(IDS_COMMANDER_UNPIN_TAB);
+    if (auto item = ItemForTitle(text, finder, &ranges)) {
       item->command = std::make_pair(
-          u"Unpin tab...",
-          base::BindRepeating(&TogglePinTabCommandsForTabsMatching,
-                              base::Unretained(browser), false));
+          text, base::BindRepeating(&TogglePinTabCommandsForTabsMatching,
+                                    base::Unretained(browser), false));
       results.push_back((std::move(item)));
-    }
-
-    if (auto item = ItemForTitle(u"Scroll to top", finder, &ranges)) {
-      item->command = base::BindOnce(&ScrollToTop, base::Unretained(browser));
-      results.push_back(std::move(item));
-    }
-
-    if (auto item = ItemForTitle(u"Scroll to bottom", finder, &ranges)) {
-      item->command =
-          base::BindOnce(&ScrollToBottom, base::Unretained(browser));
-      results.push_back(std::move(item));
-    }
-
-    if (send_tab_to_self::ShouldDisplayEntryPoint(
-            tab_strip_model->GetActiveWebContents())) {
-      if (auto item = ItemForTitle(u"Send tab to self...", finder, &ranges)) {
-        item->command = base::BindOnce(&chrome::SendTabToSelfFromPageAction,
-                                       base::Unretained(browser));
-        results.push_back(std::move(item));
-      }
     }
   }
 

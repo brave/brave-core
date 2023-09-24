@@ -6,12 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_COMMANDER_TAB_COMMAND_SOURCE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_COMMANDER_TAB_COMMAND_SOURCE_H_
 
-#include "src/chrome/browser/ui/commander/tab_command_source.h"  // IWYU pragma: export
-
 #include "chrome/browser/ui/commander/command_source.h"
+
+#include "src/chrome/browser/ui/commander/tab_command_source.h"  // IWYU pragma: export
 
 namespace commander {
 
+// Note: This is implemented in chromium_src because we need access to functions
+// in the anonymous namespace of TabCommandSource.
 class BraveTabCommandSource : public CommandSource {
  public:
   BraveTabCommandSource();

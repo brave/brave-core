@@ -199,7 +199,7 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
   auto items = commander()->GetItems();
   ASSERT_EQ(3u, items.size());
   EXPECT_EQ(u"Pin tab", items[0].title);
-  EXPECT_EQ(u"Pin tab...", items[1].title);
+  EXPECT_EQ(u"Pin tab…", items[1].title);
   EXPECT_EQ(u"Close unpinned tabs", items[2].title);
 
   commander()->SelectCommand(1, 1);
