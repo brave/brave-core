@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_STATUS_ICON_ICON_UTILS_H_
 #define BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_STATUS_ICON_ICON_UTILS_H_
 
+#include "base/win/windows_types.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
 namespace gfx {
 class ImageSkia;
 class Size;
@@ -13,6 +16,8 @@ class Size;
 
 namespace brave_vpn {
 gfx::ImageSkia GetIconFromResources(int icon_id, const gfx::Size& size);
+bool IsBraveVpnTrayIconRunning();
+absl::optional<HWND> GetBraveVpnStatusTrayIconHWND();
 }  // namespace brave_vpn
 
 #endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_STATUS_ICON_ICON_UTILS_H_

@@ -3,10 +3,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("status_icon") {
+source_set("utils") {
   sources = [
+    "constants.h",
     "icon_utils.cc",
     "icon_utils.h",
+  ]
+  deps = [
+    "//base",
+    "//third_party/abseil-cpp:absl",
+    "//ui/gfx",
+  ]
+}
+
+source_set("status_icon") {
+  sources = [
     "native_popup_menu.cc",
     "native_popup_menu.h",
     "scoped_hmenu.h",
@@ -20,6 +31,7 @@ source_set("status_icon") {
   ]
   public_deps = [ "//ui/base" ]
   deps = [
+    ":utils",
     "//base",
     "//ui/gfx",
   ]

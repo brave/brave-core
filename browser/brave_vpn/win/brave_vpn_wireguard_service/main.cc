@@ -18,6 +18,7 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/install_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_service_runner.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/install_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_tray_runner.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
 #include "chrome/install_static/product_install_details.h"
@@ -142,7 +143,8 @@ int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
   // windows service and removes stored data. Used by the uninstaller.
   if (command_line->HasSwitch(
           brave_vpn::kBraveVpnWireguardServiceUnnstallSwitchName)) {
-    auto success = brave_vpn::UninstallBraveWireguardService();
+    auto success = brave_vpn::UninstallBraveWireguardService() &&
+                   brave_vpn::UninstallStatusTrayIcon();
     return success ? 0 : 1;
   }
 

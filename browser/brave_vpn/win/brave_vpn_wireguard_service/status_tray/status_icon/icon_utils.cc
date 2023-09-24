@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/constants.h"
 #include "ui/gfx/icon_util.h"
 #include "ui/gfx/image/image_family.h"
 #include "ui/gfx/image/image_skia.h"
@@ -31,6 +32,19 @@ gfx::ImageSkia GetIconFromResources(int icon_id, const gfx::Size& size) {
   }
 
   return family->CreateExact(size).AsImageSkia();
+}
+
+absl::optional<HWND> GetBraveVpnStatusTrayIconHWND() {
+  auto* hWnd = FindWindowEx(nullptr, nullptr, kStatusTrayWindowClass,
+                            kStatusTrayWindowName);
+  if (hWnd != NULL) {
+    return hWnd;
+  }
+  return absl::nullopt;
+}
+
+bool IsBraveVpnTrayIconRunning() {
+  return GetBraveVpnStatusTrayIconHWND().has_value();
 }
 
 }  // namespace brave_vpn
