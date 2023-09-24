@@ -63,6 +63,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           // The `History submenu
           {IDC_SHOW_HISTORY, kLeoHistoryIcon},
           {IDC_CLEAR_BROWSING_DATA, kLeoShredDataIcon},
+          {IDC_RECENT_TABS_NO_DEVICE_TABS, kLeoSmartphoneLaptopIcon},
 
           // The `Help` menu
           {IDC_ABOUT, kLeoBraveIconMonochromeIcon},
