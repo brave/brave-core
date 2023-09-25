@@ -266,6 +266,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_unittest_util.cc",
     "//brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_unittest_util.h",
     "//brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_validation_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_unittest.cc",
     "//brave/components/brave_ads/core/internal/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_unittest_util.cc",

@@ -464,6 +464,8 @@ static_library("internal") {
     "conversions/queue/queue_item/conversion_queue_item_util.cc",
     "conversions/queue/queue_item/conversion_queue_item_util.h",
     "conversions/queue/queue_item/conversion_queue_item_util_constants.h",
+    "conversions/queue/queue_item/conversion_queue_item_validation_util.cc",
+    "conversions/queue/queue_item/conversion_queue_item_validation_util.h",
     "conversions/resource/conversion_resource.cc",
     "conversions/resource/conversion_resource.h",
     "conversions/resource/conversion_resource_constants.h",
