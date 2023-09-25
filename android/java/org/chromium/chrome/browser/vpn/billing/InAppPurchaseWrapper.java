@@ -415,7 +415,7 @@ public class InAppPurchaseWrapper {
         if (pricingPhase != null) {
             double yearlyPrice = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS) * 12;
             String priceString = String.format(Locale.getDefault(), "%.2f", yearlyPrice);
-            return pricingPhase.getPriceCurrencyCode() + priceString;
+            return pricingPhase.getPriceCurrencyCode() + " " + priceString;
         }
         return null;
     }
