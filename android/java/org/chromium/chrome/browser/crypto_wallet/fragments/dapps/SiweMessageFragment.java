@@ -50,7 +50,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
-import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.url.mojom.Url;
 
 import java.lang.ref.WeakReference;
@@ -259,10 +258,6 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
 
         List<TwoLineItemRecyclerViewAdapter.TwoLineItem> items = new ArrayList<>();
         addDetail(items, R.string.brave_wallet_origin, getOriginJson(mSiweMessageData.origin));
-        addDetail(items, R.string.host, mCurrentSignMessageRequest.originInfo.eTldPlusOne,
-                (title, subTitle) -> {
-                    subTitle.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
-                });
         addDetail(items, R.string.brave_wallet_address, mSiweMessageData.address);
         addDetail(items, R.string.brave_wallet_statement, mSiweMessageData.statement);
         addDetail(items, R.string.brave_wallet_uri, mSiweMessageData.uri.url);
@@ -279,14 +274,6 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         fragment.show(getParentFragmentManager(), TAG);
     }
 
-    private void addDetail(List<TwoLineItemRecyclerViewAdapter.TwoLineItem> allDetails,
-            @StringRes int id, String value,
-            Callbacks.Callback2<TextView, TextView> customUiChanges) {
-        if (TextUtils.isEmpty(value)) return;
-        allDetails.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemText(
-                getString(id), value, customUiChanges));
-        allDetails.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
-    }
     private void addDetail(List<TwoLineItemRecyclerViewAdapter.TwoLineItem> allDetails,
             @StringRes int id, String value) {
         if (TextUtils.isEmpty(value)) return;
