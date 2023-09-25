@@ -255,9 +255,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         mMenu.removeItem(R.id.brave_playlist_id);
         mMenu.removeItem(R.id.brave_speedreader_id);
         mMenu.removeItem(R.id.exit_id);
-        if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
-            mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
-        }
+        mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);
     }
 
     @Override
