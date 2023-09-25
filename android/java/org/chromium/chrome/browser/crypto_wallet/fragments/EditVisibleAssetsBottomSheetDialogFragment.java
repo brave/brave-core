@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import static java.lang.Boolean.compare;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -251,7 +253,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.edit_visible_assets_bottom_sheet, container, false);
+        final View view =
+                inflater.inflate(R.layout.edit_visible_assets_bottom_sheet, container, false);
 
         Button saveAssets = view.findViewById(R.id.saveAssets);
         TextView addCustomAsset = view.findViewById(R.id.add_custom_asset);
@@ -388,8 +391,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             walletListItemModelList.add(itemModel);
         }
         walletListItemModelList.sort(
-                (item1, item2)
-                        -> Boolean.compare(item2.isVisible(), item1.isVisible()));
+                (item1, item2) -> compare(item2.isVisible(), item1.isVisible()));
         mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
         mWalletCoinAdapter.setOnWalletListItemClick(this);
         mWalletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
