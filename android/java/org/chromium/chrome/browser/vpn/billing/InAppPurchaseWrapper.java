@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class InAppPurchaseWrapper {
@@ -45,6 +46,9 @@ public class InAppPurchaseWrapper {
     public static final String RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
     public static final String RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
     private BillingClient mBillingClient;
+
+    private static final long MICRO_UNITS =
+            1000000; // 1,000,000 micro-units equal one unit of the currency
 
     private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static Object sMutex = new Object();
@@ -377,5 +381,42 @@ public class InAppPurchaseWrapper {
                 tries++;
             }
         } while (tries <= maxTries && !isConnectionEstablished);
+    }
+
+    private ProductDetails.PricingPhase getPricingPhase(ProductDetails productDetails) {
+        if (productDetails.getSubscriptionOfferDetails() != null) {
+            for (ProductDetails.SubscriptionOfferDetails subscriptionOfferDetails :
+                    productDetails.getSubscriptionOfferDetails()) {
+                if (subscriptionOfferDetails.getOfferId() == null) {
+                    for (ProductDetails.PricingPhase pricingPhase :
+                            subscriptionOfferDetails.getPricingPhases().getPricingPhaseList()) {
+                        if (pricingPhase.getPriceAmountMicros() > 0) {
+                            return pricingPhase;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getFormattedProductPrice(ProductDetails productDetails) {
+        ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
+        if (pricingPhase != null) {
+            double price = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS);
+            String priceString = String.format(Locale.getDefault(), "%.2f", price);
+            return pricingPhase.getPriceCurrencyCode() + " " + priceString;
+        }
+        return null;
+    }
+
+    public String getFormattedFullProductPrice(ProductDetails productDetails) {
+        ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
+        if (pricingPhase != null) {
+            double yearlyPrice = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS) * 12;
+            String priceString = String.format(Locale.getDefault(), "%.2f", yearlyPrice);
+            return pricingPhase.getPriceCurrencyCode() + " " + priceString;
+        }
+        return null;
     }
 }
