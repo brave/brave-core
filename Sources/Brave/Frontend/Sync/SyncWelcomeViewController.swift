@@ -7,6 +7,7 @@ import BraveShared
 import BraveCore
 import BraveUI
 import os.log
+import Preferences
 
 /// Sometimes during heavy operations we want to prevent user from navigating back, changing screen etc.
 protocol NavigationPrevention {
@@ -261,7 +262,7 @@ class SyncWelcomeViewController: SyncViewController {
         }
       }
       
-      self.syncAPI.joinSyncGroup(codeWords: self.syncAPI.getSyncCode(), syncProfileService: self.syncProfileServices, shouldEnableBookmarks: true)
+      self.syncAPI.joinSyncGroup(codeWords: self.syncAPI.getSyncCode(), syncProfileService: self.syncProfileServices)
       self.handleSyncSetupFailure()
     }
     
@@ -337,7 +338,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
 
     // In parallel set code words - request sync and setup complete
     // should be called on brave-core side
-    syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileServices, shouldEnableBookmarks: false)
+    syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileServices)
     handleSyncSetupFailure()
   }
   
@@ -485,8 +486,9 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
   }
   
   private func enableDefaultTypeAndPushSettings() {
-    // Enable Bookmark Syncing and push settings
-    syncAPI.enableSyncTypes(syncProfileService: syncProfileServices, shouldEnableBookmarks: true)
+    // Enable default sync type Bookmarks and push settings
+    Preferences.Chromium.syncBookmarksEnabled.value = true
+    syncAPI.enableSyncTypes(syncProfileService: syncProfileServices)
     pushSettings()
   }
   
