@@ -773,6 +773,14 @@ void VerticalTabStripRegionView::SetState(State state) {
   mouse_enter_timer_.Stop();
 
   last_state_ = std::exchange(state_, state);
+  resize_area_->SetEnabled(state == State::kExpanded);
+  header_view_->toggle_button()->SetHighlighted(state == State::kExpanded);
+
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
+    // This can happen when "float on mouse hover" is enabled and tab strip
+    // orientation has been changed.
+    return;
+  }
 
   auto tab_strip = original_region_view_->tab_strip_;
   tab_strip->SetAvailableWidthCallback(base::BindRepeating(
@@ -780,9 +788,6 @@ void VerticalTabStripRegionView::SetState(State state) {
       base::Unretained(this)));
   tab_strip->tab_container_->InvalidateIdealBounds();
   tab_strip->tab_container_->CompleteAnimationAndLayout();
-
-  resize_area_->SetEnabled(state == State::kExpanded);
-  header_view_->toggle_button()->SetHighlighted(state == State::kExpanded);
 
   if (gfx::Animation::ShouldRenderRichAnimation()) {
     state_ == State::kCollapsed ? width_animation_.Hide()
@@ -835,6 +840,7 @@ gfx::Vector2d VerticalTabStripRegionView::GetOffsetForDraggedTab() const {
 }
 
 int VerticalTabStripRegionView::GetAvailableWidthForTabContainer() {
+  DCHECK(tabs::utils::ShouldShowVerticalTabs(browser_));
   return GetPreferredWidthForState(state_, /*include_border=*/false,
                                    /*ignore_animation=*/false);
 }
@@ -900,6 +906,12 @@ void VerticalTabStripRegionView::Layout() {
 
 void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
   UpdateLayout(/* in_destruction= */ false);
+
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_) &&
+      state_ == State::kFloating) {
+    mouse_enter_timer_.Stop();
+    SetState(State::kCollapsed);
+  }
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
