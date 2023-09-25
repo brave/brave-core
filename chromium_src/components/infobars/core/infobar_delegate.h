@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_INFOBARS_CORE_INFOBAR_DELEGATE_H_
 
 // Add corresponding value into
+// NOLINTNEXTLINE
 // brave/android/java/org/chromium/chrome/browser/infobar/BraveInfoBarIdentifier.java
 // When there will be too many items, redo java_cpp_enum.py to generate it
 // automatically

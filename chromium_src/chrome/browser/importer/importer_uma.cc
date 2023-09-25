@@ -15,3 +15,4 @@
   break;                   \
   case TYPE_FIREFOX
 #include "src/chrome/browser/importer/importer_uma.cc"
+#undef TYPE_FIREFOX

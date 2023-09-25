@@ -9,6 +9,9 @@
 #include "brave/browser/ui/views/brave_views_delegate_linux.h"
 #undef ChromeViewsDelegate
 #define ChromeViewsDelegate BraveViewsDelegateLinux
-#endif
+#endif  // BUILDFLAG(IS_LINUX)
 
 #include "src/chrome/browser/ui/views/chrome_browser_main_extra_parts_views.cc"
+#if BUILDFLAG(IS_LINUX)
+#undef ChromeViewsDelegate
+#endif  // BUILDFLAG(IS_LINUX)

@@ -23,4 +23,4 @@ void Widget::ResetWindowControlsPosition() {
 
 }  // namespace views
 
-#endif  // defined(OS_MAC)
+#endif  // BUILDFLAG(IS_MAC)

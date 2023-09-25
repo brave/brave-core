@@ -108,9 +108,6 @@
         "chrome/install_static/install_util.cc": [
             "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
         ],
-        "chrome/installer/mini_installer/appid.h": [
-            "CHROME_INSTALLER_MINI_INSTALLER_APPID_H_",
-        ],
         "chrome/installer/setup/install_worker.cc": [
             "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
         ],

@@ -15,7 +15,7 @@
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
 #include "src/third_party/blink/renderer/bindings/core/v8/referrer_script_info.cc"
-
+#undef BRAVE_REFERRER_SCRIPT_INFO_IS_DEFAULT_VALUE
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef ToV8HostDefinedOptions
 #undef FromV8HostDefinedOptions

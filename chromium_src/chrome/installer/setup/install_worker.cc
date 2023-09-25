@@ -102,13 +102,16 @@ void AddBraveVPNWireguardServiceWorkItems(
 
 }  // namespace
 
-#define GetElevationServicePath GetElevationServicePath(target_path, new_version), install_list); \
-  AddBraveVPNWireguardServiceWorkItems(                                                           \
-      brave_vpn::GetBraveVPNWireguardServiceInstallationPath(target_path,                         \
-                                                             new_version),                        \
-      install_list);                                                                              \
+#define GetElevationServicePath GetElevationServicePath(                   \
+  target_path, new_version), install_list);                                \
+  AddBraveVPNWireguardServiceWorkItems(                                    \
+      brave_vpn::GetBraveVPNWireguardServiceInstallationPath(target_path,  \
+                                                             new_version), \
+      install_list);                                                       \
   AddBraveVPNHelperServiceWorkItems(GetBraveVPNHelperPath
+
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
 #include "src/chrome/installer/setup/install_worker.cc"
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #undef GetElevationServicePath

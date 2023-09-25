@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef CHROME_INSTALLER_MINI_INSTALLER_APPID_H_
-#define CHROME_INSTALLER_MINI_INSTALLER_APPID_H_
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_APPID_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_APPID_H_
 
 // The appid included by the mini_installer.
 namespace google_update {
@@ -19,4 +20,4 @@ extern const wchar_t kSxSAppGuid[];
 
 }  // namespace google_update
 
-#endif  // CHROME_INSTALLER_MINI_INSTALLER_APPID_H_
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_APPID_H_

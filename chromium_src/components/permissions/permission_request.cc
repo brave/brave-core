@@ -75,6 +75,9 @@ const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
 #include "src/components/permissions/permission_request.cc"
 #undef IDS_VR_INFOBAR_TEXT
 #undef IDS_VR_PERMISSION_FRAGMENT
+#undef BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID
+#undef BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP
+#undef BRAVE_ENUM_ITEMS_FOR_SWITCH
 #undef IsDuplicateOf
 #undef PermissionRequest
 

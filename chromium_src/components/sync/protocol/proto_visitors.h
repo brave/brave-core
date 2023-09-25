@@ -15,5 +15,7 @@ VISIT_PROTO_FIELDS(const sync_pb::BraveSpecificFields& proto) {        \
 }
 
 #include "src/components/sync/protocol/proto_visitors.h"  // IWYU pragma: export
+#undef BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD
+#undef BRAVE_VISIT_DEVICE_INFO_SPECIFICS_BRAVE_FIELDS
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_PROTOCOL_PROTO_VISITORS_H_
