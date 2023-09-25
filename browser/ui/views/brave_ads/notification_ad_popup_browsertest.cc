@@ -25,7 +25,7 @@ namespace brave_ads {
 class NotificationAdPopupBrowserTest : public InProcessBrowserTest {
  public:
   NotificationAdPopupBrowserTest() {
-    feature_list_.InitAndEnableFeature(kCustomNotificationAdFeature);
+    scoped_feature_list_.InitAndEnableFeature(kCustomNotificationAdFeature);
   }
 
   void SetUp() override {
@@ -45,7 +45,7 @@ class NotificationAdPopupBrowserTest : public InProcessBrowserTest {
   }
 
  private:
-  base::test::ScopedFeatureList feature_list_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(NotificationAdPopupBrowserTest, CheckThemeChanged) {

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/user/user_attention/user_idle_detection/user_idle_detection_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, IsEnabled) {
 
 TEST(BraveAdsUserIdleDetectionFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kUserIdleDetectionFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kUserIdleDetectionFeature);
 
   // Act
 
@@ -42,16 +34,9 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, IsDisabled) {
 
 TEST(BraveAdsUserIdleDetectionFeatureTest, MaximumIdleTime) {
   // Arrange
-  base::FieldTrialParams params;
-  params["maximum_idle_time"] = "30m";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kUserIdleDetectionFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kUserIdleDetectionFeature, {{"maximum_idle_time", "30m"}});
 
   // Act
 
@@ -70,14 +55,8 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultMaximumIdleTime) {
 
 TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultMaximumIdleTimeWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kUserIdleDetectionFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kUserIdleDetectionFeature);
 
   // Act
 
@@ -87,16 +66,9 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultMaximumIdleTimeWhenDisabled) {
 
 TEST(BraveAdsUserIdleDetectionFeatureTest, ShouldDetectScreenWasLocked) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_detect_screen_was_locked"] = "true";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kUserIdleDetectionFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kUserIdleDetectionFeature, {{"should_detect_screen_was_locked", "true"}});
 
   // Act
 
@@ -116,14 +88,8 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultShouldDetectScreenWasLocked) {
 TEST(BraveAdsUserIdleDetectionFeatureTest,
      ShouldDetectScreenWasLockedWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kUserIdleDetectionFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kUserIdleDetectionFeature);
 
   // Act
 

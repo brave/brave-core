@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving.h"
 
-#include "base/metrics/field_trial_params.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
@@ -78,17 +77,15 @@ class BraveAdsNotificationAdServingTest : public UnitTestBase {
 
 TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"version", "0"}});
+
   ForcePermissionRulesForTesting();
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
-
-  base::FieldTrialParams params;
-  params["version"] = "0";
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kNotificationAdServingFeature, params);
 
   // Act
   MaybeServeAd();

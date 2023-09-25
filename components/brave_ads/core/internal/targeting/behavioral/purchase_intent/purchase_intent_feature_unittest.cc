@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -26,14 +24,8 @@ TEST(BraveAdsPurchaseIntentFeatureTest, IsEnabled) {
 
 TEST(BraveAdsPurchaseIntentFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPurchaseIntentFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
   // Act
 
@@ -43,16 +35,9 @@ TEST(BraveAdsPurchaseIntentFeatureTest, IsDisabled) {
 
 TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentResourceVersion) {
   // Arrange
-  base::FieldTrialParams params;
-  params["resource_version"] = "0";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPurchaseIntentFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPurchaseIntentFeature, {{"resource_version", "0"}});
 
   // Act
 
@@ -72,14 +57,8 @@ TEST(BraveAdsPurchaseIntentFeatureTest, DefaultPurchaseIntentResourceVersion) {
 TEST(BraveAdsPurchaseIntentFeatureTest,
      DefaultPurchaseIntentResourceVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPurchaseIntentFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
   // Act
 
@@ -89,16 +68,9 @@ TEST(BraveAdsPurchaseIntentFeatureTest,
 
 TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentThreshold) {
   // Arrange
-  base::FieldTrialParams params;
-  params["threshold"] = "5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPurchaseIntentFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(kPurchaseIntentFeature,
+                                                         {{"threshold", "5"}});
 
   // Act
 
@@ -118,14 +90,8 @@ TEST(BraveAdsPurchaseIntentFeatureTest, DefaultPurchaseIntentThreshold) {
 TEST(BraveAdsPurchaseIntentFeatureTest,
      DefaultPurchaseIntentThresholdWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPurchaseIntentFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
   // Act
 
@@ -135,16 +101,9 @@ TEST(BraveAdsPurchaseIntentFeatureTest,
 
 TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentTimeWindow) {
   // Arrange
-  base::FieldTrialParams params;
-  params["time_window"] = "1d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPurchaseIntentFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPurchaseIntentFeature, {{"time_window", "1d"}});
 
   // Act
 
@@ -164,14 +123,8 @@ TEST(BraveAdsPurchaseIntentFeatureTest, DefaultPurchaseIntentTimeWindow) {
 TEST(BraveAdsPurchaseIntentFeatureTest,
      DefaultPurchaseIntentTimeWindowWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPurchaseIntentFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
   // Act
 

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/browser_is_active_permission_rule.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
@@ -45,16 +43,10 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldNotAllow) {
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        ShouldAllowIfPermissionRuleIsDisabled) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_only_serve_ads_if_browser_is_active"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPermissionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature,
+      {{"should_only_serve_ads_if_browser_is_active", "false"}});
 
   // Act
   NotifyBrowserDidResignActive();

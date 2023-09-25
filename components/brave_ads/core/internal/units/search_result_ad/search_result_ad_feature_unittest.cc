@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/units/search_result_ad/search_result_ad_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -16,16 +14,9 @@ namespace brave_ads {
 
 TEST(BraveAdsSearchResultAdFeatureTest, MaximumAdsPerHour) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["maximum_ads_per_hour"] = "42";
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kSearchResultAdFeature, {{"maximum_ads_per_hour", "42"}});
 
   // Act
 
@@ -44,14 +35,8 @@ TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumAdsPerHour) {
 
 TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kSearchResultAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kSearchResultAdFeature);
 
   // Act
 
@@ -61,21 +46,14 @@ TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
 
 TEST(BraveAdsSearchResultAdFeatureTest, MaximumAdsPerDay) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["maximum_ads_per_day"] = "42";
-  enabled_features.emplace_back(kSearchResultAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kSearchResultAdFeature, {{"maximum_ads_per_day", "24"}});
 
   // Act
 
   // Assert
-  EXPECT_EQ(42, kMaximumSearchResultAdsPerDay.Get());
+  EXPECT_EQ(24, kMaximumSearchResultAdsPerDay.Get());
 }
 
 TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumAdsPerDay) {
@@ -89,14 +67,8 @@ TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumAdsPerDay) {
 
 TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kSearchResultAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kSearchResultAdFeature);
 
   // Act
 

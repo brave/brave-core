@@ -83,7 +83,8 @@ void CompareSearchResultAdInfosWithNonEmptyConversion(
 class SearchResultAdHandlerTest : public ::testing::Test {
  public:
   SearchResultAdHandlerTest() {
-    feature_list_.InitAndEnableFeature(kShouldSupportSearchResultAdsFeature);
+    scoped_feature_list_.InitAndEnableFeature(
+        kShouldSupportSearchResultAdsFeature);
   }
 
   static void SimulateOnRetrieveSearchResultAdEntities(
@@ -97,7 +98,7 @@ class SearchResultAdHandlerTest : public ::testing::Test {
 
  protected:
   AdsServiceMock ads_service_mock_;
-  base::test::ScopedFeatureList feature_list_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 TEST_F(SearchResultAdHandlerTest,

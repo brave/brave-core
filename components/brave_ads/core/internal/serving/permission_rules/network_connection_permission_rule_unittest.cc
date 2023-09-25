@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/network_connection_permission_rule.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -43,16 +41,10 @@ TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, ShouldNotAllow) {
 TEST_F(BraveAdsNetworkConnectionPermissionRuleTest,
        ShouldAllowIfPermissionRuleIsDisabled) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_only_serve_ads_with_valid_internet_connection"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPermissionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature,
+      {{"should_only_serve_ads_with_valid_internet_connection", "false"}});
 
   MockIsNetworkConnectionAvailable(ads_client_mock_, false);
 

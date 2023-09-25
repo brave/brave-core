@@ -66,16 +66,8 @@ class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
   ForcePermissionRulesForTesting();
 
@@ -98,16 +90,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, Serve) {
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, DoNotServe) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
   const absl::optional<NewTabPageAdInfo> ad;
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
@@ -123,16 +107,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, DoNotServe) {
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
   ForcePermissionRulesForTesting();
 
@@ -162,18 +138,10 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
        TriggerViewedEventForNonRewardsUser) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+
   DisableBraveRewardsForTesting();
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
@@ -211,16 +179,8 @@ TEST_F(
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
   ForcePermissionRulesForTesting();
 
@@ -256,18 +216,10 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
        TriggerClickedEventForNonRewardsUser) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+
   DisableBraveRewardsForTesting();
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kViewed,

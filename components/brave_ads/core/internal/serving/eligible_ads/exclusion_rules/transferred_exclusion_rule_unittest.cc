@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/transferred_exclusion_rule.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -46,16 +44,10 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 TEST_F(BraveAdsTransferredExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdWithin2Days) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_transferred_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = kCreativeInstanceId;
@@ -83,16 +75,10 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 TEST_F(BraveAdsTransferredExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdWithin2DaysForMultipleAdTypes) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_transferred_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = kCreativeInstanceId;
@@ -137,16 +123,10 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 TEST_F(BraveAdsTransferredExclusionRuleTest,
        ShouldExcludeWithSameCampaignIdWithin2Days) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_transferred_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -171,16 +151,10 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 TEST_F(BraveAdsTransferredExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdWithin0Seconds) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_transferred_within_time_window"] = "0s";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_transferred_within_time_window", "0s"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -205,16 +179,10 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 TEST_F(BraveAdsTransferredExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdAfter2Days) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_transferred_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -239,16 +207,10 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 TEST_F(BraveAdsTransferredExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdAfter2Days) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_transferred_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_transferred_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = kCreativeInstanceId;

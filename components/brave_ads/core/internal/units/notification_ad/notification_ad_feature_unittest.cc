@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsNotificationAdFeatureTest, IsEnabled) {
 
 TEST(BraveAdsNotificationAdFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
   // Act
 
@@ -42,16 +34,9 @@ TEST(BraveAdsNotificationAdFeatureTest, IsDisabled) {
 
 TEST(BraveAdsNotificationAdFeatureTest, DefaultAdsPerHour) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["default_ads_per_hour"] = "42";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature, {{"default_ads_per_hour", "42"}});
 
   // Act
 
@@ -70,14 +55,8 @@ TEST(BraveAdsNotificationAdFeatureTest, DefaultDefaultAdsPerHour) {
 
 TEST(BraveAdsNotificationAdFeatureTest, DefaultDefaultAdsPerHourWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
   // Act
 
@@ -87,16 +66,9 @@ TEST(BraveAdsNotificationAdFeatureTest, DefaultDefaultAdsPerHourWhenDisabled) {
 
 TEST(BraveAdsNotificationAdFeatureTest, MaximumAdsPerDay) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["maximum_ads_per_day"] = "24";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature, {{"maximum_ads_per_day", "24"}});
 
   // Act
 
@@ -115,14 +87,8 @@ TEST(BraveAdsNotificationAdFeatureTest, DefaultMaximumAdsPerDay) {
 
 TEST(BraveAdsNotificationAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
   // Act
 
@@ -142,16 +108,10 @@ TEST(BraveAdsNotificationAdFeatureTest,
 
 TEST(BraveAdsNotificationAdFeatureTest, CanFallbackToCustomNotificationAds) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["can_fallback_to_custom_notifications"] = "true";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature,
+      {{"can_fallback_to_custom_notifications", "true"}});
 
   // Act
 

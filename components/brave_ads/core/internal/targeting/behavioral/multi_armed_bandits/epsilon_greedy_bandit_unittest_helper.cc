@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_unittest_helper.h"
 
+#include <string>
+
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feedback_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/resource/epsilon_greedy_bandit_resource_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
@@ -19,22 +22,43 @@ EpsilonGreedyBanditHelperForTesting::~EpsilonGreedyBanditHelperForTesting() =
 
 void EpsilonGreedyBanditHelperForTesting::Mock() {
   SetEpsilonGreedyBanditEligibleSegments(
-      SegmentList{"architecture", "arts & entertainment", "automotive"});
+      SupportedEpsilonGreedyBanditSegments());
 
-  processor_.Process(EpsilonGreedyBanditFeedbackInfo{
-      /*segment*/ "architecture", mojom::NotificationAdEventType::kDismissed});
+  // Set all values to zero by choosing a zero-reward action due to optimistic
+  // initial values for arms.
+  for (const std::string& segment : SupportedEpsilonGreedyBanditSegments()) {
+    processor_.Process(EpsilonGreedyBanditFeedbackInfo{
+        std::string(segment), mojom::NotificationAdEventType::kDismissed});
+  }
 
+  const std::string segment_1 = "science";
   processor_.Process(EpsilonGreedyBanditFeedbackInfo{
-      /*segment*/ "arts & entertainment",
-      mojom::NotificationAdEventType::kDismissed});
+      segment_1, mojom::NotificationAdEventType::kClicked});
+  processor_.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment_1, mojom::NotificationAdEventType::kClicked});
+  processor_.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment_1, mojom::NotificationAdEventType::kClicked});
 
+  const std::string segment_2 = "travel";
   processor_.Process(EpsilonGreedyBanditFeedbackInfo{
-      /*segment*/ "automotive", mojom::NotificationAdEventType::kClicked});
+      segment_2, mojom::NotificationAdEventType::kDismissed});
+  processor_.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment_2, mojom::NotificationAdEventType::kClicked});
+  processor_.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment_2, mojom::NotificationAdEventType::kClicked});
+
+  const std::string segment_3 = "technology & computing";
+  processor_.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor_.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment_3, mojom::NotificationAdEventType::kDismissed});
+  processor_.Process(EpsilonGreedyBanditFeedbackInfo{
+      segment_3, mojom::NotificationAdEventType::kClicked});
 }
 
 // static
 SegmentList EpsilonGreedyBanditHelperForTesting::Expectation() {
-  return {"automotive", "architecture", "arts & entertainment"};
+  return {"science", "travel", "technology & computing"};
 }
 
 }  // namespace brave_ads

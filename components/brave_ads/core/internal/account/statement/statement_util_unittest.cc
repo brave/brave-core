@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -21,12 +20,6 @@ class BraveAdsStatementUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
   // Arrange
-  base::FieldTrialParams params;
-  params["next_payment_day"] = "7";
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAccountStatementFeature, params);
-
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 
   const base::Time next_token_redemption_at =

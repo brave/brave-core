@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
@@ -98,16 +96,9 @@ TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNotificationAds) {
 
 TEST_F(BraveAdsSettingsTest, MaximumNotificationAdsPerHour) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["default_ads_per_hour"] = "2";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature, {{"default_ads_per_hour", "2"}});
 
   SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 3);
 
@@ -119,16 +110,9 @@ TEST_F(BraveAdsSettingsTest, MaximumNotificationAdsPerHour) {
 
 TEST_F(BraveAdsSettingsTest, DefaultMaximumNotificationAdsPerHour) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["default_ads_per_hour"] = "2";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature, {{"default_ads_per_hour", "2"}});
 
   // Act
 

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_embedding_exclusion_rule.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -24,19 +22,12 @@ class EmbeddingExclusionRuleTest : public UnitTestBase {
 
 TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfNoEmbeddingV2) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"version", "2"}});
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "2";
-  enabled_features.emplace_back(kNotificationAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
 
@@ -46,20 +37,13 @@ TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfNoEmbeddingV2) {
 
 TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfEmbeddingV2) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"version", "2"}});
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.embedding = {1.0, 2.0, 3.0, 4.0, 5.0};
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "2";
-  enabled_features.emplace_back(kNotificationAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
 
@@ -69,19 +53,12 @@ TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfEmbeddingV2) {
 
 TEST_F(EmbeddingExclusionRuleTest, DisallowIfNoEmbeddingV3) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"version", "3"}});
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "3";
-  enabled_features.emplace_back(kNotificationAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
 
@@ -91,19 +68,12 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfNoEmbeddingV3) {
 
 TEST_F(EmbeddingExclusionRuleTest, DisallowIfEmptyEmbeddingV3) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"version", "3"}});
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "3";
-  enabled_features.emplace_back(kNotificationAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
 
@@ -113,20 +83,13 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfEmptyEmbeddingV3) {
 
 TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfEmbeddingV3) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"version", "3"}});
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.embedding = {1.0, 2.0, 3.0, 4.0, 5.0};
-
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "3";
-  enabled_features.emplace_back(kNotificationAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
 

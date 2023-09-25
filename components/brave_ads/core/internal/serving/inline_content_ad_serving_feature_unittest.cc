@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,14 +23,8 @@ TEST(BraveAdsInlineContentAdServingFeatureTest, IsEnabled) {
 
 TEST(BraveAdsServingFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kInlineContentAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kInlineContentAdServingFeature);
 
   // Act
 
@@ -42,16 +34,9 @@ TEST(BraveAdsServingFeatureTest, IsDisabled) {
 
 TEST(BraveAdsInlineContentAdServingFeatureTest, ServingVersion) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "0";
-  enabled_features.emplace_back(kInlineContentAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kInlineContentAdServingFeature, {{"version", "0"}});
 
   // Act
 
@@ -71,14 +56,8 @@ TEST(BraveAdsInlineContentAdServingFeatureTest, DefaultServingVersion) {
 TEST(BraveAdsInlineContentAdServingFeatureTest,
      DefaultServingVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kInlineContentAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kInlineContentAdServingFeature);
 
   // Act
 

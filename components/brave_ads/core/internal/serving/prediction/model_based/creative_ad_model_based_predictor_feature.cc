@@ -7,7 +7,7 @@
 
 namespace brave_ads {
 
-BASE_FEATURE(CreativeAdModelBasedPredictorFeature,
+BASE_FEATURE(kCreativeAdModelBasedPredictorFeature,
              "CreativeAdModelBasedPredictor",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
