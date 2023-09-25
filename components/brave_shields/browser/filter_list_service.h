@@ -37,6 +37,7 @@ class FilterListService : public KeyedService,
   void CreateSubscription(const GURL& subscription_url) override;
   void EnableSubscription(const GURL& sub_url, bool enabled) override;
   void DeleteSubscription(const GURL& sub_url) override;
+  void GetFilterLists(GetFilterListsCallback callback) override;
 
  private:
   raw_ptr<AdBlockService> ad_block_service_ = nullptr;
