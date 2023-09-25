@@ -185,6 +185,8 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabForegroundActiveFrameActive] = {kLightToolbarIcon};
   mixer[kColorTabForegroundInactiveFrameActive] = {
       kColorTabForegroundActiveFrameActive};
+  mixer[kColorTabStrokeFrameActive] = {SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
+  mixer[kColorTabStrokeFrameInactive] = {kColorTabStrokeFrameActive};
   mixer[kColorToolbar] = {kLightToolbar};
   mixer[kColorToolbarButtonIcon] = {kColorTabForegroundActiveFrameActive};
   mixer[kColorToolbarButtonIconInactive] = {

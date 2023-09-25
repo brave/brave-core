@@ -7,6 +7,8 @@
 
 #include <limits>
 
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -109,6 +111,14 @@ void CalculateVerticalLayout(const TabLayoutConstants& layout_constants,
 
 }  // namespace
 
+int GetTabCornerRadius(const Tab& tab) {
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return tab.data().pinned ? 8 : 4;
+  }
+
+  return brave_tabs::kTabBorderRadius;
+}
+
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
@@ -124,6 +134,22 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
   CalculateVerticalLayout(layout_constants, tabs, width, &bounds);
 
   DCHECK_EQ(tabs.size(), bounds.size());
+  return bounds;
+}
+
+std::vector<gfx::Rect> CalculateBoundsForHorizontalDraggedViews(
+    const std::vector<TabSlotView*>& views,
+    TabStrip* tab_strip) {
+  // Chromium aligns the dragged tabs to the bottom of the tab strip, whereas we
+  // need to keep the tabs aligned to the top.
+  std::vector<gfx::Rect> bounds;
+  const int overlap = TabStyle::Get()->GetTabOverlap();
+  int x = 0;
+  for (const TabSlotView* view : views) {
+    const int width = view->width();
+    bounds.emplace_back(x, 0, width, view->height());
+    x += width - overlap;
+  }
   return bounds;
 }
 

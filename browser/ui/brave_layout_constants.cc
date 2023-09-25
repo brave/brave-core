@@ -5,8 +5,11 @@
 
 #include "brave/browser/ui/brave_layout_constants.h"
 
+#include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "ui/base/pointer/touch_ui_controller.h"
+
+using tabs::features::HorizontalTabsUpdateEnabled;
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
 absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
@@ -18,7 +21,15 @@ absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   //     ui::MaterialDesignController::IsNewerMaterialUi();
   switch (constant) {
     case TAB_HEIGHT: {
-      return (touch ? 41 : 30) + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+      const int tab_height = HorizontalTabsUpdateEnabled() ? 36 : 30;
+      return (touch ? 41 : tab_height) +
+             GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+    }
+    case TABSTRIP_TOOLBAR_OVERLAP: {
+      if (!HorizontalTabsUpdateEnabled()) {
+        return absl::nullopt;
+      }
+      return 0;
     }
     case TAB_SEPARATOR_HEIGHT: {
       return 24;

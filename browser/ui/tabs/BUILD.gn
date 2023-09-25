@@ -12,12 +12,14 @@ source_set("tabs") {
 
   if (!is_android) {
     sources = [
+      "brave_tab_layout_constants.h",
       "brave_tab_menu_model.cc",
       "brave_tab_menu_model.h",
       "brave_tab_prefs.cc",
       "brave_tab_prefs.h",
       "brave_tab_strip_model.cc",
       "brave_tab_strip_model.h",
+      "brave_tab_style.h",
       "brave_vertical_tab_color_mixer.cc",
       "brave_vertical_tab_color_mixer.h",
       "features.cc",

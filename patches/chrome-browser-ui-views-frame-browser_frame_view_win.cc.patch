@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_win.cc b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
+index a4c7824a16a504f577668cfb2b40428c1b63d1c1..bde9e6ede746e52cd90c7417917b503c635eb79e 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_win.cc
++++ b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
+@@ -531,6 +531,7 @@ int BrowserFrameViewWin::TopAreaHeight(bool restored) const {
+                      : caption_button_container_->GetPreferredSize().height();
+     return top;
+   }
++  BRAVE_BROWSER_FRAME_VIEW_WIN_TOP_AREA_HEIGHT
+ 
+   // In Refresh, the tabstrip controls its own top padding.
+   if (features::IsChromeRefresh2023()) {

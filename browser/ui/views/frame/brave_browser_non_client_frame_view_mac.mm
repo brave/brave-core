@@ -8,6 +8,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_non_client_frame_view_mac.h"
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -66,7 +67,13 @@ int BraveBrowserNonClientFrameViewMac::GetTopInset(bool restored) const {
     return 30;
   }
 
-  return BrowserNonClientFrameViewMac::GetTopInset(restored);
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return BrowserNonClientFrameViewMac::GetTopInset(restored);
+  }
+
+  // The tab region view maintains its own padding, but insert a small gap to
+  // give a bit more room for the frame resize handle.
+  return 2;
 }
 
 bool BraveBrowserNonClientFrameViewMac::ShouldShowWindowTitleForVerticalTabs()

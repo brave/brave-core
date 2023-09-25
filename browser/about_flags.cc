@@ -361,16 +361,24 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_SHARED_PINNED_TABS                                  \
-  EXPAND_FEATURE_ENTRIES({                                        \
-      "brave-shared-pinned-tabs",                                 \
-      "Shared pinned tab",                                        \
-      "Pinned tabs are shared across windows",                    \
-      kOsWin | kOsMac | kOsLinux,                                 \
-      FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs), \
-  })
+#define BRAVE_TABS_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES(                                                 \
+      {                                                                   \
+          "brave-shared-pinned-tabs",                                     \
+          "Shared pinned tab",                                            \
+          "Pinned tabs are shared across windows",                        \
+          kOsWin | kOsMac | kOsLinux,                                     \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs),     \
+      },                                                                  \
+      {                                                                   \
+          "brave-horizontal-tabs-update",                                 \
+          "Updated horizontal tabs design",                               \
+          "Updates the look and feel or horizontal tabs",                 \
+          kOsWin | kOsMac | kOsLinux,                                     \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveHorizontalTabsUpdate), \
+      })
 #else
-#define BRAVE_SHARED_PINNED_TABS
+#define BRAVE_TABS_FEATURE_ENTRIES
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -887,7 +895,7 @@
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
-  BRAVE_SHARED_PINNED_TABS                                                     \
+  BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.

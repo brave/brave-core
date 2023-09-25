@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
@@ -20,9 +21,8 @@
 
 namespace {
 
-SkColor GetGroupBackgroundColorForVerticalTabs(
-    const tab_groups::TabGroupId& group_id,
-    TabSlotController* controller) {
+SkColor GetGroupBackgroundColor(const tab_groups::TabGroupId& group_id,
+                                TabSlotController* controller) {
   if (!controller->GetBrowser()
            ->tab_strip_model()
            ->group_model()
@@ -60,11 +60,13 @@ void BraveTabGroupHeader::AddedToWidget() {
 
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
-  if (!ShouldShowVerticalTabs()) {
+
+  if (!tabs::features::HorizontalTabsUpdateEnabled() &&
+      !ShouldShowVerticalTabs()) {
     return;
   }
 
-  title_->SetEnabledColor(GetGroupBackgroundColorForVerticalTabs(
+  title_->SetEnabledColor(GetGroupBackgroundColor(
       group().value(), base::to_address(tab_slot_controller_)));
   title_->SetSubpixelRenderingEnabled(false);
 
@@ -72,19 +74,18 @@ void BraveTabGroupHeader::VisualsChanged() {
   title_->SetFontList(font_list.DeriveWithWeight(gfx::Font::Weight::MEDIUM)
                           .DeriveWithSizeDelta(13 - font_list.GetFontSize()));
 
-  // We don't draw background for vertical tabs.
   title_chip_->SetBackground(nullptr);
 
-  LayoutTitleChip();
+  if (ShouldShowVerticalTabs()) {
+    LayoutTitleChipForVerticalTabs();
+  }
 }
 
 void BraveTabGroupHeader::Layout() {
   TabGroupHeader::Layout();
-  if (!ShouldShowVerticalTabs()) {
-    return;
+  if (ShouldShowVerticalTabs()) {
+    LayoutTitleChipForVerticalTabs();
   }
-
-  LayoutTitleChip();
 }
 
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
@@ -92,7 +93,7 @@ bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
       tab_slot_controller_->GetBrowser());
 }
 
-void BraveTabGroupHeader::LayoutTitleChip() {
+void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
   auto title_bounds = GetContentsBounds();
   title_bounds.Inset(gfx::Insets(kPaddingForGroup * 2));
   title_chip_->SetBoundsRect(title_bounds);
