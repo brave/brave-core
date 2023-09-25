@@ -161,7 +161,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             holder.text2Text.setVisibility(View.GONE);
             if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                 holder.assetCheck.setVisibility(View.VISIBLE);
-                holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());
+                holder.assetCheck.setChecked(walletListItemModel.isVisible());
                 holder.assetCheck.setOnCheckedChangeListener(
                         new CompoundButton.OnCheckedChangeListener() {
                             @Override
@@ -236,7 +236,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             });
             if (mType == AdapterType.SELECT_ACCOUNTS_LIST) {
                 holder.ivSelected.setVisibility(
-                        walletListItemModel.getIsUserSelected() ? View.VISIBLE : View.INVISIBLE);
+                        walletListItemModel.isVisible() ? View.VISIBLE : View.INVISIBLE);
             }
         }
     }
@@ -263,7 +263,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             mCheckedPositions.clear();
         }
         for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
-            if (walletListItemModelListCopy.get(i).getIsUserSelected()) {
+            if (walletListItemModelListCopy.get(i).isVisible()) {
                 mCheckedPositions.add((Integer) i);
             }
         }
@@ -320,10 +320,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     private void updateSelectedNetwork(int selectedAccountPosition) {
-        walletListItemModelList.get(previousSelectedPos).setIsUserSelected(false);
+        walletListItemModelList.get(previousSelectedPos).isVisible(false);
         notifyItemChanged(previousSelectedPos);
 
-        walletListItemModelList.get(selectedAccountPosition).setIsUserSelected(true);
+        walletListItemModelList.get(selectedAccountPosition).isVisible(true);
         previousSelectedPos = selectedAccountPosition;
         notifyItemChanged(selectedAccountPosition);
     }
