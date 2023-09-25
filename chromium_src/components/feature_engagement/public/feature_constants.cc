@@ -9,8 +9,7 @@
 
 namespace feature_engagement {
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
 OVERRIDE_FEATURE_DEFAULT_STATES({{kIPHPerformanceNewBadgeFeature,
                                   base::FEATURE_DISABLED_BY_DEFAULT}});
 #endif
