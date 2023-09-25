@@ -671,11 +671,12 @@ class TabTrayController: AuthenticationController {
           tabManager.addTabAndSelect(isPrivate: true)
         }
         
-        let privateModeTabSelected = tabManager.allTabs[safe: tabManager.privateTabSelectedIndex]
+        let privateModeTabSelected = tabManager.tabsForCurrentMode[safe: tabManager.privateTabSelectedIndex] ?? tabManager.tabsForCurrentMode.last
 
         if Preferences.Privacy.persistentPrivateBrowsing.value {
           tabManager.selectTab(privateModeTabSelected)
         }
+        
         tabTrayView.hidePrivateModeInfo()
         tabTrayView.collectionView.reloadData()
         
@@ -691,8 +692,8 @@ class TabTrayController: AuthenticationController {
       
       // When you go back from private mode, a previous current tab is selected
       // Reloding the collection view in order to mark the selecte the tab
-      let normalModeTabSelected = tabManager.allTabs[safe: tabManager.normalTabSelectedIndex]
-      
+      let normalModeTabSelected = tabManager.tabsForCurrentMode[safe: tabManager.normalTabSelectedIndex] ?? tabManager.tabsForCurrentMode.last
+
       tabManager.selectTab(normalModeTabSelected)
       tabTrayView.collectionView.reloadData()
       
