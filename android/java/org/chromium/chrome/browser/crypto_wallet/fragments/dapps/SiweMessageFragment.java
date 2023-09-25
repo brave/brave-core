@@ -259,9 +259,10 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
 
         List<TwoLineItemRecyclerViewAdapter.TwoLineItem> items = new ArrayList<>();
         addDetail(items, R.string.brave_wallet_origin, getOriginJson(mSiweMessageData.origin));
-        addDetail(items, R.string.host, mCurrentSignMessageRequest.originInfo.eTldPlusOne, (title, subTitle) -> {
-            subTitle.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
-        });
+        addDetail(items, R.string.host, mCurrentSignMessageRequest.originInfo.eTldPlusOne,
+                (title, subTitle) -> {
+                    subTitle.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
+                });
         addDetail(items, R.string.brave_wallet_address, mSiweMessageData.address);
         addDetail(items, R.string.brave_wallet_statement, mSiweMessageData.statement);
         addDetail(items, R.string.brave_wallet_uri, mSiweMessageData.uri.url);
@@ -272,8 +273,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         addDetail(items, R.string.brave_wallet_expiration_time, mSiweMessageData.expirationTime);
         addDetail(items, R.string.brave_wallet_not_before, mSiweMessageData.notBefore);
         addDetail(items, R.string.brave_wallet_request_id, mSiweMessageData.requestId);
-        addDetail(items, R.string.resources,
-                getSiweResources(mSiweMessageData.resources));
+        addDetail(items, R.string.resources, getSiweResources(mSiweMessageData.resources));
         TwoLineItemBottomSheetFragment fragment = TwoLineItemBottomSheetFragment.newInstance(items);
         fragment.mTitle = getString(R.string.brave_wallet_see_details);
         fragment.show(getParentFragmentManager(), TAG);
