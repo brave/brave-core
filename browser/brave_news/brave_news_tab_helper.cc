@@ -130,6 +130,7 @@ std::string BraveNewsTabHelper::GetTitleForFeedUrl(const GURL& feed_url) {
         feed_url,
         base::BindOnce(&BraveNewsTabHelper::OnFoundFeeds,
                        weak_ptr_factory_.GetWeakPtr(), feed_url, url));
+    return feed_url.spec();
   }
   return it->title;
 }
