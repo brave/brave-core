@@ -8,6 +8,7 @@
 #include <windows.h>  // needed for WM_MENUCOMMAND
 
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/brave_vpn_tray_command_ids.h"
+#include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/constants.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/icon_utils.h"
 
 namespace brave_vpn {
@@ -17,7 +18,10 @@ bool UninstallStatusTrayIcon() {
   if (!hWnd) {
     return true;
   }
-  return SendMessage(hWnd, WM_MENUCOMMAND, IDC_BRAVE_VPN_TRAY_EXIT, 0) == TRUE;
+
+  return SendMessage(hWnd,
+                     RegisterWindowMessage(kBraveVpnStatusTrayMessageName),
+                     IDC_BRAVE_VPN_TRAY_EXIT, 0) == TRUE;
 }
 
 }  // namespace brave_vpn

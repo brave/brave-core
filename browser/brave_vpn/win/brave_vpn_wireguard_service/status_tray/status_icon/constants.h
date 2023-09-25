@@ -16,7 +16,7 @@ constexpr base::FilePath::CharType kStatusTrayWindowName[] =
 constexpr base::FilePath::CharType kStatusTrayWindowClass[] =
     FILE_PATH_LITERAL("BraveVpn_StatusTraydowClass");
 const base::FilePath::CharType kBraveVpnStatusTrayMessageName[] =
-    FILE_PATH_LITERAL("CustomTrayMessage");
+    FILE_PATH_LITERAL("BraveVpn_CustomTrayMessage");
 }  // namespace brave_vpn
 
 #endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_BRAVE_VPN_WIREGUARD_SERVICE_STATUS_TRAY_STATUS_ICON_CONSTANTS_H_
