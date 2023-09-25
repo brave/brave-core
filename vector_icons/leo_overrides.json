@@ -18,6 +18,7 @@
   "//components/omnibox/browser/vector_icons/share.icon": "leo_share",
   "//components/omnibox/browser/vector_icons/star_active.icon": "leo_bookmark_added",
   "//components/omnibox/browser/vector_icons/star.icon": "leo_browser_bookmark_normal",
+  "//components/omnibox/browser/vector_icons/switch.icon": "leo_window_tab",
   "//components/vector_icons/back_arrow.icon": "leo_browser_back",
   "//components/vector_icons/extension.icon": "leo_browser_extensions",
   "//components/vector_icons/forward_arrow.icon": "leo_browser_forward",
