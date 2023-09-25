@@ -38,10 +38,13 @@ class BraveNewsTabHelper
         const std::vector<FeedDetails>& feeds) = 0;
   };
 
+  static void MaybeCreateForWebContents(content::WebContents* contents);
+
   BraveNewsTabHelper(const BraveNewsTabHelper&) = delete;
   BraveNewsTabHelper& operator=(const BraveNewsTabHelper&) = delete;
 
   ~BraveNewsTabHelper() override;
+
 
   const std::vector<FeedDetails> GetAvailableFeeds();
   bool IsSubscribed(const FeedDetails& feed_details);
