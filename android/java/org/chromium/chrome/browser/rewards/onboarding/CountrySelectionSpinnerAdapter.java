@@ -9,62 +9,32 @@ package org.chromium.chrome.browser.rewards.onboarding;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class CountrySelectionSpinnerAdapter extends ArrayAdapter<String> {
-    public CountrySelectionSpinnerAdapter(Context context, ArrayList<String> countryList) {
-        super(context, 0, countryList);
-    }
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext())
-                                  .inflate(android.R.layout.simple_spinner_item, parent, false);
-        }
-        return createView(position, convertView, parent, false);
+    public CountrySelectionSpinnerAdapter(Context context, String[] countries) {
+        super(context, android.R.layout.simple_spinner_item, countries);
     }
 
     @Override
-    public View getDropDownView(
-            int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
-            convertView =
-                    LayoutInflater.from(getContext())
-                            .inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
-        }
-        return createView(position, convertView, parent, true);
-    }
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        View view = super.getDropDownView(position, null, parent);
+        TextView textViewName = view.findViewById(android.R.id.text1);
 
-    private View createView(int position, View convertView, ViewGroup parent, boolean isDropdown) {
-        TextView textViewName = convertView.findViewById(android.R.id.text1);
+        String defaultCountry = BraveRewardsNativeWorker.getInstance().getCountryCode() != null
+                ? new Locale("", BraveRewardsNativeWorker.getInstance().getCountryCode())
+                          .getDisplayCountry()
+                : null;
         String currentItem = getItem(position);
-        if (isDropdown) {
-            String defaultCountry = BraveRewardsNativeWorker.getInstance().getCountryCode() != null
-                    ? new Locale("", BraveRewardsNativeWorker.getInstance().getCountryCode())
-                              .getDisplayCountry()
-                    : null;
-            if (defaultCountry != null && currentItem.equals(defaultCountry)) {
-                textViewName.setTypeface(textViewName.getTypeface(), Typeface.BOLD);
-            }
+        if (defaultCountry != null && currentItem.equals(defaultCountry)) {
+            textViewName.setTypeface(textViewName.getTypeface(), Typeface.BOLD);
         }
 
-        if (currentItem != null) {
-            textViewName.setText(currentItem);
-        }
-        return convertView;
+        return view;
     }
 }

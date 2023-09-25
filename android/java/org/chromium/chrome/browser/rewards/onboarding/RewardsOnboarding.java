@@ -7,12 +7,14 @@
 
 package org.chromium.chrome.browser.rewards.onboarding;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,7 +40,9 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.permissions.PermissionConstants;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.TreeMap;
 
@@ -171,30 +175,39 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         updateCountryList(countries);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void updateCountryList(String[] countries) {
         shouldShowContinueProgress(false);
         mContinueButton.setText(mActivity.getResources().getString(R.string.continue_text));
-        TreeMap<String, String> sortedCountryMap = new TreeMap<String, String>();
-        for (String countryCode : countries) {
-            sortedCountryMap.put(new Locale("", countryCode).getDisplayCountry(), countryCode);
-        }
-
-        ArrayList<String> countryList = new ArrayList<String>();
-        countryList.add(mActivity.getResources().getString(R.string.select_your_country_title));
-        countryList.addAll(sortedCountryMap.keySet());
         String defaultCountry = mBraveRewardsNativeWorker.getCountryCode() != null
                 ? new Locale("", mBraveRewardsNativeWorker.getCountryCode()).getDisplayCountry()
                 : null;
-        if (defaultCountry != null && countryList.contains(defaultCountry)) {
-            countryList.remove(defaultCountry);
-            countryList.add(1, defaultCountry);
+
+        TreeMap<String, String> sortedCountryMap = new TreeMap<String, String>();
+        ArrayList<String> list = new ArrayList<>();
+        for (String countryCode : countries) {
+            sortedCountryMap.put(new Locale("", countryCode).getDisplayCountry(), countryCode);
+            list.add(new Locale("", countryCode).getDisplayCountry());
         }
+        Collections.sort(list, Collator.getInstance());
+        ArrayList<String> countryList = new ArrayList<>();
+        countryList.add(mActivity.getResources().getString(R.string.select_your_country_title));
+        countryList.addAll(list);
 
         String[] countryArray = countryList.toArray(new String[countryList.size()]);
 
         CountrySelectionSpinnerAdapter countrySelectionSpinnerAdapter =
-                new CountrySelectionSpinnerAdapter(mActivity, countryList);
+                new CountrySelectionSpinnerAdapter(mActivity, countryArray);
+        countrySelectionSpinnerAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
         mCountrySpinner.setAdapter(countrySelectionSpinnerAdapter);
+        mCountrySpinner.setOnTouchListener((view, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                mCountrySpinner.setSelection(
+                        countrySelectionSpinnerAdapter.getPosition(defaultCountry));
+            }
+            return false;
+        });
         mCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
