@@ -1255,6 +1255,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_FROM_PLAYLIST" desc="Context menu item on Playlist item to remove it from the folder">
           Remove from playlist
         </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_VIEW_ORIGINAL_PAGE" desc="Context menu item on Playlist item to open the source page in a new tab">
+          View original page
+        </message>
       </if> <!-- enable_playlist_webui -->
       <!--Add new items to the appropriate sections above -->
     </messages>

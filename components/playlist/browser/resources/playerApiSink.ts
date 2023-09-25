@@ -17,6 +17,10 @@ export function handlePlayerMessage (payload: PlayerMessagePayload) {
       getPlayerActions().selectedPlaylistUpdated(payload)
       break
     }
+    case types.UNLOAD_PLAYLIST: {
+      getPlayerActions().unloadPlaylist()
+      break
+    }
   }
 }
 

@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_CONTENTS_WRAPPER_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_CONTENTS_WRAPPER_H_
 
+#include <memory>
+
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
@@ -46,6 +48,14 @@ class PlaylistContentsWrapper
   content::PictureInPictureResult EnterPictureInPicture(
       content::WebContents* web_contents) override;
   void ExitPictureInPicture() override;
+
+  void AddNewContents(content::WebContents* source,
+                      std::unique_ptr<content::WebContents> new_contents,
+                      const GURL& target_url,
+                      WindowOpenDisposition disposition,
+                      const blink::mojom::WindowFeatures& window_features,
+                      bool user_gesture,
+                      bool* was_blocked) override;
 
   // FullscreenObserver:
   void OnFullscreenStateChanged() override;

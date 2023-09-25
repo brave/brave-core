@@ -32,7 +32,7 @@ const playerReducer: Reducer<PlayerState | undefined> = (
   state: PlayerState | undefined,
   action
 ) => {
-  if (state === undefined) {
+  if (state === undefined || action.type === types.UNLOAD_PLAYLIST) {
     state = {
       currentList: undefined,
       itemsInOrder: undefined,

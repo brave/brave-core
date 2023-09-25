@@ -30,6 +30,9 @@ export type PlayerMessagePayload =
   | ({
       actionType: types.SELECTED_PLAYLIST_UPDATED
     } & SelectedPlaylistUpdatedPayload)
+  | ({
+      actionType: types.UNLOAD_PLAYLIST
+    })
 
 export default function postMessageToPlayer (payload: PlayerMessagePayload) {
   const playerWindow = getPlayerWindow()

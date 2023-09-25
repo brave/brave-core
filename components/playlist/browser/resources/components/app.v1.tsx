@@ -17,6 +17,7 @@ import {
   useLastPlayerState,
   usePlaylistEditMode
 } from '../reducers/states'
+import { useHistorySynchronization } from '../playerEventSink'
 
 const HeaderWrapper = styled.header<{ isPlaylistPlayerPage: boolean }>`
   position: sticky;
@@ -28,6 +29,8 @@ const HeaderWrapper = styled.header<{ isPlaylistPlayerPage: boolean }>`
 `
 
 export default function App () {
+  useHistorySynchronization()
+
   const lastPlayerState = useLastPlayerState()
   const editMode = usePlaylistEditMode()
 
