@@ -213,6 +213,6 @@ public class TransactionDetailsSheetFragment extends WalletBottomSheetDialogFrag
                 }));
 
         txDetails.setAdapter(new TwoLineItemRecyclerViewAdapter(
-                items, TwoLineItemRecyclerViewAdapter.ORIENTATION.HORIZONTAL));
+                items, TwoLineItemRecyclerViewAdapter.ADAPTER_VIEW_ORIENTATION.HORIZONTAL));
     }
 }

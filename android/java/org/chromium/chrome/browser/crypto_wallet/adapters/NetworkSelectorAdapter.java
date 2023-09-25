@@ -136,7 +136,7 @@ public class NetworkSelectorAdapter
                         holder.ivNetworkPicture.setColorFilter(filter);
                     }
                 } else if (!NetworkUtils.isAllNetwork(network.mNetworkInfo)) {
-                    Utils.setBlockiesBitmapResource(mExecutor, mHandler, holder.ivNetworkPicture,
+                    Utils.setTextGeneratedBlockies(mExecutor, mHandler, holder.ivNetworkPicture,
                             network.getNetworkName(), false);
                 } else {
                     AndroidUtils.gone(holder.ivNetworkPicture);

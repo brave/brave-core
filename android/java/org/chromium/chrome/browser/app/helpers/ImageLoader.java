@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.app.helpers;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -39,20 +40,24 @@ import org.xmlpull.v1.XmlSerializer;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.WebContentsFactory;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.components.image_fetcher.ImageFetcher;
 import org.chromium.components.image_fetcher.ImageFetcher.Params;
 import org.chromium.components.image_fetcher.ImageFetcherConfig;
 import org.chromium.components.image_fetcher.ImageFetcherFactory;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.url.GURL;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -71,6 +76,9 @@ public class ImageLoader {
     private static final String ATT_VALUE_1000_PX = "1000px";
     private static final String SVG_TAG = "svg";
     private static final String DATA_IMAGE_SVG_UTF8_PREFIX = "data:image/svg+xml;utf8,";
+
+    private static FaviconHelper sFaviconHelper;
+    private static FaviconHelper.DefaultFaviconHelper sFaviconThemeHelper;
 
     private static void downloadImage(String url, final RequestManager requestManager,
             final boolean isCircular, final int roundedCorners, final ImageView imageView,
@@ -382,6 +390,41 @@ public class ImageLoader {
         // Converts the URL to lowercase to make the matching case-insensitive.
         url = url.toLowerCase(Locale.ENGLISH);
         return url.endsWith(".gif") || url.endsWith("=gif");
+    }
+
+    public static void fetchFavIcon(String originSpecUrl, WeakReference<Context> context,
+            Callbacks.Callback1<Bitmap> callback) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            FaviconHelper.FaviconImageCallback imageCallback = (bitmap, iconUrl) -> {
+                if (context.get() != null) {
+                    if (bitmap == null) {
+                        bitmap = getFaviconThemeHelper().getDefaultFaviconBitmap(
+                                context.get(), iconUrl, true);
+                    }
+                    callback.call(bitmap);
+                }
+            };
+            // 0 is a max bitmap size for download
+            getFaviconHelper().getLocalFaviconImageForURL(
+                    activity.getCurrentProfile(), new GURL(originSpecUrl), 0, imageCallback);
+
+        } catch (Exception ignored) {
+        }
+    }
+
+    public static FaviconHelper getFaviconHelper() {
+        if (sFaviconHelper == null) {
+            sFaviconHelper = new FaviconHelper();
+        }
+        return sFaviconHelper;
+    }
+
+    private static FaviconHelper.DefaultFaviconHelper getFaviconThemeHelper() {
+        if (sFaviconThemeHelper == null) {
+            sFaviconThemeHelper = new FaviconHelper.DefaultFaviconHelper();
+        }
+        return sFaviconThemeHelper;
     }
 
     private static boolean isValidImgUrl(String url) {

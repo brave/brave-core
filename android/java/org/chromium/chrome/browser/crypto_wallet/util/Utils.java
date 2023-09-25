@@ -848,10 +848,11 @@ public class Utils {
         return bitmap;
     }
 
-    public static void setBlockiesBitmapResource(ExecutorService executor, Handler handler,
-            ImageView iconImg, String source, boolean makeLowerCase) {
+    public static void setTextGeneratedBlockies(ExecutorService executor, Handler handler,
+            ImageView iconImg, String blockieSourceText, boolean makeLowerCase,
+            boolean isCircular) {
         executor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
+            final Bitmap bitmap = Blockies.createIcon(blockieSourceText, makeLowerCase, isCircular);
             handler.post(() -> {
                 if (iconImg != null) {
                     iconImg.setImageBitmap(bitmap);
@@ -860,19 +861,18 @@ public class Utils {
         });
     }
 
+    public static void setTextGeneratedBlockies(ExecutorService executor, Handler handler,
+            ImageView iconImg, String blockieSourceText, boolean makeLowerCase) {
+        setTextGeneratedBlockies(
+                executor, handler, iconImg, blockieSourceText, makeLowerCase, true);
+    }
+
     public static void setBlockiesBitmapResourceFromAccount(ExecutorService executor,
             Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase) {
         // TODO(apaymyshev): need to hash uniqueKey string for bitcoin accounts(same as for desktop)
         String source =
                 accountInfo.address != null ? accountInfo.address : accountInfo.accountId.uniqueKey;
-        executor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
-            handler.post(() -> {
-                if (iconImg != null) {
-                    iconImg.setImageBitmap(bitmap);
-                }
-            });
-        });
+        setTextGeneratedBlockies(executor, handler, iconImg, source, makeLowerCase);
     }
 
     public static void setBlockiesBackground(ExecutorService executor, Handler handler, View view,
