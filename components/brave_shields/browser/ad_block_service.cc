@@ -70,10 +70,23 @@ void AdBlockService::SourceProviderObserver::OnChanged() {
 
 void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
     base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
-  auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
-      adblock::new_filter_set());
-  task_runner_->PostTask(FROM_HERE,
-                         base::BindOnce(std::move(cb), filter_set.get()));
+  task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(
+          [](base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
+            auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
+                adblock::new_filter_set());
+            std::move(cb).Run(filter_set.get());
+            return filter_set;
+          },
+          std::move(cb)),
+      base::BindOnce(
+          &AdBlockService::SourceProviderObserver::OnFilterSetCreated,
+          weak_factory_.GetWeakPtr()));
+}
+
+void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
+    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
   filter_set_ = std::move(filter_set);
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);

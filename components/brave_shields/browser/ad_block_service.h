@@ -69,6 +69,7 @@ class AdBlockService {
    private:
     void OnFilterSetCallbackLoaded(
         base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
+    void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
 
     // AdBlockFiltersProvider::Observer
     void OnChanged() override;
