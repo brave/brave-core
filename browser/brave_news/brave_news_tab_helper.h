@@ -70,6 +70,7 @@ class BraveNewsTabHelper
  private:
   explicit BraveNewsTabHelper(content::WebContents* contents);
 
+  bool ShouldFindFeeds();
   void AvailableFeedsChanged();
 
   raw_ptr<brave_news::BraveNewsController> controller_;

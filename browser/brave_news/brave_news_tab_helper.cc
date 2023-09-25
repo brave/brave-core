@@ -21,6 +21,7 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/browser/feed/rss_links_fetcher.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/feed/buildflags.h"
@@ -34,11 +35,6 @@
 // static
 void BraveNewsTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
-  auto* profile = Profile::FromBrowserContext(contents->GetBrowserContext());
-  if (!brave_news::GetIsEnabled(profile->GetPrefs())) {
-    return;
-  }
-
   if (contents->GetBrowserContext()->IsOffTheRecord()) {
     return;
   }
@@ -165,6 +161,13 @@ void BraveNewsTabHelper::RemoveObserver(PageFeedsObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
+bool BraveNewsTabHelper::ShouldFindFeeds() {
+  auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+                    ->GetPrefs();
+  return brave_news::GetIsEnabled(prefs) &&
+         prefs->GetBoolean(brave_news::prefs::kShouldShowToolbarButton);
+}
+
 void BraveNewsTabHelper::AvailableFeedsChanged() {
   for (auto& observer : observers_) {
     observer.OnAvailableFeedsChanged(GetAvailableFeeds());
@@ -182,6 +185,11 @@ void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost* rfh) {
   if (GetWebContents().GetPrimaryMainFrame() != rfh) {
     return;
   }
+
+  if (!ShouldFindFeeds()) {
+    return;
+  }
+
   feed::FetchRssLinks(GetWebContents().GetLastCommittedURL(), &GetWebContents(),
                       base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
                                      weak_ptr_factory_.GetWeakPtr(),
