@@ -31,15 +31,15 @@ BraveVPNMenuModel::~BraveVPNMenuModel() = default;
 void BraveVPNMenuModel::Build() {
   AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN, IDS_BRAVE_VPN_MENU);
   AddSeparator(ui::NORMAL_SEPARATOR);
-  AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON,
-                      IsBraveVPNButtonVisible()
-                          ? IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM
-                          : IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM);
+  if (!IsBraveVPNButtonVisible()) {
+    AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON,
+                        IDS_BRAVE_VPN_SHOW_VPN_BUTTON_MENU_ITEM);
+  }
 #if BUILDFLAG(IS_WIN)
-  AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
-                      IsTrayIconEnabled()
-                          ? IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM
-                          : IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM);
+  if (!IsTrayIconEnabled()) {
+    AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TRAY_ICON,
+                        IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM);
+  }
 #endif  // BUILDFLAG(IS_WIN)
   AddItemWithStringId(IDC_SEND_BRAVE_VPN_FEEDBACK,
                       IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM);
