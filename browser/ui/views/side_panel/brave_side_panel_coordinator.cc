@@ -45,13 +45,20 @@ void BraveSidePanelCoordinator::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  if (selection.active_tab_changed()) {
-    static_cast<BraveBrowserView*>(browser_view_)
-        ->SetSidePanelOperationByActiveTabChange(true);
+  auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
+  const bool active_tab_changed = selection.active_tab_changed();
+  if (active_tab_changed) {
+    brave_browser_view->SetSidePanelOperationByActiveTabChange(true);
   }
 
   SidePanelCoordinator::OnTabStripModelChanged(tab_strip_model, change,
                                                selection);
+
+  // Clear as this flag is only used for show/hide operation triggered by above
+  // SidePanelCoordinator::OnTabStripModelChanged().
+  if (active_tab_changed) {
+    brave_browser_view->SetSidePanelOperationByActiveTabChange(false);
+  }
 }
 
 std::unique_ptr<views::View> BraveSidePanelCoordinator::CreateHeader() {

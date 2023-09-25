@@ -9,7 +9,6 @@
 #include <limits>
 #include <utility>
 
-#include "base/auto_reset.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -677,12 +676,8 @@ void SidebarContainerView::HideSidebarForShowOption() {
   }
 }
 
-bool SidebarContainerView::GetIsPanelOperationFromActiveTabChangeAndReset() {
-  return std::exchange(operation_from_active_tab_change_, false);
-}
-
 bool SidebarContainerView::ShouldUseAnimation() {
-  return !GetIsPanelOperationFromActiveTabChangeAndReset() &&
+  return !operation_from_active_tab_change_ &&
          gfx::Animation::ShouldRenderRichAnimation();
 }
 
