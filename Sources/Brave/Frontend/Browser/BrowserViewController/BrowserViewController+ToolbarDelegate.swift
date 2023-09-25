@@ -154,10 +154,7 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidPressStop(_ topToolbar: TopToolbarView) {
-    tabManager.selectedTab?.stop()
-    processAddressBarTask?.cancel()
-    topToolbarDidPressReloadTask?.cancel()
-    topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+    stopTabToolbarLoading()
   }
 
   func topToolbarDidLongPressReloadButton(_ topToolbar: TopToolbarView, from button: UIButton) {
@@ -916,6 +913,13 @@ extension BrowserViewController: ToolbarDelegate {
     if newTabIndex >= 0 && newTabIndex < tabs.count {
       tabManager.selectTab(tabs[newTabIndex])
     }
+  }
+  
+  func stopTabToolbarLoading() {
+    tabManager.selectedTab?.stop()
+    processAddressBarTask?.cancel()
+    topToolbarDidPressReloadTask?.cancel()
+    topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
   }
 }
 
