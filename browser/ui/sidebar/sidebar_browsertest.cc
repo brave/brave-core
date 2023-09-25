@@ -151,6 +151,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return static_cast<SidebarContainerView*>(controller()->sidebar());
   }
 
+  void CheckOperationFromActiveTabChangedFlagCleared() const {
+    EXPECT_FALSE(GetSidebarContainerView()->operation_from_active_tab_change_);
+  }
+
   BraveSidePanel* GetSidePanel() const {
     return GetSidebarContainerView()->side_panel_;
   }
@@ -683,6 +687,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat, TabSpecificPanel) {
   ASSERT_EQ(tab_model()->GetTabCount(), 3);
   // Open a "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
+  // Tab changed flag should be cleared after ActivateTabAt() executed.
+  CheckOperationFromActiveTabChangedFlagCleared();
   SimulateSidebarItemClickAt(global_item_index.value());
   // Open a "tab specific" panel from Tab 1
   tab_model()->ActivateTabAt(1);

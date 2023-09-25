@@ -180,7 +180,6 @@ class SidebarContainerView
   void StartObservingContextualSidePanelRegistry(
       content::WebContents* contents);
   void StopObservingContextualSidePanelRegistry(content::WebContents* contents);
-  bool GetIsPanelOperationFromActiveTabChangeAndReset();
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;
