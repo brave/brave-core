@@ -2950,6 +2950,16 @@ extension Strings {
       NSLocalizedString("vpn.resetVPNErrorBody", tableName: "BraveShared", bundle: .module,
         value: "Failed to reset vpn configuration, please try again later.",
         comment: "Message to show when vpn configuration reset fails.")
+    
+    public static let resetVPNSuccessTitle =
+      NSLocalizedString("vpn.resetVPNSuccessTitle", tableName: "BraveShared", bundle: .module,
+        value: "Success",
+        comment: "Title for success message when vpn configuration reset succeeds.")
+
+    public static let resetVPNSuccessBody =
+      NSLocalizedString("vpn.resetVPNSuccessBody", tableName: "BraveShared", bundle: .module,
+        value: "VPN Configuration is resetted successfully.",
+        comment: "Message to show when vpn configuration reset succeeds.")
 
     public static let contactFormDoNotEditText =
       NSLocalizedString("vpn.contactFormDoNotEditText", tableName: "BraveShared", bundle: .module,

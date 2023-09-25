@@ -244,9 +244,7 @@ public class BraveVPNSettingsViewController: TableViewController {
           self.isLoading = false
           self.vpnReconfigurationPending = false
           self.updateServerInfo()
-          if !success {
-            self.showVPNResetErrorAlert()
-          }
+          self.showVPNResetAlert(success: success)
         }
       }
     })
@@ -294,9 +292,11 @@ public class BraveVPNSettingsViewController: TableViewController {
     navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func showVPNResetErrorAlert() {
-    let alert = UIAlertController(title: Strings.VPN.resetVPNErrorTitle,
-                                  message: Strings.VPN.resetVPNErrorBody, preferredStyle: .alert)
+  private func showVPNResetAlert(success: Bool) {
+    let alert = UIAlertController(
+      title: success ? Strings.VPN.resetVPNSuccessTitle : Strings.VPN.resetVPNErrorTitle,
+      message: success ? Strings.VPN.resetVPNSuccessBody : Strings.VPN.resetVPNErrorBody,
+      preferredStyle: .alert)
 
     let okAction = UIAlertAction(title: Strings.OKString, style: .default)
     alert.addAction(okAction)
