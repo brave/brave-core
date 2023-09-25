@@ -127,6 +127,41 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountToBrandedWallpaperTest) {
   model.RegisterPageView();
 }
 
+TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetTest) {
+  ViewCounterModel model(prefs());
+  model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
+
+  // Verify param value for initial count was used
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
+  model.RegisterPageView();
+  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  model.RegisterPageView();
+  EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 3);
+
+  // We expect to be reset to initial count when source data updates (which
+  // calls Reset).
+  model.Reset();
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
+}
+
+TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetMinTest) {
+  ViewCounterModel model(prefs());
+  model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
+
+  // Verify param value for initial count was used
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
+  model.RegisterPageView();
+  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 0);
+
+  // We expect to be reset to initial count only if count_to_branded_wallpaper_
+  // is higher than initial count.
+  model.Reset();
+  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 0);
+}
+
 TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetTimerTest) {
   ViewCounterModel model(prefs());
   model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
@@ -137,7 +172,7 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetTimerTest) {
   EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
   model.RegisterPageView();
   EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
-  EXPECT_EQ(model.count_to_branded_wallpaper_, 4);
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 3);
   task_environment_.FastForwardBy(base::Days(1));
   EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
 }

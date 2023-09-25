@@ -47,12 +47,17 @@ class ViewCounterModel {
 
   bool ShouldShowBrandedWallpaper() const;
   void RegisterPageView();
+  void MaybeResetBrandedWallpaperCount();
   void Reset();
   void IncreaseBackgroundWallpaperImageIndex();
 
  private:
   friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPSponsoredImagesCountResetTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPSponsoredImagesCountResetMinTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
                            NTPSponsoredImagesCountResetTimerTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,

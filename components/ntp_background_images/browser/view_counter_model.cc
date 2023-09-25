@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
+#include <algorithm>
 
 #include "base/check.h"
 #include "base/logging.h"
@@ -24,8 +25,8 @@ constexpr base::TimeDelta kCountsResetTimeDelay = base::Days(1);
 ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
   CHECK(prefs);
 
-  // When browser is restarted or component is updated, we reset to "initial"
-  // count.
+  // When browser is restarted we reset to "initial" count. This will also get
+  // set again in the Reset() function, called e.g. when component is updated.
   count_to_branded_wallpaper_ = features::kInitialCountToBrandedWallpaper.Get();
 
   // We also reset when a specific amount of time is elapsed when in SI mode
@@ -153,6 +154,16 @@ void ViewCounterModel::IncreaseBackgroundWallpaperImageIndex() {
   current_wallpaper_image_index_ %= total_image_count_;
 }
 
+void ViewCounterModel::MaybeResetBrandedWallpaperCount() {
+  // Set count so that user is more likely to see new branded data at least once
+  // Only reset count for SI images
+  if (!always_show_branded_wallpaper_ && show_branded_wallpaper_) {
+    count_to_branded_wallpaper_ =
+        std::min(count_to_branded_wallpaper_,
+                 features::kInitialCountToBrandedWallpaper.Get());
+  }
+}
+
 void ViewCounterModel::Reset() {
   current_wallpaper_image_index_ = 0;
   total_image_count_ = 0;
@@ -161,14 +172,13 @@ void ViewCounterModel::Reset() {
   total_campaign_count_ = 0;
   campaigns_total_branded_image_count_.clear();
   campaigns_current_branded_image_index_.clear();
+  MaybeResetBrandedWallpaperCount();
+  // Restart timer with same parameters as set during this class' constructor
+  timer_counts_reset_.Reset();
 }
 
 void ViewCounterModel::OnTimerCountsResetExpired() {
-  // Only reset count after timer expires for SI images
-  if (!always_show_branded_wallpaper_ && show_branded_wallpaper_) {
-    count_to_branded_wallpaper_ =
-        features::kInitialCountToBrandedWallpaper.Get();
-  }
+  MaybeResetBrandedWallpaperCount();
 }
 
 }  // namespace ntp_background_images
