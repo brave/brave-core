@@ -9,10 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "base/no_destructor.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/brave_wallet/common/switches.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
 
@@ -169,7 +166,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPortfolioAssetNetworkDescription",
      IDS_BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION},
     {"braveWalletAccounts", IDS_BRAVE_WALLET_ACCOUNTS},
-    {"braveWalletAccount", IDS_BRAVE_WALLET_ACCOUNT},
+    {"braveWalletSubviewAccount", IDS_BRAVE_WALLET_SUBVIEW_ACCOUNT},
     {"braveWalletOwner", IDS_BRAVE_WALLET_OWNER},
     {"braveWalletTransactions", IDS_BRAVE_WALLET_TRANSACTIONS},
     {"braveWalletPrice", IDS_BRAVE_WALLET_PRICE},
@@ -521,8 +518,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DETAILS_BUTTON},
     {"braveWalletAllowAddNetworkButton",
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_BUTTON},
-    {"braveWalletAllowAddNetworkChainID",
-     IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CHAIN_I_D},
+    {"braveWalletChainId", IDS_BRAVE_WALLET_CHAIN_ID},
     {"braveWalletAllowAddNetworkCurrencySymbol",
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL},
     {"braveWalletAllowAddNetworkExplorer",
@@ -951,6 +947,25 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_TRANSACTION_INTENT_SEND},
     {"braveWalletTransactionIntentSwap",
      IDS_BRAVE_WALLET_TRANSACTION_INTENT_SWAP},
+    {"braveWalletSignInWithBraveWallet",
+     IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET},
+    {"braveWalletSignInWithBraveWalletMessage",
+     IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET_MESSAGE},
+    {"braveWalletSeeDetails", IDS_BRAVE_WALLET_SEE_DETAILS},
+    {"braveWalletSignIn", IDS_BRAVE_WALLET_SIGN_IN},
+    {"braveWalletOrigin", IDS_BRAVE_WALLET_ORIGIN},
+    {"braveWalletAddress", IDS_BRAVE_WALLET_ADDRESS},
+    {"braveWalletStatement", IDS_BRAVE_WALLET_STATEMENT},
+    {"braveWalletUri", IDS_BRAVE_WALLET_URI},
+    {"braveWalletVersion", IDS_BRAVE_WALLET_VERSION},
+    {"braveWalletNonce", IDS_BRAVE_WALLET_NONCE},
+    {"braveWalletIssuedAt", IDS_BRAVE_WALLET_ISSUED_AT},
+    {"braveWalletExpirationTime", IDS_BRAVE_WALLET_EXPIRATION_TIME},
+    {"braveWalletNotBefore", IDS_BRAVE_WALLET_NOT_BEFORE},
+    {"braveWalletRequestId", IDS_BRAVE_WALLET_REQUEST_ID},
+    {"braveWalletResources", IDS_BRAVE_WALLET_RESOURCES},
+    {"braveWalletSecurityRiskDetected",
+     IDS_BRAVE_WALLET_SECURITY_RISK_DETECTED},
     {"braveWalletEditGasLimitError", IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR},
     {"braveWalletApproveTransaction", IDS_BRAVE_WALLET_APPROVE_TRANSACTION},
     {"braveWalletSolanaSystemProgram", IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM},
@@ -1297,10 +1312,20 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveNftsTabUnhide", IDS_BRAVE_WALLET_NFTS_TAB_UNHIDE},
     {"braveNftsTabEdit", IDS_BRAVE_WALLET_NFTS_TAB_EDIT},
     {"braveWalletNftUnspam", IDS_BRAVE_WALLET_NFT_UNSPAM},
+    {"braveWalletNftJunk", IDS_BRAVE_WALLET_NFT_JUNK},
+    {"braveWalletRemoveNftModalHeader",
+     IDS_BRAVE_WALLET_REMOVE_NFT_MODAL_HEADER},
+    {"braveWalletRemoveNftModalDescription",
+     IDS_BRAVE_WALLET_REMOVE_NFT_MODAL_DESCRIPTION},
+    {"braveWalletRemoveNftModalCancel",
+     IDS_BRAVE_WALLET_REMOVE_NFT_MODAL_CANCEL},
+    {"braveWalletRemoveNftModalConfirm",
+     IDS_BRAVE_WALLET_REMOVE_NFT_MODAL_CONFIRM},
     {"braveWalletNftMoveToSpam", IDS_BRAVE_WALLET_NFT_MOVE_TO_SPAM},
     {"braveNftsTab", IDS_BRAVE_WALLET_NFTS_TAB},
     {"braveNftsTabHidden", IDS_BRAVE_WALLET_NFTS_TAB_HIDDEN},
-    {"braveNftsTabSpam", IDS_BRAVE_WALLET_NFTS_TAB_SPAM},
+    {"braveNftsTabCollected", IDS_BRAVE_WALLET_NFTS_TAB_COLLECTED},
+    {"braveNftsTabRemove", IDS_BRAVE_WALLET_NFTS_TAB_REMOVE},
     {"braveWalletImportNftModalTitle", IDS_BRAVE_WALLET_IMPORT_NFT_MODAL_TITLE},
     {"braveWalletEditNftModalTitle", IDS_BRAVE_WALLET_EDIT_NFT_MODAL_TITLE},
     {"braveWalletEnableNftAutoDiscoveryModalHeader",

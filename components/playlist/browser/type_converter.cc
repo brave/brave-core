@@ -6,9 +6,11 @@
 #include "brave/components/playlist/browser/type_converter.h"
 
 #include <limits>
+#include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/json/values_util.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 
@@ -63,6 +65,23 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
          !dict.contains(kPlaylistItemParentKey) ||
          // Added 2023. Aug.
          !dict.contains(kPlaylistItemMediaFileBytesKey);
+  // DO NOT ADD MORE
+}
+
+void MigratePlaylistOrder(const base::Value::Dict& playlists,
+                          base::Value::List& order) {
+  base::flat_set<std::string> missing_ids;
+  for (const auto [id, _] : playlists) {
+    missing_ids.insert(id);
+  }
+
+  for (const auto& existing_id_value : order) {
+    missing_ids.erase(existing_id_value.GetString());
+  }
+
+  for (const auto& id : missing_ids) {
+    order.Append(id);
+  }
 }
 
 mojom::PlaylistItemPtr ConvertValueToPlaylistItem(

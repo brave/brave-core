@@ -38,7 +38,7 @@ namespace {
 const base::Feature* const kFeatures[] = {
     &kAccountStatementFeature,   &kAccountTokensFeature,
     &kAntiTargetingFeature,      &kConversionsFeature,
-    &kEligibleAdFeature,         &kEpsilonGreedyBanditFeatures,
+    &kEligibleAdFeature,         &kEpsilonGreedyBanditFeature,
     &kExclusionRulesFeature,     &kInlineContentAdFeature,
     &kNewTabPageAdFeature,       &kNotificationAdFeature,
     &kPermissionRulesFeature,    &kPromotedContentAdFeature,

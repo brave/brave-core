@@ -44,7 +44,7 @@ SegmentList ToSegmentList(const EpsilonGreedyBanditArmList& arms) {
 EpsilonGreedyBanditArmList ToArmList(const EpsilonGreedyBanditArmMap& arms) {
   EpsilonGreedyBanditArmList list;
 
-  for (const auto& [segment, arm] : arms) {
+  for (const auto& [_, arm] : arms) {
     list.push_back(arm);
   }
 
@@ -122,7 +122,7 @@ EpsilonGreedyBanditArmList GetTopArms(const ArmBucketList& buckets,
 SegmentList ExploreSegments(const EpsilonGreedyBanditArmMap& arms) {
   SegmentList segments;
 
-  for (const auto& [segment, arm] : arms) {
+  for (const auto& [segment, _] : arms) {
     segments.push_back(segment);
   }
 
@@ -174,7 +174,7 @@ SegmentList GetSegmentsForArms(const EpsilonGreedyBanditArmMap& arms) {
 
 }  // namespace
 
-SegmentList EpsilonGreedyBanditModel::GetSegments() const {
+SegmentList GetEpsilonGreedyBanditSegments() {
   return GetSegmentsForArms(GetEpsilonGreedyBanditArms());
 }
 

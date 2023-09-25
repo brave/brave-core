@@ -13,7 +13,6 @@ import {
   SerializableTransactionInfo,
   SpotPriceRegistry,
 } from '../../constants/types'
-import { NftsPinningStatusType } from '../../page/constants/action_types'
 
 // images
 import {
@@ -81,7 +80,6 @@ export const getMockedTransactionInfo =
         originSpec: 'https://brave.com',
         eTldPlusOne: 'brave.com'
       },
-      groupId: undefined,
       effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f'
     }
   }
@@ -216,7 +214,7 @@ export const mockSplNft: BraveWallet.BlockchainToken = {
 
 }
 
-export const mockNftPinningStatus: NftsPinningStatusType = {
+export const mockNftPinningStatus = {
   [getAssetIdKey(mockErc721Token)]: {
     code: BraveWallet.TokenPinStatusCode.STATUS_PINNED,
     error: undefined
@@ -527,7 +525,6 @@ export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionIn
     originSpec: 'https://f40y4d.csb.app',
     eTldPlusOne: 'csb.app'
   },
-  groupId: undefined,
   effectiveRecipient: undefined
 }
 
@@ -1372,3 +1369,22 @@ export const mockSolStakingChangeSimulation: SafeBlowfishSolanaResponse = {
 }
 
 
+export const mockOnRampCurrency: BraveWallet.OnRampCurrency = {
+  currencyCode: 'USD',
+  currencyName: 'United States Dollar',
+  providers: []
+}
+
+export const mockOnRampCurrencies: BraveWallet.OnRampCurrency[] = [
+  mockOnRampCurrency,
+  {
+    currencyCode: 'EUR',
+    currencyName: 'Euro',
+    providers: []
+  },
+  {
+    currencyCode: 'GBP',
+    currencyName: 'British Pound Sterling',
+    providers: []
+  }
+]

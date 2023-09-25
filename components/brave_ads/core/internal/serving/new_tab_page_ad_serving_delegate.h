@@ -6,18 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_NEW_TAB_PAGE_AD_SERVING_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_NEW_TAB_PAGE_AD_SERVING_DELEGATE_H_
 
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
-
 namespace brave_ads {
 
 struct NewTabPageAdInfo;
 
 class NewTabPageAdServingDelegate {
  public:
-  // Invoked when an opportunity arises to serve a new tab page ad for the
-  // |segments|.
-  virtual void OnOpportunityAroseToServeNewTabPageAd(
-      const SegmentList& segments) {}
+  // Invoked when an opportunity arises to serve a new tab page ad.
+  virtual void OnOpportunityAroseToServeNewTabPageAd() {}
 
   // Invoked when a new tab page ad is served.
   virtual void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {}

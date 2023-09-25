@@ -50,6 +50,8 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
        IDS_PLAYLIST_CONTEXT_MENU_RENAME_PLAYLIST},
       {"bravePlaylistContextMenuDeletePlaylist",
        IDS_PLAYLIST_CONTEXT_MENU_DELETE_PLAYLIST},
+      {"bravePlaylistContextMenuViewOriginalPage",
+       IDS_PLAYLIST_CONTEXT_MENU_VIEW_ORIGINAL_PAGE},
   };
 
   for (const auto& [name, id] : kLocalizedStrings) {

@@ -5,6 +5,8 @@
 
 #include "brave/common/extensions/brave_extensions_api_provider.h"
 
+#include <string_view>
+
 #include "brave/common/extensions/api/generated_includes.h"
 #include "extensions/common/features/json_feature_provider_source.h"
 #include "extensions/common/permissions/permissions_info.h"
@@ -43,7 +45,7 @@ bool BraveExtensionsAPIProvider::IsAPISchemaGenerated(
   return api::BraveGeneratedSchemas::IsGenerated(name);
 }
 
-base::StringPiece BraveExtensionsAPIProvider::GetAPISchema(
+std::string_view BraveExtensionsAPIProvider::GetAPISchema(
     const std::string& name) {
   return api::BraveGeneratedSchemas::Get(name);
 }

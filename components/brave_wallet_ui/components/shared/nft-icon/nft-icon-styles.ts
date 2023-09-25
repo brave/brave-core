@@ -34,3 +34,17 @@ export const IconWrapper = styled.div<{ disabled?: boolean }>`
   z-index: 3;
   filter: ${(p) => p.disabled ? 'grayscale(100%)' : 'none'};
 `
+
+export const AccountBoxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: absolute;
+  bottom: -3px;
+  right: 18px;
+  background-color: ${(p) => p.theme.color.background02};
+  border-radius: 100%;
+  padding: 2px;
+  z-index: 3;
+`

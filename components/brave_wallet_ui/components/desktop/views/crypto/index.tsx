@@ -11,7 +11,7 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 // actions
 import { AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
@@ -45,7 +45,6 @@ import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
 import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
-import { WalletPageActions } from '../../../../page/actions'
 import {
   Column
 } from '../../../shared/style'
@@ -92,8 +91,6 @@ export const CryptoView = (props: Props) => {
   const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
-  const dispatch = useDispatch()
-
   // state
   // const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
@@ -104,9 +101,23 @@ export const CryptoView = (props: Props) => {
   const location = useLocation()
 
   // methods
-  const onShowBackup = React.useCallback(() => {
+  const onShowBackup = () => {
+    if (isPanel) {
+      chrome.tabs.create(
+        {
+          url: `chrome://wallet${WalletRoutes.Backup}`
+        }, () => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              'tabs.create failed: '
+              + chrome.runtime.lastError.message
+            )
+          }
+        })
+      return
+    }
     history.push(WalletRoutes.Backup)
-  }, [])
+  }
 
   const onShowVisibleAssetsModal = React.useCallback((showModal: boolean) => {
     if (showModal) {
@@ -183,12 +194,6 @@ export const CryptoView = (props: Props) => {
     onShowBackup,
     showBackupWarning
   ])
-
-  // effects
-  React.useEffect(() => {
-    dispatch(WalletPageActions.getLocalIpfsNodeStatus())
-    dispatch(WalletPageActions.getIsAutoPinEnabled())
-  }, [])
 
   // render
   return (

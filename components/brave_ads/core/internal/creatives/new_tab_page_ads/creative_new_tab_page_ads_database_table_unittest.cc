@@ -311,40 +311,6 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
       std::move(expected_creative_ads)));
 }
 
-TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
-       GetCreativeNewTabPageAdsMatchingCaseInsensitiveSegments) {
-  // Arrange
-  CreativeNewTabPageAdList creative_ads;
-
-  CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
-  creative_ad_1.segment = "technology & computing-software";
-  creative_ads.push_back(creative_ad_1);
-
-  CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
-  creative_ad_2.segment = "food & drink";
-  creative_ads.push_back(creative_ad_2);
-
-  database::SaveCreativeNewTabPageAds(creative_ads);
-
-  // Act
-
-  // Assert
-  CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
-
-  database_table_.GetForSegments(
-      /*segments*/ {"FoOd & DrInK"},
-      base::BindOnce(
-          [](const CreativeNewTabPageAdList& expected_creative_ads,
-             const bool success, const SegmentList& /*segments*/,
-             const CreativeNewTabPageAdList& creative_ads) {
-            ASSERT_TRUE(success);
-            EXPECT_EQ(expected_creative_ads, creative_ads);
-          },
-          std::move(expected_creative_ads)));
-}
-
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, TableName) {
   // Arrange
 

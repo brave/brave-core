@@ -55,18 +55,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 // Allow certain client hints in request header.
 BASE_FEATURE(kAllowCertainClientHints,
              "AllowCertainClientHints",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
-// Clamp platform version client hint's patch field.
-// Platform version client hint is only sent when requested and when the
-// AllowCertainClientHints feature is turned on.
-BASE_FEATURE(kClampPlatformVersionClientHint,
-             "ClampPlatformVersionClientHint",
              base::FEATURE_ENABLED_BY_DEFAULT);
-
-constexpr base::FeatureParam<std::string>
-    kClampPlatformVersionClientHintPatchValue{&kClampPlatformVersionClientHint,
-                                              "patch_value", "0"};
 
 BASE_FEATURE(kFileSystemAccessAPI,
              "FileSystemAccessAPI",
@@ -102,6 +91,11 @@ BASE_FEATURE(kBraveBlockScreenFingerprinting,
 // Enables protection against fingerprinting via high-resolution time stamps.
 BASE_FEATURE(kBraveRoundTimeStamps,
              "BraveRoundTimeStamps",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+// Enables the Global Privacy Control header and navigator APIs.
+BASE_FEATURE(kBraveGlobalPrivacyControl,
+             "BraveGlobalPrivacyControl",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enable EventSource connection pool limit per eTLD+1.

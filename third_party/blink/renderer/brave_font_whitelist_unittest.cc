@@ -4,27 +4,27 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <vector>
 
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 
 #include "base/containers/flat_set.h"
-#include "base/strings/string_piece.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace {
 
-base::flat_set<base::StringPiece> kTestFontWhitelist =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
+base::flat_set<std::string_view> kTestFontWhitelist =
+    base::MakeFlatSet<std::string_view>(std::vector<std::string_view>{
         "roboto",
         "caro",
         "tenso",
         "elfo",
     });
-base::flat_set<base::StringPiece> kEmptyFontSet =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<std::string_view> kEmptyFontSet =
+    base::MakeFlatSet<std::string_view>(std::vector<std::string_view>{});
 
 }  // namespace
 
@@ -39,7 +39,7 @@ class BraveFontWhitelistTest : public testing::Test {
 };
 
 TEST(BraveFontWhitelistTest, Platforms) {
-  base::flat_set<base::StringPiece> allowed(
+  base::flat_set<std::string_view> allowed(
       brave::get_font_whitelist_for_testing());
 
 #if BUILDFLAG(IS_MAC)
@@ -102,7 +102,7 @@ TEST(BraveFontWhitelistTest, Locales) {
     std::make_tuple<>("la", 0UL),
   };
   for (const auto& c : test_cases) {
-    base::flat_set<base::StringPiece> allowed(
+    base::flat_set<std::string_view> allowed(
         brave::GetAdditionalFontWhitelistByLocale(std::get<0>(c)));
     EXPECT_EQ(allowed.size(), std::get<1>(c));
   }
@@ -210,14 +210,14 @@ TEST(BraveFontWhitelistTest, API) {
   brave::set_font_whitelist_for_testing(true /* can_restrict_fonts */,
                                         kTestFontWhitelist);
   EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), true);
-  base::flat_set<base::StringPiece> allowed(
+  base::flat_set<std::string_view> allowed(
       brave::get_font_whitelist_for_testing());
   EXPECT_EQ(allowed.size(), 4UL);
   EXPECT_EQ(allowed.contains("elfo"), true);
   brave::set_font_whitelist_for_testing(false /* can_restrict_fonts */,
                                         kEmptyFontSet);
   EXPECT_EQ(brave::get_can_restrict_fonts_for_testing(), false);
-  base::flat_set<base::StringPiece> allowed2(
+  base::flat_set<std::string_view> allowed2(
       brave::get_font_whitelist_for_testing());
   EXPECT_EQ(allowed2.size(), 0UL);
 }

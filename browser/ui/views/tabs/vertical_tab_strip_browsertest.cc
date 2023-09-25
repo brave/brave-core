@@ -8,7 +8,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -114,9 +113,7 @@ void FullscreenNotificationObserver::Wait() {
 
 class VerticalTabStripBrowserTest : public InProcessBrowserTest {
  public:
-  VerticalTabStripBrowserTest()
-      : feature_list_(tabs::features::kBraveVerticalTabs) {}
-
+  VerticalTabStripBrowserTest() = default;
   ~VerticalTabStripBrowserTest() override = default;
 
   const BraveBrowserView* browser_view() const {
@@ -205,8 +202,6 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   }
 
  private:
-  base::test::ScopedFeatureList feature_list_;
-
   std::unique_ptr<base::RunLoop> run_loop_;
 };
 
@@ -396,6 +391,40 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
     observer.Wait();
   }
 
+  // Vertical tab strip should be invisible on browser fullscreen.
+  ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
+  ASSERT_TRUE(browser_view()->IsFullscreen());
+  EXPECT_FALSE(browser_view()
+                   ->vertical_tab_strip_host_view_->GetPreferredSize()
+                   .width());
+
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    fullscreen_controller->ToggleBrowserFullscreenMode();
+    observer.Wait();
+  }
+  ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
+  ASSERT_FALSE(browser_view()->IsFullscreen());
+
+  {
+    auto observer = FullscreenNotificationObserver(browser());
+    // Vertical tab strip should become invisible on tab fullscreen.
+    fullscreen_controller->EnterFullscreenModeForTab(
+        browser_view()
+            ->browser()
+            ->tab_strip_model()
+            ->GetActiveWebContents()
+            ->GetPrimaryMainFrame());
+
+    observer.Wait();
+  }
+  ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
+  if (!browser_view()
+           ->vertical_tab_strip_host_view_->GetPreferredSize()
+           .width()) {
+    return;
+  }
+
   base::RunLoop run_loop;
   auto wait_until = base::BindLambdaForTesting(
       [&](base::RepeatingCallback<bool()> predicate) {
@@ -408,47 +437,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
                         base::BindLambdaForTesting([&]() {
                           if (predicate.Run()) {
                             run_loop.Quit();
+                          } else {
+                            LOG(ERROR) << browser_view()
+                                              ->vertical_tab_strip_host_view_
+                                              ->GetPreferredSize()
+                                              .width();
                           }
                         }));
         run_loop.Run();
       });
-
-  // Vertical tab strip should be invisible on browser fullscreen.
-  ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
-  ASSERT_TRUE(browser_view()->IsFullscreen());
-  wait_until.Run(base::BindLambdaForTesting([&]() {
-    return !browser_view()
-                ->vertical_tab_strip_host_view_->GetPreferredSize()
-                .width();
-  }));
-
-  {
-    auto observer = FullscreenNotificationObserver(browser());
-    fullscreen_controller->ToggleBrowserFullscreenMode();
-    observer.Wait();
-  }
-  ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
-  ASSERT_FALSE(browser_view()->IsFullscreen());
-
-  {
-    auto observer = FullscreenNotificationObserver(browser());
-    fullscreen_controller->EnterFullscreenModeForTab(
-        browser_view()
-            ->browser()
-            ->tab_strip_model()
-            ->GetActiveWebContents()
-            ->GetPrimaryMainFrame());
-
-    observer.Wait();
-  }
-
-  // Vertical tab strip should be invisible on tab fullscreen.
-  ASSERT_TRUE(fullscreen_controller->IsTabFullscreen());
-  if (!browser_view()
-           ->vertical_tab_strip_host_view_->GetPreferredSize()
-           .width()) {
-    return;
-  }
 
   wait_until.Run(base::BindLambdaForTesting([&]() {
     return !browser_view()

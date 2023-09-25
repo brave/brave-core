@@ -8,6 +8,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -202,10 +203,10 @@ class EthTxManagerUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          base::StringPiece request_string(request.request_body->elements()
-                                               ->at(0)
-                                               .As<network::DataElementBytes>()
-                                               .AsStringPiece());
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
           base::Value::Dict request_value = ParseJsonDict(request_string);
           std::string* method = request_value.FindString("method");
           ASSERT_TRUE(method);
@@ -318,16 +319,14 @@ class EthTxManagerUnitTest : public testing::Test {
         }));
   }
 
-  void DoSpeedupOrCancelTransactionSuccess(
-      const std::string& chain_id,
-      const std::string& nonce,
-      const std::string& gas_price,
-      const std::vector<uint8_t>& data,
-      const std::string& orig_meta_id,
-      mojom::TransactionStatus status,
-      bool cancel,
-      std::string* tx_meta_id,
-      const absl::optional<std::string>& group_id = absl::nullopt) {
+  void DoSpeedupOrCancelTransactionSuccess(const std::string& chain_id,
+                                           const std::string& nonce,
+                                           const std::string& gas_price,
+                                           const std::vector<uint8_t>& data,
+                                           const std::string& orig_meta_id,
+                                           mojom::TransactionStatus status,
+                                           bool cancel,
+                                           std::string* tx_meta_id) {
     auto tx_data =
         mojom::TxData::New(nonce, gas_price, "0x0974",
                            "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
@@ -339,7 +338,6 @@ class EthTxManagerUnitTest : public testing::Test {
     meta.set_id(orig_meta_id);
     meta.set_chain_id(chain_id);
     meta.set_status(status);
-    meta.set_group_id(group_id);
     ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
 
     bool callback_called = false;
@@ -360,8 +358,7 @@ class EthTxManagerUnitTest : public testing::Test {
       const std::string& orig_meta_id,
       mojom::TransactionStatus status,
       bool cancel,
-      std::string* tx_meta_id,
-      const absl::optional<std::string>& group_id = absl::nullopt) {
+      std::string* tx_meta_id) {
     auto tx_data1559 = mojom::TxData1559::New(
         mojom::TxData::New(nonce, "", "0x0974",
                            "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
@@ -376,7 +373,6 @@ class EthTxManagerUnitTest : public testing::Test {
     meta.set_id(orig_meta_id);
     meta.set_chain_id(chain_id);
     meta.set_status(status);
-    meta.set_group_id(group_id);
     ASSERT_TRUE(eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta));
 
     bool callback_called = false;
@@ -406,31 +402,26 @@ class EthTxManagerUnitTest : public testing::Test {
       const mojom::AccountIdPtr& from,
       const absl::optional<url::Origin>& origin,
       EthTxManager::AddUnapprovedTransactionCallback callback) {
-    eth_tx_manager()->AddUnapprovedTransaction(chain_id, std::move(tx_data),
-                                               from, origin, absl::nullopt,
-                                               std::move(callback));
+    eth_tx_manager()->AddUnapprovedTransaction(
+        chain_id, std::move(tx_data), from, origin, std::move(callback));
   }
 
   void AddUnapprovedTransaction(
       const std::string& chain_id,
       mojom::TxDataPtr tx_data,
       const mojom::AccountIdPtr& from,
-      EthTxManager::AddUnapprovedTransactionCallback callback,
-      const absl::optional<std::string>& group_id = absl::nullopt) {
-    eth_tx_manager()->AddUnapprovedTransaction(chain_id, std::move(tx_data),
-                                               from, GetOrigin(), group_id,
-                                               std::move(callback));
+      EthTxManager::AddUnapprovedTransactionCallback callback) {
+    eth_tx_manager()->AddUnapprovedTransaction(
+        chain_id, std::move(tx_data), from, GetOrigin(), std::move(callback));
   }
 
   void AddUnapproved1559Transaction(
       const std::string& chain_id,
       mojom::TxData1559Ptr tx_data,
       const mojom::AccountIdPtr& from,
-      EthTxManager::AddUnapprovedTransactionCallback callback,
-      const absl::optional<std::string>& group_id = absl::nullopt) {
-    eth_tx_manager()->AddUnapproved1559Transaction(chain_id, std::move(tx_data),
-                                                   from, GetOrigin(), group_id,
-                                                   std::move(callback));
+      EthTxManager::AddUnapprovedTransactionCallback callback) {
+    eth_tx_manager()->AddUnapproved1559Transaction(
+        chain_id, std::move(tx_data), from, GetOrigin(), std::move(callback));
   }
 
   void TestMakeERC1155TransferFromDataTxType(
@@ -565,75 +556,6 @@ TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
 
   EXPECT_EQ(tx_meta->origin(),
             url::Origin::Create(GURL("https://some.site.com")));
-}
-
-TEST_F(EthTxManagerUnitTest,
-       AddUnapprovedLegacyOrEIP1559TransactionWithGroupId) {
-  auto tx_data =
-      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
-                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt);
-  bool callback_called = false;
-  std::string tx_meta_id;
-
-  // Legacy transaction with group_id
-  AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, tx_data.Clone(), from(),
-      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
-                     &tx_meta_id),
-      "mockGroupId");
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  auto tx_meta =
-      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
-  EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
-
-  // Legacy transaction with empty group_id
-  callback_called = false;
-  AddUnapprovedTransaction(
-      mojom::kLocalhostChainId, std::move(tx_data), from(),
-      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
-                     &tx_meta_id));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  tx_meta =
-      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
-  EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), absl::nullopt);
-
-  auto tx_data_1559 = mojom::TxData1559::New(
-      mojom::TxData::New("0x1", "", "0x0974",
-                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", data_, false, absl::nullopt),
-      "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
-
-  // EIP-1559 transaction with group_id
-  callback_called = false;
-  AddUnapproved1559Transaction(
-      mojom::kLocalhostChainId, tx_data_1559.Clone(), from(),
-      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
-                     &tx_meta_id),
-      "mockGroupId1559");
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  tx_meta =
-      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
-  EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), "mockGroupId1559");
-
-  // EIP-1559 transaction with empty group_id
-  callback_called = false;
-  AddUnapproved1559Transaction(
-      mojom::kLocalhostChainId, std::move(tx_data_1559), from(),
-      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
-                     &tx_meta_id));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  tx_meta =
-      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
-  EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), absl::nullopt);
 }
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
@@ -2098,17 +2020,6 @@ TEST_F(EthTxManagerUnitTest, SpeedupTransaction) {
   ASSERT_TRUE(tx_meta);
   EXPECT_EQ(*expected_tx_meta->tx(), *tx_meta->tx());
 
-  // Speedup should reuse group_id
-  orig_meta_id = "004";
-  DoSpeedupOrCancelTransactionSuccess(mojom::kLocalhostChainId, "0x05", "0xa",
-                                      std::vector<uint8_t>(), orig_meta_id,
-                                      mojom::TransactionStatus::Submitted,
-                                      false, &tx_meta_id, "mockGroupId");
-  tx_meta =
-      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
-  ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
-
   // Non-exist transaction should fail.
   DoSpeedupOrCancelTransactionFailure(mojom::kLocalhostChainId, "123", false);
 
@@ -2165,17 +2076,6 @@ TEST_F(EthTxManagerUnitTest, Speedup1559Transaction) {
   ASSERT_TRUE(tx_meta);
   tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(*expected_tx1559_ptr, *tx1559_ptr);
-
-  // Speedup should reuse group_id
-  orig_meta_id = "003";
-  DoSpeedupOrCancel1559TransactionSuccess(
-      mojom::kLocalhostChainId, "0x05", data_, "0x77359400" /* 2 Gwei */,
-      "0xb2d05e000" /* 48 Gwei */, orig_meta_id,
-      mojom::TransactionStatus::Submitted, false, &tx_meta_id, "mockGroupId");
-  tx_meta =
-      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
-  ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
 
   // Non-exist transaction should fail.
   DoSpeedupOrCancelTransactionFailure(mojom::kLocalhostChainId, "123", false);
@@ -2241,16 +2141,6 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   EXPECT_EQ(tx_meta->tx()->value(), 0u);
   EXPECT_TRUE(tx_meta->tx()->data().empty());
 
-  // Cancel should reuse group_id
-  orig_meta_id = "003";
-  DoSpeedupOrCancelTransactionSuccess(
-      mojom::kLocalhostChainId, "0x07", "0x1", data_, orig_meta_id,
-      mojom::TransactionStatus::Submitted, true, &tx_meta_id, "mockGroupId");
-  tx_meta =
-      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
-  ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
-
   // EIP1559
   // Cancel with original gas fees + 10% > avg gas fees should use
   // original gas fees + 10%.
@@ -2277,16 +2167,6 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
             orig_tx_meta->from()->address);
   EXPECT_EQ(tx_meta->tx()->value(), 0u);
   EXPECT_TRUE(tx_meta->tx()->data().empty());
-
-  // Cancel should reuse group_id
-  DoSpeedupOrCancel1559TransactionSuccess(
-      mojom::kLocalhostChainId, "0x08", data_, "0x77359400" /* 2 Gwei */,
-      "0xb2d05e000" /* 48 Gwei */, orig_meta_id,
-      mojom::TransactionStatus::Submitted, true, &tx_meta_id, "mockGroupId");
-  tx_meta =
-      eth_tx_manager()->GetTxForTesting(mojom::kLocalhostChainId, tx_meta_id);
-  ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
 
   // Non-exist transaction should fail.
   DoSpeedupOrCancelTransactionFailure(mojom::kLocalhostChainId, "123", true);
@@ -2386,10 +2266,10 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
 
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-        base::StringPiece request_string(request.request_body->elements()
-                                             ->at(0)
-                                             .As<network::DataElementBytes>()
-                                             .AsStringPiece());
+        std::string_view request_string(request.request_body->elements()
+                                            ->at(0)
+                                            .As<network::DataElementBytes>()
+                                            .AsStringPiece());
         if (request_string.find(contract_safe_transfer_from) !=
             std::string::npos) {
           url_loader_factory_.AddResponse(

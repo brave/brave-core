@@ -29,7 +29,7 @@ class BraveAdsDaypartExclusionRuleTest : public UnitTestBase {
   const DaypartExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsDaypartExclusionRuleTest, ShouldIncludeWhenNoDayparts) {
+TEST_F(BraveAdsDaypartExclusionRuleTest, ShouldIncludeIfNoDayparts) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

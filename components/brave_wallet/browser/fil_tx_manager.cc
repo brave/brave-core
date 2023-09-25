@@ -53,7 +53,6 @@ FilTxManager::~FilTxManager() {
 void FilTxManager::GetEstimatedGas(const std::string& chain_id,
                                    const mojom::AccountIdPtr& from,
                                    const absl::optional<url::Origin>& origin,
-                                   const absl::optional<std::string>& group_id,
                                    std::unique_ptr<FilTransaction> tx,
                                    AddUnapprovedTransactionCallback callback) {
   const std::string gas_premium = tx->gas_premium();
@@ -68,14 +67,13 @@ void FilTxManager::GetEstimatedGas(const std::string& chain_id,
       max_fee, value,
       base::BindOnce(&FilTxManager::ContinueAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), chain_id, from.Clone(), origin,
-                     group_id, std::move(tx), std::move(callback)));
+                     std::move(tx), std::move(callback)));
 }
 
 void FilTxManager::ContinueAddUnapprovedTransaction(
     const std::string& chain_id,
     const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
-    const absl::optional<std::string>& group_id,
     std::unique_ptr<FilTransaction> tx,
     AddUnapprovedTransactionCallback callback,
     const std::string& gas_premium,
@@ -95,7 +93,6 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_origin(
       origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
-  meta.set_group_id(group_id);
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(chain_id);
@@ -113,7 +110,6 @@ void FilTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
-    const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_fil_tx_data());
   const bool is_mainnet = chain_id == mojom::kFilecoinMainnet;
@@ -137,12 +133,12 @@ void FilTxManager::AddUnapprovedTransaction(
   const std::string gas_premium = tx->gas_premium();
   auto gas_limit = tx->gas_limit();
   if (!gas_limit || gas_fee_cap.empty() || gas_premium.empty()) {
-    GetEstimatedGas(chain_id, from, origin, group_id, std::move(tx_ptr),
+    GetEstimatedGas(chain_id, from, origin, std::move(tx_ptr),
                     std::move(callback));
   } else {
     ContinueAddUnapprovedTransaction(
-        chain_id, from, origin, group_id, std::move(tx_ptr),
-        std::move(callback), gas_premium, gas_fee_cap, gas_limit,
+        chain_id, from, origin, std::move(tx_ptr), std::move(callback),
+        gas_premium, gas_fee_cap, gas_limit,
         mojom::FilecoinProviderError::kSuccess, "");
   }
 }

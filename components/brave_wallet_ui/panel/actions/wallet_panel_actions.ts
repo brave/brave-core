@@ -44,7 +44,8 @@ export const navigateToMain = createAction('navigateToMain')
 export const navigateBack = createAction('navigateBack')
 export const signMessage = createAction<BraveWallet.SignMessageRequest[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
-export const signMessageHardware = createAction<SignMessageHardwarePayload>('signMessageHardware')
+export const signMessageHardware =
+  createAction<SignMessageHardwarePayload>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageProcessedPayload>('signMessageHardwareProcessed')
 export const setHardwareWalletInteractionError = createAction<HardwareWalletResponseCodeType | undefined>('setHardwareWalletInteractionError')
 export const cancelConnectHardwareWallet = createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')
@@ -63,3 +64,7 @@ export const signAllTransactionsHardware = createAction<SignAllTransactionsHardw
 export const signAllTransactionsProcessed = createAction<SignAllTransactionsProcessedPayload>('signAllTransactionsProcessed')
 export const setCloseOnDeactivate
   = createAction<boolean>('setCloseOnDeactivate')
+export const signMessageError =
+  createAction<BraveWallet.SignMessageError[]>('signMessageError')
+export const signMessageErrorProcessed =
+  createAction<string>('signMessageErrorProcessed')

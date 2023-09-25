@@ -7,6 +7,7 @@ module brave_shields.mojom;
 
 import "url/mojom/url.mojom";
 import "mojo/public/mojom/base/time.mojom";
+import "mojo/public/mojom/base/values.mojom";
 
 struct SubscriptionInfo {
   bool enabled;
@@ -26,6 +27,7 @@ interface FilterListAndroidHandler {
   CreateSubscription(url.mojom.Url subscription_url);
   EnableSubscription(url.mojom.Url sub_url, bool enabled);
   DeleteSubscription(url.mojom.Url sub_url);
+  GetFilterLists() => (mojo_base.mojom.ListValue filterLists);
 };
 
 const string kSwitchToAppUuid = "2F3DCE16-A19A-493C-A88F-2E110FBD37D6";

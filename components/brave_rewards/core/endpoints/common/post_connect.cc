@@ -21,7 +21,24 @@ using Result = PostConnect::Result;
 
 namespace {
 
-Result ParseBody(const std::string& body) {
+Result ParseGeoCountry(const std::string& body) {
+  const auto value = base::JSONReader::Read(body);
+  if (!value || !value->is_dict()) {
+    BLOG(0, "Failed to parse body!");
+    return base::unexpected(Error::kFailedToParseBody);
+  }
+
+  const base::Value::Dict& dict = value->GetDict();
+  const auto* geo_country = dict.FindString("geoCountry");
+  if (!geo_country || geo_country->empty()) {
+    BLOG(0, "Missing geoCountry response field");
+    return base::unexpected(Error::kFailedToParseBody);
+  }
+
+  return *geo_country;
+}
+
+Result ParseErrorMessage(const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Failed to parse body!");
@@ -85,11 +102,11 @@ Result ParseBody(const std::string& body) {
 Result PostConnect::ProcessResponse(const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
-      return {};
+      return ParseGeoCountry(response.body);
     case net::HTTP_BAD_REQUEST:  // HTTP 400
-      return ParseBody(response.body);
+      return ParseErrorMessage(response.body);
     case net::HTTP_FORBIDDEN:  // HTTP 403
-      return ParseBody(response.body);
+      return ParseErrorMessage(response.body);
     case net::HTTP_NOT_FOUND:  // HTTP 404
       BLOG(0, "KYC required!");
       return base::unexpected(Error::kKYCRequired);

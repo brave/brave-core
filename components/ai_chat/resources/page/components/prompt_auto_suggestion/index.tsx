@@ -4,27 +4,35 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styles from './style.module.scss'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 
-interface PromptAutoSuggestionProps {
-  onEnable?: () => void
-  onDismiss?: () => void
-}
+import styles from './style.module.scss'
+import DataContext from '../../state/context'
 
-function PromptAutoSuggestion (props: PromptAutoSuggestionProps) {
+function PromptAutoSuggestion () {
+  const { setUserAllowsAutoGenerating, generateSuggestedQuestions } = React.useContext(DataContext)
+
+  const handleOnEnableAutoGenerateQuestion = () => {
+    setUserAllowsAutoGenerating(true)
+    generateSuggestedQuestions()
+  }
+
+  const handleOnDismiss = () => {
+    setUserAllowsAutoGenerating(false)
+  }
+
   return (
     <div className={styles.box}>
-      <Icon name="product-brave-ai" className={styles.icon} />
+      <Icon name="product-brave-leo" className={styles.icon} />
       <h1>{getLocale('enableQuestionsTitle')}</h1>
       <p>{getLocale('enableQuestionsDesc')}</p>
       <div className={styles.actionsBox}>
-        <Button onClick={props.onEnable}>
+        <Button onClick={handleOnEnableAutoGenerateQuestion}>
           {getLocale('enableQuestionsButtonLabel')}
         </Button>
-        <Button kind="plain-faint" onClick={props.onDismiss}>
+        <Button kind="plain-faint" onClick={handleOnDismiss}>
           {getLocale('noThanksButtonLabel')}
         </Button>
       </div>

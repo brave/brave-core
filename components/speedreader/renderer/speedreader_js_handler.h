@@ -36,6 +36,8 @@ class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler> {
   // A function to be called from JS
   void ShowOriginalPage(v8::Isolate* isolate);
 
+  void TtsPlayPause(v8::Isolate* isolate, int index);
+
   base::WeakPtr<SpeedreaderRenderFrameObserver> owner_;
 };
 

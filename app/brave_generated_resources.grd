@@ -796,6 +796,19 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP" desc="Text of sidebar add item button tooltip">
           Add to Sidebar
         </message>
+        <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_TITLE" desc="Text of readling list panel header">
+          Reading List
+        </message>
+        <if expr="not use_titlecase">
+          <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_BOOKMARKS_BUTTON_TOOLTIP" desc="Text of bookmarks panel header button tooltip">
+            Bookmarks manager
+          </message>
+        </if>
+        <if expr="use_titlecase">
+          <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_BOOKMARKS_BUTTON_TOOLTIP" desc="Text of bookmark panel header button tooltip">
+            Bookmarks Manager
+          </message>
+        </if>
       </if>
 
       <!-- Stats -->
@@ -1012,9 +1025,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for showing vpn tray icon in windows">
             Show VPN Tray Icon
           </message>
-          <message name="IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for hiding vpn tray icon in windows">
-            Hide VPN Tray Icon
-          </message>
           <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
             Send Feedback
           </message>
@@ -1031,9 +1041,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
           <message name="IDS_BRAVE_VPN_SHOW_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for showing vpn tray icon in windows">
             Show VPN tray icon
-          </message>
-          <message name="IDS_BRAVE_VPN_HIDE_VPN_TRAY_ICON_MENU_ITEM" desc="The menu item for hiding vpn tray icon in windows">
-            Hide VPN tray icon
           </message>
           <message name="IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM" desc="The menu item for sending feedback">
             Send feedback
@@ -1247,6 +1254,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_PLAYLIST_CONTEXT_MENU_REMOVE_FROM_PLAYLIST" desc="Context menu item on Playlist item to remove it from the folder">
           Remove from playlist
+        </message>
+        <message name="IDS_PLAYLIST_CONTEXT_MENU_VIEW_ORIGINAL_PAGE" desc="Context menu item on Playlist item to open the source page in a new tab">
+          View original page
         </message>
       </if> <!-- enable_playlist_webui -->
       <!--Add new items to the appropriate sections above -->

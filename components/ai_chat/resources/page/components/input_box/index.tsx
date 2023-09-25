@@ -8,33 +8,24 @@ import * as React from 'react'
 import classnames from 'classnames'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
-import styles from './style.module.scss'
 
-interface InputBoxProps {
-  onInputChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
-  onSubmit?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
-  onSummaryClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
-  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
-  value: string
-  hasSeenAgreement: boolean
-  disabled: boolean
-  onHandleAgreeClick: Function
-}
+import styles from './style.module.scss'
+import DataContext from '../../state/context'
+import getPageHandlerInstance from '../../api/page_handler'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
-function InputBox (props: InputBoxProps) {
-  const [inputText, setInputText] = React.useState(props.value)
+function InputBox () {
+  const [inputText, setInputText] = React.useState('')
+  const { hasSeenAgreement, handleAgreeClick, shouldDisableUserInput } = React.useContext(DataContext)
 
   const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
 
-  if (!props.hasSeenAgreement) {
-    const handleAgreeClick = () => {
-      props.onHandleAgreeClick()
-    }
+  const isInputDisabled = shouldDisableUserInput || isCharLimitExceeded
 
+  if (!hasSeenAgreement) {
     return (
       <div className={styles.container}>
         <button className={styles.buttonAgree} onClick={handleAgreeClick}>{getLocale('acceptButtonLabel')}</button>
@@ -42,23 +33,27 @@ function InputBox (props: InputBoxProps) {
     )
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value)
-    props.onInputChange?.(e)
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (isCharLimitExceeded) return
-    props.onSubmit?.(e)
+  const submitInputTextToAPI = () => {
+    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
     setInputText('')
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (!inputText) return
+    if (isCharLimitExceeded) return
+
+    e.preventDefault()
+    submitInputTextToAPI()
+  }
+
+  const onUserPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       if (!e.repeat) {
-        if (isCharLimitExceeded) return
-        props.onKeyDown?.(e)
-        setInputText('')
+        submitInputTextToAPI()
       }
 
       e.preventDefault()
@@ -71,10 +66,10 @@ function InputBox (props: InputBoxProps) {
         <textarea
           className={styles.textarea}
           placeholder={getLocale('placeholderLabel')}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
+          onChange={onInputChange}
+          onKeyDown={onUserPressEnter}
           value={inputText}
-          disabled={props.disabled}
+          disabled={isInputDisabled}
           autoFocus
         />
         <div className={classnames({
@@ -88,8 +83,8 @@ function InputBox (props: InputBoxProps) {
       <div>
         <button
           className={styles.buttonSend}
-          onClick={handleClick}
-          disabled={isCharLimitExceeded || props.disabled}
+          onClick={handleSubmit}
+          disabled={isInputDisabled}
         >
           <Icon name='send' />
         </button>

@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_allowance_manager.h"
@@ -22,10 +23,10 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -1480,6 +1481,31 @@ void BraveWalletService::NotifySignMessageRequestProcessed(
   std::move(callback).Run(approved, std::move(signature), error);
 }
 
+void BraveWalletService::GetPendingSignMessageErrors(
+    GetPendingSignMessageErrorsCallback callback) {
+  std::vector<mojom::SignMessageErrorPtr> errors;
+  if (sign_message_errors_.empty()) {
+    std::move(callback).Run(std::move(errors));
+    return;
+  }
+
+  for (const auto& error : sign_message_errors_) {
+    errors.push_back(error.Clone());
+  }
+
+  std::move(callback).Run(std::move(errors));
+}
+
+void BraveWalletService::NotifySignMessageErrorProcessed(
+    const std::string& id) {
+  if (sign_message_errors_.empty() || sign_message_errors_.front()->id != id) {
+    VLOG(1) << "id: " << id << " is not expected, should be "
+            << sign_message_errors_.front()->id;
+    return;
+  }
+  sign_message_errors_.pop_front();
+}
+
 void BraveWalletService::GetPendingSignTransactionRequests(
     GetPendingSignTransactionRequestsCallback callback) {
   std::vector<mojom::SignTransactionRequestPtr> requests;
@@ -1639,6 +1665,10 @@ void BraveWalletService::AddSignMessageRequest(
   }
   sign_message_requests_.push_back(std::move(request));
   sign_message_callbacks_.push_back(std::move(callback));
+}
+
+void BraveWalletService::AddSignMessageError(mojom::SignMessageErrorPtr error) {
+  sign_message_errors_.push_back(std::move(error));
 }
 
 void BraveWalletService::AddSignTransactionRequest(

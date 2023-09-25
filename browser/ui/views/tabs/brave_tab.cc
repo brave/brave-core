@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -152,16 +151,10 @@ void BraveTab::ActiveStateChanged() {
   // https://github.com/brave/brave-browser/issues/23476/
   alert_indicator_button_->UpdateEnabledForMuteToggle();
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    UpdateShadowForActiveTab();
-  }
+  UpdateShadowForActiveTab();
 }
 
 absl::optional<SkColor> BraveTab::GetGroupColor() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return Tab::GetGroupColor();
-  }
-
   // Hide tab border with group color as it doesn't go well with vertical tabs.
   if (tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
     return {};
@@ -208,10 +201,6 @@ void BraveTab::OnLayerBoundsChanged(const gfx::Rect& old_bounds,
                                     ui::PropertyChangeReason reason) {
   Tab::OnLayerBoundsChanged(old_bounds, reason);
 
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
-
   if (shadow_layer_ && shadow_layer_->parent() &&
       shadow_layer_->parent() == layer()->parent()) {
     LayoutShadowLayer();
@@ -255,10 +244,6 @@ gfx::Insets BraveTab::GetInsets() const {
 void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
   Tab::ReorderChildLayers(parent_layer);
 
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
-
   if (!layer() || layer()->parent() != parent_layer || !shadow_layer_) {
     return;
   }
@@ -278,8 +263,7 @@ void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
 
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                            int visual_width) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+  if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
     Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
     return;
   }
@@ -299,16 +283,11 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
 }
 
 bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return false;
-  }
-
   return tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
          width() <= tabs::kVerticalTabMinWidth;
 }
 
 void BraveTab::UpdateShadowForActiveTab() {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
   if (IsActive() &&
       tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
     shadow_layer_ = CreateShadowLayer();

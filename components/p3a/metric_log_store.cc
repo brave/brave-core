@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/metric_log_store.h"
 
+#include <string_view>
 #include <vector>
 
 #include "base/check_op.h"
@@ -231,7 +232,7 @@ void MetricLogStore::StageNextLog() {
   VLOG(2) << "MetricLogStore::StageNextLog: staged " << staged_entry_key_;
 }
 
-void MetricLogStore::DiscardStagedLog(base::StringPiece reason) {
+void MetricLogStore::DiscardStagedLog(std::string_view reason) {
   if (!has_staged_log()) {
     return;
   }

@@ -8,16 +8,15 @@
 
 #include <array>
 #include <string>
+#include <string_view>
 #include <utility>
-
-#include "base/strings/string_piece.h"
 
 namespace blink {
 namespace internal {
 
 // https://bitwizeshift.github.io/posts/2021/03/09/getting-an-unmangled-type-name-at-compile-time/
 template <std::size_t... Idxs>
-constexpr auto substring_as_array(base::StringPiece str,
+constexpr auto substring_as_array(std::string_view str,
                                   std::index_sequence<Idxs...>) {
   return std::array{str[Idxs]..., '\n'};
 }
@@ -25,17 +24,17 @@ constexpr auto substring_as_array(base::StringPiece str,
 template <typename T>
 constexpr auto type_name_array() {
 #if defined(__clang__)
-  constexpr auto prefix = base::StringPiece{"[T = "};
-  constexpr auto suffix = base::StringPiece{"]"};
-  constexpr auto function = base::StringPiece{__PRETTY_FUNCTION__};
+  constexpr auto prefix = std::string_view{"[T = "};
+  constexpr auto suffix = std::string_view{"]"};
+  constexpr auto function = std::string_view{__PRETTY_FUNCTION__};
 #elif defined(__GNUC__)
-  constexpr auto prefix = base::StringPiece{"with T = "};
-  constexpr auto suffix = base::StringPiece{"]"};
-  constexpr auto function = base::StringPiece{__PRETTY_FUNCTION__};
+  constexpr auto prefix = std::string_view{"with T = "};
+  constexpr auto suffix = std::string_view{"]"};
+  constexpr auto function = std::string_view{__PRETTY_FUNCTION__};
 #elif defined(_MSC_VER)
-  constexpr auto prefix = base::StringPiece{"type_name_array<"};
-  constexpr auto suffix = base::StringPiece{">(void)"};
-  constexpr auto function = base::StringPiece{__FUNCSIG__};
+  constexpr auto prefix = std::string_view{"type_name_array<"};
+  constexpr auto suffix = std::string_view{">(void)"};
+  constexpr auto function = std::string_view{__FUNCSIG__};
 #else
 #error Unsupported compiler
 #endif
@@ -57,9 +56,9 @@ struct type_name_holder {
 }  // namespace internal
 
 template <typename T>
-constexpr base::StringPiece type_name_to_string() {
+constexpr std::string_view type_name_to_string() {
   constexpr auto& value = internal::type_name_holder<T>::value;
-  return base::StringPiece(value.data(), value.size());
+  return std::string_view(value.data(), value.size());
 }
 
 }  // namespace blink

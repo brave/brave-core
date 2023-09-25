@@ -6,6 +6,7 @@
 #import "brave/ios/browser/brave_web_client.h"
 
 #include <string>
+#include <string_view>
 
 #include "base/functional/bind.h"
 #include "brave/ios/browser/brave_web_main_parts.h"
@@ -46,7 +47,7 @@ std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
   return user_agent_;
 }
 
-base::StringPiece BraveWebClient::GetDataResource(
+std::string_view BraveWebClient::GetDataResource(
     int resource_id,
     ui::ResourceScaleFactor scale_factor) const {
   return ui::ResourceBundle::GetSharedInstance().GetRawDataResourceForScale(

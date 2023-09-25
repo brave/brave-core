@@ -13,14 +13,19 @@ if (is_official_build) {
 
 static_library("browser") {
   sources = [
-    "ai_chat_api.cc",
-    "ai_chat_api.h",
     "ai_chat_metrics.cc",
     "ai_chat_metrics.h",
     "ai_chat_tab_helper.cc",
     "ai_chat_tab_helper.h",
     "constants.cc",
     "constants.h",
+    "engine/engine_consumer.h",
+    "engine/engine_consumer_claude.cc",
+    "engine/engine_consumer_claude.h",
+    "engine/engine_consumer_llama.cc",
+    "engine/engine_consumer_llama.h",
+    "engine/remote_completion_client.cc",
+    "engine/remote_completion_client.h",
     "page_content_fetcher.cc",
     "page_content_fetcher.h",
   ]

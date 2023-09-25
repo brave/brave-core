@@ -59,7 +59,6 @@ void SolanaTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
-    const absl::optional<std::string>& group_id,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_solana_tx_data());
 
@@ -76,7 +75,6 @@ void SolanaTxManager::AddUnapprovedTransaction(
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_origin(
       origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
-  meta.set_group_id(group_id);
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(chain_id);

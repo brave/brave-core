@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 
 public class BraveRewardsOnboardingFragment extends Fragment {
     private OnViewPagerAction onViewPagerAction;
@@ -70,6 +71,8 @@ public class BraveRewardsOnboardingFragment extends Fragment {
 
         btnSkip = root.findViewById(R.id.btn_skip);
         btnNext = root.findViewById(R.id.btn_next);
+
+        BraveTouchUtils.ensureMinTouchTarget(btnSkip);
     }
 
     private void setActions() {

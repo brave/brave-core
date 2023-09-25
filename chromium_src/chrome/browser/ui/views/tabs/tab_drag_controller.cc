@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -23,14 +22,13 @@
       : source->GetWidget()->GetTopLevelWidget()->non_client_view()
 
 // Remove drag threshold when it's vertical tab strip
-#define GetHorizontalDragThreshold()                                       \
-  GetHorizontalDragThreshold() -                                           \
-      (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) && \
-               tabs::utils::ShouldShowVerticalTabs(                        \
-                   BrowserView::GetBrowserViewForNativeWindow(             \
-                       GetAttachedBrowserWidget()->GetNativeWindow())      \
-                       ->browser())                                        \
-           ? attached_context_->GetHorizontalDragThreshold()               \
+#define GetHorizontalDragThreshold()                          \
+  GetHorizontalDragThreshold() -                              \
+      (tabs::utils::ShouldShowVerticalTabs(                   \
+           BrowserView::GetBrowserViewForNativeWindow(        \
+               GetAttachedBrowserWidget()->GetNativeWindow()) \
+               ->browser())                                   \
+           ? attached_context_->GetHorizontalDragThreshold()  \
            : 0)
 
 #include "src/chrome/browser/ui/views/tabs/tab_drag_controller.cc"

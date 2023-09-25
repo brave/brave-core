@@ -23,6 +23,7 @@
 # The binder is not instantiated because BraveContentBrowserClient is also not
 # available. The difference between CI and local execution has not been
 # investigated.
+-FetchManifestAndInstallCommandTest.MultipleInstalls
 -WebAppTabStripBrowserTest.OnlyNavigateHomeTabIfDifferentUrl
 
 # These tests fail because our default search provider is not Google, which

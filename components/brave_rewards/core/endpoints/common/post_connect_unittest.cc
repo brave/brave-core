@@ -93,8 +93,28 @@ INSTANTIATE_TEST_SUITE_P(
     PostConnectParamType{
       "HTTP_200_success",
       net::HTTP_OK,
-      "",
-      {}
+      R"(
+        {
+          "geoCountry": "US"
+        }
+      )",
+      "US"
+    },
+    PostConnectParamType{
+      "HTTP_200_no_geo",
+      net::HTTP_OK,
+      "{}",
+      base::unexpected(Error::kFailedToParseBody)
+    },
+    PostConnectParamType{
+      "HTTP_200_empty_geo",
+      net::HTTP_OK,
+      R"(
+        {
+          "geoCountry": ""
+        }
+      )",
+      base::unexpected(Error::kFailedToParseBody)
     },
     PostConnectParamType{
       "HTTP_400_flagged_wallet",

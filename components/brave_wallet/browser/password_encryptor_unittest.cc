@@ -3,16 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
-#include "base/strings/string_piece.h"
 #include "crypto/aead.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
 namespace {
-base::span<const uint8_t> ToSpan(base::StringPiece sp) {
-  return base::as_bytes(base::make_span(sp));
+base::span<const uint8_t> ToSpan(std::string_view sv) {
+  return base::as_bytes(base::make_span(sv));
 }
 std::string ToString(const std::vector<uint8_t>& v) {
   return std::string(v.begin(), v.end());

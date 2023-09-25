@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_BROWSERTEST_H_
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/thread_annotations.h"
@@ -93,7 +94,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
 
   void CreateBroadcastChannel(content::RenderFrameHost* frame);
   void SendBroadcastMessage(content::RenderFrameHost* frame,
-                            base::StringPiece message);
+                            std::string_view message);
   void ClearBroadcastMessage(content::RenderFrameHost* frame);
   content::EvalJsResult GetBroadcastMessage(content::RenderFrameHost* frame,
                                             bool wait_for_non_empty);

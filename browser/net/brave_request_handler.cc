@@ -35,6 +35,7 @@
 #include "extensions/common/constants.h"
 #include "net/base/features.h"
 #include "net/base/net_errors.h"
+#include "third_party/blink/public/common/features.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/browser/net/brave_torrent_redirect_network_delegate_helper.h"
@@ -100,9 +101,12 @@ void BraveRequestHandler::SetupCallbacks() {
       base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
-  start_transaction_callback = base::BindRepeating(
-      brave::OnBeforeStartTransaction_GlobalPrivacyControlWork);
-  before_start_transaction_callbacks_.push_back(start_transaction_callback);
+  if (base::FeatureList::IsEnabled(
+          blink::features::kBraveGlobalPrivacyControl)) {
+    start_transaction_callback = base::BindRepeating(
+        brave::OnBeforeStartTransaction_GlobalPrivacyControlWork);
+    before_start_transaction_callbacks_.push_back(start_transaction_callback);
+  }
 
   start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_BraveServiceKey);

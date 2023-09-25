@@ -22,6 +22,13 @@ constexpr base::FeatureParam<int>
     kTextClassificationPageProbabilitiesHistorySize{
         &kTextClassificationFeature, "page_probabilities_history_size", 5};
 
+// V2 without exploration; 5 page history; Legacy text classifier.
+
+// V2 with exploration; 25 page history; Legacy text classifier.
+// V2 with exploration; 25 page history; New text classifier.
+// V2 without exploration; 25 page history; Legacy text classifier.
+// V2 without exploration; 25 page history; New text classifier.
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_FEATURE_H_

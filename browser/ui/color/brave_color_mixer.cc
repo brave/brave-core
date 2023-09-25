@@ -12,7 +12,6 @@
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/color/leo/colors.h"
 #include "brave/browser/ui/tabs/brave_vertical_tab_color_mixer.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -64,6 +63,13 @@ SkColor PickColorContrastingToToolbar(const ui::ColorProviderKey& key,
     toolbar_color = custom_toolbar_color;
   }
   return color_utils::PickContrastingColor(color1, color2, toolbar_color);
+}
+
+bool HasCustomToolbarColor(const ui::ColorProviderKey& key) {
+  SkColor custom_toolbar_color;
+  return key.custom_theme &&
+         key.custom_theme->GetColor(ThemeProperties::COLOR_TOOLBAR,
+                                    &custom_toolbar_color);
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_SPEEDREADER)
@@ -350,13 +356,38 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarArrowBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarItemBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0xE6, 0xE8, 0xF5)};
+  mixer[kColorSidebarPanelHeaderSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderBackground] = {
+      leo::GetColor(leo::Color::kColorContainerBackground, leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderTitle] = {
+      leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderButton] = {
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
+  mixer[kColorSidebarPanelHeaderButtonHovered] = {
+      leo::GetColor(leo::Color::kColorGray60, leo::Theme::kLight)};
 
-  mixer[kColorSidebarButtonBase] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
-                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+  if (HasCustomToolbarColor(key)) {
+    // When custom color for toolbar is set, we can't depend on the color mode.
+    mixer[kColorSidebarButtonBase] = {PickColorContrastingToToolbar(
+        key, mixer,
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight),
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark))};
+    mixer[kColorSidebarButtonPressed] = {PickColorContrastingToToolbar(
+        key, mixer,
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight),
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark))};
+  } else {
+    mixer[kColorSidebarButtonBase] = {
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
+    mixer[kColorSidebarButtonPressed] = {
+        leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kLight)};
+  }
+
   mixer[kColorSidebarAddButtonDisabled] = {PickColorContrastingToToolbar(
       key, mixer, SkColorSetARGB(0x66, 0x49, 0x50, 0x57),
       SkColorSetARGB(0x66, 0xC2, 0xC4, 0xCF))};
+
   mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
       key, mixer, SkColorSetARGB(0x8A, 0x49, 0x50, 0x57),
       SkColorSetARGB(0x8A, 0xAE, 0xB1, 0xC2))};
@@ -385,9 +416,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
-  }
+  tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
@@ -443,9 +472,37 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarArrowBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarItemBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
-  mixer[kColorSidebarButtonBase] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
-                                    SkColorSetRGB(0xC2, 0xC4, 0xCF))};
+  mixer[kColorSidebarPanelHeaderSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
+
+  // To align with upstream's panel backround color, use |kGogleGreay900|.
+  // When we apply our style to panel webui, use below color for header.
+  // leo::GetColor(leo::Color::kColorContainerBackground, leo::Theme::kDark).
+  // Or delete when panel webui renders header view also.
+  mixer[kColorSidebarPanelHeaderBackground] = {gfx::kGoogleGrey900};
+  mixer[kColorSidebarPanelHeaderTitle] = {
+      leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kDark)};
+  mixer[kColorSidebarPanelHeaderButton] = {
+      leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};
+  mixer[kColorSidebarPanelHeaderButtonHovered] = {
+      leo::GetColor(leo::Color::kColorGray60, leo::Theme::kDark)};
+
+  if (HasCustomToolbarColor(key)) {
+    // When custom color for toolbar is set, we can't depend on the color mode.
+    mixer[kColorSidebarButtonBase] = {PickColorContrastingToToolbar(
+        key, mixer,
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight),
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark))};
+    mixer[kColorSidebarButtonPressed] = {PickColorContrastingToToolbar(
+        key, mixer,
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight),
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark))};
+  } else {
+    mixer[kColorSidebarButtonBase] = {
+        leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};
+    mixer[kColorSidebarButtonPressed] = {
+        leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kDark)};
+  }
   mixer[kColorSidebarAddButtonDisabled] = {PickColorContrastingToToolbar(
       key, mixer, SkColorSetARGB(0x66, 0x49, 0x50, 0x57),
       SkColorSetARGB(0x66, 0xC2, 0xC4, 0xCF))};
@@ -477,9 +534,7 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
-  }
+  tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {

@@ -15,6 +15,11 @@
     *** createViewProvider(...);
 }
 
+-keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
+    *** mContext;
+    *** loadUrlForOmniboxMatch(...);
+}
+
 -keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources {
     *** getResourceItem(...);
 }

@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,7 +21,7 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
        ComputeCreativeAdPredictorMatchingChildIntentSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
-  user_model.intent_segments = {"parent-child", "xyzzy-thud"};
+  user_model.intent.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
   const CreativeAdPredictorSegmentInputVariableInfo input_variable =
@@ -37,7 +37,7 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
        ComputeCreativeAdPredictorMatchingParentIntentSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
-  user_model.intent_segments = {"parent-child", "xyzzy-thud"};
+  user_model.intent.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
   const CreativeAdPredictorSegmentInputVariableInfo input_variable =
@@ -53,7 +53,7 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
        ComputeCreativeAdPredictorNonMatchingIntentSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
-  user_model.intent_segments = {"parent-child", "xyzzy-thud"};
+  user_model.intent.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
   const CreativeAdPredictorSegmentInputVariableInfo input_variable =
@@ -70,7 +70,7 @@ TEST_F(
     ComputeCreativeAdPredictorMatchingChildLatentInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
-  user_model.latent_interest_segments = {"parent-child", "xyzzy-thud"};
+  user_model.latent_interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
   const CreativeAdPredictorSegmentInputVariableInfo input_variable =
@@ -87,7 +87,7 @@ TEST_F(
     ComputeCreativeAdPredictorMatchingParentLatentInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
-  user_model.latent_interest_segments = {"parent-child", "xyzzy-thud"};
+  user_model.latent_interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
   const CreativeAdPredictorSegmentInputVariableInfo input_variable =
@@ -104,7 +104,7 @@ TEST_F(
     ComputeCreativeAdPredictorNonMatchingLatentInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
-  user_model.latent_interest_segments = {"parent-child", "xyzzy-thud"};
+  user_model.latent_interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
   const CreativeAdPredictorSegmentInputVariableInfo input_variable =
@@ -120,7 +120,7 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
        ComputeCreativeAdPredictorMatchingChildInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
-  user_model.interest_segments = {"parent-child", "xyzzy-thud"};
+  user_model.interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
   const CreativeAdPredictorSegmentInputVariableInfo input_variable =
@@ -136,7 +136,7 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
        ComputeCreativeAdPredictorMatchingParentInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
-  user_model.interest_segments = {"parent-child", "xyzzy-thud"};
+  user_model.interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
   const CreativeAdPredictorSegmentInputVariableInfo input_variable =
@@ -152,7 +152,7 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
        ComputeCreativeAdPredictorNonMatchingInterestSegmentInputVariable) {
   // Arrange
   UserModelInfo user_model;
-  user_model.interest_segments = {"parent-child", "xyzzy-thud"};
+  user_model.interest.segments = {"parent-child", "xyzzy-thud"};
 
   // Act
   const CreativeAdPredictorSegmentInputVariableInfo input_variable =
@@ -173,7 +173,8 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
   AdEventList ad_events;
   const AdEventInfo ad_event =
       BuildAdEventForTesting(creative_ad, AdType::kNotificationAd,
-                             ConfirmationType::kViewed, Now() - base::Hours(7));
+                             ConfirmationType::kViewed, Now() - base::Hours(7),
+                             /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   // Act
@@ -209,7 +210,8 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableUtilTest,
   AdEventList ad_events;
   const AdEventInfo ad_event =
       BuildAdEventForTesting(creative_ad, AdType::kNotificationAd,
-                             ConfirmationType::kViewed, Now() - base::Hours(3));
+                             ConfirmationType::kViewed, Now() - base::Hours(3),
+                             /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   // Act

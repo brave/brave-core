@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
@@ -70,7 +72,7 @@ TEST_F(BraveFontWhitelistRenderViewTest, MAYBE_FontLocalSource) {
   // on the font whitelist.
   brave::set_font_whitelist_for_testing(
       true,
-      base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{}));
+      base::MakeFlatSet<std::string_view>(std::vector<std::string_view>{}));
 
   // Use mock content settings agent that unconditionally enables font
   // whitelisting.

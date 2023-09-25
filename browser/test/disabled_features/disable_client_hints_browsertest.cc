@@ -13,7 +13,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
@@ -36,8 +35,6 @@ const char kClientHintsDelegationMerge[] = "/ch_delegation_merge.html";
 const char KClientHintsMetaHTTPEquivAcceptCH[] =
     "/ch-meta-http-equiv-accept-ch.html";
 const char KClientHintsMetaNameAcceptCH[] = "/ch-meta-name-accept-ch.html";
-
-const char kPlatformVersionClientHintPatchValue[] = "x";
 
 const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     // Individual hints features
@@ -70,30 +67,23 @@ class ClientHintsBrowserTest
 
   void SetUp() override {
     // Test that even with CH features enabled, there is no header.
-    std::vector<base::test::FeatureRefAndParams> enabled_features;
+    std::vector<base::test::FeatureRef> enabled_features;
     std::vector<base::test::FeatureRef> disabled_features;
     for (const auto& feature : kTestFeatures) {
       if (IsClientHintHeaderEnabled()) {
-        enabled_features.emplace_back(feature.get(), base::FieldTrialParams());
+        enabled_features.push_back(feature.get());
       } else {
         disabled_features.push_back(feature.get());
       }
     }
 
     if (IsBraveClientHintFeatureEnabled()) {
-      enabled_features.emplace_back(blink::features::kAllowCertainClientHints,
-                                    base::FieldTrialParams());
-      base::FieldTrialParams parameters;
-      parameters[blink::features::kClampPlatformVersionClientHintPatchValue
-                     .name] = kPlatformVersionClientHintPatchValue;
-      enabled_features.emplace_back(
-          blink::features::kClampPlatformVersionClientHint, parameters);
+      enabled_features.push_back(blink::features::kAllowCertainClientHints);
     } else {
       disabled_features.push_back(blink::features::kAllowCertainClientHints);
     }
 
-    scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features,
-                                                       disabled_features);
+    scoped_feature_list_.InitWithFeatures(enabled_features, disabled_features);
 
     if (IsBraveClientHintFeatureEnabled()) {
       PopulateDefaultClientHints();
@@ -181,21 +171,10 @@ class ClientHintsBrowserTest
     return base::JoinString(unexpected_client_hints_headers_seen_, ", ");
   }
 
-  std::string platform_version_client_hint_value() const {
-    return platform_version_client_hint_value_;
-  }
-
   void reset_client_hints_headers_seen() {
     default_client_hints_headers_seen_.clear();
     allowed_client_hints_headers_seen_.clear();
     unexpected_client_hints_headers_seen_.clear();
-    platform_version_client_hint_value_ = "";
-  }
-
-  bool VerifyPlatformVersionClientHintPatchValue() const {
-    return base::EndsWith(
-        platform_version_client_hint_value_,
-        base::StrCat({".", kPlatformVersionClientHintPatchValue, "\""}));
   }
 
  private:
@@ -217,21 +196,6 @@ class ClientHintsBrowserTest
         hints_map.at(network::mojom::WebClientHintsType::kUAPlatformVersion));
   }
 
-  bool IsPlatformVersionClientHintHeader(const std::string& header) const {
-    return header ==
-           network::GetClientHintToNameMap().at(
-               network::mojom::WebClientHintsType::kUAPlatformVersion);
-  }
-
-  void StorePlatformVersionClientHintHeaderValue(
-      const net::test_server::HttpRequest::HeaderMap& headers) {
-    const auto& hints_map = network::GetClientHintToNameMap();
-    const std::string& platform_version_header_name =
-        hints_map.at(network::mojom::WebClientHintsType::kUAPlatformVersion);
-    platform_version_client_hint_value_ =
-        headers.at(platform_version_header_name);
-  }
-
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
     for (const auto& elem : network::GetClientHintToNameMap()) {
       const auto& header = elem.second;
@@ -242,9 +206,6 @@ class ClientHintsBrowserTest
             continue;
           } else if (base::Contains(allowed_hints_, header)) {
             allowed_client_hints_headers_seen_.insert(header);
-            if (IsPlatformVersionClientHintHeader(header)) {
-              StorePlatformVersionClientHintHeaderValue(request.headers);
-            }
             continue;
           }
         }
@@ -268,14 +229,12 @@ class ClientHintsBrowserTest
   std::vector<std::string> default_hints_;
   std::vector<std::string> allowed_hints_;
 
-  std::string platform_version_client_hint_value_;
-
   base::test::ScopedFeatureList scoped_feature_list_;
 
   base::WeakPtrFactory<ClientHintsBrowserTest> weak_ptr_factory_{this};
 };
 
-IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, CheckClientHints) {
+IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
   for (const auto& feature : kTestFeatures) {
     EXPECT_EQ(IsClientHintHeaderEnabled(),
               base::FeatureList::IsEnabled(feature));
@@ -313,13 +272,6 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, CheckClientHints) {
       << "Allowed headers seen: " << allowed_client_hints_headers_seen();
   EXPECT_EQ(0u, client_hints_headers_seen_count())
       << "Unexpected headers: " << unexpected_client_hints_headers_seen();
-  if (IsClientHintHeaderEnabled() && IsBraveClientHintFeatureEnabled()) {
-    EXPECT_TRUE(VerifyPlatformVersionClientHintPatchValue())
-        << "Expected the patch field value to be: '"
-        << kPlatformVersionClientHintPatchValue << "'. "
-        << "Actual platform version value: "
-        << platform_version_client_hint_value();
-  }
 
   reset_client_hints_headers_seen();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(

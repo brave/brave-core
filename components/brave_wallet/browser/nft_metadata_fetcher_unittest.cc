@@ -6,11 +6,13 @@
 #include "brave/components/brave_wallet/browser/nft_metadata_fetcher.h"
 
 #include <memory>
+#include <string_view>
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -225,11 +227,10 @@ class NftMetadataFetcherUnitTest : public testing::Test {
           url_loader_factory_.ClearResponses();
           if (request.method ==
               "POST") {  // An eth_call, either to supportsInterface or tokenURI
-            base::StringPiece request_string(
-                request.request_body->elements()
-                    ->at(0)
-                    .As<network::DataElementBytes>()
-                    .AsStringPiece());
+            std::string_view request_string(request.request_body->elements()
+                                                ->at(0)
+                                                .As<network::DataElementBytes>()
+                                                .AsStringPiece());
             bool is_supports_interface_req =
                 request_string.find(GetFunctionHash(
                     "supportsInterface(bytes4)")) != std::string::npos;

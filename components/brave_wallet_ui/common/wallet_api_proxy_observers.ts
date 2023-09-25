@@ -8,7 +8,6 @@ import { Store } from './async/types'
 import { BraveWallet } from '../constants/types'
 import { objectEquals } from '../utils/object-utils'
 import { makeSerializableTransaction } from '../utils/model-serialization-utils'
-import { WalletPageActions } from '../page/actions'
 import { walletApi } from './slices/api.slice'
 import { getCoinFromTxDataUnion } from '../utils/network-utils'
 
@@ -86,7 +85,11 @@ export function makeJsonRpcServiceObserver (store: Store) {
       selectedWalletAccountChanged: function (account: BraveWallet.AccountInfo) {
         store.dispatch(walletApi.endpoints.invalidateSelectedAccount.initiate())
       },
-      selectedDappAccountChanged: function (coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo | null) {
+      selectedDappAccountChanged:
+        function (
+          coin: BraveWallet.CoinType,
+          account: BraveWallet.AccountInfo | null
+        ) {
         // TODO: Handle this event.
       }
     })
@@ -192,14 +195,11 @@ export function makeJsonRpcServiceObserver (store: Store) {
 
   export function  makeBraveWalletPinServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletPinServiceObserverReceiver({
-      onTokenStatusChanged: function (service, token, status) {
-        store.dispatch(WalletPageActions.updateNftPinningStatus({
-          token,
-          status
-        }))
+      onTokenStatusChanged: function (_service, token, status) {
+        store.dispatch(walletApi.endpoints.updateNftsPinningStatus.initiate({ token, status }))
       },
-      onLocalNodeStatusChanged: function (status) {
-        store.dispatch(WalletPageActions.updateLocalIpfsNodeStatus(status))
+      onLocalNodeStatusChanged: function (_status) {
+        store.dispatch(walletApi.util.invalidateTags(['LocalIPFSNodeStatus']))
       }
     })
     return braveWalletServiceObserverReceiver
@@ -208,9 +208,7 @@ export function makeJsonRpcServiceObserver (store: Store) {
   export function  makeBraveWalletAutoPinServiceObserver (store: Store) {
     const braveWalletAutoPinServiceObserverReceiver = new BraveWallet.WalletAutoPinServiceObserverReceiver({
       onAutoPinStatusChanged: function (enabled) {
-        store.dispatch(WalletPageActions.updateAutoPinEnabled(
-          enabled
-        ))
+        store.dispatch(walletApi.endpoints.setAutopinEnabled.initiate(enabled))
       }
     })
     return braveWalletAutoPinServiceObserverReceiver

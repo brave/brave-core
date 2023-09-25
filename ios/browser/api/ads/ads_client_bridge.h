@@ -46,14 +46,14 @@
 - (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)showReminder:(const brave_ads::mojom::ReminderType)type;
-- (void)recordAdEventForId:(const std::string&)id
-                    adType:(const std::string&)ad_type
-          confirmationType:(const std::string&)confirmation_type
-                      time:(const base::Time)time;
-- (std::vector<base::Time>)getAdEventHistory:(const std::string&)ad_type
+- (void)cacheAdEventForInstanceId:(const std::string&)id
+                           adType:(const std::string&)ad_type
+                 confirmationType:(const std::string&)confirmation_type
+                             time:(const base::Time)time;
+- (std::vector<base::Time>)getCachedAdEvents:(const std::string&)ad_type
                             confirmationType:
                                 (const std::string&)confirmation_type;
-- (void)resetAdEventHistoryForId:(const std::string&)id;
+- (void)resetAdEventCacheForInstanceId:(const std::string&)id;
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
           callback:(brave_ads::UrlRequestCallback)callback;
 - (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
@@ -79,7 +79,7 @@
 - (absl::optional<base::Value::List>)getListPref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
 - (bool)hasPrefPath:(const std::string&)path;
-- (void)recordP2AEvents:(base::Value::List)events;
+- (void)recordP2AEvents:(const std::vector<std::string>&)events;
 - (void)addTrainingSample:
     (const std::vector<brave_federated::mojom::CovariateInfoPtr>)
         training_sample;

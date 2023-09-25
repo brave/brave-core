@@ -3,7 +3,6 @@
 <translationbundle lang="zh-TW">
 <translation id="1075622780330595106">你有 <ph name="NUMBER_OF_TABS"/> 個分頁最近沒有使用過。要關閉這些分頁嗎？</translation>
 <translation id="125153950246128346">輕觸即可查看另一個分頁</translation>
-<translation id="955456285524876618">在 Brave 主選單下方「最近開啟的分頁」中，可以查看關閉的分頁。</translation>
 <translation id="1657719826150349398">將分頁向下移</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 個分頁}other{<ph name="TABS_COUNT_MANY"/> 個分頁}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{已將 <ph name="TABS_COUNT_ONE"/> 個選取的分頁加入書籤}other{已將 <ph name="TABS_COUNT_MANY"/> 個選取的分頁加入書籤}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">隱藏全螢幕格狀檢視</translation>
 <translation id="5076161749301278626">要查看商店評論嗎？</translation>
 <translation id="5082793167783849073">建立群組以快速比較多個頁面。如要開始建立，請輕觸並按住連結。</translation>
+<translation id="5339733443032484186">最後一個分頁</translation>
 <translation id="5490235265819901748">已展開分頁群組</translation>
 <translation id="5494920125229734069">全選</translation>
 <translation id="5556417849629758491">商店資訊和可用選項位於靠近畫面頂端的地方</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">查看商店資訊</translation>
 <translation id="6562820390860419811">將分頁向左移</translation>
 <translation id="6615455863669487791">顯示</translation>
+<translation id="6398241160085205003">輕觸 Brave 主選單的「最近開啟的分頁」，即可查看已關閉的分頁。</translation>
 <translation id="6840760312327750441">如要將分頁加入群組，請輕觸並按住分頁，然後將其拖曳到其他分頁上。</translation>
 <translation id="6856809498882026482">隱藏多選模式</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{分享分頁}other{分享分頁}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">在靠近畫面底部的分頁群組中切換分頁</translation>
 <translation id="9169594135889675189">在群組中新增分頁</translation>
 <translation id="959682366969460160">保持井然有序</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {你可以在 Brave 主選單下最近開啟的分頁找到關閉的分頁。無痕分頁將無法使用。}
+        other {你可以在 Brave 主選單下最近開啟的分頁找到關閉的分頁。你的 # 個無痕分頁將無法使用。}}</translation>
 <translation id="3228718275011575753">要關閉隱私分頁嗎？</translation>
-<translation id="1922184283901690941">您在這些「隱私」分頁中的活動將從此裝置中清除</translation>
+<translation id="6687920250729800417">您在這些「隱私」分頁中的活動將從此裝置中移除</translation>
 </translationbundle>

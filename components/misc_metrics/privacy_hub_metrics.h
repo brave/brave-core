@@ -8,12 +8,7 @@
 
 #include "base/timer/wall_clock_timer.h"
 
-#include "brave/components/misc_metrics/common/misc_metrics.mojom.h"
 #include "brave/components/time_period_storage/monthly_storage.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "mojo/public/cpp/bindings/receiver_set.h"
-#endif  // BUILDFLAG(IS_ANDROID)
 
 class PrefRegistrySimple;
 class PrefService;
@@ -23,25 +18,18 @@ namespace misc_metrics {
 extern const char kViewsMonthlyHistogramName[];
 extern const char kIsEnabledHistogramName[];
 
-// TODO(djandries): consider refactoring this into a more generic
-// metrics service if we receive additional metric requests for features
-// that don't have a mojo service that we can piggyback onto.
-class PrivacyHubMetrics : public mojom::PrivacyHubMetrics {
+class PrivacyHubMetrics {
  public:
   explicit PrivacyHubMetrics(PrefService* local_state);
-  ~PrivacyHubMetrics() override;
+  ~PrivacyHubMetrics();
 
   PrivacyHubMetrics(const PrivacyHubMetrics&) = delete;
   PrivacyHubMetrics& operator=(const PrivacyHubMetrics&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-#if BUILDFLAG(IS_ANDROID)
-  mojo::PendingRemote<mojom::PrivacyHubMetrics> MakeRemote();
-#endif  // BUILDFLAG(IS_ANDROID)
-
-  void RecordView() override;
-  void RecordEnabledStatus(bool is_enabled) override;
+  void RecordView();
+  void RecordEnabledStatus(bool is_enabled);
 
  private:
   void RecordViewCount();
@@ -49,10 +37,6 @@ class PrivacyHubMetrics : public mojom::PrivacyHubMetrics {
 
   MonthlyStorage view_storage_;
   base::WallClockTimer report_timer_;
-
-#if BUILDFLAG(IS_ANDROID)
-  mojo::ReceiverSet<mojom::PrivacyHubMetrics> receivers_;
-#endif  // BUILDFLAG(IS_ANDROID)
 };
 
 }  // namespace misc_metrics

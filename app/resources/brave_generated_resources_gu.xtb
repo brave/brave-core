@@ -26,6 +26,7 @@
 <translation id="8712637175834984815">સમજાઈ ગયું</translation>
 <translation id="4394049700291259645">બંધ કરો</translation>
 <translation id="8428213095426709021">સેટિંગ્સ</translation>
+<translation id="7473891865547856676">નહીં આભાર</translation>
 <translation id="4474155171896946103">બધા ટૅબ્સ બુકમાર્ક  કરો...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{ટૅબને મ્યૂટ કરો}one{ટૅબને મ્યૂટ કરો}other{ટૅબને મ્યૂટ કરો}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{ટૅબને અનમ્યૂટ કરો}one{ટૅબને અનમ્યૂટ કરો}other{ટૅબને અનમ્યૂટ કરો}}</translation>
@@ -38,6 +39,10 @@
 <translation id="8041089156583427627">પ્રતિસાદ મોકલો</translation>
 <translation id="945522503751344254">પ્રતિસાદ મોકલો</translation>
 <translation id="7537601449003285327">ટાસ્કબારમાં પિન કરો</translation>
+<translation id="385051799172605136">પાછળ</translation>
+<translation id="5317780077021120954">સાચવો</translation>
+<translation id="8261506727792406068">ડિલીટ કરો</translation>
+<translation id="7525067979554623046">બનાવો</translation>
 <translation id="9156965752763025780">તમારા ફેરફારો તમે આગલી વખતે Brave ફરીથી લોંચ કરશો ત્યારે પ્રભાવમાં આવશે.</translation>
 <translation id="4472575034687746823">પ્રારંભ કરો</translation>
 <translation id="6786747875388722282">એક્સ્ટેન્શન્સ</translation>
@@ -85,6 +90,7 @@
 <translation id="1736420071277903564">કમ્પ્યુટર</translation>
 <translation id="2653659639078652383">સબમિટ કરો</translation>
 <translation id="8137559199583651773">એક્સટેન્શનનું સંચાલન કરો</translation>
+<translation id="5840822070878669614">વેબ સ્ટોર ખોલો</translation>
 <translation id="1426410128494586442">હા</translation>
 <translation id="1327977588028644528">ગેટવે</translation>
 <translation id="8425213833346101688">બદલો</translation>

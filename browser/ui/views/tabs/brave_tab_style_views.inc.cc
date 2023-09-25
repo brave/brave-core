@@ -75,8 +75,6 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
 };
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab) : BraveGM2TabStyle(tab) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "This class should be used only when the flag is on.";
 }
 
 SkPath BraveVerticalTabStyle::GetPath(
@@ -187,6 +185,12 @@ SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
                                                          hovered);
   }
 
+  if (selection_state == TabStyle::TabSelectionState::kSelected) {
+    // Use the same color if th tab is selected via multiselection.
+    return BraveGM2TabStyle::GetTargetTabBackgroundColor(selection_state,
+                                                         hovered);
+  }
+
   const ui::ColorProvider* cp = tab()->GetColorProvider();
   if (!cp) {
     return gfx::kPlaceholderColor;
@@ -204,9 +208,5 @@ bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
 }  // namespace
 
 std::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab(Tab* tab) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return std::make_unique<BraveVerticalTabStyle>(tab);
-  }
-
-  return std::make_unique<BraveGM2TabStyle>(tab);
+  return std::make_unique<BraveVerticalTabStyle>(tab);
 }

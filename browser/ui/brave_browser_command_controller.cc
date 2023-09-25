@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/debug/stack_trace.h"
 #include "base/feature_list.h"
 #include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
@@ -16,7 +17,6 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -28,12 +28,17 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/send_tab_to_self/send_tab_to_self_util.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_change_type.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
+#include "content/public/browser/web_contents.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -82,6 +87,34 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
 }
 
 BraveBrowserCommandController::~BraveBrowserCommandController() = default;
+
+void BraveBrowserCommandController::TabChangedAt(content::WebContents* contents,
+                                                 int index,
+                                                 TabChangeType type) {
+  UpdateCommandsForMute();
+  UpdateCommandsForSend();
+}
+
+void BraveBrowserCommandController::TabPinnedStateChanged(
+    TabStripModel* tab_strip_model,
+    content::WebContents* contents,
+    int index) {
+  UpdateCommandsForPin();
+}
+
+void BraveBrowserCommandController::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  BrowserCommandController::OnTabStripModelChanged(tab_strip_model, change,
+                                                   selection);
+
+  UpdateCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT,
+                       brave::CanCloseTabsToLeft(&*browser_));
+  UpdateCommandsForMute();
+  UpdateCommandsForSend();
+  UpdateCommandsForPin();
+}
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
   return IsBraveCommands(id) ? brave_command_updater_.SupportsCommand(id)
@@ -192,15 +225,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
-  UpdateCommandEnabled(
-      IDC_TOGGLE_VERTICAL_TABS,
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
-  UpdateCommandEnabled(
-      IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
-  UpdateCommandEnabled(
-      IDC_TOGGLE_VERTICAL_TABS_EXPANDED,
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
+  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE, true);
+  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_EXPANDED, true);
 
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
                        !browser_->profile()->IsOffTheRecord());
@@ -213,8 +240,19 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
   UpdateCommandEnabled(IDC_GROUP_TABS_ON_CURRENT_ORIGIN, true);
+
   UpdateCommandEnabled(IDC_MOVE_GROUP_TO_NEW_WINDOW, true);
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS, true);
+  UpdateCommandEnabled(IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP, true);
+
+  UpdateCommandEnabled(IDC_SCROLL_TAB_TO_TOP, true);
+  UpdateCommandEnabled(IDC_SCROLL_TAB_TO_BOTTOM, true);
+
+  UpdateCommandEnabled(IDC_BRAVE_SEND_TAB_TO_SELF, true);
+
+  UpdateCommandsForMute();
+  UpdateCommandsForSend();
+  UpdateCommandsForPin();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -285,6 +323,27 @@ void BraveBrowserCommandController::UpdateCommandForPlaylist() {
         browser_->is_type_normal() && !browser_->profile()->IsOffTheRecord());
   }
 #endif
+}
+
+void BraveBrowserCommandController::UpdateCommandsForMute() {
+  UpdateCommandEnabled(IDC_WINDOW_MUTE_ALL_TABS,
+                       brave::CanMuteAllTabs(&*browser_, false));
+  UpdateCommandEnabled(IDC_WINDOW_MUTE_OTHER_TABS,
+                       brave::CanMuteAllTabs(&*browser_, true));
+  UpdateCommandEnabled(IDC_WINDOW_UNMUTE_ALL_TABS,
+                       brave::CanUnmuteAllTabs(&*browser_));
+}
+
+void BraveBrowserCommandController::UpdateCommandsForSend() {
+  UpdateCommandEnabled(
+      IDC_BRAVE_SEND_TAB_TO_SELF,
+      send_tab_to_self::ShouldDisplayEntryPoint(
+          browser_->tab_strip_model()->GetActiveWebContents()));
+}
+
+void BraveBrowserCommandController::UpdateCommandsForPin() {
+  UpdateCommandEnabled(IDC_WINDOW_CLOSE_UNPINNED_TABS,
+                       brave::CanCloseUnpinnedTabs(&*browser_));
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
@@ -425,6 +484,33 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_CLOSE_DUPLICATE_TABS:
       brave::CloseDuplicateTabs(&*browser_);
+      break;
+    case IDC_WINDOW_CLOSE_TABS_TO_LEFT:
+      brave::CloseTabsToLeft(&*browser_);
+      break;
+    case IDC_WINDOW_CLOSE_UNPINNED_TABS:
+      brave::CloseUnpinnedTabs(&*browser_);
+      break;
+    case IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP:
+      brave::AddAllTabsToNewGroup(&*browser_);
+      break;
+    case IDC_WINDOW_MUTE_ALL_TABS:
+      brave::MuteAllTabs(&*browser_, false);
+      break;
+    case IDC_WINDOW_MUTE_OTHER_TABS:
+      brave::MuteAllTabs(&*browser_, true);
+      break;
+    case IDC_WINDOW_UNMUTE_ALL_TABS:
+      brave::UnmuteAllTabs(&*browser_);
+      break;
+    case IDC_SCROLL_TAB_TO_TOP:
+      brave::ScrollTabToTop(&*browser_);
+      break;
+    case IDC_SCROLL_TAB_TO_BOTTOM:
+      brave::ScrollTabToBottom(&*browser_);
+      break;
+    case IDC_BRAVE_SEND_TAB_TO_SELF:
+      chrome::SendTabToSelfFromPageAction(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

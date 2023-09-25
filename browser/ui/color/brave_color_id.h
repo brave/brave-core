@@ -51,9 +51,15 @@
     E_CPONLY(kColorSidebarArrowDisabled)                      \
     E_CPONLY(kColorSidebarArrowNormal)                        \
     E_CPONLY(kColorSidebarButtonBase)                         \
+    E_CPONLY(kColorSidebarButtonPressed)                      \
     E_CPONLY(kColorSidebarItemBackgroundHovered)              \
     E_CPONLY(kColorSidebarItemDragIndicator)                  \
-    E_CPONLY(kColorSidebarSeparator)
+    E_CPONLY(kColorSidebarSeparator)                          \
+    E_CPONLY(kColorSidebarPanelHeaderSeparator)               \
+    E_CPONLY(kColorSidebarPanelHeaderBackground)              \
+    E_CPONLY(kColorSidebarPanelHeaderTitle)                   \
+    E_CPONLY(kColorSidebarPanelHeaderButton)                  \
+    E_CPONLY(kColorSidebarPanelHeaderButtonHovered)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #define BRAVE_SPEEDREADER_COLOR_IDS      \

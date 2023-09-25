@@ -72,6 +72,7 @@ import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
 import { p3aEndpoints } from './endpoints/p3a.endpoints'
 import { pricingEndpoints } from './endpoints/pricing.endpoints'
 import { nftsEndpoints } from './endpoints/nfts.endpoints'
+import { qrCodeEndpoints } from './endpoints/qr-code.endpoints'
 
 // utils
 import { handleEndpointError } from '../../utils/api-utils';
@@ -402,7 +403,7 @@ export function createWalletApi () {
         invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
       }),
       getSelectedChain: query<BraveWallet.NetworkInfo | undefined, void>({
-        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
           try {
             return {
               data: await getSelectedNetwork(baseQuery(undefined).data)
@@ -1618,9 +1619,7 @@ export function createWalletApi () {
                 isEIP1559
                   ? toTxDataUnion({ ethTxData1559: txData1559 })
                   : toTxDataUnion({ ethTxData: txData }),
-                payload.fromAccount.accountId,
-                null,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success && errorMessage) {
@@ -1674,9 +1673,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ filTxData: filTxData }),
-                payload.fromAccount.accountId,
-                null,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success && errorMessage) {
@@ -1737,9 +1734,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ solanaTxData: txData ?? undefined }),
-                payload.fromAccount.accountId,
-                null,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success && errorMessage) {
@@ -1789,9 +1784,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ btcTxData }),
-                payload.fromAccount.accountId,
-                null,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success && errorMessage) {
@@ -1972,9 +1965,7 @@ export function createWalletApi () {
             const { errorMessage, success } =
               await txService.addUnapprovedTransaction(
                 toTxDataUnion({ solanaTxData: txData }),
-                payload.fromAccount.accountId,
-                null,
-                null
+                payload.fromAccount.accountId
               )
 
             if (!success) {
@@ -3003,6 +2994,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: coingeckoEndpoints })
     // token suggestion request endpoints
     .injectEndpoints({ endpoints: tokenSuggestionsEndpoints })
+    // QR Code generator endpoints
+    .injectEndpoints({ endpoints: qrCodeEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -3024,6 +3017,7 @@ export const {
   useGetAccountTokenCurrentBalanceQuery,
   useGetAddressByteCodeQuery,
   useGetAutopinEnabledQuery,
+  useGetBuyUrlQuery,
   useGetCoingeckoIdQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultFiatCurrencyQuery,
@@ -3036,19 +3030,24 @@ export const {
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetIsTxSimulationOptInStatusQuery,
+  useGetLocalIpfsNodeStatusQuery,
   useGetNetworksRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetNftMetadataQuery,
   useGetNftPinningStatusQuery,
+  useGetNftsPinningStatusQuery,
   useGetOffRampAssetsQuery,
   useGetOnRampAssetsQuery,
+  useGetOnRampFiatCurrenciesQuery,
   useGetPendingTokenSuggestionRequestsQuery,
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,
+  useGetQrCodeImageQuery,
   useGetRewardsBalanceQuery,
   useGetRewardsEnabledQuery,
   useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery,
+  useGetSimpleHashSpamNftsQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetSolanaTransactionSimulationQuery,
   useGetSwapSupportedNetworkIdsQuery,
@@ -3063,6 +3062,7 @@ export const {
   useLazyGetAccountInfosRegistryQuery,
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,
+  useLazyGetBuyUrlQuery,
   useLazyGetCombinedTokenBalanceForAllAccountsQuery,
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC721MetadataQuery,
@@ -3088,7 +3088,6 @@ export const {
   useLazyGetTokensRegistryQuery,
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
-  useGetSimpleHashSpamNftsQuery,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
@@ -3105,6 +3104,7 @@ export const {
   useSendSolTransactionMutation,
   useSendSPLTransferMutation,
   useSendTransactionMutation,
+  useSetAutopinEnabledMutation,
   useSetDefaultFiatCurrencyMutation,
   useSetIsTxSimulationOptInStatusMutation,
   useSetNetworkMutation,
@@ -3113,12 +3113,13 @@ export const {
   useSpeedupTransactionMutation,
   useTransactionStatusChangedMutation,
   useUnapprovedTxUpdatedMutation,
+  useUpdateNftSpamStatusMutation,
+  useUpdateNftsPinningStatusMutation,
   useUpdateUnapprovedTransactionGasFieldsMutation,
   useUpdateUnapprovedTransactionNonceMutation,
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
-  useUpdateUserTokenMutation,
-  useUpdateNftSpamStatusMutation
+  useUpdateUserTokenMutation
 } = walletApi
 
 // Derived Data Queries

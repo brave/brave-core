@@ -11,7 +11,6 @@ export const {
   agreeToWalletTerms,
   checkWalletsToImport,
   createWallet,
-  getNFTMetadata,
   hasMnemonicError,
   importFromCryptoWallets,
   importFromMetaMask,
@@ -34,15 +33,4 @@ export const {
   walletBackupComplete,
   walletCreated,
   walletSetupComplete,
-  updateNFTPinStatus,
-  getPinStatus,
-  getIsAutoPinEnabled,
-  setAutoPinEnabled,
-  updateEnablingAutoPin,
-  updateAutoPinEnabled,
-  getNftsPinningStatus,
-  setNftsPinningStatus,
-  updateNftPinningStatus,
-  getLocalIpfsNodeStatus,
-  updateLocalIpfsNodeStatus
 } = PageActions

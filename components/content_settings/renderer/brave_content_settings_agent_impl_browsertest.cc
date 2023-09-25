@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <string_view>
 
 #include "base/feature_list.h"
 #include "base/path_service.h"
@@ -354,12 +355,12 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   template <typename T>
-  void CheckCookie(T* frame, base::StringPiece cookie) {
+  void CheckCookie(T* frame, std::string_view cookie) {
     EXPECT_EQ(cookie, EvalJs(frame, kCookieScript));
   }
 
   template <typename T>
-  void Check3PCookie(T* frame, base::StringPiece cookie) {
+  void Check3PCookie(T* frame, std::string_view cookie) {
     EXPECT_EQ(cookie, EvalJs(frame, kCookie3PScript));
   }
 

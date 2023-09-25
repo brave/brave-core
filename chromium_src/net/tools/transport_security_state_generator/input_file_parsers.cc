@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #define ParseJSON ParseJSON_ChromiumImpl
 #define ParseCertificatesFile ParseCertificatesFile_ChromiumImpl
 #include "src/net/tools/transport_security_state_generator/input_file_parsers.cc"
@@ -10,7 +12,7 @@
 #undef ParseJSON
 
 namespace {
-constexpr base::StringPiece kBravePinsJson = R"brave_pins_json({
+constexpr std::string_view kBravePinsJson = R"brave_pins_json({
   "pinsets": [
     {
       "name": "brave",
@@ -124,7 +126,7 @@ constexpr base::StringPiece kBravePinsJson = R"brave_pins_json({
     { "name": "ssl-pinning.someblog.org", "pins" : "brave"}
  ]})brave_pins_json";
 
-constexpr base::StringPiece kBraveHstsJson = R"brave_hsts_json({
+constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
   "entries": [
     // Critical endpoints that should remain unpinned so that they
     // always work.
@@ -537,13 +539,13 @@ namespace net {
 
 namespace transport_security_state {
 
-bool ParseCertificatesFile(base::StringPiece certs_input,
+bool ParseCertificatesFile(std::string_view certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
-  constexpr base::StringPiece brave_certs = R"brave_certs(
-# Last updated: Wed Sep  6 22:34:17 UTC 2023
+  constexpr std::string_view brave_certs = R"brave_certs(
+# Last updated: Thu Sep 21 23:38:51 UTC 2023
 PinsListTimestamp
-1694039657
+1695339531
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
@@ -882,8 +884,8 @@ tL4ndQavEi51mI38AjEAi/V3bNTIZargCyzuFJ0nN6T5U6VR5CmD1/iQMVtCnwr1
   return ParseCertificatesFile_ChromiumImpl(brave_certs, pinsets, timestamp);
 }
 
-bool ParseJSON(base::StringPiece hsts_json,
-               base::StringPiece pins_json,
+bool ParseJSON(std::string_view hsts_json,
+               std::string_view pins_json,
                TransportSecurityStateEntries* entries,
                Pinsets* pinsets) {
   Pinsets chromium_pinsets;

@@ -6,6 +6,7 @@
 #include "brave/browser/brave_wallet/blockchain_images_source.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/files/file_path.h"
@@ -60,7 +61,7 @@ class BlockchainImagesSourceTest : public testing::Test {
   void OnDataReceived(scoped_refptr<base::RefCountedMemory> bytes) {
     data_received_ = true;
     if (bytes) {
-      data_ = std::string(base::StringPiece(
+      data_ = std::string(std::string_view(
           reinterpret_cast<const char*>(bytes->front()), bytes->size()));
     }
   }

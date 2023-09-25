@@ -7,10 +7,10 @@
 // therefore avoid undef before use.
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
+#include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -27,9 +27,11 @@
 #define SidePanel BraveSidePanel
 #define kAlignLeft kHorizontalAlignLeft
 #define kAlignRight kHorizontalAlignRight
+#define SidePanelCoordinator BraveSidePanelCoordinator
 
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"
 
+#undef SidePanelCoordintor
 #undef ToolbarView
 #undef BrowserTabStripController
 #undef TabStrip

@@ -43,10 +43,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url);
 
-  const PurchaseIntentModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetPurchaseIntentSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -66,10 +64,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   const GURL url_2 = GURL("https://www.basicattentiontoken.org/test?bar=foo");
   processor.Process(url_2);
 
-  const PurchaseIntentModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetPurchaseIntentSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -79,10 +75,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
   ASSERT_TRUE(LoadResource());
 
-  const PurchaseIntentModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetPurchaseIntentSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -98,10 +92,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1");
   processor.Process(url);
 
-  const PurchaseIntentModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetPurchaseIntentSegments();
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -121,10 +113,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 
   processor.Process(url_1);
 
-  const PurchaseIntentModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetPurchaseIntentSegments();
 
   // Assert
   const SegmentList expected_segments = {"segment 3", "segment 2"};
@@ -143,10 +133,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   processor.Process(url);
   processor.Process(url);
 
-  const PurchaseIntentModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetPurchaseIntentSegments();
 
   // Assert
   const SegmentList expected_segments = {"segment 1"};
@@ -164,10 +152,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
       GURL("https://duckduckgo.com/?q=segment+keyword+1+funnel+keyword+2");
   processor.Process(url);
 
-  const PurchaseIntentModel model;
-
   // Act
-  const SegmentList segments = model.GetSegments();
+  const SegmentList segments = GetPurchaseIntentSegments();
 
   // Assert
   const SegmentList expected_segments = {"segment 1"};

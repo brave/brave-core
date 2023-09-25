@@ -6,7 +6,7 @@
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "base/test/test_reg_util_win.h"
 #include "base/win/registry.h"
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

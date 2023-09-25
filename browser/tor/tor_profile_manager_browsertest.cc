@@ -52,27 +52,13 @@
 
 namespace {
 
-// An observer that returns back to test code after a new profile is
-// initialized.
-void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
-                                TorLauncherFactory* factory,
-                                Browser* browser) {
-  run_loop->Quit();
-
-  ASSERT_TRUE(browser);
-  tor::TorProfileService* service =
-      TorProfileServiceFactory::GetForContext(browser->profile());
-  service->SetTorLauncherFactoryForTest(factory);
-}
-
 Profile* SwitchToTorProfile(Profile* parent_profile,
                             TorLauncherFactory* factory,
                             size_t current_profile_num = 1) {
-  base::RunLoop run_loop;
-  TorProfileManager::SwitchToTorProfile(
-      parent_profile,
-      base::BindOnce(&OnUnblockOnProfileCreation, &run_loop, factory));
-  run_loop.Run();
+  Browser* tor_browser = TorProfileManager::SwitchToTorProfile(parent_profile);
+  tor::TorProfileService* service =
+      TorProfileServiceFactory::GetForContext(tor_browser->profile());
+  service->SetTorLauncherFactoryForTest(factory);
 
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(current_profile_num + 1, browser_list->size());

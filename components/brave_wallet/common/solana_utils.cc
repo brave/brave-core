@@ -10,7 +10,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/third_party/bitcoin-core/src/src/base58.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 
 namespace brave_wallet {
 
@@ -65,24 +65,6 @@ absl::optional<std::tuple<uint16_t, size_t>> CompactU16Decode(
   }
 
   return absl::nullopt;
-}
-
-bool Base58Decode(const std::string& str,
-                  std::vector<uint8_t>* ret,
-                  int len,
-                  bool strict) {
-  DCHECK(ret);
-  ret->clear();
-  return DecodeBase58(str, *ret, len) &&
-         (!strict || static_cast<int>(ret->size()) == len);
-}
-
-std::string Base58Encode(const std::vector<uint8_t>& bytes) {
-  return EncodeBase58(bytes);
-}
-
-std::string Base58Encode(base::span<const uint8_t> bytes) {
-  return EncodeBase58(bytes);
 }
 
 bool IsBase58EncodedSolanaPubkey(const std::string& key) {

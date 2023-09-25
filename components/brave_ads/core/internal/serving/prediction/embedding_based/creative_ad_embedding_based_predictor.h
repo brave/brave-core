@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/embedding_based/creative_ad_embedding_based_predictor_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/embedding_based/sampling/creative_ad_embedding_based_predictor_sampling.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/embedding_based/voting/creative_ad_embedding_based_predictor_voting.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -24,7 +24,7 @@ absl::optional<T> MaybePredictCreativeAd(const std::vector<T>& creative_ads,
 
   const std::vector<int> creative_ad_vote_registry =
       ComputeCreativeAdVoteRegistryForTextEmbeddingHtmlEvents(
-          creative_ads, user_model.text_embedding_html_events);
+          creative_ads, user_model.interest.text_embedding_html_events);
 
   const std::vector<double> creative_ad_probabilities =
       ComputeCreativeAdProbabilitiesForVoteRegistry(creative_ad_vote_registry);

@@ -154,7 +154,6 @@ class SimulationServiceUnitTest : public testing::Test {
       meta.set_origin(url::Origin::Create(GURL(*origin)));
     }
 
-    meta.set_group_id("mockGroupId");
     meta.set_chain_id(chain_id);
 
     return meta.ToTransactionInfo();

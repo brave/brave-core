@@ -15,6 +15,7 @@ namespace {
 
 constexpr char kDelimiter[] = ",";
 const std::vector<float> kTestVector = {1.2F, 2.3F, 3.4F, 4.5F, 5.6F};
+
 }  // namespace
 
 TEST(BraveAdsStringConversionsUtilTest, TrueBoolToString) {

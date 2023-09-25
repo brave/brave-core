@@ -189,7 +189,7 @@ void Conversions::Convert(
                             << ", campaign id " << ad_event.campaign_id
                             << " and advertiser id " << ad_event.advertiser_id);
 
-  LogAdEvent(
+  RecordAdEvent(
       RebuildAdEvent(ad_event, ConfirmationType::kConversion,
                      base::Time::Now()),
       base::BindOnce(&Conversions::ConvertCallback, weak_factory_.GetWeakPtr(),

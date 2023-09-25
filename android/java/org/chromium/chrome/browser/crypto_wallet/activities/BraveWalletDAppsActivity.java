@@ -26,8 +26,10 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddSwitchChainN
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.EncryptionKeyFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageErrorFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignTransactionFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SiweMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
@@ -35,12 +37,15 @@ import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Base activity for all DApps-related activities
+ */
 public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         implements TransactionConfirmationListener,
                    AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
     public static final String ACTIVITY_TYPE = "activityType";
     private static final String TAG = "BraveWalletDApps";
-    private ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment;
+    private ApproveTxBottomSheetDialogFragment mApproveTxBottomSheetDialogFragment;
     private PendingTxHelper mPendingTxHelper;
     private Fragment mFragment;
     private WalletModel mWalletModel;
@@ -56,27 +61,29 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         GET_ENCRYPTION_PUBLIC_KEY_REQUEST(7),
         SIGN_TRANSACTION(8),
         SIGN_ALL_TRANSACTIONS(9),
-        FINISH(10);
+        SIWE_MESSAGE(10),
+        SIGN_MESSAGE_ERROR(11),
+        FINISH(12);
 
-        private int value;
-        private static Map map = new HashMap<>();
+        private int mValue;
+        private static Map sMap = new HashMap<>();
 
         private ActivityType(int value) {
-            this.value = value;
+            this.mValue = value;
         }
 
         static {
             for (ActivityType activityType : ActivityType.values()) {
-                map.put(activityType.value, activityType);
+                sMap.put(activityType.mValue, activityType);
             }
         }
 
         public static ActivityType valueOf(int activityType) {
-            return (ActivityType) map.get(activityType);
+            return (ActivityType) sMap.get(activityType);
         }
 
         public int getValue() {
-            return value;
+            return mValue;
         }
     }
 
@@ -178,6 +185,10 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         mFragment = null;
         if (mActivityType == ActivityType.SIGN_MESSAGE) {
             mFragment = new SignMessageFragment();
+        } else if (mActivityType == ActivityType.SIWE_MESSAGE) {
+            mFragment = new SiweMessageFragment();
+        } else if (mActivityType == ActivityType.SIGN_MESSAGE_ERROR) {
+            mFragment = new SignMessageErrorFragment();
         } else if (mActivityType == ActivityType.ADD_TOKEN) {
             mFragment = new AddTokenFragment();
         } else if (mActivityType == ActivityType.CONFIRM_TRANSACTION) {
@@ -197,20 +208,20 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                             || mPendingTxHelper.getPendingTransactions().size() == 0) {
                         return;
                     }
-                    if (approveTxBottomSheetDialogFragment != null
-                            && approveTxBottomSheetDialogFragment.isVisible()) {
+                    if (mApproveTxBottomSheetDialogFragment != null
+                            && mApproveTxBottomSheetDialogFragment.isVisible()) {
                         // TODO: instead of dismiss, show the details of new Tx once
                         //  onNextTransaction implementation is done
-                        approveTxBottomSheetDialogFragment.dismiss();
+                        mApproveTxBottomSheetDialogFragment.dismiss();
                     }
-                    approveTxBottomSheetDialogFragment =
+                    mApproveTxBottomSheetDialogFragment =
                             ApproveTxBottomSheetDialogFragment.newInstance(
                                     mPendingTxHelper.getPendingTransactions(), transactionInfo,
                                     this);
-                    approveTxBottomSheetDialogFragment.show(getSupportFragmentManager(),
+                    mApproveTxBottomSheetDialogFragment.show(getSupportFragmentManager(),
                             ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
                     mPendingTxHelper.mTransactionInfoLd.observe(this, transactionInfos -> {
-                        approveTxBottomSheetDialogFragment.setTxList(transactionInfos);
+                        mApproveTxBottomSheetDialogFragment.setTxList(transactionInfos);
                     });
                 });
                 mPendingTxHelper.fetchTransactions(() -> {});

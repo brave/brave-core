@@ -14,6 +14,7 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "build/build_config.h"
@@ -36,13 +37,12 @@ std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
     version_info::Channel channel) {
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   if (IsBraveVPNWireguardEnabled(local_prefs)) {
     return CreateBraveVPNWireguardConnectionAPI(url_loader_factory, local_prefs,
                                                 channel);
   }
 #endif
-
 #if BUILDFLAG(IS_ANDROID)
   // Android doesn't use connection api.
   return nullptr;

@@ -20,6 +20,10 @@ extern const base::FeatureParam<double> kAITemperature;
 
 bool IsAIChatEnabled();
 
+BASE_DECLARE_FEATURE(kAIChatHistory);
+
+bool IsAIChatHistoryEnabled();
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_COMMON_FEATURES_H_

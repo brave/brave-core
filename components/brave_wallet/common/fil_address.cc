@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/fil_address.h"
 
+#include <string_view>
+
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -210,8 +212,8 @@ FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
   payload.insert(payload.end(), checksum.begin(), checksum.end());
 
   std::string encoded = base32::Base32Encode(
-      base::StringPiece(reinterpret_cast<const char*>(payload.data()),
-                        payload.size()),
+      std::string_view(reinterpret_cast<const char*>(payload.data()),
+                       payload.size()),
       base32::Base32EncodePolicy::OMIT_PADDING);
   return FilAddress::FromAddress((is_mainnet ? "f410f" : "t410f") + encoded);
 }

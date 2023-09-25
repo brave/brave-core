@@ -222,44 +222,76 @@ void Account::MaybeRewardUser() {
 }
 
 void Account::InitializeUserRewards() {
-  if (!issuers_url_request_) {
-    BLOG(1, "Initialize issuers url request");
-    issuers_url_request_ = std::make_unique<IssuersUrlRequest>();
-    issuers_url_request_->SetDelegate(this);
+  InitializeIssuers();
+  InitializeRefillConfirmationTokens();
+  InitializeRedeemPaymentTokens();
+}
+
+void Account::InitializeIssuers() {
+  if (issuers_url_request_) {
+    return;
   }
 
-  if (!refill_confirmation_tokens_) {
-    BLOG(1, "Initialize refill confirmation tokens");
-    refill_confirmation_tokens_ =
-        std::make_unique<RefillConfirmationTokens>(token_generator_);
-    refill_confirmation_tokens_->SetDelegate(this);
+  BLOG(1, "Initialize issuers url request");
+  issuers_url_request_ = std::make_unique<IssuersUrlRequest>();
+  issuers_url_request_->SetDelegate(this);
+}
+
+void Account::InitializeRefillConfirmationTokens() {
+  if (refill_confirmation_tokens_) {
+    return;
   }
 
-  if (!redeem_payment_tokens_) {
-    BLOG(1, "Initialize redeem payment tokens");
-    redeem_payment_tokens_ = std::make_unique<RedeemPaymentTokens>();
-    redeem_payment_tokens_->SetDelegate(this);
+  BLOG(1, "Initialize refill confirmation tokens");
+  refill_confirmation_tokens_ =
+      std::make_unique<RefillConfirmationTokens>(token_generator_);
+  refill_confirmation_tokens_->SetDelegate(this);
+}
+
+void Account::InitializeRedeemPaymentTokens() {
+  if (redeem_payment_tokens_) {
+    return;
   }
+
+  BLOG(1, "Initialize redeem payment tokens");
+  redeem_payment_tokens_ = std::make_unique<RedeemPaymentTokens>();
+  redeem_payment_tokens_->SetDelegate(this);
 }
 
 void Account::ShutdownUserRewards() {
-  if (issuers_url_request_) {
-    issuers_url_request_.reset();
-    BLOG(1, "Shutdown issuers url request");
+  ShutdownIssuers();
+  ShutdownRefillConfirmationTokens();
+  ShutdownRedeemPaymentTokens();
+}
 
-    ResetIssuers();
-    BLOG(1, "Reset issuers");
+void Account::ShutdownIssuers() {
+  if (!issuers_url_request_) {
+    return;
   }
 
-  if (refill_confirmation_tokens_) {
-    refill_confirmation_tokens_.reset();
-    BLOG(1, "Shutdown refill confirmation tokens");
+  issuers_url_request_.reset();
+  BLOG(1, "Shutdown issuers url request");
+
+  ResetIssuers();
+  BLOG(1, "Reset issuers");
+}
+
+void Account::ShutdownRefillConfirmationTokens() {
+  if (!refill_confirmation_tokens_) {
+    return;
   }
 
-  if (redeem_payment_tokens_) {
-    redeem_payment_tokens_.reset();
-    BLOG(1, "Shutdown redeem payment tokens");
+  refill_confirmation_tokens_.reset();
+  BLOG(1, "Shutdown refill confirmation tokens");
+}
+
+void Account::ShutdownRedeemPaymentTokens() {
+  if (!redeem_payment_tokens_) {
+    return;
   }
+
+  redeem_payment_tokens_.reset();
+  BLOG(1, "Shutdown redeem payment tokens");
 }
 
 void Account::MaybeFetchIssuers() const {
@@ -289,13 +321,17 @@ void Account::MaybeReset() {
 
   InitializeConfirmations();
 
-  ResetIssuers();
-
   ResetTokens();
+
+  ResetAndFetchIssuers();
 
   AdsClientHelper::GetInstance()->SetBooleanPref(
       prefs::kShouldMigrateVerifiedRewardsUser, false);
+}
 
+void Account::ResetAndFetchIssuers() {
+  ShutdownIssuers();
+  InitializeIssuers();
   MaybeFetchIssuers();
 }
 
@@ -356,7 +392,7 @@ void Account::OnNotifyRewardsWalletDidUpdate(const std::string& payment_id,
                                              const std::string& recovery_seed) {
   SetWallet(payment_id, recovery_seed);
 
-  MaybeRefillConfirmationTokens();
+  Initialize();
 }
 
 void Account::OnNotifyDidSolveAdaptiveCaptcha() {

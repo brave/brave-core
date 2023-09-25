@@ -10,6 +10,7 @@
 #include <iterator>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -217,7 +218,7 @@ void ParseAndVerifyDocument(
     return;
   }
 
-  base::StringPiece trimmed_body =
+  std::string_view trimmed_body =
       base::TrimWhitespaceASCII(*response_body, base::TrimPositions::TRIM_ALL);
   absl::optional<std::vector<uint8_t>> cose_encoded =
       base::Base64Decode(trimmed_body);

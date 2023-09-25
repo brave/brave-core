@@ -175,7 +175,7 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.getPrivacyHubMetrics().recordEnabledStatus(enabled);
+            activity.getMiscAndroidMetrics().recordPrivacyHubEnabledStatus(enabled);
         } catch (BraveActivityNotFoundException e) {
             Log.e(TAG, "Could not report privacy hub enabled change to P3A: " + e);
         }

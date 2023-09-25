@@ -9,21 +9,16 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import styles from './style.module.scss'
-import { ConversationTurn, CharacterType } from '../../api/page_handler'
+import getPageHandlerInstance, { CharacterType } from '../../api/page_handler'
+import DataContext from '../../state/context'
 
-interface ConversationListProps {
-  list: ConversationTurn[]
-  suggestedQuestions: string[]
-  isLoading: boolean
-  onQuestionSubmit: (question: string) => void
-}
-
-function ConversationList (props: ConversationListProps) {
+function ConversationList () {
   // Scroll the last conversation item in to view when entries are added.
   const lastConversationEntryElementRef = React.useRef<HTMLDivElement>(null)
+  const { isGenerating, conversationHistory, suggestedQuestions, shouldDisableUserInput } = React.useContext(DataContext)
 
   React.useEffect(() => {
-    if (!props.list.length && !props.isLoading) {
+    if (!conversationHistory.length && !isGenerating) {
       return
     }
 
@@ -32,14 +27,18 @@ function ConversationList (props: ConversationListProps) {
     } else {
       lastConversationEntryElementRef.current.scrollIntoView(false)
     }
-  }, [props.list.length, props.isLoading, lastConversationEntryElementRef.current?.clientHeight])
+  }, [conversationHistory.length, isGenerating, lastConversationEntryElementRef.current?.clientHeight])
+
+  const handleQuestionSubmit = (question: string) => {
+    getPageHandlerInstance().pageHandler.submitHumanConversationEntry(question)
+  }
 
   return (
     <>
       <div>
-      {props.list.map((turn, id) => {
-        const isLastEntry = (id === (props.list.length - 1))
-        const isLoading = isLastEntry && props.isLoading
+      {conversationHistory.map((turn, id) => {
+        const isLastEntry = (id === (conversationHistory.length - 1))
+        const isLoading = isLastEntry && isGenerating
         const elementRef = isLastEntry
           ? lastConversationEntryElementRef
           : null
@@ -60,7 +59,7 @@ function ConversationList (props: ConversationListProps) {
         return (
           <div key={id} ref={elementRef} className={turnClass}>
             <div className={avatarStyles}>
-              <Icon name={isHuman ? 'user-circle' : 'product-brave-ai'} />
+              <Icon name={isHuman ? 'user-circle' : 'product-brave-leo'} />
             </div>
             <div className={styles.message}>
               {turn.text}
@@ -70,15 +69,20 @@ function ConversationList (props: ConversationListProps) {
         )
       })}
       </div>
-      {props.suggestedQuestions.length > 0 && (
+      {suggestedQuestions.length > 0 && (
         <div className={styles.suggestedQuestionsBox}>
           <div className={styles.suggestedQuestionLabel}>
-            <Icon name="product-brave-ai" />
+            <Icon name="product-brave-leo" />
             <div>Suggested follow-ups</div>
           </div>
           <div className={styles.questionsList}>
-            {props.suggestedQuestions.map((question, id) => (
-              <Button key={id} kind='outline' onClick={() => props.onQuestionSubmit(question)}>
+            {suggestedQuestions.map((question, id) => (
+              <Button
+                key={id}
+                kind='outline'
+                onClick={() => handleQuestionSubmit(question)}
+                isDisabled={shouldDisableUserInput}
+              >
                 <span className={styles.buttonText}>
                   {question}
                 </span>

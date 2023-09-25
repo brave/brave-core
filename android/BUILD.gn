@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/p3a/buildflags.gni")
 import("//brave/components/webcompat_reporter/buildflags/buildflags.gni")
@@ -27,5 +28,6 @@ java_cpp_template("brave_config_java") {
     "BRAVE_ANDROID_P3A_ENABLED=$brave_p3a_enabled",
     "BRAVE_ANDROID_ENABLE_IPFS=$enable_ipfs",
     "BRAVE_ANDROID_WEBCOMPAT_REPORT_ENDPOINT=\"$webcompat_report_api_endpoint\"",
+    "BRAVE_ANDROID_AI_CHAT_ENABLED=$enable_ai_chat",
   ]
 }

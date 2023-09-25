@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/units/search_result_ad/search_result_ad_handler.h"
-
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
@@ -13,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/units/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
@@ -63,7 +62,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
   enabled_features.emplace_back(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
 
-  std::vector<base::test::FeatureRef> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -96,7 +95,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   enabled_features.emplace_back(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
 
-  std::vector<base::test::FeatureRef> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -143,7 +142,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   enabled_features.emplace_back(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
 
-  std::vector<base::test::FeatureRef> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -182,7 +181,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
   enabled_features.emplace_back(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
 
-  std::vector<base::test::FeatureRef> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -239,7 +238,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
   enabled_features.emplace_back(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
 
-  std::vector<base::test::FeatureRef> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -289,7 +288,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
   enabled_features.emplace_back(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature, params);
 
-  std::vector<base::test::FeatureRef> disabled_features;
+  const std::vector<base::test::FeatureRef> disabled_features;
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,

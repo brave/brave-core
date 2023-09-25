@@ -39,6 +39,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+/**
+ * Fragment used by DApps sign operation
+ */
 public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private static final String TAG = "SignMessageFragment";
 
@@ -51,7 +55,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private TextView mAccountName;
     private TextView mNetworkName;
     private Button mBtCancel;
-    private Button mBtSign;
+    protected Button mBtSign;
     private TextView mWebSite;
     private ExecutorService mExecutor;
     private Handler mHandler;
@@ -111,6 +115,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
 
                 return;
             }
+
             mCurrentSignMessageRequest = requests[0];
             mSignMessagePagerAdapter =
                     new SignMessagePagerAdapter(this, mTabTitles, mCurrentSignMessageRequest);

@@ -5,13 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/common/resources/country_components.h"
 
+#include <string_view>
+
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
-#include "base/strings/string_piece.h"
 
 namespace {
 
-constexpr auto kCountryComponentIds = base::MakeFixedFlatSet<base::StringPiece>(
+constexpr auto kCountryComponentIds = base::MakeFixedFlatSet<std::string_view>(
     {"jememeholcpjpoahinnlafoiaknnmfgl", "hfonhokmgmjionconfpknjfphfahdklo",
      "anlkmbkbgleadcacchhgdoecllpllknb", "imoolhehjnpebcjecoinphmohihmbccj",
      "kgnhcdjacgcanjnbdcmngdeoncckfmfh", "pmlmnjficamnkblapnohndlnhkkoaoco",

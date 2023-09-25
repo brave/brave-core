@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_highlight.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
@@ -13,9 +12,6 @@
 BraveTabGroupHighlight::~BraveTabGroupHighlight() = default;
 
 SkPath BraveTabGroupHighlight::GetPath() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return TabGroupHighlight::GetPath();
-
   if (!tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser())) {
     return TabGroupHighlight::GetPath();
   }

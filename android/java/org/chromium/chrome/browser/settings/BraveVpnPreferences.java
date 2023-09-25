@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
@@ -93,8 +94,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         getActivity().setTitle(R.string.brave_firewall_vpn);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_vpn_preferences);
 
-        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(getActivity(), null);
-
         mVpnSwitch = (ChromeSwitchPreference) findPreference(PREF_VPN_SWITCH);
         mVpnSwitch.setChecked(
                 BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity()));
@@ -121,13 +120,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         BraveVpnUtils.showProgressDialog(
                                 getActivity(), getResources().getString(R.string.vpn_connect_text));
                         if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
-                            MutableLiveData<Boolean> _billingConnectionState =
-                                    new MutableLiveData();
-                            LiveData<Boolean> billingConnectionState = _billingConnectionState;
-                            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                                    getActivity(), _billingConnectionState);
-                            LiveDataUtil.observeOnce(billingConnectionState,
-                                    isConnected -> { verifyPurchase(true); });
+                            verifyPurchase(true);
                         } else {
                             BraveVpnUtils.openBraveVpnPlansActivity(getActivity());
                             BraveVpnUtils.dismissProgressDialog();
@@ -258,12 +251,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 mBraveVpnPrefModel = new BraveVpnPrefModel();
                 BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
             } else {
-                MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
-                LiveData<Boolean> billingConnectionState = _billingConnectionState;
-                InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                        getActivity(), _billingConnectionState);
-                LiveDataUtil.observeOnce(
-                        billingConnectionState, isConnected -> { verifyPurchase(false); });
+                verifyPurchase(false);
             }
         } else if (BraveVpnUtils.mUpdateProfileAfterSplitTunnel) {
             BraveVpnUtils.mUpdateProfileAfterSplitTunnel = false;
@@ -376,14 +364,15 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             };
 
     private void verifyPurchase(boolean isVerification) {
-        InAppPurchaseWrapper.getInstance().queryPurchases();
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+        LiveData<PurchaseModel> activePurchases = _activePurchases;
+        InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
         LiveDataUtil.observeOnce(
-                InAppPurchaseWrapper.getInstance().getActivePurchase(), activePurchase -> {
+                activePurchases, activePurchaseModel -> {
                     mBraveVpnPrefModel = new BraveVpnPrefModel();
-                    if (activePurchase != null) {
-                        mBraveVpnPrefModel.setPurchaseToken(activePurchase.getPurchaseToken());
-                        mBraveVpnPrefModel.setProductId(
-                                activePurchase.getProducts().get(0).toString());
+                    if (activePurchaseModel != null) {
+                        mBraveVpnPrefModel.setPurchaseToken(activePurchaseModel.getPurchaseToken());
+                        mBraveVpnPrefModel.setProductId(activePurchaseModel.getProductId());
                         if (BraveVpnPrefUtils.isResetConfiguration()) {
                             BraveVpnUtils.dismissProgressDialog();
                             BraveVpnUtils.openBraveVpnProfileActivity(getActivity());

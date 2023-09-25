@@ -88,14 +88,14 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
     const char* region = "";
 
     if (GetParam().country ==
-        base::StringPiece("US") /*United States of America*/) {
-      if (GetParam().region == base::StringPiece("FL") /*Florida*/) {
+        std::string_view("US") /*United States of America*/) {
+      if (GetParam().region == std::string_view("FL") /*Florida*/) {
         region = "CA";  // Alabama
       } else {
         region = "FL";  // Florida
       }
-    } else if (GetParam().country == base::StringPiece("CA") /*Canada*/) {
-      if (GetParam().region == base::StringPiece("QC") /*Quebec*/) {
+    } else if (GetParam().country == std::string_view("CA") /*Canada*/) {
+      if (GetParam().region == std::string_view("QC") /*Quebec*/) {
         region = "AB";  // Alberta
       } else {
         region = "QC";  // Quebec

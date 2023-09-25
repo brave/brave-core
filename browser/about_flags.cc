@@ -321,29 +321,6 @@
 #define BRAVE_COMMANDS_FEATURE_ENTRIES
 #endif
 
-#if defined(TOOLKIT_VIEWS)
-#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      "brave-vertical-tabs",                                             \
-      "Vertical tabs",                                                   \
-      "Move tab strip to be a vertical panel on the side of the window " \
-      "instead of horizontal at the top of the window.",                 \
-      kOsWin | kOsMac | kOsLinux,                                        \
-      FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabs),            \
-  })
-#define BRAVE_VERTICAL_TABS_STICKY_PINNED_TABS_FEATURE_ENTRY                  \
-  EXPAND_FEATURE_ENTRIES({                                                    \
-      "brave-vertical-tabs-stick-pinned-tabs",                                \
-      "Vertical tabs - sticky pinned tabs",                                   \
-      "Pinned tabs will be on top of unpinned tabs regardless scroll state",  \
-      kOsWin | kOsMac | kOsLinux,                                             \
-      FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabsStickyPinnedTabs), \
-  })
-#else
-#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
-#define BRAVE_VERTICAL_TABS_STICKY_PINNED_TABS_FEATURE_ENTRY
-#endif
-
 #if BUILDFLAG(IS_LINUX)
 #define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES               \
   EXPAND_FEATURE_ENTRIES({                                                    \
@@ -405,8 +382,17 @@
       kOsWin | kOsMac | kOsLinux | kOsAndroid,                 \
       FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),          \
   })
+#define BRAVE_AI_CHAT_HISTORY                                \
+  EXPAND_FEATURE_ENTRIES({                                   \
+      "brave-ai-chat-history",                               \
+      "Brave AI Chat History",                               \
+      "Enables AI Chat History persistence and management",  \
+      kOsWin | kOsMac | kOsLinux,                            \
+      FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory), \
+  })
 #else
 #define BRAVE_AI_CHAT
+#define BRAVE_AI_CHAT_HISTORY
 #endif
 
 // Keep the last item empty.
@@ -429,14 +415,6 @@
           "sec-ch-ua-mobile, sec-ch-ua-platform)",                             \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(blink::features::kAllowCertainClientHints),       \
-      },                                                                       \
-      {                                                                        \
-          "clamp-platform-version-client-hint",                                \
-          "Clamp platform version client hint",                                \
-          "Clamps the patch field of the platform version client hint",        \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              blink::features::kClampPlatformVersionClientHint),               \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
@@ -868,6 +846,14 @@
           FEATURE_VALUE_TYPE(features::kBraveCopyCleanLinkByDefault),          \
       },                                                                       \
       {                                                                        \
+          "brave-global-privacy-control-enabled",                              \
+          "Enable Global Privacy Control",                                     \
+          "Enable the Sec-GPC request header and the "                         \
+          "navigator.globalPrivacyControl JS API",                             \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(blink::features::kBraveGlobalPrivacyControl),     \
+      },                                                                       \
+      {                                                                        \
           "https-by-default",                                                  \
           "Use HTTPS by Default",                                              \
           "Attempt to connect to all websites using HTTPS before falling "     \
@@ -898,13 +884,12 @@
   BRAVE_FEDERATED_FEATURE_ENTRIES                                              \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
-  BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                            \
-  BRAVE_VERTICAL_TABS_STICKY_PINNED_TABS_FEATURE_ENTRY                         \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_SHARED_PINNED_TABS                                                     \
   BRAVE_AI_CHAT                                                                \
+  BRAVE_AI_CHAT_HISTORY                                                        \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

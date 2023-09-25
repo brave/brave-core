@@ -250,6 +250,11 @@ void AdBlockEngine::Load(bool deserialize,
   }
 }
 
+void AdBlockEngine::Load(rust::Box<adblock::FilterSet> filter_set,
+                         const std::string& resources_json) {
+  OnFilterSetLoaded(std::move(filter_set), resources_json);
+}
+
 void AdBlockEngine::UpdateAdBlockClient(
     rust::Box<adblock::Engine> ad_block_client,
     const std::string& resources_json) {
@@ -271,6 +276,17 @@ void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     ad_block_client_->enable_tag(tag);
   });
+}
+
+void AdBlockEngine::OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
+                                      const std::string& resources_json) {
+  auto result = adblock::engine_from_filter_set(std::move(filter_set));
+  if (result.result_kind != adblock::ResultKind::Success) {
+    VLOG(0) << "AdBlockEngine::OnFilterSetLoaded failed: "
+            << result.error_message.c_str();
+    return;
+  }
+  UpdateAdBlockClient(std::move(result.value), resources_json);
 }
 
 void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,

@@ -13,6 +13,7 @@ import {
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -34,7 +35,7 @@ import {
 } from './style'
 
 export interface Props {
-  network: BraveWallet.NetworkInfo
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
   onCreated?: () => void
   onCancel: () => void
 }
@@ -49,14 +50,18 @@ export const CreateAccountTab = ({
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
 
+  // queries
+  const { data: network } = useGetNetworkQuery({
+    chainId: accountNetwork.chainId,
+    coin: accountNetwork.coin
+  })
+
   // state
   const [showUnlock, setShowUnlock] = React.useState<boolean>(false)
 
-  const suggestedAccountName = React.useMemo((): string => {
-    return accountNetwork
-      ? suggestNewAccountName(accounts, accountNetwork)
-      : ''
-  }, [accounts, accountNetwork])
+  const suggestedAccountName = network
+    ? suggestNewAccountName(accounts, network)
+    : ''
 
   const onCreateAccount = React.useCallback(() => {
     // unlock needed to create accounts
@@ -114,10 +119,12 @@ export const CreateAccountTab = ({
   return (
     <StyledWrapper>
       <Description>
-        {accountNetwork
-          ? getLocale('braveWalletCreateAccountDescription').replace('$1', accountNetwork.symbolName)
-          : ''
-        }
+        {network
+          ? getLocale('braveWalletCreateAccountDescription').replace(
+              '$1',
+              network.symbolName
+            )
+          : ''}
       </Description>
 
       <ButtonRow>

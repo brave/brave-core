@@ -14,6 +14,7 @@ export const localeStrings = {
   termsOfService: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   sendFormTitle: 'Support this creator',
   sendButtonLabel: 'Send',
+  sendWithButtonLabel: 'Send with $1',
   web3ButtonLabel: 'Use Web3 Wallet',
   verifiedTooltipTitle: 'Verified Creator',
   verifiedTooltipText: 'This Creator has registered with Brave and can receive contributions from Brave Rewards users.',

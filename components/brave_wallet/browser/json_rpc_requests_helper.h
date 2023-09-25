@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_REQUESTS_HELPER_H_
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/containers/flat_map.h"
@@ -17,12 +18,12 @@ namespace brave_wallet {
 
 namespace internal {
 
-base::Value::Dict ComposeRpcDict(base::StringPiece method);
+base::Value::Dict ComposeRpcDict(std::string_view method);
 
 }  // namespace internal
 
 template <typename T>
-base::Value::Dict GetJsonRpcDictionary(base::StringPiece method, T&& params) {
+base::Value::Dict GetJsonRpcDictionary(std::string_view method, T&& params) {
   auto dict = internal::ComposeRpcDict(method);
   dict.Set("params", std::move(params));
   return dict;
@@ -31,15 +32,15 @@ base::Value::Dict GetJsonRpcDictionary(base::StringPiece method, T&& params) {
 std::string GetJSON(base::ValueView dict);
 
 template <typename... Args>
-std::string GetJsonRpcString(base::StringPiece method, Args&&... args) {
+std::string GetJsonRpcString(std::string_view method, Args&&... args) {
   base::Value::List params;
   (params.Append(std::forward<Args&&>(args)), ...);
   return GetJSON(GetJsonRpcDictionary(method, std::move(params)));
 }
 
 void AddKeyIfNotEmpty(base::Value::Dict* dict,
-                      base::StringPiece name,
-                      base::StringPiece val);
+                      std::string_view name,
+                      std::string_view val);
 
 base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
     const std::string& json_payload);

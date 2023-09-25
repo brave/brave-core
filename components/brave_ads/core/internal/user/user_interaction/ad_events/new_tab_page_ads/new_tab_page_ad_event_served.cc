@@ -15,7 +15,7 @@ namespace brave_ads {
 
 void NewTabPageAdEventServed::FireEvent(const NewTabPageAdInfo& ad,
                                         ResultCallback callback) {
-  LogAdEvent(ad, ConfirmationType::kServed, std::move(callback));
+  RecordAdEvent(ad, ConfirmationType::kServed, std::move(callback));
 }
 
 }  // namespace brave_ads

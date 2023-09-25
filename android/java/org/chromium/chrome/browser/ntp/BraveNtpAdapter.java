@@ -53,6 +53,7 @@ import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -605,6 +606,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     (TextView) itemView.findViewById(R.id.brave_stats_text_time_count);
             this.estTimeSavedCountTextTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_time_count_text);
+            BraveTouchUtils.ensureMinTouchTarget(this.hideStatsImg);
         }
     }
 
@@ -644,6 +646,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     (FloatingActionButton) itemView.findViewById(R.id.super_referral_logo);
             this.creditTv = (TextView) itemView.findViewById(R.id.credit_text);
             this.sponsoredLogo = (ImageView) itemView.findViewById(R.id.sponsored_logo);
+            BraveTouchUtils.ensureMinTouchTarget(this.creditTv);
         }
     }
 
@@ -661,6 +664,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             optinLearnMore = (TextView) itemView.findViewById(R.id.optin_learnmore);
             optinTv = (TextView) itemView.findViewById(R.id.optin_button_text);
             optinLoadingSpinner = (ProgressBar) itemView.findViewById(R.id.optin_loading_spinner);
+            BraveTouchUtils.ensureMinTouchTarget(optinButton);
+            BraveTouchUtils.ensureMinTouchTarget(optinLearnMore);
         }
     }
 

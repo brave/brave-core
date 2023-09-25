@@ -108,8 +108,7 @@ const defaultState: WalletState = {
     NoneGroupByOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
   solFeeEstimates: undefined,
-  onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
-  selectedCurrency: undefined,
+  selectedDepositAssetId: undefined,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: false,
   isNftPinningFeatureEnabled: false,
@@ -213,11 +212,7 @@ export const WalletAsyncActions = {
     'setSelectedAccountFilterItem'
   ),
   addAccount: createAction<AddAccountPayloadType>('addAccount'), // alias for keyringService.addAccount
-  getOnRampCurrencies: createAction('getOnRampCurrencies'),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
-  updateTokenPinStatus: createAction<BraveWallet.BlockchainToken>(
-    'updateTokenPinStatus'
-  ),
   updateAccountName: createAction<UpdateAccountNamePayloadType>(
     'updateAccountName'
   ),
@@ -335,11 +330,11 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isLoadingCoinMarketData = false
       },
 
-      selectCurrency(
+      selectOnRampAssetId(
         state: WalletState,
-        { payload }: PayloadAction<BraveWallet.OnRampCurrency>
+        { payload }: PayloadAction<string | undefined>
       ) {
-        state.selectedCurrency = payload
+        state.selectedDepositAssetId = payload
       },
 
       setGasEstimates(
@@ -357,12 +352,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isMetaMaskInstalled = payload
       },
 
-      setOnRampCurrencies(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.OnRampCurrency[]>
-      ) {
-        state.onRampCurrencies = payload
-      },
 
       setPasswordAttempts(
         state: WalletState,

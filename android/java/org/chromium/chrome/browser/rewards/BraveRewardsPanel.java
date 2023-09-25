@@ -78,6 +78,7 @@ import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -217,6 +218,7 @@ public class BraveRewardsPanel
     private View mWalletBalanceProgress;
     private View mBalanceDataViewGroups;
     private View mEstimatedToolTip;
+    private View mVbatUserdrainToolTip;
 
     public BraveRewardsPanel(View anchorView) {
         mCurrentNotificationId = "";
@@ -244,6 +246,12 @@ public class BraveRewardsPanel
                 if (mEstimatedToolTip != null && mEstimatedToolTip.isShown()
                         && !isWithinViewBounds((int) event.getRawX(), (int) event.getRawY())) {
                     estimatedTooltipGroup.setVisibility(View.GONE);
+                }
+                View vbatUserdrainTooltipGroup =
+                        mPopupView.findViewById(R.id.vbat_userdrain_tooltip_group);
+                if (mVbatUserdrainToolTip != null && mVbatUserdrainToolTip.isShown()
+                        && !isWithinViewBounds((int) event.getRawX(), (int) event.getRawY())) {
+                    vbatUserdrainTooltipGroup.setVisibility(View.GONE);
                 }
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
                     dismiss();
@@ -357,6 +365,7 @@ public class BraveRewardsPanel
         mPopupWindow.setContentView(mPopupView);
 
         mWalletBalanceProgress = mPopupView.findViewById(R.id.wallet_progress_bar_group);
+        adjustTouchTargets();
     }
 
     // Rewards main layout changes
@@ -366,12 +375,17 @@ public class BraveRewardsPanel
         }
         mRewardsMainLayout.setVisibility(View.VISIBLE);
         mEstimatedToolTip = mPopupView.findViewById(R.id.estimated_earnings_tooltip);
-        mayBeShowEstimatedToolTip();
+        maybeShowEstimatedToolTip();
+
+        mVbatUserdrainToolTip = mPopupView.findViewById(R.id.vbat_userdrain_tooltip);
+        maybeShowVbatUserdrainToolTip();
 
         TextView loggedOutStateText = mPopupView.findViewById(R.id.logged_out_state_text);
-        loggedOutStateText.setText(String.format(
-                mActivity.getResources().getString(R.string.logged_out_state_dialog_text),
-                getWalletString(mBraveRewardsNativeWorker.getExternalWalletType())));
+        if (mExternalWallet != null) {
+            loggedOutStateText.setText(String.format(
+                    mActivity.getResources().getString(R.string.logged_out_state_dialog_text),
+                    getWalletString(mExternalWallet.getType())));
+        }
         mBalanceDataViewGroups = mPopupView.findViewById(R.id.balance_display_group);
 
         setVisibilityForLoggedOutState();
@@ -436,13 +450,21 @@ public class BraveRewardsPanel
         monthYearText.setText(monthYear);
     }
     @SuppressLint("ClickableViewAccessibility")
-    private void mayBeShowEstimatedToolTip() {
+    private void maybeShowEstimatedToolTip() {
         View estimatedEarningsText = mPopupView.findViewById(R.id.estimated_earnings);
         View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
         clickManageAds();
         clickOnCloseButton();
         estimatedEarningsText.setOnClickListener(
                 v -> { estimatedTooltipGroup.setVisibility(View.VISIBLE); });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void maybeShowVbatUserdrainToolTip() {
+        View vBatUserdrainHelpImg = mPopupView.findViewById(R.id.vbat_userdrain_help_img);
+        View vBatUserdrainTooltipGroup = mPopupView.findViewById(R.id.vbat_userdrain_tooltip_group);
+        vBatUserdrainHelpImg.setOnClickListener(
+                v -> { vBatUserdrainTooltipGroup.setVisibility(View.VISIBLE); });
     }
 
     private void clickManageAds() {
@@ -1006,13 +1028,14 @@ public class BraveRewardsPanel
                 && !PackageUtils.isFirstInstall(mActivity)) {
             mPopupView.findViewById(R.id.estimated_earnings_range_group).setVisibility(View.GONE);
             mPopupView.findViewById(R.id.estimated_not_connected_group).setVisibility(View.VISIBLE);
-            mPopupView.findViewById(R.id.bat_ads_balance_learn_more_text)
-                    .setOnClickListener((new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            CustomTabActivity.showInfoPage(mActivity, BRAVE_REWARDS_CHANGES_PAGE);
-                        }
-                    }));
+            TextView batAdsBalanceLearnMoreText =
+                    mPopupView.findViewById(R.id.bat_ads_balance_learn_more_text);
+            batAdsBalanceLearnMoreText.setOnClickListener((new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CustomTabActivity.showInfoPage(mActivity, BRAVE_REWARDS_CHANGES_PAGE);
+                }
+            }));
         } else {
             TextView estimatedRange = mPopupView.findViewById(R.id.estimated_range);
             String minValue = BraveRewardsHelper.getFormattedAmount(minEarningsThisMonth);
@@ -1102,6 +1125,12 @@ public class BraveRewardsPanel
                                 ? View.GONE
                                 : View.VISIBLE);
                 mWalletBalanceProgress.setVisibility(View.GONE);
+                if (mBraveRewardsNativeWorker.isGrandfatheredUser() && mExternalWallet != null
+                        && mExternalWallet.getType().equals(BraveWalletProvider.ZEBPAY)
+                        && mExternalWallet.getStatus() == WalletStatus.CONNECTED) {
+                    mPopupView.findViewById(R.id.vbat_userdrain_help_img)
+                            .setVisibility(View.VISIBLE);
+                }
                 if (mBraveRewardsNativeWorker != null) {
                     BraveRewardsBalance walletBalanceObject =
                             mBraveRewardsNativeWorker.GetWalletBalance();
@@ -1367,6 +1396,7 @@ public class BraveRewardsPanel
                 CustomTabActivity.showInfoPage(mActivity, BRAVE_REWARDS_PAGE);
             }
         }));
+        BraveTouchUtils.ensureMinTouchTarget(learnMoreUnverifiedText);
 
         if (BraveAdsNativeHelper.nativeIsOptedInToNotificationAds(
                     Profile.getLastUsedRegularProfile())) {
@@ -1389,6 +1419,7 @@ public class BraveRewardsPanel
                                     mActivity, UNVERIFIED_USER_UNSUPPORTED_REGION_PAGE);
                         }
                     }));
+            BraveTouchUtils.ensureMinTouchTarget(rewardsPanelUnverifiedOnSectionLearnMoreText);
             if (mBraveRewardsNativeWorker.canConnectAccount()) {
                 String sectionText = "<b>"
                         + mPopupView.getResources().getString(R.string.ready_to_start_earning_text)
@@ -1447,8 +1478,9 @@ public class BraveRewardsPanel
                 .setOnClickListener(braveRewardsOnboardingClickListener);
         mBraveRewardsOnboardingView.findViewById(R.id.btn_skip)
                 .setOnClickListener(braveRewardsOnboardingClickListener);
-        mBraveRewardsOnboardingView.findViewById(R.id.btn_start_quick_tour)
-                .setOnClickListener(braveRewardsOnboardingClickListener);
+        final View startQuickTourButton =
+                (View) mBraveRewardsOnboardingView.findViewById(R.id.btn_start_quick_tour);
+        startQuickTourButton.setOnClickListener(braveRewardsOnboardingClickListener);
 
         mBraveRewardsViewPager =
                 mBraveRewardsOnboardingView.findViewById(R.id.brave_rewards_view_pager);
@@ -1491,6 +1523,17 @@ public class BraveRewardsPanel
         TabLayout braveRewardsTabLayout =
                 mBraveRewardsOnboardingView.findViewById(R.id.brave_rewards_tab_layout);
         braveRewardsTabLayout.setupWithViewPager(mBraveRewardsViewPager, true);
+
+        // Try to get the tab view. Not officially supported so wrap in try..catch
+        try {
+            LinearLayout tabs = (LinearLayout) braveRewardsTabLayout.getChildAt(0);
+            for (int i = 0; i < tabs.getChildCount(); ++i) {
+                BraveTouchUtils.ensureMinTouchTarget(tabs.getChildAt(i));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to enlarge touch target on tab:", e);
+        }
+
         AppCompatImageView modalCloseButton = mBraveRewardsOnboardingView.findViewById(
                 R.id.brave_rewards_onboarding_layout_modal_close);
         modalCloseButton.setOnClickListener((new View.OnClickListener() {
@@ -1505,6 +1548,9 @@ public class BraveRewardsPanel
                 .setVisibility(View.VISIBLE);
         mBraveRewardsOnboardingView.findViewById(R.id.onboarding_action_layout)
                 .setVisibility(View.GONE);
+
+        BraveTouchUtils.ensureMinTouchTarget(modalCloseButton);
+        BraveTouchUtils.ensureMinTouchTarget(startQuickTourButton);
     }
 
     private void panelShadow(boolean isEnable) {
@@ -1775,7 +1821,7 @@ public class BraveRewardsPanel
         }
         int walletStatus = mExternalWallet.getStatus();
         if (mBraveRewardsNativeWorker != null) {
-            String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
+            String walletType = mExternalWallet.getType();
             if (walletStatus == WalletStatus.CONNECTED
                     && (walletType.equals(BraveWalletProvider.UPHOLD)
                             || walletType.equals(BraveWalletProvider.BITFLYER)
@@ -1810,7 +1856,7 @@ public class BraveRewardsPanel
         SharedPreferences.Editor editor = sharedPref.edit();
         int rightDrawable = 0;
         int textId = 0;
-        String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
+        String walletType = mExternalWallet.getType();
 
         switch (status) {
             case WalletStatus.NOT_CONNECTED:
@@ -2179,5 +2225,12 @@ public class BraveRewardsPanel
         } else {
             return R.drawable.ic_logo_zebpay_white;
         }
+    }
+
+    private void adjustTouchTargets() {
+        BraveTouchUtils.ensureMinTouchTarget(mPopupView.findViewById(R.id.estimated_earnings));
+        BraveTouchUtils.ensureMinTouchTarget(
+                mPopupView.findViewById(R.id.bat_ads_balance_learn_more_text));
+        BraveTouchUtils.ensureMinTouchTarget(mPopupView.findViewById(R.id.btn_verify_wallet));
     }
 }

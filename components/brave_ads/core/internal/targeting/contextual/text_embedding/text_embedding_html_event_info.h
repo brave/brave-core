@@ -30,6 +30,11 @@ struct TextEmbeddingHtmlEventInfo final {
   std::vector<float> embedding;
 };
 
+bool operator==(const TextEmbeddingHtmlEventInfo&,
+                const TextEmbeddingHtmlEventInfo&);
+bool operator!=(const TextEmbeddingHtmlEventInfo&,
+                const TextEmbeddingHtmlEventInfo&);
+
 using TextEmbeddingHtmlEventList = std::vector<TextEmbeddingHtmlEventInfo>;
 
 }  // namespace brave_ads

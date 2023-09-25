@@ -11,8 +11,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -24,21 +24,22 @@ class BraveAdsCreativeAdModelBasedPredictorTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
   // Arrange
-  const UserModelInfo user_model = BuildUserModelForTesting(
-      /*intent_segments*/ {"parent-child"},
-      /*latent_interest_segments*/ {"parent-child"},
-      /*interest_segments*/ {"parent-child"},
-      /*text_embedding_html_events*/ {});
-
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/
                                             true);
   creative_ads.push_back(creative_ad);
 
+  const UserModelInfo user_model{
+      IntentUserModelInfo{SegmentList{"parent-child"}},
+      LatentInterestUserModelInfo{SegmentList{"parent-child"}},
+      InterestUserModelInfo{SegmentList{"parent-child"},
+                            TextEmbeddingHtmlEventList{}}};
+
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now(),
+      /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   // Act
@@ -70,21 +71,22 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  const UserModelInfo user_model = BuildUserModelForTesting(
-      /*intent_segments*/ {"parent-child"},
-      /*latent_interest_segments*/ {"parent-child"},
-      /*interest_segments*/ {"parent-child"},
-      /*text_embedding_html_events*/ {});
-
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/
                                             true);
   creative_ads.push_back(creative_ad);
 
+  const UserModelInfo user_model{
+      IntentUserModelInfo{SegmentList{"parent-child"}},
+      LatentInterestUserModelInfo{SegmentList{"parent-child"}},
+      InterestUserModelInfo{SegmentList{"parent-child"},
+                            TextEmbeddingHtmlEventList{}}};
+
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now(),
+      /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   // Act

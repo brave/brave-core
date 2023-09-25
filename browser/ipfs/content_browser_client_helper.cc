@@ -120,9 +120,11 @@ bool HandleIPFSURLReverseRewrite(GURL* url,
   if (ipfs_pos == std::string::npos && ipns_pos == std::string::npos)
     return false;
 
-  auto cid_end = (ipfs_pos == std::string::npos) ? ipns_pos : ipfs_pos;
-  if (!ipfs::IsValidCIDOrDomain(url->host().substr(0, cid_end)))
+  if (auto cid_end = (ipfs_pos == std::string::npos) ? ipns_pos : ipfs_pos;
+      !ipfs::IsValidCIDOrDomain(
+          ipfs::DecodeSingleLabelForm((url->host().substr(0, cid_end))))) {
     return false;
+  }
 
   GURL configured_gateway = GetConfiguredBaseGateway(
       user_prefs::UserPrefs::Get(browser_context), chrome::GetChannel());

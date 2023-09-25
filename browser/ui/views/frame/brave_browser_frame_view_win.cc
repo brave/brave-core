@@ -6,7 +6,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -25,20 +24,16 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(BrowserFrame* frame,
   frame_graphic_.reset(
       new BraveWindowFrameGraphic(browser_view->browser()->profile()));
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    DCHECK(browser_view->browser());
-    auto* prefs = browser_view->browser()->profile()->GetPrefs();
-    using_vertical_tabs_.Init(
-        brave_tabs::kVerticalTabsEnabled, prefs,
-        base::BindRepeating(
-            &BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
-            base::Unretained(this)));
-    showing_window_title_for_vertical_tabs_.Init(
-        brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
-        base::BindRepeating(
-            &BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
-            base::Unretained(this)));
-  }
+  DCHECK(browser_view->browser());
+  auto* prefs = browser_view->browser()->profile()->GetPrefs();
+  using_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsEnabled, prefs,
+      base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
+                          base::Unretained(this)));
+  showing_window_title_for_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
+      base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
+                          base::Unretained(this)));
 }
 
 BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
@@ -74,10 +69,6 @@ void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return BrowserFrameViewWin::GetTopInset(restored);
-  }
-
   if (auto* browser = browser_view()->browser();
       tabs::utils::ShouldShowVerticalTabs(browser) &&
       !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {

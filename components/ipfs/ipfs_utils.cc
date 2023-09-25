@@ -6,10 +6,10 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/feature_list.h"
-#include "base/strings/string_piece_forward.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -499,7 +499,7 @@ GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash) {
     return GURL();
   if (code != kIpnsNSCodec && code != kIpfsNSCodec)
     return GURL();
-  std::string encoded = base32::Base32Encode(base::StringPiece(
+  std::string encoded = base32::Base32Encode(std::string_view(
       reinterpret_cast<const char*>(contenthash.data()), contenthash.size()));
   if (encoded.empty())
     return GURL();

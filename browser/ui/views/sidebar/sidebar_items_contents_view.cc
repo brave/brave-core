@@ -30,8 +30,8 @@
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "brave/grit/brave_theme_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -59,14 +59,16 @@
 
 namespace {
 
-constexpr gfx::Size kIconSize = {22, 22};
+constexpr gfx::Size kIconSize(SidebarButtonView::kIconSize,
+                              SidebarButtonView::kIconSize);
 
 std::string GetFirstCharFromURL(const GURL& url) {
   DCHECK(url.is_valid());
 
   std::string target = url.host();
-  if (target.empty())
+  if (target.empty()) {
     target = url.spec();
+  }
   if (base::StartsWith(target, "www.")) {
     target = target.substr(4, 1);
   } else {
@@ -90,25 +92,18 @@ SidebarItemsContentsView::SidebarItemsContentsView(
   DCHECK(browser_);
   set_context_menu_controller(this);
   SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical));
+                       views::BoxLayout::Orientation::kVertical))
+      ->SetCollapseMarginsSpacing(true);
 }
 
 SidebarItemsContentsView::~SidebarItemsContentsView() = default;
 
 gfx::Size SidebarItemsContentsView::CalculatePreferredSize() const {
-  if (children().empty())
+  if (children().empty()) {
     return {0, 0};
-  const gfx::Size child_size = children()[0]->GetPreferredSize();
-  return gfx::Size(
-      child_size.width() + GetInsets().width(),
-      children().size() * child_size.height() + GetInsets().height());
-}
+  }
 
-void SidebarItemsContentsView::OnThemeChanged() {
-  View::OnThemeChanged();
-
-  // BuiltIn items use different icon set based on theme.
-  UpdateAllBuiltInItemsViewState();
+  return views::View::CalculatePreferredSize();
 }
 
 void SidebarItemsContentsView::Update() {
@@ -118,15 +113,17 @@ void SidebarItemsContentsView::Update() {
 void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   const auto& items = sidebar_model_->GetAllSidebarItems();
   // It's not initialized yet if child view count and items size are different.
-  if (children().size() != items.size())
+  if (children().size() != items.size()) {
     return;
+  }
 
   auto active_index = sidebar_model_->active_index();
   const size_t items_num = items.size();
   for (size_t item_index = 0; item_index < items_num; ++item_index) {
     const auto item = items[item_index];
-    if (!sidebar::IsBuiltInType(item))
+    if (!sidebar::IsBuiltInType(item)) {
       continue;
+    }
 
     // If browser window has tab that loads brave talk, brave talk panel icon
     // will use colored one for normal state also.
@@ -147,11 +144,13 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& point,
     ui::MenuSourceType source_type) {
-  if (context_menu_runner_ && context_menu_runner_->IsRunning())
+  if (context_menu_runner_ && context_menu_runner_->IsRunning()) {
     return;
+  }
 
-  if (!GetIndexOf(source))
+  if (!GetIndexOf(source)) {
     return;
+  }
 
   view_for_context_menu_ = source;
   context_menu_model_ = std::make_unique<ui::SimpleMenuModel>(this);
@@ -212,11 +211,13 @@ bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
   DCHECK(index);
 
   // Available for all items.
-  if (command_id == kItemRemove)
+  if (command_id == kItemRemove) {
     return true;
+  }
 
-  if (command_id == kItemEdit)
+  if (command_id == kItemEdit) {
     return GetSidebarService(browser_)->IsEditableItemAt(*index);
+  }
 
   NOTREACHED();
   return false;
@@ -241,11 +242,13 @@ void SidebarItemsContentsView::OnItemRemoved(int index) {
 void SidebarItemsContentsView::OnActiveIndexChanged(
     absl::optional<size_t> old_index,
     absl::optional<size_t> new_index) {
-  if (old_index)
+  if (old_index) {
     UpdateItemViewStateAt(*old_index, false);
+  }
 
-  if (new_index)
+  if (new_index) {
     UpdateItemViewStateAt(*new_index, true);
+  }
 }
 
 void SidebarItemsContentsView::OnItemMoved(const sidebar::SidebarItem& item,
@@ -269,8 +272,9 @@ void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                           base::Unretained(this), item_view));
   item_view->set_drag_controller(drag_controller_);
 
-  if (sidebar::IsWebType(item))
+  if (sidebar::IsWebType(item)) {
     SetDefaultImageAt(index, item);
+  }
 
   UpdateItemViewStateAt(index, false);
 }
@@ -302,14 +306,16 @@ void SidebarItemsContentsView::UpdateItem(
     const sidebar::SidebarItem& item,
     const sidebar::SidebarItemUpdate& update) {
   //  Set default for new url. Then waiting favicon update event.
-  if (update.url_updated)
+  if (update.url_updated) {
     SetDefaultImageAt(update.index, item);
+  }
 
   // Each item button uses accessible name as a title.
   if (update.title_updated) {
     auto title = item.title;
-    if (title.empty())
+    if (title.empty()) {
       title = base::UTF8ToUTF16(item.url.spec());
+    }
     GetItemViewAt(update.index)->SetAccessibleName(title);
   }
 }
@@ -320,8 +326,9 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
   const int current_count =
       prefs->GetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount);
   // Don't show feedback bubble more than three times.
-  if (current_count >= 3)
+  if (current_count >= 3) {
     return;
+  }
   prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount,
                     current_count + 1);
   CHECK_LT(item_added_index, children().size());
@@ -356,8 +363,9 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
                                                const gfx::ImageSkia& image) {
   auto index = sidebar_model_->GetIndexOf(item);
   // disengaged means |item| is deleted while fetching favicon.
-  if (!index)
+  if (!index) {
     return;
+  }
 
   SidebarItemView* item_view = GetItemViewAt(*index);
   item_view->SetImage(
@@ -415,8 +423,9 @@ void SidebarItemsContentsView::DoDrawDragIndicator(
   // Clear current drag indicator.
   ClearDragIndicator();
 
-  if (!index)
+  if (!index) {
     return;
+  }
 
   // Use item's top or bottom border as a drag indicator.
   // Item's top border is used as a drag indicator except last item.
@@ -443,22 +452,15 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
   }
 
   if (sidebar::IsBuiltInType(item)) {
-    item_view->SetImage(views::Button::STATE_NORMAL,
-                        GetImageForBuiltInItems(item.built_in_item_type, active,
-                                                /* disabled= */ false));
-    item_view->SetImage(
-        views::Button::STATE_HOVERED,
-        GetImageForBuiltInItems(item.built_in_item_type, /* focus= */ true,
-                                /* disabled= */ false));
-    item_view->SetImage(
-        views::Button::STATE_PRESSED,
-        GetImageForBuiltInItems(item.built_in_item_type, /* focus= */ true,
-                                /* disabled= */ false));
+    for (const auto state : views::Button::kButtonStates) {
+      auto color_state = state;
+      if (active && state != views::Button::STATE_DISABLED) {
+        color_state = views::Button::STATE_PRESSED;
+      }
 
-    item_view->SetImage(
-        views::Button::STATE_DISABLED,
-        GetImageForBuiltInItems(item.built_in_item_type, /* focus= */ false,
-                                /* disabled= */ true));
+      item_view->SetImageModel(
+          state, GetImageForBuiltInItems(item.built_in_item_type, color_state));
+    }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
     if (ai_chat::features::IsAIChatEnabled() && browser_->profile()->IsTor()) {
@@ -514,62 +516,39 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
   controller->ActivateItemAt(index, open_disposition);
 }
 
-gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
+ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
     sidebar::SidebarItem::BuiltInItemType type,
-    bool focused,
-    bool disabled) const {
-  SkColor base_button_color = SK_ColorWHITE;
-  if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    base_button_color = color_provider->GetColor(
-        disabled ? kColorSidebarAddButtonDisabled : kColorSidebarButtonBase);
-  }
-  constexpr int kBuiltInIconSize = 16;
-  int focused_image_resource = -1;
-  const gfx::VectorIcon* normal_image_icon = nullptr;
-  auto& bundle = ui::ResourceBundle::GetSharedInstance();
+    views::Button::ButtonState state) const {
+  const auto get_image_model = [](const gfx::VectorIcon& icon,
+                                  views::Button::ButtonState state) {
+    return ui::ImageModel::FromVectorIcon(
+        icon,
+        state == views::Button::STATE_DISABLED
+            ? kColorSidebarArrowDisabled
+            : (state == views::Button::STATE_PRESSED
+                   ? kColorSidebarButtonPressed
+                   : kColorSidebarButtonBase),
+        SidebarButtonView::kIconSize);
+  };
+
   switch (type) {
     case sidebar::SidebarItem::BuiltInItemType::kWallet:
-      focused_image_resource = IDR_SIDEBAR_CRYPTO_WALLET_FOCUSED;
-      normal_image_icon = &kSidebarCryptoWalletIcon;
-      break;
+      return get_image_model(kLeoProductBraveWalletIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kBraveTalk:
-      focused_image_resource = IDR_SIDEBAR_BRAVE_TALK_FOCUSED;
-      normal_image_icon = &kSidebarBraveTalkIcon;
-      break;
+      return get_image_model(kLeoProductBraveTalkIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kBookmarks:
-      focused_image_resource = IDR_SIDEBAR_BOOKMARKS_FOCUSED;
-      normal_image_icon = &kSidebarBookmarksIcon;
-      break;
+      return get_image_model(kLeoProductBookmarksIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kReadingList:
-      focused_image_resource = IDR_SIDEBAR_READING_LIST_FOCUSED;
-      normal_image_icon = &kSidebarReadingListIcon;
-      break;
+      return get_image_model(kLeoReadingListIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kHistory:
-      focused_image_resource = IDR_SIDEBAR_HISTORY_FOCUSED;
-      normal_image_icon = &kSidebarHistoryIcon;
-      break;
-    case sidebar::SidebarItem::BuiltInItemType::kPlaylist: {
-      return gfx::CreateVectorIcon(kMediaToolbarButtonIcon, kBuiltInIconSize,
-                                   base_button_color);
-    }
-    case sidebar::SidebarItem::BuiltInItemType::kChatUI: {
-      return gfx::CreateVectorIcon(kSidebarChatIcon, kBuiltInIconSize,
-                                   base_button_color);
-    }
+      return get_image_model(kLeoHistoryIcon, state);
+    case sidebar::SidebarItem::BuiltInItemType::kPlaylist:
+      return get_image_model(kLeoProductPlaylistIcon, state);
+    case sidebar::SidebarItem::BuiltInItemType::kChatUI:
+      return get_image_model(kLeoProductBraveLeoIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kNone:
-      NOTREACHED();
-      return gfx::ImageSkia();
+      NOTREACHED_NORETURN();
   }
-
-  if (focused) {
-    return gfx::ImageSkiaOperations::CreateResizedImage(
-        *bundle.GetImageSkiaNamed(focused_image_resource),
-        skia::ImageOperations::RESIZE_BEST,
-        gfx::Size{kBuiltInIconSize, kBuiltInIconSize});
-  }
-
-  return gfx::CreateVectorIcon(*normal_image_icon, kBuiltInIconSize,
-                               base_button_color);
 }
 
 void SidebarItemsContentsView::OnWidgetDestroying(views::Widget* widget) {
@@ -577,11 +556,13 @@ void SidebarItemsContentsView::OnWidgetDestroying(views::Widget* widget) {
 }
 
 bool SidebarItemsContentsView::IsBubbleVisible() const {
-  if (context_menu_runner_ && context_menu_runner_->IsRunning())
+  if (context_menu_runner_ && context_menu_runner_->IsRunning()) {
     return true;
+  }
 
-  if (observation_.IsObserving())
+  if (observation_.IsObserving()) {
     return true;
+  }
 
   return false;
 }

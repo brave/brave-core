@@ -12,20 +12,20 @@ import android.util.Pair;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.crypto.KeyPair;
 
 import org.chromium.base.Log;
-import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.vpn.billing.PurchaseModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
@@ -39,14 +39,9 @@ public abstract class BraveVpnParentActivity
     private static final String TAG = "BraveVPN";
     public boolean mIsVerification;
     protected BraveVpnPrefModel mBraveVpnPrefModel;
-    private final OneshotSupplierImpl<Profile> mProfileSupplier;
 
     abstract void showRestoreMenu(boolean shouldShowRestore);
     abstract void updateProfileView();
-
-    public BraveVpnParentActivity() {
-        mProfileSupplier = new OneshotSupplierImpl<>();
-    }
 
     // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
     // https://github.com/brave/brave-browser/issues/31882
@@ -71,18 +66,18 @@ public abstract class BraveVpnParentActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        mProfileSupplier.set(Profile.getLastUsedRegularProfile());
     }
 
     protected void verifySubscription() {
         mBraveVpnPrefModel = new BraveVpnPrefModel();
-        InAppPurchaseWrapper.getInstance().queryPurchases();
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+        LiveData<PurchaseModel> activePurchases = _activePurchases;
+        InAppPurchaseWrapper.getInstance().queryPurchases(_activePurchases);
         LiveDataUtil.observeOnce(
-                InAppPurchaseWrapper.getInstance().getActivePurchase(), activePurchase -> {
-                    if (activePurchase != null) {
-                        mBraveVpnPrefModel.setPurchaseToken(activePurchase.getPurchaseToken());
-                        mBraveVpnPrefModel.setProductId(
-                                activePurchase.getProducts().get(0).toString());
+                activePurchases, activePurchaseModel -> {
+                    if (activePurchaseModel != null) {
+                        mBraveVpnPrefModel.setPurchaseToken(activePurchaseModel.getPurchaseToken());
+                        mBraveVpnPrefModel.setProductId(activePurchaseModel.getProductId());
                         BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
                                 mBraveVpnPrefModel.getPurchaseToken(),
                                 mBraveVpnPrefModel.getProductId(),
@@ -91,6 +86,8 @@ public abstract class BraveVpnParentActivity
                         if (!mIsVerification) {
                             BraveVpnApiResponseUtils.queryPurchaseFailed(
                                     BraveVpnParentActivity.this);
+                        } else {
+                            showRestoreMenu(false);
                         }
                         BraveVpnUtils.dismissProgressDialog();
                     }
@@ -208,9 +205,5 @@ public abstract class BraveVpnParentActivity
                 }
             }
         }.start();
-    }
-
-    public OneshotSupplier<Profile> getProfileSupplier() {
-        return mProfileSupplier;
     }
 }

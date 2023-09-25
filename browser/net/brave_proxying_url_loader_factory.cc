@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -377,7 +378,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     write_data->producer =
         std::make_unique<mojo::DataPipeProducer>(std::move(producer));
 
-    base::StringPiece string_piece(write_data->data);
+    std::string_view string_piece(write_data->data);
     WriteData* write_data_ptr = write_data.get();
     write_data_ptr->producer->Write(
         std::make_unique<mojo::StringDataSource>(

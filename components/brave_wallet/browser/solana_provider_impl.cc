@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/grit/brave_components_strings.h"
@@ -520,9 +521,9 @@ void SolanaProviderImpl::SignAndSendTransaction(
   tx.set_send_options(
       SolanaTransaction::SendOptions::FromValue(std::move(send_options)));
 
-  tx_service_->AddUnapprovedTransaction(
+  tx_service_->AddUnapprovedTransactionWithOrigin(
       mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
-      account->account_id.Clone(), delegate_->GetOrigin(), absl::nullopt,
+      account->account_id.Clone(), delegate_->GetOrigin(),
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -630,7 +631,8 @@ void SolanaProviderImpl::SignMessage(
   }
   auto request = mojom::SignMessageRequest::New(
       MakeOriginInfo(delegate_->GetOrigin()), -1, account->account_id.Clone(),
-      "", message, false, absl::nullopt, absl::nullopt, blob_msg,
+      mojom::SignDataUnion::NewSolanaSignData(
+          mojom::SolanaSignData::New(message, blob_msg)),
       mojom::CoinType::SOL,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL,
                                         delegate_->GetOrigin()));

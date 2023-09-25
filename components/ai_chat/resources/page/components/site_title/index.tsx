@@ -10,13 +10,8 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
-import { SiteInfo } from '../../api/page_handler'
-
-interface SiteTitleProps {
-  siteInfo?: SiteInfo
-  favIconUrl?: string
-  onDisconnectButtonClick?: () => void
-}
+import DataContext from '../../state/context'
+import getPageHandlerInstance from '../../api/page_handler'
 
 type Timer = ReturnType<typeof setTimeout>
 
@@ -39,9 +34,10 @@ function Tooltip(props: ToolTipProps) {
   )
 }
 
-function SiteTitle (props: SiteTitleProps) {
+function SiteTitle () {
   const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
   const timerId = React.useRef<Timer | undefined>();
+  const { siteInfo, favIconUrl } = React.useContext(DataContext)
 
   const showTooltipWithDelay = () => {
     timerId.current = setTimeout(() => {
@@ -60,14 +56,18 @@ function SiteTitle (props: SiteTitleProps) {
     }
   }
 
+  const handlePageContentDisconnect = () => {
+    getPageHandlerInstance().pageHandler.disconnectPageContents()
+  }
+
    return (
     <div className={styles.box}>
       <Tooltip isVisible={isTooltipVisible} />
       <div className={styles.favIconBox}>
-        { props.favIconUrl && <img src={props.favIconUrl} /> }
+        { favIconUrl && <img src={favIconUrl} /> }
       </div>
       <div className={styles.titleBox}>
-        <p className={styles.title}>{props.siteInfo?.title}</p>
+        <p className={styles.title}>{siteInfo?.title}</p>
       </div>
       <div
         aria-describedby='page-content-warning-tooltip'
@@ -82,7 +82,7 @@ function SiteTitle (props: SiteTitleProps) {
         <Button
           aria-label="Disconnect"
           kind="plain-faint"
-          onClick={props.onDisconnectButtonClick}
+          onClick={handlePageContentDisconnect}
         >
           <Icon name="link-broken" />
         </Button>

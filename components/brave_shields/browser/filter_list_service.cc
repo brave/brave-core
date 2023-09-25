@@ -10,8 +10,8 @@
 #include <string>
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -44,14 +44,19 @@ void FilterListService::IsFilterListEnabled(
     const std::string& filterListUuid,
     IsFilterListEnabledCallback callback) {
   std::move(callback).Run(
-      ad_block_service_->regional_service_manager()->IsFilterListEnabled(
+      ad_block_service_->component_service_manager()->IsFilterListEnabled(
           filterListUuid));
 }
 
 void FilterListService::EnableFilter(const std::string& filterListUuid,
                                      bool shouldEnableFilter) {
-  ad_block_service_->regional_service_manager()->EnableFilterList(
+  ad_block_service_->component_service_manager()->EnableFilterList(
       filterListUuid, shouldEnableFilter);
+}
+
+void FilterListService::GetFilterLists(GetFilterListsCallback callback) {
+  std::move(callback).Run(
+      ad_block_service_->component_service_manager()->GetRegionalLists());
 }
 
 void FilterListService::GetSubscriptions(GetSubscriptionsCallback callback) {

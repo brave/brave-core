@@ -38,6 +38,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
       std::string component_id,
       std::string base64_public_key,
       std::string title,
+      uint8_t permission_mask,
       bool is_default_engine = true);
   // Helper to build a particular adblock component from a catalog entry
   AdBlockComponentFiltersProvider(
@@ -50,9 +51,8 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   AdBlockComponentFiltersProvider& operator=(
       const AdBlockComponentFiltersProvider&) = delete;
 
-  void LoadDATBuffer(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)>) override;
+  void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
+                     base::OnceCallback<void()>) override;
 
   // Remove the component. This will force it to be redownloaded next time it
   // is registered.
@@ -68,6 +68,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
 
   base::FilePath component_path_;
   std::string component_id_;
+  uint8_t permission_mask_;
   const raw_ptr<component_updater::ComponentUpdateService>
       component_updater_service_;
 

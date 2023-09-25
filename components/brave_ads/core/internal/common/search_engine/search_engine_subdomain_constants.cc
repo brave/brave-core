@@ -7,9 +7,9 @@
 
 namespace brave_ads {
 
-base::span<const base::StringPiece> GetWikipediaSearchEngineSubdomains() {
+base::span<const std::string_view> GetWikipediaSearchEngineSubdomains() {
   // See https://www.wikipedia.org/.
-  static constexpr base::StringPiece kExtensions[] = {
+  static constexpr std::string_view kExtensions[] = {
       "af", "ar", "arz", "ast", "az",  "azb", "be", "bg",    "bn",
       "ca", "ce", "ceb", "cs",  "cy",  "da",  "de", "el",    "en",
       "eo", "es", "et",  "eu",  "fa",  "fi",  "fr", "gl",    "he",
@@ -22,9 +22,9 @@ base::span<const base::StringPiece> GetWikipediaSearchEngineSubdomains() {
   return kExtensions;
 }
 
-base::span<const base::StringPiece> GetYahooSearchEngineSubdomains() {
+base::span<const std::string_view> GetYahooSearchEngineSubdomains() {
   // See https://uk.yahoo.com/everything/world.
-  static constexpr base::StringPiece kExtensions[] = {
+  static constexpr std::string_view kExtensions[] = {
       "au",      "be", "br",       "ca", "de", "en-maktoob", "es",
       "espanol", "fr", "fr-be",    "gr", "hk", "id",         "ie",
       "in",      "it", "malaysia", "nz", "ph", "qc",         "ro",

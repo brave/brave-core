@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/callback_list.h"
@@ -16,7 +17,6 @@
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
-#include "base/strings/string_piece_forward.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -98,7 +98,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   friend class base::RefCountedThreadSafe<P3AService>;
   ~P3AService() override;
 
-  void InitCallback(const base::StringPiece& histogram_name);
+  void InitCallback(const std::string_view histogram_name);
 
   void LoadDynamicMetrics();
 
@@ -107,7 +107,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
                               size_t bucket);
 
   // Updates or removes a metric from the log.
-  void HandleHistogramChange(base::StringPiece histogram_name, size_t bucket);
+  void HandleHistogramChange(std::string_view histogram_name, size_t bucket);
 
   // General prefs:
   bool initialized_ = false;
@@ -126,7 +126,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
   // Used to store histogram values that are produced between constructing
   // the service and its initialization.
-  base::flat_map<base::StringPiece, size_t> histogram_values_;
+  base::flat_map<std::string_view, size_t> histogram_values_;
 
   std::vector<
       std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>

@@ -40,7 +40,6 @@ import { AllNetworksOption, AllNetworksOptionDefault } from '../../options/netwo
 import { AllAccountsOptionUniqueKey, applySelectedAccountFilter } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
-import { WalletPageActions } from '../../page/actions'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 import { IPFS_PROTOCOL, isIpfs, stripERC20TokenImageURL } from '../../utils/string-utils'
 import { toTxDataUnion } from '../../utils/tx-utils'
@@ -149,30 +148,6 @@ export async function getBlockchainTokenInfo (contractAddress: string): Promise<
   return (await apiProxy.assetRatioService.getTokenInfo(contractAddress))
 }
 
-export async function getBuyAssetUrl (args: {
-  asset: BraveWallet.BlockchainToken
-  onRampProvider: BraveWallet.OnRampProvider
-  chainId: string
-  address: string
-  amount: string
-  currencyCode: string
-}) {
-  const { assetRatioService } = getAPIProxy()
-  const { url, error } = await assetRatioService.getBuyUrlV1(
-    args.onRampProvider,
-    args.chainId,
-    args.address,
-    args.asset.symbol,
-    args.amount,
-    args.currencyCode
-  )
-
-  if (error) {
-    console.log(`Failed to get buy URL: ${error}`)
-  }
-
-  return url
-}
 
 export async function getSellAssetUrl (args: {
   asset: BraveWallet.BlockchainToken
@@ -252,8 +227,6 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
       .filter(token => removedAssetIds.includes(getAssetIdKey(token)))
     await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
     await dispatch(WalletActions.setRemovedNonFungibleTokens(removedNfts))
-    const nfts = userVisibleTokensInfo.filter((asset) => asset.isErc721 || asset.isNft)
-    dispatch(WalletPageActions.getNftsPinningStatus(nfts))
   }
 }
 
@@ -327,17 +300,13 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
     }
     return await apiProxy.txService.addUnapprovedTransaction(
       toTxDataUnion({ ethTxData1559: txData1559 }),
-      payload.fromAccount.accountId,
-      null,
-      null
+      payload.fromAccount.accountId
     )
   }
 
   return await apiProxy.txService.addUnapprovedTransaction(
     toTxDataUnion({ ethTxData: txData }),
-    payload.fromAccount.accountId,
-    null,
-    null
+    payload.fromAccount.accountId
   )
 }
 
@@ -354,9 +323,7 @@ export async function sendFilTransaction(payload: SendFilTransactionParams) {
   }
   return await apiProxy.txService.addUnapprovedTransaction(
     toTxDataUnion({ filTxData: filTxData }),
-    payload.fromAccount.accountId,
-    null,
-    null
+    payload.fromAccount.accountId
   )
 }
 
@@ -369,9 +336,7 @@ export async function sendSolTransaction(payload: SendSolTransactionParams) {
   )
   return await txService.addUnapprovedTransaction(
     toTxDataUnion({ solanaTxData: value.txData ?? undefined }),
-    payload.fromAccount.accountId,
-    null,
-    null
+    payload.fromAccount.accountId
   )
 }
 
@@ -392,9 +357,7 @@ export async function sendSolanaSerializedTransaction(
 
   return await txService.addUnapprovedTransaction(
     toTxDataUnion({ solanaTxData: result.txData ?? undefined }),
-    payload.accountId,
-    null,
-    payload.groupId || null
+    payload.accountId
   )
 }
 

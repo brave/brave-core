@@ -152,6 +152,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ESTIMATED_TOOLTIP_TEXT"  desc="Text for This reflects your estimated earnings range for Brave Ads this month.">
         This reflects your estimated earnings range for Brave Ads this month.
       </message>
+      <message name="IDS_VBAT_USERDRAIN_TOOLTIP_TEXT"  desc="Text for vbat userdrain tooltip">
+        Now that you're connected to ZebPay, any previous balance you had will be deposited into your ZebPay account as part of your next earnings payout. Once it arrives, you'll see your BAT reflected in your Rewards balance.
+      </message>
       <message name="IDS_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Notifications are disabled">
         Notifications are disabled
       </message>
@@ -509,8 +512,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTENT_FILTERING_SUMMARY" desc="Summary for Content Filtering settings.">
         Enable custom filters that block regional and language-specific trackers and Annoyances
       </message>
-      <message name="IDS_FILTER_LISTS_TITLE" desc="Title for Filter Lists settings.">
-        Filter Lists
+      <message name="IDS_CONTENT_FILTERS_TITLE" desc="Title for Content Filters settings.">
+        Content Filters
+      </message>
+      <message name="IDS_FILTER_LISTS" desc="Title for filter lists.">
+        Filter lists
+      </message>
+      <message name="IDS_FILTER_LISTS_SUMMARY" desc="Summary text for Filter lists.">
+        Additional popular community lists. Note that enabling too many filters will degrade browsing speeds.
       </message>
       <message name="IDS_CUSTOM_FILTER_LISTS" desc="Title for Custom filter lists.">
         Custom filter lists
@@ -1962,6 +1971,9 @@ Are you sure you want to do this?
       <message name="IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP" desc="Select value">
         Disable non-proxied UDP
       </message>
+      <message name="IDS_SEND_WITH_CUSTODIAN" desc="Text for send with Custodian">
+        Send with <ph name="CUSTODIAN">%1$s</ph>
+      </message>
     <message name="IDS_SEND" desc="Brave Wallet send button text">
       Send
     </message>
@@ -2391,9 +2403,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
-    </message>
-    <message name="IDS_YEAR_SUBSCRIPTION_OLD_AMOUNT" desc="Brave VPN plan text">
-      &#36;119.88
     </message>
     <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
       Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renewal.
@@ -3015,6 +3024,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_POSITIVE_BUTTON_ACTION" desc="Brave wallet Dapp sign farment positive action text">
       Sign
     </message>
+    <message name="IDS_BRAVE_WALLET_SIGN_IN_MESSAGE_POSITIVE_BUTTON_ACTION" desc="Brave wallet Dapp sign in farment positive action text">
+      Sign in
+    </message>
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_TITLE" desc="Title text for a request to connect a wallet.">
       Connect With Brave Wallet
     </message>
@@ -3178,7 +3190,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Solana
     </message>
     <message name="IDS_DOWNLOAD_WALLET_DATA_FILES_PROGRESS" desc="Caption for displaying download progress of Brave Wallet datafiles component">
-      Downloading wallet data file \u2022 <ph name="percentage">%1$d<ex>37</ex></ph>%%
+      Downloading wallet data file \u2022 <ph name="percentage">%1$d<ex>37</ex></ph>\u0025
     </message>
     <message name="IDS_CONNECTED_TO_HOST" desc="Brave Vpn notification statistics text">
       Connected to <ph name="VALUE">%1$s</ph>
@@ -3335,15 +3347,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BACKUP_WALLET_PASSWORD" desc="Brave Wallet prompt to enter a password">
       Enter your Brave Wallet password
-    </message>
-    <message name="IDS_BLOCK_COOKIE_NOTICES_ACTION_TEXT" desc="Block cookie consent notices action text">
-      Got it
-    </message>
-    <message name="IDS_BLOCK_COOKIE_NOTICES_TITLE" desc="Block cookie consent notices title">
-      Brave is blocking cookie consent notices.
-    </message>
-    <message name="IDS_BLOCK_COOKIE_NOTICES_TEXT" desc="Block cookie consent notices text">
-      Brave already blocks harmful cookies. Now, we automatically block those annoying cookie consent notices, too.
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">
       Note that Brave can't verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you're sure you want to take this action, and trust the requesting site.
@@ -3566,6 +3569,36 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_SIGN_MESSAGE_DETAILS_MESSAGE_SECTION" desc="A message section template of sign message details" translateable="false">
       <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Message:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_MESSAGE_TEXT">%1$s</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_ORIGIN_SECTION" desc="An origin section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Origin:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_ORIGIN_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_ADDRESS_SECTION" desc="An address section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Address:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_ADDRESS_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_STATEMENT_SECTION" desc="A statement section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Statement:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_STATEMENT_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_URI_SECTION" desc="An URI section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>URI:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_URI_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_VERSION_SECTION" desc="A version section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Version:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_VERSION_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_CHAIN_ID_SECTION" desc="A chain id section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Chain id:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_CHAIN_ID_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_NONCE_SECTION" desc="A nonce section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nonce:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_NONCE_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_ISSUED_AT_SECTION" desc="An issued at section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Issued at:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_ISSUED_AT_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIWE_MESSAGE_DETAILS_EXPIRATION_TIME_SECTION" desc="An expiration time section template for Sign with Ethereum message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Expiration time:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_EXPIRATION_TIME_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_BRAVE_WALLET_SECURITY_RISK_DETECTED" desc="Sign in with Brave Wallet Error Security risk">
+      Security risk detected
     </message>
     <message name="IDS_WALLET_ADD_CUSTOM_ASSET_TOKEN_ADDRESS" desc="Add custom asset dialog Token contract address field for Solana NFT">
       Token address

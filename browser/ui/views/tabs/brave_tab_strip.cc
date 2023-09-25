@@ -162,9 +162,6 @@ void BraveTabStrip::MaybeStartDrag(
 
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
 
   if (BrowserView::GetBrowserViewForBrowser(GetBrowser())) {
     UpdateTabContainer();
@@ -226,9 +223,6 @@ absl::optional<int> BraveTabStrip::GetCustomBackgroundId(
 }
 
 void BraveTabStrip::UpdateTabContainer() {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "This should be called only when the flag is on.";
-
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   const bool should_use_compound_tab_container =
       using_vertical_tabs ||
@@ -236,8 +230,6 @@ void BraveTabStrip::UpdateTabContainer() {
   const bool is_using_compound_tab_container =
       tab_container_->GetClassName() ==
       BraveCompoundTabContainer::kViewClassName;
-  const bool using_sticky_pinned_tabs = base::FeatureList::IsEnabled(
-      tabs::features::kBraveVerticalTabsStickyPinnedTabs);
 
   base::ScopedClosureRunner layout_lock;
   if (should_use_compound_tab_container != is_using_compound_tab_container) {
@@ -261,14 +253,12 @@ void BraveTabStrip::UpdateTabContainer() {
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());
 
-      if (using_sticky_pinned_tabs) {
-        brave_tab_container->SetScrollEnabled(using_vertical_tabs);
+      brave_tab_container->SetScrollEnabled(using_vertical_tabs);
 
-        // Make dragged views on top of container's layer.
-        drag_context->SetPaintToLayer();
-        drag_context->layer()->SetFillsBoundsOpaquely(false);
-        drag_context->parent()->ReorderChildView(drag_context, -1);
-      }
+      // Make dragged views on top of container's layer.
+      drag_context->SetPaintToLayer();
+      drag_context->layer()->SetFillsBoundsOpaquely(false);
+      drag_context->parent()->ReorderChildView(drag_context, -1);
     } else {
       // Container should be attached before TabDragContext so that dragged
       // views can be atop container.
@@ -281,9 +271,7 @@ void BraveTabStrip::UpdateTabContainer() {
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());
 
-      if (using_sticky_pinned_tabs) {
-        GetDragContext()->DestroyLayer();
-      }
+      GetDragContext()->DestroyLayer();
     }
 
     // Resets TabSlotViews for the new TabContainer.
@@ -358,15 +346,6 @@ void BraveTabStrip::UpdateTabContainer() {
           &VerticalTabStripRegionView::GetAvailableWidthForTabContainer,
           base::Unretained(vertical_region_view)));
     }
-
-    if (!using_sticky_pinned_tabs) {
-      tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
-          ->SetOrientation(views::LayoutOrientation::kVertical)
-          .SetDefault(views::kFlexBehaviorKey,
-                      views::FlexSpecification(
-                          views::MinimumFlexSizeRule::kScaleToMinimumSnapToZero,
-                          views::MaximumFlexSizeRule::kPreferred));
-    }
   } else {
     if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
       auto* browser_view = static_cast<BraveBrowserView*>(
@@ -397,10 +376,6 @@ void BraveTabStrip::UpdateTabContainer() {
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return false;
-  }
-
   return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
 }
 

@@ -42,6 +42,19 @@
     sub-label="$i18n{statsUsagePingEnabledDesc}"
     on-settings-boolean-control-change="onStatsUsagePingEnabledChange_">
 </settings-toggle-button>
+<settings-toggle-button id="metricsReportingControl"
+    class="hr"
+    pref="[[metricsReportingPref_]]"
+    label="$i18n{enablePersonalizationLogging}"
+    sub-label="$i18n{enablePersonalizationLoggingDesc}" no-set-pref
+    on-settings-boolean-control-change="onMetricsReportingChange_">
+  <template is="dom-if" if="[[showRestartForMetricsReporting_]]" restamp>
+    <cr-button on-click="restartBrowser_" id="restart"
+        slot="more-actions">
+      $i18n{restart}
+    </cr-button>
+  </template>
+</settings-toggle-button>
 <div hidden="[[!isRequestOTRFeatureEnabled_]]" class="settings-box">
     <div class="start" id="labelWrapper">
         <div class="label">$i18n{requestOTRLabel}</div>

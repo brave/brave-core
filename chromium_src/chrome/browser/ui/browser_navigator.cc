@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
@@ -19,7 +21,7 @@ void UpdateBraveScheme(NavigateParams* params) {
   }
 }
 
-bool IsHostAllowedInIncognitoBraveImpl(const base::StringPiece& host) {
+bool IsHostAllowedInIncognitoBraveImpl(const std::string_view host) {
   if (host == kWalletPageHost || host == kWalletPanelHost ||
       host == kRewardsPageHost || host == chrome::kChromeUISyncInternalsHost ||
       host == chrome::kChromeUISyncHost || host == kAdblockHost ||

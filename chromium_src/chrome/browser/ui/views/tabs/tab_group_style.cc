@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
 #define TabGroupStyle TabGroupStyle_ChromiumImpl
@@ -50,10 +49,6 @@ SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
 }
 
 bool TabGroupStyle::ShouldShowVerticalTabs() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return false;
-  }
-
   return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
 }
 

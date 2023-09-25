@@ -52,11 +52,11 @@ source_set("ui") {
     "webui/skus_internals_ui.h",
   ]
 
-  # It doesn't make sense to view accelerators on iOS & Android.
+  # It doesn't make sense to view the webcompat webui on iOS & Android.
   if (!is_android && !is_ios) {
     sources += [
-      "webui/webcompat_reporter_ui.cc",
-      "webui/webcompat_reporter_ui.h",
+      "webui/webcompat_reporter/webcompat_reporter_ui.cc",
+      "webui/webcompat_reporter/webcompat_reporter_ui.h",
     ]
   }
 
@@ -71,6 +71,8 @@ source_set("ui") {
     sources += [
       "webui/ai_chat/ai_chat_ui.cc",
       "webui/ai_chat/ai_chat_ui.h",
+      "webui/ai_chat/ai_chat_ui_page_handler.cc",
+      "webui/ai_chat/ai_chat_ui_page_handler.h",
     ]
   }
 
@@ -214,8 +216,6 @@ source_set("ui") {
 
     if (enable_ai_chat) {
       sources += [
-        "webui/ai_chat/ai_chat_ui_page_handler.cc",
-        "webui/ai_chat/ai_chat_ui_page_handler.h",
         "webui/settings/brave_settings_leo_assistant_handler.cc",
         "webui/settings/brave_settings_leo_assistant_handler.h",
       ]
@@ -330,10 +330,21 @@ source_set("ui") {
       "views/page_action/brave_page_action_icon_container_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
+      "views/side_panel/bookmarks/brave_bookmarks_side_panel_coordinator.cc",
+      "views/side_panel/bookmarks/brave_bookmarks_side_panel_coordinator.h",
+      "views/side_panel/brave_bookmarks_side_panel_view.cc",
+      "views/side_panel/brave_bookmarks_side_panel_view.h",
+      "views/side_panel/brave_read_later_side_panel_view.cc",
+      "views/side_panel/brave_read_later_side_panel_view.h",
       "views/side_panel/brave_side_panel.cc",
       "views/side_panel/brave_side_panel.h",
+      "views/side_panel/brave_side_panel_coordinator.cc",
+      "views/side_panel/brave_side_panel_coordinator.h",
       "views/side_panel/brave_side_panel_resize_widget.cc",
       "views/side_panel/brave_side_panel_resize_widget.h",
+      "views/side_panel/brave_side_panel_utils.cc",
+      "views/side_panel/brave_side_panel_view_base.cc",
+      "views/side_panel/brave_side_panel_view_base.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
       "views/tabs/brave_compound_tab_container.cc",
@@ -382,11 +393,8 @@ source_set("ui") {
       }
     }
     if (enable_ai_chat) {
-      sources += [
-        "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.cc",
-        "views/side_panel/ai_chat/ai_chat_side_panel_coordinator.h",
-        "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc",
-      ]
+      sources +=
+          [ "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc" ]
     }
     if (use_aura) {
       sources += [
@@ -553,6 +561,7 @@ source_set("ui") {
     "//components/gcm_driver:gcm_buildflags",
     "//components/image_fetcher/core",
     "//components/infobars/content",
+    "//components/language/core/browser",
     "//components/omnibox/browser:vector_icons",
     "//components/optimization_guide/core:features",
     "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
@@ -798,6 +807,8 @@ source_set("ui") {
       "views/brave_actions/brave_shields_action_view.h",
       "views/frame/vertical_tab_strip_region_view.cc",
       "views/frame/vertical_tab_strip_region_view.h",
+      "views/frame/vertical_tab_strip_root_view.cc",
+      "views/frame/vertical_tab_strip_root_view.h",
       "views/frame/vertical_tab_strip_widget_delegate_view.cc",
       "views/frame/vertical_tab_strip_widget_delegate_view.h",
       "views/location_bar/brave_location_bar_view.cc",

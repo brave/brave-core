@@ -6,6 +6,7 @@
 #include "base/test/mock_callback.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -39,14 +40,9 @@ class BraveAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
-  void ServeNextAd() {
+  void ServeAd() {
     ASSERT_TRUE(ShouldServeAdsAtRegularIntervals());
     FastForwardClockTo(ServeAdAt());
-  }
-
-  void ServeAd() {
-    NotifyUserDidBecomeActive(/*idle_time*/ base::TimeDelta::Min(),
-                              /*screen_was_locked*/ false);
   }
 };
 
@@ -55,6 +51,11 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
+  EXPECT_CALL(ads_client_mock_, RecordP2AEvents(BuildP2AAdOpportunityEvents(
+                                    AdType::kNotificationAd, /*segments*/ {})));
+
+  EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
+
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
         // Assert
@@ -62,19 +63,13 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents);
-
-  EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
-
   // Act
-  ServeNextAd();
+  ServeAd();
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
        DoNotServeWhenUserBecomesActive) {
   // Arrange
-
-  // Assert
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
@@ -83,6 +78,8 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
 
   // Act
   ServeAd();
+
+  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
@@ -99,6 +96,8 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   // Arrange
   ForcePermissionRulesForTesting();
 
+  EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
+
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
@@ -108,7 +107,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
         EXPECT_CALL(callback, Run).WillOnce([&ad](const bool success) {
           // Assert
           EXPECT_TRUE(success);
-          ASSERT_TRUE(
+          EXPECT_TRUE(
               NotificationAdManager::GetInstance().Exists(ad.placement_id));
           EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kNotificationAd,
                                                   ConfirmationType::kServed));
@@ -118,15 +117,13 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
           EXPECT_EQ(1U, GetTransactionCountForTesting());
         });
 
-        EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
-
         // Act
         GetAds().TriggerNotificationAdEvent(
             ad.placement_id, mojom::NotificationAdEventType::kViewed,
             callback.Get());
       }));
 
-  ServeNextAd();
+  ServeAd();
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
@@ -157,7 +154,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
             callback.Get());
       }));
 
-  ServeNextAd();
+  ServeAd();
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
@@ -190,7 +187,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
             callback.Get());
       }));
 
-  ServeNextAd();
+  ServeAd();
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
@@ -220,7 +217,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
             callback.Get());
       }));
 
-  ServeNextAd();
+  ServeAd();
 }
 
 }  // namespace brave_ads

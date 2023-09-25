@@ -31,10 +31,10 @@ source_set("ads") {
     ":brave_ads_mojom_wrappers",
     "//base",
     "//brave/components/brave_ads/core",
-    "//brave/components/brave_ads/core",
     "//brave/components/brave_federated/public/interfaces",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
+    "//brave/components/ntp_background_images/common",
     "//brave/ios/browser/api/common",
   ]
 

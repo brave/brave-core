@@ -66,10 +66,6 @@ void TabDragController::Init(TabDragContext* source_context,
     }
   }
 
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
-
   auto* widget = source_view->GetWidget();
   DCHECK(widget);
   const auto* browser =

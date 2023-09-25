@@ -13,6 +13,7 @@
 #include "base/functional/callback.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 
 using brave_component_updater::DATFileDataBuffer;
@@ -41,14 +42,12 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
   static AdBlockFiltersProviderManager* GetInstance();
 
-  void LoadDATBuffer(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)>) override;
+  void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
+                     base::OnceCallback<void()>) override;
 
-  void LoadDATBufferForEngine(
-      bool is_for_default_engine,
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)> cb);
+  void LoadFilterSetForEngine(bool is_for_default_engine,
+                              rust::Box<adblock::FilterSet>* filter_set,
+                              base::OnceCallback<void()> cb);
 
   // AdBlockFiltersProvider::Observer
   void OnChanged() override;
@@ -62,10 +61,6 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
  private:
   friend base::NoDestructor<AdBlockFiltersProviderManager>;
-
-  void FinishCombinating(
-      base::OnceCallback<void(bool, const DATFileDataBuffer&)> cb,
-      const std::vector<DATFileDataBuffer>& results);
 
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;

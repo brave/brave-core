@@ -195,7 +195,7 @@ void ConnectUpholdWallet::OnCreateCard(ConnectExternalWalletCallback callback,
 
   auto on_connect =
       base::BindOnce(&ConnectUpholdWallet::OnConnect, base::Unretained(this),
-                     std::move(callback), access_token, id, country_id);
+                     std::move(callback), access_token, id);
 
   RequestFor<PostConnectUphold>(*engine_, std::move(id))
       .Send(std::move(on_connect));

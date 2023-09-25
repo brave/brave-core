@@ -16,8 +16,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing_random_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
@@ -62,17 +61,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing-software"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{
+          IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+          InterestUserModelInfo{SegmentList{"technology & computing-software"},
+                                TextEmbeddingHtmlEventList{}}},
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -89,17 +85,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing-software"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{
+          IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+          InterestUserModelInfo{SegmentList{"technology & computing-software"},
+                                TextEmbeddingHtmlEventList{}}},
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -116,17 +109,13 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"finance-banking"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{SegmentList{"finance-banking"},
+                                          TextEmbeddingHtmlEventList{}}},
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -158,17 +147,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
                                                       creative_ad_3};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing", "food & drink"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing", "food & drink"},
+                        TextEmbeddingHtmlEventList{}}},
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
@@ -188,10 +174,8 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetAdsForNoSegments) {
       /*user_model*/ {},
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -206,15 +190,11 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"UNMATCHED"},
-          /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{SegmentList{"UNMATCHED"},
+                                          TextEmbeddingHtmlEventList{}}},
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
@@ -224,15 +204,12 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing", "food & drink"},
-          /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing", "food & drink"},
+                        TextEmbeddingHtmlEventList{}}},
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
@@ -260,17 +237,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing", "food & drink"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing", "food & drink"},
+                        TextEmbeddingHtmlEventList{}}},
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -300,17 +274,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing", "food & drink"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing", "food & drink"},
+                        TextEmbeddingHtmlEventList{}}},
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -344,17 +315,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_1};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing", "food & drink"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing", "food & drink"},
+                        TextEmbeddingHtmlEventList{}}},
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));

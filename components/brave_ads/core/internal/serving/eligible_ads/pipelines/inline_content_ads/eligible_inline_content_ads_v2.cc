@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
@@ -42,14 +42,15 @@ void EligibleInlineContentAdsV2::GetForUserModel(
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
-      base::BindOnce(&EligibleInlineContentAdsV2::GetForUserModelCallback,
-                     weak_factory_.GetWeakPtr(), std::move(user_model),
-                     dimensions, std::move(callback)));
+      base::BindOnce(
+          &EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback,
+          weak_factory_.GetWeakPtr(), std::move(user_model), dimensions,
+          std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleInlineContentAdsV2::GetForUserModelCallback(
+void EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback(
     UserModelInfo user_model,
     const std::string& dimensions,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
@@ -57,8 +58,7 @@ void EligibleInlineContentAdsV2::GetForUserModelCallback(
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Failed to get ad events");
-    return std::move(callback).Run(/*had_opportunity*/ false,
-                                   /*eligible_ads*/ {});
+    return std::move(callback).Run(/*eligible_ads*/ {});
   }
 
   GetBrowsingHistory(std::move(user_model), ad_events, dimensions,
@@ -100,36 +100,29 @@ void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads");
-    return std::move(callback).Run(/*had_opportunity*/ false,
-                                   /*eligible_ads*/ {});
+    return std::move(callback).Run(/*eligible_ads*/ {});
   }
 
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
-    return std::move(callback).Run(/*had_opportunity*/ false,
-                                   /*eligible_ads*/ {});
+    return std::move(callback).Run(/*eligible_ads*/ {});
   }
 
   const CreativeInlineContentAdList eligible_creative_ads =
       FilterCreativeAds(creative_ads, ad_events, browsing_history);
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-    return std::move(callback).Run(/*had_opportunity*/ true,
-                                   /*eligible_ads*/ {});
+    return std::move(callback).Run(/*eligible_ads*/ {});
   }
 
   const absl::optional<CreativeInlineContentAdInfo> creative_ad =
       MaybePredictCreativeAd(eligible_creative_ads, user_model, ad_events);
   if (!creative_ad) {
-    BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-    return std::move(callback).Run(/*had_opportunity*/ true,
-                                   /*eligible_ads*/ {});
+    BLOG(1, "No eligible ads");
+    return std::move(callback).Run(/*eligible_ads*/ {});
   }
 
-  BLOG(1, eligible_creative_ads.size()
-              << " eligible ads out of " << creative_ads.size() << " ads");
-
-  std::move(callback).Run(/*had_opportunity*/ true, {*creative_ad});
+  std::move(callback).Run({*creative_ad});
 }
 
 CreativeInlineContentAdList EligibleInlineContentAdsV2::FilterCreativeAds(

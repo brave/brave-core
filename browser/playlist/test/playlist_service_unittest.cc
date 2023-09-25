@@ -75,8 +75,9 @@ namespace playlist {
 //
 class FakeDownloadRequestManager : public PlaylistDownloadRequestManager {
  public:
-  FakeDownloadRequestManager()
-      : PlaylistDownloadRequestManager(nullptr, nullptr) {}
+  explicit FakeDownloadRequestManager(
+      MediaDetectorComponentManager* component_manager)
+      : PlaylistDownloadRequestManager(nullptr, component_manager) {}
   ~FakeDownloadRequestManager() override = default;
 
   // PlaylistDownloadRequestManager:
@@ -113,14 +114,16 @@ class PlaylistServiceUnitTest : public testing::Test {
   PrefService* prefs() { return profile_->GetPrefs(); }
 
   void WaitUntil(base::RepeatingCallback<bool()> condition) {
-    if (condition.Run())
+    if (condition.Run()) {
       return;
+    }
 
     base::RepeatingTimer scheduler;
     scheduler.Start(FROM_HERE, base::Milliseconds(100),
                     base::BindLambdaForTesting([this, &condition]() {
-                      if (condition.Run())
+                      if (condition.Run()) {
                         run_loop_->Quit();
+                      }
                     }));
     Run();
   }
@@ -165,8 +168,9 @@ class PlaylistServiceUnitTest : public testing::Test {
 
   mojom::PlaylistPtr GetPlaylist(const std::string& id) {
     auto* playlist_value = prefs()->GetDict(kPlaylistsPref).FindDict(id);
-    if (!playlist_value)
+    if (!playlist_value) {
       return nullptr;
+    }
 
     return ConvertValueToPlaylist(*playlist_value,
                                   prefs()->GetDict(kPlaylistItemsPref));
@@ -232,13 +236,15 @@ class PlaylistServiceUnitTest : public testing::Test {
     testing::Test::TearDown();
   }
 
+ protected:
+  std::unique_ptr<MediaDetectorComponentManager> detector_manager_;
+
  private:
   content::BrowserTaskEnvironment task_environment_{
       content::BrowserTaskEnvironment::IO_MAINLOOP};
 
   TestingPrefServiceSimple local_state_;
   std::unique_ptr<TestingProfile> profile_;
-  std::unique_ptr<MediaDetectorComponentManager> detector_manager_;
   std::unique_ptr<PlaylistService> service_;
 
   std::unique_ptr<base::ScopedTempDir> temp_dir_;
@@ -356,7 +362,7 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
 TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
   auto* service = playlist_service();
   service->download_request_manager_ =
-      std::make_unique<FakeDownloadRequestManager>();
+      std::make_unique<FakeDownloadRequestManager>(detector_manager_.get());
   auto* fake_download_request_manager =
       static_cast<FakeDownloadRequestManager*>(
           service->download_request_manager_.get());
@@ -729,8 +735,9 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
     service->UpdatePlaylistItemValue(
         id, base::Value(ConvertPlaylistItemToValue(dummy_item)));
   }
-  for (const auto& id : item_ids)
+  for (const auto& id : item_ids) {
     ASSERT_TRUE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
+  }
 
   // Try adding items and check they're stored well.
   // Adding duplicate items should affect the list, but considered as success.
@@ -816,8 +823,9 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
     service->UpdatePlaylistItemValue(
         id, base::Value(ConvertPlaylistItemToValue(dummy_item)));
   }
-  for (const auto& id : item_ids)
+  for (const auto& id : item_ids) {
     ASSERT_TRUE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
+  }
 
   ASSERT_TRUE(service->AddItemsToPlaylist(kDefaultPlaylistID,
                                           {item_ids.begin(), item_ids.end()}));
@@ -1285,6 +1293,141 @@ TEST_F(PlaylistServiceUnitTest, CleanUpOrphanedPlaylistItemDirs) {
         return !base::DirectoryExists(item_path);
       },
       service->GetPlaylistItemDirPath(item.id)));
+}
+
+TEST_F(PlaylistServiceUnitTest, MigratePlaylistOrder) {
+  // Pre-condition: There's a playlist before migration is done.
+  mojom::PlaylistPtr playlist = mojom::Playlist::New();
+  {
+    do {
+      playlist->id = base::Token::CreateRandom().ToString();
+    } while (playlist->id == kDefaultPlaylistID);
+
+    ScopedDictPrefUpdate playlists_update(prefs(), kPlaylistsPref);
+    playlists_update->Set(playlist->id.value(),
+                          ConvertPlaylistToValue(playlist));
+  }
+
+  // Playlist order pref should have only default playlist id
+  EXPECT_TRUE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
+                             base::Value(kDefaultPlaylistID)));
+  EXPECT_FALSE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
+                              base::Value(*playlist->id)));
+
+  // Call migration
+  auto new_order_list = prefs()->GetList(kPlaylistOrderPref).Clone();
+  MigratePlaylistOrder(prefs()->GetDict(kPlaylistsPref), new_order_list);
+  prefs()->SetList(kPlaylistOrderPref, std::move(new_order_list));
+
+  // After migration, the order pref should have both default and new playlist
+  EXPECT_TRUE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
+                             base::Value(*playlist->id)));
+}
+
+TEST_F(PlaylistServiceUnitTest, PlaylistOrderSync) {
+  // Pre-condition: Order pref should only have the default playlist
+  EXPECT_TRUE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
+                             base::Value(kDefaultPlaylistID)));
+  EXPECT_EQ(1u, prefs()->GetList(kPlaylistOrderPref).size());
+
+  // After creating a new playlist, order pref should contain that.
+  std::string new_id;
+  playlist_service()->CreatePlaylist(
+      mojom::Playlist::New(),
+      base::BindLambdaForTesting(
+          [&](mojom::PlaylistPtr playlist) { new_id = *playlist->id; }));
+
+  EXPECT_TRUE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
+                             base::Value(new_id)));
+  EXPECT_EQ(2u, prefs()->GetList(kPlaylistOrderPref).size());
+
+  // After creating the playlist, order pref shouldn't contain that.
+  playlist_service()->RemovePlaylist(new_id);
+  EXPECT_FALSE(base::Contains(prefs()->GetList(kPlaylistOrderPref),
+                              base::Value(new_id)));
+  EXPECT_EQ(1u, prefs()->GetList(kPlaylistOrderPref).size());
+}
+
+TEST_F(PlaylistServiceUnitTest, ReorderPlaylist) {
+  // pre-condition: Prepare
+  std::vector<std::string> ids;
+  for (int i = 0; i < 5; i++) {
+    auto playlist = mojom::Playlist::New();
+    playlist_service()->CreatePlaylist(
+        std::move(playlist),
+        base::BindLambdaForTesting([&](mojom::PlaylistPtr playlist) {
+          ids.push_back(*playlist->id);
+        }));
+  }
+
+  auto CheckOrder = [&](const std::vector<std::string>& expected_orders) {
+    EXPECT_TRUE(base::ranges::equal(prefs()->GetList(kPlaylistOrderPref),
+                                    expected_orders,
+                                    [](const auto& value, const auto& id) {
+                                      EXPECT_EQ(value.GetString(), id);
+                                      return value.GetString() == id;
+                                    }));
+  };
+
+  CheckOrder({
+      std::string(kDefaultPlaylistID),
+      ids.at(0),
+      ids.at(1),
+      ids.at(2),
+      ids.at(3),
+      ids.at(4),
+  });
+
+  // Move to the right
+  // ---------------------------------------------------------
+  playlist_service()->ReorderPlaylist(playlist::kDefaultPlaylistID, 3,
+                                      base::DoNothing());
+  CheckOrder({
+      ids.at(0),
+      ids.at(1),
+      ids.at(2),
+      std::string(kDefaultPlaylistID),
+      ids.at(3),
+      ids.at(4),
+  });
+
+  playlist_service()->ReorderPlaylist(playlist::kDefaultPlaylistID, 5,
+                                      base::DoNothing());
+  CheckOrder({
+      ids.at(0),
+      ids.at(1),
+      ids.at(2),
+      ids.at(3),
+      ids.at(4),
+      std::string(kDefaultPlaylistID),
+  });
+
+  // Move to the left
+  // ----------------------------------------------------------
+  playlist_service()->ReorderPlaylist(playlist::kDefaultPlaylistID, 2,
+                                      base::DoNothing());
+  CheckOrder({
+      ids.at(0),
+      ids.at(1),
+      std::string(kDefaultPlaylistID),
+      ids.at(2),
+      ids.at(3),
+      ids.at(4),
+  });
+
+  playlist_service()->ReorderPlaylist(playlist::kDefaultPlaylistID, 0,
+                                      base::DoNothing());
+  CheckOrder({
+      std::string(kDefaultPlaylistID),
+      ids.at(0),
+      ids.at(1),
+      ids.at(2),
+      ids.at(3),
+      ids.at(4),
+  });
+
+  playlist_service()->ResetAll();
+  CheckOrder({std::string(kDefaultPlaylistID)});
 }
 
 class PlaylistServiceWithFakeUAUnitTest : public PlaylistServiceUnitTest {

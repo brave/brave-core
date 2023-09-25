@@ -75,17 +75,3 @@ export type ImportWalletErrorPayloadType = {
   incrementAttempts?: boolean
 }
 
-export type PinningStatusType = {
-  code: BraveWallet.TokenPinStatusCode | undefined
-  error: BraveWallet.PinError | undefined
-}
-
-export type NftsPinningStatusType = {
-  [key: string]: PinningStatusType
-}
-
-export type UpdateNftPinningStatusType = {
-  token: BraveWallet.BlockchainToken
-  status?: BraveWallet.TokenPinStatus | undefined
-  error?: BraveWallet.PinError | undefined
-}

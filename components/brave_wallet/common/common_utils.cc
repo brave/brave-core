@@ -66,6 +66,10 @@ bool IsBitcoinEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletBitcoinFeature);
 }
 
+bool IsZCashEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveWalletZCashFeature);
+}
+
 bool IsAllowed(PrefService* prefs) {
   return !IsDisabledByPolicy(prefs);
 }

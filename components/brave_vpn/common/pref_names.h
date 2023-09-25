@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_COMMON_PREF_NAMES_H_
 
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 namespace brave_vpn {
@@ -29,9 +30,11 @@ constexpr char kBraveVPNShowNotificationDialog[] =
     "brave.brave_vpn.show_notification_dialog";
 constexpr char kBraveVPNWireguardFallbackDialog[] =
     "brave.brave_vpn.show_wireguard_fallback_dialog";
+#endif  // BUILDFLAG(IS_WIN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
 constexpr char kBraveVPNWireguardEnabled[] =
     "brave.brave_vpn.wireguard_enabled";
-#endif  // BUILDFLAG(IS_WIN)
+#endif
 constexpr char kBraveVPNWireguardProfileCredentials[] =
     "brave.brave_vpn.wireguard.profile_credentials";
 constexpr char kBraveVPNEnvironment[] = "brave.brave_vpn.env";

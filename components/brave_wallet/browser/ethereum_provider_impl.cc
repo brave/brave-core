@@ -12,15 +12,18 @@
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/siwe_message_parser.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -89,6 +92,15 @@ void RejectAccountNotAuthed(base::Value id,
   base::Value formed_response = GetProviderErrorDictionary(
       mojom::ProviderError::kUnauthorized,
       l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+  std::move(callback).Run(std::move(id), std::move(formed_response), true, "",
+                          false);
+}
+
+void RejectMismatchError(base::Value id,
+                         const std::string& err_msg,
+                         mojom::EthereumProvider::RequestCallback callback) {
+  base::Value formed_response =
+      GetProviderErrorDictionary(mojom::ProviderError::kInternalError, err_msg);
   std::move(callback).Run(std::move(id), std::move(formed_response), true, "",
                           false);
 }
@@ -233,29 +245,17 @@ void EthereumProviderImpl::SwitchEthereumChain(const std::string& chain_id,
   }
 }
 
-void EthereumProviderImpl::ContinueGetDefaultKeyringInfo(
+void EthereumProviderImpl::SendOrSignTransactionInternal(
     RequestCallback callback,
     base::Value id,
     const std::string& normalized_json_request,
-    const url::Origin& origin,
-    bool sign_only,
-    mojom::NetworkInfoPtr chain) {
-  keyring_service_->GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindOnce(&EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo,
-                     weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), normalized_json_request, origin,
-                     std::move(chain), sign_only));
-}
+    bool sign_only) {
+  url::Origin origin = delegate_->GetOrigin();
+  mojom::NetworkInfoPtr chain =
+      json_rpc_service_->GetNetworkSync(mojom::CoinType::ETH, origin);
+  mojom::KeyringInfoPtr keyring_info =
+      keyring_service_->GetKeyringInfoSync(mojom::kDefaultKeyringId);
 
-void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
-    RequestCallback callback,
-    base::Value id,
-    const std::string& normalized_json_request,
-    const url::Origin& origin,
-    mojom::NetworkInfoPtr chain,
-    bool sign_only,
-    mojom::KeyringInfoPtr keyring_info) {
   bool reject = false;
   if (!chain || !keyring_info) {
     mojom::ProviderError code = mojom::ProviderError::kInternalError;
@@ -290,16 +290,16 @@ void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
                          keyring_info->account_infos, from)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
-    tx_service_->AddUnapprovedTransaction(
+    tx_service_->AddUnapprovedTransactionWithOrigin(
         mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data_1559)),
-        account_id.Clone(), origin, absl::nullopt,
+        account_id.Clone(), origin,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
   } else {
-    tx_service_->AddUnapprovedTransaction(
+    tx_service_->AddUnapprovedTransactionWithOrigin(
         mojom::TxDataUnion::NewEthTxData(std::move(tx_data_1559->base_data)),
-        account_id.Clone(), origin, absl::nullopt,
+        account_id.Clone(), origin,
         base::BindOnce(&EthereumProviderImpl::OnAddUnapprovedTransactionAdapter,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id)));
@@ -363,14 +363,93 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
   if (!PrefixedHexStringToBytes(message, &message_bytes)) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
-
   std::string message_str(message_bytes.begin(), message_bytes.end());
-  if (!base::IsStringUTF8(message_str)) {
-    message_str = ToHex(message_str);
+  mojom::SignDataUnionPtr sign_data = nullptr;
+
+  SIWEMessageParser parser;
+  auto siwe_message = parser.Parse(message_str);
+
+  // Non SIWE compliant message will fallback to eip-191(Signed Data Standard)
+  if (siwe_message) {
+    const std::string chain_id_hex = json_rpc_service_->GetChainIdSync(
+        mojom::CoinType::ETH, delegate_->GetOrigin());
+    uint64_t chain_id;
+    if (!base::HexStringToUInt64(chain_id_hex, &chain_id) ||
+        chain_id != siwe_message->chain_id) {
+      const std::string& incorrect_chain_id =
+          base::NumberToString(siwe_message->chain_id);
+      brave_wallet_service_->AddSignMessageError(mojom::SignMessageError::New(
+          GenerateRandomHexString(), MakeOriginInfo(delegate_->GetOrigin()),
+          mojom::SignMessageErrorType::kChainIdMismatched,
+          l10n_util::GetStringFUTF8(
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+              l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_NETWORK),
+              base::StrCat(
+                  {l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_CHAIN_ID), u": ",
+                   base::ASCIIToUTF16(incorrect_chain_id)})),
+          incorrect_chain_id));
+      delegate_->ShowPanel();
+      return RejectMismatchError(
+          std::move(id),
+          l10n_util::GetStringFUTF8(
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH,
+              base::ASCIIToUTF16(incorrect_chain_id)),
+          std::move(callback));
+    }
+    if (EthAddress::FromHex(address) !=
+        EthAddress::FromHex(siwe_message->address)) {
+      brave_wallet_service_->AddSignMessageError(mojom::SignMessageError::New(
+          GenerateRandomHexString(), MakeOriginInfo(delegate_->GetOrigin()),
+          mojom::SignMessageErrorType::kAccountMismatched,
+          l10n_util::GetStringFUTF8(
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+              l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_ACCOUNT),
+              base::ASCIIToUTF16(siwe_message->address)),
+          absl::nullopt));
+      delegate_->ShowPanel();
+      return RejectMismatchError(
+          std::move(id),
+          l10n_util::GetStringFUTF8(
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_ACCOUNT_MISMATCH,
+              base::ASCIIToUTF16(siwe_message->address)),
+          std::move(callback));
+    }
+    if (bool uri_mismatched = false;
+        delegate_->GetOrigin() != siwe_message->origin ||
+        (uri_mismatched =
+             !siwe_message->origin.IsSameOriginWith(siwe_message->uri))) {
+      const std::string& err_domain = uri_mismatched
+                                          ? siwe_message->uri.spec()
+                                          : siwe_message->origin.Serialize();
+      brave_wallet_service_->AddSignMessageError(mojom::SignMessageError::New(
+          GenerateRandomHexString(), MakeOriginInfo(delegate_->GetOrigin()),
+          mojom::SignMessageErrorType::kDomainMismatched,
+          l10n_util::GetStringFUTF8(
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+              l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
+              base::ASCIIToUTF16(err_domain)),
+          absl::nullopt));
+      delegate_->ShowPanel();
+      return RejectMismatchError(
+          std::move(id),
+          l10n_util::GetStringFUTF8(
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_DOMAIN_MISMATCH,
+              base::ASCIIToUTF16(err_domain)),
+          std::move(callback));
+    }
+
+    sign_data = mojom::SignDataUnion::NewEthSiweData(std::move(siwe_message));
+  } else {
+    if (!base::IsStringUTF8(message_str)) {
+      message_str = ToHex(message_str);
+    }
+
+    sign_data = mojom::SignDataUnion::NewEthStandardSignData(
+        mojom::EthStandardSignData::New(message_str));
   }
 
-  SignMessageInternal(account_id, "", message_str, std::move(message_bytes),
-                      absl::nullopt, absl::nullopt, false, std::move(callback),
+  SignMessageInternal(account_id, std::move(sign_data),
+                      std::move(message_bytes), std::move(callback),
                       std::move(id));
 }
 
@@ -580,7 +659,6 @@ void EthereumProviderImpl::SignTypedMessage(
     base::Value::Dict domain,
     RequestCallback callback,
     base::Value id) {
-  bool reject = false;
   std::string domain_string;
   if (!base::JSONWriter::Write(domain, &domain_string) || domain_hash.empty() ||
       primary_hash.empty()) {
@@ -595,15 +673,12 @@ void EthereumProviderImpl::SignTypedMessage(
             chain_id_hex, json_rpc_service_->GetChainIdSync(
                               mojom::CoinType::ETH, delegate_->GetOrigin())) !=
         0) {
-      base::Value formed_response = GetProviderErrorDictionary(
-          mojom::ProviderError::kInternalError,
+      return RejectMismatchError(
+          std::move(id),
           l10n_util::GetStringFUTF8(
-              IDS_BRAVE_WALLET_SIGN_TYPED_MESSAGE_CHAIN_ID_MISMATCH,
-              base::ASCIIToUTF16(chain_id_hex)));
-      reject = true;
-      std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                              "", false);
-      return;
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH,
+              base::ASCIIToUTF16(chain_id_hex)),
+          std::move(callback));
     }
   }
 
@@ -622,26 +697,27 @@ void EthereumProviderImpl::SignTypedMessage(
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  SignMessageInternal(account_id, domain_string, message,
-                      std::move(*message_to_sign), base::HexEncode(domain_hash),
-                      base::HexEncode(primary_hash), true, std::move(callback),
+  mojom::SignDataUnionPtr sign_data =
+      mojom::SignDataUnion::NewEthSignTypedData(mojom::EthSignTypedData::New(
+          message, domain_string, base::HexEncode(domain_hash),
+          base::HexEncode(primary_hash)));
+
+  SignMessageInternal(account_id, std::move(sign_data),
+                      std::move(*message_to_sign), std::move(callback),
                       std::move(id));
 }
 
 void EthereumProviderImpl::SignMessageInternal(
     const mojom::AccountIdPtr& account_id,
-    const std::string& domain,
-    const std::string& message,
-    std::vector<uint8_t> message_to_sign,
-    const absl::optional<std::string>& domain_hash,
-    const absl::optional<std::string>& primary_hash,
-    bool is_eip712,
+    mojom::SignDataUnionPtr sign_data,
+    std::vector<uint8_t>&& message_to_sign,
     RequestCallback callback,
     base::Value id) {
+  CHECK(sign_data);
+  bool is_eip712 = sign_data->is_eth_sign_typed_data();
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, account_id.Clone(), domain,
-      message, is_eip712, domain_hash, primary_hash, absl::nullopt,
-      mojom::CoinType::ETH,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, account_id.Clone(),
+      std::move(sign_data), mojom::CoinType::ETH,
       json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
                                         delegate_->GetOrigin()));
 
@@ -843,19 +919,11 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     }
     SwitchEthereumChain(chain_id, std::move(callback), std::move(id));
   } else if (method == kEthSendTransaction) {
-    json_rpc_service_->GetNetwork(
-        mojom::CoinType::ETH, delegate_->GetOrigin(),
-        base::BindOnce(&EthereumProviderImpl::ContinueGetDefaultKeyringInfo,
-                       weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), normalized_json_request,
-                       delegate_->GetOrigin(), false));
+    SendOrSignTransactionInternal(std::move(callback), std::move(id),
+                                  std::move(normalized_json_request), false);
   } else if (method == kEthSignTransaction) {
-    json_rpc_service_->GetNetwork(
-        mojom::CoinType::ETH, delegate_->GetOrigin(),
-        base::BindOnce(&EthereumProviderImpl::ContinueGetDefaultKeyringInfo,
-                       weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), normalized_json_request,
-                       delegate_->GetOrigin(), true));
+    SendOrSignTransactionInternal(std::move(callback), std::move(id),
+                                  std::move(normalized_json_request), true);
   } else if (method == kEthSendRawTransaction) {
     std::string signed_transaction;
     if (!ParseEthSendRawTransactionParams(normalized_json_request,

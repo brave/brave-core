@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/json/values_util.h"
@@ -104,7 +105,7 @@ void InitializeUnsupportedShieldSettingInDictionary(
 
 void CheckMigrationFromResourceIdentifierForDictionary(
     const base::Value::Dict& dict,
-    base::StringPiece patterns_string,
+    std::string_view patterns_string,
     const absl::optional<base::Time> expected_last_modified,
     absl::optional<int> expected_setting_value) {
   const base::Value::Dict* settings_dict = dict.FindDict(patterns_string);

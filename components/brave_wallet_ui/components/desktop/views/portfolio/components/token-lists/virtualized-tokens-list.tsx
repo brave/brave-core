@@ -4,52 +4,52 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { VariableSizeList as List } from 'react-window'
+import {
+  VariableSizeList as List, //
+  ListChildComponentProps,
+  ListItemKeySelector
+} from 'react-window'
 
 // types
-import {
-  BraveWallet,
-  UserAssetInfoType
-} from '../../../../../../constants/types'
-import { getAssetIdKey } from '../../../../../../utils/asset-utils'
+import { BraveWallet } from '../../../../../../constants/types'
 
 type ViewMode = 'list' | 'grid'
 
-type RenderTokenProps = {
-  item: UserAssetInfoType
+type RenderTokenProps<T> = {
+  item: T
   viewMode: ViewMode
   index: number
   account?: BraveWallet.AccountInfo
 }
 
-export type RenderTokenFunc = (props: RenderTokenProps) => JSX.Element | undefined | null
+export type RenderTokenFunc<
+  T
+> = (props: RenderTokenProps<T>) => JSX.Element | undefined | null
 
-type VirtualizedTokensListProps = {
-  userAssetList: UserAssetInfoType[]
-  renderToken: RenderTokenFunc
+type VirtualizedTokensListProps<T extends any[]> = {
+  userAssetList: T
+  renderToken: RenderTokenFunc<T[number]>
   estimatedItemSize: number
   getItemSize: (index: number) => number
+  getItemKey: ListItemKeySelector<T[number]>
   maximumViewableTokens?: number
 }
 
-type ListItemProps<T extends UserAssetInfoType | BraveWallet.BlockchainToken = UserAssetInfoType> = {
+type ListItemProps<T> = {
   index: number
   data: T
   style: React.CSSProperties
-  renderToken: RenderTokenFunc
+  renderToken: RenderTokenFunc<T>
 }
 
-const ListItem = ({
+const ListItem = React.memo(function <T>({
   data,
   index,
   renderToken,
   style
-}: ListItemProps) => {
+}: ListItemProps<T>) {
   if (!data) {
-    console.warn('Token was null at index',
-      index,
-      data
-    )
+    console.warn('Token was null at index', index, data)
   }
 
   return (
@@ -57,21 +57,20 @@ const ListItem = ({
       {data && renderToken({ index, item: data, viewMode: 'list' })}
     </div>
   )
-}
+})
 
 const LIST_STYLE = {
   overscrollBehavior: 'contain'
 }
 
-const getListItemKey = (i: number, data: UserAssetInfoType[]) => getAssetIdKey(data[i].asset)
-
-export const VirtualizedTokensList = ({
+export const VirtualizedTokensList = React.memo(function <T extends any[]>({
   renderToken,
   userAssetList,
   estimatedItemSize,
   getItemSize,
-  maximumViewableTokens
-}: VirtualizedTokensListProps) => {
+  maximumViewableTokens,
+  getItemKey
+}: VirtualizedTokensListProps<T>) {
   // computed
   // last item shown as 50% visible to indicate that scrolling is possible here
   const maxTokens =
@@ -81,6 +80,19 @@ export const VirtualizedTokensList = ({
   const minimumItems =
     (Math.min(maxTokens, userAssetList.length || 1)) // min: 1, max: 4.5
   const listHeight = estimatedItemSize * minimumItems
+
+  // methods
+  const renderListChild = React.useCallback(
+    (itemProps: ListChildComponentProps<T>) => (
+      <ListItem
+        data={itemProps.data[itemProps.index]}
+        index={itemProps.index}
+        renderToken={renderToken}
+        style={itemProps.style}
+      />
+    ),
+    [renderToken]
+  )
 
   // render
   return (
@@ -92,15 +104,9 @@ export const VirtualizedTokensList = ({
       itemCount={userAssetList.length}
       estimatedItemSize={estimatedItemSize}
       overscanCount={20}
-      itemKey={getListItemKey}
+      itemKey={getItemKey}
       style={LIST_STYLE}
-      children={(itemProps) => (
-        <ListItem
-          {...itemProps}
-          data={itemProps.data[itemProps.index]}
-          renderToken={renderToken}
-        />
-      )}
+      children={renderListChild}
     />
   )
-}
+})

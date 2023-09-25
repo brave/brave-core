@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string_view>
+
 #include "base/path_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
@@ -125,7 +127,7 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
 
   content::RenderFrameHost* GetNthChildFrameWithHost(
       content::RenderFrameHost* main,
-      base::StringPiece host,
+      std::string_view host,
       size_t n = 0) {
     size_t child_idx = 0;
     while (true) {
@@ -142,7 +144,7 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
   }
 
   void OpenWebSockets(content::RenderFrameHost* rfh,
-                      base::StringPiece script_template,
+                      std::string_view script_template,
                       int count) {
     const std::string& ws_open_script =
         content::JsReplace(script_template, ws_url_);
@@ -152,7 +154,7 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
   }
 
   void ExpectWebSocketsAreLimited(content::RenderFrameHost* rfh,
-                                  base::StringPiece script_template) {
+                                  std::string_view script_template) {
     const std::string& ws_open_script =
         content::JsReplace(script_template, ws_url_);
     for (int i = 0; i < 5; ++i) {
@@ -161,7 +163,7 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
   }
 
   void CloseWebSockets(content::RenderFrameHost* rfh,
-                       base::StringPiece script_template,
+                       std::string_view script_template,
                        int count) {
     for (int i = 0; i < count; ++i) {
       EXPECT_TRUE(content::ExecJs(rfh, content::JsReplace(script_template, i)));
@@ -169,7 +171,7 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
   }
 
   void OpenWebSocketsAndExpectLimited(content::RenderFrameHost* rfh,
-                                      base::StringPiece script_template,
+                                      std::string_view script_template,
                                       int count) {
     OpenWebSockets(rfh, script_template, count);
     ExpectWebSocketsAreLimited(rfh, script_template);

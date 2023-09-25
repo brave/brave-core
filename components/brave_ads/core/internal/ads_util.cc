@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/ads_util.h"
 
-#include "base/strings/string_piece.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/ofac_sanction_util.h"
 

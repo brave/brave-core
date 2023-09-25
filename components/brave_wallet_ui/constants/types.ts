@@ -6,7 +6,6 @@
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
-import { NftsPinningStatusType } from '../page/constants/action_types'
 import { BlowfishWarningKind } from '../common/constants/blowfish'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
@@ -114,7 +113,6 @@ export type PanelTypes =
   | 'switchEthereumChain'
   | 'transactionDetails'
   | 'activity' // Transactions
-  | 'currencies'
   | 'transactionStatus'
 
 export type NavTypes =
@@ -249,8 +247,10 @@ export interface WalletState {
   selectedAssetFilter: string
   selectedGroupAssetsByItem: string
   selectedAccountFilter: string
-  onRampCurrencies: BraveWallet.OnRampCurrency[]
-  selectedCurrency: BraveWallet.OnRampCurrency | undefined
+  /**
+   * used for "buy" and "deposit" screens
+   */
+  selectedDepositAssetId?: string | undefined
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
@@ -285,6 +285,7 @@ export interface PanelState {
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   selectedTransactionId?: string
+  signMessageErrorData: BraveWallet.SignMessageError[]
 }
 
 export interface PageState {
@@ -309,8 +310,6 @@ export interface PageState {
   importWalletAttempts: number
   walletTermsAcknowledged: boolean
   selectedCoinMarket: BraveWallet.CoinMarket | undefined
-  nftsPinningStatus: NftsPinningStatusType
-  isLocalIpfsNodeRunning: boolean
 }
 
 export interface WalletPageState {
@@ -396,7 +395,6 @@ export interface SolanaSerializedTransactionParams {
   accountId: BraveWallet.AccountId
   txType: BraveWallet.TransactionType
   sendOptions?: BraveWallet.SolanaSendTransactionOptions
-  groupId?: string
 }
 
 export interface SendEthTransactionParams extends BaseEthTransactionParams {
@@ -644,15 +642,17 @@ export enum WalletRoutes {
   OnboardingConnectHardwareWalletStart = '/crypto/onboarding/connect-hardware-wallet',
   OnboardingConnectHardwareWallet = '/crypto/onboarding/connect-hardware-wallet/:accountTypeName?',
 
-
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',
 
   // fund wallet page
   FundWalletPageStart = '/crypto/fund-wallet',
-  FundWalletPage = '/crypto/fund-wallet/:tokenId?',
+  FundWalletPage = '/crypto/fund-wallet/:currencyCode?/:buyAmount?',
+  FundWalletPurchaseOptionsPage = '/crypto/fund-wallet/purchase/' +
+    ':currencyCode/:buyAmount',
   DepositFundsPageStart = '/crypto/deposit-funds',
-  DepositFundsPage = '/crypto/deposit-funds/:tokenId?',
+  DepositFundsPage = '/crypto/deposit-funds',
+  DepositFundsAccountPage = '/crypto/deposit-funds/account',
 
   // market
   Market = '/crypto/market',
@@ -693,13 +693,13 @@ export enum WalletRoutes {
   PortfolioAssets = '/crypto/portfolio/assets',
   PortfolioNFTs = '/crypto/portfolio/nfts',
   PortfolioNFTAsset = '/crypto/portfolio/nfts/' +
-  ':chainId/' +
-  ':contractAddress/' +
-  ':tokenId?',
+    ':chainId/' +
+    ':contractAddress/' +
+    ':tokenId?',
   PortfolioAsset = '/crypto/portfolio/assets/' +
-  ':chainIdOrMarketSymbol/' +
-  ':contractOrSymbol?/' +
-  ':tokenId?',
+    ':chainIdOrMarketSymbol/' +
+    ':contractOrSymbol?/' +
+    ':tokenId?',
   PortfolioSub = '/crypto/portfolio/:assetsOrNfts/:chainIdOrMarketSymbol?',
 
   // portfolio asset modals
@@ -711,10 +711,10 @@ export enum WalletRoutes {
   // send
   SendPageStart = '/send',
   SendPage = '/send/' +
-  ':chainId?/' +
-  ':accountAddress?/' +
-  ':contractAddressOrSymbol?/' +
-  ':tokenId?',
+    ':chainId?/' +
+    ':accountAddress?/' +
+    ':contractAddressOrSymbol?/' +
+    ':tokenId?',
 
   // dev bitcoin screen
   DevBitcoin = '/dev-bitcoin',

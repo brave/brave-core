@@ -15,15 +15,10 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_wallet/wallet_notification_helper.h"
-#endif
 
 namespace brave_wallet {
 
@@ -148,19 +143,12 @@ TxServiceFactory::~TxServiceFactory() = default;
 
 KeyedService* TxServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  auto* tx_service =
-      new TxService(JsonRpcServiceFactory::GetServiceForContext(context),
-                    BitcoinWalletServiceFactory::GetServiceForContext(context),
-                    KeyringServiceFactory::GetServiceForContext(context),
-                    user_prefs::UserPrefs::Get(context), context->GetPath(),
-                    base::SequencedTaskRunner::GetCurrentDefault());
-#if !BUILDFLAG(IS_ANDROID)
-  // TODO(apaymyshev): WalletNotificationServiceFactory depends on
-  // TxServiceFactory and should be responsible for subscribing on TxService.
-  // Refactor this.
-  RegisterWalletNotificationService(context, tx_service);
-#endif
-  return tx_service;
+  return new TxService(
+      JsonRpcServiceFactory::GetServiceForContext(context),
+      BitcoinWalletServiceFactory::GetServiceForContext(context),
+      KeyringServiceFactory::GetServiceForContext(context),
+      user_prefs::UserPrefs::Get(context), context->GetPath(),
+      base::SequencedTaskRunner::GetCurrentDefault());
 }
 
 content::BrowserContext* TxServiceFactory::GetBrowserContextToUse(

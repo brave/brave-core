@@ -79,7 +79,6 @@ import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-t
 import { ConfirmBitcoinTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-bitcoin-transaction-panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
 import { useDispatch } from 'react-redux'
-import { SelectCurrency } from '../components/buy-send-swap/select-currency/select-currency'
 import { ConfirmSwapTransaction } from '../components/extension/confirm-transaction-panel/swap'
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import { useSafePanelSelector, useSafeWalletSelector, useUnsafePanelSelector, useUnsafeWalletSelector } from '../common/hooks/use-safe-selector'
@@ -95,6 +94,9 @@ import {
 import { useSelectedAccountQuery } from '../common/slices/api.slice.extra'
 import { usePendingTransactions } from '../common/hooks/use-pending-transaction'
 import PageContainer from '../page/container'
+import {
+  SignInWithEthereumError
+} from '../components/extension/sign-panel/sign_in_with_ethereum_error'
 
 // Allow BigInts to be stringified
 (BigInt.prototype as any).toJSON = function () {
@@ -133,6 +135,8 @@ function Container () {
   const getEncryptionPublicKeyRequest = useUnsafePanelSelector(PanelSelectors.getEncryptionPublicKeyRequest)
   const decryptRequest = useUnsafePanelSelector(PanelSelectors.decryptRequest)
   const connectingAccounts = useUnsafePanelSelector(PanelSelectors.connectingAccounts)
+  const signMessageErrorData =
+    useUnsafePanelSelector(PanelSelectors.signMessageErrorData)
 
   // queries & mutations
   const [setSelectedAccount] = useSetSelectedAccountMutation()
@@ -327,14 +331,6 @@ function Container () {
     )
   }
 
-  const onBack = React.useCallback(() => {
-    navigateTo('buy')
-  }, [])
-
-  const onSelectCurrency = React.useCallback(() => {
-    dispatch(WalletPanelActions.navigateTo('buy'))
-  }, [])
-
   React.useEffect(() => {
     if (needsAccount && selectedPanel === 'main') {
       dispatch(WalletPanelActions.navigateTo('createAccount'))
@@ -471,6 +467,14 @@ function Container () {
             panelType='change'
           />
         </LongWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (signMessageErrorData.length !== 0) {
+    return (
+      <PanelWrapper>
+        <SignInWithEthereumError />
       </PanelWrapper>
     )
   }
@@ -688,27 +692,6 @@ function Container () {
           />
         </LongWrapper>
       </WelcomePanelWrapper>
-    )
-  }
-
-  if (selectedPanel === 'currencies') {
-    return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <Panel
-            navAction={navigateTo}
-            title={panelTitle}
-            useSearch={false}
-          >
-            <ScrollContainer>
-              <SelectCurrency
-                onBack={onBack}
-                onSelectCurrency={onSelectCurrency}
-              />
-            </ScrollContainer>
-          </Panel>
-        </StyledExtensionWrapper>
-      </PanelWrapper>
     )
   }
 

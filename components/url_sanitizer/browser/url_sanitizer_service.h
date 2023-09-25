@@ -15,7 +15,6 @@
 #include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
-#include "base/strings/string_piece.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "brave/components/url_sanitizer/common/mojom/url_sanitizer.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"

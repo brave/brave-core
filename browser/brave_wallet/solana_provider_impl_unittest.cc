@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/solana_message.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/permissions/brave_permission_manager.h"
@@ -175,7 +176,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
         base::BindLambdaForTesting(
             [&](std::vector<mojom::SignMessageRequestPtr> requests) {
               for (const auto& request : requests) {
-                SCOPED_TRACE(request->message);
+                ASSERT_TRUE(request->sign_data->is_solana_sign_data());
+                SCOPED_TRACE(
+                    request->sign_data->get_solana_sign_data()->message);
                 EXPECT_EQ(request->chain_id,
                           json_rpc_service_->GetChainIdSync(
                               mojom::CoinType::SOL, GetOrigin()));
@@ -846,10 +849,11 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
   base::RunLoop().RunUntilIdle();
   auto requests = GetPendingSignMessageRequests();
   ASSERT_EQ(requests.size(), 4u);
-  EXPECT_EQ(requests[0]->message, "BRAVE");
-  EXPECT_EQ(requests[1]->message, "BRAVE");
-  EXPECT_EQ(requests[2]->message, "0x4252415645");
-  EXPECT_EQ(requests[3]->message, "BRAVE");
+  EXPECT_EQ(requests[0]->sign_data->get_solana_sign_data()->message, "BRAVE");
+  EXPECT_EQ(requests[1]->sign_data->get_solana_sign_data()->message, "BRAVE");
+  EXPECT_EQ(requests[2]->sign_data->get_solana_sign_data()->message,
+            "0x4252415645");
+  EXPECT_EQ(requests[3]->sign_data->get_solana_sign_data()->message, "BRAVE");
 }
 
 TEST_F(SolanaProviderImplUnitTest, SignMessage_Hardware) {

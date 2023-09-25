@@ -3,11 +3,69 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_common_sources = []
+import("//extensions/buildflags/buildflags.gni")
+
+brave_chrome_common_sources = [
+  "//brave/common/brave_channel_info.cc",
+  "//brave/common/brave_channel_info.h",
+  "//brave/common/resource_bundle_helper.cc",
+  "//brave/common/resource_bundle_helper.h",
+]
+
+brave_chrome_common_deps = [
+  "//base",
+  "//brave/common:mojo_bindings",
+  "//brave/extensions:common",
+  "//components/version_info:channel",
+  "//extensions/buildflags",
+  "//services/service_manager",
+  "//ui/base",
+]
+
+brave_chrome_common_public_deps = [ "//brave/components/constants" ]
 
 if (is_android) {
-  brave_common_sources = [
+  brave_chrome_common_sources += [
     "//chrome/common/importer/imported_bookmark_entry.cc",
     "//chrome/common/importer/imported_bookmark_entry.h",
+  ]
+}
+
+if (!is_android && !is_ios) {
+  brave_chrome_common_deps += [ "//brave/common/importer" ]
+}
+
+if (enable_extensions) {
+  brave_chrome_common_sources += [
+    "//brave/common/extensions/brave_extensions_api_provider.cc",
+    "//brave/common/extensions/brave_extensions_api_provider.h",
+    "//brave/common/extensions/brave_extensions_client.cc",
+    "//brave/common/extensions/brave_extensions_client.h",
+  ]
+
+  brave_chrome_common_deps += [
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/https_upgrade_exceptions/browser",
+    "//components/component_updater",
+    "//extensions/common:common_constants",
+  ]
+
+  brave_chrome_common_public_deps += [ "extensions/api" ]
+}
+
+if (!is_ios) {
+  brave_chrome_common_sources += [
+    "//brave/common/brave_content_client.cc",
+    "//brave/common/brave_content_client.h",
+  ]
+
+  brave_chrome_common_deps += [
+    "//brave/components/resources",
+    "//brave/components/resources:static_resources_grit",
+    "//chrome/common:channel_info",
+    "//chrome/common:constants",
+    "//components/resources",
+    "//content/public/common",
+    "//third_party/widevine/cdm:buildflags",
   ]
 }

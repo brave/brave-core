@@ -154,7 +154,7 @@ export function Settings () {
   }, [rewardsData.initializing])
 
   React.useEffect(() => {
-    const id = setInterval(() => { actions.getBalance() }, 60000)
+    const id = setInterval(() => { actions.getBalance() }, 180000)
     return () => { clearInterval(id) }
   }, [rewardsData.initializing])
 

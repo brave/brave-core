@@ -7,16 +7,19 @@ import * as React from 'react'
 export function useScrollIntoView () {
   // Prevents scrolling into view again if re-render occurs
   const alreadyScrolled = React.useRef(false)
-  const scrollIntoView = React.useCallback((ref: HTMLElement | null) => {
-    if (!alreadyScrolled.current) {
-      ref?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center'
-      })
-      alreadyScrolled.current = true
-    }
-  }, [alreadyScrolled])
+  const scrollIntoView = React.useCallback(
+    (ref: HTMLElement | null, forceScroll = false) => {
+      if (forceScroll || !alreadyScrolled.current) {
+        ref?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        })
+        alreadyScrolled.current = true
+      }
+    },
+    [alreadyScrolled]
+  )
 
   return scrollIntoView
 }

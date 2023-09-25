@@ -30,7 +30,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceUtilTest, SetNoEligibleSegments) {
   // Arrange
 
   // Act
-  SetEpsilonGreedyBanditEligibleSegments(/*segments*/ {});
+  SetEpsilonGreedyBanditEligibleSegments(SegmentList{});
 
   // Assert
   const SegmentList segments = GetEpsilonGreedyBanditEligibleSegments();

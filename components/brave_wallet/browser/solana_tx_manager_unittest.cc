@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
@@ -15,8 +16,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
@@ -30,6 +31,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -123,10 +125,10 @@ class SolanaTxManagerUnitTest : public testing::Test {
          last_valid_block_height, block_height,
          get_null_signature_statuses](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          base::StringPiece request_string(request.request_body->elements()
-                                               ->at(0)
-                                               .As<network::DataElementBytes>()
-                                               .AsStringPiece());
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
           base::Value::Dict request_root =
               base::test::ParseJsonDict(request_string);
 
@@ -244,22 +246,20 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                 const mojom::AccountIdPtr& from,
                                 std::string* meta_id) {
     AddUnapprovedTransaction(chain_id, std::move(solana_tx_data), from,
-                             GetOrigin(), meta_id, absl::nullopt);
+                             GetOrigin(), meta_id);
   }
 
-  void AddUnapprovedTransaction(
-      const std::string& chain_id,
-      mojom::SolanaTxDataPtr solana_tx_data,
-      const mojom::AccountIdPtr& from,
-      const absl::optional<url::Origin>& origin,
-      std::string* meta_id,
-      const absl::optional<std::string>& group_id = absl::nullopt) {
+  void AddUnapprovedTransaction(const std::string& chain_id,
+                                mojom::SolanaTxDataPtr solana_tx_data,
+                                const mojom::AccountIdPtr& from,
+                                const absl::optional<url::Origin>& origin,
+                                std::string* meta_id) {
     auto tx_data_union =
         mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data));
 
     base::RunLoop run_loop;
     solana_tx_manager()->AddUnapprovedTransaction(
-        chain_id, std::move(tx_data_union), from, origin, group_id,
+        chain_id, std::move(tx_data_union), from, origin,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
@@ -618,27 +618,6 @@ TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
   EXPECT_EQ(tx_meta->chain_id(), mojom::kSolanaMainnet);
   EXPECT_EQ(tx_meta->origin(),
             url::Origin::Create(GURL("https://some.site.com")));
-}
-
-TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithGroupId) {
-  const auto& from = sol_account();
-  const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
-  mojom::SolanaTxDataPtr system_transfer_data = nullptr;
-  TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
-                                      mojom::SolanaProviderError::kSuccess, "",
-                                      &system_transfer_data);
-  ASSERT_TRUE(system_transfer_data);
-
-  std::string meta_id;
-  AddUnapprovedTransaction(mojom::kSolanaMainnet,
-                           std::move(system_transfer_data), from, absl::nullopt,
-                           &meta_id, "mockGroupId");
-
-  auto tx_meta =
-      solana_tx_manager()->GetTxForTesting(mojom::kSolanaMainnet, meta_id);
-  ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->chain_id(), mojom::kSolanaMainnet);
-  EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
 }
 
 TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {

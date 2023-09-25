@@ -73,7 +73,7 @@ provideStrings({
 
   // Portfolio SubView
   braveWalletAccounts: 'Accounts',
-  braveWalletAccount: 'Account',
+  braveWalletSubviewAccount: 'Account',
   braveWalletOwner: 'Owner',
   braveWalletActivity: 'Activity',
   braveWalletTransactions: 'Transactions',
@@ -490,6 +490,25 @@ provideStrings({
   braveWalletSignTransactionButton: 'Sign',
   braveWalletApproveTransaction: 'Approve transaction',
 
+  // Sign in with Ethereum
+  braveWalletSignInWithBraveWallet: 'Sign in with Brave Wallet',
+  braveWalletSignInWithBraveWalletMessage:
+    'You are signing into $1. Brave wallet will share your wallet address with $1.',
+  braveWalletSeeDetails: 'See details',
+  braveWalletSignIn: 'Sign in',
+  braveWalletOrigin: 'Origin',
+  braveWalletAddress: 'Address',
+  braveWalletStatement: 'Statement',
+  braveWalletUri: 'URI',
+  braveWalletVersion: 'Version',
+  braveWalletNonce: 'Nonce',
+  braveWalletIssuedAt: 'Issued at',
+  braveWalletExpirationTime: 'Expiration time',
+  braveWalletNotBefore: 'Not before',
+  braveWalletRequestId: 'Request ID',
+  braveWalletResources: 'Resources',
+  braveWalletSecurityRiskDetected: 'Security risk detected',
+
   // Encryption Key Panel
   braveWalletProvideEncryptionKeyTitle: 'A DApp is requesting your public encryption key',
   braveWalletProvideEncryptionKeyDescription: '$1$url$2 is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.',
@@ -517,7 +536,7 @@ provideStrings({
   braveWalletAllowAddNetworkUrl: 'Network URL',
   braveWalletAllowAddNetworkDetailsButton: 'View all details',
   braveWalletAllowAddNetworkButton: 'Approve',
-  braveWalletAllowAddNetworkChainID: 'Chain ID',
+  braveWalletChainId: 'Chain ID',
   braveWalletAllowAddNetworkCurrencySymbol: 'Currency symbol',
   braveWalletAllowAddNetworkExplorer: 'Block explorer URL',
   braveWalletAllowChangeNetworkTitle: 'Allow this site to switch the network?',
@@ -924,10 +943,11 @@ provideStrings({
   braveNftsTabEmptyStateDisclaimer: 'Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).',
   braveNftsTab: 'NFTs',
   braveNftsTabHidden: 'Hidden',
-  braveNftsTabSpam: 'Spam',
+  braveNftsTabCollected: 'Collected',
   braveNftsTabHide: 'Hide',
   braveNftsTabUnhide: 'Unhide',
   braveNftsTabEdit: 'Edit',
+  braveNftsTabRemove: 'Don\'t show in wallet',
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
@@ -977,8 +997,15 @@ provideStrings({
   braveWalletNftPinningErrorTooltipReasonThree: 'Not enough space on local node',
   braveWalletImportNftModalTitle: 'Import NFT',
   braveWalletEditNftModalTitle: 'Edit NFT',
-  braveWalletNftMoveToSpam: 'Move to spam',
-  braveWalletNftUnspam: 'Not spam',
+  braveWalletNftMoveToSpam: 'Mark as junk',
+  braveWalletNftUnspam: 'Mark as not junk',
+  braveWalletNftJunk: 'Junk',
+
+  // Remove NFT modal
+  braveWalletRemoveNftModalHeader: 'Remove from Brave Wallet?',
+  braveWalletRemoveNftModalDescription: 'NFT will be removed from Brave Wallet but will remain on the blockchain. If you remove it, then change your mind, you\'ll need to import it again manually.',
+  braveWalletRemoveNftModalCancel: 'Cancel',
+  braveWalletRemoveNftModalConfirm: 'Remove',
 
   // NFT auto discovery modal
   braveWalletEnableNftAutoDiscoveryModalHeader: 'Want your NFTs displayed automatically?',

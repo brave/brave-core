@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_balance/post_balance_gemini.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -54,7 +55,7 @@ mojom::Result PostBalance::ParseBody(const std::string& body,
     }
 
     const bool result =
-        base::StringToDouble(base::StringPiece(*available_value), available);
+        base::StringToDouble(std::string_view(*available_value), available);
     if (!result) {
       BLOG(0, "Invalid balance");
       return mojom::Result::FAILED;

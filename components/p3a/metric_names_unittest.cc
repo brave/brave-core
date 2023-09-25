@@ -20,8 +20,8 @@ TEST(P3AMetrics, Searchable) {
   EXPECT_TRUE(kCollectedTypicalHistograms.contains("Brave.Core.IsDefault"));
   EXPECT_TRUE(
       kCollectedTypicalHistograms.contains("Brave.P3A.SentAnswersCount"));
-  EXPECT_TRUE(
-      kCollectedTypicalHistograms.contains("Brave.P2A.TotalAdOpportunities"));
+  EXPECT_TRUE(kCollectedTypicalHistograms.contains(
+      "Brave.P2A.ad_notification.opportunities"));
   // Verify set membership testing isn't returning true unconditionally.
   EXPECT_FALSE(kCollectedTypicalHistograms.contains("Not.A.Brave.Metric"));
   EXPECT_FALSE(kCollectedTypicalHistograms.contains("antimetric"));

@@ -60,8 +60,7 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
                                   mojom::NewTabPageAdEventType event_type);
 
   // NewTabPageAdServingDelegate:
-  void OnOpportunityAroseToServeNewTabPageAd(
-      const SegmentList& segments) override;
+  void OnOpportunityAroseToServeNewTabPageAd() override;
   void OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) override;
 
   // NewTabPageAdEventHandlerDelegate:

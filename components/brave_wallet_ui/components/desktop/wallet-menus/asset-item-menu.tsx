@@ -26,6 +26,7 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
+import { makeDepositFundsRoute } from '../../../utils/routes-utils'
 
 // Components
 import {
@@ -129,9 +130,7 @@ export const AssetItemMenu = (props: Props) => {
   }, [])
 
   const onClickDeposit = React.useCallback(() => {
-    history.push(
-      WalletRoutes.DepositFundsPage.replace(':tokenId?', asset.symbol)
-    )
+    history.push(makeDepositFundsRoute(asset.symbol))
   }, [asset.symbol])
 
   const onClickSell = React.useCallback(() => {

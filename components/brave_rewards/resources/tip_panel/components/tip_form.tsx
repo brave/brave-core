@@ -78,8 +78,16 @@ export function TipForm () {
     switch (sendStatus) {
       case 'failed': return getString('tryAgainButtonLabel')
       case 'pending': return <LoadingIcon />
-      default: return getString('sendButtonLabel')
     }
+
+    const { walletProvider } = state.rewardsUser
+    if (!walletProvider) {
+      return getString('sendButtonLabel')
+    }
+
+    return formatMessage(getString('sendWithButtonLabel'), [
+      getExternalWalletProviderName(walletProvider)
+    ])
   }
 
   function maybeRenderMonthlyTipNote () {

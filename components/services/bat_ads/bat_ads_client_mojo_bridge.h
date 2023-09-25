@@ -64,14 +64,14 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
 
   void UpdateAdRewards() override;
 
-  void RecordAdEventForId(const std::string& id,
-                          const std::string& ad_type,
-                          const std::string& confirmation_type,
-                          base::Time time) const override;
-  std::vector<base::Time> GetAdEventHistory(
+  void CacheAdEventForInstanceId(const std::string& id,
+                                 const std::string& ad_type,
+                                 const std::string& confirmation_type,
+                                 base::Time time) const override;
+  std::vector<base::Time> GetCachedAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
-  void ResetAdEventHistoryForId(const std::string& id) const override;
+  void ResetAdEventCacheForInstanceId(const std::string& id) const override;
 
   void GetBrowsingHistory(
       int max_count,
@@ -99,7 +99,7 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
                         brave_ads::RunDBTransactionCallback callback) override;
 
-  void RecordP2AEvents(base::Value::List events) override;
+  void RecordP2AEvents(const std::vector<std::string>& events) override;
 
   void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
                              training_sample) override;

@@ -36,13 +36,13 @@ const mainButtonsOptions = [
     id: 'tts',
     type: MainButtonType.TextToSpeech,
     iconName: 'headphones',
-    hidden: true,  // TODO(boocmp): Enable in future PR.
+    hidden: !loadTimeData.getBoolean('ttsEnabled'),
     title: getLocale('braveReaderModeTextToSpeech')
   },
   {
     id: 'ai',
     type: MainButtonType.AI,
-    iconName: 'product-brave-ai',
+    iconName: 'product-brave-leo',
     hidden: !loadTimeData.getBoolean('aiChatFeatureEnabled'),
     title: getLocale('braveReaderModeAI')
   }

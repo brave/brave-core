@@ -77,15 +77,7 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
   }
 
   Browser* OpenTorWindow() {
-    base::RunLoop loop;
-    Browser* tor_browser = nullptr;
-    TorProfileManager::SwitchToTorProfile(
-        browser()->profile(), base::BindLambdaForTesting([&](Browser* browser) {
-          tor_browser = browser;
-          loop.Quit();
-        }));
-    loop.Run();
-    return tor_browser;
+    return TorProfileManager::SwitchToTorProfile(browser()->profile());
   }
 
  protected:

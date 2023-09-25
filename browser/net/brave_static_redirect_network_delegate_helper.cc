@@ -8,9 +8,9 @@
 #include <algorithm>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
-#include "base/strings/string_piece_forward.h"
 #include "brave/browser/net/brave_geolocation_buildflags.h"
 #include "brave/browser/safebrowsing/buildflags.h"
 #include "brave/components/constants/network_constants.h"
@@ -26,7 +26,7 @@ namespace {
 
 bool g_safebrowsing_api_endpoint_for_testing_ = false;
 
-base::StringPiece GetSafeBrowsingEndpoint() {
+std::string_view GetSafeBrowsingEndpoint() {
   if (g_safebrowsing_api_endpoint_for_testing_)
     return kSafeBrowsingTestingEndpoint;
   return BUILDFLAG(SAFEBROWSING_ENDPOINT);

@@ -101,9 +101,9 @@ void Transfer::TransferAdCallback(const int32_t tab_id,
     return FailedToTransferAd(ad);
   }
 
-  LogAdEvent(ad, ConfirmationType::kTransferred,
-             base::BindOnce(&Transfer::LogAdEventCallback,
-                            weak_factory_.GetWeakPtr(), ad));
+  RecordAdEvent(ad, ConfirmationType::kTransferred,
+                base::BindOnce(&Transfer::LogAdEventCallback,
+                               weak_factory_.GetWeakPtr(), ad));
 }
 
 void Transfer::LogAdEventCallback(const AdInfo& ad, const bool success) {

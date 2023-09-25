@@ -99,8 +99,7 @@ bool RefillConfirmationTokens::ShouldRequestSignedTokens() const {
 void RefillConfirmationTokens::RequestSignedTokens() {
   CHECK(blinded_tokens_);
 
-  BLOG(1, "RequestSignedTokens");
-  BLOG(2, "POST /v{version}/confirmation/token/{paymentId}");
+  BLOG(1, "Request signed tokens");
 
   RequestSignedTokensUrlRequestBuilder url_request_builder(wallet_,
                                                            *blinded_tokens_);
@@ -116,8 +115,6 @@ void RefillConfirmationTokens::RequestSignedTokens() {
 
 void RefillConfirmationTokens::RequestSignedTokensCallback(
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnRequestSignedTokens");
-
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
@@ -166,8 +163,7 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
 void RefillConfirmationTokens::GetSignedTokens() {
   CHECK(nonce_);
 
-  BLOG(1, "GetSignedTokens");
-  BLOG(2, "GET /v{version}/confirmation/token/{paymentId}?nonce={nonce}");
+  BLOG(1, "Get signed tokens");
 
   GetSignedTokensUrlRequestBuilder url_request_builder(wallet_, *nonce_);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
@@ -182,8 +178,6 @@ void RefillConfirmationTokens::GetSignedTokens() {
 
 void RefillConfirmationTokens::GetSignedTokensCallback(
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "OnGetSignedTokens");
-
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 

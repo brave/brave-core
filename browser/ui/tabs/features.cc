@@ -7,14 +7,6 @@
 
 namespace tabs::features {
 
-BASE_FEATURE(kBraveVerticalTabs,
-             "BraveVerticalTabs",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-BASE_FEATURE(kBraveVerticalTabsStickyPinnedTabs,
-             "BraveVerticalTabsStickyPinnedTabs",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 #if BUILDFLAG(IS_LINUX)
 BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
              "BraveChangeActiveTabOnScrollEvent",

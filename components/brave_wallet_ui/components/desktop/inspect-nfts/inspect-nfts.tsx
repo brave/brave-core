@@ -4,8 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
+
+// api
+import { useGetAutopinEnabledQuery, useSetAutopinEnabledMutation } from '../../../common/slices/api.slice'
 
 // components
 import { NftList } from './components/nft-list/nft-list'
@@ -15,12 +17,7 @@ import { InfoTooltip } from './components/info-tooltip/info-tooltip'
 // styled components
 import { Row } from '../../shared/style'
 
-// selectors
-import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../page/selectors'
-
 // utils
-import { WalletPageActions } from '../../../page/actions'
 import { getLocale } from '../../../../common/locale'
 import { useNftPin } from '../../../common/hooks/nft-pin'
 
@@ -57,17 +54,20 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
   // routing
   const history = useHistory()
 
-  // redux
-  const dispatch = useDispatch()
-  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
+ // queries
+ const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
+  
+ // mutations
+ const [setAutoPinStatus] = useSetAutopinEnabledMutation()
 
-  // methods
-  const onClickRunNode = React.useCallback(() => {
-    if (!isAutoPinEnabled) {
-      dispatch(WalletPageActions.setAutoPinEnabled(true))
-    }
-    history.push(WalletRoutes.PortfolioNFTs)
-  }, [isAutoPinEnabled])
+ // methods
+ const onClickRunNode = React.useCallback(() => {
+   if (!isAutoPinEnabled) {
+     setAutoPinStatus(true)
+   }
+   history.push(WalletRoutes.PortfolioNFTs)
+ }, [isAutoPinEnabled])
+
 
   const onShowTooltip = React.useCallback(() => setShowTooltip(true), [])
   const onHideTooltip = React.useCallback(() => setShowTooltip(false), [])

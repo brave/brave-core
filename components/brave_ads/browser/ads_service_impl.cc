@@ -30,13 +30,13 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/components/brave_ads/browser/analytics/p2a/ads_p2a.h"
+#include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 #include "brave/components/brave_ads/browser/units/notification_ad/custom_notification_ad_feature.h"
-#include "brave/components/brave_ads/browser/user/user_interaction/ad_events/frequency_capping_helper.h"
+#include "brave/components/brave_ads/browser/user/user_interaction/ad_events/ad_event_cache_helper.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
@@ -1502,24 +1502,24 @@ void AdsServiceImpl::UpdateAdRewards() {
   }
 }
 
-void AdsServiceImpl::RecordAdEventForId(const std::string& id,
-                                        const std::string& ad_type,
-                                        const std::string& confirmation_type,
-                                        const base::Time time) {
-  FrequencyCappingHelper::GetInstance()->RecordAdEventForId(
+void AdsServiceImpl::CacheAdEventForInstanceId(
+    const std::string& id,
+    const std::string& ad_type,
+    const std::string& confirmation_type,
+    const base::Time time) {
+  AdEventCacheHelper::GetInstance()->CacheAdEventForInstanceId(
       id, ad_type, confirmation_type, time);
 }
 
-void AdsServiceImpl::GetAdEventHistory(const std::string& ad_type,
+void AdsServiceImpl::GetCachedAdEvents(const std::string& ad_type,
                                        const std::string& confirmation_type,
-                                       GetAdEventHistoryCallback callback) {
-  std::move(callback).Run(
-      FrequencyCappingHelper::GetInstance()->GetAdEventHistory(
-          ad_type, confirmation_type));
+                                       GetCachedAdEventsCallback callback) {
+  std::move(callback).Run(AdEventCacheHelper::GetInstance()->GetCachedAdEvents(
+      ad_type, confirmation_type));
 }
 
-void AdsServiceImpl::ResetAdEventHistoryForId(const std::string& id) {
-  return FrequencyCappingHelper::GetInstance()->ResetAdEventHistoryForId(id);
+void AdsServiceImpl::ResetAdEventCacheForInstanceId(const std::string& id) {
+  return AdEventCacheHelper::GetInstance()->ResetAdEventCacheForInstanceId(id);
 }
 
 void AdsServiceImpl::GetBrowsingHistory(const int max_count,
@@ -1595,7 +1595,7 @@ void AdsServiceImpl::Save(const std::string& name,
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&base::ImportantFileWriter::WriteFileAtomically,
-                     base_path_.AppendASCII(name), value, base::StringPiece()),
+                     base_path_.AppendASCII(name), value, std::string_view()),
       std::move(callback));
 }
 
@@ -1697,12 +1697,10 @@ void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
       std::move(callback));
 }
 
-void AdsServiceImpl::RecordP2AEvents(base::Value::List events) {
+void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {
   for (const auto& event : events) {
-    CHECK(event.is_string());
-
-    RecordInWeeklyStorageAndEmitP2AHistogramName(profile_->GetPrefs(),
-                                                 /*name*/ event.GetString());
+    RecordAndEmitP2AHistogramName(profile_->GetPrefs(),
+                                  /*name*/ event);
   }
 }
 

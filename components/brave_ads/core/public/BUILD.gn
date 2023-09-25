@@ -49,7 +49,7 @@ source_set("headers") {
     "units/search_result_ad/search_result_ad_feature.h",
     "user/user_attention/user_activity/page_transition_types.h",
     "user/user_attention/user_idle_detection/user_idle_detection_feature.h",
-    "user/user_interaction/ad_events/ad_event_history.h",
+    "user/user_interaction/ad_events/ad_event_cache.h",
   ]
 
   deps = [

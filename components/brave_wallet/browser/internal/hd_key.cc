@@ -18,6 +18,7 @@
 #include "base/sys_byteorder.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
@@ -442,6 +443,10 @@ std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
   }
 
   return public_key;
+}
+
+std::string HDKey::GetZCashTransparentAddress(bool testnet) {
+  return PubkeyToTransparentAddress(public_key_, testnet);
 }
 
 std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {

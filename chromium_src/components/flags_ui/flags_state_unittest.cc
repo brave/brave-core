@@ -5,6 +5,8 @@
 
 #include "src/components/flags_ui/flags_state_unittest.cc"
 
+#include <string_view>
+
 #include "base/ranges/algorithm.h"
 
 namespace flags_ui {
@@ -28,7 +30,7 @@ TEST_F(FlagsStateTest, ShowDefaultState) {
   ASSERT_EQ(11u, supported_entries.size());
 
   auto check_default_option_description =
-      [&](base::StringPiece name, base::StringPiece expected_description) {
+      [&](std::string_view name, std::string_view expected_description) {
         SCOPED_TRACE(name);
         auto entry_it = base::ranges::find_if(
             supported_entries, [&](const base::Value& entry) {

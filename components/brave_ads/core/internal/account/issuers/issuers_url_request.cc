@@ -11,7 +11,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_json_reader.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -59,7 +58,7 @@ void IssuersUrlRequest::Fetch() {
     return;
   }
 
-  BLOG(1, "Fetching issuers " << BuildIssuersUrlPath());
+  BLOG(1, "Fetch issuers");
 
   is_fetching_ = true;
 
@@ -75,8 +74,6 @@ void IssuersUrlRequest::Fetch() {
 
 void IssuersUrlRequest::FetchCallback(
     const mojom::UrlResponseInfo& url_response) {
-  BLOG(1, "Fetched issuers");
-
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 

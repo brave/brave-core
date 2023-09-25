@@ -16,7 +16,6 @@ export const NftGrid = styled.div`
   @media screen and (max-width: 545px) {
     grid-template-columns: repeat(1, 1fr);
   }
-  padding-top: 24px;
 `
 
 export const EmptyStateText = styled.div`

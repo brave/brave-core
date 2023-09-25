@@ -11,7 +11,7 @@
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
 
-constexpr char kRegionalCatalogFile[] = "regional_catalog.json";
+constexpr char kListCatalogFile[] = "list_catalog.json";
 
 namespace brave_shields {
 
@@ -53,7 +53,7 @@ void AdBlockFilterListCatalogProvider::OnComponentReady(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(kRegionalCatalogFile)),
+                     component_path_.AppendASCII(kListCatalogFile)),
       base::BindOnce(
           &AdBlockFilterListCatalogProvider::OnFilterListCatalogLoaded,
           weak_factory_.GetWeakPtr()));
@@ -70,7 +70,7 @@ void AdBlockFilterListCatalogProvider::LoadFilterListCatalog(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(kRegionalCatalogFile)),
+                     component_path_.AppendASCII(kListCatalogFile)),
       std::move(cb));
 }
 

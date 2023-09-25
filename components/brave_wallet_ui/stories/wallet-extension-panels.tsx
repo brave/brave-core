@@ -149,7 +149,6 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
       confirmedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
       originInfo: mockOriginInfo,
-      groupId: undefined,
       effectiveRecipient: ''
     },
     {
@@ -186,7 +185,6 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined,
       effectiveRecipient: ''
     },
     {
@@ -223,7 +221,6 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined,
       effectiveRecipient: ''
     },
     {
@@ -260,7 +257,6 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined,
       effectiveRecipient: ''
     },
     {
@@ -297,7 +293,6 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined,
       effectiveRecipient: ''
     }
   ],
@@ -336,7 +331,6 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined,
       effectiveRecipient: ''
     },
     {
@@ -373,7 +367,6 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       submittedTime: { microseconds: 0 },
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
-      groupId: undefined,
       effectiveRecipient: ''
     }
   ]
@@ -524,15 +517,20 @@ export const _SignData = () => {
   const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [{
     id: 0,
     accountId: mockEthAccountId('0x3f29A1da97149722eB09c526E4eAd698895b426').fromAccountId,
-    message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
-    domain: '',
     originInfo: mockOriginInfo,
     coin: BraveWallet.CoinType.ETH,
     chainId: BraveWallet.MAINNET_CHAIN_ID,
-    isEip712: true,
-    domainHash: '',
-    primaryHash: '',
-    messageBytes: undefined
+    signData: {
+      ethStandardSignData: undefined,
+      ethSignTypedData: {
+        message: 'Sign below to authenticate with CryptoKitties.',
+        domain: '',
+        domainHash: undefined,
+        primaryHash: undefined
+      },
+      ethSiweData: undefined,
+      solanaSignData: undefined
+    }
   }]
 
   return (

@@ -9,7 +9,6 @@ import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-d
 
 // utils
 import { getWalletLocationTitle } from '../utils/string-utils'
-import { getLocale } from '../../common/locale'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
@@ -96,7 +95,6 @@ export const Container = () => {
   // state
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
   const [inputValue, setInputValue] = React.useState<string>('')
-  const [showDepositAddress, setShowDepositAddress] = React.useState<boolean>(false)
 
   // methods
   const onToggleShowRestore = React.useCallback(() => {
@@ -151,17 +149,6 @@ export const Container = () => {
     dispatch(WalletPageActions.openWalletSettings())
   }, [])
 
-  const handleDepositScreenBack = React.useCallback(() => {
-    if (!showDepositAddress && history.length) {
-      return history.goBack()
-    }
-
-    if (showDepositAddress) {
-      // go back to asset selection
-      setShowDepositAddress(false)
-    }
-  }, [showDepositAddress, history])
-
   // computed
   const walletNotYetCreated = (!isWalletCreated || setupStillInProgress)
 
@@ -202,8 +189,8 @@ export const Container = () => {
       if (
         walletLocation === WalletRoutes.Swap ||
         walletLocation === WalletRoutes.SendPageStart ||
-        walletLocation.includes(WalletRoutes.DepositFundsPage) ||
-        walletLocation.includes(WalletRoutes.FundWalletPage) ||
+        walletLocation.includes(WalletRoutes.DepositFundsPageStart) ||
+        walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
         walletLocation.includes(WalletRoutes.LocalIpfsNode) ||
         walletLocation.includes(WalletRoutes.InspectNfts) ||
         walletLocation.includes(WalletRoutes.PortfolioAssets) ||
@@ -309,29 +296,14 @@ export const Container = () => {
             }
 
             {!isWalletLocked &&
-              <Route path={WalletRoutes.FundWalletPage} exact>
+              <Route path={WalletRoutes.FundWalletPageStart}>
                 <FundWalletScreen />
               </Route>
             }
 
             {!isWalletLocked &&
-              <Route path={WalletRoutes.DepositFundsPage} exact>
-                <WalletPageWrapper
-                  wrapContentInBox={true}
-                  cardWidth={456}
-                  cardHeader={
-                    <PageTitleHeader
-                      title={getLocale('braveWalletDepositCryptoButton')}
-                      showBackButton={showDepositAddress}
-                      onBack={handleDepositScreenBack}
-                    />
-                  }
-                >
-                  <DepositFundsScreen
-                    showDepositAddress={showDepositAddress}
-                    onShowDepositAddress={setShowDepositAddress}
-                  />
-                </WalletPageWrapper>
+              <Route path={WalletRoutes.DepositFundsPageStart}>
+                  <DepositFundsScreen />
               </Route>
             }
 

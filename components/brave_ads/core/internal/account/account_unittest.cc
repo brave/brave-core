@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/account.h"
 
-#include <utility>
-
 #include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/core/internal/account/account_observer_unittest_helper.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
@@ -44,57 +43,25 @@
 
 namespace brave_ads {
 
-class BraveAdsAccountTest : public AccountObserver, public UnitTestBase {
+class BraveAdsAccountTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
     account_ = std::make_unique<Account>(&token_generator_mock_);
-    account_->AddObserver(this);
+    account_->AddObserver(&account_observer_);
   }
 
   void TearDown() override {
-    account_->RemoveObserver(this);
+    account_->RemoveObserver(&account_observer_);
 
     UnitTestBase::TearDown();
-  }
-
-  void OnDidInitializeWallet(const WalletInfo& /*wallet*/) override {
-    wallet_did_initialize_ = true;
-  }
-
-  void OnFailedToInitializeWallet() override {
-    failed_to_initialize_wallet_ = true;
-  }
-
-  void OnDidProcessDeposit(const TransactionInfo& transaction) override {
-    did_process_deposit_ = true;
-    transaction_ = transaction;
-  }
-
-  void OnFailedToProcessDeposit(
-      const std::string& /*creative_instance_id*/,
-      const AdType& /*ad_type*/,
-      const ConfirmationType& /*confirmation_type*/) override {
-    failed_to_process_deposit_ = true;
-  }
-
-  void OnStatementOfAccountsDidChange() override {
-    statement_of_accounts_did_change_ = true;
   }
 
   ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
 
   std::unique_ptr<Account> account_;
-
-  bool wallet_did_initialize_ = false;
-  bool failed_to_initialize_wallet_ = false;
-
-  TransactionInfo transaction_;
-  bool did_process_deposit_ = false;
-  bool failed_to_process_deposit_ = false;
-
-  bool statement_of_accounts_did_change_ = false;
+  AccountObserverForTesting account_observer_;
 };
 
 TEST_F(BraveAdsAccountTest, SetWallet) {
@@ -104,8 +71,8 @@ TEST_F(BraveAdsAccountTest, SetWallet) {
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Assert
-  EXPECT_TRUE(wallet_did_initialize_);
-  EXPECT_FALSE(failed_to_initialize_wallet_);
+  EXPECT_TRUE(account_observer_.did_initialize_wallet());
+  EXPECT_FALSE(account_observer_.failed_to_initialize_wallet());
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
@@ -115,8 +82,8 @@ TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
   account_->SetWallet(/*payment_id*/ {}, kWalletRecoverySeed);
 
   // Assert
-  EXPECT_FALSE(wallet_did_initialize_);
-  EXPECT_TRUE(failed_to_initialize_wallet_);
+  EXPECT_FALSE(account_observer_.did_initialize_wallet());
+  EXPECT_TRUE(account_observer_.failed_to_initialize_wallet());
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
@@ -126,8 +93,8 @@ TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
   account_->SetWallet(kWalletPaymentId, kInvalidWalletRecoverySeed);
 
   // Assert
-  EXPECT_FALSE(wallet_did_initialize_);
-  EXPECT_TRUE(failed_to_initialize_wallet_);
+  EXPECT_FALSE(account_observer_.did_initialize_wallet());
+  EXPECT_TRUE(account_observer_.failed_to_initialize_wallet());
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
@@ -137,8 +104,8 @@ TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
   account_->SetWallet(kWalletPaymentId, /*recovery_seed*/ "");
 
   // Assert
-  EXPECT_FALSE(wallet_did_initialize_);
-  EXPECT_TRUE(failed_to_initialize_wallet_);
+  EXPECT_FALSE(account_observer_.did_initialize_wallet());
+  EXPECT_TRUE(account_observer_.failed_to_initialize_wallet());
 }
 
 TEST_F(BraveAdsAccountTest, GetWallet) {
@@ -332,13 +299,14 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
                     AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
-  EXPECT_TRUE(did_process_deposit_);
-  EXPECT_FALSE(failed_to_process_deposit_);
-  EXPECT_TRUE(statement_of_accounts_did_change_);
+  EXPECT_TRUE(account_observer_.did_process_deposit());
+  EXPECT_TRUE(account_observer_.transaction());
+  EXPECT_FALSE(account_observer_.failed_to_process_deposit());
+  EXPECT_TRUE(account_observer_.statement_of_accounts_did_change());
 
   TransactionList expected_transactions;
   TransactionInfo expected_transaction;
-  expected_transaction.id = transaction_.id;
+  expected_transaction.id = account_observer_.transaction()->id;
   expected_transaction.created_at = Now();
   expected_transaction.creative_instance_id = creative_ad.creative_instance_id;
   expected_transaction.value = 1.0;
@@ -363,13 +331,14 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
                     ConfirmationType::kClicked);
 
   // Assert
-  EXPECT_TRUE(did_process_deposit_);
-  EXPECT_FALSE(failed_to_process_deposit_);
-  EXPECT_TRUE(statement_of_accounts_did_change_);
+  EXPECT_TRUE(account_observer_.did_process_deposit());
+  EXPECT_TRUE(account_observer_.transaction());
+  EXPECT_FALSE(account_observer_.failed_to_process_deposit());
+  EXPECT_TRUE(account_observer_.statement_of_accounts_did_change());
 
   TransactionList expected_transactions;
   TransactionInfo expected_transaction;
-  expected_transaction.id = transaction_.id;
+  expected_transaction.id = account_observer_.transaction()->id;
   expected_transaction.created_at = Now();
   expected_transaction.creative_instance_id = kCreativeInstanceId;
   expected_transaction.value = 0.0;
@@ -396,9 +365,9 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
                     AdType::kNotificationAd, ConfirmationType::kViewed);
 
   // Assert
-  EXPECT_FALSE(did_process_deposit_);
-  EXPECT_TRUE(failed_to_process_deposit_);
-  EXPECT_FALSE(statement_of_accounts_did_change_);
+  EXPECT_FALSE(account_observer_.did_process_deposit());
+  EXPECT_TRUE(account_observer_.failed_to_process_deposit());
+  EXPECT_FALSE(account_observer_.statement_of_accounts_did_change());
 
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback,

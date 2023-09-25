@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 #include "base/time/time.h"
 #include "base/values.h"
@@ -49,13 +50,13 @@ class MessageMetainfo {
   void MaybeStripCountry();
 };
 
-base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
+base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
                                          uint64_t metric_value,
                                          MetricLogType log_type,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type);
 
-std::string GenerateP3AConstellationMessage(base::StringPiece metric_name,
+std::string GenerateP3AConstellationMessage(std::string_view metric_name,
                                             uint64_t metric_value,
                                             const MessageMetainfo& meta);
 

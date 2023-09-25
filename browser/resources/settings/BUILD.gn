@@ -72,6 +72,7 @@ preprocess_if_expr("preprocess") {
     "enable_tor=$enable_tor",
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
     "enable_brave_vpn=$enable_brave_vpn",
+    "enable_brave_vpn_wireguard=$enable_brave_vpn_wireguard",
     "enable_extensions=$enable_extensions",
     "enable_pin_shortcut=$enable_pin_shortcut",
   ]

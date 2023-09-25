@@ -45,7 +45,8 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
+      /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -68,7 +69,8 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
-      creative_ad_2, AdType::kNotificationAd, ConfirmationType::kServed, Now());
+      creative_ad_2, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
+      /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -88,7 +90,8 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
+      /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -110,7 +113,8 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
+      /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
   const DailyCapExclusionRule exclusion_rule(ad_events);
@@ -131,7 +135,8 @@ TEST_F(BraveAdsDailyCapExclusionRuleTest, ShouldExcludeIfExceedsCap) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now());
+      creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
+      /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

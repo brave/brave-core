@@ -5,6 +5,7 @@
 
 #include "brave/components/api_request_helper/api_request_helper.h"
 
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -13,7 +14,6 @@
 #include "base/containers/cxx20_erase_vector.h"
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_status_code.h"
@@ -268,7 +268,7 @@ APIRequestHelper::URLLoaderHandler::GetWeakPtr() {
 }
 
 void APIRequestHelper::URLLoaderHandler::send_sse_data_for_testing(
-    base::StringPiece string_piece,
+    std::string_view string_piece,
     bool is_sse,
     DataReceivedCallback callback) {
   is_sse_ = true;
@@ -286,7 +286,7 @@ APIRequestHelper::URLLoaderHandler::GetDataDecoder() {
 }
 
 void APIRequestHelper::URLLoaderHandler::OnDataReceived(
-    base::StringPiece string_piece,
+    std::string_view string_piece,
     base::OnceClosure resume) {
   DVLOG(2) << "\n[[" << __func__ << "]]"
            << " Chunk received";
@@ -406,12 +406,12 @@ void APIRequestHelper::URLLoaderHandler::MaybeSendResult() {
 }
 
 void APIRequestHelper::URLLoaderHandler::ParseSSE(
-    base::StringPiece string_piece) {
+    std::string_view string_piece) {
   // New chunks should only be received before the request is completed
   DCHECK(!request_is_finished_);
   // We split the string into multiple chunks because there are cases where
   // multiple chunks are received in a single call.
-  std::vector<base::StringPiece> stream_data = base::SplitStringPiece(
+  std::vector<std::string_view> stream_data = base::SplitStringPiece(
       string_piece, "\r\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   // Remove SSE events that don't look like JSON - could be string or [DONE]
@@ -419,7 +419,7 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
   // TODO(@nullhook): Parse both JSON and string values. The below currently
   // only identifies JSON values.
   static constexpr char kDataPrefix[] = "data: {";
-  base::EraseIf(stream_data, [](base::StringPiece item) {
+  base::EraseIf(stream_data, [](std::string_view item) {
     DVLOG(3) << "Received chunk: " << item;
     if (!base::StartsWith(item, kDataPrefix)) {
       // This is useful to log in case an API starts

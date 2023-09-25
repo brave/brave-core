@@ -1,9 +1,18 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
+<translation id="7630214457764713113">Copiați linkul curat</translation>
 <translation id="885805571521218129">Aici sunt reflectate veniturile dvs. din Brave Ads în această lună.</translation>
 <translation id="3478449063771497234">Notificările sunt dezactivate</translation>
+<translation id="2862978891748913252">Selectați țara</translation>
+<translation id="3970520675790340955">Selectați-vă țara ca să vă putem afișa opțiunile și anunțurile adecvate pentru regiunea dvs.</translation>
+<translation id="6439128034594289376">Iuguu, totul e gata!</translation>
 <translation id="370665806235115550">Se încarcă…</translation>
+<translation id="7931127789630755251">Câștigați tokenuri pentru anunțurile private pe care le vedeți în Brave.</translation>
+<translation id="7859066142771796818">Folosiți tokenuri pentru a cumpăra cadouri, pentru a le schimba cu alte valute, pentru a susține creatori și altele.</translation>
+<translation id="3863981251715594911">Cum funcționează?</translation>
+<translation id="5547108999862247665">Cum funcționează recompensele Brave?</translation>
+<translation id="2965798296974325760">Începe să folosești Recompensele</translation>
 <translation id="8220484609979012449">\n\nPuteți trimite în continuare contribuții în criptomonede către acest creator folosind portofelul Web3.</translation>
 <translation id="6385969012847057348">Acest creator nu poate primi contribuții de la <ph name="CUSTODIAN"/>.</translation>
 <translation id="6268134562674951939">Nu aveți suficiente tokenuri</translation>
@@ -169,7 +178,6 @@
 <translation id="9110294136812584522">Site-urile pot solicita să utilizeze conectarea Google anterioară prin intermediul modulelor cookie terțe</translation>
 <translation id="2903783737778379345">Nu permiteți conectarea Google anterioară prin intermediul modulelor cookie terțe</translation>
 <translation id="6880817299303842099">Este permisă utilizarea modulelor cookie terțe pentru conectarea Google anterioară</translation>
-<translation id="5169650598465327872">Acces Localhost</translation>
 <translation id="4172219483893066798">Site-urile pot solicita acces la resursele localhost</translation>
 <translation id="7181706637590665047">Nu permiteți accesul la resursele localhost</translation>
 <translation id="1485435696620658073">Acces permis la resursele localhost</translation>
@@ -422,6 +430,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6883611015375728278">Blochează toate cookie-urile</translation>
 <translation id="4941539331405513605">Blocare module cookie între site-uri</translation>
 <translation id="5657156137487675418">Permite toate cookie-urile</translation>
+<translation id="4891600875049212418">Activați modul Off-The-Record când accesați site-uri sensibile</translation>
 <translation id="3895527457258986253">Blocare amprentare</translation>
 <translation id="7854108565842971747">Acestea sunt setările implicite pentru scuturi. Modificarea lor nu va afecta setările existente per site.</translation>
 <translation id="218587021686734263">Împiedicați amprentarea prin setările de limbă</translation>
@@ -545,6 +554,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1689062823386843231">Dezactivează UDP fără proxy</translation>
 <translation id="1483493594462132177">Trimite</translation>
 <translation id="538450413584738399">Schimbați</translation>
+<translation id="1366855498335432549">Depune</translation>
 <translation id="1420318137760245955">Bun venit la noul portofel Brave</translation>
 <translation id="8339846196588658366">Păstrați în custodie criptomonede și monitorizați performanța portofoliului, totul direct din browserul Brave, care protejează confidențialitatea dvs.</translation>
 <translation id="4472575034687746823">Începeți</translation>
@@ -561,7 +571,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="375882617301124395">Realizați o copie de rezervă după portofel</translation>
 <translation id="8289942708804097960">Cumpărați criptomonede folosind un card de credit ori un card de debit.</translation>
 <translation id="841880029259839903">Trimiteți criptomonede sau transferați dintr-un cont în altul!</translation>
-<translation id="8226778393040773102">Faceți schimb de tokenuri și active</translation>
 <translation id="1783600039044302171">Securizați contul dvs. pentru criptomonede cu o parolă</translation>
 <translation id="3726490322412361740">Introduceți parola</translation>
 <translation id="3038243139480464605">Confirmați parola</translation>
@@ -602,13 +611,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
 <translation id="5760476995887363522">Expresiile nu corespund. Încercați din nou!</translation>
 <translation id="2360588547830602174">Recuperarea contului nu a reușit. Încercați din nou!</translation>
-<translation id="6748108480210050150">De la</translation>
-<translation id="3318280255740629162">25%</translation>
-<translation id="2636487255623744079">50%</translation>
-<translation id="8654192805213365413">75%</translation>
-<translation id="6159566011642056819">Până la (estimare)</translation>
-<translation id="6998989275928107238">Către</translation>
-<translation id="2589431635772931954">Adresă sau URL</translation>
 <translation id="5517732667776806421">Informații lipsă privind suma de verificare</translation>
 <translation id="4006711930669471508">Informații incorecte privind suma de verificare</translation>
 <translation id="1987317783729300807">Conturi</translation>
@@ -636,7 +638,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8475984867371585028">Editați NFT-urile vizibile</translation>
 <translation id="5050890334032852465">Salvarea listei cu activele de urmărit</translation>
 <translation id="7755766175599167100">Căutați token-uri</translation>
-<translation id="3835223348537121988">Sold:</translation>
 <translation id="3956169227169516344">Selectați metoda de achiziționare</translation>
 <translation id="8488282162676695335">Portofelul Brave</translation>
 <translation id="3784455785234192852">Blocați</translation>
@@ -650,7 +651,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8239147115686034860">Blocați automat portofelul Brave</translation>
 <translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
 <translation id="2326850911705720398">Resetați și ștergeți datele de portofel</translation>
-<translation id="4322846864135539519">Sigur doriți să resetați recompensele dvs. Brave? Dacă nu ați realizat o copie de rezervă a portofelului, resetarea va duce la pierderea tuturor datelor privind contul (inclusiv a fondurilor asociate). Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
 <translation id="6915083716464390008">Selectați una dintre următoarele opțiuni</translation>
 <translation id="7667423728712601865">Cumpărați criptomonede utilizând un card Visa sau Mastercard.</translation>
 <translation id="3101839349578102016">Cumpărați instant cu contul dvs. bancar. Taxe mai mici.</translation>
@@ -767,8 +767,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5045550434625856497">Parolă incorectă</translation>
 <translation id="1367951781824006909">Alege un fișier</translation>
 <translation id="8648684608605749476">Blochează cookie-urile terță parte în modul incognito</translation>
-<translation id="1118876217803190221">Sold insuficient</translation>
-<translation id="3025158262797849291">Formatul numărului nerecunoscut</translation>
 <translation id="5932938770824268122">Cheie privată</translation>
 <translation id="2472882733835903303">Afișați cheia privată</translation>
 <translation id="4391056902675005799">Ascundeți cheia privată</translation>
@@ -813,14 +811,12 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1254969878422524947">Limita contribuției pentru gas (Gwei)</translation>
 <translation id="7373308452149471621">Limita prețului pentru gas (Gwei)</translation>
 <translation id="5891811606602061966">Nu s-a reușit importarea contului. Încercați din nou!</translation>
-<translation id="1822506443689803572">Brave utilizează <ph name="DEX_PROVIDER"/> ca agregator de schimb descentralizat.</translation>
 <translation id="5061574358754621254">Date privind prețurile, oferite de CoinGecko</translation>
-<translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
 <translation id="8574289650879708853">Adăugați activ personalizat</translation>
 <translation id="1255896809210433555">Adăugați NFT</translation>
 <translation id="7791543448312431591">Adaugă</translation>
 <translation id="6600400596821238377">Numele token-ului</translation>
-<translation id="4432966365400169165">Adresă contract token</translation>
+<translation id="3797613444743816037">Adresa emiterii</translation>
 <translation id="4092152169181928870">Simbol token</translation>
 <translation id="4351811224047421378">Zecimale de precizie</translation>
 <translation id="547122651977318828">Identificator token (numai pentur ERC721)</translation>
@@ -1002,8 +998,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="8382368767453083629">Inițializați multisig 2</translation>
 <translation id="77243237706803459">Inițializați emisia 2</translation>
 <translation id="583281660410589416">Necunoscut</translation>
-<translation id="2862978891748913252">Selectați țara</translation>
-<translation id="3832588024105436400">Selectați țara ca să vă putem afișa opțiuni și anunțuri relevante pentru regiunea dvs. <ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">Regiunea Recompenselor Brave a fost setată la <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Din păcate, a apărut o eroare în timp ce încercam să configurăm Recompensele Brave. Încercați din nou.</translation>
 <translation id="7352651011704765696">A apărut o eroare</translation>
@@ -1061,10 +1055,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7748944510530490017">Rețele primare</translation>
 <translation id="2781668117338732220">Rețele secundare</translation>
 <translation id="282560918037172384">Rețele de test</translation>
-<translation id="6309721369749814582">Domeniul <ph name="DOMAIN"/> nu este înregistrat</translation>
-<translation id="4071347720273751665">Se pare că ați introdus o adresă ENS. Va trebui să folosim un gateway terț pentru a rezolva solicitarea, care ar putea să vă vadă adresa IP și domeniul. <ph name="LEARN_MORE"/></translation>
-<translation id="4096049525705855774">Folosiți domeniul ENS offchain</translation>
-<translation id="4982630604810554641">Se caută domeniul...</translation>
 <translation id="3586775666459823714">Token-uri nefungibile</translation>
 <translation id="707569835145765061">Acțiune necesară: Conectați un cont de custode sau vBAT-ul va fi pierdut.</translation>
 <translation id="1776742005329298234">Pe <ph name="DUE_DATE"/>, vom întrerupe asistența pentru soldurile BAT virtuale existente. Conectați un cont de custode înainte de această dată pentru a vă putea transfera soldul câștigat în contul de custode, altfel soldul dvs. va fi pierdut.</translation>

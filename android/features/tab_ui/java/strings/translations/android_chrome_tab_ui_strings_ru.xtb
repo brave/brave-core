@@ -3,7 +3,6 @@
 <translationbundle lang="ru">
 <translation id="1075622780330595106">Вы давно не использовали некоторые вкладки (всего: <ph name="NUMBER_OF_TABS"/>). Закрыть их?</translation>
 <translation id="125153950246128346">Нажмите, чтобы перейти на другую вкладку</translation>
-<translation id="955456285524876618">Закрытые вкладки можно найти в главном меню Brave в разделе "Недавние вкладки".</translation>
 <translation id="1657719826150349398">Переместить вкладку вниз</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> вкладка}one{<ph name="TABS_COUNT_MANY"/> вкладка}few{<ph name="TABS_COUNT_MANY"/> вкладки}many{<ph name="TABS_COUNT_MANY"/> вкладок}other{<ph name="TABS_COUNT_MANY"/> вкладки}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Добавить в закладки <ph name="TABS_COUNT_ONE"/> выбранную вкладку}one{Добавить в закладки <ph name="TABS_COUNT_MANY"/> выбранную вкладку}few{Добавить в закладки <ph name="TABS_COUNT_MANY"/> выбранные вкладки}many{Добавить в закладки <ph name="TABS_COUNT_MANY"/> выбранных вкладок}other{Добавить в закладки <ph name="TABS_COUNT_MANY"/> выбранной вкладки}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">Скрыть полноэкранную сетку с вкладками</translation>
 <translation id="5076161749301278626">Показать отзывы о магазине?</translation>
 <translation id="5082793167783849073">Сравнивайте страницы быстрее, объединяя их в группы. Чтобы начать, нажмите на ссылку и удерживайте ее.</translation>
+<translation id="5339733443032484186">Ваша последняя вкладка</translation>
 <translation id="5490235265819901748">Группа вкладок развернута</translation>
 <translation id="5494920125229734069">Выделить все</translation>
 <translation id="5556417849629758491">Просмотр сведений о магазине, параметр вверху экрана</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">Посмотреть сведения о магазине</translation>
 <translation id="6562820390860419811">Переместить вкладку влево</translation>
 <translation id="6615455863669487791">Показать</translation>
+<translation id="6398241160085205003">Закрытые вкладки можно будет найти в разделе "Недавние вкладки" главного меню Brave.</translation>
 <translation id="6840760312327750441">Чтобы сгруппировать вкладки: нажмите и удерживайте одну вкладку, затем перетащите ее на другую.</translation>
 <translation id="6856809498882026482">Выйти из режима выбора вкладок</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Поделиться вкладкой}one{Поделиться вкладками}few{Поделиться вкладками}many{Поделиться вкладками}other{Поделиться вкладками}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">В нижней части экрана можно переключаться между вкладками, объединенными в группы</translation>
 <translation id="9169594135889675189">Добавить новую вкладку в группу</translation>
 <translation id="959682366969460160">Организация работы</translation>
-<translation id="3228718275011575753">Закрыть все вкладки инкогнито?</translation>
-<translation id="1922184283901690941">История действий на этих вкладках будет удалена с устройства.</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Последние посещенные сайты можно найти в разделе «Недавние вкладки» главного меню Brave. Информация о вкладке инкогнито недоступна.}
+        other {Последние посещенные сайты можно найти в разделе «Недавние вкладки» главного меню Brave. Информация о вкладках инкогнито (#) недоступна.}}</translation>
+<translation id="3228718275011575753">Закрыть все приватные вкладки?</translation>
+<translation id="6687920250729800417">История действий на вкладках инкогнито будет удалена с устройства.</translation>
 </translationbundle>

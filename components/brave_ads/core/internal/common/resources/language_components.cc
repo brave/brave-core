@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
+#include <string_view>
+
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
-#include "base/strings/string_piece.h"
+#include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
 
 namespace {
 
-constexpr auto kLanguageComponentIds = base::MakeFixedFlatSet<
-    base::StringPiece>(
+constexpr auto kLanguageComponentIds = base::MakeFixedFlatSet<std::string_view>(
     {"ijmgabghpbflfadffhpmjklamndnonha", "hddanjaanmjbdklklpldpgpmbdmaiihb",
      "blcjdmhlkddhompnlbjlpccpelipihem", "pecokcgeeiabdlkfkfjpmfldfhhjlmom",
      "pgkommhmfkkkfbbcnnfhlkagbodoimjm", "emopjfcnkbjfedjbfgajdajnkkfekcbl",

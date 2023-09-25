@@ -3,5 +3,6 @@ include_rules = [
   "+services/data_decoder/public",
   "+services/network/public",
   "+services/service_manager/public",
+  "+absl/types/optional.h",
   "+ui",
 ]

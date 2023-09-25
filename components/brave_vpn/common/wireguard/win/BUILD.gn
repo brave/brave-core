@@ -25,8 +25,8 @@ source_set("win") {
     "service_details.h",
     "storage_utils.cc",
     "storage_utils.h",
-    "wireguard_utils.cc",
-    "wireguard_utils.h",
+    "wireguard_utils_win.cc",
+    "wireguard_utils_win.h",
   ]
   deps = [
     ":brave_wireguard_manager_idl",

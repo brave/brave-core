@@ -36,6 +36,8 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kDeleteFormDataOnExit, false);
   registry->RegisterBooleanPref(kDeleteHostedAppsDataOnExit, false);
   registry->RegisterBooleanPref(kDeleteSiteSettingsOnExit, false);
+  registry->RegisterBooleanPref(kDeleteBraveLeoHistory, false);
+  registry->RegisterBooleanPref(kDeleteBraveLeoHistoryOnExit, false);
 }
 
 }  // namespace prefs

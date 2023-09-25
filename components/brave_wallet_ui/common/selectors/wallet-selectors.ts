@@ -47,6 +47,8 @@ export const isPanelV2FeatureEnabled = ({ wallet }: State) =>
   wallet.isPanelV2FeatureEnabled
 export const importAccountError = ({ wallet }: State) =>
   wallet.importAccountError
+export const selectedOnRampAssetId = ({ wallet }: State) =>
+  wallet.selectedDepositAssetId
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const accounts = ({ wallet }: State) => wallet.accounts
@@ -57,11 +59,9 @@ export const defaultCurrencies = ({ wallet }: State) => wallet.defaultCurrencies
 export const favoriteApps = ({ wallet }: State) => wallet.favoriteApps
 export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
 export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates
-export const onRampCurrencies = ({ wallet }: State) => wallet.onRampCurrencies
 export const selectedAssetFilter = ({ wallet }: State) => wallet.selectedAssetFilter
 export const selectedGroupAssetsByItem = ({ wallet }: State) =>
   wallet.selectedGroupAssetsByItem
-export const selectedCurrency = ({ wallet }: State) => wallet.selectedCurrency
 export const selectedNetworkFilter = ({ wallet }: State) => wallet.selectedNetworkFilter
 export const solFeeEstimates = ({ wallet }: State) => wallet.solFeeEstimates
 export const userVisibleTokensInfo = ({ wallet }: State) => wallet.userVisibleTokensInfo

@@ -189,6 +189,8 @@ class BraveWalletService : public KeyedService,
   mojom::OriginInfoPtr GetActiveOriginSync();
   void GetPendingSignMessageRequests(
       GetPendingSignMessageRequestsCallback callback) override;
+  void GetPendingSignMessageErrors(
+      GetPendingSignMessageErrorsCallback callback) override;
   void GetPendingSignTransactionRequests(
       GetPendingSignTransactionRequestsCallback callback) override;
   void GetPendingSignAllTransactionsRequests(
@@ -208,6 +210,7 @@ class BraveWalletService : public KeyedService,
       int id,
       mojom::ByteArrayStringUnionPtr signature,
       const absl::optional<std::string>& error) override;
+  void NotifySignMessageErrorProcessed(const std::string& error_id) override;
   void GetPendingAddSuggestTokenRequests(
       GetPendingAddSuggestTokenRequestsCallback callback) override;
   void GetPendingGetEncryptionPublicKeyRequests(
@@ -265,6 +268,7 @@ class BraveWalletService : public KeyedService,
 
   void AddSignMessageRequest(mojom::SignMessageRequestPtr request,
                              SignMessageRequestCallback callback);
+  void AddSignMessageError(mojom::SignMessageErrorPtr error);
   void AddSuggestTokenRequest(mojom::AddSuggestTokenRequestPtr request,
                               mojom::EthereumProvider::RequestCallback callback,
                               base::Value id);
@@ -366,6 +370,7 @@ class BraveWalletService : public KeyedService,
   int sign_all_transactions_id_ = 0;
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
+  base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;
   base::circular_deque<mojom::SignTransactionRequestPtr>
       sign_transaction_requests_;
   base::circular_deque<SignTransactionRequestCallback>

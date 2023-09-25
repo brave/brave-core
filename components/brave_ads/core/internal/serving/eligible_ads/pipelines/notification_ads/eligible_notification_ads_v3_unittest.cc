@@ -14,8 +14,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_unittest_util.h"
@@ -63,17 +62,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {},
-          /*text_embedding_html_events*/ {text_embedding_html_event}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        /*segments*/ {},
+                        TextEmbeddingHtmlEventList{text_embedding_html_event}}},
       base::BindOnce(
           [](const CreativeNotificationAdInfo& creative_ad_1,
-             const bool had_opportunity,
              const CreativeNotificationAdList& creative_ads) {
             // Assert
-            EXPECT_FALSE(had_opportunity);
             EXPECT_FALSE(creative_ads.empty());
 
             EXPECT_EQ(creative_ads.at(0).embedding, creative_ad_1.embedding);
@@ -99,15 +95,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      /*user_model*/ {},
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       }));
 }
@@ -135,15 +125,12 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {},
-          /*text_embedding_html_events*/ {text_embedding_html_event}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        /*segments*/ {},
+                        TextEmbeddingHtmlEventList{text_embedding_html_event}}},
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
@@ -155,15 +142,12 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {},
-          /*text_embedding_html_events*/ {text_embedding_html_event}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNotificationAdList& creative_ads) {
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        /*segments*/ {},
+                        TextEmbeddingHtmlEventList{text_embedding_html_event}}},
+      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }

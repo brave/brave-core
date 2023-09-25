@@ -9,7 +9,6 @@
 #include <limits>
 #include <utility>
 
-#include "base/auto_reset.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -18,12 +17,16 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -34,10 +37,14 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/native_web_keyboard_event.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/events/event_observer.h"
 #include "ui/events/types/event_type.h"
@@ -55,6 +62,14 @@ using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
 sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
+}
+
+SharedPinnedTabService* GetSharedPinnedTabService(Profile* profile) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    return SharedPinnedTabServiceFactory::GetForProfile(profile);
+  }
+
+  return nullptr;
 }
 
 }  // namespace
@@ -115,13 +130,14 @@ void SidebarContainerView::Init() {
 
   sidebar_model_ = browser_->sidebar_controller()->model();
   sidebar_model_observation_.Observe(sidebar_model_);
+  browser_->tab_strip_model()->AddObserver(this);
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   DCHECK(browser_view);
 
   auto* side_panel_registry =
       SidePanelCoordinator::GetGlobalSidePanelRegistry(browser_);
-  panel_registry_observation_.Observe(side_panel_registry);
+  panel_registry_observations_.AddObservation(side_panel_registry);
 
   for (const auto& entry : side_panel_registry->entries()) {
     DVLOG(1) << "Observing panel entry in ctor: " << entry->name();
@@ -226,21 +242,6 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
 void SidebarContainerView::UpdateSidebarItemsState() {
   // control view has items.
   sidebar_control_view_->Update();
-}
-
-bool SidebarContainerView::HasActiveContextualEntry() {
-  auto* web_contents = browser_->tab_strip_model()->GetActiveWebContents();
-  if (!web_contents) {
-    return false;
-  }
-
-  auto* active_contextual_registry = SidePanelRegistry::Get(web_contents);
-  if (active_contextual_registry &&
-      active_contextual_registry->active_entry()) {
-    return true;
-  }
-
-  return false;
 }
 
 void SidebarContainerView::MenuClosed() {
@@ -675,9 +676,8 @@ void SidebarContainerView::HideSidebarForShowOption() {
   }
 }
 
-bool SidebarContainerView::ShouldUseAnimation() const {
-  auto* controller = browser_->sidebar_controller();
-  return !controller->GetIsPanelOperationFromActiveTabChangeAndReset() &&
+bool SidebarContainerView::ShouldUseAnimation() {
+  return !operation_from_active_tab_change_ &&
          gfx::Animation::ShouldRenderRichAnimation();
 }
 
@@ -716,19 +716,14 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
   DVLOG(1) << "Panel shown: " << entry->name();
   auto* controller = browser_->sidebar_controller();
 
-  // Asked to set here because SidebarController doesn't know non-managed entry
-  // activation.
-  // Set browser active panel when panel is shown.
-  controller->SetBrowserActivePanelKey(entry->key());
-
   // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
     if (!item.open_in_panel) {
       continue;
     }
     if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
-      auto side_bar_index = sidebar_model_->GetIndexOf(item);
-      controller->ActivateItemAt(side_bar_index);
+      const auto sidebar_index = sidebar_model_->GetIndexOf(item);
+      controller->ActivateItemAt(sidebar_index);
       return;
     }
   }
@@ -745,12 +740,6 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   DVLOG(1) << "Panel hidden: " << entry->name();
   auto* controller = browser_->sidebar_controller();
 
-  // Asked to clear here because SidebarController doesn't know non-managed
-  // entry's de-activation. Clear browser active panel when panel is hidden.
-  if (!side_panel_coordinator_->GetCurrentEntryId()) {
-    controller->ClearBrowserActivePanelKey();
-  }
-
   // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
     if (!item.open_in_panel) {
@@ -758,8 +747,14 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
     }
 
     if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
-      auto side_bar_index = sidebar_model_->GetIndexOf(item);
-      if (controller->IsActiveIndex(side_bar_index)) {
+      const auto sidebar_index = sidebar_model_->GetIndexOf(item);
+      // Only deactivate sidebar item for hidden |entry| when it was active
+      // and it's not active one now.
+      // It can happen when shown & hidden entries have same sidebar item(ex,
+      // different tab uses ai-chat). In this case, don't need to deactivate
+      // item because same item should be activated.
+      if (controller->IsActiveIndex(sidebar_index) &&
+          side_panel_coordinator_->GetCurrentEntryId() != entry->key().id()) {
         controller->ActivateItemAt(absl::nullopt);
         return;
       }
@@ -786,6 +781,89 @@ void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
   // Stop observing
   DVLOG(1) << "Unobserving panel entry in registry observer: " << entry->name();
   panel_entry_observations_.RemoveObservation(entry);
+}
+
+void SidebarContainerView::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  // Need to [de]register contextual registry when tab is replaced.
+  if ((change.type() == TabStripModelChange::kReplaced)) {
+    auto* replace = change.GetReplace();
+    StartObservingContextualSidePanelRegistry(replace->new_contents);
+    StopObservingContextualSidePanelRegistry(replace->old_contents);
+    return;
+  }
+
+  if (change.type() == TabStripModelChange::kInserted) {
+    for (const auto& contents : change.GetInsert()->contents) {
+      StartObservingContextualSidePanelRegistry(contents.contents);
+    }
+    return;
+  }
+
+  if (change.type() == TabStripModelChange::kRemoved) {
+    for (const auto& contents : change.GetRemove()->contents) {
+      StopObservingContextualSidePanelRegistry(contents.contents);
+    }
+    return;
+  }
+}
+
+void SidebarContainerView::StopObservingContextualSidePanelRegistry(
+    content::WebContents* contents) {
+  auto* registry = SidePanelRegistry::Get(contents);
+  if (!registry) {
+    return;
+  }
+
+  panel_registry_observations_.RemoveObservation(registry);
+
+  for (const auto& entry : registry->entries()) {
+    if (panel_entry_observations_.IsObservingSource(entry.get())) {
+      DVLOG(1) << "Removing panel entry observation from removed contextual "
+                  "registry : "
+               << entry->name();
+      panel_entry_observations_.RemoveObservation(entry.get());
+    }
+  }
+}
+
+void SidebarContainerView::StartObservingContextualSidePanelRegistry(
+    content::WebContents* contents) {
+  auto* registry = SidePanelRegistry::Get(contents);
+  if (!registry) {
+    return;
+  }
+
+  panel_registry_observations_.AddObservation(registry);
+
+  for (const auto& entry : registry->entries()) {
+    if (!panel_entry_observations_.IsObservingSource(entry.get())) {
+      DVLOG(1) << "Observing existing panel entry from newly added contextual "
+                  "registry : "
+               << entry->name();
+      panel_entry_observations_.AddObservation(entry.get());
+    }
+  }
+
+  SharedPinnedTabService* shared_pinned_tab_service =
+      GetSharedPinnedTabService(browser_->profile());
+
+  // When a tab is moved from another window and it has active contextual entry,
+  // SidePanelCoordinator handles it and make it visible after it's moved to new
+  // window. However, SidePanelCoordinator doesn't handle shared pinned tab's
+  // activation because it only have interests about active tab changing. We
+  // switch shared pinned tab by replacing tab. With below special handling,
+  // shared pinned tab across multiple windows will have proper panel open
+  // state. If per-tab side panel is opened for shared pinned tab, all other
+  // windows also should have same visible side panel.
+  if (shared_pinned_tab_service &&
+      shared_pinned_tab_service->IsSharedContents(contents)) {
+    if (auto active_entry = registry->active_entry()) {
+      OnEntryShown(*active_entry);
+    }
+  }
 }
 
 BEGIN_METADATA(SidebarContainerView, views::View)

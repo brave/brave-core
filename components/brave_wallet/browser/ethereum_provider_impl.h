@@ -213,12 +213,8 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                          const std::string& tx_meta_id,
                                          const std::string& error_message);
   void SignMessageInternal(const mojom::AccountIdPtr& account_id,
-                           const std::string& domain,
-                           const std::string& message,
-                           std::vector<uint8_t> message_to_sign,
-                           const absl::optional<std::string>& domain_hash,
-                           const absl::optional<std::string>& primary_hash,
-                           bool is_eip712,
+                           mojom::SignDataUnionPtr sign_data,
+                           std::vector<uint8_t>&& message_to_sign,
                            RequestCallback callback,
                            base::Value id);
   bool CheckAccountAllowed(const mojom::AccountIdPtr& account_id,
@@ -227,34 +223,15 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void OnUpdateKnownAccounts(const std::vector<std::string>& allowed_accounts,
                              mojom::ProviderError error,
                              const std::string& error_message);
-
-  void ContinueGetDefaultKeyringInfo(RequestCallback callback,
-                                     base::Value id,
-                                     const std::string& normalized_json_request,
-                                     const url::Origin& origin,
-                                     bool sign_only,
-                                     mojom::NetworkInfoPtr chain);
-  void ContinueGetEncryptionPublicKey(
-      RequestCallback callback,
-      base::Value id,
-      const std::string& address,
-      const url::Origin& origin,
-      const std::vector<std::string>& allowed_accounts,
-      mojom::ProviderError error,
-      const std::string& error_message);
   void ContinueDecryptWithSanitizedJson(RequestCallback callback,
                                         base::Value id,
                                         const mojom::AccountIdPtr& account_id,
                                         const url::Origin& origin,
                                         data_decoder::JsonSanitizer::Result);
-  void OnGetNetworkAndDefaultKeyringInfo(
-      RequestCallback callback,
-      base::Value id,
-      const std::string& normalized_json_request,
-      const url::Origin& origin,
-      mojom::NetworkInfoPtr chain,
-      bool sign_only,
-      mojom::KeyringInfoPtr keyring_info);
+  void SendOrSignTransactionInternal(RequestCallback callback,
+                                     base::Value id,
+                                     const std::string& normalized_json_request,
+                                     bool sign_only);
 
   // content_settings::Observer:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,

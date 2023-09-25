@@ -8,4 +8,7 @@ module speedreader.mojom;
 interface SpeedreaderHost {
   // The browser handler for clicking on the "Show original page" link.
   OnShowOriginalPage();
+
+  // The browser handler for clicking on the "Play/Pause" button.
+  OnTtsPlayPause(int32 paragraph_index);
 };

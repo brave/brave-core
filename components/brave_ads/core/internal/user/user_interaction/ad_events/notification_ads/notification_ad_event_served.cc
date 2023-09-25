@@ -15,7 +15,7 @@ namespace brave_ads {
 
 void NotificationAdEventServed::FireEvent(const NotificationAdInfo& ad,
                                           ResultCallback callback) {
-  LogAdEvent(ad, ConfirmationType::kServed, std::move(callback));
+  RecordAdEvent(ad, ConfirmationType::kServed, std::move(callback));
 }
 
 }  // namespace brave_ads

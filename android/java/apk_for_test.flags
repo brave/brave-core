@@ -541,6 +541,10 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediatorBase {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController {
     *** wrapDialogDismissalCallback(...);
     public <init>(...);
@@ -630,6 +634,9 @@
 }
 
 -keep class org.chromium.components.variations.firstrun.VariationsSeedFetcher {
+    *** sLock;
+    *** DEFAULT_VARIATIONS_SERVER_URL;
+    *** DEFAULT_FAST_VARIATIONS_SERVER_URL;
     *** get(...);
 }
 

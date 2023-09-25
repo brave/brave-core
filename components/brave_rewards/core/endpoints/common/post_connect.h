@@ -26,7 +26,7 @@ class PostConnect;
 
 template <>
 struct ResultFor<PostConnect> {
-  using Value = void;
+  using Value = std::string;  // Country ID
   using Error = mojom::PostConnectError;
 };
 

@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/credentials/brave_vpn_wireguard_profile_credentials.h"
-#include "brave/components/brave_vpn/common/wireguard/constants.h"
+#include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
 class PrefService;
 
@@ -36,7 +36,6 @@ class BraveVPNWireguardConnectionAPIBase
   void Connect() override;
 
   // Platform dependent APIs.
-  virtual void RequestNewProfileCredentials() = 0;
   virtual void PlatformConnectImpl(
       const wireguard::WireguardProfileCredentials& credentials) = 0;
 
@@ -45,7 +44,7 @@ class BraveVPNWireguardConnectionAPIBase
 
  protected:
   void OnDisconnected(bool success);
-  void OnWireguardKeypairGenerated(
+  void RequestNewProfileCredentials(
       brave_vpn::wireguard::WireguardKeyPair key_pair);
   void OnGetProfileCredentials(const std::string& client_private_key,
                                const std::string& profile_credential,

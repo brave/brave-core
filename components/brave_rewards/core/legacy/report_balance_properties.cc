@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_rewards/core/legacy/report_balance_properties.h"
 
+#include <string_view>
+
 #include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -24,7 +26,7 @@ const char kOneTimeDonationsKey[] = "one_time_donation";
 const char kRecurringDonationsKey[] = "recurring_donation";
 
 bool GetPropertyFromDict(const base::Value::Dict& dict,
-                         base::StringPiece key,
+                         std::string_view key,
                          double* value) {
   DCHECK(value);
 

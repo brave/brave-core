@@ -9,7 +9,6 @@ brave_browser_brave_wallet_deps =
 brave_browser_brave_wallet_sources = []
 if (!is_android) {
   brave_browser_brave_wallet_sources += [
-    "//brave/browser/brave_wallet/notifications/wallet_notification_helper_impl.cc",
     "//brave/browser/brave_wallet/notifications/wallet_notification_service.cc",
     "//brave/browser/brave_wallet/notifications/wallet_notification_service.h",
     "//brave/browser/brave_wallet/notifications/wallet_notification_service_factory.cc",

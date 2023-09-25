@@ -6,12 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_SEGMENTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_MULTI_ARMED_BANDITS_EPSILON_GREEDY_BANDIT_SEGMENTS_H_
 
-#include "base/containers/span.h"
-#include "base/strings/string_piece.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace brave_ads {
 
-base::span<const base::StringPiece> GetSegments();
+const SegmentList& SupportedEpsilonGreedyBanditSegments();
 
 }  // namespace brave_ads
 

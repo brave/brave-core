@@ -1,9 +1,20 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
+<translation id="8631427463833030968">広告を管理</translation>
+<translation id="7630214457764713113">クリーンリンクをコピー</translation>
 <translation id="885805571521218129">これは、今月のBrave広告の推定収益範囲を反映しています。</translation>
 <translation id="3478449063771497234">通知は無効です</translation>
+<translation id="2862978891748913252">国を選択</translation>
+<translation id="3970520675790340955">お住まいの国を選択すると、その地域に合ったオプションや広告が表示されます。</translation>
+<translation id="7301741773883122509">広告を見るだけで報酬を獲得できるようになりました。参加していただくだけで、ウェブを誰にとってもより良い場所に変えていくことができます。これは素晴らしいことですよね！</translation>
+<translation id="6439128034594289376">準備完了です！</translation>
 <translation id="370665806235115550">Loading...</translation>
+<translation id="7931127789630755251">Braveのプライベート広告でトークンを獲得</translation>
+<translation id="7859066142771796818">トークンはギフトカードの購入、他の通貨との交換、コンテンツクリエイターの支援などに利用できます。</translation>
+<translation id="3863981251715594911">その仕組みとは？</translation>
+<translation id="5547108999862247665">Braveリワードの仕組み</translation>
+<translation id="2965798296974325760">Rewardsの使用開始</translation>
 <translation id="8220484609979012449">\n\nWeb3ウォレットを使用すれば、このクリエイターに暗号通貨で支援を送ることができます。</translation>
 <translation id="6385969012847057348">このクリエイターは<ph name="CUSTODIAN"/>からの支援を受け取ることができません。</translation>
 <translation id="6268134562674951939">トークンが不足しています</translation>
@@ -169,7 +180,7 @@
 <translation id="9110294136812584522">サイトは、サードパーティのCookieを介して、レガシーのGoogleサインインの利用を求めることができる</translation>
 <translation id="2903783737778379345">サードパーティCookieを使用したレガシーのGoogleサインインを許可しない</translation>
 <translation id="6880817299303842099">レガシーのGoogleサインインにサードパーティCookieの使用を許可する</translation>
-<translation id="5169650598465327872">Localhostのアクセス</translation>
+<translation id="2136412236435693622">Localhostのアクセス</translation>
 <translation id="4172219483893066798">サイトがLocalhostのリソースへのアクセスを要求可能</translation>
 <translation id="7181706637590665047">Localhostのリソースへのアクセスを許可しない</translation>
 <translation id="1485435696620658073">Localhostのリソースへのアクセスを許可</translation>
@@ -396,6 +407,7 @@
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="734105583050813665">Bitflyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
+<translation id="6011108706830742093">ZebPay</translation>
 <translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を必要とする場合があります。</translation>
 <translation id="3200197118442451932">Brave Software Inc.では、アカウントを開設する際に<ph name="WALLET_PROVIDER"/>に提供される個人情報について処理、保存、アクセスすることは一切ありません。</translation>
 <translation id="1665118090708049096"><ph name="WALLET_PROVIDER"/>アカウントへ移動</translation>
@@ -422,6 +434,12 @@
 <translation id="6883611015375728278">すべてのクッキーをブロック</translation>
 <translation id="4941539331405513605">クロスサイトクッキーをブロック</translation>
 <translation id="5657156137487675418">すべてのクッキーを許可する</translation>
+<translation id="1553643198679271031">OTRモードをリクエスト</translation>
+<translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
+<translation id="1388619247102737054">サイトからリクエストがあった場合に、ブラウザ履歴とローカルストレージを無効にします</translation>
+<translation id="1876882294512858963">常にOTRモードを使用</translation>
+<translation id="554464532999080267">OTRモードへの切り替え前 (起動前) に一言声をかける</translation>
+<translation id="926857659063503456">OTRモードを使用しない</translation>
 <translation id="3895527457258986253">フィンガープリントをブロック</translation>
 <translation id="7854108565842971747">新しいサイトに対するShieldsのデフォルト設定です。この設定を変更しても、既存のサイト設定には影響しません。</translation>
 <translation id="218587021686734263">言語設定によるフィンガープリントの防止</translation>
@@ -545,6 +563,7 @@
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
 <translation id="1483493594462132177">送信</translation>
 <translation id="538450413584738399">スワップ</translation>
+<translation id="1366855498335432549">振込</translation>
 <translation id="1420318137760245955">新しい Brave Wallet へようこそ</translation>
 <translation id="8339846196588658366">暗号資産を保管してポートフォリオのパフォーマンスを追跡しましょう。Brave プライバシーブラウザからご利用いただけます。</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -561,7 +580,8 @@
 <translation id="375882617301124395">暗号資産ウォレットをバックアップします</translation>
 <translation id="8289942708804097960">クレジットカードまたはデビットカードで暗号資産を購入しましょう。</translation>
 <translation id="841880029259839903">あるアカウントから別のアカウントへ暗号資産を送信また転送できます。</translation>
-<translation id="8226778393040773102">トークンとアセットをスワップ</translation>
+<translation id="151939837774436299">トークンとアセットをスワップします。</translation>
+<translation id="5512897350309216422">Braveウォレットに暗号資産を入金しました。</translation>
 <translation id="1783600039044302171">暗号資産をパスワードで保護</translation>
 <translation id="3726490322412361740">パスワードを入力してください</translation>
 <translation id="3038243139480464605">パスワードを確認</translation>
@@ -602,13 +622,6 @@
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="5760476995887363522">フレーズが一致しません。もう一度お試しください。</translation>
 <translation id="2360588547830602174">アカウントの復元に失敗しました。もう一度お試しください。</translation>
-<translation id="6748108480210050150">送信元</translation>
-<translation id="3318280255740629162">25%</translation>
-<translation id="2636487255623744079">50%</translation>
-<translation id="8654192805213365413">75%</translation>
-<translation id="6159566011642056819">最大 (推定)</translation>
-<translation id="6998989275928107238">送信先</translation>
-<translation id="2589431635772931954">アドレスまたはURL</translation>
 <translation id="5517732667776806421">チェックサム情報がありません</translation>
 <translation id="4006711930669471508">チェックサム情報が無効です</translation>
 <translation id="1987317783729300807">アカウント</translation>
@@ -636,7 +649,6 @@
 <translation id="8475984867371585028">表示されているNFTを編集する</translation>
 <translation id="5050890334032852465">アカウントのウォッチリストを保存</translation>
 <translation id="7755766175599167100">トークンの検索</translation>
-<translation id="3835223348537121988">残高:</translation>
 <translation id="3956169227169516344">購入方法を選択</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="3784455785234192852">ロック</translation>
@@ -650,7 +662,7 @@
 <translation id="8239147115686034860">Braveウォレット を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="2326850911705720398">ウォレットのデータをリセット＆クリア</translation>
-<translation id="4322846864135539519">Braveリワードをリセットしますか？ウォレットがバックアップされていない場合、リセットすると（紐づく資金を含む）すべてのアカウントデータが失われます。確認のため「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
+<translation id="6567712397896147805">Braveウォレットをリセットしてよろしいですか？ウォレットがバックアップされていない場合、リセットするとすべてのアカウントデータ (関連する資金を含む) が失われます。確認のために「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
 <translation id="6915083716464390008">以下のオプションのいずれかを選択</translation>
 <translation id="7667423728712601865">VisaまたはMastercardで暗号資産を購入。</translation>
 <translation id="3101839349578102016">銀行口座で即座に購入。手数料が安くなる</translation>
@@ -767,8 +779,6 @@
 <translation id="5045550434625856497">パスワードが正しくありません</translation>
 <translation id="1367951781824006909">ファイルを選択</translation>
 <translation id="8648684608605749476">プライベートモードでサードパーティの Cookie をブロックします</translation>
-<translation id="1118876217803190221">残高不足です</translation>
-<translation id="3025158262797849291">数字の形式が正しくありません</translation>
 <translation id="5932938770824268122">秘密鍵</translation>
 <translation id="2472882733835903303">秘密鍵を表示</translation>
 <translation id="4391056902675005799">秘密鍵を非表示</translation>
@@ -813,14 +823,12 @@
 <translation id="1254969878422524947">ガスあたりのチップ制限 (Gwei)</translation>
 <translation id="7373308452149471621">ガスあたりの価格制限 (Gwei)</translation>
 <translation id="5891811606602061966">アカウントのインポートに失敗しました。もう一度やり直してください。</translation>
-<translation id="1822506443689803572">BraveはDEXアグリゲーターとして<ph name="DEX_PROVIDER"/>を使用しています</translation>
 <translation id="5061574358754621254">CoinGeckoによる価格データ</translation>
-<translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
 <translation id="8574289650879708853">カスタムアセットを追加</translation>
 <translation id="1255896809210433555">NFTを追加する</translation>
 <translation id="7791543448312431591">追加</translation>
 <translation id="6600400596821238377">トークン名</translation>
-<translation id="4432966365400169165">トークン契約アドレス</translation>
+<translation id="3797613444743816037">ミントアドレス</translation>
 <translation id="4092152169181928870">トークンシンボル</translation>
 <translation id="4351811224047421378">小数点桁数</translation>
 <translation id="547122651977318828">トークンID (ERC721のみ)</translation>
@@ -920,6 +928,7 @@
 <translation id="6044189892950611565">Braveブラウザへの通知チャンネル</translation>
 <translation id="1173919438868967364">アカウントを選択</translation>
 <translation id="8922793255489232731">以下に一致するタイムゾーンを取得できません : <ph name="VALUE"/></translation>
+<translation id="7084757528071133475">ウォレットのデータファイルをダウンロードしています \u2022 <ph name="percentage"/>\u0025</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>に接続済み</translation>
 <translation id="1968852757206592413">トライアル</translation>
 <translation id="7733890291091968191">Web3の通知を表示</translation>
@@ -1002,8 +1011,6 @@
 <translation id="8382368767453083629">マルチシグを初期化 (2)</translation>
 <translation id="77243237706803459">ミントを初期化 (2)</translation>
 <translation id="583281660410589416">不明</translation>
-<translation id="2862978891748913252">国を選択</translation>
-<translation id="3832588024105436400">国を選択すると、お住まいの地域に適したオプションと広告を表示することができます。<ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">Braveリワードの地域を<ph name="COUNTRY_NAME"/>に設定しました。</translation>
 <translation id="909076461795862330">Brave Rewardsの設定時にエラーが発生しました。もう一度お試しください。</translation>
 <translation id="7352651011704765696">エラーが発生しました</translation>
@@ -1060,10 +1067,6 @@
 <translation id="7748944510530490017">プライマリネットワーク</translation>
 <translation id="2781668117338732220">セカンダリネットワーク</translation>
 <translation id="282560918037172384">テストネットワーク</translation>
-<translation id="6309721369749814582">ドメイン「<ph name="DOMAIN"/>」は登録されていません</translation>
-<translation id="4071347720273751665">ENSアドレスが入力されたようです。この要求を解決するには、サードパーティのリゾルバを使用する必要がありますが、IPアドレスとドメインが表示される可能性があります。<ph name="LEARN_MORE"/></translation>
-<translation id="4096049525705855774">ENSオフチェーンドメインを使用する</translation>
-<translation id="4982630604810554641">ドメインを検索中...</translation>
 <translation id="3586775666459823714">NFTs</translation>
 <translation id="707569835145765061">要対応: カストディアルアカウントとの接続をしない場合、これまで獲得したvBATは消滅します。</translation>
 <translation id="1776742005329298234"><ph name="DUE_DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。この日までにカストディアルアカウントを接続し、獲得した残高をカストディアルアカウントに移行できるようにしてください。この設定を行わない場合、残高は失われます。</translation>

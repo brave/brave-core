@@ -5,44 +5,44 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_segments.h"
 
-namespace {
-
-constexpr base::StringPiece kSegments[] = {"architecture",
-                                           "arts & entertainment",
-                                           "automotive",
-                                           "business",
-                                           "careers",
-                                           "cell phones",
-                                           "drugs",
-                                           "education",
-                                           "family & parenting",
-                                           "fashion",
-                                           "folklore",
-                                           "food & drink",
-                                           "health & fitness",
-                                           "history",
-                                           "hobbies & interests",
-                                           "home",
-                                           "law",
-                                           "military",
-                                           "personal finance",
-                                           "pets",
-                                           "politics",
-                                           "real estate",
-                                           "religion",
-                                           "science",
-                                           "society",
-                                           "sports",
-                                           "technology & computing",
-                                           "travel",
-                                           "weather",
-                                           "crypto"};
-}  // namespace
+#include "base/no_destructor.h"
 
 namespace brave_ads {
 
-base::span<const base::StringPiece> GetSegments() {
-  return kSegments;
+const SegmentList& SupportedEpsilonGreedyBanditSegments() {
+  static const base::NoDestructor<SegmentList> kSegments(
+      {"architecture",
+       "arts & entertainment",
+       "automotive",
+       "business",
+       "careers",
+       "cell phones",
+       "drugs",
+       "education",
+       "family & parenting",
+       "fashion",
+       "folklore",
+       "food & drink",
+       "health & fitness",
+       "history",
+       "hobbies & interests",
+       "home",
+       "law",
+       "military",
+       "personal finance",
+       "pets",
+       "politics",
+       "real estate",
+       "religion",
+       "science",
+       "society",
+       "sports",
+       "technology & computing",
+       "travel",
+       "weather",
+       "crypto"});
+
+  return *kSegments;
 }
 
 }  // namespace brave_ads

@@ -6,15 +6,16 @@
 #include "brave/browser/net/brave_stp_util.h"
 
 #include <string>
+#include <string_view>
 
 #include "base/no_destructor.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace brave {
 
-base::flat_set<base::StringPiece>* TrackableSecurityHeaders() {
-  static base::NoDestructor<base::flat_set<base::StringPiece>>
-      kTrackableSecurityHeaders(base::flat_set<base::StringPiece>{
+base::flat_set<std::string_view>* TrackableSecurityHeaders() {
+  static base::NoDestructor<base::flat_set<std::string_view>>
+      kTrackableSecurityHeaders(base::flat_set<std::string_view>{
           "Strict-Transport-Security", "Expect-CT", "Public-Key-Pins",
           "Public-Key-Pins-Report-Only"});
   return kTrackableSecurityHeaders.get();

@@ -22,6 +22,7 @@ import {
 
 export interface Props {
   option: NavOption
+  onClick?: (() => void) | (() => Promise<void>)
 }
 
 export const WalletNavButton = (props: Props) => {
@@ -33,8 +34,9 @@ export const WalletNavButton = (props: Props) => {
 
   // Methods
   const onClick = React.useCallback(() => {
-    history.push(option.route)
-  }, [option.route])
+    props.onClick?.()
+    history.push(props.option.route)
+  }, [props])
 
   return (
     <StyledButton

@@ -36,6 +36,7 @@ export interface WalletPageStoryProps {
   accountTabStateOverride?: Partial<AccountsTabState>
   uiStateOverride?: Partial<UIState>
   apiOverrides?: WalletApiDataOverrides
+  initialRoute?: WalletRoutes
 }
 
 const mockedProxy = getMockedAPIProxy()
@@ -47,6 +48,7 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
   accountTabStateOverride,
   uiStateOverride,
   apiOverrides,
+  initialRoute
 }) => {
   // redux
   const store = React.useMemo(() => {
@@ -72,7 +74,9 @@ export const WalletPageStory: React.FC<React.PropsWithChildren<WalletPageStoryPr
 
   // render
   return (
-    <MemoryRouter initialEntries={[WalletRoutes.OnboardingWelcome]}>
+    <MemoryRouter
+      initialEntries={[initialRoute || WalletRoutes.OnboardingWelcome]}
+    >
       <Provider store={store}>
         <ApiProxyContext.Provider value={mockedProxy}>
           <LibContext.Provider value={Lib as any}>

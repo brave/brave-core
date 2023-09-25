@@ -3,7 +3,6 @@
 <translationbundle lang="en-GB">
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> of your tabs haven't been used lately. Close them?</translation>
 <translation id="125153950246128346">Tap to see another tab</translation>
-<translation id="955456285524876618">You can find your closed tabs in Recent tabs under the Brave main menu</translation>
 <translation id="1657719826150349398">Move tab down</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> tab}other{<ph name="TABS_COUNT_MANY"/> tabs}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Bookmark <ph name="TABS_COUNT_ONE"/> selected tab}other{Bookmark <ph name="TABS_COUNT_MANY"/> selected tabs}}</translation>
@@ -45,6 +44,7 @@
 <translation id="5073204694187207510">Hide full-screen grid</translation>
 <translation id="5076161749301278626">See store reviews?</translation>
 <translation id="5082793167783849073">Quickly compare pages by making a group. To start, touch and hold a link.</translation>
+<translation id="5339733443032484186">Your last tab</translation>
 <translation id="5490235265819901748">Tab group expanded</translation>
 <translation id="5494920125229734069">Select all</translation>
 <translation id="5556417849629758491">View shop info, option available near top of the screen</translation>
@@ -64,6 +64,7 @@
 <translation id="6549021453810473782">View shop info</translation>
 <translation id="6562820390860419811">Move tab left</translation>
 <translation id="6615455863669487791">Show me</translation>
+<translation id="6398241160085205003">You can find your closed tabs in Recent tabs under the Brave main menu.</translation>
 <translation id="6840760312327750441">To group tabs, touch and hold a tab. Then, drag it onto another tab.</translation>
 <translation id="6856809498882026482">Hide multi-select mode</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Share tab}other{Share tabs}}</translation>
@@ -92,6 +93,9 @@
 <translation id="9150694013019234766">Switch between tabs in your tab group near bottom of screen</translation>
 <translation id="9169594135889675189">Add new tab to group</translation>
 <translation id="959682366969460160">Get organised</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {You can find your closed tabs in Recent tabs under the Brave main menu. Your Private tab won't be available.}
+        other {You can find your closed tabs in Recent tabs under the Brave main menu. Your # Private tabs won't be available.}}</translation>
 <translation id="3228718275011575753">Close all Private tabs?</translation>
-<translation id="1922184283901690941">Your activity in these Private tabs will be cleared from this device</translation>
+<translation id="6687920250729800417">Your activity in these Private tabs will be removed from this device</translation>
 </translationbundle>

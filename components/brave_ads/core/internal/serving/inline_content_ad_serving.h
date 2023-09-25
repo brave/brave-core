@@ -12,8 +12,8 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
@@ -44,27 +44,31 @@ class InlineContentAdServing final {
   }
 
   void MaybeServeAd(const std::string& dimensions,
-                    MaybeServeInlineContentAdCallback callback);
+                    MaybeServeInlineContentAdCallback callback) const;
 
  private:
+  base::expected<void, std::string> CanServeAd() const;
+
   bool IsSupported() const { return bool{eligible_ads_}; }
 
+  void GetEligibleAds(const std::string& dimensions,
+                      MaybeServeInlineContentAdCallback callback) const;
   void BuildUserModelCallback(const std::string& dimensions,
                               MaybeServeInlineContentAdCallback callback,
-                              const UserModelInfo& user_model);
-  void GetForUserModelCallback(const UserModelInfo& user_model,
-                               const std::string& dimensions,
-                               MaybeServeInlineContentAdCallback callback,
-                               bool had_opportunity,
-                               const CreativeInlineContentAdList& creative_ads);
+                              const UserModelInfo& user_model) const;
+  void GetEligibleAdsForUserModelCallback(
+      const std::string& dimensions,
+      MaybeServeInlineContentAdCallback callback,
+      const CreativeInlineContentAdList& creative_ads) const;
 
   void ServeAd(const InlineContentAdInfo& ad,
-               MaybeServeInlineContentAdCallback callback);
+               MaybeServeInlineContentAdCallback callback) const;
+  void SuccessfullyServedAd(const InlineContentAdInfo& ad,
+                            MaybeServeInlineContentAdCallback callback) const;
   void FailedToServeAd(const std::string& dimensions,
-                       MaybeServeInlineContentAdCallback callback);
+                       MaybeServeInlineContentAdCallback callback) const;
 
-  void NotifyOpportunityAroseToServeInlineContentAd(
-      const SegmentList& segments) const;
+  void NotifyOpportunityAroseToServeInlineContentAd() const;
   void NotifyDidServeInlineContentAd(const InlineContentAdInfo& ad) const;
   void NotifyFailedToServeInlineContentAd() const;
 

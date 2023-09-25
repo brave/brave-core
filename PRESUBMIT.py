@@ -16,7 +16,7 @@ import override_utils
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
 
-# pylint: disable=line-too-long,protected-access
+# pylint: disable=line-too-long,protected-access,undefined-variable
 
 
 # Adds support for chromium_presubmit_config.json5 and some helpers.
@@ -283,6 +283,14 @@ def CheckLicense(input_api, output_api):
 # executed first.
 chromium_presubmit_overrides.inline_presubmit_from_src('PRESUBMIT.py',
                                                        globals(), locals())
+
+_BANNED_CPP_FUNCTIONS += (
+    BanRule(
+        r'/\bStringPiece',
+        ('Use std::string_view instead', ),
+        True,
+        [_THIRD_PARTY_EXCEPT_BLINK],  # Don't warn in third_party folders.
+    ), )
 
 
 # Extend BanRule exclude lists with Brave-specific paths.

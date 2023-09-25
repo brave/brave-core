@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_TRANSLATE_CORE_BROWSER_TRANSLATE_PREFS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_TRANSLATE_CORE_BROWSER_TRANSLATE_PREFS_H_
 
+#include <string_view>
+
 // This is done to allow the same renaming in
 // chromium_src/chrome/browser/prefs/browser_prefs.cc
 #define TranslatePrefs TranslatePrefs_ChromiumImpl
@@ -19,7 +21,7 @@ class TranslatePrefs : public TranslatePrefs_ChromiumImpl {
 
   // Override to control by Brave features. No virtual because TranslatePrefs
   // doesn't have a virtual dtor and the method isn't used inside the impl.
-  bool ShouldAutoTranslate(base::StringPiece source_language,
+  bool ShouldAutoTranslate(std::string_view source_language,
                            std::string* target_language);
 };
 }  // namespace translate

@@ -5,6 +5,8 @@
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
+#include <string_view>
+
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/numerics/safe_conversions.h"
@@ -251,7 +253,7 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
     return;
 
   uint8_t* pixels = const_cast<uint8_t*>(data);
-  // This needs to be type size_t because we pass it to base::StringPiece
+  // This needs to be type size_t because we pass it to std::string_view
   // later for content hashing. This is safe because the maximum canvas
   // dimensions are less than SIZE_T_MAX. (Width and height are each
   // limited to 32,767 pixels.)
@@ -265,7 +267,7 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_plus_domain_key),
                sizeof session_plus_domain_key));
   uint8_t canvas_key[32];
-  CHECK(h.Sign(base::StringPiece(reinterpret_cast<const char*>(pixels), size),
+  CHECK(h.Sign(std::string_view(reinterpret_cast<const char*>(pixels), size),
                canvas_key, sizeof canvas_key));
   uint64_t v = *reinterpret_cast<uint64_t*>(canvas_key);
   uint64_t pixel_index;

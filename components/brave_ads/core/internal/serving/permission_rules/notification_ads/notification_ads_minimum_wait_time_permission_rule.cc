@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 
@@ -39,7 +39,7 @@ NotificationAdMinimumWaitTimePermissionRule::ShouldAllow() const {
   }
 
   const std::vector<base::Time> history =
-      GetAdEventHistory(AdType::kNotificationAd, ConfirmationType::kServed);
+      GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kServed);
   if (!DoesRespectCap(history)) {
     return base::unexpected(
         "Notification ad cannot be shown as minimum wait time has not passed");

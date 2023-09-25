@@ -44,6 +44,8 @@ void NotificationAdEventHandler::FireEvent(
                           std::move(callback)));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void NotificationAdEventHandler::FireEventCallback(
     const NotificationAdInfo& ad,
     const mojom::NotificationAdEventType event_type,

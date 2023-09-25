@@ -27,10 +27,6 @@ class SidebarItemAddButton : public SidebarButtonView,
   SidebarItemAddButton(const SidebarItemAddButton&) = delete;
   SidebarItemAddButton& operator=(const SidebarItemAddButton&) = delete;
 
-  // SidebarButtonView overrides:
-  void AddedToWidget() override;
-  void OnThemeChanged() override;
-
   // views::WidgetObserver overrides:
   void OnWidgetDestroying(views::Widget* widget) override;
 

@@ -10,7 +10,6 @@
 
 #include "base/big_endian.h"
 #include "base/json/json_reader.h"
-#include "base/strings/string_piece.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/database/database.h"

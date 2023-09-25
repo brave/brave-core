@@ -355,7 +355,7 @@ void CreativePromotedContentAds::GetForSegments(
 
   int index = 0;
   for (const auto& segment : segments) {
-    BindString(&*command, index, base::ToLowerASCII(segment));
+    BindString(&*command, index, segment);
     index++;
   }
 

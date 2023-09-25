@@ -8,21 +8,6 @@
 
 namespace ai_chat {
 
-// Note the blank space intentionally added
-constexpr char kHumanPrompt[] = "Human:";
-constexpr char kHumanPromptPlaceholder[] = "\nH: ";
-constexpr char kAIPrompt[] = "Assistant:";
-constexpr char kAIPromptPlaceholder[] = "\n\nA: ";
-
-constexpr char kLlama2Bos[] = "<s>";
-constexpr char kLlama2Eos[] = "</s>";
-constexpr char kLlama2BIns[] = "[INST]";
-constexpr char kLlama2EIns[] = "[/INST]";
-constexpr char kLlama2BSys[] = "<<SYS>>\n";
-constexpr char kLlama2ESys[] = "\n<</SYS>>\n\n";
-
-constexpr char kAIChatCompletionPath[] = "v1/complete";
-
 base::span<const webui::LocalizedString> GetLocalizedStrings() {
   constexpr webui::LocalizedString kLocalizedStrings[] = {
       {"siteTitle", IDS_CHAT_UI_TITLE},
@@ -43,14 +28,6 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"retryButtonLabel", IDS_CHAT_UI_RETRY_BUTTON_LABEL}};
 
   return kLocalizedStrings;
-}
-
-std::string GetHumanPromptSegment() {
-  return base::StrCat({"\n\n", kHumanPrompt, " "});
-}
-
-std::string GetAssistantPromptSegment() {
-  return base::StrCat({"\n\n", kAIPrompt});
 }
 
 bool UsesLlama2PromptTemplate(const std::string& model) {

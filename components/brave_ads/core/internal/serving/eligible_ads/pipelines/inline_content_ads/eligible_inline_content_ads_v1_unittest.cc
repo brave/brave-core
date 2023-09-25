@@ -15,10 +15,14 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing_random_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
 
@@ -62,18 +66,15 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing-software"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{
+          IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+          InterestUserModelInfo{SegmentList{"technology & computing-software"},
+                                TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeInlineContentAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -90,18 +91,15 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing-software"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{
+          IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+          InterestUserModelInfo{SegmentList{"technology & computing-software"},
+                                TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeInlineContentAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -118,18 +116,14 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"finance-banking"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{SegmentList{"finance-banking"},
+                                          TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeInlineContentAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -161,18 +155,15 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
                                                        creative_ad_3};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing", "food & drink"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing", "food & drink"},
+                        TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeInlineContentAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
@@ -192,10 +183,8 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
       /*user_model*/ {}, /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeInlineContentAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -211,16 +200,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"UNMATCHED"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{SegmentList{"UNMATCHED"},
+                                          TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "200x100",
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
@@ -235,16 +220,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{SegmentList{"technology & computing"},
+                                          TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "?x?",
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeInlineContentAdList& creative_ads) {
+      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }
@@ -272,18 +253,15 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing", "food & drink"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing", "food & drink"},
+                        TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeInlineContentAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -313,18 +291,15 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing", "food & drink"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing", "food & drink"},
+                        TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeInlineContentAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));
@@ -358,18 +333,15 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_1};
 
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"technology & computing", "food & drink"},
-          /*text_embedding_html_events*/ {}),
+      UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{
+                        SegmentList{"technology & computing", "food & drink"},
+                        TextEmbeddingHtmlEventList{}}},
       /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
-             const bool had_opportunity,
              const CreativeInlineContentAdList& creative_ads) {
             // Assert
-            EXPECT_TRUE(had_opportunity);
             EXPECT_EQ(expected_creative_ads, creative_ads);
           },
           std::move(expected_creative_ads)));

@@ -237,18 +237,11 @@ RegisterPolymerTemplateModifications({
       'getStarted'
     )
     peopleEl.insertAdjacentElement('afterend', getStartedEl)
+
     // Move Appearance item
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
 
-    // Add New Tab item
-    const newTabEl = createMenuElement(
-      loadTimeData.getString('braveNewTab'),
-      '/newTab',
-      'window-tab-new',
-      'newTab'
-    )
-    appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
     // Add Shields item
     const shieldsEl = createMenuElement(
       loadTimeData.getString('braveShieldsTitle'),
@@ -256,7 +249,12 @@ RegisterPolymerTemplateModifications({
       'shield-done',
       'shields',
     )
-    newTabEl.insertAdjacentElement('afterend', shieldsEl)
+    appearanceBrowserEl.insertAdjacentElement('afterend', shieldsEl)
+
+    // Add privacy item
+    const privacyEl = getMenuElement(templateContent, '/privacy')
+    shieldsEl.insertAdjacentElement('afterend', privacyEl)
+
     // Add Rewards item
     const isBraveRewardsSupported = loadTimeData.getBoolean('isBraveRewardsSupported')
     let rewardsEl = undefined
@@ -267,23 +265,22 @@ RegisterPolymerTemplateModifications({
         'product-bat-outline',
         'rewards',
       )
-      shieldsEl.insertAdjacentElement('afterend', rewardsEl)
+      privacyEl.insertAdjacentElement('afterend', rewardsEl)
     }
-    // Add Embed Blocking item
-    const embedEl = createMenuElement(
-      loadTimeData.getString('socialBlocking'),
-      '/socialBlocking',
-      'thumb-down',
-      'socialBlocking',
+
+    // Add web3 item
+    const web3El = createMenuElement(
+      loadTimeData.getString('braveWeb3'),
+      '/web3',
+      'product-brave-wallet',
+      'wallet',
     )
     if (isBraveRewardsSupported) {
-      rewardsEl.insertAdjacentElement('afterend', embedEl)
+      rewardsEl.insertAdjacentElement('afterend', web3El)
     } else {
-      shieldsEl.insertAdjacentElement('afterend', embedEl)
+      privacyEl.insertAdjacentElement('afterend', web3El)
     }
-    // Add privacy
-    const privacyEl = getMenuElement(templateContent, '/privacy')
-    embedEl.insertAdjacentElement('afterend', privacyEl)
+
     // Add Sync item
     const syncEl = createMenuElement(
       loadTimeData.getString('braveSync'),
@@ -291,10 +288,12 @@ RegisterPolymerTemplateModifications({
       'product-sync',
       'braveSync',
     )
-    privacyEl.insertAdjacentElement('afterend', syncEl)
-    // Move search item
+    web3El.insertAdjacentElement('afterend', syncEl)
+
+    // Add search item
     const searchEl = getMenuElement(templateContent, '/search')
     syncEl.insertAdjacentElement('afterend', searchEl)
+
     // Add Extensions item
     const extensionEl = createMenuElement(
       loadTimeData.getString('braveDefaultExtensions'),
@@ -304,23 +303,14 @@ RegisterPolymerTemplateModifications({
     )
     searchEl.insertAdjacentElement('afterend', extensionEl)
 
-
-    const web3El = createMenuElement(
-      loadTimeData.getString('braveWeb3'),
-      '/web3',
-      'product-brave-wallet',
-      'wallet',
-    )
-
+    // Add leo item
     const leoAssistantEl = createMenuElement(
       loadTimeData.getString('leoAssistant'),
       '/leo-assistant',
-      'product-brave-ai',
+      'product-brave-leo',
       'leoAssistant',
     )
-
-    extensionEl.insertAdjacentElement('afterend', web3El)
-    web3El.insertAdjacentElement('afterend', leoAssistantEl)
+    extensionEl.insertAdjacentElement('afterend', leoAssistantEl)
 
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')

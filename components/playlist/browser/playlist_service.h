@@ -193,6 +193,9 @@ class PlaylistService : public KeyedService,
 
   void CreatePlaylist(mojom::PlaylistPtr playlist,
                       CreatePlaylistCallback callback) override;
+  void ReorderPlaylist(const std::string& playlist_id,
+                       int16_t position,
+                       ReorderPlaylistCallback callback) override;
   void RemovePlaylist(const std::string& playlist_id) override;
   void RenamePlaylist(const std::string& playlist_id,
                       const std::string& playlist_name,
@@ -253,6 +256,7 @@ class PlaylistService : public KeyedService,
   // contents that is different from the given |contents|.
   bool ShouldGetMediaFromBackgroundWebContents(
       content::WebContents* contents) const;
+  bool ShouldUseFakeUA(const GURL& url) const;
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
@@ -264,6 +268,7 @@ class PlaylistService : public KeyedService,
                          DownloadMediaFileCallback callback);
 
   void CleanUpMalformedPlaylistItems();
+  void MigratePlaylistValues();
 
   // Delete orphaned playlist item directories that are not included in prefs.
   void CleanUpOrphanedPlaylistItemDirs();

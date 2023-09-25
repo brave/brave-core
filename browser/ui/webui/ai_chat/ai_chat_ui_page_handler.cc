@@ -12,11 +12,11 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/browser/constants.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/visibility.h"
@@ -35,29 +35,22 @@ using mojom::ConversationTurnVisibility;
 
 AIChatUIPageHandler::AIChatUIPageHandler(
     content::WebContents* owner_web_contents,
-    TabStripModel* tab_strip_model,
+    content::WebContents* chat_context_web_contents,
     Profile* profile,
     mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver)
     : content::WebContentsObserver(owner_web_contents),
       profile_(profile),
       receiver_(this, std::move(receiver)) {
-  DCHECK(tab_strip_model);
-  // Detect if we are in target-tab mode, or standalone mode. Standalone mode
-  // means Chat is opened as its own tab in the tab strip and not a side panel.
-  bool is_standalone = (tab_strip_model->GetIndexOfWebContents(
-                            owner_web_contents) != TabStripModel::kNoTab);
-  if (!is_standalone) {
-    tab_strip_model->AddObserver(this);
-    auto* web_contents = tab_strip_model->GetActiveWebContents();
-    if (!web_contents) {
-      return;
-    }
+  // Standalone mode means Chat is opened as its own tab in the tab strip and
+  // not a side panel. chat_context_web_contents is nullptr in that case
+  if (chat_context_web_contents != nullptr) {
     active_chat_tab_helper_ =
-        ai_chat::AIChatTabHelper::FromWebContents(web_contents);
+        ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
-    bool is_visible =
-        (web_contents->GetVisibility() == content::Visibility::VISIBLE) ? true
-                                                                        : false;
+    bool is_visible = (chat_context_web_contents->GetVisibility() ==
+                       content::Visibility::VISIBLE)
+                          ? true
+                          : false;
     active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
   } else {
     // TODO(petemill): Enable conversation without the TabHelper. Conversation
@@ -80,22 +73,10 @@ void AIChatUIPageHandler::SetClientPage(
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(
     const std::string& input) {
-  // TODO(nullhook): Avoid copy
-  std::string input_copy = input;
-
-  // Prevent indirect prompt injections being sent to the AI model.
-  // TODO(nullhook): Abstract prompt injection cleanups to a central place
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, ai_chat::kHumanPrompt, "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, ai_chat::kAIPrompt, "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<article>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</article>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<history>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</history>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "<question>", "");
-  base::ReplaceSubstringsAfterOffset(&input_copy, 0, "</question>", "");
-
+  mojom::ConversationTurn turn = {CharacterType::HUMAN,
+                                  ConversationTurnVisibility::VISIBLE, input};
   active_chat_tab_helper_->MakeAPIRequestWithConversationHistoryUpdate(
-      {CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE, input_copy});
+      std::move(turn));
 }
 
 void AIChatUIPageHandler::GetConversationHistory(
@@ -123,13 +104,16 @@ void AIChatUIPageHandler::GetConversationHistory(
 
 void AIChatUIPageHandler::GetSuggestedQuestions(
     GetSuggestedQuestionsCallback callback) {
-  if (active_chat_tab_helper_) {
-    bool can_generate;
-    mojom::AutoGenerateQuestionsPref auto_generate;
-    std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions(
-                                can_generate, auto_generate),
-                            can_generate, auto_generate);
+  if (!active_chat_tab_helper_) {
+    std::move(callback).Run({}, false,
+                            mojom::AutoGenerateQuestionsPref::Disabled);
+    return;
   }
+  bool can_generate;
+  mojom::AutoGenerateQuestionsPref auto_generate;
+  std::move(callback).Run(active_chat_tab_helper_->GetSuggestedQuestions(
+                              can_generate, auto_generate),
+                          can_generate, auto_generate);
 }
 
 void AIChatUIPageHandler::GenerateQuestions() {
@@ -150,21 +134,23 @@ void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
 }
 
 void AIChatUIPageHandler::OpenBraveLeoSettings() {
-  if (active_chat_tab_helper_) {
-    active_chat_tab_helper_->web_contents()->OpenURL(
-        {GURL("brave://settings/leo-assistant"), content::Referrer(),
-         WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
-         false});
-  }
+  auto* contents_to_navigate = (active_chat_tab_helper_)
+                                   ? active_chat_tab_helper_->web_contents()
+                                   : web_contents();
+  contents_to_navigate->OpenURL({GURL("brave://settings/leo-assistant"),
+                                 content::Referrer(),
+                                 WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                 ui::PAGE_TRANSITION_LINK, false});
 }
 
 void AIChatUIPageHandler::OpenBraveLeoWiki() {
-  if (active_chat_tab_helper_) {
-    active_chat_tab_helper_->web_contents()->OpenURL(
-        {GURL("https://github.com/brave/brave-browser/wiki/Brave-Leo"),
-         content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-         ui::PAGE_TRANSITION_LINK, false});
-  }
+  auto* contents_to_navigate = (active_chat_tab_helper_)
+                                   ? active_chat_tab_helper_->web_contents()
+                                   : web_contents();
+  contents_to_navigate->OpenURL(
+      {GURL("https://github.com/brave/brave-browser/wiki/Brave-Leo"),
+       content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+       ui::PAGE_TRANSITION_LINK, false});
 }
 
 void AIChatUIPageHandler::DisconnectPageContents() {
@@ -187,9 +173,11 @@ void AIChatUIPageHandler::RetryAPIRequest() {
 
 void AIChatUIPageHandler::GetAPIResponseError(
     GetAPIResponseErrorCallback callback) {
-  if (active_chat_tab_helper_) {
-    std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
+  if (!active_chat_tab_helper_) {
+    std::move(callback).Run(mojom::APIError::None);
+    return;
   }
+  std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
@@ -249,31 +237,6 @@ void AIChatUIPageHandler::OnPageHasContent() {
   }
 }
 
-void AIChatUIPageHandler::OnTabStripModelChanged(
-    TabStripModel* tab_strip_model,
-    const TabStripModelChange& change,
-    const TabStripSelectionChange& selection) {
-  if (selection.active_tab_changed()) {
-    if (active_chat_tab_helper_) {
-      active_chat_tab_helper_ = nullptr;
-      chat_tab_helper_observation_.Reset();
-    }
-
-    if (selection.new_contents) {
-      active_chat_tab_helper_ =
-          AIChatTabHelper::FromWebContents(selection.new_contents);
-      // Let the tab helper know if the UI is visible
-      active_chat_tab_helper_->OnConversationActiveChanged(
-          (web_contents()->GetVisibility() == content::Visibility::VISIBLE)
-              ? true
-              : false);
-      chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
-    }
-    // Reset state
-    page_->OnTargetTabChanged();
-  }
-}
-
 void AIChatUIPageHandler::GetFaviconImageData(
     GetFaviconImageDataCallback callback) {
   if (!active_chat_tab_helper_) {
@@ -320,11 +283,11 @@ absl::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
 
 void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
   // WebUI visibility changed (not target tab)
-  if (active_chat_tab_helper_) {
-    bool is_visible =
-        (visibility == content::Visibility::VISIBLE) ? true : false;
-    active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
+  if (!active_chat_tab_helper_) {
+    return;
   }
+  bool is_visible = (visibility == content::Visibility::VISIBLE) ? true : false;
+  active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
 }
 
 }  // namespace ai_chat

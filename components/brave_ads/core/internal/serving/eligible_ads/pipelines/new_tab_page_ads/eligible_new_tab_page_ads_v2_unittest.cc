@@ -11,8 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_builder_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
@@ -54,15 +53,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {"foo-bar1", "foo-bar2"},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"foo-bar3"},
-          /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNewTabPageAdList& creative_ads) {
+      UserModelInfo{IntentUserModelInfo{SegmentList{"foo-bar1", "foo-bar2"}},
+                    LatentInterestUserModelInfo{},
+                    InterestUserModelInfo{SegmentList{"foo-bar3"},
+                                          TextEmbeddingHtmlEventList{}}},
+      base::BindOnce([](const CreativeNewTabPageAdList& creative_ads) {
         // Assert
-        EXPECT_TRUE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       }));
 }
@@ -85,15 +81,9 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {},
-          /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNewTabPageAdList& creative_ads) {
+      /*user_model*/ {},
+      base::BindOnce([](const CreativeNewTabPageAdList& creative_ads) {
         // Assert
-        EXPECT_TRUE(had_opportunity);
         EXPECT_FALSE(creative_ads.empty());
       }));
 }
@@ -103,15 +93,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      BuildUserModelForTesting(
-          /*intent_segments*/ {"intent-foo", "intent-bar"},
-          /*latent_interest_segments*/ {},
-          /*interest_segments*/ {"interest-foo", "interest-bar"},
-          /*text_embedding_html_events*/ {}),
-      base::BindOnce([](const bool had_opportunity,
-                        const CreativeNewTabPageAdList& creative_ads) {
+      UserModelInfo{
+          IntentUserModelInfo{SegmentList{"intent-foo", "intent-boo"}},
+          LatentInterestUserModelInfo{},
+          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
+                                TextEmbeddingHtmlEventList{}}},
+      base::BindOnce([](const CreativeNewTabPageAdList& creative_ads) {
         // Assert
-        EXPECT_FALSE(had_opportunity);
         EXPECT_TRUE(creative_ads.empty());
       }));
 }

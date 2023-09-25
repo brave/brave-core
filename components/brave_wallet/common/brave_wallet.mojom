@@ -634,6 +634,8 @@ enum KeyringId {
   kFilecoinTestnet = 3,
   kBitcoin84 = 4,
   kBitcoin84Testnet = 5,
+  kZCashMainnet = 6,
+  kZCashTestnet = 7,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
@@ -1096,6 +1098,8 @@ const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 const string kBitcoinMainnet = "bitcoin_mainnet";
 const string kBitcoinTestnet = "bitcoin_testnet";
+const string kZCashMainnet = "zcash_mainnet";
+const string kZCashTestnet = "zcash_testnet";
 const string kArbitrumNovaChainId = "0xa4ba";
 const string kGnosisChainId = "0x64";
 const string kGodwokenChainId = "0x116ea";
@@ -1353,6 +1357,12 @@ struct BitcoinKeyId {
   uint32 index;
 };
 
+struct ZCashKeyId {
+  uint32 account;
+  uint32 change;
+  uint32 index;
+};
+
 struct BitcoinUnspentOutput {
   array<uint8> txid;
   uint32 vout;
@@ -1464,7 +1474,6 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta submitted_time;
   mojo_base.mojom.TimeDelta confirmed_time;
   OriginInfo? origin_info;
-  string? group_id;
   string chain_id;
   // Currently only available for ETH and FIL
   // Represent effective recipient of the transaction
@@ -1494,8 +1503,7 @@ interface TxServiceObserver {
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
-  // Used to add a transaction. Missing origin is expected to come from chrome://wallet.
-  AddUnapprovedTransaction(TxDataUnion tx_data_union, AccountId from, url.mojom.Origin? origin, string? group_id)
+  AddUnapprovedTransaction(TxDataUnion tx_data_union, AccountId from)
     => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
@@ -1661,23 +1669,78 @@ interface BraveWalletServiceTokenObserver {
   OnTokenRemoved(BlockchainToken token);
 };
 
+// https://eips.ethereum.org/EIPS/eip-191
+struct EthStandardSignData {
+  // message for display
+  string message;
+};
+
+// https://eips.ethereum.org/EIPS/eip-712
+struct EthSignTypedData {
+  // message for display
+  string message;
+  string domain;
+  // These fields are for hardware eip712 signing
+  string? domain_hash;
+  string? primary_hash;
+};
+
+// https://eips.ethereum.org/EIPS/eip-4361
+struct SIWEMessage {
+  url.mojom.Origin origin;
+  string address;
+  string? statement;
+  url.mojom.Url uri;
+  uint32 version;
+  uint64 chain_id;
+  string nonce;
+  // These ISO 8601 format strings are only used for displaying, no need to
+  // convert it to base::Time
+  string issued_at;
+  string? expiration_time;
+  string? not_before;
+  string? request_id;
+  array<url.mojom.Url>? resources;
+};
+
+struct SolanaSignData {
+  // message for display
+  string message;
+  // This will be passed for Solana, in hardware keyring case, it will be used
+  // to sign.
+  array<uint8>? message_bytes;
+};
+
+union SignDataUnion {
+  EthStandardSignData eth_standard_sign_data;
+  EthSignTypedData eth_sign_typed_data;
+  SIWEMessage eth_siwe_data;
+  SolanaSignData solana_sign_data;
+};
+
 struct SignMessageRequest {
   OriginInfo origin_info;
   int32 id;
   AccountId account_id;
-  string domain;
-  string message;
-  bool is_eip712;
-  // These fields are for hardware eip712 signing and
-  // Should be used only if is_eip712 is true
-  string? domain_hash;
-  string? primary_hash;
-
-  // This will be passed for Solana, in hardware keyring case, it will be used
-  // to sign.
-  array<uint8>? message_bytes;
+  SignDataUnion sign_data;
   CoinType coin;
   string chain_id;
+};
+
+enum SignMessageErrorType {
+  kChainIdMismatched,
+  kAccountMismatched,
+  kDomainMismatched
+};
+
+struct SignMessageError {
+  string id;
+  OriginInfo origin_info;
+  SignMessageErrorType type;
+  // Localized error message for UI display
+  string localized_err_msg;
+  // It contains value only when type is kChainIdMismatched
+  string? chain_id;
 };
 
 struct SignTransactionRequest {
@@ -1815,10 +1878,18 @@ interface BraveWalletService {
   ResetWebSitePermission(CoinType coin, string formed_website)
     => (bool success);
 
+  // TODO(darkdh): Move these bridging methods into EthereumProviderService when
+  // we split EthereumProviderImpl into EthereumProviderHost and
+  // EthereumProviderService https://github.com/brave/brave-browser/issues/32313
+
   // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
   NotifySignMessageRequestProcessed(bool approved, int32 id, ByteArrayStringUnion? signature, string? error);
   // Obtains the pending sign message requests
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
+
+  GetPendingSignMessageErrors() => (array<SignMessageError> errors);
+  // Used for UI notifying native when the error has been displayed to users
+  NotifySignMessageErrorProcessed(string error_id);
 
   GetPendingSignTransactionRequests() => (array<SignTransactionRequest> requests);
   // Used for UI notifying native when the user approve/reject sign

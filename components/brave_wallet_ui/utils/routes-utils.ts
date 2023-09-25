@@ -28,3 +28,64 @@ export const makeAccountTransactionRoute = (
     ) + '#' + transactionId.replace('#', '')
   )
 }
+
+export const makeFundWalletRoute = (
+  currencyCode?: string,
+  buyAmount?: string,
+  searchText?: string,
+  chainId?: string,
+  coinType?: string
+) => {
+  const routePartial = WalletRoutes.FundWalletPage.replace(
+    '/:currencyCode?',
+    currencyCode ? `/${currencyCode}` : ''
+  ).replace('/:buyAmount?', currencyCode && buyAmount ? `/${buyAmount}` : '')
+
+  const params = new URLSearchParams()
+  if (searchText) {
+    params?.append('search', searchText)
+  }
+  if (chainId) {
+    params?.append('chainId', chainId)
+  }
+  if (coinType) {
+    params?.append('coinType', coinType)
+  }
+
+  const paramsString = params ? params.toString() : undefined
+
+  return `${routePartial}${paramsString ? `?${paramsString}` : ''}`
+}
+
+export const makeFundWalletPurchaseOptionsRoute = (
+  currencyCode: string,
+  buyAmount: string
+) => {
+  return WalletRoutes.FundWalletPurchaseOptionsPage.replace(
+    ':currencyCode',
+    currencyCode
+  ).replace(':buyAmount', buyAmount)
+}
+
+export const makeDepositFundsRoute = (
+  searchText?: string,
+  chainId?: string,
+  coinType?: string
+) => {
+  const params = new URLSearchParams()
+  if (searchText) {
+    params?.append('search', searchText)
+  }
+  if (chainId) {
+    params?.append('chainId', chainId)
+  }
+  if (coinType) {
+    params?.append('coinType', coinType)
+  }
+
+  const paramsString = params ? params.toString() : undefined
+
+  return `${WalletRoutes.DepositFundsPage}${
+    paramsString ? `?${paramsString}` : ''
+  }`
+}

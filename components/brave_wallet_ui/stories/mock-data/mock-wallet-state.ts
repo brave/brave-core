@@ -59,26 +59,6 @@ const mockAccount3: BraveWallet.AccountInfo = {
   hardware: undefined
 }
 
-const mockCurrency: BraveWallet.OnRampCurrency = {
-  currencyCode: 'USD',
-  currencyName: 'United States Dollar',
-  providers: []
-}
-
-const mockCurrencies: BraveWallet.OnRampCurrency[] = [
-  mockCurrency,
-  {
-    currencyCode: 'EUR',
-    currencyName: 'Euro',
-    providers: []
-  },
-  {
-    currencyCode: 'GBP',
-    currencyName: 'British Pound Sterling',
-    providers: []
-  }
-]
-
 const mockCoinMarketData: BraveWallet.CoinMarket[] = [
   {
     id: 'bitcoin',
@@ -238,8 +218,6 @@ export const mockWalletState: WalletState = {
   selectedNetworkFilter: AllNetworksOptionDefault,
   selectedAssetFilter: HighToLowAssetsFilterOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
-  onRampCurrencies: mockCurrencies,
-  selectedCurrency: mockCurrency,
   passwordAttempts: 0,
   isLoadingCoinMarketData: false,
   coinMarketData: mockCoinMarketData,

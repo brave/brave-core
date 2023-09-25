@@ -7,23 +7,24 @@
 #define BRAVE_CHROMIUM_SRC_NET_BASE_HOST_PORT_PAIR_H_
 
 #include <string>
+#include <string_view>
 
 // Nudges HostPortPair past Chromium's style
 // threshold for in-line constructors and destructors.
-#define BRAVE_HOST_PORT_PAIR_H_                                        \
-  HostPortPair(base::StringPiece username, base::StringPiece password, \
-               base::StringPiece in_host, uint16_t in_port);           \
-  ~HostPortPair();                                                     \
-  HostPortPair(const HostPortPair&);                                   \
-  const std::string& username() const;                                 \
-  const std::string& password() const;                                 \
-  void set_username(const std::string& username);                      \
-  void set_password(const std::string& password);                      \
-  bool operator<(const HostPortPair& other) const;                     \
-  bool Equals(const HostPortPair& other) const;                        \
-                                                                       \
- private:                                                              \
-  std::string username_;                                               \
+#define BRAVE_HOST_PORT_PAIR_H_                                      \
+  HostPortPair(std::string_view username, std::string_view password, \
+               std::string_view in_host, uint16_t in_port);          \
+  ~HostPortPair();                                                   \
+  HostPortPair(const HostPortPair&);                                 \
+  const std::string& username() const;                               \
+  const std::string& password() const;                               \
+  void set_username(const std::string& username);                    \
+  void set_password(const std::string& password);                    \
+  bool operator<(const HostPortPair& other) const;                   \
+  bool Equals(const HostPortPair& other) const;                      \
+                                                                     \
+ private:                                                            \
+  std::string username_;                                             \
   std::string password_;
 
 #include "src/net/base/host_port_pair.h"  // IWYU pragma: export

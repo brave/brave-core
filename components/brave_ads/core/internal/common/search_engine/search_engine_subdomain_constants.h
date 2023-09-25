@@ -6,13 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_SUBDOMAIN_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_SUBDOMAIN_CONSTANTS_H_
 
+#include <string_view>
+
 #include "base/containers/span.h"
-#include "base/strings/string_piece.h"
 
 namespace brave_ads {
 
-base::span<const base::StringPiece> GetWikipediaSearchEngineSubdomains();
-base::span<const base::StringPiece> GetYahooSearchEngineSubdomains();
+base::span<const std::string_view> GetWikipediaSearchEngineSubdomains();
+base::span<const std::string_view> GetYahooSearchEngineSubdomains();
 
 }  // namespace brave_ads
 

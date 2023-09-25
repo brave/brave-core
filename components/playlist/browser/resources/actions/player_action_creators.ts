@@ -34,3 +34,5 @@ export const playPreviousItem = () => action(types.PLAYER_PLAY_PREVIOUS_ITEM)
 export const toggleShuffle = () => action(types.PLAYER_TOGGLE_SHUFFLE)
 
 export const toggleAutoPlay = () => action(types.PLAYER_TOGGLE_AUTO_PLAY)
+
+export const unloadPlaylist = () => action(types.UNLOAD_PLAYLIST)

@@ -6,8 +6,6 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { useSelector } from 'react-redux'
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 
 import { color, font, spacing } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
@@ -28,6 +26,7 @@ import { formatBytes } from '../utils/bytesFormatter'
 import { ApplicationState, CachingProgress } from '../reducers/states'
 import { getPlaylistAPI } from '../api/api'
 import { BouncingBars } from './bouncingBars'
+import { useVerticallySortable } from '../utils/dragDropUtils'
 
 interface Props {
   playlist: Playlist
@@ -332,6 +331,14 @@ export function PlaylistItem ({
             iconName: 'trash',
             onClick: () =>
               getPlaylistAPI().removeItemFromPlaylist(playlist.id!, id)
+          },
+          {
+            name: getLocalizedString(
+              'bravePlaylistContextMenuViewOriginalPage'
+            ),
+            iconName: 'link-normal',
+            onClick: () =>
+              window.open(item.pageSource.url, '_blank', 'noopener noreferrer')
           }
         ]}
         onShowMenu={() => setShowingMenu(true)}
@@ -342,14 +349,10 @@ export function PlaylistItem ({
 }
 
 export function SortablePlaylistItem (props: Props) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: props.item.id, disabled: !props.canReorder })
-
-  if (transform) transform.x = 0
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition
-  }
+  const { attributes, listeners, setNodeRef, style } = useVerticallySortable({
+    id: props.item.id,
+    disabled: !props.canReorder
+  })
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>

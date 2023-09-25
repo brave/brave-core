@@ -98,6 +98,7 @@ class SpeedreaderTabHelper
 
   // mojom::SpeedreaderHost:
   void OnShowOriginalPage() override;
+  void OnTtsPlayPause(int index) override;
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;

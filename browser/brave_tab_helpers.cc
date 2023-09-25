@@ -89,13 +89,19 @@
 #include "brave/browser/playlist/playlist_tab_helper.h"
 #endif
 
-#if defined(TOOLKIT_VIEWS)
-#include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
-#endif
-
 namespace brave {
 
+#if defined(TOOLKIT_VIEWS)
+// Register per-tab(contextual) side-panel registry.
+// Defined at //brave/browser/ui/views/side_panel/brave_side_panel_utils.cc as
+// the implementation is view-layer specific.
+void RegisterContextualSidePanel(content::WebContents* web_contents);
+#endif
+
 void AttachTabHelpers(content::WebContents* web_contents) {
+#if defined(TOOLKIT_VIEWS)
+  RegisterContextualSidePanel(web_contents);
+#endif
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionTabHelper::CreateForWebContents(web_contents);
 #endif
@@ -151,10 +157,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
-#endif
-
-#if defined(TOOLKIT_VIEWS)
-  SidebarTabHelper::CreateForWebContents(web_contents);
 #endif
 
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {

@@ -11,7 +11,6 @@
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/notreached.h"
-#include "base/strings/string_piece.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
@@ -37,8 +36,7 @@ bool DoesRequireResource() {
 }
 
 void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
-  for (const base::StringPiece value : GetSegments()) {
-    std::string segment = static_cast<std::string>(value);
+  for (const std::string& segment : SupportedEpsilonGreedyBanditSegments()) {
     if (base::Contains(arms, segment)) {
       BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
                                                               << " segment");
@@ -54,13 +52,13 @@ void MaybeAddOrResetArms(EpsilonGreedyBanditArmMap& arms) {
     BLOG(2,
          "Epsilon greedy bandit arm was added for " << segment << " segment");
 
-    arms.insert_or_assign(std::move(segment), arm);
+    arms.insert_or_assign(segment, arm);
   }
 }
 
 void MaybeDeleteArms(EpsilonGreedyBanditArmMap& arms) {
   for (auto iter = arms.cbegin(); iter != arms.cend();) {
-    if (base::Contains(GetSegments(), iter->first)) {
+    if (base::Contains(SupportedEpsilonGreedyBanditSegments(), iter->first)) {
       ++iter;
       continue;
     }

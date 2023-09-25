@@ -7,7 +7,6 @@
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
@@ -35,9 +34,6 @@
 namespace tabs::utils {
 
 bool SupportsVerticalTabs(const Browser* browser) {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-      << "Don't call this before checking the feature flag.";
-
   if (!browser) {
     // During unit tests, |browser| can be null.
     CHECK_IS_TEST();

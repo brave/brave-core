@@ -56,8 +56,7 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
                           const absl::optional<InlineContentAdInfo>& ad);
 
   // InlineContentAdServingDelegate:
-  void OnOpportunityAroseToServeInlineContentAd(
-      const SegmentList& segments) override;
+  void OnOpportunityAroseToServeInlineContentAd() override;
   void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
 
   // InlineContentAdEventHandlerDelegate:

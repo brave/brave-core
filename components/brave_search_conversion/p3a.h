@@ -20,13 +20,18 @@ extern const char kSearchPromoBannerBHistogramName[];
 extern const char kSearchPromoBannerCHistogramName[];
 extern const char kSearchPromoBannerDHistogramName[];
 extern const char kSearchPromoNTPHistogramName[];
+extern const char kSearchQueriesBeforeChurnHistogramName[];
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
+
 void RecordPromoShown(PrefService* prefs, ConversionType type);
 void RecordPromoTrigger(PrefService* prefs, ConversionType type);
-void RecordDefaultEngineChange(PrefService* prefs);
+
+void RecordLocationBarQuery(PrefService* prefs);
+void RecordDefaultEngineConversion(PrefService* prefs);
+void RecordDefaultEngineChurn(PrefService* prefs);
 
 }  // namespace p3a
 }  // namespace brave_search_conversion

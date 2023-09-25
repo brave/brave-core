@@ -11,7 +11,6 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 namespace content {
@@ -19,11 +18,13 @@ class BrowserContext;
 }  // namespace content
 
 namespace brave_wallet {
+class TxService;
 
 class WalletNotificationService : public KeyedService,
                                   public mojom::TxServiceObserver {
  public:
-  explicit WalletNotificationService(content::BrowserContext* context);
+  WalletNotificationService(TxService* tx_service,
+                            content::BrowserContext* context);
   ~WalletNotificationService() override;
   WalletNotificationService(const WalletNotificationService&) = delete;
   WalletNotificationService operator=(const WalletNotificationService&) =
@@ -34,10 +35,6 @@ class WalletNotificationService : public KeyedService,
   void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) override {}
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
   void OnTxServiceReset() override {}
-
-  mojo::PendingRemote<mojom::TxServiceObserver> GetReceiver() {
-    return tx_observer_receiver_.BindNewPipeAndPassRemote();
-  }
 
  private:
   friend class WalletNotificationServiceUnitTest;

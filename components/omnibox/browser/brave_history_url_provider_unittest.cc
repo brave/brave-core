@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/run_loop.h"
@@ -43,7 +44,7 @@ class BraveHistoryURLProviderTest : public testing::Test,
   BraveHistoryURLProviderTest& operator=(const BraveHistoryURLProviderTest&) =
       delete;
 
-  AutocompleteInput CreateAutocompleteInput(base::StringPiece text) {
+  AutocompleteInput CreateAutocompleteInput(std::string_view text) {
     AutocompleteInput input(base::UTF8ToUTF16(text),
                             metrics::OmniboxEventProto::OTHER,
                             TestSchemeClassifier());

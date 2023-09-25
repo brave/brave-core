@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <string_view>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -35,7 +36,7 @@ class BraveShortcutsProviderTest : public testing::Test {
  public:
   BraveShortcutsProviderTest() = default;
 
-  AutocompleteInput CreateAutocompleteInput(base::StringPiece text) {
+  AutocompleteInput CreateAutocompleteInput(std::string_view text) {
     AutocompleteInput input(base::UTF8ToUTF16(text),
                             metrics::OmniboxEventProto::OTHER, classifier_);
     input.set_focus_type(metrics::OmniboxFocusType::INTERACTION_DEFAULT);

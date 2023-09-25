@@ -90,7 +90,7 @@ interface Props {
   userAssetList: UserAssetInfoType[]
   networks?: BraveWallet.NetworkInfo[]
   accounts?: BraveWallet.AccountInfo[]
-  renderToken: RenderTokenFunc
+  renderToken: RenderTokenFunc<UserAssetInfoType>
   enableScroll?: boolean
   maxListHeight?: string
   estimatedItemSize: number

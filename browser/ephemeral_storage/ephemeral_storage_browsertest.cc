@@ -6,6 +6,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
 #include <memory>
+#include <string_view>
 
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
@@ -342,7 +343,7 @@ void EphemeralStorageBrowserTest::CreateBroadcastChannel(
 
 void EphemeralStorageBrowserTest::SendBroadcastMessage(
     RenderFrameHost* frame,
-    base::StringPiece message) {
+    std::string_view message) {
   EXPECT_TRUE(content::ExecJs(
       frame, content::JsReplace("(async () => {"
                                 "  self.bc.postMessage($1);"

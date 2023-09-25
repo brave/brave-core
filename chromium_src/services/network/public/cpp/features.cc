@@ -11,6 +11,7 @@ namespace network {
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kFledgePst, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivateStateTokens, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

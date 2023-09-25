@@ -20,15 +20,22 @@ interface TtsControlProps {
 
 function TtsControl(props: TtsControlProps) {
   const [voices, setVoices] = React.useState(speechSynthesis.getVoices())
-  speechSynthesis.onvoiceschanged = () => {
-    setVoices(speechSynthesis.getVoices())
-  }
-
   const [playbackState, setPlaybackState] = React.useState<PlaybackState>(PlaybackState.kStopped)
-  getToolbarAPI().dataHandler.getPlaybackState().then(res => setPlaybackState(res.playbackState))
-  getToolbarAPI().eventsRouter.setPlaybackState.addListener((state: PlaybackState) => {
-    setPlaybackState(state)
-  })
+
+  React.useEffect(() => {
+    const updateVoices = () => {
+      setVoices(speechSynthesis.getVoices().filter((v) => {
+        return navigator.languages.find((l) => { return v.lang.startsWith(l) })
+      }))
+    }
+    speechSynthesis.onvoiceschanged = updateVoices
+    window.onlanguagechange = updateVoices
+
+    getToolbarAPI().dataHandler.getPlaybackState().then(res => setPlaybackState(res.playbackState))
+    getToolbarAPI().eventsRouter.setPlaybackState.addListener((state: PlaybackState) => {
+      setPlaybackState(state)
+    })
+  }, [])
 
   return (
     <S.Box>

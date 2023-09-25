@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/no_destructor.h"
-#include "base/strings/string_piece.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {

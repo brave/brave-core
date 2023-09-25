@@ -37,6 +37,7 @@ import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
+import org.chromium.chrome.browser.util.BraveTouchUtils;
 
 import java.io.IOException;
 
@@ -80,6 +81,9 @@ public class BraveLocationBarQRDialogFragment
 
         mCameraSourcePreview = (CameraSourcePreview) view.findViewById(R.id.preview);
         createCameraSource(true, false);
+
+        BraveTouchUtils.ensureMinTouchTarget(backImageView);
+
         try {
             startCameraSource();
         } catch (SecurityException exc) {

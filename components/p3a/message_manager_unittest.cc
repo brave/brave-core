@@ -8,6 +8,7 @@
 #include <map>
 #include <memory>
 #include <set>
+#include <string_view>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
@@ -164,7 +165,7 @@ class P3AMessageManagerTest : public testing::Test,
     std::vector<std::string> result;
     size_t p3a_i = 0;
     size_t p2a_i = 0;
-    for (const base::StringPiece& histogram_name :
+    for (const std::string_view histogram_name :
          p3a::kCollectedTypicalHistograms) {
       if (histogram_name.rfind(kP2APrefix, 0) == 0) {
         if (p2a_i < p2a_count) {
@@ -207,7 +208,7 @@ class P3AMessageManagerTest : public testing::Test,
   base::Time next_epoch_time;
 
  private:
-  base::StringPiece ExtractBodyFromRequest(
+  std::string_view ExtractBodyFromRequest(
       const network::ResourceRequest& request) {
     return request.request_body->elements()
         ->at(0)
@@ -217,7 +218,7 @@ class P3AMessageManagerTest : public testing::Test,
 
   void StoreJsonMetricInMap(const network::ResourceRequest& request,
                             bool is_p2a) {
-    base::StringPiece body = ExtractBodyFromRequest(request);
+    std::string_view body = ExtractBodyFromRequest(request);
     base::Value::Dict parsed_log = base::test::ParseJsonDict(body);
     std::string* metric_name = parsed_log.FindString("metric_name");
     ASSERT_TRUE(metric_name);

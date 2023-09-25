@@ -56,7 +56,6 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
-  groupId: undefined,
   effectiveRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef'
 }
 
@@ -104,7 +103,6 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
-  groupId: undefined,
   effectiveRecipient: undefined
 }
 
@@ -114,7 +112,6 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   createdTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
   fromAddress: mockFilecoinAccount.address,
   fromAccountId: mockFilecoinAccount.accountId,
-  groupId: undefined,
   id: 'fil-send-tx',
   originInfo: undefined,
   submittedTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },

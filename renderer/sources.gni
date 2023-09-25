@@ -68,9 +68,7 @@ if (enable_brave_vpn) {
   }
 }
 
-if (enable_widevine) {
-  brave_chrome_renderer_deps += [ "//third_party/widevine/cdm:headers" ]
-}
+brave_chrome_renderer_deps += [ "//third_party/widevine/cdm:headers" ]
 
 # do not add anything else here
 brave_chrome_renderer_public_deps = []

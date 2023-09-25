@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
 
 // Selectors
 import {
@@ -32,37 +33,47 @@ import {
   PageOptionsWrapper,
   PanelOptionsWrapper
 } from './wallet-nav.style'
+import { WalletRoutes } from '../../../constants/types'
+import { WalletActions } from '../../../common/actions'
 
 export const WalletNav = () => {
-  // Selectors
+  // redux
+  const dispatch = useDispatch()
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   return (
-    <Wrapper
-      isPanel={isPanel}
-    >
-
+    <Wrapper isPanel={isPanel}>
       <PanelOptionsWrapper>
         <Section>
-          {PanelNavOptions.map((option) =>
+          {PanelNavOptions.map((option) => (
             <WalletNavButton option={option} key={option.id} />
-          )}
+          ))}
         </Section>
       </PanelOptionsWrapper>
 
       <PageOptionsWrapper>
         <Section showBorder={true}>
-          {NavOptions.map((option) =>
+          {NavOptions.map((option) => (
             <WalletNavButton option={option} key={option.id} />
-          )}
+          ))}
         </Section>
         <Section>
-          {BuySendSwapDepositOptions.map((option) =>
-            <WalletNavButton option={option} key={option.id} />
-          )}
+          {BuySendSwapDepositOptions.map((option) => (
+            <WalletNavButton
+              option={option}
+              key={option.id}
+              onClick={() => {
+                if (
+                  option.route === WalletRoutes.FundWalletPageStart ||
+                  option.route === WalletRoutes.DepositFundsPageStart
+                ) {
+                  dispatch(WalletActions.selectOnRampAssetId(undefined))
+                }
+              }}
+            />
+          ))}
         </Section>
       </PageOptionsWrapper>
-
     </Wrapper>
   )
 }

@@ -11,7 +11,7 @@ namespace brave_ads::prefs {
 const char kVersion[] = "brave.brave_ads.prefs.current_version";
 
 // Prefix for preference names pertaining to p2a weekly metrics
-const char kP2AStoragePrefNamePrefix[] = "brave.weekly_storage.";
+const char kP2APrefPathPrefix[] = "brave.weekly_storage.";
 
 // Stores whether we should show the My First notification ad
 const char kShouldShowOnboardingNotification[] =

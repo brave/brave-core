@@ -19,6 +19,8 @@ constexpr mojom::CoinType kAllCoins[] = {
     mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL,
     mojom::CoinType::BTC};
 
+bool IsZCashKeyring(mojom::KeyringId keyring_id);
+
 bool IsNativeWalletEnabled();
 bool IsFilecoinEnabled();
 bool IsSolanaEnabled();
@@ -28,6 +30,7 @@ bool IsPanelV2Enabled();
 bool ShouldCreateDefaultSolanaAccount();
 bool IsDappsSupportEnabled();
 bool IsBitcoinEnabled();
+bool IsZCashEnabled();
 
 bool IsAllowed(PrefService* prefs);
 

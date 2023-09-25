@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -14,6 +15,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -31,27 +33,20 @@
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
-#include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/permissions/brave_permission_manager.h"
-#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
-#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -60,9 +55,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/test/test_web_contents.h"
@@ -130,15 +122,13 @@ std::vector<uint8_t> DecodeHexHash(const std::string& hash_hex) {
 }
 
 absl::optional<base::Value> ToValue(const network::ResourceRequest& request) {
-  base::StringPiece request_string(request.request_body->elements()
-                                       ->at(0)
-                                       .As<network::DataElementBytes>()
-                                       .AsStringPiece());
+  std::string_view request_string(request.request_body->elements()
+                                      ->at(0)
+                                      .As<network::DataElementBytes>()
+                                      .AsStringPiece());
   return base::JSONReader::Read(request_string,
                                 base::JSONParserOptions::JSON_PARSE_RFC);
 }
-
-}  // namespace
 
 class TestEventsListener : public brave_wallet::mojom::EventsListener {
  public:
@@ -200,6 +190,8 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
  private:
   mojo::Receiver<brave_wallet::mojom::EventsListener> observer_receiver_{this};
 };
+
+}  // namespace
 
 class EthereumProviderImplUnitTest : public testing::Test {
  public:
@@ -506,6 +498,21 @@ class EthereumProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  std::string GetSIWEMessage(const std::string& domain,
+                             const std::string& account,
+                             const std::string& uri,
+                             const std::string& network) {
+    return base::StringPrintf(
+        "%s wants you to sign in with your Ethereum account:\n"
+        "%s\n\n\n"
+        "URI: %s\n"
+        "Version: 1\n"
+        "Chain ID: %s\n"
+        "Nonce: 32891756\n"
+        "Issued At: 2021-09-30T16:25:24Z)",
+        domain.c_str(), account.c_str(), uri.c_str(), network.c_str());
+  }
+
   void SignMessageHardware(bool user_approved,
                            const std::string& address,
                            const std::string& message,
@@ -664,6 +671,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
   const mojom::SignMessageRequestPtr& GetSignMessageQueueFront() const {
     return brave_wallet_service_->sign_message_requests_.front();
   }
+  const mojom::SignMessageErrorPtr& GetSignMessageErrorQueueFront() const {
+    return brave_wallet_service_->sign_message_errors_.front();
+  }
 
   std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests() {
     base::RunLoop run_loop;
@@ -672,7 +682,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
         base::BindLambdaForTesting(
             [&](std::vector<mojom::SignMessageRequestPtr> requests) {
               for (const auto& request : requests) {
-                SCOPED_TRACE(request->message);
+                ASSERT_TRUE(request->sign_data->is_eth_standard_sign_data());
+                SCOPED_TRACE(
+                    request->sign_data->get_eth_standard_sign_data()->message);
                 EXPECT_EQ(request->chain_id,
                           json_rpc_service_->GetChainIdSync(
                               mojom::CoinType::ETH, GetOrigin()));
@@ -1644,62 +1656,157 @@ TEST_F(EthereumProviderImplUnitTest, RequestEthereumPermissionsLocked) {
 TEST_F(EthereumProviderImplUnitTest, SignMessage) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  Navigate(GURL("https://brave.com"));
+  for (const auto& message : {
+           std::string("0x1234"),
+           ToHex(GetSIWEMessage("https://brave.com", account_0->address,
+                                "https://brave.com/login", "1")),
+       }) {
+    SCOPED_TRACE(message);
+    std::string signature;
+    mojom::ProviderError error = mojom::ProviderError::kUnknown;
+    std::string error_message;
+    SignMessage(absl::nullopt, "1234", message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+    SignMessage(absl::nullopt, "0x12345678", message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+    SignMessage(absl::nullopt, GetAccountUtils().EthUnkownAccount()->address,
+                message, &signature, &error, &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
+    EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+
+    // No permission
+    SignMessage(absl::nullopt, account_0->address, message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
+    EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+    AddEthereumPermission(account_0->account_id);
+    SignMessage(true, account_0->address, message, &signature, &error,
+                &error_message);
+
+    EXPECT_FALSE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+    EXPECT_TRUE(error_message.empty());
+
+    // User reject request
+    SignMessage(false, account_0->address, message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+
+    Lock();
+
+    // nullopt for the first param here because we don't AddSignMessageRequest
+    // whent here are no accounts returned.
+    SignMessage(absl::nullopt, account_0->address, message, &signature, &error,
+                &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
+    EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+
+    Unlock();
+    ResetEthereumPermission(account_0->account_id);
+  }
+}
+
+TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumError) {
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  auto account_1 = GetAccountUtils().EnsureEthAccount(1);
   std::string signature;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
-  SignMessage(absl::nullopt, "1234", "0x1234", &signature, &error,
-              &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  SignMessage(absl::nullopt, "0x12345678", "0x1234", &signature, &error,
-              &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-
-  SignMessage(absl::nullopt, GetAccountUtils().EthUnkownAccount()->address,
-              "0x1234", &signature, &error, &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-
-  // No permission
-  SignMessage(absl::nullopt, account_0->address, "0x1234", &signature, &error,
-              &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
-  GURL url("https://brave.com");
-  Navigate(url);
+  CreateBraveWalletTabHelper();
+  brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
+  Navigate(GURL("https://brave.com"));
   AddEthereumPermission(account_0->account_id);
-  SignMessage(true, account_0->address, "0x1234", &signature, &error,
-              &error_message);
 
-  EXPECT_FALSE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-  EXPECT_TRUE(error_message.empty());
+  struct {
+    std::string domain;
+    std::string address;
+    std::string uri;
+    std::string network;
+    mojom::SignMessageErrorType siwe_err_type;
+    std::string siwe_err_msg;
+    absl::optional<std::string> chain_id;
+    mojom::ProviderError provider_err;
+    std::string provider_err_msg;
+  } cases[]{
+      {"https://brave.com", account_0->address, "https://brave.com/login",
+       "5566", mojom::SignMessageErrorType::kChainIdMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_NETWORK),
+           base::StrCat({l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_CHAIN_ID),
+                         u": 5566"})),
+       std::string("5566"), mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH, u"5566")},
+      {"https://brave.com", account_1->address, "https://brave.com/login", "1",
+       mojom::SignMessageErrorType::kAccountMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_ACCOUNT),
+           base::ASCIIToUTF16(account_1->address)),
+       absl::nullopt, mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_ACCOUNT_MISMATCH,
+                                 base::ASCIIToUTF16(account_1->address))},
+      {"https://example.com", account_0->address, "https://brave.com/login",
+       "1", mojom::SignMessageErrorType::kDomainMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
+           u"https://example.com"),
+       absl::nullopt, mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_DOMAIN_MISMATCH,
+                                 u"https://example.com")},
+      {"https://brave.com", account_0->address, "https://example.com/login",
+       "1", mojom::SignMessageErrorType::kDomainMismatched,
+       l10n_util::GetStringFUTF8(
+           IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+           l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
+           u"https://example.com/login"),
+       absl::nullopt, mojom::ProviderError::kInternalError,
+       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_DOMAIN_MISMATCH,
+                                 u"https://example.com/login")},
+  };
+  for (const auto& invalid_case : cases) {
+    const std::string& siwe_message =
+        GetSIWEMessage(invalid_case.domain, invalid_case.address,
+                       invalid_case.uri, invalid_case.network);
+    SCOPED_TRACE(siwe_message);
+    SignMessage(true, account_0->address, ToHex(siwe_message), &signature,
+                &error, &error_message);
+    EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
+    EXPECT_EQ(GetSignMessageErrorQueueFront()->origin_info,
+              MakeOriginInfo(GetOrigin()));
+    EXPECT_EQ(GetSignMessageErrorQueueFront()->type,
+              invalid_case.siwe_err_type);
+    EXPECT_EQ(GetSignMessageErrorQueueFront()->localized_err_msg,
+              invalid_case.siwe_err_msg);
+    EXPECT_EQ(GetSignMessageErrorQueueFront()->chain_id, invalid_case.chain_id);
 
-  // User reject request
-  SignMessage(false, account_0->address, "0x1234", &signature, &error,
-              &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, invalid_case.provider_err);
+    EXPECT_EQ(error_message, invalid_case.provider_err_msg);
 
-  keyring_service()->Lock();
-
-  // nullopt for the first param here because we don't AddSignMessageRequest
-  // whent here are no accounts returned.
-  SignMessage(absl::nullopt, account_0->address, "0x1234", &signature, &error,
-              &error_message);
-  EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+    brave_wallet_service_->NotifySignMessageErrorProcessed(
+        GetSignMessageErrorQueueFront()->id);
+  }
 }
 
 TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
@@ -1811,10 +1918,9 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
                    domain.Clone(), &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInternalError);
-  EXPECT_EQ(error_message,
-            l10n_util::GetStringFUTF8(
-                IDS_BRAVE_WALLET_SIGN_TYPED_MESSAGE_CHAIN_ID_MISMATCH,
-                base::ASCIIToUTF16(chain_id)));
+  EXPECT_EQ(error_message, l10n_util::GetStringFUTF8(
+                               IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH,
+                               base::ASCIIToUTF16(chain_id)));
   domain.Set("chainId", 1);
 
   SignTypedMessage(absl::nullopt, address_0, "{...}", domain_hash, primary_hash,
@@ -1912,16 +2018,22 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
 
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message1_in_queue);
   {
     auto queue = GetPendingSignMessageRequests();
     ASSERT_EQ(queue.size(), 3u);
     EXPECT_EQ(queue[0]->id, id1);
-    EXPECT_EQ(queue[0]->message, message1_in_queue);
+    EXPECT_EQ(queue[0]->sign_data->get_eth_standard_sign_data()->message,
+              message1_in_queue);
     EXPECT_EQ(queue[1]->id, id2);
-    EXPECT_EQ(queue[1]->message, message2_in_queue);
+    EXPECT_EQ(queue[1]->sign_data->get_eth_standard_sign_data()->message,
+              message2_in_queue);
     EXPECT_EQ(queue[2]->id, id3);
-    EXPECT_EQ(queue[2]->message, message3_in_queue);
+    EXPECT_EQ(queue[2]->sign_data->get_eth_standard_sign_data()->message,
+              message3_in_queue);
   }
 
   // wrong order
@@ -1929,26 +2041,37 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message1_in_queue);
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id3, nullptr,
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message1_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message1_in_queue);
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1, nullptr,
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message2_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message2_in_queue);
   {
     auto queue = GetPendingSignMessageRequests();
     ASSERT_EQ(queue.size(), 2u);
     EXPECT_EQ(queue[0]->id, id2);
-    EXPECT_EQ(queue[0]->message, message2_in_queue);
+    EXPECT_EQ(queue[0]->sign_data->get_eth_standard_sign_data()->message,
+              message2_in_queue);
     EXPECT_EQ(queue[1]->id, id3);
-    EXPECT_EQ(queue[1]->message, message3_in_queue);
+    EXPECT_EQ(queue[1]->sign_data->get_eth_standard_sign_data()->message,
+              message3_in_queue);
   }
 
   // old id
@@ -1956,18 +2079,25 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 2u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id2);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message2_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message2_in_queue);
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2, nullptr,
                                                            absl::nullopt);
   EXPECT_EQ(GetSignMessageQueueSize(), 1u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id3);
-  EXPECT_EQ(GetSignMessageQueueFront()->message, message3_in_queue);
+  EXPECT_EQ(GetSignMessageQueueFront()
+                ->sign_data->get_eth_standard_sign_data()
+                ->message,
+            message3_in_queue);
   {
     auto queue = GetPendingSignMessageRequests();
     ASSERT_EQ(queue.size(), 1u);
     EXPECT_EQ(queue[0]->id, id3);
-    EXPECT_EQ(queue[0]->message, message3_in_queue);
+    EXPECT_EQ(queue[0]->sign_data->get_eth_standard_sign_data()->message,
+              message3_in_queue);
   }
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id3, nullptr,

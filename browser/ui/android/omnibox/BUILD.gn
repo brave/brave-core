@@ -11,7 +11,6 @@ android_library("java") {
     "java/src/org/chromium/chrome/browser/omnibox/OmniboxPrefManager.java",
     "java/src/org/chromium/chrome/browser/omnibox/status/BraveStatusMediator.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator.java",
-    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxSuggestionUiType.java",
@@ -45,6 +44,7 @@ android_library("java") {
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
     "//ui/android:ui_no_recycler_view_java",
+    "//url:gurl_java",
   ]
 
   resources_package = "org.chromium.chrome.browser.omnibox"
