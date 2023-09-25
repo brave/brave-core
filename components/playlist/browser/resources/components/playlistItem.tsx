@@ -338,7 +338,7 @@ export function PlaylistItem ({
             ),
             iconName: 'link-normal',
             onClick: () =>
-              window.open(item.pageSource.url, '_blank', 'noopener,noreferrer')
+              window.open(item.pageSource.url, '_blank', 'noopener noreferrer')
           }
         ]}
         onShowMenu={() => setShowingMenu(true)}
