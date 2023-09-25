@@ -58,7 +58,8 @@ bool ParseEthSignTypedDataParams(const std::string& json,
                                  base::Value::Dict* domain,
                                  EthSignTypedDataHelper::Version version,
                                  std::vector<uint8_t>* domain_hash_out,
-                                 std::vector<uint8_t>* primary_hash_out);
+                                 std::vector<uint8_t>* primary_hash_out,
+                                 mojom::EthSignTypedDataMetaPtr* meta_out);
 
 bool ParseSwitchEthereumChainParams(const std::string& json,
                                     std::string* chain_id);

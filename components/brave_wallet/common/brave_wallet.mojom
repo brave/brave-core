@@ -1314,16 +1314,16 @@ interface JsonRpcService {
   GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
   // Fetches symbol of an ERC20 or ERC721 token.
-  GetEthTokenSymbol(string chain_id,
-                    string contract_address) => (string symbol,
-                                                 ProviderError error,
-                                                 string error_message);
+  GetEthTokenSymbol(string contract_address,
+                    string chain_id) => (string symbol,
+                                         ProviderError error,
+                                         string error_message);
 
   // Fetches decimals of an ERC20 or ERC721 token.
-  GetEthTokenDecimals(string chain_id,
-                      string contract_address) => (string decimals,
-                                                   ProviderError error,
-                                                   string error_message);
+  GetEthTokenDecimals(string contract_address,
+                      string chain_id) => (string decimals,
+                                           ProviderError error,
+                                           string error_message);
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
 
@@ -1675,6 +1675,19 @@ struct EthStandardSignData {
   string message;
 };
 
+struct CowSwapOrder {
+  string sell_token;
+  string sell_amount;
+  string buy_token;
+  string buy_amount;
+  string receiver;
+  string deadline;
+};
+
+union EthSignTypedDataMeta {
+  CowSwapOrder cow_swap_order;
+};
+
 // https://eips.ethereum.org/EIPS/eip-712
 struct EthSignTypedData {
   // message for display
@@ -1683,6 +1696,8 @@ struct EthSignTypedData {
   // These fields are for hardware eip712 signing
   string? domain_hash;
   string? primary_hash;
+
+  EthSignTypedDataMeta? meta;
 };
 
 // https://eips.ethereum.org/EIPS/eip-4361

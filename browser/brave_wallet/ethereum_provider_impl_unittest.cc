@@ -619,6 +619,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
                         const std::vector<uint8_t>& domain_hash,
                         const std::vector<uint8_t>& primary_hash,
                         base::Value::Dict domain,
+                        mojom::EthSignTypedDataMetaPtr meta,
                         std::string* signature_out,
                         mojom::ProviderError* error_out,
                         std::string* error_message_out) {
@@ -628,7 +629,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
     base::RunLoop run_loop;
     provider()->SignTypedMessage(
-        address, message, domain_hash, primary_hash, std::move(domain),
+        address, message, domain_hash, primary_hash, std::move(meta),
+        std::move(domain),
         base::BindLambdaForTesting(
             [&](base::Value id, base::Value formed_response, const bool reject,
                 const std::string& first_allowed_account,
@@ -1879,14 +1881,14 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
       "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
   domain.Set("chainId", 1);
   SignTypedMessage(absl::nullopt, "1234", "{...}", domain_hash, primary_hash,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   SignTypedMessage(absl::nullopt, "0x12345678", "{...}", domain_hash,
-                   primary_hash, domain.Clone(), &signature, &error,
+                   primary_hash, domain.Clone(), nullptr, &signature, &error,
                    &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
@@ -1897,7 +1899,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
 
   // not valid domain hash
   SignTypedMessage(absl::nullopt, address_0, "{...}", {}, primary_hash,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
@@ -1905,7 +1907,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
 
   // not valid primary hash
   SignTypedMessage(absl::nullopt, address_0, "{...}", domain_hash, {},
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
@@ -1915,7 +1917,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   std::string chain_id = "0xaa36a7";
   // not active network
   SignTypedMessage(absl::nullopt, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInternalError);
   EXPECT_EQ(error_message, l10n_util::GetStringFUTF8(
@@ -1924,7 +1926,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   domain.Set("chainId", 1);
 
   SignTypedMessage(absl::nullopt, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
@@ -1932,7 +1934,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   // No permission
   ASSERT_FALSE(address_0.empty());
   SignTypedMessage(absl::nullopt, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
@@ -1940,7 +1942,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   Navigate(url);
   AddEthereumPermission(account_0->account_id);
   SignTypedMessage(true, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), nullptr, &signature, &error, &error_message);
 
   EXPECT_FALSE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
@@ -1948,14 +1950,14 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
 
   // User reject request
   SignTypedMessage(false, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   // not valid eip712 domain hash
   SignTypedMessage(absl::nullopt, address_0, "{...}", DecodeHexHash("brave"),
-                   primary_hash, domain.Clone(), &signature, &error,
+                   primary_hash, domain.Clone(), nullptr, &signature, &error,
                    &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
@@ -1963,8 +1965,8 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   // not valid eip712 primary hash
   SignTypedMessage(absl::nullopt, address_0, "{...}", domain_hash,
-                   DecodeHexHash("primary"), domain.Clone(), &signature, &error,
-                   &error_message);
+                   DecodeHexHash("primary"), domain.Clone(), nullptr,
+                   &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
@@ -1974,7 +1976,7 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   // nullopt for the first param here because we don't AddSignMessageRequest
   // whent here are no accounts returned.
   SignTypedMessage(absl::nullopt, address_0, "{...}", domain_hash, primary_hash,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), nullptr, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));

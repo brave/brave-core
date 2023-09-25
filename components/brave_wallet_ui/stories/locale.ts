@@ -486,6 +486,7 @@ provideStrings({
   braveWalletSignWarningTitle: 'Sign at your own risk',
   braveWalletSignTransactionMessageTitle: 'Message',
   braveWalletSignTransactionEIP712MessageTitle: 'Details',
+  braveWalletSignTransactionEIP712MessageHideDetails: 'Hide details',
   braveWalletSignTransactionEIP712MessageDomain: 'Domain',
   braveWalletSignTransactionButton: 'Sign',
   braveWalletApproveTransaction: 'Approve transaction',

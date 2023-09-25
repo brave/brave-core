@@ -73,6 +73,7 @@ static_library("common") {
   ]
   deps = [
     ":common_constants",
+    ":generated_eth_requests",
     ":generated_json_rpc_requests",
     ":mojom",
     ":mojom__generator",
@@ -107,6 +108,16 @@ generated_types("generated_json_rpc_requests") {
   root_namespace = "brave_wallet::%(namespace)s"
   deps = [ "//base" ]
   visibility = [ ":common" ]
+}
+
+generated_types("generated_eth_requests") {
+  sources = [ "eth_requests.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":common",
+    "test:brave_wallet_unit_tests",
+  ]
 }
 
 preprocess_if_expr("preprocess_mojo") {

@@ -37,6 +37,7 @@ constexpr char kFillOtcOrderWithEthSelector[] = "0x706394d5";
 constexpr char kFillOtcOrderSelector[] = "0xdac748d4";
 constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
+constexpr char kCowOrderSellEthSelector[] = "0x322bba21";
 
 }  // namespace
 
@@ -341,6 +342,55 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                                     "uint128",   // sell amount
                                                     "uint128"},  // buy amount
                            tx_args);
+  } else if (selector == kCowOrderSellEthSelector) {
+    // The following block handles decoding of calldata for CoW swap orders,
+    // when the sell asset is the native asset (ETH, XDAI, etc).
+
+    // TXN: ETH/XDAI → token
+    // Function:
+    // createOrder((address buyToken,
+    //              address receiver,
+    //              uint256 sellAmount,
+    //              uint256 buyAmount,
+    //              bytes32 appData,
+    //              uint256 feeAmount,
+    //              uint32 validTo,
+    //              bool partiallyFillable,
+    //              int64 quoteId))
+    //
+    // Refs:
+    //   https://github.com/cowprotocol/ethflowcontract/blob/1d5d54a4ba890c5c0d3b26429ee32aa8e69f2f0d/src/CoWSwapEthFlow.sol#L81
+    //   https://github.com/cowprotocol/ethflowcontract/blob/1d5d54a4ba890c5c0d3b26429ee32aa8e69f2f0d/src/libraries/EthFlowOrder.sol#L18-L45
+
+    // NOTE: createOrder() takes one argument of type EthFlowOrder.Data, which
+    // could be represented as a tuple. Since tuples with static types can be
+    // flattened for easier decoding, we can consider this function to be
+    // taking 9 arguments.
+    //
+    // For the purpose of parsing transaction data corresponding to ETHSwap, we
+    // are only interested in the first four fields. Ignore the rest of the
+    // arguments as extraneous data.
+    auto decoded_calldata = ABIDecode(
+        {
+            "address",  // buyToken
+            "address",  // receiver
+            "uint256",  // sellAmount
+            "uint256",  // buyAmount
+        },
+        calldata);
+    if (!decoded_calldata) {
+      return absl::nullopt;
+    }
+
+    const auto& tx_args = std::get<1>(*decoded_calldata);
+    return std::make_tuple(
+        mojom::TransactionType::ETHSwap,
+        std::vector<std::string>{"bytes",     // fill path,
+                                 "uint256",   // sell amount
+                                 "uint256"},  // buy amount
+        std::vector<std::string>{
+            std::string(kNativeAssetContractAddress) + tx_args.at(0).substr(2),
+            tx_args.at(2), tx_args.at(3)});
   } else if (selector == kERC1155SafeTransferFromSelector) {
     auto decoded = ABIDecode(
         {"address", "address", "uint256", "uint256", "bytes"}, calldata);

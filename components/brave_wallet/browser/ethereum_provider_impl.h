@@ -108,6 +108,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                         const std::string& message,
                         const std::vector<uint8_t>& domain_hash,
                         const std::vector<uint8_t>& primary_hash,
+                        mojom::EthSignTypedDataMetaPtr meta,
                         base::Value::Dict domain,
                         RequestCallback callback,
                         base::Value id);
