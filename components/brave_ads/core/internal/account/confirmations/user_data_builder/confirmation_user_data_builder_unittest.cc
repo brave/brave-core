@@ -50,12 +50,33 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
     UserDataInfo expected_user_data;
+
     expected_user_data.dynamic = base::test::ParseJsonDict(
-        R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})");
-    expected_user_data
-        .fixed = base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
-        R"( {"buildChannel":"release","catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":"I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=","segment":"untargeted","studies":[],"topSegment":\[],"versionNumber":"$1"})",
-        {GetBrowserVersionNumber()}, nullptr));
+        R"(
+            {
+              "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+              "systemTimestamp": "2020-11-18T12:00:00.000Z"
+            })");
+
+    expected_user_data.fixed =
+        base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
+            R"({
+                  "buildChannel": "release",
+                  "catalog": [
+                    {
+                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                    }
+                  ],
+                  "countryCode": "US",
+                  "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                  "platform": "windows",
+                  "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                  "segment": "untargeted",
+                  "studies": [],
+                  "topSegment": [],
+                  "versionNumber": "$1"
+                })",
+            {GetBrowserVersionNumber()}, nullptr));
 
     EXPECT_EQ(expected_user_data, user_data);
   });
@@ -79,12 +100,38 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
     UserDataInfo expected_user_data;
-    expected_user_data.dynamic = base::test::ParseJsonDict(
-        R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})");
-    expected_user_data
-        .fixed = base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
-        R"({"buildChannel":"release","catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":[{"action":"view"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":"I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=","segment":"untargeted","studies":[],"topSegment":\[],"versionNumber":"$1"})",
-        {GetBrowserVersionNumber()}, nullptr));
+
+    expected_user_data.dynamic = base::test::ParseJsonDict(R"(
+      {
+        "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+        "systemTimestamp": "2020-11-18T12:00:00.000Z"
+      })");
+
+    expected_user_data.fixed =
+        base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
+            R"(
+                {
+                  "buildChannel": "release",
+                  "catalog": [
+                    {
+                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                    }
+                  ],
+                  "conversion": [
+                    {
+                      "action": "view"
+                    }
+                  ],
+                  "countryCode": "US",
+                  "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                  "platform": "windows",
+                  "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                  "segment": "untargeted",
+                  "studies": [],
+                  "topSegment": [],
+                  "versionNumber": "$1"
+                })",
+            {GetBrowserVersionNumber()}, nullptr));
 
     EXPECT_EQ(expected_user_data, user_data);
   });
@@ -107,10 +154,14 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
-    EXPECT_EQ(
-        base::test::ParseJsonDict(
-            R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
-        user_data.dynamic);
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  R"(
+                      {
+                        "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+                        "systemTimestamp": "2020-11-18T12:00:00.000Z"
+                      }
+                    )"),
+              user_data.dynamic);
 
     std::string json;
     ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
@@ -156,8 +207,15 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   // Assert
   UserDataInfo expected_user_data;
-  expected_user_data.fixed =
-      base::test::ParseJsonDict(R"({"conversion":[{"action":"view"}]})");
+  expected_user_data.fixed = base::test::ParseJsonDict(
+      R"(
+          {
+            "conversion": [
+              {
+                "action": "view"
+              }
+            ]
+          })");
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(expected_user_data));
 

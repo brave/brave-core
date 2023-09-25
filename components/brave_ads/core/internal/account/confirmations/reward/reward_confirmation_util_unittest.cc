@@ -93,14 +93,32 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
     expected_confirmation.reward = BuildRewardForTesting(*confirmation);
 
     expected_confirmation.user_data.dynamic = base::test::ParseJsonDict(
-        R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"1996-07-08T09:00:00.000Z"})");
+        R"(
+            {
+              "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+              "systemTimestamp": "1996-07-08T09:00:00.000Z"
+            })");
 
-    const std::string expected_fixed_data = base::ReplaceStringPlaceholders(
-        R"({"buildChannel":"release","catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"1996-07-08T09:00:00.000Z","platform":"windows","rotating_hash":"jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=","segment":"untargeted","studies":[],"topSegment":[],"versionNumber":"$1"})",
-        {GetBrowserVersionNumber()}, nullptr);
     expected_confirmation.user_data.fixed =
-        base::test::ParseJsonDict(expected_fixed_data);
-    ASSERT_TRUE(IsValid(expected_confirmation));
+        base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
+            R"(
+                {
+                  "buildChannel": "release",
+                  "catalog": [
+                    {
+                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                    }
+                  ],
+                  "countryCode": "US",
+                  "createdAtTimestamp": "1996-07-08T09:00:00.000Z",
+                  "platform": "windows",
+                  "rotating_hash": "jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=",
+                  "segment": "untargeted",
+                  "studies": [],
+                  "topSegment": [],
+                  "versionNumber": "$1"
+                })",
+            {GetBrowserVersionNumber()}, nullptr));
 
     EXPECT_EQ(expected_confirmation, confirmation);
   });

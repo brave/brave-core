@@ -30,10 +30,17 @@ TEST_F(BraveAdsCatalogUserDataTest, BuildCatalogUserDataForRewardsUser) {
   // Act
 
   // Assert
-  EXPECT_EQ(
-      base::test::ParseJsonDict(
-          R"({"catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}]})"),
-      BuildCatalogUserData());
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "catalog": [
+                        {
+                          "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                        }
+                      ]
+                    }
+          )"),
+            BuildCatalogUserData());
 }
 
 TEST_F(BraveAdsCatalogUserDataTest,

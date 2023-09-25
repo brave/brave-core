@@ -51,7 +51,23 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
     const base::Value::Dict expected_user_data =
         base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
-            R"({"buildChannel":"release","catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":"I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=","segment":"untargeted","studies":[],"topSegment":\[],"versionNumber":"$1"})",
+            R"(
+                {
+                  "buildChannel": "release",
+                  "catalog": [
+                    {
+                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                    }
+                  ],
+                  "countryCode": "US",
+                  "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                  "platform": "windows",
+                  "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                  "segment": "untargeted",
+                  "studies": [],
+                  "topSegment": [],
+                  "versionNumber": "$1"
+                })",
             {GetBrowserVersionNumber()}, nullptr));
 
     EXPECT_EQ(expected_user_data, user_data);
@@ -93,7 +109,28 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
     const base::Value::Dict expected_user_data =
         base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
-            R"({"buildChannel":"release","catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":[{"action":"view"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":"I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=","segment":"untargeted","studies":[],"topSegment":\[],"versionNumber":"$1"})",
+            R"(
+                {
+                  "buildChannel": "release",
+                  "catalog": [
+                    {
+                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                    }
+                  ],
+                  "conversion": [
+                    {
+                      "action": "view"
+                    }
+                  ],
+                  "countryCode": "US",
+                  "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                  "platform": "windows",
+                  "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                  "segment": "untargeted",
+                  "studies": [],
+                  "topSegment": [],
+                  "versionNumber": "$1"
+                })",
             {GetBrowserVersionNumber()}, nullptr));
 
     EXPECT_EQ(expected_user_data, user_data);
@@ -117,8 +154,15 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
       /*should_use_random_uuids*/ false);
 
   // Assert
-  const base::Value::Dict expected_user_data =
-      base::test::ParseJsonDict(R"({"conversion":[{"action":"click"}]})");
+  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
+      R"(
+          {
+            "conversion": [
+              {
+                "action": "click"
+              }
+            ]
+          })");
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 

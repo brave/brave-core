@@ -29,8 +29,15 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
       /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
 
   // Assert
-  const base::Value::Dict expected_user_data =
-      base::test::ParseJsonDict(R"({"conversion":[{"action":"view"}]})");
+  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
+      R"(
+          {
+            "conversion": [
+              {
+                "action": "view"
+              }
+            ]
+          })");
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 
@@ -69,8 +76,15 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
       /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
 
   // Assert
-  const base::Value::Dict expected_user_data =
-      base::test::ParseJsonDict(R"({"conversion":[{"action":"view"}]})");
+  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
+      R"(
+          {
+            "conversion": [
+              {
+                "action": "view"
+              }
+            ]
+          })");
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 

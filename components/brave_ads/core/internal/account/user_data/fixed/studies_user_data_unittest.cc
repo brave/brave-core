@@ -35,10 +35,22 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForRewardsUser) {
   // Act
 
   // Assert
-  EXPECT_EQ(
-      base::test::ParseJsonDict(
-          R"({"studies":[{"group":"GroupB","name":"BraveAds.BarStudy"},{"group":"GroupA","name":"BraveAds.FooStudy"}]})"),
-      BuildStudiesUserData());
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "studies": [
+                        {
+                          "group": "GroupB",
+                          "name": "BraveAds.BarStudy"
+                        },
+                        {
+                          "group": "GroupA",
+                          "name": "BraveAds.FooStudy"
+                        }
+                      ]
+                    }
+                )"),
+            BuildStudiesUserData());
 }
 
 TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {

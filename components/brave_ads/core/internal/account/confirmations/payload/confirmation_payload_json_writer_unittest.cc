@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
@@ -43,9 +44,18 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
       json::writer::WriteConfirmationPayload(*confirmation);
 
   // Assert
-  EXPECT_EQ(
-      R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})",
-      json);
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "blindedPaymentTokens": [
+                        "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="
+                      ],
+                      "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+                      "publicKey": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=",
+                      "transactionId": "8b742869-6e4a-490c-ac31-31b49130098a",
+                      "type": "view"
+                    })"),
+            base::test::ParseJsonDict(json));
 }
 
 TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
@@ -67,8 +77,9 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
 
   // Assert
   EXPECT_EQ(
-      R"({"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})",
-      json);
+      base::test::ParseJsonDict(
+          R"({"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})"),
+      base::test::ParseJsonDict(json));
 }
 
 }  // namespace brave_ads
