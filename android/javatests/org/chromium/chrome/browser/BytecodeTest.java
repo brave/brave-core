@@ -174,8 +174,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/BraveNewTabPage"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
         Assert.assertTrue(classExists(
@@ -680,11 +678,6 @@ public class BytecodeTest {
                 BottomSheetController.class, Supplier.class, WindowAndroid.class, Supplier.class,
                 SettingsLauncher.class, HomeSurfaceTracker.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
-                "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
-                Context.class, SuggestionHost.class, UrlBarDelegate.class,
-                OmniboxImageSupplier.class, Supplier.class, Supplier.class));
-        Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                 "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
                 ToolbarControlContainer.class, ViewStub.class, ToolbarLayout.class,
@@ -894,9 +887,6 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mTabModelSelector"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/ntp/NewTabPage", "mBottomSheetController"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
-                "mHasClearedOmniboxForFocus"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                         "mTileGroup"));
@@ -1059,6 +1049,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mIsTablet"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "mIsLocationBarFocusedFromNtpScroll"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "mShouldClearOmniboxOnFocus"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator", "mContext"));
         Assert.assertTrue(fieldExists(
