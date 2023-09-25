@@ -41,7 +41,6 @@ public class Migration {
     }
 
     // Adding Observer to enable sync types
-
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(enableUserSelectedTypesForSync),
@@ -56,7 +55,7 @@ public class Migration {
       return
     }
 
-    braveCore.syncAPI.enableSyncTypes(syncProfileService: braveCore.syncProfileService, shouldEnableBookmarks: true)
+    braveCore.syncAPI.enableSyncTypes(syncProfileService: braveCore.syncProfileService)
   }
 
   /// Adblock files don't have to be moved, they now have a new directory and will be downloaded there.
