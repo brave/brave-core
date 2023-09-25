@@ -21,7 +21,6 @@
         android:translationZ="1dp"
         android:visibility="gone"
         app:cardCornerRadius="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_fragment_two_line_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +49,7 @@
         android:id="@+id/item_fragment_two_line_sub_title"
         style="@style/BraveWalletTextViewSubTitle"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/item_fragment_two_line_icon_container"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/item_fragment_two_line_title"
         app:layout_constraintTop_toBottomOf="@id/item_fragment_two_line_title"
         tools:text="Sign" />
