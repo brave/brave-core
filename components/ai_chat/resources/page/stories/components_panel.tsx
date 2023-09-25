@@ -110,6 +110,7 @@ export default {
         options.args.currentErrorState
       )
       const [hasSeenAgreement] = React.useState(options.args.hasSeenAgreement)
+      const [isPremiumUser] = React.useState(options.args.isPremiumUser)
 
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
@@ -131,6 +132,7 @@ export default {
         hasSeenAgreement,
         apiHasError,
         shouldDisableUserInput
+        isPremiumUser
       }
 
       return (

@@ -75,11 +75,36 @@
   <message name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
     Available language models
   </message>
+  <message name="IDS_CHAT_UI_PREMIUM_BUTTON_LABEL" desc="A button label to subscribe for premium model">
+     Go Premium
+  </message>
   <message name="IDS_CHAT_UI_FEEDBACK_SENT" desc="Notification message for successful feedback submission">
     Feedback sent successfully
   </message>
+   <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_TITLE" desc="An error message when the user has reached API limit">
+     Response rate limit reached
+  </message>
   <message name="IDS_CHAT_UI_ANSWER_DISLIKED" desc="Notification for a disliked answer">
     Answer disliked
+  </message>
+  <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC" desc="A description to unlock premium features">
+     Unlock a higher response rate by subscribing to Premium, or try again
+        later
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1" desc="A premium feature">
+     Access to industry-leading LLMs
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2" desc="A premium feature">
+     Higher rate limits
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_LABEL" translateable="false" desc="A label for Brave premium products">
+     Brave Leo Premium
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_PRICING" desc="Price label to subscribe for Premium model">
+  USD/\$\15/month
+  </message>
+  <message name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
+    Dismiss
   </message>
   <message name="IDS_CHAT_UI_ANSWER_LIKED" desc="Notification for a liked answer">
     Answer liked
