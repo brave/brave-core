@@ -60,6 +60,8 @@ public class QuickActions: NSObject {
     case .newTab:
       handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: false)
     case .newPrivateTab:
+      browserViewController.stopTabToolbarLoading()
+      
       if Preferences.Privacy.lockWithPasscode.value {
         handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
       } else {
