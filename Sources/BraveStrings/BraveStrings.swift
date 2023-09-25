@@ -529,11 +529,6 @@ extension Strings {
       value: "Reader Mode", comment: "Title of a bar that show up when you enter reader mode.")
 }
 
-// MARK:-  SearchEnginePicker.swift
-extension Strings {
-  public static let searchEnginePickerNavTitle = NSLocalizedString("SearchEnginePickerNavTitle", tableName: "BraveShared", bundle: .module, value: "Default Search Engine", comment: "Title for default search engine picker.")
-}
-
 // MARK:-  SearchSettingsTableViewController.swift
 extension Strings {
   public static let searchSettingNavTitle = NSLocalizedString("SearchSettingNavTitle", tableName: "BraveShared", bundle: .module, value: "Search", comment: "Navigation title for search settings.")
@@ -1783,7 +1778,7 @@ extension Strings {
 
     public static let playlistStartPlaybackSettingsOptionTitle =
       NSLocalizedString("playlist.playlistStartPlaybackSettingsOptionTitle", tableName: "BraveShared", bundle: .module,
-        value: "Remember file playback position",
+        value: "Remember File Playback Position",
         comment: "Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off")
 
     public static let playlistStartPlaybackSettingsFooterText =
@@ -4597,13 +4592,8 @@ extension Strings {
 // Page Zoom
 extension Strings {
   public struct PageZoom {
-    public static let settingsMenuTitle = NSLocalizedString("pagezoom.settings.menu-title", tableName: "BraveShared", bundle: .module,
-      value: "Page Zoom",
-      comment: "Title of the Web-Page Zoom settings menu"
-    )
-    
     public static let settingsTitle = NSLocalizedString("pagezoom.settings.title", tableName: "BraveShared", bundle: .module,
-      value: "Page Zoom Settings",
+      value: "Page Zoom",
       comment: "Title of the Web-Page Zoom screen"
     )
     
@@ -4858,7 +4848,6 @@ extension Strings {
   public static let contentFiltering = NSLocalizedString("ContentFiltering", tableName: "BraveShared", bundle: .module, value: "Content Filtering", comment: "A title to the content filtering page under global shield settings and the title on the Content filtering page")
   public static let blockMobileAnnoyances = NSLocalizedString("blockMobileAnnoyances", tableName: "BraveShared", bundle: .module, value: "Block 'Switch to App' Notices", comment: "A title for setting which blocks 'switch to app' popups")
   public static let contentFilteringDescription = NSLocalizedString("ContentFilteringDescription", tableName: "BraveShared", bundle: .module, value: "Enable custom filters that block regional and language-specific trackers and Annoyances", comment: "A description of the content filtering page.")
-  public static let filterLists = NSLocalizedString("FilterLists", tableName: "BraveShared", bundle: .module, value: "Filter Lists", comment: "A title on the content filtering screen that allows you to enable/disable filter lists")
   public static let defaultFilterLists = NSLocalizedString("DefaultFilterLists", tableName: "BraveShared", bundle: .module, value: "Default Filter Lists", comment: "A section title that contains default (predefined) filter lists a user can enable/diable.")
   public static let filterListsDescription = NSLocalizedString("FilterListsDescription", tableName: "BraveShared", bundle: .module, value: "Additional popular community lists. Note that enabling too many filters will degrade browsing speeds.", comment: "A description on the content filtering screen for the filter lists section.")
   public static let addCustomFilterList = NSLocalizedString("AddCustomFilterList", tableName: "BraveShared", bundle: .module, value: "Add Custom Filter List", comment: "A title within a cell where a user can navigate to an add screen.")

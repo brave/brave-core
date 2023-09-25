@@ -99,7 +99,7 @@ class SearchCustomEngineViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = Strings.CustomSearchEngine.customEngineNavigationTitle
+    title = Strings.searchSettingAddCustomEngineCellTitle
 
     setup()
     doLayout()

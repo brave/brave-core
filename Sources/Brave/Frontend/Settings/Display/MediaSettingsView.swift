@@ -45,7 +45,7 @@ fileprivate struct QualitySettingsView: View {
   
   var body: some View {
     Form {
-      Section(header: Text("")) {
+      Section(header: Text(Strings.Settings.qualitySettings)) {
         Button(action: {
           qualityOption.value = YoutubeHighQualityPreference.on.rawValue
           presentationMode.dismiss()
@@ -69,7 +69,7 @@ fileprivate struct QualitySettingsView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .navigationBarTitle(Strings.Settings.qualitySettings)
+    .navigationBarTitle(Strings.Settings.highestQualityPlayback)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
   }
   

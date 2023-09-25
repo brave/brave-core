@@ -104,7 +104,7 @@ struct FilterListsView: View {
     .animation(.default, value: customFilterListStorage.filterListsURLs)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
-    .navigationTitle(Strings.filterLists)
+    .navigationTitle(Strings.contentFiltering)
     .toolbar {
       EditButton().disabled(
         customFilterListStorage.filterListsURLs.isEmpty &&

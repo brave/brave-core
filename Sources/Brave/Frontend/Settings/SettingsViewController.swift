@@ -417,6 +417,7 @@ class SettingsViewController: TableViewController {
           }
         )
         optionsViewController.headerText = Strings.showTabsBar
+        optionsViewController.navigationItem.title = Strings.showTabsBar
         self.navigationController?.pushViewController(optionsViewController, animated: true)
       }
       tabs.rows.append(row)
@@ -443,6 +444,7 @@ class SettingsViewController: TableViewController {
       )
       optionsViewController.headerText = Strings.Settings.autocloseTabsSetting
       optionsViewController.footerText = Strings.Settings.autocloseTabsSettingFooter
+      optionsViewController.navigationItem.title = Strings.Settings.autocloseTabsSetting
       self.navigationController?.pushViewController(optionsViewController, animated: true)
     }
 
@@ -494,7 +496,8 @@ class SettingsViewController: TableViewController {
       )
       optionsViewController.headerText = Strings.themesDisplayBrightness
       optionsViewController.footerText = Strings.themesDisplayBrightnessFooter
-
+      optionsViewController.navigationItem.title = Strings.themesDisplayBrightness
+      
       let nightModeSection = Section(
         header: .title(Strings.NightMode.sectionTitle.uppercased()),
         rows: [
@@ -527,9 +530,10 @@ class SettingsViewController: TableViewController {
     // We do NOT persistently save page-zoom settings in Private Browsing
     if !tabManager.privateBrowsingManager.isPrivateBrowsing {
       display.rows.append(
-        Row(text: Strings.PageZoom.settingsMenuTitle,
+        Row(text: Strings.PageZoom.settingsTitle,
             selection: { [weak self] in
               let controller = PageZoomSettingsController()
+              controller.navigationItem.title = Strings.PageZoom.settingsTitle
               self?.navigationController?.pushViewController(controller, animated: true)
             },
             image: UIImage(braveSystemNamed: "leo.font.size"),
@@ -683,6 +687,7 @@ class SettingsViewController: TableViewController {
           selection: { [unowned self] in
             // Show privacy policy
             let privacy = SettingsContentViewController().then { $0.url = .brave.privacy }
+            privacy.navigationItem.title = Strings.privacyPolicy
             self.navigationController?.pushViewController(privacy, animated: true)
           },
           accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
@@ -691,6 +696,7 @@ class SettingsViewController: TableViewController {
           selection: { [unowned self] in
             // Show terms of use
             let toc = SettingsContentViewController().then { $0.url = .brave.termsOfUse }
+            toc.navigationItem.title = Strings.termsOfUse
             self.navigationController?.pushViewController(toc, animated: true)
           },
           accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
