@@ -12,6 +12,7 @@ import SwiftUI
 import BraveVPN
 import Onboarding
 import SafariServices
+import StoreKit
 
 // MARK: - Callouts
 
@@ -255,12 +256,44 @@ extension BrowserViewController {
   
   private func presentVPNUpdateBillingCallout(skipSafeGuards: Bool = false) {
     if !skipSafeGuards {
-      // TODO: Condition
-      return
+      // Checking subscription receipt is in retry period
+      guard let receiptStatus = Preferences.VPN.vpnReceiptStatus.value else {
+        return
+      }
+      
+      if receiptStatus != BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue {
+        return
+      }
     }
+
     
-    presentVPNChurnPromoCallout(for: .updateBillingExpired) {
-      // TODO: Action
+#if compiler(>=5.8)
+      if #available(iOS 16.4, *) {
+        Task { @MainActor in
+          for await message in StoreKit.Message.messages {
+            guard let windowScene = currentScene else {
+              return
+            }
+            
+            try? message.display(in: windowScene)
+          }
+        }
+      } else {
+        presentVPNChurnBilling()
+      }
+#else
+    presentVPNChurnBilling()
+#endif
+    
+    func presentVPNChurnBilling() {
+      presentVPNChurnPromoCallout(for: .updateBillingExpired) {
+        // Opens Apple's 'manage subscription' screen
+        guard let url = URL.apple.manageSubscriptions else { return }
+        
+        if UIApplication.shared.canOpenURL(url) {
+          UIApplication.shared.open(url, options: [:])
+        }
+      }
     }
   }
   

@@ -18,6 +18,7 @@ extension BrowserViewController {
   func featuresMenuSection(_ menuController: MenuViewController) -> some View {
     VStack(alignment: .leading, spacing: 5) {
       VPNMenuButton(
+        retryStateActive: Preferences.VPN.vpnReceiptStatus.value == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
         vpnProductInfo: self.vpnProductInfo,
         displayVPNDestination: { [unowned self] vc in
           (self.presentedViewController as? MenuViewController)?
@@ -54,6 +55,7 @@ extension BrowserViewController {
         .padding(.bottom, 5)
 
       VPNMenuButton(
+        retryStateActive: Preferences.VPN.vpnReceiptStatus.value == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
         vpnProductInfo: self.vpnProductInfo,
         description: Strings.OptionsMenu.braveVPNItemDescription,
         displayVPNDestination: { [unowned self] vc in

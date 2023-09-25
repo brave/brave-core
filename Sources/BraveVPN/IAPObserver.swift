@@ -49,10 +49,13 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
         SKPaymentQueue.default().finishTransaction(transaction)
         
         if callPurchaseDelegateOnce {
-          BraveVPN.validateReceipt() { [weak self] expired in
+          BraveVPN.validateReceiptData() { [weak self] response in
             guard let self = self else { return }
             
-            if expired == false {
+            if response?.status == .expired {
+              // Receipt either expired or receipt validation returned some error.
+              self.delegate?.purchaseFailed(error: .receiptError)
+            } else {
               self.delegate?.purchasedOrRestoredProduct(validateReceipt: false)
               // If we purchased via Apple's IAP we reset the Brave SKUs credential
               // to avoid mixing two purchase types in the app.
@@ -60,9 +63,6 @@ public class IAPObserver: NSObject, SKPaymentTransactionObserver {
               // The user will be able to retrieve the shared credential
               // after log in to account.brave website.
               BraveVPN.clearSkusCredentials(includeExpirationDate: false)
-            } else {
-              // Receipt either expired or receipt validation returned some error.
-              self.delegate?.purchaseFailed(error: .receiptError)
             }
           }
         }

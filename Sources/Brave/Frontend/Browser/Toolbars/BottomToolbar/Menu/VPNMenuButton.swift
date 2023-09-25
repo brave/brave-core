@@ -12,6 +12,8 @@ import BraveVPN
 
 /// A menu button that provides a shortcut to toggling Brave VPN
 struct VPNMenuButton: View {
+  /// The status indicating VPN is in retry state
+  var retryStateActive: Bool
   /// The product info
   var vpnProductInfo: VPNProductInfo
   /// The description for product info
@@ -78,15 +80,12 @@ struct VPNMenuButton: View {
 
   private var vpnToggle: some View {
     Toggle("Brave VPN", isOn: isVPNEnabledBinding)
-      .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+      .toggleStyle(SwitchToggleStyle(tint: retryStateActive ? Color(.braveErrorBorder) : .accentColor))
   }
 
   var body: some View {
     HStack {
-      MenuItemHeaderView(
-        icon: Image(braveSystemName: "leo.product.vpn"),
-        title: description == nil ? "Brave VPN" : Strings.OptionsMenu.braveVPNItemTitle,
-        subtitle: description)
+      headerView
       Spacer()
       if isVPNStatusChanging {
         ActivityIndicatorView(isAnimating: true)
@@ -121,5 +120,31 @@ struct VPNMenuButton: View {
         isVPNStatusChanging = BraveVPN.reconnectPending
       }
     }
+  }
+  
+  private var headerView: some View {
+    HStack(spacing: 14) {
+      Image(braveSystemName: retryStateActive ? "leo.warning.triangle-filled" : "leo.product.vpn")
+        .font(.body)
+        .frame(width: 32, height: 32)
+        .foregroundColor(retryStateActive ? Color(.braveErrorLabel) : Color(.braveLabel))
+        .background(
+          RoundedRectangle(cornerRadius: 8, style: .continuous)
+            .fill(Color(.secondaryBraveGroupedBackground))
+            .shadow(color: Color.black.opacity(0.1), radius: 1, x: 0, y: 1)
+        )
+        .padding(.vertical, 2)
+      VStack(alignment: .leading, spacing: 3) {
+        Text(verbatim: description == nil ? "Brave VPN" : Strings.OptionsMenu.braveVPNItemTitle)
+          .foregroundColor(Color(.bravePrimary))
+        if let subTitle = description {
+          Text(retryStateActive ? Strings.VPN.vpnUpdatePaymentMethodDescriptionText : subTitle)
+            .font(.subheadline)
+            .foregroundColor(retryStateActive ? Color(.braveErrorLabel) : Color(.secondaryBraveLabel))
+        }
+      }
+      .padding(.vertical, description != nil ? 5 : 0)
+    }
+    .foregroundColor(Color(.braveLabel))
   }
 }

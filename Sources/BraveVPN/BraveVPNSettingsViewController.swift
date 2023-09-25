@@ -23,8 +23,6 @@ public class BraveVPNSettingsViewController: TableViewController {
   @available(*, unavailable)
   required init(coder: NSCoder) { fatalError() }
 
-  private let manageSubcriptionURL = URL(string: "https://apps.apple.com/account/subscriptions")
-
   // Cell/section tags so we can update them dynamically.
   private let serverSectionId = "server"
   private let hostCellId = "host"
@@ -108,6 +106,10 @@ public class BraveVPNSettingsViewController: TableViewController {
       }
     })
     
+    if Preferences.VPN.vpnReceiptStatus.value == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue {
+      switchView.onTintColor = .braveErrorLabel
+    }
+    
     self.vpnConnectionStatusSwitch = switchView
     
     let vpnStatusSection = Section(rows: [
@@ -115,24 +117,37 @@ public class BraveVPNSettingsViewController: TableViewController {
           accessory: .view(switchView), uuid: vpnStatusSectionCellId)
     ], uuid: vpnStatusSectionCellId)
     
-    let subscriptionStatus = BraveVPN.hasExpired == true ?
-    Strings.VPN.subscriptionStatusExpired : BraveVPN.subscriptionName
+    let (subscriptionStatus, statusDetailColor) = { () -> (String, UIColor) in
+      if Preferences.VPN.vpnReceiptStatus.value == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue {
+        return (Strings.VPN.vpnActionUpdatePaymentMethodSettingsText, .braveErrorLabel)
+      }
+      
+      if BraveVPN.vpnState == .expired {
+        return (Strings.VPN.subscriptionStatusExpired, .braveErrorLabel)
+      } else {
+        return (BraveVPN.subscriptionName, .braveLabel)
+      }
+    }()
     
-    let expiration = BraveVPN.hasExpired == true ? "-" : expirationDate
+    let expiration = BraveVPN.vpnState == .expired ? "-" : expirationDate
     
     let subscriptionSection =
     Section(header: .title(Strings.VPN.settingsSubscriptionSection),
             rows: [Row(text: Strings.VPN.settingsSubscriptionStatus,
-                       detailText: subscriptionStatus),
+                       detailText: subscriptionStatus,
+                       cellClass: ColoredDetailCell.self,
+                       context: [ColoredDetailCell.colorKey: statusDetailColor]),
                    Row(text: Strings.VPN.settingsSubscriptionExpiration, detailText: expiration),
                    Row(text: Strings.VPN.settingsManageSubscription,
-                       selection: { [unowned self] in
-      guard let url = self.manageSubcriptionURL else { return }
-      if UIApplication.shared.canOpenURL(url) {
-        // Opens Apple's 'manage subscription' screen.
-        UIApplication.shared.open(url, options: [:])
-      }
-    }, cellClass: ButtonCell.self)] + linkReceiptRows,
+                       selection: {
+                         guard let url = URL.apple.manageSubscriptions else { return }
+                           if UIApplication.shared.canOpenURL(url) {
+                             // Opens Apple's 'manage subscription' screen.
+                             UIApplication.shared.open(url, options: [:])
+                           }
+                       },
+                       cellClass: ButtonCell.self)
+            ] + linkReceiptRows,
             footer: .title(Strings.VPN.settingsLinkReceiptFooter))
     
     let location = BraveVPN.serverLocation ?? "-"

@@ -13,24 +13,6 @@ import os.log
 
 /// A static class to handle all things related to the Brave VPN service.
 public class BraveVPN {
-  
-  public struct ReceiptResponse {
-    enum Status {
-      case active, expired, retryPeriod
-    }
-    
-    enum ExpirationIntent: Int {
-      case none, cancelled, billingError, priceIncreaseConsent, notAvailable, unknown
-    }
-    
-    var status: Status
-    var expiryReason: ExpirationIntent = .none
-    var expiryDate: Date?
-
-    var isInTrialPeriod: Bool = false
-    var autoRenewEnabled: Bool = false
-  }
-  
   private static let housekeepingApi = GRDHousekeepingAPI()
   private static let helper = GRDVPNHelper.sharedInstance()
   private static let serverManager = GRDServerManager()
@@ -68,7 +50,7 @@ public class BraveVPN {
         }
       }
     }
-    
+
     if let customCredential = customCredential {
       if hasExpired == true {
         clearConfiguration()
@@ -99,6 +81,7 @@ public class BraveVPN {
     }
     
     BraveVPN.validateReceiptData() { receiptResponse in
+      // Clear configuration if only if the receipt response is expired (not retryPeriod)
       if receiptResponse?.status == .expired {
         clearConfiguration()
         logAndStoreError("Receipt expired")
@@ -131,48 +114,6 @@ public class BraveVPN {
      "brave-payments-env": credential.environment,
      "validation-method": "brave-premium"]
     helper.customSubscriberCredentialAuthKeys = dict
-  }
-  
-  /// Connects to Guardian's server to validate locally stored receipt.
-  /// Returns true if the receipt expired, false if not or nil if expiration status can't be determined.
-  public static func validateReceipt(receiptHasExpired: ((Bool?) -> Void)? = nil) {
-    guard let receipt = receipt,
-    let bundleId = Bundle.main.bundleIdentifier else {
-      receiptHasExpired?(nil)
-      return
-    }
-    
-    if Preferences.VPN.skusCredential.value != nil {
-      // Receipt verification applies to Apple's IAP only,
-      // if we detect Brave's SKU token we should not look at Apple's receipt.
-      return
-    }
-
-    housekeepingApi.verifyReceipt(receipt, bundleId: bundleId) { validSubscriptions, success, error in
-      if !success {
-        // Api call for receipt verification failed,
-        // we do not know if the receipt has expired or not.
-        receiptHasExpired?(nil)
-        logAndStoreError("Api call for receipt verification failed: \(error ?? "unknown error")")
-        return
-      }
-
-      guard let validSubscriptions = validSubscriptions,
-            let newestReceipt = validSubscriptions.sorted(by: { $0.expiresDate > $1.expiresDate }).first else {
-        // Setting super old date to force expiration logic in the UI.
-        Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
-        receiptHasExpired?(true)
-        logAndStoreError("vpn expired", printToConsole: false)
-        return
-      }
-
-      Preferences.VPN.expirationDate.value = newestReceipt.expiresDate
-      Preferences.VPN.freeTrialUsed.value = !newestReceipt.isTrialPeriod
-      populateRegionDataIfNecessary()
-      
-      GRDSubscriptionManager.setIsPayingUser(true)
-      receiptHasExpired?(false)
-    }
   }
   
   /// Connects to Guardian's server to validate locally stored receipt.
@@ -213,10 +154,15 @@ public class BraveVPN {
       switch processedReceiptDetail.status {
       case .expired:
         Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
+        Preferences.VPN.originalTransactionId.value = nil
         logAndStoreError("VPN Subscription LineItems are empty subscription expired", printToConsole: false)
       case .active, .retryPeriod:
         if let expirationDate = processedReceiptDetail.expiryDate {
           Preferences.VPN.expirationDate.value = expirationDate
+        }
+        
+        if let gracePeriodExpirationDate = processedReceiptDetail.graceExpiryDate {
+          Preferences.VPN.gracePeriodExpirationDate.value = gracePeriodExpirationDate
         }
         
         Preferences.VPN.freeTrialUsed.value = !processedReceiptDetail.isInTrialPeriod
@@ -225,19 +171,41 @@ public class BraveVPN {
         GRDSubscriptionManager.setIsPayingUser(true)
       }
       
+      Preferences.VPN.vpnReceiptStatus.value = processedReceiptDetail.status.rawValue
+      
       receiptResponse?(processedReceiptDetail)
     }
   }
   
   public static func processReceiptResponse(receiptResponseItem: GRDIAPReceiptResponse) -> ReceiptResponse {
     guard let newestReceiptLineItem = receiptResponseItem.lineItems.sorted(by: { $0.expiresDate > $1.expiresDate }).first else {
+      if let originalTransactionId = Preferences.VPN.originalTransactionId.value {
+        let lineItemMetaDataForOriginalId =  receiptResponseItem.lineItemsMetadata.first(
+          where: { Int($0.originalTransactionId) ?? 00 == originalTransactionId })
+        
+        if let metaData = lineItemMetaDataForOriginalId, metaData.gracePeriodExpiresDate > Date() {
+          let response = ReceiptResponse(
+            status: .retryPeriod,
+            expiryReason: ReceiptResponse.ExpirationIntent(rawValue: Int(metaData.expirationIntent)) ?? .none,
+            graceExpiryDate: metaData.gracePeriodExpiresDate,
+            isInTrialPeriod: false,
+            autoRenewEnabled: false)
+          
+          return response
+        }
+      }
+
       return ReceiptResponse(status: .expired)
     }
 
     let lineItemMetaData =  receiptResponseItem.lineItemsMetadata.first(
       where: { Int($0.originalTransactionId) ?? 00 == newestReceiptLineItem.originalTransactionId })
 
+    // Original transaction id of last active subscription in order to detect grace period
+    Preferences.VPN.originalTransactionId.value = newestReceiptLineItem.originalTransactionId
+    
     guard let metadata = lineItemMetaData else {
+      logAndStoreError("No line item meta data - can not happen")
       return ReceiptResponse(status: .active)
     }
 
@@ -247,12 +215,15 @@ public class BraveVPN {
     // 0 is for turned off renewal, 1 is subscription renewal
     let autoRenewEnabled = metadata.autoRenewStatus == 1
 
-    return ReceiptResponse(
+    let response = ReceiptResponse(
       status: receiptStatus,
       expiryReason: expirationIntent,
       expiryDate: newestReceiptLineItem.expiresDate,
+      graceExpiryDate: metadata.gracePeriodExpiresDate,
       isInTrialPeriod: newestReceiptLineItem.isTrialPeriod,
       autoRenewEnabled: autoRenewEnabled)
+    
+    return response
   }
 
   // MARK: - STATE
@@ -261,7 +232,7 @@ public class BraveVPN {
   public static var reconnectPending = false
 
   /// A state in which the vpn can be.
-  public enum State {
+  public enum State: Equatable {
     case notPurchased
     case purchased(enabled: Bool)
 
@@ -305,10 +276,18 @@ public class BraveVPN {
 
   /// Whether the vpn subscription has expired.
   /// Returns nil if there has been no subscription yet (user never bought the vpn).
-  public static var hasExpired: Bool? {
+  private static var hasExpired: Bool? {
     guard let expirationDate = Preferences.VPN.expirationDate.value else { return nil }
 
-    return expirationDate < Date()
+    if expirationDate < Date() {
+      if let gracePeriodExpirationDate = Preferences.VPN.gracePeriodExpirationDate.value {
+        return gracePeriodExpirationDate < Date()
+      }
+      
+      return true
+    }
+    
+    return false
   }
 
   /// Location of last used server for the vpn configuration.
@@ -335,6 +314,26 @@ public class BraveVPN {
       assertionFailure("Can't get product id")
       return ""
     }
+  }
+  
+  // MARK: - ReceiptResponse
+  
+  public struct ReceiptResponse {
+    public enum Status: Int {
+      case active, expired, retryPeriod
+    }
+    
+    enum ExpirationIntent: Int {
+      case none, cancelled, billingError, priceIncreaseConsent, notAvailable, unknown
+    }
+    
+    var status: Status
+    var expiryReason: ExpirationIntent = .none
+    var expiryDate: Date?
+    var graceExpiryDate: Date?
+
+    var isInTrialPeriod: Bool = false
+    var autoRenewEnabled: Bool = false
   }
   
   // MARK: - Actions
@@ -475,6 +474,7 @@ public class BraveVPN {
     
     if includeExpirationDate {
       Preferences.VPN.expirationDate.reset()
+      Preferences.VPN.gracePeriodExpirationDate.reset()
     }
   }
 
