@@ -6,13 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_TARGETING_SEGMENTS_TOP_SEGMENTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_TARGETING_SEGMENTS_TOP_SEGMENTS_H_
 
+#include <string>
+
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 SegmentList GetTopSegments(const SegmentList& segments,
                            int max_count,
                            bool parent_only);
+
+absl::optional<std::string> GetTopSegment(const SegmentList& segments,
+                                          bool parent_only);
 
 }  // namespace brave_ads
 
