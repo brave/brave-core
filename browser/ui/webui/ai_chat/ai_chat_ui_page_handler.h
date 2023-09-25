@@ -68,7 +68,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnVisibilityChanged(content::Visibility visibility) override;
 
  private:
-  // ChatTabHelper::Observer
+  // AIChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
   void OnAPIResponseError(mojom::APIError error) override;

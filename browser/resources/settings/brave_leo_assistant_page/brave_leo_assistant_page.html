@@ -14,6 +14,10 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   pref="{{prefs.brave.ai_chat.auto_generate_questions}}"
   label="$i18n{braveLeoAssistantShowSuggestedPromptsLabel}">
 </settings-toggle-button>
+<settings-toggle-button class="cr-row hr"
+  pref="{{prefs.brave.ai_chat.autocomplete_provider_enabled}}"
+  label="$i18n{braveLeoAssistantShowAutocompleteSuggestionInAddressBar}">
+</settings-toggle-button>
 <div class="settings-box " on-click="onResetAssistantData_">
     <div class="flex cr-padded-text reset-wallet">
       <div>$i18n{braveLeoAssistantResetAndClearDataLabel}</div>

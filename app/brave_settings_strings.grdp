@@ -1412,6 +1412,9 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_AUTOCOMPLETE_SUGGESTION_IN_ADDRESS_BAR" desc="A text for en/disable autcomplete provider with Leo assistant">
+    Show autocomplete suggestions in address bar
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL" desc="The text for settings option">
     Clear Leo data
   </message>

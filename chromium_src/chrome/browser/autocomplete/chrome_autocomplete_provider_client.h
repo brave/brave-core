@@ -14,10 +14,18 @@
 #define GetLocalOrSyncableBookmarkModel       \
   GetLocalOrSyncableBookmarkModel() override; \
   commander::CommanderFrontendDelegate* GetCommanderDelegate
-#endif
+#endif  // BUILDFLAG(ENABLE_COMMANDER)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#define GetAccountBookmarkModel                       \
+  GetAccountBookmarkModel() override;                 \
+  void OpenLeo(const std::u16string& query) override; \
+  bool IsLeoProviderEnabled
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"  // IWYU pragma: export
 
+#undef GetAccountBookmarkModel
 #undef GetLocalOrSyncableBookmarkModel
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_AUTOCOMPLETE_CHROME_AUTOCOMPLETE_PROVIDER_CLIENT_H_

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_TAB_HELPER_H_
 
+#include <deque>
 #include <memory>
 #include <string>
 #include <vector>
@@ -96,6 +97,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnUserOptedIn();
   void OnPermissionChangedAutoGenerateQuestions();
   std::string GetConversationHistoryString();
+  bool MaybePopPendingRequests();
   void MaybeGeneratePageText();
   void MaybeGenerateQuestions();
   void CleanUp();
@@ -151,6 +153,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   mojom::APIError current_error_ = mojom::APIError::None;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+
+  std::deque<mojom::ConversationTurn> pending_requests_;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

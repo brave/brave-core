@@ -92,6 +92,9 @@ const std::vector<ConversationTurn>& AIChatTabHelper::GetConversationHistory() {
 void AIChatTabHelper::OnConversationActiveChanged(bool is_conversation_active) {
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
+  if (MaybePopPendingRequests()) {
+    return;
+  }
   MaybeGeneratePageText();
   MaybeGenerateQuestions();
 }
@@ -101,7 +104,10 @@ bool AIChatTabHelper::HasUserOptedIn() {
 }
 
 void AIChatTabHelper::OnUserOptedIn() {
-  MaybeGeneratePageText();
+  if (!MaybePopPendingRequests()) {
+    MaybeGeneratePageText();
+  }
+
   if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
     ai_chat_metrics_->RecordEnabled();
   }
@@ -152,6 +158,21 @@ void AIChatTabHelper::AddObserver(Observer* observer) {
 
 void AIChatTabHelper::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+bool AIChatTabHelper::MaybePopPendingRequests() {
+  if (!is_conversation_active_ || !HasUserOptedIn()) {
+    return false;
+  }
+
+  if (pending_requests_.empty()) {
+    return false;
+  }
+
+  mojom::ConversationTurn request = std::move(pending_requests_.front());
+  pending_requests_.pop_front();
+  MakeAPIRequestWithConversationHistoryUpdate(std::move(request));
+  return true;
 }
 
 void AIChatTabHelper::MaybeGeneratePageText() {
@@ -245,6 +266,7 @@ void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
   article_text_.clear();
   suggested_questions_.clear();
+  pending_requests_.clear();
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
   has_generated_questions_ = false;
@@ -341,10 +363,12 @@ void AIChatTabHelper::OnSuggestedQuestionsResponse(
 
 void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
     mojom::ConversationTurn turn) {
-  // This function should not be presented in the UI if the user has not
-  // opted-in yet.
-  DCHECK(HasUserOptedIn());
-  DCHECK(is_conversation_active_);
+  if (!is_conversation_active_ || !HasUserOptedIn()) {
+    // This function should not be presented in the UI if the user has not
+    // opted-in yet.
+    pending_requests_.push_back(std::move(turn));
+    return;
+  }
 
   DCHECK(turn.character_type == CharacterType::HUMAN);
 
@@ -451,6 +475,9 @@ void AIChatTabHelper::OnEngineCompletionComplete(
     // handle failure
     SetAPIError(std::move(result.error()));
   }
+
+  MaybePopPendingRequests();
+
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnAPIRequestInProgress(IsRequestInProgress());

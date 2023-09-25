@@ -8,8 +8,11 @@
 #include <memory>
 
 #include "base/time/time.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/omnibox/brave_search_conversion_promotion_view.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
+#include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.h"
@@ -21,8 +24,16 @@
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/omnibox/browser/omnibox_popup_selection.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/base/window_open_disposition.h"
+#include "ui/gfx/canvas.h"
+#include "ui/gfx/scoped_canvas.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/view_class_properties.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/omnibox/browser/leo_provider.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 BraveOmniboxResultView::~BraveOmniboxResultView() = default;
 
@@ -45,12 +56,36 @@ void BraveOmniboxResultView::SetMatch(const AutocompleteMatch& match) {
   if (IsBraveSearchPromotionMatch(match)) {
     UpdateForBraveSearchConversion();
   }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  UpdateForLeoMatch();
+#endif
 }
 
 void BraveOmniboxResultView::OnSelectionStateChanged() {
   OmniboxResultView::OnSelectionStateChanged();
 
   HandleSelectionStateChangedForPromotionView();
+}
+
+gfx::Image BraveOmniboxResultView::GetIcon() const {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (LeoProvider::IsMatchFromLeoProvider(match_)) {
+    // As Leo icon has gradient color, we can't use vector icon because it lacks
+    // of gradient color.
+    return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+        IDR_LEO_FAVICON);
+  }
+#endif
+  return OmniboxResultView::GetIcon();
+}
+
+void BraveOmniboxResultView::OnThemeChanged() {
+  OmniboxResultView::OnThemeChanged();
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  UpdateForLeoMatch();
+#endif
 }
 
 void BraveOmniboxResultView::OpenMatch() {
@@ -94,6 +129,37 @@ void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
   brave_search_promotion_view_->SetTypeAndInput(
       GetConversionTypeFromMatch(match_),
       popup_view_->controller()->autocomplete_controller()->input().text());
+}
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveOmniboxResultView::UpdateForLeoMatch() {
+  if (LeoProvider::IsMatchFromLeoProvider(match_)) {
+    constexpr int kLeoMatchPadding = 4;
+    SetProperty(views::kMarginsKey, gfx::Insets().set_top(kLeoMatchPadding));
+    if (auto* cp = GetColorProvider()) {
+      SetBorder(views::CreatePaddedBorder(
+          views::CreateSolidSidedBorder(
+              gfx::Insets().set_top(1),
+              cp->GetColor(kColorBraveOmniboxResultViewSeparator)),
+          gfx::Insets().set_top(kLeoMatchPadding)));
+    }
+  } else {
+    ClearProperty(views::kMarginsKey);
+    SetBorder(nullptr);
+  }
+}
+#endif
+
+void BraveOmniboxResultView::OnPaintBackground(gfx::Canvas* canvas) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  gfx::ScopedCanvas scoped_canvas(canvas);
+  if (LeoProvider::IsMatchFromLeoProvider(match_)) {
+    // Clip upper padding
+    canvas->ClipRect(GetContentsBounds());
+  }
+#endif
+
+  OmniboxResultView::OnPaintBackground(canvas);
 }
 
 BEGIN_METADATA(BraveOmniboxResultView, OmniboxResultView)

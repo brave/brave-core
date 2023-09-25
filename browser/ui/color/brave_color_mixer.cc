@@ -648,6 +648,9 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ false)};
+
+  mixer[kColorBraveOmniboxResultViewSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
 }
 
 void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -669,6 +672,9 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ true, /*incognito*/ false)};
+
+  mixer[kColorBraveOmniboxResultViewSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
 }
 
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
