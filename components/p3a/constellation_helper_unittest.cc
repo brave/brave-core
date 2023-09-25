@@ -15,6 +15,7 @@
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_message.h"
 #include "brave/components/p3a/star_randomness_test_util.h"
+#include "brave/components/p3a/uploader.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -172,8 +173,8 @@ TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
 
   helper_->StartMessagePreparation(
       kTestHistogramName, MetricLogType::kTypical,
-      GenerateP3AConstellationMessage(kTestHistogramName, kTestEpoch,
-                                      meta_info));
+      GenerateP3AConstellationMessage(kTestHistogramName, kTestEpoch, meta_info,
+                                      kP3AUploadType));
   task_environment_.RunUntilIdle();
 
   ASSERT_TRUE(points_request_made_);

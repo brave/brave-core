@@ -43,8 +43,9 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
   // See BraveP3AService::RegisterDynamicMetric and
   // BraveP3AService::RegisterMetricCycledCallback header comments for more
   // info.
-  void OnP3ARotation(p3a::MetricLogType log_type, bool is_star);
-  void OnP3AMetricCycled(const std::string& histogram_name, bool is_star);
+  void OnP3ARotation(p3a::MetricLogType log_type, bool is_constellation);
+  void OnP3AMetricCycled(const std::string& histogram_name,
+                         bool is_constellation);
 
  private:
   std::string BuildHistogramName(const std::string& creative_instance_id,

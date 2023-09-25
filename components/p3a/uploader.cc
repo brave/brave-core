@@ -22,9 +22,15 @@ namespace p3a {
 namespace {
 
 GURL GetConstellationUploadURL(const P3AConfig* config,
-                               MetricLogType log_type) {
-  return GURL(base::StrCat({config->p3a_constellation_upload_host, "/",
-                            MetricLogTypeToString(log_type)}));
+                               MetricLogType log_type,
+                               const std::string& upload_type) {
+  std::string path;
+  if (upload_type == kP3ACreativeUploadType) {
+    path = "creative";
+  } else {
+    path = MetricLogTypeToString(log_type);
+  }
+  return GURL(base::StrCat({config->p3a_constellation_upload_host, "/", path}));
 }
 
 }  // namespace
@@ -48,9 +54,10 @@ void Uploader::UploadLog(const std::string& compressed_log_data,
     resource_request->url = config_->p2a_json_upload_url;
     resource_request->headers.SetHeader("X-Brave-P2A", "?1");
   } else if (upload_type == kP3AUploadType) {
-    resource_request->url = is_constellation
-                                ? GetConstellationUploadURL(config_, log_type)
-                                : config_->p3a_json_upload_url;
+    resource_request->url =
+        is_constellation
+            ? GetConstellationUploadURL(config_, log_type, upload_type)
+            : config_->p3a_json_upload_url;
     resource_request->headers.SetHeader("X-Brave-P3A", "?1");
   } else if (upload_type == kP3ACreativeUploadType) {
     resource_request->url = config_->p3a_creative_upload_url;

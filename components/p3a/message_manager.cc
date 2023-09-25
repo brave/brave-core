@@ -340,8 +340,8 @@ std::string MessageManager::SerializeLog(std::string_view histogram_name,
   message_meta_.Update();
 
   if (is_constellation) {
-    return GenerateP3AConstellationMessage(histogram_name, value,
-                                           message_meta_);
+    return GenerateP3AConstellationMessage(histogram_name, value, message_meta_,
+                                           upload_type);
   } else {
     base::Value::Dict p3a_json_value = GenerateP3AMessageDict(
         histogram_name, value, log_type, message_meta_, upload_type);
