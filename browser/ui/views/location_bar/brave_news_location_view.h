@@ -41,7 +41,7 @@ class BraveNewsLocationView : public PageActionIconView,
 
   // BraveNewsTabHelper::PageFeedsObserver:
   void OnAvailableFeedsChanged(
-      const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override;
+      const std::vector<GURL>& feeds) override;
 
   // views::View:
   void OnThemeChanged() override;

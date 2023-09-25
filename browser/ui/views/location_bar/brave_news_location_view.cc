@@ -108,7 +108,7 @@ void BraveNewsLocationView::UpdateImpl() {
   UpdateIconColor(tab_helper->IsSubscribed());
 
   // Don't show icon if there are no feeds
-  const bool has_feeds = !tab_helper->GetAvailableFeeds().empty();
+  const bool has_feeds = !tab_helper->GetAvailableFeedUrls().empty();
   const bool is_visible = has_feeds || IsBubbleShowing();
   SetVisible(is_visible);
 }
@@ -132,7 +132,7 @@ bool BraveNewsLocationView::ShouldShowLabel() const {
 }
 
 void BraveNewsLocationView::OnAvailableFeedsChanged(
-    const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) {
+    const std::vector<GURL>& feeds) {
   Update();
 }
 
