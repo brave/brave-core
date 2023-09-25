@@ -116,11 +116,11 @@ function EditActionsContainer ({
 }
 
 function useItemIdFromHash () {
-  const getId = () => window.location.hash.replace('#', '')
-  let [idFromHash, setIdFromHash] = React.useState<string>('')
-  const updateId = () => setIdFromHash(getId())
+  const [idFromHash, setIdFromHash] = React.useState<string>('')
 
   React.useEffect(() => {
+    const getId = () => window.location.hash.replace('#', '')
+    const updateId = () => setIdFromHash(getId())
     updateId()
     window.addEventListener('hashchange', updateId)
     return () => window.removeEventListener('hashchange', updateId)
@@ -129,16 +129,13 @@ function useItemIdFromHash () {
 }
 
 function useScrollToItem (itemId: string | undefined) {
-  const ref = React.useRef<HTMLAnchorElement>(null)
-  const scrollToElement = () => {
-    if (ref.current) {
-      window.scrollTo({ top: ref.current.offsetTop })
-    }
-  }
+  const [el, setEl] = React.useState<HTMLAnchorElement | null>(null)
 
-  React.useEffect(() => scrollToElement(), [itemId, ref.current])
+  React.useEffect(() => {
+    if (el) window.scrollTo({ top: el.offsetTop })
+  }, [el, itemId])
 
-  return ref
+  return setEl
 }
 
 export default function PlaylistFolder ({

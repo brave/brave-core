@@ -343,7 +343,7 @@ export function PlaylistItem ({
 export const SortablePlaylistItem = React.forwardRef(
   function SortablePlaylistItem (
     props: Props,
-    forwardedRef: React.ForwardedRef<HTMLAnchorElement>
+    forwardedRef?: React.ForwardedRef<HTMLAnchorElement>
   ) {
     const itemId = props.item.id
     const { attributes, listeners, setNodeRef, style } = useVerticallySortable({

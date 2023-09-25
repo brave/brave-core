@@ -258,9 +258,9 @@ void ConfirmBubble::OpenInPlaylist() {
   side_panel_coordinator->ActivatePanel();
 
   // TODO(sko) Calling this will reload the web ui and we'll lose the video
-  // being played if there's. So the panel has been already activated and has
-  // something loaded, we should call web ui API and handle this from the web ui
-  // side.
+  // being played if there is one. So if the panel has been already activated
+  // and has something loaded, we should call web ui API and handle this from
+  // the web ui side.
   side_panel_coordinator->LoadPlaylist(playlist_id, item_id);
 
   // Before closing widget, try resetting observer to avoid crash on Win11
