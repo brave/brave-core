@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -228,6 +229,10 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
     profile->GetPrefs()->ClearPref(pref);
   }
 #endif
+
+  // Added 2023-09
+  ntp_background_images::ViewCounterService::MigrateObsoleteProfilePrefs(
+      profile->GetPrefs());
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

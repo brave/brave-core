@@ -36,6 +36,7 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -270,6 +271,10 @@ void RegisterProfilePrefsForMigration(
     registry->RegisterListPref(pref);
   }
 #endif
+
+  // Added 2023-09
+  ntp_background_images::ViewCounterService::RegisterProfilePrefsForMigration(
+      registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
