@@ -3141,6 +3141,11 @@ extension Strings {
         value: "Update Payment",
         comment: "Action button title that updates method payment")
     
+    public static let updateActionCellTitle =
+      NSLocalizedString("vpn.updateActionCellTitle", tableName: "BraveShared", bundle: .module,
+        value: "Update",
+        comment: "Cell title indicates update payment method")
+    
     public static let subscribeVPNActionButtonTitle =
       NSLocalizedString("vpn.subscribeVPNActionButtonTitle", tableName: "BraveShared", bundle: .module,
         value: "Subscribe Now",
@@ -3175,6 +3180,16 @@ extension Strings {
       NSLocalizedString("vpn.subscribeVPNPopOverSubDescription", tableName: "BraveShared", bundle: .module,
         value: "Ready to safeguard every app on your phone? Come back to Brave VPN and get 20% off for the next 3 months.",
         comment: "Pop up sub description the subscription for VPN can be used for all platforms")
+    
+    public static let vpnUpdatePaymentMethodDescriptionText =
+      NSLocalizedString("vpn.vpnUpdatePaymentMethodDescriptionText", tableName: "BraveShared", bundle: .module,
+        value: "Please update your payment method",
+        comment: "Text description of VPN subscription needs a method of payment update")
+    
+    public static let vpnActionUpdatePaymentMethodSettingsText =
+      NSLocalizedString("vpn.vpnActionUpdatePaymentMethodSettingsText", tableName: "BraveShared", bundle: .module,
+        value: "Update Payment Method",
+        comment: "Text for necesseray required action of VPN subscription needs a method of payment update")
   }
   
 }

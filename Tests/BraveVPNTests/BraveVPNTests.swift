@@ -8,6 +8,7 @@ import Foundation
 import BraveShared
 import XCTest
 import GuardianConnect
+import Preferences
 
 class BraveVPNTests: XCTestCase {
 
@@ -71,11 +72,24 @@ class BraveVPNTests: XCTestCase {
       "auto_renew_status": "0",
       "is_in_billing_retry_period": "true"]
     
+    let gracePeriod = 16 // days
+    let modifiedDateWithGracePeriod = Calendar.current.date(byAdding: .day, value: gracePeriod, to: Date())!
+    let gracePeriodExpiryInMs = Int(modifiedDateWithGracePeriod.timeIntervalSince1970 * 1000)
+
+    let lineItemMetaDataIsInRetryPeriodWithGraceExpiry: NSDictionary = [
+      "product_id": "bravevpn.yearly",
+      "original_transaction_id": "2000000159090000",
+      "auto_renew_product_id": "bravevpn.yearly",
+      "auto_renew_status": "0",
+      "grace_period_expires_date_ms": String(gracePeriodExpiryInMs),
+      "is_in_billing_retry_period": "true"]
+    
 
     subjectActivePeriodRenewableNotInTrial = generateReceiptResponse(using: lineItemPurchasedNotInTrial, metaData: lineItemMetaDataAutoRenewEnabled)
     subjectActivePeriodRenewableInTrial = generateReceiptResponse(using: lineItemPurchasedInTrial, metaData: lineItemMetaDataAutoRenewEnabled)
     subjectActivePeriodNotRenewable = generateReceiptResponse(using: lineItemPurchasedNotInTrial, metaData: lineItemMetaDataAutoRenewCanceled)
     subjectRetryPeriod = generateReceiptResponse(using: lineItemPurchasedNotInTrial, metaData: lineItemMetaDataIsInRetryPeriod)
+    subjectRetryPeriodNoMetaGraceExpiry = generateReceiptResponse(using: nil, metaData: lineItemMetaDataIsInRetryPeriodWithGraceExpiry)
     subjectExpiredPeriod = generateReceiptResponse(using: nil, metaData: lineItemMetaDataAutoRenewCanceled)
   }
 
@@ -87,6 +101,9 @@ class BraveVPNTests: XCTestCase {
     subjectExpiredPeriod = nil
     
     super.tearDown()
+    
+    Preferences.VPN.expirationDate.reset()
+    Preferences.VPN.gracePeriodExpirationDate.reset()
   }
 
   func testSubscriptionActiveAutoRenewEnabledNotInTrial() {
@@ -114,6 +131,14 @@ class BraveVPNTests: XCTestCase {
   
   func testSubscriptionIsInRetryPeriod() {
     let processedLineItem = BraveVPN.processReceiptResponse(receiptResponseItem: subjectRetryPeriod)
+    
+    XCTAssertTrue(processedLineItem.status == .retryPeriod)
+    XCTAssertFalse(processedLineItem.autoRenewEnabled)
+    XCTAssertFalse(processedLineItem.isInTrialPeriod)
+  }
+  
+  func testSubscriptionIsInNoMetaGraceExpiry() {
+    let processedLineItem = BraveVPN.processReceiptResponse(receiptResponseItem: subjectRetryPeriodNoMetaGraceExpiry)
     
     XCTAssertTrue(processedLineItem.status == .retryPeriod)
     XCTAssertFalse(processedLineItem.autoRenewEnabled)
@@ -153,5 +178,6 @@ class BraveVPNTests: XCTestCase {
   private var subjectActivePeriodRenewableInTrial: GRDIAPReceiptResponse!
   private var subjectActivePeriodNotRenewable: GRDIAPReceiptResponse!
   private var subjectRetryPeriod: GRDIAPReceiptResponse!
+  private var subjectRetryPeriodNoMetaGraceExpiry: GRDIAPReceiptResponse!
   private var subjectExpiredPeriod: GRDIAPReceiptResponse!
 }

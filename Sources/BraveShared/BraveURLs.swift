@@ -29,7 +29,11 @@ extension URL {
     public static let screenTimeHelp =
     URL(string: "https://support.apple.com/guide/security/secd8831e732/web")!
   }
+  public enum Apple {
+    public static let manageSubscriptions = URL(string: "https://apps.apple.com/account/subscriptions")
+  }
   public static let brave = Brave.self
+  public static let apple = Apple.self
 }
 
 public struct AppURLScheme {
