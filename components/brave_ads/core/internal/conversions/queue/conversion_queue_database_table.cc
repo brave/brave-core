@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
@@ -20,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_constants.h"
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_validation_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -139,6 +142,16 @@ void GetCallback(GetConversionQueueCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(&*record);
+    // TODO(https://github.com/brave/brave-browser/issues/33239): Validate all
+    // Brave Ads data when loading from database
+    if (!conversion_queue_item.IsValid()) {
+      SCOPED_CRASH_KEY_STRING256(
+          "BraveAdsConversion", "invalidFieldsNames",
+          GetConversionQueueItemInvalidFieldsNames(conversion_queue_item));
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     conversion_queue_items.push_back(conversion_queue_item);
   }
 
