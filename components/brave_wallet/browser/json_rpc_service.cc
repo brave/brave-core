@@ -3429,12 +3429,12 @@ void JsonRpcService::OnGetSPLTokenBalances(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
-void JsonRpcService::AnkrGetAccountBalance(
+void JsonRpcService::AnkrGetAccountBalances(
     const std::string& account,
     const std::vector<std::string>& chain_ids,
-    AnkrGetAccountBalanceCallback callback) {
+    AnkrGetAccountBalancesCallback callback) {
   auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnAnkrGetAccountBalance,
+      base::BindOnce(&JsonRpcService::OnAnkrGetAccountBalances,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
@@ -3449,7 +3449,7 @@ void JsonRpcService::AnkrGetAccountBalance(
   }
 
   std::string encoded_params =
-      EncodeAnkrGetAccountBalanceParams(account, blockchains);
+      EncodeAnkrGetAccountBalancesParams(account, blockchains);
 
   api_request_helper_->Request(
       "POST", GURL(kAnkrAdvancedAPIBaseURL), encoded_params, "application/json",
@@ -3457,8 +3457,8 @@ void JsonRpcService::AnkrGetAccountBalance(
       {.auto_retry_on_network_change = false}, std::move(conversion_callback));
 }
 
-void JsonRpcService::OnAnkrGetAccountBalance(
-    AnkrGetAccountBalanceCallback callback,
+void JsonRpcService::OnAnkrGetAccountBalances(
+    AnkrGetAccountBalancesCallback callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(

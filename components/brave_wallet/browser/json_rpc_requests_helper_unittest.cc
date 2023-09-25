@@ -14,9 +14,9 @@ using base::test::ParseJson;
 
 namespace brave_wallet {
 
-TEST(JsonRpcRequestsHelperUnitTest, EncodeAnkrGetAccountBalanceParams) {
+TEST(JsonRpcRequestsHelperUnitTest, EncodeAnkrGetAccountBalancesParams) {
   auto encoded_params =
-      EncodeAnkrGetAccountBalanceParams("mockAddress", {"eth", "bsc"});
+      EncodeAnkrGetAccountBalancesParams("mockAddress", {"eth", "bsc"});
 
   std::string expected_params(R"(
     {
@@ -37,7 +37,7 @@ TEST(JsonRpcRequestsHelperUnitTest, EncodeAnkrGetAccountBalanceParams) {
   EXPECT_EQ(encoded_params, GetJSON(ParseJson(expected_params)));
 
   // OK: empty blockchains
-  encoded_params = EncodeAnkrGetAccountBalanceParams("mockAddress", {});
+  encoded_params = EncodeAnkrGetAccountBalancesParams("mockAddress", {});
   expected_params = R"(
     {
       "id": 1,

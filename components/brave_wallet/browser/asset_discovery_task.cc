@@ -130,7 +130,7 @@ void AssetDiscoveryTask::DiscoverAnkrTokens(
     return;
   }
 
-  // Use a barrier callback to wait for all AnkrGetAccountBalance calls to
+  // Use a barrier callback to wait for all AnkrGetAccountBalances calls to
   // complete (one for each account address).
   const auto barrier_callback =
       base::BarrierCallback<std::vector<mojom::AnkrAssetBalancePtr>>(
@@ -138,17 +138,17 @@ void AssetDiscoveryTask::DiscoverAnkrTokens(
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAnkrTokens,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
-  // For each account address, call AnkrGetAccountBalance
+  // For each account address, call AnkrGetAccountBalances
   for (const auto& account_address : account_addresses) {
     auto internal_callback =
-        base::BindOnce(&AssetDiscoveryTask::OnAnkrGetAccountBalance,
+        base::BindOnce(&AssetDiscoveryTask::OnAnkrGetAccountBalances,
                        weak_ptr_factory_.GetWeakPtr(), barrier_callback);
-    json_rpc_service_->AnkrGetAccountBalance(account_address, chain_ids,
-                                             std::move(internal_callback));
+    json_rpc_service_->AnkrGetAccountBalances(account_address, chain_ids,
+                                              std::move(internal_callback));
   }
 }
 
-void AssetDiscoveryTask::OnAnkrGetAccountBalance(
+void AssetDiscoveryTask::OnAnkrGetAccountBalances(
     base::OnceCallback<void(std::vector<mojom::AnkrAssetBalancePtr>)>
         barrier_callback,
     std::vector<mojom::AnkrAssetBalancePtr> balances,

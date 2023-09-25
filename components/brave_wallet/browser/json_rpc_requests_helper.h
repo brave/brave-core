@@ -46,7 +46,7 @@ base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
     const std::string& json_payload);
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders();
 
-std::string EncodeAnkrGetAccountBalanceParams(
+std::string EncodeAnkrGetAccountBalancesParams(
     const std::string& address,
     std::vector<std::string> blockchains);
 

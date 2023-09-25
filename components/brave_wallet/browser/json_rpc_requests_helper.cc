@@ -82,7 +82,7 @@ base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders() {
   };
 }
 
-std::string EncodeAnkrGetAccountBalanceParams(
+std::string EncodeAnkrGetAccountBalancesParams(
     const std::string& address,
     std::vector<std::string> blockchains) {
   base::Value::Dict dict = internal::ComposeRpcDict("ankr_getAccountBalance");

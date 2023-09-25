@@ -64,7 +64,7 @@ namespace json_rpc_responses {
     DOMString thumbnail;
   };
 
-  dictionary AnkrGetAccountBalanceResult {
+  dictionary AnkrGetAccountBalancesResult {
     DOMString totalBalanceUsd;
     AnkrAssetBalance[] assets;
   };

@@ -78,7 +78,7 @@ class AssetDiscoveryTask {
   void DiscoverAnkrTokens(const std::vector<std::string>& chain_ids,
                           const std::vector<std::string>& account_addresses,
                           DiscoverAssetsCompletedCallback callback);
-  void OnAnkrGetAccountBalance(
+  void OnAnkrGetAccountBalances(
       base::OnceCallback<void(std::vector<mojom::AnkrAssetBalancePtr>)>
           barrier_callback,
       std::vector<mojom::AnkrAssetBalancePtr> balances,

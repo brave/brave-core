@@ -229,7 +229,7 @@ ParseGetAccountBalanceResponse(const base::Value& json_value) {
   }
 
   auto response =
-      json_rpc_responses::AnkrGetAccountBalanceResult::FromValue(*result);
+      json_rpc_responses::AnkrGetAccountBalancesResult::FromValue(*result);
   if (!response) {
     return absl::nullopt;
   }

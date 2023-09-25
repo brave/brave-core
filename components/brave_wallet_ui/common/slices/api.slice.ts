@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { assertNotReached } from 'chrome://resources/js/assert_ts.js';
+import { assertNotReached } from 'chrome://resources/js/assert_ts.js'
 import { batch } from 'react-redux'
 import { EntityId, Store } from '@reduxjs/toolkit'
 import { skipToken } from '@reduxjs/toolkit/query/react'
@@ -112,7 +112,7 @@ import {
   tokenSuggestionsEndpoints //
 } from './endpoints/token_suggestions.endpoints'
 import { addressEndpoints } from './endpoints/address.endpoints'
-import { accountEndpoints } from './endpoints/account.endpoints';
+import { accountEndpoints } from './endpoints/account.endpoints'
 import {
   coinTypesMapping //
 } from './constants'
@@ -138,7 +138,7 @@ type GetTokenBalancesForAddressAndChainIdArg = {
   tokens: GetBlockchainTokenIdArg[]
   chainId: string
   coin:
-        | typeof CoinTypes.ETH
+    | typeof CoinTypes.ETH
     | typeof CoinTypes.FIL
     | typeof CoinTypes.BTC
     | typeof CoinTypes.ZEC
@@ -148,7 +148,7 @@ type GetTokenBalancesForChainIdArg =
   | GetTokenBalancesForAddressAndChainIdArg
 
 type GetTokenBalancesRegistryArg = {
-  accounts: BraveWallet.AccountId[]
+  accountIds: BraveWallet.AccountId[]
   networks: Array<
     Pick<
       BraveWallet.NetworkInfo,
@@ -1263,92 +1263,148 @@ export function createWalletApi () {
           baseQuery
         ) => {
           try {
+            const { braveWalletService, jsonRpcService } =
+              baseQuery(undefined).data // apiProxy
             const { getUserTokensRegistry, getTokenBalancesForChainId } =
               walletApi.endpoints
+
+            const { chainIds: ankrSupportedChainIds } =
+              await braveWalletService.getAnkrSupportedChainIds()
+            const ankrSupportedNetworks = args.networks.filter(
+              (network) => ankrSupportedChainIds.includes(network.chainId)
+            )
+            const nonAnkrSupportedNetworks = args.networks.filter(
+              (network) =>
+                !ankrSupportedChainIds.includes(network.chainId)
+            )
 
             const userTokens = await dispatch(
               getUserTokensRegistry.initiate()
             ).unwrap()
 
             const tokenBalancesRegistryArray = await mapLimit(
-              args.accounts,
-              3,
+              args.accountIds,
+              args.accountIds.length,
               async (accountId: BraveWallet.AccountId) => {
-                const networks = args.networks.filter(
-                  (network) => network.coin === accountId.coin)
+                const ankrSupportedAccountNetworks =
+                  ankrSupportedNetworks.filter(
+                    (network) => network.coin === accountId.coin
+                  )
+                const nonAnkrSupportedAccountNetworks =
+                  nonAnkrSupportedNetworks.filter(
+                    (network) => network.coin === accountId.coin
+                  )
 
-                if (networks.length === 0) {
-                  return {}
-                }
+                let ankrAssetBalances: BraveWallet.AnkrAssetBalance[] = []
 
-                const registryArray = await mapLimit(
-                  networks,
-                  3,
-                  async (
-                    network: Pick<
-                      BraveWallet.NetworkInfo,
-                      'coin' | 'chainId'
-                    >
-                  ) => {
-                    const partialRegistryQuery = dispatch(
-                      getTokenBalancesForChainId.initiate(
-                        network.coin === CoinTypes.SOL
-                          ? [
-                              {
-                                accountId,
-                                coin: CoinTypes.SOL,
-                                chainId: network.chainId
-                              }
-                            ]
-                          : coinTypesMapping[network.coin] ? [
-                              {
-                                accountId,
-                                coin: coinTypesMapping[network.coin],
-                                chainId: network.chainId,
-                                tokens:
-                                  getEntitiesListFromEntityState(
-                                    userTokens,
-                                    userTokens.idsByChainId[
-                                      networkEntityAdapter.selectId({
-                                        coin: network.coin,
-                                        chainId: network.chainId
-                                      })
-                                    ]
-                                  )
-                              }
-                            ]: [],
-                        {
-                          forceRefetch: true
-                        }
+                if (ankrSupportedAccountNetworks.length) {
+                  const { balances, errorMessage } =
+                    await jsonRpcService.ankrGetAccountBalances(
+                      accountId.address,
+                      ankrSupportedAccountNetworks.map(
+                        (network) => network.chainId
                       )
                     )
 
-                    try {
-                      const partialRegistry: TokenBalancesRegistry =
-                        await partialRegistryQuery.unwrap()
-                      return partialRegistry
-                    } catch (error) {
-                      console.error(error)
-                      return {}
-                    }
+                  if (errorMessage) {
+                    console.log(
+                      `ankrGetAccountBalance error: ${errorMessage}`
+                    )
                   }
-                )
 
-                return registryArray.reduce((acc, curr) => {
-                  for (const [uniqueKey, chainIds] of Object.entries(
-                    curr
-                  )) {
-                    if (!acc.hasOwnProperty(uniqueKey)) {
-                      acc[uniqueKey] = chainIds
-                    } else {
-                      acc[uniqueKey] = {
-                        ...acc[uniqueKey],
-                        ...chainIds
+                  ankrAssetBalances = balances || []
+                }
+
+                let nonAnkrBalancesRegistry: TokenBalancesRegistry = {}
+
+                if (nonAnkrSupportedAccountNetworks.length) {
+                  const nonAnkrBalancesRegistryArray = await mapLimit(
+                    nonAnkrSupportedAccountNetworks,
+                    1,
+                    async (
+                      network: Pick<
+                        BraveWallet.NetworkInfo,
+                        'coin' | 'chainId'
+                      >
+                    ) => {
+                      const partialRegistryQuery = dispatch(
+                        getTokenBalancesForChainId.initiate(
+                          network.coin === CoinTypes.SOL
+                            ? [
+                                {
+                                  accountId,
+                                  coin: CoinTypes.SOL,
+                                  chainId: network.chainId
+                                }
+                              ]
+                            : coinTypesMapping[network.coin] ? [
+                                {
+                                  accountId,
+                                  coin: coinTypesMapping[network.coin],
+                                  chainId: network.chainId,
+                                  tokens:
+                                    getEntitiesListFromEntityState(
+                                      userTokens,
+                                      userTokens.idsByChainId[
+                                        networkEntityAdapter.selectId({
+                                          coin: network.coin,
+                                          chainId: network.chainId
+                                        })
+                                      ]
+                                    )
+                                }
+                              ]: [],
+                          {
+                            forceRefetch: true
+                          }
+                        )
+                      )
+  
+                      try {
+                        const partialRegistry: TokenBalancesRegistry =
+                          await partialRegistryQuery.unwrap()
+                        return partialRegistry
+                      } catch (error) {
+                        console.error(error)
+                        return {}
                       }
                     }
-                  }
-                  return acc
-                }, {})
+                  )
+
+                  nonAnkrBalancesRegistry =
+                    nonAnkrBalancesRegistryArray.reduce((acc, curr) => {
+                      for (const [uniqueKey, chainIds] of Object.entries(
+                        curr
+                      )) {
+                        if (!acc.hasOwnProperty(uniqueKey)) {
+                          acc[uniqueKey] = chainIds
+                        } else {
+                          acc[uniqueKey] = {
+                            ...acc[uniqueKey],
+                            ...chainIds
+                          }
+                        }
+                      }
+                      return acc
+                    }, {})
+                }
+
+                return ankrAssetBalances.reduce(
+                  (acc, { asset, balance }) => {
+                    const accountKey = getAccountBalancesKey(accountId)
+
+                    acc[accountKey] = {
+                      ...(acc[accountKey] || {}),
+                      [asset.chainId]: {
+                        ...((acc[accountKey] || {})[asset.chainId] || {}),
+                        [asset.contractAddress]: balance
+                      }
+                    }
+
+                    return acc
+                  },
+                  nonAnkrBalancesRegistry
+                )
               }
             )
 
@@ -1368,7 +1424,7 @@ export function createWalletApi () {
         },
         providesTags: (result, err, args) => err
           ? ['TokenBalances', 'UNKNOWN_ERROR']
-          : args.accounts.flatMap((accountId) => {
+          : args.accountIds.flatMap((accountId) => {
               const networkKeys = args.networks
                 .filter((network) => accountId.coin === network.coin)
                 .map((network) => network.chainId)

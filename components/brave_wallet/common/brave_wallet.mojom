@@ -1368,7 +1368,7 @@ interface JsonRpcService {
                                            SolanaProviderError error,
                                            string error_message);
 
-  AnkrGetAccountBalance(string account, array<string> chain_ids)
+  AnkrGetAccountBalances(string account_address, array<string> chain_ids)
     => (array<AnkrAssetBalance> balances, string error_message);
 };
 

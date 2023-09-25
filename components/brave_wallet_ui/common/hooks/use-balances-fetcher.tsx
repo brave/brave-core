@@ -29,10 +29,10 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
     !isWalletLocked &&
     isWalletCreated &&
     hasInitialized &&
-    arg.accounts.length &&
-    arg.networks.length
+    arg.accounts &&
+    arg.networks
       ? {
-          accounts: arg.accounts.map(account => account.accountId),
+          accountIds: arg.accounts.map(account => account.accountId),
           networks: arg.networks
             .map(({ chainId, coin }) => ({ chainId, coin }))
         }
