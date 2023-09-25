@@ -113,7 +113,6 @@ struct PageZoomSettingsView: View {
       }
     }
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-    .navigationTitle(Strings.PageZoom.settingsTitle)
     .navigationBarTitleDisplayMode(.inline)
     .listStyle(.insetGrouped)
   }

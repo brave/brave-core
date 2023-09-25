@@ -31,7 +31,7 @@ class SearchEnginePicker: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    navigationItem.title = Strings.searchEnginePickerNavTitle
+    navigationItem.title = type == .standard ? Strings.standardTabSearch : Strings.privateTabSearch
     if showCancel {
       navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(cancel))
     }

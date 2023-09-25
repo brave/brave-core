@@ -62,8 +62,6 @@ class SearchSettingsTableViewController: UITableViewController {
   private var privateBrowsingManager: PrivateBrowsingManager
 
   private func searchPickerEngines(type: DefaultEngineType) -> [OpenSearchEngine] {
-    let isPrivate = type == .privateMode
-
     var orderedEngines = searchEngines.orderedEngines
       .sorted { $0.shortName < $1.shortName }
       .sorted { engine, _ in engine.shortName == OpenSearchEngine.EngineNames.brave }
@@ -99,7 +97,7 @@ class SearchSettingsTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    navigationItem.title = Strings.searchSettingNavTitle
+    navigationItem.title = Strings.searchEngines
 
     tableView.do {
       $0.allowsSelectionDuringEditing = true

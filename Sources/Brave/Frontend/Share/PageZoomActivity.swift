@@ -16,7 +16,7 @@ class PageZoomActivity: UIActivity, MenuActivity {
   }
 
   override var activityTitle: String? {
-    return Strings.PageZoom.settingsMenuTitle
+    return Strings.PageZoom.settingsTitle
   }
 
   override var activityImage: UIImage? {
