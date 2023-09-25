@@ -151,7 +151,10 @@ void StatusTrayRunner::SetupStatusIcon() {
 
 void StatusTrayRunner::ExecuteCommand(int command_id, int event_flags) {
   switch (command_id) {
-    case IDC_BRAVE_VPN_TRAY_EXIT_ICON:
+    case IDC_BRAVE_VPN_TRAY_EXIT:
+      SignalExit();
+      break;
+    case IDC_BRAVE_VPN_TRAY_HIDE_ICON:
       EnableVPNTrayIcon(false);
       SignalExit();
       break;
@@ -193,7 +196,7 @@ void StatusTrayRunner::OnMenuWillShow(ui::SimpleMenuModel* source) {
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM));
   source->AddSeparator(ui::NORMAL_SEPARATOR);
   source->AddItem(
-      IDC_BRAVE_VPN_TRAY_EXIT_ICON,
+      IDC_BRAVE_VPN_TRAY_HIDE_ICON,
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM));
 }
 
@@ -331,7 +334,7 @@ HRESULT StatusTrayRunner::Run() {
     return S_OK;
   }
 
-  if (StatusTray::IconWindowExists()) {
+  if (brave_vpn::IsBraveVpnTrayIconRunning()) {
     VLOG(1) << "Tray icon is already visible.";
     return S_OK;
   }

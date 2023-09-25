@@ -27,8 +27,6 @@ class StatusTray {
 
   ~StatusTray();
 
-  static bool IconWindowExists();
-
   void CreateStatusIcon(const gfx::ImageSkia& image,
                         const std::u16string& tool_tip);
   StatusIcon* GetStatusIcon();
@@ -56,6 +54,10 @@ class StatusTray {
   // The message ID of the "TaskbarCreated" message, sent to us when we need to
   // reset our status icons.
   UINT taskbar_created_message_;
+
+  // The message ID of the "CustomTrayMessage" message, sent to us when we need
+  // to execute status icon commands.
+  UINT custom_tray_message_;
 
   std::unique_ptr<StatusIcon> status_icon_;
 };
