@@ -263,6 +263,16 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
   ASSERT_EQ(ipns_uri.spec(),
             "ipns://en.wikipedia-on-ipfs.org/wiki/Architecture");
 
+  source =
+      "http://"
+      "bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq.ipfs."
+      "localhost";
+  ipns_uri = GURL(source).ReplaceComponents(replacements);
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(
+      ipns_uri.spec(),
+      "ipfs://bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq/");
+
   source = "http://test.com.ipns.localhost:8000/";
   ipns_uri = GURL(source);
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
@@ -328,6 +338,11 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
   ipns_uri = GURL(source);
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), source);
+
+  source = "http://en-wikipedia--on--ipfs-org.ipns.localhost:8080/wiki/";
+  ipns_uri = GURL(source);
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), "ipns://en.wikipedia-on-ipfs.org/wiki/");
 
   ipns_uri = GURL(
       "https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"

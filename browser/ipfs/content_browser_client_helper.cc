@@ -41,6 +41,20 @@ bool IsIPFSLocalGateway(PrefService* prefs) {
   return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
 }
 
+std::size_t GetIPFSCidOrHostEndPos(GURL const* url,
+                                   const std::size_t& ipfs_pos,
+                                   const std::size_t& ipns_pos) {
+  if (ipfs_pos != std::string::npos) {
+    return ipfs_pos;
+  }
+
+  if (ipns_pos != std::string::npos) {
+    return ipns_pos;
+  }
+
+  return url->host().length();
+}
+
 }  // namespace
 
 namespace ipfs {
@@ -120,9 +134,10 @@ bool HandleIPFSURLReverseRewrite(GURL* url,
   if (ipfs_pos == std::string::npos && ipns_pos == std::string::npos)
     return false;
 
-  if (auto cid_end = (ipfs_pos == std::string::npos) ? ipns_pos : ipfs_pos;
-      !ipfs::IsValidCIDOrDomain(
-          ipfs::DecodeSingleLabelForm((url->host().substr(0, cid_end))))) {
+  const auto decoded_host = ipfs::DecodeSingleLabelForm(
+      url->host().substr(0, GetIPFSCidOrHostEndPos(url, ipfs_pos, ipns_pos)));
+
+  if (!ipfs::IsValidCIDOrDomain(decoded_host)) {
     return false;
   }
 
@@ -132,8 +147,6 @@ bool HandleIPFSURLReverseRewrite(GURL* url,
     return false;
   GURL::Replacements scheme_replacements;
   GURL::Replacements host_replacements;
-  auto decoded_host = ipfs::DecodeSingleLabelForm(
-      std::string(url->host_piece().substr(0, ipns_pos)));
   if (ipfs_pos != std::string::npos) {
     scheme_replacements.SetSchemeStr(kIPFSScheme);
     host_replacements.SetHostStr(url->host_piece().substr(0, ipfs_pos));
