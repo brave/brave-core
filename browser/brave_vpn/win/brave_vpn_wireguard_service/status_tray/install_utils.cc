@@ -13,12 +13,11 @@
 namespace brave_vpn {
 
 bool UninstallStatusTrayIcon() {
-  auto hWnd = GetBraveVpnStatusTrayIconHWND();
-  if (!hWnd.has_value()) {
+  auto* hWnd = GetBraveVpnStatusTrayIconHWND();
+  if (!hWnd) {
     return true;
   }
-  return SendMessage(hWnd.value(), WM_MENUCOMMAND, IDC_BRAVE_VPN_TRAY_EXIT,
-                     0) == TRUE;
+  return SendMessage(hWnd, WM_MENUCOMMAND, IDC_BRAVE_VPN_TRAY_EXIT, 0) == TRUE;
 }
 
 }  // namespace brave_vpn

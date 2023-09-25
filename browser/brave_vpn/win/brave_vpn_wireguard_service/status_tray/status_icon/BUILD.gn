@@ -11,7 +11,6 @@ source_set("utils") {
   ]
   deps = [
     "//base",
-    "//third_party/abseil-cpp:absl",
     "//ui/gfx",
   ]
 }

@@ -34,17 +34,13 @@ gfx::ImageSkia GetIconFromResources(int icon_id, const gfx::Size& size) {
   return family->CreateExact(size).AsImageSkia();
 }
 
-absl::optional<HWND> GetBraveVpnStatusTrayIconHWND() {
-  auto* hWnd = FindWindowEx(nullptr, nullptr, kStatusTrayWindowClass,
-                            kStatusTrayWindowName);
-  if (hWnd != NULL) {
-    return hWnd;
-  }
-  return absl::nullopt;
+HWND GetBraveVpnStatusTrayIconHWND() {
+  return FindWindowEx(nullptr, nullptr, kStatusTrayWindowClass,
+                      kStatusTrayWindowName);
 }
 
 bool IsBraveVpnTrayIconRunning() {
-  return GetBraveVpnStatusTrayIconHWND().has_value();
+  return GetBraveVpnStatusTrayIconHWND() != NULL;
 }
 
 }  // namespace brave_vpn
