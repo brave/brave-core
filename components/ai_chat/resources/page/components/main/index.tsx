@@ -34,14 +34,10 @@ function Main () {
   let currentErrorElement = null
 
   if (hasSeenAgreement) {
-    conversationListElement = (
-      <ConversationList />
-    )
+    conversationListElement = <ConversationList />
 
     if (siteInfo) {
-      siteTitleElement = (
-        <SiteTitle />
-      )
+      siteTitleElement = <SiteTitle />
     }
 
     if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset) {
@@ -71,8 +67,11 @@ function Main () {
     <main className={styles.main}>
       <div className={styles.header}>
         <div className={styles.logo}>
-          <Icon name="product-brave-leo" />
-          <div className={styles.logoTitle}>Brave <span>Leo</span></div>
+          <Icon name='product-brave-leo' />
+          <div className={styles.logoTitle}>
+            Brave <span>Leo</span>
+          </div>
+          {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
         </div>
         <div className={styles.actions}>
           {hasSeenAgreement && <>
@@ -89,15 +88,11 @@ function Main () {
           context.hasChangedModel && <ModelIntro />
         }
         {siteTitleElement && (
-          <div className={styles.siteTitleBox}>
-            {siteTitleElement}
-          </div>
+          <div className={styles.siteTitleBox}>{siteTitleElement}</div>
         )}
         {conversationListElement}
         {currentErrorElement && (
-          <div className={styles.errorContainer}>
-            {currentErrorElement}
-          </div>
+          <div className={styles.errorContainer}>{currentErrorElement}</div>
         )}
       </div>
       <div className={styles.inputBox}>

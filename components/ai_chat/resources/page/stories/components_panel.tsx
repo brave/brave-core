@@ -61,14 +61,14 @@ const MODELS: mojom.Model[] = [
 ]
 
 const SAMPLE_QUESTIONS = [
-  "Summarize this article",
-  "What was the score?",
-  "Any injuries?",
-  "Why did google executives disregard this character in the company?"
+  'Summarize this article',
+  'What was the score?',
+  'Any injuries?',
+  'Why did google executives disregard this character in the company?'
 ]
 
 const SITE_INFO = {
-  title: "Microsoft is hiking the price of Xbox Series X and Xbox Game Pass"
+  title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass'
 }
 
 interface StoryArgs {
@@ -99,6 +99,7 @@ export default {
       const [favIconUrl] = React.useState<string>()
       const [currentError] = React.useState<mojom.APIError>(options.args.currentErrorState)
       const [hasSeenAgreement] = React.useState(options.args.hasSeenAgreement)
+      const [isPremiumUser] = React.useState(options.args.isPremiumUser)
 
 
       const apiHasError = (currentError !== mojom.APIError.None)
@@ -121,6 +122,7 @@ export default {
         hasSeenAgreement,
         apiHasError,
         shouldDisableUserInput,
+        isPremiumUser
       }
 
       return (
