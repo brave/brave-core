@@ -23,17 +23,17 @@ class TabBarCell: UICollectionViewCell {
     button.imageEdgeInsets.left = 6
     return button
   }()
-
-  private let separatorLine = UIView()
-
-  let separatorLineRight = UIView().then {
-    $0.isHidden = true
+  
+  private let highlightView = UIView().then {
+    $0.layer.cornerRadius = 4
+    $0.layer.cornerCurve = .continuous
+    $0.layer.shadowOffset = CGSize(width: 0, height: 1)
+    $0.layer.shadowRadius = 2
   }
 
   var currentIndex: Int = -1 {
     didSet {
       isSelected = currentIndex == tabManager?.currentDisplayedIndex
-      separatorLine.isHidden = currentIndex == 0
     }
   }
   weak var tab: Tab?
@@ -56,7 +56,7 @@ class TabBarCell: UICollectionViewCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    [closeButton, titleLabel, separatorLine, separatorLineRight].forEach { contentView.addSubview($0) }
+    [highlightView, closeButton, titleLabel].forEach { contentView.addSubview($0) }
     initConstraints()
     updateFont()
     
@@ -66,9 +66,10 @@ class TabBarCell: UICollectionViewCell {
   private var privateModeCancellable: AnyCancellable?
   private func updateColors() {
     let browserColors: any BrowserColors = tabManager?.privateBrowsingManager.browserColors ?? .standard
-    separatorLine.backgroundColor = browserColors.dividerSubtle
-    separatorLineRight.backgroundColor = browserColors.dividerSubtle
-    backgroundColor = isSelected ? browserColors.tabBarTabActiveBackground : browserColors.tabBarTabBackground
+    backgroundColor = browserColors.tabBarTabBackground
+    highlightView.backgroundColor = isSelected ? browserColors.tabBarTabActiveBackground : .clear
+    highlightView.layer.shadowOpacity = isSelected ? 0.05 : 0.0
+    highlightView.layer.shadowColor = UIColor.black.cgColor
     closeButton.tintColor = browserColors.iconDefault
     titleLabel.textColor = isSelected ? browserColors.textPrimary : browserColors.textSecondary
   }
@@ -78,6 +79,10 @@ class TabBarCell: UICollectionViewCell {
   }
 
   private func initConstraints() {
+    highlightView.snp.makeConstraints {
+      $0.edges.equalToSuperview().inset(2)
+    }
+    
     titleLabel.snp.makeConstraints { make in
       make.top.bottom.equalTo(self)
       make.left.equalTo(self).inset(16)
@@ -88,20 +93,6 @@ class TabBarCell: UICollectionViewCell {
       make.top.bottom.equalTo(self)
       make.right.equalTo(self).inset(2)
       make.width.equalTo(30)
-    }
-
-    separatorLine.snp.makeConstraints { make in
-      make.left.equalTo(self)
-      make.width.equalTo(0.5)
-      make.height.equalTo(self)
-      make.centerY.equalTo(self.snp.centerY)
-    }
-
-    separatorLineRight.snp.makeConstraints { make in
-      make.right.equalTo(self)
-      make.width.equalTo(0.5)
-      make.height.equalTo(self)
-      make.centerY.equalTo(self.snp.centerY)
     }
   }
 
@@ -152,5 +143,11 @@ class TabBarCell: UICollectionViewCell {
       strongSelf.titleUpdateScheduled = false
       strongSelf.titleLabel.text = tab.displayTitle
     }
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    
+    highlightView.layer.shadowPath = UIBezierPath(roundedRect: highlightView.bounds, cornerRadius: 4).cgPath
   }
 }

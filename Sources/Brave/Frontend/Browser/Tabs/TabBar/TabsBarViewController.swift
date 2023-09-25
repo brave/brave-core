@@ -152,7 +152,7 @@ class TabsBarViewController: UIViewController {
   private var privateModeCancellable: AnyCancellable?
   private func updateColors() {
     let browserColors: any BrowserColors = tabManager?.privateBrowsingManager.browserColors ?? .standard
-    view.backgroundColor = browserColors.chromeBackground
+    view.backgroundColor = browserColors.tabBarTabBackground
     collectionView.backgroundColor = view.backgroundColor
   }
 
@@ -384,7 +384,6 @@ extension TabsBarViewController: UICollectionViewDataSource {
     cell.tab = tab
     cell.titleLabel.text = tab.displayTitle
     cell.currentIndex = indexPath.row
-    cell.separatorLineRight.isHidden = (indexPath.row != tabList.count() - 1)
     cell.configure()
 
     cell.closeTabCallback = { [weak self] tab in
