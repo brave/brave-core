@@ -15,13 +15,13 @@ constexpr char kModelsDefaultKey[] = "chat-default";
 
 const base::flat_map<base::StringPiece, mojom::Model> kAllModels = {
     {"chat-default",
-     {"chat-default", "llama-2-13b-chat", mojom::ModelEngineType::LLAMA_REMOTE,
+     {"chat-default", "llama-2-13b-chat", "llama2 13b", "Meta", mojom::ModelEngineType::LLAMA_REMOTE,
       mojom::ModelCategory::CHAT, false}},
     {"chat-leo-expanded",
-     {"chat-leo-expanded", "llama-2-70b-chat",
+     {"chat-leo-expanded", "llama-2-70b-chat", "llama2 70b", "Meta",
       mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT, true}},
     {"chat-claude-instant",
-     {"chat-claude-instant", "claude-instant-v1",
+     {"chat-claude-instant", "claude-instant-v1", "Claude Instant", "Anthropic",
       mojom::ModelEngineType::CLAUDE_REMOTE, mojom::ModelCategory::CHAT, true}},
     // {"code-llama-basic", {"code-llama-basic",
     //   "code-llama-13b",

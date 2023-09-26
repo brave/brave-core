@@ -1,0 +1,43 @@
+.modelInfo {
+  margin: 24px 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: start;
+}
+
+.modelIcon {
+  --leo-icon-color: white;
+  background: var(--leo-gradient-icons-active);
+  padding: 9px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meta {
+  padding-top: 4px;
+
+  .category {
+    margin: 0;
+    font: var(--leo-font-primary-heading-h4);
+    color: var(--leo-color-text-primary);
+  }
+
+  .name {
+    margin: 0;
+    font: var(--leo-font-primary-small-regular);
+    color: var(--leo-color-text-tertiary);
+
+    .maker {
+      color: var(--leo-color-text-primary);
+    }
+  }
+
+  .modelIntro {
+    margin: 14px 0 0 0;
+    font: var(--leo-secondary-default-regular);
+    color: var(--leo-color-text-primary);
+  }
+}

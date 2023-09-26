@@ -43,6 +43,8 @@ const MODELS: mojom.Model[] = [
   {
     key: '1',
     name: 'model-one',
+    displayName: 'Model One',
+    displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
     isPremium: false
@@ -50,6 +52,8 @@ const MODELS: mojom.Model[] = [
   {
     key: '2',
     name: 'model-two',
+    displayName: 'Model Two',
+    displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
     isPremium: true
@@ -80,6 +84,7 @@ export default {
   },
   args: {
     hasQuestions: true,
+    hasChangedModel: false,
     hasSeenAgreement: true,
     currentErrorState: select('Current Status', mojom.APIError, mojom.APIError.RateLimitReached)
   },
@@ -102,6 +107,7 @@ export default {
       const store: AIChatContext = {
         // Don't error when new properties are added
         ...defaultContext,
+        hasChangedModel: options.args.hasChangedModel,
         allModels: MODELS,
         currentModel: MODELS[0],
         conversationHistory,

@@ -17,6 +17,7 @@ import ErrorRateLimit from '../error_rate_limit'
 import InputBox from '../input_box'
 import FeatureButtonMenu from '../feature_button_menu'
 import styles from './style.module.scss'
+import ModelIntro from '../model_intro'
 
 function Main () {
   const context = React.useContext(DataContext)
@@ -89,6 +90,9 @@ function Main () {
             {siteTitleElement}
           </div>
         )}
+        {
+          context.hasChangedModel && <ModelIntro />
+        }
         {conversationListElement}
         {currentErrorElement && (
           <div className={styles.errorContainer}>
