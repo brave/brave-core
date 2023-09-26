@@ -5,9 +5,6 @@
 
 import * as React from 'react'
 
-// components
-import { Image, ImageWrapper } from './nft-content-styles'
-
 // types
 import { NFTMetadataReturnType } from '../../../constants/types'
 import { DisplayMode } from '../../nft-ui-messages'
@@ -16,6 +13,8 @@ import { DisplayMode } from '../../nft-ui-messages'
 import Placeholder from '../../../assets/svg-icons/nft-placeholder.svg'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
 import { stripChromeImageURL } from '../../../utils/string-utils'
+import { ImageWrapper } from './nft-content-styles'
+import { ImageLoader } from '../nft-image/image-loader'
 
 interface Props {
   isLoading?: boolean
@@ -57,7 +56,7 @@ export const NftContent = (props: Props) => {
       <div ref={wrapperRef}>
         {url && displayMode === 'icon' && isInView ? (
           <ImageWrapper>
-            <Image src={url} />
+            <ImageLoader src={url} />
           </ImageWrapper>
         ) : null}
       </div>
