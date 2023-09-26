@@ -163,6 +163,10 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
 
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
+  // Collapse the separator line between the toolbar/bookmark bar and the views
+  // below.
+  contents_separator_->SetPreferredSize(gfx::Size());
+
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
   if (!WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
           browser_.get())) {
@@ -516,6 +520,11 @@ void BraveBrowserView::CloseWalletBubble() {
   }
 }
 
+gfx::Size BraveBrowserView::GetContentsSize() const {
+  DCHECK(initialized_);
+  return contents_web_view_->GetContentsBounds().size();
+}
+
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
 
@@ -645,11 +654,15 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
 
 void BraveBrowserView::OnThemeChanged() {
   BrowserView::OnThemeChanged();
+
   if (vertical_tab_strip_host_view_) {
     const auto background_color = GetColorProvider()->GetColor(kColorToolbar);
     vertical_tab_strip_host_view_->SetBackground(
         views::CreateSolidBackground(background_color));
   }
+
+  contents_container_->SetBackground(views::CreateSolidBackground(
+      GetColorProvider()->GetColor(kColorToolbar)));
 }
 
 TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {

@@ -977,9 +977,10 @@ void VerticalTabStripRegionView::OnThemeChanged() {
 
   new_tab_button_->FrameColorsChanged();
 
-  SetBorder(views::CreateSolidSidedBorder(
-      gfx::Insets().set_right(1),
-      cp->GetColor(kColorBraveVerticalTabSeparator)));
+  // TODO(zenparsing): If we don't set the border at all, we'll get a DCHECK on
+  // the width for some reason.
+  SetBorder(views::CreateSolidSidedBorder(gfx::Insets().set_right(1),
+                                          cp->GetColor(kColorToolbar)));
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {

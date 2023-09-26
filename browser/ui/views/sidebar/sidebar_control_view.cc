@@ -84,13 +84,8 @@ void SidebarControlView::OnThemeChanged() {
 
 void SidebarControlView::UpdateBackgroundAndBorder() {
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    constexpr int kBorderThickness = 1;
     SetBackground(
         views::CreateSolidBackground(color_provider->GetColor(kColorToolbar)));
-    SetBorder(views::CreateSolidSidedBorder(
-        gfx::Insets::TLBR(0, sidebar_on_left_ ? 0 : kBorderThickness, 0,
-                          sidebar_on_left_ ? kBorderThickness : 0),
-        color_provider->GetColor(kColorToolbarContentAreaSeparator)));
   }
 }
 

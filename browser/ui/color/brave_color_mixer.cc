@@ -194,6 +194,7 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarContentAreaSeparator] = {ui::kColorFrameActive};
   mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
   mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
+  mixer[kColorInfoBarContentAreaSeparator] = {kColorToolbar};
   mixer[ui::kColorFrameActive] = {kLightFrame};
   mixer[ui::kColorFrameInactive] = {
       color_utils::HSLShift(kLightFrame, {-1, -1, 0.6})};
@@ -238,6 +239,7 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
   mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
   mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
+  mixer[kColorInfoBarContentAreaSeparator] = {kColorToolbar};
   mixer[ui::kColorFrameActive] = {kDarkFrame};
   mixer[ui::kColorFrameInactive] = {
       color_utils::HSLShift(kDarkFrame, {-1, -1, 0.6})};

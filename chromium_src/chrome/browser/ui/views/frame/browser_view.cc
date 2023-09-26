@@ -8,6 +8,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
+#include "brave/browser/ui/views/frame/brave_contents_web_view.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
@@ -22,6 +23,7 @@
 #define InfoBarContainerView BraveInfoBarContainerView
 #define BrowserViewLayout BraveBrowserViewLayout
 #define ToolbarView BraveToolbarView
+#define ContentsWebView BraveContentsWebView
 #define BrowserTabStripController BraveBrowserTabStripController
 #define TabStrip BraveTabStrip
 #define SidePanel BraveSidePanel
@@ -39,6 +41,7 @@
 #undef SidePanel
 #undef kAlignLeft
 #undef kAlignRight
+#undef ContentsWebView
 #undef InfoBarContainerView
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {

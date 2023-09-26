@@ -118,6 +118,7 @@ class BraveBrowserView : public BrowserView,
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
   // BrowserView overrides:
+  gfx::Size GetContentsSize() const override;
   void AddedToWidget() override;
   void LoadAccelerators() override;
   void OnTabStripModelChanged(
