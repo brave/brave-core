@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 
+#include <string_view>
+
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -52,7 +54,7 @@ void ExtractAddresses(permissions::RequestType type,
   DCHECK(!origin.opaque() && address_queue);
 
   std::string origin_string(origin.Serialize());
-  re2::StringPiece input(origin_string);
+  std::string_view input(origin_string);
   std::string match;
   re2::RE2* regex;
   if (type == permissions::RequestType::kBraveEthereum) {

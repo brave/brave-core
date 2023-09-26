@@ -15,7 +15,6 @@
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "third_party/re2/src/re2/re2.h"
-#include "third_party/re2/src/re2/stringpiece.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -44,7 +43,7 @@ std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& charset,
   // Find most `<link` elements from most types of html documents
   static const re2::RE2 link_pattern("(?i)(<\\s*link [^>]+>)");
   std::string link_text;
-  re2::StringPiece input(html_body);
+  std::string_view input(html_body);
   while (re2::RE2::FindAndConsume(&input, link_pattern, &link_text)) {
     VLOG(1) << "Found link: " << link_text;
     // Extract rel

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_url_redirects_parser_util.h"
 
+#include <string_view>
+
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
@@ -27,7 +29,7 @@ absl::optional<std::string> MaybeParseVerifableConversionIdFromUrlRedirects(
     return absl::nullopt;
   }
 
-  re2::StringPiece url_string_piece(iter->spec());
+  std::string_view url_string_piece(iter->spec());
   const RE2 r(resource_id_pattern.id_pattern);
   std::string verifiable_conversion_id;
 

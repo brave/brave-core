@@ -6,6 +6,7 @@
 #include "brave/components/services/ipfs/ipfs_service_utils.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -101,7 +102,7 @@ bool UpdateConfigJSON(const std::string& source,
 
 std::string GetVersionFromNodeFilename(const std::string& filename) {
   static const RE2 version_pattern(kExecutableRegEx);
-  std::vector<re2::StringPiece> matched_groups(
+  std::vector<std::string_view> matched_groups(
       version_pattern.NumberOfCapturingGroups() + 1);
   if (!version_pattern.Match(filename, 0, filename.size(), RE2::ANCHOR_START,
                              matched_groups.data(), matched_groups.size()) ||
