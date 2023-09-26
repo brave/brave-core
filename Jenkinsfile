@@ -29,7 +29,9 @@ pipeline {
                         GITHUB_AUTH_HEADERS = [[name: 'Authorization', value: 'token ' + PR_BUILDER_TOKEN]]
                         CHANGE_BRANCH_ENCODED = java.net.URLEncoder.encode(CHANGE_BRANCH, 'UTF-8')
                         def prDetails = readJSON(text: httpRequest(url: GITHUB_API + '/brave-core/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
-                        SKIP = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) || prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1)
+                        SKIP = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) ||\
+                               prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1) ||\
+                               PLATFORM in ["linux-arm64", "windows-arm64"] && prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/run-${PLATFORM}") }.equals(0)
                         SKIP_ALL_LINTERS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip-all-linters') }.equals(1)
                         RUN_NETWORK_AUDIT = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-network-audit') }.equals(1)
                         RUN_AUDIT_DEPS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-audit-deps') }.equals(1)
@@ -39,7 +41,7 @@ pipeline {
                     }
 
                     if (SKIP && PLATFORM != 'noplatform') {
-                        echo "Aborting build as PRs have a skip label (CI/skip or CI/skip-${PLATFORM})"
+                        echo "Skipping build, not required"
                         currentBuild.result = 'SUCCESS'
                         return
                     }
