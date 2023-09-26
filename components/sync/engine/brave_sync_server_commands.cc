@@ -10,6 +10,7 @@
 #include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/engine/syncer_proto_util.h"
 #include "components/sync/protocol/sync.pb.h"
@@ -38,10 +39,11 @@ void BraveSyncServerCommands::PermanentlyDeleteAccount(
   const SyncerError post_result = SyncerProtoUtil::PostClientToServerMessage(
       message, &response, cycle, nullptr);
 
-  if (post_result.value() != SyncerError::SYNCER_OK) {
+  if (post_result.type() != SyncerError::Type::kSuccess) {
     VLOG(1) << "[BraveSync] " << __func__
             << " Post ClearServerData failed post_result="
-            << post_result.value() << " " << post_result.ToString();
+            << base::to_underlying(post_result.type()) << " "
+            << post_result.ToString();
   }
 
   if (response.has_error_code()) {
