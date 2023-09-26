@@ -4,12 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { mockDapp } from '../../../../../common/constants/mocks'
+import { mockDapp } from '../../../../../../common/constants/mocks'
 import { Dapp } from './dapp'
 
-const _Dapp = () => {
+export const _Dapp = () => {
   return <Dapp dapp={mockDapp} />
 }
 
-_Dapp.storyName = 'Dapp'
-export default _Dapp
+export default _Dapp.storyName = 'Dapp'

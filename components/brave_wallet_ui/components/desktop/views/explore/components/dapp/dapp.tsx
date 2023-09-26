@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // types
-import { BraveWallet } from '../../../../../constants/types'
+import { BraveWallet } from '../../../../../../constants/types'
 
 // styles
 import { ContentWrapper, Description, Name, StyledWrapper } from './dapp.styles'

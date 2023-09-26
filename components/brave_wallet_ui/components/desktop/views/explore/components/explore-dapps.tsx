@@ -20,7 +20,7 @@ import { UISelectors } from '../../../../../common/selectors'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
-import DappCategoryList from './dapp-category-list'
+import DappCategoryList from './dapp-category-list/dapp-category-list'
 
 // styles
 import { Row, VerticalDivider, VerticalSpace } from '../../../../shared/style'

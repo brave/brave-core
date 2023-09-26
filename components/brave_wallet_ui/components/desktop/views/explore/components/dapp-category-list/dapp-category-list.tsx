@@ -7,10 +7,10 @@ import * as React from 'react'
 // import { FixedSizeList as List } from 'react-window'
 
 // types
-import { BraveWallet } from '../../../../../constants/types'
+import { BraveWallet } from '../../../../../../constants/types'
 
 // components
-import { Dapp } from './dapp'
+import { Dapp } from '../dapp/dapp'
 
 // styles
 import {
@@ -21,7 +21,7 @@ import {
   LoadingRing,
   StyledWrapper
 } from './dapp-category-list.styles'
-import { Row } from '../../../../shared/style'
+import { Row } from '../../../../../shared/style'
 
 interface CategoryList {
   [category: string]: BraveWallet.Dapp[]

@@ -1391,12 +1391,12 @@ export const mockOnRampCurrencies: BraveWallet.OnRampCurrency[] = [
 
 export const mockDapp: BraveWallet.Dapp = {
   id: 1,
-  name: 'Brave Dapp',
-  description: 'Brave Dapp',
+  name: 'Stargate Finace',
+  description: 'Stargate is a fully composable liquidity transport protocol that lives at the heart of omnichain DeFi.',
   logo: ETHIconUrl,
   website: '',
   chains: [],
-  categories: [],
+  categories: ['DeFi', 'Marketplace', 'Games'],
   transactions: 0,
   uaw: 0,
   volume: 0,

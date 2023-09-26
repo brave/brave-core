@@ -6,8 +6,8 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Ring from '@brave/leo/react/progressRing'
-import { layoutPanelWidth } from '../../../wallet-page-wrapper/wallet-page-wrapper.style'
-import { WalletButton } from '../../../../shared/style'
+import { layoutPanelWidth } from '../../../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { WalletButton } from '../../../../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
