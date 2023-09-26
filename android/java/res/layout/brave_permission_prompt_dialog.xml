@@ -55,24 +55,21 @@
 
     <TextView
         android:id="@+id/domain"
+        style="@style/BraveWalletTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:textColor="@color/wallet_text_color"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/permission_prompt_fav_container" />
 
     <TextView
         android:id="@+id/sub_title"
+        style="@style/BraveWalletTextViewTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:text="@string/permissions_connect_brave_wallet_sub_title"
-        android:textColor="@color/wallet_text_color"
-        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/permission_prompt_div2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/domain" />
@@ -103,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/brave_wallet_dn_highlight_bg_color"
-            android:padding="4dp" />
+            android:padding="12dp" />
     </com.google.android.material.card.MaterialCardView>
 
     <View
@@ -117,12 +114,10 @@
 
     <TextView
         android:id="@+id/warning_title"
+        style="@style/BraveWalletTextViewTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:text="@string/permissions_connect_brave_wallet_warning_title"
-        android:textColor="@color/wallet_text_color"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/permission_prompt_div3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
