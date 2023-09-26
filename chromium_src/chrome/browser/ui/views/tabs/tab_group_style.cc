@@ -50,8 +50,10 @@ SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
   return path;
 }
 
-gfx::Insets TabGroupStyle::GetInsetsForHeaderChip() const {
-  auto insets = TabGroupStyle_ChromiumImpl::GetInsetsForHeaderChip();
+gfx::Insets TabGroupStyle::GetInsetsForHeaderChip(
+    bool should_show_sync_icon) const {
+  auto insets =
+      TabGroupStyle_ChromiumImpl::GetInsetsForHeaderChip(should_show_sync_icon);
   if (!tabs::features::HorizontalTabsUpdateEnabled()) {
     return insets;
   }
