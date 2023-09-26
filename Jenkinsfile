@@ -31,7 +31,7 @@ pipeline {
                         def prDetails = readJSON(text: httpRequest(url: GITHUB_API + '/brave-core/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
                         SKIP = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) ||\
                                prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1) ||\
-                               PLATFORM in ["linux-arm64", "windows-arm64", "windows-x86"] && prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/run-${PLATFORM}") }.equals(0)
+                               PLATFORM in ["linux-arm64", "windows-arm64"] && prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/run-${PLATFORM}") }.equals(0)
                         SKIP_ALL_LINTERS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip-all-linters') }.equals(1)
                         RUN_NETWORK_AUDIT = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-network-audit') }.equals(1)
                         RUN_AUDIT_DEPS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-audit-deps') }.equals(1)
