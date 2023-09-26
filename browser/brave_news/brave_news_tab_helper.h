@@ -30,6 +30,10 @@ class BraveNewsTabHelper
   struct FeedDetails {
     GURL feed_url;
     std::string title;
+
+    // Indicates whether we've requested this feed, so we don't request it
+    // multiple times.
+    bool requested_feed;
   };
 
   class PageFeedsObserver : public base::CheckedObserver {
@@ -53,9 +57,9 @@ class BraveNewsTabHelper
   std::string GetTitleForFeedUrl(const GURL& url);
 
   void OnReceivedRssUrls(const GURL& site_url, std::vector<GURL> feed_urls);
-  void OnFoundFeeds(const GURL& feed_url,
-                    const GURL& site_url,
-                    std::vector<brave_news::mojom::FeedSearchResultItemPtr>);
+  void OnFoundFeedData(const GURL& feed_url,
+                       const GURL& site_url,
+                       std::vector<brave_news::mojom::FeedSearchResultItemPtr>);
 
   void AddObserver(PageFeedsObserver* observer);
   void RemoveObserver(PageFeedsObserver* observer);

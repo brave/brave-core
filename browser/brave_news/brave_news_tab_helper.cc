@@ -111,28 +111,44 @@ bool BraveNewsTabHelper::IsSubscribed() {
 }
 
 std::string BraveNewsTabHelper::GetTitleForFeedUrl(const GURL& feed_url) {
+  // If there's a default publisher for this |feed_url| we should use it's
+  // title.
   auto* default_publisher =
       controller_->publisher_controller()->GetPublisherForFeed(feed_url);
   if (default_publisher) {
     return default_publisher->publisher_name;
   }
 
+  // Otherwise, find the |FeedDetails| for this |feed_url|.
   auto it = base::ranges::find_if(
       rss_page_feeds_,
       [feed_url](const auto& details) { return details.feed_url == feed_url; });
+  // If we don't have any details, return the empty string as we don't know what
+  // the title should be.
   if (it == rss_page_feeds_.end()) {
     return "";
   }
 
-  if (it->title.empty()) {
+  // Return our cached title, if we have one.
+  if (!it->title.empty()) {
+    return it->title;
+  }
+
+  // If we have an entry, but don't have a title for it, we should request the
+  // feed (if we haven't already). Observers will be notified once the feed
+  // resolves and we extract a title.
+  if (!it->requested_feed) {
     const auto url = web_contents()->GetLastCommittedURL();
     controller_->FindFeeds(
         feed_url,
-        base::BindOnce(&BraveNewsTabHelper::OnFoundFeeds,
+        base::BindOnce(&BraveNewsTabHelper::OnFoundFeedData,
                        weak_ptr_factory_.GetWeakPtr(), feed_url, url));
-    return feed_url.spec();
+    it->requested_feed = true;
   }
-  return it->title;
+
+  // In the meantime, use the feed_url as the title. Observers will be
+  // notified when we receive a title.
+  return feed_url.spec();
 }
 
 void BraveNewsTabHelper::ToggleSubscription(const GURL& feed_url) {
@@ -164,7 +180,7 @@ void BraveNewsTabHelper::OnReceivedRssUrls(const GURL& site_url,
   AvailableFeedsChanged();
 }
 
-void BraveNewsTabHelper::OnFoundFeeds(
+void BraveNewsTabHelper::OnFoundFeedData(
     const GURL& feed_url,
     const GURL& site_url,
     std::vector<brave_news::mojom::FeedSearchResultItemPtr> feeds) {
@@ -177,12 +193,16 @@ void BraveNewsTabHelper::OnFoundFeeds(
       return detail.feed_url == feed_url;
     });
   } else {
+    DCHECK_EQ(1u, feeds.size())
+        << "As we were passed a FeedURL, this should only find one feed.";
+
+    // Find the FeedDetails this title is for.
     auto result = base::ranges::find_if(
         rss_page_feeds_,
         [feed_url](const auto& detail) { return detail.feed_url == feed_url; });
 
+    // If there was a match, set the title.
     if (result != rss_page_feeds_.end()) {
-      // TODO: Something else?
       result->title = feeds.at(0)->feed_title;
     }
   }
