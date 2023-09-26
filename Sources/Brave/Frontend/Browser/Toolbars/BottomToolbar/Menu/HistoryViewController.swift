@@ -13,6 +13,7 @@ import BraveCore
 import Favicon
 import UIKit
 import DesignSystem
+import ScreenTime
 
 class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol {
 
@@ -292,6 +293,13 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       
       // Reoving a history item should remove its corresponded Recently Closed item
       RecentlyClosed.remove(with: historyItem.url.absoluteString)
+      
+      do {
+        let screenTimeHistory = try STWebHistory(bundleIdentifier: Bundle.main.bundleIdentifier!)
+        screenTimeHistory.deleteHistory(for: historyItem.url)
+      } catch {
+        assertionFailure("STWebHistory could not be initialized: \(error)")
+      }
       
       if isHistoryBeingSearched {
         reloadDataAndShowLoading(with: searchQuery)
