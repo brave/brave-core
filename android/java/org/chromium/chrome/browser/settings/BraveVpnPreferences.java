@@ -577,4 +577,10 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             }
         }, INVALIDATE_CREDENTIAL_TIMER_COUNT);
     }
+
+    @Override
+    protected void onDestroy() {
+        BraveVpnUtils.dismissProgressDialog();
+        super.onDestroy();
+    }
 }
