@@ -55,7 +55,7 @@ export function createWalletApiBase () {
       'SimpleHashSpamNFTs',
       'LocalIPFSNodeStatus',
       'EthTokenDecimals',
-      'EthTokenSymbol'
+      'EthTokenSymbol',
       'LocalIPFSNodeStatus',
       'Dapps'
     ],
