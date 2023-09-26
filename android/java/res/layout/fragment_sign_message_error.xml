@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    android:background="@color/wallet_bg"
+    android:background="@color/brave_wallet_dn_panel_bg"
     tools:context=".browser.crypto_wallet.fragments.dapps.SignMessageErrorFragment" >
 
     <TextView
@@ -61,8 +61,7 @@
             android:maxWidth="48dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_warning_circle"
-            app:tint="@color/wallet_sign_msg_err_icon_color" />
+            app:srcCompat="@drawable/ic_warning_circle_filled" />
 
         <TextView
             android:id="@+id/fragment_sign_msg_err_tv_host"
