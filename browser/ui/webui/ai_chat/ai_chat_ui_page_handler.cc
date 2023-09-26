@@ -45,11 +45,14 @@ AIChatUIPageHandler::AIChatUIPageHandler(
       receiver_(this, std::move(receiver)) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_contents is nullptr in that case
-  if (chat_context_web_contents != nullptr) {
+  const bool is_standalone = chat_context_web_contents == nullptr;
+  if (!is_standalone) {
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
-    bool is_visible = (chat_context_web_contents->GetVisibility() ==
+    // Report visibility of AI Chat UI to the Conversation, so that
+    // automatic actions are only performed when neccessary.
+    bool is_visible = (owner_web_contents->GetVisibility() ==
                        content::Visibility::VISIBLE)
                           ? true
                           : false;
