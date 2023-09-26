@@ -24,6 +24,8 @@ using BraveTranslateBubbleView = TranslateBubbleView;
 
 class TranslateBubbleView : public TranslateBubbleView_ChromiumImpl {
  public:
+  METADATA_HEADER(TranslateBubbleView);
+
   template <class... Args>
   explicit TranslateBubbleView(Args&&... args)
       : TranslateBubbleView_ChromiumImpl(std::forward<Args>(args)...) {
