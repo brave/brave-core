@@ -409,6 +409,7 @@ Config.prototype.buildArgs = function () {
     enable_update_notifications: this.isOfficialBuild(),
     brave_ai_chat_endpoint: this.brave_ai_chat_endpoint,
     brave_services_production_domain: this.braveServicesProductionDomain,
+    brave_ai_chat_premium_endpoint: this.brave_ai_chat_premium_endpoint,
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
     enable_dangling_raw_ptr_checks: this.enable_dangling_raw_ptr_checks,
@@ -689,6 +690,7 @@ Config.prototype.buildArgs = function () {
     delete args.v8_enable_verify_heap
     delete args.brave_variations_server_url
     delete args.brave_ai_chat_endpoint
+    delete args.brave_ai_chat_premium_endpoint
     delete args.enable_dangling_raw_ptr_checks
   }
 
