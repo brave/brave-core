@@ -12,6 +12,8 @@ import("//brave/ios/browser/api/brave_shields/headers.gni")
 import("//brave/ios/browser/api/brave_stats/headers.gni")
 import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
+import("//brave/ios/browser/api/de_amp/headers.gni")
+import("//brave/ios/browser/api/debounce/headers.gni")
 import("//brave/ios/browser/api/favicon/headers.gni")
 import("//brave/ios/browser/api/ipfs/headers.gni")
 import("//brave/ios/browser/api/ntp_background_images/headers.gni")
@@ -25,6 +27,7 @@ import("//brave/ios/browser/api/url/headers.gni")
 import("//brave/ios/browser/api/url_sanitizer/headers.gni")
 import("//brave/ios/browser/api/web/ui/headers.gni")
 import("//brave/ios/browser/api/web/web_state/headers.gni")
+import("//brave/ios/browser/debounce/headers.gni")
 import("//brave/ios/browser/url_sanitizer/headers.gni")
 import("//build/apple/tweak_info_plist.gni")
 import("//build/config/compiler/compiler.gni")
@@ -77,6 +80,9 @@ brave_core_public_headers += ai_chat_public_headers
 brave_core_public_headers += brave_shields_public_headers
 brave_core_public_headers += browser_api_url_sanitizer_public_headers
 brave_core_public_headers += browser_url_sanitizer_public_headers
+brave_core_public_headers += browser_api_de_amp_public_headers
+brave_core_public_headers += browser_api_debounce_public_headers
+brave_core_public_headers += browser_debounce_public_headers
 brave_core_public_headers += brave_stats_public_headers
 brave_core_public_headers += brave_wallet_public_headers
 brave_core_public_headers += browser_api_certificate_public_headers

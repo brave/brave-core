@@ -174,6 +174,7 @@ brave_chrome_browser_deps = [
   "//brave/components/cosmetic_filters/common:mojom",
   "//brave/components/de_amp/browser",
   "//brave/components/de_amp/common",
+  "//brave/components/debounce/content/browser",
   "//brave/components/decentralized_dns/content",
   "//brave/components/decentralized_dns/core",
   "//brave/components/google_sign_in_permission",

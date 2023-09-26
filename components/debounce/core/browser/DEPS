@@ -1,0 +1,4 @@
+include_rules = [
+  "+extensions/common",
+  "+third_party/re2",
+]

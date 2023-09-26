@@ -1,0 +1,20 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("de_amp") {
+  sources = [
+    "de_amp_prefs+private.h",
+    "de_amp_prefs.h",
+    "de_amp_prefs.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/de_amp/common",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}

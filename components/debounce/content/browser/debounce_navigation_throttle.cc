@@ -1,9 +1,9 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/debounce/browser/debounce_navigation_throttle.h"
+#include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 
 #include <memory>
 #include <string>
@@ -14,8 +14,8 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/debounce/browser/debounce_service.h"
-#include "brave/components/debounce/common/pref_names.h"
+#include "brave/components/debounce/core/browser/debounce_service.h"
+#include "brave/components/debounce/core/common/pref_names.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
@@ -69,8 +69,9 @@ void ClearRedirectChain(NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame() ||
       !navigation_handle->GetNavigationEntry() ||
       navigation_handle->GetNavigationEntry()->GetTransitionType() &
-          ui::PAGE_TRANSITION_IS_REDIRECT_MASK)
+          ui::PAGE_TRANSITION_IS_REDIRECT_MASK) {
     return;
+  }
 
   WebContents* web_contents = navigation_handle->GetWebContents();
   if (web_contents) {
@@ -90,8 +91,9 @@ DebounceNavigationThrottle::MaybeCreateThrottleFor(
   // If debouncing is disabled in brave://flags, debounce service will
   // never be created (will be null) so we won't create the throttle
   // either. Caller must nullcheck this.
-  if (!debounce_service)
+  if (!debounce_service) {
     return nullptr;
+  }
 
   if (!debounce_service->IsEnabled()) {
     return nullptr;
@@ -122,8 +124,9 @@ DebounceNavigationThrottle::WillRedirectRequest() {
 NavigationThrottle::ThrottleCheckResult
 DebounceNavigationThrottle::MaybeRedirect() {
   WebContents* web_contents = navigation_handle()->GetWebContents();
-  if (!web_contents || !navigation_handle()->IsInMainFrame())
+  if (!web_contents || !navigation_handle()->IsInMainFrame()) {
     return NavigationThrottle::PROCEED;
+  }
 
   GURL debounced_url;
   GURL original_url = navigation_handle()->GetURL();
@@ -154,8 +157,9 @@ DebounceNavigationThrottle::MaybeRedirect() {
       FROM_HERE, base::BindOnce(
                      [](base::WeakPtr<content::WebContents> web_contents,
                         const content::OpenURLParams& params) {
-                       if (!web_contents)
+                       if (!web_contents) {
                          return;
+                       }
                        web_contents->OpenURL(params);
                      },
                      web_contents->GetWeakPtr(), std::move(params)));

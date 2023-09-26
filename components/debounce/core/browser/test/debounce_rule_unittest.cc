@@ -1,9 +1,9 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/debounce/browser/debounce_rule.h"
+#include "brave/components/debounce/core/browser/debounce_rule.h"
 #include "base/json/json_reader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -53,7 +53,6 @@ TEST(DebounceRuleUnitTest, DebounceActionChecking) {
 // JSON blobs in these test cases because we have the default )" in the regexes
 TEST(DebounceRuleUnitTest, CheckBaseCase) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -62,7 +61,6 @@ TEST(DebounceRuleUnitTest, CheckBaseCase) {
           "action": "regex-path",
           "param": "^/(.*)$"
       }]
-
     )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -75,7 +73,6 @@ TEST(DebounceRuleUnitTest, CheckBaseCase) {
 
 TEST(DebounceRuleUnitTest, MalformedParam) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -85,7 +82,6 @@ TEST(DebounceRuleUnitTest, MalformedParam) {
           "action": "regex-path",
           "param": "())"
       }]
-
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -97,7 +93,6 @@ TEST(DebounceRuleUnitTest, MalformedParam) {
 
 TEST(DebounceRuleUnitTest, ParamCapturesNoStrings) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -107,7 +102,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesNoStrings) {
           "action": "regex-path",
           "param": "brave.com"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -119,7 +113,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesNoStrings) {
 
 TEST(DebounceRuleUnitTest, ParamCapturesMoreThanOneString) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -128,7 +121,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesMoreThanOneString) {
           "action": "regex-path",
           "param": "(brave).(com)"
       }]
-      
       )json";
 
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
@@ -141,7 +133,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesMoreThanOneString) {
 
 TEST(DebounceRuleUnitTest, ParamCapturesNonURLNoPrependScheme) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -151,7 +142,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesNonURLNoPrependScheme) {
           "action": "regex-path",
           "param": "^/(.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -162,7 +152,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesNonURLNoPrependScheme) {
 
 TEST(DebounceRuleUnitTest, ParamCapturesNonURLWithPrependScheme) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -173,7 +162,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesNonURLWithPrependScheme) {
           "prepend_scheme": "http",
           "param": "^/(.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -185,7 +173,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesNonURLWithPrependScheme) {
 
 TEST(DebounceRuleUnitTest, TwoCaptureGroups) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -196,7 +183,6 @@ TEST(DebounceRuleUnitTest, TwoCaptureGroups) {
           "prepend_scheme": "https",
           "param": "^/([^/]+)/xyz(/.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -208,7 +194,6 @@ TEST(DebounceRuleUnitTest, TwoCaptureGroups) {
 
 TEST(DebounceRuleUnitTest, CurlyBracesInRegexGetParseError) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -219,7 +204,6 @@ TEST(DebounceRuleUnitTest, CurlyBracesInRegexGetParseError) {
           "prepend_scheme": "https",
           "param": "^/turbo/([^/]+)/xyz(/\d{4})/xyzzy(/.*)$"
       }]
-      
       )json";
 
   auto parsed = DebounceRule::ParseRules(contents);
@@ -228,7 +212,6 @@ TEST(DebounceRuleUnitTest, CurlyBracesInRegexGetParseError) {
 
 TEST(DebounceRuleUnitTest, ThreeCaptureGroups) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -239,7 +222,6 @@ TEST(DebounceRuleUnitTest, ThreeCaptureGroups) {
           "prepend_scheme": "https",
           "param": "^/turbo/([^/]+)/xyz(/[0-9]+)/xyzzy(/.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -253,7 +235,6 @@ TEST(DebounceRuleUnitTest, ThreeCaptureGroups) {
 
 TEST(DebounceRuleUnitTest, ParamCapturesURLWithPrependScheme) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -264,7 +245,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesURLWithPrependScheme) {
           "prepend_scheme": "http",
           "param": "^/(.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -276,7 +256,6 @@ TEST(DebounceRuleUnitTest, ParamCapturesURLWithPrependScheme) {
 
 TEST(DebounceRuleUnitTest, IncorrectPrependScheme) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -287,7 +266,6 @@ TEST(DebounceRuleUnitTest, IncorrectPrependScheme) {
           "prepend_scheme": "wss",
           "param": "(.*)"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -300,7 +278,6 @@ TEST(DebounceRuleUnitTest, PrefToggle) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterBooleanPref("brave.de_amp.enabled", false);
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -311,7 +288,6 @@ TEST(DebounceRuleUnitTest, PrefToggle) {
           "pref": "brave.de_amp.enabled",
           "param": "^/(.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -329,7 +305,6 @@ TEST(DebounceRuleUnitTest, PrefToggle) {
 
 TEST(DebounceRuleUnitTest, PrefDoesNotExist) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://test.com/*"
@@ -340,7 +315,6 @@ TEST(DebounceRuleUnitTest, PrefDoesNotExist) {
           "pref": "brave.de_amp.enabled",
           "param": "^/(.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -354,7 +328,6 @@ TEST(DebounceRuleUnitTest, ArbitrarySubdomainInInclude) {
   prefs.registry()->RegisterBooleanPref("brave.de_amp.enabled", true);
 
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://*.cdn.ampproject.org/c/s/*"
@@ -366,7 +339,6 @@ TEST(DebounceRuleUnitTest, ArbitrarySubdomainInInclude) {
           "pref": "brave.de_amp.enabled",
           "param": "^/c/s/(.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -383,7 +355,6 @@ TEST(DebounceRuleUnitTest, ArbitrarySubdomainInInclude) {
 
 TEST(DebounceRuleUnitTest, UrlEncodedDestinationUrl) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://prf.hn/click/*"
@@ -391,9 +362,9 @@ TEST(DebounceRuleUnitTest, UrlEncodedDestinationUrl) {
           "exclude": [
           ],
           "action": "regex-path",
-          "param": "^/click/camref:[0-9a-zA-Z]*/pubref:[0-9a-zA-Z-]*/destination:(.*)$"
+          "param":
+          "^/click/camref:[0-9a-zA-Z]*/pubref:[0-9a-zA-Z-]*/destination:(.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
@@ -411,7 +382,6 @@ TEST(DebounceRuleUnitTest, UrlEncodedDestinationUrl) {
 
 TEST(DebounceRuleUnitTest, CatchMultiplePathsForSameInclude) {
   const std::string contents = R"json(
-
       [{
           "include": [
               "*://*.anrdoezrs.net/links/*"
@@ -421,7 +391,6 @@ TEST(DebounceRuleUnitTest, CatchMultiplePathsForSameInclude) {
           "action": "regex-path",
           "param": "^/links/[0-9]*/type/dlg/sid/[-_a-zA-Z]*/(.*)$"
       }]
-      
       )json";
   std::vector<std::unique_ptr<DebounceRule>> rules = StringToRules(contents);
 
