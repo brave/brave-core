@@ -53,9 +53,9 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
-#include "brave/components/l10n/common/region_code_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -204,10 +204,9 @@ mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
   return command_response;
 }
 
-void RegisterResourceComponentsForCountryCode(
-    const std::string& geo_region_code) {
+void RegisterResourceComponentsForCountryCode(const std::string& country_code) {
   g_brave_browser_process->resource_component()
-      ->RegisterComponentForCountryCode(geo_region_code);
+      ->RegisterComponentForCountryCode(country_code);
 }
 
 void RegisterResourceComponentsForDefaultLanguageCode() {
@@ -306,10 +305,9 @@ void AdsServiceImpl::Migrate() {
 }
 
 void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() const {
-  const std::string geo_region_code =
-      brave_l10n::GetCurrentGeoRegionCode(local_state_);
+  const std::string country_code = brave_l10n::GetCountryCode(local_state_);
 
-  RegisterResourceComponentsForCountryCode(geo_region_code);
+  RegisterResourceComponentsForCountryCode(country_code);
 }
 
 bool AdsServiceImpl::UserHasOptedInToBraveRewards() const {
@@ -543,7 +541,7 @@ void AdsServiceImpl::ShutdownAndResetState() {
   VLOG(6) << "Resetting ads state";
 
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently("brave.brave_ads");
-  local_state_->ClearPref(brave_l10n::prefs::kGeoRegionCode);
+  local_state_->ClearPref(brave_l10n::prefs::kCountryCode);
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, base_path_),
@@ -621,10 +619,10 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
   local_state_pref_change_registrar_.Init(local_state_);
 
   local_state_pref_change_registrar_.Add(
-      brave_l10n::prefs::kGeoRegionCode,
-      base::BindRepeating(&AdsServiceImpl::OnGeoRegionCodePrefChanged,
+      brave_l10n::prefs::kCountryCode,
+      base::BindRepeating(&AdsServiceImpl::OnCountryCodePrefChanged,
                           base::Unretained(this),
-                          brave_l10n::prefs::kGeoRegionCode));
+                          brave_l10n::prefs::kCountryCode));
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
@@ -719,7 +717,7 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
   NotifyPrefChanged(path);
 }
 
-void AdsServiceImpl::OnGeoRegionCodePrefChanged(const std::string& path) {
+void AdsServiceImpl::OnCountryCodePrefChanged(const std::string& path) {
   RegisterResourceComponentsForCurrentCountryCode();
 
   NotifyPrefChanged(path);

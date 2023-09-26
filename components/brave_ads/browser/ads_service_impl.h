@@ -152,7 +152,7 @@ class AdsServiceImpl : public AdsService,
   void InitializeNewTabPageAdsPrefChangeRegistrar();
   void InitializeNotificationAdsPrefChangeRegistrar();
   void OnOptedInToAdsPrefChanged(const std::string& path);
-  void OnGeoRegionCodePrefChanged(const std::string& path);
+  void OnCountryCodePrefChanged(const std::string& path);
   void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();

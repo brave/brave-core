@@ -94,8 +94,6 @@ static NSString* const kSubdivisionTargetingSubdivisionPrefKey =
 static NSString* const kSubdivisionTargetingAutoDetectedSubdivisionPrefKey =
     base::SysUTF8ToNSString(
         brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
-static NSString* const kGeoRegionCodePrefKey =
-    base::SysUTF8ToNSString(brave_l10n::prefs::kGeoRegionCode);
 static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 static NSString* const kBraveNewsOptedInPrefKey =
     base::SysUTF8ToNSString(brave_news::prefs::kBraveNewsOptedIn);
@@ -153,7 +151,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 @property(nonatomic) dispatch_group_t prefsWriteGroup;
 @property(nonatomic) dispatch_queue_t prefsWriteThread;
 @property(nonatomic) NSMutableDictionary* prefs;
-@property(nonatomic) NSMutableDictionary* localState;
 @property(nonatomic, copy) NSDictionary* adsResourceMetadata;
 @property(nonatomic) NSTimer* updateAdsResourceTimer;
 @property(nonatomic) int64_t adsResourceRetryCount;
@@ -188,18 +185,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     self.prefs[kNewTabPageShowTodayPrefKey] = @(true);
     self.prefs[kNewTabPageShowBackgroundImagePrefKey] = @(true);
     self.prefs[kNewTabPageShowSponsoredImagesBackgroundImagePrefKey] = @(true);
-
-    // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
-    // code that permanently sets geo region code preference when the issue is
-    // resolved.
-    self.localState = [[NSMutableDictionary alloc] init];
-    std::string geo_region_code_json;
-    if (base::JSONWriter::Write(
-            base::Value(brave_l10n::GetDefaultISOLanguageCodeString()),
-            &geo_region_code_json)) {
-      self.localState[kGeoRegionCodePrefKey] =
-          base::SysUTF8ToNSString(geo_region_code_json);
-    }
 
     [self setupNetworkMonitoring];
 
@@ -1585,31 +1570,15 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)setLocalStatePref:(const std::string&)path value:(base::Value)value {
-  std::string json;
-  if (base::JSONWriter::Write(value, &json)) {
-    const auto key = base::SysUTF8ToNSString(path);
-    self.localState[key] = base::SysUTF8ToNSString(json);
-
-    if ([self isAdsServiceRunning]) {
-      adsClientNotifier->NotifyPrefDidChange(path);
-    }
-  }
+  // Not needed on iOS
 }
 
 - (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto json = (NSString*)self.localState[key];
-  if (!json) {
-    return absl::nullopt;
+  if (path == brave_l10n::prefs::kCountryCode) {
+    return base::Value(brave_l10n::GetDefaultISOCountryCodeString());
   }
 
-  absl::optional<base::Value> value =
-      base::JSONReader::Read(base::SysNSStringToUTF8(json));
-  if (!value) {
-    return absl::nullopt;
-  }
-
-  return value->Clone();
+  return absl::nullopt;
 }
 
 #pragma mark - Ads Resources Paths

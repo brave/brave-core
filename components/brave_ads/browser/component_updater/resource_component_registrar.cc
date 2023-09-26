@@ -7,16 +7,14 @@
 
 #include "base/files/file_path.h"
 #include "base/logging.h"
-#include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar_delegate.h"
 
 namespace brave_ads {
 
 namespace {
-
-constexpr char kComponentName[] = "Brave Ads Resources (%s)";
-
+constexpr char kComponentName[] = "Brave Ads Resources ($1)";
 }  // namespace
 
 ResourceComponentRegistrar::ResourceComponentRegistrar(
@@ -46,7 +44,7 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
   resource_component_id_ = component->id.data();
 
   const std::string component_name =
-      base::StringPrintf(kComponentName, resource_id.c_str());
+      base::ReplaceStringPlaceholders(kComponentName, {resource_id}, nullptr);
 
   VLOG(1) << "Registering " << component_name << " with id " << component->id;
 

@@ -18,8 +18,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/prefs.h"
-#include "brave/components/l10n/common/region_code_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -126,9 +126,9 @@ void NTPBackgroundImagesService::Init() {
     RegisterSponsoredImagesComponent();
 
     pref_change_registrar_.Add(
-        brave_l10n::prefs::kGeoRegionCode,
+        brave_l10n::prefs::kCountryCode,
         base::BindRepeating(
-            &NTPBackgroundImagesService::OnGeoRegionCodePrefChanged,
+            &NTPBackgroundImagesService::OnCountryCodePrefChanged,
             base::Unretained(this)));
   }
 
@@ -178,13 +178,12 @@ void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
 }
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
-  const std::string geo_region_code =
-      brave_l10n::GetCurrentGeoRegionCode(local_pref_);
+  const std::string country_code = brave_l10n::GetCountryCode(local_pref_);
 
-  const auto data = GetSponsoredImagesComponentData(geo_region_code);
+  const auto data = GetSponsoredImagesComponentData(country_code);
   if (!data) {
     DVLOG(2) << __func__ << ": Not support NTP SI component for "
-             << geo_region_code;
+             << country_code;
     return;
   }
 
@@ -337,7 +336,7 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
 #endif
 }
 
-void NTPBackgroundImagesService::OnGeoRegionCodePrefChanged() {
+void NTPBackgroundImagesService::OnCountryCodePrefChanged() {
   RegisterSponsoredImagesComponent();
 }
 

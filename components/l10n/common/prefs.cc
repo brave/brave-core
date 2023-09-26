@@ -12,13 +12,11 @@
 namespace brave_l10n {
 
 namespace prefs {
-
-const char kGeoRegionCode[] = "brave.geo.region";
-
+const char kCountryCode[] = "brave.country_code";
 }  // namespace prefs
 
 void RegisterL10nLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterStringPref(prefs::kGeoRegionCode,
+  registry->RegisterStringPref(prefs::kCountryCode,
                                GetDefaultISOCountryCodeString());
 }
 

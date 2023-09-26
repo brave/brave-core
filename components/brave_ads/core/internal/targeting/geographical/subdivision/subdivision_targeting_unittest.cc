@@ -7,12 +7,12 @@
 
 #include <memory>
 
+#include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
-#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision.h"
-#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/geographical/subdivision/subdivision_url_request_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"

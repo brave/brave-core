@@ -54,7 +54,7 @@ class ResourceComponent : public ResourceComponentRegistrarDelegate {
                             const base::FilePath& install_dir,
                             const std::string& json);
 
-  // ResourceComponentRegistrarDelegate
+  // ResourceComponentRegistrarDelegate:
   void OnResourceComponentRegistered(
       const std::string& component_id,
       const base::FilePath& install_dir) override;

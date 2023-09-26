@@ -68,7 +68,7 @@ void RegisterPrefs() {
 
   RegisterStringPref(prefs::kBrowserVersionNumber, "");
 
-  RegisterStringPref(brave_l10n::prefs::kGeoRegionCode,
+  RegisterStringPref(brave_l10n::prefs::kCountryCode,
                      brave_l10n::GetDefaultISOCountryCodeString());
 }
 

@@ -10,15 +10,18 @@ static_library("common") {
   ]
 
   public = [
+    "country_code_util.h",
     "locale_util.h",
     "localization_util.h",
     "ofac_sanction_util.h",
     "prefs.h",
-    "region_code_util.h",
     "un_m49_code_util.h",
   ]
 
   sources = [
+    "country_code_feature.cc",
+    "country_code_feature.h",
+    "country_code_util.cc",
     "default_locale.cc",
     "default_locale.h",
     "locale_subtag_info.cc",
@@ -34,9 +37,6 @@ static_library("common") {
     "ofac_sanctioned_iso_3166_1_country_code_constants.h",
     "ofac_sanctioned_un_m49_code_constants.h",
     "prefs.cc",
-    "region_code_feature.cc",
-    "region_code_feature.h",
-    "region_code_util.cc",
     "un_m49_code_constants.h",
     "un_m49_code_util.cc",
     "un_m49_code_util.h",
@@ -68,11 +68,11 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "country_code_util_unittest.cc",
     "locale_subtag_parser_util_unittest.cc",
     "locale_util_unittest.cc",
     "localization_util_unittest.cc",
     "ofac_sanction_util_unittest.cc",
-    "region_code_util_unittest.cc",
     "un_m49_code_util_unittest.cc",
   ]
 

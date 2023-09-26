@@ -12,8 +12,8 @@ namespace brave_l10n {
 
 namespace prefs {
 
-// Region code retrieved from brave geo endpoint.
-extern const char kGeoRegionCode[];
+// The country code used to register component resources.
+extern const char kCountryCode[];
 
 }  // namespace prefs
 

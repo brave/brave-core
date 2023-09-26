@@ -333,11 +333,13 @@ void UnitTestBase::MockSetLocalStatePref(AdsClientMock& mock) {
       .WillByDefault(
           ::testing::Invoke([=](const std::string& path, base::Value value) {
             switch (value.type()) {
-              case base::Value::Type::STRING:
+              case base::Value::Type::STRING: {
                 SetPrefValue(path, value.GetString());
                 break;
-              default:
+              }
+              default: {
                 NOTREACHED_NORETURN();
+              }
             }
             NotifyPrefDidChange(path);
           }));

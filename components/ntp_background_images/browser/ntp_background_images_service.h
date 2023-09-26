@@ -131,7 +131,7 @@ class NTPBackgroundImagesService {
   void OnGetComponentJsonData(const std::string& json_string);
   void OnMappingTableComponentReady(const base::FilePath& installed_dir);
   void OnPreferenceChanged(const std::string& pref_name);
-  void OnGeoRegionCodePrefChanged();
+  void OnCountryCodePrefChanged();
   void OnGetMappingTableData(const std::string& json_string);
 
   std::string GetReferralPromoCode() const;
