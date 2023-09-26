@@ -5,9 +5,9 @@ Resolves
 * CI/run-audit-deps (1) - check for known npm/cargo vulnerabilities (audit_deps)
 * CI/run-network-audit (1) - run network-audit
 * CI/run-upstream-tests - run Chromium unit and browser tests on Linux and Windows (otherwise only on Linux)
-* CI/run-linux-arm64, CI/run-windows-arm64 - run builds that would otherwise be skipped
+* CI/run-linux-arm64, CI/run-windows-arm64, CI/run-windows-x86 - run builds that would otherwise be skipped
 * CI/skip - do not run CI builds (except noplatform)
-* CI/skip-linux-x64, CI/skip-android, CI/skip-macos, CI/skip-ios, CI/skip-windows-x64, CI/skip-windows-x86 - skip CI builds for specific platforms
+* CI/skip-linux-x64, CI/skip-android, CI/skip-macos, CI/skip-ios, CI/skip-windows-x64 - skip CI builds for specific platforms
 * CI/skip-upstream-tests - do not run Chromium unit, or browser tests (otherwise only on Linux)
 * CI/skip-all-linters - do not run presubmit and lint checks
 * CI/storybook-url (1) - deploy storybook and provide a unique URL for each build
