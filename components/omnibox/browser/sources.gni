@@ -30,7 +30,6 @@ brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/promotion_utils.h",
   "//brave/components/omnibox/browser/topsites_provider.cc",
   "//brave/components/omnibox/browser/topsites_provider.h",
-  "//brave/components/omnibox/browser/topsites_provider_data.cc",
 ]
 
 brave_components_omnibox_browser_deps = [
