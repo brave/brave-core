@@ -73,6 +73,7 @@ import { p3aEndpoints } from './endpoints/p3a.endpoints'
 import { pricingEndpoints } from './endpoints/pricing.endpoints'
 import { nftsEndpoints } from './endpoints/nfts.endpoints'
 import { qrCodeEndpoints } from './endpoints/qr-code.endpoints'
+import { dappsEndpoints } from './endpoints/dapps.endpoints'
 
 // utils
 import { handleEndpointError } from '../../utils/api-utils';
@@ -3072,6 +3073,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: tokenSuggestionsEndpoints })
     // QR Code generator endpoints
     .injectEndpoints({ endpoints: qrCodeEndpoints })
+    // Dapps endpoints
+    .injectEndpoints({ endpoints: dappsEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -3135,6 +3138,7 @@ export const {
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
+  useGetTopDappsQuery,
   useInvalidateTransactionsCacheMutation,
   useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,

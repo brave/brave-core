@@ -56,6 +56,8 @@ export function createWalletApiBase () {
       'LocalIPFSNodeStatus',
       'EthTokenDecimals',
       'EthTokenSymbol'
+      'LocalIPFSNodeStatus',
+      'Dapps'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

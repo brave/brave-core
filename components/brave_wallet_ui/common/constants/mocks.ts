@@ -1388,3 +1388,18 @@ export const mockOnRampCurrencies: BraveWallet.OnRampCurrency[] = [
     providers: []
   }
 ]
+
+export const mockDapp: BraveWallet.Dapp = {
+  id: 1,
+  name: 'Brave Dapp',
+  description: 'Brave Dapp',
+  logo: ETHIconUrl,
+  website: '',
+  chains: [],
+  categories: [],
+  transactions: 0,
+  uaw: 0,
+  volume: 0,
+  balance: 0,
+  range: ''
+}

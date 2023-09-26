@@ -5,6 +5,12 @@
 
 import * as React from 'react'
 
+// types
+import { BraveWallet } from '../../../../../constants/types'
+
+// api
+import { useGetTopDappsQuery } from '../../../../../common/slices/api.slice'
+
 // utils
 import { getLocale } from '../../../../../../common/locale'
 
@@ -14,11 +20,17 @@ import { UISelectors } from '../../../../../common/selectors'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
+import DappCategoryList from './dapp-category-list'
 
 // styles
 import { Row, VerticalDivider, VerticalSpace } from '../../../../shared/style'
 import { Title } from './explore-dapps.styles'
-import { ButtonIcon, CircleButton, ContentWrapper, SearchBarWrapper } from '../../portfolio/style'
+import {
+  ButtonIcon,
+  CircleButton,
+  ContentWrapper,
+  SearchBarWrapper
+} from '../../portfolio/style'
 
 export const ExploreDapps = () => {
   // state
@@ -28,11 +40,34 @@ export const ExploreDapps = () => {
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
+  // queries
+  const { data: dapps, isLoading: isLoadingDapps } = useGetTopDappsQuery()
+
   // methods
   const onCloseSearchBar = React.useCallback(() => {
     setShowSearchBar(false)
     setSearchValue('')
   }, [])
+
+  // memos
+  const categorizedDapps = React.useMemo(() => {
+    const map: { [cateory: string]: BraveWallet.Dapp[] } = {}
+    if (isLoadingDapps || !dapps) return map
+
+    dapps.forEach((dapp) => {
+      const { categories } = dapp
+      categories.forEach((category) => {
+        if (!map[category]) {
+          map[category] = []
+        }
+        if (!map[category].some((d) => d.id === dapp.id)) {
+          map[category].push(dapp)
+        }
+      })
+    })
+
+    return map
+  }, [isLoadingDapps, dapps])
 
   return (
     <ContentWrapper
@@ -41,8 +76,15 @@ export const ExploreDapps = () => {
       justifyContent='flex-start'
       isPanel={isPanel}
     >
-      <Row justifyContent='space-between' alignItems='flex-end' width='100%'>
-        {!showSearchBar ? (<Title>{getLocale('braveWalletTopNavExploreDapps')}</Title>) : null}
+      <Row
+        justifyContent='space-between'
+        alignItems='flex-end'
+        width='100%'
+        padding='0 0 0 8px'
+      >
+        {!showSearchBar ? (
+          <Title>{getLocale('braveWalletTopNavExploreDapps')}</Title>
+        ) : null}
         <Row width={showSearchBar ? '100%' : 'unset'}>
           {showSearchBar ? (
             <Row width='unset'>
@@ -70,7 +112,7 @@ export const ExploreDapps = () => {
               >
                 <ButtonIcon name='search' />
               </CircleButton>
-             
+
               <CircleButton onClick={() => console.log('filters')}>
                 <ButtonIcon name='filter-settings' />
               </CircleButton>
@@ -79,7 +121,8 @@ export const ExploreDapps = () => {
         </Row>
       </Row>
       <VerticalSpace space='16px' />
-      {isPanel ? <VerticalDivider/> : null }
+      {isPanel ? <VerticalDivider /> : null}
+      <DappCategoryList data={categorizedDapps} isLoading={isLoadingDapps} />
     </ContentWrapper>
   )
 }
