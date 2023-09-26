@@ -102,3 +102,9 @@ export function useAutoPlayEnabled () {
     applicationState => applicationState.playerState?.autoPlayEnabled
   )
 }
+
+export function useInitialized() {
+  return useSelector<ApplicationState, boolean>(
+    applicationState => !!applicationState.playlistData?.lists.length
+  )
+}

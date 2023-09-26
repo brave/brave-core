@@ -33,6 +33,7 @@ interface Props {
   item: PlaylistItemMojo
   isEditing: boolean
   isSelected?: boolean
+  isHighlighted?: boolean
   canReorder: boolean
   shouldBeHidden: boolean
   onClick: (item: PlaylistItemMojo) => void
@@ -74,8 +75,18 @@ const DefaultThumbnail = styled.div`
 
 const PlaylistItemContainer = styled.li<{
   isActive: boolean
+  isHighlighted?: boolean
   shouldBeHidden: boolean
 }>`
+  @keyframes highlightBackground {
+    0% {
+      background-color: none;
+    }
+    100% {
+      background-color: ${color.container.interactive};
+    }
+  }
+
   display: flex;
   position: relative;
   padding: ${spacing.m} ${spacing.xl} ${spacing.m} ${spacing.m};
@@ -98,6 +109,12 @@ const PlaylistItemContainer = styled.li<{
     p.isActive &&
     css`
       background: ${color.container.interactive};
+    `}
+
+  ${p =>
+    p.isHighlighted &&
+    css`
+      animation: highlightBackground 500ms 4 alternate;
     `}
 `
 
@@ -206,6 +223,7 @@ export function PlaylistItem ({
   item,
   isEditing,
   isSelected,
+  isHighlighted,
   shouldBeHidden,
   onClick
 }: Props) {
@@ -217,24 +235,6 @@ export function PlaylistItem ({
     duration,
     thumbnailPath: { url: thumbnailUrl }
   } = item
-
-  const anchorElem = React.useRef<HTMLAnchorElement>(null)
-
-  const scrollToThisIfNeeded = React.useCallback(() => {
-    if (window.location.hash.replace('#', '') !== id) return
-
-    if (anchorElem.current)
-      window.scrollTo({ top: anchorElem.current.offsetTop })
-  }, [id])
-
-  React.useEffect(() => {
-    window.addEventListener('hashchange', scrollToThisIfNeeded)
-    return () => {
-      window.removeEventListener('hashchange', scrollToThisIfNeeded)
-    }
-  }, [scrollToThisIfNeeded])
-
-  React.useEffect(() => scrollToThisIfNeeded(), [])
 
   const [hovered, setHovered] = React.useState(false)
   const [showingMenu, setShowingMenu] = React.useState(false)
@@ -255,10 +255,10 @@ export function PlaylistItem ({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       isActive={(isEditing && isSelected) || isPlaying}
+      isHighlighted={isHighlighted}
       shouldBeHidden={shouldBeHidden}
       onClick={() => onClick(item)}
     >
-      <a ref={anchorElem} href={`#${id}`} />
       {isEditing && (
         <StyledCheckBox
           checked={!!isSelected}
@@ -348,15 +348,22 @@ export function PlaylistItem ({
   )
 }
 
-export function SortablePlaylistItem (props: Props) {
-  const { attributes, listeners, setNodeRef, style } = useVerticallySortable({
-    id: props.item.id,
-    disabled: !props.canReorder
-  })
+export const SortablePlaylistItem = React.forwardRef(
+  function SortablePlaylistItem (
+    props: Props,
+    forwardedRef?: React.ForwardedRef<HTMLAnchorElement>
+  ) {
+    const itemId = props.item.id
+    const { attributes, listeners, setNodeRef, style } = useVerticallySortable({
+      id: itemId,
+      disabled: !props.canReorder
+    })
 
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <PlaylistItem {...props} />
-    </div>
-  )
-}
+    return (
+      <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <a ref={forwardedRef} href={`#${itemId}`} />
+        <PlaylistItem {...props} />
+      </div>
+    )
+  }
+)

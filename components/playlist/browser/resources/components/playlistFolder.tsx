@@ -26,6 +26,7 @@ import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/
 import { SortablePlaylistItem, PlaylistItem } from './playlistItem'
 import {
   PlaylistEditMode,
+  useInitialized,
   useLastPlayerState,
   usePlaylist,
   usePlaylistEditMode
@@ -114,11 +115,35 @@ function EditActionsContainer ({
   )
 }
 
+function useItemIdFromHash () {
+  const [idFromHash, setIdFromHash] = React.useState<string>('')
+
+  React.useEffect(() => {
+    const getId = () => window.location.hash.replace('#', '')
+    const updateId = () => setIdFromHash(getId())
+    updateId()
+    window.addEventListener('hashchange', updateId)
+    return () => window.removeEventListener('hashchange', updateId)
+  }, [])
+  return idFromHash
+}
+
+function useScrollToItem (itemId: string | undefined) {
+  const [el, setEl] = React.useState<HTMLAnchorElement | null>(null)
+
+  React.useEffect(() => {
+    if (el) window.scrollTo({ top: el.offsetTop })
+  }, [el, itemId])
+
+  return setEl
+}
+
 export default function PlaylistFolder ({
   match
 }: RouteComponentProps<MatchParams>) {
   const playlist = usePlaylist(match.params.playlistId)
   const lastPlayerState = useLastPlayerState()
+  const initialized = useInitialized()
 
   React.useEffect(() => {
     // When playlist updated and player is working, notify that the current
@@ -166,10 +191,19 @@ export default function PlaylistFolder ({
 
   const [draggedId, setDraggedId] = useDraggedId()
   const [draggedOrder, setDraggedOrder] = useDraggedOrder<PlaylistItemMojo>()
-
   const sensors = useSensorsWithThreshold()
 
+  const itemIdFromHash = useItemIdFromHash()
+  const anchorElemRef = useScrollToItem(itemIdFromHash)
+
   if (!playlist) {
+    if (!initialized) {
+      // When Playlist web ui is loaded with a certain folder in the path, e.g.
+      // chrome://playlist/playlist/{playlist_id}, the App state could be uninitialized yet.
+      // We should wait for it to be loaded rather than redirect to the index page.
+      return null
+    }
+
     // After deleting a playlist from header, this could happen. In this case,
     // redirect to the index page.
     return <Redirect to='/' />
@@ -188,14 +222,19 @@ export default function PlaylistFolder ({
   ) => {
     if (!item) return null
 
+    const ref =
+      !forDragOverlay && item.id === itemIdFromHash ? anchorElemRef : null
+
     const Item = forDragOverlay ? PlaylistItem : SortablePlaylistItem
     return (
       <Item
         key={item.id}
         playlist={playlist}
         item={item}
+        ref={ref}
         isEditing={editMode === PlaylistEditMode.BULK_EDIT}
         isSelected={selectedSet.has(item.id)}
+        isHighlighted={!!ref}
         canReorder={
           editMode !== PlaylistEditMode.BULK_EDIT &&
           !lastPlayerState?.shuffleEnabled
