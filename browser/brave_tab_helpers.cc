@@ -18,6 +18,7 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
+#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -29,6 +30,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -119,9 +121,16 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
+    content::BrowserContext* context = web_contents->GetBrowserContext();
+    auto skus_service_getter = base::BindRepeating(
+        [](content::BrowserContext* context) {
+          return skus::SkusServiceFactory::GetForContext(context);
+        },
+        context);
     ai_chat::AIChatTabHelper::CreateForWebContents(
         web_contents,
-        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics());
+        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics(),
+        skus_service_getter, g_browser_process->local_state());
   }
 #endif
 

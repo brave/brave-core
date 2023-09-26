@@ -10,12 +10,19 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/skus/browser/skus_utils.h"
+#include "base/time/time.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
+class PrefService;
+
 namespace ai_chat {
+
+struct CredentialCacheEntry {
+  std::string credential;
+  base::Time expires_at;
+};
 
 // Interfaces with the SKUs SDK to provide APIs to check and fetch Leo
 // premium credentials.
@@ -23,43 +30,47 @@ class AIChatCredentialManager {
  public:
   AIChatCredentialManager(
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-          skus_service_getter);
+          skus_service_getter,
+      PrefService* prefs_service);
 
   AIChatCredentialManager(const AIChatCredentialManager&) = delete;
   AIChatCredentialManager& operator=(const AIChatCredentialManager&) = delete;
   ~AIChatCredentialManager();
 
-  using UserHasValidPremiumCredentialCallback =
-      base::OnceCallback<void(bool success)>;
-
-  using FetchPremiumCredentialCallback = base::OnceCallback<void(
-      absl::optional<std::string> credential_as_cookie)>;
-
   void UserHasValidPremiumCredential(
-      UserHasValidPremiumCredentialCallback callback);
+      base::OnceCallback<void(bool success)> callback);
 
-  void FetchPremiumCredential(FetchPremiumCredentialCallback callback);
+  void FetchPremiumCredential(
+      base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+          callback);
+
+  void PutCredentialInCache(CredentialCacheEntry credential);
 
  private:
   void EnsureMojoConnected();
 
   void OnMojoConnectionError();
 
-  void OnCredentialSummary(UserHasValidPremiumCredentialCallback callback,
+  void OnCredentialSummary(base::OnceCallback<void(bool success)> callback,
                            const std::string& domain,
                            const std::string& summary_string);
 
-  void OnUserHasValidPremiumCredential(FetchPremiumCredentialCallback callback,
-                                       bool result);
+  void OnUserHasValidPremiumCredential(
+      base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+          callback,
+      bool result);
 
   void OnPrepareCredentialsPresentation(
-      FetchPremiumCredentialCallback callback,
+      base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+          callback,
       const std::string& domain,
       const std::string& credential_as_cookie);
 
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
+  raw_ptr<PrefService> prefs_service_ = nullptr;
+
   base::WeakPtrFactory<AIChatCredentialManager> weak_ptr_factory_{this};
 };
 

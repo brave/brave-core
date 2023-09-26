@@ -16,4 +16,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
 }
 
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterDictionaryPref(kBraveChatPremiumCredentialCache);
+}
+
 }  // namespace ai_chat::prefs

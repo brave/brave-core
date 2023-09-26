@@ -6,26 +6,56 @@
 #include "brave/components/ai_chat/browser/ai_chat_credential_manager.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/json/values_util.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/ai_chat/browser/constants.h"
+#include "brave/components/ai_chat/common/pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
 #include "url/url_util.h"
 
+namespace {
+
+const char kLeoSkuDomain[] = "leo.bravesoftware.com";
+
+}  // namespace
+
 namespace ai_chat {
 
 AIChatCredentialManager::AIChatCredentialManager(
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-        skus_service_getter)
-    : skus_service_getter_(std::move(skus_service_getter)) {}
+        skus_service_getter,
+    PrefService* prefs_service)
+    : skus_service_getter_(std::move(skus_service_getter)),
+      prefs_service_(prefs_service) {}
 AIChatCredentialManager::~AIChatCredentialManager() = default;
 
 void AIChatCredentialManager::UserHasValidPremiumCredential(
-    UserHasValidPremiumCredentialCallback callback) {
+    base::OnceCallback<void(bool success)> callback) {
+  base::Time now = base::Time::Now();
+  // First check for a valid credential in the cache.
+  const auto& cached_creds_dict =
+      prefs_service_->GetDict(ai_chat::prefs::kBraveChatPremiumCredentialCache);
+  for (const auto [credential, expires_at_value] : cached_creds_dict) {
+    absl::optional<base::Time> expires_at = base::ValueToTime(expires_at_value);
+    if (!expires_at) {
+      continue;
+    }
+
+    if (*expires_at > now) {
+      std::move(callback).Run(true);
+      return;
+    }
+  }
+
+  // If there aren't any valid in the cache, we must check the CredentialSummary
+  // from from the SKU service.
   EnsureMojoConnected();
   skus_service_->CredentialSummary(
       kLeoSkuDomain,
@@ -35,7 +65,7 @@ void AIChatCredentialManager::UserHasValidPremiumCredential(
 }
 
 void AIChatCredentialManager::OnCredentialSummary(
-    UserHasValidPremiumCredentialCallback callback,
+    base::OnceCallback<void(bool success)> callback,
     const std::string& domain,
     const std::string& summary_string) {
   std::string summary_string_trimmed;
@@ -56,33 +86,83 @@ void AIChatCredentialManager::OnCredentialSummary(
     return;
   }
 
-  // Empty dict - clean user.
+  // Empty dict - all credentials are expired, the user may need to refresh.
   if (records_v->GetDict().empty()) {
     std::move(callback).Run(false);
     return;
   }
 
-  // For now, if there are any records in CredentialSummary, then I'm assuming
-  // it's active, even if active is literally false.
-  //
-  // const bool active =
-  // (*records_v).GetDict().FindBool("active").value_or(false); if (!active) {
-  //   std::move(callback).Run(false);
-  //   return;
-  // }
-
+  // For now, if there are any records in CredentialSummary, then we assume
+  // there is a subscription active, even if the "active" property on the
+  // credential summary is literally false.
   std::move(callback).Run(true);
 }
 
 void AIChatCredentialManager::FetchPremiumCredential(
-    FetchPremiumCredentialCallback callback) {
+    base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+        callback) {
+  // Loop through credentials looking for a valid credential and remove it. If
+  // there is more than one valid credential, use the one that is expiring
+  // soonest. Also, remove any expired credentials as we go.
+  ScopedDictPrefUpdate update(prefs_service_,
+                              ai_chat::prefs::kBraveChatPremiumCredentialCache);
+  base::Value::Dict& dict = update.Get();
+  base::Time now = base::Time::Now();
+  CredentialCacheEntry valid_credential;
+  bool found_valid_credential = false;
+  base::Time nearest_expiration = base::Time::Max();
+  auto valid_credential_iter =
+      dict.end();  // iterator to the nearest credential
+
+  // Collect iterators of credentials to be removed.
+  std::vector<base::Value::Dict::iterator> to_erase;
+
+  for (auto it = dict.begin(); it != dict.end(); ++it) {
+    base::Value& expires_at_value = it->second;
+    absl::optional<base::Time> expires_at = base::ValueToTime(expires_at_value);
+
+    // Remove expired credentials from the cache.
+    if (!expires_at || *expires_at < now) {
+      to_erase.push_back(it);
+      continue;
+    }
+
+    // Check if this credential is closer to expiration than the current
+    // nearest.
+    if (*expires_at < nearest_expiration) {
+      nearest_expiration = *expires_at;
+      valid_credential.credential = it->first;
+      valid_credential.expires_at = *expires_at;
+      found_valid_credential = true;
+      valid_credential_iter = it;
+    }
+  }
+
+  if (found_valid_credential) {
+    to_erase.push_back(valid_credential_iter);
+  }
+
+  // Erase invalid and nearest credentials in a separate loop to
+  // avoid iterator invalidation during iteration.
+  for (auto it : to_erase) {
+    dict.erase(it);
+  }
+
+  // Use credential from the cache if it existed.
+  if (found_valid_credential) {
+    std::move(callback).Run(valid_credential);
+    return;
+  }
+
+  // Otherwise, fetch a fresh credential using the SKUs SDK.
   UserHasValidPremiumCredential(
       base::BindOnce(&AIChatCredentialManager::OnUserHasValidPremiumCredential,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AIChatCredentialManager::OnUserHasValidPremiumCredential(
-    FetchPremiumCredentialCallback callback,
+    base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+        callback,
     bool result) {
   if (!result) {
     std::move(callback).Run(absl::nullopt);
@@ -98,20 +178,19 @@ void AIChatCredentialManager::OnUserHasValidPremiumCredential(
 }
 
 void AIChatCredentialManager::OnPrepareCredentialsPresentation(
-    FetchPremiumCredentialCallback callback,
+    base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
+        callback,
     const std::string& domain,
     const std::string& credential_as_cookie) {
   // Credential is returned in cookie format.
   net::CookieInclusionStatus status;
   net::ParsedCookie credential_cookie(credential_as_cookie, &status);
   if (!credential_cookie.IsValid()) {
-    VLOG(1) << __func__ << " : FAILED credential_cookie.IsValid";
     std::move(callback).Run(absl::nullopt);
     return;
   }
 
   if (!status.IsInclude()) {
-    VLOG(1) << __func__ << " : FAILED status.IsInclude";
     std::move(callback).Run(absl::nullopt);
     return;
   }
@@ -121,11 +200,17 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
     return;
   }
 
+  const auto time =
+      net::cookie_util::ParseCookieExpirationTime(credential_cookie.Expires());
+  // Early return when it's already expired.
+  if (time < base::Time::Now()) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
   // Credential value received needs to be URL decoded.
   // That leaves us with a Base64 encoded JSON blob which is the credential.
   const std::string encoded_credential = credential_cookie.Value();
-  const auto time =
-      net::cookie_util::ParseCookieExpirationTime(credential_cookie.Expires());
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(
       encoded_credential.data(), encoded_credential.size(),
@@ -138,13 +223,18 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
     return;
   }
 
-  // Early return when it's already expired.
-  if (time < base::Time::Now()) {
-    std::move(callback).Run(absl::nullopt);
-    return;
-  }
+  CredentialCacheEntry entry;
+  entry.credential = credential;
+  entry.expires_at = time;
+  std::move(callback).Run(entry);
+}
 
-  std::move(callback).Run(credential);
+void AIChatCredentialManager::PutCredentialInCache(
+    CredentialCacheEntry credential) {
+  ScopedDictPrefUpdate update(prefs_service_,
+                              ai_chat::prefs::kBraveChatPremiumCredentialCache);
+  base::Value::Dict& dict = update.Get();
+  dict.Set(credential.credential, base::TimeToValue(credential.expires_at));
 }
 
 void AIChatCredentialManager::EnsureMojoConnected() {

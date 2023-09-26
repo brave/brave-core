@@ -105,7 +105,8 @@ const GURL GetEndpointBaseUrl(bool premium) {
         base::StrCat({url::kHttpsScheme, "://", endpoint})};
     return *url;
   } else {
-    LOG(ERROR) << "BRAVE_AI_CHAT_ENDPOINT was empty. Must supply an AI Chat"
+    LOG(ERROR) << "BRAVE_AI_CHAT_ENDPOINT or BRAVE_AI_CHAT_PREMIUM_ENDPOINT "
+                  "was empty. Must supply an AI Chat"
                   "endpoint via build flag to use the AI Chat feature.";
     return GURL::EmptyGURL();
   }
@@ -162,15 +163,14 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
     const std::vector<std::string> extra_stop_sequences,
     EngineConsumer::GenerationCompletedCallback data_completed_callback,
     EngineConsumer::GenerationDataCallback data_received_callback,
-    absl::optional<std::string> cookie_as_string) {
-  bool premium_enabled = cookie_as_string.has_value();
-  // const GURL api_base_url = GetEndpointBaseUrl(premium_enabled);
-  GURL api_base_url = GURL("http://0.0.0.0:8000");  // TODO(nvonpentz) remove me
+    absl::optional<CredentialCacheEntry> credential) {
+  bool premium_enabled = credential.has_value();
+  const GURL api_base_url = GetEndpointBaseUrl(premium_enabled);
   base::flat_map<std::string, std::string> headers;
   if (premium_enabled) {
     // Add Leo premium SKU credential as a Cookie header.
     std::string cookie_header_value =
-        "__Secure-sku#brave-leo-premium=" + *cookie_as_string;
+        "__Secure-sku#brave-leo-premium=" + credential->credential;
     headers.emplace("Cookie", cookie_header_value);
   }
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
@@ -192,18 +192,20 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
     auto on_received = base::BindRepeating(
         &RemoteCompletionClient::OnQueryDataReceived,
         weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback));
-    auto on_complete = base::BindOnce(&RemoteCompletionClient::OnQueryCompleted,
-                                      weak_ptr_factory_.GetWeakPtr(),
-                                      std::move(data_completed_callback));
+    auto on_complete =
+        base::BindOnce(&RemoteCompletionClient::OnQueryCompleted,
+                       weak_ptr_factory_.GetWeakPtr(), credential,
+                       std::move(data_completed_callback));
 
     api_request_helper_.RequestSSE("POST", api_url, CreateJSONRequestBody(dict),
                                    "application/json", std::move(on_received),
                                    std::move(on_complete), headers, {});
   } else {
     VLOG(2) << "Making non-streaming AI Chat API Request";
-    auto on_complete = base::BindOnce(&RemoteCompletionClient::OnQueryCompleted,
-                                      weak_ptr_factory_.GetWeakPtr(),
-                                      std::move(data_completed_callback));
+    auto on_complete =
+        base::BindOnce(&RemoteCompletionClient::OnQueryCompleted,
+                       weak_ptr_factory_.GetWeakPtr(), credential,
+                       std::move(data_completed_callback));
 
     api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
                                 "application/json", std::move(on_complete),
@@ -231,6 +233,7 @@ void RemoteCompletionClient::OnQueryDataReceived(
 }
 
 void RemoteCompletionClient::OnQueryCompleted(
+    absl::optional<CredentialCacheEntry> credential,
     EngineConsumer::GenerationCompletedCallback callback,
     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
@@ -245,14 +248,22 @@ void RemoteCompletionClient::OnQueryCompleted(
     } else {
       completion = "";
     }
+
     std::move(callback).Run(base::ok(std::move(completion)));
     return;
   }
+
+  // If error code is not 401, put credential in cache
+  if (result.response_code() != net::HTTP_UNAUTHORIZED && credential) {
+    credential_manager_->PutCredentialInCache(std::move(*credential));
+  }
+
   // Handle error
   mojom::APIError error =
       (net::HTTP_TOO_MANY_REQUESTS == result.response_code())
           ? mojom::APIError::RateLimitReached
           : mojom::APIError::ConnectionIssue;
+
   std::move(callback).Run(base::unexpected(std::move(error)));
 }
 

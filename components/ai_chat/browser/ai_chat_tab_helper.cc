@@ -17,7 +17,6 @@
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
-#include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/ai_chat/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/browser/engine/engine_consumer_claude.h"
@@ -28,6 +27,7 @@
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
+// #include "chrome/browser/browser_process.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -48,8 +48,12 @@ static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
 
 namespace ai_chat {
 
-AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
-                                 AIChatMetrics* ai_chat_metrics)
+AIChatTabHelper::AIChatTabHelper(
+    content::WebContents* web_contents,
+    AIChatMetrics* ai_chat_metrics,
+    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+        skus_service_getter,
+    PrefService* local_state_prefs)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AIChatTabHelper>(*web_contents),
       pref_service_(
@@ -66,6 +70,9 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
       base::BindRepeating(
           &AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions,
           weak_ptr_factory_.GetWeakPtr()));
+  credential_manager_ = std::make_unique<ai_chat::AIChatCredentialManager>(
+      skus_service_getter, local_state_prefs);
+
   // Engines and model names are be selectable
   // per conversation, not static.
   // Start with default.
