@@ -9,6 +9,7 @@ import BraveCore
 import BraveShared
 import CoreData
 import Shared
+import ScreenTime
 
 extension BraveHistoryAPI {
 
@@ -54,9 +55,17 @@ extension BraveHistoryAPI {
   }
   
   func deleteAll(completion: @escaping () -> Void) {
+    var screenTimeHistory: STWebHistory?
+    do {
+      screenTimeHistory = try STWebHistory(bundleIdentifier: Bundle.main.bundleIdentifier!)
+    } catch {
+      assertionFailure("STWebHistory could not be initialized: \(error)")
+    }
+    
     DispatchQueue.main.async {
       self.removeAll {
         Domain.deleteNonBookmarkedAndClearSiteVisits() {
+          screenTimeHistory?.deleteAllHistory()
           completion()
         }
       }
