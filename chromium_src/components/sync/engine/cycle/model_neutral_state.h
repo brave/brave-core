@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_CYCLE_MODEL_NEUTRAL_STATE_H_
 
 #define last_download_updates_result     \
-  unused;                                \
+  Unused();                              \
   std::string last_server_error_message; \
   SyncerError last_download_updates_result
 
