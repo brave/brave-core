@@ -276,6 +276,12 @@ const util = {
     // Replace webui CSS to use our fonts.
     fileMap.add([path.join(config.braveCoreDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css'),
                  path.join(config.srcDir, 'ui', 'webui', 'resources', 'css', 'text_defaults_md.css')])
+    // Replace chrome dark logo with channel specific brave logo.
+    fileMap.add([
+      path.join(config.braveCoreDir, 'node_modules', '@brave', 'leo', 'icons',
+          config.getBraveLogoIconName()),
+      path.join(config.srcDir, 'ui', 'webui', 'resources', 'images',
+          'chrome_logo_dark.svg')])
 
     let explicitSourceFiles = new Set()
     if (config.getTargetOS() === 'mac') {
