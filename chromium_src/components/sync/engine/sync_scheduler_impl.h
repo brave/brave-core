@@ -12,7 +12,7 @@ extern const char kNigoriFolderNotReadyError[];
 
 }  // namespace syncer
 
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 
 #define DoPollSyncCycleJob                                                   \
   HandleBraveConfigurationFailure(                                           \

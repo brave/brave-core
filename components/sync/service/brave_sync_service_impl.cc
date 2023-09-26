@@ -16,8 +16,8 @@
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/model/type_entities_count.h"
-#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 

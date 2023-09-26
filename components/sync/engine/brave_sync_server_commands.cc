@@ -10,9 +10,9 @@
 #include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
+#include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/engine/syncer_proto_util.h"
 #include "components/sync/protocol/sync.pb.h"
-#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 
