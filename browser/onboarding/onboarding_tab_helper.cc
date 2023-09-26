@@ -8,7 +8,9 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/onboarding/domain_map.h"
 #include "brave/browser/onboarding/pref_names.h"
 #include "brave/browser/ui/brave_browser_window.h"
@@ -17,6 +19,7 @@
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -30,26 +33,55 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }  // namespace onboarding
 
 // static
+bool OnboardingTabHelper::IsSevenDaysPassedSinceFirstRun() {
+  base::Time time_first_run = s_sentinel_time_for_testing_.value_or(
+      first_run::GetFirstRunSentinelCreationTime());
+  base::Time time_now = s_time_now_for_testing_.value_or(base::Time::Now());
+
+  base::Time time_7_days_ago = time_now - base::Days(7);
+  return time_first_run < time_7_days_ago;
+}
+
+// static
+absl::optional<base::Time> OnboardingTabHelper::s_time_now_for_testing_;
+absl::optional<base::Time> OnboardingTabHelper::s_sentinel_time_for_testing_;
+
+// static
 void OnboardingTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
   base::Time last_shields_icon_highlight_time =
       g_browser_process->local_state()->GetTime(
           onboarding::prefs::kLastShieldsIconHighlightTime);
 
-  if (last_shields_icon_highlight_time.is_null()) {
-    OnboardingTabHelper::CreateForWebContents(web_contents);
+  // Shields highlight is aleady shown. We use it only once.
+  if (!last_shields_icon_highlight_time.is_null()) {
+    return;
   }
-}
 
-OnboardingTabHelper::~OnboardingTabHelper() = default;
+  if (first_run::IsChromeFirstRun()) {
+    OnboardingTabHelper::CreateForWebContents(web_contents);
+    return;
+  }
+
+  // Don't show highlight if already 7 days passed for non first run.
+  // OnboardingTabHelper::IsSevenDaysPassedSinceFirstRun() could have IO.
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&OnboardingTabHelper::IsSevenDaysPassedSinceFirstRun),
+      base::BindOnce(
+          [](base::WeakPtr<content::WebContents> contents, bool passed) {
+            if (!passed && contents) {
+              OnboardingTabHelper::CreateForWebContents(contents.get());
+            }
+          },
+          web_contents->GetWeakPtr()));
+}
 
 OnboardingTabHelper::OnboardingTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<OnboardingTabHelper>(*web_contents) {
-  permission_request_manager_ =
-      permissions::PermissionRequestManager::FromWebContents(web_contents);
-  permission_request_manager_observation_.Observe(permission_request_manager_);
-}
+      content::WebContentsUserData<OnboardingTabHelper>(*web_contents) {}
+
+OnboardingTabHelper::~OnboardingTabHelper() = default;
 
 void OnboardingTabHelper::DidStopLoading() {
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
@@ -66,38 +98,33 @@ void OnboardingTabHelper::DidStopLoading() {
     return;
   }
 
-  // Avoid concurrent execution of permissions bubble checks and shields checks
-  // to prevent displaying two active bubbles on the screen.
-  // Add a delay to increase the likelihood of not interfering with the checks.
-  timer_.Start(
-      FROM_HERE, base::Seconds(1), this,
-      &OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble);
-}
+  // Show highlight when there is no permission request after loaded.
+  // If permission requests are existed, don't try to show highlight in this
+  // loading.
+  auto* permission_request_manager =
+      permissions::PermissionRequestManager::FromWebContents(web_contents());
 
-void OnboardingTabHelper::WebContentsDestroyed() {
-  CleanUp();
-}
-
-void OnboardingTabHelper::OnPromptAdded() {
-  browser_has_active_bubble_ = true;
-}
-
-void OnboardingTabHelper::OnPromptRemoved() {
-  browser_has_active_bubble_ = false;
-}
-
-void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
-  if (browser_has_active_bubble_) {
+  // Can be null in unit test.
+  if (!permission_request_manager) {
     return;
   }
 
+  if (permission_request_manager->has_pending_requests() ||
+      permission_request_manager->IsRequestInProgress()) {
+    return;
+  }
+
+  PerformBraveShieldsChecksAndShowHelpBubble();
+}
+
+void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
   auto* shields_data_controller =
       brave_shields::BraveShieldsDataController::FromWebContents(
           web_contents());
   DCHECK(shields_data_controller);
 
   if (shields_data_controller->GetBraveShieldsEnabled() &&
-      shields_data_controller->GetTotalBlockedCount() > 1 &&
+      shields_data_controller->GetTotalBlockedCount() > 0 &&
       CanHighlightBraveShields()) {
     ShowBraveHelpBubbleView();
   }
@@ -108,29 +135,33 @@ bool OnboardingTabHelper::CanHighlightBraveShields() {
       g_browser_process->local_state()->GetTime(
           onboarding::prefs::kLastShieldsIconHighlightTime);
 
+  // If highlight is shown from other tabs after this tab is created,
+  // this condition could be met.
   if (!last_shields_icon_highlight_time.is_null()) {
     return false;
   }
 
-  base::ScopedAllowBlockingForTesting allow_blocking;
-  base::Time time_first_run = first_run::GetFirstRunSentinelCreationTime();
-  base::Time time_now = base::Time::Now();
-  base::Time time_7_days_ago = time_now - base::Days(7);
-  bool has_browser_been_run_recently = (time_first_run > time_7_days_ago);
-
-  if (first_run::IsChromeFirstRun() || has_browser_been_run_recently) {
+  // Show highlight for first run always if it's not shown so far.
+  if (first_run::IsChromeFirstRun()) {
     return true;
   }
 
-  return false;
+  // We only show highlight to users that has installed the browser in the
+  // previous 7 days.
+  return !IsSevenDaysPassedSinceFirstRun();
 }
 
 void OnboardingTabHelper::ShowBraveHelpBubbleView() {
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
   DCHECK(browser);
+  if (!browser) {
+    return;
+  }
 
-  BraveBrowserWindow::From(browser->window())
-      ->ShowBraveHelpBubbleView(GetTextForOnboardingShieldsBubble());
+  if (!BraveBrowserWindow::From(browser->window())
+           ->ShowBraveHelpBubbleView(GetTextForOnboardingShieldsBubble())) {
+    return;
+  }
 
   g_browser_process->local_state()->SetTime(
       onboarding::prefs::kLastShieldsIconHighlightTime, base::Time::Now());
@@ -152,18 +183,23 @@ std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
       onboarding::GetCompanyNamesAndCountFromAdsList(
           shields_data_controller->GetBlockedAdsList());
 
+  const int others_blocked =
+      shields_data_controller->GetTotalBlockedCount() - total_companies_blocked;
+
   std::string label_text = l10n_util::GetStringUTF8(
       company_names.empty()
           ? IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES
+      : others_blocked == 0
+          ? IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_ONLY_COMPANIES
           : IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES);
 
   if (!company_names.empty()) {
     replacements.push_back(company_names);
   }
 
-  replacements.push_back(
-      base::NumberToString(shields_data_controller->GetTotalBlockedCount() -
-                           total_companies_blocked));
+  if (others_blocked != 0) {
+    replacements.push_back(base::NumberToString(others_blocked));
+  }
   replacements.push_back(shields_data_controller->GetCurrentSiteURL().host());
 
   return base::ReplaceStringPlaceholders(label_text, replacements, nullptr);
@@ -171,11 +207,6 @@ std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
 
 void OnboardingTabHelper::CleanUp() {
   Observe(nullptr);
-  permission_request_manager_observation_.Reset();
-
-  if (timer_.IsRunning()) {
-    timer_.Stop();
-  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(OnboardingTabHelper);

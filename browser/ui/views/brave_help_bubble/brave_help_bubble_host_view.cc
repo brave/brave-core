@@ -10,16 +10,16 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/skia/include/core/SkPoint.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/ui_base_types.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/transform_util.h"
 #include "ui/views/animation/animation_builder.h"
-#include "ui/views/background.h"
-#include "ui/views/bubble/bubble_border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
-#include "ui/views/layout/box_layout.h"
+#include "ui/views/bubble/bubble_frame_view.h"
 #include "ui/views/view_class_properties.h"
+#include "ui/views/view_utils.h"
 
 namespace {
 constexpr int kWidth = 60;
@@ -68,113 +68,83 @@ void SchedulePulsingAnimation(ui::Layer* layer) {
 }
 }  // namespace
 
-BraveHelpBubbleHostView::BraveHelpBubbleHostView(View* tracked_element)
-    : tracked_element_(tracked_element) {
-  // Making the layer of this view transparent for mouse clicks to interact with
-  // the underlying tracked element
-  SetEnabled(false);
+BraveHelpBubbleHostView::BraveHelpBubbleHostView() {
+  // Disable event handling to interact with the underlying element.
+  SetCanProcessEventsWithinSubtree(false);
+  SetPaintToLayer();
+  layer()->SetFillsBoundsOpaquely(false);
+  SetSize({kWidth, kHeight});
 }
 
 BraveHelpBubbleHostView::~BraveHelpBubbleHostView() = default;
 
-// static
-base::WeakPtr<BraveHelpBubbleHostView> BraveHelpBubbleHostView::Create(
-    View* tracked_element,
-    const std::string text) {
-  auto* bubble = new BraveHelpBubbleHostView(tracked_element);
-  bubble->text_ = text;
-  return bubble->weak_factory_.GetWeakPtr();
-}
-
-void BraveHelpBubbleHostView::Show() {
-  if (!brave_help_bubble_delegate_view_) {
-    brave_help_bubble_delegate_view_ =
-        new BraveHelpBubbleDelegateView(this, text_);
-    bubble_help_delegate_observation_.Observe(brave_help_bubble_delegate_view_);
+bool BraveHelpBubbleHostView::Show() {
+  if (help_bubble_) {
+    return false;
   }
 
-  if (brave_help_bubble_delegate_view_) {
-    brave_help_bubble_delegate_view_->Show();
-  }
+  CHECK(tracked_element_ && !text_.empty());
 
-  SetPaintToLayer();
-  layer()->SetFillsBoundsOpaquely(false);
-  SetSize({kWidth, kHeight});
-  if (!gfx::Animation::PrefersReducedMotion()) {
+  auto* brave_help_bubble_delegate_view =
+      new BraveHelpBubbleDelegateView(this, text_);
+  help_bubble_ = views::BubbleDialogDelegateView::CreateBubble(
+      brave_help_bubble_delegate_view);
+  auto* frame_view = brave_help_bubble_delegate_view->GetBubbleFrameView();
+  frame_view->SetDisplayVisibleArrow(true);
+  bubble_widget_observation_.Observe(help_bubble_);
+
+  // Observes tracked element and host widget(browser frame) to know this host
+  // view's position update timing.
+  tracked_view_observation_.Observe(tracked_element_);
+  host_widget_observation_.Observe(GetWidget());
+
+  // To locate help bubble at more higher than other normal widget.
+  help_bubble_->SetZOrderLevel(ui::ZOrderLevel::kFloatingUIElement);
+
+  ui::ElementIdentifier id =
+      tracked_element_->GetProperty(views::kElementIdentifierKey);
+  CHECK(id);
+  // Listen activation state to to hide bubble.(ex, hide bubble when button
+  // clicked)
+  activated_subscription_ =
+      ui::ElementTracker::GetElementTracker()->AddElementActivatedCallback(
+          id, views::ElementTrackerViews::GetContextForView(tracked_element_),
+          base::BindRepeating(
+              &BraveHelpBubbleHostView::OnTrackedElementActivated,
+              weak_factory_.GetWeakPtr()));
+
+  // With this inactive launching, bubble will be hidden after activated.
+  help_bubble_->ShowInactive();
+
+  UpdatePosition();
+  SetVisible(true);
+
+  if (!gfx::Animation::ShouldRenderRichAnimation()) {
     SchedulePulsingAnimation(layer());
   }
-  SetVisible(true);
+
+  return true;
 }
 
 void BraveHelpBubbleHostView::Hide() {
-  if (brave_help_bubble_delegate_view_) {
-    brave_help_bubble_delegate_view_->Hide();
+  if (!help_bubble_) {
+    return;
   }
 
-  SetVisible(false);
-}
-
-void BraveHelpBubbleHostView::InitElementTrackers() {
-  ui::ElementIdentifier id =
-      tracked_element_->GetProperty(views::kElementIdentifierKey);
-
-  if (!id) {
-    id = ui::ElementTracker::kTemporaryIdentifier;
-    tracked_element_->SetProperty(views::kElementIdentifierKey, id);
-  }
-
-  context_ = views::ElementTrackerViews::GetContextForView(tracked_element_);
-  CHECK(context_);
-
-  shown_subscription_ =
-      ui::ElementTracker::GetElementTracker()->AddElementShownCallback(
-          id, context_,
-          base::BindRepeating(&BraveHelpBubbleHostView::OnTrackedElementShown,
-                              weak_factory_.GetWeakPtr()));
-  hidden_subscription_ =
-      ui::ElementTracker::GetElementTracker()->AddElementHiddenCallback(
-          id, context_,
-          base::BindRepeating(&BraveHelpBubbleHostView::OnTrackedElementHidden,
-                              weak_factory_.GetWeakPtr()));
+  // Closing bubble will make this host view hidden.
+  help_bubble_->CloseWithReason(views::Widget::ClosedReason::kLostFocus);
 }
 
 void BraveHelpBubbleHostView::UpdatePosition() {
-  auto browser_root_view_origin =
-      GetWidget()->GetRootView()->GetBoundsInScreen().origin();
-  auto tracked_element_origin =
-      tracked_element_->GetBoundsInScreen().CenterPoint();
-
-  auto circle_center = gfx::Point(kWidth / 2, kHeight / 2);
-
-  // Calculate the final origin point by taking into account the Browser
-  // window's position and frame's top padding
-  tracked_element_origin.set_x(tracked_element_origin.x() -
-                               browser_root_view_origin.x() -
-                               circle_center.x() + kBraveActionLeftMarginExtra);
-  tracked_element_origin.set_y(tracked_element_origin.y() -
-                               browser_root_view_origin.y() -
-                               circle_center.y());
-
-  SetPosition({tracked_element_origin.x(), tracked_element_origin.y()});
-}
-
-void BraveHelpBubbleHostView::StartObservingAndShow() {
-  // Observing changes to the parent element's bounds,
-  // as they are the only ones that are expected to change
-  if (!view_observation_.IsObserving()) {
-    view_observation_.Observe(tracked_element_->parent());
-  }
-
-  UpdatePosition();
-  Show();
-}
-
-void BraveHelpBubbleHostView::AddedToWidget() {
-  InitElementTrackers();
-
-  if (tracked_element_ && tracked_element_->GetVisible()) {
-    StartObservingAndShow();
-  }
+  CHECK(tracked_element_);
+  auto tracked_element_local_center =
+      tracked_element_->GetLocalBounds().CenterPoint();
+  views::View::ConvertPointToScreen(tracked_element_,
+                                    &tracked_element_local_center);
+  auto host_view_origin = views::View::ConvertPointFromScreen(
+      this->parent(), tracked_element_local_center);
+  host_view_origin.Offset(-kWidth / 2, -kHeight / 2);
+  SetPosition(host_view_origin);
 }
 
 void BraveHelpBubbleHostView::OnPaint(gfx::Canvas* canvas) {
@@ -188,47 +158,57 @@ void BraveHelpBubbleHostView::OnPaint(gfx::Canvas* canvas) {
   canvas->DrawCircle(GetContentsBounds().CenterPoint(), 20.f, flags);
 }
 
-void BraveHelpBubbleHostView::OnBubbleDestroying(views::Widget* widget) {
-  // In the destruction, we don't have to remove this from parent. Otherwise,
-  // DCHECK will fail as the ancestor view is iterating its children to destroy
-  // all descendant.
-  if (GetWidget()->IsClosed()) {
-    return;
-  }
-
-  // There's a possibility that someone is iterating over the parent's children,
-  // and we are removing the child view early. This can cause a DCHECK in
-  // view.cc, so we schedule removal of the child view via TaskRunner to avoid
-  // this issue.
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<views::View> view) {
-                       if (!view) {
-                         return;
-                       }
-                       DCHECK(view->parent());
-                       view->parent()->RemoveChildViewT(view.get());
-                     },
-                     weak_factory_.GetWeakPtr()));
-
-  brave_help_bubble_delegate_view_ = nullptr;
-}
-
 void BraveHelpBubbleHostView::OnViewBoundsChanged(views::View* observed_view) {
+  // Update host view position when |tracked_element_| bounds is changed.
+  CHECK(tracked_element_ == observed_view);
   UpdatePosition();
 }
 
-void BraveHelpBubbleHostView::OnTrackedElementShown(
-    ui::TrackedElement* element) {
-  if (auto* el = element->AsA<views::TrackedElementViews>();
-      !el || el->view() != tracked_element_) {
+void BraveHelpBubbleHostView::OnViewIsDeleting(views::View* observed_view) {
+  CHECK(tracked_element_ == observed_view);
+  tracked_element_ = nullptr;
+  tracked_view_observation_.Reset();
+}
+
+void BraveHelpBubbleHostView::OnViewVisibilityChanged(
+    views::View* observed_view,
+    views::View* starting_view) {
+  // Close help bubble when |tracked_element_| gets hidden.
+  // It could be in-visible when its ancestor is hidden.
+  if (!observed_view->GetVisible() ||
+      (starting_view && !starting_view->GetVisible())) {
+    Hide();
+  }
+}
+
+void BraveHelpBubbleHostView::OnWidgetBoundsChanged(views::Widget* widget,
+                                                    const gfx::Rect&) {
+  // Only update host view position when host widget(browser frame)'s bounds is
+  // changed.
+  if (help_bubble_ == widget) {
     return;
   }
 
-  StartObservingAndShow();
+  UpdatePosition();
 }
 
-void BraveHelpBubbleHostView::OnTrackedElementHidden(
+void BraveHelpBubbleHostView::OnWidgetDestroying(views::Widget* widget) {
+  if (help_bubble_ == widget) {
+    // Hide this host view when bubble is closed.
+    help_bubble_ = nullptr;
+    bubble_widget_observation_.Reset();
+    tracked_view_observation_.Reset();
+    text_ = std::string();
+    activated_subscription_ = {};
+    tracked_element_ = nullptr;
+
+    SetVisible(false);
+  }
+
+  host_widget_observation_.Reset();
+}
+
+void BraveHelpBubbleHostView::OnTrackedElementActivated(
     ui::TrackedElement* element) {
   Hide();
 }

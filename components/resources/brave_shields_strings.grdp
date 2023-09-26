@@ -206,6 +206,10 @@
     Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> and <ph name="BLOCKED_COUNT">$2</ph> other trackers on <ph name="SITE_URL">$3</ph>
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_ONLY_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Brave Shields blocking company-specific trackers only on a website.">
+    Brave Shields blocked <ph name="COMPANY_LIST">$1</ph> trackers on <ph name="SITE_URL">$2</ph>
+  </message>
+
   <message name="IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES" desc="Label for the onboarding bubble UI, informing users about Brave Shields blocking number of trackers only.">
     Brave Shields blocked <ph name="BLOCKED_COUNT">$1</ph> trackers on <ph name="SITE_URL">$2</ph>
   </message>

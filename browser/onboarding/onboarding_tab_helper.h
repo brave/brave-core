@@ -8,10 +8,10 @@
 
 #include <string>
 
-#include "base/scoped_observation.h"
-#include "components/permissions/permission_request_manager.h"
+#include "base/time/time.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
 
@@ -21,8 +21,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 class OnboardingTabHelper
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<OnboardingTabHelper>,
-      public permissions::PermissionRequestManager::Observer {
+      public content::WebContentsUserData<OnboardingTabHelper> {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents);
   OnboardingTabHelper(const OnboardingTabHelper&) = delete;
@@ -31,16 +30,13 @@ class OnboardingTabHelper
 
  private:
   friend class content::WebContentsUserData<OnboardingTabHelper>;
+  FRIEND_TEST_ALL_PREFIXES(OnboardingTest, HelperCreationTestForFirstRun);
+  FRIEND_TEST_ALL_PREFIXES(OnboardingTest, HelperCreationTestForNonFirstRun);
 
   explicit OnboardingTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver
   void DidStopLoading() override;
-  void WebContentsDestroyed() override;
-
-  // PermissionRequestManager::Observer
-  void OnPromptAdded() override;
-  void OnPromptRemoved() override;
 
   void PerformBraveShieldsChecksAndShowHelpBubble();
   bool CanHighlightBraveShields();
@@ -48,13 +44,10 @@ class OnboardingTabHelper
   std::string GetTextForOnboardingShieldsBubble();
   void CleanUp();
 
-  raw_ptr<permissions::PermissionRequestManager> permission_request_manager_ =
-      nullptr;
-  bool browser_has_active_bubble_ = false;
-  base::OneShotTimer timer_;
-  base::ScopedObservation<permissions::PermissionRequestManager,
-                          permissions::PermissionRequestManager::Observer>
-      permission_request_manager_observation_{this};
+  static bool IsSevenDaysPassedSinceFirstRun();
+
+  static absl::optional<base::Time> s_time_now_for_testing_;
+  static absl::optional<base::Time> s_sentinel_time_for_testing_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

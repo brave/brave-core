@@ -476,6 +476,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/brave_tooltips/brave_tooltips_unittest.cc",
     ]
     deps += [
+      "//brave/browser/onboarding:unit_tests",
       "//brave/browser/ui/sidebar:unit_tests",
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",

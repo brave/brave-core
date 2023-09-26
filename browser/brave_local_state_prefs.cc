@@ -51,11 +51,14 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/onboarding/onboarding_tab_helper.h"
 #include "brave/browser/p3a/p3a_core_metrics.h"
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/onboarding/onboarding_tab_helper.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -123,6 +126,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   BraveWindowTracker::RegisterPrefs(registry);
   dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
   whats_new::RegisterLocalStatePrefs(registry);
+#endif
+
+#if defined(TOOLKIT_VIEWS)
   onboarding::RegisterLocalStatePrefs(registry);
 #endif
 

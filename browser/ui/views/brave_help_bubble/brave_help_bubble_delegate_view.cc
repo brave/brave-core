@@ -77,8 +77,8 @@ class BorderWithArrow : public views::BubbleBorder {
     cc::PaintFlags flags;
     flags.setStrokeCap(cc::PaintFlags::kRound_Cap);
 
-    flags.setColor(view.GetColorProvider()->GetColor(
-        ui::kColorBubbleBorderWhenShadowPresent));
+    flags.setColor(
+        view.GetColorProvider()->GetColor(ui::kColorBubbleBorderShadowLarge));
     flags.setStyle(cc::PaintFlags::kStroke_Style);
     flags.setStrokeWidth(1.2);
     flags.setAntiAlias(true);
@@ -152,26 +152,29 @@ BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
 
-  views::Label* k_blocked_trackers_label = new views::Label();
-  k_blocked_trackers_label->SetBorder(
+  views::Label* blocked_trackers_label =
+      AddChildView(std::make_unique<views::Label>());
+  blocked_trackers_label->SetBorder(
       views::CreateEmptyBorder(gfx::Insets::TLBR(10, 0, 8, 0)));
-  SetUpLabel(k_blocked_trackers_label, base::UTF8ToUTF16(text), 16,
+  SetUpLabel(blocked_trackers_label, base::UTF8ToUTF16(text), 16,
              gfx::Font::Weight::SEMIBOLD);
 
-  views::Label* k_view_label = new views::Label();
-  SetUpLabel(k_view_label,
+  views::Label* view_label = AddChildView(std::make_unique<views::Label>());
+  SetUpLabel(view_label,
              l10n_util::GetStringUTF16(
                  IDS_BRAVE_SHIELDS_ONBOARDING_CLICK_TO_VIEW_LABEL),
              14, gfx::Font::Weight::NORMAL);
 
-  AddChildView(k_blocked_trackers_label);
-  AddChildView(k_view_label);
+  AddChildView(view_label);
 }
+
+BraveHelpBubbleDelegateView::~BraveHelpBubbleDelegateView() = default;
 
 std::unique_ptr<NonClientFrameView>
 BraveHelpBubbleDelegateView::CreateNonClientFrameView(views::Widget* widget) {
   std::unique_ptr<NonClientFrameView> frame =
-      BubbleDialogDelegate::CreateNonClientFrameView(widget);
+      BubbleDialogDelegateView::CreateNonClientFrameView(widget);
+  CHECK(frame);
 
   std::unique_ptr<BorderWithArrow> border =
       std::make_unique<BorderWithArrow>(arrow(), color());
@@ -181,18 +184,9 @@ BraveHelpBubbleDelegateView::CreateNonClientFrameView(views::Widget* widget) {
     border->SetCornerRadius(GetCornerRadius());
   }
 
-  DCHECK(frame);
-
   static_cast<BubbleFrameView*>(frame.get())
       ->SetBubbleBorder(std::move(border));
-
   return frame;
-}
-
-void BraveHelpBubbleDelegateView::OnWidgetDestroying(views::Widget* widget) {
-  for (auto& obs : observers_) {
-    obs.OnBubbleDestroying(widget);
-  }
 }
 
 void BraveHelpBubbleDelegateView::SetUpLabel(views::Label* label,
@@ -210,32 +204,6 @@ void BraveHelpBubbleDelegateView::SetUpLabel(views::Label* label,
   label->SetFontList(font_list);
   label->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 }
-
-void BraveHelpBubbleDelegateView::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void BraveHelpBubbleDelegateView::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
-}
-
-void BraveHelpBubbleDelegateView::Show() {
-  if (!widget_) {
-    widget_ = views::BubbleDialogDelegateView::CreateBubble(this);
-  }
-
-  widget_->Show();
-}
-
-void BraveHelpBubbleDelegateView::Hide() {
-  if (!widget_) {
-    return;
-  }
-
-  widget_->Hide();
-}
-
-BraveHelpBubbleDelegateView::~BraveHelpBubbleDelegateView() = default;
 
 BEGIN_METADATA(BraveHelpBubbleDelegateView, BubbleDialogDelegateView)
 END_METADATA

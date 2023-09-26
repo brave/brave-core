@@ -102,7 +102,7 @@ class BraveBrowserView : public BrowserView,
   vertical_tab_strip_widget_delegate_view() {
     return vertical_tab_strip_widget_delegate_view_;
   }
-  void ShowBraveHelpBubbleView(const std::string& text) override;
+  bool ShowBraveHelpBubbleView(const std::string& text) override;
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
@@ -159,7 +159,7 @@ class BraveBrowserView : public BrowserView,
   void UpdateSideBarHorizontalAlignment();
 
   bool closing_confirm_dialog_activated_ = false;
-  base::WeakPtr<BraveHelpBubbleHostView> brave_help_bubble_view_;
+  raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_separator_view_ = nullptr;
   raw_ptr<views::View> contents_background_view_ = nullptr;

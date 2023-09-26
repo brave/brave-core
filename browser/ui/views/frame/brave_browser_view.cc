@@ -590,17 +590,25 @@ void BraveBrowserView::AddedToWidget() {
   }
 }
 
-void BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
+bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
   auto* shields_action_view =
       static_cast<BraveLocationBarView*>(GetLocationBarView())
           ->brave_actions_contatiner_view()
           ->GetShieldsActionView();
-
-  if (shields_action_view && !brave_help_bubble_view_) {
-    brave_help_bubble_view_ =
-        BraveHelpBubbleHostView::Create(shields_action_view, text);
-    AddChildView(brave_help_bubble_view_.get());
+  if (!shields_action_view || !shields_action_view->GetVisible()) {
+    return false;
   }
+
+  // When help bubble is closed, this host view gets hidden.
+  // For now, this help bubble host view is only used for shield icon, but it
+  // could be re-used for other icons or views in the future.
+  if (!brave_help_bubble_host_view_) {
+    brave_help_bubble_host_view_ =
+        AddChildView(std::make_unique<BraveHelpBubbleHostView>());
+  }
+  brave_help_bubble_host_view_->set_text(text);
+  brave_help_bubble_host_view_->set_tracked_element(shields_action_view);
+  return brave_help_bubble_host_view_->Show();
 }
 
 void BraveBrowserView::LoadAccelerators() {
@@ -625,6 +633,11 @@ void BraveBrowserView::OnTabStripModelChanged(
     // This can happen when tab is closed by shortcut (ex, ctrl + F4).
     // After stopping, current tab cycling, new tab cycling will be started.
     StopTabCycling();
+  }
+
+  if (selection.active_tab_changed() && brave_help_bubble_host_view_ &&
+      brave_help_bubble_host_view_->GetVisible()) {
+    brave_help_bubble_host_view_->Hide();
   }
 }
 

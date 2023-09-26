@@ -13,9 +13,10 @@
 class GURL;
 
 namespace onboarding {
-std::string GetCompanyNameFromGURL(const GURL& url);
+
 std::pair<std::string, int> GetCompanyNamesAndCountFromAdsList(
     const std::vector<GURL>& ads_list);
+
 }  // namespace onboarding
 
 #endif  // BRAVE_BROWSER_ONBOARDING_DOMAIN_MAP_H_

@@ -10,6 +10,7 @@ namespace onboarding::prefs {
 
 constexpr char kLastShieldsIconHighlightTime[] =
     "brave.onboarding.last_shields_icon_highlighted_time";
+
 }  // namespace onboarding::prefs
 
 #endif  // BRAVE_BROWSER_ONBOARDING_PREF_NAMES_H_

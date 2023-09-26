@@ -35,5 +35,11 @@ void BraveBrowserWindow::ToggleSidebar() {}
 bool BraveBrowserWindow::HasSelectedURL() const {
   return false;
 }
+
 void BraveBrowserWindow::CleanAndCopySelectedURL() {}
+
+bool BraveBrowserWindow::ShowBraveHelpBubbleView(const std::string& text) {
+  return false;
+}
+
 #endif

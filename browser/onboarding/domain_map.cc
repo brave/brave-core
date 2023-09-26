@@ -5,16 +5,20 @@
 
 #include "brave/browser/onboarding/domain_map.h"
 
-#include <unordered_map>
+#include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
-#include "base/strings/string_piece.h"
+#include "base/containers/flat_set.h"
+#include "base/strings/string_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
 namespace onboarding {
+
+namespace {
+
 constexpr auto kDomains =
-    base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>({
+    base::MakeFixedFlatMap<std::string_view, std::string_view>({
         {"2mdn.net", "Google"},
         {"admeld.com", "Google"},
         {"admob.com", "Google"},
@@ -139,17 +143,19 @@ constexpr auto kDomains =
     });
 
 std::string GetCompanyNameFromGURL(const GURL& url) {
-  auto host = net::registry_controlled_domains::GetDomainAndRegistry(
+  const auto host = net::registry_controlled_domains::GetDomainAndRegistry(
       url, net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
 
   return kDomains.contains(host) ? std::string(kDomains.at(host))
                                  : std::string();
 }
 
+}  // namespace
+
 std::pair<std::string, int> GetCompanyNamesAndCountFromAdsList(
     const std::vector<GURL>& ads_list) {
-  std::string result;
-  std::unordered_map<std::string, int> company_count_map;
+  std::string company_names;
+  base::flat_set<std::string> company_names_set;
   int total_count = 0;
 
   for (const GURL& url : ads_list) {
@@ -157,21 +163,18 @@ std::pair<std::string, int> GetCompanyNamesAndCountFromAdsList(
     if (company_name.empty()) {
       continue;
     }
-    company_count_map[company_name]++;
+    company_names_set.insert(company_name);
+    total_count++;
   }
 
-  for (const auto& [company_name, count] : company_count_map) {
-    if (count > 0) {
-      result.append(company_name);
-      result.append(", ", 2);
-      total_count += count;
-    }
+  if (!company_names_set.empty()) {
+    company_names =
+        base::JoinString(std::vector<std::string>(company_names_set.begin(),
+                                                  company_names_set.end()),
+                         ", ");
   }
 
-  if (result.size() > 0) {
-    result = result.substr(0, result.size() - 2);
-  }
-
-  return {result, total_count};
+  return {company_names, total_count};
 }
+
 }  // namespace onboarding
