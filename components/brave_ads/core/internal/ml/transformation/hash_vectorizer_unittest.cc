@@ -65,7 +65,19 @@ class BraveAdsHashVectorizerTest : public UnitTestBase {};
 TEST_F(BraveAdsHashVectorizerTest, ValidJsonScheme) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(
-      R"({"test":{"foo":true,"bar":3.14,"baz":"qux","quux":"corge"},"list":["grault","garply"]})");
+      R"(
+          {
+            "test": {
+              "foo": true,
+              "bar": 3.14,
+              "baz": "qux",
+              "quux": "corge"
+            },
+            "list": [
+              "grault",
+              "garply"
+            ]
+          })");
 
   // Act
 

@@ -39,10 +39,23 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
   // Act
 
   // Assert
-  EXPECT_EQ(
-      base::test::ParseJsonDict(
-          R"({"totals":[{"ad_format":"ad_notification","click":1,"view":2},{"ad_format":"inline_content_ad","view":1}]})"),
-      BuildSummaryUserData(payment_tokens));
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "totals": [
+                        {
+                          "ad_format": "ad_notification",
+                          "click": 1,
+                          "view": 2
+                        },
+                        {
+                          "ad_format": "inline_content_ad",
+                          "view": 1
+                        }
+                      ]
+                    }
+                )"),
+            BuildSummaryUserData(payment_tokens));
 }
 
 TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForNonRewardsUser) {

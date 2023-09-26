@@ -16,7 +16,14 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kJson[] = R"({"category":"untargeted","optAction":0})";
+
+constexpr char kJson[] =
+    R"(
+        {
+          "category": "untargeted",
+          "optAction": 0
+        })";
+
 }  // namespace
 
 class BraveAdsCategoryContentValueUtilTest : public UnitTestBase {};

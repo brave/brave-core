@@ -21,10 +21,40 @@ namespace brave_ads::ml::pipeline {
 namespace {
 
 constexpr char kJson[] =
-    R"({"locale": "EN", "timestamp": "2022-06-09 08:00:00.704847", "version": 1, "embeddings": {"quick": [0.7481, 0.0493, -0.5572], "brown": [-0.0647, 0.4511, -0.7326], "fox": [-0.9328, -0.2578, 0.0032]}})";
-constexpr char kEmptyJson[] = "{}";
+    R"(
+        {
+          "locale": "EN",
+          "timestamp": "2022-06-09 08:00:00.704847",
+          "version": 1,
+          "embeddings": {
+            "quick": [
+              0.7481,
+              0.0493,
+              -0.5572
+            ],
+            "brown": [
+              -0.0647,
+              0.4511,
+              -0.7326
+            ],
+            "fox": [
+              -0.9328,
+              -0.2578,
+              0.0032
+            ]
+          }
+        })";
+
 constexpr char kMalformedJson[] =
-    R"({"locale": "EN", "timestamp": "2022-06-09 08:00:00.704847", "version": 1, "embeddings": {"quick": "foobar"}})";
+    R"(
+        {
+          "locale": "EN",
+          "timestamp": "2022-06-09 08:00:00.704847",
+          "version": 1,
+          "embeddings": {
+            "quick": "foobar"
+          }
+        })";
 
 }  // namespace
 
@@ -62,9 +92,9 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
   }
 }
 
-TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromEmptyValue) {
+TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromMalformedValue) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(kEmptyJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kMalformedJson);
 
   // Act
 
@@ -72,9 +102,9 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromEmptyValue) {
   EXPECT_FALSE(EmbeddingPipelineFromValue(dict));
 }
 
-TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromMalformedValue) {
+TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromEmptyValue) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(kMalformedJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict("{}");
 
   // Act
 

@@ -45,7 +45,10 @@ class BraveAdsGetSignedTokensUrlRequestUtilTest : public UnitTestBase {
 TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest, ParseCaptchaId) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(
-      R"({"captcha_id":"daf85dc8-164e-4eb9-a4d4-1836055004b3"})");
+      R"(
+          {
+            "captcha_id": "daf85dc8-164e-4eb9-a4d4-1836055004b3"
+          })");
 
   // Act
 

@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/build_user_data_callback.h"
+#include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_unittest_util.h"
@@ -48,11 +49,28 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   // Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
-    std::string json;
-    ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
-    const std::string pattern =
-        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"topSegment":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
-    EXPECT_TRUE(RE2::FullMatch(json, pattern));
+    const base::Value::Dict expected_user_data =
+        base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
+            R"(
+                {
+                  "buildChannel": "release",
+                  "catalog": [
+                    {
+                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                    }
+                  ],
+                  "countryCode": "US",
+                  "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                  "platform": "windows",
+                  "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                  "segment": "untargeted",
+                  "studies": [],
+                  "topSegment": [],
+                  "versionNumber": "$1"
+                })",
+            {GetBrowserVersionNumber()}, nullptr));
+
+    EXPECT_EQ(expected_user_data, user_data);
   });
 
   // Act
@@ -89,11 +107,33 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   // Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
-    std::string json;
-    ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
-    const std::string pattern =
-        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"view"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"topSegment":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
-    EXPECT_TRUE(RE2::FullMatch(json, pattern));
+    const base::Value::Dict expected_user_data =
+        base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
+            R"(
+                {
+                  "buildChannel": "release",
+                  "catalog": [
+                    {
+                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                    }
+                  ],
+                  "conversion": [
+                    {
+                      "action": "view"
+                    }
+                  ],
+                  "countryCode": "US",
+                  "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                  "platform": "windows",
+                  "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                  "segment": "untargeted",
+                  "studies": [],
+                  "topSegment": [],
+                  "versionNumber": "$1"
+                })",
+            {GetBrowserVersionNumber()}, nullptr));
+
+    EXPECT_EQ(expected_user_data, user_data);
   });
 
   // Act
@@ -114,8 +154,15 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
       /*should_use_random_uuids*/ false);
 
   // Assert
-  const base::Value::Dict expected_user_data =
-      base::test::ParseJsonDict(R"({"conversion":[{"action":"click"}]})");
+  const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
+      R"(
+          {
+            "conversion": [
+              {
+                "action": "click"
+              }
+            ]
+          })");
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 
@@ -139,8 +186,9 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
     std::string json;
     ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
-    const std::string pattern =
-        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"view"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":".{44}","segment":"untargeted","studies":\[],"topSegment":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})";
+    const std::string pattern = base::ReplaceStringPlaceholders(
+        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"view"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":"I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=","segment":"untargeted","studies":\[],"topSegment":\[],"versionNumber":"$1"})",
+        {GetBrowserVersionNumber()}, nullptr);
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
