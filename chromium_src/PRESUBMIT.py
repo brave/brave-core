@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import chromium_presubmit_overrides
+import import_inline
 
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
@@ -44,3 +45,26 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
         output_api.PresubmitError(
             f'#include "src/**/*.h" should end with {expected_suffix}', items)
     ]
+
+
+def CheckOverrides(input_api, output_api):
+    items = []
+    with import_inline.sys_path(
+            input_api.os_path.join(input_api.PresubmitLocalPath(), '..',
+                                   'tools')):
+        # pylint: disable=import-error,import-outside-toplevel
+        from chromium_src import check_chromium_src
+    overrides = [
+        f.AbsoluteLocalPath() for f in input_api.AffectedSourceFiles(None)
+    ]
+    # We can't provide the gen directory path from presubmit.
+    messages = check_chromium_src.ChromiumSrcOverridesChecker(
+        gen_buildir=None).check_overrides(overrides)
+    for message in messages['infos']:
+        items.append(output_api.PresubmitNotifyResult(message))
+    for message in messages['warnings']:
+        items.append(output_api.PresubmitPromptWarning(message))
+    for message in messages['errors']:
+        items.append(output_api.PresubmitError(message))
+
+    return items
