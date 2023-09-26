@@ -275,7 +275,7 @@ export const DefaultPanelMenu = (props: Props) => {
               </PopupButtonText>
               <Toggle
                 checked={!hidePortfolioBalances}
-                onChanged={onToggleHideBalances}
+                onChange={onToggleHideBalances}
                 size='small'
               />
             </Row>
@@ -290,7 +290,7 @@ export const DefaultPanelMenu = (props: Props) => {
             </Row>
             <Toggle
               checked={!hidePortfolioGraph}
-              onChanged={onToggleHideGraph}
+              onChange={onToggleHideGraph}
               size='small'
             />
           </ToggleRow>
@@ -304,7 +304,7 @@ export const DefaultPanelMenu = (props: Props) => {
             </Row>
             <Toggle
               checked={!hidePortfolioNFTsTab}
-              onChanged={onToggleHideNFTsTab}
+              onChange={onToggleHideNFTsTab}
               size='small'
             />
           </ToggleRow>

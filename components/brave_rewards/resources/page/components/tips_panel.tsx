@@ -146,7 +146,7 @@ export function TipsPanel () {
           <style.inlineTippingSiteItem key={site}>
             <Checkbox
               checked={enabled}
-              onChanged={siteToggleHandler(site, enabled)}
+              onChange={siteToggleHandler(site, enabled)}
             />
             <span>
               {lookupPublisherPlatformName(site)}
