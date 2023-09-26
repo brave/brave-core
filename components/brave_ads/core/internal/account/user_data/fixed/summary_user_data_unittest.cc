@@ -78,7 +78,11 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataIfNoPaymentTokens) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"totals":[]})"),
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "totals": []
+                    })"),
             BuildSummaryUserData(payment_tokens));
 }
 

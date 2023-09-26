@@ -38,6 +38,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
               }
             ]
           })");
+
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 
@@ -85,6 +86,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
               }
             ]
           })");
+
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 

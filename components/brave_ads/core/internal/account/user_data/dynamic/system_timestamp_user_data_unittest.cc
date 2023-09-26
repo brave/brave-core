@@ -27,7 +27,10 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"({"systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
+                R"(
+                    {
+                      "systemTimestamp": "2020-11-18T12:00:00.000Z"
+                    })"),
             BuildSystemTimestampUserData());
 }
 

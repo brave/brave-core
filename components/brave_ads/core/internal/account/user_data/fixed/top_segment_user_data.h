@@ -10,7 +10,9 @@
 
 namespace brave_ads {
 
-base::Value::Dict BuildTopSegmentUserData();
+struct TransactionInfo;
+
+base::Value::Dict BuildTopSegmentUserData(const TransactionInfo& transaction);
 
 }  // namespace brave_ads
 

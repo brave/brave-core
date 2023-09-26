@@ -83,7 +83,11 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"studies":[]})"),
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "studies": []
+                    })"),
             BuildStudiesUserData());
 }
 

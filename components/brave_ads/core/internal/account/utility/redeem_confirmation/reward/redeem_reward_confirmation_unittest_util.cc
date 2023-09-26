@@ -8,7 +8,8 @@
 namespace brave_ads {
 
 std::string BuildCreateRewardConfirmationUrlResponseBodyForTesting() {
-  return R"({
+  return R"(
+            {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",
@@ -18,7 +19,8 @@ std::string BuildCreateRewardConfirmationUrlResponseBodyForTesting() {
 }
 
 std::string BuildFetchPaymentTokenUrlResponseBodyForTesting() {
-  return R"({
+  return R"(
+            {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
               "createdAt" : "2020-04-20T10:27:11.717Z",
               "type" : "view",

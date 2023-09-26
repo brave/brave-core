@@ -24,7 +24,11 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"countryCode":"US"})"),
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "countryCode": "US"
+                    })"),
             BuildLocaleUserData());
 }
 
@@ -71,7 +75,11 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"countryCode":"??"})"),
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "countryCode": "??"
+                    })"),
             BuildLocaleUserData());
 }
 

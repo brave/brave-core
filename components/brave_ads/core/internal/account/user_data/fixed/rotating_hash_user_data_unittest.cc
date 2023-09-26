@@ -42,8 +42,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
                 R"(
                     {
                       "rotating_hash": "j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="
-                    }
-            )"),
+                    })"),
             BuildRotatingHashUserData(transaction));
 }
 

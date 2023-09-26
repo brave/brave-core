@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -43,12 +44,23 @@ TEST_F(BraveAdsTopSegmentUserDataTest, BuildTopSegmentUserDataForRewardsUser) {
   // Arrange
   targeting_->MockInterest();
 
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ false);
+
   // Act
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"({"topSegment":[{"interest":"personal finance-banking"}]})"),
-            BuildTopSegmentUserData());
+                R"(
+                    {
+                      "topSegment": [
+                        {
+                          "interest": "personal finance-banking"
+                        }
+                      ]
+                    })"),
+            BuildTopSegmentUserData(transaction));
 }
 
 TEST_F(BraveAdsTopSegmentUserDataTest,
@@ -58,21 +70,47 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
 
   targeting_->MockInterest();
 
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ false);
+
   // Act
 
   // Assert
-  EXPECT_TRUE(BuildTopSegmentUserData().empty());
+  EXPECT_TRUE(BuildTopSegmentUserData(transaction).empty());
 }
 
 TEST_F(BraveAdsTopSegmentUserDataTest,
-       DoNotBuildTopSegmentUserDataIfEmptySegment) {
+       DoNotBuildTopSegmentUserDataForNonViewedConfirmationType) {
   // Arrange
+  targeting_->MockInterest();
+
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kClicked,
+      /*should_use_random_uuids*/ false);
 
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"topSegment":[]})"),
-            BuildTopSegmentUserData());
+  EXPECT_TRUE(BuildTopSegmentUserData(transaction).empty());
+}
+
+TEST_F(BraveAdsTopSegmentUserDataTest,
+       DoNotBuildTopSegmentUserDataIfNoTargeting) {
+  // Arrange
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ false);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "topSegment": []
+                    })"),
+            BuildTopSegmentUserData(transaction));
 }
 
 }  // namespace brave_ads

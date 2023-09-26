@@ -22,7 +22,11 @@ TEST_F(BraveAdsBuildChannelUserDataTest,
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"buildChannel":"release"})"),
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "buildChannel": "release"
+                    })"),
             BuildBuildChannelUserData());
 }
 

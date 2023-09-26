@@ -90,7 +90,11 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"action":"view"})"),
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "action": "view"
+                    })"),
             BuildConversionActionTypeUserData(conversion_queue_item));
 }
 
