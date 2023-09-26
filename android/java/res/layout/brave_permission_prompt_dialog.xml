@@ -4,108 +4,125 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/. */ -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:gravity="start"
-    style="@style/AlertDialogContent">
+    style="@style/AlertDialogContent"
+    android:background="@color/brave_wallet_dn_panel_bg"
+    android:gravity="start">
 
-    <ImageView
-        android:id="@+id/favicon"
-        android:layout_height="60dp"
+    <TextView
+        android:id="@+id/title"
+        style="@style/BraveWalletTextViewTitle"
+        android:layout_width="match_parent"
+        android:layout_marginVertical="4dp"
+        android:gravity="center"
+        android:text="@string/permissions_connect_brave_wallet_title"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/permission_prompt_div"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/wallet_edittext_outline_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/permission_prompt_fav_container"
         android:layout_width="60dp"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@null"
-        android:visibility="gone"/>
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:elevation="12dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/permission_prompt_div"
+        app:strokeColor="@color/brave_white"
+        app:strokeWidth="1dp">
+
+        <ImageView
+            android:id="@+id/favicon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_wallet_dapp_panel_account"
+            tools:srcCompat="@drawable/ic_brave_logo" />
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/domain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
         android:textColor="@color/wallet_text_color"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center"
-        android:textColor="@color/wallet_text_color"
-        android:text="@string/permissions_connect_brave_wallet_title"
-        android:textSize="16sp" />
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/permission_prompt_fav_container" />
 
     <TextView
         android:id="@+id/sub_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
+        android:layout_marginVertical="8dp"
         android:text="@string/permissions_connect_brave_wallet_sub_title"
         android:textColor="@color/wallet_text_color"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/permission_prompt_div2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/domain" />
+
+    <View
+        android:id="@+id/permission_prompt_div2"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/wallet_edittext_outline_color"
+        app:layout_constraintBottom_toTopOf="@id/permission_prompt_cv_accounts"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sub_title" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/permission_prompt_cv_accounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:elevation="12dp"
+        app:cardCornerRadius="12dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/permission_prompt_div3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/permission_prompt_div2">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/accounts_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/brave_wallet_dn_highlight_bg_color"
+            android:padding="4dp" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:id="@+id/permission_prompt_div3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/wallet_edittext_outline_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/permission_prompt_cv_accounts" />
 
     <TextView
-        android:id="@+id/title_accounts"
+        android:id="@+id/warning_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/permissions_connect_brave_wallet_accounts_title"
+        android:layout_marginVertical="8dp"
+        android:text="@string/permissions_connect_brave_wallet_warning_title"
         android:textColor="@color/wallet_text_color"
-        android:textSize="14sp" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentTop="true"
-            android:background="@color/wallet_edittext_outline_color" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:paddingBottom="25dp"
-            android:fillViewport="true" >
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/accounts_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp" />
-
-        </ScrollView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/wallet_edittext_outline_color" />
-
-            <TextView
-                android:id="@+id/warning_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/permissions_connect_brave_wallet_warning_title"
-                android:textColor="@color/wallet_text_color"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/permission_prompt_div3" />
+</androidx.constraintlayout.widget.ConstraintLayout>

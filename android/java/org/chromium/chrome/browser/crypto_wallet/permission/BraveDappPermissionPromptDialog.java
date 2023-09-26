@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
+
 import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
@@ -29,6 +31,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -48,11 +51,12 @@ import org.chromium.ui.modaldialog.ModalDialogProperties.ButtonType;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.url.GURL;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.List;
 
 public class BraveDappPermissionPromptDialog
-        implements ModalDialogProperties.Controller, ImageDownloadCallback, ConnectionErrorHandler {
+        implements ModalDialogProperties.Controller, ConnectionErrorHandler {
     private static final String TAG = "BraveDappPermission";
 
     private final ModalDialogManager mModalDialogManager;
@@ -62,10 +66,10 @@ public class BraveDappPermissionPromptDialog
     private PropertyModel mPropertyModel;
     private WebContents mWebContents;
     private String mFavIconURL;
+    private MaterialCardView mCvFavContainer;
     private ImageView mFavIconImage;
     private RecyclerView mRecyclerView;
     private BravePermissionAccountsListAdapter mAccountsListAdapter;
-    private int mRequestId; // Used for favicon downloader
     private KeyringService mKeyringService;
     private boolean mMojoServicesClosed;
     private BraveWalletService mBraveWalletService;
@@ -110,6 +114,7 @@ public class BraveDappPermissionPromptDialog
                 mContext, R.layout.brave_permission_prompt_dialog, null);
 
         mFavIconImage = customView.findViewById(R.id.favicon);
+        mCvFavContainer = customView.findViewById(R.id.permission_prompt_fav_container);
         setFavIcon();
         mRecyclerView = customView.findViewById(R.id.accounts_list);
 
@@ -205,37 +210,11 @@ public class BraveDappPermissionPromptDialog
         if (mFavIconURL.isEmpty()) {
             return;
         }
-        mRequestId = mWebContents.downloadImage(new GURL(mFavIconURL), // url
-                true, // isFavicon
-                WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD, // maxBitmapSize
-                false, // bypassCache
-                this); // callback
-    }
-
-    @Override
-    public void onFinishDownloadImage(int id, int httpStatusCode, GURL imageUrl,
-            List<Bitmap> bitmaps, List<Rect> originalImageSizes) {
-        if (id != mRequestId) return;
-
-        Iterator<Bitmap> iterBitmap = bitmaps.iterator();
-        Iterator<Rect> iterSize = originalImageSizes.iterator();
-
-        Bitmap bestBitmap = null;
-        Rect bestSize = new Rect(0, 0, 0, 0);
-        while (iterBitmap.hasNext() && iterSize.hasNext()) {
-            Bitmap bitmap = iterBitmap.next();
-            Rect size = iterSize.next();
-            if (size.width() > bestSize.width() && size.height() > bestSize.height()) {
-                bestBitmap = bitmap;
-                bestSize = size;
-            }
-        }
-        if (bestSize.width() == 0 || bestSize.height() == 0) {
-            return;
-        }
-
-        mFavIconImage.setImageBitmap(bestBitmap);
-        mFavIconImage.setVisibility(View.VISIBLE);
+        ImageLoader.fetchFavIcon(mFavIconURL, new WeakReference<>(mContext), fav -> {
+            if (fav == null) return;
+            mFavIconImage.setImageBitmap(fav);
+            mCvFavContainer.setVisibility(View.VISIBLE);
+        });
     }
 
     public String[] getSelectedAccounts() {

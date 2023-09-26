@@ -868,11 +868,19 @@ public class Utils {
     }
 
     public static void setBlockiesBitmapResourceFromAccount(ExecutorService executor,
-            Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase) {
+            Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase,
+            boolean isCircular) {
         // TODO(apaymyshev): need to hash uniqueKey string for bitcoin accounts(same as for desktop)
         String source =
                 accountInfo.address != null ? accountInfo.address : accountInfo.accountId.uniqueKey;
-        setTextGeneratedBlockies(executor, handler, iconImg, source, makeLowerCase);
+        setTextGeneratedBlockies(executor, handler, iconImg, source, makeLowerCase, isCircular);
+    }
+
+    public static void setBlockiesBitmapResourceFromAccount(ExecutorService executor,
+            Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase) {
+        // TODO(apaymyshev): need to hash uniqueKey string for bitcoin accounts(same as for desktop)
+        setBlockiesBitmapResourceFromAccount(
+                executor, handler, iconImg, accountInfo, makeLowerCase, true);
     }
 
     public static void setBlockiesBackground(ExecutorService executor, Handler handler, View view,
