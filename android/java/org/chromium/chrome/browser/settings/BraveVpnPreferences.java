@@ -579,7 +579,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         BraveVpnUtils.dismissProgressDialog();
         super.onDestroy();
     }
