@@ -266,6 +266,9 @@ class TabsBarViewController: UIViewController {
         break
       }
       
+      // _UIDragSnappingFeedbackGenerator will occasionally throw an exception that its "already being
+      // interacted with" without explicitly ending the interactive movement on begin
+      collectionView.endInteractiveMovement()
       Task.delayed(bySeconds: 0.1) { @MainActor in
         self.collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
       }
