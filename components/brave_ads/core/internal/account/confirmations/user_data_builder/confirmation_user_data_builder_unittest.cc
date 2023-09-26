@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/json/json_writer.h"
+#include "base/strings/string_util.h"
 #include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -60,7 +61,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
     expected_user_data.fixed =
         base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
-            R"({
+            R"(
+                {
                   "buildChannel": "release",
                   "catalog": [
                     {
@@ -101,11 +103,12 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
     UserDataInfo expected_user_data;
 
-    expected_user_data.dynamic = base::test::ParseJsonDict(R"(
-      {
-        "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
-        "systemTimestamp": "2020-11-18T12:00:00.000Z"
-      })");
+    expected_user_data.dynamic = base::test::ParseJsonDict(
+        R"(
+            {
+              "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+              "systemTimestamp": "2020-11-18T12:00:00.000Z"
+            })");
 
     expected_user_data.fixed =
         base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
@@ -128,7 +131,6 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
                   "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
                   "segment": "untargeted",
                   "studies": [],
-                  "topSegment": [],
                   "versionNumber": "$1"
                 })",
             {GetBrowserVersionNumber()}, nullptr));
@@ -166,7 +168,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     std::string json;
     ASSERT_TRUE(base::JSONWriter::Write(user_data.fixed, &json));
     const std::string pattern = base::ReplaceStringPlaceholders(
-        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":"I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=","segment":"untargeted","studies":\[],"topSegment":\[],"versionNumber":"$1"})",
+        R"({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversion":\[{"action":"click"},{"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","platform":"windows","rotating_hash":"I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=","segment":"untargeted","studies":\[],"versionNumber":"$1"})",
         {GetBrowserVersionNumber()}, nullptr);
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
@@ -216,6 +218,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
               }
             ]
           })");
+
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(expected_user_data));
 

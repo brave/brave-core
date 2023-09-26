@@ -24,7 +24,7 @@ namespace {
 
 constexpr char kExpectedUrl[] =
     R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJzaWduYXR1cmUiOiJrM3hJalZwc0FYTGNHL0NKRGVLQVphN0g3aGlrMVpyUThIOVpEZC9KVU1SQWdtYk5WY0V6VnhRb2dDZDBjcmlDZnZCQWtsd1hybWNyeVBaaFUxMlg3Zz09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)";
-constexpr char kExpectedContent[] =
+constexpr char kExpectedUrlRequestContent[] =
     R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})";
 
 }  // namespace
@@ -58,7 +58,7 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {"accept: application/json"};
-  expected_url_request->content = kExpectedContent;
+  expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
@@ -90,7 +90,7 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {"accept: application/json"};
-  expected_url_request->content = kExpectedContent;
+  expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
@@ -122,7 +122,7 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {"accept: application/json"};
-  expected_url_request->content = kExpectedContent;
+  expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
@@ -154,7 +154,7 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {"accept: application/json"};
-  expected_url_request->content = kExpectedContent;
+  expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
@@ -188,7 +188,7 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {"accept: application/json"};
-  expected_url_request->content = kExpectedContent;
+  expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 
@@ -222,7 +222,7 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {"accept: application/json"};
-  expected_url_request->content = kExpectedContent;
+  expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
 

@@ -8,9 +8,11 @@
 #include <string>
 #include <utility>
 
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_segments.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_segments.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 
@@ -21,10 +23,14 @@ constexpr char kInterestSegmentKey[] = "interest";
 
 }  // namespace
 
-base::Value::Dict BuildTopSegmentUserData() {
+base::Value::Dict BuildTopSegmentUserData(const TransactionInfo& transaction) {
   base::Value::Dict user_data;
 
   if (!UserHasJoinedBraveRewards()) {
+    return user_data;
+  }
+
+  if (transaction.confirmation_type != ConfirmationType::kViewed) {
     return user_data;
   }
 

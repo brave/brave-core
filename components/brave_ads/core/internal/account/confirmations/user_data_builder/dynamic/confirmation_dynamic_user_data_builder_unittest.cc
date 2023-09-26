@@ -41,6 +41,7 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
             "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
             "systemTimestamp": "2020-11-18T12:00:00.000Z"
           })");
+
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 

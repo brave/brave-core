@@ -26,7 +26,11 @@ TEST_F(BraveAdsSegmentUserDataTest, BuildSegmentUserDataForRewardsUser) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"segment":"untargeted"})"),
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "segment": "untargeted"
+                    })"),
             BuildSegmentUserData(transaction));
 }
 
@@ -45,7 +49,7 @@ TEST_F(BraveAdsSegmentUserDataTest,
   EXPECT_TRUE(BuildSegmentUserData(transaction).empty());
 }
 
-TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSegmentUserDataIfEmptySegment) {
+TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSegmentUserDataIfNoTargeting) {
   // Arrange
   const TransactionInfo transaction;
 

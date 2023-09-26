@@ -39,7 +39,7 @@ void BuildFixedUserDataCallback(const TransactionInfo& transaction,
   user_data.Merge(BuildRotatingHashUserData(transaction));
   user_data.Merge(BuildSegmentUserData(transaction));
   user_data.Merge(BuildStudiesUserData());
-  user_data.Merge(BuildTopSegmentUserData());
+  user_data.Merge(BuildTopSegmentUserData(transaction));
   user_data.Merge(BuildVersionNumberUserData());
 
   std::move(callback).Run(std::move(user_data));

@@ -8,13 +8,14 @@
 namespace brave_ads {
 
 std::string BuildCreateNonRewardConfirmationUrlResponseBodyForTesting() {
-  return R"({
-              "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
-              "createdAt" : "2020-04-20T10:27:11.717Z",
-              "type" : "view",
-              "modifiedAt" : "2020-04-20T10:27:11.717Z",
-              "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
-            })";
+  return R"(
+              {
+                "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
+                "createdAt" : "2020-04-20T10:27:11.717Z",
+                "type" : "view",
+                "modifiedAt" : "2020-04-20T10:27:11.717Z",
+                "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
+              })";
 }
 
 }  // namespace brave_ads

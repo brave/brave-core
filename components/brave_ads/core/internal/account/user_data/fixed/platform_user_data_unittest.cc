@@ -21,7 +21,11 @@ TEST_F(BraveAdsPlatformUserDataTest, BuildPlatformUserDataForRewardsUser) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"platform":"windows"})"),
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "platform": "windows"
+                    })"),
             BuildPlatformUserData());
 }
 
