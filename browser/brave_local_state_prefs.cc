@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
 #include "brave/components/misc_metrics/page_metrics_service.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
@@ -84,6 +85,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       registry);
   ntp_background_images::ViewCounterService::RegisterLocalStatePrefs(registry);
   RegisterPrefsForBraveReferralsService(registry);
+  brave_l10n::RegisterL10nLocalStatePrefs(registry);
 #if BUILDFLAG(IS_MAC)
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,

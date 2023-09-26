@@ -131,6 +131,7 @@ class NTPBackgroundImagesService {
   void OnGetComponentJsonData(const std::string& json_string);
   void OnMappingTableComponentReady(const base::FilePath& installed_dir);
   void OnPreferenceChanged(const std::string& pref_name);
+  void OnCountryCodePrefChanged();
   void OnGetMappingTableData(const std::string& json_string);
 
   std::string GetReferralPromoCode() const;
@@ -155,6 +156,7 @@ class NTPBackgroundImagesService {
   bool test_data_used_ = false;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_ =
       nullptr;
+  absl::optional<std::string> sponsored_images_component_id_;
   raw_ptr<PrefService> local_pref_ = nullptr;
   base::FilePath bi_installed_dir_;
   std::unique_ptr<NTPBackgroundImagesData> bi_images_data_;

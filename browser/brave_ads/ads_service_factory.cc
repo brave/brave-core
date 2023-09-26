@@ -17,6 +17,7 @@
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -89,8 +90,9 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
 
   std::unique_ptr<AdsServiceImpl> ads_service =
       std::make_unique<AdsServiceImpl>(
-          profile, brave_adaptive_captcha_service,
-          CreateAdsTooltipsDelegate(profile), std::make_unique<DeviceIdImpl>(),
+          profile, g_browser_process->local_state(),
+          brave_adaptive_captcha_service, CreateAdsTooltipsDelegate(profile),
+          std::make_unique<DeviceIdImpl>(),
           std::make_unique<BatAdsServiceFactoryImpl>(), history_service,
           rewards_service, notification_ad_async_data_store);
   return ads_service.release();

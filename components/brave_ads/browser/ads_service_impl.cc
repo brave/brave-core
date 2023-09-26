@@ -53,7 +53,9 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -202,9 +204,7 @@ mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
   return command_response;
 }
 
-void RegisterResourceComponentsForDefaultCountryCode() {
-  const std::string& locale = brave_l10n::GetDefaultLocaleString();
-  const std::string country_code = brave_l10n::GetISOCountryCode(locale);
+void RegisterResourceComponentsForCountryCode(const std::string& country_code) {
   g_brave_browser_process->resource_component()
       ->RegisterComponentForCountryCode(country_code);
 }
@@ -228,6 +228,7 @@ void OnUrlLoaderResponseStartedCallback(
 
 AdsServiceImpl::AdsServiceImpl(
     Profile* profile,
+    PrefService* local_state,
     brave_adaptive_captcha::BraveAdaptiveCaptchaService*
         adaptive_captcha_service,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
@@ -237,6 +238,7 @@ AdsServiceImpl::AdsServiceImpl(
     brave_rewards::RewardsService* rewards_service,
     brave_federated::AsyncDataStore* notification_ad_timing_data_store)
     : profile_(profile),
+      local_state_(local_state),
       history_service_(history_service),
       adaptive_captcha_service_(adaptive_captcha_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
@@ -251,6 +253,7 @@ AdsServiceImpl::AdsServiceImpl(
       notification_ad_timing_data_store_(notification_ad_timing_data_store),
       bat_ads_client_(this) {
   CHECK(profile_);
+  CHECK(local_state_);
   CHECK(adaptive_captcha_service_);
   CHECK(device_id_);
   CHECK(history_service_);
@@ -285,8 +288,8 @@ bool AdsServiceImpl::IsBatAdsServiceBound() const {
   return bat_ads_service_.is_bound();
 }
 
-void AdsServiceImpl::RegisterResourceComponentsForDefaultLocale() const {
-  RegisterResourceComponentsForDefaultCountryCode();
+void AdsServiceImpl::RegisterResourceComponents() const {
+  RegisterResourceComponentsForCurrentCountryCode();
   if (UserHasOptedInToNotificationAds()) {
     RegisterResourceComponentsForDefaultLanguageCode();
   }
@@ -299,6 +302,12 @@ void AdsServiceImpl::Migrate() {
     profile_->GetPrefs()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
     profile_->GetPrefs()->SetBoolean(prefs::kOptedInToNotificationAds, false);
   }
+}
+
+void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() const {
+  const std::string country_code = brave_l10n::GetCountryCode(local_state_);
+
+  RegisterResourceComponentsForCountryCode(country_code);
 }
 
 bool AdsServiceImpl::UserHasOptedInToBraveRewards() const {
@@ -338,6 +347,7 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
     std::string device_id) {
   sys_info_.device_id = std::move(device_id);
 
+  InitializeLocalStatePrefChangeRegistrar();
   InitializePrefChangeRegistrar();
 
   MaybeStartBatAdsService();
@@ -510,7 +520,7 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
 
   is_bat_ads_initialized_ = true;
 
-  RegisterResourceComponentsForDefaultLocale();
+  RegisterResourceComponents();
 
   BackgroundHelper::GetInstance()->AddObserver(this);
 
@@ -531,6 +541,7 @@ void AdsServiceImpl::ShutdownAndResetState() {
   VLOG(6) << "Resetting ads state";
 
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently("brave.brave_ads");
+  local_state_->ClearPref(brave_l10n::prefs::kCountryCode);
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, base_path_),
@@ -602,6 +613,16 @@ void AdsServiceImpl::CloseAdaptiveCaptcha() {
 #if !BUILDFLAG(IS_ANDROID)
   ads_tooltips_delegate_->CloseCaptchaTooltip();
 #endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
+  local_state_pref_change_registrar_.Init(local_state_);
+
+  local_state_pref_change_registrar_.Add(
+      brave_l10n::prefs::kCountryCode,
+      base::BindRepeating(&AdsServiceImpl::OnCountryCodePrefChanged,
+                          base::Unretained(this),
+                          brave_l10n::prefs::kCountryCode));
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
@@ -692,6 +713,12 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
   }
 
   MaybeStartBatAdsService();
+
+  NotifyPrefChanged(path);
+}
+
+void AdsServiceImpl::OnCountryCodePrefChanged(const std::string& path) {
+  RegisterResourceComponentsForCurrentCountryCode();
 
   NotifyPrefChanged(path);
 }
@@ -1825,6 +1852,17 @@ void AdsServiceImpl::ClearPref(const std::string& path) {
 void AdsServiceImpl::HasPrefPath(const std::string& path,
                                  HasPrefPathCallback callback) {
   std::move(callback).Run(profile_->GetPrefs()->HasPrefPath(path));
+}
+
+void AdsServiceImpl::GetLocalStatePref(const std::string& path,
+                                       GetLocalStatePrefCallback callback) {
+  std::move(callback).Run(local_state_->GetValue(path).Clone());
+}
+
+void AdsServiceImpl::SetLocalStatePref(const std::string& path,
+                                       base::Value value) {
+  local_state_->Set(path, value);
+  NotifyPrefChanged(path);
 }
 
 void AdsServiceImpl::Log(const std::string& file,

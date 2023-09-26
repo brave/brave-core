@@ -10,6 +10,8 @@
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
+#include "brave/components/brave_ads/core/internal/common/country_code/country_code.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -92,7 +94,9 @@ class AdHandler final : public ConversionsObserver, TransferObserver {
 
   Transfer transfer_;
 
+  CountryCode country_code_;
   SubdivisionTargeting subdivision_targeting_;
+  Subdivision subdivision_;
 
   AntiTargetingResource anti_targeting_resource_;
 

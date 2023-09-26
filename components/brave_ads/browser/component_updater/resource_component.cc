@@ -11,9 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_ads/browser/component_updater/component_util.h"
 
 namespace brave_ads {
 
@@ -29,8 +27,6 @@ constexpr char kResourceIdKey[] = "id";
 constexpr char kResourceFilenameKey[] = "filename";
 constexpr char kResourceVersionKey[] = "version";
 
-constexpr char kComponentName[] = "Brave Ads Resources (%s)";
-
 constexpr base::FilePath::CharType kManifestFile[] =
     FILE_PATH_LITERAL("manifest.json");
 
@@ -43,10 +39,12 @@ std::string GetResourceKey(const std::string& id, int version) {
 
 }  // namespace
 
-ResourceComponent::ResourceComponent(Delegate* delegate)
-    : brave_component_updater::BraveComponent(delegate) {
-  CHECK(delegate);
-}
+ResourceComponent::ResourceComponent(
+    brave_component_updater::BraveComponent::Delegate*
+        component_updater_delegate)
+    : country_resource_component_registrar_(component_updater_delegate, *this),
+      language_resource_component_registrar_(component_updater_delegate,
+                                             *this) {}
 
 ResourceComponent::~ResourceComponent() = default;
 
@@ -64,38 +62,13 @@ void ResourceComponent::RemoveObserver(ResourceComponentObserver* observer) {
 
 void ResourceComponent::RegisterComponentForCountryCode(
     const std::string& country_code) {
-  CHECK(!country_code.empty());
-
-  const absl::optional<ComponentInfo> component =
-      GetComponentInfo(country_code);
-  if (!component) {
-    return VLOG(1) << "Ads resource not supported for " << country_code;
-  }
-
-  const std::string component_name =
-      base::StringPrintf(kComponentName, country_code.c_str());
-
-  VLOG(1) << "Registering " << component_name << " with id " << component->id;
-
-  Register(component_name, component->id.data(), component->public_key.data());
+  country_resource_component_registrar_.RegisterResourceComponent(country_code);
 }
 
 void ResourceComponent::RegisterComponentForLanguageCode(
     const std::string& language_code) {
-  CHECK(!language_code.empty());
-
-  const absl::optional<ComponentInfo> component =
-      GetComponentInfo(language_code);
-  if (!component) {
-    return VLOG(1) << "Ads resource not supported for " << language_code;
-  }
-
-  const std::string component_name =
-      base::StringPrintf(kComponentName, language_code.c_str());
-
-  VLOG(1) << "Registering " << component_name << " with id " << component->id;
-
-  Register(component_name, component->id.data(), component->public_key.data());
+  language_resource_component_registrar_.RegisterResourceComponent(
+      language_code);
 }
 
 void ResourceComponent::NotifyDidUpdateResourceComponent(
@@ -132,9 +105,9 @@ std::string LoadFile(const base::FilePath& path) {
   return json;
 }
 
-void ResourceComponent::OnComponentReady(const std::string& component_id,
-                                         const base::FilePath& install_dir,
-                                         const std::string& /*resource*/) {
+void ResourceComponent::OnResourceComponentRegistered(
+    const std::string& component_id,
+    const base::FilePath& install_dir) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&LoadFile, install_dir.Append(kManifestFile)),

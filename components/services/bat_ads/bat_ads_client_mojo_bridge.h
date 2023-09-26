@@ -128,6 +128,10 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   void ClearPref(const std::string& path) override;
   bool HasPrefPath(const std::string& path) const override;
 
+  absl::optional<base::Value> GetLocalStatePref(
+      const std::string& path) const override;
+  void SetLocalStatePref(const std::string& path, base::Value value) override;
+
   void Log(const char* file,
            int line,
            int verbose_level,

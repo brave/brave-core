@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_GEOGRAPHICAL_SUBDIVISION_SUBDIVISION_URL_REQUEST_DELEGATE_MOCK_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_GEOGRAPHICAL_SUBDIVISION_SUBDIVISION_URL_REQUEST_DELEGATE_MOCK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_URL_REQUEST_SUBDIVISION_URL_REQUEST_DELEGATE_MOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_URL_REQUEST_SUBDIVISION_URL_REQUEST_DELEGATE_MOCK_H_
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_url_request_delegate.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
@@ -44,4 +44,4 @@ class SubdivisionUrlRequestDelegateMock : public SubdivisionUrlRequestDelegate {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_GEOGRAPHICAL_SUBDIVISION_SUBDIVISION_URL_REQUEST_DELEGATE_MOCK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SUBDIVISION_URL_REQUEST_SUBDIVISION_URL_REQUEST_DELEGATE_MOCK_H_

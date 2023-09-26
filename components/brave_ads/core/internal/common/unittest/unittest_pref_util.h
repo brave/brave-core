@@ -28,6 +28,7 @@ void SetUint64Pref(const std::string& path, uint64_t value);
 void SetDictPref(const std::string& path, base::Value::Dict value = {});
 void SetListPref(const std::string& path, base::Value::List value = {});
 void SetTimePref(const std::string& path, base::Time value);
+void SetLocalStatePref(const std::string& path, const std::string& value);
 
 }  // namespace brave_ads
 

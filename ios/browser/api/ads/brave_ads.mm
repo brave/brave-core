@@ -5,13 +5,7 @@
 
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 
-#import "ads_client_bridge.h"
-#import "ads_client_ios.h"
 #include "base/base64.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
@@ -25,6 +19,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
@@ -41,14 +36,20 @@
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/user/user_interaction/ad_events/ad_event_cache.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/prefs.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
+#import "brave/ios/browser/api/ads/ads_client_bridge.h"
+#import "brave/ios/browser/api/ads/ads_client_ios.h"
+#import "brave/ios/browser/api/ads/brave_ads.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
+#import "brave/ios/browser/api/ads/inline_content_ad_ios.h"
+#import "brave/ios/browser/api/ads/notification_ad_ios.h"
 #import "brave/ios/browser/api/common/common_operations.h"
-#import "brave_ads.h"
 #include "build/build_config.h"
-#import "inline_content_ad_ios.h"
 #include "net/base/mac/url_conversions.h"
-#import "notification_ad_ios.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -1566,6 +1567,18 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (bool)hasPrefPath:(const std::string&)path {
   const auto key = base::SysUTF8ToNSString(path);
   return [self.prefs objectForKey:key] != nil;
+}
+
+- (void)setLocalStatePref:(const std::string&)path value:(base::Value)value {
+  // Not needed on iOS
+}
+
+- (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path {
+  if (path == brave_l10n::prefs::kCountryCode) {
+    return base::Value(brave_l10n::GetDefaultISOCountryCodeString());
+  }
+
+  return absl::nullopt;
 }
 
 #pragma mark - Ads Resources Paths

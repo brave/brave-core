@@ -13,15 +13,18 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component_registrar.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component_registrar_delegate.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_info.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-class ResourceComponent : public brave_component_updater::BraveComponent {
+class ResourceComponent : public ResourceComponentRegistrarDelegate {
  public:
-  explicit ResourceComponent(Delegate* delegate);
+  explicit ResourceComponent(
+      brave_component_updater::BraveComponent::Delegate* delegate);
 
   ResourceComponent(const ResourceComponent&) = delete;
   ResourceComponent& operator=(const ResourceComponent&) = delete;
@@ -51,11 +54,13 @@ class ResourceComponent : public brave_component_updater::BraveComponent {
                             const base::FilePath& install_dir,
                             const std::string& json);
 
-  // brave_component_updater::BraveComponent:
-  void OnComponentReady(const std::string& component_id,
-                        const base::FilePath& install_dir,
-                        const std::string& manifest) override;
+  // ResourceComponentRegistrarDelegate:
+  void OnResourceComponentRegistered(
+      const std::string& component_id,
+      const base::FilePath& install_dir) override;
 
+  ResourceComponentRegistrar country_resource_component_registrar_;
+  ResourceComponentRegistrar language_resource_component_registrar_;
   std::map<std::string, ResourceInfo> resources_;
   base::ObserverList<ResourceComponentObserver> observers_;
   base::WeakPtrFactory<ResourceComponent> weak_factory_{this};

@@ -8,6 +8,8 @@
 
 #include <string_view>
 
+#include <string>
+
 #include "base/containers/flat_map.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/public/export.h"
@@ -22,7 +24,8 @@ using SupportedSubdivisionMap =
 
 ADS_EXPORT const SupportedSubdivisionMap& GetSupportedSubdivisions();
 
-ADS_EXPORT base::Value::List GetSupportedSubdivisionsAsValueList();
+base::Value::List GetSupportedSubdivisionsAsValueList(
+    const std::string& country_code);
 
 }  // namespace brave_ads
 

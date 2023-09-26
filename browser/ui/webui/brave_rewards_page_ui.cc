@@ -36,9 +36,10 @@
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
@@ -68,6 +69,10 @@ using brave_rewards::GetExternalWalletResult;
 using content::WebUIMessageHandler;
 
 namespace {
+
+PrefService* GetLocalState() {
+  return g_browser_process->local_state();
+}
 
 #if !BUILDFLAG(IS_ANDROID)
 
@@ -1243,8 +1248,9 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   ads_data.Set("needsBrowserUpgradeToServeAds",
                ads_service_->NeedsBrowserUpgradeToServeAds());
 
+  const std::string country_code = brave_l10n::GetCountryCode(GetLocalState());
   ads_data.Set("subdivisions",
-               brave_ads::GetSupportedSubdivisionsAsValueList());
+               brave_ads::GetSupportedSubdivisionsAsValueList(country_code));
 
   ads_data.Set("notificationAdsEnabled",
                prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds));
@@ -1484,9 +1490,6 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
                       value == "true");
   } else if (key == kAdsSubdivisionTargeting) {
     prefs->SetString(brave_ads::prefs::kSubdivisionTargetingSubdivision, value);
-  } else if (key == kAutoDetectedSubdivisionTargeting) {
-    prefs->SetString(
-        brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision, value);
   }
 
   GetAdsData(base::Value::List());
