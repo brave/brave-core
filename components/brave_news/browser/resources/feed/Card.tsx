@@ -32,14 +32,18 @@ export const MetaInfoContainer = styled.h4`
   --leo-icon-size: 12px;
 `
 
+export const getOrigin = (article: FeedItemMetadata) => {
+  const host = new URL(article.url.url).host
+  return host.startsWith('www.') ? host.substring(4) : host
+}
+
 export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boolean }) {
-  const host = new URL(props.article.url.url).host
-  const hostSansWWW = host.startsWith('www.') ? host.substring(4) : host
+
   const maybeChannel = !props.hideChannel && <>
     • {channelIcons[props.article.categoryName] ?? channelIcons.default} {props.article.categoryName}
   </>
   return <MetaInfoContainer>
-    {hostSansWWW} {maybeChannel} • {props.article.relativeTimeDescription}
+    {getOrigin(props.article)} {maybeChannel} • {props.article.relativeTimeDescription}
   </MetaInfoContainer>
 }
 

@@ -3,13 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
-import Card, { MetaInfo, Title } from './Card';
+import Card, { MetaInfo, Title, getOrigin } from './Card';
 import { FeedItemMetadata, Article as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
 import { spacing } from '@brave/leo/tokens/css';
 import { useLazyUnpaddedImageUrl } from '../../../../brave_new_tab_ui/components/default/braveNews/useUnpaddedImageUrl';
 import Flex from '../../../../brave_new_tab_ui/components/Flex';
 import Button from '@brave/leo/react/button';
+import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Icon from '@brave/leo/react/icon';
 
 interface Props {
@@ -46,13 +47,22 @@ export default function Article({ info, hideChannel }: Props) {
   return <Container onClick={() => openArticle(info.data)} ref={setElementRef}>
     <Flex direction='row' gap={spacing.m} justify='space-between'>
       <MetaInfo article={info.data} hideChannel={hideChannel} />
-      <MenuButton kind='plain-faint' onClick={e => {
-        e.preventDefault()
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-      }}><Icon name='more-horizontal' /></MenuButton>
+      <ButtonMenu>
+        <MenuButton slot='anchor-content' kind='plain-faint' onClick={e => {
+          e.preventDefault()
+          e.stopPropagation()
+          e.stopImmediatePropagation()
+        }}>
+          <Icon name='more-horizontal' />
+        </MenuButton>
+        <leo-menu-item onClick={e => {
+          e.preventDefault()
+          e.stopPropagation()
+          e.stopImmediatePropagation()
+        }}>Hide content from {getOrigin(info.data)}</leo-menu-item>
+      </ButtonMenu>
     </Flex>
-    <Flex direction='row' gap={spacing.m}>
+    <Flex direction='row' gap={spacing.m} justify='space-between'>
       <Title>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</Title>
       <ArticleImage src={url} />
     </Flex>
