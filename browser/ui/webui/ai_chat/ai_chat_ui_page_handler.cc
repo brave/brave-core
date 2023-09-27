@@ -52,10 +52,10 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
     // Report visibility of AI Chat UI to the Conversation, so that
     // automatic actions are only performed when neccessary.
-    bool is_visible = (owner_web_contents->GetVisibility() ==
-                       content::Visibility::VISIBLE)
-                          ? true
-                          : false;
+    bool is_visible =
+        (owner_web_contents->GetVisibility() == content::Visibility::VISIBLE)
+            ? true
+            : false;
     active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
   } else {
     // TODO(petemill): Enable conversation without the TabHelper. Conversation
