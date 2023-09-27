@@ -26,6 +26,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           {IDC_NEW_TAB, kLeoBrowserAddIcon},
           {IDC_NEW_WINDOW, kLeoWindowTabNewIcon},
           {IDC_NEW_INCOGNITO_WINDOW, kLeoWindowTabPrivateIcon},
+          {IDC_NEW_TOR_CONNECTION_FOR_SITE, kLeoWindowTabTorIcon},
           {IDC_NEW_OFFTHERECORD_WINDOW_TOR, kLeoWindowTabTorIcon},
           {IDC_SHOW_BRAVE_REWARDS, kLeoProductBatOutlineIcon},
           {IDC_SHOW_BRAVE_WALLET, kLeoProductBraveWalletIcon},
@@ -62,6 +63,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           // The `History submenu
           {IDC_SHOW_HISTORY, kLeoHistoryIcon},
           {IDC_CLEAR_BROWSING_DATA, kLeoShredDataIcon},
+          {IDC_RECENT_TABS_NO_DEVICE_TABS, kLeoSmartphoneLaptopIcon},
 
           // The `Help` menu
           {IDC_ABOUT, kLeoBraveIconMonochromeIcon},
