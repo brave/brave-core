@@ -110,8 +110,10 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
 
         observer.fetchedPanelPublisher = { [weak self] publisher, tabId in
           guard let self = self else { return }
-          if tabId == self.tab.rewardsId {
-            self.publisher = publisher
+          DispatchQueue.main.async {
+            if tabId == self.tab.rewardsId {
+              self.publisher = publisher
+            }
           }
         }
       }
