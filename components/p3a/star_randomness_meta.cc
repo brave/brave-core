@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "brave/components/p3a/features.h"
@@ -19,6 +20,7 @@
 #include "brave/components/p3a/nitro_utils/attestation.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -28,10 +30,20 @@ namespace p3a {
 
 namespace {
 
-constexpr char kCurrentPKPrefName[] = "brave.p3a.current_pk";
-constexpr char kCurrentEpochPrefName[] = "brave.p3a.current_epoch";
-constexpr char kNextEpochTimePrefName[] = "brave.p3a.next_epoch_time";
-constexpr char kApprovedCertFPPrefName[] = "brave.p3a.approved_cert_fp";
+constexpr char kCurrentPKPrefName[] = "brave.p3a.current_pk";  // DEPRECATED
+constexpr char kCurrentEpochPrefName[] =
+    "brave.p3a.current_epoch";  // DEPRECATED
+constexpr char kNextEpochTimePrefName[] =
+    "brave.p3a.next_epoch_time";  // DEPRECATED
+constexpr char kApprovedCertFPPrefName[] =
+    "brave.p3a.approved_cert_fp";  // DEPRECATED
+
+constexpr char kRandomnessMetaDictPrefName[] =
+    "brave.p3a.randomness_meta";  // DEPRECATED
+constexpr char kCurrentPKPrefKey[] = "current_pk";
+constexpr char kCurrentEpochPrefKey[] = "current_epoch";
+constexpr char kNextEpochTimePrefKey[] = "next_epoch_time";
+
 // A generous arbitrary limit, 128KB
 constexpr std::size_t kMaxInfoResponseSize = 128 * 1024;
 const int kRndInfoRetryInitialBackoffSeconds = 5;
@@ -103,10 +115,32 @@ StarRandomnessMeta::StarRandomnessMeta(
 StarRandomnessMeta::~StarRandomnessMeta() = default;
 
 void StarRandomnessMeta::RegisterPrefs(PrefRegistrySimple* registry) {
+  registry->RegisterDictionaryPref(kRandomnessMetaDictPrefName);
+  registry->RegisterStringPref(kApprovedCertFPPrefName, "");
+}
+
+void StarRandomnessMeta::RegisterPrefsForMigration(
+    PrefRegistrySimple* registry) {
+  // Added 09/2023
   registry->RegisterStringPref(kCurrentPKPrefName, std::string());
   registry->RegisterIntegerPref(kCurrentEpochPrefName, -1);
   registry->RegisterTimePref(kNextEpochTimePrefName, base::Time());
-  registry->RegisterStringPref(kApprovedCertFPPrefName, "");
+}
+
+void StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(
+    PrefService* local_state) {
+  // Added 09/2023
+  ScopedDictPrefUpdate update(local_state, kRandomnessMetaDictPrefName);
+  base::Value::Dict* typical_dict =
+      update->EnsureDict(MetricLogTypeToString(MetricLogType::kTypical));
+
+  typical_dict->Set(kCurrentPKPrefKey,
+                    local_state->GetString(kCurrentPKPrefName));
+  typical_dict->Set(kCurrentEpochPrefKey,
+                    local_state->GetInteger(kCurrentEpochPrefName));
+  typical_dict->Set(
+      kNextEpochTimePrefKey,
+      base::TimeToValue(local_state->GetTime(kNextEpochTimePrefName)));
 }
 
 bool StarRandomnessMeta::ShouldAttestEnclave() {
@@ -155,28 +189,36 @@ void StarRandomnessMeta::RequestServerInfo(MetricLogType log_type) {
 
   if (!update_state->has_used_cached_info) {
     // Using cached server info, if available.
-    update_state->last_cached_epoch =
-        absl::make_optional(local_state_->GetInteger(kCurrentEpochPrefName));
-    base::Time saved_next_epoch_time =
-        local_state_->GetTime(kNextEpochTimePrefName);
-    // only return cached info if the epoch is not expired,
-    // and if the "fake" star epoch matches the last saved epoch (if specified).
-    // if "fake" star epoch does not match the saved epoch, then fresh server
-    // info should be requested to update the local state with the new epoch
-    // info
-    if (saved_next_epoch_time > base::Time::Now() &&
-        (!config_->fake_star_epochs.at(log_type).has_value() ||
-         config_->fake_star_epochs.at(log_type) ==
-             update_state->last_cached_epoch)) {
-      std::string saved_pk = local_state_->GetString(kCurrentPKPrefName);
+    const base::Value::Dict& meta_dict =
+        local_state_->GetDict(kRandomnessMetaDictPrefName);
+    const base::Value::Dict* meta_type_dict =
+        meta_dict.FindDict(MetricLogTypeToString(log_type));
+    if (meta_type_dict != nullptr) {
+      update_state->last_cached_epoch =
+          meta_type_dict->FindInt(kCurrentEpochPrefKey);
+      base::Time saved_next_epoch_time =
+          base::ValueToTime(meta_type_dict->Find(kNextEpochTimePrefKey))
+              .value_or(base::Time());
+      // only return cached info if the epoch is not expired,
+      // and if the "fake" star epoch matches the last saved epoch (if
+      // specified). if "fake" star epoch does not match the saved epoch, then
+      // fresh server info should be requested to update the local state with
+      // the new epoch info
+      if (saved_next_epoch_time > base::Time::Now() &&
+          (!config_->fake_star_epochs.at(log_type).has_value() ||
+           config_->fake_star_epochs.at(log_type) ==
+               update_state->last_cached_epoch)) {
+        const std::string* saved_pk =
+            meta_type_dict->FindString(kCurrentPKPrefKey);
 
-      update_state->rnd_server_info = std::make_unique<RandomnessServerInfo>(
-          *update_state->last_cached_epoch, saved_next_epoch_time, false,
-          DecodeServerPublicKey(&saved_pk));
-      VLOG(2) << "StarRandomnessMeta: using cached server info";
-      info_callback_.Run(log_type, update_state->rnd_server_info.get());
-      update_state->has_used_cached_info = true;
-      return;
+        update_state->rnd_server_info = std::make_unique<RandomnessServerInfo>(
+            *update_state->last_cached_epoch, saved_next_epoch_time, false,
+            DecodeServerPublicKey(saved_pk));
+        VLOG(2) << "StarRandomnessMeta: using cached server info";
+        info_callback_.Run(log_type, update_state->rnd_server_info.get());
+        update_state->has_used_cached_info = true;
+        return;
+      }
     }
   }
 
@@ -329,11 +371,16 @@ void StarRandomnessMeta::HandleServerInfoResponse(
   const std::string* pk_value = root.FindString("publicKey");
   ::rust::Box<constellation::PPOPRFPublicKeyWrapper> pk =
       DecodeServerPublicKey(pk_value);
+
+  ScopedDictPrefUpdate update(local_state_, kRandomnessMetaDictPrefName);
+  base::Value::Dict* meta_type_dict =
+      update->EnsureDict(MetricLogTypeToString(log_type));
   if (pk_value != nullptr) {
-    local_state_->SetString(kCurrentPKPrefName, *pk_value);
+    meta_type_dict->Set(kCurrentPKPrefKey, *pk_value);
   }
-  local_state_->SetInteger(kCurrentEpochPrefName, *epoch);
-  local_state_->SetTime(kNextEpochTimePrefName, next_epoch_time);
+  meta_type_dict->Set(kCurrentEpochPrefKey, *epoch);
+  meta_type_dict->Set(kNextEpochTimePrefKey,
+                      base::TimeToValue(next_epoch_time));
 
   bool epoch_change_detected = false;
   if (update_state->last_cached_epoch != epoch) {

@@ -7,27 +7,38 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_message.h"
 #include "brave/components/p3a/star_randomness_test_util.h"
 #include "brave/components/p3a/uploader.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
 namespace p3a {
 
 namespace {
 
-constexpr uint8_t kTestEpoch = 5;
-constexpr char kTestNextEpochTime[] = "2086-06-24T18:00:00Z";
+constexpr uint8_t kTestSlowEpoch = 2;
+constexpr uint8_t kTestTypicalEpoch = 5;
+constexpr uint8_t kTestExpressEpoch = 7;
+constexpr char kTestSlowNextEpochTime[] = "2086-06-22T18:00:00Z";
+constexpr char kTestTypicalNextEpochTime[] = "2086-06-24T18:00:00Z";
+constexpr char kTestExpressNextEpochTime[] = "2086-07-01T18:00:00Z";
 constexpr char kTestHistogramName[] = "Brave.Test.Histogram";
 constexpr char kTestHost[] = "https://localhost:8443";
 
@@ -52,18 +63,15 @@ class P3AConstellationHelperTest : public testing::Test {
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
 
-          std::string response;
-          if (request.url ==
-              GURL(std::string(kTestHost) + "/instances/typical/info")) {
-            EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
+          MetricLogType log_type = ValidateURLAndGetMetricLogType(request.url);
+          LOG(ERROR) << request.url;
 
-            response = "{\"currentEpoch\":" + base::NumberToString(kTestEpoch) +
-                       ", \"nextEpochTime\": \"" + kTestNextEpochTime + "\"}";
-            info_request_made_ = true;
-          } else if (request.url == GURL(std::string(kTestHost) +
-                                         "/instances/typical/randomness")) {
-            response = HandleRandomnessRequest(request, kTestEpoch);
-            points_request_made_ = true;
+          std::string response;
+          if (base::EndsWith(request.url.spec(), "/info")) {
+            response = HandleInfoRequest(request, log_type);
+          } else if (base::EndsWith(request.url.spec(), "/randomness")) {
+            response = HandleRandomnessRequest(request, GetTestEpoch(log_type));
+            points_request_made_[log_type] = true;
           }
           if (!response.empty()) {
             if (interceptor_send_bad_response_) {
@@ -95,6 +103,50 @@ class P3AConstellationHelperTest : public testing::Test {
     task_environment_.RunUntilIdle();
   }
 
+  uint8_t GetTestEpoch(MetricLogType log_type) {
+    switch (log_type) {
+      case MetricLogType::kSlow:
+        return kTestSlowEpoch;
+      case MetricLogType::kTypical:
+        return kTestTypicalEpoch;
+      case MetricLogType::kExpress:
+        return kTestExpressEpoch;
+    }
+    NOTREACHED();
+  }
+
+  const char* GetTestNextEpochTime(MetricLogType log_type) {
+    switch (log_type) {
+      case MetricLogType::kSlow:
+        return kTestSlowNextEpochTime;
+      case MetricLogType::kTypical:
+        return kTestTypicalNextEpochTime;
+      case MetricLogType::kExpress:
+        return kTestExpressNextEpochTime;
+    }
+    NOTREACHED();
+  }
+
+  void CheckInfoRequestMade(MetricLogType log_type) {
+    for (MetricLogType check_log_type : kAllMetricLogTypes) {
+      if (check_log_type == log_type) {
+        ASSERT_TRUE(info_request_made[check_log_type]);
+      } else {
+        ASSERT_FALSE(info_request_made[check_log_type]);
+      }
+    }
+  }
+
+  void CheckPointsRequestMade(MetricLogType log_type) {
+    for (MetricLogType check_log_type : kAllMetricLogTypes) {
+      if (check_log_type == log_type) {
+        ASSERT_TRUE(points_request_made[check_log_type]);
+      } else {
+        ASSERT_FALSE(points_request_made[check_log_type]);
+      }
+    }
+  }
+
   content::BrowserTaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -109,81 +161,125 @@ class P3AConstellationHelperTest : public testing::Test {
   std::string histogram_name_from_callback_;
   uint8_t epoch_from_callback_;
 
-  bool info_request_made_ = false;
-  bool points_request_made_ = false;
+  base::flat_map<MetricLogType, bool> info_request_made_;
+  base::flat_map<MetricLogType, bool> points_request_made_;
+
+ private:
+  MetricLogType ValidateURLAndGetMetricLogType(const GURL& url) {
+    std::string url_prefix = base::StrCat({kTestHost, "/instances/"});
+
+    EXPECT_TRUE(base::StartsWith(url.spec(), url_prefix));
+
+    std::vector<std::string> path_segments = base::SplitString(
+        url.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+    EXPECT_EQ(path_segments.size(), 4U);
+
+    absl::optional<MetricLogType> log_type =
+        StringToMetricLogType(path_segments[2]);
+    EXPECT_TRUE(log_type.has_value());
+
+    return *log_type;
+  }
+
+  std::string HandleInfoRequest(const network::ResourceRequest& request,
+                                MetricLogType log_type) {
+    EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
+
+    info_request_made_[log_type] = true;
+    return base::StrCat(
+        {"{\"currentEpoch\":", base::NumberToString(GetTestEpoch(log_type)),
+         ", \"nextEpochTime\": \"", GetTestNextEpochTime(log_type), "\"}"});
+  }
 };
 
 TEST_F(P3AConstellationHelperTest, CanRetrieveServerInfo) {
-  base::Time exp_next_epoch_time;
-  ASSERT_TRUE(base::Time::FromString(kTestNextEpochTime, &exp_next_epoch_time));
-
   SetUpHelper();
-  helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
-  task_environment_.RunUntilIdle();
+  for (MetricLogType log_type : kAllMetricLogTypes) {
+    uint8_t test_epoch = GetTestEpoch(log_type);
+    base::Time exp_next_epoch_time;
 
-  ASSERT_TRUE(info_request_made_);
+    ASSERT_TRUE(base::Time::FromString(GetTestNextEpochTime(log_type),
+                                       &exp_next_epoch_time));
 
-  EXPECT_NE(server_info_from_callback_, nullptr);
-  EXPECT_EQ(server_info_from_callback_->current_epoch, kTestEpoch);
+    helper_->UpdateRandomnessServerInfo(log_type);
+    task_environment_.RunUntilIdle();
 
-  EXPECT_EQ(server_info_from_callback_->next_epoch_time, exp_next_epoch_time);
+    CheckInfoRequestMade(log_type);
 
-  // See if cached server info is used on next execution
-  info_request_made_ = false;
-  SetUpHelper();
-  helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
-  task_environment_.RunUntilIdle();
+    EXPECT_NE(server_info_from_callback_, nullptr);
+    EXPECT_EQ(server_info_from_callback_->current_epoch, test_epoch);
 
-  ASSERT_FALSE(info_request_made_);
-  EXPECT_NE(server_info_from_callback_, nullptr);
-  EXPECT_EQ(server_info_from_callback_->current_epoch, kTestEpoch);
-  EXPECT_EQ(server_info_from_callback_->next_epoch_time, exp_next_epoch_time);
+    EXPECT_EQ(server_info_from_callback_->next_epoch_time, exp_next_epoch_time);
+
+    // See if cached server info is used on next execution
+    info_request_made_[log_type] = false;
+    server_info_from_callback_ = nullptr;
+
+    SetUpHelper();
+    helper_->UpdateRandomnessServerInfo(log_type);
+    task_environment_.RunUntilIdle();
+
+    ASSERT_FALSE(info_request_made_[log_type]);
+    EXPECT_NE(server_info_from_callback_, nullptr);
+    EXPECT_EQ(server_info_from_callback_->current_epoch, test_epoch);
+    EXPECT_EQ(server_info_from_callback_->next_epoch_time, exp_next_epoch_time);
+    server_info_from_callback_ = nullptr;
+  }
 }
 
 TEST_F(P3AConstellationHelperTest, CannotRetrieveServerInfo) {
-  base::Time exp_next_epoch_time;
-  ASSERT_TRUE(base::Time::FromString(kTestNextEpochTime, &exp_next_epoch_time));
-
-  interceptor_send_bad_response_ = true;
-
   SetUpHelper();
-  helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
-  task_environment_.RunUntilIdle();
+  for (MetricLogType log_type : kAllMetricLogTypes) {
+    base::Time exp_next_epoch_time;
+    ASSERT_TRUE(base::Time::FromString(GetTestNextEpochTime(log_type),
+                                       &exp_next_epoch_time));
 
-  ASSERT_TRUE(info_request_made_);
+    interceptor_send_bad_response_ = true;
 
-  // callback should not be executed if info retrieval failed
-  EXPECT_EQ(server_info_from_callback_, nullptr);
+    helper_->UpdateRandomnessServerInfo(log_type);
+    task_environment_.RunUntilIdle();
 
-  // See if info retrieval retry is scheduled
-  info_request_made_ = false;
-  task_environment_.FastForwardBy(base::Seconds(6));
+    CheckInfoRequestMade(log_type);
 
-  ASSERT_TRUE(info_request_made_);
-  EXPECT_EQ(server_info_from_callback_, nullptr);
+    // callback should not be executed if info retrieval failed
+    EXPECT_EQ(server_info_from_callback_, nullptr);
+
+    // See if info retrieval retry is scheduled
+    info_request_made_[log_type] = false;
+    task_environment_.FastForwardBy(base::Seconds(6));
+
+    ASSERT_TRUE(info_request_made_[log_type]);
+    EXPECT_EQ(server_info_from_callback_, nullptr);
+    info_request_made_[log_type] = false;
+  }
 }
 
 TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
   SetUpHelper();
-  helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
-  task_environment_.RunUntilIdle();
+  for (MetricLogType log_type : kAllMetricLogTypes) {
+    uint8_t test_epoch = GetTestEpoch(log_type);
 
-  MessageMetainfo meta_info;
-  meta_info.Init(&local_state_, "release", "2022-01-01");
+    helper_->UpdateRandomnessServerInfo(log_type);
+    task_environment_.RunUntilIdle();
 
-  helper_->StartMessagePreparation(
-      kTestHistogramName, MetricLogType::kTypical,
-      GenerateP3AConstellationMessage(kTestHistogramName, kTestEpoch, meta_info,
-                                      kP3AUploadType));
-  task_environment_.RunUntilIdle();
+    MessageMetainfo meta_info;
+    meta_info.Init(&local_state_, "release", "2022-01-01");
 
-  ASSERT_TRUE(points_request_made_);
+    helper->StartMessagePreparation(
+        kTestHistogramName, log_type,
+        GenerateP3AConstellationMessage(kTestHistogramName, test_epoch,
+                                        meta_info, kP3AUploadType));
+    task_environment_.RunUntilIdle();
 
-  EXPECT_NE(serialized_message_from_callback_, nullptr);
-  EXPECT_NE(serialized_message_from_callback_->size(), 0U);
+    CheckPointsRequestMade(log_type);
 
-  EXPECT_EQ(histogram_name_from_callback_, kTestHistogramName);
-  EXPECT_EQ(epoch_from_callback_, kTestEpoch);
+    EXPECT_NE(serialized_message_from_callback_, nullptr);
+    EXPECT_NE(serialized_message_from_callback_->size(), 0U);
+
+    EXPECT_EQ(histogram_name_from_callback_, kTestHistogramName);
+    EXPECT_EQ(epoch_from_callback_, test_epoch);
+    points_request_made_[log_type] = false;
+  }
 }
 
 }  // namespace p3a

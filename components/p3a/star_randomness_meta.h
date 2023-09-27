@@ -84,6 +84,8 @@ class StarRandomnessMeta {
   StarRandomnessMeta& operator=(const StarRandomnessMeta&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterPrefsForMigration(PrefRegistrySimple* registry);
+  static void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
   bool VerifyRandomnessCert(network::SimpleURLLoader* url_loader);
 

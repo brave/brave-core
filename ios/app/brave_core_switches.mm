@@ -33,8 +33,12 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyP3AExpressRotationIntervalSeconds =
     base::SysUTF8ToNSString(p3a::switches::kP3AExpressRotationIntervalSeconds);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ASlowRotationIntervalSeconds =
     base::SysUTF8ToNSString(p3a::switches::kP3ASlowRotationIntervalSeconds);
-const BraveCoreSwitchKey BraveCoreSwitchKeyP3AFakeStarEpoch =
-    base::SysUTF8ToNSString(p3a::switches::kP3AFakeStarEpoch);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3ATypicalFakeStarEpoch =
+    base::SysUTF8ToNSString(p3a::switches::kP3ATypicalFakeStarEpoch);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3ASlowFakeStarEpoch =
+    base::SysUTF8ToNSString(p3a::switches::kP3ASlowFakeStarEpoch);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AExpressFakeStarEpoch =
+    base::SysUTF8ToNSString(p3a::switches::kP3AExpressFakeStarEpoch);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AJsonUploadServerURL =
     base::SysUTF8ToNSString(p3a::switches::kP3AJsonUploadUrl);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ACreativeUploadServerURL =

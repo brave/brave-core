@@ -30,6 +30,7 @@ include_rules = [
   "+brave/components/ntp_background_images",
   "+brave/components/ntp_tiles",
   "+brave/components/omnibox",
+  "+brave/components/p3a",
   "+brave/components/permissions",
   "+brave/components/playlist",
   "+brave/components/privacy_sandbox",

@@ -22,6 +22,7 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -268,6 +269,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   misc_metrics::UptimeMonitor::MigrateObsoletePrefs(local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
   brave_stats::MigrateObsoleteLocalStatePrefs(local_state);
+  p3a::StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(local_state);
 
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }
