@@ -40,6 +40,7 @@ class TorProfileManagerUnitTest : public testing::Test {
   }
 
   void TearDown() override {
+    profile_ = nullptr;
     profile_manager_->DeleteTestingProfile(kTestProfileName);
   }
 
@@ -51,8 +52,8 @@ class TorProfileManagerUnitTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<TestingProfileManager> profile_manager_;
+  raw_ptr<Profile> profile_ = nullptr;
 
   TorProfileManagerUnitTest(const TorProfileManagerUnitTest&) = delete;
   TorProfileManagerUnitTest& operator=(const TorProfileManagerUnitTest&) =

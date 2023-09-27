@@ -484,13 +484,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
  protected:
   std::unique_ptr<SolanaProviderImpl> provider_;
   std::unique_ptr<MockEventsListener> observer_;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
 
  private:
   std::unique_ptr<ScopedTestingLocalState> local_state_;
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
-  raw_ptr<TxService> tx_service_ = nullptr;
   std::unique_ptr<content::TestWebContents> web_contents_;
   content::BrowserTaskEnvironment browser_task_environment_;
   content::TestWebContentsFactory factory_;
@@ -499,6 +495,13 @@ class SolanaProviderImplUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<TxService> tx_service_ = nullptr;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+
+ protected:
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
 };
 
 TEST_F(SolanaProviderImplUnitTest, Connect) {

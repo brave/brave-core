@@ -406,8 +406,8 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveWalletService> wallet_service_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  std::unique_ptr<AssetDiscoveryTask> asset_discovery_task_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
+  std::unique_ptr<AssetDiscoveryTask> asset_discovery_task_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<TxService> tx_service;

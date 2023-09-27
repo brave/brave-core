@@ -210,6 +210,10 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void SetUp() override {
+    // Resetting this test callback, as it gets stored in a discreet global, and
+    // in some cases it was causing stack-use-after-return.
+    SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>());
+
     local_state_ = std::make_unique<ScopedTestingLocalState>(
         TestingBrowserProcess::GetGlobal());
     web_contents_ =
@@ -957,23 +961,25 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   std::unique_ptr<TestEventsListener> observer_;
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<EthereumProviderImpl> provider_;
 
  private:
   std::unique_ptr<ScopedTestingLocalState> local_state_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
   content::TestWebContentsFactory factory_;
-  raw_ptr<TxService> tx_service_;
-  raw_ptr<AssetRatioService> asset_ratio_service_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<AssetRatioService> asset_ratio_service_;
+  raw_ptr<TxService> tx_service_;
+
+ protected:
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
 };
 
 TEST_F(EthereumProviderImplUnitTest, ValidateBrokenPayloads) {

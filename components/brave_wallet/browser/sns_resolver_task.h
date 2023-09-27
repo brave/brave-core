@@ -123,7 +123,6 @@ class SnsResolverTask {
  private:
   template <typename T>
   friend class SnsResolverTaskContainer;
-  friend class ScopedWorkOnSnsTask;
   void ScheduleWorkOnTask();
   void WorkOnTask();
   void WorkOnWalletAddressTask();

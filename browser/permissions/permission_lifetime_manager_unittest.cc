@@ -156,7 +156,7 @@ class PermissionLifetimeManagerTest : public testing::Test {
     return manager_.get();
   }
 
-  void ResetManager() {
+  virtual void ResetManager() {
     ASSERT_TRUE(manager_);
     manager_->Shutdown();
     manager_.reset();
@@ -583,6 +583,16 @@ class PermissionLifetimeManagerWithOriginMonitorTest
     EXPECT_CALL(*origin_lifetime_monitor_,
                 SetOnPermissionOriginDestroyedCallback(_));
     return monitor;
+  }
+
+  void TearDown() override {
+    origin_lifetime_monitor_ = nullptr;
+    PermissionLifetimeManagerTest::TearDown();
+  }
+
+  void ResetManager() override {
+    origin_lifetime_monitor_ = nullptr;
+    PermissionLifetimeManagerTest::ResetManager();
   }
 
  protected:

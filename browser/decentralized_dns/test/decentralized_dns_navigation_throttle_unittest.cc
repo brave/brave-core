@@ -60,11 +60,11 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler test_render_host_factories_;
-  raw_ptr<ScopedTestingLocalState> local_state_ = nullptr;
   TestingProfileManager profile_manager_;
-  raw_ptr<TestingProfile> profile_ = nullptr;
   std::unique_ptr<content::WebContents> web_contents_;
   std::string locale_;
+  raw_ptr<ScopedTestingLocalState> local_state_ = nullptr;
+  raw_ptr<TestingProfile> profile_ = nullptr;
 };
 
 TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {

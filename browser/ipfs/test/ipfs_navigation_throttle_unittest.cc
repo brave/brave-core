@@ -102,6 +102,7 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
   }
 
   void TearDown() override {
+    navigation_handles_.clear();
     web_contents_.reset();
     profile_ = nullptr;
     profile_manager_->DeleteTestingProfile(kTestProfileName);
@@ -112,12 +113,14 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
   std::unique_ptr<IpfsNavigationThrottle> CreateDeferredNavigation(
       IpfsService* service,
       const base::RepeatingClosure& resume_callback) {
-    content::MockNavigationHandle test_handle(web_contents());
-    test_handle.set_url(GetIPFSURL());
+    auto test_handle =
+        std::make_unique<content::MockNavigationHandle>(web_contents());
+    test_handle->set_url(GetIPFSURL());
     std::unique_ptr<IpfsNavigationThrottle> throttle =
         IpfsNavigationThrottle::MaybeCreateThrottleFor(
-            &test_handle, service, profile_->GetPrefs(), locale());
+            test_handle.get(), service, profile_->GetPrefs(), locale());
     throttle->set_resume_callback_for_testing(resume_callback);
+    navigation_handles_.push_back(std::move(test_handle));
     EXPECT_EQ(NavigationThrottle::DEFER, throttle->WillStartRequest().action())
         << GetIPFSURL();
     return throttle;
@@ -146,6 +149,11 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
   std::unique_ptr<TestingProfileManager> profile_manager_;
   base::test::ScopedFeatureList feature_list_;
   std::string locale_;
+
+  // Storage for all navigation handles used by `IpfsNavigationThrottle`
+  // instances during tests.
+  std::vector<std::unique_ptr<content::MockNavigationHandle>>
+      navigation_handles_;
 };
 
 TEST_F(IpfsNavigationThrottleUnitTest, DeferMultipleUntilIpfsProcessLaunched) {
