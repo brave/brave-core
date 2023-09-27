@@ -18,9 +18,6 @@ public class BraveFeedSurfaceMediatorClassAdapter extends BraveClassVisitor {
 
         redirectConstructor(sFeedSurfaceMediatorClassName, sBraveFeedSurfaceMediatorClassName);
 
-        deleteMethod(sBraveFeedSurfaceMediatorClassName, "destroyPropertiesForStream");
-        makePublicMethod(sFeedSurfaceMediatorClassName, "destroyPropertiesForStream");
-
         deleteField(sBraveFeedSurfaceMediatorClassName, "mCoordinator");
         makeProtectedField(sFeedSurfaceMediatorClassName, "mCoordinator");
 
