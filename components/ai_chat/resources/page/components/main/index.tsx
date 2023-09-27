@@ -44,7 +44,7 @@ function Main () {
       )
     }
 
-    if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset && userAutoGeneratePref) {
+    if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset) {
       promptAutoSuggestionElement = (
         <PromptAutoSuggestion />
       )
