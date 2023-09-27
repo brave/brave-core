@@ -68,6 +68,12 @@ public abstract class BraveVpnParentActivity
         super.finishNativeInitialization();
     }
 
+    @Override
+    protected void onDestroy() {
+        BraveVpnUtils.dismissProgressDialog();
+        super.onDestroy();
+    }
+
     protected void verifySubscription() {
         mBraveVpnPrefModel = new BraveVpnPrefModel();
         MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
