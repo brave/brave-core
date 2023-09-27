@@ -151,6 +151,8 @@ const char kLearnMoreReportingURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017905872-How-do-I-enable-or-disable-automatic-crash-reporting-";
 
+const char kManage3pcHelpCenterURL[] = "https://support.brave.com/";
+
 const char kHighEfficiencyModeLearnMoreUrl[] =
     "https://support.brave.com/hc/en-us/articles/13383683902733";
 
@@ -158,6 +160,10 @@ const char kHighEfficiencyModeTabDiscardingHelpUrl[] =
     "https://support.brave.com/";
 
 const char kIncognitoHelpCenterURL[] = "https://support.brave.com";
+
+const char kTrackingProtectionHelpCenterURL[] = "https://support.brave.com/";
+
+const char kUserBypassHelpCenterURL[] = "https://support.brave.com/";
 
 const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
 
