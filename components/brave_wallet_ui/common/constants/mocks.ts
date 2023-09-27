@@ -1390,16 +1390,18 @@ export const mockOnRampCurrencies: BraveWallet.OnRampCurrency[] = [
 ]
 
 export const mockDapp: BraveWallet.Dapp = {
-  id: 1,
-  name: 'Stargate Finace',
-  description: 'Stargate is a fully composable liquidity transport protocol that lives at the heart of omnichain DeFi.',
-  logo: ETHIconUrl,
-  website: '',
-  chains: [],
-  categories: ['DeFi', 'Marketplace', 'Games'],
-  transactions: 0,
-  uaw: 0,
-  volume: 0,
-  balance: 0,
-  range: ''
+  id: 10734,
+  name: 'Magic Eden',
+  description:
+    'The NFT Marketplace Solana deserves, smooth as silk & fast as Solana. 0% listing fee, only 2% transaction fee.',
+  logo:
+    'https://dashboard-assets.dappradar.com/geRRcWz9IdTwSrm1/document/10734/magiceden-dapp-marketplaces-solana-logo_4c3e2b8273f1b58465b6032f5dafd8ad.png',
+  website: 'https://magiceden.io/',
+  chains: ['solana'],
+  categories: ['marketplaces'],
+  transactions: 51954428,
+  uaw: 70918,
+  volume: 977028.76,
+  balance: 10181.37,
+  range: '30d'
 }

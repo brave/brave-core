@@ -76,6 +76,7 @@ type FlexProps = Partial<Pick<CSSProperties,
   | 'alignItems'
   | 'justifyContent'
   | 'gap'
+  | 'flexWrap'
 >>
 
 // Mixins
@@ -126,6 +127,7 @@ export const Row = styled.div<
   position: relative;
   ${makePaddingMixin(0)}
   box-sizing: border-box;
+  flex-wrap: ${(p) => p.flexWrap ?? 'unset'};
 `
 
 export const Column = styled.div<
@@ -159,8 +161,8 @@ export const ScrollableColumn = styled(Column) <{
   maxHeight?: string
   marginBottom?: string
 }>`
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: ${(p) => p.justifyContent ?? 'flex-start'};
+  align-items: ${(p) => p.alignItems ?? 'flex-start'};
   max-height: ${(p) => p.maxHeight || '100%'};
   overflow-y: ${(p) => p.scrollDisabled ? 'unset' : 'auto'};
   margin-bottom: ${(p) => p.marginBottom || 'unset'};

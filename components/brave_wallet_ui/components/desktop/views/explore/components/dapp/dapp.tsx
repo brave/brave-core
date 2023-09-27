@@ -8,6 +8,9 @@ import * as React from 'react'
 // types
 import { BraveWallet } from '../../../../../../constants/types'
 
+// components
+import { DappDetailsModal } from '../dapp-details-modal/dapp-details-modal'
+
 // styles
 import { ContentWrapper, Description, Name, StyledWrapper } from './dapp.styles'
 
@@ -16,14 +19,35 @@ interface Props {
 }
 
 export const Dapp = ({ dapp }: Props) => {
+  const [isDappModalOpen, setIsDappModalOpen] = React.useState<boolean>(false)
+
+  const toggleModal = () => setIsDappModalOpen(!isDappModalOpen)
+
   return (
-    <StyledWrapper>
-      {/* <DappImage src={dapp.logo} /> */}
-      <div style={{ display: 'flex', flexShrink: 0, width: '40px', height: '40px', backgroundColor: 'blue', borderRadius: '50%'}} />
-      <ContentWrapper>
-        <Name>{dapp.name}</Name>
-        <Description>{dapp.description}</Description>
-      </ContentWrapper>
-    </StyledWrapper>
+    <>
+      <StyledWrapper onClick={() => toggleModal()}>
+        {/* <DappImage src={dapp.logo} /> */}
+        <div
+          style={{
+            display: 'flex',
+            flexShrink: 0,
+            width: '40px',
+            height: '40px',
+            backgroundColor: 'blue',
+            borderRadius: '50%'
+          }}
+        />
+        <ContentWrapper>
+          <Name>{dapp.name}</Name>
+          <Description>{dapp.description}</Description>
+        </ContentWrapper>
+      </StyledWrapper>
+      {isDappModalOpen && (
+        <DappDetailsModal
+          dapp={dapp}
+          onClose={() => toggleModal()}
+        />
+      )}
+    </>
   )
 }
