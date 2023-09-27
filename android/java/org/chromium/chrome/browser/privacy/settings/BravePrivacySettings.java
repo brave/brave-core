@@ -142,11 +142,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final int STANDARD = 1;
     private static final int ALLOW = 2;
 
-    private final PrefService mPrefServiceBridge = UserPrefs.get(Profile.getLastUsedRegularProfile());
+    private final PrefService mPrefServiceBridge =
+            UserPrefs.get(Profile.getLastUsedRegularProfile());
     private final PrivacyPreferencesManagerImpl mPrivacyPrefManager =
             PrivacyPreferencesManagerImpl.getInstance();
-    private final ChromeManagedPreferenceDelegate mManagedPreferenceDelegate =
-            createManagedPreferenceDelegate();
+    private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
     private ChromeSwitchPreference mSearchSuggestions;
     private ChromeSwitchPreference mCanMakePayment;
     private BraveDialogPreference mAdsTrakersBlockPref;
@@ -210,6 +210,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
+
+        mManagedPreferenceDelegate = createManagedPreferenceDelegate();
 
         // override title
         getActivity().setTitle(R.string.brave_shields_and_privacy);
@@ -317,7 +319,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 (ChromeSwitchPreference) findPreference(PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR);
         mShowAutocompleteInAddressBar.setOnPreferenceChangeListener(this);
 
-        mAutocompleteTopSites = (ChromeSwitchPreference) findPreference(PREF_AUTOCOMPLETE_TOP_SITES);
+        mAutocompleteTopSites =
+                (ChromeSwitchPreference) findPreference(PREF_AUTOCOMPLETE_TOP_SITES);
         mAutocompleteTopSites.setOnPreferenceChangeListener(this);
 
         mSocialBlockingCategory =
@@ -336,13 +339,16 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             }
         }
 
-        mSocialBlockingFacebook = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_FACEBOOK);
+        mSocialBlockingFacebook =
+                (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_FACEBOOK);
         mSocialBlockingFacebook.setOnPreferenceChangeListener(this);
 
-        mSocialBlockingTwitter = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_TWITTER);
+        mSocialBlockingTwitter =
+                (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_TWITTER);
         mSocialBlockingTwitter.setOnPreferenceChangeListener(this);
 
-        mSocialBlockingLinkedin = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_LINKEDIN);
+        mSocialBlockingLinkedin =
+                (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_LINKEDIN);
         mSocialBlockingLinkedin.setOnPreferenceChangeListener(this);
 
         mAppLinks = (ChromeSwitchPreference) findPreference(PREF_APP_LINKS);
