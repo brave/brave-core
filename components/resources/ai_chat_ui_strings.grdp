@@ -67,7 +67,7 @@
     New chat
   </message>
   <message name="IDS_CHAT_UI_MENU_SUGGESTED_QUESTIONS" desc="Menu item for whether to enable suggested questions during chat conversations">
-    Suggested questions
+    Suggest questions
   </message>
   <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
     Settings
