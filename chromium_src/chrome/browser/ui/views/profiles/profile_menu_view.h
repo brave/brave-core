@@ -6,8 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_PROFILE_MENU_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_PROFILE_MENU_VIEW_H_
 
-#define BRAVE_PROFILE_MENU_VIEW_H    \
-  friend class BraveProfileMenuView; \
+#define BRAVE_PROFILE_MENU_VIEW_H friend class BraveProfileMenuView;
 
 #define OnExitProfileButtonClicked virtual OnExitProfileButtonClicked
 #define BuildAutofillButtons virtual BuildAutofillButtons
