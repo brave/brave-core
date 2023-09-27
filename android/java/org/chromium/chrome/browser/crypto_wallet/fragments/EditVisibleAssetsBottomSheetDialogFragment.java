@@ -490,7 +490,19 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         }
 
         BlockchainToken thisToken = walletListItemModel.getBlockchainToken();
-        TokenUtils.isCustomToken(getBlockchainRegistry(), walletListItemModel.getAssetNetwork(),
+        final BraveWalletService braveWalletService = getBraveWalletService();
+        if (braveWalletService == null) {
+            Log.e(TAG, "BraveWalletService was null.");
+            return;
+        }
+
+        final BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
+        if (blockchainRegistry == null) {
+            Log.e(TAG, "BlockchainRegistry was null.");
+            return;
+        }
+
+        TokenUtils.isCustomToken(blockchainRegistry, walletListItemModel.getAssetNetwork(),
                 walletListItemModel.getBlockchainToken().coin, thisToken, isCustom -> {
                     // Only show add asset dialog on click when:
                     //    1. It is an ERC721 token
@@ -503,10 +515,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                                 false); // The added token is different from the listed one
                         itemCheckboxConsistency(walletListItemModel, assetCheck, isChecked);
                     } else {
-                        BraveWalletService braveWalletService = getBraveWalletService();
-                        // TODO: all the asserts need to be removed. Shall do proper
-                        // error handling instead.
-                        assert braveWalletService != null;
                         if (!isCustom) {
                             if (isChecked) {
                                 braveWalletService.addUserAsset(thisToken, (success) -> {
