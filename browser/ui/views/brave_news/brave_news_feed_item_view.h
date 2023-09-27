@@ -25,8 +25,7 @@ class BraveNewsFeedItemView : public views::View,
  public:
   METADATA_HEADER(BraveNewsFeedItemView);
 
-  BraveNewsFeedItemView(const GURL& feed_url,
-                        content::WebContents* contents);
+  BraveNewsFeedItemView(const GURL& feed_url, content::WebContents* contents);
   BraveNewsFeedItemView(const BraveNewsFeedItemView&) = delete;
   BraveNewsFeedItemView& operator=(const BraveNewsFeedItemView&) = delete;
   ~BraveNewsFeedItemView() override;
@@ -35,8 +34,7 @@ class BraveNewsFeedItemView : public views::View,
   void OnPressed();
 
   // BraveNewsTabHelper::PageFeedsObserver:
-  void OnAvailableFeedsChanged(
-      const std::vector<GURL>& feed_urls) override;
+  void OnAvailableFeedsChanged(const std::vector<GURL>& feed_urls) override;
 
  private:
   bool loading_ = false;
