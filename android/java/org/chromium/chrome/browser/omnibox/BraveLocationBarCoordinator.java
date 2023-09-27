@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabWindowManager;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.ui.base.WindowAndroid;
@@ -66,7 +67,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @Nullable BackPressManager backPressManager,
             @NonNull OmniboxSuggestionsDropdownScrollListener
                     omniboxSuggestionsDropdownScrollListener,
-            @Nullable OpenHistoryClustersDelegate openHistoryClustersDelegate) {
+            @Nullable OpenHistoryClustersDelegate openHistoryClustersDelegate,
+            @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
         super(locationBarLayout, autocompleteAnchorView, profileObservableSupplier,
                 privacyPreferencesManager, locationBarDataProvider, actionModeCallback,
                 windowDelegate, windowAndroid, activityTabSupplier, modalDialogManagerSupplier,
@@ -76,7 +78,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier,
                 merchantTrustSignalsCoordinatorSupplier, omniboxActionDelegate,
                 browserControlsVisibilityDelegate, reportExceptionCallback, backPressManager,
-                omniboxSuggestionsDropdownScrollListener, openHistoryClustersDelegate);
+                omniboxSuggestionsDropdownScrollListener, openHistoryClustersDelegate,
+                tabModelSelectorSupplier);
 
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {
             mQRButton = locationBarLayout.findViewById(R.id.qr_button);

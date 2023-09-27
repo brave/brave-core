@@ -12,9 +12,10 @@
 
 namespace embedder_support {
 
-blink::UserAgentMetadata GetUserAgentMetadata();
+blink::UserAgentMetadata GetUserAgentMetadata(bool only_low_entropy_ch = false);
 
-blink::UserAgentMetadata GetUserAgentMetadata(const PrefService* pref_service);
+blink::UserAgentMetadata GetUserAgentMetadata(const PrefService* pref_service,
+                                              bool only_low_entropy_ch = false);
 
 }  // namespace embedder_support
 

@@ -183,21 +183,18 @@ void PinToTaskbar(Profile* profile,
   if (profile)
     profile_path = profile->GetPath();
 
-  // TODO(simonhong): handle connection error state if caller wants.
-  GetIsPinnedToTaskbarState(
-      base::DoNothing(),
-      base::BindOnce(
-          [](const base::FilePath& profile_path,
-             base::OnceCallback<void(bool)> result_callback, bool succeeded,
-             bool is_pinned_to_taskbar) {
-            if (succeeded && is_pinned_to_taskbar) {
-              // Early return. Already pinned.
-              std::move(result_callback).Run(true);
-              return;
-            }
-            DoPinToTaskbar(profile_path, std::move(result_callback));
-          },
-          std::move(profile_path), std::move(result_callback)));
+  GetIsPinnedToTaskbarState(base::BindOnce(
+      [](const base::FilePath& profile_path,
+         base::OnceCallback<void(bool)> result_callback, bool succeeded,
+         bool is_pinned_to_taskbar) {
+        if (succeeded && is_pinned_to_taskbar) {
+          // Early return. Already pinned.
+          std::move(result_callback).Run(true);
+          return;
+        }
+        DoPinToTaskbar(profile_path, std::move(result_callback));
+      },
+      std::move(profile_path), std::move(result_callback)));
 }
 
 void IsShortcutPinned(base::OnceCallback<void(bool)> result_callback) {
@@ -208,14 +205,12 @@ void IsShortcutPinned(base::OnceCallback<void(bool)> result_callback) {
     return;
   }
 
-  GetIsPinnedToTaskbarState(
-      base::DoNothing(),
-      base::BindOnce(
-          [](base::OnceCallback<void(bool)> result_callback, bool succeeded,
-             bool is_pinned_to_taskbar) {
-            std::move(result_callback).Run(succeeded && is_pinned_to_taskbar);
-          },
-          std::move(result_callback)));
+  GetIsPinnedToTaskbarState(base::BindOnce(
+      [](base::OnceCallback<void(bool)> result_callback, bool succeeded,
+         bool is_pinned_to_taskbar) {
+        std::move(result_callback).Run(succeeded && is_pinned_to_taskbar);
+      },
+      std::move(result_callback)));
 }
 
 }  // namespace shell_integration::win

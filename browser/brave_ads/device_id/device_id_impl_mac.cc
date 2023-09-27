@@ -17,12 +17,12 @@
 #include <string>
 #include <utility>
 
+#include "base/apple/foundation_util.h"
+#include "base/apple/scoped_cftyperef.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/location.h"
-#include "base/mac/foundation_util.h"
 #include "base/mac/mac_util.h"
-#include "base/mac/scoped_cftyperef.h"
 #include "base/mac/scoped_ioobject.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -76,30 +76,31 @@ std::string GetVolumeUUIDFromBSDName(const std::string& bsd_name) {
 
   const CFAllocatorRef allocator = nullptr;
 
-  const base::ScopedCFTypeRef<DASessionRef> session(DASessionCreate(allocator));
+  const base::apple::ScopedCFTypeRef<DASessionRef> session(
+      DASessionCreate(allocator));
   if (!session) {
     return {};
   }
 
-  const base::ScopedCFTypeRef<DADiskRef> disk(
+  const base::apple::ScopedCFTypeRef<DADiskRef> disk(
       DADiskCreateFromBSDName(allocator, session, bsd_name.c_str()));
   if (!disk) {
     return {};
   }
 
-  const base::ScopedCFTypeRef<CFDictionaryRef> disk_description(
+  const base::apple::ScopedCFTypeRef<CFDictionaryRef> disk_description(
       DADiskCopyDescription(disk));
   if (!disk_description) {
     return {};
   }
 
-  const CFUUIDRef volume_uuid = base::mac::GetValueFromDictionary<CFUUIDRef>(
+  const CFUUIDRef volume_uuid = base::apple::GetValueFromDictionary<CFUUIDRef>(
       disk_description, kDADiskDescriptionVolumeUUIDKey);
   if (volume_uuid == nullptr) {
     return {};
   }
 
-  const base::ScopedCFTypeRef<CFStringRef> volume_uuid_as_string(
+  const base::apple::ScopedCFTypeRef<CFStringRef> volume_uuid_as_string(
       CFUUIDCreateString(allocator, volume_uuid));
   if (!volume_uuid_as_string) {
     return {};
@@ -129,7 +130,7 @@ class MacAddressProcessor {
   bool ProcessNetworkController(io_object_t network_controller) {
     bool keep_going = true;
 
-    const base::ScopedCFTypeRef<CFDataRef> mac_address_data(
+    const base::apple::ScopedCFTypeRef<CFDataRef> mac_address_data(
         static_cast<CFDataRef>(IORegistryEntryCreateCFProperty(
             network_controller, CFSTR(kIOMACAddress), kCFAllocatorDefault, 0)));
     if (!mac_address_data) {
@@ -145,7 +146,7 @@ class MacAddressProcessor {
     mac_address_ =
         base::ToLowerASCII(base::HexEncode(mac_address, mac_address_size));
 
-    base::ScopedCFTypeRef<CFStringRef> provider_class_string(
+    base::apple::ScopedCFTypeRef<CFStringRef> provider_class_string(
         static_cast<CFStringRef>(IORegistryEntryCreateCFProperty(
             network_controller, CFSTR(kIOProviderClassKey), kCFAllocatorDefault,
             0)));

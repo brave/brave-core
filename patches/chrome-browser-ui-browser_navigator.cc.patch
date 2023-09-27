@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index 88edd87bcb2d0bb6eb0cb2d9d9b281d6655cbb18..a7ca18e18acd35a8cb95b843ac24a1b2bcedf102 100644
+index 3b7f96e505e0ba32837b83be5473562e3e120452..b4433a1fd9b008741a0ef9d6e9d75405d93a0287 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
-@@ -590,6 +590,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
+@@ -585,6 +585,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
      // Block any navigation requests in locked fullscreen mode.
      return nullptr;
    }
@@ -10,9 +10,7 @@ index 88edd87bcb2d0bb6eb0cb2d9d9b281d6655cbb18..a7ca18e18acd35a8cb95b843ac24a1b2
  
    // Open System Apps in their standalone window if necessary.
    // TODO(crbug.com/1096345): Remove this code after we integrate with intent
-@@ -910,6 +911,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
- bool IsHostAllowedInIncognito(const GURL& url) {
-   std::string scheme = url.scheme();
+@@ -922,4 +923,5 @@ bool IsHostAllowedInIncognito(const GURL& url) {
    base::StringPiece host = url.host_piece();
 +  if (!IsHostAllowedInIncognitoBraveImpl(host)) return false;
    if (scheme != content::kChromeUIScheme)

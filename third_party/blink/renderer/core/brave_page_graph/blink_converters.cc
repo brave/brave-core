@@ -54,10 +54,9 @@ String ToPageGraphBlinkArg(TextMetrics* result) {
       << ", emHeightAscent: " << result->emHeightAscent()
       << ", emHeightDescent: " << result->emHeightDescent();
 
-  Baselines* baselines = result->getBaselines();
-  result_buffer << ", hangingBaseline: " << baselines->hanging()
-                << ", alphabeticBaseline: " << baselines->alphabetic()
-                << ", ideographicBaseline: " << baselines->ideographic();
+  result_buffer << ", hangingBaseline: " << result->hangingBaseline()
+                << ", alphabeticBaseline: " << result->alphabeticBaseline()
+                << ", ideographicBaseline: " << result->ideographicBaseline();
 
   return String(result_buffer.str());
 }

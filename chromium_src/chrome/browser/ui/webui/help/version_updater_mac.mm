@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/webui/help/version_updater_mac.h"
 
-#include "base/mac/foundation_util.h"
+#include "base/apple/foundation_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/escape.h"
 #include "base/strings/sys_string_conversions.h"
@@ -122,11 +122,11 @@ void VersionUpdaterMac::PromoteUpdater() {
 }
 
 void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
-  AutoupdateStatus sparkle_status = static_cast<AutoupdateStatus>(
-      [base::mac::ObjCCastStrict<NSNumber>(
+  AutoupdateStatus sparkle_status =
+      static_cast<AutoupdateStatus>([base::apple::ObjCCastStrict<NSNumber>(
           [dictionary objectForKey:kAutoupdateStatusStatus]) intValue]);
-  std::string error_messages = base::SysNSStringToUTF8(
-      base::mac::ObjCCastStrict<NSString>(
+  std::string error_messages =
+      base::SysNSStringToUTF8(base::apple::ObjCCastStrict<NSString>(
           [dictionary objectForKey:kAutoupdateStatusErrorMessages]));
 
   std::u16string message;

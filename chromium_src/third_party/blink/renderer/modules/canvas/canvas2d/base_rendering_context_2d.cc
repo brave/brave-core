@@ -17,12 +17,17 @@
         image_data_pixmap.computeByteSize());                                 \
   }
 
+#define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT         \
+  if (!brave::AllowFingerprinting(GetTopExecutionContext())) \
+    return MakeGarbageCollected<TextMetrics>();
+
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
 #define getImageData getImageData_Unused
 #include "src/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
 #undef getImageData
 #undef BRAVE_GET_IMAGE_DATA_PARAMS
 #undef BRAVE_GET_IMAGE_DATA
+#undef BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT
 
 namespace {
 

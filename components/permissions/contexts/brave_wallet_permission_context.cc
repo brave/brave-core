@@ -14,6 +14,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_request.h"
+#include "components/permissions/permission_request_data.h"
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/permissions_client.h"
@@ -60,12 +61,11 @@ bool BraveWalletPermissionContext::IsRestrictedToSecureOrigins() const {
 }
 
 void BraveWalletPermissionContext::RequestPermission(
-    const PermissionRequestID& id,
-    const GURL& requesting_frame,
-    bool user_gesture,
+    PermissionRequestData request_data,
     BrowserPermissionCallback callback) {
-  const std::string id_str = id.ToString();
-  url::Origin requesting_origin = url::Origin::Create(requesting_frame);
+  const std::string id_str = request_data.id.ToString();
+  url::Origin requesting_origin =
+      url::Origin::Create(request_data.requesting_origin);
   url::Origin origin;
   permissions::RequestType type =
       ContentSettingsTypeToRequestType(content_settings_type());
@@ -78,15 +78,16 @@ void BraveWalletPermissionContext::RequestPermission(
   if (!brave_wallet::ParseRequestingOrigin(
           type, requesting_origin, &origin,
           is_new_id ? &address_queue : nullptr)) {
-    content::RenderFrameHost* rfh =
-        content::RenderFrameHost::FromID(id.global_render_frame_host_id());
+    content::RenderFrameHost* rfh = content::RenderFrameHost::FromID(
+        request_data.id.global_render_frame_host_id());
     content::WebContents* web_contents =
         content::WebContents::FromRenderFrameHost(rfh);
     GURL embedding_origin =
         url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
-    NotifyPermissionSet(id, requesting_origin.GetURL(), embedding_origin,
-                        std::move(callback), /*persist=*/false,
-                        CONTENT_SETTING_BLOCK, /*is_one_time=*/false,
+    NotifyPermissionSet(request_data.id, requesting_origin.GetURL(),
+                        embedding_origin, std::move(callback),
+                        /*persist=*/false, CONTENT_SETTING_BLOCK,
+                        /*is_one_time=*/false,
                         /*is_final_decision=*/true);
     return;
   }
@@ -107,8 +108,10 @@ void BraveWalletPermissionContext::RequestPermission(
   if (addr_queue.empty()) {
     request_address_queues_.erase(addr_queue_it);
   }
-  PermissionContextBase::RequestPermission(id, sub_request_origin.GetURL(),
-                                           user_gesture, std::move(callback));
+  PermissionContextBase::RequestPermission(
+      PermissionRequestData(this, request_data.id, request_data.user_gesture,
+                            sub_request_origin.GetURL()),
+      std::move(callback));
 }
 
 // static

@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/containers/span.h"
+#include "base/strings/string_piece.h"
 #include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

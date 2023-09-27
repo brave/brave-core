@@ -11,11 +11,16 @@
 namespace ntp_features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kCustomizeChromeSidePanelExtensionsCard,
+     base::FEATURE_DISABLED_BY_DEFAULT},
+    {kCustomizeChromeWallpaperSearch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpAlphaBackgroundCollections, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpBackgroundImageErrorDetection, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpChromeCartModule, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpHistoryClustersModule, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNtpHistoryClustersModuleDiscounts, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNtpHistoryClustersModuleLoad, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNtpModulesMaxColumnCount, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace ntp_features

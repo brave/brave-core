@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteResult;
+import org.chromium.components.omnibox.GroupsProto.GroupConfig;
 import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.Arrays;
@@ -62,9 +63,9 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     }
 
     @Override
-    void onUrlFocusChange(boolean hasFocus) {
-        super.onUrlFocusChange(hasFocus);
-        mBraveSearchBannerProcessor.onUrlFocusChange(hasFocus);
+    void onOmniboxSessionStateChange(boolean activated) {
+        super.onOmniboxSessionStateChange(activated);
+        mBraveSearchBannerProcessor.onOmniboxSessionStateChange(activated);
     }
 
     @Override
@@ -83,8 +84,8 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         if (isBraveSearchPromoBanner()) {
             final PropertyModel model = mBraveSearchBannerProcessor.createModel();
             mBraveSearchBannerProcessor.populateModel(model);
-            viewInfoList.add(new DropdownItemViewInfo(mBraveSearchBannerProcessor, model,
-                    BraveSearchBannerProcessor.BRAVE_SEARCH_PROMO_GROUP));
+            viewInfoList.add(new DropdownItemViewInfo(
+                    mBraveSearchBannerProcessor, model, GroupConfig.getDefaultInstance()));
         }
 
         return viewInfoList;

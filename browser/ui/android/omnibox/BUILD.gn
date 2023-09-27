@@ -1,6 +1,7 @@
-# Copyright 2022 The Brave Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/android/config.gni")
 import("//build/config/android/rules.gni")
@@ -19,7 +20,6 @@ android_library("java") {
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerProcessor.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerProperties.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerViewBinder.java",
-    "java/src/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor.java",
   ]
 
   deps = [
@@ -42,6 +42,7 @@ android_library("java") {
     "//components/prefs/android:java",
     "//components/search_engines/android:java",
     "//components/user_prefs/android:java",
+    "//content/public/android:content_full_java",
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
     "//ui/android:ui_no_recycler_view_java",

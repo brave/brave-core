@@ -10,9 +10,9 @@
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/companion/core/features.h"
 #include "chrome/browser/companion/visual_search/features.h"
-#include "chrome/browser/dips/dips_features.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
+#include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/promos/promos_features.h"
 #include "chrome/browser/signin/signin_features.h"
 #include "chrome/common/chrome_features.h"
@@ -48,7 +48,9 @@
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
 #include "components/signin/public/base/signin_buildflags.h"
 #include "components/subresource_filter/core/common/common_features.h"
+#include "content/common/features.h"
 #include "content/public/common/content_features.h"
+#include "content/public/common/dips_utils.h"
 #include "content/public/test/browser_test.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "media/base/media_switches.h"
@@ -63,7 +65,7 @@
 #include "chrome/test/base/android/android_browser_test.h"
 #else
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
-#include "chrome/browser/ui/profile_picker.h"
+#include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/translate/core/common/translate_util.h"
@@ -161,8 +163,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &companion::features::internal::kSidePanelCompanion,
     &companion::features::internal::kSidePanelCompanion2,
     &companion::visual_search::features::kVisualSearchSuggestions,
+    &content::kServiceWorkerAutoPreload,
+    &content_settings::features::kThirdPartyCookieDeprecationCookieSettings,
     &content_settings::features::kUserBypassUI,
-    &dips::kFeature,
     &enterprise_connectors::kLocalContentAnalysisEnabled,
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
     &enterprise_signals::features::kDeviceSignalsConsentDialog,
@@ -184,6 +187,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kDesktopPWAsLinkCapturing,
 #endif
     &features::kDigitalGoodsApi,
+    &features::kDIPS,
     &features::kExtensionsMenuInAppMenu,
     &features::kFedCm,
     &features::kFedCmWithoutThirdPartyCookies,
@@ -196,11 +200,14 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kOmniboxTriggerForPrerender2,
-#if !BUILDFLAG(IS_ANDROID)
+    &features::kPerformanceSettingsPreloadingSubpage,
     &features::kPrivacyGuide3,
-#endif
 #if BUILDFLAG(IS_ANDROID)
     &features::kPrivacyGuideAndroidPostMVP,
+#endif
+    &features::kPrivacyGuidePreload,
+#if BUILDFLAG(IS_ANDROID)
+    &features::kPrivacyGuidePreloadAndroid,
 #endif
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSCTAuditing,
@@ -218,6 +225,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kWebOTP,
     &history::kOrganicRepeatableQueries,
     &history::kSyncSegmentsData,
+    &history_clusters::kRenameJourneys,
     &history_clusters::kSidePanelJourneys,
     &history_clusters::features::kOnDeviceClustering,
     &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
@@ -243,13 +251,17 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &net::features::kEnableWebTransportDraft07,
     &net::features::kNoncedPartitionedCookies,
     &net::features::kPartitionedCookies,
+    &net::features::kThirdPartyPartitionedStorageAllowedByDefault,
     &network::features::kFledgePst,
     &network::features::kPrivateStateTokens,
     &network_time::kNetworkTimeServiceQuerying,
+    &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
+    &ntp_features::kCustomizeChromeWallpaperSearch,
     &ntp_features::kNtpAlphaBackgroundCollections,
     &ntp_features::kNtpBackgroundImageErrorDetection,
     &ntp_features::kNtpChromeCartModule,
     &ntp_features::kNtpHistoryClustersModule,
+    &ntp_features::kNtpHistoryClustersModuleDiscounts,
     &ntp_features::kNtpHistoryClustersModuleLoad,
     &omnibox::kInspireMe,
     &omnibox::kDocumentProviderNoSetting,
@@ -259,11 +271,12 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &omnibox::kOmniboxMostVisitedTilesOnSrp,
     &omnibox::kOmniboxSteadyStateHeight,
     &omnibox::kRichAutocompletion,
+    &optimization_guide::features::kOptimizationGuideFetchingForSRP,
     &optimization_guide::features::kOptimizationHints,
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
-    &optimization_guide::features::kOptimizationGuideFetchingForSRP,
+    &optimization_guide::features::kTextEmbeddingPageContentAnnotations,
     &page_image_service::kImageService,
     &page_image_service::kImageServiceSuggestPoweredImages,
 #if !BUILDFLAG(IS_ANDROID)
@@ -279,8 +292,12 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &promos_features::kIOSPromoPasswordBubble,
     &safe_browsing::kExtensionTelemetry,
     &safe_browsing::kExtensionTelemetryDeclarativeNetRequestSignal,
+    &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
+    &safe_browsing::kExtensionTelemetryTabsApiSignal,
+    &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
     &segmentation_platform::features::kSegmentationPlatformDeviceTier,
     &segmentation_platform::features::kSegmentationPlatformFeature,
+    &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
     &send_tab_to_self::kSendTabToSelfSigninPromo,
     &shared_highlighting::kIOSSharedHighlightingV2,
     &shared_highlighting::kSharedHighlightingManager,

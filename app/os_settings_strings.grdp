@@ -912,6 +912,9 @@
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
     Preferred search engine
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
+    Set search engine in Brave browser settings
+  </message>
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_DESCRIPTION" desc="Description in the search engine dialog in OS settings explaining that search engine is used in both the Brave browser and the ChromeOS app launcher.">
     Set your default search engine for Brave browser and <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> Launcher
   </message>
@@ -924,10 +927,10 @@
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_DISABLED" desc="Sub label for the Brave Assistant button when Assistant is disabled.">
     Disabled
   </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ON" desc="Row label in Brave Assistant settings." meaning="Google Assistant is on.">
+  <message name="IDS_OS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ON" desc="Row label in Brave Assistant settings." meaning="Google Assistant is on.">
     On
   </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_OFF" desc="Row label in Brave Assistant settings." meaning="Google Assistant is off.">
+  <message name="IDS_OS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_OFF" desc="Row label in Brave Assistant settings." meaning="Google Assistant is off.">
     Off
   </message>
    <message name="IDS_SETTINGS_SEARCH_AND_ASSISTANT" desc="Name of the settings page which displays search engine and assistant preferences on ChromeOS.">
@@ -974,7 +977,7 @@
     Clean up offline storage?
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAN_UP_STORAGE_BODY" desc="Title text for the Offline Storage confirmation dialog where users can clear their offline storage in Settings: Files: Google Drive.">
-    This will remove <ph name="OFFLINE_STORAGE_SIZE">$1<ex>5.0 GB</ex></ph> of space used by your offline files. Some files will still be available offline. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This will remove up to <ph name="OFFLINE_STORAGE_SIZE">$1<ex>5.0 GB</ex></ph> of space used by your offline files. Some files will still be available offline. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAN_UP_STORAGE_DISABLED_TOOLTIP" desc="Tooltip text that shows when hovering over the clear offline storage button in the Settings: Files: Google Drive.">
     Can’t clean up storage while file sync is on
@@ -1057,6 +1060,9 @@
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_NOT_SIGNED_IN_SUBLABEL" desc="Label indicating that Google Drive is not signed in (i.e. disabled) for the current user in Settings: Files">
     Not signed in
   </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_ENABLED_ON_METERED_NETWORK_LABEL" desc="Label that shows for the settings to enable using metered network for syncing operations in Settings: Files: Google Drive">
+    Allow syncing on metered networks
+  </message>
   <message name="IDS_SETTINGS_GOOGLE_DRIVE_FILE_SYNC_ON_SUBLABEL" desc="Sub label for the row indicating that Google Drive is enabled and file sync is on in Settings: Files">
     File sync on
   </message>
@@ -1077,6 +1083,9 @@
   </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES" desc="In Downloads Settings, the title of the SMB shares setting section.">
     Network file shares
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DOWNLOADS_SMB_SHARES_DESCRIPTION" desc="In Files Settings, the description of the SMB shares setting section.">
+    Access shared files, folders, or drives on a local network. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES_LEARN_MORE_LABEL" desc="Label for the link that teaches users how to setup SMB shares.">
     Set up or manage network file shares. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -1114,39 +1123,39 @@
   <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_SUCCESS_MESSAGE" desc="The message shown when a new SMB share is successfully mounted.">
     Share mounted successfully.
   </message>
-  <!-- TODO(b/254586358): Finalise Office files strings -->
-  <message name="IDS_SETTINGS_ONE_DRIVE_LABEL" translateable="false" desc="Label for the Settings link that takes the user to the OneDrive account settings.">
+
+  <message name="IDS_SETTINGS_ONE_DRIVE_LABEL" desc="Label for the Settings link that takes the user to the OneDrive account settings.">
     OneDrive
   </message>
-  <message name="IDS_SETTINGS_ONE_DRIVE_SIGNED_IN_AS" translateable="false" desc="Label indicating, in the Files Settings subpage, the email address with which the user is currently signed in in OneDrive">
+  <message name="IDS_SETTINGS_ONE_DRIVE_SIGNED_IN_AS" desc="Label indicating, in the Files Settings subpage, the email address with which the user is currently signed in in OneDrive">
     Signed in as <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="DRIVE_ACCOUNT_EMAIL">$1<ex>john@google.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_ONE_DRIVE_DISCONNECTED" translateable="false" desc="Label indicating, in the Files Settings subpage, that the user is currently not signed in in OneDrive">
-    Disconnected
+  <message name="IDS_SETTINGS_ONE_DRIVE_DISCONNECTED" desc="Label indicating, in the Files Settings subpage, that the user is currently not signed in in OneDrive">
+    Add your Microsoft account
   </message>
-  <message name="IDS_SETTINGS_ONE_DRIVE_CONNECT" translateable="false" desc="Action to connect OneDrive in Settings: Files: OneDrive.">
-    Connect account
+  <message name="IDS_SETTINGS_ONE_DRIVE_CONNECT" desc="Action to connect OneDrive in Settings: Files: OneDrive.">
+    Add
   </message>
-  <message name="IDS_SETTINGS_ONE_DRIVE_DISCONNECT" translateable="false" desc="Action to disconnect from OneDrive in Settings: Files: OneDrive.">
-    Disconnect
+  <message name="IDS_SETTINGS_ONE_DRIVE_DISCONNECT" desc="Action to disconnect from OneDrive in Settings: Files: OneDrive.">
+    Remove
   </message>
-  <message name="IDS_SETTINGS_OPEN_ONE_DRIVE_FOLDER" translateable="false" desc="Label for the Settings link in the OneDrive subpage to open the OneDrive folder">
+  <message name="IDS_SETTINGS_OPEN_ONE_DRIVE_FOLDER" desc="Label for the Settings link in the OneDrive subpage to open the OneDrive folder">
     Open OneDrive folder
   </message>
-  <message name="IDS_SETTINGS_OFFICE_LABEL" translateable="false" desc="Label for the Settings link that takes the user to the Microsoft 365 files settings.">
+  <message name="IDS_SETTINGS_OFFICE_LABEL" desc="Label for the Settings link that takes the user to the Microsoft 365 files settings.">
     Microsoft 365
   </message>
-  <message name="IDS_SETTINGS_OFFICE_SUBLABEL" translateable="false" desc="Sub-label that describes that users can open Microsoft 365 files.">
+  <message name="IDS_SETTINGS_OFFICE_SUBLABEL" desc="Sub-label that describes that users can open Microsoft 365 files.">
     Open Word, Excel, and PowerPoint files
   </message>
-  <message name="IDS_SETTINGS_OFFICE_SUBPAGE_TITLE" translateable="false" desc="Title of the Microsoft 365 subpage.">
+  <message name="IDS_SETTINGS_OFFICE_SUBPAGE_TITLE" desc="Title of the Microsoft 365 subpage.">
     Microsoft 365 files
   </message>
-  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_DRIVE_PREFERENCE_LABEL" translateable="false" desc="Label for the preference that allows users to always move files to Drive without asking for confirmation.">
-    Ask before moving Microsoft files to Google Drive
+  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_DRIVE_PREFERENCE_LABEL" desc="Label for the preference that allows users to always move files to Drive without asking for confirmation.">
+    Ask before copying or moving Microsoft files to Google Drive
   </message>
-  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_ONEDRIVE_PREFERENCE_LABEL" translateable="false" desc="Label for the preference that allows users to always move files to OneDrive without asking for confirmation.">
-    Ask before moving Microsoft files to OneDrive
+  <message name="IDS_SETTINGS_ALWAYS_MOVE_OFFICE_TO_ONEDRIVE_PREFERENCE_LABEL" desc="Label for the preference that allows users to always move files to OneDrive without asking for confirmation.">
+    Ask before copying or moving Microsoft files to Microsoft OneDrive
   </message>
 
   <!-- Accessibility -->
@@ -2297,6 +2306,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_GUEST_OS_SHARED_USB_DEVICES_LABEL" desc="Label for managing shared USB devices.">
     Manage USB devices
   </message>
+  <message name="IDS_SETTINGS_GUEST_OS_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices.">
+    Let Android apps access USB devices on this Chromebook
+  </message>
   <message name="IDS_SETTINGS_GUEST_OS_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
     Only supported devices are shown.
   </message>
@@ -2614,19 +2626,19 @@ Press an assigned switch or key to remove assignment.
 
   <!-- Bruschetta sub-page -->
   <!-- TODO(b/233129383): Finalize and translate these strings -->
-  <message name="IDS_SETTINGS_BRUSCHETTA_LABEL" translateable="false" desc="Label for the Bruschetta sub-page.">
+  <message name="IDS_SETTINGS_BRUSCHETTA_LABEL" desc="Label for the Bruschetta sub-page.">
     Managed Development Environment (<ph name="GENERAL_NAME">$1<ex>HappyVm</ex></ph>)
   </message>
-  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_USB_DEVICES_DESCRIPTION" translateable="false" desc="Description for managing shared USB devices.">
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices.">
     Give <ph name="SPECIFIC_NAME">$1<ex>HappyVm</ex></ph> permission to access USB devices. <ph name="SPECIFIC_NAME">$1<ex>HappyVm</ex></ph> won't remember a USB device after it's removed.
   </message>
-  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_INSTRUCTIONS_LOCATE" translateable="false" desc="Instructions for how to locate shared folders in Bruschetta..">
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_INSTRUCTIONS_LOCATE" desc="Instructions for how to locate shared folders in Bruschetta..">
     Shared folders are available in <ph name="SPECIFIC_NAME">$1<ex>HappyVm</ex></ph> at <ph name="BASE_DIR">$2<ex>/mnt/chromeos</ex></ph>.
   </message>
-  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_INSTRUCTIONS_ADD" translateable="false" desc="Instructions for how to add shared folders in Bruschetta..">
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Bruschetta..">
     To share, right-click on a folder in Files app, then select "Share with <ph name="SPECIFIC_NAME">$1<ex>HappyVm</ex></ph>".
   </message>
-  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_REMOVE_FAILURE_DIALOG_MESSAGE" translateable="false" desc="Message to show user when unsharing a Bruschetta shared folder fails..">
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_REMOVE_FAILURE_DIALOG_MESSAGE" desc="Message to show user when unsharing a Bruschetta shared folder fails..">
     Couldn't unshare because an application is using this folder. The folder will be unshared when <ph name="SPECIFIC_NAME">$1<ex>HappyVm</ex></ph> is next shut down.
   </message>
   <message name="IDS_SETTINGS_BRUSCHETTA_SUBTEXT" desc="Description for the section for enabling and managing Bruschetta (codename).">
@@ -2646,20 +2658,32 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
     Google Play Store
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
+    Manage Google Play preferences
+  </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_ENABLE_BUTTON_ROLE" desc="Role description of the button which starts the Google Play Store Terms of Service screen. Spoken aloud by screen readers when the Turn On button is focused">
     Turn on Google Play Store
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_MANAGE_APPS" desc="Label for launching Android apps settings.">
     Manage Android preferences
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_MANAGE_APPS" desc="Label for launching Android apps settings.">
+    Android Settings
+  </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE" desc="Label for the control to open a dialog confirming removal of the Google Play Store.">
     Remove Google Play Store
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_REMOVE" desc="Label for the control to open a dialog confirming removal of the Google Play Store.">
+    Remove Google Play and Android apps
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE_BUTTON" desc="Label for the button for the removal of the Google Play Store">
     Remove
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_TITLE" desc="Title of the confirmation dialog for disabling android apps.">
     Remove Android apps?
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_DISABLE_DIALOG_TITLE" desc="Title of the confirmation dialog for disabling android apps.">
+    Remove Google Play and Android apps?
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_REMOVE" desc="Label for confirmation button in the disable android apps dialog.">
     Remove Android apps
@@ -2669,6 +2693,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_APPS_ARC_VM_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices. Do not translate 'ARCVM'.">
     Let Android apps access USB devices on this Chromebook. Permission will be requested each time you plug in a USB device. Individual Android apps will ask for additional permissions.
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_OPEN_GOOGLE_PLAY" desc="Label for launching Google Play Store.">
+    Open Google Play
   </message>
 
   <!-- Device Stylus (OS settings) -->
@@ -2721,6 +2748,24 @@ Press an assigned switch or key to remove assignment.
   <!-- Customize buttons page (OS settings)-->
   <message name="IDS_SETTINGS_CUSTOMIZE_MOUSE_BUTTONS_TITLE" translateable="false" desc="Title of Customize mouse buttons page">
     Customize mouse buttons
+  </message>
+  <message name="IDS_SETTINGS_KEY_COMBINATION_OPTION_LABEL" translateable="false" desc="Label of key combination option in the button remapping action dropdown menu.">
+    Key combination
+  </message>
+  <message name="IDS_SETTINGS_NO_REMAPPING_OPTION_LABEL" translateable="false" desc="Label of no remapping option in the button remapping action dropdown menu.">
+    None
+  </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_BUTTONS_RENAMING_DIALOG_TITLE" translateable="false" desc="Title of the button renaming dialog in customize device buttons page.">
+    Change button name
+  </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_BUTTONS_DIALOG_CANCEL" translateable="false" desc="Label of cancel button on dialogs in customize device buttons pages.">
+    Cancel
+  </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_BUTTONS_DIALOG_SAVE" translateable="false" desc="Label of save button on dialogs in customize device buttons pages.">
+    Save
+  </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_BUTTONS_RENAMING_DIALOG_INPUT_LABEL" translateable="false" desc="Label above renaming button input field on the dialog in customize device buttons pages.">
+    New button name
   </message>
 
   <!-- Bluetooth page (OS settings) -->
@@ -3075,9 +3120,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_TOUCHPAD_SPEED_LABEL" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of the touchpad.">
     Touchpad speed
   </message>
-  <message name="IDS_SETTINGS_TOUCHPAD_SCROLL_SPEED_LABEL" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of touchpad scrolling.">
-    Touchpad scroll speed
-  </message>
   <message name="IDS_SETTINGS_POINTER_SPEED_SLOW_LABEL" desc="In Device Settings, the text under the left (less sensitive) side of the slider for the pointer (mouse/touch) speed (sensitivity).">
     Slow
   </message>
@@ -3090,16 +3132,14 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_POINTING_STICK_SPEED_LABEL" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of the pointing stick (normally referred to as a TrackPoint).">
     TrackPoint speed
   </message>
-  <!-- TODO(zhangwenyu): Remove translateable="false" once the string is finalized. -->
-  <message name="IDS_SETTINGS_MOUSE_SCROLL_SPEED_LABEL" translateable="false" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of mouse scrolling.">
+  <message name="IDS_SETTINGS_MOUSE_SCROLL_SPEED_LABEL" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of mouse scrolling.">
     Scrolling speed
   </message>
-  <!-- TODO(zhangwenyu): Remove translateable="false" once the string is finalized. -->
-  <message name="IDS_SETTINGS_MOUSE_CURSOR_LABEL" translateable="false" desc="In Device Settings, the text of mouse cursor subsection title.">
-    Mouse cursor
+  <message name="IDS_SETTINGS_MOUSE_CURSOR_LABEL" desc="In Device Settings, the text of mouse cursor subsection title.">
+    Cursor
   </message>
-  <message name="IDS_SETTINGS_MOUSE_SCROLLING_LABEL" translateable="false" desc="In Device Settings, the text of mouse scrolling subsection title.">
-    Mouse scrolling
+  <message name="IDS_SETTINGS_MOUSE_SCROLLING_LABEL" desc="In Device Settings, the text of mouse scrolling subsection title.">
+    Scrolling
   </message>
   <message name="IDS_SETTINGS_MOUSE_SWAP_BUTTONS_LABEL" desc="In Device Settings, the text next to the checkbox to set the primary mouse button to the right button instead of the left button.">
     Swap primary mouse button
@@ -3134,15 +3174,14 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_OS_SETTINGS_REVAMP_MOUSE_ACCELERATION_DESCRIPTION" desc="In Device Settings, the description for the label next to the checkbox to enable mouse acceleration.">
     Faster movements with your mouse will move the cursor farther
   </message>
-  <!-- TODO(zhangwenyu): Remove translateable="false" once the string is finalized. -->
-  <message name="IDS_SETTINGS_MOUSE_SCROLL_ACCELERATION_LABEL" translateable="false" desc="In Device Settings, the text next to the toggle for mouse scroll acceleration.">
-    Enable scroll acceleration. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_MOUSE_SCROLL_ACCELERATION_LABEL" desc="In Device Settings, the text next to the toggle for mouse scroll acceleration. Faster scrolling with your mouse will scroll farther.">
+    Scroll acceleration <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_CURSOR_SPEED_LABEL" translateable="false" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of the mouse cursor.">
+  <message name="IDS_SETTINGS_CURSOR_SPEED_LABEL" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of the mouse cursor.">
     Cursor speed
   </message>
-  <message name="IDS_SETTINGS_CURSOR_ACCELERATION_LABEL" translateable="false" desc="In Device Settings, the text next to the checkbox to disable mouse cursor acceleration.">
-    Enable cursor acceleration
+  <message name="IDS_SETTINGS_CURSOR_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable mouse cursor acceleration. Faster movements with your mouse will move the cursor farther.">
+    Cursor acceleration
   </message>
   <message name="IDS_SETTINGS_POINTING_STICK_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable pointing stick (a.k.a. TrackPoint) acceleration. (TrackPoint is a trademark that's not translated.)">
     Enable TrackPoint acceleration
@@ -3155,9 +3194,6 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_TOUCHPAD_ACCELERATION_DESCRIPTION" desc="In Device Settings, the description of the label next to the checkbox to disable touchpad acceleration.">
     Faster movements on your touchpad will move the cursor farther
-  </message>
-  <message name="IDS_SETTINGS_TOUCHPAD_SCROLL_ACCELERATION_LABEL" desc="In Device Settings, the text next to the toggle for touchpad scroll acceleration.">
-    Enable touchpad scroll acceleration
   </message>
   <message name="IDS_SETTINGS_MOUSE_AND_TOUCHPAD_TITLE" desc="In Device Settings, the title of the mouse and touchpad settings subpage (when the user has both types of devices).">
     Mouse and touchpad
@@ -3184,7 +3220,7 @@ Press an assigned switch or key to remove assignment.
     Use touchpad and keyboard to right-click
   </message>
   <message name="IDS_SETTINGS_TOUCHPAD_SIMULATE_RIGHT_CLICK_OPTION_DISABLED" desc="In the touchpad settings subpage, the dropdown list item for the disabled option.">
-    disabled
+    Disabled
   </message>
   <message name="IDS_SETTINGS_TOUCHPAD_SIMULATE_RIGHT_CLICK_OPTION_SEARCH" desc="In the touchpad settings subpage, the dropdown list item for the Search + Click option.">
     search + click
@@ -3195,95 +3231,100 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_TOUCHPAD_SIMULATE_RIGHT_CLICK_OPTION_ALT" desc="In the touchpad settings subpage, the dropdown list item for the Alt + Click option.">
     alt + click
   </message>
-  <!-- TODO(b/286937607): Finalize and translate these strings -->
   <message name="IDS_SETTINGS_MODIFIER_KEYS_LABEL" desc="In the remap keyboard keys settings subpage, the label for the section that contains all of the modifier keys (Ctrl, Alt, etc).">
     Select an action for each key
   </message>
   <message name="IDS_SETTINGS_OTHER_KEYS_LABEL" desc="In the remap keyboard keys settings subpage, the label for the section that contains all of the non-modifier keys (Backspace, Home, etc).">
     Select a shortcut for each action
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_INSERT" translateable="false" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the insert 6-pack key action.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_INSERT" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the insert 6-pack key action.">
     insert
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_HOME" translateable="false" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the home 6-pack key action.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_HOME" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the home 6-pack key action.">
     home
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_END" translateable="false" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the end 6-pack key action.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_END" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the end 6-pack key action.">
     end
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_UP" translateable="false" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the PageUp 6-pack key action.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_UP" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the PageUp 6-pack key action.">
     page up
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_DOWN" translateable="false" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the PageDown 6-pack key action.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_DOWN" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the PageDown 6-pack key action.">
     page down
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_DELETE" translateable="false" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the delete 6-pack key action.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_DELETE" desc="In the keyboard settings subpage, the text next to the dropdown for setting the shortcut used to trigger the delete 6-pack key action.">
     delete
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_DELETE_ALT" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_DELETE_ALT" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     alt + backspace
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_DELETE_SEARCH" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the search + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_DELETE_SEARCH" desc="In the keyboard settings subpage, the dropdown list item for the search + backspace option.">
     search + backspace
   </message>
   <message name="IDS_SETTINGS_SIX_PACK_KEY_DELETE_LAUNCHER" desc="In the keyboard settings subpage, the dropdown list item for the launcher + backspace option.">
     launcher + backspace
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_HOME_ALT" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_HOME_ALT" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     ctrl + alt + up arrow
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_HOME_SEARCH" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_HOME_SEARCH" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     search + left arrow
   </message>
   <message name="IDS_SETTINGS_SIX_PACK_KEY_HOME_LAUNCHER" desc="In the keyboard settings subpage, the dropdown list item for the launcher + left arrow option.">
     launcher + left arrow
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_END_ALT" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_END_ALT" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     ctrl + alt + down arrow
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_END_SEARCH" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_END_SEARCH" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     search + right arrow
   </message>
   <message name="IDS_SETTINGS_SIX_PACK_KEY_END_LAUNCHER" desc="In the keyboard settings subpage, the dropdown list item for the launcher + right arrow option.">
     launcher + right arrow
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_INSERT_SEARCH" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_INSERT_SEARCH" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     search + shift + backspace
   </message>
   <message name="IDS_SETTINGS_SIX_PACK_KEY_INSERT_LAUNCHER" desc="In the keyboard settings subpage, the dropdown list item for the launcher + shift + backspace option.">
     launcher + shift + backspace
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_DOWN_ALT" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_DOWN_ALT" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     alt + down arrow
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_DOWN_SEARCH" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_DOWN_SEARCH" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     search + down arrow
   </message>
   <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_DOWN_LAUNCHER" desc="In the keyboard settings subpage, the dropdown list item for the launcher + down arrow option.">
     launcher + down arrow
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_UP_ALT" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_UP_ALT" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     alt + up arrow
   </message>
-  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_UP_SEARCH" translateable="false" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
+  <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_UP_SEARCH" desc="In the keyboard settings subpage, the dropdown list item for the alt + backspace option.">
     search + up arrow
   </message>
   <message name="IDS_SETTINGS_SIX_PACK_KEY_PAGE_UP_LAUNCHER" desc="In the keyboard settings subpage, the dropdown list item for the launcher + up arrow option.">
     launcher + up arrow
   </message>
   <message name="IDS_SETTINGS_SIX_PACK_KEY_OPTION_DISABLED" desc="In the keyboard settings subpage, the dropdown list item for the disabled option.">
-    disabled
+    Disabled
   </message>
 
   <!-- Printing Page (OS Settings)-->
   <message name="IDS_SETTINGS_PRINT_AND_SCAN" desc="Title of the printing and scanning page and navigation item to get there.">
-    Print and scan
+    Printers and Scanners
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINT_SERVER" desc="Label for button that allows the user to access the add print server dialog.">
     Print server
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS" desc="In Printing Settings, the title of the CUPS printers setting section.">
     Printers
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_PRINTING_CUPS_PRINT_TITLE" desc="In Printing Settings, the label of the CUPS print setting section.">
+    Print
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_PRINTING_CUPS_PRINT_DESCRIPTION" desc="In Printing Settings, the description of the CUPS print setting section.">
+    View or add printers and see active print jobs
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_LEARN_MORE_LABEL" desc="Label for the link that teaches users how to use CUPS printing.">
     Set up or manage CUPS printers. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -4279,11 +4320,20 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_USERS_GUEST_BROWSING_LABEL" desc="Label for the guest browsing setting.">
     Enable Guest browsing
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_USERS_GUEST_BROWSING_LABEL" desc="Label for the guest browsing setting.">
+    Guest browsing
+  </message>
   <message name="IDS_SETTINGS_USERS_SHOW_ON_SIGNIN_LABEL" desc="Label for the 'show users on sign-in screen' setting.">
     Show usernames and photos on the sign-in screen
   </message>
   <message name="IDS_SETTINGS_USERS_RESTRICT_SIGNIN_LABEL" desc="Label for the setting for restricting sign in to specific users.">
     Restrict sign-in to the following users:
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_USERS_RESTRICT_SIGNIN_LABEL" desc="Label for the setting for restricting sign in to specific users.">
+    Limit who can sign in
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_USERS_RESTRICT_SIGNIN_DESCRIPTION" desc="Description for the setting for restricting sign in to specific users.">
+    You can limit sign-in to certain users. This removes the "Add profile" option on the sign-in screen. You can also remove current users.
   </message>
   <message name="IDS_SETTINGS_USERS_DEVICE_OWNER_LABEL" desc="Label for a user who is the device owner.">
     <ph name="USER_NAME">$1<ex>John Smith</ex></ph> (owner)
@@ -4657,14 +4707,32 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_SMART_LOCK_SUMMARY" desc="Description of for the 'Smart Lock' setting. This feature automatically unlocks the user's Chromebook if their phone is nearby and unlocked.">
     Unlock your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_CHANGE_PASSWORD_BUTTON" desc="Button that is used to change a password.">
+    Change password
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_DEVICE_PASSWORD_OPTION_LABEL" desc="Label for the option to use a device password to sign in.">
+    Device password
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_GOOGLE_ACCOUNT_PASSWORD_OPTION_LABEL" desc="Label for the option to use the Brave sync chain password to sign in.">
+    Brave sync chain password
+  </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_OPTIONS_LOGIN_LOCK" desc="Text on the lock screen which is the subheader for the screen locking options.">
     Lock screen from sleep mode
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_REMOVE_PIN_BUTTON" desc="Label of the button that removes the user's PIN.">
     Remove
   </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PASSWORD_LABEL" desc="Label for the password authentication factor on the lock screen page.">
+    Password
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PASSWORD_DESCRIPTION" desc="Description of the password authentication factor on the lock screen page.">
+    Device password or Brave sync chain password
+  </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_LABEL" desc="Label for PIN authentication factor on the lock screen page.">
     PIN
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_SETUP_PASSWORD_BUTTON" desc="Button that is used to setup a password when the user does not have a password yet.">
+    Set up
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_SETUP_PIN_BUTTON" desc="Button that is used to setup a new PIN when the user does not have a PIN yet.">
     Set up
@@ -4883,11 +4951,17 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_POWER_IDLE_WHILE_CHARGING_LABEL" desc="In Device Settings &gt; Power, label for behavior when device is idle.">
     While charging
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_POWER_INACTIVE_WHILE_PLUGGED_IN_LABEL" desc="In Device Settings &gt; Power, label for behavior when device is inactive and plugged in.">
+    While inactive and plugged in
+  </message>
   <message name="IDS_SETTINGS_POWER_IDLE_WHILE_CHARGING_ARIA_LABEL" desc="In Device Settings &gt; Power, aria label for behavior when device is idle.">
     Idle action while charging
   </message>
   <message name="IDS_SETTINGS_POWER_IDLE_WHILE_ON_BATTERY_LABEL" desc="In Device Settings &gt; Power, label for behavior when device is idle.">
     While on battery
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_POWER_INACTIVE_WHILE_ON_BATTERY_LABEL" desc="In Device Settings &gt; Power, label for behavior when device is inactive and on battery.">
+    While inactive and on battery
   </message>
   <message name="IDS_SETTINGS_POWER_IDLE_WHILE_ON_BATTERY_ARIA_LABEL" desc="In Device Settings &gt; Power, aria label for behavior when device is idle.">
     Idle action while on battery
@@ -4931,16 +5005,19 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BATTERY_STATUS_SHORT" desc="In Device Settings &gt; Power, the battery status when the time left cannot be shown.">
     <ph name="percentage">$1<ex>56</ex></ph>%
   </message>
-  <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_LABEL" desc="In Device Settings &gt; Power, label for toggling battery saver mode" translateable="false">
+  <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_LABEL" desc="In Device Settings &gt; Power, label for toggling battery saver mode">
     Battery Saver
   </message>
-  <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_SUBTEXT" desc="In Device Settings &gt; Power, description of the behavior of battery saver mode" translateable="false">
-    Enable Energy saver to extend battery life by turning off background functions such as[...]
+  <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_SUBTEXT" desc="In Device Settings &gt; Power, description of the behavior of battery saver mode">
+    Extends battery life by reducing brightness, limiting background activity and visual effects, delaying notifications, and turning on Brave Energy Saver.
   </message>
 
   <!-- Reset Page (OS settings)-->
   <message name="IDS_SETTINGS_RESET_TITLE" desc="Title of a section of settings. This section describes settings for resetting the device.">
     Reset settings
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_RESET_TITLE" desc="Title of a section of settings. This section describes settings for resetting the device.">
+    Reset
   </message>
   <message name="IDS_SETTINGS_FACTORY_RESET" desc="Name of the factory reset option on the Brave settings page">
     Powerwash
@@ -4950,6 +5027,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_FACTORY_RESET_DESCRIPTION" desc="Description of the factory reset option on the Brave settings page">
     Remove all user accounts and reset your <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> device to be just like new.
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_FACTORY_RESET_DESCRIPTION" desc="Description of the factory reset option on the ChromeOS settings page">
+    Remove all user accounts and reset your Chromebook to be just like new.
   </message>
   <message name="IDS_SETTINGS_FACTORY_RESET_WARNING" desc="Warning text in the 'Factory Reset' window">
     A restart is required before your device can be reset with Powerwash. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -5120,8 +5200,14 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_TITLE" desc="In Device Settings &gt; Displays, the label for the section for changing a display's refresh rate.">
     Refresh Rate
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_REFRESH_RATE_TITLE" desc="In Device Settings &gt; Displays, the label for the section for changing a display's refresh rate.">
+    Refresh rate
+  </message>
   <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_SUBLABEL" desc="In Device Settings &gt; Displays, the text describing the drop down menu to select the desired refresh rate of the selected external display.">
     Determines the frequency that the screen updates
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_REFRESH_RATE_DESCRIPTION" desc="In Device Settings &gt; Displays, the text describing the drop down menu to select the desired refresh rate of the selected external display.">
+    With a higher refresh rate, you'll have a smoother display with more details. Increased refresh rate may impact battery life.
   </message>
   <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display refresh rate drop down menu, when Resolution and Refresh Rate are displayed separately. Hz is the SI unit Hertz">
     <ph name="REFRESH_RATE">$1<ex>60</ex></ph> Hz
@@ -5132,8 +5218,14 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_DISPLAY_ZOOM_TITLE" desc="In Device Settings &gt; Displays, the title for the section for changing the display's zoom.">
     Display size
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_ZOOM_LABEL" desc="In Device Settings &gt; Displays, the label for the section for changing the display's zoom.">
+    Display and text size
+  </message>
   <message name="IDS_SETTINGS_DISPLAY_ZOOM_SUBLABEL" desc="In Device Settings &gt; Displays, the text describing the display's zoom.">
     Make items on your screen smaller or larger
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_ZOOM_DESCRIPTION" desc="In Device Settings &gt; Displays, the description for the display's zoom.">
+    Make items on your screen, including text, smaller or larger
   </message>
   <message name="IDS_SETTINGS_DISPLAY_ZOOM_VALUE" desc="The currently selected display zoom percentage.">
     <ph name="DISPLAY_ZOOM">$1<ex>120</ex></ph>%
@@ -5177,8 +5269,14 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_DISPLAY_OVERSCAN_TITLE" desc="Title of the settings subpage which adjusts display overscan.">
     Overscan
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_BOUNDARIES_TITLE" desc="Title of the settings subpage which adjusts display boundaries.">
+    Display boundaries
+  </message>
   <message name="IDS_SETTINGS_DISPLAY_OVERSCAN_SUBTITLE" desc="Subtitle for the display overscan settings subpage.">
     Adjust the boundaries of your display
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_BOUNDARIES_DESCRIPTION" desc="Description for the display boundaries settings subpage.">
+    Press the arrow keys to shrink or expand the display area. To move the display area around, press shift and +, then use the arrow keys.
   </message>
   <message name="IDS_SETTINGS_DISPLAY_OVERSCAN_INSTRUCTIONS" desc="Instructions for changing the display overscan calibration.">
     Tap the following keys to adjust or move the cropping area
@@ -5273,6 +5371,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_TIME_ZONE_DETECTION_MODE_IP_ONLY_DEFAULT" desc="Display name for the automatic time zone detection mode which enables time zone detection sending unprecise location to Brave servers. Default means that this is the default time zone detection mode.">
     Use your IP address to determine location (default)
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_TIME_ZONE_DETECTION_MODE_IP_ONLY_DEFAULT" desc="Display name for the automatic time zone detection mode which enables time zone detection sending unprecise location to Brave servers.">
+    Use your IP address to determine location
   </message>
   <message name="IDS_SETTINGS_TIME_ZONE_DETECTION_MODE_SEND_WIFI_AP" desc="Display name for the automatic time zone detection mode which enables time zone detection sending list of visible WiFi Access Point names to Brave servers.">
     Use only Wi-Fi to determine location
@@ -5379,7 +5480,22 @@ Press an assigned switch or key to remove assignment.
     launcher
   </message>
   <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_DISABLED" desc="In keyboard remap keys subpage, the dropdown list item for a disabled key.">
-    disabled
+    Disabled
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_CONNECTED_A11Y_LABEL" desc="The message announced to screen readers when a device is connected.">
+    <ph name="DEVICE_NAME">$1<ex>Internal Keyboard</ex></ph> has been connected
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_DISCONNECTED_A11Y_LABEL" desc="The message announced to screen readers when a device is disconnected.">
+    <ph name="DEVICE_NAME">$1<ex>Internal Keyboard</ex></ph> has been disconnected
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_ALL_MICE_DISCONNECTED_A11Y_LABEL" desc="The message announced to screen readers when all mice have been disconnected.">
+    All mice have been disconnected
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_ALL_TOUCHPADS_DISCONNECTED_A11Y_LABEL" desc="The message announced to screen readers when all mice have been disconnected.">
+    All touchpads have been disconnected
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_ALL_POINTING_STICKS_DISCONNECTED_A11Y_LABEL" desc="The message announced to screen readers when all mice have been disconnected.">
+    All TrackPoints have been disconnected
   </message>
 
   <!-- Device Keyboard page (OS settings) -->
@@ -5458,6 +5574,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_KEYBOARD_SHOW_INPUT_SETTINGS" desc="The link to navigate to input method settings.">
     Change input settings
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_KEYBOARD_SHOW_INPUT_SETTINGS" desc="The link to navigate to input method settings.">
+    Input settings
+  </message>
   <message name="IDS_SETTINGS_KEYBOARD_KEY_LAUNCHER" desc="In Device Settings, the label and dropdown list item for the Search key on keyboard layouts of newer Chromebooks.">
     Launcher
   </message>
@@ -5488,17 +5607,38 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_SETTINGS_APPS_LINK_TEXT" desc="The label for the button which links to the App Management page.">
     Manage your apps
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_APP_NOTIFICATIONS_TITLE" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
+    Allow notifications
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_APP_PERMISSIONS_TITLE_ANDROID" desc="Label for a link to more settings and permissions for an app with type Android.">
+    More Android settings and permissions
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_APP_PERMISSIONS_TITLE_WEB_APP" desc="Label for a link to more settings and permissions for an app with type web app.">
+    More web app settings and permissions
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_APP_PERMISSIONS_TITLE_CHROME_APP" desc="Label for a link to more settings and permissions for an app with type Brave app.">
+    More Brave app settings and permissions
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_OPEN_IN_APP_TITLE" desc="Label for the intent sharing option to open in a specified app.">
+    Open in <ph name="APP_NAME">$1<ex>Calculator</ex></ph> app
+  </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TEXT" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
     Notifications
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_APP_NOTIFICATIONS_LINK_DESCRIPTION" desc="The description for the settings row button in the App section of OS Settings which links to the App Notifications page.">
+    Manage app notifications, Do not disturb, and app badging
   </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_SUBLABEL_TEXT" desc="The sublabel for the settings row button in the App section of OS Settings which links to the App Notifications page indicating the number of ChromeOS apps installed.">
     <ph name="APP_COUNT">$1<ex>3</ex></ph> apps
   </message>
-  <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DND_ENABLED_SUBLABEL_TEXT" desc="The sublabel for the settings row button in the App section of OS Settings which links to the App Notifications page indicating that Do Not Disturb is on.">
+  <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DND_ENABLED_SUBLABEL_TEXT" desc="The sublabel for the settings row button in the App section of OS Settings which links to the App Notifications page indicating that Do not disturb is on.">
     Do not disturb enabled
   </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_TITLE" desc="The label for the notfications DoNotDisturb toggle that lets the user silence all app notifications.">
     Do not disturb
+  </message>
+   <message name="IDS_OS_SETTINGS_REVAMP_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_DESCRIPTION" desc="The text description of the DoNotDisturb toggle within help icon tooltip.">
+    Notifications won't pop up on the screen. You can still see notifications by clicking the Do not disturb icon on the bottom right of your screen.
   </message>
    <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_DESCRIPTION" desc="The text description of the DoNotDisturb toggle within help icon tooltip.">
     When turned on, all notifications will be silenced
@@ -5521,6 +5661,9 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
     Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
+    You can download Android apps and games through the Play Store. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
   <!-- TODO(jamescook): Use device type instead of "Chromebook", which may
         require changing ArcPlayTermsOfServiceConsent resource id handling. -->
   <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
@@ -5529,6 +5672,13 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
     Content you’ve purchased such as movies, TV shows, music, books, or other in-app purchases may also be deleted.
     <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
     This doesn’t affect apps or content on other devices.
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
+    Google Play and apps you've downloaded from Google Play will be deleted from this Chromebook.
+    <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
+    Content you've purchased through Google Play such as movies, TV shows, music, books, as well as purchases from other apps may also be deleted.
+    <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
+    This doesn't affect apps or content on other devices.
   </message>
   <message name="IDS_SETTINGS_APP_DETAILS_TITLE" desc="The title of app details subpage, which displays details about a specific app.">
     App details
@@ -5766,6 +5916,12 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_OS_SETTINGS_ON_STARTUP_TITLE" desc="The title of the dropdown menu that allows the user to configure the restore apps and pages options on startup.">
     Restore apps on startup
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ON_STARTUP_TITLE" desc="The title of the dropdown menu that allows the user to configure the restore apps and pages options on startup.">
+    Restore session on startup
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_ON_STARTUP_DESCRIPTION" desc="The description of the dropdown menu that allows the user to configure the restore apps and pages options on startup.">
+    After restarting, continue where you left off with apps, websites, and open windows
+  </message>
   <message name="IDS_OS_SETTINGS_ON_STARTUP_ALWAYS" desc="Label for the dropdown menu which enables the always restore apps and pages option on startup.">
     Always restore
   </message>
@@ -5779,6 +5935,9 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <!-- System Preferences Page -->
   <message name="IDS_OS_SETTINGS_SYSTEM_PREFERENCES_TITLE" desc="The title of the System Preferences page and respective menu item.">
     System Preferences
+  </message>
+  <message name="IDS_OS_SETTINGS_SYSTEM_PREFERENCES_STORAGE_AND_POWER_TITLE" desc="The title of the Storage and Power settings card in the System Preferences page.">
+    Storage and power
   </message>
 </if>
 </grit-part>

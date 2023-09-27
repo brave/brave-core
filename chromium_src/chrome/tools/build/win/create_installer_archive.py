@@ -22,11 +22,11 @@ from sign_binaries import sign_binaries
 @override_utils.override_function(globals())
 def CopyAllFilesToStagingDir(original_function, config, distribution,
                              staging_dir, build_dir, enable_hidpi,
-                             include_snapshotblob, component_build,
+                             include_snapshotblob, include_dxc, component_build,
                              component_ffmpeg_build, verbose):
     original_function(config, distribution, staging_dir, build_dir,
-                      enable_hidpi, include_snapshotblob, component_build,
-                      component_ffmpeg_build, verbose)
+                      enable_hidpi, include_snapshotblob, include_dxc,
+                      component_build, component_ffmpeg_build, verbose)
     brave_extension_locales_src_dir_path = os.path.realpath(
         os.path.join(get_src_dir(), 'brave', 'components', 'brave_extension',
                      'extension', 'brave_extension', '_locales'))

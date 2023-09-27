@@ -758,7 +758,7 @@ are declared in tools/grit/grit_rule.gni.
             Just once
           </message>
           <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION" desc="The context-menu item that asks whether to use the PDF OCR service to convert image to text.">
-            Convert image to text
+            Extract text from PDF
           </message>
           <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ALWAYS" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text always.">
             Always
@@ -1048,7 +1048,7 @@ are declared in tools/grit/grit_rule.gni.
             Just Once
           </message>
           <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION" desc="The context-menu item that asks whether to use the PDF OCR service to convert image to text.">
-            Convert image to text
+            Extract Text From PDF
           </message>
           <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ALWAYS" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text always.">
             Always
@@ -2765,9 +2765,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_NO_SAFE_BROWSING" desc="Subpage summary text for a download item when the download could not be verified due to Safe Browsing being off.">
         This file can't be verified because Safe Browsing is off
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_BLOCKED_LEARN_MORE_LABEL" desc="Sentence including the link to the help page about why Brave blocks some downloaded files, indicating to the user that they can learn more by clicking on the link.">
-        Learn why <ph name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_BLOCKED_LEARN_MORE_LINK">$1<ex>Brave blocks some downloads</ex></ph>
-      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_SAFE_BROWSING_SETTING_LABEL" desc="Sentence including the link to the settings page allowing the user to turn on Safe Browsing, indicating to the user that they can change the setting by clicking on the link.">
         <ph name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_SAFE_BROWSING_SETTING_LINK">$1<ex>Turn on Safe Browsing</ex></ph> to make downloading files safer
       </message>
@@ -2813,12 +2810,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_TOO_BIG" desc="Subpage summary of warning for a file blocked for being too large.">
         Your organization blocked this file because it is too big for a security check. You can open files up to 50 MB.
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_DEEP_SCANNING_PROMPT_UPDATED" desc="Subpage summary of warning for a file where we recommend sending the file for deep scanning.">
-        This file might be a virus or malware.<ph name="LINE_BREAK">$1</ph>You can send it to Google Safe Browsing to check if it's unsafe. Scans usually take a few seconds.
-      </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_DEEP_SCANNING_LINK" desc="Additional text describing the process of deep scanning a download">
-        Learn more about malware scans
-      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_ASYNC_SCANNING" desc="Subpage summary when download deep scanning is in progress">
         This file might be a virus or malware
       </message>
@@ -2836,15 +2827,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_TRY_AGAIN" desc="Retry button when a download is failed">
         Try again
-      </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_DEEP_SCANNING_PROMPT" desc="Prompt for Deep Scanning of a download">
-        Scan before opening
-      </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_DEEP_SCANNING_PROMPT_UPDATED" desc="Prompt for Deep Scanning of a download">
-        Scan for malware
-      </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ASYNC_SCANNING" desc="Status text for a download item that is being scanned.">
-        Scanning...
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ASYNC_SCANNING_ENTERPRISE" desc="Status text for a download item that is being scanned by enterprise policy.">
         Checking with your organization's security policies...
@@ -2961,6 +2943,44 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_MALWARE" desc="Subpage summary text for a download item when the downloaded file may hide malware.">
         This file may hide malware
+      </message>
+
+      <!-- Deep scanning in download bubble -->
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_DEEP_SCANNING_PROMPT" desc="Prompt for Deep Scanning of a download">
+        Scan before opening
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_DEEP_SCANNING_PROMPT_UPDATED" desc="Prompt for Deep Scanning of a download">
+        Scan for malware
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ASYNC_SCANNING" desc="Status text for a download item that is being scanned.">
+        Scanning...
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_DEEP_SCANNING_PROMPT_UPDATED" desc="Subpage summary of warning for a file where we recommend sending the file for deep scanning.">
+        This file might be a virus or malware.<ph name="LINE_BREAK">$1</ph>You can send it to Google Safe Browsing to check if it's unsafe. Scans usually take a few seconds.
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_DEEP_SCANNING_PROMPT_ENCRYPTED_ARCHIVE" desc="Subpage summary of warning for an encrypted archive where we recommend sending the file for deep scanning.">
+        This encrypted file might be a virus or malware.<ph name="LINE_BREAK">$1</ph>To check if it's unsafe, you can send the file and password to Google Safe Browsing. Scans usually take a few seconds.<ph name="LINE_BREAK">$1</ph>To scan, add the file's password.
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_DEEP_SCANNING_LINK" desc="Additional text describing the process of deep scanning a download">
+        Learn more about malware scans
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PASSWORD_PROMPT" desc="Prompt for the user to enter the file's password">
+        File password
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PASSWORD_PROMPT_EMPTY" desc="Prompt for the user when the password entered is empty">
+        Enter the file's password
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PASSWORD_PROMPT_INVALID" desc="Prompt for the user when the password entered is incorrect">
+        Incorrect password. Try again.
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PASSWORD_PROMPT_ACCESSIBLE_ALERT" desc="Accessible alert text for screen readers when users focus on the password textfield with no subtext">
+        File password
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PASSWORD_PROMPT_ACCESSIBLE_ALERT_EMPTY" desc="Accessible alert text for screen readers when users focus on the password textfield with subtext indicating empty password">
+        Enter the file's password
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PASSWORD_PROMPT_ACCESSIBLE_ALERT_INVALID" desc="Accessible alert text for screen readers when users focus on the password textfield with subtext indicating invalid password">
+        Incorrect password. Try again.
       </message>
 
       <!-- Desktop omnibox PWA install icon -->
@@ -5089,6 +5109,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_ATTACHED_DEVICE_INFO" desc="Permission string for accessing information of attached devices.">
             Read attached devices information and data
           </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_BLUETOOTH_PERIPHERALS_INFO" desc="Permission string for accessing information of Bluetooth peripherals.">
+            Read Bluetooth peripherals information and data
+          </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
             Run ChromeOS Flex diagnostic tests
           </message>
@@ -5108,6 +5131,9 @@ are declared in tools/grit/grit_rule.gni.
         <if expr="not reven">
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_ATTACHED_DEVICE_INFO" desc="Permission string for accessing information of attached devices.">
             Read attached devices information and data
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_BLUETOOTH_PERIPHERALS_INFO" desc="Permission string for accessing information of Bluetooth peripherals.">
+            Read Bluetooth peripherals information and data
           </message>
           <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
             Run ChromeOS diagnostic tests
@@ -5392,6 +5418,15 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
             Pinned by your administrator
           </message>
+          <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR_ACCESSIBLE_NAME" desc="The accessible name for the menu item to pin an extension to the toolbar (sentence case).">
+            Pin <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>
+          </message>
+          <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR_ACCESSIBLE_NAME" desc="The accessible name for the menu item to unpin an extension from the toolbar (sentence case).">
+            Unpin <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>
+          </message>
+          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN_ACCESSIBLE_NAME" desc="The accessible name indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
+            <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> is pinned by your administrator
+          </message>
           <message name="IDS_MANAGE_EXTENSION" desc="The text for the button in the extension's context menu used to open the chrome://extensions/?id=xxx page and manage a specific extension (sentence case).">
             Manage extension
           </message>
@@ -5477,6 +5512,15 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (title case).">
             Pinned by your Administrator
+          </message>
+          <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR_ACCESSIBLE_NAME" desc="The accessible name for the menu item to pin an extension to the toolbar (sentence case).">
+            Pin <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>
+          </message>
+          <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR_ACCESSIBLE_NAME" desc="The accessible name for the menu item to unpin an extension from the toolbar (sentence case).">
+            Unpin <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>
+          </message>
+          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN_ACCESSIBLE_NAME" desc="The accessible name indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
+            <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> is pinned by your Administrator
           </message>
           <message name="IDS_MANAGE_EXTENSION" desc="The text for the button in the extension's context menu used to open the chrome://extensions/?id=xxx page and manage a specific extension (title case).">
             Manage Extension
@@ -5863,10 +5907,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Extensions
       </message>
       <message name="IDS_EXTENSIONS_MENU_CONTEXT_MENU_TOOLTIP" desc="Title of the context menu for individual extensions in the Extensions Menu">
-          more options
+          More options
       </message>
       <message name="IDS_EXTENSIONS_MENU_CONTEXT_MENU_TOOLTIP_ACCESSIBLE_NAME" desc="Title of the context menu for individual extensions in the Extensions Menu">
-          <ph name="EXTENSION_NAME">Select to see more options for $1<ex>MyExtension</ex></ph>
+          <ph name="EXTENSION_NAME">More options for $1<ex>MyExtension</ex></ph>
       </message>
       <message name="IDS_EXTENSIONS_MENU_PIN_BUTTON_TOOLTIP" desc="The tooltip for the pinning button for individual extensions in the Extensions Menu">
         Pin extension
@@ -6478,23 +6522,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PASSWORD_MANAGER_UPDATE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION" desc="The description of the Brave Password Manager's update password message when the user is signed in.">
         In Brave Password Manager for <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
       </message>
-      <if expr="is_android">
-        <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_V3" desc="The description of the Brave Password Manager's save password prompt when the user is signed in and syncing passwords.">
-          To Brave Password Manager <ph name="SEPARATOR">•</ph> <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_UPDATE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_V3" desc="The description of the Brave Password Manager's update password prompt when the user is signed in and syncing passwords.">
-          In Brave Password Manager <ph name="SEPARATOR">•</ph> <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_V2" desc="The description of the Brave Password Manager's save password prompt when the user is signed in.">
-          To your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_UPDATE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_V2" desc="The description of the Brave Password Manager's save password prompt when the user is signed in.">
-          In your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_SAVE_UPDATE_PASSWORD_SIGNED_OUT_MESSAGE_DESCRIPTION_V1" desc="The description of the Brave Password Manager's save password prompt when the user is signed out and passwords are only stored locally.">
-          Only on this device
-        </message>
-      </if>
       <if expr="use_titlecase">
         <message name="IDS_PASSWORD_MANAGER_ACCOUNT_CHOOSER_SIGN_IN" desc="In Title Case: The title of the Sign in button in the account chooser when there is one account.">
           Sign In
@@ -6511,11 +6538,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Manage passwords
         </message>
       </if>
-      <if expr="is_android">
-        <message name="IDS_SETTINGS_PASSWORDS_ANDROID_APP" desc="Label for the app a password is for when displaying a credential and the real app display name could not be obtained.">
-          App (<ph name="ANDROID_PACKAGE_NAME">$1<ex>com.netflix.mediaclient</ex></ph>)
-        </message>
-      </if>
+      <message name="IDS_SETTINGS_PASSWORDS_ANDROID_APP" desc="Label for the app a password is for when displaying a credential and the real app display name could not be obtained.">
+        App (<ph name="ANDROID_PACKAGE_NAME">$1<ex>com.netflix.mediaclient</ex></ph>)
+      </message>
       <message name="IDS_SHARED_PASSWORDS_NOTIFICATION_GOT_IT_BUTTON" desc="The button text on the shared passwords notification bubble to inform the user that one of the stored passwords for this website has been received via the password sharing feature.">
         Got it
       </message>
@@ -6966,11 +6991,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OMNIBOX_CLEAR_ALL" desc="Accessibility text for the button that deletes all text input from the omnibox on touch devices.">
         Clear input
       </message>
-      <if expr="is_android or enable_vr">
-        <message name="IDS_SEARCH_OR_TYPE_WEB_ADDRESS" desc="Prompt to enter text into the text field that will either perform web searches or navigate to a website. [CHAR_LIMIT=38]" formatter_data="android_java">
-          Search or type web address
-        </message>
-      </if>
       <message name="IDS_OMNIBOX_WHY_THIS_SUGGESTION" desc="The title of a menu entry and bubble that explains why this suggestion appears in the omnibox popup.">
         Why this suggestion?
       </message>
@@ -7166,6 +7186,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_UPLOADED_IMAGE_LABEL" desc="The label for the 'Uploaded image' tile in the customization menu on the New Tab Page side panel.">
         Uploaded image
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_YOUR_UPLOADED_IMAGE_LABEL" desc="The label for the 'Your uploaded image' button in the customization menu on the New Tab Page side panel.">
+        Your uploaded image
+      </message>
       <message name="IDS_NTP_CUSTOMIZE_UPLOAD_FROM_DEVICE_LABEL" desc="The label for the 'Upload from device' tile in the customization menu on the New Tab Page">
         Upload from device
       </message>
@@ -7210,6 +7233,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOMIZE_COLOR_PICKER_LABEL" desc="The label for the color picker in the customization menu on the New Tab Page">
         Custom color
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_COLOR_HUE_SLIDER_TITLE" desc="The label for the hue slider in the customization menu on the New Tab Page that allows a user to pick a color for their theme">
+        Color picker
       </message>
       <message name="IDS_NTP_THEME_MANAGED_DIALOG_TITLE" desc="Title text for the dialog informing users that their theme is managed when they try selecting a theme on the New Tab Page.">
         Theme is set by your Organization
@@ -7468,7 +7494,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DRIVE_SENTENCE" desc="Name of the Drive module in sentence case shown in various UIs.">
         Google Drive files
       </message>
-      <message name="IDS_NTP_MODULES_DRIVE_SENTENCE_V2" desc="Name of the Drive module v2 in sentence case shown in various UIs." translateable="false">
+      <message name="IDS_NTP_MODULES_DRIVE_SENTENCE_V2" desc="Name of the Drive module v2 in sentence case shown in various UIs.">
         Drive
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_SENTENCE2" desc="Variant of the name of the Drive module in sentence case shown in various UIs.">
@@ -10073,6 +10099,14 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_MEDIA_SCREEN_CAPTURE_NOTIFICATION_STOP" desc="Text shown on the button that stops screen capture.">
         Stop sharing
       </message>
+      <if expr="chromeos_lacros">
+        <message name="IDS_LACROS_STATUS_TRAY_SCREEN_ACCESS_STOP" desc="screen sharing stop button">
+          Stop
+        </message>
+        <message name="IDS_LACROS_STATUS_TRAY_SCREEN_SHARE_TITLE" desc="The title for screen sharing notification">
+          You're sharing your screen
+        </message>
+      </if>
 
       <!-- Strings for the certificate selection dialog triggered by chrome.platformKeys -->
       <message name="IDS_PLATFORM_KEYS_SELECT_CERT_DIALOG_TEXT" desc="The text in the dialog that prompts the user to select a certificate when an extension requests certificates through the platformKeys API.">
@@ -10202,14 +10236,14 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </if>
       </if> <!-- not is_android -->
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_ARC_LABEL" desc="Label for ARC">
           ARC
         </message>
         <message name="IDS_PLATFORM_LABEL" desc="Label for Platform">
           Platform
         </message>
-      </if> <!-- chromeos_ash -->
+      </if> <!-- is_chromeos -->
 
       <!-- Settings related strings not specific to chrome://settings.
            (Settings specific strings are in settings_strings.grdp).
@@ -11482,11 +11516,20 @@ This can include information about installed software, files, your browser, and 
       <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_TITLE" desc="Title of the account password storage reauth tab modal dialog.">
         Use your Brave sync chain to save and fill passwords?
       </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_WITH_PASSKEYS_REAUTH_TITLE" desc="Title of the account password storage reauth tab modal dialog. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+        Use your Brave sync chain to save and fill passwords and passkeys?
+      </message>
       <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_DESC" desc="Body of the account password storage reauth tab modal dialog.">
         Passwords from your Brave sync chain will also be available on this device while you're signed in
       </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_WITH_PASSKEYS_REAUTH_DESC" desc="Body of the account password storage reauth tab modal dialog. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+        Passwords and passkeys in your Brave sync chain will also be available on this device while you're signed in
+      </message>
       <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_DESC_ALREADY_SAVED_LOCALLY" desc="Body of the account password storage reauth tab modal dialog, shown in the case where the password was already saved locally.">
         Brave saved your password to this device, but you can save it to your Brave sync chain instead. Then, all passwords in your Brave sync chain will also be available while you're signed in.
+      </message>
+      <message name="IDS_ACCOUNT_PASSWORDS_WITH_PASSKEYS_REAUTH_DESC_ALREADY_SAVED_LOCALLY" desc="Body of the account password storage reauth tab modal dialog, shown in the case where the password was already saved locally. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+        Brave saved your password to this device, but you can save it to your Brave sync chain instead. Then, all passwords and passkeys in your Brave sync chain will also be available while you're signed in.
       </message>
       <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the account password storage reauth tab modal dialog.">
         Yes
@@ -12712,22 +12755,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MANAGE_PASSWORDS_DIFFERENT_DOMAIN_NO_PASSWORDS_TITLE" desc="The title text that is used in the manage passwords bubble when no passwords are available for a different domain.">
         No passwords saved for <ph name="ORIGIN">$1<ex>example.com</ex></ph>
       </message>
-      <message name="IDS_MANAGE_PASSWORDS_ACCOUNT_STORE_ICON_DESCRIPTION" desc="An accessibility text for images that mark passwords as stored in the user's profile.">
-        Password stored in your Brave account
-      </message>
-      <message name="IDS_MANAGE_PASSWORDS_DELETED" desc="The text that is used in the manage passwords bubble when a password is deleted.">
-        Password deleted
-      </message>
-      <message name="IDS_MANAGE_PASSWORDS_UNDO" desc="The text that is used in the manage passwords bubble when a password is deleted.">
-        Undo
-      </message>
-      <message name="IDS_MANAGE_PASSWORDS_UNDO_TOOLTIP" desc="Tooltip text for restoring a deleted password (undoing removal)">
-        Restore deleted password for <ph name="USERNAME">$1<ex>user@gmail.com</ex></ph>
-      </message>
-      <message name="IDS_MANAGE_PASSWORDS_DELETE" desc="The tooltip of a button that is used in the manage passwords bubble for removing the credential.">
-        Delete password for <ph name="USERNAME">$1<ex>user@gmail.com</ex></ph>
-      </message>
-
       <message name="IDS_MANAGE_PASSWORDS_SHOW_PASSWORD" desc="The tooltip of a button that is used in the manage pending password bubble for revealing the password.">
         Show password
       </message>
@@ -13096,7 +13123,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Linux apps
         </message>
         <message name="IDS_APP_LIST_BRUSCHETTA_DEFAULT_FOLDER_NAME" desc="The default name for the Bruschetta apps folder in the App Launcher">
-          Bruschetta apps
+          <ph name="VM_NAME">$1<ex>ManagedVM</ex></ph> apps
+        </message>
+        <message name="IDS_APP_CONTEXT_MENU_LAUNCH_APP_SHORTCUT" desc="Text for an option shown in a context menu to launch a shortcut in its host app. Example: 'Open Fortnite - GeForce Now'">
+            Open <ph name="SHORTCUT_NAME">$1<ex>Fortnite</ex></ph> - <ph name="APP_NAME">$2<ex>GeForce Now</ex></ph>
         </message>
       </if>
 
@@ -14183,6 +14213,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_USB" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication) plugged in to the USB port of the computer.">
         USB security key
       </message>
+      <if expr="is_macosx">
+        <message name="IDS_WEBAUTHN_YOUR_CHROME_PROFILE" desc="Menu item text. The user selects this to use a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader. The credential itself is stored in the Brave profile, however, and this text emphasizes that.">
+          Your Brave profile
+        </message>
+      </if>
       <message name="IDS_WEBAUTHN_TRANSPORT_INTERNAL" desc="Menu item text. The user selects this to use a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader.">
         This device
       </message>
@@ -14192,8 +14227,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_AOA" desc="Menu item text. The user selects this to use their phone, once physically connected with a USB cable, to sign in to a web site on their computer. This appears next to the similar string 'Your phone' with TC ID 4865460888230929643.">
         Your phone with a USB cable
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_DIFFERENT_AUTHENTICATOR_WIN" desc="Menu item text. The user selects this to use Windows Hello or a security key (an external physical device for user authentication). Windows Hello is a Microsoft brand and should be translated the same as it is in Windows. If you edit the language code in https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0 you can see how Microsoft translates it in several languages. (It is often left untranslated.)">
+      <message name="IDS_WEBAUTHN_TRANSPORT_WINDOWS_HELLO_OR_SECURITY_KEY" desc="Menu item text. The user selects this to use Windows Hello or a security key (an external physical device for user authentication). Windows Hello is a Microsoft brand and should be translated the same as it is in Windows. If you edit the language code in https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0 you can see how Microsoft translates it in several languages. (It is often left untranslated.)">
         Windows Hello or external security key
+      </message>
+      <message name="IDS_WEBAUTHN_TRANSPORT_WINDOWS_HELLO" desc="Menu item text. The user selects this to use Windows Hello. Windows Hello is a Microsoft brand and should be translated the same as it is in Windows. If you edit the language code in https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0 you can see how Microsoft translates it in several languages. (It is often left untranslated.)">
+        Windows Hello
+      </message>
+      <message name="IDS_WEBAUTHN_TRANSPORT_ICLOUD_KEYCHAIN" desc="Menu item text. The user selects this to use iCloud Keychain. iCloud Keychain is an Apple brand and should be translated the same as it is in Apple devices. If you edit the language code in https://support.apple.com/es-es/HT204085 you can see how Apple translates it in several languages. ('Keychain' is usually localized.)">
+        iCloud Keychain
+      </message>
+      <message name="IDS_WEBAUTHN_TRANSPORT_EXTERNAL_SECURITY_KEY" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication).">
+        Use an external security key
       </message>
       <message name="IDS_WEBAUTHN_USB_ACTIVATE_DESCRIPTION" desc="Description in the dialog instructing the user to plug in and activate (e.g. press a button on) their USB security key (an external physical device for user authentication).">
         Insert your security key and touch it
@@ -14314,8 +14358,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_PASSKEY_PHONE_OR_TABLET_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone.">
         Use a phone or tablet
       </message>
+      <message name="IDS_WEBAUTHN_PASSKEY_PHONE_TABLET_OR_SECURITY_KEY_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. Users can also insert and tap their security key on the QR code screen.">
+        Use a phone, tablet, or security key
+      </message>
       <message name="IDS_WEBAUTHN_PASSKEY_DIFFERENT_PHONE_OR_TABLET_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. This string is used when a specific phone is also an option in the list, so the word 'different' is intended to communicate that this is the correct option when none of the previously list phones are correct.">
         Use a different phone or tablet
+      </message>
+      <message name="IDS_WEBAUTHN_PASSKEY_DIFFERENT_PHONE_TABLET_OR_SECURITY_KEY_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. This string is used when a specific phone is also an option in the list, so the word 'different' is intended to communicate that this is the correct option when none of the previously list phones are correct. Users can also insert and tap their security key on the QR code screen.">
+        Use a different phone, tablet, or security key
       </message>
       <message name="IDS_WEBAUTHN_PHONE_CONFIRMATION_TITLE" desc="The title of a dialog shown when a user can use a passkey from a phone or tablet they have already paired with Brave to sign in to a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
         Use a passkey from <ph name="DEVICE_NAME">$1<ex>Ted's Pixel 6 Pro</ex></ph> to sign in to <ph name="WEBSITE">$2<ex>accounts.google.com</ex></ph>
@@ -14505,6 +14555,47 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_USE_A_DIFFERENT_DEVICE" desc="Label on a secondary button on a dialog for creating or using a passkey to sign into a website. Clicking this button will show a menu that lets the user pick a different device (such as a phone or hardware security key) to sign in.">
          Use a different device
+      </message>
+      <message name="IDS_WEBAUTHN_USE_A_DIFFERENT_PASSKEY" desc="Label on a secondary button on a dialog for creating or using a passkey to sign into a website. Clicking this button will show a menu that lets the user pick a different passkey or device (such as a phone or hardware security key) to sign in. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         Use a different passkey
+      </message>
+      <message name="IDS_WEBAUTHN_QR_CREATE_PASSKEY_ON_SECURITY_KEY_LABEL" desc="Label on a modal dialog with a QR code. The label indicates to the user that instead of scanning the QR code with a phone, they can insert and activate a security key to create a passkey instead. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         If you want to create a passkey for <ph name="APP_NAME">$1<ex>google.com</ex></ph> on a USB security key, insert and touch it now
+      </message>
+      <message name="IDS_WEBAUTHN_QR_USE_PASSKEY_ON_SECURITY_KEY_LABEL" desc="Label on a modal dialog with a QR code. The label indicates to the user that instead of scanning the QR code with a phone, they can insert and activate a security key to sign in with a passkey instead. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+         If your passkey for <ph name="APP_NAME">$1<ex>google.com</ex></ph> is on a USB security key, insert and touch it now
+      </message>
+      <message name="IDS_WEBAUTHN_BACK" desc="Label on a button on a dialog for creating or using a passkey to sign into a website. Pressing the button will take the user to the previous step.">
+         Back
+      </message>
+
+      <!-- Multi source passkey picker -->
+      <message name="IDS_WEBAUTHN_CHOOSE_PASSKEY_FOR_RP_TITLE" desc="The title of a dialog prompting the user to choose a passkey from a list to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+        Choose a passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+      </message>
+      <message name="IDS_WEBAUTHN_THIS_DEVICE_LABEL" desc="The label for a list of passkeys the user can choose from the device they are using.">
+        On this device
+      </message>
+      <message name="IDS_WEBAUTHN_FROM_PHONE_LABEL" desc="The label for a list of passkeys the user can choose from a phone they own.">
+        From "<ph name="PHONE_NAME">$1<ex>Pixel 7</ex></ph>"
+      </message>
+      <message name="IDS_WEBAUTHN_OTHER_DEVICES_LABEL" desc="The label for a list of passkeys and their sources the user can choose from devices other than the one they are using. The list includes both passkeys (e.g. 'Juan Perez | Passkey from Pixel 7') and devices that may have passkeys (e.g. 'USB Security Key').">
+        On other devices
+      </message>
+      <message name="IDS_WEBAUTHN_SOURCE_CHROME_PROFILE" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's Brave Profile.">
+        From your Brave profile
+      </message>
+      <message name="IDS_WEBAUTHN_SOURCE_ICLOUD_KEYCHAIN" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's iCloud Keychain.">
+        From iCloud Keychain
+      </message>
+      <message name="IDS_WEBAUTHN_SOURCE_CUSTOM_VENDOR" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in a third party passkey provider identified by VENDOR_NAME.">
+        From "<ph name="VENDOR_NAME">$1<ex>Dashlane</ex></ph>"
+      </message>
+      <message name="IDS_WEBAUTHN_SOURCE_WINDOWS_HELLO" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in Windows Hello.">
+        From Windows Hello
+      </message>
+      <message name="IDS_WEBAUTHN_SOURCE_PHONE" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in their phone.">
+        From "<ph name="PHONE_NAME">$1<ex>Pixel 7</ex></ph>"
       </message>
 
       <!-- Side Search -->
@@ -14991,6 +15082,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_CHROMELABS_ENABLED_WITH_VARIATION_NAME" desc="Label for combobox option for an enabled variation that will have a description describing what variation is enabled in the placeholder.">
       Enabled – <ph name="VARIATION_NAME">$1<ex>tabs shrink to pinned tab width</ex></ph>
     </message>
+    <!-- BraveLabs Tab Groups Save-->
+    <message name="IDS_TAB_GROUPS_SAVE_EXPERIMENT_NAME" desc="The name for the Tab Groups Save experiment.">
+      Tab Groups Save and Sync
+    </message>
+    <message name="IDS_TAB_GROUPS_SAVE_DESCRIPTION" desc="The description for the Tab Groups Save experiment.">
+      Enables saving and recalling of tab groups. Right click a tab group to save it. Recall groups from the bookmarks bar.
+    </message>
     <!-- BraveLabs BraveRefresh2023-->
     <message name="IDS_CHROMEREFRESH2023_EXPERIMENT_NAME" desc="The name of the project for Brave's desktop UI redesign.">
       Brave Refresh 2023
@@ -15097,6 +15195,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_IDP_SIGNIN_STATUS_MISMATCH_DIALOG_BODY" desc="Body for mismatch dialog which is shown to prompt the user to sign in to a website using an account from an identity provider.">
       You can use your <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph> account on this site. To continue, sign in to <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph>.
+    </message>
+    <message name="IDS_SIGNIN_GENERIC_ERROR_DIALOG_SUMMARY" desc="Summary of generic error upon user failing to sign in with an account from an identity provider." translateable="false">
+      Cannot continue with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph>.
+    </message>
+    <message name="IDS_SIGNIN_GENERIC_ERROR_DIALOG_DESCRIPTION" desc="Description of generic error upon user failing to sign in with an account from an identity provider." translateable="false">
+      Something went wrong.
     </message>
     <message name="IDS_MULTI_IDP_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet when there are multiple identity providers. Sheet is shown to prompt user for sign in consent." translateable="false">
       Sign in to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph>
@@ -15439,10 +15543,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
         labore
       </message>
       <message name="IDS_SEARCH_ENGINE_CHOICE_BUTTON_TITLE" desc="The title of the button of the Search Engine Choice page." translateable="false">
-        Button
+        Lorem ipsum
       </message>
       <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_TITLE" desc="The title of the info dialog of the Search Engine Choice page." translateable="false">
         Lorem ipsum dolor sit amet
+      </message>
+       <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_BODY_FIRST_PARAGRAPH" desc="The first paragraph of the info dialog body of the Search Engine Choice page." translateable="false">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+      </message>
+      <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_BODY_SECOND_PARAGRAPH" desc="The second paragraph of the info dialog body of the Search Engine Choice page." translateable="false">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolorin reprehenderit in voluptate<ph name="END_BOLD">&lt;/b&gt;</ph> velit esse cillum dolore eufugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </message>
+      <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_BODY_THIRD_PARAGRAPH" desc="The third paragraph of the info dialog body of the Search Engine Choice page." translateable="false">
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.
+      </message>
+      <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_BUTTON_TITLE" desc="The title of the button of the Search Engine Choice info dialog." translateable="false">
+        Lorem ipsum
       </message>
     </if>
 

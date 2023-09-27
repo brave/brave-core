@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
-index d64456f3a768104bc2048af616afc335bbdb41c9..b68661f9f2b72c11992b393480de849dc155a421 100644
+index c2b922df0590d17fd84e2b6c95208fd566da1aef..f8423480cfcaf7cf298be42abf38aa3c851c24c7 100644
 --- a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
 +++ b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
-@@ -190,6 +190,7 @@ PermissionPromptBubbleBaseView::PermissionPromptBubbleBaseView(
+@@ -197,6 +197,7 @@ PermissionPromptBubbleBaseView::PermissionPromptBubbleBaseView(
    }
  
    SetProperty(views::kElementIdentifierKey, kMainViewId);

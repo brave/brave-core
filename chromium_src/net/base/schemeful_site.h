@@ -6,12 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_NET_BASE_SCHEMEFUL_SITE_H_
 #define BRAVE_CHROMIUM_SRC_NET_BASE_SCHEMEFUL_SITE_H_
 
-#define NetworkIsolationKey \
-  NetworkIsolationKey;      \
+#define IsolationInfo \
+  IsolationInfo;      \
   friend class HSTSPartitionHashHelper
 
 #include "src/net/base/schemeful_site.h"  // IWYU pragma: export
 
-#undef NetworkIsolationKey
+#undef IsolationInfo
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_BASE_SCHEMEFUL_SITE_H_

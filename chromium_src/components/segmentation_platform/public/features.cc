@@ -12,8 +12,11 @@
 namespace segmentation_platform::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kSegmentationPlatformCollectTabRankData,
+     base::FEATURE_DISABLED_BY_DEFAULT},
     {kSegmentationPlatformDeviceTier, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSegmentationPlatformFeature, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSegmentationPlatformTimeDelaySampling, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace segmentation_platform::features

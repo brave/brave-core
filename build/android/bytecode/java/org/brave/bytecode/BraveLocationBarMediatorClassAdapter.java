@@ -34,6 +34,8 @@ public class BraveLocationBarMediatorClassAdapter extends BraveClassVisitor {
         makeProtectedField(sLocationBarMediator, "mIsTablet");
         deleteField(sBraveLocationBarMediator, "mIsLocationBarFocusedFromNtpScroll");
         makeProtectedField(sLocationBarMediator, "mIsLocationBarFocusedFromNtpScroll");
+        deleteField(sBraveLocationBarMediator, "mShouldClearOmniboxOnFocus");
+        makeProtectedField(sLocationBarMediator, "mShouldClearOmniboxOnFocus");
         deleteField(sBraveLocationBarMediator, "mContext");
         makeProtectedField(sLocationBarMediator, "mContext");
         deleteField(sBraveLocationBarMediator, "mBrandedColorScheme");

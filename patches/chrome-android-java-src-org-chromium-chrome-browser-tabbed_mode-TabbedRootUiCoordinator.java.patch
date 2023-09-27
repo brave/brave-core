@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-index 7f494b05c003ff94d51b1fbb1f8e799b717c0611..db9bef6484953024b31ea14c164665857dab1564 100644
+index 6558fa1debd9c27766518e818a0c50c5082f9c12..0016e08102837df80b624788791f124b496a07ac 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-@@ -702,7 +702,7 @@ public class TabbedRootUiCoordinator extends RootUiCoordinator {
+@@ -700,7 +700,7 @@ public class TabbedRootUiCoordinator extends RootUiCoordinator {
              NotificationPermissionController.attach(
                      mWindowAndroid, mNotificationPermissionController);
  

@@ -7,12 +7,12 @@
 
 #include <vector>
 
+#include "base/apple/foundation_util.h"
 #include "base/base_paths.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/mac/foundation_util.h"
 #include "base/path_service.h"
 #include "base/stl_util.h"
 #include "base/strings/sys_string_conversions.h"
@@ -97,7 +97,7 @@
           withListener:
               (void (^)(BraveBookmarksImporterState,
                         NSArray<BraveImportedBookmark*>* _Nullable))listener {
-  base::FilePath source_file_path = base::mac::NSStringToFilePath(filePath);
+  base::FilePath source_file_path = base::apple::NSStringToFilePath(filePath);
 
   // In Chromium, this is IDS_BOOKMARK_GROUP (804)
   std::u16string top_level_folder_name = base::SysNSStringToUTF16(folderName);

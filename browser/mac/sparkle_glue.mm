@@ -10,9 +10,9 @@
 #include <sys/stat.h>
 
 #include "base/apple/bundle_locations.h"
+#include "base/apple/foundation_util.h"
+#import "base/apple/scoped_nsautorelease_pool.h"
 #include "base/command_line.h"
-#include "base/mac/foundation_util.h"
-#import "base/mac/scoped_nsautorelease_pool.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/system/sys_info.h"
@@ -175,7 +175,7 @@ std::string GetDescriptionFromAppcastItem(id item) {
   NSString* appInfoPlistPath = [self appInfoPlistPath];
   NSDictionary* infoPlist =
       [NSDictionary dictionaryWithContentsOfFile:appInfoPlistPath];
-  return base::mac::ObjCCast<NSString>(
+  return base::apple::ObjCCast<NSString>(
       [infoPlist objectForKey:@"CFBundleShortVersionString"]);
 }
 
@@ -250,7 +250,7 @@ std::string GetDescriptionFromAppcastItem(id item) {
 
 - (AutoupdateStatus)recentStatus {
   NSDictionary* dictionary = _recentNotification.userInfo;
-  NSNumber* status = base::mac::ObjCCastStrict<NSNumber>(
+  NSNumber* status = base::apple::ObjCCastStrict<NSNumber>(
       [dictionary objectForKey:kAutoupdateStatusStatus]);
   return static_cast<AutoupdateStatus>(status.intValue);
 }

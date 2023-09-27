@@ -141,8 +141,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
         brave_wallet::TxServiceFactory::GetServiceForContext(browser_context());
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
-            PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
-                browser_context()))));
+            PermissionManagerFactory::GetInstance()
+                ->BuildServiceInstanceForBrowserContext(browser_context())
+                .release())));
     auto* host_content_settings_map =
         HostContentSettingsMapFactory::GetForProfile(browser_context());
     ASSERT_TRUE(host_content_settings_map);

@@ -46,7 +46,7 @@ source_set("browser") {
     "//components/metrics_services_manager",
     "//components/variations",
     "//components/variations/service",
-    "//ios/chrome/browser/application_context",
+    "//ios/chrome/browser/application_context/model",
     "//ios/chrome/browser/browser_state:browser_state",
     "//ios/chrome/browser/flags",
     "//ios/chrome/browser/flags:client_side",

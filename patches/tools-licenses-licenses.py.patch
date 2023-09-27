@@ -1,8 +1,8 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index 15b461326e2ce4bd255cbe779b449261a7f63f09..4ad542a3e8d1b806f7e63b7c10a4d37cd9b56b0a 100755
+index 9a34155c5066b5e8c08c205170d48afb0f4caa92..1c5e2677689ff823b2618236a769238fd98d4dc8 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
-@@ -39,6 +39,7 @@ _REPOSITORY_ROOT = os.path.abspath(
+@@ -41,6 +41,7 @@ _REPOSITORY_ROOT = os.path.abspath(
      os.path.join(os.path.dirname(__file__), '..', '..'))
  sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build'))
  import action_helpers
@@ -10,7 +10,7 @@ index 15b461326e2ce4bd255cbe779b449261a7f63f09..4ad542a3e8d1b806f7e63b7c10a4d37c
  
  # Paths from the root of the tree to directories to skip.
  PRUNE_PATHS = set([
-@@ -425,6 +426,7 @@ SPECIAL_CASES = {
+@@ -426,6 +427,7 @@ SPECIAL_CASES = {
          "License File": ["//third_party/selenium-atoms/LICENSE.closure"],
      },
  }
@@ -18,7 +18,7 @@ index 15b461326e2ce4bd255cbe779b449261a7f63f09..4ad542a3e8d1b806f7e63b7c10a4d37c
  
  # These buildtools/third_party directories only contain
  # chromium build files. The actual third_party source files and their
-@@ -708,7 +710,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
+@@ -710,7 +712,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -28,7 +28,7 @@ index 15b461326e2ce4bd255cbe779b449261a7f63f09..4ad542a3e8d1b806f7e63b7c10a4d37c
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -956,7 +959,8 @@ def GenerateCredits(file_template_file,
+@@ -959,7 +962,8 @@ def GenerateCredits(file_template_file,
                            enable_warnings=enable_warnings)
        if not metadata:
          continue
