@@ -435,8 +435,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "createAdapterIfNecessary", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
-                "destroyPropertiesForStream", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/theme/ThemeUtils",
                 "getTextBoxColorForToolbarBackgroundInNonNativePage", false, null));
         Assert.assertTrue(methodExists(

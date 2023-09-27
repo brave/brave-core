@@ -415,7 +415,6 @@
     <init>(...);
     *** mCoordinator;
     *** mSnapScrollHelper;
-    *** destroyPropertiesForStream(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceMediator {

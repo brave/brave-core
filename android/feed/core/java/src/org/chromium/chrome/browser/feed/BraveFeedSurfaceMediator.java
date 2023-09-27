@@ -63,8 +63,4 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
             view.getViewTreeObserver().addOnScrollChangedListener(mSnapScrollHelper::handleScroll);
         }
     }
-
-    public void destroyPropertiesForStream() {
-        assert false : "destroyPropertiesForStream should be redirected to parent in bytecode!";
-    }
 }
