@@ -268,6 +268,10 @@ class BraveRewardsNativeWorker
   void OnRefreshPublisher(const brave_rewards::mojom::PublisherStatus status,
                           const std::string& publisher_key);
   void SetAutoContributeEnabled(JNIEnv* env, bool isAutoContributeEnabled);
+  bool IsValidWalletProviderRedirect(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& referrer_url,
+      const base::android::JavaParamRef<jstring>& redirect_url);
 
  private:
   std::string StdStrStrMapToJsonString(

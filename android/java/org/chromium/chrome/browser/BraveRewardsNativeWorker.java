@@ -555,6 +555,13 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public boolean isValidWalletProviderRedirect(String referrerUrl, String redirectUrl) {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().isValidWalletProviderRedirect(
+                    mNativeBraveRewardsNativeWorker, referrerUrl, redirectUrl);
+        }
+    }
+
     public void SetAutoContributionAmount(double amount) {
         synchronized(lock) {
             BraveRewardsNativeWorkerJni.get().setAutoContributionAmount(
@@ -853,6 +860,8 @@ public class BraveRewardsNativeWorker {
         void fetchBalance(long nativeBraveRewardsNativeWorker);
         void setAutoContributeEnabled(
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);
+        boolean isValidWalletProviderRedirect(
+                long nativeBraveRewardsNativeWorker, String referrerUrl, String redirectUrl);
         void setAutoContributionAmount(long nativeBraveRewardsNativeWorker, double amount);
         void getAutoContributionAmount(long nativeBraveRewardsNativeWorker);
         void getAdsAccountStatement(long nativeBraveRewardsNativeWorker);

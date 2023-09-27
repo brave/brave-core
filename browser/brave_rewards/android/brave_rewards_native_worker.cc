@@ -1027,8 +1027,15 @@ void BraveRewardsNativeWorker::SetAutoContributeEnabled(
     bool isAutoContributeEnabled) {
   if (brave_rewards_service_) {
     brave_rewards_service_->SetAutoContributeEnabled(isAutoContributeEnabled);
-    brave_rewards::IsValidWalletProviderRedirect(GURL(""), GURL(""));
   }
+}
+
+bool BraveRewardsNativeWorker::IsValidWalletProviderRedirect(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& referrer_url,
+    const base::android::JavaParamRef<jstring>& redirect_url) {
+  return brave_rewards::IsValidWalletProviderRedirect(GURL(referrer_url),
+                                                      GURL(redirect_url));
 }
 
 static void JNI_BraveRewardsNativeWorker_Init(

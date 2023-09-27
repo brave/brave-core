@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.externalnav;
 import android.content.Intent;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
@@ -34,7 +35,8 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
 
         Log.e("BraveExternalNavigationHandler",
                 "originalUrl : " + originalUrl + " referrerUrl : " + referrerUrl);
-        if (isWalletProviderOverride(params)) {
+        if (BraveRewardsNativeWorker.getInstance().isValidWalletProviderRedirect(
+                    +referrerUrl, originalUrl)) {
             String originalUrl = params.getUrl().getSpec();
             String url = originalUrl.replaceFirst("^rewards://", "brave://rewards/");
             GURL browserFallbackGURL = new GURL(url);
