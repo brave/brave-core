@@ -36,7 +36,7 @@ constexpr auto kEnabledLanguages =
 // We can add to this list as new locales become available to have Brave News
 // show when it's ready for those users.
 constexpr auto kEnabledLocales = base::MakeFixedFlatSet<base::StringPiece>(
-    {"es_ES", "es_MX", "pt_BR", "fr_FR", "de_DE"});
+    {"es_ES", "es_MX", "es_AR", "pt_BR", "fr_FR", "de_DE"});
 
 bool HasAnyLocale(const base::flat_set<std::string>& locales,
                   const mojom::Publisher* publisher) {
