@@ -22,7 +22,7 @@ class TabGroupStyle : public TabGroupStyle_ChromiumImpl {
 
   SkPath GetUnderlinePath(gfx::Rect local_bounds) const override;
 
-  gfx::Insets GetInsetsForHeaderChip() const override;
+  gfx::Insets GetInsetsForHeaderChip(bool should_show_sync_icon) const override;
 
   float GetEmptyChipSize() const override;
 

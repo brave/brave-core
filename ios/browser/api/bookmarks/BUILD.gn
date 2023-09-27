@@ -22,7 +22,7 @@ source_set("bookmarks") {
     "//components/prefs",
     "//components/undo",
     "//components/user_prefs",
-    "//ios/chrome/browser/bookmarks",
+    "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/ui/bookmarks",

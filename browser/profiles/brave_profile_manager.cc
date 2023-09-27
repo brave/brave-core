@@ -168,7 +168,7 @@ void BraveProfileManager::MigrateProfileNames() {
   // e.g. 'Person X' --> 'Profile X'.
   ProfileAttributesStorage& storage = GetProfileAttributesStorage();
   std::vector<ProfileAttributesEntry*> entries =
-      storage.GetAllProfilesAttributesSortedByName();
+      storage.GetAllProfilesAttributesSortedByNameWithCheck();
   // Make sure we keep the numbering the same.
   for (auto* entry : entries) {
     // Rename the necessary profiles. Don't check for legacy names as profile

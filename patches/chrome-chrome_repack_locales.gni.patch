@@ -1,5 +1,5 @@
 diff --git a/chrome/chrome_repack_locales.gni b/chrome/chrome_repack_locales.gni
-index adc881122cb9c191c1f43cfa72cff69281775b70..a233866b274c43bae71f8deddb359fec967d1bdd 100644
+index 7aa8989a0f47167440824f0531ee9956d2f24098..d7a9da068994a9450eca2655dd5c038be0c3f55f 100644
 --- a/chrome/chrome_repack_locales.gni
 +++ b/chrome/chrome_repack_locales.gni
 @@ -40,6 +40,7 @@ template("chrome_repack_locales") {
@@ -10,7 +10,7 @@ index adc881122cb9c191c1f43cfa72cff69281775b70..a233866b274c43bae71f8deddb359fec
      if (!defined(deps)) {
        deps = []
      }
-@@ -60,6 +61,7 @@ template("chrome_repack_locales") {
+@@ -62,6 +63,7 @@ template("chrome_repack_locales") {
        "//ui/strings:ax_strings",
        "//ui/strings:ui_strings",
      ]
@@ -18,3 +18,14 @@ index adc881122cb9c191c1f43cfa72cff69281775b70..a233866b274c43bae71f8deddb359fec
      if (defined(invoker.deps)) {
        deps += invoker.deps
      }
+@@ -106,8 +108,8 @@ template("chrome_repack_locales") {
+       ]
+     } else {
+       source_patterns += [
+-        "${root_gen_dir}/chrome/chromium_strings_",
+-        "${root_gen_dir}/components/strings/components_chromium_strings_",
++        "${root_gen_dir}/chrome/${branding_path_product}_strings_",
++        "${root_gen_dir}/components/strings/components_${branding_path_product}_strings_",
+       ]
+     }
+ 

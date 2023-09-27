@@ -10,8 +10,8 @@
 
 #include <string>
 
-#include "base/mac/foundation_util.h"
-#include "base/mac/scoped_objc_class_swizzler.h"
+#include "base/apple/foundation_util.h"
+#include "base/apple/scoped_objc_class_swizzler.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_app_controller_mac.h"
@@ -85,7 +85,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   EXPECT_TRUE(omnibox_view->IsSelectAll());
   EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
 
-  BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
+  BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
   NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
@@ -117,7 +117,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   EXPECT_TRUE(omnibox_view->IsSelectAll());
   EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
 
-  BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
+  BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
@@ -145,7 +145,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
   omnibox_view->SetUserText(u"any text");
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  AppController* ac = base::mac::ObjCCastStrict<AppController>(
+  AppController* ac = base::apple::ObjCCastStrict<AppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
@@ -178,7 +178,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   EXPECT_FALSE(omnibox_view->IsSelectAll());
   EXPECT_FALSE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
 
-  BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
+  BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
@@ -194,7 +194,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
                        BookmarkItemsFromMenuBarTest) {
   AppController* ac =
-      base::mac::ObjCCastStrict<AppController>([NSApp delegate]);
+      base::apple::ObjCCastStrict<AppController>([NSApp delegate]);
   [ac mainMenuCreated];
   [ac setLastProfile:browser()->profile()];
 

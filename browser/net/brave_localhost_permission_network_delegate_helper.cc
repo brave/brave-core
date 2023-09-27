@@ -142,8 +142,10 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
       if (localhost_permission_component->CanAskForLocalhostPermission(
               request_initiator_url)) {
         permission_controller->RequestPermissionsFromCurrentDocument(
-            {blink::PermissionType::BRAVE_LOCALHOST_ACCESS},
-            /* rfh */ contents->GetPrimaryMainFrame(), true,
+            /* rfh */ contents->GetPrimaryMainFrame(),
+            content::PermissionRequestDescription(
+                blink::PermissionType::BRAVE_LOCALHOST_ACCESS,
+                /*user_gesture*/ true),
             base::BindOnce(&OnPermissionRequestStatus,
                            ctx->frame_tree_node_id));
       }

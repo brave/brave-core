@@ -17,15 +17,15 @@ namespace permissions {
 class BraveWalletPermissionContextUnitTest;
 }
 
-#define BuildServiceInstanceFor                                          \
-  BuildServiceInstanceFor_ChromiumImpl(content::BrowserContext* profile) \
-      const;                                                             \
-  friend brave_wallet::EthereumProviderImplUnitTest;                     \
-  friend brave_wallet::SolanaProviderImplUnitTest;                       \
-  friend permissions::BraveWalletPermissionContextUnitTest;              \
-  KeyedService* BuildServiceInstanceFor
+#define BuildServiceInstanceForBrowserContext               \
+  BuildServiceInstanceForBrowserContext_ChromiumImpl(       \
+      content::BrowserContext* profile) const;              \
+  friend brave_wallet::EthereumProviderImplUnitTest;        \
+  friend brave_wallet::SolanaProviderImplUnitTest;          \
+  friend permissions::BraveWalletPermissionContextUnitTest; \
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext
 
 #include "src/chrome/browser/permissions/permission_manager_factory.h"  // IWYU pragma: export
-#undef BuildServiceInstanceFor
+#undef BuildServiceInstanceForBrowserContext
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PERMISSIONS_PERMISSION_MANAGER_FACTORY_H_

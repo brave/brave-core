@@ -1,12 +1,12 @@
 diff --git a/extensions/browser/api/web_request/extension_web_request_event_router.cc b/extensions/browser/api/web_request/extension_web_request_event_router.cc
-index 7a29adc72df19d359272bb37fa55d8b9b5cb9912..6eff2126c6a85481be86fcb3526eb224e5b20119 100644
+index a8f8bf4e930361ca1f348b3684b8c0461a840ad3..eb134802a57d4ec2687172b09907a98feb23a16b 100644
 --- a/extensions/browser/api/web_request/extension_web_request_event_router.cc
 +++ b/extensions/browser/api/web_request/extension_web_request_event_router.cc
-@@ -1168,6 +1168,7 @@ ExtensionWebRequestEventRouter::OnAuthRequired(
-     const net::AuthChallengeInfo& auth_info,
-     AuthCallback callback,
-     net::AuthCredentials* credentials) {
+@@ -1183,6 +1183,7 @@ ExtensionWebRequestEventRouter::OnAuthRequired(
+                                          *request)) {
+     return AuthRequiredResponse::AUTH_REQUIRED_RESPONSE_NO_ACTION;
+   }
 +  BRAVE_EXTENSION_WEB_REQUEST_EVENT_ROUTER_ON_AUTH_REQUIRED
-   // No browser_context means that this is for authentication challenges in the
-   // system context. Skip in that case. Also skip sensitive requests.
-   if (!browser_context ||
+ 
+   int extra_info_spec = 0;
+   RawListeners listeners = GetMatchingListeners(

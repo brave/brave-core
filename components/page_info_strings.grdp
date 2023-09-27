@@ -20,11 +20,20 @@
   <message name="IDS_PAGE_INFO_MALWARE_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as containing malware.">
     This site contains malware
   </message>
+  <message name="IDS_PAGE_INFO_MALWARE_SUMMARY_NEW" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as containing malware.">
+    Dangerous site
+  </message>
   <message name="IDS_PAGE_INFO_SOCIAL_ENGINEERING_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as social engineering.">
     This site is deceptive
   </message>
+  <message name="IDS_PAGE_INFO_SOCIAL_ENGINEERING_SUMMARY_NEW" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as social engineering.">
+    Dangerous site
+  </message>
   <message name="IDS_PAGE_INFO_UNWANTED_SOFTWARE_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as containing unwanted software.">
     This site contains harmful programs
+  </message>
+  <message name="IDS_PAGE_INFO_UNWANTED_SOFTWARE_SUMMARY_NEW" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as containing unwanted software.">
+    Dangerous site
   </message>
 
   <!-- Internal page summary strings -->
@@ -83,11 +92,20 @@
   <message name="IDS_PAGE_INFO_MALWARE_DETAILS" desc="A short paragraph explaining to the user that the current website has been flagged as containing malware.">
     Attackers on this site might attempt to install dangerous programs on your computer that steal or delete your information (for example, photos, passwords, messages, and credit cards).
   </message>
+  <message name="IDS_PAGE_INFO_MALWARE_DETAILS_NEW" desc="A short paragraph explaining to the user that the current website has been flagged as containing malware.">
+    Attackers on the site you're trying to visit might install harmful software that steals or deletes things like your password, photos, messages, or credit card number.
+  </message>
   <message name="IDS_PAGE_INFO_SOCIAL_ENGINEERING_DETAILS" desc="A short paragraph explaining to the user that the current website has been flagged as social engineering.">
     Attackers on this site may trick you into doing something dangerous like installing software or revealing your personal information (for example, passwords, phone numbers, or credit cards).
   </message>
+  <message name="IDS_PAGE_INFO_SOCIAL_ENGINEERING_DETAILS_NEW" desc="A short paragraph explaining to the user that the current website has been flagged as social engineering.">
+    Attackers on the site you're trying to visit might trick you into installing software or revealing things like your password, phone, or credit card number.
+  </message>
   <message name="IDS_PAGE_INFO_UNWANTED_SOFTWARE_DETAILS" desc="A short paragraph explaining to the user that the current website has been flagged as containing unwanted software.">
     Attackers on this site might try to trick you into installing programs that harm your browsing experience (for example, by changing your homepage or showing extra ads on sites you visit).
+  </message>
+  <message name="IDS_PAGE_INFO_UNWANTED_SOFTWARE_DETAILS_NEW" desc="A short paragraph explaining to the user that the current website has been flagged as containing unwanted software.">
+    Attackers on the site you're trying to visit might trick you into installing harmful software that affects the way you browse — for example, by changing your homepage or showing you extra ads on sites you visit.
   </message>
 
   <!-- Identity detail strings shared with iOS -->
@@ -363,10 +381,16 @@
     <message name="IDS_PAGE_INFO_SELECTOR_TOOLTIP" desc="The text of the tooltip on the page info selector.">
       Select permission for <ph name="PERMISSION_NAME">$1<ex>Location</ex></ph>
     </message>
+    <message name="IDS_PAGE_INFO_SELECTOR_STORAGE_ACCESS_TOOLTIP" desc="The text of the tooltip on the page info selector for the storage access permission.">
+      Allow <ph name="SITE">$1<ex>example.com</ex></ph> to use info they've saved about you
+    </message>
 
     <!-- Permission ask strings -->
     <message name="IDS_PAGE_INFO_STATE_TEXT_AR_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the AR permission is in the ask state and the site can prompt the user to ask if they want to allow the site to track their camera position.">
       Can ask to track your camera position
+    </message>
+    <message name="IDS_PAGE_INFO_STATE_TEXT_AUTO_PICTURE_IN_PICTURE_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the auto picture-in-picture permission is in the ask state and the site can prompt the user to ask if they want to allow the site to automatically open picture-in-picture windows..">
+      Can ask to automatically open picture-in-picture windows
     </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_AUTOMATIC_DOWNLOADS_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the automatic download permission is in the ask state and the site can prompt the user to ask if they allow the site to automatically download multiple files.">
       Can ask to automatically download multiple files
@@ -629,13 +653,13 @@
     Expires On
   </message>
   <message name="IDS_CERT_INFO_FINGERPRINTS_GROUP" desc="The label of the group showing the certificate fingerprints in the general page of the certificate info dialog">
-    Fingerprints
+    SHA-256 Fingerprints
   </message>
-  <message name="IDS_CERT_INFO_SHA256_FINGERPRINT_LABEL" desc="The label of the SHA-256 Fingerprint field in the general page of the certificate info dialog">
-    SHA-256 Fingerprint
+  <message name="IDS_CERT_INFO_SHA256_FINGERPRINT_LABEL" desc="The label of the SHA-256 Certificate Fingerprint field in the general page of the certificate info dialog">
+    Certificate
   </message>
-  <message name="IDS_CERT_INFO_SHA1_FINGERPRINT_LABEL" desc="The label of the SHA-1 Fingerprint field in the general page of the certificate info dialog">
-    SHA-1 Fingerprint
+  <message name="IDS_CERT_INFO_SHA256_SPKI_FINGERPRINT_LABEL" desc="The label of the SHA-256 SPKI Fingerprint field in the general page of the certificate info dialog">
+    Public Key
   </message>
 
   <message name="IDS_CERT_DETAILS_EXTENSIONS" desc="The label of the Extensions element in the details page of the certificate info dialog.">

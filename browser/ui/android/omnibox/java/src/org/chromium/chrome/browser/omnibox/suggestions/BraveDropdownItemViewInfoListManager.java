@@ -11,7 +11,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import org.chromium.components.omnibox.suggestions.OmniboxSuggestionUiType;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 class BraveDropdownItemViewInfoListManager extends DropdownItemViewInfoListManager {
@@ -25,21 +24,20 @@ class BraveDropdownItemViewInfoListManager extends DropdownItemViewInfoListManag
     }
 
     /**
-     * Remove all suggestions that belong to specific group.
-     *
-     * @param groupId Group ID of suggestions that should be removed.
+     * Removes Brave search suggestion.
      */
-    public void removeSuggestionsForGroup(int groupId) {
+    public void removeBraveSearchSuggestion() {
         int index;
         int count = 0;
 
         for (index = mManagedModel.size() - 1; index >= 0; index--) {
             DropdownItemViewInfo viewInfo = (DropdownItemViewInfo) mManagedModel.get(index);
-            if (isGroupHeaderWithId(viewInfo, groupId)) {
-                break;
-            } else if (viewInfo.groupId == groupId) {
+            if (viewInfo.processor.getViewTypeId()
+                    == BraveOmniboxSuggestionUiType.BRAVE_SEARCH_PROMO_BANNER) {
                 count++;
-            } else if (count > 0 && viewInfo.groupId != groupId) {
+            } else if (count > 0
+                    && viewInfo.processor.getViewTypeId()
+                            != BraveOmniboxSuggestionUiType.BRAVE_SEARCH_PROMO_BANNER) {
                 break;
             }
         }
@@ -47,10 +45,5 @@ class BraveDropdownItemViewInfoListManager extends DropdownItemViewInfoListManag
             // Skip group header when dropping items.
             mManagedModel.removeRange(index + 1, count);
         }
-    }
-
-    /** @return Whether the supplied view info is a header for the specific group of suggestions. */
-    private boolean isGroupHeaderWithId(DropdownItemViewInfo info, int groupId) {
-        return (info.type == OmniboxSuggestionUiType.HEADER && info.groupId == groupId);
     }
 }

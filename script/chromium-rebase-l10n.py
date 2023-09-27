@@ -257,6 +257,14 @@ def main():
         comment = etree.Comment(comment_text)
         grit_root.addprevious(comment)
 
+    # Fix output filenames to generate "brave" files instead of "chromium".
+    if basename in ('brave_strings', 'components_brave_strings'):
+        for pak_filename in xml_tree.xpath(
+                "//output[re:test(@filename, '.*\\.(pak|xml)')]",
+                namespaces={"re": "http://exslt.org/regular-expressions"}):
+            pak_filename.attrib['filename'] = pak_filename.attrib[
+                'filename'].replace('chromium_strings', 'brave_strings')
+
     print(f'writing file {source_string_path}')
     write_xml_file_from_tree(source_string_path, xml_tree)
     print('-----------')

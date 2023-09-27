@@ -92,6 +92,14 @@ PermissionRequest::PermissionRequest(
                                      std::move(permission_decided_callback),
                                      std::move(delete_callback)) {}
 
+PermissionRequest::PermissionRequest(
+    PermissionRequestData request_data,
+    PermissionDecidedCallback permission_decided_callback,
+    base::OnceClosure delete_callback)
+    : PermissionRequest_ChromiumImpl(std::move(request_data),
+                                     std::move(permission_decided_callback),
+                                     std::move(delete_callback)) {}
+
 PermissionRequest::~PermissionRequest() = default;
 
 bool PermissionRequest::SupportsLifetime() const {

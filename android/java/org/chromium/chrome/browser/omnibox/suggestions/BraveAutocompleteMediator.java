@@ -16,7 +16,6 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -57,28 +56,28 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
     }
 
     @Override
-    public void onTextChanged(String textWithoutAutocomplete, String textWithAutocomplete) {
+    public void onTextChanged(String textWithoutAutocomplete) {
         if (ProfileManager.isInitialized()
                 && !UserPrefs.get(Profile.getLastUsedRegularProfile())
                             .getBoolean(AUTOCOMPLETE_ENABLED)) {
             return;
         }
 
-        super.onTextChanged(textWithoutAutocomplete, textWithAutocomplete);
+        super.onTextChanged(textWithoutAutocomplete);
     }
 
     @Override
-    public void onUrlFocusChange(boolean hasFocus) {
+    public void onOmniboxSessionStateChange(boolean activated) {
         if (!mNativeInitialized) return;
 
-        super.onUrlFocusChange(hasFocus);
+        super.onOmniboxSessionStateChange(activated);
     }
 
     @Override
     public void removeBraveSearchSuggestion() {
         if (mDropdownViewInfoListManager instanceof BraveDropdownItemViewInfoListManager) {
             ((BraveDropdownItemViewInfoListManager) mDropdownViewInfoListManager)
-                    .removeSuggestionsForGroup(BraveSearchBannerProcessor.BRAVE_SEARCH_PROMO_GROUP);
+                    .removeBraveSearchSuggestion();
         }
     }
 }

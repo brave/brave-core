@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.ts b/chrome/browser/resources/settings/site_settings/constants.ts
-index 42a580a7eed0f49fc7251ef867c721a04a37d0bf..00331b98d9bd28c9ab11373b52edc4bd2a35d742 100644
+index 81acd993d10b96b5edb57d566197967696973d4f..c923b663a75bcd505a9d56e4b0bd3a5cfe283a2f 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.ts
 +++ b/chrome/browser/resources/settings/site_settings/constants.ts
-@@ -53,6 +53,7 @@ export enum ContentSettingsTypes {
+@@ -54,6 +54,7 @@ export enum ContentSettingsTypes {
    // are used everywhere where ContentSettingsTypes is used in JS.
    PDF_DOCUMENTS = 'pdfDocuments',
    SITE_DATA = 'site-data',

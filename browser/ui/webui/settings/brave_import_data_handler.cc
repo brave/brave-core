@@ -18,9 +18,9 @@
 #include "content/public/browser/web_contents.h"
 
 #if BUILDFLAG(IS_MAC)
+#include "base/apple/foundation_util.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/mac/foundation_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ui/webui/settings/brave_full_disk_access_confirm_dialog_delegate.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -32,7 +32,7 @@ namespace {
 bool HasProperDiskAccessPermission(uint16_t imported_items) {
   DCHECK(imported_items);
 
-  const base::FilePath& library_dir = base::mac::GetUserLibraryPath();
+  const base::FilePath& library_dir = base::apple::GetUserLibraryPath();
   const base::FilePath safari_dir = library_dir.Append("Safari");
 
   if (imported_items & importer::FAVORITES) {

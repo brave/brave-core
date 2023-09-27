@@ -1,0 +1,13 @@
+diff --git a/components/BUILD.gn b/components/BUILD.gn
+index 0f65455cfdc6f8d409b951eb9deb517a0cffe862..79d73a48dc2bf9d1be6b20f0afd6af7e9eba38df 100644
+--- a/components/BUILD.gn
++++ b/components/BUILD.gn
+@@ -774,7 +774,7 @@ repack("components_tests_pak") {
+   if (is_chrome_branded) {
+     sources += [ "${root_gen_dir}/components/strings/components_google_chrome_strings_en-US.pak" ]
+   } else {
+-    sources += [ "${root_gen_dir}/components/strings/components_chromium_strings_en-US.pak" ]
++    sources += [ "${root_gen_dir}/components/strings/components_${branding_path_product}_strings_en-US.pak" ]
+   }
+ }
+ 

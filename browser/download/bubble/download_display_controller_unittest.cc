@@ -119,6 +119,8 @@ class FakeDownloadDisplay : public DownloadDisplay {
   DownloadIconState GetDownloadIconState() { return icon_state_; }
   bool IsActive() { return is_active_; }
   void SetIsFullscreen(bool is_fullscreen) { is_fullscreen_ = is_fullscreen; }
+  void OpenSecuritySubpage(
+      const offline_items_collection::ContentId&) override {}
 
  private:
   bool shown_ = false;

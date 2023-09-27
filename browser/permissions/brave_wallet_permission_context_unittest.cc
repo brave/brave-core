@@ -30,8 +30,9 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
     map_ = HostContentSettingsMapFactory::GetForProfile(&profile_);
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<BravePermissionManager*>(
-            PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
-                browser_context()))));
+            PermissionManagerFactory::GetInstance()
+                ->BuildServiceInstanceForBrowserContext(browser_context())
+                .release())));
   }
 
   void TearDown() override {

@@ -32,7 +32,7 @@ base::FilePath GetProfilePathByName(const std::u16string& name) {
   std::vector<ProfileAttributesEntry*> entries =
       g_browser_process->profile_manager()
           ->GetProfileAttributesStorage()
-          .GetAllProfilesAttributesSortedByName();
+          .GetAllProfilesAttributesSortedByNameWithCheck();
   for (auto* it : entries) {
     if (it->GetName() == name) {
       return it->GetPath();

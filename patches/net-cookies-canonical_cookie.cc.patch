@@ -1,5 +1,5 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index edb3e8b305538be9e58dea5b3dd53e4aae30a67d..d9c6edf446226dde8b0c75f07e384ee12bd190da 100644
+index 089443aab299000b7a10b42b90f3367318aa7730..2469311431c23816a773536d3eadfbe48dfe8603 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
 @@ -514,6 +514,7 @@ base::Time CanonicalCookie::ValidateAndAdjustExpiryDate(
@@ -7,6 +7,6 @@ index edb3e8b305538be9e58dea5b3dd53e4aae30a67d..d9c6edf446226dde8b0c75f07e384ee1
      fixed_creation_date = base::Time::Now();
    }
 +  BRAVE_CANONICAL_COOKIE_VALIDATE_AND_ADJUST_EXPIRY_DATE
-   if (base::FeatureList::IsEnabled(features::kClampCookieExpiryTo400Days)) {
-     base::Time maximum_expiry_date = fixed_creation_date + base::Days(400);
-     if (expiry_date > maximum_expiry_date)
+   base::Time maximum_expiry_date = fixed_creation_date + base::Days(400);
+   if (expiry_date > maximum_expiry_date) {
+     return maximum_expiry_date;

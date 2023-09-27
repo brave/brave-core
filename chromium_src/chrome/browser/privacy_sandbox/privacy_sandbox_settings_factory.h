@@ -8,12 +8,13 @@
 
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-#define BuildServiceInstanceFor                                         \
-  BuildServiceInstanceFor_ChromiumImpl(content::BrowserContext*) const; \
-  KeyedService* BuildServiceInstanceFor
+#define BuildServiceInstanceForBrowserContext                                  \
+  BuildServiceInstanceForBrowserContext_ChromiumImpl(content::BrowserContext*) \
+      const;                                                                   \
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext
 
 #include "src/chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.h"  // IWYU pragma: export
 
-#undef BuildServiceInstanceFor
+#undef BuildServiceInstanceForBrowserContext
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PRIVACY_SANDBOX_PRIVACY_SANDBOX_SETTINGS_FACTORY_H_

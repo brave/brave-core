@@ -17,10 +17,12 @@ import org.chromium.url.GURL;
 
 class BraveAutocompleteMediatorBase {
     void loadUrlForOmniboxMatch(int matchIndex, @NonNull AutocompleteMatch suggestion,
-            @NonNull GURL url, long inputStart, boolean inVisibleSuggestionList) {
+            @NonNull GURL url, long inputStart, boolean inVisibleSuggestionList,
+            boolean openInNewTab) {
         BraveReflectionUtil.InvokeMethod(AutocompleteMediator.class, this, "loadUrlForOmniboxMatch",
                 int.class, matchIndex, AutocompleteMatch.class, suggestion, GURL.class, url,
-                long.class, inputStart, boolean.class, inVisibleSuggestionList);
+                long.class, inputStart, boolean.class, inVisibleSuggestionList, boolean.class,
+                openInNewTab);
         if (suggestion.getType() == OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED
                 || suggestion.getType() == OmniboxSuggestionType.SEARCH_SUGGEST) {
             Context context = (Context) BraveReflectionUtil.getField(
