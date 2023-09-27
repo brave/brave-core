@@ -21,8 +21,9 @@ const Container = styled(Card)`
 `
 
 const ArticleImage = styled.img`
-  width: 120px;
-  height: 80px;
+  width: 96px;
+  min-width: 96px;
+  height: 64px;
 
   object-fit: cover;
   object-position: top;
