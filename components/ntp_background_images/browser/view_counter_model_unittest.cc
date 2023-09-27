@@ -4,10 +4,13 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
+#include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -19,22 +22,29 @@ namespace ntp_background_images {
 
 class ViewCounterModelTest : public testing::Test {
  public:
-  ViewCounterModelTest() = default;
+  ViewCounterModelTest()
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~ViewCounterModelTest() override = default;
 
   void SetUp() override {
     auto* registry = prefs()->registry();
     ViewCounterService::RegisterProfilePrefs(registry);
+
+    base::FieldTrialParams parameters;
+    std::vector<base::test::FeatureRefAndParams> enabled_features;
+    parameters[features::kInitialCountToBrandedWallpaper.name] = "1";
+    parameters[features::kCountToBrandedWallpaper.name] = "3";
+    enabled_features.emplace_back(features::kBraveNTPBrandedWallpaper,
+                                  parameters);
+    feature_list_.InitWithFeaturesAndParameters(enabled_features, {});
   }
 
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }
 
-  void SetCountToBrandedWallPaper(int count) {
-    prefs()->SetInteger(prefs::kCountToBrandedWallpaper, count);
-  }
-
  protected:
+  content::BrowserTaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
 TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
@@ -82,9 +92,8 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
 }
 
 TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountToBrandedWallpaperTest) {
-  SetCountToBrandedWallPaper(1);
-
   ViewCounterModel model(prefs());
+  model.count_to_branded_wallpaper_ = 1;
 
   model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
 
@@ -116,6 +125,56 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountToBrandedWallpaperTest) {
   // Count is 0 so we should show branded wallpaper.
   EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
   model.RegisterPageView();
+}
+
+TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetTest) {
+  ViewCounterModel model(prefs());
+  model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
+
+  // Verify param value for initial count was used
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
+  model.RegisterPageView();
+  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  model.RegisterPageView();
+  EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 3);
+
+  // We expect to be reset to initial count when source data updates (which
+  // calls Reset).
+  model.Reset();
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
+}
+
+TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetMinTest) {
+  ViewCounterModel model(prefs());
+  model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
+
+  // Verify param value for initial count was used
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
+  model.RegisterPageView();
+  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 0);
+
+  // We expect to be reset to initial count only if count_to_branded_wallpaper_
+  // is higher than initial count.
+  model.Reset();
+  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 0);
+}
+
+TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetTimerTest) {
+  ViewCounterModel model(prefs());
+  model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
+
+  // Verify param value for initial count was used
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
+  model.RegisterPageView();
+  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  model.RegisterPageView();
+  EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 3);
+  task_environment_.FastForwardBy(base::Days(1));
+  EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
 }
 
 TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
