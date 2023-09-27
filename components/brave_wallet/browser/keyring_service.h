@@ -14,7 +14,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -100,6 +99,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                      const std::string& password,
                      bool is_legacy_brave_wallet,
                      RestoreWalletCallback callback) override;
+  bool RestoreWalletSync(const std::string& mnemonic,
+                         const std::string& password,
+                         bool is_legacy_brave_wallet);
   void Unlock(const std::string& password, UnlockCallback callback) override;
   void Lock() override;
   void IsLocked(IsLockedCallback callback) override;
@@ -134,6 +136,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                      const std::string& password,
                      RemoveAccountCallback callback) override;
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;
+  bool IsWalletBackedUpSync();
   void NotifyWalletBackupComplete() override;
   mojom::KeyringInfoPtr GetKeyringInfoSync(mojom::KeyringId keyring_id);
   void GetKeyringInfo(mojom::KeyringId keyring_id,
@@ -384,8 +387,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
-
-  std::unique_ptr<AccountDiscoveryManager> account_discovery_manager_;
 
   KeyringService(const KeyringService&) = delete;
   KeyringService& operator=(const KeyringService&) = delete;

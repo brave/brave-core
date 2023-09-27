@@ -8,11 +8,13 @@
 #include <map>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -215,8 +217,14 @@ BraveWalletService::BraveWalletService(
       url_loader_factory, this, json_rpc_service, keyring_service,
       simple_hash_client_.get(), profile_prefs);
 
-  CHECK(delegate_);
-  delegate_->AddObserver(this);
+  if (!delegate_) {
+    CHECK_IS_TEST();
+  } else {
+    delegate_->AddObserver(this);
+  }
+
+  keyring_service_->AddObserver(
+      keyring_observer_receiver_.BindNewPipeAndPassRemote());
 
   DCHECK(profile_prefs_);
 
@@ -1589,6 +1597,12 @@ void BraveWalletService::OnActiveOriginChanged(
   }
 }
 
+void BraveWalletService::WalletRestored() {
+  account_discovery_manager_ = std::make_unique<AccountDiscoveryManager>(
+      json_rpc_service_.get(), keyring_service_.get());
+  account_discovery_manager_->StartDiscovery();
+}
+
 void BraveWalletService::OnDiscoverAssetsStarted() {
   for (const auto& observer : observers_) {
     observer->OnDiscoverAssetsStarted();
@@ -1635,26 +1649,19 @@ void BraveWalletService::OnGetImportInfo(
     return;
   }
 
-  keyring_service_->RestoreWallet(
-      info.mnemonic, new_password, info.is_legacy_crypto_wallets,
-      base::BindOnce(
-          [](ImportFromExternalWalletCallback callback,
-             size_t number_of_accounts, KeyringService* keyring_service,
-             bool is_valid_mnemonic) {
-            if (!is_valid_mnemonic) {
-              std::move(callback).Run(
-                  false,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INVALID_MNEMONIC_ERROR));
-              return;
-            }
-            if (number_of_accounts > 1) {
-              keyring_service->AddAccountsWithDefaultName(
-                  mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                  number_of_accounts - 1);
-            }
-            std::move(callback).Run(is_valid_mnemonic, absl::nullopt);
-          },
-          std::move(callback), info.number_of_accounts, keyring_service_));
+  bool is_valid_mnemonic = keyring_service_->RestoreWalletSync(
+      info.mnemonic, new_password, info.is_legacy_crypto_wallets);
+  if (!is_valid_mnemonic) {
+    std::move(callback).Run(
+        false, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_MNEMONIC_ERROR));
+    return;
+  }
+  if (info.number_of_accounts > 1) {
+    keyring_service_->AddAccountsWithDefaultName(mojom::CoinType::ETH,
+                                                 mojom::kDefaultKeyringId,
+                                                 info.number_of_accounts - 1);
+  }
+  std::move(callback).Run(is_valid_mnemonic, absl::nullopt);
 }
 
 void BraveWalletService::AddSignMessageRequest(
@@ -2141,6 +2148,7 @@ void BraveWalletService::Reset() {
   if (keyring_service_) {
     keyring_service_->Reset();
   }
+  account_discovery_manager_.reset();
 
   for (const auto& observer : observers_) {
     observer->OnResetWallet();

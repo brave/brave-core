@@ -762,8 +762,8 @@ interface KeyringServiceObserver {
   // Fired when a keyring is created
   KeyringCreated(KeyringId keyring_id);
 
-  // Fired when a keyring is restored
-  KeyringRestored(KeyringId keyring_id);
+  // Fired when wallet is restored
+  WalletRestored();
 
   // Fired when a keyring is reset
   KeyringReset();

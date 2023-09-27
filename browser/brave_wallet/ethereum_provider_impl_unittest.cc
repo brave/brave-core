@@ -284,14 +284,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
   void RestoreWallet(const std::string& mnemonic,
                      const std::string& password,
                      bool is_legacy_brave_wallet) {
-    base::RunLoop run_loop;
-    keyring_service_->RestoreWallet(
-        mnemonic, password, is_legacy_brave_wallet,
-        base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    ASSERT_TRUE(keyring_service_->RestoreWalletSync(mnemonic, password,
+                                                    is_legacy_brave_wallet));
   }
 
   mojom::AccountInfoPtr AddHardwareAccount(const std::string& address) {
@@ -2719,7 +2713,7 @@ TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
-  RestoreWallet(kMnemonicDivideCruise, "brave", false);
+  RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword, false);
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
 
   CreateBraveWalletTabHelper();
@@ -2771,7 +2765,7 @@ TEST_F(EthereumProviderImplUnitTest, GetEncryptionPublicKey) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, Decrypt) {
-  RestoreWallet(kMnemonicDivideCruise, "brave", false);
+  RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword, false);
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   auto address_0 = account_0->address;
 

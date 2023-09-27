@@ -27,6 +27,12 @@ namespace brave_wallet {
 constexpr char kMnemonicDivideCruise[] =
     "divide cruise upon flag harsh carbon filter merit once advice bright "
     "drive";
+constexpr char kMnemonicDripCaution[] =
+    "drip caution abandon festival order clown oven regular absorb evidence "
+    "crew where";
+constexpr char kMnemonicScarePiece[] =
+    "scare piece awesome elite long drift control cabbage glass dash coral "
+    "angry";
 constexpr char kTestWalletPassword[] = "brave";
 
 class KeyringService;

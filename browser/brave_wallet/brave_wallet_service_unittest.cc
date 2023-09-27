@@ -2334,9 +2334,7 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
 
   error_message.clear();
-  const char* valid_mnemonic =
-      "drip caution abandon festival order clown oven regular absorb evidence "
-      "crew where";
+  const char* valid_mnemonic = kMnemonicDripCaution;
   SimulateOnGetImportInfo(new_password, true,
                           ImportInfo({valid_mnemonic, false, 3}),
                           ImportError::kNone, &success, &error_message);
@@ -3015,11 +3013,8 @@ TEST_F(BraveWalletServiceUnitTest, EnsureSelectedAccountForChain) {
   const char* new_password = "brave1234!";
   bool success;
   std::string error_message;
-  const char* valid_mnemonic =
-      "drip caution abandon festival order clown oven regular absorb evidence "
-      "crew where";
   SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({valid_mnemonic, false, 1}),
+                          ImportInfo({kMnemonicDripCaution, false, 1}),
                           ImportError::kNone, &success, &error_message);
 
   auto accounts = std::move(keyring_service_->GetAllAccountsSync()->accounts);

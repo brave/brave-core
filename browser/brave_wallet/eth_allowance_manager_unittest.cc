@@ -296,8 +296,8 @@ class EthAllowanceManagerUnitTest : public testing::Test {
         contract_addresses.push_back(tkn->contract_address);
       }
     }
-    keyring_service_->RestoreWallet(kMnemonicDivideCruise, kPasswordBrave,
-                                    false, base::DoNothing());
+    ASSERT_TRUE(keyring_service_->RestoreWalletSync(kMnemonicDivideCruise,
+                                                    kPasswordBrave, false));
     for (int i = 0; i < (eth_account_count - 1); i++) {
       AddEthAccount("additonal eth account");
     }

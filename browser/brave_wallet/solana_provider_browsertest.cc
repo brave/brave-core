@@ -454,17 +454,8 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   void RestoreWallet() {
-    const char mnemonic[] =
-        "scare piece awesome elite long drift control cabbage glass dash coral "
-        "angry";
-    base::RunLoop run_loop;
-    keyring_service_->RestoreWallet(
-        mnemonic, "brave123", false,
-        base::BindLambdaForTesting([&run_loop](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+        kMnemonicScarePiece, kTestWalletPassword, false));
 
     EXPECT_EQ(kFirstAccount, GetAccountUtils().EnsureSolAccount(0)->address);
     EXPECT_EQ(kSecondAccount, GetAccountUtils().EnsureSolAccount(1)->address);

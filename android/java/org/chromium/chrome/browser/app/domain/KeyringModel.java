@@ -165,7 +165,7 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringRestored(@KeyringId.EnumType int keyringId) {
+    public void walletRestored() {
         update();
     }
 
