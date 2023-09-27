@@ -1259,7 +1259,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           View original page
         </message>
         <message name="IDS_PLAYLIST_EMPTY_FOLDER_MESSAGE" desc="A message that shows up when a playlist folder is empty">
-          The fun starts when you have something to play! Find your favorite media and add them to this playlist.
+          The fun starts when you have something to play. Add your favorite media and playback anytime, anywhere. Even offline.
         </message>
       </if> <!-- enable_playlist_webui -->
       <!--Add new items to the appropriate sections above -->
