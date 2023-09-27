@@ -66,6 +66,7 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
   gfx::Insets GetContentsInsets() const override;
   TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const override;
   float GetSeparatorOpacity(bool for_layout, bool leading) const override;
+  int GetStrokeThickness(bool should_paint_as_active = false) const override;
   void PaintTab(gfx::Canvas* canvas) const override;
 
  private:
@@ -246,6 +247,14 @@ float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
   return visible_opacity;
 }
 
+int BraveVerticalTabStyle::GetStrokeThickness(
+    bool should_paint_as_active) const {
+  if (!HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs()) {
+    return BraveGM2TabStyle::GetStrokeThickness(should_paint_as_active);
+  }
+  return 0;
+}
+
 void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
   BraveGM2TabStyle::PaintTab(canvas);
 
@@ -253,6 +262,7 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
     return;
   }
 
+  // Paint a stroke for pinned tabs.
   if (tab()->data().pinned) {
     const auto* widget = tab()->GetWidget();
     CHECK(widget);
@@ -264,8 +274,17 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
       color_id = kColorBraveVerticalTabSeparator;
     }
 
-    PaintBackgroundStroke(canvas, TabStyle::TabSelectionState::kActive,
-                          widget->GetColorProvider()->GetColor(color_id));
+    SkPath stroke_path =
+        GetPath(TabStyle::PathType::kBorder, canvas->image_scale(), false);
+
+    gfx::ScopedCanvas scoped_canvas(canvas);
+    float scale = canvas->UndoDeviceScaleFactor();
+    cc::PaintFlags flags;
+    flags.setAntiAlias(true);
+    flags.setColor(widget->GetColorProvider()->GetColor(color_id));
+    flags.setStyle(cc::PaintFlags::kStroke_Style);
+    flags.setStrokeWidth(scale);
+    canvas->DrawPath(stroke_path, flags);
   }
 }
 

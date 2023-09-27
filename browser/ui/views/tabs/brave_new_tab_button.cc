@@ -84,7 +84,8 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
     // the canvas in the center of the view.
     constexpr int kIconSize = 16;
     gfx::Rect bounds = GetContentsBounds();
-    canvas->Translate(gfx::Vector2d((bounds.width() - kIconSize) / 2,
+    canvas->Translate(bounds.OffsetFromOrigin() +
+                      gfx::Vector2d((bounds.width() - kIconSize) / 2,
                                     (bounds.height() - kIconSize) / 2));
     gfx::PaintVectorIcon(canvas, kLeoPlusAddIcon, kIconSize,
                          GetForegroundColor());

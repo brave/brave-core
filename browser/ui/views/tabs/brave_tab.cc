@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -322,8 +323,13 @@ void BraveTab::LayoutShadowLayer() {
   CHECK(shadow_layer_->parent());
   CHECK(layer());
   DCHECK_EQ(layer()->parent(), shadow_layer_->parent());
-  shadow_layer_->SetBounds(
-      ShadowLayer::GetShadowLayerBounds(layer()->bounds()));
+  auto bounds = ShadowLayer::GetShadowLayerBounds(layer()->bounds());
+  if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+    // For horizontal tabs, inset the shadow layer to match the visual rounded
+    // rectangle of the tab, which is inset from the tab view.
+    bounds.Inset(gfx::Insets::VH(0, brave_tabs::kHorizontalTabInset));
+  }
+  shadow_layer_->SetBounds(bounds);
 }
 
 void BraveTab::AddLayerToBelowThis() {

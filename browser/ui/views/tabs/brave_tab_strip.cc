@@ -121,15 +121,6 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   return contrast_ratio < kBraveMinimumContrastRatioForOutlines;
 }
 
-int BraveTabStrip::GetStrokeThickness() const {
-  if (ShouldShowVerticalTabs() || HorizontalTabsUpdateEnabled()) {
-    // Bypass checking ShouldDrawStrokes().
-    return 1;
-  }
-
-  return TabStrip::GetStrokeThickness();
-}
-
 void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
   if (brave_tabs::AreTooltipsEnabled(controller_->GetProfile()->GetPrefs())) {
     return;

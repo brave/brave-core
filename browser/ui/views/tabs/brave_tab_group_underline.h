@@ -26,6 +26,7 @@ class BraveTabGroupUnderline : public TabGroupUnderline {
       const views::View* underline_view,
       const views::View* leading_view,
       const views::View* trailing_view) const override;
+  void OnPaint(gfx::Canvas* canvas) override;
 
  private:
   bool ShouldShowVerticalTabs() const;
