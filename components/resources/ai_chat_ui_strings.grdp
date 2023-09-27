@@ -48,4 +48,31 @@
   <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
      Retry
   </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEFAULT" desc="AI Chat intro message for the default model">
+    I'm here to help. What can I assist you with today?
+  </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_EXPANDED" desc="AI Chat intro message for the expanded model">
+    I have a vast base of knowledge and a large memory able to help with more complex challenges.
+  </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model">
+    Hi! My name is Claude. I was created by Anthropic to be helpful, harmless, and honest.
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
+    <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat">
+    Chat
+  </message>
+  <message name="IDS_CHAT_UI_MENU_NEW_CHAT" desc="Menu item for new chat">
+    New chat
+  </message>
+  <message name="IDS_CHAT_UI_MENU_SUGGESTED_QUESTIONS" desc="Menu item for whether to enable suggested questions during chat conversations">
+    Suggested questions
+  </message>
+  <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
+    Settings
+  </message>
+  <message name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
+    Available language models
+  </message>
 </grit-part>

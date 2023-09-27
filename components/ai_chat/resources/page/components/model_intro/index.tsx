@@ -5,43 +5,26 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import formatMessage from '$web-common/formatMessage'
+import { getLocale } from '$web-common/locale'
 import * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import styles from './style.module.scss'
 
-function getCategoryName (category: mojom.ModelCategory): string {
-  if (category === mojom.ModelCategory.CHAT) {
-    return 'Chat' // TODO: translate
-  }
-
-  console.error('Cannot provide string for model category: ', category)
-  return ''
+function getCategoryName (category: mojom.ModelCategory) {
+  // To avoid problems when order of enum values change, we base the key
+  // on the enum name rather than the number value, e.g. "CHAT" vs 0
+  const categoryKey = Object.keys(mojom.ModelCategory)[category]
+  const key = `modelCategory-${categoryKey.toLowerCase()}`
+  return getLocale(key)
 }
 
 function getIntroMessage (model: mojom.Model) {
-  switch (model.key) {
-    case 'chat-default':
-      return `Hi there! I'm here to help. What can I assist you with today?`
-    case 'chat-leo-expanded':
-      return `I have a vast base of knowledge and a large memory able to help with more complex challenges`
-    case 'chat-claude-instant':
-      return `Hi! My name is Claude. I was created by Anthropic to be helpful, harmless, and honest.`
-    default:
-      console.error(`Did not know intro string for model key: ${model.key}`)
-      return `Hi there! I'm here to help. What can I assist you with today?`
-  }
+  const key = `introMessage-${model.key}`
+  return getLocale(key)
 }
 
-function ModelDisplayName ({model}: {model: mojom.Model}) {
-  // TODO: translate
-  return (
-    <>
-      {model.displayName} by <span className={styles.maker}>{model.displayMaker}</span>
-    </>
-  )
-}
-
-export default function ModelIntro (props: {}) {
+export default function ModelIntro () {
   const context = React.useContext(DataContext)
 
   const model = context.currentModel
@@ -56,15 +39,16 @@ export default function ModelIntro (props: {}) {
         <Icon name='product-brave-leo' />
       </div>
       <div className={styles.meta}>
-        <h2 className={styles.category}>
-          {getCategoryName(model.category)}
-        </h2>
+        <h2 className={styles.category}>{getCategoryName(model.category)}</h2>
         <h3 className={styles.name}>
-          <ModelDisplayName model={model} />
+          {formatMessage(getLocale('modelNameSyntax'), {
+            placeholders: {
+              $1: model.displayName,
+              $2: <span className={styles.maker}>{model.displayMaker}</span>
+            }
+          })}
         </h3>
-        <p className={styles.modelIntro}>
-          {getIntroMessage(model)}
-        </p>
+        <p className={styles.modelIntro}>{getIntroMessage(model)}</p>
       </div>
     </div>
   )

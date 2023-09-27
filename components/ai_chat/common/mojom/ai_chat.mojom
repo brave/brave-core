@@ -32,9 +32,10 @@ enum ModelEngineType {
   CLAUDE_REMOTE,
 };
 
+// When adding or modifying category names, associated UI strings must also
+// be provided via ai_chat_ui_strings.grdp and ai_chat/browser/constants.cc
 enum ModelCategory {
   CHAT,
-  // CODING,
 };
 
 struct SiteInfo {

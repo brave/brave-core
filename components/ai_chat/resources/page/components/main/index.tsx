@@ -85,14 +85,14 @@ function Main () {
         </div>
       </div>
       <div className={styles.scroller}>
+        {
+          context.hasChangedModel && <ModelIntro />
+        }
         {siteTitleElement && (
           <div className={styles.siteTitleBox}>
             {siteTitleElement}
           </div>
         )}
-        {
-          context.hasChangedModel && <ModelIntro />
-        }
         {conversationListElement}
         {currentErrorElement && (
           <div className={styles.errorContainer}>
