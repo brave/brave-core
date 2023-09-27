@@ -18,11 +18,12 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 
-import { color } from '@brave/leo/tokens/css'
+import { color, font, spacing } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
 import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m'
 
+import EmptyFolderIcon from '../assets/playlist-empty-folder.svg'
 import { SortablePlaylistItem, PlaylistItem } from './playlistItem'
 import {
   PlaylistEditMode,
@@ -41,6 +42,7 @@ import {
   useDraggedOrder,
   useSensorsWithThreshold
 } from '../utils/dragDropUtils'
+import { getLocalizedString } from '../utils/l10n'
 
 interface MatchParams {
   playlistId: string
@@ -138,6 +140,57 @@ function useScrollToItem (itemId: string | undefined) {
   return setEl
 }
 
+const StyledEmptyFolderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  align-self: stretch;
+  align-items: center;
+  width: 100vw;
+  height: calc(100vh - var(--header-height));
+`
+
+const StyledEmptyFolderMessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: ${spacing['2Xl']};
+  flex: 1 0 0;
+`
+
+const StyledEmptyFolderIcon = styled.div`
+  content: url(${`/${EmptyFolderIcon}`});
+`
+
+const StyledEmptyFolderMessage = styled.div`
+  color: ${color.text.tertiary};
+  text-align: center;
+  font: ${font.primary.default.regular};
+  padding: 0px 40px;
+`
+
+const StyledSuggestedItemsContainer = styled.div`
+  width: 100%;
+  height: 230px;
+`
+
+export function EmptyPlaylistFolder () {
+  return (
+    <StyledEmptyFolderContainer>
+      <StyledEmptyFolderMessageContainer>
+        <StyledEmptyFolderIcon />
+        <StyledEmptyFolderMessage>
+          {getLocalizedString('bravePlaylistEmptyFolderMessage')}
+        </StyledEmptyFolderMessage>
+      </StyledEmptyFolderMessageContainer>
+      <StyledSuggestedItemsContainer>
+        {/* TODO(sko) Not implemented yet */}
+      </StyledSuggestedItemsContainer>
+    </StyledEmptyFolderContainer>
+  )
+}
+
 export default function PlaylistFolder ({
   match
 }: RouteComponentProps<MatchParams>) {
@@ -214,6 +267,10 @@ export default function PlaylistFolder ({
     (lastPlayerState?.shuffleEnabled
       ? lastPlayerState.currentList?.items ?? playlist?.items
       : playlist?.items)
+
+  if (!itemsToRender.length) {
+    return <EmptyPlaylistFolder />
+  }
 
   const getPlaylistItem = (
     item: PlaylistItemMojo | undefined,
