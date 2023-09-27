@@ -31,9 +31,7 @@ export default function HeroArticle({ info }: Props) {
   })
   return <Card onClick={() => openArticle(info.data)} ref={setElementRef}>
     <HeroImage src={url} />
-    <MetaInfo>
-      {new URL(info.data.url.url).host} • {info.data.relativeTimeDescription}
-    </MetaInfo>
+    <MetaInfo article={info.data} />
     <Title>{info.data.title}</Title>
   </Card>
 }

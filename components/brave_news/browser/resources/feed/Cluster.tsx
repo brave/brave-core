@@ -4,11 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
 import { Cluster as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
-import Card, { MetaInfo } from './Card';
+import Card, { MetaInfoContainer } from './Card';
 import Article from './Article';
-import IconReact from '@brave/leo/react/icon';
 import styled from 'styled-components';
 import { spacing } from '@brave/leo/tokens/css';
+import { channelIcons } from '../../../../brave_new_tab_ui/components/default/braveNews/customize/Icons';
 
 interface Props {
   info: Info
@@ -22,10 +22,9 @@ const Container = styled(Card)`
 
 export default function Cluster({ info }: Props) {
   return <Container>
-    <MetaInfo>
-      <IconReact name="fire" />
-      {info.type}: {info.id}
-    </MetaInfo>
-    {info.articles.map((a, i) => <Article key={i} info={a.article || a.hero as any}/>)}
+    <MetaInfoContainer>
+      {channelIcons[info.id] ?? channelIcons.default} {info.id}
+    </MetaInfoContainer>
+    {info.articles.map((a, i) => <Article key={i} info={a.article || a.hero as any} hideChannel />)}
   </Container>
 }

@@ -4,6 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from "styled-components";
 import { color, font, radius, spacing } from '@brave/leo/tokens/css'
+import { FeedItemMetadata } from "../../../../brave_new_tab_ui/api/brave_news";
+import { channelIcons } from "../../../../brave_new_tab_ui/components/default/braveNews/customize/Icons";
+import * as React from "react";
 
 export const Header = styled.h2`
   margin: 0;
@@ -14,19 +17,36 @@ export const Header = styled.h2`
   --leo-icon-size: 18px;
 `
 
-export const MetaInfo = styled.h4` 
+export const MetaInfoContainer = styled.h4` 
   margin: 0;
 
-  font: ${font.primary.heading.h4};
+  font: ${font.primary.xSmall.regular};
   color: ${color.text.secondary};
+
+  opacity: 0.5;
+
+  display: flex;
+  align-items: center;
+  gap: ${spacing.s};
 
   --leo-icon-size: 12px;
 `
 
+export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boolean }) {
+  const host = new URL(props.article.url.url).host
+  const hostSansWWW = host.startsWith('www.') ? host.substring(4) : host
+  const maybeChannel = !props.hideChannel && <>
+    • {channelIcons[props.article.categoryName] ?? channelIcons.default} {props.article.categoryName}
+  </>
+  return <MetaInfoContainer>
+    {hostSansWWW} {maybeChannel} • {props.article.relativeTimeDescription}
+  </MetaInfoContainer>
+}
+
 export const Title = styled.h3`
   margin: 0;
 
-  font: ${font.primary.heading.h3};
+  font: ${font.primary.default.regular};
   color: ${color.text.primary};
 `
 

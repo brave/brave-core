@@ -11,6 +11,7 @@ import { useLazyUnpaddedImageUrl } from '../../../../brave_new_tab_ui/components
 
 interface Props {
   info: Info
+  hideChannel?: boolean
 }
 
 const Container = styled(Card)`
@@ -33,11 +34,12 @@ const ArticleImage = styled.img`
 
 export const openArticle = (article: FeedItemMetadata) => window.open(article.url.url, '_blank', 'noopener noreferrer')
 
-export default function Article({ info }: Props) {
+export default function Article({ info, hideChannel }: Props) {
   const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url, { useCache: true })
+
   return <Container onClick={() => openArticle(info.data)} ref={setElementRef}>
     <div>
-      <MetaInfo>{new URL(info.data.url.url).host} • {info.data.relativeTimeDescription}</MetaInfo>
+      <MetaInfo article={info.data} hideChannel={hideChannel} />
       <Title>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</Title>
     </div>
     <ArticleImage src={url} />
