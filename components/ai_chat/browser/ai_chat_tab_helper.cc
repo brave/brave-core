@@ -253,6 +253,12 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
       << " suggested questions: "
       << base::JoinString(suggested_questions_, ", ");
 
+  // User might have already asked questions before the page is loaded. It'd be
+  // strange if we generate contents based on the page.
+  if (!chat_history_.empty()) {
+    return;
+  }
+
   // Now that we have content, we can provide a summary on-demand. Add that to
   // suggested questions.
   // TODO(petemill): translation for this question
@@ -328,6 +334,11 @@ void AIChatTabHelper::GenerateQuestions() {
   }
   // Don't perform the operation more than once
   if (suggested_questions_.size() > 1u) {
+    return;
+  }
+
+  // Don't generate suggested questions if there's already on-going conversions
+  if (!chat_history_.empty()) {
     return;
   }
 
