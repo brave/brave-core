@@ -4,12 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
+// components
+import { ImageLoader } from './image-loader'
+
 // styles
+import { ImageWrapper } from './nft-image.styles'
 import {
-  ImageWrapper,
-  Image
-} from './nft-image.styles'
-import { NftUiCommand, UpdateNftImageLoadingMessage, sendMessageToWalletUi } from '../../nft-ui-messages'
+  NftUiCommand,
+  UpdateNftImageLoadingMessage,
+  sendMessageToWalletUi
+} from '../../nft-ui-messages'
 
 interface Props {
   imageUrl: string
@@ -28,10 +32,13 @@ export const NftImage = (props: Props) => {
   }, [])
 
   return (
-    <>
-      <ImageWrapper>
-        <Image src={imageUrl} onLoad={onImageLoaded} />
-      </ImageWrapper>
-    </>
+    <ImageWrapper>
+      <ImageLoader
+        src={imageUrl}
+        onLoaded={onImageLoaded}
+        width='auto'
+        height='360px'
+      />
+    </ImageWrapper>
   )
 }
