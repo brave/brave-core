@@ -8,6 +8,9 @@ import { FeedItemMetadata, Article as Info } from 'gen/brave/components/brave_ne
 import styled from 'styled-components';
 import { spacing } from '@brave/leo/tokens/css';
 import { useLazyUnpaddedImageUrl } from '../../../../brave_new_tab_ui/components/default/braveNews/useUnpaddedImageUrl';
+import Flex from '../../../../brave_new_tab_ui/components/Flex';
+import Button from '@brave/leo/react/button';
+import Icon from '@brave/leo/react/icon';
 
 interface Props {
   info: Info
@@ -16,9 +19,7 @@ interface Props {
 
 const Container = styled(Card)`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: ${spacing.m};
+  flex-direction: column;
 `
 
 const ArticleImage = styled.img`
@@ -32,16 +33,28 @@ const ArticleImage = styled.img`
   border-radius: 6px;
 `
 
+const MenuButton = styled(Button)`
+  flex-grow: 0;
+  --leo-button-padding: ${spacing.s};
+`
+
 export const openArticle = (article: FeedItemMetadata) => window.open(article.url.url, '_blank', 'noopener noreferrer')
 
 export default function Article({ info, hideChannel }: Props) {
   const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url, { useCache: true })
 
   return <Container onClick={() => openArticle(info.data)} ref={setElementRef}>
-    <div>
+    <Flex direction='row' gap={spacing.m} justify='space-between'>
       <MetaInfo article={info.data} hideChannel={hideChannel} />
+      <MenuButton kind='plain-faint' onClick={e => {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }}><Icon name='more-horizontal' /></MenuButton>
+    </Flex>
+    <Flex direction='row' gap={spacing.m}>
       <Title>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</Title>
-    </div>
-    <ArticleImage src={url} />
+      <ArticleImage src={url} />
+    </Flex>
   </Container>
 }
