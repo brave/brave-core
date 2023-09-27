@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.brave_news;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -26,6 +27,7 @@ import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesDataListener;
+import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,9 +128,16 @@ public class BraveNewsUtils {
         }
     }
 
-    public static boolean shouldDisplayNews() {
+    public static boolean shouldDisplayNewsFeed() {
         return BravePrefServiceBridge.getInstance().getShowNews()
                 && BravePrefServiceBridge.getInstance().getNewsOptIn();
+    }
+
+    public static boolean shouldDisplayNewsOptin() {
+        return BravePrefServiceBridge.getInstance().getShowNews()
+                && !BravePrefServiceBridge.getInstance().getNewsOptIn()
+                && ContextUtils.getAppSharedPreferences().getBoolean(
+                        BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true);
     }
 
     public static void setChannelIcons() {
