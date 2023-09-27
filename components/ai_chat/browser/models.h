@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/strings/string_piece.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
@@ -17,9 +16,9 @@ namespace ai_chat {
 extern const char kModelsDefaultKey[];
 
 // All models that the user can choose for chat conversations.
-extern const base::flat_map<base::StringPiece, mojom::Model> kAllModels;
+extern const base::flat_map<std::string_view, mojom::Model> kAllModels;
 // UI display order for models
-extern const std::vector<base::StringPiece> kAllModelKeysDisplayOrder;
+extern const std::vector<std::string_view> kAllModelKeysDisplayOrder;
 
 }  // namespace ai_chat
 

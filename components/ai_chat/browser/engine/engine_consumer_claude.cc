@@ -127,8 +127,8 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
     model_name = model.name;
   }
   DCHECK(!model_name.empty());
-  base::flat_set<base::StringPiece> stop_sequences(kStopSequences.begin(),
-                                                   kStopSequences.end());
+  base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
+                                                  kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(model_name, stop_sequences,
                                                   url_loader_factory);
 }

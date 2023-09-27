@@ -17,7 +17,7 @@ constexpr char kModelsDefaultKey[] = "chat-default";
 // strings to ai_chat_ui_strings.grdp and ai_chat/browser/constants.cc.
 // This also applies for modifying keys, since some of the strings are based
 // on the model key.
-const base::flat_map<base::StringPiece, mojom::Model> kAllModels = {
+const base::flat_map<std::string_view, mojom::Model> kAllModels = {
     {"chat-default",
      {"chat-default", "llama-2-13b-chat", "llama2 13b", "Meta",
       mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT, false}},
@@ -27,17 +27,9 @@ const base::flat_map<base::StringPiece, mojom::Model> kAllModels = {
     {"chat-claude-instant",
      {"chat-claude-instant", "claude-instant-v1", "Claude Instant", "Anthropic",
       mojom::ModelEngineType::CLAUDE_REMOTE, mojom::ModelCategory::CHAT, true}},
-    // {"code-llama-basic", {"code-llama-basic",
-    //   "code-llama-13b",
-    //   mojom::ModelCategory::CODING,
-    //   false}},
-    // {"code-llama-expanded", {"code-llama-expanded",
-    //   "code-llama-70b",
-    //   mojom::ModelCategory::CODING,
-    //   true}},
 };
 
-const std::vector<base::StringPiece> kAllModelKeysDisplayOrder = {
+const std::vector<std::string_view> kAllModelKeysDisplayOrder = {
     "chat-default",
     "chat-leo-expanded",
     "chat-claude-instant",
