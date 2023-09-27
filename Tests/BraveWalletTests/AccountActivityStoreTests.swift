@@ -414,7 +414,6 @@ class AccountActivityStoreTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.FilecoinMainnet,
       effectiveRecipient: nil
     )
