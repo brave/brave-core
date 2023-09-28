@@ -2,12 +2,13 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import * as React from 'react';
 import { HeroArticle as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
-import { openArticle } from './Article';
+import * as React from 'react';
 import styled from 'styled-components';
-import Card, { MetaInfo, Title } from './Card';
-import { useLazyUnpaddedImageUrl } from '../../../../brave_new_tab_ui/components/default/braveNews/useUnpaddedImageUrl'
+import { useLazyUnpaddedImageUrl } from '../../../../brave_new_tab_ui/components/default/braveNews/useUnpaddedImageUrl';
+import { openArticle } from './Article';
+import ArticleMetaRow from './ArticleMetaRow';
+import Card, { Title } from './Card';
 
 interface Props {
   info: Info
@@ -31,7 +32,7 @@ export default function HeroArticle({ info }: Props) {
   })
   return <Card onClick={() => openArticle(info.data)} ref={setElementRef}>
     <HeroImage src={url} />
-    <MetaInfo article={info.data} />
+    <ArticleMetaRow article={info.data} />
     <Title>{info.data.title}</Title>
   </Card>
 }
