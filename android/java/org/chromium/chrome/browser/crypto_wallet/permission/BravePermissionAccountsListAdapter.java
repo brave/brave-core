@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 
@@ -104,9 +105,9 @@ public class BravePermissionAccountsListAdapter
         final int arrayPosition = position;
         AccountInfo accountInfo = mAccountInfos[position];
         holder.titleText.setText(accountInfo.name);
-        holder.subTitleText.setText(Utils.stripAccountAddress(accountInfo.address));
+        holder.subTitleText.setText(AddressUtils.getTruncatedAddress(accountInfo.address));
         Utils.setBlockiesBitmapResourceFromAccount(
-                mExecutor, mHandler, holder.iconImg, accountInfo, true);
+                mExecutor, mHandler, holder.iconImg, accountInfo, true, false);
 
         if (mCheckBoxStyle) {
             holder.accountCheck.setVisibility(View.VISIBLE);
