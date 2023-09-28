@@ -184,7 +184,8 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
     const std::string& credential_as_cookie) {
   // Credential is returned in cookie format.
   net::CookieInclusionStatus status;
-  net::ParsedCookie credential_cookie(credential_as_cookie, &status);
+  net::ParsedCookie credential_cookie(credential_as_cookie,
+                                      /*block_truncated=*/true, &status);
   if (!credential_cookie.IsValid()) {
     std::move(callback).Run(absl::nullopt);
     return;
