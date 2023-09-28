@@ -6,12 +6,11 @@
 #include "chrome/install_static/buildflags.h"
 
 #if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
-#define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
+#include "chrome/install_static/brave_enable_google_update_integration.h"
 #endif
 
 #include "src/chrome/installer/setup/user_experiment.cc"
 
 #if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
+#include "chrome/install_static/brave_restore_google_update_integration.h"
 #endif
