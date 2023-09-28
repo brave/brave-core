@@ -817,6 +817,8 @@ static_library("internal") {
     "ml/transformation/lowercase_transformation.h",
     "ml/transformation/mapped_tokens_transformation.cc",
     "ml/transformation/mapped_tokens_transformation.h",
+    "ml/transformation/mapped_tokens_transformation_util.cc",
+    "ml/transformation/mapped_tokens_transformation_util.h",
     "ml/transformation/normalization_transformation.cc",
     "ml/transformation/normalization_transformation.h",
     "ml/transformation/transformation.cc",

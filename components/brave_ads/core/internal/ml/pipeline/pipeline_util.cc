@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation.h"
+#include "brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation_util.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/normalization_transformation.h"
 
 namespace brave_ads::ml::pipeline {
@@ -38,6 +39,7 @@ constexpr char kClassifierTypeLinearKey[] = "LINEAR";
 constexpr char kClassifierTypeNeuralNetworkKey[] = "NEURAL";
 
 constexpr char kClassWeightsKey[] = "class_weights";
+constexpr char kHuffmanCodingKey[] = "huffman_coding";
 constexpr char kLocaleKey[] = "locale";
 constexpr char kNumberBucketsKey[] = "num_buckets";
 
@@ -99,9 +101,36 @@ absl::optional<TransformationPtr> ParsePipelineTransformationHashedNgrams(
   return std::make_unique<HashedNGramsTransformation>(*num_buckets, subgrams);
 }
 
-std::map<std::string, std::vector<int>> FillTokensCategoriesMapping(
-    const base::Value::Dict* mapping) {
-  std::map<std::string, std::vector<int>> token_categories_mapping;
+std::map<std::string, std::vector<int>> FillHuffmanCodingMapping(
+    const base::Value::Dict* huffman_coding) {
+  std::map<std::string, std::vector<int>> huffman_coding_mapping;
+  for (const auto [character, coding] : *huffman_coding) {
+    const auto* coding_bits = coding.GetIfList();
+    if (!coding_bits) {
+      continue;
+    }
+
+    std::string character_key = character;
+
+    std::vector<int> mapped_coding_bits;
+    mapped_coding_bits.reserve(coding_bits->size());
+    for (const base::Value& coding_bit : *coding_bits) {
+      if (!coding_bit.is_double() && !coding_bit.is_int()) {
+        return {};
+      }
+      mapped_coding_bits.push_back(static_cast<int>(coding_bit.GetInt()));
+    }
+    huffman_coding_mapping[character_key] = mapped_coding_bits;
+  }
+  return huffman_coding_mapping;
+}
+
+std::map<std::basic_string<unsigned char>, std::vector<unsigned char>>
+FillTokensCategoriesMapping(
+    const base::Value::Dict* mapping,
+    const std::map<std::string, std::vector<int>>& huffman_coding_mapping) {
+  std::map<std::basic_string<unsigned char>, std::vector<unsigned char>>
+      token_categories_mapping;
   for (const auto [token, categories] : *mapping) {
     const auto* category_indexes = categories.GetIfList();
     if (!category_indexes) {
@@ -109,16 +138,22 @@ std::map<std::string, std::vector<int>> FillTokensCategoriesMapping(
     }
 
     std::string token_text = token;
-    std::vector<int> mapped_category_indexes;
+    absl::optional<std::basic_string<unsigned char>> compressed_token =
+        CompressToken(token_text, huffman_coding_mapping);
+    if (!compressed_token) {
+      continue;
+    }
+
+    std::vector<unsigned char> mapped_category_indexes;
     mapped_category_indexes.reserve(category_indexes->size());
     for (const base::Value& category_index : *category_indexes) {
       if (!category_index.is_double() && !category_index.is_int()) {
         return {};
       }
       mapped_category_indexes.push_back(
-          static_cast<int>(category_index.GetInt()));
+          static_cast<unsigned char>(category_index.GetInt()));
     }
-    token_categories_mapping[token_text] = mapped_category_indexes;
+    token_categories_mapping[*compressed_token] = mapped_category_indexes;
   }
   return token_categories_mapping;
 }
@@ -131,20 +166,30 @@ absl::optional<TransformationPtr> ParsePipelineTransformationMappedTokens(
     return absl::nullopt;
   }
 
+  const auto* const huffman_coding =
+      transformation_dict->FindDict(kHuffmanCodingKey);
+  if (!huffman_coding) {
+    return absl::nullopt;
+  }
+  std::map<std::string, std::vector<int>> huffman_coding_mapping =
+      FillHuffmanCodingMapping(huffman_coding);
+
   const auto* const mapping =
       transformation_dict->FindDict(kTokenCategoriesMappingKey);
   if (!mapping) {
     return absl::nullopt;
   }
+
   int vector_dimension = *dimension;
-  std::map<std::string, std::vector<int>> token_categories_mapping =
-      FillTokensCategoriesMapping(mapping);
+  std::map<std::basic_string<unsigned char>, std::vector<unsigned char>>
+      token_categories_mapping =
+          FillTokensCategoriesMapping(mapping, huffman_coding_mapping);
   if (token_categories_mapping.empty()) {
     return absl::nullopt;
   }
 
-  return std::make_unique<MappedTokensTransformation>(vector_dimension,
-                                                      token_categories_mapping);
+  return std::make_unique<MappedTokensTransformation>(
+      vector_dimension, huffman_coding_mapping, token_categories_mapping);
 }
 
 absl::optional<TransformationPtr> AddPipelineTransformation(

@@ -20,7 +20,9 @@ class MappedTokensTransformation final : public Transformation {
   MappedTokensTransformation();
   MappedTokensTransformation(
       int vector_dimension,
-      std::map<std::string, std::vector<int>> token_categories_mapping);
+      std::map<std::string, std::vector<int>> huffman_coding_mapping,
+      std::map<std::basic_string<unsigned char>, std::vector<unsigned char>>
+          token_categories_mapping);
 
   MappedTokensTransformation(
       MappedTokensTransformation&& mapped_tokens) noexcept;
@@ -31,18 +33,20 @@ class MappedTokensTransformation final : public Transformation {
 
   explicit MappedTokensTransformation(const std::string& parameters);
 
-  static std::vector<std::string> GetTokensFromText(
+  static std::vector<std::string> GetWordsFromText(
       const std::unique_ptr<Data>& input_data);
 
   std::map<unsigned, double> GetCategoryFrequencies(
-      std::vector<std::string> tokens) const;
+      std::vector<std::string> words) const;
 
   std::unique_ptr<Data> Apply(
       const std::unique_ptr<Data>& input_data) const override;
 
  private:
   int vector_dimension_ = 0;
-  std::map<std::string, std::vector<int>> token_categories_mapping_;
+  std::map<std::string, std::vector<int>> huffman_coding_mapping_;
+  std::map<std::basic_string<unsigned char>, std::vector<unsigned char>>
+      token_categories_mapping_;
 };
 
 }  // namespace brave_ads::ml
