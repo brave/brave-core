@@ -8,11 +8,13 @@ import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/pol
 RegisterPolymerTemplateModifications({
   'settings-cookies-page': (templateContent) => {
     const privacySandboxSettings4Template = templateContent.
-      querySelector(`template[if*='!isPrivacySandboxSettings4_']`)
+      querySelector(
+        'template[if*="isPrivacySandboxSettings3CookieSettingsEnabled_"]'
+      )
     if (!privacySandboxSettings4Template) {
       console.error(
         '[Brave Settings Overrides] Could not find template with ' +
-        'if*=isPrivacySandboxSettings4_ on cookies page.')
+        'if*=isPrivacySandboxSettings3CookieSettingsEnabled_ on cookies page.')
     } else {
       const clearOnExitToggle =
         privacySandboxSettings4Template.content.getElementById('clearOnExit')
