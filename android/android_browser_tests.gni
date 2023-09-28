@@ -114,7 +114,6 @@ android_test_exception_deps = [
   "//brave/browser/net:browser_tests",
   "//brave/browser/permissions:browser_tests",
   "//brave/browser/playlist/test:browser_tests",
-  "//brave/browser/request_otr:browser_tests",
   "//brave/browser/test:browser_tests",
   "//brave/browser/ui:browser_tests",
   "//brave/browser/ui/tabs/test:browser_tests",

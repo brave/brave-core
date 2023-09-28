@@ -21,13 +21,13 @@
 #include "brave/components/request_otr/browser/request_otr_service.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/request_otr/common/pref_names.h"
-#include "chrome/browser/engagement/site_engagement_service_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -35,10 +35,6 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar_manager.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
-#include "components/site_engagement/content/engagement_type.h"
-#include "components/site_engagement/content/site_engagement_helper.h"
-#include "components/site_engagement/content/site_engagement_metrics.h"
-#include "components/site_engagement/content/site_engagement_observer.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_paths.h"
@@ -50,17 +46,11 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
 
-using request_otr::features::kBraveRequestOTRTab;
-using site_engagement::EngagementType;
-using site_engagement::SiteEngagementObserver;
-using site_engagement::SiteEngagementService;
-using site_engagement::SiteEngagementServiceFactory;
 using ::testing::_;
 
 namespace {
 
 const char kTestDataDirectory[] = "request-otr-data";
-const char kRequestOTRResponseHeader[] = "Request-OTR";
 
 class TestObserver : public infobars::InfoBarManager::Observer {
  public:
@@ -69,23 +59,9 @@ class TestObserver : public infobars::InfoBarManager::Observer {
   MOCK_METHOD(void, OnInfoBarAdded, (infobars::InfoBar * infobar), (override));
 };
 
-std::unique_ptr<net::test_server::HttpResponse> RespondWithCustomHeader(
-    const net::test_server::HttpRequest& request) {
-  auto http_response = std::make_unique<net::test_server::BasicHttpResponse>();
-  http_response->set_code(net::HTTP_OK);
-  http_response->set_content_type("text/plain");
-  http_response->set_content("Well OK I guess");
-  if (request.relative_url.find("include-response-header-with-1") !=
-      std::string::npos) {
-    http_response->AddCustomHeader(kRequestOTRResponseHeader, "1");
-  } else if (request.relative_url.find("include-response-header-with-0") !=
-             std::string::npos) {
-    http_response->AddCustomHeader(kRequestOTRResponseHeader, "0");
-  }
-  return http_response;
-}
-
 }  // namespace
+
+using request_otr::features::kBraveRequestOTRTab;
 
 namespace request_otr {
 
@@ -135,34 +111,39 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
     RequestOTRComponentInstallerPolicyWaiter(component_installer).Wait();
   }
 
-  content::WebContents* web_contents() {
-    return browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* GetActiveWebContents() {
+    return chrome_test_utils::GetActiveWebContents(this);
   }
 
+  Profile* GetProfile() { return chrome_test_utils::GetProfile(this); }
+
   void SetRequestOTRPref(RequestOTRService::RequestOTRActionOption value) {
-    browser()->profile()->GetPrefs()->SetInteger(kRequestOTRActionOption,
-                                                 static_cast<int>(value));
+    GetProfile()->GetPrefs()->SetInteger(kRequestOTRActionOption,
+                                         static_cast<int>(value));
   }
 
   bool IsShowingInterstitial() {
-    return chrome_browser_interstitials::IsShowingInterstitial(web_contents());
+    return chrome_browser_interstitials::IsShowingInterstitial(
+        GetActiveWebContents());
   }
 
   void NavigateTo(const GURL& url) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
+    content::RenderFrameHost* frame =
+        GetActiveWebContents()->GetPrimaryMainFrame();
     ASSERT_TRUE(WaitForRenderFrameReady(frame));
   }
 
   void Click(const std::string& id) {
-    content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
+    content::RenderFrameHost* frame =
+        GetActiveWebContents()->GetPrimaryMainFrame();
     frame->ExecuteJavaScriptForTests(
         base::ASCIIToUTF16("document.getElementById('" + id + "').click();\n"),
         base::NullCallback());
   }
 
   void ClickAndWaitForNavigation(const std::string& id) {
-    content::TestNavigationObserver observer(web_contents());
+    content::TestNavigationObserver observer(GetActiveWebContents());
     Click(id);
     observer.WaitForNavigationFinished();
   }
@@ -187,9 +168,6 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
     loop.Run();
     return history_count;
   }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 class RequestOTRBrowserTest : public RequestOTRBrowserTestBase {
@@ -368,17 +346,18 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
                        WindowOpenAfterStandardNavigationCrossOrigin) {
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
-  ASSERT_TRUE(content::ExecJs(
-      web_contents(), "window.open('notsensitive.b.com/simple.html');"));
-  ASSERT_NE(content::EvalJs(web_contents(), "window.opener"), nullptr);
+  ASSERT_TRUE(
+      content::ExecJs(GetActiveWebContents(),
+                      "window.open('notsensitive.b.com/simple.html');"));
+  ASSERT_NE(content::EvalJs(GetActiveWebContents(), "window.opener"), nullptr);
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
                        WindowOpenAfterStandardNavigationSameOrigin) {
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
-  ASSERT_TRUE(
-      content::ExecJs(web_contents(), "window.open('a.com/simple.html');"));
-  ASSERT_NE(content::EvalJs(web_contents(), "window.opener"), nullptr);
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
+                              "window.open('a.com/simple.html');"));
+  ASSERT_NE(content::EvalJs(GetActiveWebContents(), "window.opener"), nullptr);
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
@@ -389,14 +368,10 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
 
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
-  ASSERT_TRUE(content::ExecJs(
-      web_contents(), "window.open('notsensitive.b.com/simple.html');"));
-  EXPECT_NE(
-      content::EvalJs(
-          web_contents(),
-          "try { typeof(window.opener.postMessage) } catch (e) { e.message; }")
-          .ExtractString(),
-      "function");
+  ASSERT_TRUE(
+      content::ExecJs(GetActiveWebContents(),
+                      "window.open('notsensitive.b.com/simple.html');"));
+  ASSERT_EQ(content::EvalJs(GetActiveWebContents(), "window.opener"), nullptr);
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
@@ -407,9 +382,9 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
 
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
-  ASSERT_TRUE(
-      content::ExecJs(web_contents(), "window.open('a.com/simple.html');"));
-  ASSERT_EQ(content::EvalJs(web_contents(), "window.opener"), nullptr);
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
+                              "window.open('a.com/simple.html');"));
+  ASSERT_EQ(content::EvalJs(GetActiveWebContents(), "window.opener"), nullptr);
 }
 
 // Define a subclass that disables the feature so we can ensure that nothing
@@ -534,7 +509,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
   // Sensitive site in request-otr mode should not allow service workers.
   NavigateTo(https_server_.GetURL("sensitive.a.com",
                                   "/workers/service_worker_setup.html"));
-  ASSERT_FALSE(content::ExecJs(web_contents(), "setup();"));
+  ASSERT_FALSE(content::ExecJs(GetActiveWebContents(), "setup();"));
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
@@ -548,91 +523,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRServiceWorkerBrowserTest,
   // workers.
   NavigateTo(https_server_.GetURL("sensitive.a.com",
                                   "/workers/service_worker_setup.html"));
-  ASSERT_TRUE(content::ExecJs(web_contents(), "setup();"));
-}
-
-// Define a subclass that sets up a special HTTP server that responds with
-// a custom header to trigger an OTR tab.
-class RequestOTRCustomHeaderBrowserTest : public RequestOTRBrowserTest {
- public:
-  void SetUp() override {
-    content::SetupCrossSiteRedirector(embedded_test_server());
-    embedded_test_server()->RegisterRequestHandler(
-        base::BindRepeating(&RespondWithCustomHeader));
-    ASSERT_TRUE(embedded_test_server()->Start());
-    ExtensionBrowserTest::SetUp();
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(RequestOTRCustomHeaderBrowserTest,
-                       CustomHeaderShowsInterstitial) {
-  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
-
-  // No Request-OTR header -> do not show interstitial
-  GURL url = embedded_test_server()->GetURL("z.com", "/simple.html");
-  NavigateTo(url);
-  ASSERT_FALSE(IsShowingInterstitial());
-
-  // 'Request-OTR: 1' header -> show interstitial
-  url = embedded_test_server()->GetURL(
-      "z.com", "/simple.html?test=include-response-header-with-1");
-  NavigateTo(url);
-  ASSERT_TRUE(IsShowingInterstitial());
-
-  // 'Request-OTR: 0' header -> do not show interstitial
-  url = embedded_test_server()->GetURL(
-      "z.com", "/simple.html?test=include-response-header-with-0");
-  NavigateTo(url);
-  ASSERT_FALSE(IsShowingInterstitial());
-}
-
-class ObserverTester : public SiteEngagementObserver {
- public:
-  explicit ObserverTester(SiteEngagementService* service)
-      : site_engagement::SiteEngagementObserver(service) {}
-
-  void OnEngagementEvent(content::WebContents* web_contents,
-                         const GURL& url,
-                         double score,
-                         EngagementType type) override {
-    last_updated_type_ = type;
-    last_updated_url_ = url;
-    if (type == type_waiting_) {
-      if (quit_closure_) {
-        std::move(quit_closure_).Run();
-      }
-    }
-  }
-
-  EngagementType last_updated_type() { return last_updated_type_; }
-  const GURL& last_updated_url() { return last_updated_url_; }
-
- private:
-  base::OnceClosure quit_closure_;
-  GURL last_updated_url_;
-  EngagementType last_updated_type_ = EngagementType::kLast;
-  EngagementType type_waiting_ = EngagementType::kLast;
-};
-
-IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, SiteEngagementNotRecorded) {
-  ASSERT_TRUE(InstallMockExtension());
-  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
-
-  SiteEngagementService* service =
-      SiteEngagementServiceFactory::GetForProfile(browser()->profile());
-  ObserverTester tester(service);
-
-  // Navigating to a non-sensitive URL should record the navigation with the
-  // site engagement service.
-  GURL non_sensitive_url =
-      embedded_test_server()->GetURL("z.com", "/simple.html");
-  NavigateTo(non_sensitive_url);
-  EXPECT_EQ(tester.last_updated_type(), EngagementType::kNavigation);
-  EXPECT_EQ(tester.last_updated_url(), non_sensitive_url);
-
-  // Navigating to a sensitive URL should not record the navigation.
-  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
-  EXPECT_EQ(tester.last_updated_url(), non_sensitive_url);
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(), "setup();"));
 }
 
 }  // namespace request_otr

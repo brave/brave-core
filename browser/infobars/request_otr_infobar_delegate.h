@@ -16,7 +16,7 @@ class ContentInfoBarManager;
 // Off-The-Record mode.
 class RequestOTRInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
-  RequestOTRInfoBarDelegate(const GURL& url);
+  explicit RequestOTRInfoBarDelegate(const GURL& url);
   RequestOTRInfoBarDelegate(const RequestOTRInfoBarDelegate&) = delete;
   RequestOTRInfoBarDelegate& operator=(const RequestOTRInfoBarDelegate&) =
       delete;

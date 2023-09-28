@@ -841,6 +841,7 @@ test("brave_browser_tests") {
     "//brave/browser/net:browser_tests",
     "//brave/browser/permissions:browser_tests",
     "//brave/browser/profiles",
+    "//brave/browser/request_otr:browser_tests",
     "//brave/browser/sandbox:browser_tests",
     "//brave/browser/sessions:browser_tests",
     "//brave/browser/test:browser_tests",
@@ -1094,6 +1095,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
     ]
     deps += [
+      "//brave/browser/request_otr:desktop_browser_tests",
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/views/brave_ads",
@@ -1118,7 +1120,6 @@ test("brave_browser_tests") {
     deps += [
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
-      "//brave/browser/request_otr:browser_tests",
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/components/brave_wallet/browser:test_support",
