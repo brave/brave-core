@@ -15,8 +15,6 @@ BASE_DECLARE_FEATURE(kBraveSync);
 
 BASE_DECLARE_FEATURE(kBraveSyncHistoryDiagnostics);
 
-BASE_DECLARE_FEATURE(kBraveSyncSendAllHistory);
-
 }  // namespace features
 }  // namespace brave_sync
 

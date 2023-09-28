@@ -9,7 +9,6 @@
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_sync/features.h"
-#include "brave/components/history/core/browser/sync/brave_typed_url_sync_bridge.h"
 // Forward include to avoid re-define of URLResult::set_blocked_visit
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/browser/url_row.h"
@@ -81,9 +80,7 @@ std::u16string GetDiagnosticTitle(const history::URLResult& url_result,
   set_title(GetDiagnosticTitle(url_result, visit)); \
   url_result.set_blocked_visit
 
-#define TypedURLSyncBridge BraveTypedURLSyncBridge
 
 #include "src/components/history/core/browser/history_backend.cc"
 
-#undef TypedURLSyncBridge
 #undef set_blocked_visit
