@@ -63,4 +63,13 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
             view.getViewTreeObserver().addOnScrollChangedListener(mSnapScrollHelper::handleScroll);
         }
     }
+
+    @Override
+    public void onTemplateURLServiceChanged() {
+        if (!FeedFeatures.isFeedEnabled()) {
+            // We don't need any special handling since feed is disabled.
+            return;
+        }
+        super.onTemplateURLServiceChanged();
+    }
 }
