@@ -281,7 +281,7 @@ Config.prototype.isOfficialBuild = function () {
 }
 
 Config.prototype.getBraveLogoIconName = function () {
-  let iconName = "brave-icon-debug-color.svg"
+  let iconName = "brave-icon-dev-color.svg"
   if (this.isBraveReleaseBuild()) {
     if (this.channel === "beta") {
       iconName = "brave-icon-beta-color.svg"
