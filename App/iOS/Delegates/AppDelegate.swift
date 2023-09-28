@@ -92,11 +92,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       Preferences.BraveNews.isShowingOptIn.value = true
     }
 
-    if !Preferences.BraveNews.languageChecked.value,
-      let languageCode = Locale.preferredLanguages.first?.prefix(2) {
+    // If the user's language was checked but not included in the News supported languages list check it again
+    // each launch since updates could add support for a new language. If a user previously opted in to News
+    // however then we shouldn't show the opt-in card again.
+    let shouldPerformLanguageCheck = !Preferences.BraveNews.languageChecked.value || 
+      Preferences.BraveNews.languageWasUnavailableDuringCheck.value == true
+    let isNewsEnabledOrPreviouslyOptedIn = Preferences.BraveNews.isEnabled.value || 
+      Preferences.BraveNews.userOptedIn.value
+    if shouldPerformLanguageCheck, !isNewsEnabledOrPreviouslyOptedIn,
+       let languageCode = Locale.preferredLanguages.first?.prefix(2) {
       Preferences.BraveNews.languageChecked.value = true
-      // Base opt-in visibility on whether or not the user's language is supported in BT
-      Preferences.BraveNews.isShowingOptIn.value = FeedDataSource.supportedLanguages.contains(String(languageCode)) || FeedDataSource.knownSupportedLocales.contains(Locale.current.identifier)
+      let languageShouldShowOptIn = FeedDataSource.supportedLanguages.contains(String(languageCode)) ||
+        FeedDataSource.knownSupportedLocales.contains(Locale.current.identifier)
+      Preferences.BraveNews.languageWasUnavailableDuringCheck.value = !languageShouldShowOptIn
+      Preferences.BraveNews.isShowingOptIn.value = languageShouldShowOptIn
     }
 
     SystemUtils.onFirstRun()

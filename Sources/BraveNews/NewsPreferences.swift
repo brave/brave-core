@@ -12,6 +12,7 @@ extension Preferences {
     public static let userOptedIn = Option<Bool>(key: "brave-today.user-opted-in", default: false)
     public static let isEnabled = Option<Bool>(key: "brave-today.enabled", default: true)
     public static let languageChecked = Option<Bool>(key: "brave-today.language-checked", default: false)
+    public static let languageWasUnavailableDuringCheck = Option<Bool?>(key: "brave-today.language-unavailable-when-checked", default: nil)
     public static let debugEnvironment = Option<String?>(key: "brave-today.debug.environment", default: nil)
     /// A list of channels followed for a locale.
     ///
