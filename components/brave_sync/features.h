@@ -13,8 +13,6 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveSync);
 
-BASE_DECLARE_FEATURE(kBraveSyncHistoryDiagnostics);
-
 }  // namespace features
 }  // namespace brave_sync
 

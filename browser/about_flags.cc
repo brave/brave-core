@@ -855,15 +855,6 @@
           FEATURE_VALUE_TYPE(translate::kTranslate),                           \
       },                                                                       \
       {                                                                        \
-          "brave-sync-history-diagnostics",                                    \
-          "Enable Brave Sync History Diagnostics",                             \
-          "Brave Sync History Diagnostics flag displays additional sync "      \
-          "related information on History page",                               \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_sync::features::kBraveSyncHistoryDiagnostics),             \
-      },                                                                       \
-      {                                                                        \
           "restrict-event-source-pool",                                        \
           "Restrict Event Source Pool",                                        \
           "Limits simultaneous active WebSockets connections per eTLD+1",      \
