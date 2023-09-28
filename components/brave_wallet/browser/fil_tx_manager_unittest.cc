@@ -97,15 +97,12 @@ class FilTxManagerUnitTest : public testing::Test {
         mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId, "Account 1");
   }
 
-  mojom::AccountIdPtr FilTestAcc(size_t index) {
-    return keyring_service_
-        ->GetKeyringInfoSync(mojom::KeyringId::kFilecoinTestnet)
-        ->account_infos[index]
-        ->account_id.Clone();
+  AccountUtils GetAccountUtils() {
+    return AccountUtils(keyring_service_.get());
   }
 
-  std::string from(mojom::KeyringId keyring_id) {
-    return keyring_service_->GetHDKeyringById(keyring_id)->GetAddress(0);
+  mojom::AccountIdPtr FilTestAcc(size_t index) {
+    return GetAccountUtils().EnsureFilTestAccount(index)->account_id->Clone();
   }
 
   void SetInterceptor(const GURL& expected_url,

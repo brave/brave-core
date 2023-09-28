@@ -129,39 +129,15 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
     return url::Origin::Create(web_contents()->GetLastCommittedURL());
   }
 
+  AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
+
   void RestoreWallet() {
     ASSERT_TRUE(keyring_service_->RestoreWalletSync(
         kMnemonicDripCaution, kTestWalletPassword, false));
   }
 
-  void GetAddress(std::string* valid_address) {
-    ASSERT_NE(valid_address, nullptr);
-
-    base::RunLoop run_loop;
-    keyring_service_->GetKeyringInfo(
-        brave_wallet::mojom::kDefaultKeyringId,
-        base::BindLambdaForTesting(
-            [&](brave_wallet::mojom::KeyringInfoPtr keyring_info) {
-              *valid_address = "";
-              if (keyring_info->account_infos.size() > 0) {
-                *valid_address = keyring_info->account_infos[0]->address;
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-  }
-
-  void SetSelectedAccount(const std::string& address) {
-    base::RunLoop run_loop;
-    keyring_service_->SetSelectedAccount(
-        MakeAccountId(mojom::CoinType::ETH,
-                      brave_wallet::mojom::kDefaultKeyringId,
-                      mojom::AccountKind::kDerived, address),
-        base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+  void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
+    ASSERT_TRUE(keyring_service_->SetSelectedAccountSync(account_id.Clone()));
   }
 
  private:
@@ -204,23 +180,22 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
 IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
                        CheckForAnAccountChangedEvent) {
   RestoreWallet();
+  auto eth_account = GetAccountUtils().EnsureEthAccount(0);
   GURL url =
       https_server()->GetURL("a.com", "/brave_wallet_event_emitter.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  std::string address;
-  GetAddress(&address);
 
   url::Origin sub_request_origin;
   ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
       permissions::RequestType::kBraveEthereum, GetLastCommitedOrigin(),
-      address, &sub_request_origin));
+      eth_account->address, &sub_request_origin));
   host_content_settings_map()->SetContentSettingDefaultScope(
       sub_request_origin.GetURL(), GetLastCommitedOrigin().GetURL(),
       ContentSettingsType::BRAVE_ETHEREUM,
       ContentSetting::CONTENT_SETTING_ALLOW);
-  SetSelectedAccount(address);
+  SetSelectedAccount(eth_account->account_id);
 
   auto result_first =
       EvalJs(contents, CheckForEventScript("received_account_changed_event"));

@@ -90,6 +90,14 @@ class AccountUtils {
 
   mojom::AccountIdPtr FindAccountIdByAddress(const std::string& address);
 
+  std::vector<mojom::AccountInfoPtr> AllAccounts(mojom::KeyringId keyring_id);
+  std::vector<mojom::AccountInfoPtr> AllEthAccounts();
+  std::vector<mojom::AccountInfoPtr> AllSolAccounts();
+  std::vector<mojom::AccountInfoPtr> AllFilAccounts();
+  std::vector<mojom::AccountInfoPtr> AllFilTestAccounts();
+  std::vector<mojom::AccountInfoPtr> AllBtcAccounts();
+  std::vector<mojom::AccountInfoPtr> AllBtcTestAccounts();
+
  private:
   raw_ptr<KeyringService> keyring_service_;
 };

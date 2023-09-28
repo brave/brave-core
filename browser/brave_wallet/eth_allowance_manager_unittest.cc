@@ -302,17 +302,16 @@ class EthAllowanceManagerUnitTest : public testing::Test {
       AddEthAccount("additonal eth account");
     }
 
-    const auto keyring_info = keyring_service_->GetKeyringInfoSync(
-        brave_wallet::mojom::kDefaultKeyringId);
     std::vector<std::string> account_addresses;
-    for (const auto& account_info : keyring_info->account_infos) {
-      std::string hex_account_address;
-      if (!PadHexEncodedParameter(account_info->address,
-                                  &hex_account_address)) {
-        ASSERT_TRUE(false);
+    for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
+      if (account_info->account_id->coin == mojom::CoinType::ETH) {
+        std::string hex_account_address;
+        ASSERT_TRUE(PadHexEncodedParameter(account_info->address,
+                                           &hex_account_address));
+        account_addresses.push_back(hex_account_address);
       }
-      account_addresses.push_back(hex_account_address);
     }
+
     auto responses =
         std::move(get_responses).Run(account_addresses, token_list_map);
     blockchain_registry->UpdateTokenList(std::move(token_list_map));

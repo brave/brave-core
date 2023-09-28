@@ -705,7 +705,6 @@ struct KeyringInfo {
   bool is_keyring_created;
   bool is_locked;
   bool is_backed_up;
-  array<AccountInfo> account_infos;
 };
 
 struct WalletInfo {

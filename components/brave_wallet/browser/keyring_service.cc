@@ -991,7 +991,6 @@ mojom::KeyringInfoPtr KeyringService::GetKeyringInfoSync(
     backup_complete = value->GetBool();
   }
   keyring_info->is_backed_up = backup_complete;
-  keyring_info->account_infos = GetAccountInfosForKeyring(keyring_id);
   return keyring_info;
 }
 
