@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// NOLINT(build/header_guard)
+// no-include-guard-because-multiply-included
+
 #ifdef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
 #if BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() == 0
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION_WAS_0
