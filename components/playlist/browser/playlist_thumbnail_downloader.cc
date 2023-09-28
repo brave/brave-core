@@ -106,6 +106,7 @@ void PlaylistThumbnailDownloader::CancelDownloadRequest(const std::string& id) {
 void PlaylistThumbnailDownloader::CancelAllDownloadRequests() {
   VLOG(2) << __func__;
   url_loader_map_.clear();
+  url_loaders_.clear();
 }
 
 void PlaylistThumbnailDownloader::SaveResponseToFile(
@@ -115,9 +116,13 @@ void PlaylistThumbnailDownloader::SaveResponseToFile(
     std::unique_ptr<std::string> response_body) {
   DVLOG(2) << __func__ << " id: " << id;
 
+  if (!url_loader_map_.count(id)) {
+    // Download could have been canceled
+    return;
+  }
+
   if (!response_body) {
     url_loaders_.erase(iter);
-    DCHECK(!url_loader_map_.empty());
     url_loader_map_.erase(id);
     delegate_->OnThumbnailDownloaded(id, {});
     return;
@@ -130,8 +135,12 @@ void PlaylistThumbnailDownloader::SaveResponseToFile(
           return;
         }
 
+        if (!self->url_loader_map_.count(id)) {
+          // Download could have been canceled
+          return;
+        }
+
         self->url_loaders_.erase(iter);
-        DCHECK(!self->url_loader_map_.empty());
         self->url_loader_map_.erase(id);
         self->delegate_->OnThumbnailDownloaded(id, path);
       },
@@ -150,10 +159,14 @@ void PlaylistThumbnailDownloader::ConvertResponseToImage(
     std::unique_ptr<std::string> response_body) {
   DVLOG(2) << __func__ << " id: " << id;
 
+  if (!url_loader_map_.count(id)) {
+    // Download could have been canceled
+    return;
+  }
+
   const bool has_response = !!response_body;
   if (!has_response) {
     url_loaders_.erase(iter);
-    DCHECK(!url_loader_map_.empty());
     url_loader_map_.erase(id);
     std::move(callback).Run({});
     return;
@@ -167,8 +180,12 @@ void PlaylistThumbnailDownloader::ConvertResponseToImage(
           return;
         }
 
+        if (!self->url_loader_map_.count(id)) {
+          // Download could have been canceled
+          return;
+        }
+
         self->url_loaders_.erase(iter);
-        DCHECK(!self->url_loader_map_.empty());
         self->url_loader_map_.erase(id);
         CHECK(callback);
         std::move(callback).Run(gfx::Image::CreateFrom1xPNGBytes(image));
