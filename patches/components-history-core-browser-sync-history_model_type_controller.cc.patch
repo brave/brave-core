@@ -1,0 +1,12 @@
+diff --git a/components/history/core/browser/sync/history_model_type_controller.cc b/components/history/core/browser/sync/history_model_type_controller.cc
+index 77b8d10dabd8a14beb4e2b8b80060d0418f744f1..f597e70d46c09a689393aed9ef6350a460e99266 100644
+--- a/components/history/core/browser/sync/history_model_type_controller.cc
++++ b/components/history/core/browser/sync/history_model_type_controller.cc
+@@ -145,6 +145,7 @@ HistoryModelTypeController::~HistoryModelTypeController() = default;
+ 
+ syncer::DataTypeController::PreconditionState
+ HistoryModelTypeController::GetPreconditionState() const {
++  if (static_cast<int>(type()) > 0) return PreconditionState::kPreconditionsMet;
+   if (!base::FeatureList::IsEnabled(syncer::kSyncEnableHistoryDataType)) {
+     DCHECK_EQ(type(), syncer::TYPED_URLS);
+     return helper_.GetPreconditionState();
