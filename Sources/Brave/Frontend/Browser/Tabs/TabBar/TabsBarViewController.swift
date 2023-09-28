@@ -69,9 +69,6 @@ class TabsBarViewController: UIViewController {
     super.viewDidLoad()
 
     collectionView.backgroundColor = view.backgroundColor
-    collectionView.dragDelegate = UIApplication.shared.supportsMultipleScenes ? self : nil
-    collectionView.dropDelegate = UIApplication.shared.supportsMultipleScenes ? self : nil
-
     tabManager?.addDelegate(self)
 
     // Can't get view.frame inside of lazy property, need to put this code here.
@@ -79,10 +76,16 @@ class TabsBarViewController: UIViewController {
     (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: UX.TabsBar.minimumWidth, height: view.frame.height)
     view.addSubview(collectionView)
 
-    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(gesture:)))
-    longPressGesture.minimumPressDuration = 0.2
-    longPressGesture.delaysTouchesBegan = true
-    collectionView.addGestureRecognizer(longPressGesture)
+    if UIApplication.shared.supportsMultipleScenes {
+      collectionView.dragInteractionEnabled = true
+      collectionView.dragDelegate = self
+      collectionView.dropDelegate = self
+    } else {
+      let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(gesture:)))
+      longPressGesture.minimumPressDuration = 0.2
+      longPressGesture.delaysTouchesBegan = true
+      collectionView.addGestureRecognizer(longPressGesture)
+    }
 
     NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: UIDevice.orientationDidChangeNotification, object: nil)
 
@@ -209,7 +212,7 @@ class TabsBarViewController: UIViewController {
     }
   }
 
-  func updateData() {
+  func updateData(reloadingCollectionView: Bool = true) {
     // Don't waste time/resources updating data when we're in the middle of a restore or bulk delete
     guard let tabManager = tabManager, !tabManager.isRestoring && !tabManager.isBulkDeleting else {
       return
@@ -218,7 +221,10 @@ class TabsBarViewController: UIViewController {
     tabList = WeakList<Tab>(tabManager.tabsForCurrentMode)
 
     overflowIndicators()
-    reloadDataAndRestoreSelectedTab()
+    
+    if reloadingCollectionView {
+      reloadDataAndRestoreSelectedTab()
+    }
   }
 
   func updateSelectedTabTitle() {
@@ -454,7 +460,6 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
   }
   
   func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-    guard coordinator.items.first?.sourceIndexPath == nil else { return }
     let destinationIndexPath: IndexPath
 
     if let indexPath = coordinator.destinationIndexPath {
@@ -468,10 +473,27 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
     if coordinator.proposal.operation == .move {
       guard let item = coordinator.items.first else { return }
       
-      // TODO: Figure out how to get the item here...
+      // TODO: Figure out how to get the item here from other Brave scene...
       // LocalObject is nil because the tab is in another process? :S
+      if let sourceIndexPath = item.sourceIndexPath {
+        guard let manager = tabManager, let fromTab = tabList[sourceIndexPath.row],
+              let toTab = tabList[destinationIndexPath.row]
+        else { return }
+        
+        // Find original from/to index... we need to target the full list not partial.
+        let tabs = manager.tabsForCurrentMode
+        guard let to = tabs.firstIndex(where: { $0 === toTab }) else { return }
+        
+        manager.moveTab(fromTab, toIndex: to)
+        updateData(reloadingCollectionView: false)
+        collectionView.moveItem(at: sourceIndexPath, to: destinationIndexPath)
+        collectionView.reloadSections(IndexSet(integer: 0)) // Updates selection states
+        guard let selectedTab = tabList[destinationIndexPath.row] else { return }
+        manager.selectTab(selectedTab)
+      }
       
       _ = coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+      reloadDataAndRestoreSelectedTab()
     }
   }
   
