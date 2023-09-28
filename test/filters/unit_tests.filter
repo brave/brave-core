@@ -50,12 +50,13 @@
 -CookieControlsUserBypassTest.SiteCounts
 -CoreTabHelperWindowUnitTest.SearchWithLens_LensPingEnabled_TriggersLensPing
 -CustomizeChromeFeaturePromoHelperTest.*
+-DeleteAddressProfileDialogControllerImplTest.*
+-DoesFirstPartyPrecedeThirdPartyTest.*
 -DownloadBubbleRowListViewTest.AddRow
 -DownloadBubbleRowListViewTest.RemoveRow
--DownloadBubbleRowViewTest.CopyAcceleratorCopiesFile
--DownloadBubbleRowViewTest.MainButtonPressed
--DownloadBubbleRowViewTest.UpdateTimeFromCompletedDownload
--DownloadBubbleRowViewTest.OnlyEnabledQuickActionsVisible
+-DownloadBubbleRowViewTest.*
+-DownloadToolbarButtonViewTest.*
+-EditAddressProfileDialogControllerImplTest.*
 -ExpsRegistrationSuccessObserverTest.IPHNotShownForChromeUrls
 -ExtensionActionViewControllerFeatureUnitTest.*
 -ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
@@ -65,6 +66,7 @@
 -ExtensionMenuItemViewTest.*
 -ExtensionsSitePermissionsPageViewUnitTest.*
 -ExtensionsToolbarControlsWithPermittedSitesUnitTest.RequestAccessButtonVisibilityOnPermittedSites
+-FileSystemAccessRestorePermissionBubbleViewTest.*
 -FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.*
 -FirstShowAndReshow/MandatoryReauthBubbleControllerOptInBubbleMetricsTest.*
 -HighEfficiencyBubbleViewMemorySavingsImprovementsTest.*
@@ -92,10 +94,12 @@
 -ProfileManagementNavigationThrottleTest.*
 -ProfileTokenNavigationThrottleTest.*
 -ProfileTokenWebSigninInterceptorTest.*
+-ReadAnythingCoordinatorScreen2xDataCollectionModeTest.OnBrowserSetLastActive_SidePanelIsVisible
 -SaveCvcBubbleLoggingTest.Metrics_*
 -SavedTabGroupModelListenerTest.CreatesRemovesBrowserListener
 -SavedTabGroupModelListenerTest.GetTabStripModelWithTabGroupId
 -SaveIbanBubbleControllerImplTest.LocalIbanSavedSuccessfully
+-SidePanelPinningCoordinatorTest.SidePanelTitleUpdates
 -SidePanelToolbarContainerTest.*
 -TabHelperUnitTest.ClearsExtensionOnUnload
 -TabHelperUnitTest.ReloadRequired_BlockAllExtensions
@@ -223,6 +227,11 @@
 # This test fails because we disable the privacy sandbox
 -PrivacySandboxServiceTest.MetricsLoggingOccursCorrectly
 
+# These tests fail because we disable
+# privacy_sandbox::kEnforcePrivacySandboxAttestations
+-PrivacySandboxAttestationsHistograms/PrivacySandboxAttestationsHistogramsTest.*/*
+-PrivacySandboxAttestationsInstallerFeatureEnabledTest.*
+
 # This test fails because we intentionally disable the Federated Credential
 # Management API via features::kFedCm
 -FederatedIdentityApiPermissionContextTest.WhitelistedSiteForThirdPartyCookies
@@ -256,6 +265,7 @@
 -All/CustomizeChromePageHandlerSetThemeTest.*/*
 -CustomizeChromePageHandlerTest.*
 -CustomizeChromePageHandlerWithModulesTest.*
+-CustomizeChromePageHandlerWithWallpaperSearchTest.*
 -CWSInfoServiceTest.*
 -LocalTabHandlerTest.*
 -PermissionPromptBubbleTwoOriginsViewTest.DiesIfPermissionNotAllowed
@@ -263,6 +273,7 @@
 -PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsTwoOriginsAndPermission
 -SavedTabGroupKeyedServiceUnitTest.*
 -TabLifecycleUnitTest.CannotDiscardPictureInPictureWindow
+-TabOrganizationServiceTest.*
 
 # These tests fail because we disable the media router via
 # prefs::kEnableMediaRouter
@@ -337,7 +348,8 @@
 -ContentAnalysisDelegateResultHandlingTest.Test/8
 -ManagementUIHandlerTests.ThreatReportingInfo
 
-# These fail because we disable safe browsing enhanced protection.
+# These tests fail because we disable safe browsing enhanced protection and
+# patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/1
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/2
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/3
@@ -348,7 +360,11 @@
 -All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/5
 -All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/7
 -ChromePingManagerFactoryTest.ShouldFetchAccessTokenForReport_Yes
+-DownloadBubblePrefsTest.EnhancedProtectionEnabled
+-EnhancedProtectionDownloadTest.*
 -NotificationMetricsLoggerTest.PersistentNotificationSize
+-SafetyHubHandlerTest.HandleGetSafeBrowsingCardData_EnabledEnhanced
+-SafetyHubHandlerTest.HandleGetSafeBrowsingState_EnabledEnhanced
 
 # These fail because we have journeys/history clusters disabled.
 -HistoryClustersHandlerTest.OpenVisitUrlsInTabGroup
@@ -403,10 +419,6 @@
 # Page Info cookies view.
 -PageInfoBubbleViewCookiesSubpageTest.TextsOnButtonsAreCorrect
 
-# This test fails because we patch safe_browsing::IsEnhancedProtectionEnabled to
-# return false
--SafetyHubHandlerTest.HandleGetSafeBrowsingState_EnabledEnhanced
-
 # This test times out because we Disable "Use a prediction service to load
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref)
 -NavigationPredictorUserInteractionsTest.ProcessPointerEventUsingMLModel
@@ -414,6 +426,14 @@
 # These tests fail because we disable the
 # privacy_sandbox::kEnforcePrivacySandboxAttestations feature
 -PrivacySandboxAttestationsInstallerFeatureEnabledTest.*
+
+# This test fails because we disable kPartitionedCookies
+-ExtensionCookiesTest.PartitionKeySerialization
+
+# These tests fail a CalledOnValidSequence check when calling FindPreference
+-BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedDefaultValue
+-BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToFalse
+-BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToTrue
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -546,13 +566,11 @@
 -DevToolsUIBindingsTest.*
 -DevToolsUIDataSourceTest.*
 -DocumentOverlayWindowViewsTest.*
--DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadProtectionServiceTest.*
 -DownloadRequestMakerTest.*
 -DownloadShelfWebViewTest.*
 -DownloadTargetDeterminerTest.*
 -DurableStoragePermissionContextTest.*
--EnhancedProtectionDownloadTest.*
 -ExistingBaseSubMenuModelTest.*
 -ExistingTabGroupSubMenuModelTest.*
 -ExistingWindowSubMenuModelTest.*
