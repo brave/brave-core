@@ -30,7 +30,7 @@ using api_request_helper::APIRequestResult;
 class RemoteCompletionClient {
  public:
   RemoteCompletionClient(
-      std::string model_name,
+      const std::string& model_name,
       const base::flat_set<std::string_view>& stop_sequences,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
@@ -55,7 +55,7 @@ class RemoteCompletionClient {
   void OnQueryCompleted(EngineConsumer::GenerationCompletedCallback callback,
                         APIRequestResult result);
 
-  std::string model_name_;
+  const std::string model_name_;
   const base::flat_set<std::string_view> stop_sequences_;
   api_request_helper::APIRequestHelper api_request_helper_;
 

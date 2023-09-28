@@ -11,7 +11,9 @@
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/browser/constants.h"
+#include "brave/components/ai_chat/browser/models.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
@@ -43,14 +45,17 @@ AIChatUIPageHandler::AIChatUIPageHandler(
       receiver_(this, std::move(receiver)) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_contents is nullptr in that case
-  if (chat_context_web_contents != nullptr) {
+  const bool is_standalone = chat_context_web_contents == nullptr;
+  if (!is_standalone) {
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
-    bool is_visible = (chat_context_web_contents->GetVisibility() ==
-                       content::Visibility::VISIBLE)
-                          ? true
-                          : false;
+    // Report visibility of AI Chat UI to the Conversation, so that
+    // automatic actions are only performed when neccessary.
+    bool is_visible =
+        (owner_web_contents->GetVisibility() == content::Visibility::VISIBLE)
+            ? true
+            : false;
     active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
   } else {
     // TODO(petemill): Enable conversation without the TabHelper. Conversation
@@ -69,6 +74,24 @@ AIChatUIPageHandler::~AIChatUIPageHandler() = default;
 void AIChatUIPageHandler::SetClientPage(
     mojo::PendingRemote<ai_chat::mojom::ChatUIPage> page) {
   page_.Bind(std::move(page));
+}
+
+void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
+  std::vector<mojom::ModelPtr> models(kAllModelKeysDisplayOrder.size());
+  // Ensure we return only in intended display order
+  std::transform(kAllModelKeysDisplayOrder.cbegin(),
+                 kAllModelKeysDisplayOrder.cend(), models.begin(),
+                 [](auto& model_key) {
+                   auto model_match = kAllModels.find(model_key);
+                   DCHECK(model_match != kAllModels.end());
+                   return model_match->second.Clone();
+                 });
+  std::move(callback).Run(std::move(models),
+                          active_chat_tab_helper_->GetCurrentModel().Clone());
+}
+
+void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {
+  active_chat_tab_helper_->ChangelModel(model_key);
 }
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(

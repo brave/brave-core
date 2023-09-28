@@ -6,8 +6,8 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-
-import styles from './style.module.scss'
+import getPageHandlerInstance, * as mojom from '../../api/page_handler'
+import DataContext from '../../state/context'
 import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
 import SiteTitle from '../site_title'
@@ -15,16 +15,14 @@ import PromptAutoSuggestion from '../prompt_auto_suggestion'
 import ErrorConnection from '../error_connection'
 import ErrorRateLimit from '../error_rate_limit'
 import InputBox from '../input_box'
-import getPageHandlerInstance, { AutoGenerateQuestionsPref, APIError } from '../../api/page_handler'
-import DataContext from '../../state/context'
+import FeatureButtonMenu from '../feature_button_menu'
+import styles from './style.module.scss'
+import ModelIntro from '../model_intro'
 
 function Main () {
+  const context = React.useContext(DataContext)
   const { siteInfo, userAutoGeneratePref, hasSeenAgreement,
-    currentError, apiHasError } = React.useContext(DataContext)
-
-  const handleSettingsClick = () => {
-    getPageHandlerInstance().pageHandler.openBraveLeoSettings()
-  }
+    currentError, apiHasError } = context
 
   const handleEraseClick = () => {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
@@ -46,13 +44,13 @@ function Main () {
       )
     }
 
-    if (userAutoGeneratePref === AutoGenerateQuestionsPref.Unset && userAutoGeneratePref) {
+    if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset) {
       promptAutoSuggestionElement = (
         <PromptAutoSuggestion />
       )
     }
 
-    if (apiHasError && currentError === APIError.ConnectionIssue) {
+    if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
@@ -60,7 +58,7 @@ function Main () {
       )
     }
 
-    if (apiHasError && currentError === APIError.RateLimitReached) {
+    if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
       currentErrorElement = (
         <ErrorRateLimit
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
@@ -77,19 +75,19 @@ function Main () {
           <div className={styles.logoTitle}>Brave <span>Leo</span></div>
         </div>
         <div className={styles.actions}>
-          {hasSeenAgreement && (
+          {hasSeenAgreement && <>
             <Button kind="plain-faint" aria-label="Erase conversation history"
             title="Erase conversation history" onClick={handleEraseClick}>
                 <Icon name="erase" />
             </Button>
-          )}
-          <Button kind="plain-faint" aria-label="Settings"
-          title="Settings" onClick={handleSettingsClick}>
-              <Icon name="settings" />
-          </Button>
+            <FeatureButtonMenu />
+          </>}
         </div>
       </div>
       <div className={styles.scroller}>
+        {
+          context.hasChangedModel && <ModelIntro />
+        }
         {siteTitleElement && (
           <div className={styles.siteTitleBox}>
             {siteTitleElement}

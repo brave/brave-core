@@ -25,18 +25,21 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"pageContentWarning", IDS_CHAT_UI_PAGE_CONTENT_WARNING},
       {"errorNetworkLabel", IDS_CHAT_UI_ERROR_NETWORK},
       {"errorRateLimit", IDS_CHAT_UI_ERROR_RATE_LIMIT},
-      {"retryButtonLabel", IDS_CHAT_UI_RETRY_BUTTON_LABEL}};
+      {"retryButtonLabel", IDS_CHAT_UI_RETRY_BUTTON_LABEL},
+      {"introMessage-chat-default", IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEFAULT},
+      {"introMessage-chat-leo-expanded",
+       IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_EXPANDED},
+      {"introMessage-chat-claude-instant",
+       IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT},
+      {"modelNameSyntax", IDS_CHAT_UI_MODEL_NAME_SYNTAX},
+      {"modelCategory-chat", IDS_CHAT_UI_MODEL_CATEGORY_CHAT},
+      {"menuNewChat", IDS_CHAT_UI_MENU_NEW_CHAT},
+      {"menuSuggestedQuestions", IDS_CHAT_UI_MENU_SUGGESTED_QUESTIONS},
+      {"menuSettings", IDS_CHAT_UI_MENU_SETTINGS},
+      {"menuTitleModels", IDS_CHAT_UI_MENU_TITLE_MODELS},
+  };
 
   return kLocalizedStrings;
-}
-
-bool UsesLlama2PromptTemplate(const std::string& model) {
-  if (model.find("llama-2") != std::string::npos &&
-      model.find("chat") != std::string::npos) {
-    return true;
-  }
-
-  return false;
 }
 
 }  // namespace ai_chat

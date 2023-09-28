@@ -13,8 +13,11 @@
 namespace ai_chat::features {
 
 BASE_FEATURE(kAIChat, "AIChat", base::FEATURE_DISABLED_BY_DEFAULT);
+const base::FeatureParam<std::string> kAIModelKey(&kAIChat,
+                                                  "ai_model_key",
+                                                  "chat-default");
 const base::FeatureParam<std::string> kAIModelName{&kAIChat, "ai_model_name",
-                                                   "llama-2-13b-chat"};
+                                                   ""};
 const base::FeatureParam<bool> kAIChatSSE{&kAIChat, "ai_chat_sse", true};
 const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};
 

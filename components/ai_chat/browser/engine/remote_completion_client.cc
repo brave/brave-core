@@ -114,7 +114,7 @@ const GURL GetEndpointBaseUrl() {
 // static
 
 RemoteCompletionClient::RemoteCompletionClient(
-    std::string model_name,
+    const std::string& model_name,
     const base::flat_set<std::string_view>& stop_sequences,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : model_name_(model_name),

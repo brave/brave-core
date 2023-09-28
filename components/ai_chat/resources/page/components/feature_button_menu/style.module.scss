@@ -1,0 +1,37 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.menuSectionTitle {
+  // height: 44px; // menu item height
+  background-color: var(--leo-color-page-background);
+  padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+  color: var(--leo-color-text-tertiary);
+  font: var(--leo-font-primary-small-regular);
+}
+
+.menuSubtitle {
+  padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+  color: var(--leo-color-text-tertiary);
+  font: var(--leo-font-primary-small-semibold);
+}
+
+.menuSeparator {
+  padding: 0;
+  height: 1px;
+  background-color: var(--leo-color-divider-subtle);
+}
+
+.menuItemWithIcon {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  // gap is for the minimum space between text and icon
+  gap: 22px;
+}
+
+.menuIconSpace {
+  width: calc(var(--leo-icon-size) + 8px);
+}
