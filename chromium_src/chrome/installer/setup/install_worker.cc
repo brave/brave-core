@@ -23,10 +23,14 @@
 #include "chrome/installer/util/work_item_list.h"
 
 #if defined(OFFICIAL_BUILD)
+// clang-format off
+// NOLINTBEGIN(sort-order)
 #include "chrome/install_static/buildflags.h"
 #include "chrome/install_static/install_constants.h"
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
+#include "chrome/install_static/brave_stash_google_update_integration.h"
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
+// NOLINTEND(sort-order)
+// clang-format on
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -110,5 +114,5 @@ void AddBraveVPNWireguardServiceWorkItems(
 #undef GetElevationServicePath
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 #if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
+#include "chrome/install_static/brave_restore_google_update_integration.h"
 #endif

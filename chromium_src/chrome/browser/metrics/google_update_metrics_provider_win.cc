@@ -9,12 +9,12 @@
 #include "chrome/install_static/install_constants.h"
 
 #if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
+#include "chrome/install_static/brave_stash_google_update_integration.h"
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (0)
 #endif
 
 #include "src/chrome/browser/metrics/google_update_metrics_provider_win.cc"
 
 #if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
+#include "chrome/install_static/brave_restore_google_update_integration.h"
 #endif
