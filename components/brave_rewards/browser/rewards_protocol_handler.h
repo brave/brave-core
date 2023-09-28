@@ -15,7 +15,7 @@ namespace brave_rewards {
 bool IsRewardsProtocol(const GURL& url);
 
 void HandleRewardsProtocol(const GURL& url,
-                           content::WebContents::OnceGetter web_contents_getter,
+                           content::WebContents* web_contents,
                            ui::PageTransition page_transition);
 
 }  // namespace brave_rewards
