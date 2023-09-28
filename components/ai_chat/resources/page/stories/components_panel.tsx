@@ -89,6 +89,7 @@ export default {
     hasQuestions: true,
     hasChangedModel: false,
     hasSeenAgreement: true,
+    isPremiumUser: false,
     currentErrorState: select(
       'Current Status',
       mojom.APIError,
