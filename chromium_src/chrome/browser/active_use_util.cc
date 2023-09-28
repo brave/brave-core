@@ -7,11 +7,12 @@
 #include "chrome/install_static/buildflags.h"
 
 #if BUILDFLAG(IS_WIN) && defined(OFFICIAL_BUILD)
-#include "chrome/install_static/brave_enable_google_update_integration.h"
+#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
+#define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
 #endif
 
 #include "src/chrome/browser/active_use_util.cc"
 
 #if BUILDFLAG(IS_WIN) && defined(OFFICIAL_BUILD)
-#include "chrome/install_static/brave_restore_google_update_integration.h"
+#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
 #endif
