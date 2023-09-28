@@ -48,9 +48,6 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
       const DATFileDataBuffer& dat_buf);
 
-  void AddDATBufferToFilterSet(DATFileDataBuffer buffer,
-                               rust::Box<adblock::FilterSet>* filter_set);
-
   std::string GetNameForDebugging() override;
 
  private:
