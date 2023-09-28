@@ -128,7 +128,7 @@ export const FilterAccountsSection = (props: Props) => {
               checked={
                 !isAccountFilteredOut(account.address)
               }
-              onChanged={
+              onChange={
                 () => onCheckAccount(account.address)
               }
             >

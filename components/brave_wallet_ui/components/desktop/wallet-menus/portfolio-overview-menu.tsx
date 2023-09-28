@@ -112,7 +112,7 @@ export const PortfolioOverviewMenu = () => {
           </PopupButtonText>
           <Toggle
             checked={!hidePortfolioBalances}
-            onChanged={onToggleHideBalances}
+            onChange={onToggleHideBalances}
             size='small'
           />
         </Row>
@@ -127,7 +127,7 @@ export const PortfolioOverviewMenu = () => {
         </Row>
         <Toggle
           checked={!hidePortfolioGraph}
-          onChanged={onToggleHideGraph}
+          onChange={onToggleHideGraph}
           size='small'
         />
       </ToggleRow>
@@ -141,7 +141,7 @@ export const PortfolioOverviewMenu = () => {
         </Row>
         <Toggle
           checked={!hidePortfolioNFTsTab}
-          onChanged={onToggleHideNFTsTab}
+          onChange={onToggleHideNFTsTab}
           size='small'
         />
       </ToggleRow>
