@@ -25,8 +25,7 @@
 #if defined(OFFICIAL_BUILD)
 #include "chrome/install_static/buildflags.h"
 #include "chrome/install_static/install_constants.h"
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
-#define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
+#include "chrome/install_static/brave_enable_google_update_integration.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -110,5 +109,5 @@ void AddBraveVPNWireguardServiceWorkItems(
 #undef GetElevationServicePath
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 #if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
+#include "chrome/install_static/brave_restore_google_update_integration.h"
 #endif

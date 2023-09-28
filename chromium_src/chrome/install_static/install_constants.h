@@ -10,14 +10,13 @@
 
 #if defined(OFFICIAL_BUILD)
 #include "chrome/install_static/buildflags.h"
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
-#define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
-#endif
+#include "chrome/install_static/brave_enable_google_update_integration.h"
+#endif  // defined(OFFICIAL_BUILD)
 
 #include "src/chrome/install_static/install_constants.h"  // IWYU pragma: export
 
 #if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
-#endif
+#include "chrome/install_static/brave_restore_google_update_integration.h"
+#endif  // defined(OFFICIAL_BUILD)
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_INSTALL_STATIC_INSTALL_CONSTANTS_H_

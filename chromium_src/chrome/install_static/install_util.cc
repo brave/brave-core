@@ -18,8 +18,7 @@
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
-#define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
+#include "chrome/install_static/brave_enable_google_update_integration.h"
 #endif
 
 #define GetChromeChannel GetChromeChannel_ChromiumImpl
@@ -30,7 +29,7 @@
 
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
-#undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION
+#include "chrome/install_static/brave_restore_google_update_integration.h"
 #endif
 
 namespace install_static {
