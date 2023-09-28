@@ -9,6 +9,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
@@ -56,11 +57,11 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
         ->MakeRemote();
   }
 
-  void TestGetPremiumStatus(bool expected_result) {
+  void TestGetPremiumStatus(ai_chat::mojom::PremiumStatus expected_status) {
     base::RunLoop run_loop;
     ai_chat_credential_manager_->GetPremiumStatus(
-        base::BindLambdaForTesting([&](bool result) {
-          EXPECT_EQ(result, expected_result);
+        base::BindLambdaForTesting([&](ai_chat::mojom::PremiumStatus status) {
+          EXPECT_EQ(status, expected_status);
           run_loop.Quit();
         }));
     run_loop.Run();
@@ -116,20 +117,20 @@ TEST_F(AIChatCredentialManagerUnitTest, PutCredentialInCache) {
 
 TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatus) {
   // By default there should be no credentials.
-  TestGetPremiumStatus(false);
+  TestGetPremiumStatus(ai_chat::mojom::PremiumStatus::Disconnected);
 
   // Add an expired credential to the cache, should return false.
   CredentialCacheEntry entry;
   entry.credential = "credential";
   entry.expires_at = base::Time::Now() - base::Hours(1);  // Expired
   ai_chat_credential_manager_->PutCredentialInCache(entry);
-  TestGetPremiumStatus(false);
+  TestGetPremiumStatus(ai_chat::mojom::PremiumStatus::Disconnected);
 
   // Add valid credential to the cache, GetPremiumStatus should
-  // return true.
+  // return ai_chat::mojom::PremiumStatus::Active.
   entry.expires_at = base::Time::Now() + base::Hours(1);  // Valid
   ai_chat_credential_manager_->PutCredentialInCache(entry);
-  TestGetPremiumStatus(true);
+  TestGetPremiumStatus(ai_chat::mojom::PremiumStatus::Active);
 }
 
 TEST_F(AIChatCredentialManagerUnitTest, FetchPremiumCredential) {
