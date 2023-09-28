@@ -88,8 +88,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void DisconnectPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
-  void UserHasValidPremiumCredential(
-      base::OnceCallback<void(bool success)> callback);
+  void GetPremiumStatus(
+      ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;

@@ -38,6 +38,12 @@ enum ModelEngineType {
 // be provided via ai_chat_ui_strings.grdp and ai_chat/browser/constants.cc
 enum ModelCategory {
   CHAT,
+}
+
+enum PremiumStatus {
+  Inactive,
+  Active,
+  Disconnected
 };
 
 struct SiteInfo {
@@ -102,7 +108,7 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
-  UserHasValidPremiumCredential() => (bool result);
+  GetPremiumStatus() => (PremiumStatus result);
   GetHasUserDismissedPremiumPrompt() => (bool has_dismissed);
   SetHasUserDismissedPremiumPrompt(bool has_dismissed);
   RateMessage(bool is_liked, string turn_text) => (string? id);

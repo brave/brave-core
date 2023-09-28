@@ -56,9 +56,9 @@ class AIChatCredentialManagerUnitTest : public testing::Test {
         ->MakeRemote();
   }
 
-  void TestUserHasValidPremiumCredential(bool expected_result) {
+  void TestGetPremiumStatus(bool expected_result) {
     base::RunLoop run_loop;
-    ai_chat_credential_manager_->UserHasValidPremiumCredential(
+    ai_chat_credential_manager_->GetPremiumStatus(
         base::BindLambdaForTesting([&](bool result) {
           EXPECT_EQ(result, expected_result);
           run_loop.Quit();
@@ -114,22 +114,22 @@ TEST_F(AIChatCredentialManagerUnitTest, PutCredentialInCache) {
             entry.expires_at);
 }
 
-TEST_F(AIChatCredentialManagerUnitTest, UserHasValidPremiumCredential) {
+TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatus) {
   // By default there should be no credentials.
-  TestUserHasValidPremiumCredential(false);
+  TestGetPremiumStatus(false);
 
   // Add an expired credential to the cache, should return false.
   CredentialCacheEntry entry;
   entry.credential = "credential";
   entry.expires_at = base::Time::Now() - base::Hours(1);  // Expired
   ai_chat_credential_manager_->PutCredentialInCache(entry);
-  TestUserHasValidPremiumCredential(false);
+  TestGetPremiumStatus(false);
 
-  // Add valid credential to the cache, UserHasValidPremiumCredential should
+  // Add valid credential to the cache, GetPremiumStatus should
   // return true.
   entry.expires_at = base::Time::Now() + base::Hours(1);  // Valid
   ai_chat_credential_manager_->PutCredentialInCache(entry);
-  TestUserHasValidPremiumCredential(true);
+  TestGetPremiumStatus(true);
 }
 
 TEST_F(AIChatCredentialManagerUnitTest, FetchPremiumCredential) {

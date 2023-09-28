@@ -11,6 +11,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -37,8 +38,8 @@ class AIChatCredentialManager {
   AIChatCredentialManager& operator=(const AIChatCredentialManager&) = delete;
   ~AIChatCredentialManager();
 
-  void UserHasValidPremiumCredential(
-      base::OnceCallback<void(bool success)> callback);
+  void GetPremiumStatus(
+      ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
 
   void FetchPremiumCredential(
       base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
@@ -51,14 +52,15 @@ class AIChatCredentialManager {
 
   void OnMojoConnectionError();
 
-  void OnCredentialSummary(base::OnceCallback<void(bool success)> callback,
-                           const std::string& domain,
-                           const std::string& summary_string);
+  void OnCredentialSummary(
+      ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback,
+      const std::string& domain,
+      const std::string& summary_string);
 
-  void OnUserHasValidPremiumCredential(
+  void OnGetPremiumStatus(
       base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
           callback,
-      bool result);
+      ai_chat::mojom::PremiumStatus);
 
   void OnPrepareCredentialsPresentation(
       base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>

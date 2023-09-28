@@ -661,9 +661,9 @@ void AIChatTabHelper::WebContentsDestroyed() {
       ->RemoveObserver(this);
 }
 
-void AIChatTabHelper::UserHasValidPremiumCredential(
-    base::OnceCallback<void(bool success)> callback) {
-  credential_manager_->UserHasValidPremiumCredential(std::move(callback));
+void AIChatTabHelper::GetPremiumStatus(
+    ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback) {
+  credential_manager_->GetPremiumStatus(std::move(callback));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

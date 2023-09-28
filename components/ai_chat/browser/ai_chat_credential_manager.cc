@@ -36,8 +36,8 @@ AIChatCredentialManager::AIChatCredentialManager(
       prefs_service_(prefs_service) {}
 AIChatCredentialManager::~AIChatCredentialManager() = default;
 
-void AIChatCredentialManager::UserHasValidPremiumCredential(
-    base::OnceCallback<void(bool success)> callback) {
+void AIChatCredentialManager::GetPremiumStatus(
+    ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback) {
   base::Time now = base::Time::Now();
   // First check for a valid credential in the cache.
   const auto& cached_creds_dict =
@@ -49,7 +49,7 @@ void AIChatCredentialManager::UserHasValidPremiumCredential(
     }
 
     if (*expires_at > now) {
-      std::move(callback).Run(true);
+      std::move(callback).Run(ai_chat::mojom::PremiumStatus::Active);
       return;
     }
   }
@@ -65,7 +65,7 @@ void AIChatCredentialManager::UserHasValidPremiumCredential(
 }
 
 void AIChatCredentialManager::OnCredentialSummary(
-    base::OnceCallback<void(bool success)> callback,
+    ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback,
     const std::string& domain,
     const std::string& summary_string) {
   std::string summary_string_trimmed;
@@ -73,7 +73,7 @@ void AIChatCredentialManager::OnCredentialSummary(
                             &summary_string_trimmed);
   if (summary_string_trimmed.length() == 0) {
     // no credential found; person needs to login
-    std::move(callback).Run(false);
+    std::move(callback).Run(ai_chat::mojom::PremiumStatus::Inactive);
     return;
   }
 
@@ -82,20 +82,20 @@ void AIChatCredentialManager::OnCredentialSummary(
 
   // Early return when summary is invalid or it's empty dict.
   if (!records_v || !records_v->is_dict()) {
-    std::move(callback).Run(false);
+    std::move(callback).Run(ai_chat::mojom::PremiumStatus::Inactive);
     return;
   }
 
-  // Empty dict - all credentials are expired, the user may need to refresh.
+  // Empty dict - "{}" - all credentials are expired or it's a new user
   if (records_v->GetDict().empty()) {
-    std::move(callback).Run(false);
+    std::move(callback).Run(ai_chat::mojom::PremiumStatus::Disconnected);
     return;
   }
 
   // For now, if there are any records in CredentialSummary, then we assume
   // there is a subscription active, even if the "active" property on the
   // credential summary is literally false.
-  std::move(callback).Run(true);
+  std::move(callback).Run(ai_chat::mojom::PremiumStatus::Active);
 }
 
 void AIChatCredentialManager::FetchPremiumCredential(
@@ -155,16 +155,16 @@ void AIChatCredentialManager::FetchPremiumCredential(
   }
 
   // Otherwise, fetch a fresh credential using the SKUs SDK.
-  UserHasValidPremiumCredential(
-      base::BindOnce(&AIChatCredentialManager::OnUserHasValidPremiumCredential,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  GetPremiumStatus(base::BindOnce(&AIChatCredentialManager::OnGetPremiumStatus,
+                                  weak_ptr_factory_.GetWeakPtr(),
+                                  std::move(callback)));
 }
 
-void AIChatCredentialManager::OnUserHasValidPremiumCredential(
+void AIChatCredentialManager::OnGetPremiumStatus(
     base::OnceCallback<void(absl::optional<CredentialCacheEntry> credential)>
         callback,
-    bool result) {
-  if (!result) {
+    ai_chat::mojom::PremiumStatus status) {
+  if (status != ai_chat::mojom::PremiumStatus::Active) {
     std::move(callback).Run(absl::nullopt);
     return;
   }

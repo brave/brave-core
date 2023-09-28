@@ -79,8 +79,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
 
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
-  void UserHasValidPremiumCredential(
-      UserHasValidPremiumCredentialCallback callback) override;
+  void GetPremiumStatus(GetPremiumStatusCallback callback) override;
 
  private:
   // AIChatTabHelper::Observer
