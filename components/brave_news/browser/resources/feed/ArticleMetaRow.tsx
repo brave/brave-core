@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { color, font, spacing } from "@brave/leo/tokens/css"
-import { FeedItemMetadata } from "../../../../brave_new_tab_ui/api/brave_news"
+import { FeedItemMetadata, UserEnabled } from "../../../../brave_new_tab_ui/api/brave_news"
 import { channelIcons } from "../../../../brave_new_tab_ui/components/default/braveNews/customize/Icons"
 import styled from "styled-components";
 import * as React from "react";
@@ -12,6 +12,7 @@ import Flex from "../../../../brave_new_tab_ui/components/Flex";
 import ButtonMenu from "@brave/leo/react/buttonMenu";
 import Button from "@brave/leo/react/button";
 import Icon from "@brave/leo/react/icon";
+import { api } from "../context";
 
 const MenuButton = styled(Button)`
   flex-grow: 0;
@@ -62,6 +63,8 @@ export default function ArticleMetaRow(props: { article: FeedItemMetadata, hideC
       <leo-menu-item onClick={e => {
         e.preventDefault()
         e.stopPropagation()
+
+        api.setPublisherPref(props.article.publisherId, UserEnabled.DISABLED)
       }}>Hide content from {getOrigin(props.article)}</leo-menu-item>
     </ButtonMenu>
   </Flex>
