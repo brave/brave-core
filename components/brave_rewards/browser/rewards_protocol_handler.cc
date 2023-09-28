@@ -71,12 +71,9 @@ bool IsValidWalletProviderRedirect(
 void LoadRewardsURL(const GURL& redirect_url,
                     content::WebContents* web_contents,
                     ui::PageTransition page_transition) {
-  LOG(ERROR) << "LoadRewardsURL : 1";
   if (!web_contents) {
     return;
   }
-
-  LOG(ERROR) << "LoadRewardsURL : 2";
 
   static const auto kAllowedReferrerUrls{[] {
     std::map<std::string, std::vector<GURL>> allowed_urls{
@@ -102,11 +99,6 @@ void LoadRewardsURL(const GURL& redirect_url,
 
     return allowed_urls;
   }()};
-
-  LOG(ERROR) << "LoadRewardsURL : 3";
-  LOG(ERROR) << "LoadRewardsURL : web_contents->GetURL() : " +
-                    web_contents->GetURL().spec();
-  LOG(ERROR) << "LoadRewardsURL : redirect_url : " + redirect_url.spec();
 
   if (IsValidWalletProviderRedirect(web_contents->GetURL(), redirect_url,
                                     kAllowedReferrerUrls)) {
