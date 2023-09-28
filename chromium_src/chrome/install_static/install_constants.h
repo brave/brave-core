@@ -9,8 +9,12 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALL_STATIC_INSTALL_CONSTANTS_H_
 
 #if defined(OFFICIAL_BUILD)
+// clang-format off
+// NOLINTBEGIN(sort-order)
 #include "chrome/install_static/buildflags.h"
 #include "chrome/install_static/brave_enable_google_update_integration.h"
+// NOLINTEND(sort-order)
+// clang-format on
 #endif  // defined(OFFICIAL_BUILD)
 
 #include "src/chrome/install_static/install_constants.h"  // IWYU pragma: export
