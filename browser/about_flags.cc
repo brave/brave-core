@@ -871,14 +871,6 @@
           FEATURE_VALUE_TYPE(blink::features::kRestrictEventSourcePool),       \
       },                                                                       \
       {                                                                        \
-          "brave-sync-send-all-history",                                       \
-          "Send All History to Brave Sync",                                    \
-          "With Send All History flag all sync entries are sent to Sync "      \
-          "server including transitions of link, bookmark, reload, etc",       \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_sync::features::kBraveSyncSendAllHistory),  \
-      },                                                                       \
-      {                                                                        \
           "brave-copy-clean-link-by-default",                                  \
           "Override default copy hotkey with copy clean link",                 \
           "Sanitize url before copying, replaces default ctrl+c hotkey for "   \

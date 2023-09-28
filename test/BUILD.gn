@@ -109,8 +109,6 @@ test("brave_unit_tests") {
     "//brave/chromium_src/chrome/browser/lookalikes/lookalike_url_navigation_throttle_unittest.cc",
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
     "//brave/chromium_src/components/autofill/core/browser/autofill_experiments_unittest.cc",
-    "//brave/chromium_src/components/history/core/browser/sync/brave_typed_url_sync_bridge_unittest.cc",
-    "//brave/chromium_src/components/history/core/browser/sync/chromium_typed_url_sync_bridge_unittest.cc",
     "//brave/chromium_src/components/variations/service/field_trial_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
     "//brave/chromium_src/services/network/public/cpp/cors/cors_unittest.cc",
