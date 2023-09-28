@@ -96,9 +96,10 @@ class EphemeralStorageServiceTest : public testing::Test {
     return service;
   }
 
-  static void ShutdownEphemeralStorageService(
+  void ShutdownEphemeralStorageService(
       std::unique_ptr<EphemeralStorageService>& service) {
     ASSERT_TRUE(service);
+    mock_delegate_ = nullptr;
     service->Shutdown();
     service.reset();
   }
@@ -106,9 +107,9 @@ class EphemeralStorageServiceTest : public testing::Test {
  protected:
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile profile_;
-  raw_ptr<MockDelegate> mock_delegate_ = nullptr;
   testing::StrictMock<MockObserver> mock_observer_;
   std::unique_ptr<EphemeralStorageService> service_;
+  raw_ptr<MockDelegate> mock_delegate_ = nullptr;
 };
 
 TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
@@ -290,11 +291,12 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
 
   // Simulate a browser restart. No cleanup should happen at construction.
   {
-    ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
     ShutdownEphemeralStorageService(service_);
+
     service_ = CreateEphemeralStorageService(&profile_, mock_delegate_,
                                              &mock_observer_);
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
     EXPECT_EQ(
         profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
         1u);
@@ -339,10 +341,10 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
 
   // Simulate a browser restart. No cleanup should happen at construction.
   {
-    ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ShutdownEphemeralStorageService(service_);
     service_ = CreateEphemeralStorageService(&profile_, mock_delegate_,
                                              &mock_observer_);
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
     EXPECT_EQ(
         profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
         1u);
@@ -393,10 +395,10 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, OffTheRecordSkipsPrefs) {
 
   // Simulate a browser restart. No cleanup should happen at all.
   {
-    ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ShutdownEphemeralStorageService(otr_service);
     otr_service = CreateEphemeralStorageService(otr_profile, mock_delegate_,
                                                 &mock_observer_);
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
     task_environment_.FastForwardBy(base::Seconds(5));
   }
 

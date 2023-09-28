@@ -59,6 +59,7 @@ class BraveIdentityManagerTest : public testing::Test {
   }
 
   ~BraveIdentityManagerTest() override {
+    gaia_cookie_manager_service_ = nullptr;
     identity_manager_->Shutdown();
     signin_client_.Shutdown();
   }

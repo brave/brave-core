@@ -59,6 +59,7 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
   }
 
   void TearDown() override {
+    json_rpc_service_ = nullptr;
     profile_.reset();
     local_state_.reset();
   }

@@ -231,9 +231,9 @@ class BraveWalletPinServiceTest : public testing::Test {
   testing::NiceMock<MockIpfsLocalPinService> ipfs_local_pin_service_;
   testing::NiceMock<MockJsonRpcService> json_rpc_service_;
   testing::NiceMock<MockIpfsService> ipfs_service_;
-  raw_ptr<testing::NiceMock<MockContentTypeChecker>> content_type_checker_;
 
   std::unique_ptr<BraveWalletPinService> brave_wallet_pin_service_;
+  raw_ptr<testing::NiceMock<MockContentTypeChecker>> content_type_checker_;
   TestingPrefServiceSimple pref_service_;
   content::BrowserTaskEnvironment task_environment_;
 };

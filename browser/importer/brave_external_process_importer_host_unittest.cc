@@ -16,6 +16,7 @@
 #include "base/json/json_reader.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
+#include "base/test/bind.h"
 #include "brave/browser/importer/test_storage_utils.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/constants/brave_paths.h"
@@ -133,7 +134,10 @@ class BraveExternalProcessImporterHostUnitTest : public testing::Test {
     external_process_host()->StartImportSettings(source_profile, GetProfile(),
                                                  importer::EXTENSIONS, nullptr);
     base::RunLoop loop;
-    ImportEndedObserver observer(loop.QuitClosure());
+    ImportEndedObserver observer(base::BindLambdaForTesting([&loop, this]() {
+      external_process_host_ = nullptr;
+      loop.Quit();
+    }));
     external_process_host()->set_observer(&observer);
     external_process_host()->NotifyImportEnded();
     loop.Run();

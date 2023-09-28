@@ -110,6 +110,7 @@ class BraveWebTorrentNavigationThrottleUnitTest
   }
 
   void TearDown() override {
+    extension_service_ = nullptr;
     content::SetBrowserClientForTesting(original_client_);
     content::RenderViewHostTestHarness::TearDown();
   }
@@ -146,10 +147,11 @@ class BraveWebTorrentNavigationThrottleUnitTest
  private:
   scoped_refptr<const Extension> extension_;
   MockBrowserClient client_;
-  raw_ptr<content::ContentBrowserClient> original_client_ = nullptr;
   ScopedTestingLocalState local_state_;
   base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  raw_ptr<content::ContentBrowserClient> original_client_ = nullptr;
+
   // The ExtensionService associated with the primary profile.
   raw_ptr<extensions::ExtensionService> extension_service_ = nullptr;
 };

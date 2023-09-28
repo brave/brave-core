@@ -83,11 +83,6 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
 
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
- protected:
-  std::unique_ptr<EthTxStateManager> tx_state_manager_;
-  mojom::AccountIdPtr eth_account_id_;
-  mojom::AccountIdPtr eth_account_id_other_;
-
  private:
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -99,6 +94,11 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   std::unique_ptr<AccountResolverDelegateForTest> account_resolver_delegate_;
   std::unique_ptr<TestingProfile> profile_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
+
+ protected:
+  std::unique_ptr<EthTxStateManager> tx_state_manager_;
+  mojom::AccountIdPtr eth_account_id_;
+  mojom::AccountIdPtr eth_account_id_other_;
 };
 
 TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {

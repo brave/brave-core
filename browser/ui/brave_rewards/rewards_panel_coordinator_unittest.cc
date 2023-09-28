@@ -51,6 +51,14 @@ class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
     coordinator_->AddObserver(observer_.get());
   }
 
+  void TearDown() override {
+    // Clean up coordinator pointer, so it doesn't dangle during the browsers
+    // destruction.
+    coordinator_ = nullptr;
+
+    BrowserWithTestWindowTest::TearDown();
+  }
+
  protected:
   const mojom::RewardsPanelArgs& last_args() const {
     CHECK(last_args_);

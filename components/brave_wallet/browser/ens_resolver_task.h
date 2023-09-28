@@ -117,7 +117,6 @@ class EnsResolverTask {
  private:
   template <typename T>
   friend class EnsResolverTaskContainer;
-  friend class ScopedWorkOnTask;
   void ScheduleWorkOnTask();
   void WorkOnTask();
 

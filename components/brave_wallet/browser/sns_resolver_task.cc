@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "build/build_config.h"
 #include "crypto/sha2.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
 
 namespace brave_wallet {
@@ -381,15 +382,6 @@ SnsResolverTaskError::SnsResolverTaskError(mojom::SolanaProviderError error,
                                            std::string error_message)
     : error(error), error_message(error_message) {}
 
-class ScopedWorkOnSnsTask {
- public:
-  explicit ScopedWorkOnSnsTask(SnsResolverTask* task) : task_(task) {}
-  ~ScopedWorkOnSnsTask() { task_->WorkOnTask(); }
-
- private:
-  raw_ptr<SnsResolverTask> task_ = nullptr;
-};
-
 SnsResolverTask::SnsResolverTask(DoneCallback done_callback,
                                  APIRequestHelper* api_request_helper,
                                  const std::string& domain,
@@ -535,7 +527,7 @@ void SnsResolverTask::FetchNftSplMint() {
 }
 
 void SnsResolverTask::OnFetchNftSplMint(APIRequestResult api_request_result) {
-  ScopedWorkOnSnsTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -575,7 +567,7 @@ void SnsResolverTask::FetchNftTokenOwner() {
 
 void SnsResolverTask::OnFetchNftTokenOwner(
     APIRequestResult api_request_result) {
-  ScopedWorkOnSnsTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -605,7 +597,7 @@ void SnsResolverTask::FetchDomainRegistryState() {
 
 void SnsResolverTask::OnFetchDomainRegistryState(
     APIRequestResult api_request_result) {
-  ScopedWorkOnSnsTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -654,7 +646,7 @@ void SnsResolverTask::FetchSolRecordRegistryState() {
 
 void SnsResolverTask::OnFetchSolRecordRegistryState(
     APIRequestResult api_request_result) {
-  ScopedWorkOnSnsTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -709,7 +701,7 @@ void SnsResolverTask::FetchUrlRecordRegistryState() {
 
 void SnsResolverTask::OnFetchUrlRecordRegistryState(
     APIRequestResult api_request_result) {
-  ScopedWorkOnSnsTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());
@@ -770,7 +762,7 @@ void SnsResolverTask::FetchIpfsRecordRegistryState() {
 
 void SnsResolverTask::OnFetchIpfsRecordRegistryState(
     APIRequestResult api_request_result) {
-  ScopedWorkOnSnsTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     SetError(MakeInternalError());

@@ -146,13 +146,14 @@ class BraveSearchProviderTest : public testing::Test {
   }
 
   base::Time last_added_time_;
-  raw_ptr<TemplateURL> default_t_url_ = nullptr;
 
   content::BrowserTaskEnvironment task_environment_;
 
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<ChromeAutocompleteProviderClient> client_;
   scoped_refptr<BraveSearchProvider> provider_;
+
+  raw_ptr<TemplateURL> default_t_url_ = nullptr;
 
   // If not nullptr, OnProviderUpdate quits the current |run_loop_|.
   raw_ptr<base::RunLoop> run_loop_ = nullptr;
