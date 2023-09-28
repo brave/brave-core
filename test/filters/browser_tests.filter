@@ -590,6 +590,8 @@
 -IpProtectionAuthTokenProviderBrowserTest.NetworkServiceCanRequestTokens
 -IpProtectionConfigProviderBrowserTest.ExpectedReceiverSetStateAfterNetworkServiceCrash
 -IpProtectionConfigProviderBrowserTest.NetworkServiceCanRequestTokens
+-PersonalizedHintsFetcherBrowserTest.NoUserSignIn
+-PersonalizedHintsFetcherBrowserTest.UserSignedIn
 -SupervisionRemovalExtensionTest.RemoveCustodianApprovalRequirement
 
 # These tests fail or time out because IdentityManager never loads refresh
@@ -690,6 +692,7 @@
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/TS
 
 # These tests fail because we are modifying the HttpsUpgrades feature.
+-HttpsUpgradesBrowserTest.AccidentalTypicallySecureUsersRemediation/*
 -HttpsUpgradesBrowserTest.AllowlistEntryExpires/*
 -HttpsUpgradesBrowserTest.EnterpriseAllowlistDisablesHttpsFirstModeForSiteEngagament/*
 -HttpsUpgradesBrowserTest.EnterpriseAllowlistDisablesUpgrades/*
@@ -903,6 +906,11 @@
 # to return false
 -ExtensionTelemetryServiceBrowserTest.*
 -ExtensionTelemetryServiceBrowserTestWithInterceptRemoteHostsContactedInRendererEnabled.InterceptsRemoteHostContactedSignalInRenderer
+
+# These tests fail because we disable the
+# privacy_sandbox::kEnforcePrivacySandboxAttestations feature
+-PrivacySandboxAttestationsBrowserTest.*
+-PrivacySandboxSettingsAttestPrivateAggregationInProtectedAudienceBrowserTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
