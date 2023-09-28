@@ -28,6 +28,7 @@
 #include "url/gurl.h"
 
 class AdBlockServiceTest;
+class EphemeralStorage1pDomainBlockBrowserTest;
 class DebounceBrowserTest;
 class PrefService;
 
@@ -141,6 +142,7 @@ class AdBlockService {
 
  private:
   friend class ::AdBlockServiceTest;
+  friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::DebounceBrowserTest;
 
   static std::string g_ad_block_dat_file_version_;

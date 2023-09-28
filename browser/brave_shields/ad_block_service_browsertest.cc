@@ -26,6 +26,7 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/engine_test_observer.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -88,31 +89,6 @@ using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
-
-// A test observer that allows blocking waits for an AdBlockEngine to be
-// updated with new rules.
-class EngineTestObserver : public brave_shields::AdBlockEngine::TestObserver {
- public:
-  // Constructs an EngineTestObserver which will observe the given adblock
-  // engine for filter data updates.
-  explicit EngineTestObserver(brave_shields::AdBlockEngine* engine)
-      : engine_(engine) {
-    engine_->AddObserverForTest(this);
-  }
-  ~EngineTestObserver() override { engine_->RemoveObserverForTest(); }
-
-  EngineTestObserver(const EngineTestObserver& other) = delete;
-  EngineTestObserver& operator=(const EngineTestObserver& other) = delete;
-
-  // Blocks until the engine is updated
-  void Wait() { run_loop_.Run(); }
-
- private:
-  void OnEngineUpdated() override { run_loop_.Quit(); }
-
-  base::RunLoop run_loop_;
-  raw_ptr<brave_shields::AdBlockEngine> engine_ = nullptr;
-};
 
 AdBlockServiceTest::AdBlockServiceTest()
     : ws_server_(net::SpawnedTestServer::TYPE_WS,
