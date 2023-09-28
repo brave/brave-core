@@ -327,8 +327,8 @@ void StarRandomnessMeta::HandleServerInfoResponse(
   if (!response_body || response_body->empty()) {
     std::string error_str =
         net::ErrorToShortString(update_state->url_loader->NetError());
-    LOG(ERROR) << "StarRandomnessMeta: no response body for randomness server "
-               << "info request, net error: " << error_str;
+    VLOG(2) << "StarRandomnessMeta: no response body for randomness server "
+            << "info request, net error: " << error_str;
     ScheduleServerInfoRetry(log_type);
     return;
   }

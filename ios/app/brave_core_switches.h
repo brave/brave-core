@@ -97,7 +97,7 @@ OBJC_EXPORT const BraveCoreSwitchKey
 ///
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitchKey
-    BraveCoreSwitchKeyP3AConstellationUploadServerURL NS_SWIFT_NAME(p3aConstellationUploadServerURL);
+    BraveCoreSwitchKeyP3AConstellationUploadServerHost NS_SWIFT_NAME(p3aConstellationUploadServerHost);
 /// Overrides the P3A "disable star attestation" setting.
 OBJC_EXPORT const BraveCoreSwitchKey
     BraveCoreSwitchKeyP3ADisableStarAttestation NS_SWIFT_NAME(p3aDisableStarAttestation);

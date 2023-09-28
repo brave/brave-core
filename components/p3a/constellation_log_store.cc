@@ -27,11 +27,11 @@ constexpr char kTypicalPrefName[] = "p3a.constellation_logs";
 constexpr char kSlowPrefName[] = "p3a.constellation_logs_slow";
 constexpr char kExpressPrefName[] = "p3a.constellation_logs_express";
 
+}  // namespace
+
 const size_t kTypicalMaxEpochsToRetain = 4;
 const size_t kSlowMaxEpochsToRetain = 2;
 const size_t kExpressMaxEpochsToRetain = 21;
-
-}  // namespace
 
 ConstellationLogStore::ConstellationLogStore(PrefService& local_state,
                                              MetricLogType log_type)

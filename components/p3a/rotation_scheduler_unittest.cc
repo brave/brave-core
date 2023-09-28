@@ -60,31 +60,34 @@ TEST_F(P3ARotationSchedulerTest, JsonRotation) {
 }
 
 TEST_F(P3ARotationSchedulerTest, ConstellationRotation) {
-  task_environment_.FastForwardBy(base::Days(7));
-  // Should be 0 since the timer has not started
-  EXPECT_EQ(constellation_rotation_count_, 0u);
+  for (MetricLogType log_type : kAllMetricLogTypes) {
+    constellation_rotation_count_ = 0;
+    task_environment_.FastForwardBy(base::Days(7));
+    // Should be 0 since the timer has not started
+    EXPECT_EQ(constellation_rotation_count_, 0u);
 
-  scheduler_->InitConstellationTimer(MetricLogType::kTypical,
-                                     base::Time::Now() + base::Days(7));
+    scheduler_->InitConstellationTimer(log_type,
+                                       base::Time::Now() + base::Days(7));
 
-  task_environment_.FastForwardBy(base::Days(7));
-  EXPECT_EQ(constellation_rotation_count_, 0u);
+    task_environment_.FastForwardBy(base::Days(7));
+    EXPECT_EQ(constellation_rotation_count_, 0u);
 
-  task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(constellation_rotation_count_, 1u);
+    task_environment_.FastForwardBy(base::Seconds(5));
+    EXPECT_EQ(constellation_rotation_count_, 1u);
 
-  task_environment_.FastForwardBy(base::Days(30));
-  // Should not rotate again until InitConstellationTimer sets the timer
-  EXPECT_EQ(constellation_rotation_count_, 1u);
+    task_environment_.FastForwardBy(base::Days(30));
+    // Should not rotate again until InitConstellationTimer sets the timer
+    EXPECT_EQ(constellation_rotation_count_, 1u);
 
-  scheduler_->InitConstellationTimer(MetricLogType::kTypical,
-                                     base::Time::Now() + base::Days(7));
-  task_environment_.FastForwardBy(base::Days(7));
-  EXPECT_EQ(constellation_rotation_count_, 1u);
+    scheduler_->InitConstellationTimer(log_type,
+                                       base::Time::Now() + base::Days(7));
+    task_environment_.FastForwardBy(base::Days(7));
+    EXPECT_EQ(constellation_rotation_count_, 1u);
 
-  // Should trigger at +5 seconds.
-  task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(constellation_rotation_count_, 2u);
+    // Should trigger at +5 seconds.
+    task_environment_.FastForwardBy(base::Seconds(5));
+    EXPECT_EQ(constellation_rotation_count_, 2u);
+  }
 }
 
 }  // namespace p3a

@@ -63,12 +63,15 @@ class P3AConstellationHelperTest : public testing::Test {
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
 
-          MetricLogType log_type = ValidateURLAndGetMetricLogType(request.url);
-          LOG(ERROR) << request.url;
+          MetricLogType log_type =
+              ValidateURLAndGetMetricLogType(request.url, kTestHost);
 
           std::string response;
           if (base::EndsWith(request.url.spec(), "/info")) {
-            response = HandleInfoRequest(request, log_type);
+            response =
+                HandleInfoRequest(request, log_type, GetTestEpoch(log_type),
+                                  GetTestNextEpochTime(log_type));
+            info_request_made_[log_type] = true;
           } else if (base::EndsWith(request.url.spec(), "/randomness")) {
             response = HandleRandomnessRequest(request, GetTestEpoch(log_type));
             points_request_made_[log_type] = true;
@@ -130,9 +133,9 @@ class P3AConstellationHelperTest : public testing::Test {
   void CheckInfoRequestMade(MetricLogType log_type) {
     for (MetricLogType check_log_type : kAllMetricLogTypes) {
       if (check_log_type == log_type) {
-        ASSERT_TRUE(info_request_made[check_log_type]);
+        ASSERT_TRUE(info_request_made_[check_log_type]);
       } else {
-        ASSERT_FALSE(info_request_made[check_log_type]);
+        ASSERT_FALSE(info_request_made_[check_log_type]);
       }
     }
   }
@@ -140,9 +143,9 @@ class P3AConstellationHelperTest : public testing::Test {
   void CheckPointsRequestMade(MetricLogType log_type) {
     for (MetricLogType check_log_type : kAllMetricLogTypes) {
       if (check_log_type == log_type) {
-        ASSERT_TRUE(points_request_made[check_log_type]);
+        ASSERT_TRUE(points_request_made_[check_log_type]);
       } else {
-        ASSERT_FALSE(points_request_made[check_log_type]);
+        ASSERT_FALSE(points_request_made_[check_log_type]);
       }
     }
   }
@@ -163,33 +166,6 @@ class P3AConstellationHelperTest : public testing::Test {
 
   base::flat_map<MetricLogType, bool> info_request_made_;
   base::flat_map<MetricLogType, bool> points_request_made_;
-
- private:
-  MetricLogType ValidateURLAndGetMetricLogType(const GURL& url) {
-    std::string url_prefix = base::StrCat({kTestHost, "/instances/"});
-
-    EXPECT_TRUE(base::StartsWith(url.spec(), url_prefix));
-
-    std::vector<std::string> path_segments = base::SplitString(
-        url.path(), "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-    EXPECT_EQ(path_segments.size(), 4U);
-
-    absl::optional<MetricLogType> log_type =
-        StringToMetricLogType(path_segments[2]);
-    EXPECT_TRUE(log_type.has_value());
-
-    return *log_type;
-  }
-
-  std::string HandleInfoRequest(const network::ResourceRequest& request,
-                                MetricLogType log_type) {
-    EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
-
-    info_request_made_[log_type] = true;
-    return base::StrCat(
-        {"{\"currentEpoch\":", base::NumberToString(GetTestEpoch(log_type)),
-         ", \"nextEpochTime\": \"", GetTestNextEpochTime(log_type), "\"}"});
-  }
 };
 
 TEST_F(P3AConstellationHelperTest, CanRetrieveServerInfo) {
@@ -265,7 +241,7 @@ TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
     MessageMetainfo meta_info;
     meta_info.Init(&local_state_, "release", "2022-01-01");
 
-    helper->StartMessagePreparation(
+    helper_->StartMessagePreparation(
         kTestHistogramName, log_type,
         GenerateP3AConstellationMessage(kTestHistogramName, test_epoch,
                                         meta_info, kP3AUploadType));

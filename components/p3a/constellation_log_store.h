@@ -24,6 +24,10 @@ class PrefRegistrySimple;
 
 namespace p3a {
 
+extern const size_t kTypicalMaxEpochsToRetain;
+extern const size_t kSlowMaxEpochsToRetain;
+extern const size_t kExpressMaxEpochsToRetain;
+
 // Stores messages from previous epochs in memory and persists all messages in
 // prefs on the fly. All messages from previous epochs could be loaded using
 // |LoadPersistedUnsentLogs()|. The function will also remove epochs are exceed

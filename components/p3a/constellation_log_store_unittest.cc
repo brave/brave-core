@@ -9,16 +9,11 @@
 #include <set>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace p3a {
-
-namespace {
-
-constexpr size_t kTestKeepEpochCount = 4;
-
-}  // namespace
 
 class P3AConstellationLogStoreTest : public testing::Test {
  public:
@@ -27,13 +22,27 @@ class P3AConstellationLogStoreTest : public testing::Test {
  protected:
   void SetUp() override {
     ConstellationLogStore::RegisterPrefs(local_state.registry());
-    log_store = std::make_unique<ConstellationLogStore>(
-        local_state, MetricLogType::kTypical);
+  }
+
+  void SetUpLogStore(MetricLogType log_type) {
+    log_store = std::make_unique<ConstellationLogStore>(local_state, log_type);
   }
 
   std::string GenerateMockConstellationMessage() {
     return "log msg " +
            base::NumberToString(curr_test_constellation_message_id++);
+  }
+
+  size_t GetMaxEpochsToRetain(MetricLogType log_type) {
+    switch (log_type) {
+      case MetricLogType::kSlow:
+        return kSlowMaxEpochsToRetain;
+      case MetricLogType::kTypical:
+        return kTypicalMaxEpochsToRetain;
+      case MetricLogType::kExpress:
+        return kExpressMaxEpochsToRetain;
+    }
+    NOTREACHED();
   }
 
   void UpdateSomeMessages(uint8_t epoch, size_t message_count) {
@@ -74,6 +83,7 @@ class P3AConstellationLogStoreTest : public testing::Test {
 };
 
 TEST_F(P3AConstellationLogStoreTest, CurrentEpochStaging) {
+  SetUpLogStore(MetricLogType::kTypical);
   log_store->SetCurrentEpoch(1);
 
   UpdateSomeMessages(1, 8);
@@ -81,6 +91,7 @@ TEST_F(P3AConstellationLogStoreTest, CurrentEpochStaging) {
 }
 
 TEST_F(P3AConstellationLogStoreTest, PreviousEpochStaging) {
+  SetUpLogStore(MetricLogType::kTypical);
   log_store->SetCurrentEpoch(1);
 
   UpdateSomeMessages(1, 5);
@@ -92,6 +103,7 @@ TEST_F(P3AConstellationLogStoreTest, PreviousEpochStaging) {
 }
 
 TEST_F(P3AConstellationLogStoreTest, PreviousEpochsStaging) {
+  SetUpLogStore(MetricLogType::kTypical);
   log_store->SetCurrentEpoch(1);
   UpdateSomeMessages(1, 5);
 
@@ -112,6 +124,7 @@ TEST_F(P3AConstellationLogStoreTest, PreviousEpochsStaging) {
 }
 
 TEST_F(P3AConstellationLogStoreTest, UpdatePreviousEpochMessage) {
+  SetUpLogStore(MetricLogType::kTypical);
   log_store->SetCurrentEpoch(1);
 
   log_store->SetCurrentEpoch(2);
@@ -123,6 +136,7 @@ TEST_F(P3AConstellationLogStoreTest, UpdatePreviousEpochMessage) {
 }
 
 TEST_F(P3AConstellationLogStoreTest, DiscardShouldNotDelete) {
+  SetUpLogStore(MetricLogType::kTypical);
   log_store->SetCurrentEpoch(1);
 
   UpdateSomeMessages(1, 1);
@@ -147,17 +161,20 @@ TEST_F(P3AConstellationLogStoreTest, DiscardShouldNotDelete) {
 }
 
 TEST_F(P3AConstellationLogStoreTest, ShouldDeleteOldMessages) {
-  log_store->SetCurrentEpoch(1);
+  for (MetricLogType log_type : kAllMetricLogTypes) {
+    SetUpLogStore(log_type);
+    size_t max_epochs = GetMaxEpochsToRetain(log_type);
+    log_store->SetCurrentEpoch(1);
 
-  UpdateSomeMessages(1, 3);
+    UpdateSomeMessages(1, 3);
 
-  log_store->SetCurrentEpoch(kTestKeepEpochCount + 1);
-  UpdateSomeMessages(kTestKeepEpochCount + 1, 8);
+    log_store->SetCurrentEpoch(max_epochs + 1);
+    UpdateSomeMessages(max_epochs + 1, 8);
 
-  log_store->SetCurrentEpoch(kTestKeepEpochCount + 2);
-  log_store->LoadPersistedUnsentLogs();
-
-  // Should only consume messages from the latest previous epoch
+    // Should only consume messages from the latest previous epoch
+    log_store->SetCurrentEpoch(max_epochs + 2);
+    log_store->LoadPersistedUnsentLogs();
+  }
 }
 
 }  // namespace p3a

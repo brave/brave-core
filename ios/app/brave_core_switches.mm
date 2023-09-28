@@ -33,20 +33,20 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyP3AExpressRotationIntervalSeconds =
     base::SysUTF8ToNSString(p3a::switches::kP3AExpressRotationIntervalSeconds);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ASlowRotationIntervalSeconds =
     base::SysUTF8ToNSString(p3a::switches::kP3ASlowRotationIntervalSeconds);
-const BraveCoreSwitchKey BraveCoreSwitchKeyP3ATypicalFakeStarEpoch =
-    base::SysUTF8ToNSString(p3a::switches::kP3ATypicalFakeStarEpoch);
-const BraveCoreSwitchKey BraveCoreSwitchKeyP3ASlowFakeStarEpoch =
-    base::SysUTF8ToNSString(p3a::switches::kP3ASlowFakeStarEpoch);
-const BraveCoreSwitchKey BraveCoreSwitchKeyP3AExpressFakeStarEpoch =
-    base::SysUTF8ToNSString(p3a::switches::kP3AExpressFakeStarEpoch);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AFakeTypicalStarEpoch =
+    base::SysUTF8ToNSString(p3a::switches::kP3AFakeTypicalStarEpoch);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AFakeSlowStarEpoch =
+    base::SysUTF8ToNSString(p3a::switches::kP3AFakeSlowStarEpoch);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AFakeExpressStarEpoch =
+    base::SysUTF8ToNSString(p3a::switches::kP3AFakeExpressStarEpoch);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AJsonUploadServerURL =
     base::SysUTF8ToNSString(p3a::switches::kP3AJsonUploadUrl);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ACreativeUploadServerURL =
     base::SysUTF8ToNSString(p3a::switches::kP3ACreativeUploadUrl);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP2AJsonUploadServerURL =
     base::SysUTF8ToNSString(p3a::switches::kP2AJsonUploadUrl);
-const BraveCoreSwitchKey BraveCoreSwitchKeyP3AConstellationUploadServerURL =
-    base::SysUTF8ToNSString(p3a::switches::kP3AConstellationUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AConstellationUploadServerHost =
+    base::SysUTF8ToNSString(p3a::switches::kP3AConstellationUploadHost);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ADisableStarAttestation =
     base::SysUTF8ToNSString(p3a::switches::kP3ADisableStarAttestation);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AStarRandomnessHost =

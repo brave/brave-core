@@ -15,6 +15,7 @@
 #include "brave/components/p3a/constellation_helper.h"
 #include "brave/components/p3a/constellation_log_store.h"
 #include "brave/components/p3a/features.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/pref_names.h"
@@ -50,7 +51,7 @@ MessageManager::MessageManager(PrefService& local_state,
     if (features::IsConstellationEnabled()) {
       constellation_prep_log_stores_[log_type] =
           std::make_unique<MetricLogStore>(*this, *local_state_, true,
-                                           MetricLogType::kTypical);
+                                           log_type);
       constellation_prep_log_stores_[log_type]->LoadPersistedUnsentLogs();
       constellation_send_log_stores_[log_type] =
           std::make_unique<ConstellationLogStore>(*local_state_, log_type);
@@ -211,7 +212,7 @@ void MessageManager::OnRandomnessServerInfoReady(
     // a detected epoch change means that we can rotate
     // the preparation store
     constellation_prep_log_stores_[log_type]->ResetUploadStamps();
-    delegate_->OnRotation(MetricLogType::kTypical, true);
+    delegate_->OnRotation(log_type, true);
   }
   constellation_send_log_stores_[log_type]->SetCurrentEpoch(
       server_info->current_epoch);
