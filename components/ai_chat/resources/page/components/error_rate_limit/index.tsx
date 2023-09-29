@@ -10,7 +10,7 @@ import Button from '@brave/leo/react/button'
 
 import DataContext from '../../state/context'
 import styles from './style.module.scss'
-import ErrorRateLimitPremium from '../error_rate_limit_premium'
+import PremiumSuggestion from '../premium_suggestion'
 
 interface ErrorRateLimit {
   onRetry?: () => void
@@ -19,27 +19,33 @@ interface ErrorRateLimit {
 function ErrorRateLimit(props: ErrorRateLimit) {
   const { isPremiumUser } = React.useContext(DataContext)
 
+  if (!isPremiumUser) {
+    return (
+      <PremiumSuggestion
+        title={getLocale('rateLimitReachedTitle')}
+        description={getLocale('rateLimitReachedDesc')}
+        secondaryActionButton={
+          <Button kind='plain-faint' onClick={props.onRetry}>
+            {getLocale('retryButtonLabel')}
+          </Button>
+        }
+      />
+    )
+  }
+
   return (
     <div className={styles.common}>
-      {isPremiumUser ? (
-        <div className={styles.box}>
-          <Icon name='warning-triangle-filled' className={styles.icon} />
-          <div>
-            <p>{getLocale('errorRateLimit')}</p>
-            <div className={styles.actionsBox}>
-              <Button onClick={props.onRetry}>
-                {getLocale('retryButtonLabel')}
-              </Button>
-            </div>
+      <div className={styles.box}>
+        <Icon name='warning-triangle-filled' className={styles.icon} />
+        <div>
+          <p>{getLocale('errorRateLimit')}</p>
+          <div className={styles.actionsBox}>
+            <Button onClick={props.onRetry}>
+              {getLocale('retryButtonLabel')}
+            </Button>
           </div>
         </div>
-      ) : (
-        <ErrorRateLimitPremium
-          title={getLocale('rateLimitReachedTitle')}
-          description={getLocale('rateLimitReachedDesc')}
-          onRetry={props.onRetry}
-        />
-      )}
+      </div>
     </div>
   )
 }

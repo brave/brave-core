@@ -10,16 +10,18 @@ import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
 
-interface ErrorRateLimit {
-  onRetry?: () => void
-  onDismiss?: () => void
-  isDismissable?: boolean
+interface PremiumSuggestionProps {
   title?: string
   description?: string
+  secondaryActionButton?: React.ReactNode
+  verbose?: boolean
 }
 
-function ErrorRateLimitPremium(props: ErrorRateLimit) {
-  const pricing = getLocale('premiumPricing').split('/')
+function PremiumSuggestion(props: PremiumSuggestionProps) {
+  const pricingInfo = getLocale('premiumPricing').split('/')
+  const price = pricingInfo[1]
+
+  const handlePremiumButtonClick = () => {}
 
   return (
     <div className={styles.boxPremium}>
@@ -28,34 +30,37 @@ function ErrorRateLimitPremium(props: ErrorRateLimit) {
       <ul className={styles.featuresListing}>
         <li>
           <Icon name='check-normal' />
-          <span>{getLocale('premiumFeature_1')}</span>
+          <span>
+            {getLocale('premiumFeature_1')}
+            {props?.verbose && <p>Anthropic Claude + more coming soon</p>}
+          </span>
         </li>
         <li>
           <Icon name='check-normal' />
-          <span>{getLocale('premiumFeature_2')}</span>
+          <span>
+            {getLocale('premiumFeature_2')}
+            {props?.verbose && (
+              <p>Priority access and increased response limits</p>
+            )}
+          </span>
         </li>
         <li className={styles.priceList}>
           <span>{getLocale('premiumLabel')}</span>
           <span className={styles.price}>
-            {pricing[0]}
-            <data>{pricing[1]}</data>
-            {pricing[2]}
+            {pricingInfo[0]} {price[0]}
+            <data>{price.replace(/^\D+/g, '')}</data>
+            {pricingInfo[2]}
           </span>
         </li>
       </ul>
       <div className={styles.actionsBox}>
-        <Button onClick={props.onRetry}>
+        <Button onClick={handlePremiumButtonClick}>
           {getLocale('premiumButtonLabel')}
         </Button>
-        <Button
-          kind='plain-faint'
-          onClick={props.isDismissable ? props.onDismiss : props.onRetry}
-        >
-          {props.isDismissable ? getLocale('dismissButtonLabel') : getLocale('retryButtonLabel')}
-        </Button>
+        {props.secondaryActionButton}
       </div>
     </div>
   )
 }
 
-export default ErrorRateLimitPremium
+export default PremiumSuggestion
