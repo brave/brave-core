@@ -1023,7 +1023,7 @@ public class BraveRewardsPanel
     @Override
     public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
             int adsReceivedThisMonth, double minEarningsThisMonth, double maxEarningsThisMonth,
-            double earningsLastMonth) {
+            double minEarningsLastMonth, double maxEarningsLastMonth) {
         if (mExternalWallet != null && mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED
                 && !PackageUtils.isFirstInstall(mActivity)) {
             mPopupView.findViewById(R.id.estimated_earnings_range_group).setVisibility(View.GONE);
@@ -1049,7 +1049,7 @@ public class BraveRewardsPanel
             }
         }
 
-        if (minEarningsThisMonth > 0) {
+        if (minEarningsLastMonth > 0) {
             showPayoutStatusBanner((long) nextPaymentDate);
         }
     }
@@ -1096,7 +1096,6 @@ public class BraveRewardsPanel
     }
 
     private void showPayoutStatusBanner(long nextPaymentDate) {
-        Log.e("payout_status", "nextPaymentDate : " + nextPaymentDate);
         String payoutStatus = mBraveRewardsNativeWorker.getPayoutStatus();
         if (mPayoutStatusBannerLayout != null && mExternalWallet != null
                 && mExternalWallet.getStatus() == WalletStatus.CONNECTED) {

@@ -454,7 +454,7 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
   if (!statement) {
     Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(
         env, weak_java_brave_rewards_native_worker_.get(env),
-        /* success */ false, 0.0, 0, 0.0, 0.0, 0.0);
+        /* success */ false, 0.0, 0, 0.0, 0.0, 0.0, 0.0);
     return;
   }
 
@@ -462,7 +462,8 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
       env, weak_java_brave_rewards_native_worker_.get(env),
       /* success */ true, statement->next_payment_date.ToDoubleT() * 1000,
       statement->ads_received_this_month, statement->min_earnings_this_month,
-      statement->max_earnings_this_month, statement->max_earnings_last_month);
+      statement->max_earnings_this_month, statement->min_earnings_last_month,
+      statement->max_earnings_last_month);
 }
 
 bool BraveRewardsNativeWorker::CanConnectAccount(JNIEnv* env) {
