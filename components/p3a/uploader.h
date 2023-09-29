@@ -64,9 +64,14 @@ class Uploader {
                         scoped_refptr<net::HttpResponseHeaders> headers);
 
  private:
+  base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>&
+  GetURLLoaders(bool is_constellation);
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>
-      url_loaders_;
+      json_url_loaders_;
+  base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>
+      constellation_url_loaders_;
 
   const raw_ptr<const P3AConfig> config_;
 
