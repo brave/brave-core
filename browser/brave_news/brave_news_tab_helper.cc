@@ -49,6 +49,8 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
       controller_(
           brave_news::BraveNewsControllerFactory::GetControllerForContext(
               contents->GetBrowserContext())) {
+  CHECK(!contents->GetBrowserContext()->IsOffTheRecord());
+
   publishers_observation_.Observe(controller_->publisher_controller());
   controller_->GetPublishers(base::DoNothing());
 }
@@ -102,27 +104,22 @@ bool BraveNewsTabHelper::IsSubscribed(const GURL& feed_url) {
 }
 
 bool BraveNewsTabHelper::IsSubscribed() {
-  for (const auto& feed_url : GetAvailableFeedUrls()) {
-    if (IsSubscribed(feed_url)) {
-      return true;
-    }
-  }
-  return false;
+  return base::ranges::any_of(GetAvailableFeedUrls(), [this](const auto& feed) {
+    return IsSubscribed(feed);
+  });
 }
 
 std::string BraveNewsTabHelper::GetTitleForFeedUrl(const GURL& feed_url) {
   // If there's a default publisher for this |feed_url| we should use it's
   // title.
-  auto* default_publisher =
-      controller_->publisher_controller()->GetPublisherForFeed(feed_url);
-  if (default_publisher) {
+  if (auto* default_publisher =
+          controller_->publisher_controller()->GetPublisherForFeed(feed_url)) {
     return default_publisher->publisher_name;
   }
 
   // Otherwise, find the |FeedDetails| for this |feed_url|.
-  auto it = base::ranges::find_if(
-      rss_page_feeds_,
-      [feed_url](const auto& details) { return details.feed_url == feed_url; });
+  auto it =
+      base::ranges::find(rss_page_feeds_, feed_url, &FeedDetails::feed_url);
   // If we don't have any details, return the empty string as we don't know what
   // the title should be.
   if (it == rss_page_feeds_.end()) {
@@ -189,9 +186,8 @@ void BraveNewsTabHelper::OnFoundFeedData(
   }
 
   if (feeds.empty()) {
-    base::ranges::remove_if(rss_page_feeds_, [feed_url](const auto& detail) {
-      return detail.feed_url == feed_url;
-    });
+    rss_page_feeds_.erase(base::ranges::remove(rss_page_feeds_, feed_url,
+                                               &FeedDetails::feed_url));
   } else {
     DCHECK_EQ(1u, feeds.size())
         << "As we were passed a FeedURL, this should only find one feed.";
@@ -226,8 +222,9 @@ bool BraveNewsTabHelper::ShouldFindFeeds() {
 }
 
 void BraveNewsTabHelper::AvailableFeedsChanged() {
+  const auto& feed_urls = GetAvailableFeedUrls();
   for (auto& observer : observers_) {
-    observer.OnAvailableFeedsChanged(GetAvailableFeedUrls());
+    observer.OnAvailableFeedsChanged(feed_urls);
   }
 }
 

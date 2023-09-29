@@ -33,7 +33,7 @@ class BraveNewsTabHelper
 
     // Indicates whether we've requested this feed, so we don't request it
     // multiple times.
-    bool requested_feed;
+    bool requested_feed = false;
   };
 
   class PageFeedsObserver : public base::CheckedObserver {
