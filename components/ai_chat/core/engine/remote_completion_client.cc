@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
+#include "brave/components/ai_chat/core/engine/remote_completion_client.h"
 
 #include <base/containers/flat_map.h>
 
@@ -17,9 +17,9 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/browser/constants.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/constants.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"

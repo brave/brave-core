@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_ENGINE_CONSUMER_LLAMA_H_
-#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_ENGINE_CONSUMER_LLAMA_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_ENGINE_ENGINE_CONSUMER_CLAUDE_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_ENGINE_ENGINE_CONSUMER_CLAUDE_H_
 
 #include <memory>
 #include <string>
 
-#include "brave/components/ai_chat/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/engine/remote_completion_client.h"
 
 namespace api_request_helper {
 class APIRequestResult;
@@ -26,16 +26,16 @@ namespace ai_chat {
 using api_request_helper::APIRequestResult;
 
 // An AI Chat engine consumer that uses the Claude-style remote HTTP completion
-// API and builds prompts tailored to the Brave Leo model.
-class EngineConsumerLlamaRemote : public EngineConsumer {
+// API and builds prompts tailored to the Claude models.
+class EngineConsumerClaudeRemote : public EngineConsumer {
  public:
-  explicit EngineConsumerLlamaRemote(
+  explicit EngineConsumerClaudeRemote(
       const mojom::Model& model,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  EngineConsumerLlamaRemote(const EngineConsumerLlamaRemote&) = delete;
-  EngineConsumerLlamaRemote& operator=(const EngineConsumerLlamaRemote&) =
+  EngineConsumerClaudeRemote(const EngineConsumerClaudeRemote&) = delete;
+  EngineConsumerClaudeRemote& operator=(const EngineConsumerClaudeRemote&) =
       delete;
-  ~EngineConsumerLlamaRemote() override;
+  ~EngineConsumerClaudeRemote() override;
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
@@ -59,9 +59,9 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
 
   std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
 
-  base::WeakPtrFactory<EngineConsumerLlamaRemote> weak_ptr_factory_{this};
+  base::WeakPtrFactory<EngineConsumerClaudeRemote> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_ENGINE_CONSUMER_LLAMA_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_ENGINE_ENGINE_CONSUMER_CLAUDE_H_

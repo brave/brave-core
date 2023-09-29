@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_REMOTE_COMPLETION_CLIENT_H_
-#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_REMOTE_COMPLETION_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_ENGINE_REMOTE_COMPLETION_CLIENT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_ENGINE_REMOTE_COMPLETION_CLIENT_H_
 
 #include <memory>
 #include <string>
@@ -15,8 +15,8 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/engine/engine_consumer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 namespace network {
@@ -64,4 +64,4 @@ class RemoteCompletionClient {
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_ENGINE_REMOTE_COMPLETION_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_ENGINE_REMOTE_COMPLETION_CLIENT_H_

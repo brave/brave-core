@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_MODELS_H_
-#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_MODELS_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_MODELS_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_MODELS_H_
 
 #include <vector>
 
@@ -22,4 +22,4 @@ extern const std::vector<std::string_view> kAllModelKeysDisplayOrder;
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_MODELS_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_MODELS_H_

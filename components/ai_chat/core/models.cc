@@ -5,7 +5,7 @@
 
 #include <vector>
 
-#include "brave/components/ai_chat/browser/models.h"
+#include "brave/components/ai_chat/core/models.h"
 
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 
@@ -14,7 +14,7 @@ namespace ai_chat {
 constexpr char kModelsDefaultKey[] = "chat-default";
 
 // When adding new models, especially for display, make sure to add the UI
-// strings to ai_chat_ui_strings.grdp and ai_chat/browser/constants.cc.
+// strings to ai_chat_ui_strings.grdp and ai_chat/core/constants.cc.
 // This also applies for modifying keys, since some of the strings are based
 // on the model key.
 const base::flat_map<std::string_view, mojom::Model> kAllModels = {

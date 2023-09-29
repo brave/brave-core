@@ -15,7 +15,7 @@
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/ai_chat_metrics.h"
 #endif
 
 namespace misc_metrics {

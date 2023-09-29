@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
+#include "brave/components/ai_chat/core/engine/remote_completion_client.h"
 
 #include <memory>
 #include <utility>

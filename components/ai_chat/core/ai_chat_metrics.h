@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_METRICS_H_
-#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_METRICS_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_AI_CHAT_METRICS_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_AI_CHAT_METRICS_H_
 
 #include "base/memory/weak_ptr.h"
 #include "base/timer/wall_clock_timer.h"
@@ -46,4 +46,4 @@ class AIChatMetrics : public base::SupportsWeakPtr<AIChatMetrics> {
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_METRICS_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_AI_CHAT_METRICS_H_
