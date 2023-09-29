@@ -65,6 +65,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void ClearConversationHistory() override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
+  void GetUserDismissedPremiumPrompt(
+      GetUserDismissedPremiumPromptCallback callback) override;
+  void SetUserDismissedPremiumPrompt(bool has_dismissed) override;
 
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;

@@ -13,6 +13,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBraveChatHasSeenDisclaimer, false);
   registry->RegisterBooleanPref(kBraveChatAutoGenerateQuestions, false);
   registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
+  registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
 }
 
 }  // namespace ai_chat::prefs

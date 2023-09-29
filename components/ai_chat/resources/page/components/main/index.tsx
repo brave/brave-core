@@ -30,7 +30,9 @@ function Main () {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const shouldShowPremiumSuggestion = !context.isPremiumUser && context.currentModel?.isPremium
+  const shouldShowPremiumSuggestionForModel = !context.isPremiumUser && context.currentModel?.isPremium
+
+  const shouldShowPremiumSuggestionStandalone = !context.hasUserDissmisedPremiumPrompt && !siteInfo && !context.isPremiumUser
 
   let conversationListElement = <PrivacyMessage />
   let siteTitleElement = null
@@ -96,14 +98,34 @@ function Main () {
         )}
         {conversationListElement}
         {currentErrorElement && (
-          <div className={styles.errorContainer}>{currentErrorElement}</div>
+          <div className={styles.promptContainer}>{currentErrorElement}</div>
         )}
         {
-          shouldShowPremiumSuggestion && (
-            <PremiumSuggestion
-              title={getLocale('unlockPremium')}
-              verbose={true}
-            />
+          shouldShowPremiumSuggestionForModel && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremium')}
+                verbose={true}
+              />
+            </div>
+          )
+        }
+        {
+          shouldShowPremiumSuggestionStandalone && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremium')}
+                verbose={true}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => context.dismissPremiumPrompt()}
+                  >
+                    {getLocale('dismissButtonLabel')}
+                  </Button>
+                }
+              />
+            </div>
           )
         }
       </div>

@@ -77,6 +77,11 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
           ai_chat::prefs::kBraveChatHasSeenDisclaimer));
 
+  untrusted_source->AddBoolean(
+      "hasUserDismissedPrompt",
+      profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
+          ai_chat::prefs::kUserDismissedPremiumPrompt));
+
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src 'self' chrome-untrusted://resources;");
