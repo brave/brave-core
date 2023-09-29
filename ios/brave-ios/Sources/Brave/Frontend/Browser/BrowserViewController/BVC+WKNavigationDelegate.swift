@@ -327,7 +327,7 @@ extension BrowserViewController: WKNavigationDelegate {
         tab?.setScripts(scripts: [
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
-          .deAmp: Preferences.Shields.autoRedirectAMPPages.value,
+          .deAmp: tabManager.deAmpPrefs.isDeAmpEnabled,
 
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
@@ -354,7 +354,10 @@ extension BrowserViewController: WKNavigationDelegate {
           isForMainFrame: targetFrame.isMainFrame
         )
         let scriptTypes =
-          await tab?.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
+          await tab?.currentPageData?.makeUserScriptTypes(
+            domain: domainForMainFrame,
+            isDeAmpEnabled: tabManager.deAmpPrefs.isDeAmpEnabled
+          ) ?? []
         tab?.setCustomUserScript(scripts: scriptTypes)
       }
     }
@@ -605,7 +608,11 @@ extension BrowserViewController: WKNavigationDelegate {
         isForMainFrame: navigationResponse.isForMainFrame
       ) == true
     {
-      let scriptTypes = await tab?.currentPageData?.makeUserScriptTypes(domain: domain) ?? []
+      let scriptTypes =
+        await tab?.currentPageData?.makeUserScriptTypes(
+          domain: domain,
+          isDeAmpEnabled: tabManager.deAmpPrefs.isDeAmpEnabled
+        ) ?? []
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
 
@@ -1669,9 +1676,12 @@ extension BrowserViewController: WKUIDelegate {
     // Then we simply get all elements up until the user allows us to redirect
     // (i.e. appropriate settings are enabled for that redirect rule)
     if Preferences.Shields.autoRedirectTrackingURLs.value,
-       let currentURL = tab.webView?.url,
-       currentURL.baseDomain != requestURL.baseDomain {
-      if let redirectURL = DebounceServiceFactory.get(privateMode: tab.isPrivate)?.debounce(requestURL) {
+      let currentURL = tab.webView?.url,
+      currentURL.baseDomain != requestURL.baseDomain
+    {
+      if let redirectURL = DebounceServiceFactory.get(privateMode: tab.isPrivate)?.debounce(
+        requestURL
+      ) {
         // For now we only allow the `Referer`. The browser will add other headers during navigation.
         var modifiedRequest = URLRequest(url: redirectURL)
 

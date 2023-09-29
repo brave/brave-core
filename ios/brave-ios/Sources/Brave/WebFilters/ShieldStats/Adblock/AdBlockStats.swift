@@ -234,6 +234,7 @@ public actor AdBlockStats {
   func makeEngineScriptTypes(
     frameURL: URL,
     isMainFrame: Bool,
+    isDeAmpEnabled: Bool,
     domain: Domain
   ) async -> Set<UserScriptType> {
     // Add any engine scripts for this frame
@@ -245,6 +246,7 @@ public actor AdBlockStats {
           frameURL: frameURL,
           isMainFrame: isMainFrame,
           domain: domain,
+          isDeAmpEnabled: isDeAmpEnabled,
           index: index
         )
       } catch {

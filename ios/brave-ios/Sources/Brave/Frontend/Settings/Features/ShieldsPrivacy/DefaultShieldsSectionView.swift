@@ -43,10 +43,10 @@ struct DefaultShieldsViewView: View {
         subtitle: Strings.HTTPSEverywhereDescription,
         option: Preferences.Shields.httpsEverywhere
       )
-      OptionToggleView(
+      ShieldToggleView(
         title: Strings.autoRedirectAMPPages,
         subtitle: Strings.autoRedirectAMPPagesDescription,
-        option: Preferences.Shields.autoRedirectAMPPages
+        toggle: $settings.isDeAmpEnabled
       )
       OptionToggleView(
         title: Strings.autoRedirectTrackingURLs,

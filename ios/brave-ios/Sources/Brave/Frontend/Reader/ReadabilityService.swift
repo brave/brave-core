@@ -35,7 +35,7 @@ class ReadabilityOperation: Operation {
     DispatchQueue.main.async {
       let configuration = WKWebViewConfiguration()
       self.tab = Tab(configuration: configuration)
-      self.tab.createWebview()
+      self.tab.createWebview(includeDeAmpScript: false)
       self.tab.navigationDelegate = self
 
       let readerMode = ReaderModeScriptHandler(tab: self.tab)

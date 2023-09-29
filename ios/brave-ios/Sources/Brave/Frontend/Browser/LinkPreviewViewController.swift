@@ -38,7 +38,7 @@ class LinkPreviewViewController: UIViewController {
     ).then {
       $0.tabDelegate = browserController
       $0.navigationDelegate = browserController
-      $0.createWebview()
+      $0.createWebview(includeDeAmpScript: false)
       $0.webView?.scrollView.layer.masksToBounds = true
     }
 

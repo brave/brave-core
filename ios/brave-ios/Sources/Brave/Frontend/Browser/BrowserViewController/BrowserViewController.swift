@@ -328,7 +328,8 @@ public class BrowserViewController: UIViewController {
       prefs: profile.prefs,
       rewards: rewards,
       tabGeneratorAPI: braveCore.tabGeneratorAPI,
-      privateBrowsingManager: privateBrowsingManager
+      privateBrowsingManager: privateBrowsingManager,
+      deAmpPrefs: braveCore.deAmpPrefs
     )
 
     // Add Regular tabs to Sync Chain
@@ -3513,7 +3514,7 @@ extension BrowserViewController: PreferencesObserver {
         HTTPCookie.loadFromDisk { _ in
           self.tabManager.reloadSelectedTab()
           for tab in self.tabManager.allTabs where tab != self.tabManager.selectedTab {
-            tab.createWebview()
+            tab.createWebview(includeDeAmpScript: self.tabManager.deAmpPrefs.isDeAmpEnabled)
             if let url = tab.webView?.url {
               tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
             }

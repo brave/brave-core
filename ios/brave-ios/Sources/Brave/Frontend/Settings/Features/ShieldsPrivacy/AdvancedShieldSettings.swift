@@ -46,6 +46,11 @@ import os
       p3aUtilities.isP3AEnabled = isP3AEnabled
     }
   }
+  @Published var isDeAmpEnabled: Bool {
+    didSet {
+      deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
+    }
+  }
   @Published var adBlockAndTrackingPreventionLevel: ShieldLevel {
     didSet {
       ShieldPreferences.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
@@ -60,6 +65,7 @@ import os
 
   private var subscriptions: [AnyCancellable] = []
   private let p3aUtilities: BraveP3AUtils
+  private let deAmpPrefs: DeAmpPrefs
   private let clearDataCallback: ClearDataCallback
   let tabManager: TabManager
 
@@ -69,13 +75,16 @@ import os
     feedDataSource: FeedDataSource,
     historyAPI: BraveHistoryAPI,
     p3aUtilities: BraveP3AUtils,
+    deAmpPrefs: DeAmpPrefs,
     clearDataCallback: @escaping ClearDataCallback
   ) {
     self.p3aUtilities = p3aUtilities
+    self.deAmpPrefs = deAmpPrefs
     self.tabManager = tabManager
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
     self.clearDataCallback = clearDataCallback
     self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
+    self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
 
     cookieConsentBlocking = FilterListStorage.shared.isEnabled(
       for: FilterList.cookieConsentNoticesComponentID
