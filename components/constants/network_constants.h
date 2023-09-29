@@ -14,7 +14,6 @@ extern const char kBraveProxyPattern[];
 extern const char kBraveSoftwareProxyPattern[];
 
 extern const char kBraveUsageStandardPath[];
-extern const char kBraveUsageThresholdPath[];
 extern const char kBraveReferralsServer[];
 extern const char kBraveReferralsInitPath[];
 extern const char kBraveReferralsActivityPath[];

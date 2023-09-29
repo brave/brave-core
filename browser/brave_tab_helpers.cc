@@ -13,7 +13,6 @@
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/browser/brave_stats/brave_stats_tab_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
@@ -160,8 +159,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
   BraveNewsTabHelper::MaybeCreateForWebContents(web_contents);
-
-  brave_stats::BraveStatsTabHelper::CreateForWebContents(web_contents);
 
   if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
     ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
