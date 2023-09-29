@@ -37,7 +37,7 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
   "entries": [
     // Brave
     { "name": "adblock-data.s3.brave.com", "pins": "brave"},
-    { "name": "ai-chat.proxy.brave.com", "pins": "brave"},
+    { "name": "ai-chat.bsg.brave.com", "pins": "brave"},
     { "name": "brave-core-ext.s3.brave.com", "pins": "brave"},
     { "name": "brave-today-cdn.brave.com", "pins": "brave"},
     { "name": "clients4.brave.com", "pins": "brave"},
@@ -153,7 +153,7 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
       "policy": "custom"
     },
     {
-      "name": "ai-chat.proxy.brave.com",
+      "name": "ai-chat.bsg.brave.com",
       "mode": "force-https",
       "policy": "custom"
     },
