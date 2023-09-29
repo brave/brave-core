@@ -51,6 +51,8 @@ using ::testing::_;
 namespace {
 
 const char kTestDataDirectory[] = "request-otr-data";
+const char kWindowOpenerScript[] =
+    "try { window.opener.location.hostname } catch (e) { e.name }";
 
 class TestObserver : public infobars::InfoBarManager::Observer {
  public:
@@ -345,23 +347,24 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
                        WindowOpenAfterStandardNavigationCrossOrigin) {
-  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
-  ASSERT_TRUE(
-      content::ExecJs(GetActiveWebContents(),
-                      "window.open('notsensitive.b.com/simple.html');"));
-  ASSERT_NE(content::EvalJs(GetActiveWebContents(), "window.opener"), nullptr);
+  NavigateTo(embedded_test_server()->GetURL("a.com", "/simple.html"));
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
+                              "window.open('b.com/simple.html');"));
+  ASSERT_EQ(content::EvalJs(GetActiveWebContents(), kWindowOpenerScript),
+            "a.com");
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
                        WindowOpenAfterStandardNavigationSameOrigin) {
-  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  NavigateTo(embedded_test_server()->GetURL("a.com", "/simple.html"));
   ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
                               "window.open('a.com/simple.html');"));
-  ASSERT_NE(content::EvalJs(GetActiveWebContents(), "window.opener"), nullptr);
+  ASSERT_EQ(content::EvalJs(GetActiveWebContents(), kWindowOpenerScript),
+            "a.com");
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
-                       DISABLED_WindowOpenAfterOTRNavigationCrossOrigin) {
+                       WindowOpenAfterOTRNavigationCrossOrigin) {
   ASSERT_TRUE(InstallMockExtension());
 
   // Always use request-otr for sensitive sites (skipping interstitial).
@@ -371,11 +374,11 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   ASSERT_TRUE(
       content::ExecJs(GetActiveWebContents(),
                       "window.open('notsensitive.b.com/simple.html');"));
-  ASSERT_EQ(content::EvalJs(GetActiveWebContents(), "window.opener"), nullptr);
+  ASSERT_EQ(content::EvalJs(GetActiveWebContents(), kWindowOpenerScript), "");
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
-                       DISABLED_WindowOpenAfterOTRNavigationSameOrigin) {
+                       WindowOpenAfterOTRNavigationSameOrigin) {
   ASSERT_TRUE(InstallMockExtension());
 
   // Always use request-otr for sensitive sites (skipping interstitial).
@@ -383,8 +386,8 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
 
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
   ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
-                              "window.open('a.com/simple.html');"));
-  ASSERT_EQ(content::EvalJs(GetActiveWebContents(), "window.opener"), nullptr);
+                              "window.open('sensitive.a.com/simple.html');"));
+  ASSERT_EQ(content::EvalJs(GetActiveWebContents(), kWindowOpenerScript), "");
 }
 
 // Define a subclass that disables the feature so we can ensure that nothing
