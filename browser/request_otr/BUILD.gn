@@ -19,7 +19,6 @@ source_set("browser_tests") {
     "//brave/components/request_otr/common",
     "//chrome/common",
     "//chrome/test:test_support",
-    "//chrome/test:test_support_ui",
     "//components/permissions:permissions",
     "//components/prefs",
     "//components/security_interstitials/content:security_interstitial_page",
