@@ -34,6 +34,12 @@ source_set("ui") {
   deps = []
   public_deps = []
   sources = [
+    "autofill/confirm_autocomplete_bubble_controller.h",
+    "autofill/confirm_autocomplete_bubble_controller_impl.cc",
+    "autofill/confirm_autocomplete_bubble_controller_impl.h",
+    "autofill/confirm_autocomplete_ui.h",
+    "views/autofill/confirm_autocomplete_bubble_view.cc",
+    "views/autofill/confirm_autocomplete_bubble_view.h",
     "webui/brave_adblock_internals_ui.cc",
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",

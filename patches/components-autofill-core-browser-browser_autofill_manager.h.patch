@@ -1,0 +1,16 @@
+diff --git a/components/autofill/core/browser/browser_autofill_manager.h b/components/autofill/core/browser/browser_autofill_manager.h
+index 3d4facb3e4e3b3fde0b23f77fd324163a3e14312..089bb8a3d7405b371a0c814a91b8e7021a5bea29 100644
+--- a/components/autofill/core/browser/browser_autofill_manager.h
++++ b/components/autofill/core/browser/browser_autofill_manager.h
+@@ -701,6 +701,11 @@ class BrowserAutofillManager : public AutofillManager,
+   // `GetPlusAddressService`.
+   absl::optional<Suggestion> MaybeGetPlusAddressSuggestion();
+ 
++  void OnConfirmAutocomplete(
++      FormData form_data,
++      std::unique_ptr<FormStructure> submitted_form,
++      AutofillClient::ConfirmAutocompleteUserDecision user_decision);
++
+   // Delegates to perform external processing (display, selection) on
+   // our behalf.
+   std::unique_ptr<AutofillExternalDelegate> external_delegate_;

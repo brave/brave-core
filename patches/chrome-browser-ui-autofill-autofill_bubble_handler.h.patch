@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/ui/autofill/autofill_bubble_handler.h b/chrome/browser/ui/autofill/autofill_bubble_handler.h
+index ac20cf76009c63369e00d7cad64682628d292379..c6594c98805626e26f71267767c564dc3341682f 100644
+--- a/chrome/browser/ui/autofill/autofill_bubble_handler.h
++++ b/chrome/browser/ui/autofill/autofill_bubble_handler.h
+@@ -23,6 +23,9 @@ class MandatoryReauthBubbleController;
+ enum class IbanBubbleType;
+ enum class MandatoryReauthBubbleType;
+ 
++class ConfirmAutocompleteBubbleController;
++enum class ConfirmAutocompleteBubbleType;
++
+ // TODO(crbug.com/1337392): consider removing this class and give the logic back
+ // to each bubble's controller. This class serves also the avatar button /
+ // personal data manager observer for saving feedback. If we end up not doing it
+@@ -53,6 +56,12 @@ class AutofillBubbleHandler {
+                                              bool is_user_gesture,
+                                              IbanBubbleType bubble_type) = 0;
+ 
++  virtual AutofillBubbleBase* ShowConfirmAutocompleteBubble(
++      content::WebContents* web_contents,
++      ConfirmAutocompleteBubbleController* controller,
++      bool is_user_gesture,
++      ConfirmAutocompleteBubbleType bubble_type) = 0;
++
+   virtual AutofillBubbleBase* ShowOfferNotificationBubble(
+       content::WebContents* web_contents,
+       OfferNotificationBubbleController* controller,

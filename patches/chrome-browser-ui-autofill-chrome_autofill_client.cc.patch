@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.cc b/chrome/browser/ui/autofill/chrome_autofill_client.cc
+index f858890be28658620fbed4e023e38c319b988f93..140a09f51fd61b7b1cba89b8d5626b3fb7b05236 100644
+--- a/chrome/browser/ui/autofill/chrome_autofill_client.cc
++++ b/chrome/browser/ui/autofill/chrome_autofill_client.cc
+@@ -15,6 +15,7 @@
+ #include "base/strings/string_util.h"
+ #include "base/strings/utf_string_conversions.h"
+ #include "base/time/time.h"
++#include "brave/browser/ui/autofill/confirm_autocomplete_bubble_controller_impl.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/autofill/address_normalizer_factory.h"
+ #include "chrome/browser/autofill/autocomplete_history_manager_factory.h"
+@@ -685,6 +686,13 @@ void ChromeAutofillClient::ConfirmSaveIbanLocally(
+       ->OfferLocalSave(iban, should_show_prompt, std::move(callback));
+ }
+ 
++void ChromeAutofillClient::ConfirmAutocomplete(
++    ConfirmAutocompletePromptCallback callback) {
++  ConfirmAutocompleteBubbleControllerImpl::CreateForWebContents(web_contents());
++  ConfirmAutocompleteBubbleControllerImpl::FromWebContents(web_contents())
++      ->OfferLocalSave(std::move(callback));
++}
++
+ void ChromeAutofillClient::ShowWebauthnOfferDialog(
+     WebauthnDialogCallback offer_dialog_callback) {
+   WebauthnDialogControllerImpl::GetOrCreateForPage(

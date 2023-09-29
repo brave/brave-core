@@ -1,0 +1,39 @@
+diff --git a/components/autofill/core/browser/autofill_client.h b/components/autofill/core/browser/autofill_client.h
+index 3cc201da7bdfcf8e8cbbb971ff5a66f478ce94ce..ff7dcd822a5c5256e679fedef84e830f795cef5c 100644
+--- a/components/autofill/core/browser/autofill_client.h
++++ b/components/autofill/core/browser/autofill_client.h
+@@ -184,6 +184,14 @@ class AutofillClient : public RiskDataLoader {
+     kIgnored,
+   };
+ 
++  enum class ConfirmAutocompleteUserDecision {
++    kAccepted,
++
++    kDeclined,
++
++    kIgnored,
++  };
++
+   enum class UnmaskCardReason {
+     // The card is being unmasked for PaymentRequest.
+     kPaymentRequest,
+@@ -369,6 +377,9 @@ class AutofillClient : public RiskDataLoader {
+       base::OnceCallback<void(SaveIbanOfferUserDecision user_decision,
+                               const absl::optional<std::u16string>& nickname)>;
+ 
++  using ConfirmAutocompletePromptCallback =
++      base::OnceCallback<void(ConfirmAutocompleteUserDecision user_decision)>;
++
+   // Callback to run if the OK button or the cancel button in a
+   // Webauthn dialog is clicked.
+   typedef base::RepeatingCallback<void(WebauthnDialogCallbackType)>
+@@ -617,6 +628,9 @@ class AutofillClient : public RiskDataLoader {
+                                       bool should_show_prompt,
+                                       LocalSaveIbanPromptCallback callback) = 0;
+ 
++  virtual void ConfirmAutocomplete(
++      ConfirmAutocompletePromptCallback callback) = 0;
++
+   // TODO(crbug.com/991037): Find a way to merge these two functions. Shouldn't
+   // use WebauthnDialogState as that state is a purely UI state (should not be
+   // accessible for managers?), and some of the states |KInactive| may be
