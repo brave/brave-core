@@ -13,8 +13,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/brave_domains/buildflags.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -63,18 +62,11 @@ base::Value::Dict ToRatingPayloadDict(const RatingPayload& rating_payload) {
 }
 
 const GURL GetEndpointBaseUrl() {
-  auto* hostname = BUILDFLAG(BRAVE_AI_CHAT_FEEDBACK_HOSTNAME);
+  auto* base_hostname = BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
 
-  // Simply log if we have empty endpoint, it's probably just a local
-  // non-configured build.
-  if (strlen(hostname) != 0) {
-    static base::NoDestructor<GURL> url{
-        base::StrCat({url::kHttpsScheme, "://", hostname})};
-    return *url;
-  } else {
-    LOG(ERROR) << "brave_ai_chat_feedback_hostname was empty.";
-    return GURL::EmptyGURL();
-  }
+  static base::NoDestructor<GURL> url{
+      base::StrCat({url::kHttpsScheme, "://feedback.", base_hostname})};
+  return *url;
 }
 
 }  // namespace
