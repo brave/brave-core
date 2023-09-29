@@ -23,6 +23,7 @@ static_library("browser") {
 
   deps = [
     "//base",
+    "//brave/brave_domains",
     "//brave/components/ai_chat/common",
     "//brave/components/ai_chat/common/buildflags",
     "//brave/components/ai_chat/common/mojom",

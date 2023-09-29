@@ -126,6 +126,7 @@ hooks = [
 include_rules = [
   #Everybody can use some things.
   "+brave_base",
+  "+brave_domains",
   "+crypto",
   "+net",
   "+sql",

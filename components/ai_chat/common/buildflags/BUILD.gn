@@ -1,4 +1,4 @@
-# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -11,6 +11,5 @@ buildflag_header("buildflags") {
   flags = [
     "ENABLE_AI_CHAT=$enable_ai_chat",
     "BRAVE_AI_CHAT_ENDPOINT=\"$brave_ai_chat_endpoint\"",
-    "BRAVE_AI_CHAT_FEEDBACK_HOSTNAME=\"$brave_ai_chat_feedback_hostname\"",
   ]
 }
