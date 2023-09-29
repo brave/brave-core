@@ -256,6 +256,17 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
                               std::move(on_complete));
 }
 
+void AIChatUIPageHandler::GetUserDismissedPremiumPrompt(
+    GetUserDismissedPremiumPromptCallback callback) {
+  std::move(callback).Run(profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kUserDismissedPremiumPrompt));
+}
+
+void AIChatUIPageHandler::SetUserDismissedPremiumPrompt(bool has_dismissed) {
+  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kUserDismissedPremiumPrompt,
+                                   has_dismissed);
+}
+
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
                                    true);

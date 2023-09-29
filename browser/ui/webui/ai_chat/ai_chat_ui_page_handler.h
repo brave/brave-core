@@ -69,6 +69,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void RateMessage(bool is_liked,
                    const std::string& turn_text,
                    RateMessageCallback callback) override;
+  void GetUserDismissedPremiumPrompt(
+      GetUserDismissedPremiumPromptCallback callback) override;
+  void SetUserDismissedPremiumPrompt(bool has_dismissed) override;
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
                     const std::string& rating_id,
