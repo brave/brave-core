@@ -38,8 +38,9 @@ class AdBlockFiltersProvider {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  virtual void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
-                             base::OnceCallback<void()>) = 0;
+  virtual void LoadFilterSet(
+      base::OnceCallback<
+          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) = 0;
 
   base::WeakPtr<AdBlockFiltersProvider> AsWeakPtr();
 

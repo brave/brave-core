@@ -12,6 +12,16 @@
 
 namespace brave_shields {
 
+namespace {
+
+void AddDATBufferToFilterSet(uint8_t permission_mask,
+                             DATFileDataBuffer buffer,
+                             rust::Box<adblock::FilterSet>* filter_set) {
+  (*filter_set)->add_filter_list_with_permissions(buffer, permission_mask);
+}
+
+}  // namespace
+
 TestFiltersProvider::TestFiltersProvider(const std::string& rules,
                                          const std::string& resources)
     : AdBlockFiltersProvider(true), rules_(rules), resources_(resources) {}
@@ -31,11 +41,11 @@ std::string TestFiltersProvider::GetNameForDebugging() {
 }
 
 void TestFiltersProvider::LoadFilterSet(
-    rust::Box<adblock::FilterSet>* filter_set,
-    base::OnceCallback<void()> cb) {
+    base::OnceCallback<
+        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
   auto buffer = std::vector<unsigned char>(rules_.begin(), rules_.end());
-  (*filter_set)->add_filter_list_with_permissions(buffer, permission_mask_);
-  std::move(cb).Run();
+  std::move(cb).Run(
+      base::BindOnce(&AddDATBufferToFilterSet, permission_mask_, buffer));
 }
 
 void TestFiltersProvider::LoadResources(

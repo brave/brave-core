@@ -51,8 +51,9 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   AdBlockComponentFiltersProvider& operator=(
       const AdBlockComponentFiltersProvider&) = delete;
 
-  void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
-                     base::OnceCallback<void()>) override;
+  void LoadFilterSet(
+      base::OnceCallback<void(
+          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
 
   // Remove the component. This will force it to be redownloaded next time it
   // is registered.
