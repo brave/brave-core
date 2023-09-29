@@ -7,6 +7,7 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import formatMessage from '$web-common/formatMessage'
 
 import styles from './style.module.scss'
 
@@ -18,8 +19,11 @@ interface PremiumSuggestionProps {
 }
 
 function PremiumSuggestion(props: PremiumSuggestionProps) {
-  const pricingInfo = getLocale('premiumPricing').split('/')
-  const price = pricingInfo[1]
+  const pricingInfo = formatMessage(getLocale('premiumPricing'), {
+    tags: {
+      $1: () => <data>15</data>
+    }
+  })
 
   const handlePremiumButtonClick = () => {}
 
@@ -47,9 +51,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
         <li className={styles.priceList}>
           <span>{getLocale('premiumLabel')}</span>
           <span className={styles.price}>
-            {pricingInfo[0]} {price[0]}
-            <data>{price.replace(/^\D+/g, '')}</data>
-            {pricingInfo[2]}
+            {pricingInfo}
           </span>
         </li>
       </ul>

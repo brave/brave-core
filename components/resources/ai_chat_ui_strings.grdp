@@ -95,7 +95,7 @@
      Brave Leo Premium
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_PRICING" desc="Price label to subscribe for Premium model">
-  USD/\$\15/month
+    USD $ <ph name="PRICE_START">$1</ph> <ph name="PRICE_END">$2</ph> /month
   </message>
   <message name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
     Dismiss
