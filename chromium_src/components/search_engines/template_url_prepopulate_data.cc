@@ -601,7 +601,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   if (default_search_provider_index)
     *default_search_provider_index = 0;
   std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      GetPrepopulatedTemplateURLData(prefs);
+      GetOverriddenTemplateURLData(prefs);
   if (!t_urls.empty())
     return t_urls;
 
