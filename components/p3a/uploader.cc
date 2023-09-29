@@ -62,10 +62,12 @@ void Uploader::UploadLog(const std::string& compressed_log_data,
   }
 #endif
 
-  url_loaders_[log_type] = network::SimpleURLLoader::Create(
+  base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>&
+      url_loaders = GetURLLoaders(is_constellation);
+  url_loaders[log_type] = network::SimpleURLLoader::Create(
       std::move(resource_request),
       GetP3AUploadAnnotation(upload_type, is_constellation));
-  network::SimpleURLLoader* url_loader = url_loaders_[log_type].get();
+  network::SimpleURLLoader* url_loader = url_loaders[log_type].get();
 
   url_loader->AttachStringForUpload(
       compressed_log_data,
@@ -82,14 +84,25 @@ void Uploader::OnUploadComplete(
     MetricLogType log_type,
     scoped_refptr<net::HttpResponseHeaders> headers) {
   int response_code = -1;
-  network::SimpleURLLoader* url_loader = url_loaders_[log_type].get();
+  base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>&
+      url_loaders = GetURLLoaders(is_constellation);
+  network::SimpleURLLoader* url_loader = url_loaders[log_type].get();
 
   if (headers) {
     response_code = headers->response_code();
   }
   bool is_ok = url_loader->NetError() == net::OK;
-  url_loaders_.erase(log_type);
+  url_loaders.erase(log_type);
   upload_callback_.Run(is_ok, response_code, is_constellation, log_type);
+}
+
+base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>&
+Uploader::GetURLLoaders(bool is_constellation) {
+  if (is_constellation) {
+    return constellation_url_loaders_;
+  } else {
+    return json_url_loaders_;
+  }
 }
 
 }  // namespace p3a
