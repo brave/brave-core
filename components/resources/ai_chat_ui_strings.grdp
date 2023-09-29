@@ -160,4 +160,7 @@
   <message name="IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR" desc="An error message when the user's feedback could not be submitted">
     Your feedback could not be submitted, please check network connection and try again
   </message>
+  <message name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
+    Unlock the full potential of Leo
+  </message>
 </grit-part>
