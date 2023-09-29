@@ -100,13 +100,11 @@ class TestNativeThemeObserver : public ui::NativeThemeObserver {
 
 #if BUILDFLAG(IS_WIN)
 void RunLoopRunWithTimeout(base::TimeDelta timeout) {
-  // ScopedRunLoopTimeout causes a FATAL failure on timeout though, but for us
-  // the timeout means success, so turn the FATAL failure into success.
+  // ScopedRunLoopTimeout causes a non-fatal failure on timeout but for us the
+  // timeout means success, so turn the failure into success.
   base::RunLoop run_loop;
   base::test::ScopedRunLoopTimeout run_timeout(FROM_HERE, timeout);
-  // EXPECT_FATAL_FAILURE() can only reference globals and statics.
-  static base::RunLoop& static_loop = run_loop;
-  EXPECT_FATAL_FAILURE(static_loop.Run(), "Run() timed out.");
+  EXPECT_NONFATAL_FAILURE(run_loop.Run(), "Run() timed out.");
 }
 #endif
 
