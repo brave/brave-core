@@ -149,7 +149,7 @@ public class BraveRewardsPanel
     public static final String WALLET_GENERATION_DISABLED_ERROR = "wallet-generation-disabled";
 
     // Payout status
-    private static final String PAYOUT_STATUS_PENDING = "pending";
+    private static final String PAYOUT_STATUS_PENDING = "off";
     private static final String PAYOUT_STATUS_PROCESSING = "processing";
     private static final String PAYOUT_STATUS_COMPLETE = "complete";
 
@@ -1048,31 +1048,74 @@ public class BraveRewardsPanel
                 estimatedRange.setText(estimatedValue);
             }
         }
-        showPayoutStatusBanner(nextPaymentDate);
+
+        if (minEarningsThisMonth > 0) {
+            showPayoutStatusBanner((long) nextPaymentDate);
+        }
     }
 
-    private void showPayoutStatusBanner(double nextPaymentDate) {
+    private double getDaysUntilRewardsPayment(long nextPaymentDateLong) {
+        Date nextPaymentDate = new Date(nextPaymentDateLong);
+        Calendar nextPaymentDateCalendar = Calendar.getInstance();
+        nextPaymentDateCalendar.setTime(nextPaymentDate);
+        nextPaymentDateCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        nextPaymentDateCalendar.set(Calendar.MINUTE, 0);
+        nextPaymentDateCalendar.set(Calendar.SECOND, 0);
+
+        Calendar nowDateCalendar = Calendar.getInstance();
+        if (nextPaymentDateCalendar.get(Calendar.MONTH) != nowDateCalendar.get(Calendar.MONTH)) {
+            return 0;
+        }
+
+        long delta =
+                nextPaymentDateCalendar.getTime().getTime() - nowDateCalendar.getTime().getTime();
+        double days = Math.ceil((double) delta / 24 / 60 / 60 / 1000);
+
+        if (days < 1) {
+            return 0;
+        }
+
+        return days;
+    }
+
+    private String getPaymentMonth() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        return (String) android.text.format.DateFormat.format("MMMM", calendar);
+    }
+
+    private String formatPaymentDate(long nextPaymentDateLong) {
+        Date nextPaymentDate = new Date(nextPaymentDateLong);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(nextPaymentDate);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        return (String) android.text.format.DateFormat.format("MMMM dd", calendar.getTime());
+    }
+
+    private void showPayoutStatusBanner(long nextPaymentDate) {
+        Log.e("payout_status", "nextPaymentDate : " + nextPaymentDate);
         String payoutStatus = mBraveRewardsNativeWorker.getPayoutStatus();
-        if (mPayoutStatusBannerLayout != null && !TextUtils.isEmpty(payoutStatus)
-                && mExternalWallet != null
+        if (mPayoutStatusBannerLayout != null && mExternalWallet != null
                 && mExternalWallet.getStatus() == WalletStatus.CONNECTED) {
-            String currentDate = (String) android.text.format.DateFormat.format("MMMM", new Date());
             mPayoutStatusBannerLayout.setVisibility(View.VISIBLE);
             ImageView payoutBannerImg = mPopupView.findViewById(R.id.payout_banner_img);
             TextView payoutBannerText = mPopupView.findViewById(R.id.payout_banner_text);
-            if (payoutStatus.equals(PAYOUT_STATUS_PENDING)) {
-                if (nextPaymentDate > 0) {
-                    String nextPayoutDate = (String) android.text.format.DateFormat.format(
-                            "MMMM dd", new Date((long) nextPaymentDate));
-                    mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
-                            ContextUtils.getApplicationContext().getResources(),
-                            R.drawable.rewards_panel_payout_processing_bg, null));
-                    payoutBannerImg.setImageResource(R.drawable.ic_payout_status_pending);
-                    payoutBannerText.setText(
-                            String.format(mPopupView.getResources().getString(
-                                                  R.string.rewards_panel_payout_pending_text),
-                                    currentDate, nextPayoutDate));
-                }
+            if (payoutStatus.equals(PAYOUT_STATUS_COMPLETE)) {
+                mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
+                        ContextUtils.getApplicationContext().getResources(),
+                        R.drawable.rewards_panel_payout_complete_bg, null));
+                payoutBannerImg.setImageResource(R.drawable.ic_payout_status_complete);
+                SpannableString spannableBannerText = spannableClickSpan(
+                        String.format(mPopupView.getResources().getString(
+                                              R.string.rewards_panel_payout_complete_text),
+                                getPaymentMonth(),
+                                mPopupView.getResources().getString(R.string.support)),
+                        mPopupView.getResources().getString(R.string.support), SUPPORT_URL);
+                payoutBannerText.setMovementMethod(LinkMovementMethod.getInstance());
+                payoutBannerText.setText(spannableBannerText);
             } else if (payoutStatus.equals(PAYOUT_STATUS_PROCESSING)) {
                 mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
                         ContextUtils.getApplicationContext().getResources(),
@@ -1081,7 +1124,7 @@ public class BraveRewardsPanel
                 SpannableString spannableBannerText = spannableClickSpan(
                         String.format(mPopupView.getResources().getString(
                                               R.string.rewards_panel_payout_processing_text),
-                                currentDate,
+                                getPaymentMonth(),
                                 mPopupView.getResources().getString(
                                         R.string.rewards_panel_payout_check_status_text)),
                         mPopupView.getResources().getString(
@@ -1089,18 +1132,17 @@ public class BraveRewardsPanel
                         ADS_PAYOUT_STATUS_URL);
                 payoutBannerText.setMovementMethod(LinkMovementMethod.getInstance());
                 payoutBannerText.setText(spannableBannerText);
-            } else if (payoutStatus.equals(PAYOUT_STATUS_COMPLETE)) {
+            } else if ((payoutStatus.equals(PAYOUT_STATUS_PENDING)
+                               || TextUtils.isEmpty(payoutStatus))
+                    && getDaysUntilRewardsPayment(nextPaymentDate) > 0) {
                 mPayoutStatusBannerLayout.setBackgroundDrawable(ResourcesCompat.getDrawable(
                         ContextUtils.getApplicationContext().getResources(),
-                        R.drawable.rewards_panel_payout_complete_bg, null));
-                payoutBannerImg.setImageResource(R.drawable.ic_payout_status_complete);
-                SpannableString spannableBannerText = spannableClickSpan(
+                        R.drawable.rewards_panel_payout_processing_bg, null));
+                payoutBannerImg.setImageResource(R.drawable.ic_payout_status_pending);
+                payoutBannerText.setText(
                         String.format(mPopupView.getResources().getString(
-                                              R.string.rewards_panel_payout_complete_text),
-                                currentDate, mPopupView.getResources().getString(R.string.support)),
-                        mPopupView.getResources().getString(R.string.support), SUPPORT_URL);
-                payoutBannerText.setMovementMethod(LinkMovementMethod.getInstance());
-                payoutBannerText.setText(spannableBannerText);
+                                              R.string.rewards_panel_payout_pending_text),
+                                getPaymentMonth(), formatPaymentDate(nextPaymentDate)));
             }
         }
     }
