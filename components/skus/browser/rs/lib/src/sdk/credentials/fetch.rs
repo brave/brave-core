@@ -320,7 +320,6 @@ where
         event!(Level::DEBUG, "done decoded body");
 
         let mut time_limited_creds: HashMap<String, Vec<TimeLimitedCredential>> = HashMap::new();
-        let mut time_limited_v2_creds: Vec<String> = Vec::new();
 
         for item_cred in resp {
             match item_cred {
@@ -361,13 +360,13 @@ where
                             return Err(SkusError(InternalError::ItemCredentialsMissing));
                         }
 
-                        // so we can clear out the used tokens at the end of the loop
-                        time_limited_v2_creds.push(item_id.to_string());
-
                         // Rederive blinded creds so that the proof will fail if different creds
                         // were signed
-                        let my_blinded_creds: Vec<BlindedToken> =
-                            item_creds.creds.iter().map(|t| t.blind()).collect();
+                        let mut my_blinded_creds: HashMap<String, Token> = item_creds
+                            .creds
+                            .into_iter()
+                            .map(|t| (t.blind().encode_base64(), t))
+                            .collect();
 
                         // okay, right here we need to filter out all of the
                         // creds that do not have a blinded token that match
@@ -376,23 +375,9 @@ where
                         let mut bucket_creds: Vec<Token> = Vec::new();
 
                         for sbc in blinded_creds {
-                            // keep in our blinded_creds array the ones we matched
-                            for bc in &my_blinded_creds {
-                                // find the blinded cred that matches what the server says
-                                // it signed and push it onto our bucket of blinded creds
-                                // for batch verification
-                                if bc.encode_base64() == sbc.encode_base64() {
-                                    bucket_blinded_creds.push(*bc);
-                                    for t in &item_creds.creds {
-                                        // find the original token from our list of creds
-                                        // that matches up with this blinded token so we can
-                                        // add to our bucket creds for verification
-                                        if t.blind().encode_base64() == bc.encode_base64() {
-                                            bucket_creds
-                                                .push(Token::from_bytes(&t.to_bytes()).unwrap());
-                                        }
-                                    }
-                                }
+                            if let Some(t) = my_blinded_creds.remove(&sbc.encode_base64()) {
+                                bucket_blinded_creds.push(sbc);
+                                bucket_creds.push(t);
                             }
                         }
 
