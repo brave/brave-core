@@ -12,6 +12,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
@@ -550,7 +551,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (PREF_FORGET_FIRST_PARTY_STORAGE.equals(key)) {
             BraveShieldsContentSettings.setForgetFirstPartyStoragePref((boolean) newValue);
         } else if (PREF_CLOSE_TABS_ON_EXIT.equals(key)) {
-            sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
+            sharedPreferencesEditor.putBoolean(
+                    BravePreferenceKeys.BRAVE_CLOSE_TABS_ON_EXIT, (boolean) newValue);
         } else if (PREF_SEND_P3A.equals(key)) {
             BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, (boolean) newValue);
             BraveLocalState.commitPendingWrite();
@@ -583,7 +585,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.LINKED_IN_EMBED_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_CLEAR_ON_EXIT.equals(key)) {
-            sharedPreferencesEditor.putBoolean(PREF_CLEAR_ON_EXIT, (boolean) newValue);
+            sharedPreferencesEditor.putBoolean(
+                    BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, (boolean) newValue);
         } else if (PREF_APP_LINKS.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_APP_LINKS, (boolean) newValue);
             SharedPreferencesManager.getInstance().writeBoolean(
@@ -740,7 +743,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                         .getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
 
         mClearBrowsingDataOnExit.setChecked(
-                sharedPreferences.getBoolean(PREF_CLEAR_ON_EXIT, false));
+                sharedPreferences.getBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false));
 
         boolean autocompleteEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                               .getBoolean(BravePref.AUTOCOMPLETE_ENABLED);

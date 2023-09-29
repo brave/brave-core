@@ -517,11 +517,11 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoMediator",
                 "updateVisibility", true, void.class));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/preferences/ChromePreferenceKeyChecker",
-                        "getInstance", false, null));
-        Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
                         "onItemSelected", true, boolean.class, int.class));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/preferences/StrictPreferenceKeyChecker",
+                        "isKeyInUse", true, boolean.class, String.class));
     }
 
     @Test
@@ -880,6 +880,9 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
                 ContextMenuItemDelegate.class, Supplier.class, int.class, ExternalAuthUtils.class,
                 Context.class, ContextMenuParams.class, ContextMenuNativeDelegate.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/preferences/StrictPreferenceKeyChecker",
+                "org/chromium/chrome/browser/preferences/BraveStrictPreferenceKeyChecker"));
     }
 
     @Test

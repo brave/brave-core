@@ -5,6 +5,9 @@
 
 package org.chromium.base;
 
+import java.util.Arrays;
+import java.util.List;
+
 public final class BravePreferenceKeys {
     public static final String BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY =
             "brave_bottom_toolbar_enabled_key";
@@ -56,4 +59,49 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_DEFERRED_DEEPLINK_PLAYLIST =
             "brave_deferred_deeplink_playlist";
     public static final String BRAVE_DEFERRED_DEEPLINK_VPN = "brave_deferred_deeplink_vpn";
+    public static final String BRAVE_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
+    public static final String BRAVE_CLEAR_ON_EXIT = "clear_on_exit";
+    public static final String BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES =
+            "org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider.TILES";
+
+    // These are dynamic keys
+    public static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
+    public static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION = "recyclerview_offset_position_";
+
+    /*
+     * Returns the list of Brave's preference keys.
+     */
+    private static List<String> getKeysInUse() {
+        return Arrays.asList(BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, BRAVE_BOTTOM_TOOLBAR_SET_KEY,
+                BRAVE_USE_CUSTOM_TABS, BRAVE_APP_OPEN_COUNT, BRAVE_ROLE_MANAGER_DIALOG_COUNT,
+                BRAVE_IS_DEFAULT, BRAVE_WAS_DEFAULT_ASK_COUNT, BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
+                BRAVE_DEFAULT_DONT_ASK, BRAVE_UPDATE_EXTRA_PARAM, BRAVE_NOTIFICATION_PREF_NAME,
+                BRAVE_MILLISECONDS_NAME, BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE,
+                BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE, BRAVE_DOUBLE_RESTART,
+                BRAVE_TAB_GROUPS_ENABLED, BRAVE_DISABLE_SHARING_HUB, BRAVE_NEWS_CARDS_VISITED,
+                BRAVE_NEWS_CHANGE_SOURCE, BRAVE_NEWS_FEED_HASH, BRAVE_NEWS_PREF_SHOW_NEWS,
+                BRAVE_NEWS_PREF_TURN_ON_NEWS, BRAVE_USE_BIOMETRICS_FOR_WALLET,
+                BRAVE_BIOMETRICS_FOR_WALLET_IV, BRAVE_BIOMETRICS_FOR_WALLET_ENCRYPTED,
+                BRAVE_AD_FREE_CALLOUT_DIALOG, BRAVE_OPENED_YOUTUBE,
+                SHOULD_SHOW_COOKIE_CONSENT_NOTICE, LOADED_SITE_COUNT,
+                BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE,
+                BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO, BRAVE_DEFERRED_DEEPLINK_PLAYLIST,
+                BRAVE_DEFERRED_DEEPLINK_VPN, BRAVE_CLOSE_TABS_ON_EXIT, BRAVE_CLEAR_ON_EXIT,
+                BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES);
+    }
+
+    /*
+     * Checks if preference key is among Brave's dynamic keys.
+     */
+    private static boolean isBraveDynamicKeyInUse(String key) {
+        return key.startsWith(BRAVE_RECYCLERVIEW_POSITION)
+                || key.startsWith(BRAVE_RECYCLERVIEW_OFFSET_POSITION);
+    }
+
+    /*
+     * Checks if preference key is used in Brave.
+     */
+    public static boolean isBraveKeyInUse(String key) {
+        return getKeysInUse().contains(key) || isBraveDynamicKeyInUse(key);
+    }
 }
