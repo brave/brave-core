@@ -38,12 +38,12 @@ enum ModelEngineType {
 // be provided via ai_chat_ui_strings.grdp and ai_chat/browser/constants.cc
 enum ModelCategory {
   CHAT,
-}
+};
 
 enum PremiumStatus {
   Inactive,
   Active,
-  Disconnected
+  Disconnected,
 };
 
 struct SiteInfo {

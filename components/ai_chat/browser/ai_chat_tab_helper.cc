@@ -129,35 +129,27 @@ void AIChatTabHelper::InitEngine() {
       model_match = kAllModels.begin();
     }
   }
+
   auto model = model_match->second;
-
-  // Init the credential manager
-  content::BrowserContext* context = web_contents()->GetBrowserContext();
-  auto skus_service_getter = base::BindRepeating(
-      [](content::BrowserContext* context) {
-        return skus::SkusServiceFactory::GetForContext(context);
-      },
-      context);
-  credential_manager_ =
-      std::make_unique<ai_chat::AIChatCredentialManager>(skus_service_getter);
-
   // TODO(petemill): Engine enum on model to decide which one
   if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
     VLOG(1) << "Started tab helper for AI engine: llama";
     engine_ = std::make_unique<EngineConsumerLlamaRemote>(
-        model, web_contents()
-                   ->GetBrowserContext()
-                   ->GetDefaultStoragePartition()
-                   ->GetURLLoaderFactoryForBrowserProcess(),
-               credential_manager_.get());
+        model,
+        web_contents()
+            ->GetBrowserContext()
+            ->GetDefaultStoragePartition()
+            ->GetURLLoaderFactoryForBrowserProcess(),
+        credential_manager_.get());
   } else {
     VLOG(1) << "Started tab helper for AI engine: claude";
     engine_ = std::make_unique<EngineConsumerClaudeRemote>(
-        model, web_contents()
-                   ->GetBrowserContext()
-                   ->GetDefaultStoragePartition()
-                   ->GetURLLoaderFactoryForBrowserProcess(),
-                credential_manager_.get());
+        model,
+        web_contents()
+            ->GetBrowserContext()
+            ->GetDefaultStoragePartition()
+            ->GetURLLoaderFactoryForBrowserProcess(),
+        credential_manager_.get());
   }
 }
 
