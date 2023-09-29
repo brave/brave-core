@@ -40,12 +40,15 @@ class StatusIcon {
   void SetContextMenu(std::unique_ptr<TrayMenuModel> menu);
   void OnMenuCommand(int index, int event_flags);
   void ExecuteCommand(int command_id, int event_flags);
-  // Re-creates the status tray icon.
   void ResetIcon();
 
  private:
   void SetImage(const gfx::ImageSkia& image);
   void SetToolTip(const std::u16string& tool_tip);
+
+  void UpdateIcon();
+  void AddIcon();
+  void DeleteIcon();
 
   HWND window() const { return window_; }
   UINT message_id() const { return message_id_; }
