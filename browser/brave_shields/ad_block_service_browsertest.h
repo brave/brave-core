@@ -19,6 +19,7 @@ class HostContentSettingsMap;
 
 namespace brave_shields {
 class AdBlockService;
+class FilterListCatalogEntry;
 }  // namespace brave_shields
 
 class AdBlockServiceTest : public InProcessBrowserTest {
@@ -52,9 +53,10 @@ class AdBlockServiceTest : public InProcessBrowserTest {
   void GetTestDataDir(base::FilePath* test_data_dir);
   void SetDefaultComponentIdAndBase64PublicKeyForTest();
   void SetRegionalComponentIdAndBase64PublicKeyForTest();
-  bool InstallDefaultAdBlockComponent(
-      const std::string& extension_dir = "adblock-default");
-  bool InstallRegionalAdBlockComponent(const std::string& uuid,
+  void InstallComponent(
+      const brave_shields::FilterListCatalogEntry& catalog_entry);
+  void InstallDefaultAdBlockComponent();
+  void InstallRegionalAdBlockComponent(const std::string& uuid,
                                        bool enable_list = true);
   void SetSubscriptionIntervals();
   void WaitForAdBlockServiceThreads();
