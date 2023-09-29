@@ -15,6 +15,20 @@ RegisterPolymerTemplateModifications({
   'settings-autofill-page': (templateContent) => {
     templateContent.appendChild(html`
         <settings-toggle-button
+          id="autofillAutocompleteToggle"
+          hidden=[[!isAutofillPage_]]
+          class="hr"
+          no-extension-indicator
+          label=
+            "${loadTimeData.getString('autofillEnableAutocompleteLabel')}"
+          sub-label=
+            "${loadTimeData.getString('autofillEnableAutocompleteSublabel')}"
+          pref="{{prefs.brave.autocomplete}}">
+        </settings-toggle-button>
+      `)
+
+    templateContent.appendChild(html`
+        <settings-toggle-button
           class="hr"
           label="${loadTimeData.getString('autofillInPrivateSettingLabel')}"
           sub-label="${loadTimeData.getString('autofillInPrivateSettingDesc')}"

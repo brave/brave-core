@@ -162,6 +162,8 @@
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
+      <!-- Autofill resources -->
+      <message name="IDS_BRAVE_AUTOFILL_CONFIRM_AUTOCOMPLETE_PROMPT_TITLE" desc="">Would you like Brave to save this kind of information and fill it in for you later?</message>
       <!-- Error pages -->
       <message name="IDS_ERRORPAGES_IPFS_INCOGNITO_HEADING" desc="Heading of the IPFS not available in incognito error page.">
         IPFS page cannot be loaded.
