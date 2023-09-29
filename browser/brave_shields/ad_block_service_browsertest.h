@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
-#include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/test/spawned_test_server/spawned_test_server.h"
 
@@ -21,7 +21,7 @@ namespace brave_shields {
 class AdBlockService;
 }  // namespace brave_shields
 
-class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
+class AdBlockServiceTest : public InProcessBrowserTest {
  public:
   AdBlockServiceTest();
   ~AdBlockServiceTest() override;

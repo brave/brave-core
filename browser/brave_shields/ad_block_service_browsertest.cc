@@ -41,8 +41,9 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -109,7 +110,7 @@ void AdBlockServiceTest::SetUpInProcessBrowserTestFixture() {
 }
 
 void AdBlockServiceTest::SetUpOnMainThread() {
-  ExtensionBrowserTest::SetUpOnMainThread();
+  InProcessBrowserTest::SetUpOnMainThread();
   mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   host_resolver()->AddRule("*", "127.0.0.1");
   // Most tests are written for aggressive mode. Individual tests should reset
@@ -121,18 +122,18 @@ void AdBlockServiceTest::SetUpOnMainThread() {
 
 void AdBlockServiceTest::SetUp() {
   InitEmbeddedTestServer();
-  ExtensionBrowserTest::SetUp();
+  InProcessBrowserTest::SetUp();
 }
 
 void AdBlockServiceTest::PreRunTestOnMainThread() {
-  ExtensionBrowserTest::PreRunTestOnMainThread();
+  InProcessBrowserTest::PreRunTestOnMainThread();
   WaitForAdBlockServiceThreads();
 }
 
 void AdBlockServiceTest::TearDownOnMainThread() {
   // Unset the host resolver so as not to interfere with later tests.
   brave::SetAdblockCnameHostResolverForTesting(nullptr);
-  ExtensionBrowserTest::TearDownOnMainThread();
+  InProcessBrowserTest::TearDownOnMainThread();
 }
 
 void AdBlockServiceTest::TearDownInProcessBrowserTestFixture() {
