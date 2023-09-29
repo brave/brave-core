@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_TAB_HELPER_H_
 
-#include <deque>
 #include <memory>
 #include <string>
 #include <vector>
@@ -154,7 +153,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
-  std::deque<mojom::ConversationTurn> pending_requests_;
+  std::unique_ptr<mojom::ConversationTurn> pending_request_;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

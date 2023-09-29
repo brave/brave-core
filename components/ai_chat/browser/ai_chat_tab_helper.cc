@@ -165,12 +165,12 @@ bool AIChatTabHelper::MaybePopPendingRequests() {
     return false;
   }
 
-  if (pending_requests_.empty()) {
+  if (!pending_request_) {
     return false;
   }
 
-  mojom::ConversationTurn request = std::move(pending_requests_.front());
-  pending_requests_.pop_front();
+  mojom::ConversationTurn request = std::move(*pending_request_);
+  pending_request_.reset();
   MakeAPIRequestWithConversationHistoryUpdate(std::move(request));
   return true;
 }
@@ -179,6 +179,16 @@ void AIChatTabHelper::MaybeGeneratePageText() {
   const GURL url = web_contents()->GetLastCommittedURL();
 
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
+    return;
+  }
+
+  // User might have already asked questions before the page is loaded. It'd be
+  // strange if we generate contents based on the page.
+  // TODO(sko) This makes it impossible to ask something like "Summarize this
+  // page" once a user already asked a question. But for now we'd like to keep
+  // it simple and not confuse users with the context changing. We'll see what
+  // users say.
+  if (!chat_history_.empty()) {
     return;
   }
 
@@ -253,12 +263,6 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
       << " suggested questions: "
       << base::JoinString(suggested_questions_, ", ");
 
-  // User might have already asked questions before the page is loaded. It'd be
-  // strange if we generate contents based on the page.
-  if (!chat_history_.empty()) {
-    return;
-  }
-
   // Now that we have content, we can provide a summary on-demand. Add that to
   // suggested questions.
   // TODO(petemill): translation for this question
@@ -272,7 +276,7 @@ void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
   article_text_.clear();
   suggested_questions_.clear();
-  pending_requests_.clear();
+  pending_request_.reset();
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
   has_generated_questions_ = false;
@@ -377,7 +381,8 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   if (!is_conversation_active_ || !HasUserOptedIn()) {
     // This function should not be presented in the UI if the user has not
     // opted-in yet.
-    pending_requests_.push_back(std::move(turn));
+    pending_request_ =
+        std::make_unique<mojom::ConversationTurn>(std::move(turn));
     return;
   }
 
@@ -486,8 +491,6 @@ void AIChatTabHelper::OnEngineCompletionComplete(
     // handle failure
     SetAPIError(std::move(result.error()));
   }
-
-  MaybePopPendingRequests();
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
