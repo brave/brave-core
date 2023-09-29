@@ -106,7 +106,6 @@ class DomainBlockDisabledTest : public DomainBlockTestBase {
 };
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitial) {
-  InstallDefaultAdBlockComponent();
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
@@ -122,7 +121,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitial) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndProceed) {
-  InstallDefaultAdBlockComponent();
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
@@ -146,7 +144,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndProceed) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndReload) {
-  InstallDefaultAdBlockComponent();
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
@@ -167,7 +164,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndReload) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedAndReload) {
-  InstallDefaultAdBlockComponent();
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
@@ -200,7 +196,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedAndReload) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
-  InstallDefaultAdBlockComponent();
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
@@ -234,7 +229,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
-  InstallDefaultAdBlockComponent();
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
@@ -275,7 +269,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndGoBack) {
-  InstallDefaultAdBlockComponent();
   GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
                                   url_a);
@@ -301,7 +294,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndGoBack) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
-  InstallDefaultAdBlockComponent();
   ASSERT_EQ(0, request_count_);
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
@@ -320,7 +312,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoThirdPartyInterstitial) {
-  InstallDefaultAdBlockComponent();
   ASSERT_TRUE(g_brave_browser_process->ad_block_service()
                   ->custom_filters_provider()
                   ->UpdateCustomFilters("||b.com^$third-party"));
@@ -355,7 +346,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoThirdPartyInterstitial) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoInterstitialUnlessAggressive) {
-  InstallDefaultAdBlockComponent();
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
@@ -388,7 +378,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoInterstitialUnlessAggressive) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockDisabledTest, NoInterstitial) {
-  InstallDefaultAdBlockComponent();
   GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
 
@@ -410,7 +399,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockDisabledTest, NoInterstitial) {
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectOtherDomains) {
-  InstallDefaultAdBlockComponent();
   GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
                                   url_a);
@@ -451,7 +439,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectOtherDomains) {
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest,
                        DontWarnAgainDoesNotAffectOtherDomains) {
-  InstallDefaultAdBlockComponent();
   GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
                                   url_a);
