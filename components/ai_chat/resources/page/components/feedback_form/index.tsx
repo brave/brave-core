@@ -33,6 +33,8 @@ function FeedbackForm(props: FeedbackFormProps) {
   const [category, setCategory] = React.useState('')
   const [feedbackText, setFeedbackText] = React.useState('')
 
+  const canSubmit = !!category && !props.isDisabled
+
   const handleCancelClick = () => {
     props.onCancel?.()
   }
@@ -74,6 +76,9 @@ function FeedbackForm(props: FeedbackFormProps) {
     ref.current?.scrollIntoView()
   }, [])
 
+  // TODO(petemill): allow submission and show error on Dropdown if nothing
+  // is selected when user attempts to Submit.
+
   return (
     <div ref={ref} className={styles.form}>
       <h4>{getLocale('provideFeedbackTitle')}</h4>
@@ -101,7 +106,7 @@ function FeedbackForm(props: FeedbackFormProps) {
           <Button onClick={handleCancelClick} kind='plain-faint'>
             {getLocale('cancelButtonLabel')}
           </Button>
-          <Button isDisabled={props.isDisabled} onClick={handleSubmit}>
+          <Button isDisabled={!canSubmit} onClick={handleSubmit}>
             {getLocale('submitButtonLabel')}
           </Button>
         </fieldset>
