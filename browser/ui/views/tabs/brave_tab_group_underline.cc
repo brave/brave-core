@@ -102,6 +102,24 @@ gfx::Rect BraveTabGroupUnderline::CalculateTabGroupUnderlineBounds(
   return group_bounds;
 }
 
+void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return TabGroupUnderline::OnPaint(canvas);
+  }
+
+  SkColor color = tab_group_views_->GetGroupColor();
+  if (!ShouldShowVerticalTabs()) {
+    color = SkColorSetA(color, 0.6 * 255);
+  }
+
+  SkPath path = style_->GetUnderlinePath(GetLocalBounds());
+  cc::PaintFlags flags;
+  flags.setAntiAlias(true);
+  flags.setColor(color);
+  flags.setStyle(cc::PaintFlags::kFill_Style);
+  canvas->DrawPath(path, flags);
+}
+
 bool BraveTabGroupUnderline::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(tab_group_views_->GetBrowser());
 }

@@ -43,7 +43,6 @@ class BraveTabStrip : public TabStrip {
   // TabStrip overrides:
   SkColor GetTabSeparatorColor() const override;
   bool ShouldDrawStrokes() const override;
-  int GetStrokeThickness() const override;
   void Layout() override;
   void OnPaintBackground(gfx::Canvas* canvas) override;
 
