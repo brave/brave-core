@@ -206,6 +206,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_news/browser/test:brave_news_unit_tests",
     "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_private_cdn",
+    "//brave/components/brave_referrals/browser:unit_tests",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_rewards/core/test",
