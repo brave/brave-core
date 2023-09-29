@@ -2885,6 +2885,7 @@ export const {
   useGetRewardsEnabledQuery,
   useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery,
+  useGetSimpleHashSpamNftsQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetSolanaTransactionSimulationQuery,
   useGetSwapSupportedNetworkIdsQuery,
@@ -2947,11 +2948,13 @@ export const {
   useSpeedupTransactionMutation,
   useTransactionStatusChangedMutation,
   useUnapprovedTxUpdatedMutation,
+  useUpdateNftSpamStatusMutation,
+  useUpdateNftsPinningStatusMutation,
   useUpdateUnapprovedTransactionGasFieldsMutation,
   useUpdateUnapprovedTransactionNonceMutation,
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
-  useUpdateUserTokenMutation,
+  useUpdateUserTokenMutation
 } = walletApi
 
 // Derived Data Queries

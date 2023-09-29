@@ -275,9 +275,12 @@ export const _NFTGridViewItem = () => {
   return (
     <WalletPageStory>
       <NFTGridViewItem
-        isHidden={false}
+        isTokenHidden={false}
+        isTokenSpam={false}
         token={mockErc721Token}
         onSelectAsset={() => {}}
+        networks={[]}
+        accounts={[]}
       />
     </WalletPageStory>
   )

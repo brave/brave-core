@@ -11,6 +11,7 @@ export const AccountBox = styled.div<{
   orb: string
   size?: 'big' | 'medium' | 'small' | 'tiny'
   marginRight?: number
+  round?: boolean
 }>`
   --box-big: 48px;
   --box-medium: 32px;
@@ -43,6 +44,7 @@ export const AccountBox = styled.div<{
       ? p.marginRight
       : 0
   }px;
+  border-radius: ${(p) => p.round ? '50%': 'unset'};
 `
 
 export const AccountIcon = styled(Icon) <{

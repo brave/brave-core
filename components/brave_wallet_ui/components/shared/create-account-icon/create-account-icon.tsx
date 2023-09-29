@@ -18,6 +18,7 @@ interface Props {
   account: BraveWallet.AccountInfo
   size?: 'big' | 'medium' | 'small' | 'tiny'
   marginRight?: number
+  round?: boolean
 }
 
 export const CreateAccountIcon = (props: Props) => {
@@ -25,6 +26,7 @@ export const CreateAccountIcon = (props: Props) => {
     account,
     size,
     marginRight,
+    round
   } = props
 
   // Memos
@@ -35,6 +37,7 @@ export const CreateAccountIcon = (props: Props) => {
       orb={orb}
       size={size}
       marginRight={marginRight}
+      round={round}
     >
       {account.accountId.kind === BraveWallet.AccountKind.kHardware &&
         <AccountIcon

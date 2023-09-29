@@ -44,11 +44,14 @@ export function createWalletApiBase () {
       'BraveRewards-RewardsBalance',
       'BraveRewards-ExternalWallet',
       'NFTPinningStatus',
+      'NFTSPinningStatus',
       'AutoPinEnabled',
       'OnRampAssets',
       'OffRampAssets',
       'CoingeckoId',
-      'TokenSuggestionRequests'
+      'TokenSuggestionRequests',
+      'SimpleHashSpamNFTs',
+      'LocalIPFSNodeStatus'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

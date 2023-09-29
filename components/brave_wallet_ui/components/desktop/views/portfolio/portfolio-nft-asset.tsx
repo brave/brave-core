@@ -28,7 +28,8 @@ import {
   useUnsafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
 import {
-  useGetNetworkQuery
+  useGetNetworkQuery,
+  useGetSimpleHashSpamNftsQuery
 } from '../../../../common/slices/api.slice'
 import {
   useScopedBalanceUpdater
@@ -48,15 +49,21 @@ export const PortfolioNftAsset = () => {
     tokenId?: string
   }>()
 
+  // redux
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
   const hiddenNfts =
     useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokens)
 
+  // queries
+  const { data: simpleHashNfts = [], isLoading: isLoadingSpamNfts } = useGetSimpleHashSpamNftsQuery()
+
   const selectedAssetFromParams = React.useMemo(() => {
     const userToken =
-      [...userVisibleTokensInfo, ...hiddenNfts]
+      userVisibleTokensInfo
+        .concat(hiddenNfts)
+        .concat(simpleHashNfts)
         .find((token) =>
           tokenId
             ? token.tokenId === tokenId &&
@@ -70,7 +77,8 @@ export const PortfolioNftAsset = () => {
     userVisibleTokensInfo,
     contractAddress,
     tokenId,
-    hiddenNfts
+    hiddenNfts,
+    simpleHashNfts
   ])
 
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
@@ -141,8 +149,8 @@ export const PortfolioNftAsset = () => {
     )
   }, [selectedAssetFromParams, ownerAccount, selectedAssetNetwork])
 
-  // token list needs to load before we can find an asset to select from the url params
-  if (userVisibleTokensInfo.length === 0) {
+  // token list and spam NFTs needs to load before we can find an asset to select from the url params
+  if (userVisibleTokensInfo.length === 0 || isLoadingSpamNfts) {
     return <Skeleton />
   }
 
