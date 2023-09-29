@@ -8,6 +8,7 @@ import * as ReactDOM from 'react-dom'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
+import classnames from '$web-common/classnames'
 import { showAlert } from '@brave/leo/react/alertCenter'
 
 import getPageHandlerInstance from '../../api/page_handler'
@@ -17,6 +18,7 @@ import FeedbackForm from '../feedback_form'
 interface ContextMenuAssistantProps {
   turnText: string
   chatId: number
+  className?: string
 }
 
 function ContextMenuAssistant_(
@@ -89,7 +91,7 @@ function ContextMenuAssistant_(
 
   return (
     <>
-      <ButtonMenu className={styles.moreButton}>
+      <ButtonMenu className={classnames(styles.moreButton, props.className)}>
         <div slot='anchor-content'>
           <Icon name='more-vertical' />
         </div>

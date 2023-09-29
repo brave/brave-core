@@ -70,11 +70,14 @@ function ConversationList() {
             >
               <div className={turnClass}>
                 {isAIAssistant && (
-                  <ContextMenuAssistant
-                    ref={portalRefs}
-                    chatId={id}
-                    turnText={turn.text}
-                  />
+                  <div className={styles.turnActions}>
+                    <ContextMenuAssistant
+                      className={styles.turnMenuButton}
+                      ref={portalRefs}
+                      chatId={id}
+                      turnText={turn.text}
+                    />
+                  </div>
                 )}
                 <div className={avatarStyles}>
                   <Icon name={isHuman ? 'user-circle' : 'product-brave-leo'} />

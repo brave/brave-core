@@ -15,12 +15,10 @@
   position: relative;
 }
 
-.turn > leo-buttonmenu {
-  display: none;
-}
-
-.turn:hover > leo-buttonmenu {
-  display: flex;
+@media (pointer: fine) {
+  .turn:not(:hover) > .turnActions {
+    display: none;
+  }
 }
 
 .turnAI {
@@ -91,4 +89,15 @@
 
 .feedbackFormPortal {
   padding: 0 16px;
+}
+
+.turnActions {
+  position: absolute;
+  inset: 16px 16px 0 auto;
+  z-index: 3;
+}
+
+.turnMenuButton {
+  position: sticky;
+  top: 16px;
 }
