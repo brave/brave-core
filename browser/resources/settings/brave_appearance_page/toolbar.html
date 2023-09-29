@@ -44,6 +44,12 @@
       pref="{{prefs.brave.omnibox.bookmark_suggestions_enabled}}"
       label="$i18n{appearanceSettingsUseBookmarkSuggestions}">
     </settings-checkbox>
+    <template is="dom-if" if="[[showLeoAssistant_()]]">
+      <settings-checkbox class="cr-row list-item"
+        pref="{{prefs.brave.ai_chat.autocomplete_provider_enabled}}"
+        label="$i18n{appearanceSettingsUseLeoSuggestions}">
+      </settings-checkbox>
+    </template>
   </div>
 </template>
 <if expr="toolkit_views">

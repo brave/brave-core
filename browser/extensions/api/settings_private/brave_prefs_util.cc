@@ -285,6 +285,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   (*s_brave_allowlist)[ai_chat::prefs::kBraveChatAutoGenerateQuestions] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[ai_chat::prefs::kBraveChatAutocompleteProviderEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)

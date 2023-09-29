@@ -14,6 +14,7 @@ brave_grit("brave_theme_resources") {
   source = "brave_theme_resources.grd"
   defines = chrome_grit_defines
   defines += [
+    "enable_ai_chat=$enable_ai_chat",
     "enable_ipfs=$enable_ipfs",
     "enable_playlist_webui=$enable_playlist_webui",
   ]

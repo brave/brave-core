@@ -8,6 +8,7 @@
 
 #include "components/omnibox/browser/autocomplete_provider_client.h"
 
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -31,7 +32,21 @@
   scoped_refptr<history::TopSites> GetTopSites
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#define GetRemoteSuggestionsService                     \
+  GetRemoteSuggestionsService_Unused() {                \
+    return nullptr;                                     \
+  }                                                     \
+  void OpenLeo(const std::u16string& query) override {} \
+  bool IsLeoProviderEnabled() override {                \
+    return false;                                       \
+  }                                                     \
+  RemoteSuggestionsService* GetRemoteSuggestionsService
+#endif
+
 #include "src/components/omnibox/browser/mock_autocomplete_provider_client.h"  // IWYU pragma: export
+
+#undef GetRemoteSuggestionsService
 #undef GetTopSites
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_MOCK_AUTOCOMPLETE_PROVIDER_CLIENT_H_

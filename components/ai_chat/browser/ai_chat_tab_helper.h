@@ -99,6 +99,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnUserOptedIn();
   void OnPermissionChangedAutoGenerateQuestions();
   std::string GetConversationHistoryString();
+  bool MaybePopPendingRequests();
   void MaybeGeneratePageText();
   void MaybeGenerateQuestions();
   void CleanUp();
@@ -155,6 +156,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   mojom::APIError current_error_ = mojom::APIError::None;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+
+  std::unique_ptr<mojom::ConversationTurn> pending_request_;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

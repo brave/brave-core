@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 
 brave_components_omnibox_browser_sources = [
@@ -42,6 +43,20 @@ brave_components_omnibox_browser_deps = [
   "//components/prefs",
   "//url",
 ]
+
+if (enable_ai_chat) {
+  brave_components_omnibox_browser_sources += [
+    "//brave/components/omnibox/browser/leo_action.cc",
+    "//brave/components/omnibox/browser/leo_action.h",
+    "//brave/components/omnibox/browser/leo_provider.cc",
+    "//brave/components/omnibox/browser/leo_provider.h",
+  ]
+
+  brave_components_omnibox_browser_deps += [
+    "//brave/components/ai_chat/common",
+    "//brave/components/ai_chat/common/buildflags",
+  ]
+}
 
 if (enable_commander) {
   brave_components_omnibox_browser_sources += [
