@@ -1352,7 +1352,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_REFRESH},
     {"braveWalletExploreDappsShowMore",
      IDS_BRAVE_WALLET_EXPLORE_DAPPS_SHOW_MORE},
-    {"braveWalletExploreDappsShowLESS",
+    {"braveWalletExploreDappsShowLess",
      IDS_BRAVE_WALLET_EXPLORE_DAPPS_SHOW_LESS},
     {"braveWalletExploreDappsModalTitle",
      IDS_BRAVE_WALLET_EXPLORE_DAPPS_MODAL_TITLE},
