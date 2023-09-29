@@ -13,12 +13,12 @@ import { Url } from 'gen/url/mojom/url.mojom.m'
 import styles from './style.module.scss'
 import getPageHandlerInstance from '../../api/page_handler'
 
-const OPTIONS = [
-  { value: 'not-helpful', text: getLocale('optionNotHelpful') },
-  { value: 'incorrect', text: getLocale('optionIncorrect') },
-  { value: 'unsafe-harmful', text: getLocale('optionUnsafeHarmful') },
-  { value: 'other', text: getLocale('optionOther') }
-]
+const CATEGORY_OPTIONS = new Map([
+  ['not-helpful', getLocale('optionNotHelpful') ],
+  ['incorrect', getLocale('optionIncorrect') ],
+  ['unsafe-harmful',getLocale('optionUnsafeHarmful') ],
+  ['other', getLocale('optionOther') ]
+])
 
 const ABOUT_LEO_PREMIUM_URL = "https://brave.com/leo-roadmap/"
 
@@ -84,10 +84,11 @@ function FeedbackForm(props: FeedbackFormProps) {
             placeholder={getLocale('selectFeedbackTopic')}
             onChange={handleSelectOnChange}
             required={true}
+            value={CATEGORY_OPTIONS.get(category)}
           >
             <div slot='label'>{getLocale('feedbackCategoryLabel')}</div>
-            {OPTIONS.map((entry, id) => {
-              return <leo-option key={id} value={entry.value}>{entry.text}</leo-option>
+            {[...CATEGORY_OPTIONS.keys()].map((key) => {
+              return <leo-option key={key} value={key}>{CATEGORY_OPTIONS.get(key)}</leo-option>
             })}
           </DropDown>
         </fieldset>
