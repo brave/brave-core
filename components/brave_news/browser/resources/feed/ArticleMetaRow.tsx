@@ -19,7 +19,7 @@ const MenuButton = styled(Button)`
   --leo-button-padding: ${spacing.s};
 `
 
-export const MetaInfoContainer = styled.h4` 
+export const MetaInfoContainer = styled.h4`
   margin: 0;
 
   font: ${font.primary.xSmall.regular};

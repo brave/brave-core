@@ -26,7 +26,7 @@ const Blur = styled.div`
 
   z-index: -1;
   position: fixed;
-  top: var(--edges); left: var(--edges); bottom: var(--edges); right: var(--edges);
+  inset: var(--edges);
   filter: blur(64px);
   background: rgba(255, 255, 255, 0.7);
 `
