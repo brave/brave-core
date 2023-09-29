@@ -30,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
@@ -452,8 +453,6 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
      **/
 
     public static class DataManager {
-        private static final String TILES =
-                "org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider.TILES";
         public static void parseTilesAndWriteWidgetTiles(List<Tile> tiles) {
             List<WidgetTile> widgetTileList = new ArrayList<>();
             for (Tile tile : tiles) {
@@ -471,12 +470,14 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                 }
             }
             SharedPreferencesManager.getInstance().writeString(
-                    TILES, widgetTilesJsonArray.toString());
+                    BravePreferenceKeys.BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
+                    widgetTilesJsonArray.toString());
             updateAppWidgets();
         }
 
         public static List<WidgetTile> readWidgetTiles() {
-            String widgetTilesJson = SharedPreferencesManager.getInstance().readString(TILES, null);
+            String widgetTilesJson = SharedPreferencesManager.getInstance().readString(
+                    BravePreferenceKeys.BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES, null);
             List<WidgetTile> widgetTileList = new ArrayList();
             widgetTilesJson = "{\"widgetTiles\":" + widgetTilesJson + "}";
             try {

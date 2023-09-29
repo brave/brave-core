@@ -126,9 +126,6 @@ public class BraveNewTabPageLayout
     private static final String TAG = "BraveNewTabPage";
 
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
-    private static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
-    private static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION =
-            "recyclerview_offset_position_";
 
     // To delete in bytecode, parent variable will be used instead.
     private ViewGroup mMvTilesContainerLayout;
@@ -401,12 +398,15 @@ public class BraveNewTabPageLayout
 
                 Tab tab = BraveActivity.getBraveActivity().getActivityTab();
                 int offsetPosition = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
-                                             BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0)
+                                             BravePreferenceKeys.BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                     + tab.getId(),
+                                             0)
                                                    : 0;
 
-                int itemPosition = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
-                                           BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0)
-                                                 : 0;
+                int itemPosition = (tab != null)
+                        ? SharedPreferencesManager.getInstance().readInt(
+                                BravePreferenceKeys.BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0)
+                        : 0;
 
                 if (offsetPosition == 0 && itemPosition == 0) {
                     isFeedLoaded = false;
@@ -447,14 +447,14 @@ public class BraveNewTabPageLayout
                                 int verticalOffset = firstChild.getTop();
 
                                 SharedPreferencesManager.getInstance().writeInt(
-                                        BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                        BravePreferenceKeys.BRAVE_RECYCLERVIEW_OFFSET_POSITION
                                                 + BraveActivity.getBraveActivity()
                                                           .getActivityTab()
                                                           .getId(),
                                         verticalOffset);
 
                                 SharedPreferencesManager.getInstance().writeInt(
-                                        BRAVE_RECYCLERVIEW_POSITION
+                                        BravePreferenceKeys.BRAVE_RECYCLERVIEW_POSITION
                                                 + BraveActivity.getBraveActivity()
                                                           .getActivityTab()
                                                           .getId(),
@@ -707,14 +707,16 @@ public class BraveNewTabPageLayout
             Tab tab = BraveActivity.getBraveActivity().getActivityTab();
             if (tab != null) {
                 int itemPosition = SharedPreferencesManager.getInstance().readInt(
-                        BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0);
+                        BravePreferenceKeys.BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0);
 
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     if (mNtpAdapter != null && mNtpAdapter.getItemCount() > itemPosition) {
                         RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
                         if (manager instanceof LinearLayoutManager) {
                             int offsetPosition = SharedPreferencesManager.getInstance().readInt(
-                                    BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0);
+                                    BravePreferenceKeys.BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                            + tab.getId(),
+                                    0);
 
                             if (itemPosition
                                     == mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount()

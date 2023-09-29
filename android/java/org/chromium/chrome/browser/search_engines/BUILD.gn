@@ -25,6 +25,7 @@ android_library("java") {
     "//chrome/browser/search_engines/android:java",
     "//components/search_engines/android:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
   ]
 
   resources_package = "org.chromium.chrome.browser.search_engines"
