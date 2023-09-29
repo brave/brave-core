@@ -4,23 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-// import { FixedSizeList as List } from 'react-window'
 
 // types
 import { BraveWallet } from '../../../../../../constants/types'
 
 // components
-import { Dapp } from '../dapp/dapp'
+import { DappCategory } from '../dapp-category/dapp-category'
 
 // styles
-import {
-  CategoryTitle,
-  CategoryWrapper,
-  DappGrid,
-  ListToggleButton,
-  LoadingRing,
-  StyledWrapper
-} from './dapp-category-list.styles'
+import { LoadingRing, StyledWrapper } from './dapp-category-list.styles'
 import { Row } from '../../../../../shared/style'
 
 interface CategoryList {
@@ -32,57 +24,34 @@ interface CategoryListProps {
   data: CategoryList
 }
 
-const Category = ({
-  category,
-  dapps,
-  expanded,
-  onShowMore
-}: {
-  category: string
-  dapps: BraveWallet.Dapp[]
-  expanded: boolean
-  onShowMore: () => void
-}) => {
-  return (
-    <CategoryWrapper>
-      <CategoryTitle>{category}</CategoryTitle>
-      <DappGrid>
-        {dapps.map((dapp) => (
-          <Dapp key={`${category}-${dapp.id}`} dapp={dapp} />
-        ))}
-      </DappGrid>
-      <ListToggleButton onClick={onShowMore}>
-        {expanded ? 'Show less' : 'Show more'}
-      </ListToggleButton>
-    </CategoryWrapper>
-  )
-}
+const COLLAPSED_DAPP_COUNT = 8
 
 const DappCategoryList = ({ isLoading, data }: CategoryListProps) => {
   const [expandedItem, setExpandedItem] = React.useState<number>()
   const categories = Object.keys(data)
 
-  const toggleItem = (index: number) => {
+  // methods
+  const toggleItem = React.useCallback((index: number) => {
     if (expandedItem === index) {
       // Clicking on an already expanded item will collapse it
       setExpandedItem(undefined)
     } else {
       setExpandedItem(index)
     }
-  }
+  }, [expandedItem])
 
   return (
     <StyledWrapper>
       {!isLoading ? (
         <>
           {categories.map((category, index) => (
-            <Category
+            <DappCategory
               key={category}
               category={category}
               dapps={
                 expandedItem === index
                   ? data[category]
-                  : data[category].slice(0, 8)
+                  : data[category].slice(0, COLLAPSED_DAPP_COUNT)
               }
               expanded={expandedItem === index}
               onShowMore={() => toggleItem(index)}
@@ -90,7 +59,12 @@ const DappCategoryList = ({ isLoading, data }: CategoryListProps) => {
           ))}
         </>
       ) : (
-        <Row alignItems='center' justifyContent='center' width='100%' margin='48px 0 0 0'>
+        <Row
+          alignItems='center'
+          justifyContent='center'
+          width='100%'
+          margin='48px 0 0 0'
+        >
           <LoadingRing />
         </Row>
       )}

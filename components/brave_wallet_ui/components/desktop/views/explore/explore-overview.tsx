@@ -14,11 +14,11 @@ import { WalletRoutes } from '../../../../constants/types'
 import SegmentedControl from '../../../shared/segmented-control/segmented-control'
 import { MarketView } from '../market'
 import { ExploreDapps } from './components/explore-dapps'
+import PortfolioAsset from '../portfolio/portfolio-asset'
 
 // styles
 import { Column } from '../../../shared/style'
 import { ControlsRow } from './explore-overview.styles'
-import PortfolioAsset from '../portfolio/portfolio-asset'
 
 export const ExploreOverview = () => {
   return (

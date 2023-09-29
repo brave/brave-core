@@ -35,7 +35,7 @@ import {
   VerticalSpace
 } from '../../../../../shared/style'
 import {
-  Category,
+  CategoryTag,
   Name,
   Description,
   Stat,
@@ -47,6 +47,7 @@ import {
   VisitDappButton,
   LaunchIcon
 } from './dapp-details-modal.styles'
+import { getLocale } from '../../../../../../../common/locale'
 
 interface Props {
   dapp: BraveWallet.Dapp
@@ -110,7 +111,7 @@ export const DappDetailsModal = ({ dapp, onClose }: Props) => {
   return (
     <PopupModal
       onClose={onClose}
-      title='Details'
+      title={getLocale('braveWalletExploreDappsModalTitle')}
       width={isPanel ? '100%' : '436px'}
       borderRadius={16}
       showDivider={false}
@@ -140,7 +141,7 @@ export const DappDetailsModal = ({ dapp, onClose }: Props) => {
           <VerticalSpace space='8px' />
           <Row gap='8px' flexWrap='wrap'>
             {categories.map((category) => (
-              <Category key={category}>{category}</Category>
+              <CategoryTag key={category}>{category}</CategoryTag>
             ))}
           </Row>
           <VerticalSpace space='8px' />
@@ -151,21 +152,29 @@ export const DappDetailsModal = ({ dapp, onClose }: Props) => {
           <Column gap='8px' fullWidth>
             <Row gap='8px'>
               <Stat>
-                <StatTitle>Active wallets</StatTitle>
+                <StatTitle>
+                  {getLocale('braveWalletExploreDappActiveWallets')}
+                </StatTitle>
                 <StatValue>{activeWallets}</StatValue>
               </Stat>
               <Stat>
-                <StatTitle>Transactions</StatTitle>
+                <StatTitle>
+                  {getLocale('braveWalletExploreDappTransactions')}
+                </StatTitle>
                 <StatValue>{formattedTxs}</StatValue>
               </Stat>
             </Row>
             <Row gap='8px'>
               <Stat>
-                <StatTitle>Volume</StatTitle>
+                <StatTitle>
+                  {getLocale('braveWalletExploreDappVolume')}
+                </StatTitle>
                 <StatValue>{formattedVolume}</StatValue>
               </Stat>
               <Stat>
-                <StatTitle>Balance</StatTitle>
+                <StatTitle>
+                  {getLocale('braveWalletExploreDappBalance')}
+                </StatTitle>
                 <StatValue>{formattedBal}</StatValue>
               </Stat>
             </Row>
@@ -175,7 +184,9 @@ export const DappDetailsModal = ({ dapp, onClose }: Props) => {
               <VerticalSpace
                 space={isPanel ? leo.spacing['2Xl'] : leo.spacing['3Xl']}
               />
-              <NetworksTitle>Networks</NetworksTitle>
+              <NetworksTitle>
+                {getLocale('braveWalletExploreDappNetworks')}
+              </NetworksTitle>
               <NetworksWrapper>
                 {dappNetworks.map((network) => (
                   <Tooltip
@@ -193,7 +204,10 @@ export const DappDetailsModal = ({ dapp, onClose }: Props) => {
         </Column>
         <ButtonWrapper isPanel={isPanel}>
           <VisitDappButton onClick={onVisitDapp}>
-            Visit {dapp.name}
+            {getLocale('braveWalletExploreDappsVisitDapp').replace(
+              '$1',
+              dapp.name
+            )}
             <LaunchIcon />
           </VisitDappButton>
         </ButtonWrapper>

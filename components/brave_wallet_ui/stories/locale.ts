@@ -1019,5 +1019,17 @@ provideStrings({
   braveWalletAutoDiscoveryEmptyStateSubHeading: 'Once an NFT is detected, it\’ll be displayed here.',
   braveWalletAutoDiscoveryEmptyStateFooter: 'Can\’t see your NFTs?',
   braveWalletAutoDiscoveryEmptyStateActions: '$1Refresh$2 or $3Import Manually$4',
-  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing' 
+  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing',
+
+  // Explore Dapps
+  braveWalletExploreDappsShowMore: 'Show more',
+  braveWalletExploreDappsShowLess: 'Show less',
+  braveWalletExploreDappsModalTitle: 'Details',
+  braveWalletExploreDappActiveWallets: 'Active wallets',
+  braveWalletExploreDappTransactions: 'Transactions',
+  braveWalletExploreDappVolume: 'Volume',
+  braveWalletExploreDappBalance: 'Balance',
+  braveWalletExploreDappNetworks: 'Networks',
+  braveWalletExploreDappsVisitDapp: 'Visit $1'
+  
 })

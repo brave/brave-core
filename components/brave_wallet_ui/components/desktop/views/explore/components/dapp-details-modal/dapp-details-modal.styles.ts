@@ -18,7 +18,7 @@ export const Name = styled.div`
   text-align: center;
 `
 
-export const Category = styled.div`
+export const CategoryTag = styled.div`
   display: flex;
   height: 20px;
   padding: 0px ${leo.spacing.s};
