@@ -159,9 +159,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
-  if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
-    BraveNewsTabHelper::CreateForWebContents(web_contents);
-  }
+  BraveNewsTabHelper::MaybeCreateForWebContents(web_contents);
 
   brave_stats::BraveStatsTabHelper::CreateForWebContents(web_contents);
 

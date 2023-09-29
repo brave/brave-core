@@ -8,12 +8,14 @@
 #include <memory>
 #include <vector>
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_thread.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/geometry/size.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/label_button.h"
@@ -26,10 +28,9 @@ namespace {
 constexpr int kFollowButtonIconSize = 14;
 }
 
-BraveNewsFeedItemView::BraveNewsFeedItemView(
-    BraveNewsTabHelper::FeedDetails details,
-    content::WebContents* contents)
-    : feed_details_(details), contents_(contents) {
+BraveNewsFeedItemView::BraveNewsFeedItemView(const GURL& feed_url,
+                                             content::WebContents* contents)
+    : feed_url_(feed_url), contents_(contents) {
   DCHECK(contents_);
   tab_helper_ = BraveNewsTabHelper::FromWebContents(contents);
   tab_helper_observation_.Observe(tab_helper_);
@@ -39,16 +40,17 @@ BraveNewsFeedItemView::BraveNewsFeedItemView(
       .SetMainAxisAlignment(views::LayoutAlignment::kStart)
       .SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
 
-  auto* title = AddChildView(
-      std::make_unique<views::Label>(base::UTF8ToUTF16(details.title)));
-  title->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
-  title->SetProperty(
+  constexpr int kTitleWidth = 150;
+  title_ = AddChildView(std::make_unique<views::Label>());
+  title_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
+  title_->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToMinimum,
                                views::MaximumFlexSizeRule::kScaleToMaximum));
-  title->SetMultiLine(false);
-  title->SetMaximumWidthSingleLine(150);
-  title->SetElideBehavior(gfx::ELIDE_TAIL);
+  title_->SetMultiLine(false);
+  title_->SetMaximumWidthSingleLine(kTitleWidth);
+  title_->SetPreferredSize(gfx::Size(kTitleWidth, 0));
+  title_->SetElideBehavior(gfx::ELIDE_TAIL);
 
   auto* spacer = AddChildView(std::make_unique<views::View>());
   spacer->SetPreferredSize(gfx::Size(8, 0));
@@ -70,7 +72,9 @@ BraveNewsFeedItemView::~BraveNewsFeedItemView() = default;
 void BraveNewsFeedItemView::Update() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  auto is_subscribed = tab_helper_->IsSubscribed(feed_details_);
+  title_->SetText(
+      base::UTF8ToUTF16(tab_helper_->GetTitleForFeedUrl(feed_url_)));
+  auto is_subscribed = tab_helper_->IsSubscribed(feed_url_);
   subscribe_button_->SetText(l10n_util::GetStringUTF16(
       is_subscribed ? IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE
                     : IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE));
@@ -89,13 +93,13 @@ void BraveNewsFeedItemView::OnPressed() {
     return;
   }
 
-  tab_helper_->ToggleSubscription(feed_details_);
+  tab_helper_->ToggleSubscription(feed_url_);
   loading_ = true;
   Update();
 }
 
 void BraveNewsFeedItemView::OnAvailableFeedsChanged(
-    const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) {
+    const std::vector<GURL>& feed_urls) {
   loading_ = false;
   Update();
 }

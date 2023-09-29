@@ -35,7 +35,7 @@ BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
     content::WebContents* contents) {
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
 
-  auto available_feeds = tab_helper->GetAvailableFeeds();
+  auto available_feeds = tab_helper->GetAvailableFeedUrls();
   for (auto& feed_item : available_feeds) {
     auto* child = AddChildView(
         std::make_unique<BraveNewsFeedItemView>(feed_item, contents));

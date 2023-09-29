@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "ui/views/controls/label.h"
 #include "ui/views/view.h"
 
 namespace content {
@@ -24,8 +25,7 @@ class BraveNewsFeedItemView : public views::View,
  public:
   METADATA_HEADER(BraveNewsFeedItemView);
 
-  BraveNewsFeedItemView(BraveNewsTabHelper::FeedDetails details,
-                        content::WebContents* contents);
+  BraveNewsFeedItemView(const GURL& feed_url, content::WebContents* contents);
   BraveNewsFeedItemView(const BraveNewsFeedItemView&) = delete;
   BraveNewsFeedItemView& operator=(const BraveNewsFeedItemView&) = delete;
   ~BraveNewsFeedItemView() override;
@@ -34,14 +34,14 @@ class BraveNewsFeedItemView : public views::View,
   void OnPressed();
 
   // BraveNewsTabHelper::PageFeedsObserver:
-  void OnAvailableFeedsChanged(
-      const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override;
+  void OnAvailableFeedsChanged(const std::vector<GURL>& feed_urls) override;
 
  private:
   bool loading_ = false;
+  raw_ptr<views::Label> title_ = nullptr;
   raw_ptr<views::MdTextButton> subscribe_button_ = nullptr;
 
-  BraveNewsTabHelper::FeedDetails feed_details_;
+  GURL feed_url_;
   raw_ptr<content::WebContents> contents_;
   raw_ptr<BraveNewsTabHelper> tab_helper_;
 

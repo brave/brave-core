@@ -30,28 +30,36 @@ class BraveNewsTabHelper
   struct FeedDetails {
     GURL feed_url;
     std::string title;
+
+    // Indicates whether we've requested this feed, so we don't request it
+    // multiple times.
+    bool requested_feed = false;
   };
 
   class PageFeedsObserver : public base::CheckedObserver {
    public:
     virtual void OnAvailableFeedsChanged(
-        const std::vector<FeedDetails>& feeds) = 0;
+        const std::vector<GURL>& feed_urls) = 0;
   };
+
+  static void MaybeCreateForWebContents(content::WebContents* contents);
 
   BraveNewsTabHelper(const BraveNewsTabHelper&) = delete;
   BraveNewsTabHelper& operator=(const BraveNewsTabHelper&) = delete;
 
   ~BraveNewsTabHelper() override;
 
-  const std::vector<FeedDetails> GetAvailableFeeds();
-  bool IsSubscribed(const FeedDetails& feed_details);
+  const std::vector<GURL> GetAvailableFeedUrls();
+  bool IsSubscribed(const GURL& feed_url);
   bool IsSubscribed();
 
-  void ToggleSubscription(const FeedDetails& feed_details);
+  void ToggleSubscription(const GURL& feed_details);
+  std::string GetTitleForFeedUrl(const GURL& url);
 
   void OnReceivedRssUrls(const GURL& site_url, std::vector<GURL> feed_urls);
-  void OnFoundFeeds(const GURL& site_url,
-                    std::vector<brave_news::mojom::FeedSearchResultItemPtr>);
+  void OnFoundFeedData(const GURL& feed_url,
+                       const GURL& site_url,
+                       std::vector<brave_news::mojom::FeedSearchResultItemPtr>);
 
   void AddObserver(PageFeedsObserver* observer);
   void RemoveObserver(PageFeedsObserver* observer);
@@ -67,6 +75,7 @@ class BraveNewsTabHelper
  private:
   explicit BraveNewsTabHelper(content::WebContents* contents);
 
+  bool ShouldFindFeeds();
   void AvailableFeedsChanged();
 
   raw_ptr<brave_news::BraveNewsController> controller_;

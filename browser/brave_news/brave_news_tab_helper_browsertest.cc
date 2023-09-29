@@ -12,13 +12,16 @@
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -40,20 +43,21 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
 
   ~WaitForFeedsChanged() override = default;
 
-  std::vector<BraveNewsTabHelper::FeedDetails> WaitForChange() {
-    if (!last_feeds_)
+  std::vector<GURL> WaitForChange() {
+    if (!last_feeds_) {
       loop_.Run();
+    }
     return last_feeds_.value();
   }
 
  private:
-  void OnAvailableFeedsChanged(
-      const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override {
+  void OnAvailableFeedsChanged(const std::vector<GURL>& feeds) override {
     // There can be multiple OnAvailableFeedsChanged events, as we navigate
     // (first to clear, then again to populate). This class is waiting for
     // feeds, so expect to receive some.
-    if (feeds.size() == 0)
+    if (feeds.size() == 0) {
       return;
+    }
 
     last_feeds_ = feeds;
     loop_.Quit();
@@ -61,8 +65,7 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
 
   base::RunLoop loop_;
   raw_ptr<BraveNewsTabHelper> tab_helper_;
-  absl::optional<std::vector<BraveNewsTabHelper::FeedDetails>> last_feeds_ =
-      absl::nullopt;
+  absl::optional<std::vector<GURL>> last_feeds_ = absl::nullopt;
 
   base::ScopedObservation<BraveNewsTabHelper,
                           BraveNewsTabHelper::PageFeedsObserver>
@@ -83,6 +86,12 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
 
     InProcessBrowserTest::SetUp();
+  }
+
+  void OptIn() {
+    auto* prefs = browser()->profile()->GetPrefs();
+    prefs->SetBoolean(brave_news::prefs::kNewTabPageShowToday, true);
+    prefs->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -126,15 +135,9 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest,
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
   WaitForFeedsChanged waiter(tab_helper);
 
-  std::vector<brave_news::mojom::FeedSearchResultItemPtr> feeds;
-  auto feed1 = brave_news::mojom::FeedSearchResultItem::New();
-  feed1->feed_url = GURL("https://example.com/1");
-
-  auto feed2 = brave_news::mojom::FeedSearchResultItem::New();
-  feed2->feed_url = GURL("https://example.com/2");
-  feeds.emplace_back(std::move(feed1));
-  feeds.emplace_back(std::move(feed2));
-  tab_helper->OnFoundFeeds(contents()->GetLastCommittedURL(), std::move(feeds));
+  tab_helper->OnReceivedRssUrls(
+      contents()->GetLastCommittedURL(),
+      {GURL("https://example.com/1"), GURL("https://example.com/2")});
 
   auto result = waiter.WaitForChange();
   EXPECT_EQ(2u, result.size());
@@ -144,32 +147,63 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreDeduplicated) {
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
   WaitForFeedsChanged waiter(tab_helper);
 
-  std::vector<brave_news::mojom::FeedSearchResultItemPtr> feeds;
-  auto feed1 = brave_news::mojom::FeedSearchResultItem::New();
-  feed1->feed_url = GURL("https://example.com/1");
-  auto feed1_copy = feed1.Clone();
-  feeds.emplace_back(std::move(feed1));
-  feeds.emplace_back(std::move(feed1_copy));
-  tab_helper->OnFoundFeeds(contents()->GetLastCommittedURL(), std::move(feeds));
+  GURL url("https://example.com/1");
+  tab_helper->OnReceivedRssUrls(contents()->GetLastCommittedURL(), {url, url});
 
   auto result = waiter.WaitForChange();
   EXPECT_EQ(1u, result.size());
+  EXPECT_EQ(url, result[0]);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExists) {
+IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {
+  OptIn();
+
   ASSERT_TRUE(https_server()->Start());
   GURL rss_page_url = https_server()->GetURL("/page_with_rss.html");
 
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
-  WaitForFeedsChanged waiter(tab_helper);
+
+  GURL feed_url;
+  {
+    WaitForFeedsChanged waiter(tab_helper);
+
+    ui_test_utils::NavigateToURLWithDisposition(
+        browser(), rss_page_url, WindowOpenDisposition::CURRENT_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+    auto result = waiter.WaitForChange();
+
+    ASSERT_EQ(1u, result.size());
+    feed_url = result[0];
+    EXPECT_EQ(https_server()->GetURL("/page_with_rss.xml"), feed_url);
+  }
+
+  // At first, we should not have loaded the title (and fallback to the feed
+  // url). Requesting the title should trigger fetching and parsing the feed to
+  // get the title.
+  {
+    WaitForFeedsChanged waiter(tab_helper);
+    EXPECT_EQ(feed_url.spec(), tab_helper->GetTitleForFeedUrl(feed_url));
+
+    // Once the feed has been parsed, we should be notified that we have
+    // changes.
+    waiter.WaitForChange();
+    EXPECT_EQ("Channel Title", tab_helper->GetTitleForFeedUrl(feed_url));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreNotFoundWhenNotOptedIn) {
+  ASSERT_TRUE(https_server()->Start());
+  GURL rss_page_url = https_server()->GetURL("/page_with_rss.html");
+
+  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
 
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), rss_page_url, WindowOpenDisposition::CURRENT_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
-  auto result = waiter.WaitForChange();
+  // We run until idle here rather than using the Waiter because we want the
+  // load to complete before notifying, and we don't notify empty results.
+  base::RunLoop().RunUntilIdle();
 
-  ASSERT_EQ(1u, result.size());
-  EXPECT_EQ("Channel Title", result[0].title);
-  EXPECT_EQ(https_server()->GetURL("/page_with_rss.xml"), result[0].feed_url);
+  ASSERT_EQ(0u, tab_helper->GetAvailableFeedUrls().size());
 }
