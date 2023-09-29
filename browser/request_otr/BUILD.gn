@@ -31,6 +31,7 @@ source_set("browser_tests") {
 source_set("desktop_browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  check_includes = false
 
   sources = [ "//brave/browser/request_otr/request_otr_desktop_browsertest.cc" ]
   deps = [
