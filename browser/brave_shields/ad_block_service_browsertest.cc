@@ -227,11 +227,8 @@ bool AdBlockServiceTest::InstallDefaultAdBlockComponent(
           "Default lists for Brave Browser", true, true, true, 0, {},
           kDefaultAdBlockComponentTestId,
           kDefaultAdBlockComponentTest64PublicKey)});
-  const extensions::Extension* ad_block_component = LoadExtensionAsComponent(
-      test_data_dir.AppendASCII("adblock-data").AppendASCII(component_dir));
-  if (!ad_block_component) {
-    return false;
-  }
+  auto component_path =
+      test_data_dir.AppendASCII("adblock-data").AppendASCII(component_dir);
 
   auto& component_providers = g_brave_browser_process->ad_block_service()
                                   ->component_service_manager()
@@ -239,7 +236,7 @@ bool AdBlockServiceTest::InstallDefaultAdBlockComponent(
   EXPECT_EQ(component_providers.size(), 1UL);
   auto& default_provider = component_providers.at("default");
   EXPECT_TRUE(default_provider);
-  default_provider->OnComponentReady(ad_block_component->path());
+  default_provider->OnComponentReady(component_path);
 
   WaitForAdBlockServiceThreads();
 
@@ -270,12 +267,8 @@ bool AdBlockServiceTest::InstallRegionalAdBlockComponent(
       ->SetFilterListCatalog(filter_list_catalog);
 
   if (enable_list) {
-    const extensions::Extension* ad_block_component =
-        LoadExtensionAsComponent(test_data_dir.AppendASCII("adblock-data")
-                                     .AppendASCII("adblock-regional"));
-    if (!ad_block_component) {
-      return false;
-    }
+    auto component_path = test_data_dir.AppendASCII("adblock-data")
+                              .AppendASCII("adblock-regional");
 
     g_brave_browser_process->ad_block_service()
         ->component_service_manager()
@@ -292,8 +285,7 @@ bool AdBlockServiceTest::InstallRegionalAdBlockComponent(
                                 ->additional_filters_engine_.get();
     EngineTestObserver regional_engine_observer(regional_engine);
     auto regional_filters_provider = regional_filters_providers.find(uuid);
-    regional_filters_provider->second->OnComponentReady(
-        ad_block_component->path());
+    regional_filters_provider->second->OnComponentReady(component_path);
     regional_engine_observer.Wait();
   }
 
