@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import { getLocale } from '$web-common/locale'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import ConversationList from '../conversation_list'
@@ -18,6 +19,7 @@ import InputBox from '../input_box'
 import FeatureButtonMenu from '../feature_button_menu'
 import styles from './style.module.scss'
 import ModelIntro from '../model_intro'
+import PremiumSuggestion from '../premium_suggestion'
 
 function Main () {
   const context = React.useContext(DataContext)
@@ -27,6 +29,8 @@ function Main () {
   const handleEraseClick = () => {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
+
+  const shouldShowPremiumSuggestion = !context.isPremiumUser && context.currentModel?.isPremium
 
   let conversationListElement = <PrivacyMessage />
   let siteTitleElement = null
@@ -94,6 +98,14 @@ function Main () {
         {currentErrorElement && (
           <div className={styles.errorContainer}>{currentErrorElement}</div>
         )}
+        {
+          shouldShowPremiumSuggestion && (
+            <PremiumSuggestion
+              title={getLocale('unlockPremium')}
+              verbose={true}
+            />
+          )
+        }
       </div>
       <div className={styles.inputBox}>
         {promptAutoSuggestionElement}
