@@ -20,6 +20,10 @@ class URLRequest;
 
 namespace webtorrent {
 
+bool IsNonWebTorrentRequest(
+    const net::HttpResponseHeaders* original_response_headers,
+    std::shared_ptr<brave::BraveRequestInfo> ctx);
+
 int OnHeadersReceived_TorrentRedirectWork(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,

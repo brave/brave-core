@@ -48,17 +48,23 @@ bool IsMainFrameResource(std::shared_ptr<brave::BraveRequestInfo> ctx) {
 
 namespace webtorrent {
 
+bool IsNonWebTorrentRequest(
+    const net::HttpResponseHeaders* original_response_headers,
+    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  return !original_response_headers || !IsMainFrameResource(ctx) ||
+         ctx->is_webtorrent_disabled ||
+         // download .torrent, do not redirect
+         (IsWebtorrentInitiated(ctx) && !IsViewerURL(ctx->request_url)) ||
+         !IsTorrentFile(ctx->request_url, original_response_headers);
+}
+
 int OnHeadersReceived_TorrentRedirectWork(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (!original_response_headers || !IsMainFrameResource(ctx) ||
-      ctx->is_webtorrent_disabled ||
-      // download .torrent, do not redirect
-      (IsWebtorrentInitiated(ctx) && !IsViewerURL(ctx->request_url)) ||
-      !IsTorrentFile(ctx->request_url, original_response_headers)) {
+  if (IsNonWebTorrentRequest(original_response_headers, ctx)) {
     return net::OK;
   }
 
