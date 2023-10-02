@@ -26,6 +26,15 @@
   <message name="IDS_EXTENSIONS_ENABLE_ERROR_COLLECTION" desc="The checkbox for enabling error collection for an extension.">
     Collect errors
   </message>
+  <message name="IDS_EXTENSIONS_ENABLE_TOGGLE_TOOLTIP_DISABLED" desc="The tooltip for the enable extension toggle when the extension is disabled.">
+    This extension cannot read and change site information or run in the background
+  </message>
+  <message name="IDS_EXTENSIONS_ENABLE_TOGGLE_TOOLTIP_ENABLED" desc="The tooltip for the enable extension toggle when the extension is enabled but does not have host permissions.">
+    This extension may run in the background
+  </message>
+  <message name="IDS_EXTENSIONS_ENABLE_TOGGLE_TOOLTIP_ENABLED_WITH_SITE_ACCESS" desc="The tooltip for the enable extension toggle when the extension is enabled and has host permissions.">
+    This extension may read and change site information or run in the background
+  </message>
   <message name="IDS_EXTENSIONS_ERROR_NO_ERRORS_CODE_MESSAGE" desc="The text displayed in the 'code' section when an extension has no errors.">
     Nothing to see here, move along.
   </message>
@@ -301,6 +310,9 @@
   </message>
   <message name="IDS_EXTENSIONS_ITEM_PERMISSIONS_AND_SITE_ACCESS_EMPTY" desc="The text to indicate that an extension does not have any special permissions or any site access.">
     This extension requires no special permissions and has no additional site access
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_PIN_TO_TOOLBAR" desc="The text next to the toggle to pin an extension to the toolbar.">
+    Pin to toolbar
   </message>
   <message name="IDS_EXTENSIONS_ITEM_REMOVE_EXTENSION" desc="The label on the button to remove an extension.">
     Remove extension
@@ -592,6 +604,12 @@
 <if expr="chromeos_ash">
   <message name="IDS_EXTENSIONS_INCLUDE_START_MODIFIER" desc="Error message explaining that shortcuts must start with either the Control, Alt, or Search key.">
     Include Ctrl, Alt, or Search
+  </message>
+  <message name="IDS_EXTENSIONS_WFH_PERMISSION_HANDLER_FILES" desc="Label showing file names in singular or plural form.">
+    {FILE_COUNT, plural,
+      =1 {Open and edit <ph name="FILE1">{FILE1}<ex>1.txt</ex></ph> in this extension}
+      other {Open and edit <ph name="FILE1">{FILE1}<ex>1.txt</ex></ph>, ... in this app}
+    }
   </message>
 </if>
 <if expr="is_macosx or chromeos_ash">

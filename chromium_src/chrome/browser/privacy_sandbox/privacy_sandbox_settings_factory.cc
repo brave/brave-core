@@ -7,15 +7,17 @@
 
 #include "brave/components/privacy_sandbox/brave_privacy_sandbox_settings.h"
 
-#define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
+#define BuildServiceInstanceForBrowserContext \
+  BuildServiceInstanceForBrowserContext_ChromiumImpl
 #include "src/chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.cc"
-#undef BuildServiceInstanceFor
+#undef BuildServiceInstanceForBrowserContext
 
-KeyedService* PrivacySandboxSettingsFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+PrivacySandboxSettingsFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   Profile* profile = Profile::FromBrowserContext(context);
 
-  return new BravePrivacySandboxSettings(
+  return std::make_unique<BravePrivacySandboxSettings>(
       std::make_unique<PrivacySandboxSettingsDelegate>(profile),
       HostContentSettingsMapFactory::GetForProfile(profile),
       CookieSettingsFactory::GetForProfile(profile).get(), profile->GetPrefs());

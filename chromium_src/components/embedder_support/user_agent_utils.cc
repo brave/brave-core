@@ -34,13 +34,14 @@ constexpr char kBraveBrandNameForCHUA[] = "Brave";
 
 namespace embedder_support {
 
-blink::UserAgentMetadata GetUserAgentMetadata() {
-  return GetUserAgentMetadata(nullptr);
+blink::UserAgentMetadata GetUserAgentMetadata(bool only_low_entropy_ch) {
+  return GetUserAgentMetadata(nullptr, false);
 }
 
-blink::UserAgentMetadata GetUserAgentMetadata(const PrefService* pref_service) {
+blink::UserAgentMetadata GetUserAgentMetadata(const PrefService* pref_service,
+                                              bool only_low_entropy_ch) {
   blink::UserAgentMetadata metadata =
-      GetUserAgentMetadata_ChromiumImpl(pref_service);
+      GetUserAgentMetadata_ChromiumImpl(pref_service, only_low_entropy_ch);
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   if (command_line->HasSwitch(kUserAgent)) {
     return metadata;

@@ -11,6 +11,8 @@ namespace content_settings {
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kThirdPartyCookieDeprecationCookieSettings,
+     base::FEATURE_DISABLED_BY_DEFAULT},
     {kUserBypassUI, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

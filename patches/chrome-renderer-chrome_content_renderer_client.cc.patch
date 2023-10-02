@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 8d02ca21674b13dd2ae11cb79b8d85dfcc4cb217..d1b90c854d669475aa0640b745612f07d1fa4aa7 100644
+index c573a3908fd43f678af1ca5142c5f4258ff426bf..1aac3e7b57b4d213dc1d7ff21392b55671acba86 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -584,7 +584,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -588,7 +588,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
        ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher());
  #endif
    content_settings::ContentSettingsAgentImpl* content_settings =
@@ -11,9 +11,9 @@ index 8d02ca21674b13dd2ae11cb79b8d85dfcc4cb217..d1b90c854d669475aa0640b745612f07
            render_frame, should_allow_for_content_settings,
            std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
-@@ -756,6 +756,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
-                                 render_frame));
-   }
+@@ -764,6 +764,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+ #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
+   MultilineDetector::InstallIfNecessary(render_frame);
  #endif
 +  BRAVE_RENDER_FRAME_CREATED
  }

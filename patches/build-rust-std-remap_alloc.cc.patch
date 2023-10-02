@@ -1,8 +1,8 @@
 diff --git a/build/rust/std/remap_alloc.cc b/build/rust/std/remap_alloc.cc
-index 6d010b61873104f99dc5b39669af3b3d79dd6f6d..767883d3d3bc76ab80f37c7a18b7efcd315e4215 100644
+index bfd39b724b88a8de963840c617430eb0d3875f03..41c3b7317d5310c70156e5aafca5a30cefa08e0f 100644
 --- a/build/rust/std/remap_alloc.cc
 +++ b/build/rust/std/remap_alloc.cc
-@@ -129,7 +129,15 @@ REMAP_ALLOC_ATTRIBUTES void* __rust_alloc(size_t size, size_t align) {
+@@ -130,7 +130,15 @@ REMAP_ALLOC_ATTRIBUTES void* __rust_alloc(size_t size, size_t align) {
  }
  
  REMAP_ALLOC_ATTRIBUTES void __rust_dealloc(void* p, size_t size, size_t align) {

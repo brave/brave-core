@@ -168,8 +168,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
   // Verify cloud print is disabled.
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kCloudPrintProxyEnabled));
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      prefs::kCloudPrintSubmitEnabled));
 #if !BUILDFLAG(IS_ANDROID)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       ntp_prefs::kNtpUseMostVisitedTiles));

@@ -18,6 +18,7 @@ import android.provider.OpenableColumns;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -40,6 +41,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Consumer;
 
 class BraveBookmarkManagerMediator
         extends BookmarkManagerMediator implements BraveBookmarkDelegate {
@@ -61,12 +63,12 @@ class BraveBookmarkManagerMediator
             BookmarkUndoController bookmarkUndoController, ModelList modelList,
             BookmarkUiPrefs bookmarkUiPrefs, Runnable hideKeyboardRunnable,
             BookmarkImageFetcher bookmarkImageFetcher, ShoppingService shoppingService,
-            SnackbarManager snackbarManager) {
+            SnackbarManager snackbarManager, Consumer<OnScrollListener> onScrollListenerConsumer) {
         super(context, bookmarkModel, bookmarkOpener, selectableListLayout, selectionDelegate,
                 recyclerView, dragReorderableRecyclerViewAdapter, largeIconBridge, isDialogUi,
                 isIncognito, backPressStateSupplier, profile, bookmarkUndoController, modelList,
                 bookmarkUiPrefs, hideKeyboardRunnable, bookmarkImageFetcher, shoppingService,
-                snackbarManager);
+                snackbarManager, onScrollListenerConsumer);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

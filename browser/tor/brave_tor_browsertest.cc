@@ -77,7 +77,7 @@ void TestAutofillInWindow(content::WebContents* active_contents,
           ->DriverForFrame(active_contents->GetPrimaryMainFrame());
   ASSERT_TRUE(cross_driver);
   EXPECT_EQ(static_cast<autofill::BrowserAutofillManager*>(
-                cross_driver->autofill_manager())
+                &cross_driver->GetAutofillManager())
                 ->IsAutofillEnabled(),
             enabled);
 }

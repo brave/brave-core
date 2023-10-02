@@ -29,6 +29,12 @@
     </if>
   <if expr="chromeos_lacros">
     </if>
+  <if expr="is_win or is_linux or is_macosx">
+    </if>
+  <if expr="is_win or is_linux">
+    </if>
+  <if expr="is_macosx">
+    </if>
 
   <if expr="is_chromeos">
     </if>
@@ -125,6 +131,8 @@
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the 'Privacy guide'.">
     When you’re in Private mode, sites can only use cookies to see your browsing activity on their own site. Cookies are deleted at the end of the Private session.
   </message>
+  <if expr="_google_chrome">
+    </if>
   <message name="IDS_SETTINGS_PRIVACY_SEARCH_SUGGESTIONS_FEATURE_DESCRIPTION1" desc="A part of the feature description of 'search suggestions' in the 'Privacy Guide'.">
     When you click or type in the address bar or search box, you'll see suggestions from your default search engine. This is off in Private.
   </message>
@@ -133,6 +141,8 @@
      =1 {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>1 extension<ph name="END_BOLD">&lt;/b&gt;</ph> that was taken down from the Web Store}
      other {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{NUM_EXTENSIONS} extensions<ph name="END_BOLD">&lt;/b&gt;</ph> that were taken down from the Web Store}}
   </message>
+  <if expr="_google_chrome">
+    </if>
   <if expr="chrome_root_store_supported">
     </if>
   <if expr="chromeos_ash">

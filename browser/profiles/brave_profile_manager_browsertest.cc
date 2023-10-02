@@ -117,8 +117,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   ProfileAttributesStorage& storage =
       profile_manager->GetProfileAttributesStorage();
   auto profile_data = GetTestProfileData(profile_manager);
-  auto entries =
-      storage.GetAllProfilesAttributesSortedByName();
+  auto entries = storage.GetAllProfilesAttributesSortedByNameWithCheck();
   // Verify we still have the expected number of profiles.
   ASSERT_EQ(entries.size(), profile_data.size());
   // Order of items in entries and profile_data should be the same

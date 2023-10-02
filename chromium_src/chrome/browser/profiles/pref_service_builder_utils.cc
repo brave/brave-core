@@ -36,8 +36,6 @@ void RegisterProfilePrefs(bool is_signin_profile,
                                 base::Value(false));
 #if BUILDFLAG(IS_LINUX)
   // Use brave theme by default instead of gtk theme.
-  registry->SetDefaultPrefValue(prefs::kUsesSystemThemeDeprecated,
-                                base::Value(false));
   registry->SetDefaultPrefValue(
       prefs::kSystemTheme,
       base::Value(static_cast<int>(ui::SystemTheme::kDefault)));

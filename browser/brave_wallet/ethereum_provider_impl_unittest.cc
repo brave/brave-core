@@ -244,8 +244,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
-            PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
-                browser_context()))));
+            PermissionManagerFactory::GetInstance()
+                ->BuildServiceInstanceForBrowserContext(browser_context())
+                .release())));
 
     provider_ = std::make_unique<EthereumProviderImpl>(
         host_content_settings_map(), json_rpc_service(), tx_service(),

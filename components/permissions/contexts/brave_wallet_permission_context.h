@@ -18,8 +18,6 @@
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "url/origin.h"
 
-class GURL;
-
 namespace content {
 class BrowserContext;
 class WebContents;
@@ -46,9 +44,7 @@ class BraveWalletPermissionContext : public PermissionContextBase {
    * will then consume one address from the saved list and call
    * PermissionContextBase::RequestPermission with it.
    */
-  void RequestPermission(const PermissionRequestID& id,
-                         const GURL& requesting_frame,
-                         bool user_gesture,
+  void RequestPermission(PermissionRequestData request_data,
                          BrowserPermissionCallback callback) override;
 
   static void RequestPermissions(

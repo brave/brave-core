@@ -36,7 +36,6 @@ import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.omnibox.OmniboxFocusReason;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeUtil;
-import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
@@ -277,15 +276,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
      */
     void setBottomToolbarVisible(boolean isVisible) {
         if (mTabSwitcherModeCoordinator != null) {
-            try {
-                ChromeActivity activity = BraveActivity.getBraveActivity();
-                mTabSwitcherModeCoordinator.showToolbarOnTop(
-                        !isVisible, TabUiFeatureUtilities.isGridTabSwitcherEnabled(activity));
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "setBottomToolbarVisible " + e);
-                mTabSwitcherModeCoordinator.showToolbarOnTop(
-                        !isVisible, TabUiFeatureUtilities.isGridTabSwitcherEnabled(mContext));
-            }
+            mTabSwitcherModeCoordinator.showToolbarOnTop(!isVisible, true);
         }
         mBrowsingModeCoordinator.onVisibilityChanged(isVisible);
     }

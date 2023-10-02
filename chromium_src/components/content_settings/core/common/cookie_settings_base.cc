@@ -123,8 +123,9 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return false;
 
-  bool allow_3p = IsCookieAccessAllowedImpl(url, site_for_cookies,
-                                            top_frame_origin, overrides);
+  bool allow_3p =
+      IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
+                                overrides, /*cookie_settings*/ nullptr);
   bool allow_1p = first_party_setting ? IsAllowed(first_party_setting->setting)
                                       : IsFirstPartyAccessAllowed(
                                             first_party_url, this, overrides);
@@ -144,25 +145,27 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
   }
 
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                   overrides);
+                                   overrides, /*cookie_settings*/ nullptr);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides) const {
+    net::CookieSettingOverrides overrides,
+    CookieSettingWithMetadata* cookie_settings) const {
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                   overrides);
+                                   overrides, cookie_settings);
 }
 
 bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides) const {
-  bool allow = IsChromiumFullCookieAccessAllowed(url, site_for_cookies,
-                                                 top_frame_origin, overrides);
+    net::CookieSettingOverrides overrides,
+    CookieSettingWithMetadata* cookie_settings) const {
+  bool allow = IsChromiumFullCookieAccessAllowed(
+      url, site_for_cookies, top_frame_origin, overrides, cookie_settings);
 
   const bool is_1p_ephemeral_feature_enabled = base::FeatureList::IsEnabled(
       net::features::kBraveFirstPartyEphemeralStorage);

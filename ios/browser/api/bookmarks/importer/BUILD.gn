@@ -29,7 +29,7 @@ source_set("importer") {
     "//components/search_engines:search_engines",
     "//components/strings:components_strings_grit",
     "//components/user_prefs:user_prefs",
-    "//ios/chrome/browser/bookmarks",
+    "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
     "//ios/web/public/thread",

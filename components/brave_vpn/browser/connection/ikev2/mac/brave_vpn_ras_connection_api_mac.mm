@@ -12,10 +12,10 @@
 #include <netinet/in.h>
 
 #include "base/apple/bundle_locations.h"
+#include "base/apple/foundation_util.h"
+#include "base/apple/scoped_cftyperef.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/mac/foundation_util.h"
-#include "base/mac/scoped_cftyperef.h"
 #include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 
@@ -339,7 +339,7 @@ bool BraveVPNOSConnectionAPIMac::IsPlatformNetworkAvailable() {
   struct sockaddr_in addr = {0};
   addr.sin_len = sizeof(addr);
   addr.sin_family = AF_INET;
-  base::ScopedCFTypeRef<SCNetworkReachabilityRef> reachability(
+  base::apple::ScopedCFTypeRef<SCNetworkReachabilityRef> reachability(
       SCNetworkReachabilityCreateWithAddress(
           kCFAllocatorDefault, reinterpret_cast<struct sockaddr*>(&addr)));
   SCNetworkReachabilityFlags flags;

@@ -22,14 +22,14 @@ namespace viz {
 
 void GpuServiceImpl::InitializeWithHost(
     mojo::PendingRemote<mojom::GpuHost> pending_gpu_host,
-    gpu::GpuProcessActivityFlags activity_flags,
+    gpu::GpuProcessShmCount use_shader_cache_shm_count,
     scoped_refptr<gl::GLSurface> default_offscreen_surface,
     gpu::SyncPointManager* sync_point_manager,
     gpu::SharedImageManager* shared_image_manager,
     gpu::Scheduler* scheduler,
     base::WaitableEvent* shutdown_event) {
   InitializeWithHost_ChromiumImpl(
-      std::move(pending_gpu_host), std::move(activity_flags),
+      std::move(pending_gpu_host), std::move(use_shader_cache_shm_count),
       std::move(default_offscreen_surface), sync_point_manager,
       shared_image_manager, scheduler, shutdown_event);
 #if BUILDFLAG(IS_WIN)

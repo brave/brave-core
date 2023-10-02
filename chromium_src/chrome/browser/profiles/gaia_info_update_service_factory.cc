@@ -5,14 +5,16 @@
 
 #include "chrome/browser/profiles/gaia_info_update_service_factory.h"
 
-// Include to prevent redefining BuildServiceInstanceFor
+// Include to prevent redefining BuildServiceInstanceForBrowserContext
 #include "chrome/browser/signin/identity_manager_factory.h"
 
-#define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
+#define BuildServiceInstanceForBrowserContext \
+  BuildServiceInstanceForBrowserContext_ChromiumImpl
 #include "src/chrome/browser/profiles/gaia_info_update_service_factory.cc"
-#undef BuildServiceInstanceFor
+#undef BuildServiceInstanceForBrowserContext
 
-KeyedService* GAIAInfoUpdateServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+GAIAInfoUpdateServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   return nullptr;
 }

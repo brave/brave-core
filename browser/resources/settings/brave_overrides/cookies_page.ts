@@ -35,7 +35,7 @@ RegisterPolymerTemplateModifications({
       }
     }
     const preloadingLinkRowTemplate = templateContent.querySelector(
-        'template[is=dom-if][if="[[showPreloadingSubPage_]]"]')
+        'template[is=dom-if][if="[[showPreloadingSubpage_]]"]')
     if (!preloadingLinkRowTemplate) {
       console.error(
           '[Brave Settings Overrides] Could not find preloading template')

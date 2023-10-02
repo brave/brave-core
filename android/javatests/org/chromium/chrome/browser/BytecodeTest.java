@@ -69,12 +69,9 @@ import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
-import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
-import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
-import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -146,6 +143,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -171,8 +169,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/BraveNewTabPage"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
         Assert.assertTrue(classExists(
@@ -671,24 +667,19 @@ public class BytecodeTest {
                 BottomSheetController.class, Supplier.class, WindowAndroid.class, Supplier.class,
                 SettingsLauncher.class, HomeSurfaceTracker.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
-                "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor",
-                Context.class, SuggestionHost.class, UrlBarDelegate.class,
-                OmniboxImageSupplier.class, Supplier.class, Supplier.class));
-        Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                 "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
-                ToolbarControlContainer.class, ViewStub.class, ViewStub.class, ToolbarLayout.class,
+                ToolbarControlContainer.class, ViewStub.class, ToolbarLayout.class,
                 ToolbarDataProvider.class, ToolbarTabController.class, UserEducationHelper.class,
                 List.class, OneshotSupplier.class, ThemeColorProvider.class,
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
                 ButtonDataProvider.class, Callback.class, Supplier.class, Supplier.class,
-                BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
-                HistoryDelegate.class, BooleanSupplier.class, OfflineDownloader.class,
-                boolean.class, Callback.class, boolean.class, ObservableSupplier.class,
-                ObservableSupplier.class, BrowserStateBrowserControlsVisibilityDelegate.class,
-                boolean.class, FullscreenManager.class));
+                BooleanSupplier.class, boolean.class, boolean.class, HistoryDelegate.class,
+                BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
+                boolean.class, ObservableSupplier.class, ObservableSupplier.class,
+                BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class,
+                FullscreenManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -761,7 +752,7 @@ public class BytecodeTest {
                 BooleanSupplier.class, Supplier.class, OmniboxActionDelegate.class,
                 BrowserStateBrowserControlsVisibilityDelegate.class, Callback.class,
                 BackPressManager.class, OmniboxSuggestionsDropdownScrollListener.class,
-                OpenHistoryClustersDelegate.class));
+                OpenHistoryClustersDelegate.class, ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
@@ -773,7 +764,8 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getLensControllerClass(),
                 BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                 BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class,
-                BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass()));
+                BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
+                ObservableSupplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/IntentHandler",
                 "org/chromium/chrome/browser/BraveIntentHandler", Activity.class,
                 IntentHandler.IntentHandlerDelegate.class));
@@ -821,7 +813,7 @@ public class BytecodeTest {
                 Context.class, SelectableListLayout.class, SelectionDelegate.class,
                 SearchDelegate.class, DragReorderableRecyclerViewAdapter.class, boolean.class,
                 OneshotSupplier.class, BookmarkModel.class, BookmarkOpener.class,
-                BookmarkUiPrefs.class, ModalDialogManager.class));
+                BookmarkUiPrefs.class, ModalDialogManager.class, Runnable.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator",
@@ -836,7 +828,7 @@ public class BytecodeTest {
                         boolean.class, boolean.class, ObservableSupplierImpl.class, Profile.class,
                         BookmarkUndoController.class, ModelList.class, BookmarkUiPrefs.class,
                         Runnable.class, BookmarkImageFetcher.class, ShoppingService.class,
-                        SnackbarManager.class));
+                        SnackbarManager.class, Consumer.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkModel",
@@ -884,9 +876,6 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mTabModelSelector"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/ntp/NewTabPage", "mBottomSheetController"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
-                "mHasClearedOmniboxForFocus"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                         "mTileGroup"));
@@ -1037,6 +1026,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mIsTablet"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "mIsLocationBarFocusedFromNtpScroll"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
+                "mShouldClearOmniboxOnFocus"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator", "mContext"));
         Assert.assertTrue(fieldExists(

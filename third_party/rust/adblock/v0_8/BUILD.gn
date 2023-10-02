@@ -58,6 +58,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/cssparser/v0_28:lib",
     "//brave/third_party/rust/idna/v0_2:lib",
     "//brave/third_party/rust/itertools/v0_10:lib",
+    "//brave/third_party/rust/once_cell/v1:lib",
     "//brave/third_party/rust/percent_encoding/v2:lib",
     "//brave/third_party/rust/rmp_serde/v0_15:lib",
     "//brave/third_party/rust/seahash/v3:lib",
@@ -67,7 +68,6 @@ cargo_crate("lib") {
     "//third_party/rust/base64/v0_13:lib",
     "//third_party/rust/bitflags/v1:lib",
     "//third_party/rust/memchr/v2:lib",
-    "//third_party/rust/once_cell/v1:lib",
     "//third_party/rust/regex/v1:lib",
     "//third_party/rust/serde/v1:lib",
   ]
