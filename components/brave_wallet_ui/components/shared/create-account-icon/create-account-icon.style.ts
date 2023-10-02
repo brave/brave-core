@@ -36,7 +36,12 @@ export const AccountBox = styled.div<{
       : 'var(--box-medium)'
   };
   border-radius: ${(p) =>
-    p.size === 'big' ? 8 : 4}px;
+    p.round
+      ? '50%'
+      : p.size === 'big'
+        ? '8px'
+        : '4px'
+  };
   background-image: url(${(p) => p.orb});
   background-size: cover;
   margin-right: ${(p) =>
@@ -44,7 +49,6 @@ export const AccountBox = styled.div<{
       ? p.marginRight
       : 0
   }px;
-  border-radius: ${(p) => p.round ? '50%': 'unset'};
 `
 
 export const AccountIcon = styled(Icon) <{
