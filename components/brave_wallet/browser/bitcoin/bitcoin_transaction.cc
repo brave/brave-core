@@ -84,9 +84,9 @@ BitcoinTransaction& BitcoinTransaction::operator=(BitcoinTransaction&& other) =
     default;
 bool BitcoinTransaction::operator==(const BitcoinTransaction& other) const {
   return std::tie(this->inputs_, this->outputs_, this->locktime_, this->to_,
-                  this->amount_, this->fee_) ==
-         std::tie(other.inputs_, other.outputs_, other.locktime_, other.to_,
-                  other.amount_, other.fee_);
+                  this->amount_) == std::tie(other.inputs_, other.outputs_,
+                                             other.locktime_, other.to_,
+                                             other.amount_);
 }
 bool BitcoinTransaction::operator!=(const BitcoinTransaction& other) const {
   return !(*this == other);
@@ -303,7 +303,6 @@ BitcoinTransaction BitcoinTransaction::Clone() const {
   result.locktime_ = locktime_;
   result.to_ = to_;
   result.amount_ = amount_;
-  result.fee_ = fee_;
 
   return result;
 }
@@ -324,7 +323,6 @@ base::Value::Dict BitcoinTransaction::ToValue() const {
   dict.Set("locktime", base::NumberToString(locktime_));
   dict.Set("to", to_);
   dict.Set("amount", base::NumberToString(amount_));
-  dict.Set("fee", base::NumberToString(fee_));
 
   return dict;
 }
@@ -376,10 +374,6 @@ absl::optional<BitcoinTransaction> BitcoinTransaction::FromValue(
     return absl::nullopt;
   }
 
-  if (!ReadUint64StringTo(value, "fee", result.fee_)) {
-    return absl::nullopt;
-  }
-
   return result;
 }
 
@@ -398,6 +392,26 @@ uint64_t BitcoinTransaction::TotalInputsAmount() const {
     result += input.utxo_value;
   }
   return result;
+}
+
+uint64_t BitcoinTransaction::TotalOutputsAmount() const {
+  uint64_t result = 0;
+  for (auto& output : outputs_) {
+    result += output.amount;
+  }
+  return result;
+}
+
+uint64_t BitcoinTransaction::EffectiveFeeAmount() const {
+  DCHECK_GE(TotalInputsAmount(), TotalOutputsAmount());
+  return TotalInputsAmount() - TotalOutputsAmount();
+}
+
+void BitcoinTransaction::ClearSignatures() {
+  for (auto& input : inputs_) {
+    input.witness.clear();
+    input.script_sig.clear();
+  }
 }
 
 uint8_t BitcoinTransaction::sighash_type() const {

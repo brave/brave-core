@@ -67,6 +67,21 @@ const GURL MakeGetChainHeightUrl(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
+const GURL MakeGetFeeEstimatesUrl(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  const std::string path = base::StrCat({base_url.path(), "fee-estimates"});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
 const GURL MakeGetTransactionUrl(const GURL& base_url,
                                  const std::string& txid) {
   if (!base_url.is_valid()) {
@@ -229,6 +244,46 @@ void BitcoinRpc::OnGetChainHeight(GetChainHeightCallback callback,
   }
 
   std::move(callback).Run(base::ok(height));
+}
+
+void BitcoinRpc::GetFeeEstimates(const std::string& chain_id,
+                                 GetFeeEstimatesCallback callback) {
+  GURL request_url = MakeGetFeeEstimatesUrl(
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC));
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto internal_callback =
+      base::BindOnce(&BitcoinRpc::OnGetFeeEstimates,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(request_url, std::move(internal_callback));
+}
+
+void BitcoinRpc::OnGetFeeEstimates(GetFeeEstimatesCallback callback,
+                                   APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    return ReplyWithUnexpectedHttpResponseCode(
+        std::move(callback), api_request_result.response_code());
+  }
+
+  auto* dict = api_request_result.value_body().GetIfDict();
+  if (!dict || dict->empty()) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
+
+  std::map<uint32_t, double> estimates;
+
+  for (auto&& item : *dict) {
+    uint32_t blocks = 0;
+    if (!base::StringToUint(item.first, &blocks) ||
+        !item.second.GetIfDouble()) {
+      return ReplyWithInvalidJsonError(std::move(callback));
+    }
+    estimates[blocks] = item.second.GetDouble();
+  }
+
+  std::move(callback).Run(base::ok(std::move(estimates)));
 }
 
 void BitcoinRpc::GetTransaction(const std::string& chain_id,

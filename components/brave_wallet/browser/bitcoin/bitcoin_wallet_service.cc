@@ -11,6 +11,7 @@
 #include <set>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
@@ -27,6 +28,10 @@
 namespace brave_wallet {
 
 namespace {
+
+const uint32_t kHighPriorityTargetBlock = 1;
+const uint32_t kMediumPriorityTargetBlock = 4;
+const double kFallbackFeeRate = 1;  // 1 sat per byte fallback rate.
 
 bool OutputAddressSupported(const std::string& address, bool is_testnet) {
   auto decoded_address = DecodeBitcoinAddress(address);
@@ -53,6 +58,42 @@ uint64_t GetChainBalance(const bitcoin_rpc::AddressChainStats& chain_stats) {
   }
 
   return base::ClampSub(funded, spent);
+}
+
+const std::vector<uint8_t>& DummySignature() {
+  static std::vector<uint8_t> dummy_signature = []() {
+    constexpr size_t kRLength = 32;
+    constexpr size_t kSLength = 32;
+    std::vector<uint8_t> result;
+    result.assign(kRLength + kSLength + 7, 0);
+    result[0] = 0x30;
+    result[1] = kRLength + kSLength + 4;
+    result[2] = 0x02;
+    result[3] = kRLength;
+    result[4] = 0x01;
+    result[4 + kRLength] = 0x02;
+    result[5 + kRLength] = kSLength;
+    result[6 + kRLength] = 0x01;
+    result[6 + kRLength + kSLength] = kBitcoinSigHashAll;
+    return result;
+  }();
+  return dummy_signature;
+}
+
+const std::vector<uint8_t>& DummyPubkey() {
+  static std::vector<uint8_t> dummy_pubkey = []() {
+    constexpr size_t kLenght = 33;
+    std::vector<uint8_t> result(kLenght, 0);
+    return result;
+  }();
+  return dummy_pubkey;
+}
+
+const std::vector<uint8_t>& DummyWitness() {
+  static std::vector<uint8_t> dummy_witness = []() {
+    return BitcoinSerializer::SerializeWitness(DummySignature(), DummyPubkey());
+  }();
+  return dummy_witness;
 }
 
 }  // namespace
@@ -303,10 +344,13 @@ class CreateTransactionTask {
 
   void SetError(const std::string& error_string) { error_ = error_string; }
 
+  double GetFeeRate();
   bool PickInputs();
   bool PrepareOutputs();
 
   void OnGetChainHeight(base::expected<uint32_t, std::string> chain_height);
+  void OnGetFeeEstimates(
+      base::expected<std::map<uint32_t, double>, std::string> estimates);
   void OnGetUtxos(base::expected<UtxoMap, std::string> utxo_map);
   void OnDiscoverNextUnusedAddress(
       base::expected<mojom::BitcoinAddressPtr, std::string> address);
@@ -318,6 +362,7 @@ class CreateTransactionTask {
   absl::optional<uint32_t> chain_height_;
   BitcoinWalletService::UtxoMap utxo_map_;
   mojom::BitcoinAddressPtr change_address_;
+  std::map<uint32_t, double> estimates_;  // target block -> fee rate (sat/byte)
 
   absl::optional<std::string> error_;
   BitcoinTransaction transaction_;
@@ -378,22 +423,29 @@ void CreateTransactionTask::WorkOnTask() {
     return;
   }
 
-  // TODO(apaymyshev): fetch fee estimations, calculate transaction size and set
-  // transaction fee
-  transaction_.set_fee(2000);
+  // TODO(apaymyshev): this captures fee estimates at transaction creation
+  // moment and can become outdated when transaction is actually broadcasted
+  // to network. Should handle this somehow.
+  if (estimates_.empty()) {
+    bitcoin_wallet_service_->bitcoin_rpc().GetFeeEstimates(
+        GetNetworkForBitcoinAccount(account_id_),
+        base::BindOnce(&CreateTransactionTask::OnGetFeeEstimates,
+                       weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
 
   // TODO(apaymyshev): random shift locktime
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
   transaction_.set_locktime(chain_height_.value());
 
-  if (!PickInputs()) {
-    SetError("Couldn't pick transaction inputs");
+  if (!PrepareOutputs()) {
+    SetError("Couldn't prepare outputs");
     ScheduleWorkOnTask();
     return;
   }
 
-  if (!PrepareOutputs()) {
-    SetError("Couldn't prepare outputs");
+  if (!PickInputs()) {
+    SetError("Insufficient funds");
     ScheduleWorkOnTask();
     return;
   }
@@ -411,6 +463,19 @@ void CreateTransactionTask::OnGetChainHeight(
   }
 
   chain_height_ = chain_height.value();
+  WorkOnTask();
+}
+
+void CreateTransactionTask::OnGetFeeEstimates(
+    base::expected<std::map<uint32_t, double>, std::string> estimates) {
+  if (!estimates.has_value()) {
+    SetError(std::move(estimates.error()));
+    WorkOnTask();
+    return;
+  }
+
+  estimates_ = std::move(estimates.value());
+  DCHECK(!estimates_.empty());
   WorkOnTask();
 }
 
@@ -437,12 +502,18 @@ void CreateTransactionTask::OnDiscoverNextUnusedAddress(
   WorkOnTask();
 }
 
-bool CreateTransactionTask::PickInputs() {
-  bool done = false;
+double CreateTransactionTask::GetFeeRate() {
+  DCHECK(!estimates_.empty());
+  if (estimates_.contains(kMediumPriorityTargetBlock)) {
+    return estimates_.at(kMediumPriorityTargetBlock);
+  }
+  if (estimates_.contains(kHighPriorityTargetBlock)) {
+    return estimates_.at(kHighPriorityTargetBlock);
+  }
+  return kFallbackFeeRate;
+}
 
-  // TODO(apaymyshev): This just picks ouputs one by one and stops when picked
-  // amount is GE to send amount plus fee. Needs something better than such
-  // greedy strategy.
+bool CreateTransactionTask::PickInputs() {
   std::vector<BitcoinTransaction::TxInput> all_inputs;
   for (const auto& item : utxo_map_) {
     for (const auto& utxo : item.second) {
@@ -457,43 +528,55 @@ bool CreateTransactionTask::PickInputs() {
     return input1.utxo_value < input2.utxo_value;
   });
 
+  // TODO(apaymyshev): This just picks ouputs one by one and stops when picked
+  // amount is GE to send amount plus calculated fee. Needs something better
+  // than such greedy strategy.
   for (auto& input : all_inputs) {
+    // TODO(apaymyshev): Should support dummy scriptsig for non-segwit inputs.
+    // Adding dummy signatures so transaction's virtual size and dependant fee
+    // could be calculated.
     transaction_.inputs().push_back(std::move(input));
-    if (transaction_.TotalInputsAmount() >=
-        transaction_.amount() + transaction_.fee()) {
-      done = true;
-    }
+    transaction_.inputs().back().witness = DummyWitness();
 
-    if (done) {
-      break;
+    uint32_t fee = GetFeeRate() * BitcoinSerializer::CalcVSize(transaction_);
+
+    if (transaction_.TotalInputsAmount() >= transaction_.amount() + fee) {
+      CHECK_EQ(transaction_.outputs().size(), 2u);
+      // TODO(apaymyshev): should avoid empty and dust change outputs.
+      transaction_.outputs()[1].amount =
+          transaction_.TotalInputsAmount() - (transaction_.amount() + fee);
+
+      DCHECK_EQ(fee, transaction_.EffectiveFeeAmount());
+
+      // Clear dummy signatures.
+      DCHECK(transaction_.IsSigned());
+      transaction_.ClearSignatures();
+
+      return true;
     }
   }
 
-  DCHECK(!transaction_.inputs().empty());
-  return done;
+  return false;
 }
 
 bool CreateTransactionTask::PrepareOutputs() {
   auto& target_output = transaction_.outputs().emplace_back();
   target_output.address = transaction_.to();
   target_output.amount = transaction_.amount();
+  if (target_output.amount == 0) {
+    return false;
+  }
   if (!OutputAddressSupported(target_output.address, IsTestnet())) {
     return false;
   }
 
-  CHECK_GE(transaction_.TotalInputsAmount(),
-           transaction_.amount() + transaction_.fee());
-  uint64_t change_amount = transaction_.TotalInputsAmount() -
-                           transaction_.amount() - transaction_.fee();
-  if (change_amount == 0) {
-    return true;
-  }
-
+  // Always add change address. Change amount is finalized when we have enough
+  // inputs picked to pay target amount + fee.
   CHECK(change_address_);
   CHECK(OutputAddressSupported(change_address_->address_string, IsTestnet()));
   auto& change_output = transaction_.outputs().emplace_back();
   change_output.address = change_address_->address_string;
-  change_output.amount = change_amount;
+  change_output.amount = 0;
 
   return true;
 }

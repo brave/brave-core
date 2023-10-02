@@ -9,11 +9,15 @@
 #include <string>
 
 #include "base/strings/string_split.h"
+#include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -100,6 +104,12 @@ void BitcoinTestRpcServer::RequestInterceptor(
   if (request.url.path_piece() == "/blocks/tip/height") {
     url_loader_factory_.AddResponse(request.url.spec(),
                                     base::ToString(mainnet_height_));
+    return;
+  }
+
+  if (request.url.path_piece() == "/fee-estimates") {
+    url_loader_factory_.AddResponse(request.url.spec(),
+                                    base::ToString(fee_estimates_));
     return;
   }
 
@@ -198,6 +208,40 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
   utxos_6.back().vout = "7";
   utxos_6.back().value = "50000";
   utxos_6.back().status.confirmed = true;
+
+  fee_estimates_ = ParseJson(
+      R"(
+        {
+          "1": 28.322,
+          "2": 28.322,
+          "3": 25.838,
+          "4": 23.456,  // This is used as default target block fee.
+          "5": 23.219,
+          "6": 23.219,
+          "7": 23.219,
+          "8": 23.219,
+          "9": 23.219,
+          "10": 23.219,
+          "11": 23.219,
+          "12": 23.219,
+          "13": 16.53,
+          "14": 16.53,
+          "15": 16.53,
+          "16": 16.53,
+          "17": 16.53,
+          "18": 16.53,
+          "19": 16.53,
+          "20": 16.53,
+          "21": 16.53,
+          "22": 16.53,
+          "23": 16.53,
+          "24": 16.53,
+          "25": 15.069,
+          "144": 12.992,
+          "504": 12.361,
+          "1008": 1.93
+        }
+        )");
 }
 
 }  // namespace brave_wallet
