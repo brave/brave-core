@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.chromium.base.Callback;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -107,7 +109,7 @@ public class TokenUtils {
         return tokenStream.toArray(BlockchainToken[] ::new);
     }
 
-    public static void getUserAssetsFiltered(BraveWalletService braveWalletService,
+    public static void getVisibleUserAssetsFiltered(BraveWalletService braveWalletService,
             NetworkInfo selectedNetwork, int coinType, TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         braveWalletService.getUserAssets(
@@ -116,6 +118,19 @@ public class TokenUtils {
                             filterTokens(selectedNetwork, tokens, tokenType, true);
                     callback.call(filteredTokens);
                 });
+    }
+
+    /*
+     * Wrapper for {@link BlockchainRegistry#getAllTokens} with Goerli contract address
+     * modifications.
+     *
+     * <b>Note:</b>: all calls to {@link BlockchainRegistry#getAllTokens} should be intercepted by
+     * this method.
+     */
+    public static void getAllTokens(@NonNull BlockchainRegistry blockchainRegistry, String chainId,
+            int coinType, Callbacks.Callback1<BlockchainToken[]> callback) {
+        blockchainRegistry.getAllTokens(chainId, coinType,
+                tokens -> callback.call(Utils.fixupTokensRegistry(tokens, chainId)));
     }
 
     /**
@@ -134,7 +149,7 @@ public class TokenUtils {
             AsyncUtils.GetNetworkAllTokensContext context =
                     new AsyncUtils.GetNetworkAllTokensContext(
                             allNetworkTokenCollector.singleResponseComplete, networkInfo);
-            blockchainRegistry.getAllTokens(networkInfo.chainId, networkInfo.coin, context);
+            getAllTokens(blockchainRegistry, networkInfo.chainId, networkInfo.coin, context);
             allTokenContexts.add(context);
         }
         allNetworkTokenCollector.setWhenAllCompletedAction(() -> {
@@ -142,27 +157,16 @@ public class TokenUtils {
                                   .map(context
                                           -> filterTokens(context.networkInfo, context.tokens,
                                                   tokenType, false))
-                                  .flatMap(tokens -> Arrays.stream(tokens))
+                                  .flatMap(Arrays::stream)
                                   .toArray(BlockchainToken[] ::new));
         });
     }
 
-    /*
-     * Wrapper for BlockchainRegistry.getAllTokens with Goerli contract address modifications.
-     */
-    public static void getAllTokens(BlockchainRegistry blockchainRegistry, String chainId,
-            int coinType, Callbacks.Callback1<BlockchainToken[]> callback) {
-        blockchainRegistry.getAllTokens(chainId, coinType, tokens -> {
-            tokens = Utils.fixupTokensRegistry(tokens, chainId);
-            callback.call(tokens);
-        });
-    }
-
     public static void getAllTokensFiltered(BraveWalletService braveWalletService,
-            BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, int coinType,
+            BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork,
             TokenType tokenType, Callbacks.Callback1<BlockchainToken[]> callback) {
-        getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType, tokens -> {
-            braveWalletService.getUserAssets(selectedNetwork.chainId, coinType, userTokens -> {
+        getAllTokens(blockchainRegistry, selectedNetwork.chainId, selectedNetwork.coin, tokens -> {
+            braveWalletService.getUserAssets(selectedNetwork.chainId, selectedNetwork.coin, userTokens -> {
                 BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
                         distinctiveConcatenatedArrays(tokens, userTokens), tokenType, false);
                 callback.call(filteredTokens);
@@ -186,8 +190,7 @@ public class TokenUtils {
             TokenType tokenType,
             Callbacks.Callback2<BlockchainToken[], BlockchainToken[]> callback) {
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType,
-                tokens
-                -> braveWalletService.getUserAssets(
+                tokens -> braveWalletService.getUserAssets(
                         selectedNetwork.chainId, coinType, userTokens -> {
                             BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
                                     distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
@@ -204,18 +207,18 @@ public class TokenUtils {
             Callbacks.Callback1<BlockchainToken[]> callback) {
         if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
         if (userAssetsOnly)
-            getUserAssetsFiltered(
+            getVisibleUserAssetsFiltered(
                     braveWalletService, selectedNetwork, coinType, tokenType, callback);
         else
-            getAllTokensFiltered(braveWalletService, blockchainRegistry, selectedNetwork, coinType,
-                    tokenType, callback);
+            getAllTokensFiltered(
+                    braveWalletService, blockchainRegistry, selectedNetwork, tokenType, callback);
     }
 
     private static final int[] SUPPORTED_RAMP_PROVIDERS = {
             OnRampProvider.RAMP, OnRampProvider.SARDINE, OnRampProvider.TRANSAK};
 
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
-            NetworkInfo selectedNetwork, TokenType tokenType,
+            NetworkInfo selectedNetwork,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         int[] rampProviders = SUPPORTED_RAMP_PROVIDERS;
         blockchainRegistry.getProvidersBuyTokens(rampProviders, selectedNetwork.chainId, tokens -> {
@@ -237,7 +240,7 @@ public class TokenUtils {
             NetworkInfo selectedNetwork, String assetSymbol, String contractAddress, String chainId,
             Callback1<Boolean> callback) {
         getBuyTokensFiltered(
-                blockchainRegistry, selectedNetwork, TokenUtils.TokenType.ALL, tokens -> {
+                blockchainRegistry, selectedNetwork, tokens -> {
                     callback.call(JavaUtils.includes(tokens,
                             iToken
                             -> AssetUtils.Filters.isSameToken(
@@ -323,7 +326,7 @@ public class TokenUtils {
             NetworkInfo selectedNetwork, int coinType, String assetSymbol, String assetName,
             String assetId, String contractAddress, int assetDecimals,
             Callback<BlockchainToken> callback) {
-        getUserAssetsFiltered(
+        getVisibleUserAssetsFiltered(
                 braveWalletService, selectedNetwork, coinType, TokenType.ALL, userAssets -> {
                     BlockchainToken resultToken = null;
                     for (BlockchainToken userAsset : userAssets) {

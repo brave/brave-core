@@ -68,7 +68,6 @@ public class UserAssetModel {
                                         TokenUtils.TokenType.ALL, userAssets -> {
                                             TokenUtils.getAllTokensFiltered(mBraveWalletService,
                                                     mBlockchainRegistry, mSelectedNetwork,
-                                                    mSelectedNetwork.coin,
                                                     nftsOnly ? TokenUtils.TokenType.NFTS
                                                              : TokenUtils.TokenType.NON_NFTS,
                                                     tokens -> {
@@ -87,7 +86,7 @@ public class UserAssetModel {
                                     });
                         } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
                             TokenUtils.getBuyTokensFiltered(mBlockchainRegistry, mSelectedNetwork,
-                                    TokenUtils.TokenType.ALL, tokens -> {
+                                    tokens -> {
                                         _mAssetsResult.postValue(new AssetsResult(
                                                 Arrays.asList(tokens), Collections.emptyList()));
                                     });
