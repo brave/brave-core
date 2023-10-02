@@ -447,8 +447,8 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   // don't have to do this weird substitution.
   std::string question_part;
   if (turn.text == "Summarize this video") {
-    question_part = l10n_util::GetStringUTF8(
-        IDS_AI_CHAT_CLAUDE_QUESTION_SUMMARIZE_VIDEO_BULLETS);
+    question_part =
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS);
   } else {
     question_part = turn.text;
   }
