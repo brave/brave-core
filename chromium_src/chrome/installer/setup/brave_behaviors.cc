@@ -7,6 +7,8 @@
 
 #include <string_view>
 
+#include "base/strings/stringprintf.h"
+
 #define DoPostUninstallOperations DoPostUninstallOperations_UNUSED
 #include "src/chrome/installer/setup/google_chrome_behaviors.cc"
 #undef DoPostUninstallOperations
