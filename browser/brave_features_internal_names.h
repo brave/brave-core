@@ -23,5 +23,4 @@ constexpr char kBraveVPNDnsFeatureInternalName[] = "brave-vpn-dns";
 constexpr char kBraveVPNWireguardFeatureInternalName[] = "brave-vpn-wireguard";
 #endif
 
-
 #endif  // BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_

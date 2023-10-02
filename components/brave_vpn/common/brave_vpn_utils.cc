@@ -46,7 +46,12 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
   registry->RegisterTimePref(prefs::kBraveVPNSessionExpiredDate, {});
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+#if BUILDFLAG(IS_WIN)
+  // On Windows we have migration implemented inside MigrateWireguardFeatureFlag
   registry->RegisterBooleanPref(prefs::kBraveVPNWireguardEnabled, false);
+#else
+  registry->RegisterBooleanPref(prefs::kBraveVPNWireguardEnabled, true);
+#endif
 #endif
 }
 

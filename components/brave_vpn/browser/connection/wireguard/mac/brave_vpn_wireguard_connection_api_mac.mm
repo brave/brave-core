@@ -8,11 +8,18 @@
 #include <memory>
 
 #include "base/base64.h"
+#include "base/functional/bind.h"
 #include "base/notreached.h"
-#include "brave/components/brave_vpn/browser/connection/wireguard/mac/brave_vpn_wireguard_bridge/brave_vpn_runner_mac.h"
+#import "brave/components/brave_vpn/browser/connection/wireguard/mac/wireguard_utils_mac.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_vpn {
+
+namespace {
+const char kBraveVpnEntryName[] = "BraveVPNWireguard";
+const char kBraveVpnEntryAccountName[] = "Brave Vpn Tunnel: ";
+const char kBraveVpnEntryDescription[] = "wg-quick(8) config";
+}  // namespace
 
 std::unique_ptr<WireguardOSConnectionAPIMac>
 CreateBraveVPNWireguardConnectionAPI(
@@ -32,7 +39,8 @@ WireguardOSConnectionAPIMac::~WireguardOSConnectionAPIMac() = default;
 
 void WireguardOSConnectionAPIMac::PlatformConnectImpl(
     const wireguard::WireguardProfileCredentials& credentials) {
-  if (credentials.IsValid()) {
+  VLOG(1) << __func__;
+  if (!credentials.IsValid()) {
     VLOG(1) << __func__ << " : failed to get correct credentials";
     UpdateAndNotifyConnectionStateChange(
         mojom::ConnectionState::CONNECT_FAILED);
@@ -48,21 +56,108 @@ void WireguardOSConnectionAPIMac::PlatformConnectImpl(
         mojom::ConnectionState::CONNECT_FAILED);
     return;
   }
-  BraveVpnRunnerMac::GetInstance()->EnableVPN(config.value());
+  UpdateAndNotifyConnectionStateChange(mojom::ConnectionState::CONNECTING);
+
+  FindTunnelProviderManager(
+      kBraveVpnEntryName,
+      base::BindOnce(&WireguardOSConnectionAPIMac::OnExistingProviderFound,
+                     weak_factory_.GetWeakPtr(), config.value()));
+}
+
+void WireguardOSConnectionAPIMac::OnExistingProviderFound(
+    const std::string& config,
+    NETunnelProviderManager* tunnel_provider_manager) {
+  bool success = tunnel_provider_manager != nullptr;
+  VLOG(1) << __func__ << " found:" << success;
+  VLOG(1) << __func__ << " config:" << config;
+
+  if (success) {
+    ActivateTunnelProvider(tunnel_provider_manager);
+    return;
+  }
+  CreateNewTunnelProviderManager(
+      config, kBraveVpnEntryName, kBraveVpnEntryAccountName,
+      kBraveVpnEntryDescription,
+      base::BindOnce(&WireguardOSConnectionAPIMac::OnTunnelProviderCreated,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void WireguardOSConnectionAPIMac::ActivateTunnelProvider(
+    NETunnelProviderManager* tunnel_provider_manager) {
+  LOG(ERROR) << __func__ << ":"
+             << [tunnel_provider_manager localizedDescription];
+  NSError* activation_error;
+  [[tunnel_provider_manager connection]
+      startVPNTunnelWithOptions:nil
+                 andReturnError:&activation_error];
+  bool success = activation_error == nil;
+  if (!success) {
+    LOG(ERROR) << "Tunnel activation error:" << NSErrorToUTF8(activation_error);
+  }
+  auto status = success ? mojom::ConnectionState::CONNECTED
+                        : mojom::ConnectionState::CONNECT_FAILED;
+  UpdateAndNotifyConnectionStateChange(status);
+}
+
+void WireguardOSConnectionAPIMac::OnTunnelProviderCreated(
+    NETunnelProviderManager* tunnel_provider_manager) {
+  bool success = tunnel_provider_manager != nullptr;
+  VLOG(1) << __func__ << ":" << success;
+  if (!success) {
+    VLOG(1) << __func__ << " : failed to create tunnel provider";
+    UpdateAndNotifyConnectionStateChange(
+        mojom::ConnectionState::CONNECT_FAILED);
+    return;
+  }
+  ActivateTunnelProvider(tunnel_provider_manager);
 }
 
 void WireguardOSConnectionAPIMac::Disconnect() {
+  VLOG(1) << __func__;
   if (GetConnectionState() == mojom::ConnectionState::DISCONNECTED) {
     VLOG(2) << __func__ << " : already disconnected";
     return;
   }
   VLOG(2) << __func__ << " : Start stopping the service";
   UpdateAndNotifyConnectionStateChange(mojom::ConnectionState::DISCONNECTING);
-  NOTIMPLEMENTED();
+
+  FindTunnelProviderManager(
+      kBraveVpnEntryName,
+      base::BindOnce(&WireguardOSConnectionAPIMac::OnDisconnectImpl,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void WireguardOSConnectionAPIMac::OnDisconnectImpl(
+    NETunnelProviderManager* tunnel_provider_manager) {
+  if (tunnel_provider_manager == nullptr) {
+    VLOG(2) << __func__ << "Connection not found";
+    UpdateAndNotifyConnectionStateChange(mojom::ConnectionState::DISCONNECTED);
+    return;
+  }
+  [[tunnel_provider_manager connection] stopVPNTunnel];
+}
+
+void WireguardOSConnectionAPIMac::OnCheckConnection(
+    NETunnelProviderManager* tunnel_provider_manager) {
+  if (tunnel_provider_manager == nullptr) {
+    VLOG(2) << __func__ << "Connection not found";
+    UpdateAndNotifyConnectionStateChange(mojom::ConnectionState::DISCONNECTED);
+    return;
+  }
+  auto current_status = [[tunnel_provider_manager connection] status];
+  VLOG(2) << "CheckConnection: "
+          << brave_vpn::NEVPNStatusToString(current_status);
+  auto vpn_state = current_status == NEVPNStatusConnected
+                       ? mojom::ConnectionState::CONNECTED
+                       : mojom::ConnectionState::DISCONNECTED;
+  UpdateAndNotifyConnectionStateChange(vpn_state);
 }
 
 void WireguardOSConnectionAPIMac::CheckConnection() {
-  NOTIMPLEMENTED();
+  FindTunnelProviderManager(
+      kBraveVpnEntryName,
+      base::BindOnce(&WireguardOSConnectionAPIMac::OnCheckConnection,
+                     weak_factory_.GetWeakPtr()));
 }
 
 }  // namespace brave_vpn

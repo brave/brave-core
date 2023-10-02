@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/mac/brave_vpn_wireguard_bridge/keychain_mac.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/mac/keychain_utils_mac.h"
 
 #include <string>
 
@@ -28,6 +28,7 @@ const char kNetworkExtensionName[] = "WireGuardNetworkExtension.appex";
 }  // namespace
 
 bool VerifyPersistentRefData(NSData* data) {
+  VLOG(1) << __func__;
   ScopedMutableDictionary query =
       ScopedMutableDictionary(CFDictionaryCreateMutable(
           kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks,
@@ -53,10 +54,13 @@ NSData* CreatePersistentReference(const std::string& config,
                                   const std::string& label,
                                   const std::string& account,
                                   const std::string& description) {
+  VLOG(1) << __func__ << ": config:" << config;
+  VLOG(1) << __func__ << ": label:" << label;
+  VLOG(1) << __func__ << ": account:" << account;
   base::FilePath plugins(
       base::apple::MainBundlePath().Append("Contents").Append("PlugIns"));
   base::FilePath extension_path = plugins.Append(kNetworkExtensionName);
-
+  VLOG(1) << __func__ << ":" << extension_path;
 // TODO(spylogsster): Remove SecTrustedApplicationCreateFromPath
 // https://github.com/brave/brave-browser/issues/33138
 #pragma clang diagnostic push
@@ -65,19 +69,21 @@ NSData* CreatePersistentReference(const std::string& config,
   OSStatus status = SecTrustedApplicationCreateFromPath(
       extension_path.MaybeAsASCII().c_str(), extensionApp.InitializeInto());
   if (status != errSecSuccess) {
-    LOG(ERROR) << __func__ << ": Failed to get trusted application path for "
-               << extension_path << ", error:" << status;
+    VLOG(1) << __func__ << ": Failed to get trusted application path for "
+            << extension_path << ", error:" << status;
     return nil;
   }
+  VLOG(1) << __func__;
   base::apple::ScopedCFTypeRef<SecTrustedApplicationRef> mainApp;
   status = SecTrustedApplicationCreateFromPath(
       base::apple::MainBundlePath().MaybeAsASCII().c_str(),
       mainApp.InitializeInto());
   if (status != errSecSuccess) {
-    LOG(ERROR) << __func__ << ": Failed to get trusted application path for "
-               << base::apple::MainBundlePath() << ", error:" << status;
+    VLOG(1) << __func__ << ": Failed to get trusted application path for "
+            << base::apple::MainBundlePath() << ", error:" << status;
     return nil;
   }
+  VLOG(1) << __func__;
   const SecTrustedApplicationRef apps_array[] = {extensionApp.get(),
                                                  mainApp.get()};
   base::apple::ScopedCFTypeRef<CFArrayRef> apps(
@@ -87,9 +93,10 @@ NSData* CreatePersistentReference(const std::string& config,
   status = SecAccessCreate(base::SysUTF8ToCFStringRef(label), apps.get(),
                            access_ref.InitializeInto());
   if (status != errSecSuccess) {
-    LOG(ERROR) << __func__ << ": Failed to create Keychain access ref";
+    VLOG(1) << __func__ << ": Failed to create Keychain access ref";
     return nil;
   }
+  VLOG(1) << __func__;
 #pragma clang diagnostic pop
 
   NSDictionary* items = @{
@@ -106,22 +113,26 @@ NSData* CreatePersistentReference(const std::string& config,
         (__bridge id)kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
     (__bridge id)kSecAttrAccess : (__bridge id)access_ref.get(),
   };
-
+  VLOG(1) << __func__;
   base::apple::ScopedCFTypeRef<CFDataRef> cf_result;
   status = SecItemAdd((__bridge CFDictionaryRef)items,
                       (CFTypeRef*)cf_result.InitializeInto());
+  VLOG(1) << __func__ << ":" << status;
   if (status == errSecDuplicateItem) {
-    LOG(ERROR) << __func__
-               << ": There is duplicated key in keychain:" << cf_result.get();
+    VLOG(1) << __func__
+            << ": There is duplicated key in keychain:" << cf_result.get();
     NOTREACHED();
     return nil;
   }
+  VLOG(1) << __func__ << ":" << status;
   if (status != errSecSuccess) {
-    LOG(ERROR) << __func__
-               << ": Failed to save persistent ref in Keychain:" << status;
+    VLOG(1) << __func__
+            << ": Failed to save persistent ref in Keychain:" << status;
     return nil;
   }
+  VLOG(1) << __func__ << ":" << status;
   NSData* persistent_ref_data = (__bridge NSData*)cf_result.release();
+  VLOG(1) << __func__ << ":" << status;
   CHECK(VerifyPersistentRefData(persistent_ref_data));
   return persistent_ref_data;
 }

@@ -14,14 +14,30 @@ source_set("mac") {
   sources = [
     "brave_vpn_wireguard_connection_api_mac.h",
     "brave_vpn_wireguard_connection_api_mac.mm",
+    "keychain_utils_mac.h",
+    "keychain_utils_mac.mm",
+    "utils.cc",
+    "utils.h",
+    "wireguard_utils_mac.h",
+    "wireguard_utils_mac.mm",
   ]
 
   deps = [
-    "brave_vpn_wireguard_bridge",
     "//base",
     "//brave/components/brave_vpn/browser/connection/wireguard",
     "//brave/components/brave_vpn/browser/connection/wireguard/credentials",
     "//services/network/public/cpp",
     "//third_party/boringssl",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "utils_unittest.cc" ]
+
+  deps = [
+    ":mac",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
   ]
 }

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_MAC_BRAVE_VPN_WIREGUARD_CONNECTION_API_MAC_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIREGUARD_MAC_BRAVE_VPN_WIREGUARD_CONNECTION_API_MAC_H_
 
+#import <NetworkExtension/NetworkExtension.h>
+
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/credentials/brave_vpn_wireguard_profile_credentials.h"
@@ -29,9 +31,20 @@ class WireguardOSConnectionAPIMac : public BraveVPNWireguardConnectionAPIBase {
   void Disconnect() override;
   void CheckConnection() override;
 
+  void OnExistingProviderFound(
+      const std::string& config,
+      NETunnelProviderManager* tunnel_provider_manager);
+  void OnTunnelProviderCreated(
+      NETunnelProviderManager* tunnel_provider_manager);
+  void OnDisconnectImpl(NETunnelProviderManager* tunnel_provider_manager);
+  void OnCheckConnection(NETunnelProviderManager* tunnel_provider_manager);
+  void ActivateTunnelProvider(NETunnelProviderManager* tunnel_provider_manager);
+
   // BraveVPNWireguardConnectionAPIBase overrides:
   void PlatformConnectImpl(
       const wireguard::WireguardProfileCredentials& credentials) override;
+
+  base::WeakPtrFactory<WireguardOSConnectionAPIMac> weak_factory_{this};
 };
 
 }  // namespace brave_vpn

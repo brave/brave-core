@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/mac/brave_vpn_wireguard_bridge/utils.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/mac/utils.h"
 
 #include <vector>
 

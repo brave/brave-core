@@ -7,6 +7,7 @@ import(
     "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/allowlist.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -15,7 +16,6 @@ import("//third_party/icu/config.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 import("//tools/grit/repack.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
-import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//ui/base/ui_features.gni")
 
 if (enable_library_cdms) {
@@ -578,17 +578,20 @@ action("create_dist_zips") {
 }
 
 if (is_mac) {
-
   if (enable_brave_vpn_wireguard) {
     bundle_data("wireguard_network_extension") {
-      sources =
-          [ "//brave/third_party/wireguard-apple/WireGuardNetworkExtension.appex" ]
+      sources = [
+        "//brave/third_party/wireguard-apple/WireGuardNetworkExtension.appex",
+      ]
       outputs = [ "{{bundle_contents_dir}}/PlugIns/{{source_file_part}}" ]
     }
   }
 
   group("brave_app") {
-    deps = [ ":brave_app_plist", ":wireguard_network_extension" ]
+    deps = [
+      ":brave_app_plist",
+      ":wireguard_network_extension",
+    ]
   }
 
   brave_tweak_info_plist("brave_app_plist") {

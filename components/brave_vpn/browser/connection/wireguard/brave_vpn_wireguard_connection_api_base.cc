@@ -34,6 +34,7 @@ void BraveVPNWireguardConnectionAPIBase::SetSelectedRegion(
 
 void BraveVPNWireguardConnectionAPIBase::RequestNewProfileCredentials(
     brave_vpn::wireguard::WireguardKeyPair key_pair) {
+  VLOG(1) << __func__;
   if (!key_pair.has_value()) {
     VLOG(1) << __func__ << " : failed to get keypair";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
@@ -49,7 +50,7 @@ void BraveVPNWireguardConnectionAPIBase::RequestNewProfileCredentials(
 }
 
 void BraveVPNWireguardConnectionAPIBase::Connect() {
-  VLOG(2) << __func__ << " : start connecting!";
+  VLOG(1) << __func__ << " : start connecting!";
   SetLastConnectionError(std::string());
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
 
@@ -62,7 +63,7 @@ void BraveVPNWireguardConnectionAPIBase::Connect() {
   std::string target_region_name = GetRegionDataManager().GetSelectedRegion();
   if (target_region_name.empty()) {
     target_region_name = GetRegionDataManager().GetDeviceRegion();
-    VLOG(2) << __func__ << " : start connecting with valid default_region: "
+    VLOG(1) << __func__ << " : start connecting with valid default_region: "
             << target_region_name;
   }
   DCHECK(!target_region_name.empty());
@@ -73,6 +74,8 @@ void BraveVPNWireguardConnectionAPIBase::OnGetProfileCredentials(
     const std::string& client_private_key,
     const std::string& profile_credentials,
     bool success) {
+  VLOG(1) << __func__ << "client_private_key:" << client_private_key;
+  VLOG(1) << __func__ << "profile_credentials:" << profile_credentials;
   if (!success) {
     VLOG(1) << __func__ << " : failed to get profile credential";
     UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
@@ -97,6 +100,7 @@ void BraveVPNWireguardConnectionAPIBase::OnGetProfileCredentials(
 }
 
 void BraveVPNWireguardConnectionAPIBase::FetchProfileCredentials() {
+  VLOG(1) << __func__;
   if (!GetAPIRequest()) {
     return;
   }
@@ -117,7 +121,7 @@ void BraveVPNWireguardConnectionAPIBase::FetchProfileCredentials() {
 }
 
 void BraveVPNWireguardConnectionAPIBase::ResetConnectionInfo() {
-  VLOG(2) << __func__;
+  VLOG(1) << __func__;
   ResetHostname();
   local_prefs()->SetString(prefs::kBraveVPNWireguardProfileCredentials,
                            std::string());

@@ -343,7 +343,7 @@ test("brave_unit_tests") {
       ]
     }
     if (is_mac) {
-      deps += [ "//brave/components/brave_vpn/browser/connection/wireguard/mac/brave_vpn_wireguard_bridge:unit_tests" ]
+      deps += [ "//brave/components/brave_vpn/browser/connection/wireguard/mac:unit_tests" ]
     }
   }
   if (toolkit_views) {

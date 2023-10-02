@@ -124,7 +124,7 @@ def Main():
         plist[
             'com.wireguard.macos.app_group_id'] = args.brave_team_id + '.group.${CHROMIUM_BUNDLE_ID}'
         plist['com.apple.security.application-groups'] = [
-            args.brave_team_id + 'group.${CHROMIUM_BUNDLE_ID}'
+            args.brave_team_id + '.group.${CHROMIUM_BUNDLE_ID}'
         ]
 
     # Now that all keys have been mutated, rewrite the file.
