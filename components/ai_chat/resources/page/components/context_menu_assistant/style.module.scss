@@ -22,3 +22,11 @@
     gap: 10px;
   }
 }
+
+.liked {
+  color: var(--leo-color-systemfeedback-success-text);
+}
+
+.disliked {
+  color: var(--leo-color-systemfeedback-error-text);
+}

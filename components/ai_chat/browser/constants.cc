@@ -55,6 +55,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"optionIncorrect", IDS_CHAT_UI_OPTION_INCORRECT},
       {"optionUnsafeHarmful", IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL},
       {"optionOther", IDS_CHAT_UI_OPTION_OTHER},
+      {"feedbackError", IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR},
+      {"ratingError", IDS_CHAT_UI_RATING_ERROR},
   };
 
   return kLocalizedStrings;

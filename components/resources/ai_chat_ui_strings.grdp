@@ -93,4 +93,6 @@
   <message name="IDS_CHAT_UI_OPTION_INCORRECT" desc="Select option for feedback form if the answer is not correct">Incorrect</message>
   <message name="IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL" desc="Select option for feedback form if the answer is unsafe or harmful">Unsafe/harmful</message>
   <message name="IDS_CHAT_UI_OPTION_OTHER" desc="Select option for feedback form if the answer is other kind">Other</message>
+  <message name="IDS_CHAT_UI_RATING_ERROR" desc="An error message when the user's rating could not be submitted">Your rating could not be submitted, please check network connection and try again</message>
+  <message name="IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR" desc="An error message when the user's feedback could not be submitted">Your feedback could not be submitted, please check network connection and try again</message>
 </grit-part>

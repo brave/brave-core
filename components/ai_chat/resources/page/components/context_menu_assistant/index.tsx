@@ -21,12 +21,20 @@ interface ContextMenuAssistantProps {
   className?: string
 }
 
+enum RatingStatus {
+  Liked,
+  Disliked,
+  None
+}
+
 function ContextMenuAssistant_(
   props: ContextMenuAssistantProps,
   ref: React.RefObject<Map<number, Element>>
 ) {
   const [feedbackId, setFeedbackId] = React.useState<string | null>()
   const [isFormVisible, setIsFormVisible] = React.useState(false)
+  const [currentRatingStatus, setCurrentRatingStatus] =
+    React.useState<RatingStatus>(RatingStatus.None)
 
   const formContainerElement = ref.current?.get(props.chatId)
 
@@ -37,7 +45,19 @@ function ContextMenuAssistant_(
   const handleLikeAnswer = () => {
     getPageHandlerInstance()
       .pageHandler.likeMessage(true, props.turnText)
-      .then(() => {
+      .then((resp) => {
+        if (!resp.id) {
+          showAlert({
+            mode: 'simple',
+            type: 'error',
+            content: getLocale('ratingError'),
+            actions: []
+          })
+
+          return
+        }
+
+        setCurrentRatingStatus(RatingStatus.Liked)
         showAlert({
           mode: 'simple',
           type: 'info',
@@ -51,7 +71,19 @@ function ContextMenuAssistant_(
     getPageHandlerInstance()
       .pageHandler.likeMessage(false, props.turnText)
       .then((resp) => {
+        if (!resp.id) {
+          showAlert({
+            mode: 'simple',
+            type: 'error',
+            content: getLocale('ratingError'),
+            actions: []
+          })
+
+          return
+        }
+
         setFeedbackId(resp.id)
+        setCurrentRatingStatus(RatingStatus.Disliked)
         showAlert({
           mode: 'simple',
           type: 'info',
@@ -76,14 +108,23 @@ function ContextMenuAssistant_(
       getPageHandlerInstance()
         .pageHandler.sendFeedback(selectedCategory, feedbackText, feedbackId)
         .then((resp) => {
-          if (resp.isSuccess) {
+          if (!resp.isSuccess) {
             showAlert({
               mode: 'simple',
-              type: 'success',
-              content: getLocale('feedbackSent'),
+              type: 'error',
+              content: getLocale('feedbackError'),
               actions: []
             })
+
+            return
           }
+
+          showAlert({
+            mode: 'simple',
+            type: 'success',
+            content: getLocale('feedbackSent'),
+            actions: []
+          })
         })
       setIsFormVisible(false)
     }
@@ -99,11 +140,21 @@ function ContextMenuAssistant_(
           <Icon name='copy' />
           <span>{getLocale('copyButtonLabel')}</span>
         </leo-menu-item>
-        <leo-menu-item onClick={handleLikeAnswer}>
+        <leo-menu-item
+          class={classnames({
+            [styles.liked]: currentRatingStatus === RatingStatus.Liked
+          })}
+          onClick={handleLikeAnswer}
+        >
           <Icon name='thumb-up' />
           <span>{getLocale('likeAnswerButtonLabel')}</span>
         </leo-menu-item>
-        <leo-menu-item onClick={handleDislikeAnswer}>
+        <leo-menu-item
+          class={classnames({
+            [styles.disliked]: currentRatingStatus === RatingStatus.Disliked
+          })}
+          onClick={handleDislikeAnswer}
+        >
           <Icon name='thumb-up' />
           <span>{getLocale('dislikeAnswerButtonLabel')}</span>
         </leo-menu-item>
