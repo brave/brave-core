@@ -1,0 +1,13 @@
+diff --git a/components/autofill/core/browser/merchant_promo_code_manager.h b/components/autofill/core/browser/merchant_promo_code_manager.h
+index 52f15b34e5a92031735fa8562a063115230ce324..cf556a0efc2e2a058406d4977a10f0cbedc3a35b 100644
+--- a/components/autofill/core/browser/merchant_promo_code_manager.h
++++ b/components/autofill/core/browser/merchant_promo_code_manager.h
+@@ -44,7 +44,7 @@ class MerchantPromoCodeManager : public SingleFieldFormFiller,
+       base::WeakPtr<SuggestionsHandler> handler,
+       const SuggestionsContext& context) override;
+   void OnWillSubmitFormWithFields(const std::vector<FormFieldData>& fields,
+-                                  bool is_autocomplete_enabled) override;
++                                  const AutofillClient& client) override;
+   void CancelPendingQueries(const SuggestionsHandler* handler) override;
+   void OnRemoveCurrentSingleFieldSuggestion(const std::u16string& field_name,
+                                             const std::u16string& value,

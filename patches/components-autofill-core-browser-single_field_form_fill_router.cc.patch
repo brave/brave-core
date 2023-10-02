@@ -1,0 +1,40 @@
+diff --git a/components/autofill/core/browser/single_field_form_fill_router.cc b/components/autofill/core/browser/single_field_form_fill_router.cc
+index d862362d52c71fd79122a0bad5a86a0295b8ca86..dee5c31990444a8f7c941537435ca4d8bfe7b750 100644
+--- a/components/autofill/core/browser/single_field_form_fill_router.cc
++++ b/components/autofill/core/browser/single_field_form_fill_router.cc
+@@ -25,7 +25,7 @@ SingleFieldFormFillRouter::~SingleFieldFormFillRouter() = default;
+ void SingleFieldFormFillRouter::OnWillSubmitForm(
+     const FormData& form,
+     const FormStructure* form_structure,
+-    bool is_autocomplete_enabled) {
++    const AutofillClient& client) {
+   if (form_structure)
+     DCHECK(form.fields.size() == form_structure->field_count());
+   std::vector<FormFieldData> autocomplete_fields;
+@@ -51,14 +51,14 @@ void SingleFieldFormFillRouter::OnWillSubmitForm(
+ 
+   if (merchant_promo_code_manager_) {
+     merchant_promo_code_manager_->OnWillSubmitFormWithFields(
+-        merchant_promo_code_fields, is_autocomplete_enabled);
++        merchant_promo_code_fields, client);
+   }
+   if (iban_manager_) {
+     iban_manager_->OnWillSubmitFormWithFields(iban_fields,
+-                                              is_autocomplete_enabled);
++                                              client);
+   }
+   autocomplete_history_manager_->OnWillSubmitFormWithFields(
+-      autocomplete_fields, is_autocomplete_enabled);
++      autocomplete_fields, client);
+ }
+ 
+ bool SingleFieldFormFillRouter::OnGetSingleFieldSuggestions(
+@@ -86,7 +86,7 @@ bool SingleFieldFormFillRouter::OnGetSingleFieldSuggestions(
+ 
+ void SingleFieldFormFillRouter::OnWillSubmitFormWithFields(
+     const std::vector<FormFieldData>& fields,
+-    bool is_autocomplete_enabled) {}
++    const AutofillClient& client) {}
+ 
+ void SingleFieldFormFillRouter::CancelPendingQueries(
+     const SingleFieldFormFiller::SuggestionsHandler* handler) {

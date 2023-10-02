@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.h b/chrome/browser/ui/autofill/chrome_autofill_client.h
-index 22fbf3f0c1a949c272ee290f4ec7dd4b3d6459f6..5ab0a94481188e06d1f1a3c5d1d8894ee54f8e85 100644
+index 22fbf3f0c1a949c272ee290f4ec7dd4b3d6459f6..67a92c66353a756dacec5f1d8b586cf3c1baccc4 100644
 --- a/chrome/browser/ui/autofill/chrome_autofill_client.h
 +++ b/chrome/browser/ui/autofill/chrome_autofill_client.h
-@@ -187,6 +187,7 @@ class ChromeAutofillClient : public ContentAutofillClient,
+@@ -187,6 +187,8 @@ class ChromeAutofillClient : public ContentAutofillClient,
    void ConfirmSaveIbanLocally(const Iban& iban,
                                bool should_show_prompt,
                                LocalSaveIbanPromptCallback callback) override;
-+  void ConfirmAutocomplete(ConfirmAutocompletePromptCallback callback) override;
++  void ConfirmAutocomplete(
++      ConfirmAutocompletePromptCallback callback) const override;
    void ShowWebauthnOfferDialog(
        WebauthnDialogCallback offer_dialog_callback) override;
    void ShowWebauthnVerifyPendingDialog(
