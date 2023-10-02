@@ -21,14 +21,24 @@ const Grid = styled.div`
   gap: 8px;
 `
 
+const Blur = styled.div`
+  --edges: -128px;
+
+  z-index: -1;
+  position: fixed;
+  inset: var(--edges);
+  filter: blur(64px);
+  background: rgba(255, 255, 255, 0.7);
+`
 
 function App() {
-  return (
+  return <>
+    <Blur />
     <Grid>
       <SignalsPage />
       <FeedPage />
     </Grid>
-  )
+  </>
 }
 
 render(<InspectContext>

@@ -51,7 +51,7 @@ export default function InspectContext(props: React.PropsWithChildren<{}>) {
     feed,
     truncate,
     setTruncate: setAndSaveTruncate
-  }), [publishers, channels, feed, truncate, setAndSaveTruncate])
+  }), [publishers, channels, signals, feed, truncate, setAndSaveTruncate])
 
   return <Context.Provider value={context}>
     {props.children}

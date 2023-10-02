@@ -6,19 +6,29 @@ import * as React from 'react';
 import { Cluster as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import Card from './Card';
 import Article from './Article';
-import HeroArticle from './Hero';
+import styled from 'styled-components';
+import { spacing } from '@brave/leo/tokens/css';
+import { channelIcons } from '../../../../brave_new_tab_ui/components/default/braveNews/customize/Icons';
+import { MetaInfoContainer } from './ArticleMetaRow';
 
 interface Props {
   info: Info
 }
 
+const Container = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing.m};
+`
+
 export default function Cluster({ info }: Props) {
-  return <>
-    <Card>
-      Cluster: {info.type} {info.id}
-    </Card>
-    {info.articles.map(a => a.article
-      ? <Article key={a.article.data.url.url} info={a.article} />
-      : <HeroArticle key={a.hero!.data.url.url} info={a.hero!} />)}
-  </>
+  return <Container>
+    <MetaInfoContainer>
+      {channelIcons[info.id] ?? channelIcons.default} {info.id}
+    </MetaInfoContainer>
+    {info.articles.map((a, i) => {
+      const info: any = a.article || a.hero
+      return <Article key={i} info={info} hideChannel />
+    })}
+  </Container>
 }
