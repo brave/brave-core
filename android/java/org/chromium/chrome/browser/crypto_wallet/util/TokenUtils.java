@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 import org.chromium.base.Callback;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -242,11 +245,21 @@ public class TokenUtils {
                 });
     }
 
-    public static void isCustomToken(BlockchainRegistry blockchainRegistry,
-            NetworkInfo selectedNetwork, int coinType, BlockchainToken token,
+    public static void isCustomToken(@NonNull BlockchainRegistry blockchainRegistry,
+            @NonNull NetworkInfo selectedNetwork, int coinType, @NonNull BlockchainToken token,
             Callbacks.Callback1<Boolean> callback) {
         assert !JavaUtils.anyNull(token, selectedNetwork) : "Token or network should not be null";
         if (JavaUtils.anyNull(token, selectedNetwork)) return;
+
+        if (TextUtils.isEmpty(token.contractAddress)) {
+            callback.call(false);
+            return;
+        }
+        // Any token with a token ID should be considered a custom token
+        if (!TextUtils.isEmpty(token.tokenId)) {
+            callback.call(true);
+            return;
+        }
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType, tokens -> {
             boolean isCustom = true;
             tokens = filterTokens(selectedNetwork, tokens, TokenType.ALL, false);
@@ -261,7 +274,7 @@ public class TokenUtils {
     }
 
     /**
-     * Concatenate arrays, add only elements of arraySecond that are not present in the arrayFirst
+     * Concatenates arrays, add only elements of arraySecond that are not present in the arrayFirst
      * @param arrayFirst first array to be added in the result
      * @param arraySecond second array, only distinctive elements are added in result by comparing
      *         with the items of arrayFirst
@@ -285,19 +298,25 @@ public class TokenUtils {
             }
         }
 
-        return both.toArray(new BlockchainToken[both.size()]);
+        return both.toArray(new BlockchainToken[0]);
     }
 
-    public static boolean isSameToken(BlockchainToken token1, BlockchainToken token2) {
-        if (token1.chainId.equals(token2.chainId) && token1.symbol.equals(token2.symbol)
-                && ((token1.tokenId.isEmpty() && token2.tokenId.isEmpty())
-                        || token1.tokenId.equals(token2.tokenId))
-                && token1.contractAddress.toLowerCase(Locale.getDefault())
-                           .equals(token2.contractAddress.toLowerCase(Locale.getDefault()))) {
-            return true;
-        }
-
-        return false;
+    /**
+     * Checks if two tokens are equal. Two tokens are equal if:
+     * - Chain ID matches.
+     * - Symbol matches.
+     * - Token ID matches.
+     * - Contract address (ignore case) matches.
+     *
+     * @param token1 First token to compare.
+     * @param token2 Second token to compare.
+     * @return {@code} true if two tokens are equal, {@code false} otherwise.
+     */
+    public static boolean isSameToken(
+            @NonNull BlockchainToken token1, @NonNull BlockchainToken token2) {
+        return token1.chainId.equals(token2.chainId) && token1.symbol.equals(token2.symbol)
+                && token1.tokenId.equals(token2.tokenId)
+                && token1.contractAddress.equalsIgnoreCase(token2.contractAddress);
     }
 
     public static void getExactUserAsset(BraveWalletService braveWalletService,
@@ -322,7 +341,7 @@ public class TokenUtils {
                 });
     }
 
-    private static Comparator<BlockchainToken> blockchainTokenComparatorPerGasOrBatType =
+    private static final Comparator<BlockchainToken> blockchainTokenComparatorPerGasOrBatType =
             (token1, token2) -> {
         boolean isNativeToken1 = AssetUtils.isNativeToken(token1);
         boolean isNativeToken2 = AssetUtils.isNativeToken(token2);
