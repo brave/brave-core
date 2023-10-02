@@ -165,10 +165,6 @@ BraveRewardsNativeWorker::GetPayoutStatus(JNIEnv* env) {
     wallet_type = brave_rewards_service_->GetExternalWalletType();
     if (parameters_) {
       if (!parameters_->payout_status.empty()) {
-        for (auto const& link : parameters_->payout_status) {
-          LOG(ERROR) << "Payout_status : " << link.first << " : "
-                     << link.second;
-        }
         payout_status = parameters_->payout_status.at(wallet_type);
       }
     }
