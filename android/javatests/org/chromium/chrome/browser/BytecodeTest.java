@@ -581,9 +581,6 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", true, void.class, BrowserContextHandle.class, int.class,
                 int.class));
-        Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/paint_preview/StartupPaintPreviewHelper",
-                        "isEnabled", true, boolean.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/tab/TabHelpers",
                 "initTabHelpers", true, void.class, Tab.class, Tab.class));
         Assert.assertTrue(
