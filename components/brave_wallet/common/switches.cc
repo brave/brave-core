@@ -12,6 +12,8 @@ const char kDevWalletPassword[] = "dev-wallet-password";
 const char kBitcoinMainnetRpcUrl[] = "bitcoin-mainnet-rpc-url";
 const char kBitcoinTestnetRpcUrl[] = "bitcoin-testnet-rpc-url";
 const char kAssetRatioDevUrl[] = "asset-ratio-dev-url";
+const char kZCashMainnetRpcUrl[] = "zcash-mainnet-rpc-url";
+const char kZCashTestnetRpcUrl[] = "zcash-testnet-rpc-url";
 
 }  // namespace switches
 }  // namespace brave_wallet

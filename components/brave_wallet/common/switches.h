@@ -21,6 +21,12 @@ extern const char kBitcoinTestnetRpcUrl[];
 // Ratios service dev URL
 extern const char kAssetRatioDevUrl[];
 
+// ZCash rpc mainnet endpoint.
+extern const char kZCashMainnetRpcUrl[];
+
+// ZCash rpc testnet endpoint.
+extern const char kZCashTestnetRpcUrl[];
+
 }  // namespace switches
 }  // namespace brave_wallet
 

@@ -96,7 +96,8 @@ export const ImportAccountModal = () => {
     return CreateAccountOptions({
       isFilecoinEnabled,
       isSolanaEnabled,
-      isBitcoinEnabled: false // No bitcoin imported accounts by now.
+      isBitcoinEnabled: false, // No bitcoin imported accounts by now.
+      isZCashEnabled: false // No zcash imported accounts by now.
     })
   }, [isFilecoinEnabled, isSolanaEnabled])
 

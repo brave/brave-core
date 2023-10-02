@@ -576,8 +576,9 @@ mojom::AccountInfoPtr MakeAccountInfoForDerivedAccount(
     const DerivedAccountInfo& derived_account_info,
     mojom::KeyringId keyring_id) {
   // Ignore address from prefs for bitcoin.
-  auto address =
-      IsBitcoinKeyring(keyring_id) ? "" : derived_account_info.account_address;
+  auto address = IsBitcoinKeyring(keyring_id) || IsZCashKeyring(keyring_id)
+                     ? ""
+                     : derived_account_info.account_address;
 
   return mojom::AccountInfo::New(
       MakeAccountIdForDerivedAccount(derived_account_info, keyring_id),
@@ -826,6 +827,9 @@ void KeyringService::MaybeMigrateSelectedAccountPrefs() {
       break;
     case mojom::CoinType::FIL:
       wallet_selected = fil_selected.Clone();
+      break;
+    case mojom::CoinType::ZEC:
+      NOTREACHED();
       break;
     case mojom::CoinType::BTC:
       NOTREACHED();
@@ -1105,6 +1109,11 @@ void KeyringService::CreateWallet(const std::string& mnemonic,
     CreateKeyring(mojom::kBitcoinKeyring84TestId, mnemonic, password);
   }
 
+  if (IsZCashEnabled()) {
+    CreateKeyring(mojom::KeyringId::kZCashMainnet, mnemonic, password);
+    CreateKeyring(mojom::KeyringId::kZCashTestnet, mnemonic, password);
+  }
+
   ResetAllAccountInfosCache();
   std::move(callback).Run(mnemonic);
 }
@@ -1151,6 +1160,11 @@ bool KeyringService::RestoreWalletSync(const std::string& mnemonic,
   if (IsBitcoinEnabled()) {
     RestoreKeyring(mojom::kBitcoinKeyring84Id, mnemonic, password, false);
     RestoreKeyring(mojom::kBitcoinKeyring84TestId, mnemonic, password, false);
+  }
+
+  if (IsZCashEnabled()) {
+    RestoreKeyring(mojom::KeyringId::kZCashMainnet, mnemonic, password, false);
+    RestoreKeyring(mojom::KeyringId::kZCashTestnet, mnemonic, password, false);
   }
 
   ResetAllAccountInfosCache();
@@ -1223,10 +1237,16 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
     }
   }
 
+  if (IsZCashKeyring(keyring_id)) {
+    if (!IsZCashEnabled()) {
+      return nullptr;
+    }
+  }
   auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring) {
     return nullptr;
   }
+
   auto account = AddAccountForKeyring(keyring_id, account_name);
   if (!account) {
     return nullptr;
@@ -1420,6 +1440,15 @@ BitcoinKeyring* KeyringService::GetBitcoinKeyringById(
   }
 
   return static_cast<BitcoinKeyring*>(GetHDKeyringById(keyring_id));
+}
+
+ZCashKeyring* KeyringService::GetZCashKeyringById(
+    mojom::KeyringId keyring_id) const {
+  if (!IsZCashKeyring(keyring_id)) {
+    return nullptr;
+  }
+
+  return static_cast<ZCashKeyring*>(GetHDKeyringById(keyring_id));
 }
 
 void KeyringService::SetSelectedAccountInternal(
@@ -1949,6 +1978,11 @@ void KeyringService::Unlock(const std::string& password,
   if (IsBitcoinEnabled()) {
     ResumeKeyring(mojom::kBitcoinKeyring84Id, password);
     ResumeKeyring(mojom::kBitcoinKeyring84TestId, password);
+  }
+
+  if (IsZCashEnabled()) {
+    ResumeKeyring(mojom::KeyringId::kZCashMainnet, password);
+    ResumeKeyring(mojom::KeyringId::kZCashTestnet, password);
   }
 
   UpdateLastUnlockPref(local_state_);
@@ -2553,6 +2587,56 @@ void KeyringService::GetChecksumEthAddress(
 void KeyringService::HasPendingUnlockRequest(
     HasPendingUnlockRequestCallback callback) {
   std::move(callback).Run(HasPendingUnlockRequest());
+}
+
+absl::optional<std::vector<std::pair<std::string, mojom::ZCashKeyIdPtr>>>
+KeyringService::GetZCashAddresses(const mojom::AccountId& account_id) {
+  CHECK(IsZCashAccount(account_id));
+
+  auto* zcash_keyring = GetZCashKeyringById(account_id.keyring_id);
+  if (!zcash_keyring) {
+    return absl::nullopt;
+  }
+
+  // TODO(cypt4): store used addresses indexes in prefs.
+
+  // TODO(cypt4): temporarily just return first 5 recieve and 5 change
+  // addresses.
+  std::vector<std::pair<std::string, mojom::ZCashKeyIdPtr>> addresses;
+  for (auto i = 0; i < 5; ++i) {
+    auto key_id =
+        mojom::ZCashKeyId::New(account_id.bitcoin_account_index, 0, i);
+    auto address = zcash_keyring->GetAddress(*key_id);
+    if (!address) {
+      return absl::nullopt;
+    }
+    addresses.emplace_back(*address, std::move(key_id));
+  }
+  for (auto i = 0; i < 5; ++i) {
+    auto key_id =
+        mojom::ZCashKeyId::New(account_id.bitcoin_account_index, 1, i);
+    auto address = zcash_keyring->GetAddress(*key_id);
+    if (!address) {
+      return absl::nullopt;
+    }
+    addresses.emplace_back(*address, std::move(key_id));
+  }
+
+  return addresses;
+}
+
+absl::optional<std::string> KeyringService::GetZCashAddress(
+    const mojom::AccountId& account_id,
+    const mojom::ZCashKeyId& key_id) {
+  CHECK(IsZCashAccount(account_id));
+  CHECK_EQ(account_id.bitcoin_account_index, key_id.account);
+
+  auto* zcash_keyring = GetZCashKeyringById(account_id.keyring_id);
+  if (!zcash_keyring) {
+    return absl::nullopt;
+  }
+
+  return zcash_keyring->GetAddress(key_id);
 }
 
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(

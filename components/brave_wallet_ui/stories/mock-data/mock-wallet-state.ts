@@ -90,6 +90,7 @@ export const mockWalletState: WalletState = {
   isMetaMaskInstalled: false,
   isSolanaEnabled: false,
   isBitcoinEnabled: false,
+  isZCashEnabled: false,
   solFeeEstimates: {
     fee: 0.000005 * LAMPORTS_PER_SOL as unknown as bigint
   },
