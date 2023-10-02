@@ -159,6 +159,16 @@ export const keyringIdForNewAccount = (
     }
   }
 
+  if (coin === BraveWallet.CoinType.ZEC) {
+    if (chainId === BraveWallet.Z_CASH_MAINNET) {
+      return BraveWallet.KeyringId.kZCashMainnet
+    }
+    if (chainId === BraveWallet.Z_CASH_TESTNET) {
+      return BraveWallet.KeyringId.kZCashTestnet
+    }
+  }
+
+
   assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)
 }
 
@@ -172,6 +182,8 @@ export const getAccountTypeDescription = (coin: BraveWallet.CoinType) => {
       return getLocale('braveWalletFILAccountDescrption')
     case BraveWallet.CoinType.BTC:
       return getLocale('braveWalletBTCAccountDescrption')
+    case BraveWallet.CoinType.ZEC:
+      return getLocale('braveWalletZECAccountDescrption')
     default:
       assertNotReached(`Unknown coin ${coin}`)
   }

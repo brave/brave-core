@@ -18,6 +18,7 @@ export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
 export const isFilecoinEnabled = ({ wallet }: State) => wallet.isFilecoinEnabled
 export const isSolanaEnabled = ({ wallet }: State) => wallet.isSolanaEnabled
 export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
+export const isZCashEnabled = ({ wallet }: State) => wallet.isZCashEnabled
 export const isLoadingCoinMarketData = ({ wallet }: State) => wallet.isLoadingCoinMarketData
 export const isMetaMaskInstalled = ({ wallet }: State) => wallet.isMetaMaskInstalled
 export const isWalletBackedUp = ({ wallet }: State) => wallet.isWalletBackedUp

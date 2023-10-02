@@ -25,7 +25,10 @@ import {
   FilecoinNetworkLocaleMapping,
   FilecoinNetworkTypes,
   ImportAccountErrorType,
-  WalletRoutes
+  WalletRoutes,
+  ZCashNetwork,
+  ZCashNetworkLocaleMapping,
+  ZCashNetworkTypes
 } from '../../../../constants/types'
 
 // actions
@@ -69,21 +72,24 @@ export const CreateAccountModal = () => {
   const isFilecoinEnabled = useSafeWalletSelector(WalletSelectors.isFilecoinEnabled)
   const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
   const isBitcoinEnabled = useSafeWalletSelector(WalletSelectors.isBitcoinEnabled)
+  const isZCashEnabled = useSafeWalletSelector(WalletSelectors.isZCashEnabled)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // state
   const [accountName, setAccountName] = React.useState<string>('')
   const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>(BraveWallet.FILECOIN_MAINNET)
   const [bitcoinNetwork, setBitcoinNetwork] = React.useState<BitcoinNetwork>(BraveWallet.BITCOIN_TESTNET)
+  const [zcashNetwork, setZCashNetwork] = React.useState<ZCashNetwork>(BraveWallet.Z_CASH_MAINNET)
 
   // memos
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
       isFilecoinEnabled,
       isSolanaEnabled,
-      isBitcoinEnabled
+      isBitcoinEnabled,
+      isZCashEnabled
     })
-  }, [isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled])
+  }, [isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled, isZCashEnabled])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {
@@ -107,6 +113,8 @@ export const CreateAccountModal = () => {
         filecoinNetwork) ||
       (selectedAccountType.coin === BraveWallet.CoinType.BTC &&
         bitcoinNetwork) ||
+      (selectedAccountType.coin === BraveWallet.CoinType.ZEC &&
+        zcashNetwork) ||
       undefined
 
     return keyringIdForNewAccount(selectedAccountType.coin, network)
@@ -133,6 +141,10 @@ export const CreateAccountModal = () => {
 
   const onChangeBitcoinNetwork = React.useCallback((network: BitcoinNetwork) => {
     setBitcoinNetwork(network)
+  }, [])
+
+  const onChangeZCashNetwork = React.useCallback((network: ZCashNetwork) => {
+    setZCashNetwork(network)
   }, [])
 
   const onClickCreateAccount = React.useCallback(() => {
@@ -204,6 +216,19 @@ export const CreateAccountModal = () => {
                   return (
                     <div data-value={network} key={network}>
                       {BitcoinNetworkLocaleMapping[network]}
+                    </div>
+                  )
+                })}
+              </Select>
+            </SelectWrapper>
+          }
+          {selectedAccountType?.coin === BraveWallet.CoinType.ZEC &&
+            <SelectWrapper>
+              <Select value={bitcoinNetwork} onChange={onChangeZCashNetwork}>
+                {ZCashNetworkTypes.map((network) => {
+                  return (
+                    <div data-value={network} key={network}>
+                      {ZCashNetworkLocaleMapping[network]}
                     </div>
                   )
                 })}

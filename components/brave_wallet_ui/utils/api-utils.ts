@@ -55,7 +55,7 @@ export function handleEndpointError(
 
 export async function getEnabledCoinTypes(api: WalletApiProxy) {
   const {
-    isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled
+    isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled, isZCashEnabled
   } = (await api.walletHandler.getWalletInfo()).walletInfo
 
   // Get All Networks
@@ -66,6 +66,7 @@ export async function getEnabledCoinTypes(api: WalletApiProxy) {
       (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
       (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
       (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
+      (coin === BraveWallet.CoinType.ZEC && isZCashEnabled) ||
       coin === BraveWallet.CoinType.ETH
     )
   })

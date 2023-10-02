@@ -22,6 +22,7 @@ import {
   AVAXIconUrl,
   BNBIconUrl,
   BTCIconUrl,
+  ZECIconUrl,
   FILECOINIconUrl,
 } from '../stories/mock-data/asset-icons'
 
@@ -60,6 +61,8 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
       return isStorybook ? FILECOINIconUrl : 'chrome://erc-token-images/fil.png'
     case 'BTC':
       return isStorybook ? BTCIconUrl : 'chrome://erc-token-images/btc.png'
+    case 'ZEC':
+      return isStorybook ? ZECIconUrl : 'chrome://erc-token-images/zec.png'
   }
 
   return ''

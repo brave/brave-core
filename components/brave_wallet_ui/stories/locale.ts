@@ -831,6 +831,7 @@ provideStrings({
   braveWalletSOLAccountDescrption: 'Solana + SVM Chains',
   braveWalletFILAccountDescrption: 'Filecoin',
   braveWalletBTCAccountDescrption: 'Bitcoin',
+  braveWalletZECAccountDescrption: 'ZCash',
   braveWalletShowNetworkLogoOnNftsTitle: 'Network Logo',
   braveWalletShowNetworkLogoOnNftsDescription: 'Show network logo on NFTs',
   braveWalletShowSpamNftsTitle: 'Spam NFTs',

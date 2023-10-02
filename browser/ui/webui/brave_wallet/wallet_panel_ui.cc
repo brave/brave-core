@@ -121,6 +121,8 @@ void WalletPanelUI::CreatePanelHandler(
         json_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
         bitcoin_rpc_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
+        zcash_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SimulationService>

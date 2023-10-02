@@ -688,6 +688,7 @@ export class MockedWalletApiProxy {
           isSolanaEnabled: true,
           isFilecoinEnabled: true,
           isBitcoinEnabled: true,
+          isZCashEnabled:true,
           isWalletBackedUp: true,
           isWalletCreated: true,
           isWalletLocked: false,

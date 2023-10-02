@@ -222,6 +222,7 @@ export interface WalletState {
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
   isBitcoinEnabled: boolean
+  isZCashEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: BraveWallet.AppItem[]
@@ -794,9 +795,9 @@ export interface TransactionProviderErrorRegistry {
 
 export const SupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
-  BraveWallet.CoinType.ETH,
   BraveWallet.CoinType.FIL,
-  BraveWallet.CoinType.BTC
+  BraveWallet.CoinType.BTC,
+  BraveWallet.CoinType.ZEC
 ]
 
 export const SupportedOnRampNetworks = [
@@ -842,6 +843,7 @@ export const SupportedTestNetworks = [
  */
 export const CoinTypes = {
   BTC: 0,
+  ZEC: 133,
   ETH: 60,
   FIL: 461,
   SOL: 501,
@@ -855,7 +857,8 @@ export enum CoinTypesMap {
   ETH = BraveWallet.CoinType.ETH,
   FIL = BraveWallet.CoinType.FIL,
   SOL = BraveWallet.CoinType.SOL,
-  BTC = BraveWallet.CoinType.BTC
+  BTC = BraveWallet.CoinType.BTC,
+  ZEC = BraveWallet.CoinType.ZEC
 }
 
 export type BuyOption = {
@@ -1054,9 +1057,19 @@ export const BitcoinNetworkTypes = [
 ] as const
 export type BitcoinNetwork = typeof BitcoinNetworkTypes[number]
 
+export const ZCashNetworkTypes = [
+  BraveWallet.Z_CASH_MAINNET, BraveWallet.Z_CASH_TESTNET
+] as const
+export type ZCashNetwork = typeof ZCashNetworkTypes[number]
+
 export const BitcoinNetworkLocaleMapping = {
   [BraveWallet.BITCOIN_MAINNET]: 'Bitcoin Mainnet',
   [BraveWallet.BITCOIN_TESTNET]: 'Bitcoin Testnet'
+}
+
+export const ZCashNetworkLocaleMapping = {
+  [BraveWallet.Z_CASH_MAINNET]: 'ZCash Mainnet',
+  [BraveWallet.Z_CASH_TESTNET]: 'ZCash Testnet'
 }
 
 export type GasFeeOption = {

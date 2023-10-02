@@ -52,6 +52,8 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
           json_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
           bitcoin_rpc_service,
+      mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
+          zcash_service,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
       mojo::PendingReceiver<brave_wallet::mojom::SimulationService>
           simulation_service,
