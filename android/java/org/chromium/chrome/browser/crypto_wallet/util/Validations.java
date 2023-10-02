@@ -93,8 +93,7 @@ public class Validations {
                     assert selectedNetwork != null;
 
                     TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry,
-                            selectedNetwork, TokenUtils.TokenType.ALL,
-                            (tokens) -> {
+                            selectedNetwork, TokenUtils.TokenType.ALL, (tokens) -> {
                                 fillKnowContracts(tokens);
                                 checkForKnowContracts(
                                         receiverAccountAddressLower, callback, resources);

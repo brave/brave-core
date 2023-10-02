@@ -64,15 +64,16 @@ public class UserAssetModel {
                             } else {
                                 TokenUtils.getVisibleUserAssetsFiltered(mBraveWalletService,
                                         mSelectedNetwork, mSelectedNetwork.coin,
-                                        TokenUtils.TokenType.ALL, userAssets ->
-                                                TokenUtils.getAllTokensFiltered(mBraveWalletService,
+                                        TokenUtils.TokenType.ALL,
+                                        userAssets
+                                        -> TokenUtils.getAllTokensFiltered(mBraveWalletService,
                                                 mBlockchainRegistry, mSelectedNetwork,
                                                 nftsOnly ? TokenUtils.TokenType.NFTS
                                                          : TokenUtils.TokenType.NON_NFTS,
                                                 tokens -> {
-                                                    _mAssetsResult.postValue(new AssetsResult(
-                                                            Arrays.asList(tokens),
-                                                            Arrays.asList(userAssets)));
+                                                    _mAssetsResult.postValue(
+                                                            new AssetsResult(Arrays.asList(tokens),
+                                                                    Arrays.asList(userAssets)));
                                                 }));
                             }
                         }

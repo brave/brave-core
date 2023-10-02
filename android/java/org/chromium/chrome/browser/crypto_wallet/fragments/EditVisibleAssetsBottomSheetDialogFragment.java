@@ -375,7 +375,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         for (int i = 0; i < tokens.size(); i++) {
             BlockchainToken token = tokens.get(i);
 
-            NetworkInfo assetNetwork = NetworkUtils.findNetwork(mCryptoNetworks, token.chainId);
+            NetworkInfo assetNetwork =
+                    NetworkUtils.findNetwork(mCryptoNetworks, token.chainId, token.symbol);
             String subtitle = !isEditVisibleAssetType || assetNetwork == null
                     ? token.symbol
                     : getString(R.string.brave_wallet_portfolio_asset_network_description,

@@ -99,9 +99,13 @@ public class NetworkUtils {
      * @return Network info or {@code null} if the network was not found.
      */
     @Nullable
-    public static NetworkInfo findNetwork(@NonNull List<NetworkInfo> networks, @Nullable String chainId, @Nullable String symbol) {
-        if (networks.isEmpty() || TextUtils.isEmpty(chainId) || TextUtils.isEmpty(symbol)) return null;
-        return JavaUtils.find(networks, networkInfo -> networkInfo.chainId.equals(chainId) && networkInfo.symbol.equals(symbol));
+    public static NetworkInfo findNetwork(@NonNull List<NetworkInfo> networks,
+            @Nullable String chainId, @Nullable String symbol) {
+        if (networks.isEmpty() || TextUtils.isEmpty(chainId) || TextUtils.isEmpty(symbol))
+            return null;
+        return JavaUtils.find(networks,
+                networkInfo
+                -> networkInfo.chainId.equals(chainId) && networkInfo.symbol.equals(symbol));
     }
 
     public static boolean isTestNetwork(String chainId) {

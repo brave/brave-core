@@ -163,14 +163,16 @@ public class TokenUtils {
     }
 
     public static void getAllTokensFiltered(BraveWalletService braveWalletService,
-            BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork,
-            TokenType tokenType, Callbacks.Callback1<BlockchainToken[]> callback) {
+            BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, TokenType tokenType,
+            Callbacks.Callback1<BlockchainToken[]> callback) {
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, selectedNetwork.coin, tokens -> {
-            braveWalletService.getUserAssets(selectedNetwork.chainId, selectedNetwork.coin, userTokens -> {
-                BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
-                        distinctiveConcatenatedArrays(tokens, userTokens), tokenType, false);
-                callback.call(filteredTokens);
-            });
+            braveWalletService.getUserAssets(
+                    selectedNetwork.chainId, selectedNetwork.coin, userTokens -> {
+                        BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
+                                distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
+                                false);
+                        callback.call(filteredTokens);
+                    });
         });
     }
 
@@ -190,7 +192,8 @@ public class TokenUtils {
             TokenType tokenType,
             Callbacks.Callback2<BlockchainToken[], BlockchainToken[]> callback) {
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType,
-                tokens -> braveWalletService.getUserAssets(
+                tokens
+                -> braveWalletService.getUserAssets(
                         selectedNetwork.chainId, coinType, userTokens -> {
                             BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
                                     distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
@@ -218,8 +221,7 @@ public class TokenUtils {
             OnRampProvider.RAMP, OnRampProvider.SARDINE, OnRampProvider.TRANSAK};
 
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
-            NetworkInfo selectedNetwork,
-            Callbacks.Callback1<BlockchainToken[]> callback) {
+            NetworkInfo selectedNetwork, Callbacks.Callback1<BlockchainToken[]> callback) {
         int[] rampProviders = SUPPORTED_RAMP_PROVIDERS;
         blockchainRegistry.getProvidersBuyTokens(rampProviders, selectedNetwork.chainId, tokens -> {
             // blockchainRegistry.getProvidersBuyTokens returns a full list of tokens that are
