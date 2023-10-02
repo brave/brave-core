@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
+import java.util.stream.Stream;
 
 public class TokenUtils {
     /**
@@ -71,40 +71,40 @@ public class TokenUtils {
     private static BlockchainToken[] filterTokens(NetworkInfo selectedNetwork,
             BlockchainToken[] tokens, TokenType tokenType, boolean keepVisibleOnly) {
         BlockchainToken nativeAsset = Utils.makeNetworkAsset(selectedNetwork);
-        ArrayList<BlockchainToken> arrayTokens = new ArrayList<>(Arrays.asList(tokens));
-        Utils.removeIf(arrayTokens, t -> {
-            boolean typeFilter;
+        Stream<BlockchainToken> tokenStream = Arrays.stream(tokens).filter(token -> {
+            final boolean typeFilter;
             switch (tokenType) {
                 case NFTS:
-                    typeFilter = !t.isNft;
+                    typeFilter = token.isNft;
                     break;
                 case ERC20:
-                    typeFilter = !t.isErc20;
+                    typeFilter = token.isErc20;
                     break;
                 case ERC721:
-                    typeFilter = !t.isErc721;
+                    typeFilter = token.isErc721;
                     break;
                 case SOL:
-                    typeFilter = t.coin != CoinType.SOL;
+                    typeFilter = token.coin == CoinType.SOL;
                     break;
                 case NON_NFTS:
-                    typeFilter = t.isNft;
+                    typeFilter = !token.isNft;
                     break;
                 case ALL:
-                    typeFilter = false;
+                    typeFilter = true;
                     break;
                 default:
                     throw new UnsupportedOperationException("Token type not supported.");
             }
-            return typeFilter || isSameToken(t, nativeAsset) || (keepVisibleOnly && !t.visible);
+            return typeFilter && !isSameToken(token, nativeAsset)
+                    && (!keepVisibleOnly || token.visible);
         });
 
-        // The native assets are not added
-        // when filtering only NFTs.
+        // When token type is NFTS the native assets should not be added.
+        // For all the other cases we add them.
         if (tokenType != TokenType.NFTS) {
-            arrayTokens.add(0, nativeAsset);
+            tokenStream = Stream.concat(Stream.of(nativeAsset), tokenStream);
         }
-        return arrayTokens.toArray(new BlockchainToken[0]);
+        return tokenStream.toArray(BlockchainToken[] ::new);
     }
 
     public static void getUserAssetsFiltered(BraveWalletService braveWalletService,
