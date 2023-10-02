@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.app.domain;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -153,7 +154,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                                                 == txNetworks.size()) {
                                             parseTransactions(mActivityRef,
                                                     assetAccountsNetworkBalances,
-                                                    filteredTransactions);
+                                                    filteredTransactions, networkInfo.symbol);
                                         }
                                     });
                         }
@@ -164,8 +165,8 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
     }
 
     private void parseTransactions(WeakReference<BraveWalletBaseActivity> activityRef,
-            List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances,
-            TransactionInfo[] transactionInfoArr) {
+                                   List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances,
+                                   TransactionInfo[] transactionInfoArr, @NonNull String symbol) {
         // Received balances of all network, can now fetch transaction
         var allAccountsArray = mAllAccountInfoList.toArray(new AccountInfo[0]);
         SolanaTransactionsGasHelper solanaTransactionsGasHelper =
@@ -183,7 +184,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                 if (perTxSolanaFee.get(txInfo.id) != null) {
                     solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
                 }
-                var txNetwork = NetworkUtils.findNetwork(mAllNetworkInfoList, txInfo.chainId);
+                var txNetwork = NetworkUtils.findNetwork(mAllNetworkInfoList, txInfo.chainId, symbol);
                 var txExtraData =
                         assetAccountsNetworkBalances.stream()
                                 .filter(data -> data.networkInfo.chainId.equals(txInfo.chainId))
