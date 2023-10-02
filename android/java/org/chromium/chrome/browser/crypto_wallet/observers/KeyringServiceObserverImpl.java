@@ -18,7 +18,7 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
         default void locked() {}
         default void backedUp() {}
         default void keyringCreated(@KeyringId.EnumType int keyringId) {}
-        default void keyringRestored(@KeyringId.EnumType int keyringId) {}
+        default void walletRestored() {}
         default void keyringReset() {}
         default void unlocked() {}
         default void accountsChanged() {}
@@ -41,8 +41,8 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringRestored(@KeyringId.EnumType int keyringId) {
-        if (isActive()) getRef().keyringRestored(keyringId);
+    public void walletRestored() {
+        if (isActive()) getRef().walletRestored();
     }
 
     @Override

@@ -972,9 +972,6 @@ HDKeyring* KeyringService::RestoreKeyring(mojom::KeyringId keyring_id,
     return nullptr;
   }
 
-  for (const auto& observer : observers_) {
-    observer->KeyringRestored(keyring_id);
-  }
   ResetAutoLockTimer();
   return keyring;
 }
@@ -994,7 +991,6 @@ mojom::KeyringInfoPtr KeyringService::GetKeyringInfoSync(
     backup_complete = value->GetBool();
   }
   keyring_info->is_backed_up = backup_complete;
-  keyring_info->account_infos = GetAccountInfosForKeyring(keyring_id);
   return keyring_info;
 }
 
@@ -1082,6 +1078,13 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
                                    const std::string& password,
                                    bool is_legacy_brave_wallet,
                                    RestoreWalletCallback callback) {
+  std::move(callback).Run(
+      RestoreWalletSync(mnemonic, password, is_legacy_brave_wallet));
+}
+
+bool KeyringService::RestoreWalletSync(const std::string& mnemonic,
+                                       const std::string& password,
+                                       bool is_legacy_brave_wallet) {
   auto* keyring = RestoreKeyring(mojom::kDefaultKeyringId, mnemonic, password,
                                  is_legacy_brave_wallet);
   if (keyring && !GetDerivedAccountsNumberForKeyring(
@@ -1117,11 +1120,13 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
 
   ResetAllAccountInfosCache();
 
-  account_discovery_manager_ =
-      std::make_unique<AccountDiscoveryManager>(json_rpc_service_, this);
-  account_discovery_manager_->StartDiscovery();
+  if (keyring) {
+    for (const auto& observer : observers_) {
+      observer->WalletRestored();
+    }
+  }
 
-  std::move(callback).Run(keyring);
+  return !!keyring;
 }
 
 std::string KeyringService::GetMnemonicForKeyringImpl(
@@ -1463,13 +1468,16 @@ bool KeyringService::RemoveImportedAccountInternal(
 }
 
 void KeyringService::IsWalletBackedUp(IsWalletBackedUpCallback callback) {
-  bool backup_complete = false;
+  std::move(callback).Run(IsWalletBackedUpSync());
+}
+
+bool KeyringService::IsWalletBackedUpSync() {
   const base::Value* value = GetPrefForKeyring(*profile_prefs_, kBackupComplete,
                                                mojom::kDefaultKeyringId);
   if (value) {
-    backup_complete = value->GetBool();
+    return value->GetBool();
   }
-  std::move(callback).Run(backup_complete);
+  return false;
 }
 
 void KeyringService::NotifyWalletBackupComplete() {
@@ -1927,7 +1935,6 @@ void KeyringService::IsLocked(IsLockedCallback callback) {
 }
 
 void KeyringService::Reset(bool notify_observer) {
-  account_discovery_manager_.reset();
   StopAutoLockTimer();
   encryptors_.clear();
   keyrings_.clear();

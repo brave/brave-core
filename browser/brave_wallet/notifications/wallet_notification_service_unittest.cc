@@ -59,11 +59,12 @@ class WalletNotificationServiceUnitTest : public testing::Test {
   PrefService* prefs() { return profile_.GetPrefs(); }
   PrefService* local_state() { return &local_state_; }
 
+  AccountUtils GetAccountUtils() {
+    return AccountUtils(keyring_service_.get());
+  }
+
   mojom::AccountIdPtr EthAccount(size_t index) {
-    return keyring_service_
-        ->GetKeyringInfoSync(brave_wallet::mojom::kDefaultKeyringId)
-        ->account_infos[index]
-        ->account_id->Clone();
+    return GetAccountUtils().EnsureEthAccount(index)->account_id->Clone();
   }
 
   bool ShouldDisplayNotifications(mojom::TransactionStatus status) {

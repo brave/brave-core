@@ -32,7 +32,7 @@ export const {
   initialized,
   keyringCreated,
   keyringReset,
-  keyringRestored,
+  walletRestored,
   locked,
   lockWallet,
   portfolioTimelineUpdated,

@@ -107,7 +107,7 @@ class TestKeyringServiceObserver : public mojom::KeyringServiceObserver {
 
   MOCK_METHOD(void, AutoLockMinutesChanged, (), (override));
   MOCK_METHOD(void, KeyringCreated, (mojom::KeyringId keyring_id), (override));
-  MOCK_METHOD(void, KeyringRestored, (mojom::KeyringId keyring_id), (override));
+  MOCK_METHOD(void, WalletRestored, (), (override));
   MOCK_METHOD(void, KeyringReset, (), (override));
   MOCK_METHOD(void, Locked, (), (override));
   MOCK_METHOD(void, Unlocked, (), (override));
@@ -185,6 +185,10 @@ class KeyringServiceUnitTest : public testing::Test {
     return url_loader_factory_;
   }
 
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
+    return shared_url_loader_factory_;
+  }
+
   bool HasPrefForKeyring(const std::string& key, mojom::KeyringId keyring_id) {
     return KeyringService::HasPrefForKeyring(*GetPrefs(), key, keyring_id);
   }
@@ -209,8 +213,7 @@ class KeyringServiceUnitTest : public testing::Test {
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
           ASSERT_EQ(keyring_info->id, keyring_id);
           if (!keyring_info->is_keyring_created && keyring_info->is_locked &&
-              !keyring_info->is_backed_up &&
-              keyring_info->account_infos.empty()) {
+              !keyring_info->is_backed_up) {
             result = true;
           }
           run_loop.Quit();
@@ -371,15 +374,8 @@ class KeyringServiceUnitTest : public testing::Test {
                             const std::string& mnemonic,
                             const std::string& password,
                             bool is_legacy_brave_wallet) {
-    bool success = false;
-    base::RunLoop run_loop;
-    service->RestoreWallet(mnemonic, password, is_legacy_brave_wallet,
-                           base::BindLambdaForTesting([&](bool v) {
-                             success = v;
-                             run_loop.Quit();
-                           }));
-    run_loop.Run();
-    return success;
+    return service->RestoreWalletSync(mnemonic, password,
+                                      is_legacy_brave_wallet);
   }
 
   static mojom::AccountInfoPtr AddAccount(KeyringService* service,
@@ -1094,17 +1090,6 @@ TEST_F(KeyringServiceUnitTest, GetKeyringInfo) {
         EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
-        EXPECT_EQ(keyring_info->account_infos.size(), 1u);
-        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
-        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->coin,
-                  mojom::CoinType::ETH);
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->keyring_id,
-                  mojom::kDefaultKeyringId);
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                  mojom::AccountKind::kDerived);
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->address,
-                  keyring_info->account_infos[0]->address);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
@@ -1122,11 +1107,6 @@ TEST_F(KeyringServiceUnitTest, GetKeyringInfo) {
         EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_TRUE(keyring_info->is_backed_up);
-        EXPECT_EQ(keyring_info->account_infos.size(), 2u);
-        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
-        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
-        EXPECT_FALSE(keyring_info->account_infos[1]->address.empty());
-        EXPECT_EQ(keyring_info->account_infos[1]->name, "Account5566");
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
@@ -1469,7 +1449,7 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
-  EXPECT_CALL(observer, KeyringRestored(_)).Times(0);
+  EXPECT_CALL(observer, WalletRestored()).Times(0);
   EXPECT_CALL(observer, KeyringCreated(mojom::kDefaultKeyringId));
   EXPECT_CALL(observer, KeyringCreated(mojom::kFilecoinKeyringId)).Times(0);
   EXPECT_CALL(observer, KeyringCreated(mojom::kFilecoinTestnetKeyringId))
@@ -1529,20 +1509,14 @@ TEST_F(KeyringServiceUnitTest, CreateAndRestoreWallet) {
       });
   observer.WaitAndVerify();
 
-  EXPECT_CALL(observer, KeyringRestored(mojom::kDefaultKeyringId));
-  EXPECT_CALL(observer, KeyringRestored(mojom::kFilecoinKeyringId))
-      .Times(IsFilecoinEnabled());
-  EXPECT_CALL(observer, KeyringRestored(mojom::kFilecoinTestnetKeyringId))
-      .Times(IsFilecoinEnabled());
-  EXPECT_CALL(observer, KeyringRestored(mojom::kSolanaKeyringId))
-      .Times(IsSolanaEnabled());
+  EXPECT_CALL(observer, WalletRestored());
   EXPECT_CALL(observer, KeyringCreated(_)).Times(0);
   verify_restore_wallet.Run();
   observer.WaitAndVerify();
 
   // Restore twice consecutively should succeed and have only one account
   EXPECT_CALL(observer, KeyringCreated(_)).Times(0);
-  EXPECT_CALL(observer, KeyringRestored(_)).Times(0);
+  EXPECT_CALL(observer, WalletRestored());
   verify_restore_wallet.Run();
   observer.WaitAndVerify();
 }
@@ -1709,6 +1683,19 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
                     mojom::AccountKind::kImported, "0xxxxxxxxxx0"),
       kPasswordBrave));
 
+  auto account_infos = GetAccountUtils(&service).AllEthAccounts();
+  EXPECT_EQ(account_infos.size(), 3u);
+  EXPECT_FALSE(account_infos[0]->address.empty());
+  EXPECT_EQ(account_infos[0]->name, "Account 1");
+  EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kDerived);
+  // imported accounts
+  EXPECT_EQ(account_infos[1]->address, imported_accounts[0].address);
+  EXPECT_EQ(account_infos[1]->name, imported_accounts[0].name);
+  EXPECT_EQ(account_infos[1]->account_id->kind, mojom::AccountKind::kImported);
+  EXPECT_EQ(account_infos[2]->address, imported_accounts[2].address);
+  EXPECT_EQ(account_infos[2]->name, imported_accounts[2].name);
+  EXPECT_EQ(account_infos[2]->account_id->kind, mojom::AccountKind::kImported);
+
   bool callback_called = false;
   service.GetKeyringInfo(
       mojom::kDefaultKeyringId,
@@ -1717,25 +1704,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
         EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
-        EXPECT_EQ(keyring_info->account_infos.size(), 3u);
-        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
-        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                  mojom::AccountKind::kDerived);
-        // import accounts
-        EXPECT_EQ(keyring_info->account_infos[1]->address,
-                  imported_accounts[0].address);
-        EXPECT_EQ(keyring_info->account_infos[1]->name,
-                  imported_accounts[0].name);
-        EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-                  mojom::AccountKind::kImported);
 
-        EXPECT_EQ(keyring_info->account_infos[2]->address,
-                  imported_accounts[2].address);
-        EXPECT_EQ(keyring_info->account_infos[2]->name,
-                  imported_accounts[2].name);
-        EXPECT_EQ(keyring_info->account_infos[2]->account_id->kind,
-                  mojom::AccountKind::kImported);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
@@ -1751,28 +1720,15 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
 
   EXPECT_TRUE(Unlock(&service, "brave"));
 
-  callback_called = false;
+  account_infos = GetAccountUtils(&service).AllEthAccounts();
   // Imported accounts should be restored
-  service.GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->account_infos.size(), 3u);
-        EXPECT_EQ(keyring_info->account_infos[1]->address,
-                  imported_accounts[0].address);
-        EXPECT_EQ(keyring_info->account_infos[1]->name,
-                  imported_accounts[0].name);
-        EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        EXPECT_EQ(keyring_info->account_infos[2]->address,
-                  imported_accounts[2].address);
-        EXPECT_EQ(keyring_info->account_infos[2]->name,
-                  imported_accounts[2].name);
-        EXPECT_EQ(keyring_info->account_infos[2]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(account_infos.size(), 3u);
+  EXPECT_EQ(account_infos[1]->address, imported_accounts[0].address);
+  EXPECT_EQ(account_infos[1]->name, imported_accounts[0].name);
+  EXPECT_EQ(account_infos[1]->account_id->kind, mojom::AccountKind::kImported);
+  EXPECT_EQ(account_infos[2]->address, imported_accounts[2].address);
+  EXPECT_EQ(account_infos[2]->name, imported_accounts[2].name);
+  EXPECT_EQ(account_infos[2]->account_id->kind, mojom::AccountKind::kImported);
 
   // Unlocked but with wrong password won't get private key.
   EXPECT_FALSE(EncodePrivateKeyForExport(
@@ -2103,40 +2059,22 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
     EXPECT_EQ(imported_account.private_key, *private_key);
   }
 
+  auto account_infos = GetAccountUtils(&service).AllEthAccounts();
+
   // Only second imported account's name is updated.
-  base::RunLoop run_loop;
-  service.GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
-        EXPECT_TRUE(keyring_info->is_keyring_created);
-        EXPECT_FALSE(keyring_info->is_locked);
-        EXPECT_FALSE(keyring_info->is_backed_up);
-        EXPECT_EQ(keyring_info->account_infos.size(), 4u);
-        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
-        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                  mojom::AccountKind::kDerived);
-        EXPECT_EQ(keyring_info->account_infos[1]->address,
-                  imported_accounts[0].address);
-        EXPECT_EQ(keyring_info->account_infos[1]->name,
-                  imported_accounts[0].name);
-        EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        EXPECT_EQ(keyring_info->account_infos[2]->address,
-                  imported_accounts[1].address);
-        EXPECT_EQ(keyring_info->account_infos[2]->name, kUpdatedName);
-        EXPECT_EQ(keyring_info->account_infos[2]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        EXPECT_EQ(keyring_info->account_infos[3]->address,
-                  imported_accounts[2].address);
-        EXPECT_EQ(keyring_info->account_infos[3]->name,
-                  imported_accounts[2].name);
-        EXPECT_EQ(keyring_info->account_infos[3]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  EXPECT_EQ(account_infos.size(), 4u);
+  EXPECT_FALSE(account_infos[0]->address.empty());
+  EXPECT_EQ(account_infos[0]->name, "Account 1");
+  EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kDerived);
+  EXPECT_EQ(account_infos[1]->address, imported_accounts[0].address);
+  EXPECT_EQ(account_infos[1]->name, imported_accounts[0].name);
+  EXPECT_EQ(account_infos[1]->account_id->kind, mojom::AccountKind::kImported);
+  EXPECT_EQ(account_infos[2]->address, imported_accounts[1].address);
+  EXPECT_EQ(account_infos[2]->name, kUpdatedName);
+  EXPECT_EQ(account_infos[2]->account_id->kind, mojom::AccountKind::kImported);
+  EXPECT_EQ(account_infos[3]->address, imported_accounts[2].address);
+  EXPECT_EQ(account_infos[3]->name, imported_accounts[2].name);
+  EXPECT_EQ(account_infos[3]->account_id->kind, mojom::AccountKind::kImported);
 }
 
 TEST_F(KeyringServiceUnitTest, RestoreLegacyBraveWallet) {
@@ -2144,10 +2082,11 @@ TEST_F(KeyringServiceUnitTest, RestoreLegacyBraveWallet) {
       "cushion pitch impact album daring marine much annual budget social "
       "clarify balance rose almost area busy among bring hidden bind later "
       "capable pulp laundry";
-  const char* mnemonic12 =
-      "drip caution abandon festival order clown oven regular absorb evidence "
-      "crew where";
+  const char* mnemonic12 = kMnemonicDripCaution;
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
+                                          &service, json_rpc_service(), nullptr,
+                                          GetPrefs(), GetLocalState());
   auto verify_restore_wallet = base::BindLambdaForTesting(
       [&service](const char* mnemonic, const char* address, bool is_legacy,
                  bool expect_result) {
@@ -2260,90 +2199,67 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   }
   {
     // Checking Default keyring accounts
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kDefaultKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          const auto& accounts = keyring_info->account_infos;
-          EXPECT_EQ(accounts.size(), 3u);
+    auto account_infos = GetAccountUtils(&service).AllEthAccounts();
 
-          EXPECT_EQ(accounts[0]->address, "0x111");
-          EXPECT_EQ(accounts[0]->name, "name 1");
-          EXPECT_EQ(accounts[0]->account_id->kind,
-                    mojom::AccountKind::kHardware);
-          ASSERT_TRUE(accounts[0]->hardware);
-          EXPECT_EQ(accounts[0]->hardware->device_id, "device1");
-          EXPECT_EQ(accounts[0]->account_id->coin, mojom::CoinType::ETH);
+    EXPECT_EQ(account_infos.size(), 3u);
 
-          EXPECT_EQ(accounts[1]->address, "0x222");
-          EXPECT_EQ(accounts[1]->name, "name 4");
-          EXPECT_EQ(accounts[1]->account_id->kind,
-                    mojom::AccountKind::kHardware);
-          ASSERT_TRUE(accounts[1]->hardware);
-          EXPECT_EQ(accounts[1]->hardware->device_id, "device1");
-          EXPECT_EQ(accounts[1]->account_id->coin, mojom::CoinType::ETH);
+    EXPECT_EQ(account_infos[0]->address, "0x111");
+    EXPECT_EQ(account_infos[0]->name, "name 1");
+    EXPECT_EQ(account_infos[0]->account_id->kind,
+              mojom::AccountKind::kHardware);
+    ASSERT_TRUE(account_infos[0]->hardware);
+    EXPECT_EQ(account_infos[0]->hardware->device_id, "device1");
+    EXPECT_EQ(account_infos[0]->account_id->coin, mojom::CoinType::ETH);
 
-          EXPECT_EQ(accounts[2]->address, "0xEA0");
-          EXPECT_EQ(accounts[2]->name, "name 3");
-          EXPECT_EQ(accounts[2]->account_id->kind,
-                    mojom::AccountKind::kHardware);
-          ASSERT_TRUE(accounts[2]->hardware);
-          EXPECT_EQ(accounts[2]->hardware->device_id, "device2");
-          EXPECT_EQ(accounts[2]->account_id->coin, mojom::CoinType::ETH);
+    EXPECT_EQ(account_infos[1]->address, "0x222");
+    EXPECT_EQ(account_infos[1]->name, "name 4");
+    EXPECT_EQ(account_infos[1]->account_id->kind,
+              mojom::AccountKind::kHardware);
+    ASSERT_TRUE(account_infos[1]->hardware);
+    EXPECT_EQ(account_infos[1]->hardware->device_id, "device1");
+    EXPECT_EQ(account_infos[1]->account_id->coin, mojom::CoinType::ETH);
 
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    EXPECT_EQ(account_infos[2]->address, "0xEA0");
+    EXPECT_EQ(account_infos[2]->name, "name 3");
+    EXPECT_EQ(account_infos[2]->account_id->kind,
+              mojom::AccountKind::kHardware);
+    ASSERT_TRUE(account_infos[2]->hardware);
+    EXPECT_EQ(account_infos[2]->hardware->device_id, "device2");
+    EXPECT_EQ(account_infos[2]->account_id->coin, mojom::CoinType::ETH);
   }
   {
     // Checking Filecoin keyring accounts
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kFilecoinKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          const auto& accounts = keyring_info->account_infos;
-          EXPECT_EQ(accounts.size(), 2u);
+    auto account_infos = GetAccountUtils(&service).AllFilAccounts();
+    EXPECT_EQ(account_infos.size(), 2u);
 
-          EXPECT_EQ(accounts[0]->address, "0x264");
-          EXPECT_EQ(accounts[0]->name, "name 2");
-          EXPECT_EQ(accounts[0]->account_id->kind,
-                    mojom::AccountKind::kHardware);
-          ASSERT_TRUE(accounts[0]->hardware);
-          EXPECT_EQ(accounts[0]->hardware->device_id, "device1");
-          EXPECT_EQ(accounts[0]->account_id->coin, mojom::CoinType::FIL);
+    EXPECT_EQ(account_infos[0]->address, "0x264");
+    EXPECT_EQ(account_infos[0]->name, "name 2");
+    EXPECT_EQ(account_infos[0]->account_id->kind,
+              mojom::AccountKind::kHardware);
+    ASSERT_TRUE(account_infos[0]->hardware);
+    EXPECT_EQ(account_infos[0]->hardware->device_id, "device1");
+    EXPECT_EQ(account_infos[0]->account_id->coin, mojom::CoinType::FIL);
 
-          EXPECT_EQ(accounts[1]->address, "0xFIL");
-          EXPECT_EQ(accounts[1]->name, "filecoin 1");
-          EXPECT_EQ(accounts[1]->account_id->kind,
-                    mojom::AccountKind::kHardware);
-          ASSERT_TRUE(accounts[1]->hardware);
-          EXPECT_EQ(accounts[1]->hardware->device_id, "device2");
-          EXPECT_EQ(accounts[1]->account_id->coin, mojom::CoinType::FIL);
-
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    EXPECT_EQ(account_infos[1]->address, "0xFIL");
+    EXPECT_EQ(account_infos[1]->name, "filecoin 1");
+    EXPECT_EQ(account_infos[1]->account_id->kind,
+              mojom::AccountKind::kHardware);
+    ASSERT_TRUE(account_infos[1]->hardware);
+    EXPECT_EQ(account_infos[1]->hardware->device_id, "device2");
+    EXPECT_EQ(account_infos[1]->account_id->coin, mojom::CoinType::FIL);
   }
   {
     // Checking Filecoin keyring testnet accounts
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kFilecoinTestnetKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          const auto& accounts = keyring_info->account_infos;
-          EXPECT_EQ(accounts.size(), 1u);
+    auto account_infos = GetAccountUtils(&service).AllFilTestAccounts();
+    EXPECT_EQ(account_infos.size(), 1u);
 
-          EXPECT_EQ(accounts[0]->address, "0xFILTEST");
-          EXPECT_EQ(accounts[0]->name, "filecoin testnet 1");
-          EXPECT_EQ(accounts[0]->account_id->kind,
-                    mojom::AccountKind::kHardware);
-          ASSERT_TRUE(accounts[0]->hardware);
-          EXPECT_EQ(accounts[0]->hardware->device_id, "device2");
-          EXPECT_EQ(accounts[0]->account_id->coin, mojom::CoinType::FIL);
-
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    EXPECT_EQ(account_infos[0]->address, "0xFILTEST");
+    EXPECT_EQ(account_infos[0]->name, "filecoin testnet 1");
+    EXPECT_EQ(account_infos[0]->account_id->kind,
+              mojom::AccountKind::kHardware);
+    ASSERT_TRUE(account_infos[0]->hardware);
+    EXPECT_EQ(account_infos[0]->hardware->device_id, "device2");
+    EXPECT_EQ(account_infos[0]->account_id->coin, mojom::CoinType::FIL);
   }
 
   EXPECT_CALL(observer, AccountsChanged()).Times(0);
@@ -2396,24 +2312,15 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
       ""));
   observer.WaitAndVerify();
 
-  bool callback_called = false;
-  service.GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        const auto& accounts = keyring_info->account_infos;
-        EXPECT_EQ(accounts.size(), size_t(1));
+  auto account_infos = GetAccountUtils(&service).AllEthAccounts();
+  EXPECT_EQ(account_infos.size(), size_t(1));
 
-        EXPECT_EQ(accounts[0]->address, "0x222");
-        EXPECT_EQ(accounts[0]->name, "name 4");
-        EXPECT_EQ(accounts[0]->account_id->kind, mojom::AccountKind::kHardware);
-        ASSERT_TRUE(accounts[0]->hardware);
-        EXPECT_EQ(accounts[0]->hardware->device_id, "device1");
-        EXPECT_EQ(accounts[0]->account_id->coin, mojom::CoinType::ETH);
-
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(account_infos[0]->address, "0x222");
+  EXPECT_EQ(account_infos[0]->name, "name 4");
+  EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kHardware);
+  ASSERT_TRUE(account_infos[0]->hardware);
+  EXPECT_EQ(account_infos[0]->hardware->device_id, "device1");
+  EXPECT_EQ(account_infos[0]->account_id->coin, mojom::CoinType::ETH);
 
 // TODO(apaymshev): Fix this test so it tests real scenarios when we always have
 // fallback account when removing last HW account.
@@ -2580,30 +2487,24 @@ TEST_F(KeyringServiceUnitTest, SelectAddedAccount) {
              "eth acc 1");
   AddAccount(&service, mojom::CoinType::ETH, mojom::kDefaultKeyringId,
              "eth acc 2");
-  AddAccount(&service, mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-             "eth acc 3");
+  auto last_eth = AddAccount(&service, mojom::CoinType::ETH,
+                             mojom::kDefaultKeyringId, "eth acc 3");
 
   AddAccount(&service, mojom::CoinType::SOL, mojom::kSolanaKeyringId,
              "sol acc 1");
   AddAccount(&service, mojom::CoinType::SOL, mojom::kSolanaKeyringId,
              "sol acc 2");
-  AddAccount(&service, mojom::CoinType::SOL, mojom::kSolanaKeyringId,
-             "sol acc 3");
+  auto last_sol = AddAccount(&service, mojom::CoinType::SOL,
+                             mojom::kSolanaKeyringId, "sol acc 3");
 
   // Last added eth account becomes selected for eth dapp.
-  ASSERT_EQ(
-      service.GetSelectedEthereumDappAccount(),
-      service.GetKeyringInfoSync(mojom::kDefaultKeyringId)->account_infos[3]);
+  ASSERT_EQ(service.GetSelectedEthereumDappAccount(), last_eth);
 
   // Last added sol account becomes selected for sol dapp.
-  ASSERT_EQ(
-      service.GetSelectedSolanaDappAccount(),
-      service.GetKeyringInfoSync(mojom::kSolanaKeyringId)->account_infos[2]);
+  ASSERT_EQ(service.GetSelectedSolanaDappAccount(), last_sol);
 
   // Last added account becomes selected.
-  ASSERT_EQ(
-      service.GetSelectedWalletAccount(),
-      service.GetKeyringInfoSync(mojom::kSolanaKeyringId)->account_infos[2]);
+  ASSERT_EQ(service.GetSelectedWalletAccount(), last_sol);
 }
 
 TEST_F(KeyringServiceUnitTest, SelectAddedFilecoinAccount) {
@@ -2621,12 +2522,10 @@ TEST_F(KeyringServiceUnitTest, SelectAddedFilecoinAccount) {
              "fil acc 1");
   AddAccount(&service, mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId,
              "fil acc 2");
-  AddAccount(&service, mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId,
-             "fil acc 3");
+  auto last_fil = AddAccount(&service, mojom::CoinType::FIL,
+                             mojom::kFilecoinTestnetKeyringId, "fil acc 3");
 
-  ASSERT_EQ(service.GetSelectedWalletAccount(),
-            service.GetKeyringInfoSync(mojom::kFilecoinTestnetKeyringId)
-                ->account_infos[2]);
+  ASSERT_EQ(service.GetSelectedWalletAccount(), last_fil);
 }
 
 TEST_F(KeyringServiceUnitTest, SelectImportedFilecoinAccount) {
@@ -2952,22 +2851,14 @@ TEST_F(KeyringServiceUnitTest, AddAccountsWithDefaultName) {
   service.AddAccountsWithDefaultName(mojom::CoinType::ETH,
                                      mojom::kDefaultKeyringId, 3);
 
-  base::RunLoop run_loop;
-  service.GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
-        EXPECT_TRUE(keyring_info->is_keyring_created);
-        EXPECT_EQ(keyring_info->account_infos.size(), 5u);
-        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
-        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
-        EXPECT_EQ(keyring_info->account_infos[1]->name, "AccountAAAAH");
-        EXPECT_EQ(keyring_info->account_infos[2]->name, "Account 3");
-        EXPECT_EQ(keyring_info->account_infos[3]->name, "Account 4");
-        EXPECT_EQ(keyring_info->account_infos[4]->name, "Account 5");
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  auto account_infos = GetAccountUtils(&service).AllEthAccounts();
+  EXPECT_EQ(account_infos.size(), 5u);
+  EXPECT_FALSE(account_infos[0]->address.empty());
+  EXPECT_EQ(account_infos[0]->name, "Account 1");
+  EXPECT_EQ(account_infos[1]->name, "AccountAAAAH");
+  EXPECT_EQ(account_infos[2]->name, "Account 3");
+  EXPECT_EQ(account_infos[3]->name, "Account 4");
+  EXPECT_EQ(account_infos[4]->name, "Account 5");
 }
 
 TEST_F(KeyringServiceUnitTest, SignMessageByDefaultKeyring) {
@@ -3089,42 +2980,17 @@ TEST_F(KeyringServiceUnitTest, SetAccountName_HardwareAccounts) {
                     mojom::AccountKind::kHardware, "0xFILTEST"),
       "filecoin testnet 1 changed");
 
-  {
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kDefaultKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          EXPECT_FALSE(keyring_info->account_infos[1]->address.empty());
-          EXPECT_EQ(keyring_info->account_infos[1]->name, "name 1 changed");
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
+  auto account_infos = GetAccountUtils(&service).AllEthAccounts();
+  EXPECT_FALSE(account_infos[1]->address.empty());
+  EXPECT_EQ(account_infos[1]->name, "name 1 changed");
 
-  {
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kFilecoinKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          EXPECT_FALSE(keyring_info->account_infos[1]->address.empty());
-          EXPECT_EQ(keyring_info->account_infos[1]->name, "filecoin 1 changed");
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
+  account_infos = GetAccountUtils(&service).AllFilAccounts();
+  EXPECT_FALSE(account_infos[1]->address.empty());
+  EXPECT_EQ(account_infos[1]->name, "filecoin 1 changed");
 
-  {
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kFilecoinTestnetKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
-          EXPECT_EQ(keyring_info->account_infos[0]->name,
-                    "filecoin testnet 1 changed");
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
+  account_infos = GetAccountUtils(&service).AllFilTestAccounts();
+  EXPECT_FALSE(account_infos[0]->address.empty());
+  EXPECT_EQ(account_infos[0]->name, "filecoin testnet 1 changed");
 }
 
 TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
@@ -3195,35 +3061,21 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
   observer.WaitAndVerify();
 
   // Only second hardware account's name is updated.
-  base::RunLoop run_loop;
-  service.GetKeyringInfo(
-      mojom::kDefaultKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
-        EXPECT_TRUE(keyring_info->is_keyring_created);
-        EXPECT_FALSE(keyring_info->is_locked);
-        EXPECT_FALSE(keyring_info->is_backed_up);
-        EXPECT_EQ(keyring_info->account_infos.size(), 4u);
-        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
-        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
-        EXPECT_FALSE(keyring_info->account_infos[0]->hardware);
-        EXPECT_EQ(keyring_info->account_infos[1]->address,
-                  hardware_accounts[0].address);
-        EXPECT_EQ(keyring_info->account_infos[1]->name,
-                  hardware_accounts[0].name);
-        EXPECT_TRUE(keyring_info->account_infos[1]->hardware);
-        EXPECT_EQ(keyring_info->account_infos[2]->address,
-                  hardware_accounts[1].address);
-        EXPECT_EQ(keyring_info->account_infos[2]->name, kUpdatedName);
-        EXPECT_TRUE(keyring_info->account_infos[2]->hardware);
-        EXPECT_EQ(keyring_info->account_infos[3]->address,
-                  hardware_accounts[2].address);
-        EXPECT_EQ(keyring_info->account_infos[3]->name,
-                  hardware_accounts[2].name);
-        EXPECT_TRUE(keyring_info->account_infos[3]->hardware);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  auto account_infos = GetAccountUtils(&service).AllEthAccounts();
+
+  EXPECT_EQ(account_infos.size(), 4u);
+  EXPECT_FALSE(account_infos[0]->address.empty());
+  EXPECT_EQ(account_infos[0]->name, "Account 1");
+  EXPECT_FALSE(account_infos[0]->hardware);
+  EXPECT_EQ(account_infos[1]->address, hardware_accounts[0].address);
+  EXPECT_EQ(account_infos[1]->name, hardware_accounts[0].name);
+  EXPECT_TRUE(account_infos[1]->hardware);
+  EXPECT_EQ(account_infos[2]->address, hardware_accounts[1].address);
+  EXPECT_EQ(account_infos[2]->name, kUpdatedName);
+  EXPECT_TRUE(account_infos[2]->hardware);
+  EXPECT_EQ(account_infos[3]->address, hardware_accounts[2].address);
+  EXPECT_EQ(account_infos[3]->name, hardware_accounts[2].name);
+  EXPECT_TRUE(account_infos[3]->hardware);
 }
 
 TEST_F(KeyringServiceUnitTest, IsStrongPassword) {
@@ -3355,7 +3207,7 @@ TEST_F(KeyringServiceUnitTest, AddFilecoinAccounts) {
 
   // Add FIL account will lazily create corresponding keyring
   EXPECT_CALL(observer, KeyringCreated(mojom::kFilecoinKeyringId));
-  EXPECT_CALL(observer, KeyringRestored(mojom::kFilecoinKeyringId)).Times(0);
+  EXPECT_CALL(observer, WalletRestored()).Times(0);
   ASSERT_TRUE(AddAccount(&service, mojom::CoinType::FIL,
                          mojom::kFilecoinKeyringId, "FIL account1"));
   EXPECT_TRUE(service.IsKeyringCreated(mojom::kFilecoinKeyringId));
@@ -3364,8 +3216,7 @@ TEST_F(KeyringServiceUnitTest, AddFilecoinAccounts) {
   // Add FIL with testnet network
   EXPECT_FALSE(service.IsKeyringCreated(mojom::kFilecoinTestnetKeyringId));
   EXPECT_CALL(observer, KeyringCreated(mojom::kFilecoinTestnetKeyringId));
-  EXPECT_CALL(observer, KeyringRestored(mojom::kFilecoinTestnetKeyringId))
-      .Times(0);
+  EXPECT_CALL(observer, WalletRestored()).Times(0);
   ASSERT_TRUE(AddAccount(&service, mojom::CoinType::FIL,
                          mojom::kFilecoinTestnetKeyringId,
                          "FIL testnet account 1"));
@@ -3384,30 +3235,26 @@ TEST_F(KeyringServiceUnitTest, AddFilecoinAccounts) {
 
   // FIL keyring already exists
   EXPECT_CALL(observer, KeyringCreated(mojom::kFilecoinKeyringId)).Times(0);
-  EXPECT_CALL(observer, KeyringRestored(mojom::kFilecoinKeyringId)).Times(0);
+  EXPECT_CALL(observer, WalletRestored()).Times(0);
   auto last_added_account =
       AddAccount(&service, mojom::CoinType::FIL, mojom::kFilecoinKeyringId,
                  "FIL account2");
   ASSERT_TRUE(last_added_account);
   observer.WaitAndVerify();
 
-  auto keyring_info = service.GetKeyringInfoSync(mojom::kFilecoinKeyringId);
-  EXPECT_EQ(keyring_info->account_infos.size(), 2u);
-  EXPECT_EQ(keyring_info->account_infos[0]->name, "FIL account1");
-  EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-            mojom::AccountKind::kDerived);
-  EXPECT_EQ(keyring_info->account_infos[1]->name, "FIL account2");
-  EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-            mojom::AccountKind::kDerived);
+  auto account_infos = GetAccountUtils(&service).AllFilAccounts();
+  EXPECT_EQ(account_infos.size(), 2u);
+  EXPECT_EQ(account_infos[0]->name, "FIL account1");
+  EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kDerived);
+  EXPECT_EQ(account_infos[1]->name, "FIL account2");
+  EXPECT_EQ(account_infos[1]->account_id->kind, mojom::AccountKind::kDerived);
 
-  keyring_info = service.GetKeyringInfoSync(mojom::kFilecoinTestnetKeyringId);
-  EXPECT_EQ(keyring_info->account_infos.size(), 2u);
-  EXPECT_EQ(keyring_info->account_infos[0]->name, "FIL testnet account 1");
-  EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-            mojom::AccountKind::kDerived);
-  EXPECT_EQ(keyring_info->account_infos[1]->name, "FIL testnet account 2");
-  EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-            mojom::AccountKind::kDerived);
+  account_infos = GetAccountUtils(&service).AllFilTestAccounts();
+  EXPECT_EQ(account_infos.size(), 2u);
+  EXPECT_EQ(account_infos[0]->name, "FIL testnet account 1");
+  EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kDerived);
+  EXPECT_EQ(account_infos[1]->name, "FIL testnet account 2");
+  EXPECT_EQ(account_infos[1]->account_id->kind, mojom::AccountKind::kDerived);
 
   EXPECT_EQ(last_added_account, service.GetSelectedWalletAccount());
 }
@@ -3521,38 +3368,17 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
       kPasswordBrave));
   observer.WaitAndVerify();
 
-  bool callback_called = false;
-  service.GetKeyringInfo(
-      mojom::kFilecoinTestnetKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->id, mojom::kFilecoinTestnetKeyringId);
-        EXPECT_TRUE(keyring_info->is_keyring_created);
-        EXPECT_FALSE(keyring_info->is_locked);
-        EXPECT_FALSE(keyring_info->is_backed_up);
-        EXPECT_EQ(keyring_info->account_infos.size(),
-                  imported_testnet_accounts.size() - 1);
-        EXPECT_EQ(keyring_info->account_infos[0]->address,
-                  imported_testnet_accounts[0].address);
-        EXPECT_EQ(keyring_info->account_infos[0]->name,
-                  imported_testnet_accounts[0].name);
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        EXPECT_EQ(keyring_info->account_infos[1]->address,
-                  imported_testnet_accounts[2].address);
-        EXPECT_EQ(keyring_info->account_infos[1]->name,
-                  imported_testnet_accounts[2].name);
-        EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        EXPECT_EQ(keyring_info->account_infos[2]->address,
-                  imported_testnet_accounts[3].address);
-        EXPECT_EQ(keyring_info->account_infos[2]->name,
-                  imported_testnet_accounts[3].name);
-        EXPECT_EQ(keyring_info->account_infos[2]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  auto account_infos = GetAccountUtils(&service).AllFilTestAccounts();
+  EXPECT_EQ(account_infos.size(), imported_testnet_accounts.size() - 1);
+  EXPECT_EQ(account_infos[0]->address, imported_testnet_accounts[0].address);
+  EXPECT_EQ(account_infos[0]->name, imported_testnet_accounts[0].name);
+  EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kImported);
+  EXPECT_EQ(account_infos[1]->address, imported_testnet_accounts[2].address);
+  EXPECT_EQ(account_infos[1]->name, imported_testnet_accounts[2].name);
+  EXPECT_EQ(account_infos[1]->account_id->kind, mojom::AccountKind::kImported);
+  EXPECT_EQ(account_infos[2]->address, imported_testnet_accounts[3].address);
+  EXPECT_EQ(account_infos[2]->name, imported_testnet_accounts[3].name);
+  EXPECT_EQ(account_infos[2]->account_id->kind, mojom::AccountKind::kImported);
   EXPECT_EQ(filecoin_testnet_keyring->GetImportedAccountsNumber(),
             imported_testnet_accounts.size() - 1);
   service.Lock();
@@ -3566,50 +3392,21 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
 
   EXPECT_TRUE(Unlock(&service, "brave"));
 
-  callback_called = false;
+  account_infos = GetAccountUtils(&service).AllFilTestAccounts();
   // Imported accounts should be restored
-  service.GetKeyringInfo(
-      mojom::kFilecoinTestnetKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->account_infos.size(),
-                  imported_testnet_accounts.size() - 1);
-        EXPECT_EQ(keyring_info->account_infos[0]->address,
-                  imported_testnet_accounts[0].address);
-        EXPECT_EQ(keyring_info->account_infos[0]->name,
-                  imported_testnet_accounts[0].name);
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        EXPECT_EQ(keyring_info->account_infos[1]->address,
-                  imported_testnet_accounts[2].address);
-        EXPECT_EQ(keyring_info->account_infos[1]->name,
-                  imported_testnet_accounts[2].name);
-        EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        callback_called = true;
-      }));
+  EXPECT_EQ(account_infos.size(), imported_testnet_accounts.size() - 1);
+  EXPECT_EQ(account_infos[0]->address, imported_testnet_accounts[0].address);
+  EXPECT_EQ(account_infos[0]->name, imported_testnet_accounts[0].name);
+  EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kImported);
+  EXPECT_EQ(account_infos[1]->address, imported_testnet_accounts[2].address);
+  EXPECT_EQ(account_infos[1]->name, imported_testnet_accounts[2].name);
+  EXPECT_EQ(account_infos[1]->account_id->kind, mojom::AccountKind::kImported);
 
-  EXPECT_TRUE(callback_called);
-  callback_called = false;
-
-  base::RunLoop().RunUntilIdle();
-
-  service.GetKeyringInfo(
-      mojom::kFilecoinKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->account_infos.size(),
-                  imported_mainnet_accounts.size() - 1);
-        EXPECT_EQ(keyring_info->account_infos[0]->address,
-                  imported_mainnet_accounts[0].address);
-        EXPECT_EQ(keyring_info->account_infos[0]->name,
-                  imported_mainnet_accounts[0].name);
-        EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                  mojom::AccountKind::kImported);
-        callback_called = true;
-      }));
-
-  EXPECT_TRUE(callback_called);
-
-  base::RunLoop().RunUntilIdle();
+  account_infos = GetAccountUtils(&service).AllFilAccounts();
+  EXPECT_EQ(account_infos.size(), imported_mainnet_accounts.size() - 1);
+  EXPECT_EQ(account_infos[0]->address, imported_mainnet_accounts[0].address);
+  EXPECT_EQ(account_infos[0]->name, imported_mainnet_accounts[0].name);
+  EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kImported);
 
   EXPECT_EQ(service.GetHDKeyringById(mojom::kFilecoinTestnetKeyringId)
                 ->GetImportedAccountsNumber(),
@@ -3766,22 +3563,13 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     service.Lock();
     ASSERT_TRUE(Unlock(&service, "brave"));
 
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kSolanaKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          EXPECT_EQ(keyring_info->id, mojom::kSolanaKeyringId);
-          EXPECT_TRUE(keyring_info->is_keyring_created);
-          EXPECT_EQ(keyring_info->account_infos.size(), 2u);
-          EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
-          EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                    mojom::AccountKind::kDerived);
-          EXPECT_EQ(keyring_info->account_infos[1]->name, "Account 2");
-          EXPECT_EQ(keyring_info->account_infos[1]->account_id->kind,
-                    mojom::AccountKind::kDerived);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    auto account_infos = GetAccountUtils(&service).AllSolAccounts();
+    EXPECT_EQ(account_infos.size(), 2u);
+    EXPECT_EQ(account_infos[0]->name, "Account 1");
+    EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kDerived);
+    EXPECT_EQ(account_infos[1]->name, "Account 2");
+    EXPECT_EQ(account_infos[1]->account_id->kind, mojom::AccountKind::kDerived);
+
     service.Reset();
   }
   {
@@ -3790,8 +3578,7 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
 
     // TODO(apaymyshev): Restore wallet always creates kSolanaKeyringId, but
     // CreateWallet does not do that. Needs cleanup.
-    EXPECT_CALL(observer, KeyringRestored(_)).Times(AnyNumber());
-    EXPECT_CALL(observer, KeyringRestored(mojom::kSolanaKeyringId));
+    EXPECT_CALL(observer, WalletRestored());
     ASSERT_TRUE(RestoreWallet(&service, kMnemonicDivideCruise, "brave", false));
     EXPECT_TRUE(service.IsKeyringCreated(mojom::kDefaultKeyringId));
     EXPECT_TRUE(service.IsKeyringCreated(mojom::kSolanaKeyringId));
@@ -3805,21 +3592,13 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     EXPECT_TRUE(service.IsKeyringCreated(mojom::kSolanaKeyringId));
     observer.WaitAndVerify();
 
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kSolanaKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          EXPECT_EQ(keyring_info->id, mojom::kSolanaKeyringId);
-          EXPECT_TRUE(keyring_info->is_keyring_created);
-          EXPECT_EQ(keyring_info->account_infos.size(), 1u);
-          EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
-          EXPECT_EQ(keyring_info->account_infos[0]->address,
-                    "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
-          EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                    mojom::AccountKind::kDerived);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    auto account_infos = GetAccountUtils(&service).AllSolAccounts();
+    EXPECT_EQ(account_infos.size(), 1u);
+    EXPECT_EQ(account_infos[0]->name, "Account 1");
+    EXPECT_EQ(account_infos[0]->address,
+              "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+    EXPECT_EQ(account_infos[0]->account_id->kind, mojom::AccountKind::kDerived);
+
     service.Reset();
   }
 
@@ -3877,41 +3656,24 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     ASSERT_TRUE(
         RemoveAccount(&service, imported_account->account_id, kPasswordBrave));
 
-    base::RunLoop run_loop;
-    service.GetKeyringInfo(
-        mojom::kSolanaKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          EXPECT_EQ(keyring_info->id, mojom::kSolanaKeyringId);
-          EXPECT_TRUE(keyring_info->is_keyring_created);
-          ASSERT_EQ(keyring_info->account_infos.size(), 1u);
-          EXPECT_EQ(keyring_info->account_infos[0]->name, "Imported Account 1");
-          EXPECT_EQ(keyring_info->account_infos[0]->address,
-                    "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
-          EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                    mojom::AccountKind::kImported);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    auto account_infos = GetAccountUtils(&service).AllSolAccounts();
+    ASSERT_EQ(account_infos.size(), 1u);
+    EXPECT_EQ(account_infos[0]->name, "Imported Account 1");
+    EXPECT_EQ(account_infos[0]->address,
+              "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
+    EXPECT_EQ(account_infos[0]->account_id->kind,
+              mojom::AccountKind::kImported);
 
     service.Lock();
     EXPECT_TRUE(Unlock(&service, "brave"));
-
-    base::RunLoop run_loop2;
     // imported accounts persist after lock & unlock
-    service.GetKeyringInfo(
-        mojom::kSolanaKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          EXPECT_EQ(keyring_info->id, mojom::kSolanaKeyringId);
-          EXPECT_TRUE(keyring_info->is_keyring_created);
-          ASSERT_EQ(keyring_info->account_infos.size(), 1u);
-          EXPECT_EQ(keyring_info->account_infos[0]->name, "Imported Account 1");
-          EXPECT_EQ(keyring_info->account_infos[0]->address,
-                    "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
-          EXPECT_EQ(keyring_info->account_infos[0]->account_id->kind,
-                    mojom::AccountKind::kImported);
-          run_loop2.Quit();
-        }));
-    run_loop2.Run();
+    account_infos = GetAccountUtils(&service).AllSolAccounts();
+    ASSERT_EQ(account_infos.size(), 1u);
+    EXPECT_EQ(account_infos[0]->name, "Imported Account 1");
+    EXPECT_EQ(account_infos[0]->address,
+              "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
+    EXPECT_EQ(account_infos[0]->account_id->kind,
+              mojom::AccountKind::kImported);
 
     service.Reset();
   }
@@ -4050,6 +3812,9 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
+                                          &service, json_rpc_service(), nullptr,
+                                          GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -4085,6 +3850,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
   PrepareAccounts(mojom::CoinType::SOL, mojom::kSolanaKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
+                                          &service, json_rpc_service(), nullptr,
+                                          GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -4122,6 +3890,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
   PrepareAccounts(mojom::CoinType::FIL, mojom::kFilecoinKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
+                                          &service, json_rpc_service(), nullptr,
+                                          GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -4158,6 +3929,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
+                                          &service, json_rpc_service(), nullptr,
+                                          GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -4195,6 +3969,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
+                                          &service, json_rpc_service(), nullptr,
+                                          GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -4253,6 +4030,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
+                                          &service, json_rpc_service(), nullptr,
+                                          GetPrefs(), GetLocalState());
 
   std::vector<std::string> requested_addresses;
   bool first_restore = true;
@@ -4734,19 +4514,13 @@ TEST_F(KeyringServiceUnitTest, BitcoinReceiveChangeAddresses) {
       "abandon abandon about",
       "brave", false));
 
-  EXPECT_THAT(
-      service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)->account_infos,
-      testing::IsEmpty());
+  EXPECT_THAT(GetAccountUtils(&service).AllBtcAccounts(), testing::IsEmpty());
 
   auto added_account = AddAccount(&service, mojom::CoinType::BTC,
                                   mojom::kBitcoinKeyring84Id, "Btc Acc");
 
-  EXPECT_THAT(
-      service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)->account_infos,
-      testing::SizeIs(1u));
-  auto btc_acc = service.GetKeyringInfoSync(mojom::kBitcoinKeyring84Id)
-                     ->account_infos[0]
-                     ->Clone();
+  EXPECT_THAT(GetAccountUtils(&service).AllBtcAccounts(), testing::SizeIs(1u));
+  auto btc_acc = GetAccountUtils(&service).AllBtcAccounts()[0]->Clone();
   EXPECT_EQ(btc_acc, added_account);
   EXPECT_EQ(btc_acc->address, "");
   EXPECT_EQ(btc_acc->name, "Btc Acc");

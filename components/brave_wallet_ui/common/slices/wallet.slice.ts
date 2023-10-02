@@ -170,7 +170,7 @@ export const WalletAsyncActions = {
   selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
   keyringCreated: createAction('keyringCreated'),
-  keyringRestored: createAction('keyringRestored'),
+  walletRestored: createAction('walletRestored'),
   keyringReset: createAction('keyringReset'),
   locked: createAction('locked'),
   unlocked: createAction('unlocked'),

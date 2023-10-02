@@ -299,7 +299,7 @@ public class DappsModel implements KeyringServiceObserver {
     public void keyringCreated(@KeyringId.EnumType int keyringId) {}
 
     @Override
-    public void keyringRestored(@KeyringId.EnumType int keyringId) {}
+    public void walletRestored() {}
 
     @Override
     public void keyringReset() {}

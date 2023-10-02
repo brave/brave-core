@@ -189,6 +189,41 @@ mojom::AccountIdPtr AccountUtils::FindAccountIdByAddress(
   return nullptr;
 }
 
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllAccounts(
+    mojom::KeyringId keyring_id) {
+  std::vector<mojom::AccountInfoPtr> result;
+  for (auto& acc : keyring_service_->GetAllAccountInfos()) {
+    if (acc->account_id->keyring_id == keyring_id) {
+      result.push_back(acc->Clone());
+    }
+  }
+  return result;
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllEthAccounts() {
+  return AllAccounts(mojom::KeyringId::kDefault);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllSolAccounts() {
+  return AllAccounts(mojom::KeyringId::kSolana);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllFilAccounts() {
+  return AllAccounts(mojom::KeyringId::kFilecoin);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllFilTestAccounts() {
+  return AllAccounts(mojom::KeyringId::kFilecoinTestnet);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcAccounts() {
+  return AllAccounts(mojom::KeyringId::kBitcoin84);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcTestAccounts() {
+  return AllAccounts(mojom::KeyringId::kBitcoin84Testnet);
+}
+
 void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {
   if (delegate->IsInitialized()) {
     return;

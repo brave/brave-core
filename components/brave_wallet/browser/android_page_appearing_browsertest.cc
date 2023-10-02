@@ -281,14 +281,8 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
     asset_ratio_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
 
-    base::RunLoop run_loop;
-    keyring_service_->RestoreWallet(
-        kMnemonicDivideCruise, kPasswordBrave, false,
-        base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    ASSERT_TRUE(keyring_service_->RestoreWalletSync(kMnemonicDivideCruise,
+                                                    kPasswordBrave, false));
 
     TokenListMap token_list_map;
     ASSERT_TRUE(

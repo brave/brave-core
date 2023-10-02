@@ -57,8 +57,8 @@ export function makeJsonRpcServiceObserver (store: Store) {
       keyringCreated: function () {
         store.dispatch(WalletActions.keyringCreated())
       },
-      keyringRestored: function () {
-        store.dispatch(WalletActions.keyringRestored())
+      walletRestored: function () {
+        store.dispatch(WalletActions.walletRestored())
       },
       keyringReset: function () {
         store.dispatch(WalletActions.keyringReset())

@@ -125,7 +125,7 @@ handler.on(WalletActions.keyringCreated.type, async (store) => {
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.keyringRestored.type, async (store) => {
+handler.on(WalletActions.walletRestored.type, async (store) => {
   await refreshWalletInfo(store)
 })
 

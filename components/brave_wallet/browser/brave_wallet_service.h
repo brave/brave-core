@@ -46,11 +46,13 @@ class KeyringService;
 class JsonRpcService;
 class TxService;
 class EthAllowanceManager;
+class AccountDiscoveryManager;
 struct PendingDecryptRequest;
 struct PendingGetEncryptPublicKeyRequest;
 
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
+                           public KeyringServiceObserverBase,
                            public BraveWalletServiceDelegate::Observer {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
@@ -255,6 +257,9 @@ class BraveWalletService : public KeyedService,
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
+  // KeyringServiceObserverBase:
+  void WalletRestored() override;
+
   void OnDiscoverAssetsStarted();
 
   void OnDiscoverAssetsCompleted(
@@ -398,7 +403,10 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
   std::unique_ptr<EthAllowanceManager> eth_allowance_manager_;
+  std::unique_ptr<AccountDiscoveryManager> account_discovery_manager_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+      keyring_observer_receiver_{this};
   PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<BraveWalletService> weak_ptr_factory_;
 };

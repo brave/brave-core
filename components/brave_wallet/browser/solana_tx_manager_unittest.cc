@@ -107,10 +107,12 @@ class SolanaTxManagerUnitTest : public testing::Test {
         mojom::CoinType::SOL, mojom::kSolanaKeyringId, "New Account");
   }
 
+  AccountUtils GetAccountUtils() {
+    return AccountUtils(keyring_service_.get());
+  }
+
   mojom::AccountIdPtr SolAccount(size_t index) {
-    return keyring_service_->GetKeyringInfoSync(mojom::KeyringId::kSolana)
-        ->account_infos[index]
-        ->account_id->Clone();
+    return GetAccountUtils().EnsureSolAccount(index)->account_id->Clone();
   }
 
   void SetInterceptor(const std::string& latest_blockhash,

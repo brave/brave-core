@@ -287,7 +287,7 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
   }
 
   if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559,
-                         keyring_info->account_infos, from)) {
+                         keyring_service_->GetAllAccountInfos(), account_id)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
     tx_service_->AddUnapprovedTransactionWithOrigin(
@@ -1118,8 +1118,10 @@ void EthereumProviderImpl::RequestEthereumPermissions(
   }
 
   std::vector<std::string> addresses;
-  for (const auto& account_info : keyring_info->account_infos) {
-    addresses.push_back(account_info->address);
+  for (auto& account_info : keyring_service_->GetAllAccountInfos()) {
+    if (account_info->account_id->coin == mojom::CoinType::ETH) {
+      addresses.push_back(account_info->address);
+    }
   }
 
   if (keyring_info->is_locked) {
@@ -1238,8 +1240,10 @@ EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
       brave_wallet::mojom::kDefaultKeyringId);
 
   std::vector<std::string> addresses;
-  for (const auto& account_info : keyring_info->account_infos) {
-    addresses.push_back(base::ToLowerASCII(account_info->address));
+  for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
+    if (account_info->account_id->coin == mojom::CoinType::ETH) {
+      addresses.push_back(base::ToLowerASCII(account_info->address));
+    }
   }
 
   const auto selected_account =
