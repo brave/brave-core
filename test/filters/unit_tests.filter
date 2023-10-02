@@ -411,6 +411,10 @@
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref)
 -NavigationPredictorUserInteractionsTest.ProcessPointerEventUsingMLModel
 
+# These tests fail because we disable the
+# privacy_sandbox::kEnforcePrivacySandboxAttestations feature
+-PrivacySandboxAttestationsInstallerFeatureEnabledTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*

@@ -32,7 +32,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
  
      if (enable_updater) {
        deps += [ ":chromium_updater_privileged_helper" ]
-@@ -601,7 +604,7 @@ if (is_win) {
+@@ -603,7 +606,7 @@ if (is_win) {
        if (is_chrome_branded) {
          _strings_file = "google_chrome_strings"
        } else {
@@ -41,7 +41,7 @@ index bc54ace77cade8c2e2439af6d0c18984cfdaf5c6..a63dd1fc5e762fb29f571d0123d51028
        }
  
        inputs += [ "$root_gen_dir/chrome/${_strings_file}_${locale}.pak" ]
-@@ -686,6 +689,7 @@ if (is_win) {
+@@ -688,6 +691,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]

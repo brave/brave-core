@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_frame_view_win.cc b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
-index a4c7824a16a504f577668cfb2b40428c1b63d1c1..bde9e6ede746e52cd90c7417917b503c635eb79e 100644
+index 769e7e8ac3b3907328e1515c4346402891d59f03..8f5652b742a43ac913145c2aced1d2f641202061 100644
 --- a/chrome/browser/ui/views/frame/browser_frame_view_win.cc
 +++ b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
-@@ -531,6 +531,7 @@ int BrowserFrameViewWin::TopAreaHeight(bool restored) const {
+@@ -533,6 +533,7 @@ int BrowserFrameViewWin::TopAreaHeight(bool restored) const {
                       : caption_button_container_->GetPreferredSize().height();
      return top;
    }
