@@ -32,14 +32,15 @@ constexpr char kFeedbackFormPath[] = "1/ai/feedback/form";
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
       semantics {
-        sender: "AI Chat"
+        sender: "AI Chat Feedback"
         description:
-          "This is used to communicate with our partner API"
-          "on behalf of the user interacting with the ChatUI."
+          "This is used to communicate with a service to record a rating"
+          "of an AI Chat message, and anonymous details about that message."
         trigger:
-          "Triggered by user sending a prompt."
+          "Triggered by user choosing a rating for a received AI message."
         data:
-          "Will generate a text that attempts to match the user gave it"
+          "Positive or negative rating along with an extra details the user
+          provides, and the associated chat conversation messages."
         destination: WEBSITE
       }
       policy {
