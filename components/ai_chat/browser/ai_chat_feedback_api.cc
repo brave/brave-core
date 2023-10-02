@@ -14,6 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/brave_domains/buildflags.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"

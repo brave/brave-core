@@ -41,6 +41,7 @@ static_library("browser") {
     "//brave/components/ai_chat/common/buildflags",
     "//brave/components/ai_chat/common/mojom",
     "//brave/components/api_request_helper",
+    "//brave/components/brave_stats/browser",
     "//brave/components/constants",
     "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
