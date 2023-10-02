@@ -20,10 +20,12 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace ai_chat {
 namespace {
 
+constexpr char kFeedbackHostnamePart[] = "feedback";
 constexpr char kRatingPath[] = "1/ai/feedback/rating";
 constexpr char kFeedbackFormPath[] = "1/ai/feedback/form";
 
@@ -63,10 +65,11 @@ base::Value::Dict ToRatingPayloadDict(const RatingPayload& rating_payload) {
 }
 
 const GURL GetEndpointBaseUrl() {
-  auto* base_hostname = BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
+  auto* services_domain = BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
 
   static base::NoDestructor<GURL> url{
-      base::StrCat({url::kHttpsScheme, "://feedback.", base_hostname})};
+      base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                    kFeedbackHostnamePart, ".", services_domain})};
   return *url;
 }
 
