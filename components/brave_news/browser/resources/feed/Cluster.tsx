@@ -26,6 +26,9 @@ export default function Cluster({ info }: Props) {
     <MetaInfoContainer>
       {channelIcons[info.id] ?? channelIcons.default} {info.id}
     </MetaInfoContainer>
-    {info.articles.map((a, i) => <Article key={i} info={(a.article || a.hero) as any} hideChannel />)}
+    {info.articles.map((a, i) => {
+      const info: any = a.article || a.hero
+      return <Article key={i} info={info} hideChannel />
+    })}
   </Container>
 }
