@@ -26,6 +26,7 @@ class Toolbar : public views::WebView {
  public:
   explicit Toolbar(content::BrowserContext* browser_context)
       : views::WebView(browser_context) {
+    set_allow_accelerators(true);
     LoadInitialURL(GURL(kSpeedreaderPanelURL));
   }
 
