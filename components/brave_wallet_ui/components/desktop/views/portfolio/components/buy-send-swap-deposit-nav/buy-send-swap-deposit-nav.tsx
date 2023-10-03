@@ -6,6 +6,14 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 
+// Types
+import { NavOption, WalletRoutes } from '../../../../../../constants/types'
+
+
+// Selectors
+import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../../../common/selectors'
+
 // Options
 import {
   BuySendSwapDepositOptions
@@ -29,6 +37,29 @@ export const BuySendSwapDepositNav = () => {
   // Routing
   const history = useHistory()
 
+  // redux
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // methods
+  const onClick = React.useCallback(
+    (option: NavOption) => {
+      // Redirect to full page view for buy and swap page
+      // until we have a panel view for those pages
+      if (
+        (option.route === WalletRoutes.FundWalletPageStart ||
+          option.route === WalletRoutes.Swap) &&
+        isPanel
+      ) {
+        chrome.tabs.create({
+          url: `brave://wallet${option.route}`
+        })
+      } else {
+        history.push(option.route)
+      }
+    },
+    [history, isPanel]
+  )
+
   return (
     <ButtonsRow
       width='unset'
@@ -38,7 +69,7 @@ export const BuySendSwapDepositNav = () => {
           key={option.id}
         >
           <Button
-            onClick={() => history.push(option.route)}
+            onClick={() => onClick(option)}
           >
             <ButtonIcon name={option.icon} />
           </Button>
