@@ -51,6 +51,7 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                           const std::string& id) override;
+  void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
   absl::optional<ml::pipeline::EmbeddingProcessing> embedding_processing_;
 

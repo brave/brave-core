@@ -401,6 +401,7 @@ class AdsServiceImpl : public AdsService,
   // ResourceComponentObserver:
   void OnDidUpdateResourceComponent(const std::string& manifest_version,
                                     const std::string& id) override;
+  void OnDidUnregisterResourceComponent(const std::string& id) override;
 
   // RewardsServiceObserver:
   void OnRewardsWalletCreated() override;

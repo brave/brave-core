@@ -44,6 +44,8 @@ class ResourceComponentRegistrar
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
 
+  void OnComponentUnregistered(const std::string& component_id);
+
   raw_ref<ResourceComponentRegistrarDelegate>
       resource_component_registrar_delegate_;
   absl::optional<std::string> resource_component_id_;

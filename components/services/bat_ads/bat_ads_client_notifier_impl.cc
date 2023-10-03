@@ -51,6 +51,11 @@ void BatAdsClientNotifierImpl::NotifyDidUpdateResourceComponent(
   notifier_.NotifyDidUpdateResourceComponent(manifest_version, id);
 }
 
+void BatAdsClientNotifierImpl::NotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  notifier_.NotifyDidUnregisterResourceComponent(id);
+}
+
 void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
     const std::string& recovery_seed) {

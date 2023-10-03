@@ -139,4 +139,15 @@ void AntiTargetingResource::OnNotifyDidUpdateResourceComponent(
   MaybeLoad();
 }
 
+void AntiTargetingResource::OnNotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  if (!IsValidCountryComponentId(id)) {
+    return;
+  }
+
+  manifest_version_.reset();
+
+  Reset();
+}
+
 }  // namespace brave_ads

@@ -120,4 +120,15 @@ void TextEmbeddingResource::OnNotifyDidUpdateResourceComponent(
   MaybeLoad();
 }
 
+void TextEmbeddingResource::OnNotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  if (!IsValidLanguageComponentId(id)) {
+    return;
+  }
+
+  manifest_version_.reset();
+
+  Reset();
+}
+
 }  // namespace brave_ads

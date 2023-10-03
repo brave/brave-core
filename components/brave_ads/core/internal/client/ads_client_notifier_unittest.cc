@@ -40,6 +40,7 @@ void Notify(const AdsClientNotifier& queued_notifier) {
   queued_notifier.NotifyPrefDidChange(kPrefPath);
   queued_notifier.NotifyDidUpdateResourceComponent(kManifestVersion,
                                                    kResourceId);
+  queued_notifier.NotifyDidUnregisterResourceComponent(kResourceId);
   queued_notifier.NotifyRewardsWalletDidUpdate(kPaymentId, kRecoverySeed);
   queued_notifier.NotifyTabTextContentDidChange(
       kTabId, {GURL(kRedirectChainUrl)}, kText);
@@ -69,6 +70,8 @@ void ExpectNotifierCalls(AdsClientNotifierObserverMock& observer,
       .Times(expected_calls_count);
   EXPECT_CALL(observer,
               OnNotifyDidUpdateResourceComponent(kManifestVersion, kResourceId))
+      .Times(expected_calls_count);
+  EXPECT_CALL(observer, OnNotifyDidUnregisterResourceComponent(kResourceId))
       .Times(expected_calls_count);
   EXPECT_CALL(observer,
               OnNotifyRewardsWalletDidUpdate(kPaymentId, kRecoverySeed))

@@ -30,6 +30,8 @@ interface BatAdsClientNotifier {
 
   NotifyDidUpdateResourceComponent(string manifest_version, string id);
 
+  NotifyDidUnregisterResourceComponent(string id);
+
   NotifyRewardsWalletDidUpdate(string payment_id, string recovery_seed);
 
   NotifyTabHtmlContentDidChange(int32 tab_id,

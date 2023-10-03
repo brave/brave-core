@@ -124,4 +124,15 @@ void TextClassificationResource::OnNotifyDidUpdateResourceComponent(
   MaybeLoad();
 }
 
+void TextClassificationResource::OnNotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  if (!IsValidLanguageComponentId(id)) {
+    return;
+  }
+
+  manifest_version_.reset();
+
+  Reset();
+}
+
 }  // namespace brave_ads

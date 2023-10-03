@@ -40,8 +40,6 @@ class ResourceComponent : public ResourceComponentRegistrarDelegate {
   void RegisterComponentForCountryCode(const std::string& country_code);
   void RegisterComponentForLanguageCode(const std::string& language_code);
 
-  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
-                                        const std::string& id);
   absl::optional<base::FilePath> GetPath(const std::string& id, int version);
 
  private:
@@ -54,10 +52,16 @@ class ResourceComponent : public ResourceComponentRegistrarDelegate {
                             const base::FilePath& install_dir,
                             const std::string& json);
 
+  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+                                        const std::string& id);
+  void NotifyDidUnregisterResourceComponent(const std::string& id);
+
   // ResourceComponentRegistrarDelegate:
   void OnResourceComponentRegistered(
       const std::string& component_id,
       const base::FilePath& install_dir) override;
+  void OnResourceComponentUnregistered(
+      const std::string& component_id) override;
 
   ResourceComponentRegistrar country_resource_component_registrar_;
   ResourceComponentRegistrar language_resource_component_registrar_;
