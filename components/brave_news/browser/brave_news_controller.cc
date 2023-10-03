@@ -189,7 +189,7 @@ void BraveNewsController::GetFeedV2(GetFeedV2Callback callback) {
         *prefs_.get(), *history_service_.get(), url_loader_factory_);
   }
 
-  feed_v2_builder_->Build(std::move(callback));
+  feed_v2_builder_->Build(/*recalculate_signals=*/true, std::move(callback));
 }
 
 void BraveNewsController::GetSignals(GetSignalsCallback callback) {

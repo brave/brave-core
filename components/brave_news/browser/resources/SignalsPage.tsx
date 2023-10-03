@@ -10,7 +10,7 @@ import Radio from '@brave/leo/react/radioButton'
 import Button from '@brave/leo/react/button'
 import Dropdown from '@brave/leo/react/dropdown';
 import Input from '@brave/leo/react/input';
-import Flex from '../../../brave_new_tab_ui/components/Flex'
+import Flex from '$web-common/Flex'
 import { Channel, Publisher } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
 import FeedStats, { getFeedStats } from './FeedStats';
@@ -19,7 +19,6 @@ interface Props {
 }
 
 const Container = styled(Flex)`
-  width: 800px;
 `
 
 function SignalCards<T>({ items, sort, filter, getName, getKey, stats }: { items: T[], sort: 'name' | 'subscribed' | 'visitWeight' | 'shownCount', filter: string, getName: (item: T) => string, getKey: (item: T) => string, stats: { [key: string]: number } }) {
@@ -67,7 +66,7 @@ export default function SignalsPage(props: Props) {
 
   return <Container direction='column'>
     <h2>Signals</h2>
-    <Flex direction='row' gap={8}>
+    <Flex direction='row' gap={8} wrap='wrap'>
       <div>
         Publishers: {Object.keys(publishers).length}
         <br />
@@ -91,7 +90,7 @@ export default function SignalsPage(props: Props) {
         <leo-option>visitWeight</leo-option>
         <leo-option>shownCount</leo-option>
       </Dropdown>
-      <Input type="text" hasErrors={false} showErrors={false} mode='outline' size='normal' value={truncate} onChange={e => setTruncate(parseInt((e.target as any).value))}>
+      <Input type="text" hasErrors={false} showErrors={false} mode='outline' size='normal' value={truncate} onChange={e => setTruncate(parseInt((e.detail.value)))}>
         Consider first {"{n}"} cards
       </Input>
     </Flex>

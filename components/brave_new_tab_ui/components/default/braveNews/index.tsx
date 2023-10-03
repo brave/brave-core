@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
-import * as BraveNews from '../../../api/brave_news'
+import * as BraveNews from '../../../../brave_news/browser/resources/shared/api'
 import * as TodayActions from '../../../actions/today_actions'
 import * as BraveNewsElement from './default'
 import CardOptIn from './cards/cardOptIn'

@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { useCallback, useMemo, useState, useEffect } from 'react'
 import { useNewTabPref } from '../../../../hooks/usePref'
-import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled } from '../../../../api/brave_news'
+import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled } from '../../../../../brave_news/browser/resources/shared/api'
 import Modal from './Modal'
 import { PublishersCachingWrapper } from '../../../../api/brave_news/publishersCache'
 import { ChannelsCachingWrapper } from '../../../../api/brave_news/channelsCache'

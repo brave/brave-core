@@ -16,29 +16,21 @@ setIconBasePath('//resources/brave-icons')
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 400px auto;
+  grid-template-columns: 300px auto;
   padding: 16px;
   gap: 8px;
-`
 
-const Blur = styled.div`
-  --edges: -128px;
-
-  z-index: -1;
-  position: fixed;
-  inset: var(--edges);
-  filter: blur(64px);
+  backdrop-filter: blur(64px);
   background: rgba(255, 255, 255, 0.7);
+
+  min-height: 100vh;
 `
 
 function App() {
-  return <>
-    <Blur />
-    <Grid>
-      <SignalsPage />
-      <FeedPage />
-    </Grid>
-  </>
+  return <Grid>
+    <SignalsPage />
+    <FeedPage />
+  </Grid>
 }
 
 render(<InspectContext>

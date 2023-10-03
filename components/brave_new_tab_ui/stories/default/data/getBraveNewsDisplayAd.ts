@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { DisplayAd } from '../../../api/brave_news'
+import { DisplayAd } from '../../../../brave_news/browser/resources/shared/api'
 
 let callCount = 0
 

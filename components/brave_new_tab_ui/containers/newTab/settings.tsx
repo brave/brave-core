@@ -20,7 +20,7 @@ import {
 } from '../../components/default'
 
 import { getLocale } from '../../../common/locale'
-import { Publishers } from '../../api/brave_news'
+import { Publishers } from '../../../brave_news/browser/resources/shared/api'
 import { BraveNewsContext } from '../../components/default/braveNews/customize/Context'
 
 // Icons

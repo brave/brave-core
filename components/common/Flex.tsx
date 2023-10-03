@@ -8,7 +8,8 @@ interface FlexProps {
   align?: 'start' | 'end' | 'center' | 'flex-end' | 'flex-start' | 'self-start' | 'self-end' | 'stretch';
   justify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly' | 'left' | 'right'
   direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
-  gap?: number | string
+  gap?: number | string,
+  wrap?: 'nowrap' | 'wrap' | 'wrap-reverse'
 }
 
 const Flex = styled('div') <FlexProps>`
@@ -17,6 +18,7 @@ const Flex = styled('div') <FlexProps>`
   justify-content: ${p => p.justify};
   align-items: ${p => p.align};
   gap: ${p => typeof p.gap === 'number' ? `${p.gap}px` : p.gap};
+  flex-wrap: ${p => p.wrap};
 `
 
 export default Flex
