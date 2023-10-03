@@ -25,9 +25,12 @@ namespace p3a {
 // clang-format off
 constexpr inline auto kCollectedTypicalHistograms =
   base::MakeFixedFlatSet<std::string_view>({
+    "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
     "Brave.AIChat.Enabled",
+    "Brave.AIChat.OmniboxOpens",
+    "Brave.AIChat.OmniboxWeekCompare",
     "Brave.Core.BookmarksCountOnProfileLoad.2",
     "Brave.Core.CrashReportsEnabled",
     "Brave.Core.DomainsLoaded",
@@ -230,8 +233,11 @@ constexpr inline auto kCollectedExpressHistograms =
 // Once the metric value has been sent, the value will be removed from the log store.
 constexpr inline auto kEphemeralHistograms =
   base::MakeFixedFlatSet<std::string_view>({
+    "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
+    "Brave.AIChat.OmniboxOpens",
+    "Brave.AIChat.OmniboxWeekCompare",
     "Brave.AIChat.UsageDaily",
     "Brave.Playlist.UsageDaysInWeek",
     "Brave.Playlist.FirstTimeOffset",
