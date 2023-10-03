@@ -8,9 +8,120 @@ import Shared
 import os.log
 
 public class WebcompatReporter {
-  private struct BaseURL {
-    static let staging = "laptop-updates.bravesoftware.com"
-    static let prod = "laptop-updates.brave.com"
+  static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "WebcompatReporter")
+  
+  /// The raw values of the web-report.
+  public struct Report {
+    /// The URL of the broken site.
+    /// - Note: This is the full url and will be used to extract all relevant information
+    let fullUrl: URL
+    /// Any user input details
+    let additionalDetails: String?
+    /// Any user input contact details that may be provided
+    let contactInfo: String?
+    /// A bool indicating if shields are enabled for that site
+    let areShieldsEnabled: Bool
+    /// The level of adblocking currently set for the page
+    let adBlockLevel: ShieldLevel
+    /// The level of fingerprinting protection currently set for this page
+    let fingerprintProtectionLevel: ShieldLevel
+    /// Titles of all enabled filter lists
+    let adBlockListTitles: [String]
+    /// If VPN is currently enabled
+    let isVPNEnabled: Bool
+    
+    var domain: String? {
+      return fullUrl.normalizedHost() != nil ? fullUrl.domainURL.absoluteString : fullUrl.baseDomain
+    }
+    
+    var cleanedURL: URL? {
+      var components = URLComponents(url: fullUrl, resolvingAgainstBaseURL: false)
+      components?.fragment = nil
+      components?.queryItems = nil
+      return components?.url
+    }
+    
+    public init(
+      fullUrl: URL, additionalDetails: String? = nil, contactInfo: String? = nil,
+      areShieldsEnabled: Bool, adBlockLevel: ShieldLevel, fingerprintProtectionLevel: ShieldLevel,
+      adBlockListTitles: [String], isVPNEnabled: Bool
+    ) {
+      self.fullUrl = fullUrl
+      self.additionalDetails = additionalDetails
+      self.contactInfo = contactInfo
+      self.areShieldsEnabled = areShieldsEnabled
+      self.adBlockLevel = adBlockLevel
+      self.fingerprintProtectionLevel = fingerprintProtectionLevel
+      self.adBlockListTitles = adBlockListTitles
+      self.isVPNEnabled = isVPNEnabled
+    }
+  }
+  
+  private struct Payload: Encodable {
+    let report: Report
+    let apiKey: String?
+    let languageCode: String?
+    
+    enum CodingKeys: String, CodingKey {
+      case url
+      case domain
+      case additionalDetails
+      case contactInfo
+      case apiKey = "api_key"
+      
+      case fpBlockSetting
+      case adBlockSetting
+      case adBlockLists
+      case shieldsEnabled
+      case languages
+      case languageFarblingEnabled
+      case braveVPNEnabled
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+      // We want to ensure that the URL _can_ be normalized, since `domainURL` will return itself
+      // (the full URL) if the URL can't be normalized. If the URL can't be normalized, send only
+      // the base domain without scheme.
+      guard let domain = report.domain else {
+        throw EncodingError.invalidValue(CodingKeys.domain, EncodingError.Context(
+          codingPath: encoder.codingPath, debugDescription: "Cannot extract `domain` from url"
+        ))
+      }
+      
+      guard let apiKey = apiKey else {
+        throw EncodingError.invalidValue(CodingKeys.apiKey, EncodingError.Context(
+          codingPath: encoder.codingPath, debugDescription: "Missing api_key"
+        ))
+      }
+      
+      guard let cleanedURL = report.cleanedURL else {
+        throw EncodingError.invalidValue(CodingKeys.domain, EncodingError.Context(
+          codingPath: encoder.codingPath, debugDescription: "Cannot strip fragments or query params"
+        ))
+      }
+      
+      var container: KeyedEncodingContainer<CodingKeys> = encoder.container(keyedBy: CodingKeys.self)
+      try container.encode(cleanedURL.absoluteString, forKey: .url)
+      try container.encode(domain, forKey: .domain)
+      try container.encodeIfPresent(report.additionalDetails, forKey: .additionalDetails)
+      try container.encodeIfPresent(report.contactInfo, forKey: .contactInfo)
+      try container.encodeIfPresent(languageCode, forKey: .languages)
+      try container.encode(true, forKey: .languageFarblingEnabled) // This is always enabled in iOS web-kit
+      try container.encode(report.areShieldsEnabled, forKey: .shieldsEnabled)
+      try container.encode(report.isVPNEnabled, forKey: .braveVPNEnabled)
+      try container.encode(report.adBlockListTitles.joined(separator: ","), forKey: .adBlockLists)
+      try container.encode(report.fingerprintProtectionLevel.reportLabel, forKey: .fpBlockSetting)
+      try container.encode(report.adBlockLevel.reportLabel, forKey: .adBlockSetting)
+      try container.encode(apiKey, forKey: .apiKey)
+    }
+  }
+  
+  private static var baseHost: String {
+    if AppConstants.buildChannel == .debug {
+      return "laptop-updates.bravesoftware.com"
+    } else {
+      return "laptop-updates.brave.com"
+    }
   }
 
   private static let apiKeyPlistKey = "API_KEY"
@@ -18,67 +129,73 @@ public class WebcompatReporter {
 
   /// A custom user agent to send along with reports
   public static var userAgent: String?
+  
+  /// Get the user's language code
+  private static var currentLanguageCode: String? {
+    if #available(iOS 16, *) {
+      return Locale.current.language.languageCode?.identifier
+    } else {
+      return Locale.current.languageCode
+    }
+  }
 
   /// Report a webcompat issue on a given website
   ///
   /// - Returns: A deferred boolean on whether or not it reported successfully (default queue: main)
   @discardableResult
-  public static func reportIssue(on url: URL) async -> Bool {
-    let baseURL = AppConstants.buildChannel == .debug ? BaseURL.staging : BaseURL.prod
+  public static func send(report: Report) async -> Bool {
     let apiKey = (Bundle.main.infoDictionary?[apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
+    let payload = Payload(report: report, apiKey: apiKey, languageCode: currentLanguageCode)
 
     var components = URLComponents()
     components.scheme = "https"
-    components.host = baseURL
+    components.host = baseHost
     components.path = "/\(version)/webcompat"
 
-    guard let baseDomain = url.baseDomain,
-      let key = apiKey,
-      let endpoint = components.url
-    else {
-      Logger.module.error("Failed to setup webcompat request")
+    guard let endpoint = components.url else {
+      Self.log.error("Failed to setup webcompat request")
       return false
     }
 
-    // We want to ensure that the URL _can_ be normalized, since `domainURL` will return itself
-    // (the full URL) if the URL can't be normalized. If the URL can't be normalized, send only
-    // the base domain without scheme.
-    let domain = url.normalizedHost() != nil ? url.domainURL.absoluteString : baseDomain
-
-    let payload = [
-      "domain": domain,
-      "api_key": key,
-    ]
-
     do {
+      let encoder = JSONEncoder()
       var request = URLRequest(url: endpoint)
       request.httpMethod = "POST"
-      request.httpBody = try JSONSerialization.data(withJSONObject: payload, options: [])
+      request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+      request.httpBody = try encoder.encode(payload)
+      
       if let userAgent = userAgent {
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
       }
-
+      
       let session = URLSession(configuration: .ephemeral)
-      return await withCheckedContinuation { continuation in
-        let task = session.dataTask(with: request) { data, response, error in
-          var success: Bool = true
-          if let error = error {
-            Logger.module.error("Failed to report webcompat issue: \(error.localizedDescription)")
-            success = false
-          }
-          if let response = response as? HTTPURLResponse {
-            success = response.statusCode >= 200 && response.statusCode < 300
-            if !success {
-              Logger.module.error("Failed to report webcompat issue: Status Code \(response.statusCode)")
-            }
-          }
-          continuation.resume(returning: success)
+      let result = try await session.data(for: request)
+      
+      if let response = result.1 as? HTTPURLResponse {
+        let success = response.statusCode >= 200 && response.statusCode < 300
+        
+        if !success {
+          log.error("Failed to report webcompat issue: Status Code \(response.statusCode)")
         }
-        task.resume()
+        
+        return success
+      } else {
+        return false
       }
     } catch {
       Logger.module.error("Failed to setup webcompat request payload: \(error.localizedDescription)")
       return false
+    }
+  }
+}
+
+private extension ShieldLevel {
+  /// The value that is sent to the webcompat report server
+  var reportLabel: String {
+    switch self {
+    case .aggressive: return "aggressive"
+    case .standard: return "standard"
+    case .disabled: return "allow"
     }
   }
 }

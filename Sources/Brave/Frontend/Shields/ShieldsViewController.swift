@@ -12,6 +12,7 @@ import BraveUI
 import UIKit
 import Growth
 import BraveCore
+import BraveVPN
 
 /// Displays shield settings and shield stats for a given URL
 class ShieldsViewController: UIViewController, PopoverContentComponent {
@@ -326,7 +327,21 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   @objc private func tappedSubmitReportingButton() {
     if let url = url {
       Task { @MainActor in
-        await WebcompatReporter.reportIssue(on: url)
+        let domain = Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate)
+        
+        let report = WebcompatReporter.Report(
+          fullUrl: url,
+          areShieldsEnabled: !domain.areAllShieldsOff,
+          adBlockLevel: domain.blockAdsAndTrackingLevel,
+          fingerprintProtectionLevel: domain.finterprintProtectionLevel,
+          adBlockListTitles: FilterListStorage.shared.filterLists.compactMap({ filterList -> String? in
+            guard filterList.isEnabled else { return nil }
+            return filterList.entry.title
+          }),
+          isVPNEnabled: BraveVPN.isConnected
+        )
+        
+        await WebcompatReporter.send(report: report)
         try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
         guard !self.isBeingDismissed else { return }
         self.dismiss(animated: true)
