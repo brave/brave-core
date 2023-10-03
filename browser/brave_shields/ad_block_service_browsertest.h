@@ -13,9 +13,14 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/test/spawned_test_server/spawned_test_server.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
 
 class HostContentSettingsMap;
 
@@ -26,7 +31,7 @@ class FilterListCatalogEntry;
 
 class Profile;
 
-class AdBlockServiceTest : public InProcessBrowserTest {
+class AdBlockServiceTest : public PlatformBrowserTest {
  public:
   AdBlockServiceTest();
   ~AdBlockServiceTest() override;

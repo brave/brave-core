@@ -46,7 +46,6 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -55,7 +54,10 @@
 #include "net/test/test_data_directory.h"
 #include "services/network/host_resolver.h"
 
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 
@@ -106,17 +108,17 @@ AdBlockServiceTest::AdBlockServiceTest()
 AdBlockServiceTest::~AdBlockServiceTest() = default;
 
 void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
-  InProcessBrowserTest::SetUpCommandLine(command_line);
+  PlatformBrowserTest::SetUpCommandLine(command_line);
   mock_cert_verifier_.SetUpCommandLine(command_line);
 }
 
 void AdBlockServiceTest::SetUpInProcessBrowserTestFixture() {
-  InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+  PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
   mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
 }
 
 void AdBlockServiceTest::SetUpOnMainThread() {
-  InProcessBrowserTest::SetUpOnMainThread();
+  PlatformBrowserTest::SetUpOnMainThread();
   mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   host_resolver()->AddRule("*", "127.0.0.1");
   // Most tests are written for aggressive mode. Individual tests should reset
@@ -128,11 +130,11 @@ void AdBlockServiceTest::SetUpOnMainThread() {
 
 void AdBlockServiceTest::SetUp() {
   InitEmbeddedTestServer();
-  InProcessBrowserTest::SetUp();
+  PlatformBrowserTest::SetUp();
 }
 
 void AdBlockServiceTest::PreRunTestOnMainThread() {
-  InProcessBrowserTest::PreRunTestOnMainThread();
+  PlatformBrowserTest::PreRunTestOnMainThread();
   WaitForAdBlockServiceThreads();
   InstallDefaultAdBlockComponent();
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -143,12 +145,12 @@ void AdBlockServiceTest::TearDownOnMainThread() {
   temp_dirs_.clear();
   // Unset the host resolver so as not to interfere with later tests.
   brave::SetAdblockCnameHostResolverForTesting(nullptr);
-  InProcessBrowserTest::TearDownOnMainThread();
+  PlatformBrowserTest::TearDownOnMainThread();
 }
 
 void AdBlockServiceTest::TearDownInProcessBrowserTestFixture() {
   mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
-  InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+  PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
 }
 
 content::WebContents* AdBlockServiceTest::web_contents() {
