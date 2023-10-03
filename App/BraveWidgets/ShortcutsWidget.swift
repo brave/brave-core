@@ -224,6 +224,7 @@ private struct ShortcutsView: View {
 // MARK: - Previews
 
 #if swift(>=5.9)
+@available(iOS 17.0, *)
 #Preview(as: .systemMedium, widget: {
   ShortcutsWidget()
 }, timeline: {
