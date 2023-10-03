@@ -1405,14 +1405,17 @@ extension Strings {
     public static let aboutBraveShieldsTitle = NSLocalizedString("AboutBraveShields", tableName: "BraveShared", bundle: .module, value: "About Brave Shields", comment: "The title of the screen explaining Brave Shields")
     public static let aboutBraveShieldsBody = NSLocalizedString("AboutBraveShieldsBody", tableName: "BraveShared", bundle: .module, value: "Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web — tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.", comment: "The body of the screen explaining Brave Shields")
     public static let shieldsDownDisclaimer = NSLocalizedString("ShieldsDownDisclaimer", tableName: "BraveShared", bundle: .module, value: "You're browsing this site without Brave's privacy protections. Does it not work right with Shields up?", comment: "")
-    public static let reportABrokenSite = NSLocalizedString("ReportABrokenSite", tableName: "BraveShared", bundle: .module, value: "Report a broken site", comment: "")
-    public static let reportBrokenSiteBody1 = NSLocalizedString("ReportBrokenSiteBody1", tableName: "BraveShared", bundle: .module, value: "Let Brave's developers know that this site doesn't work properly with Shields:", comment: "First part of the report a broken site copy. After the colon is a new line and then a website address")
-    public static let reportBrokenSiteBody2 = NSLocalizedString("ReportBrokenSiteBody2", tableName: "BraveShared", bundle: .module, value: "Note: This site address will be submitted with your Brave version number and your IP address (which will not be stored).", comment: "")
-    public static let reportBrokenSubmitButtonTitle = NSLocalizedString("ReportBrokenSubmitButtonTitle", tableName: "BraveShared", bundle: .module, value: "Submit", comment: "")
     public static let globalControls = NSLocalizedString("BraveShieldsGlobalControls", tableName: "BraveShared", bundle: .module, value: "Global Controls", comment: "")
     public static let globalChangeButton = NSLocalizedString("BraveShieldsGlobalChangeButton", tableName: "BraveShared", bundle: .module, value: "Change Shields Global Defaults", comment: "")
     public static let siteReportedTitle = NSLocalizedString("SiteReportedTitle", tableName: "BraveShared", bundle: .module, value: "Thank You", comment: "")
     public static let siteReportedBody = NSLocalizedString("SiteReportedBody", tableName: "BraveShared", bundle: .module, value: "Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!", comment: "")
+    
+    
+    // MARK: Submit report
+    public static let reportABrokenSite = NSLocalizedString("ReportABrokenSite", tableName: "BraveShared", bundle: .module, value: "Report a broken site", comment: "")
+    public static let reportBrokenSiteBody1 = NSLocalizedString("ReportBrokenSiteBody1", tableName: "BraveShared", bundle: .module, value: "Let Brave's developers know that this site doesn't work properly with Shields:", comment: "First part of the report a broken site copy. After the colon is a new line and then a website address")
+    public static let reportBrokenSiteBody2 = NSLocalizedString("ReportBrokenSiteBody2", tableName: "BraveShared", bundle: .module, value: "Note: The report sent to Brave servers will include the site address, Brave version number, Shields settings, VPN status, and language settings.", comment: "This is the info text that is presented when a user is submitting a web-compatibility report.")
+    public static let reportBrokenSubmitButtonTitle = NSLocalizedString("ReportBrokenSubmitButtonTitle", tableName: "BraveShared", bundle: .module, value: "Submit", comment: "")
   }
 }
 
