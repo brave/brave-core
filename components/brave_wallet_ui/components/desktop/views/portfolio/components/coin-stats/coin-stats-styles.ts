@@ -14,7 +14,6 @@ export const StyledWrapper = styled.div`
 export const StatWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-right: 95px;
  `
 
 export const StatValue = styled.div`
@@ -50,6 +49,7 @@ export const Row = styled.div`
   display: flex;
   flex-direction: row;
   margin: 16px 0 16px 0;
+  justify-content: space-between;
 `
 
 export const Currency = styled.sup`
