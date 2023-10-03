@@ -78,7 +78,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
           ai_chat::prefs::kBraveChatHasSeenDisclaimer));
 
   untrusted_source->AddBoolean(
-      "hasUserDismissedPrompt",
+      "hasUserDismissedPremiumPrompt",
       profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
           ai_chat::prefs::kUserDismissedPremiumPrompt));
 

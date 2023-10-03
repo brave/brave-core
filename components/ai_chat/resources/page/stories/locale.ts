@@ -36,6 +36,6 @@ provideStrings({
   premiumFeature_1: 'Access to industry-leading LLMs',
   premiumFeature_2: 'Higher rate limits',
   premiumLabel: 'Brave Leo Premium',
-  premiumPricing: 'USD \$ $1 $2 /month',
-  unlockPremium: 'Unlock the full potential of Leo'
+  premiumPricing: 'USD \$ $1 /month',
+  unlockPremiumTitle: 'Unlock the full potential of Leo'
 })

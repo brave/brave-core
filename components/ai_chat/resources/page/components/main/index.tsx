@@ -104,7 +104,7 @@ function Main () {
           shouldShowPremiumSuggestionForModel && (
             <div className={styles.promptContainer}>
               <PremiumSuggestion
-                title={getLocale('unlockPremium')}
+                title={getLocale('unlockPremiumTitle')}
                 verbose={true}
               />
             </div>
@@ -114,7 +114,7 @@ function Main () {
           shouldShowPremiumSuggestionStandalone && (
             <div className={styles.promptContainer}>
               <PremiumSuggestion
-                title={getLocale('unlockPremium')}
+                title={getLocale('unlockPremiumTitle')}
                 verbose={true}
                 secondaryActionButton={
                   <Button
