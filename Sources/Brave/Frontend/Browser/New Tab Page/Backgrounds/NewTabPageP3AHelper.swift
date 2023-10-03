@@ -143,6 +143,8 @@ final class NewTabPageP3AHelper {
         let name = DynamicHistogramName(creativeInstanceId: creativeInstanceId, eventType: eventType)
         countsStorage.eventCounts[creativeInstanceId]?.inflightCounts[eventType] = count
         UmaHistogramRecordValueToBucket(name.histogramName, buckets: countBuckets, value: count)
+      }
+      if !eventCounts.counts.isEmpty {
         totalActiveCreatives += 1
       }
     }
