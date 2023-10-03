@@ -5,7 +5,7 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | term  | description  |
 |---|---|
 | Advertiser  | An advertiser is someone or a company that promotes products, services, or ideas through various mediums to reach and persuade potential customers or target audiences.  |
-| Advertisment  | An advertisement is a promotional message or content created to promote a product, service, or idea to a target audience, also known as an Ad.  |
+| Advertisement  | An advertisement is a promotional message or content created to promote a product, service, or idea to a target audience, also known as an Ad.  |
 | Analytics  | Examine data to uncover meaningful insights, trends, and patterns that can inform decision-making and improve understanding of a given subject or domain. See P2A and P3A.  |
 | Anti-targeting  | Exclude users from receiving targeted advertisements based on specific attributes such as demographics, interests, or behaviors.  |
 | Basic Attention Token  | See the [whitepaper](https://basicattentiontoken.org/static-assets/documents/BasicAttentionTokenWhitePaper-4.pdf). Also known as BAT.  |
