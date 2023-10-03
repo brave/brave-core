@@ -18,7 +18,7 @@ TEST(BraveInlineContentAdFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsInlineContentAdFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kInlineContentAdFeature));
 }
 
 TEST(BraveInlineContentAdFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveInlineContentAdFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsInlineContentAdFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kInlineContentAdFeature));
 }
 
 TEST(BraveInlineContentAdFeatureTest, MaximumAdsPerHour) {

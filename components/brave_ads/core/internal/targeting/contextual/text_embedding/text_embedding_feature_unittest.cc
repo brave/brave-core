@@ -20,7 +20,7 @@ TEST(BraveAdsTextEmbeddingFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsTextEmbeddingFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kTextEmbeddingFeature));
 }
 
 TEST(BraveAdsTextEmbeddingFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsTextEmbeddingFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsTextEmbeddingFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kTextEmbeddingFeature));
 }
 
 TEST(BraveAdsTextEmbeddingFeatureTest, TextEmbeddingResourceVersion) {

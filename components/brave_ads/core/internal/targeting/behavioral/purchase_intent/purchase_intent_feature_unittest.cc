@@ -19,7 +19,7 @@ TEST(BraveAdsPurchaseIntentFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsPurchaseIntentFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kPurchaseIntentFeature));
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, IsDisabled) {
@@ -30,7 +30,7 @@ TEST(BraveAdsPurchaseIntentFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsPurchaseIntentFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kPurchaseIntentFeature));
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentResourceVersion) {

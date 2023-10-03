@@ -20,7 +20,7 @@ TEST(BraveAdsEpsilonGreedyBanditFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsEpsilonGreedyBanditFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature));
 }
 
 TEST(BraveAdsEpsilonGreedyBanditFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsEpsilonGreedyBanditFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsEpsilonGreedyBanditFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature));
 }
 
 TEST(BraveAdsEpsilonGreedyBanditFeatureTest,

@@ -53,7 +53,7 @@ void InlineContentAdServing::MaybeServeAd(
 ///////////////////////////////////////////////////////////////////////////////
 
 base::expected<void, std::string> InlineContentAdServing::CanServeAd() const {
-  if (!IsInlineContentAdServingFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kInlineContentAdServingFeature)) {
     return base::unexpected(
         "Inline content ad not served: Feature is disabled");
   }

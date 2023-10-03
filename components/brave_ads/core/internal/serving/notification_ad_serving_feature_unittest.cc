@@ -18,7 +18,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsNotificationAdServingFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kNotificationAdServingFeature));
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsNotificationAdServingFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kNotificationAdServingFeature));
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest, ServingVersion) {

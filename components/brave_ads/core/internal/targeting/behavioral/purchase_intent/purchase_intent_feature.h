@@ -17,8 +17,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kPurchaseIntentFeature);
 
-bool IsPurchaseIntentFeatureEnabled();
-
 constexpr base::FeatureParam<int> kPurchaseIntentResourceVersion{
     &kPurchaseIntentFeature, "resource_version", 1};
 

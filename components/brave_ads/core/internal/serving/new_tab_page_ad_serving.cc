@@ -52,7 +52,7 @@ void NewTabPageAdServing::MaybeServeAd(
 ///////////////////////////////////////////////////////////////////////////////
 
 base::expected<void, std::string> NewTabPageAdServing::CanServeAd() const {
-  if (!IsNewTabPageAdServingFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kNewTabPageAdServingFeature)) {
     return base::unexpected("New tab page ad not served: Feature is disabled");
   }
 

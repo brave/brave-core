@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/units/notification_ad/custom_notification_ad_feature.h"
+#include "brave/components/brave_ads/browser/units/notification_ad/custom_notification_ad_feature.h"  // IWYU pragma: keep
 
 #include "base/feature_list.h"
 
@@ -12,9 +12,5 @@ namespace brave_ads {
 BASE_FEATURE(kCustomNotificationAdFeature,
              "CustomNotificationAds",
              base::FEATURE_DISABLED_BY_DEFAULT);
-
-bool IsCustomNotificationAdFeatureEnabled() {
-  return base::FeatureList::IsEnabled(kCustomNotificationAdFeature);
-}
 
 }  // namespace brave_ads

@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNewTabPageAdServingFeature);
 
-bool IsNewTabPageAdServingFeatureEnabled();
-
 constexpr base::FeatureParam<int> kNewTabPageAdServingVersion{
     &kNewTabPageAdServingFeature, "version", 2};
 

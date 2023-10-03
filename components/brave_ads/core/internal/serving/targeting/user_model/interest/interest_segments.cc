@@ -14,7 +14,7 @@ namespace brave_ads {
 SegmentList BuildInterestSegments() {
   SegmentList segments;
 
-  if (IsTextClassificationFeatureEnabled()) {
+  if (base::FeatureList::IsEnabled(kTextClassificationFeature)) {
     base::Extend(segments, GetTextClassificationSegments());
   }
 

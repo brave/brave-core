@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kTextEmbeddingFeature);
 
-bool IsTextEmbeddingFeatureEnabled();
-
 constexpr base::FeatureParam<int> kTextEmbeddingResourceVersion{
     &kTextEmbeddingFeature, "resource_version", 1};
 

@@ -14,7 +14,7 @@ namespace brave_ads {
 SegmentList BuildLatentInterestSegments() {
   SegmentList segments;
 
-  if (IsEpsilonGreedyBanditFeatureEnabled()) {
+  if (base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature)) {
     base::Extend(segments, GetEpsilonGreedyBanditSegments());
   }
 

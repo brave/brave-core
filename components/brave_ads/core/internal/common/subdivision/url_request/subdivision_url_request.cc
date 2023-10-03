@@ -94,7 +94,7 @@ void SubdivisionUrlRequest::FetchCallback(
 void SubdivisionUrlRequest::FetchAfterDelay() {
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE,
-      ShouldDebug() ? kDebugFetchAfter : kSubdivisionFetchIntervalMinutes.Get(),
+      ShouldDebug() ? kDebugFetchAfter : kFetchSubdivisionAfter.Get(),
       base::BindOnce(&SubdivisionUrlRequest::Fetch,
                      weak_factory_.GetWeakPtr()));
 

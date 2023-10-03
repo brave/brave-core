@@ -17,8 +17,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kExclusionRulesFeature);
 
-bool IsExclusionRuleFeatureEnabled();
-
 constexpr base::FeatureParam<bool> kShouldExcludeAdIfConverted{
     &kExclusionRulesFeature, "should_exclude_ad_if_converted", true};
 

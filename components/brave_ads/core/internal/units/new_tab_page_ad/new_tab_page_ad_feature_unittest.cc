@@ -18,7 +18,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsNewTabPageAdFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kNewTabPageAdFeature));
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsNewTabPageAdFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kNewTabPageAdFeature));
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest, MaximumAdsPerHour) {

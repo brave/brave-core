@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNotificationAdServingFeature);
 
-bool IsNotificationAdServingFeatureEnabled();
-
 constexpr base::FeatureParam<int> kNotificationAdServingVersion{
     &kNotificationAdServingFeature, "version", 2};
 

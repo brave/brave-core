@@ -94,7 +94,7 @@ bool NotificationHelperImplAndroid::
 
 bool NotificationHelperImplAndroid::ShowOnboardingNotification() {
   const bool should_show_custom_notifications =
-      IsCustomNotificationAdFeatureEnabled();
+      base::FeatureList::IsEnabled(kCustomNotificationAdFeature);
 
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveAdsSignupDialog_enqueueOnboardingNotificationNative(

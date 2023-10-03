@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kPromotedContentAdFeature);
 
-bool IsPromotedContentAdFeatureEnabled();
-
 constexpr base::FeatureParam<int> kMaximumPromotedContentAdsPerHour{
     &kPromotedContentAdFeature, "maximum_ads_per_hour", 4};
 

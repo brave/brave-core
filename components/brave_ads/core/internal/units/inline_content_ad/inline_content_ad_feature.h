@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kInlineContentAdFeature);
 
-bool IsInlineContentAdFeatureEnabled();
-
 constexpr base::FeatureParam<int> kMaximumInlineContentAdsPerHour{
     &kInlineContentAdFeature, "maximum_ads_per_hour", 6};
 
