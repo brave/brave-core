@@ -46,7 +46,8 @@ RegisterPolymerTemplateModifications({
               on-click="onShortcutsClicked_"
               id="shortcutsButton"
               label=${loadTimeData.getString('braveShortcutsPage')}
-              role-description="Subpage button">
+              role-description=
+                ${loadTimeData.getString('subpageArrowRoleDescription')}>
               <span id="shortcutsButtonSubLabel" slot="sub-label">
             </cr-link-row>
             <div class="hr"></div>
