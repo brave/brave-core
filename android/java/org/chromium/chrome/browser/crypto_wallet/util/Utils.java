@@ -1226,7 +1226,7 @@ public class Utils {
                 }
 
                 var txNetwork = JavaUtils.safeVal(NetworkUtils.findNetwork(allNetworks,
-                                                          txInfo.chainId, selectedNetwork.symbol),
+                                                          txInfo.chainId, selectedNetwork.coin),
                         selectedNetwork);
                 ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo, txNetwork,
                         accounts, assetPrices, solanaEstimatedTxFee, fullTokenList,
@@ -1520,7 +1520,7 @@ public class Utils {
         String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
         Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetKey, 0.0d);
         NetworkInfo assetNetwork =
-                NetworkUtils.findNetwork(allNetworkInfos, userAsset.chainId, userAsset.symbol);
+                NetworkUtils.findNetwork(allNetworkInfos, userAsset.chainId, userAsset.coin);
         String subtitle = assetNetwork == null
                 ? userAsset.symbol
                 : resources.getString(R.string.brave_wallet_portfolio_asset_network_description,

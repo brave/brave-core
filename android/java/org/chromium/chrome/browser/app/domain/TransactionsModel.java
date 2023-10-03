@@ -154,7 +154,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                                                 == txNetworks.size()) {
                                             parseTransactions(mActivityRef,
                                                     assetAccountsNetworkBalances,
-                                                    filteredTransactions, networkInfo.symbol);
+                                                    filteredTransactions, networkInfo.coin);
                                         }
                                     });
                         }
@@ -166,7 +166,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
 
     private void parseTransactions(WeakReference<BraveWalletBaseActivity> activityRef,
             List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances,
-            TransactionInfo[] transactionInfoArr, @NonNull String symbol) {
+            TransactionInfo[] transactionInfoArr, int coin) {
         // Received balances of all network, can now fetch transaction
         var allAccountsArray = mAllAccountInfoList.toArray(new AccountInfo[0]);
         SolanaTransactionsGasHelper solanaTransactionsGasHelper =
@@ -185,7 +185,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                     solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
                 }
                 var txNetwork =
-                        NetworkUtils.findNetwork(mAllNetworkInfoList, txInfo.chainId, symbol);
+                        NetworkUtils.findNetwork(mAllNetworkInfoList, txInfo.chainId, coin);
                 var txExtraData =
                         assetAccountsNetworkBalances.stream()
                                 .filter(data -> data.networkInfo.chainId.equals(txInfo.chainId))

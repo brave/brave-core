@@ -84,7 +84,7 @@ public class NetworkSelectorModel {
                 allNetworkList.add(0, allNetwork);
             }
             updateLocalNetwork(allNetworkList, mSelectedChainId,
-                    mNetworkModel.getNetwork(mSelectedChainId).symbol);
+                    mNetworkModel.getNetwork(mSelectedChainId).coin);
             return networkListsCopy;
         });
     }
@@ -147,8 +147,8 @@ public class NetworkSelectorModel {
     public SelectionMode getSelectionType() {
         return mSelectionMode;
     }
-    private void updateLocalNetwork(List<NetworkInfo> networkInfos, String chainId, String symbol) {
-        NetworkInfo networkInfo = NetworkUtils.findNetwork(networkInfos, chainId, symbol);
+    private void updateLocalNetwork(List<NetworkInfo> networkInfos, String chainId, int coin) {
+        NetworkInfo networkInfo = NetworkUtils.findNetwork(networkInfos, chainId, coin);
         if (networkInfo != null) {
             _mSelectedNetwork.postValue(networkInfo);
         }

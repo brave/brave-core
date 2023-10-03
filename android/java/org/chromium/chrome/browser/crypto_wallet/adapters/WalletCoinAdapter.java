@@ -206,7 +206,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                     onWalletListItemClick.onMaybeShowTrashButton(
                             walletListItemModel, holder.iconTrash);
                     holder.iconTrash.setOnClickListener(
-                            v -> { onWalletListItemClick.onTrashIconClick(walletListItemModel); });
+                            v -> onWalletListItemClick.onTrashIconClick(walletListItemModel));
                 }
             }
         } else {
