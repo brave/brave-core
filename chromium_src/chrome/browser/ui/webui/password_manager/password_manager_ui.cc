@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
+#include "brave/grit/brave_unscaled_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -23,5 +24,12 @@ void BraveAddPasswordManagerResources(content::WebUIDataSource* source,
   SetupChromeRefresh2023(SOURCE);      \
   BraveAddPasswordManagerResources(source, profile);
 
+#define SetupWebUIDataSource(...)                             \
+  SetupWebUIDataSource(__VA_ARGS__);                          \
+  source->AddResourcePath("images/password_manager_logo.svg", \
+                          IDR_BRAVE_PASSWORD_MANAGER_LOGO)
+
 #include "src/chrome/browser/ui/webui/password_manager/password_manager_ui.cc"
+
+#undef SetupWebUIDataSource
 #undef SetupChromeRefresh2023

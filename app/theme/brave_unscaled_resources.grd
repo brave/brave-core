@@ -14,6 +14,7 @@
         <include name="IDR_PRODUCT_LOGO_128_DEVELOPMENT" file="brave/linux/product_logo_128_development.png" type="BINDATA" />
         <include name="IDR_PRODUCT_LOGO_128_NIGHTLY" file="brave/linux/product_logo_128_nightly.png" type="BINDATA" />
       </if>
+      <include name="IDR_BRAVE_PASSWORD_MANAGER_LOGO" file="brave/password_manager_logo.svg" type="BINDATA" />
     </includes>
   </release>
 </grit>
