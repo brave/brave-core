@@ -36,7 +36,6 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month = 0.0;
   expected_statement->max_earnings_last_month = 0.0;
@@ -53,6 +52,8 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
 
   // Act
   BuildStatement(callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsStatementTest,
@@ -108,7 +109,6 @@ TEST_F(BraveAdsStatementTest,
 
   SaveTransactionsForTesting(transactions);
 
-  // Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month =
       0.01 * kMinEstimatedEarningsMultiplier.Get();
@@ -126,6 +126,8 @@ TEST_F(BraveAdsStatementTest,
 
   // Act
   BuildStatement(callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
@@ -168,7 +170,6 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month =
       0.01 * kMinEstimatedEarningsMultiplier.Get();
@@ -186,13 +187,14 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
 
   // Act
   BuildStatement(callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
   // Arrange
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
-  // Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month = 0.0;
   expected_statement->max_earnings_last_month = 0.0;
@@ -208,6 +210,8 @@ TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
 
   // Act
   BuildStatement(callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
@@ -241,7 +245,6 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month =
       0.01 * kMinEstimatedEarningsMultiplier.Get();
@@ -260,6 +263,8 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
 
   // Act
   BuildStatement(callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

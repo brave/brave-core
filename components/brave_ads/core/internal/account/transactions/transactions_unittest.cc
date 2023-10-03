@@ -5,10 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 
-#include <utility>
-
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -22,29 +21,35 @@ class BraveAdsTransactionsTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTransactionsTest, Add) {
   // Arrange
-
-  // Assert
-  base::MockCallback<AddTransactionCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, ::testing::_));
+  base::MockCallback<AddTransactionCallback> add_transaction_callback;
+  EXPECT_CALL(add_transaction_callback,
+              Run(/*success*/ true, /*transaction*/ ::testing::_));
 
   // Act
   const TransactionInfo transaction = AddTransaction(
       kCreativeInstanceId, kSegment, /*value*/ 0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewed, callback.Get());
+      ConfirmationType::kViewed, add_transaction_callback.Get());
+
+  // Assert
+  base::MockCallback<database::table::GetTransactionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, TransactionList{transaction}));
+  const database::table::Transactions database_table;
+  database_table.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("31 August 2019", /*is_local*/ true));
 
   const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("11 September 2019",
+                                /*is_local*/ false));  // A legendary moment.
 
   const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
       /*value*/ 0.0, ConfirmationType::kDismissed,
@@ -58,13 +63,14 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Assert
-  const TransactionList expected_transactions = {transaction_2, transaction_3};
   base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, expected_transactions));
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            TransactionList{transaction_2, transaction_3}));
 
   // Act
   GetTransactionsForDateRange(Now(), DistantFuture(), callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsTransactionsTest, RemoveAll) {
@@ -83,12 +89,13 @@ TEST_F(BraveAdsTransactionsTest, RemoveAll) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Assert
   base::MockCallback<RemoveAllTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true));
 
   // Act
   RemoveAllTransactions(callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

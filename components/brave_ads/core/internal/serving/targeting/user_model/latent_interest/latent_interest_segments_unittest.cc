@@ -8,8 +8,6 @@
 #include <memory>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
@@ -27,15 +25,7 @@ class BraveAdsLatentInterestSegmentsTest : public UnitTestBase {
 
     targeting_ = std::make_unique<TargetingHelperForTesting>();
 
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
-
-    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                     kLanguageComponentId);
-
     NotifyDidInitializeAds();
-
-    task_environment_.RunUntilIdle();
   }
 
   std::unique_ptr<TargetingHelperForTesting> targeting_;

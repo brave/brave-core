@@ -62,7 +62,7 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertInlineContentAdEvent) {
 TEST_F(BraveAdsConversionsUtilTest,
        CannotConvertInlineContentAdEventIfBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   const AdInfo ad = BuildAdForTesting(AdType::kInlineContentAd,
                                       /*should_use_random_uuids*/ true);
@@ -117,7 +117,7 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertPromotedContentAdEvent) {
 TEST_F(BraveAdsConversionsUtilTest,
        CannotConvertPromotedContentAdEventIfBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   const AdInfo ad = BuildAdForTesting(AdType::kPromotedContentAd,
                                       /*should_use_random_uuids*/ true);
@@ -172,7 +172,7 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertNotificationAdEvent) {
 TEST_F(BraveAdsConversionsUtilTest,
        CannotConvertNotificationAdEventIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
 
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
                                       /*should_use_random_uuids*/ true);
@@ -227,7 +227,7 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertNewTabPageAdEvent) {
 TEST_F(BraveAdsConversionsUtilTest,
        CannotConvertNewTabPageAdEventIfNewTabPageAdsAreDisabled) {
   // Arrange
-  DisableNewTabPageAdsForTesting();
+  OptOutOfNewTabPageAdsForTesting();
 
   const AdInfo ad = BuildAdForTesting(AdType::kNewTabPageAd,
                                       /*should_use_random_uuids*/ true);
@@ -282,9 +282,9 @@ TEST_F(BraveAdsConversionsUtilTest, CannotConvertSearchResultAdEvent) {
 TEST_F(BraveAdsConversionsUtilTest,
        CanConvertSearchResultAdEventIfAdsAreDisabled) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
-  DisableNotificationAdsForTesting();
-  DisableNewTabPageAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
+  OptOutOfNewTabPageAdsForTesting();
 
   const AdInfo ad = BuildAdForTesting(AdType::kNewTabPageAd,
                                       /*should_use_random_uuids*/ true);

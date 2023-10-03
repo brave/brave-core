@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <memory>
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -105,8 +104,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessUrl) {
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 2", {PurchaseIntentSignalHistoryInfo(now, weight)}},
       {"segment 3", {PurchaseIntentSignalHistoryInfo(now, weight)}}};
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
@@ -134,8 +132,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
       {"segment 3",
        {PurchaseIntentSignalHistoryInfo(now, weight),
         PurchaseIntentSignalHistoryInfo(now, weight)}}};
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
@@ -168,8 +165,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
       {"segment 3",
        {PurchaseIntentSignalHistoryInfo(now_1, weight),
         PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
@@ -202,8 +198,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
        {PurchaseIntentSignalHistoryInfo(now_1, weight),
         PurchaseIntentSignalHistoryInfo(now_2, weight)}},
       {"segment 2", {PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {

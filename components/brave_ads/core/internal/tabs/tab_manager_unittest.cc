@@ -6,355 +6,275 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer_mock.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
+class BraveAdsTabManagerTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    TabManager::GetInstance().AddObserver(this);
+    TabManager::GetInstance().AddObserver(&observer_mock_);
   }
 
   void TearDown() override {
-    TabManager::GetInstance().RemoveObserver(this);
+    TabManager::GetInstance().RemoveObserver(&observer_mock_);
 
     UnitTestBase::TearDown();
   }
 
-  void OnTabDidChangeFocus(const int32_t /*tab_id*/) override {
-    tab_did_change_focus_ = true;
+  void OpenTab(const int32_t tab_id,
+               const std::vector<GURL>& redirect_chain,
+               const bool is_visible) {
+    TabInfo tab;
+    tab.id = tab_id;
+    tab.redirect_chain = redirect_chain;
+    tab.is_playing_media = false;
+    if (!is_visible) {
+      EXPECT_CALL(observer_mock_, OnTabDidChange(tab));
+    } else {
+      EXPECT_CALL(observer_mock_, OnDidOpenNewTab(tab));
+    }
+
+    NotifyTabDidChange(tab_id, redirect_chain, is_visible);
   }
 
-  void OnTabDidChange(const TabInfo& /*tab*/) override {
-    tab_did_change_ = true;
+  void PlayMedia(const int32_t tab_id) {
+    EXPECT_CALL(observer_mock_, OnTabDidStartPlayingMedia(tab_id));
+    NotifyTabDidStartPlayingMedia(tab_id);
   }
 
-  void OnDidOpenNewTab(const TabInfo& /*tab*/) override {
-    did_open_new_tab_ = true;
-  }
-
-  void OnDidCloseTab(const int32_t /*tab_id*/) override {
-    did_close_tab_ = true;
-  }
-
-  void OnTabDidStartPlayingMedia(const int32_t /*tab_id*/) override {
-    tab_did_start_playing_media_ = true;
-  }
-
-  void OnTabDidStopPlayingMedia(const int32_t /*tab_id*/) override {
-    tab_did_stop_playing_media_ = true;
-  }
-
-  void ResetObserver() {
-    tab_did_change_focus_ = false;
-    tab_did_change_ = false;
-    did_open_new_tab_ = false;
-    did_close_tab_ = false;
-    tab_did_start_playing_media_ = false;
-    tab_did_stop_playing_media_ = false;
-  }
-
-  bool tab_did_change_focus_ = false;
-  bool tab_did_change_ = false;
-  bool did_open_new_tab_ = false;
-  bool did_close_tab_ = false;
-  bool tab_did_start_playing_media_ = false;
-  bool tab_did_stop_playing_media_ = false;
+  ::testing::StrictMock<TabManagerObserverMock> observer_mock_;
 };
 
 TEST_F(BraveAdsTabManagerTest, IsVisible) {
   // Arrange
 
   // Act
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
 
   // Assert
-  EXPECT_TRUE(TabManager::GetInstance().IsVisible(/*id*/ 1));
+  EXPECT_TRUE(TabManager::GetInstance().IsVisible(/*tab_id*/ 1));
 }
 
-TEST_F(BraveAdsTabManagerTest, IsTabOccluded) {
+TEST_F(BraveAdsTabManagerTest, IsOccluded) {
   // Arrange
 
   // Act
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ false);
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ false);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance().IsVisible(/*id*/ 1));
+  EXPECT_FALSE(TabManager::GetInstance().IsVisible(/*tab_id*/ 1));
+}
+
+TEST_F(BraveAdsTabManagerTest, IsPlayingMedia) {
+  // Arrange
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  // Act
+  PlayMedia(/*tab_id*/ 1);
+
+  // Assert
+  EXPECT_TRUE(TabManager::GetInstance().IsPlayingMedia(/*tab_id*/ 1));
+}
+
+TEST_F(BraveAdsTabManagerTest, IsNotPlayingMedia) {
+  // Arrange
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(TabManager::GetInstance().IsPlayingMedia(/*tab_id*/ 1));
 }
 
 TEST_F(BraveAdsTabManagerTest, OpenNewTab) {
   // Arrange
+  EXPECT_CALL(
+      observer_mock_,
+      OnDidOpenNewTab(TabInfo{/*tab_id*/ 1,
+                              /*redirect_chain*/ {GURL("https://brave.com")},
+                              /*is_playing_media*/ false}));
 
   // Act
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ true);
 
   // Assert
-  const absl::optional<TabInfo> tab =
-      TabManager::GetInstance().MaybeGetForId(1);
+}
 
-  TabInfo expected_tab;
-  expected_tab.id = 1;
-  expected_tab.redirect_chain = {GURL("https://brave.com")};
-  expected_tab.is_playing_media = false;
-  EXPECT_EQ(expected_tab, tab);
+TEST_F(BraveAdsTabManagerTest, ChangeTab) {
+  // Arrange
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
 
-  EXPECT_FALSE(tab_did_change_focus_);
-  EXPECT_FALSE(tab_did_change_);
-  EXPECT_TRUE(did_open_new_tab_);
-  EXPECT_FALSE(did_close_tab_);
-  EXPECT_FALSE(tab_did_start_playing_media_);
-  EXPECT_FALSE(tab_did_stop_playing_media_);
+  EXPECT_CALL(observer_mock_,
+              OnTabDidChange(TabInfo{
+                  /*tab_id*/ 1,
+                  /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
+                  /*is_playing_media*/ false}));
+
+  // Act
+  NotifyTabDidChange(
+      /*tab_id*/ 1,
+      /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
+      /*is_visible*/ true);
+
+  // Assert
 }
 
 TEST_F(BraveAdsTabManagerTest, ChangeTabFocus) {
   // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ false);
-  ResetObserver();
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ false);
+
+  EXPECT_CALL(observer_mock_, OnTabDidChangeFocus(/*tab_id*/ 1));
 
   // Act
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
-
-  // Assert
-  EXPECT_TRUE(tab_did_change_focus_);
-  EXPECT_FALSE(tab_did_change_);
-  EXPECT_FALSE(did_open_new_tab_);
-  EXPECT_FALSE(did_close_tab_);
-  EXPECT_FALSE(tab_did_start_playing_media_);
-  EXPECT_FALSE(tab_did_stop_playing_media_);
-}
-
-TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingOccludedTabWithSameUrl) {
-  // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ false);
-  ResetObserver();
-
-  // Act
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ false);
-
-  // Assert
-  const absl::optional<TabInfo> tab =
-      TabManager::GetInstance().MaybeGetForId(1);
-  ASSERT_TRUE(tab);
-
-  TabInfo expected_tab;
-  expected_tab.id = 1;
-  expected_tab.redirect_chain = {GURL("https://brave.com")};
-  expected_tab.is_playing_media = false;
-  EXPECT_EQ(expected_tab, tab);
-
-  EXPECT_FALSE(tab_did_change_focus_);
-  EXPECT_FALSE(tab_did_change_);
-  EXPECT_FALSE(did_open_new_tab_);
-  EXPECT_FALSE(did_close_tab_);
-  EXPECT_FALSE(tab_did_start_playing_media_);
-  EXPECT_FALSE(tab_did_stop_playing_media_);
-}
-
-TEST_F(BraveAdsTabManagerTest, UpdateExistingOccludedTabWithDifferentUrl) {
-  // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_visible*/ false);
-  ResetObserver();
-
-  // Act
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com/about")},
-      /*is_visible*/ false);
-
-  // Assert
-  const absl::optional<TabInfo> tab =
-      TabManager::GetInstance().MaybeGetForId(1);
-  ASSERT_TRUE(tab);
-
-  TabInfo expected_tab;
-  expected_tab.id = 1;
-  expected_tab.redirect_chain = {GURL("https://brave.com/about")};
-  expected_tab.is_playing_media = false;
-  EXPECT_EQ(expected_tab, tab);
-
-  EXPECT_FALSE(tab_did_change_focus_);
-  EXPECT_TRUE(tab_did_change_);
-  EXPECT_FALSE(did_open_new_tab_);
-  EXPECT_FALSE(did_close_tab_);
-  EXPECT_FALSE(tab_did_start_playing_media_);
-  EXPECT_FALSE(tab_did_stop_playing_media_);
-}
-
-TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingTabWithSameUrl) {
-  // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
-  ResetObserver();
-
-  // Act
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
-
-  // Assert
-  const absl::optional<TabInfo> tab =
-      TabManager::GetInstance().MaybeGetForId(1);
-  ASSERT_TRUE(tab);
-
-  TabInfo expected_tab;
-  expected_tab.id = 1;
-  expected_tab.redirect_chain = {GURL("https://brave.com")};
-  expected_tab.is_playing_media = false;
-  EXPECT_EQ(expected_tab, tab);
-
-  EXPECT_FALSE(tab_did_change_focus_);
-  EXPECT_FALSE(tab_did_change_);
-  EXPECT_FALSE(did_open_new_tab_);
-  EXPECT_FALSE(did_close_tab_);
-  EXPECT_FALSE(tab_did_start_playing_media_);
-  EXPECT_FALSE(tab_did_stop_playing_media_);
-}
-
-TEST_F(BraveAdsTabManagerTest, UpdatedExistingTabWithDifferentUrl) {
-  // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
-  ResetObserver();
-
-  // Act
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com/about")},
+      /*tab_id*/ 1,
+      /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
       /*is_visible*/ true);
 
   // Assert
-  const absl::optional<TabInfo> tab =
-      TabManager::GetInstance().MaybeGetForId(1);
-  ASSERT_TRUE(tab);
+}
 
-  TabInfo expected_tab;
-  expected_tab.id = 1;
-  expected_tab.redirect_chain = {GURL("https://brave.com/about")};
-  expected_tab.is_playing_media = false;
-  EXPECT_EQ(expected_tab, tab);
+TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingOccludedTabIfSameUrl) {
+  // Arrange
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ false);
 
-  EXPECT_FALSE(tab_did_change_focus_);
-  EXPECT_TRUE(tab_did_change_);
-  EXPECT_FALSE(did_open_new_tab_);
-  EXPECT_FALSE(did_close_tab_);
-  EXPECT_FALSE(tab_did_start_playing_media_);
-  EXPECT_FALSE(tab_did_stop_playing_media_);
+  // Act
+  NotifyTabDidChange(
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ false);
+
+  // Assert
+}
+
+TEST_F(BraveAdsTabManagerTest, UpdateExistingOccludedTabIfDifferentUrl) {
+  // Arrange
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ false);
+
+  EXPECT_CALL(observer_mock_,
+              OnTabDidChange(TabInfo{
+                  /*tab_id*/ 1,
+                  /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
+                  /*is_playing_media*/ false}));
+
+  // Act
+  NotifyTabDidChange(
+      /*tab_id*/ 1,
+      /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
+      /*is_visible*/ false);
+
+  // Assert
+}
+
+TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingVisibleTabIfSameUrl) {
+  // Arrange
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  // Act
+  NotifyTabDidChange(
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ true);
+
+  // Assert
+}
+
+TEST_F(BraveAdsTabManagerTest, UpdatedExistingVisibleTabIfDifferentUrl) {
+  // Arrange
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  EXPECT_CALL(observer_mock_,
+              OnTabDidChange(TabInfo{
+                  /*tab_id*/ 1,
+                  /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
+                  /*is_playing_media*/ false}));
+
+  // Act
+  NotifyTabDidChange(
+      /*tab_id*/ 1,
+      /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
+      /*is_visible*/ true);
+
+  // Assert
 }
 
 TEST_F(BraveAdsTabManagerTest, CloseTab) {
   // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
-  ResetObserver();
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  EXPECT_CALL(observer_mock_, OnDidCloseTab(/*tab_id*/ 1));
 
   // Act
-  NotifyDidCloseTab(/*id*/ 1);
+  NotifyDidCloseTab(/*tab_id*/ 1);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance().MaybeGetForId(1));
-
-  EXPECT_FALSE(tab_did_change_focus_);
-  EXPECT_FALSE(tab_did_change_);
-  EXPECT_FALSE(did_open_new_tab_);
-  EXPECT_TRUE(did_close_tab_);
-  EXPECT_FALSE(tab_did_start_playing_media_);
-  EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
 TEST_F(BraveAdsTabManagerTest, PlayMedia) {
   // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
-      /*is_visible*/ true);
-  ResetObserver();
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  EXPECT_CALL(observer_mock_, OnTabDidStartPlayingMedia(/*tab_id*/ 1));
 
   // Act
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
   // Assert
-  EXPECT_TRUE(TabManager::GetInstance().IsPlayingMedia(1));
-
-  EXPECT_FALSE(tab_did_change_focus_);
-  EXPECT_FALSE(tab_did_change_);
-  EXPECT_FALSE(did_open_new_tab_);
-  EXPECT_FALSE(did_close_tab_);
-  EXPECT_TRUE(tab_did_start_playing_media_);
-  EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
 TEST_F(BraveAdsTabManagerTest, AlreadyPlayingMedia) {
   // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
-      /*is_visible*/ true);
-  NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
-  ResetObserver();
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  PlayMedia(/*tab_id*/ 1);
 
   // Act
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
   // Assert
-  EXPECT_TRUE(TabManager::GetInstance().IsPlayingMedia(1));
-
-  EXPECT_FALSE(tab_did_change_focus_);
-  EXPECT_FALSE(tab_did_change_);
-  EXPECT_FALSE(did_open_new_tab_);
-  EXPECT_FALSE(did_close_tab_);
-  EXPECT_FALSE(tab_did_start_playing_media_);
-  EXPECT_FALSE(tab_did_stop_playing_media_);
 }
 
 TEST_F(BraveAdsTabManagerTest, StopPlayingMedia) {
   // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
-  NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
-  ResetObserver();
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  PlayMedia(/*tab_id*/ 1);
+
+  EXPECT_CALL(observer_mock_, OnTabDidStopPlayingMedia(/*tab_id*/ 1));
 
   // Act
-  NotifyTabDidStopPlayingMedia(/*id*/ 1);
+  NotifyTabDidStopPlayingMedia(/*tab_id*/ 1);
 
   // Assert
-  EXPECT_FALSE(TabManager::GetInstance().IsPlayingMedia(1));
-
-  EXPECT_FALSE(tab_did_change_focus_);
-  EXPECT_FALSE(tab_did_change_);
-  EXPECT_FALSE(did_open_new_tab_);
-  EXPECT_FALSE(did_close_tab_);
-  EXPECT_FALSE(tab_did_start_playing_media_);
-  EXPECT_TRUE(tab_did_stop_playing_media_);
 }
 
 TEST_F(BraveAdsTabManagerTest, GetVisible) {
   // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
-      /*is_visible*/ true);
-  NotifyTabDidChange(
-      /*id*/ 2, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  OpenTab(/*tab_id*/ 2,
+          /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
+          /*is_visible*/ true);
 
   // Act
   const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
@@ -363,20 +283,19 @@ TEST_F(BraveAdsTabManagerTest, GetVisible) {
   // Assert
   TabInfo expected_tab;
   expected_tab.id = 2;
-  expected_tab.redirect_chain = {GURL("https://brave.com")};
+  expected_tab.redirect_chain = {GURL("https://basicattentiontoken.org")};
   expected_tab.is_playing_media = false;
-
   EXPECT_EQ(expected_tab, tab);
 }
 
 TEST_F(BraveAdsTabManagerTest, GetLastVisible) {
   // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://foobar.com")},
-      /*is_visible*/ true);
-  NotifyTabDidChange(
-      /*id*/ 2, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  OpenTab(/*tab_id*/ 2,
+          /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
+          /*is_visible*/ true);
 
   // Act
   const absl::optional<TabInfo> tab =
@@ -386,37 +305,37 @@ TEST_F(BraveAdsTabManagerTest, GetLastVisible) {
   // Assert
   TabInfo expected_tab;
   expected_tab.id = 1;
-  expected_tab.redirect_chain = {GURL("https://foobar.com")};
+  expected_tab.redirect_chain = {GURL("https://brave.com")};
   expected_tab.is_playing_media = false;
-
   EXPECT_EQ(expected_tab, tab);
 }
 
 TEST_F(BraveAdsTabManagerTest, GetForId) {
   // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
+
+  OpenTab(/*tab_id*/ 2,
+          /*redirect_chain*/ {GURL("https://basicattentiontoken.org")},
+          /*is_visible*/ true);
 
   // Act
   const absl::optional<TabInfo> tab =
-      TabManager::GetInstance().MaybeGetForId(1);
+      TabManager::GetInstance().MaybeGetForId(2);
   ASSERT_TRUE(tab);
 
   // Assert
   TabInfo expected_tab;
-  expected_tab.id = 1;
-  expected_tab.redirect_chain = {GURL("https://brave.com")};
+  expected_tab.id = 2;
+  expected_tab.redirect_chain = {GURL("https://basicattentiontoken.org")};
   expected_tab.is_playing_media = false;
-
   EXPECT_EQ(expected_tab, tab);
 }
 
-TEST_F(BraveAdsTabManagerTest, DoNotGetTabForMissingId) {
+TEST_F(BraveAdsTabManagerTest, DoNotGetForMissingId) {
   // Arrange
-  NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+  OpenTab(/*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+          /*is_visible*/ true);
 
   // Act
 

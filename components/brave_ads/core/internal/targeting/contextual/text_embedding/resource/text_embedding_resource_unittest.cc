@@ -30,9 +30,10 @@ class BraveAdsTextEmbeddingResourceTest : public UnitTestBase {
     resource_ = std::make_unique<TextEmbeddingResource>();
   }
 
-  void LoadResource(const std::string& id) {
+  bool LoadResource(const std::string& id) {
     NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion, id);
     task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
   }
 
   std::unique_ptr<TextEmbeddingResource> resource_;
@@ -53,17 +54,16 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadInvalidResource) {
                                              kTextEmbeddingResourceId));
 
   // Act
-  LoadResource(kLanguageComponentId);
 
   // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  EXPECT_FALSE(LoadResource(kLanguageComponentId));
 }
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_, LoadFileResource(kTextEmbeddingResourceId,
-                                                 ::testing::_, ::testing::_))
-      .WillOnce(
+  ON_CALL(ads_client_mock_, LoadFileResource(kTextEmbeddingResourceId,
+                                             ::testing::_, ::testing::_))
+      .WillByDefault(
           ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
                                LoadFileCallback callback) {
             const base::FilePath path =
@@ -75,19 +75,17 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadMissingResource) {
           }));
 
   // Act
-  LoadResource(kLanguageComponentId);
 
   // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  EXPECT_FALSE(LoadResource(kLanguageComponentId));
 }
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, LoadResourceWhenLocaleDidChange) {
   // Arrange
-  LoadResource(kLanguageComponentId);
+  ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
   // Act
   NotifyLocaleDidChange(/*locale*/ "en_GB");
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -96,13 +94,12 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, LoadResourceWhenLocaleDidChange) {
 TEST_F(BraveAdsTextEmbeddingResourceTest,
        DoNotLoadResourceWhenLocaleDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
 
-  LoadResource(kLanguageComponentId);
+  ASSERT_FALSE(LoadResource(kLanguageComponentId));
 
   // Act
   NotifyLocaleDidChange(/*locale*/ "en_GB");
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -111,11 +108,10 @@ TEST_F(BraveAdsTextEmbeddingResourceTest,
 TEST_F(BraveAdsTextEmbeddingResourceTest,
        DoNotResetResourceWhenLocaleDidChange) {
   // Arrange
-  LoadResource(kLanguageComponentId);
+  ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
   // Act
   NotifyLocaleDidChange(/*locale*/ "en_GB");
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -124,11 +120,10 @@ TEST_F(BraveAdsTextEmbeddingResourceTest,
 TEST_F(BraveAdsTextEmbeddingResourceTest,
        LoadResourceWhenOptedInToNotificationAdsPrefDidChange) {
   // Arrange
-  LoadResource(kLanguageComponentId);
+  ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -138,13 +133,12 @@ TEST_F(
     BraveAdsTextEmbeddingResourceTest,
     DoNotLoadResourceWhenOptedInToNotificationAdsPrefDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAdsForTesting();
+  ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
-  LoadResource(kLanguageComponentId);
+  OptOutOfNotificationAdsForTesting();
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -153,11 +147,10 @@ TEST_F(
 TEST_F(BraveAdsTextEmbeddingResourceTest,
        ResetResourceWhenOptedInToNotificationAdsPrefDidChange) {
   // Arrange
-  LoadResource(kLanguageComponentId);
+  ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
-  task_environment_.RunUntilIdle();
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -168,10 +161,9 @@ TEST_F(BraveAdsTextEmbeddingResourceTest,
   // Arrange
 
   // Act
-  LoadResource(kLanguageComponentId);
 
   // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  EXPECT_TRUE(LoadResource(kLanguageComponentId));
 }
 
 TEST_F(
@@ -180,35 +172,32 @@ TEST_F(
   // Arrange
 
   // Act
-  LoadResource(kInvalidLanguageComponentId);
 
   // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  EXPECT_FALSE(LoadResource(kInvalidLanguageComponentId));
 }
 
 TEST_F(
     BraveAdsTextEmbeddingResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfOptedOutOfNotificationAds) {
   // Arrange
-  DisableNotificationAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
 
   // Act
-  LoadResource(kLanguageComponentId);
 
   // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  EXPECT_FALSE(LoadResource(kLanguageComponentId));
 }
 
 TEST_F(BraveAdsTextEmbeddingResourceTest,
        DoNotResetResourceWhenDidUpdateResourceComponent) {
   // Arrange
-  LoadResource(kLanguageComponentId);
+  ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
   // Act
-  LoadResource(kLanguageComponentId);
 
   // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  EXPECT_TRUE(LoadResource(kLanguageComponentId));
 }
 
 }  // namespace brave_ads

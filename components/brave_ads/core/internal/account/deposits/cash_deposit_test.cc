@@ -33,27 +33,27 @@ class BraveAdsCashDepositIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsCashDepositIntegrationTest, GetValue) {
   // Arrange
-
-  // Assert
   base::MockCallback<GetDepositCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true, /*value*/ 1.0));
 
   // Act
   CashDeposit deposit;
   deposit.GetValue(kCreativeInstanceId, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsCashDepositIntegrationTest,
        DoNotGetValueForMissingCreativeInstanceId) {
   // Arrange
-
-  // Assert
   base::MockCallback<GetDepositCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ false, /*value*/ 0.0));
 
   // Act
   CashDeposit deposit;
   deposit.GetValue(kMissingCreativeInstanceId, callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

@@ -131,24 +131,29 @@ void HistoryManager::Add(const SearchResultAdInfo& ad,
 
 mojom::UserReactionType HistoryManager::LikeAd(
     const AdContentInfo& ad_content) const {
-  const mojom::UserReactionType user_reaction_type =
+  AdContentInfo mutable_ad_content = ad_content;
+  mutable_ad_content.user_reaction_type =
       ClientStateManager::GetInstance().ToggleLikeAd(ad_content);
-  if (user_reaction_type == mojom::UserReactionType::kLike) {
-    NotifyDidLikeAd(ad_content);
+
+  if (mutable_ad_content.user_reaction_type == mojom::UserReactionType::kLike) {
+    NotifyDidLikeAd(mutable_ad_content);
   }
 
-  return user_reaction_type;
+  return mutable_ad_content.user_reaction_type;
 }
 
 mojom::UserReactionType HistoryManager::DislikeAd(
     const AdContentInfo& ad_content) const {
-  const mojom::UserReactionType user_reaction_type =
+  AdContentInfo mutable_ad_content = ad_content;
+  mutable_ad_content.user_reaction_type =
       ClientStateManager::GetInstance().ToggleDislikeAd(ad_content);
-  if (user_reaction_type == mojom::UserReactionType::kDislike) {
-    NotifyDidDislikeAd(ad_content);
+
+  if (mutable_ad_content.user_reaction_type ==
+      mojom::UserReactionType::kDislike) {
+    NotifyDidDislikeAd(mutable_ad_content);
   }
 
-  return user_reaction_type;
+  return mutable_ad_content.user_reaction_type;
 }
 
 mojom::UserReactionType HistoryManager::LikeCategory(
@@ -174,29 +179,32 @@ mojom::UserReactionType HistoryManager::DislikeCategory(
 }
 
 bool HistoryManager::ToggleSaveAd(const AdContentInfo& ad_content) const {
-  const bool is_saved =
+  AdContentInfo mutable_ad_content = ad_content;
+  mutable_ad_content.is_saved =
       ClientStateManager::GetInstance().ToggleSaveAd(ad_content);
-  if (is_saved) {
-    NotifyDidSaveAd(ad_content);
+
+  if (mutable_ad_content.is_saved) {
+    NotifyDidSaveAd(mutable_ad_content);
   } else {
-    NotifyDidUnsaveAd(ad_content);
+    NotifyDidUnsaveAd(mutable_ad_content);
   }
 
-  return is_saved;
+  return mutable_ad_content.is_saved;
 }
 
 bool HistoryManager::ToggleMarkAdAsInappropriate(
     const AdContentInfo& ad_content) const {
-  const bool is_marked =
+  AdContentInfo mutable_ad_content = ad_content;
+  mutable_ad_content.is_flagged =
       ClientStateManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
 
-  if (is_marked) {
-    NotifyDidMarkAdAsInappropriate(ad_content);
+  if (mutable_ad_content.is_flagged) {
+    NotifyDidMarkAdAsInappropriate(mutable_ad_content);
   } else {
-    NotifyDidMarkAdAsAppropriate(ad_content);
+    NotifyDidMarkAdAsAppropriate(mutable_ad_content);
   }
 
-  return is_marked;
+  return mutable_ad_content.is_flagged;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -28,9 +28,7 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
 
   ~TextEmbeddingResource() override;
 
-  bool IsInitialized() const {
-    return static_cast<bool>(embedding_processing_);
-  }
+  bool IsInitialized() const { return !!embedding_processing_; }
 
   const absl::optional<ml::pipeline::EmbeddingProcessing>& get() const {
     return embedding_processing_;

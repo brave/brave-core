@@ -37,7 +37,7 @@ absl::optional<SearchEngineInfo> FindSearchEngine(const GURL& url) {
 }  // namespace
 
 bool IsSearchEngine(const GURL& url) {
-  return bool{FindSearchEngine(url)};
+  return !!FindSearchEngine(url);
 }
 
 }  // namespace brave_ads

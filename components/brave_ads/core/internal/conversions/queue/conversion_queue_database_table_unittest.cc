@@ -5,16 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/queue/conversion_queue_database_table.h"
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion/conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_builder.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_builder.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -27,18 +29,15 @@ class BraveAdsConversionQueueDatabaseTableTest : public UnitTestBase {
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
   // Arrange
-  const ConversionQueueItemList conversion_queue_items;
 
   // Act
-  SaveConversionQueueItemsForTesting(conversion_queue_items);
+  SaveConversionQueueItemsForTesting({});
 
   // Assert
-  database_table_.GetAll(
-      base::BindOnce([](const bool success,
-                        const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(conversion_queue_items.empty());
-      }));
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            /*conversion_queue_items*/ ::testing::IsEmpty()));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
@@ -56,14 +55,9 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Assert
-  database_table_.GetAll(base::BindOnce(
-      [](const ConversionQueueItemList& expected_conversion_queue_items,
-         const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      },
-      conversion_queue_items));
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, conversion_queue_items));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest,
@@ -79,21 +73,16 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
       BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
+  const ConversionQueueItemList expected_conversion_queue_items = {
+      conversion_queue_items.front(), conversion_queue_items.front()};
+
   // Act
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {
-      conversion_queue_items.front(), conversion_queue_items.front()};
-
-  database_table_.GetAll(base::BindOnce(
-      [](const ConversionQueueItemList& expected_conversion_queue_items,
-         const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      },
-      expected_conversion_queue_items));
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, expected_conversion_queue_items));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest,
@@ -114,14 +103,9 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
   // Assert
-  database_table_.GetAll(base::BindOnce(
-      [](const ConversionQueueItemList& expected_conversion_queue_items,
-         const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      },
-      conversion_queue_items));
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, conversion_queue_items));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest,
@@ -151,22 +135,15 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
 
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
+  base::MockCallback<GetConversionQueueForCreativeInstanceIdCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, ad_2.creative_instance_id,
+                            ConversionQueueItemList{conversion_queue_item_2}));
+
   // Act
+  database_table_.GetForCreativeInstanceId(
+      conversion_queue_item_2.conversion.creative_instance_id, callback.Get());
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {
-      conversion_queue_item_2};
-
-  database_table_.GetForCreativeInstanceId(
-      conversion_queue_item_2.conversion.creative_instance_id,
-      base::BindOnce(
-          [](const ConversionQueueItemList& expected_conversion_queue_items,
-             const bool success, const std::string& /*creative_instance_id*/,
-             const ConversionQueueItemList& conversion_queue_items) {
-            ASSERT_TRUE(success);
-            EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-          },
-          expected_conversion_queue_items));
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest,
@@ -198,20 +175,14 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
 
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            ConversionQueueItemList{conversion_queue_item_2}));
+
   // Act
+  database_table_.GetUnprocessed(callback.Get());
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {
-      conversion_queue_item_2};
-
-  database_table_.GetUnprocessed(base::BindOnce(
-      [](const ConversionQueueItemList& expected_conversion_queue_items,
-         const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      },
-      expected_conversion_queue_items));
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest,
@@ -251,21 +222,16 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
 
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            ConversionQueueItemList{conversion_queue_item_2,
+                                                    conversion_queue_item_3,
+                                                    conversion_queue_item_1}));
+
   // Act
+  database_table_.GetAll(callback.Get());
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {
-      conversion_queue_item_2, conversion_queue_item_3,
-      conversion_queue_item_1};
-
-  database_table_.GetAll(base::BindOnce(
-      [](const ConversionQueueItemList& expected_conversion_queue_items,
-         const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      },
-      expected_conversion_queue_items));
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
@@ -294,23 +260,17 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
 
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
+  base::MockCallback<ResultCallback> delete_callback;
+  EXPECT_CALL(delete_callback, Run(/*success*/ true));
+
   // Act
-  database_table_.Delete(
-      conversion_queue_item_1,
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+  database_table_.Delete(conversion_queue_item_1, delete_callback.Get());
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {
-      conversion_queue_item_2};
-
-  database_table_.GetAll(base::BindOnce(
-      [](const ConversionQueueItemList& expected_conversion_queue_items,
-         const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      },
-      expected_conversion_queue_items));
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            ConversionQueueItemList{conversion_queue_item_2}));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest,
@@ -349,20 +309,16 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo conversion_queue_item_3 =
       BuildConversionQueueItem(conversion_3, /*process_at*/ Now());
 
+  base::MockCallback<ResultCallback> delete_callback;
+  EXPECT_CALL(delete_callback, Run(/*success*/ true));
+
   // Act
-  database_table_.Delete(
-      conversion_queue_item_3,
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+  database_table_.Delete(conversion_queue_item_3, delete_callback.Get());
 
   // Assert
-  database_table_.GetAll(base::BindOnce(
-      [](const ConversionQueueItemList& expected_conversion_queue_items,
-         const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      },
-      conversion_queue_items));
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, conversion_queue_items));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
@@ -391,23 +347,17 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
 
   SaveConversionQueueItemsForTesting(conversion_queue_items);
 
+  base::MockCallback<ResultCallback> update_callback;
+  EXPECT_CALL(update_callback, Run(/*success*/ true));
+
   // Act
-  database_table_.Update(
-      conversion_queue_item_1,
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+  database_table_.Update(conversion_queue_item_1, update_callback.Get());
 
   // Assert
-  const ConversionQueueItemList expected_conversion_queue_items = {
-      conversion_queue_item_2};
-
-  database_table_.GetUnprocessed(base::BindOnce(
-      [](const ConversionQueueItemList& expected_conversion_queue_items,
-         const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      },
-      expected_conversion_queue_items));
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            ConversionQueueItemList{conversion_queue_item_2}));
+  database_table_.GetUnprocessed(callback.Get());
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest,
@@ -446,20 +396,16 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo conversion_queue_item_3 =
       BuildConversionQueueItem(conversion_3, /*process_at*/ Now());
 
+  base::MockCallback<ResultCallback> update_callback;
+  EXPECT_CALL(update_callback, Run(/*success*/ true));
+
   // Act
-  database_table_.Update(
-      conversion_queue_item_3,
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+  database_table_.Update(conversion_queue_item_3, update_callback.Get());
 
   // Assert
-  database_table_.GetAll(base::BindOnce(
-      [](const ConversionQueueItemList& expected_conversion_queue_items,
-         const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      },
-      conversion_queue_items));
+  base::MockCallback<GetConversionQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, conversion_queue_items));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest, TableName) {

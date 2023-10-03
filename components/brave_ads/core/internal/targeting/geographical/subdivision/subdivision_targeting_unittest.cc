@@ -50,8 +50,8 @@ class BraveAdsSubdivisionTargetingTest : public UnitTestBase {
 TEST_F(BraveAdsSubdivisionTargetingTest,
        AllowAndFetchWhenOptingInToNotificationAds) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
-  DisableNotificationAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
 
   MockHttpOkUrlResponse(/*country_code*/ "US", /*subdivision_code*/ "CA");
 
@@ -71,8 +71,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        AllowAndFetchWhenOptingInToBraveNewsAds) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
-  DisableNotificationAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
 
   MockHttpOkUrlResponse(/*country_code*/ "US", /*subdivision_code*/ "CA");
 
@@ -94,7 +94,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        DoNotFetchWhenOptingOutOfNotificationAds) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   MockHttpOkUrlResponse(/*country_code*/ "US", /*subdivision_code*/ "CA");
 
@@ -110,7 +110,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        DoNotFetchWhenOptingOutOfBraveNewsAds) {
   // Arrange
-  DisableNotificationAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
 
   MockHttpOkUrlResponse(/*country_code*/ "US", /*subdivision_code*/ "CA");
 

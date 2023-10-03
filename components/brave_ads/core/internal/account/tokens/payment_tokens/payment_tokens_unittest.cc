@@ -120,8 +120,7 @@ TEST_F(BraveAdsPaymentTokensTest, RemoveToken) {
   payment_tokens.RemoveToken(token_2);
 
   // Assert
-  const PaymentTokenList expected_tokens = {token_1};
-  EXPECT_EQ(expected_tokens, payment_tokens.GetAllTokens());
+  EXPECT_EQ(PaymentTokenList{token_1}, payment_tokens.GetAllTokens());
 }
 
 TEST_F(BraveAdsPaymentTokensTest, RemoveTokens) {
@@ -140,8 +139,7 @@ TEST_F(BraveAdsPaymentTokensTest, RemoveTokens) {
   payment_tokens.RemoveTokens({token_1, token_3});
 
   // Assert
-  const PaymentTokenList expected_tokens = {token_2};
-  EXPECT_EQ(expected_tokens, payment_tokens.GetAllTokens());
+  EXPECT_EQ(PaymentTokenList{token_2}, payment_tokens.GetAllTokens());
 }
 
 TEST_F(BraveAdsPaymentTokensTest, RemoveAllTokens) {

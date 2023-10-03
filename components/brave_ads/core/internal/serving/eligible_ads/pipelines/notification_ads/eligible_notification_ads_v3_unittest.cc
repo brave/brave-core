@@ -7,9 +7,10 @@
 
 #include <memory>
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
@@ -42,6 +43,9 @@ class BraveAdsEligibleNotificationAdsV3Test : public UnitTestBase {
 
 TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
   // Arrange
+  const TextEmbeddingHtmlEventInfo text_embedding_html_event =
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
+
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
@@ -54,10 +58,10 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
   creative_ad_2.embedding = {-0.3, 0.0, -0.2};
   creative_ads.push_back(creative_ad_2);
 
-  const TextEmbeddingHtmlEventInfo text_embedding_html_event =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
-
   database::SaveCreativeNotificationAds(creative_ads);
+
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -65,15 +69,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAds) {
                     InterestUserModelInfo{
                         /*segments*/ {},
                         TextEmbeddingHtmlEventList{text_embedding_html_event}}},
-      base::BindOnce(
-          [](const CreativeNotificationAdInfo& creative_ad_1,
-             const CreativeNotificationAdList& creative_ads) {
-            // Assert
-            EXPECT_FALSE(creative_ads.empty());
+      callback.Get());
 
-            EXPECT_EQ(creative_ads.at(0).embedding, creative_ad_1.embedding);
-          },
-          creative_ad_1));
+  // Assert
 }
 
 TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
@@ -92,13 +90,13 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
 
   database::SaveCreativeNotificationAds(creative_ads);
 
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
+
   // Act
-  eligible_ads_->GetForUserModel(
-      /*user_model*/ {},
-      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
-        // Assert
-        EXPECT_FALSE(creative_ads.empty());
-      }));
+  eligible_ads_->GetForUserModel(/*user_model*/ {}, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsEligibleNotificationAdsV3Test,
@@ -115,16 +113,18 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test,
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
 
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
+
   // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         /*segments*/ {},
                         TextEmbeddingHtmlEventList{text_embedding_html_event}}},
-      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(creative_ads.empty());
-      }));
+      callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
@@ -132,16 +132,18 @@ TEST_F(BraveAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
 
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
+
   // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         /*segments*/ {},
                         TextEmbeddingHtmlEventList{text_embedding_html_event}}},
-      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(creative_ads.empty());
-      }));
+      callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

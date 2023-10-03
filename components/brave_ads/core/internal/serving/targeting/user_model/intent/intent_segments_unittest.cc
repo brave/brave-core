@@ -9,7 +9,6 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
@@ -26,14 +25,12 @@ class BraveAdsIntentSegmentsTest : public UnitTestBase {
 
     targeting_ = std::make_unique<TargetingHelperForTesting>();
 
+    LoadResource();
+  }
+
+  void LoadResource() {
     NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
                                      kCountryComponentId);
-
-    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                     kLanguageComponentId);
-
-    NotifyDidInitializeAds();
-
     task_environment_.RunUntilIdle();
   }
 

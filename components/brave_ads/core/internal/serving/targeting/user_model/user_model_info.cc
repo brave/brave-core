@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 
+#include <tuple>
 #include <utility>
 
 namespace brave_ads {

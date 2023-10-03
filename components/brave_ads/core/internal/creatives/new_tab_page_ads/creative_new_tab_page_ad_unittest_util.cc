@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_unittest_constants.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -21,8 +22,10 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAdsForTesting(const int count) {
   CreativeNewTabPageAdList creative_ads;
 
   for (int i = 0; i < count; i++) {
-    const CreativeNewTabPageAdInfo creative_ad =
+    CreativeNewTabPageAdInfo creative_ad =
         BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+    creative_ad.segment = kSegments[i % std::size(kSegments)];
+
     creative_ads.push_back(creative_ad);
   }
 

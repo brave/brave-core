@@ -29,7 +29,7 @@ class BraveAdsConfirmationsTest : public UnitTestBase {
     confirmations_ = std::make_unique<Confirmations>(&token_generator_mock_);
   }
 
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  TokenGeneratorMock token_generator_mock_;
 
   std::unique_ptr<Confirmations> confirmations_;
 };

@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer_observer.h"
 #include "brave/components/brave_ads/core/public/units/ad_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class Time;
@@ -71,7 +72,7 @@ class Transfer final : public TabManagerObserver {
 
   Timer timer_;
 
-  AdInfo last_clicked_ad_;
+  absl::optional<AdInfo> last_clicked_ad_;
 
   base::WeakPtrFactory<Transfer> weak_factory_{this};
 };

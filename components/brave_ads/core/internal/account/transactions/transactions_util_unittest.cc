@@ -38,8 +38,7 @@ TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
       GetTransactionsForDateRange(transactions, Now(), DistantFuture());
 
   // Assert
-  const TransactionList expected_transactions_for_date_range = {transaction_2};
-  EXPECT_EQ(expected_transactions_for_date_range, transactions_for_date_range);
+  EXPECT_EQ(TransactionList{transaction_2}, transactions_for_date_range);
 }
 
 TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {

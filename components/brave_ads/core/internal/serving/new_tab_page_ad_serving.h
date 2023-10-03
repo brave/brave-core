@@ -48,7 +48,7 @@ class NewTabPageAdServing final {
  private:
   base::expected<void, std::string> CanServeAd() const;
 
-  bool IsSupported() const { return bool{eligible_ads_}; }
+  bool IsSupported() const { return !!eligible_ads_; }
 
   void GetEligibleAds(MaybeServeNewTabPageAdCallback callback) const;
   void BuildUserModelCallback(MaybeServeNewTabPageAdCallback callback,

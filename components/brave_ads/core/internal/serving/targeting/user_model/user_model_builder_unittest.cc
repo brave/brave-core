@@ -34,14 +34,17 @@ class BraveAdsUserModelBuilderTest : public UnitTestBase {
 
     targeting_ = std::make_unique<TargetingHelperForTesting>();
 
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
-
-    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                     kLanguageComponentId);
+    LoadResources();
 
     NotifyDidInitializeAds();
+  }
 
+  void LoadResources() {
+    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                     kCountryComponentId);
+    task_environment_.RunUntilIdle();
+    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
+                                     kLanguageComponentId);
     task_environment_.RunUntilIdle();
   }
 
@@ -77,9 +80,7 @@ TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
   targeting_->Mock();
 
   base::MockCallback<BuildUserModelCallback> callback;
-  EXPECT_CALL(callback, Run).WillOnce([](const UserModelInfo& user_model) {
-    EXPECT_EQ(TargetingHelperForTesting::Expectation(), user_model);
-  });
+  EXPECT_CALL(callback, Run(TargetingHelperForTesting::Expectation()));
 
   // Act
   BuildUserModel(callback.Get());
@@ -92,9 +93,7 @@ TEST_F(BraveAdsUserModelBuilderTest, BuildUserModelIfNoTargeting) {
   const UserModelInfo expected_user_model;
 
   base::MockCallback<BuildUserModelCallback> callback;
-  EXPECT_CALL(callback, Run).WillOnce([=](const UserModelInfo& user_model) {
-    EXPECT_EQ(expected_user_model, user_model);
-  });
+  EXPECT_CALL(callback, Run(expected_user_model));
 
   // Act
   BuildUserModel(callback.Get());

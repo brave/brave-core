@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -28,9 +29,10 @@ class BraveAdsConversionResourceTest : public UnitTestBase {
     resource_ = std::make_unique<ConversionResource>();
   }
 
-  void LoadResource(const std::string& id) {
+  bool LoadResource(const std::string& id) {
     NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion, id);
     task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
   }
 
   std::unique_ptr<ConversionResource> resource_;
@@ -51,17 +53,16 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadInvalidResource) {
                                              kConversionResourceId));
 
   // Act
-  LoadResource(kCountryComponentId);
 
   // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_, LoadFileResource(kConversionResourceId,
-                                                 ::testing::_, ::testing::_))
-      .WillOnce(
+  ON_CALL(ads_client_mock_,
+          LoadFileResource(kConversionResourceId, ::testing::_, ::testing::_))
+      .WillByDefault(
           ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
                                LoadFileCallback callback) {
             const base::FilePath path =
@@ -73,10 +74,9 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
           }));
 
   // Act
-  LoadResource(kCountryComponentId);
 
   // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(BraveAdsConversionResourceTest, LoadResourceWhenLocaleDidChange) {
@@ -94,8 +94,8 @@ TEST_F(
     BraveAdsConversionResourceTest,
     LoadResourceWhenLocaleDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAdsForTesting();
-  DisableBraveNewsAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   // Act
   NotifyLocaleDidChange(/*locale*/ "en_GB");
@@ -110,10 +110,9 @@ TEST_F(BraveAdsConversionResourceTest,
   // Arrange
 
   // Act
-  LoadResource(kCountryComponentId);
 
   // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(
@@ -122,24 +121,22 @@ TEST_F(
   // Arrange
 
   // Act
-  LoadResource(kInvalidCountryComponentId);
 
   // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  EXPECT_FALSE(LoadResource(kInvalidCountryComponentId));
 }
 
 TEST_F(
     BraveAdsConversionResourceTest,
     LoadResourceWhenDidUpdateResourceComponentIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAdsForTesting();
-  DisableBraveNewsAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   // Act
-  LoadResource(kCountryComponentId);
 
   // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 
 }  // namespace brave_ads

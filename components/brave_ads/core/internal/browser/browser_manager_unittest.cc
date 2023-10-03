@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 
+#include "brave/components/brave_ads/core/internal/browser/browser_manager_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 
@@ -12,100 +13,69 @@
 
 namespace brave_ads {
 
-class BraveAdsBrowserManagerTest : public BrowserManagerObserver,
-                                   public UnitTestBase {
+class BraveAdsBrowserManagerTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    BrowserManager::GetInstance().AddObserver(this);
+    BrowserManager::GetInstance().AddObserver(&observer_mock_);
   }
 
   void TearDown() override {
-    BrowserManager::GetInstance().RemoveObserver(this);
+    BrowserManager::GetInstance().RemoveObserver(&observer_mock_);
 
     UnitTestBase::TearDown();
   }
 
-  void OnBrowserDidBecomeActive() override {
-    browser_did_become_active_ = true;
-  }
-
-  void OnBrowserDidResignActive() override {
-    browser_did_resign_active_ = true;
-  }
-
-  void OnBrowserDidEnterForeground() override {
-    browser_did_enter_foreground_ = true;
-  }
-
-  void OnBrowserDidEnterBackground() override {
-    browser_did_enter_background_ = true;
-  }
-
-  void ResetObserver() {
-    browser_did_become_active_ = false;
-    browser_did_resign_active_ = false;
-    browser_did_enter_foreground_ = false;
-    browser_did_enter_background_ = false;
-  }
-
-  bool browser_did_become_active_ = false;
-  bool browser_did_resign_active_ = false;
-  bool browser_did_enter_foreground_ = false;
-  bool browser_did_enter_background_ = false;
+  BrowserManagerObserverMock observer_mock_;
 };
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidBecomeActive) {
   // Arrange
+  EXPECT_CALL(observer_mock_, OnBrowserDidBecomeActive);
 
   // Act
   NotifyBrowserDidBecomeActive();
 
   // Assert
   EXPECT_TRUE(BrowserManager::GetInstance().IsBrowserActive());
-  EXPECT_TRUE(browser_did_become_active_);
-  EXPECT_FALSE(browser_did_resign_active_);
 }
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidResignActive) {
   // Arrange
   NotifyBrowserDidBecomeActive();
-  ResetObserver();
+
+  EXPECT_CALL(observer_mock_, OnBrowserDidResignActive);
 
   // Act
   NotifyBrowserDidResignActive();
 
   // Assert
   EXPECT_FALSE(BrowserManager::GetInstance().IsBrowserActive());
-  EXPECT_FALSE(browser_did_become_active_);
-  EXPECT_TRUE(browser_did_resign_active_);
 }
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterForeground) {
   // Arrange
+  EXPECT_CALL(observer_mock_, OnBrowserDidEnterForeground);
 
   // Act
   NotifyBrowserDidEnterForeground();
 
   // Assert
   EXPECT_TRUE(BrowserManager::GetInstance().IsBrowserInForeground());
-  EXPECT_TRUE(browser_did_enter_foreground_);
-  EXPECT_FALSE(browser_did_enter_background_);
 }
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterBackground) {
   // Arrange
   NotifyBrowserDidEnterForeground();
-  ResetObserver();
+
+  EXPECT_CALL(observer_mock_, OnBrowserDidEnterBackground);
 
   // Act
   NotifyBrowserDidEnterBackground();
 
   // Assert
   EXPECT_FALSE(BrowserManager::GetInstance().IsBrowserInForeground());
-  EXPECT_FALSE(browser_did_enter_foreground_);
-  EXPECT_TRUE(browser_did_enter_background_);
 }
 
 TEST_F(BraveAdsBrowserManagerTest,

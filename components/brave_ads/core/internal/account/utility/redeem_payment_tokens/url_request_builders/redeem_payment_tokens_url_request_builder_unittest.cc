@@ -33,7 +33,6 @@ TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
   const PaymentTokenList payment_tokens =
       BuildPaymentTokensForTesting(/*count*/ 7);
 
-  // Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&payment_tokens](base::Value::Dict user_data) {
@@ -57,6 +56,8 @@ TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
 
   // Act
   BuildRedeemPaymentTokensUserData(payment_tokens, callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

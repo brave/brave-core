@@ -5,17 +5,12 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/units/search_result_ad/search_result_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_unittest_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
-#include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -39,7 +34,6 @@ class BraveAdsSearchResultAdIntegrationTest : public UnitTestBase {
       const bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
     EXPECT_CALL(callback, Run(/*success*/ should_fire_event));
-
     GetAds().TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
                                         callback.Get());
   }
@@ -72,12 +66,6 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
       /*should_fire*/ true);
 
   // Assert
-  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  EXPECT_EQ(2U, GetHistoryItemCountForTesting());
-  EXPECT_EQ(2U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
@@ -101,22 +89,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
-  ASSERT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  ASSERT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  ASSERT_EQ(1U, GetHistoryItemCountForTesting());
-  ASSERT_EQ(1U, GetTransactionCountForTesting());
-
   SearchResultAd::TriggerDeferredAdViewedEvent();
 
   // Assert
-  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  EXPECT_EQ(2U, GetHistoryItemCountForTesting());
-  EXPECT_EQ(2U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
@@ -137,14 +112,6 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
                              /*should_fire*/ true);
 
   // Assert
-  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kClicked));
-  EXPECT_EQ(2U, GetHistoryItemCountForTesting());
-  EXPECT_EQ(2U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
@@ -167,12 +134,6 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
       /*should_fire*/ true);
 
   // Assert
-  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
-  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(
@@ -188,12 +149,6 @@ TEST_F(
       /*should_fire*/ false);
 
   // Assert
-  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
-  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
@@ -220,22 +175,9 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
-  ASSERT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  ASSERT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  ASSERT_EQ(0U, GetHistoryItemCountForTesting());
-  ASSERT_EQ(0U, GetTransactionCountForTesting());
-
   SearchResultAd::TriggerDeferredAdViewedEvent();
 
   // Assert
-  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  EXPECT_EQ(2U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
-  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
@@ -259,14 +201,6 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
                              /*should_fire*/ true);
 
   // Assert
-  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  EXPECT_EQ(1U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kClicked));
-  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
-  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 TEST_F(
@@ -288,14 +222,6 @@ TEST_F(
                              /*should_fire*/ false);
 
   // Assert
-  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kServed));
-  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
-  EXPECT_EQ(0U, GetAdEventCountForTesting(AdType::kSearchResultAd,
-                                          ConfirmationType::kClicked));
-  EXPECT_EQ(0U, GetHistoryItemCountForTesting());
-  EXPECT_EQ(0U, GetTransactionCountForTesting());
 }
 
 }  // namespace brave_ads

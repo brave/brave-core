@@ -42,7 +42,6 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&transaction](const UserDataInfo& user_data) {
@@ -60,6 +59,8 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
 
   // Act
   BuildConfirmationUserData(transaction, callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

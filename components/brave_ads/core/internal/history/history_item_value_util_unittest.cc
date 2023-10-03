@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
 
-#include "base/ranges/algorithm.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -101,7 +100,7 @@ TEST_F(BraveAdsHistoryItemValueUtilTest, FromValue) {
   const HistoryItemList history_items = HistoryItemsFromValue(list);
 
   // Assert
-  EXPECT_TRUE(base::ranges::equal(BuildHistoryItems(), history_items));
+  EXPECT_THAT(history_items, ::testing::ElementsAreArray(BuildHistoryItems()));
 }
 
 TEST_F(BraveAdsHistoryItemValueUtilTest, ToValue) {

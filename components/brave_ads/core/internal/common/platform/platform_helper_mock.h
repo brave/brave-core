@@ -6,10 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_PLATFORM_PLATFORM_HELPER_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_PLATFORM_PLATFORM_HELPER_MOCK_H_
 
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
-
 #include <string>
 
+#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
@@ -26,9 +25,9 @@ class PlatformHelperMock : public PlatformHelper {
 
   ~PlatformHelperMock() override;
 
-  MOCK_CONST_METHOD0(IsMobile, bool());
-  MOCK_CONST_METHOD0(GetName, std::string());
-  MOCK_CONST_METHOD0(GetType, PlatformType());
+  MOCK_METHOD(bool, IsMobile, (), (const));
+  MOCK_METHOD(std::string, GetName, (), (const));
+  MOCK_METHOD(PlatformType, GetType, (), (const));
 };
 
 }  // namespace brave_ads

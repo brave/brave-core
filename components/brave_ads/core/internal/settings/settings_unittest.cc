@@ -48,7 +48,7 @@ TEST_F(BraveAdsSettingsTest, UserHasOptedInToBraveNewsAds) {
 
 TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToBraveNews) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   // Act
 
@@ -67,7 +67,7 @@ TEST_F(BraveAdsSettingsTest, UserHasOptedInToNewTabPageAds) {
 
 TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNewTabPageAds) {
   // Arrange
-  DisableNewTabPageAdsForTesting();
+  OptOutOfNewTabPageAdsForTesting();
 
   // Act
 
@@ -86,7 +86,7 @@ TEST_F(BraveAdsSettingsTest, UserHasOptedInToNotificationAds) {
 
 TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNotificationAds) {
   // Arrange
-  DisableNotificationAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
 
   // Act
 

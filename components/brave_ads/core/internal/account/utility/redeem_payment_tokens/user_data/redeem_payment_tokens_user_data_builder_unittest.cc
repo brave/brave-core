@@ -20,8 +20,6 @@ class BraveAdsRedeemPaymentTokensUserDataBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
-
-  // Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
       R"(
           {
@@ -39,6 +37,8 @@ TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Act
   BuildRedeemPaymentTokensUserData(BuildPaymentTokensForTesting(/*count*/ 2),
                                    callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/history/filters/confirmation_history_filter.h"
 
-#include "base/containers/circular_deque.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -73,7 +72,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
       ad7   // Ad 5
   };
 
-  EXPECT_TRUE(ContainersEq(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::UnorderedElementsAreArray(history));
 }
 
 TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
@@ -139,7 +138,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
       ad8   // Click
   };
 
-  EXPECT_TRUE(ContainersEq(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::UnorderedElementsAreArray(history));
 }
 
 }  // namespace brave_ads

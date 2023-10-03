@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -30,20 +31,21 @@ class BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest
 };
 
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
-       GetCreativeNotificationAdsFromCatalogResponse) {
+       GetForSegments) {
   // Arrange
+  base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
+      callback;
+  EXPECT_CALL(callback,
+              Run(/*success*/ true, SegmentList{"technology & computing"},
+                  ::testing::SizeIs(2)));
+
+  const database::table::CreativeNotificationAds database_table;
 
   // Act
+  database_table.GetForSegments(
+      /*segments*/ {"technology & computing"}, callback.Get());
 
   // Assert
-  const database::table::CreativeNotificationAds database_table;
-  database_table.GetForSegments(
-      /*segments*/ {"technology & computing"},
-      base::BindOnce([](const bool success, const SegmentList& /*segments*/,
-                        const CreativeNotificationAdList& creative_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_EQ(2U, creative_ads.size());
-      }));
 }
 
 }  // namespace brave_ads

@@ -152,7 +152,6 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   // Assert
   const SegmentList expected_segments = {"science", "travel",
                                          "technology & computing"};
-
   EXPECT_EQ(expected_segments, segments);
 }
 
