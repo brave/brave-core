@@ -195,7 +195,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_android">
         <if expr="not use_titlecase">
           <message name="IDS_NEW_INCOGNITO_TAB" desc="The text label of a menu item for opening a new private tab">
-            New Private &amp;tab
+            New private &amp;tab
           </message>
           <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
             New &amp;Private window
