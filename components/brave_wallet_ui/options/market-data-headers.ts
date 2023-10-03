@@ -23,6 +23,7 @@ export const marketGridHeaders: MarketGridHeader[] = [
     id: 'priceChangePercentage24h',
     label: getLocale('braveWalletMarketData24HrColumn'),
     sortable: true,
+    width: '80px'
   },
   {
     id: 'marketCap',

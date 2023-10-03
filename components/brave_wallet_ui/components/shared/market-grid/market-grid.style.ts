@@ -88,7 +88,7 @@ export const GridRow = styled.div<{ templateColumns: string }>`
   display: grid;
   grid-template-columns: ${({ templateColumns }) => templateColumns};
   gap: 5px;
-  padding: 16px 0;
+  padding-top: 16px;
   cursor: pointer;
 `
 
@@ -157,6 +157,10 @@ export const TextWrapper = styled.div<{
   font-weight: 500;
   line-height: normal;
   color: ${leo.color.text.primary};
+
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    font-size: 12px;
+  }
 `
 
 export const ButtonsRow = styled.div`

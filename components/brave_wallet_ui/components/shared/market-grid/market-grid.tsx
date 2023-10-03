@@ -58,7 +58,7 @@ export type MarketGridProps = {
 }
 
 const defaultVisibleRows = 15
-const defaultRowHeight = 72
+const defaultRowHeight = 65
 const defaultOverScanCount = 15
 
 export const MarketGrid = ({
