@@ -41,10 +41,12 @@ public final class Domain: NSManagedObject, CRUD {
   /// A list of etld+1s that are always aggressive
   private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
   
-  /// Return the shield level for this domain
+  /// Return the shield level for this domain.
   ///
-  /// This only takes into consideration certain domains that are always aggressive.
+  /// - Warning: This does not consider the "all off" setting
+  /// This also takes into consideration certain domains that are always aggressive.
   @MainActor public var blockAdsAndTrackingLevel: ShieldLevel {
+    guard isShieldExpected(.AdblockAndTp, considerAllShieldsOption: false) else { return .disabled }
     let globalLevel = ShieldPreferences.blockAdsAndTrackingLevel
     
     switch globalLevel {
@@ -61,6 +63,15 @@ public final class Domain: NSManagedObject, CRUD {
     case .disabled, .aggressive:
       return globalLevel
     }
+  }
+  
+  /// Return the finterprinting protection level for this domain.
+  ///
+  /// - Warning: This does not consider the "all off" setting
+  @MainActor public var finterprintProtectionLevel: ShieldLevel {
+    guard isShieldExpected(.FpProtection, considerAllShieldsOption: false) else { return .disabled }
+    // We don't have aggressive finterprint protection in iOS
+    return .standard
   }
   
   private static let containsEthereumPermissionsPredicate = NSPredicate(format: "wallet_permittedAccounts != nil && wallet_permittedAccounts != ''")

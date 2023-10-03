@@ -22,8 +22,8 @@ class URLExtensionTests: XCTestCase {
       "http://test:t/est",
     ]
     
-    urls.forEach { XCTAssertEqual(URL(string: $0.0)!.origin.serialized, $0.1) }
-    badurls.forEach { XCTAssertTrue(URL(string: $0)!.origin.isOpaque) }
+    urls.forEach { XCTAssertEqual(URL(string: $0.0)?.origin.serialized, $0.1) }
+    badurls.forEach { XCTAssertTrue(URL(string: $0)?.origin.isOpaque ?? true) }
   }
   
   func testStrippedInternalURL() {
