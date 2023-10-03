@@ -890,14 +890,8 @@ public class BrowserViewController: UIViewController {
     // Schedule Default Browser Local Notification
     // If notification is not already scheduled or
     // an external URL opened in Brave (which indicates Brave is set as default)
-    if !Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value,
-        Preferences.DefaultBrowserIntro.defaultBrowserNotificationShouldBeShown.value {
+    if !Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value {
       scheduleDefaultBrowserNotification()
-    }
-    
-    // Remove pending notification if default browser is already set
-    if !Preferences.DefaultBrowserIntro.defaultBrowserNotificationShouldBeShown.value {
-      cancelScheduleDefaultBrowserNotification()
     }
 
     privateModeCancellable = privateBrowsingManager
@@ -988,6 +982,8 @@ public class BrowserViewController: UIViewController {
   private func cancelScheduleDefaultBrowserNotification() {
     let center = UNUserNotificationCenter.current()
     center.removePendingNotificationRequests(withIdentifiers: [Self.defaultBrowserNotificationId])
+    
+    Preferences.DefaultBrowserIntro.defaultBrowserNotificationIsCanceled.value = true
   }
   
   private func executeAfterSetup(_ block: @escaping () -> Void) {
@@ -3229,7 +3225,13 @@ extension BrowserViewController {
     if case .url(let navigatedURL, _) = path {
       if navigatedURL?.isWebPage(includeDataURIs: false) == true {
         Preferences.General.defaultBrowserCalloutDismissed.value = true
-        Preferences.DefaultBrowserIntro.defaultBrowserNotificationShouldBeShown.value = false
+        Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value = true
+        
+        // Remove pending notification if default browser is set brave
+        // Recognized by external link is open
+        if !Preferences.DefaultBrowserIntro.defaultBrowserNotificationIsCanceled.value {
+          cancelScheduleDefaultBrowserNotification()
+        }
       }
     }
     
