@@ -22,8 +22,12 @@ namespace misc_metrics {
 extern const char kAutoSecureRequestsHistogramName[];
 extern const char kSecureDnsSettingHistogramName[];
 
-// DNS-over-HTTPS metrics.
-class DohMetrics : public base::SupportsWeakPtr<DohMetrics> {
+// Manages DNS-over-HTTPS metrics. Queries the DNS query counts
+// maintained by SecureDnsCounter in the network process on
+// a fixed interval, and reports histograms accordingly.
+// A weak ptr is used for the count retrieval callback,
+// which is called via mojo.
+class DohMetrics {
  public:
   explicit DohMetrics(PrefService* local_state);
   ~DohMetrics();
@@ -56,6 +60,8 @@ class DohMetrics : public base::SupportsWeakPtr<DohMetrics> {
 
   base::OneShotTimer init_timer_;
   base::RepeatingTimer report_interval_timer_;
+
+  base::WeakPtrFactory<DohMetrics> weak_ptr_factory_{this};
 };
 
 }  // namespace misc_metrics

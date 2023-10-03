@@ -26,7 +26,11 @@ enum class DnsTaskType {
 
 // Counts total and secure DNS requests for P3A purposes.
 // misc_metrics::DohMetrics will query GetCountsAndReset
-// on a fixed interval to retrieve the counts.
+// on a fixed interval to retrieve the counts. Two
+// counts (total and upgraded requests) are maintained;
+// locking is used to ensure that count updates are atomic,
+// and to handle concurrent count updates (from the HostResolverManager)
+// & retrieval (from DohMetrics in the browser process via mojo).
 class NET_EXPORT SecureDnsCounter {
  public:
   SecureDnsCounter();

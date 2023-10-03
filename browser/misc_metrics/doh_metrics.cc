@@ -40,7 +40,8 @@ DohMetrics::DohMetrics(PrefService* local_state)
   pref_change_registrar_.Init(local_state_);
   pref_change_registrar_.Add(
       prefs::kDnsOverHttpsMode,
-      base::BindRepeating(&DohMetrics::HandleDnsOverHttpsMode, AsWeakPtr()));
+      base::BindRepeating(&DohMetrics::HandleDnsOverHttpsMode,
+                          base::Unretained(this)));
   HandleDnsOverHttpsMode();
 }
 
@@ -105,8 +106,8 @@ void DohMetrics::OnAutoUpgradeInitTimer() {
 }
 
 void DohMetrics::OnAutoUpgradeReportTimer() {
-  content::GetNetworkService()->GetDnsRequestCountsAndReset(
-      base::BindOnce(&DohMetrics::OnDnsRequestCounts, AsWeakPtr()));
+  content::GetNetworkService()->GetDnsRequestCountsAndReset(base::BindOnce(
+      &DohMetrics::OnDnsRequestCounts, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void DohMetrics::StopListeningToDnsRequests() {

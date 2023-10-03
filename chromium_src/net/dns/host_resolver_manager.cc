@@ -13,4 +13,4 @@
 
 #include "src/net/dns/host_resolver_manager.cc"
 
-#undef BRAVE_RECORD_DNS_HISTOGRAMS
+#undef BRAVE_RECORD_DNS_COUNTS
