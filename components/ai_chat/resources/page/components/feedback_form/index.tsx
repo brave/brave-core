@@ -14,13 +14,13 @@ import styles from './style.module.scss'
 import getPageHandlerInstance from '../../api/page_handler'
 
 const CATEGORY_OPTIONS = new Map([
-  ['not-helpful', getLocale('optionNotHelpful') ],
-  ['incorrect', getLocale('optionIncorrect') ],
-  ['unsafe-harmful',getLocale('optionUnsafeHarmful') ],
-  ['other', getLocale('optionOther') ]
+  ['not-helpful', getLocale('optionNotHelpful')],
+  ['incorrect', getLocale('optionIncorrect')],
+  ['unsafe-harmful', getLocale('optionUnsafeHarmful')],
+  ['other', getLocale('optionOther')]
 ])
 
-const ABOUT_LEO_PREMIUM_URL = "https://brave.com/leo-roadmap/"
+const ABOUT_LEO_PREMIUM_URL = 'https://brave.com/leo-roadmap/'
 
 interface FeedbackFormProps {
   onCancel?: () => void
@@ -93,7 +93,11 @@ function FeedbackForm(props: FeedbackFormProps) {
           >
             <div slot='label'>{getLocale('feedbackCategoryLabel')}</div>
             {[...CATEGORY_OPTIONS.keys()].map((key) => {
-              return <leo-option key={key} value={key}>{CATEGORY_OPTIONS.get(key)}</leo-option>
+              return (
+                <leo-option key={key} value={key}>
+                  {CATEGORY_OPTIONS.get(key)}
+                </leo-option>
+              )
             })}
           </DropDown>
         </fieldset>
