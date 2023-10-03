@@ -34,7 +34,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
   const [isPremiumUser] = React.useState(true)
-  const [hasUserDissmisedPremiumPrompt, setHasUserDissmisedPremiumPrompt] = React.useState(loadTimeData.getBoolean("hasUserDismissedPrompt"))
+  const [hasUserDissmisedPremiumPrompt, setHasUserDissmisedPremiumPrompt] = React.useState(loadTimeData.getBoolean("hasUserDismissedPremiumPrompt"))
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -103,12 +103,12 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const getHasUserDismissedPremiumPrompt = () => {
-    getPageHandlerInstance().pageHandler.getUserDismissedPremiumPrompt()
+    getPageHandlerInstance().pageHandler.getHasUserDismissedPremiumPrompt()
       .then(resp => setHasUserDissmisedPremiumPrompt(resp.hasDismissed))
   }
 
   const dismissPremiumPrompt = () => {
-    getPageHandlerInstance().pageHandler.setUserDismissedPremiumPrompt(true)
+    getPageHandlerInstance().pageHandler.setHasUserDismissedPremiumPrompt(true)
     setHasUserDissmisedPremiumPrompt(true)
   }
 

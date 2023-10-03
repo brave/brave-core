@@ -20,8 +20,8 @@ interface PremiumSuggestionProps {
 
 function PremiumSuggestion(props: PremiumSuggestionProps) {
   const pricingInfo = formatMessage(getLocale('premiumPricing'), {
-    tags: {
-      $1: () => <data>15</data>
+    placeholders: {
+      $1: <data>15</data>
     }
   })
 

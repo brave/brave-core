@@ -45,7 +45,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"premiumLabel", IDS_CHAT_UI_PREMIUM_LABEL},
       {"premiumPricing", IDS_CHAT_UI_PREMIUM_PRICING},
       {"dismissButtonLabel", IDS_CHAT_UI_DISMISS_BUTTON_LABEL},
-      {"unlockPremium", IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE}};
+      {"unlockPremiumTitle", IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE}};
       {"feedbackSent", IDS_CHAT_UI_FEEDBACK_SENT},
       {"answerDisliked", IDS_CHAT_UI_ANSWER_DISLIKED},
       {"answerLiked", IDS_CHAT_UI_ANSWER_LIKED},
