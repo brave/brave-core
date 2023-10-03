@@ -35,7 +35,7 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
     return true;
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST) && BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD) && BUILDFLAG(IS_WIN)
   // It's deprecated. Hide from brave://flags.
   if (base::EqualsCaseInsensitiveASCII(kBraveVPNWireguardFeatureInternalName,
                                        internal_name)) {

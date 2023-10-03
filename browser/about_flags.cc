@@ -110,15 +110,26 @@
       kOsWin,                                                            \
       FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection),   \
   })
-#else
+#elif BUILDFLAG(IS_MAC)
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES
+
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                    \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      kBraveVPNWireguardForOSXFeatureInternalName,                             \
+      "Enable experimental WireGuard Brave VPN for OSX",                       \
+      "Experimental WireGuard VPN support.",                                   \
+      kOsMac,                                                                  \
+      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNEnableWireguardForOSX), \
+  })
+#else  // BUILDFLAG(IS_MAC)
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
 #define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
-#endif
-#else
+#endif  // BUILDFLAG(IS_WIN)
+#else   // BUILDFLAG(ENABLE_BRAVE_VPN)
 #define BRAVE_VPN_FEATURE_ENTRIES
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
 #define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \
   EXPAND_FEATURE_ENTRIES({                              \
