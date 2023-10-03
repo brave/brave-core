@@ -155,12 +155,13 @@ public class TokenUtils {
             allTokenContexts.add(context);
         }
         allNetworkTokenCollector.setWhenAllCompletedAction(
-                () -> callback.call(allTokenContexts.stream()
-                              .map(context
-                                      -> filterTokens(context.networkInfo, context.tokens,
-                                              tokenType, false))
-                              .flatMap(Arrays::stream)
-                              .toArray(BlockchainToken[] ::new)));
+                ()
+                        -> callback.call(allTokenContexts.stream()
+                                                 .map(context
+                                                         -> filterTokens(context.networkInfo,
+                                                                 context.tokens, tokenType, false))
+                                                 .flatMap(Arrays::stream)
+                                                 .toArray(BlockchainToken[] ::new)));
     }
 
     /**
@@ -176,13 +177,14 @@ public class TokenUtils {
             BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, selectedNetwork.coin,
-                tokens -> braveWalletService.getUserAssets(
-                selectedNetwork.chainId, selectedNetwork.coin, userTokens -> {
-                    BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
-                            distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
-                            false);
-                    callback.call(filteredTokens);
-                }));
+                tokens
+                -> braveWalletService.getUserAssets(
+                        selectedNetwork.chainId, selectedNetwork.coin, userTokens -> {
+                            BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
+                                    distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
+                                    false);
+                            callback.call(filteredTokens);
+                        }));
     }
 
     /**
