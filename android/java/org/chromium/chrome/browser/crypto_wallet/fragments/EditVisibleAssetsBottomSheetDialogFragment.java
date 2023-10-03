@@ -365,8 +365,10 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private void setUpAssetsList(
             View view, List<BlockchainToken> tokens, List<BlockchainToken> userSelectedTokens) {
         HashSet<String> selectedTokensSymbols = new HashSet<>();
-        for (BlockchainToken userSelectedToken : userSelectedTokens) {
-            selectedTokensSymbols.add(Utils.tokenToString(userSelectedToken));
+        if (!mNftsOnly) {
+            for (BlockchainToken userSelectedToken : userSelectedTokens) {
+                selectedTokensSymbols.add(Utils.tokenToString(userSelectedToken));
+            }
         }
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
         mWalletCoinAdapter = new WalletCoinAdapter(mType);
@@ -394,7 +396,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             itemModel.setAssetNetwork(assetNetwork);
             itemModel.setBrowserResourcePath(tokensPath);
             itemModel.setIconPath("file://" + tokensPath + "/" + token.logo);
-            itemModel.isVisible(selectedTokensSymbols.contains(Utils.tokenToString(token)));
+            if (mNftsOnly) {
+                itemModel.isVisible(token.visible);
+            } else {
+                itemModel.isVisible(selectedTokensSymbols.contains(Utils.tokenToString(token)));
+            }
+
             walletListItemModelList.add(itemModel);
         }
         walletListItemModelList.sort(
