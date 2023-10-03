@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.app.domain;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -184,8 +183,7 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
                 if (perTxSolanaFee.get(txInfo.id) != null) {
                     solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
                 }
-                var txNetwork =
-                        NetworkUtils.findNetwork(mAllNetworkInfoList, txInfo.chainId, coin);
+                var txNetwork = NetworkUtils.findNetwork(mAllNetworkInfoList, txInfo.chainId, coin);
                 var txExtraData =
                         assetAccountsNetworkBalances.stream()
                                 .filter(data -> data.networkInfo.chainId.equals(txInfo.chainId))

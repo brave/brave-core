@@ -378,10 +378,13 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             NetworkInfo assetNetwork =
                     NetworkUtils.findNetwork(mCryptoNetworks, token.chainId, token.coin);
             if (assetNetwork == null) {
-                Log.e(TAG, String.format("Asset network for token with chain Id %s was null.", token.chainId));
+                Log.e(TAG,
+                        String.format("Asset network for token with chain Id %s was null.",
+                                token.chainId));
                 continue;
             }
-            String subtitle = !isEditVisibleAssetType ? token.symbol
+            String subtitle = !isEditVisibleAssetType
+                    ? token.symbol
                     : getString(R.string.brave_wallet_portfolio_asset_network_description,
                             token.symbol, assetNetwork.chainName);
 
