@@ -22,11 +22,11 @@
 #include "ios/chrome/browser/search_engines/template_url_service_factory.h"
 #include "ios/chrome/browser/signin/account_consistency_service_factory.h"
 #include "ios/chrome/browser/signin/identity_manager_factory.h"
-#include "ios/chrome/browser/sync/ios_user_event_service_factory.h"
-#include "ios/chrome/browser/sync/model_type_store_service_factory.h"
-#include "ios/chrome/browser/sync/session_sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_setup_service_factory.h"
+#include "ios/chrome/browser/sync/model/ios_user_event_service_factory.h"
+#include "ios/chrome/browser/sync/model/model_type_store_service_factory.h"
+#include "ios/chrome/browser/sync/model/session_sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/sync_setup_service_factory.h"
 #include "ios/chrome/browser/webdata_services/model/web_data_service_factory.h"
 
 void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
