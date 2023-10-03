@@ -98,8 +98,10 @@ function FeedbackForm(props: FeedbackFormProps) {
           </DropDown>
         </fieldset>
         <fieldset>
-          <label htmlFor='desc'>{getLocale('feedbackDescriptionLabel')}</label>
-          <textarea onChange={handleInputChange} id='desc' />
+          <label>
+            {getLocale('feedbackDescriptionLabel')}
+            <textarea onChange={handleInputChange} />
+          </label>
         </fieldset>
         <div className={styles.note}>{premiumNote}</div>
         <fieldset className={styles.actions}>

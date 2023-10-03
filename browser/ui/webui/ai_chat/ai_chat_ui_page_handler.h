@@ -66,9 +66,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void ClearConversationHistory() override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
-  void LikeMessage(bool is_liked,
+  void RateMessage(bool is_liked,
                    const std::string& turn_text,
-                   LikeMessageCallback callback) override;
+                   RateMessageCallback callback) override;
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
                     const std::string& rating_id,

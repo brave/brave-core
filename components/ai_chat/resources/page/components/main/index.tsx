@@ -93,8 +93,8 @@ function Main() {
         </div>
       </div>
       <div className={styles.scroller}>
-        {context.hasChangedModel && <ModelIntro />}
         <AlertCenter position='top-left' className={styles.alertCenter} />
+        {context.hasChangedModel && <ModelIntro />}
         {siteTitleElement && (
           <div className={styles.siteTitleBox}>{siteTitleElement}</div>
         )}

@@ -102,7 +102,7 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
-  LikeMessage(bool is_liked, string turn_text) => (string? id);
+  RateMessage(bool is_liked, string turn_text) => (string? id);
   SendFeedback(string category, string feedback, string rating_id) => (bool is_success);
 };
 

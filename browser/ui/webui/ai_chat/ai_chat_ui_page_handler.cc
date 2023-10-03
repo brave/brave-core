@@ -212,11 +212,11 @@ void AIChatUIPageHandler::GetAPIResponseError(
   std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
 }
 
-void AIChatUIPageHandler::LikeMessage(bool is_liked,
+void AIChatUIPageHandler::RateMessage(bool is_liked,
                                       const std::string& turn_text,
-                                      LikeMessageCallback callback) {
+                                      RateMessageCallback callback) {
   auto on_complete = base::BindOnce(
-      [](LikeMessageCallback callback, APIRequestResult result) {
+      [](RateMessageCallback callback, APIRequestResult result) {
         if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
           std::string id = *result.value_body().GetDict().FindString("id");
           std::move(callback).Run(id);

@@ -44,7 +44,7 @@ function ContextMenuAssistant_(
 
   const handleLikeAnswer = () => {
     getPageHandlerInstance()
-      .pageHandler.likeMessage(true, props.turnText)
+      .pageHandler.rateMessage(true, props.turnText)
       .then((resp) => {
         if (!resp.id) {
           showAlert({
@@ -69,7 +69,7 @@ function ContextMenuAssistant_(
 
   const handleDislikeAnswer = () => {
     getPageHandlerInstance()
-      .pageHandler.likeMessage(false, props.turnText)
+      .pageHandler.rateMessage(false, props.turnText)
       .then((resp) => {
         if (!resp.id) {
           showAlert({
