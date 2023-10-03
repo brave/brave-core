@@ -37,7 +37,7 @@ platform :ios do
     run_tests(
       project: "App/Client.xcodeproj",
       scheme: "Debug",
-      device: "iPhone 8",
+      device: "iPhone 14 (16.4)",
       code_coverage: true,
       skip_testing: [
 	"CertificateUtilitiesTests/CertificatePinningTest/testSelfSignedRootAllowed",
@@ -71,7 +71,7 @@ platform :ios do
     run_tests(
       project: "App/Client.xcodeproj",
       scheme: "Debug",
-      device: "iPad Pro (9.7-inch)",
+      device: "iPad (10th generation) (16.4)",
       code_coverage: true,
       skip_testing: [
         "ClientTests/UserAgentTests"
