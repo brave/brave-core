@@ -878,7 +878,7 @@ extension BrowserViewController: ToolbarDelegate {
     presentPanModal(menuController, sourceView: tabToolbar.menuButton, sourceRect: tabToolbar.menuButton.bounds)
     if menuController.modalPresentationStyle == .popover {
       menuController.popoverPresentationController?.popoverLayoutMargins = .init(equalInset: 4)
-      menuController.popoverPresentationController?.permittedArrowDirections = [.up]
+      menuController.popoverPresentationController?.permittedArrowDirections = [.up, .down]
     }
   }
 
