@@ -608,10 +608,6 @@ package = "getrandom"
 path = "group/v0_12/crate"
 package = "group"
 
-[patch.crates-io.hashbrown_v0_11]
-path = "hashbrown/v0_11/crate"
-package = "hashbrown"
-
 [patch.crates-io.hashbrown_v0_12]
 path = "hashbrown/v0_12/crate"
 package = "hashbrown"
