@@ -90,8 +90,8 @@ extension Preferences {
       default: false)
     
     /// Whether a default browser local notification should be shown
-    public static let defaultBrowserNotificationShouldBeShown = Option<Bool>(
-      key: "general.default-browser-notification-shown",
-      default: true)
+    public static let defaultBrowserNotificationIsCanceled = Option<Bool>(
+      key: "general.default-browser-notification-canceled",
+      default: false)
   }
 }
