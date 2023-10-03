@@ -12,7 +12,7 @@ source_set("brave_rewards_unit_tests") {
 
   sources = [
     "//brave/components/brave_rewards/browser/publisher_utils_unittest.cc",
-    "//brave/components/brave_rewards/browser/rewards_protocol_handler_unittest.cc",
+    "//brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle_unittest.cc",
     "//brave/components/brave_rewards/browser/rewards_service_impl_jp_unittest.cc",
     "//brave/components/brave_rewards/browser/rewards_service_impl_unittest.cc",
   ]

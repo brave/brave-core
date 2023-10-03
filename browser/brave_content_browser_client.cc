@@ -37,7 +37,6 @@
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/browser/brave_search_default_host_private.h"
@@ -1133,10 +1132,10 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   }
 
   // Rewards
-  if (auto rewards_protocol_throttle = brave_rewards::
-          RewardsProtocolNavigationThrottle::MaybeCreateThrottleFor(handle)) {
-    throttles.insert(throttles.begin(), std::move(rewards_protocol_throttle));
-  }
+  throttles.insert(
+      throttles.begin(),
+      std::make_unique<brave_rewards::RewardsProtocolNavigationThrottle>(
+          handle));
 
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.

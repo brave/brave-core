@@ -27,8 +27,6 @@ static_library("browser") {
     "rewards_notification_service_observer.h",
     "rewards_p3a.cc",
     "rewards_p3a.h",
-    "rewards_protocol_handler.cc",
-    "rewards_protocol_handler.h",
     "rewards_protocol_navigation_throttle.cc",
     "rewards_protocol_navigation_throttle.h",
     "rewards_service.cc",
