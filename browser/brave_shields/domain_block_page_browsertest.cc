@@ -53,13 +53,6 @@ class DomainBlockTestBase : public AdBlockServiceTest {
     UpdateAdBlockInstanceWithRules("||" + url.host() + "^");
   }
 
-  content::WebContents* web_contents() {
-    content::WebContents* web_contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    DCHECK(web_contents);
-    return web_contents;
-  }
-
   bool IsShowingInterstitial() {
     return chrome_browser_interstitials::IsShowingInterstitial(web_contents());
   }
