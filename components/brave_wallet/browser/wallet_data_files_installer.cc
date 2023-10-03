@@ -172,6 +172,22 @@ void OnSanitizedCoingeckoIdsMap(data_decoder::JsonSanitizer::Result result) {
       std::move(*coingecko_ids_map));
 }
 
+void OnSanitizedOfacAddressesList(data_decoder::JsonSanitizer::Result result) {
+  if (!result.has_value()) {
+    VLOG(1) << "OFAC addresses list JSON validation error:" << result.error();
+    return;
+  }
+
+  absl::optional<std::vector<std::string>> list =
+      ParseOfacAddressesList(*result);
+  if (!list) {
+    VLOG(1) << "Can't parse ofac addresses list.";
+    return;
+  }
+
+  BlockchainRegistry::GetInstance()->UpdateOfacAddressesList(std::move(*list));
+}
+
 void HandleParseCoingeckoIdsMap(base::FilePath absolute_install_dir,
                                 const std::string& filename) {
   const base::FilePath coingecko_ids_map_json_path =
@@ -264,6 +280,20 @@ void HandleParseOnRampCurrenciesLists(base::FilePath absolute_install_dir,
       base::BindOnce(&OnSanitizedOnRampCurrenciesLists));
 }
 
+void HandleParseOfacAddressesList(base::FilePath absolute_install_dir,
+                                  const std::string& filename) {
+  const base::FilePath ofac_list_json_path =
+      absolute_install_dir.AppendASCII(filename);
+  std::string ofac_list;
+  if (!base::ReadFileToString(ofac_list_json_path, &ofac_list)) {
+    LOG(ERROR) << "Can't read OFAC lists file: " << filename;
+    return;
+  }
+
+  data_decoder::JsonSanitizer::Sanitize(
+      std::move(ofac_list), base::BindOnce(&OnSanitizedOfacAddressesList));
+}
+
 void ParseCoingeckoIdsMapAndUpdateRegistry(const base::FilePath& install_dir) {
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
@@ -346,6 +376,23 @@ void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir) {
                                    "on-ramp-currency-lists.json");
 }
 
+void ParseOfacAddressesListsAndUpdateRegistry(
+    const base::FilePath& install_dir) {
+  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
+  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
+  // requires IO so it can only be done in this function.
+  const base::FilePath absolute_install_dir =
+      base::MakeAbsoluteFilePath(install_dir);
+
+  if (absolute_install_dir.empty()) {
+    LOG(ERROR) << "Failed to get absolute install path.";
+    return;
+  }
+
+  HandleParseOfacAddressesList(
+      absolute_install_dir, "ofac-sanctioned-digital-currency-addresses.json");
+}
+
 }  // namespace
 
 class WalletDataFilesInstallerPolicy
@@ -423,6 +470,10 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
 
   sequenced_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&ParseOnRampListsAndUpdateRegistry, path));
+
+  sequenced_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&ParseOfacAddressesListsAndUpdateRegistry, path));
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(

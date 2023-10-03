@@ -141,6 +141,7 @@ void EthTxManager::AddUnapprovedTransaction(
     const mojom::AccountIdPtr& from,
     const absl::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
+  // TODO(nvonpentz) Ensure to address is not an OFAC banned address.
   DCHECK(tx_data_union->is_eth_tx_data() ||
          tx_data_union->is_eth_tx_data_1559());
   auto origin_val =
@@ -683,6 +684,7 @@ void EthTxManager::MakeERC20TransferData(
     const std::string& to_address,
     const std::string& amount,
     MakeERC20TransferDataCallback callback) {
+  // TODO(nvonpentz) Ensure to_address is not an OFAC banned address.
   uint256_t amount_uint = 0;
   if (!HexValueToUint256(amount, &amount_uint)) {
     LOG(ERROR) << "Could not convert amount";
@@ -710,6 +712,7 @@ void EthTxManager::MakeERC20TransferData(
 void EthTxManager::MakeERC20ApproveData(const std::string& spender_address,
                                         const std::string& amount,
                                         MakeERC20ApproveDataCallback callback) {
+  // TODO(nvonpentz) Ensure spender_address is not an OFAC banned address.
   uint256_t amount_uint = 0;
   if (!HexValueToUint256(amount, &amount_uint)) {
     LOG(ERROR) << "Could not convert amount";
@@ -740,6 +743,7 @@ void EthTxManager::MakeERC721TransferFromData(
     const std::string& token_id,
     const std::string& contract_address,
     MakeERC721TransferFromDataCallback callback) {
+  // TODO(nvonpentz) Ensure to is not an OFAC banned address.
   uint256_t token_id_uint = 0;
   if (!HexValueToUint256(token_id, &token_id_uint)) {
     VLOG(1) << __FUNCTION__ << ": Could not convert token_id";
@@ -791,6 +795,7 @@ void EthTxManager::MakeERC1155TransferFromData(
     const std::string& value,
     const std::string& contract_address,
     MakeERC1155TransferFromDataCallback callback) {
+  // TODO(nvonpentz) Ensure to is not an OFAC banned address.
   uint256_t token_id_uint = 0;
   if (!HexValueToUint256(token_id, &token_id_uint)) {
     VLOG(1) << __FUNCTION__ << ": Could not convert token_id";

@@ -846,6 +846,23 @@ TEST(BlockchainRegistryUnitTest, GetOnRampCurrencies) {
   run_loop->Run();
 }
 
+TEST(BlockchainRegistryUnitTest, IsOfacAddress) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  // Before parsing the list, should return false.
+  EXPECT_FALSE(
+      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+
+  // After parsing the list, we should have some addresses;
+  std::vector<std::string> input_list;
+  input_list.push_back("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78");
+  registry->UpdateOfacAddressesList(input_list);
+  EXPECT_TRUE(
+      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  EXPECT_FALSE(registry->IsOfacAddress(""));
+}
+
 TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworks) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();

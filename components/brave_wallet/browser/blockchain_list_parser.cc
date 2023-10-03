@@ -734,4 +734,29 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
   return CoingeckoIdsMap(coingecko_ids_map.begin(), coingecko_ids_map.end());
 }
 
+absl::optional<std::vector<std::string>> ParseOfacAddressesList(
+    const std::string& json) {
+  // TODO(nvonpentz) add json example
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!records_v || !records_v->is_dict()) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return absl::nullopt;
+  }
+
+  auto ofac_list_from_component =
+      blockchain_lists::OfacAddressesList::FromValue(records_v->GetDict());
+  if (!ofac_list_from_component) {
+    return absl::nullopt;
+  }
+
+  std::vector<std::string> ofac_list;
+  for (const auto& address : (*ofac_list_from_component).addresses) {
+    ofac_list.push_back(address);
+  }
+
+  return ofac_list;
+}
+
 }  // namespace brave_wallet
