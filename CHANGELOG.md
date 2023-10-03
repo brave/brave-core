@@ -1,5 +1,48 @@
 # Changelog
 
+## [1.52](https://github.com/brave/brave-ios/releases/tag/v1.52)
+
+### Web3
+
+- Implemented NFT auto discovery in Brave Wallet. ([#7370](https://github.com/brave/brave-ios/issues/7370))
+- Added support to show transactions from all networks in activity tab. ([#7233](https://github.com/brave/brave-ios/issues/7233))
+- Added support for Solana v0 versioned transactions. ([#7211](https://github.com/brave/brave-ios/issues/7211))
+- Added the ability to connect to DApps by selected network per origin. ([#7225](https://github.com/brave/brave-ios/issues/7225))
+- Updated DApp requests to display network chain name. ([#7296](https://github.com/brave/brave-ios/issues/7296))
+- Updated pending transactions list to show the most recent one first. ([#7295](https://github.com/brave/brave-ios/issues/7295))
+- Updated sorting to show most recent pending transactions first. ([#7572](https://github.com/brave/brave-ios/issues/7572))
+- Fixed a crash when migrating from a legacy wallet. ([#7464](https://github.com/brave/brave-ios/issues/7464))
+- Fixed an account change event not emitting correctly. ([#7463](https://github.com/brave/brave-ios/issues/7463))
+- Fixed transaction links to open correct block explorer irrespective of the active network. ([#7455](https://github.com/brave/brave-ios/issues/7455))
+- Fixed loading indicator not being removed during asset auto discovery. ([#7433](https://github.com/brave/brave-ios/issues/7433))
+
+### General
+
+- Added top page color sampling for status bar overlay view color. ([#7479](https://github.com/brave/brave-ios/issues/7479))
+- Added biometrics and passcode authentication for Sync settings. ([#7436](https://github.com/brave/brave-ios/issues/7436))
+- Updated copy for Safe Browsing setting. ([#7430](https://github.com/brave/brave-ios/issues/7430))
+- Updated Playlist URL bar icons and menus. ([#7422](https://github.com/brave/brave-ios/issues/7422))
+- Updated copy text in Playlist. ([#7353](https://github.com/brave/brave-ios/issues/7353))
+- Updated Playlist to use Async-Await. ([#7349](https://github.com/brave/brave-ios/issues/7349))
+- Updated SSL Trust Validation to be less strict in order to block Mixed-Content validation. ([#5543](https://github.com/brave/brave-ios/issues/5543))
+- Enabled monogram favicons to keep background color between app launches. ([#7396](https://github.com/brave/brave-ios/issues/7396))
+- Fixed VPN profile from failing to initialize after purchase. ([#7413](https://github.com/brave/brave-ios/issues/7413))
+- Fixed issues with cosmetic filters during slow page loads. ([#7612](https://github.com/brave/brave-ios/issues/7612))
+- Fixed "Find In Page" bar from dismissing when touched while in top-bar mode. ([#7610](https://github.com/brave/brave-ios/issues/7610))
+- Fixed a crash when closing tabs in certain cases. ([#7548](https://github.com/brave/brave-ios/issues/7548))
+- Fixed various issues with CarPlay. ([#7541](https://github.com/brave/brave-ios/issues/7541))
+- Fixed https://youtube.com from adding audio files to playlist videos. ([#7537](https://github.com/brave/brave-ios/issues/7537))
+- Fixed tabs not being restored after closing private tab or toggling tab view. ([#7517](https://github.com/brave/brave-ios/issues/7517))
+- Fixed RewardsScript not running in desktop mode on iPhone devices. ([#7512](https://github.com/brave/brave-ios/issues/7512))
+- Fixed preroll ads being shown as black screen when disabling “Ads Blocking” in Shields. ([#7501](https://github.com/brave/brave-ios/issues/7501))
+- Fixed Open Session Screen to be updated properly upon deleting Sync Chain from tab tray. ([#7493](https://github.com/brave/brave-ios/issues/7493))
+- Fixed issue with background color for “Logins & Passwords” in dark mode. ([#7481](https://github.com/brave/brave-ios/issues/7481))
+- Fixed issue with Tabs Bar being hidden after using QR code scanner. ([#7476](https://github.com/brave/brave-ios/issues/7476))
+- Fixed Playlist lock-screen pausing issues. ([#7466](https://github.com/brave/brave-ios/issues/7466))
+- Fixed infinite loading spinner next to toggle switch when enabling VPN. ([#7448](https://github.com/brave/brave-ios/issues/7448))
+- Fixed cosmetic filters being injected into content editable bodies. ([#7626](https://github.com/brave/brave-ios/issues/7626))
+- Fixed hour format for the Open Tabs Session Time. ([#7410](https://github.com/brave/brave-ios/issues/7410))
+- Fixed calendar invitations being downloaded rather than being added into iOS calendar when Brave is set as the default browser. ([#7386](https://github.com/brave/brave-ios/issues/7386))
 
 ## [1.51.2](https://github.com/brave/brave-ios/releases/tag/v1.51.2)
 
