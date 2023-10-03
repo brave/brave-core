@@ -10,11 +10,11 @@ namespace brave_ads {
 
 void DisableBraveRewardsForTesting();
 
-void DisableBraveNewsAdsForTesting();
+void OptOutOfBraveNewsAdsForTesting();
 
-void DisableNewTabPageAdsForTesting();
+void OptOutOfNewTabPageAdsForTesting();
 
-void DisableNotificationAdsForTesting();
+void OptOutOfNotificationAdsForTesting();
 void SetMaximumNotificationAdsPerHourForTesting(int max_ads_per_hour);
 
 }  // namespace brave_ads

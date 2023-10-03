@@ -32,13 +32,13 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsStoppedForSingleTab) {
   // Arrange
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ true);
 
-  NotifyTabDidStartPlayingMedia(/*id*/ 1);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
   // Act
-  NotifyTabDidStopPlayingMedia(/*id*/ 1);
+  NotifyTabDidStopPlayingMedia(/*tab_id*/ 1);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -48,15 +48,15 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ true);
 
-  NotifyTabDidStartPlayingMedia(/*id*/ 1);
-  NotifyTabDidStartPlayingMedia(/*id*/ 2);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 2);
 
   // Act
-  NotifyTabDidStopPlayingMedia(/*id*/ 1);
-  NotifyTabDidStopPlayingMedia(/*id*/ 2);
+  NotifyTabDidStopPlayingMedia(/*tab_id*/ 1);
+  NotifyTabDidStopPlayingMedia(/*tab_id*/ 2);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -66,14 +66,14 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
   // Arrange
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ true);
 
-  NotifyTabDidStartPlayingMedia(/*id*/ 1);
-  NotifyTabDidStartPlayingMedia(/*id*/ 2);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 2);
 
   // Act
-  NotifyTabDidStopPlayingMedia(/*id*/ 1);
+  NotifyTabDidStopPlayingMedia(/*tab_id*/ 1);
 
   // Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -83,11 +83,11 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnVisibleTab) {
   // Arrange
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ true);
 
   // Act
-  NotifyTabDidStartPlayingMedia(/*id*/ 1);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
   // Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
@@ -103,10 +103,10 @@ TEST_F(
       {{"should_only_serve_ads_if_media_is_not_playing", "false"}});
 
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ true);
 
-  NotifyTabDidStartPlayingMedia(/*id*/ 1);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
   // Act
 
@@ -118,12 +118,12 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnMultipleTabs) {
   // Arrange
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ true);
 
   // Act
-  NotifyTabDidStartPlayingMedia(/*id*/ 1);
-  NotifyTabDidStartPlayingMedia(/*id*/ 2);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 2);
 
   // Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
@@ -133,14 +133,14 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
   // Arrange
   NotifyTabDidChange(
-      /*id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
-      /*is_active*/ true);
+      /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
+      /*is_visible*/ true);
 
-  NotifyTabDidStartPlayingMedia(/*id*/ 1);
-  NotifyTabDidStartPlayingMedia(/*id*/ 2);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
+  NotifyTabDidStartPlayingMedia(/*tab_id*/ 2);
 
   // Act
-  NotifyTabDidStopPlayingMedia(/*id*/ 2);
+  NotifyTabDidStopPlayingMedia(/*tab_id*/ 2);
 
   // Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());

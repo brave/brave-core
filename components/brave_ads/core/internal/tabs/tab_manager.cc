@@ -39,7 +39,11 @@ void TabManager::RemoveObserver(TabManagerObserver* observer) {
 }
 
 bool TabManager::IsVisible(const int32_t id) const {
-  return id != 0 && visible_tab_id_ == id;
+  if (!visible_tab_id_) {
+    return false;
+  }
+
+  return visible_tab_id_ == id;
 }
 
 bool TabManager::IsPlayingMedia(const int32_t id) const {
@@ -48,11 +52,19 @@ bool TabManager::IsPlayingMedia(const int32_t id) const {
 }
 
 absl::optional<TabInfo> TabManager::GetVisible() const {
-  return MaybeGetForId(visible_tab_id_);
+  if (!visible_tab_id_) {
+    return absl::nullopt;
+  }
+
+  return MaybeGetForId(*visible_tab_id_);
 }
 
 absl::optional<TabInfo> TabManager::GetLastVisible() const {
-  return MaybeGetForId(last_visible_tab_id_);
+  if (!last_visible_tab_id_) {
+    return absl::nullopt;
+  }
+
+  return MaybeGetForId(*last_visible_tab_id_);
 }
 
 absl::optional<TabInfo> TabManager::MaybeGetForId(const int32_t id) const {
@@ -186,7 +198,7 @@ void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t id) {
 void TabManager::OnNotifyTabDidChange(const int32_t id,
                                       const std::vector<GURL>& redirect_chain,
                                       const bool is_visible) {
-  const bool is_existing_tab = static_cast<bool>(MaybeGetForId(id));
+  const bool is_existing_tab = !!MaybeGetForId(id);
 
   TabInfo& tab = GetOrCreateForId(id);
 
@@ -217,6 +229,7 @@ void TabManager::OnNotifyTabDidChange(const int32_t id,
   BLOG(2, "Tab id " << id << " is visible");
 
   last_visible_tab_id_ = visible_tab_id_;
+
   visible_tab_id_ = id;
 
   if (is_existing_tab) {

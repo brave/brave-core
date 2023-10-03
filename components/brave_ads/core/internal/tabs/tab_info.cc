@@ -6,10 +6,18 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 
 #include <tuple>
+#include <utility>
 
 namespace brave_ads {
 
 TabInfo::TabInfo() = default;
+
+TabInfo::TabInfo(const int32_t id,
+                 std::vector<GURL> redirect_chain,
+                 const bool is_playing_media)
+    : id(id),
+      redirect_chain(std::move(redirect_chain)),
+      is_playing_media(is_playing_media) {}
 
 TabInfo::TabInfo(const TabInfo& other) = default;
 

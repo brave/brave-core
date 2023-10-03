@@ -39,7 +39,7 @@ class BraveAdsRewardConfirmationUtilTest : public UnitTestBase {
         TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ false));
   }
 
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  TokenGeneratorMock token_generator_mock_;
 };
 
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
@@ -73,7 +73,6 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([=](const UserDataInfo& user_data) {
     const absl::optional<ConfirmationInfo> confirmation =
@@ -124,6 +123,8 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
 
   // Act
   BuildConfirmationUserData(transaction, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,

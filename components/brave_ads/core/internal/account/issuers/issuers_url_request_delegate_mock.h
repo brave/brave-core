@@ -11,8 +11,6 @@
 
 namespace brave_ads {
 
-struct IssuersInfo;
-
 class IssuersUrlRequestDelegateMock : public IssuersUrlRequestDelegate {
  public:
   IssuersUrlRequestDelegateMock();

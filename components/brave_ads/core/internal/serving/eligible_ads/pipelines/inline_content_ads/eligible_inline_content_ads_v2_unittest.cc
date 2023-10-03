@@ -7,8 +7,9 @@
 
 #include <memory>
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
@@ -52,6 +53,9 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
 
   database::SaveCreativeInlineContentAds(creative_ads);
 
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
+
   // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{
@@ -60,11 +64,9 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
           InterestUserModelInfo{SegmentList{"foo-bar3"},
                                 TextEmbeddingHtmlEventList{}},
       },
-      /*dimensions*/ "200x100",
-      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_FALSE(creative_ads.empty());
-      }));
+      /*dimensions*/ "200x100", callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
@@ -83,19 +85,21 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
 
   database::SaveCreativeInlineContentAds(creative_ads);
 
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
+
   // Act
-  eligible_ads_->GetForUserModel(
-      /*user_model*/ {},
-      /*dimensions*/ "200x100",
-      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_FALSE(creative_ads.empty());
-      }));
+  eligible_ads_->GetForUserModel(/*user_model*/ {}, /*dimensions*/ "200x100",
+                                 callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
        DoNotGetAdsForNonExistentDimensions) {
   // Arrange
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -104,15 +108,15 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
           LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
                                 TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "?x?",
-      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(creative_ads.empty());
-      }));
+      /*dimensions*/ "?x?", callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -121,11 +125,9 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
           LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
                                 TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100",
-      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(creative_ads.empty());
-      }));
+      /*dimensions*/ "200x100", callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

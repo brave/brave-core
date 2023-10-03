@@ -83,10 +83,10 @@ class TabManager final : public AdsClientNotifierObserver {
   uint32_t last_text_content_hash_ = 0;
   uint32_t last_html_content_hash_ = 0;
 
-  int32_t visible_tab_id_ = 0;
-  int32_t last_visible_tab_id_ = 0;
+  absl::optional<int32_t> visible_tab_id_;
+  absl::optional<int32_t> last_visible_tab_id_;
 
-  std::map</*id*/ int32_t, TabInfo> tabs_;
+  std::map</*tab_id*/ int32_t, TabInfo> tabs_;
 };
 
 }  // namespace brave_ads

@@ -47,35 +47,34 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Assert
-  base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
-    const base::Value::Dict expected_user_data =
-        base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
-            R"(
-                {
-                  "buildChannel": "release",
-                  "catalog": [
-                    {
-                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
-                    }
-                  ],
-                  "countryCode": "US",
-                  "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
-                  "platform": "windows",
-                  "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
-                  "segment": "untargeted",
-                  "studies": [],
-                  "topSegment": [],
-                  "versionNumber": "$1"
-                })",
-            {GetBrowserVersionNumber()}, nullptr));
+  const base::Value::Dict expected_user_data =
+      base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
+          R"(
+              {
+                "buildChannel": "release",
+                "catalog": [
+                  {
+                    "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                  }
+                ],
+                "countryCode": "US",
+                "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                "platform": "windows",
+                "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                "segment": "untargeted",
+                "studies": [],
+                "topSegment": [],
+                "versionNumber": "$1"
+              })",
+          {GetBrowserVersionNumber()}, nullptr));
 
-    EXPECT_EQ(expected_user_data, user_data);
-  });
+  base::MockCallback<BuildUserDataCallback> callback;
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 
   // Act
   BuildFixedUserData(transaction, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest,
@@ -87,13 +86,15 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*user_data*/ ::testing::IsEmpty()));
 
   // Act
   BuildFixedUserData(transaction, callback.Get());
+
+  // Assert
 }
+
 TEST_F(BraveAdsFixedUserDataBuilderTest,
        BuildConversionConfirmationUserDataForRewardsUser) {
   // Arrange
@@ -105,39 +106,38 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion,
       /*should_use_random_uuids*/ false);
 
-  // Assert
-  base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
-    const base::Value::Dict expected_user_data =
-        base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
-            R"(
-                {
-                  "buildChannel": "release",
-                  "catalog": [
-                    {
-                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
-                    }
-                  ],
-                  "conversion": [
-                    {
-                      "action": "view"
-                    }
-                  ],
-                  "countryCode": "US",
-                  "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
-                  "platform": "windows",
-                  "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
-                  "segment": "untargeted",
-                  "studies": [],
-                  "versionNumber": "$1"
-                })",
-            {GetBrowserVersionNumber()}, nullptr));
+  const base::Value::Dict expected_user_data =
+      base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
+          R"(
+              {
+                "buildChannel": "release",
+                "catalog": [
+                  {
+                    "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                  }
+                ],
+                "conversion": [
+                  {
+                    "action": "view"
+                  }
+                ],
+                "countryCode": "US",
+                "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
+                "platform": "windows",
+                "rotating_hash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
+                "segment": "untargeted",
+                "studies": [],
+                "versionNumber": "$1"
+              })",
+          {GetBrowserVersionNumber()}, nullptr));
 
-    EXPECT_EQ(expected_user_data, user_data);
-  });
+  base::MockCallback<BuildUserDataCallback> callback;
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
 
   // Act
   BuildFixedUserData(transaction, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest,
@@ -153,7 +153,6 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion,
       /*should_use_random_uuids*/ false);
 
-  // Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
       R"(
           {
@@ -169,6 +168,8 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
 
   // Act
   BuildFixedUserData(transaction, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest,
@@ -182,7 +183,6 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion,
       /*should_use_random_uuids*/ false);
 
-  // Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
     std::string json;
@@ -195,6 +195,8 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
 
   // Act
   BuildFixedUserData(transaction, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest,
@@ -210,7 +212,6 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion,
       /*should_use_random_uuids*/ false);
 
-  // Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
     std::string json;
@@ -222,6 +223,8 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
 
   // Act
   BuildFixedUserData(transaction, callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

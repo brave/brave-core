@@ -73,8 +73,9 @@ class BraveAdsTimeUtilTest : public UnitTestBase,
   }
 
   void TearDown() override {
-    UnitTestBase::TearDown();
     SetFromLocalExplodedFailedForTesting(false);
+
+    UnitTestBase::TearDown();
   }
 };
 

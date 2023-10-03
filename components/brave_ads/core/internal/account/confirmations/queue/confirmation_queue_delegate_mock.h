@@ -7,12 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_CONFIRMATION_QUEUE_DELEGATE_MOCK_H_
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
-
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
-
-struct ConfirmationInfo;
 
 class ConfirmationQueueDelegateMock : public ConfirmationQueueDelegate {
  public:

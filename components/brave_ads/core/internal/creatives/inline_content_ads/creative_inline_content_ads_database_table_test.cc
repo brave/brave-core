@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -31,37 +31,39 @@ class BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest
 };
 
 TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
-       GetCreativeInlineContentAdsForSegmentsAndDimensionsFromCatalogResponse) {
+       GetForSegmentsAndDimensions) {
   // Arrange
+  base::MockCallback<database::table::GetCreativeInlineContentAdsCallback>
+      callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            /*segments*/ SegmentList{"technology & computing"},
+                            /*creative_ads*/ ::testing::SizeIs(1)));
+
+  const database::table::CreativeInlineContentAds database_table;
 
   // Act
-
-  // Assert
-  const database::table::CreativeInlineContentAds database_table;
   database_table.GetForSegmentsAndDimensions(
       /*segments*/ {"technology & computing"}, /*dimensions*/ "200x100",
-      base::BindOnce([](const bool success, const SegmentList& /*segments*/,
-                        const CreativeInlineContentAdList& creative_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_EQ(1U, creative_ads.size());
-      }));
+      callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
-       GetCreativeInlineContentAdsForDimensionsFromCatalogResponse) {
+       GetForDimensions) {
   // Arrange
+  base::MockCallback<
+      database::table::GetCreativeInlineContentAdsForDimensionsCallback>
+      callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            /*creative_ads*/ ::testing::SizeIs(1)));
+
+  const database::table::CreativeInlineContentAds database_table;
 
   // Act
+  database_table.GetForDimensions("200x100", callback.Get());
 
   // Assert
-  const database::table::CreativeInlineContentAds database_table;
-  database_table.GetForDimensions(
-      "200x100",
-      base::BindOnce([](const bool success,
-                        const CreativeInlineContentAdList& creative_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_EQ(1U, creative_ads.size());
-      }));
 }
 
 }  // namespace brave_ads

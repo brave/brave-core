@@ -40,6 +40,7 @@ class BraveAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
   }
 
   std::unique_ptr<Catalog> catalog_;
+
   std::unique_ptr<EpsilonGreedyBanditResource> resource_;
 };
 
@@ -66,7 +67,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        LoadResourceIfOptedOutOfNotificationAdsAndOptedInToBraveNewsAds) {
   // Arrange
-  DisableNotificationAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
 
   // Act
   LoadResource("catalog.json");
@@ -78,7 +79,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        LoadResourceIfOptedInToNotificationAdsAndOptedOutOfBraveNewsAds) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   // Act
   LoadResource("catalog.json");
@@ -100,8 +101,8 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest, LoadResourceIfEmptyCatalog) {
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        DoNotLoadResourceIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAdsForTesting();
-  DisableBraveNewsAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   // Act
   LoadResource("catalog.json");
@@ -116,8 +117,8 @@ TEST_F(
   // Arrange
   LoadResource("catalog.json");
 
-  DisableNotificationAdsForTesting();
-  DisableBraveNewsAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);

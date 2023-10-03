@@ -8,6 +8,7 @@
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_unittest_constants.h"
 
 namespace brave_ads {
 
@@ -18,9 +19,11 @@ CreativePromotedContentAdList BuildCreativePromotedContentAdsForTesting(
   CreativePromotedContentAdList creative_ads;
 
   for (int i = 0; i < count; i++) {
-    const CreativePromotedContentAdInfo creative_ad =
+    CreativePromotedContentAdInfo creative_ad =
         BuildCreativePromotedContentAdForTesting(
             /*should_use_random_uuids*/ true);
+    creative_ad.segment = kSegments[i % std::size(kSegments)];
+
     creative_ads.push_back(creative_ad);
   }
 

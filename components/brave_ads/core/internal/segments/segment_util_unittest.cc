@@ -76,14 +76,14 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegments) {
   // Arrange
   const SegmentList segments = {"technology & computing-software",
                                 "personal finance-personal finance",
-                                "automobiles"};
+                                "automotive"};
 
   // Act
   const SegmentList parent_segments = GetParentSegments(segments);
 
   // Assert
   const SegmentList expected_parent_segments = {
-      "technology & computing", "personal finance", "automobiles"};
+      "technology & computing", "personal finance", "automotive"};
   EXPECT_EQ(expected_parent_segments, parent_segments);
 }
 

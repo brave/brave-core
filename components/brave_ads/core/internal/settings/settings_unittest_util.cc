@@ -17,12 +17,12 @@ void DisableBraveRewardsForTesting() {
   SetBooleanPref(brave_rewards::prefs::kEnabled, false);
 }
 
-void DisableBraveNewsAdsForTesting() {
+void OptOutOfBraveNewsAdsForTesting() {
   SetBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
   SetBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
 }
 
-void DisableNewTabPageAdsForTesting() {
+void OptOutOfNewTabPageAdsForTesting() {
   SetBooleanPref(ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
                  false);
   SetBooleanPref(ntp_background_images::prefs::
@@ -30,7 +30,7 @@ void DisableNewTabPageAdsForTesting() {
                  false);
 }
 
-void DisableNotificationAdsForTesting() {
+void OptOutOfNotificationAdsForTesting() {
   SetBooleanPref(prefs::kOptedInToNotificationAds, false);
 }
 

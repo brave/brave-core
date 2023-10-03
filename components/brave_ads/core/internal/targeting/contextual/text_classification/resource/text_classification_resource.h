@@ -30,9 +30,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   ~TextClassificationResource() override;
 
-  bool IsInitialized() const {
-    return static_cast<bool>(text_processing_pipeline_);
-  }
+  bool IsInitialized() const { return !!text_processing_pipeline_; }
 
   const absl::optional<ml::pipeline::TextProcessing>& get() const {
     return text_processing_pipeline_;

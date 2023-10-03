@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -32,17 +32,16 @@ class BraveAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
 TEST_F(BraveAdsConversionsDatabaseTableIntegrationTest,
        GetConversionsFromCatalogResponse) {
   // Arrange
+  base::MockCallback<database::table::GetConversionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            /*creative_set_conversions*/ ::testing::SizeIs(2)));
+
+  const database::table::CreativeSetConversions database_table;
 
   // Act
+  database_table.GetAll(callback.Get());
 
   // Assert
-  const database::table::CreativeSetConversions database_table;
-  database_table.GetAll(base::BindOnce(
-      [](const bool success,
-         const CreativeSetConversionList& creative_set_conversions) {
-        EXPECT_TRUE(success);
-        EXPECT_EQ(2U, creative_set_conversions.size());
-      }));
 }
 
 }  // namespace brave_ads

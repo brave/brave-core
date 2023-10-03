@@ -11,8 +11,6 @@
 
 namespace brave_ads {
 
-struct CatalogInfo;
-
 class CatalogUrlRequestDelegateMock : public CatalogUrlRequestDelegate {
  public:
   CatalogUrlRequestDelegateMock();

@@ -12,7 +12,9 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate.h"
+#include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -24,38 +26,6 @@
 
 namespace brave_ads {
 
-class InlineContentAdServingDelegateForTesting
-    : public InlineContentAdServingDelegate {
- public:
-  const InlineContentAdInfo& ad() const { return ad_; }
-
-  bool opportunity_arose_to_serve_ad() const {
-    return opportunity_arose_to_serve_ad_;
-  }
-
-  bool did_serve_ad() const { return did_serve_ad_; }
-
-  bool failed_to_serve_ad() const { return failed_to_serve_ad_; }
-
- private:
-  // InlineContentAdServingDelegate:
-  void OnOpportunityAroseToServeInlineContentAd() override {
-    opportunity_arose_to_serve_ad_ = true;
-  }
-
-  void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override {
-    ad_ = ad;
-    did_serve_ad_ = true;
-  }
-
-  void OnFailedToServeInlineContentAd() override { failed_to_serve_ad_ = true; }
-
-  InlineContentAdInfo ad_;
-  bool opportunity_arose_to_serve_ad_ = false;
-  bool did_serve_ad_ = false;
-  bool failed_to_serve_ad_ = false;
-};
-
 class BraveAdsInlineContentAdServingTest : public UnitTestBase {
  protected:
   void MaybeServeAd(const std::string& dimensions,
@@ -64,12 +34,12 @@ class BraveAdsInlineContentAdServingTest : public UnitTestBase {
     AntiTargetingResource anti_targeting_resource;
     InlineContentAdServing ad_serving(subdivision_targeting,
                                       anti_targeting_resource);
-    ad_serving.SetDelegate(&ad_serving_delegate_);
+    ad_serving.SetDelegate(&delegate_mock_);
 
     ad_serving.MaybeServeAd(dimensions, std::move(callback));
   }
 
-  InlineContentAdServingDelegateForTesting ad_serving_delegate_;
+  ::testing::StrictMock<InlineContentAdServingDelegateMock> delegate_mock_;
 };
 
 TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
@@ -84,19 +54,16 @@ TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
       BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
-  // Act
-  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::string& /*dimensions*/,
-                    const absl::optional<InlineContentAdInfo>& ad) {
-        // Assert
-        EXPECT_FALSE(ad);
-        EXPECT_FALSE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
-        EXPECT_FALSE(ad_serving_delegate_.did_serve_ad());
-        EXPECT_TRUE(ad_serving_delegate_.failed_to_serve_ad());
-      });
+  EXPECT_CALL(delegate_mock_, OnFailedToServeInlineContentAd);
 
+  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
+  EXPECT_CALL(callback, Run(/*dimensions*/ "200x100",
+                            /*ad*/ ::testing::Eq(absl::nullopt)));
+
+  // Act
   MaybeServeAd("200x100", callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
@@ -106,21 +73,20 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
+  const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
+
+  EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeInlineContentAd);
+
+  EXPECT_CALL(delegate_mock_, OnDidServeInlineContentAd);
+
+  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
+  EXPECT_CALL(callback,
+              Run(/*dimensions*/ "200x100", ::testing::Ne(absl::nullopt)));
 
   // Act
-  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::string& /*dimensions*/,
-                    const absl::optional<InlineContentAdInfo>& ad) {
-        // Assert
-        EXPECT_TRUE(ad);
-        EXPECT_TRUE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
-        EXPECT_TRUE(ad_serving_delegate_.did_serve_ad());
-        EXPECT_FALSE(ad_serving_delegate_.failed_to_serve_ad());
-        EXPECT_EQ(ad, ad_serving_delegate_.ad());
-      });
-
   MaybeServeAd("200x100", callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest,
@@ -132,19 +98,18 @@ TEST_F(BraveAdsInlineContentAdServingTest,
       BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
-  // Act
-  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::string& /*dimensions*/,
-                    const absl::optional<InlineContentAdInfo>& ad) {
-        // Assert
-        EXPECT_FALSE(ad);
-        EXPECT_TRUE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
-        EXPECT_FALSE(ad_serving_delegate_.did_serve_ad());
-        EXPECT_TRUE(ad_serving_delegate_.failed_to_serve_ad());
-      });
+  EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeInlineContentAd);
 
+  EXPECT_CALL(delegate_mock_, OnFailedToServeInlineContentAd);
+
+  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
+  EXPECT_CALL(callback,
+              Run(/*dimensions*/ "?x?", /*ad*/ ::testing::Eq(absl::nullopt)));
+
+  // Act
   MaybeServeAd("?x?", callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest,
@@ -154,19 +119,16 @@ TEST_F(BraveAdsInlineContentAdServingTest,
       BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
-  // Act
-  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([=](const std::string& /*dimensions*/,
-                    const absl::optional<InlineContentAdInfo>& ad) {
-        // Assert
-        EXPECT_FALSE(ad);
-        EXPECT_FALSE(ad_serving_delegate_.opportunity_arose_to_serve_ad());
-        EXPECT_FALSE(ad_serving_delegate_.did_serve_ad());
-        EXPECT_TRUE(ad_serving_delegate_.failed_to_serve_ad());
-      });
+  EXPECT_CALL(delegate_mock_, OnFailedToServeInlineContentAd);
 
+  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
+  EXPECT_CALL(callback, Run(/*dimensions*/ "200x100",
+                            /*ad*/ ::testing::Eq(absl::nullopt)));
+
+  // Act
   MaybeServeAd("200x100", callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

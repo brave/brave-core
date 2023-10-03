@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_unittest_util.h"
@@ -28,12 +28,10 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, EmptySave) {
   database::SaveCreativeSetConversions({});
 
   // Assert
-  database_table_.GetAll(base::BindOnce(
-      [](const bool success,
-         const CreativeSetConversionList& creative_set_conversions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(creative_set_conversions.empty());
-      }));
+  base::MockCallback<database::table::GetConversionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            /*creative_set_conversions*/ ::testing::IsEmpty()));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -59,15 +57,9 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   database::SaveCreativeSetConversions(creative_set_conversions);
 
   // Assert
-  database_table_.GetAll(base::BindOnce(
-      [](const CreativeSetConversionList& expected_creative_set_conversions,
-         const bool success,
-         const CreativeSetConversionList& creative_set_conversions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_creative_set_conversions,
-                                 creative_set_conversions));
-      },
-      creative_set_conversions));
+  base::MockCallback<database::table::GetConversionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, creative_set_conversions));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -88,14 +80,9 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   database::SaveCreativeSetConversions(creative_set_conversions);
 
   // Assert
-  database_table_.GetAll(base::BindOnce(
-      [](const CreativeSetConversionList& expected_creative_set_conversions,
-         const bool success,
-         const CreativeSetConversionList& creative_set_conversions) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_creative_set_conversions, creative_set_conversions);
-      },
-      creative_set_conversions));
+  base::MockCallback<database::table::GetConversionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, creative_set_conversions));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -125,18 +112,10 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   database::PurgeExpiredCreativeSetConversions();
 
   // Assert
-  const CreativeSetConversionList expected_creative_set_conversions = {
-      creative_set_conversion_1};
-
-  database_table_.GetAll(base::BindOnce(
-      [](const CreativeSetConversionList& expected_creative_set_conversions,
-         const bool success,
-         const CreativeSetConversionList& creative_set_conversions) {
-        ASSERT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_creative_set_conversions,
-                                 creative_set_conversions));
-      },
-      expected_creative_set_conversions));
+  base::MockCallback<database::table::GetConversionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, CreativeSetConversionList{
+                                                  creative_set_conversion_1}));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -168,17 +147,10 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   database::SaveCreativeSetConversions(creative_set_conversions_2);
 
   // Assert
-  const CreativeSetConversionList expected_creative_set_conversions = {
-      creative_set_conversion_2};
-
-  database_table_.GetAll(base::BindOnce(
-      [](const CreativeSetConversionList& expected_creative_set_conversions,
-         const bool success,
-         const CreativeSetConversionList& creative_set_conversions) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_creative_set_conversions, creative_set_conversions);
-      },
-      expected_creative_set_conversions));
+  base::MockCallback<database::table::GetConversionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true, CreativeSetConversionList{
+                                                  creative_set_conversion_2}));
+  database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, TableName) {

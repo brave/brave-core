@@ -5,36 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
-#include <utility>
-
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
-
-namespace {
-
-void ExpectTransactionsEq(const TransactionList expected_transactions) {
-  base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([&expected_transactions](const bool success,
-                                         const TransactionList& transactions) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
-      });
-
-  const Transactions database_table;
-  database_table.GetAll(callback.Get());
-}
-
-}  // namespace
 
 class BraveAdsTransactionsDatabaseTableTest : public UnitTestBase {};
 
@@ -45,7 +25,11 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   SaveTransactionsForTesting({});
 
   // Assert
-  ExpectTransactionsEq({});
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            /*transactions*/ ::testing::IsEmpty()));
+  const Transactions database_table;
+  database_table.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
@@ -68,7 +52,12 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   SaveTransactionsForTesting(transactions);
 
   // Assert
-  ExpectTransactionsEq(transactions);
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(/*success*/ true,
+                  ::testing::UnorderedElementsAreArray(transactions)));
+  const Transactions database_table;
+  database_table.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
@@ -86,7 +75,12 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   SaveTransactionsForTesting(transactions);
 
   // Assert
-  ExpectTransactionsEq(transactions);
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(/*success*/ true,
+                  ::testing::UnorderedElementsAreArray(transactions)));
+  const Transactions database_table;
+  database_table.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
@@ -107,19 +101,14 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Assert
-  const TransactionList expected_transactions = {transaction_2};
   base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([&expected_transactions](const bool success,
-                                         const TransactionList& transactions) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
-      });
+  EXPECT_CALL(callback, Run(/*success*/ true, TransactionList{transaction_2}));
 
   // Act
   const Transactions database_table;
   database_table.GetForDateRange(Now(), DistantFuture(), callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
@@ -143,19 +132,22 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   payment_token.transaction_id = transaction_2.id;
   payment_tokens.push_back(payment_token);
 
-  // Assert
   transaction_2.reconciled_at = Now();
-  const TransactionList expected_transactions = {transaction_1, transaction_2};
-  base::MockCallback<ResultCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([&expected_transactions](const bool success) {
-        EXPECT_TRUE(success);
-        ExpectTransactionsEq(expected_transactions);
-      });
+
+  base::MockCallback<ResultCallback> update_callback;
+  EXPECT_CALL(update_callback, Run(/*success*/ true));
 
   // Act
   const Transactions database_table;
-  database_table.Update(payment_tokens, callback.Get());
+  database_table.Update(payment_tokens, update_callback.Get());
+
+  // Assert
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(/*success*/ true,
+                  ::testing::UnorderedElementsAreArray(
+                      TransactionList{{transaction_1, transaction_2}})));
+  database_table.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
@@ -174,16 +166,18 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
 
   SaveTransactionsForTesting(transactions);
 
-  // Assert
-  base::MockCallback<ResultCallback> callback;
-  EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
-    EXPECT_TRUE(success);
-    ExpectTransactionsEq({});
-  });
+  base::MockCallback<ResultCallback> delete_callback;
+  EXPECT_CALL(delete_callback, Run(/*success*/ true));
 
   // Act
   const Transactions database_table;
-  database_table.Delete(callback.Get());
+  database_table.Delete(delete_callback.Get());
+
+  // Assert
+  base::MockCallback<GetTransactionsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            /*transactions*/ ::testing::IsEmpty()));
+  database_table.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, TableName) {

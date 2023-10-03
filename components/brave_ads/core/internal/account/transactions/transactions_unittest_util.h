@@ -16,8 +16,6 @@ namespace brave_ads {
 
 class ConfirmationType;
 
-size_t GetTransactionCountForTesting();
-
 void SaveTransactionsForTesting(const TransactionList& transactions);
 
 TransactionInfo BuildTransactionForTesting(

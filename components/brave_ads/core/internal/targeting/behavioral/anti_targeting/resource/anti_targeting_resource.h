@@ -28,7 +28,7 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
 
   ~AntiTargetingResource() override;
 
-  bool IsInitialized() const { return static_cast<bool>(anti_targeting_); }
+  bool IsInitialized() const { return !!anti_targeting_; }
 
   AntiTargetingSiteList GetSites(const std::string& creative_set_id) const;
 

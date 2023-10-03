@@ -5,11 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/history/filters/date_range_history_filter.h"
 
-#include "base/containers/circular_deque.h"
-#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -52,7 +51,6 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
 
   // Assert
   HistoryItemList expected_history;
-
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromDoubleT(444444444);
   expected_history.push_back(history_item);
@@ -61,7 +59,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   history_item.created_at = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
 
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
 TEST(BraveAdsDateRangeHistoryFilterTest,
@@ -102,7 +100,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   history_item.created_at = base::Time::FromDoubleT(222222222);
   expected_history.push_back(history_item);
 
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
 TEST(BraveAdsDateRangeHistoryFilterTest,
@@ -147,7 +145,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   history_item.created_at = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
 
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
 TEST(BraveAdsDateRangeHistoryFilterTest,

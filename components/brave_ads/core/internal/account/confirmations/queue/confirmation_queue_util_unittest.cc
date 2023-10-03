@@ -35,7 +35,7 @@ class BraveAdsConversionQueueUtilTest : public UnitTestBase {
         TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
   }
 
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  TokenGeneratorMock token_generator_mock_;
 };
 
 TEST_F(BraveAdsConversionQueueUtilTest, AddRewardConfirmationQueueItem) {
@@ -259,15 +259,13 @@ TEST_F(BraveAdsConversionQueueUtilTest, RebuildRewardConfirmationQueueItem) {
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Assert
   base::MockCallback<RebuildConfirmationQueueItemCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([&confirmation](const ConfirmationInfo& rebuilt_confirmation) {
-        EXPECT_NE(confirmation, rebuilt_confirmation);
-      });
+  EXPECT_CALL(callback, Run(::testing::Ne(confirmation)));
 
   // Act
   RebuildConfirmationQueueItem(*confirmation, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsConversionQueueUtilTest, RebuildNonRewardConfirmationQueueItem) {
@@ -281,15 +279,13 @@ TEST_F(BraveAdsConversionQueueUtilTest, RebuildNonRewardConfirmationQueueItem) {
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Assert
   base::MockCallback<RebuildConfirmationQueueItemCallback> callback;
-  EXPECT_CALL(callback, Run)
-      .WillOnce([&confirmation](const ConfirmationInfo& rebuilt_confirmation) {
-        EXPECT_EQ(confirmation, rebuilt_confirmation);
-      });
+  EXPECT_CALL(callback, Run(::testing::Eq(confirmation)));
 
   // Act
   RebuildConfirmationQueueItem(*confirmation, callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads

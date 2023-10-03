@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
@@ -61,30 +60,22 @@ void RecordAdEventsForTesting(const AdType& type,
   const std::string& id = GetInstanceId();
   const std::string ad_type_as_string = type.ToString();
   const std::string confirmation_type_as_string = confirmation_type.ToString();
-  const base::Time time = Now();
 
   for (int i = 0; i < count; i++) {
     AdsClientHelper::GetInstance()->CacheAdEventForInstanceId(
-        id, ad_type_as_string, confirmation_type_as_string, time);
+        id, ad_type_as_string, confirmation_type_as_string, Now());
   }
 }
 
-void FireAdEventForTesting(const AdEventInfo& ad_event) {
+void RecordAdEventForTesting(const AdEventInfo& ad_event) {
   RecordAdEvent(ad_event,
                 base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
-void FireAdEventsForTesting(const AdEventInfo& ad_event, const size_t count) {
-  for (size_t i = 0; i < count; i++) {
-    FireAdEventForTesting(ad_event);
+void RecordAdEventsForTesting(const AdEventInfo& ad_event, const int count) {
+  for (int i = 0; i < count; i++) {
+    RecordAdEventForTesting(ad_event);
   }
-}
-
-size_t GetAdEventCountForTesting(const AdType& ad_type,
-                                 const ConfirmationType& confirmation_type) {
-  const std::vector<base::Time> ad_events =
-      GetCachedAdEvents(ad_type, confirmation_type);
-  return ad_events.size();
 }
 
 }  // namespace brave_ads

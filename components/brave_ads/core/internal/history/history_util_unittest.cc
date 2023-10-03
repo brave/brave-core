@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
@@ -40,8 +39,9 @@ TEST_F(BraveAdsHistoryUtilTest, AddHistory) {
   const HistoryItemInfo history_item = BuildAndAddHistoryItem();
 
   // Assert
-  const HistoryItemList expected_history = {history_item};
-  EXPECT_TRUE(base::ranges::equal(expected_history, HistoryManager::Get()));
+  const HistoryItemList expected_history_items = {history_item};
+  EXPECT_THAT(expected_history_items,
+              ::testing::ElementsAreArray(HistoryManager::Get()));
 }
 
 TEST_F(BraveAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
@@ -54,8 +54,9 @@ TEST_F(BraveAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   const HistoryItemInfo history_item = BuildAndAddHistoryItem();
 
   // Assert
-  const HistoryItemList expected_history = {history_item};
-  EXPECT_TRUE(base::ranges::equal(expected_history, HistoryManager::Get()));
+  const HistoryItemList expected_history_items = {history_item};
+  EXPECT_THAT(expected_history_items,
+              ::testing::ElementsAreArray(HistoryManager::Get()));
 }
 
 TEST_F(BraveAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
@@ -68,8 +69,10 @@ TEST_F(BraveAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
   const HistoryItemInfo history_item_2 = BuildAndAddHistoryItem();
 
   // Assert
-  const HistoryItemList expected_history = {history_item_2, history_item_1};
-  EXPECT_TRUE(base::ranges::equal(expected_history, HistoryManager::Get()));
+  const HistoryItemList expected_history_items = {history_item_2,
+                                                  history_item_1};
+  EXPECT_THAT(expected_history_items,
+              ::testing::ElementsAreArray(HistoryManager::Get()));
 }
 
 }  // namespace brave_ads

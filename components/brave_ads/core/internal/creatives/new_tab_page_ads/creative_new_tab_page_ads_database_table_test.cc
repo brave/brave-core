@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -31,20 +31,21 @@ class BraveAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest
 };
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
-       GetCreativeNewTabPageAdsFromCatalogResponse) {
+       GetForSegments) {
   // Arrange
+  base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
+      callback;
+  EXPECT_CALL(callback,
+              Run(/*success*/ true, SegmentList{"technology & computing"},
+                  ::testing::SizeIs(1)));
+
+  const database::table::CreativeNewTabPageAds database_table;
 
   // Act
+  database_table.GetForSegments(
+      /*segments*/ {"technology & computing"}, callback.Get());
 
   // Assert
-  const database::table::CreativeNewTabPageAds database_table;
-  database_table.GetForSegments(
-      /*segments*/ {"technology & computing"},
-      base::BindOnce([](const bool success, const SegmentList& /*segments*/,
-                        const CreativeNewTabPageAdList& creative_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_EQ(1U, creative_ads.size());
-      }));
 }
 
 }  // namespace brave_ads

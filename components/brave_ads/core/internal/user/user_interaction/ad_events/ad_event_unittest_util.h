@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENT_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENT_UNITTEST_UTIL_H_
 
-#include <cstddef>
-
 namespace base {
 class Time;
 }  // namespace base
@@ -31,11 +29,8 @@ void RecordAdEventsForTesting(const AdType& type,
                               const ConfirmationType& confirmation_type,
                               int count);
 
-void FireAdEventForTesting(const AdEventInfo& ad_event);
-void FireAdEventsForTesting(const AdEventInfo& ad_event, size_t count);
-
-size_t GetAdEventCountForTesting(const AdType& ad_type,
-                                 const ConfirmationType& confirmation_type);
+void RecordAdEventForTesting(const AdEventInfo& ad_event);
+void RecordAdEventsForTesting(const AdEventInfo& ad_event, int count);
 
 }  // namespace brave_ads
 

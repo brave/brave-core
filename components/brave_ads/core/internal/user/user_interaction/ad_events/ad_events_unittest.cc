@@ -33,9 +33,8 @@ TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
   RecordAdEvent(ad, ConfirmationType::kServed, record_ad_event_callback.Get());
 
   // Assert
-  const AdEventList expected_ad_events = {ad_event};
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, expected_ad_events));
+  EXPECT_CALL(callback, Run(/*success*/ true, AdEventList{ad_event}));
   const database::table::AdEvents database_table;
   database_table.GetAll(callback.Get());
 }
@@ -82,9 +81,9 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
   PurgeExpiredAdEvents(purge_expired_ad_events_callback.Get());
 
   // Assert
-  const AdEventList expected_ad_events = {ad_event_for_ad_3};
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, expected_ad_events));
+  EXPECT_CALL(callback,
+              Run(/*success*/ true, AdEventList{{ad_event_for_ad_3}}));
   const database::table::AdEvents database_table;
   database_table.GetAll(callback.Get());
 }
@@ -123,10 +122,10 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
                         purge_orphaned_ad_events_callback.Get());
 
   // Assert
-  const AdEventList expected_ad_events = {
-      ad_event_for_ad_2a, ad_event_for_ad_2b, ad_event_for_ad_3};
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, expected_ad_events));
+  EXPECT_CALL(callback, Run(/*success*/ true,
+                            AdEventList{{ad_event_for_ad_2a, ad_event_for_ad_2b,
+                                         ad_event_for_ad_3}}));
   const database::table::AdEvents database_table;
   database_table.GetAll(callback.Get());
 }

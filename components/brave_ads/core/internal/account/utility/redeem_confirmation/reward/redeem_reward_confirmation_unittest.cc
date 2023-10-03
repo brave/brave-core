@@ -29,12 +29,11 @@ namespace brave_ads {
 
 class BraveAdsRedeemRewardConfirmationTest : public UnitTestBase {
  protected:
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  TokenGeneratorMock token_generator_mock_;
 
-  ::testing::NiceMock<RedeemConfirmationDelegateMock>
-      redeem_confirmation_delegate_mock_;
+  RedeemConfirmationDelegateMock delegate_mock_;
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
-      confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};
+      confirmation_delegate_weak_factory_{&delegate_mock_};
 };
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
@@ -65,11 +64,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemConfirmation(expected_confirmation));
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation(expected_confirmation));
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnFailedToRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation).Times(0);
 
   // Act
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -90,10 +87,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, RetryRedeemingIfNoIssuers) {
   ASSERT_TRUE(confirmation);
 
   // Assert
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry*/ true));
 
@@ -127,11 +123,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemConfirmation(expected_confirmation));
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation(expected_confirmation));
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnFailedToRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation).Times(0);
 
   // Act
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -164,10 +158,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Assert
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry*/ true));
 
@@ -206,10 +199,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -248,10 +240,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ true));
 
@@ -290,10 +281,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ true));
 
@@ -328,10 +318,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Assert
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(::testing::_,
                                            /*should_retry*/ true));
 
@@ -366,8 +355,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                   "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
                 ]
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -383,10 +371,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -422,8 +409,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                   "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
                 ]
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -439,10 +425,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -471,8 +456,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
               "type" : "view",
               "modifiedAt" : "2020-04-20T10:27:11.736Z",
               "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -488,10 +472,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -526,8 +509,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                   "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
                 ]
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -543,10 +525,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -582,8 +563,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                   "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
                 ]
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -599,10 +579,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -637,8 +616,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                   "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
                 ]
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -654,10 +632,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ true));
 
@@ -692,8 +669,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                   "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
                 ]
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -709,10 +685,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -748,8 +723,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                   "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
                 ]
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -765,10 +739,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -801,8 +774,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                 "publicKey" : "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
                 "batchProof" : "FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw=="
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -818,10 +790,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -854,8 +825,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                 "publicKey" : "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
                 "batchProof" : "FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw=="
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -871,10 +841,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 
@@ -910,8 +879,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
                   "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
                 ]
               }
-            }
-          )"}}}};
+            })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   SetConfirmationTokensForTesting(/*count*/ 1);
@@ -927,10 +895,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ConfirmationInfo expected_confirmation = *confirmation;
   expected_confirmation.was_created = true;
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
+  EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(expected_confirmation,
                                            /*should_retry*/ false));
 

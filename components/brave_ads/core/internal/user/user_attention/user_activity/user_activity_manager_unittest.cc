@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_manager.h"
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
@@ -36,7 +35,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
@@ -58,7 +57,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
@@ -80,7 +79,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest,
@@ -103,7 +102,7 @@ TEST_F(BraveAdsUserActivityManagerTest,
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
@@ -125,7 +124,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
@@ -147,7 +146,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordClickedLinkEvent) {
@@ -168,7 +167,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClickedLinkEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
@@ -190,7 +189,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordClosedTabEvent) {
@@ -211,7 +210,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClosedTabEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
@@ -233,7 +232,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
@@ -255,7 +254,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordNewNavigationEvent) {
@@ -277,7 +276,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordNewNavigationEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest,
@@ -300,7 +299,7 @@ TEST_F(BraveAdsUserActivityManagerTest,
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
@@ -321,7 +320,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
@@ -343,7 +342,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
@@ -365,7 +364,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
@@ -387,7 +386,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
@@ -408,7 +407,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
@@ -430,7 +429,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest,
@@ -453,7 +452,7 @@ TEST_F(BraveAdsUserActivityManagerTest,
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordTypedUrlEvent) {
@@ -474,7 +473,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordTypedUrlEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
@@ -496,7 +495,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
@@ -518,7 +517,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
@@ -540,7 +539,7 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, DoNotRecordEventForNonRewardsUser) {
@@ -640,7 +639,7 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
   event.created_at = time;
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
@@ -672,7 +671,7 @@ TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(base::ranges::equal(expected_events, events));
+  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
 }  // namespace brave_ads

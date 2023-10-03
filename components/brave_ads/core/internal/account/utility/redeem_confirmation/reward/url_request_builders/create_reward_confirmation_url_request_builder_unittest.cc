@@ -32,7 +32,7 @@ constexpr char kExpectedUrlRequestContent[] =
 class BraveAdsCreateRewardConfirmationUrlRequestBuilderTest
     : public UnitTestBase {
  protected:
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  TokenGeneratorMock token_generator_mock_;
 };
 
 TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,

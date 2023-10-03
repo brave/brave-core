@@ -5,11 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/priority/priority.h"
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -74,8 +72,8 @@ TEST_F(BraveAdsPriorityTest, PrioritizeMultipleCreativeAds) {
   // Assert
   const CreativeNotificationAdList expected_prioritized_creative_ads = {
       creative_ad_1, creative_ad_3};
-  EXPECT_TRUE(base::ranges::equal(expected_prioritized_creative_ads,
-                                  prioritized_creative_ads));
+  EXPECT_THAT(expected_prioritized_creative_ads,
+              ::testing::ElementsAreArray(prioritized_creative_ads));
 }
 
 TEST_F(BraveAdsPriorityTest, DoNotPrioritizeZeroPriorityCreativeAds) {

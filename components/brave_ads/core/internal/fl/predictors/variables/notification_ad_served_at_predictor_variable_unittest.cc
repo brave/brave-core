@@ -19,8 +19,7 @@ class BraveAdsNotificationAdServedAtPredictorVariableTest
 
 TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest, GetDataType) {
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
-      std::make_unique<NotificationAdServedAtPredictorVariable>(
-          base::Time::Now());
+      std::make_unique<NotificationAdServedAtPredictorVariable>(Now());
 
   // Act
 

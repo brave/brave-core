@@ -7,8 +7,9 @@
 
 #include <memory>
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
@@ -51,16 +52,18 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAds) {
 
   database::SaveCreativeNotificationAds(creative_ads);
 
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
+
   // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{SegmentList{"foo-bar1", "foo-bar2"}},
                     LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"foo-bar3"},
                                           TextEmbeddingHtmlEventList{}}},
-      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
-        // Assert
-        EXPECT_FALSE(creative_ads.empty());
-      }));
+      callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
@@ -79,17 +82,19 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
 
   database::SaveCreativeNotificationAds(creative_ads);
 
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
+
   // Act
-  eligible_ads_->GetForUserModel(
-      /*user_model*/ {},
-      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
-        // Assert
-        EXPECT_FALSE(creative_ads.empty());
-      }));
+  eligible_ads_->GetForUserModel(/*user_model*/ {}, callback.Get());
+
+  // Assert
 }
 
 TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Arrange
+  base::MockCallback<EligibleAdsCallback<CreativeNotificationAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
 
   // Act
   eligible_ads_->GetForUserModel(
@@ -98,10 +103,9 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
           LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
                                 TextEmbeddingHtmlEventList{}}},
-      base::BindOnce([](const CreativeNotificationAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(creative_ads.empty());
-      }));
+      callback.Get());
+
+  // Assert
 }
 
 }  // namespace brave_ads
