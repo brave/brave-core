@@ -14,6 +14,12 @@ class PrefRegistrySimple;
 class Profile;
 class SearchEngineTracker;
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+namespace ai_chat {
+class AIChatMetrics;
+}  // namespace ai_chat
+#endif
+
 class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  public:
   BraveOmniboxClientImpl(LocationBar* location_bar,
@@ -47,6 +53,9 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  private:
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<SearchEngineTracker> search_engine_tracker_ = nullptr;
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  raw_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
+#endif
   BraveAutocompleteSchemeClassifier scheme_classifier_;
 };
 

@@ -46,7 +46,11 @@ class AIChatMetricsUnitTest : public testing::Test {
 
 TEST_F(AIChatMetricsUnitTest, Enabled) {
   histogram_tester_.ExpectTotalCount(kEnabledHistogramName, 0);
-  ai_chat_metrics_->RecordEnabled();
+  ai_chat_metrics_->RecordEnabled(false);
+  histogram_tester_.ExpectTotalCount(kEnabledHistogramName, 0);
+  ai_chat_metrics_->RecordEnabled(true);
+  histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, 1, 1);
+  ai_chat_metrics_->RecordEnabled(false);
   histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, 1, 1);
 }
 
@@ -113,6 +117,87 @@ TEST_F(AIChatMetricsUnitTest, UsageDaily) {
 
   RecordPrompts(true, 1);
   histogram_tester_.ExpectUniqueSample(kUsageDailyHistogramName, 1, 1);
+}
+
+TEST_F(AIChatMetricsUnitTest, AcquisitionSource) {
+  histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 0);
+
+  ai_chat_metrics_->HandleOpenViaSidebar();
+  histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 0);
+
+  ai_chat_metrics_->RecordEnabled(true);
+  histogram_tester_.ExpectUniqueSample(kAcquisitionSourceHistogramName, 1, 1);
+
+  ai_chat_metrics_->RecordOmniboxOpen();
+  histogram_tester_.ExpectUniqueSample(kAcquisitionSourceHistogramName, 1, 1);
+
+  ai_chat_metrics_->RecordEnabled(true);
+  histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 2);
+  histogram_tester_.ExpectBucketCount(kAcquisitionSourceHistogramName, 0, 1);
+}
+
+TEST_F(AIChatMetricsUnitTest, OmniboxOpens) {
+  histogram_tester_.ExpectTotalCount(kOmniboxOpensHistogramName, 0);
+
+  for (size_t i = 0; i < 297; i++) {
+    ai_chat_metrics_->RecordOmniboxSearchQuery();
+  }
+  histogram_tester_.ExpectTotalCount(kOmniboxOpensHistogramName, 0);
+
+  ai_chat_metrics_->RecordEnabled(true);
+  histogram_tester_.ExpectUniqueSample(kOmniboxOpensHistogramName, 0, 1);
+
+  ai_chat_metrics_->RecordOmniboxOpen();
+  histogram_tester_.ExpectBucketCount(kOmniboxOpensHistogramName, 1, 1);
+
+  for (size_t i = 0; i < 2; i++) {
+    ai_chat_metrics_->RecordOmniboxOpen();
+  }
+  histogram_tester_.ExpectBucketCount(kOmniboxOpensHistogramName, 1, 2);
+  histogram_tester_.ExpectBucketCount(kOmniboxOpensHistogramName, 2, 1);
+
+  task_environment_.FastForwardBy(base::Days(3));
+  histogram_tester_.ExpectBucketCount(kOmniboxOpensHistogramName, 2, 4);
+
+  for (size_t i = 0; i < 12; i++) {
+    ai_chat_metrics_->RecordOmniboxOpen();
+  }
+  histogram_tester_.ExpectBucketCount(kOmniboxOpensHistogramName, 2, 13);
+  histogram_tester_.ExpectBucketCount(kOmniboxOpensHistogramName, 3, 3);
+
+  histogram_tester_.ExpectBucketCount(kOmniboxOpensHistogramName, 0, 1);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectBucketCount(kOmniboxOpensHistogramName, 0, 2);
+}
+
+TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
+  histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 0);
+
+  for (size_t i = 0; i < 10; i++) {
+    ai_chat_metrics_->RecordOmniboxSearchQuery();
+  }
+  histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 0);
+
+  ai_chat_metrics_->RecordEnabled(true);
+  for (size_t i = 0; i < 2; i++) {
+    ai_chat_metrics_->RecordOmniboxOpen();
+  }
+  histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 0);
+
+  task_environment_.FastForwardBy(base::Days(7));
+
+  histogram_tester_.ExpectUniqueSample(kOmniboxWeekCompareHistogramName, 0, 1);
+
+  for (size_t i = 0; i < 10; i++) {
+    ai_chat_metrics_->RecordOmniboxSearchQuery();
+  }
+  for (size_t i = 0; i < 3; i++) {
+    ai_chat_metrics_->RecordOmniboxOpen();
+  }
+  histogram_tester_.ExpectBucketCount(kOmniboxWeekCompareHistogramName, 0, 13);
+  histogram_tester_.ExpectBucketCount(kOmniboxWeekCompareHistogramName, 1, 1);
+  histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 14);
 }
 
 }  // namespace ai_chat
