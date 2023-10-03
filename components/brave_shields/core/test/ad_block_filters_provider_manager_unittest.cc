@@ -24,9 +24,9 @@ TEST(AdBlockFiltersProviderManagerTest, WaitUntilInitialized) {
   brave_shields::AdBlockFiltersProviderManager::GetInstance()->AddObserver(
       &test_observer);
 
-  brave_shields::TestFiltersProvider provider1("", "", true, 0, false);
-  brave_shields::TestFiltersProvider provider2("", "", true, 0, false);
-  brave_shields::TestFiltersProvider provider3("", "", true, 0, false);
+  brave_shields::TestFiltersProvider provider1("", true, 0, false);
+  brave_shields::TestFiltersProvider provider2("", true, 0, false);
+  brave_shields::TestFiltersProvider provider3("", true, 0, false);
 
   provider1.Initialize();
   EXPECT_EQ(test_observer.changed_count, 0);

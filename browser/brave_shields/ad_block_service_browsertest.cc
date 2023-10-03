@@ -16,12 +16,15 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/content/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
@@ -133,6 +136,8 @@ void AdBlockServiceTest::PreRunTestOnMainThread() {
 }
 
 void AdBlockServiceTest::TearDownOnMainThread() {
+  source_providers_.clear();
+  temp_dirs_.clear();
   // Unset the host resolver so as not to interfere with later tests.
   brave::SetAdblockCnameHostResolverForTesting(nullptr);
   InProcessBrowserTest::TearDownOnMainThread();
@@ -151,41 +156,82 @@ HostContentSettingsMap* AdBlockServiceTest::content_settings() {
   return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
 }
 
-void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
-    const std::string& rules,
-    const std::string& resources,
-    uint8_t permission_mask) {
+void AdBlockServiceTest::AddNewRules(const std::string& rules,
+                                     uint8_t permission_mask,
+                                     bool first_party_protections) {
   auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
-      rules, resources, true, permission_mask);
+      rules, first_party_protections, permission_mask);
+  source_providers_.push_back(std::move(source_provider));
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
-  ad_block_service->UseSourceProvidersForTest(source_provider.get(),
-                                              source_provider.get());
+  auto* engine = first_party_protections
+                     ? ad_block_service->default_engine_.get()
+                     : ad_block_service->additional_filters_engine_.get();
+  EngineTestObserver engine_observer(engine);
+  engine_observer.Wait();
+}
 
-  source_providers_.push_back(std::move(source_provider));
+// Returns the path of the new directory, not the file. Intended for use with
+// `OnComponentReady`.
+base::FilePath AdBlockServiceTest::MakeFileInTempDir(
+    const std::string& name,
+    const std::string& contents) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
 
-  auto* engine =
-      g_brave_browser_process->ad_block_service()->default_engine_.get();
+  auto dir = std::make_unique<base::ScopedTempDir>();
+  EXPECT_TRUE(dir->CreateUniqueTempDir());
+  auto path = dir->GetPath();
+  base::File list_file(path.AppendASCII(name), base::File::FLAG_CREATE |
+                                                   base::File::FLAG_WRITE |
+                                                   base::File::FLAG_READ);
+  EXPECT_TRUE(list_file.IsValid());
+  list_file.Write(0, contents.c_str(), contents.size());
+  list_file.Close();
+
+  temp_dirs_.push_back(std::move(dir));
+
+  return path;
+}
+
+void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
+  auto component_path = MakeFileInTempDir("resources.json", resources);
+
+  brave_shields::AdBlockService* service =
+      g_brave_browser_process->ad_block_service();
+
+  static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
+      service->resource_provider())
+      ->OnComponentReady(component_path);
+}
+
+void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
+    const std::string& rules) {
+  auto component_path = MakeFileInTempDir("list.txt", rules);
+
+  brave_shields::AdBlockService* service =
+      g_brave_browser_process->ad_block_service();
+
+  auto& component_providers =
+      service->component_service_manager()->component_filters_providers();
+
+  std::string uuid = "default";
+  auto& provider = component_providers.at(uuid);
+  EXPECT_TRUE(provider);
+  provider->OnComponentReady(component_path);
+
+  auto* engine = service->default_engine_.get();
   EngineTestObserver engine_observer(engine);
   engine_observer.Wait();
 }
 
 void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
-    const std::string& rules,
-    const std::string& resources) {
-  auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
-      rules, resources, false);
-
+    const std::string& rules) {
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
-  ad_block_service->UseCustomSourceProvidersForTest(source_provider.get(),
-                                                    source_provider.get());
+  ad_block_service->custom_filters_provider()->UpdateCustomFilters(rules);
 
-  source_providers_.push_back(std::move(source_provider));
-
-  auto* engine = g_brave_browser_process->ad_block_service()
-                     ->additional_filters_engine_.get();
+  auto* engine = ad_block_service->additional_filters_engine_.get();
   EngineTestObserver engine_observer(engine);
   engine_observer.Wait();
 }
@@ -1510,8 +1556,7 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
 
 // Load a page with a script which uses a redirect data URL.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
-  UpdateAdBlockInstanceWithRules("js_mock_me.js$redirect=noopjs",
-                                 R"(
+  UpdateAdBlockResources(R"(
       [
         {
           "name": "noop.js",
@@ -1522,6 +1567,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
           "content": "KGZ1bmN0aW9uKCkgewogICAgJ3VzZSBzdHJpY3QnOwp9KSgpOwo="
         }
       ])");
+  UpdateAdBlockInstanceWithRules("js_mock_me.js$redirect=noopjs");
 
   const GURL url =
       embedded_test_server()->GetURL("example.com", kAdBlockTestPage);
@@ -1551,10 +1597,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
         },
         "content": "KGZ1bmN0aW9uKCkgewogICAgJ3VzZSBzdHJpY3QnOwp9KSgpOwo="
       }])";
+  UpdateAdBlockResources(resources);
   UpdateAdBlockInstanceWithRules(
       ".js?block=true\n"
-      "js_mock_me.js$redirect-rule=noopjs",
-      resources);
+      "js_mock_me.js$redirect-rule=noopjs");
 
   const GURL url =
       embedded_test_server()->GetURL("example.com", kAdBlockTestPage);
@@ -2216,14 +2262,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
       "    return { 'color': 'Impossible value' };"
       "  }"
       "})();";
-  UpdateAdBlockInstanceWithRules(
-      "b.com##+js(hjt)",
+  UpdateAdBlockResources(
       "[{"
       "\"name\": \"hijacktest.js\","
       "\"aliases\": [\"hjt.js\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
-          base::Base64Encode(scriptlet) + "\"}]");
+      base::Base64Encode(scriptlet) + "\"}]");
+  UpdateAdBlockInstanceWithRules("b.com##+js(hjt)");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2259,8 +2305,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ScriptletInjectionPermissions) {
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
   content::WebContents* contents;
 
+  UpdateAdBlockResources(resources);
   // Add the list with default (i.e. no) permissions
-  UpdateAdBlockInstanceWithRules(rules, resources);
+  UpdateAdBlockInstanceWithRules(rules);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
   contents = browser()->tab_strip_model()->GetActiveWebContents();
@@ -2271,7 +2318,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ScriptletInjectionPermissions) {
   }
 
   // Add a list with different but still insufficient permissions
-  UpdateAdBlockInstanceWithRules(rules, resources, 5);
+  AddNewRules(rules, 5, true);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
   contents = browser()->tab_strip_model()->GetActiveWebContents();
@@ -2282,7 +2329,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ScriptletInjectionPermissions) {
   }
 
   // Finally add a list with sufficient permissions
-  UpdateAdBlockInstanceWithRules(rules, resources, 7);
+  AddNewRules(rules, 7, true);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
   contents = browser()->tab_strip_model()->GetActiveWebContents();
@@ -2312,14 +2359,14 @@ IN_PROC_BROWSER_TEST_F(ScriptletDebugLogsFlagEnabledTest, CanDebugSetToTrue) {
       "    window.success = true;"
       "  }"
       "})();";
-  UpdateAdBlockInstanceWithRules(
-      "b.com##+js(debuggable)",
+  UpdateAdBlockResources(
       "[{"
       "\"name\": \"debuggable.js\","
       "\"aliases\": [],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
-          base::Base64Encode(scriptlet) + "\"}]");
+      base::Base64Encode(scriptlet) + "\"}]");
+  UpdateAdBlockInstanceWithRules("b.com##+js(debuggable)");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2345,14 +2392,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CheckForDeAmpPref) {
       "   }"
       " }"
       "})();";
-  UpdateAdBlockInstanceWithRules(
-      "b.*##+js(deamp)",
+  UpdateAdBlockResources(
       "[{"
       "\"name\": \"deamp.js\","
       "\"aliases\": [\"deamp.js\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
-          base::Base64Encode(scriptlet) + "\"}]");
+      base::Base64Encode(scriptlet) + "\"}]");
+  UpdateAdBlockInstanceWithRules("b.*##+js(deamp)");
 
   GURL url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2380,14 +2427,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
       "(function() {"
       "  window.JSON.parse = function() { return {} }"
       "})();";
-  UpdateAdBlockInstanceWithRules(
-      "b.com##+js(hjt)",
+  UpdateAdBlockResources(
       "[{"
       "\"name\": \"hijacktest.js\","
       "\"aliases\": [\"hjt.js\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
       "\"content\": \"" +
-          base::Base64Encode(scriptlet) + "\"}]");
+      base::Base64Encode(scriptlet) + "\"}]");
+  UpdateAdBlockInstanceWithRules("b.com##+js(hjt)");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/iframe_messenger.html");

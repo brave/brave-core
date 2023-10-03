@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "base/files/scoped_temp_dir.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -40,14 +42,12 @@ class AdBlockServiceTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 
   HostContentSettingsMap* content_settings();
-  void UpdateAdBlockInstanceWithRules(const std::string& rules,
-                                      const std::string& resources = "[]",
-                                      uint8_t permission_mask = 0);
-  void UpdateAdBlockInstanceWithDAT(const base::FilePath& dat_location,
-                                    const std::string& resources = "[]");
-  void UpdateCustomAdBlockInstanceWithRules(
-      const std::string& rules,
-      const std::string& resources = "[]");
+  void AddNewRules(const std::string& rules,
+                   uint8_t permission_mask = 0,
+                   bool first_party_protections = false);
+  void UpdateAdBlockResources(const std::string& resources);
+  void UpdateAdBlockInstanceWithRules(const std::string& rules);
+  void UpdateCustomAdBlockInstanceWithRules(const std::string& rules);
   void AssertTagExists(const std::string& tag, bool expected_exists) const;
   void InitEmbeddedTestServer();
   void GetTestDataDir(base::FilePath* test_data_dir);
@@ -65,9 +65,13 @@ class AdBlockServiceTest : public InProcessBrowserTest {
   void LoadDAT(base::FilePath path);
   void EnableRedirectUrlParsing();
   content::WebContents* web_contents();
+  base::FilePath MakeFileInTempDir(const std::string& name,
+                                   const std::string& contents);
 
   std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
       source_providers_;
+
+  std::vector<std::unique_ptr<base::ScopedTempDir>> temp_dirs_;
 
   net::SpawnedTestServer ws_server_;
   net::EmbeddedTestServer dynamic_server_;
