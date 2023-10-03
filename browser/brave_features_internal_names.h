@@ -15,6 +15,7 @@ constexpr char kPlaylistFakeUAFeatureInternalName[] = "playlist-fake-ua";
 constexpr char kBraveVPNFeatureInternalName[] = "brave-vpn";
 #if BUILDFLAG(IS_WIN)
 constexpr char kBraveVPNDnsFeatureInternalName[] = "brave-vpn-dns";
+constexpr char kBraveVPNWireguardFeatureInternalName[] = "brave-vpn-wireguard";
 #endif
 #endif
 
