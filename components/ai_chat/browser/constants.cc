@@ -45,7 +45,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"premiumLabel", IDS_CHAT_UI_PREMIUM_LABEL},
       {"premiumPricing", IDS_CHAT_UI_PREMIUM_PRICING},
       {"dismissButtonLabel", IDS_CHAT_UI_DISMISS_BUTTON_LABEL},
-      {"unlockPremiumTitle", IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE}};
+      {"unlockPremiumTitle", IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE},
       {"feedbackSent", IDS_CHAT_UI_FEEDBACK_SENT},
       {"answerDisliked", IDS_CHAT_UI_ANSWER_DISLIKED},
       {"answerLiked", IDS_CHAT_UI_ANSWER_LIKED},
@@ -65,7 +65,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"optionUnsafeHarmful", IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL},
       {"optionOther", IDS_CHAT_UI_OPTION_OTHER},
       {"feedbackError", IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR},
-      {"ratingError", IDS_CHAT_UI_RATING_ERROR},
+      {"ratingError", IDS_CHAT_UI_RATING_ERROR}};
 
   return kLocalizedStrings;
 }
