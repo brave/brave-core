@@ -103,4 +103,10 @@
   <message name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
     Unlock the full potential of Leo
   </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC" desc="A premium feature that allows access to various models">
+    Anthropic Claude + more coming soon
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature that allows priority access">
+    Priority access and increased response limits
+  </message>
 </grit-part>

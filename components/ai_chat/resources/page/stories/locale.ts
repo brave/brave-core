@@ -37,5 +37,7 @@ provideStrings({
   premiumFeature_2: 'Higher rate limits',
   premiumLabel: 'Brave Leo Premium',
   premiumPricing: 'USD \$ $1 /month',
-  unlockPremiumTitle: 'Unlock the full potential of Leo'
+  unlockPremiumTitle: 'Unlock the full potential of Leo',
+  premiumFeature_1_desc: 'Anthropic Claude + more coming soon',
+  premiumFeature_2_desc: 'Priority access and increased response limits'
 })

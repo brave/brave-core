@@ -36,7 +36,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
           <Icon name='check-normal' />
           <span>
             {getLocale('premiumFeature_1')}
-            {props?.verbose && <p>Anthropic Claude + more coming soon</p>}
+            {props?.verbose && <p>{getLocale('premiumFeature_1_desc')}</p>}
           </span>
         </li>
         <li>
@@ -44,7 +44,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
           <span>
             {getLocale('premiumFeature_2')}
             {props?.verbose && (
-              <p>Priority access and increased response limits</p>
+              <p>{getLocale('premiumFeature_2_desc')}</p>
             )}
           </span>
         </li>
