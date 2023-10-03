@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -134,46 +133,56 @@ public class TokenUtils {
     }
 
     /**
-     * Get tokens of all networks from <code>networkInfos<code/> list.
-     * @param blockchainRegistry to get tokens from core
-     * @param callback to get array of tokens
+     * Gets all tokens from each network and filters out tokens different from a given type.
+     * @param blockchainRegistry BraveChainRegistry to retrieve all tokens from core.
+     * @param networks Network list whose tokens will get retrieved and filtered.
+     * @param tokenType Token type used for filtering.
+     * @param callback Callback containing a filtered array of tokens for each network.
+     * <b>Note:</b>: It does not add user assets.
      */
     public static void getAllTokensFiltered(BlockchainRegistry blockchainRegistry,
-            List<NetworkInfo> networkInfos, TokenType tokenType,
+            List<NetworkInfo> networks, TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         AsyncUtils.MultiResponseHandler allNetworkTokenCollector =
-                new AsyncUtils.MultiResponseHandler(networkInfos.size());
+                new AsyncUtils.MultiResponseHandler(networks.size());
         ArrayList<AsyncUtils.GetNetworkAllTokensContext> allTokenContexts = new ArrayList<>();
 
-        for (NetworkInfo networkInfo : networkInfos) {
+        for (NetworkInfo networkInfo : networks) {
             AsyncUtils.GetNetworkAllTokensContext context =
                     new AsyncUtils.GetNetworkAllTokensContext(
                             allNetworkTokenCollector.singleResponseComplete, networkInfo);
             getAllTokens(blockchainRegistry, networkInfo.chainId, networkInfo.coin, context);
             allTokenContexts.add(context);
         }
-        allNetworkTokenCollector.setWhenAllCompletedAction(() -> {
-            callback.call(allTokenContexts.stream()
-                                  .map(context
-                                          -> filterTokens(context.networkInfo, context.tokens,
-                                                  tokenType, false))
-                                  .flatMap(Arrays::stream)
-                                  .toArray(BlockchainToken[] ::new));
-        });
+        allNetworkTokenCollector.setWhenAllCompletedAction(
+                () -> callback.call(allTokenContexts.stream()
+                              .map(context
+                                      -> filterTokens(context.networkInfo, context.tokens,
+                                              tokenType, false))
+                              .flatMap(Arrays::stream)
+                              .toArray(BlockchainToken[] ::new)));
     }
 
+    /**
+     * Gets all tokens from a given single network, includes user assets and filters out tokens
+     * different from a given type.
+     * @param braveWalletService BraveWalletService to retrieve user asset from core.
+     * @param blockchainRegistry BraveChainRegistry to retrieve all tokens from core.
+     * @param selectedNetwork Selected network whose tokens will be retrieved.
+     * @param tokenType Token type used for filtering.
+     * @param callback Callback containing a filtered array of tokens for the given network.
+     */
     public static void getAllTokensFiltered(BraveWalletService braveWalletService,
             BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
-        getAllTokens(blockchainRegistry, selectedNetwork.chainId, selectedNetwork.coin, tokens -> {
-            braveWalletService.getUserAssets(
-                    selectedNetwork.chainId, selectedNetwork.coin, userTokens -> {
-                        BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
-                                distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
-                                false);
-                        callback.call(filteredTokens);
-                    });
-        });
+        getAllTokens(blockchainRegistry, selectedNetwork.chainId, selectedNetwork.coin,
+                tokens -> braveWalletService.getUserAssets(
+                selectedNetwork.chainId, selectedNetwork.coin, userTokens -> {
+                    BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
+                            distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
+                            false);
+                    callback.call(filteredTokens);
+                }));
     }
 
     /**
@@ -315,7 +324,7 @@ public class TokenUtils {
      *
      * @param token1 First token to compare.
      * @param token2 Second token to compare.
-     * @return {@code} true if two tokens are equal, {@code false} otherwise.
+     * @return {@code true} if two tokens are equal, {@code false} otherwise.
      */
     public static boolean isSameToken(
             @NonNull BlockchainToken token1, @NonNull BlockchainToken token2) {
