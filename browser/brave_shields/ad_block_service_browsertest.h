@@ -24,6 +24,8 @@ class AdBlockService;
 class FilterListCatalogEntry;
 }  // namespace brave_shields
 
+class Profile;
+
 class AdBlockServiceTest : public InProcessBrowserTest {
  public:
   AdBlockServiceTest();
@@ -64,6 +66,7 @@ class AdBlockServiceTest : public InProcessBrowserTest {
   void DisableAggressiveMode();
   void LoadDAT(base::FilePath path);
   void EnableRedirectUrlParsing();
+  Profile* profile();
   content::WebContents* web_contents();
   base::FilePath MakeFileInTempDir(const std::string& name,
                                    const std::string& contents);

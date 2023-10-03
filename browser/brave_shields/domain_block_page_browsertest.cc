@@ -469,8 +469,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest,
 
   // Attempt to load a 3rd party iframe from a.com. It should not be allowed by
   // the exception created from proceeding.
-  uint64_t ads_blocked_count =
-      browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked);
+  uint64_t ads_blocked_count = profile()->GetPrefs()->GetUint64(kAdsBlocked);
   std::string iframe_script =
       "new Promise(resolve => {"
       "  const e = document.createElement('iframe');"
@@ -483,6 +482,6 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest,
       "})";
   EXPECT_EQ(true, EvalJs(web_contents(), iframe_script));
   WaitForAdBlockServiceThreads();
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked),
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked),
             ads_blocked_count + 1);
 }

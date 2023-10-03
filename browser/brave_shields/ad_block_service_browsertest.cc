@@ -133,7 +133,7 @@ void AdBlockServiceTest::PreRunTestOnMainThread() {
   InProcessBrowserTest::PreRunTestOnMainThread();
   WaitForAdBlockServiceThreads();
   InstallDefaultAdBlockComponent();
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 void AdBlockServiceTest::TearDownOnMainThread() {
@@ -153,8 +153,12 @@ content::WebContents* AdBlockServiceTest::web_contents() {
   return chrome_test_utils::GetActiveWebContents(this);
 }
 
+Profile* AdBlockServiceTest::profile() {
+  return chrome_test_utils::GetProfile(this);
+}
+
 HostContentSettingsMap* AdBlockServiceTest::content_settings() {
-  return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  return HostContentSettingsMapFactory::GetForProfile(profile());
 }
 
 void AdBlockServiceTest::AddNewRules(const std::string& rules,
@@ -355,7 +359,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Load a page with an image which is not an ad, and make sure it is NOT
@@ -371,7 +375,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('logo.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Load a page with an ad image, and make sure it is blocked by custom
@@ -388,7 +392,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
   EXPECT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Load a page with an ad image, with a corresponding exception installed in
@@ -404,7 +408,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultBlockCustomException) {
   EXPECT_EQ(true, EvalJs(contents,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Load a page with an image blocked by custom filters, with a corresponding
@@ -420,7 +424,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CustomBlockDefaultException) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Load a page with an image which is not an ad, and make sure it is NOT
@@ -434,7 +438,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('logo.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 class AdBlockServiceEngineUpdateCountTest : public AdBlockServiceTest {
@@ -481,7 +485,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_fr.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Load a page with an image which is not an ad, and make sure it is
@@ -500,7 +504,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('logo.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Load a page with several of the same adblocked xhr requests, it should only
@@ -519,7 +523,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 0, 1, 2);"
                          "xhr('adbanner.js')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Load a page with different adblocked xhr requests, it should count each.
@@ -537,7 +541,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoDiffAdsGetCountedAsTwo) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 0, 1, 2);"
                          "xhr('adbanner.js?2')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
 // New tab continues to count blocking the same resource
@@ -549,7 +553,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 0, 0, 1);"
                          "xhr('adbanner.js')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   contents = web_contents();
@@ -557,7 +561,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 0, 0, 1);"
                          "xhr('adbanner.js')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 }
@@ -571,7 +575,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
   ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 0, 1);"
                          "xhr('adbanner.js?1')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // Check also an explicit request for a script since it is a common real-world
   // scenario.
@@ -586,7 +590,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
                            })
                          )"));
   content::RunAllTasksUntilIdle();
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
 // Checks nothing is blocked if shields are off.
@@ -601,7 +605,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
   EXPECT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 1, 0);"
                          "xhr('adbanner.js?1')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   // Check also an explicit request for a script since it is a common real-world
   // scenario.
@@ -616,7 +620,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
                            })
                          )"));
   content::RunAllTasksUntilIdle();
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   brave_shields::ResetBraveShieldsEnabled(content_settings(), url);
 }
 
@@ -632,7 +636,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
                          "setExpectations(0, 0, 0, 1);"
                          "installBlockingServiceWorker()"));
   // https://github.com/brave/brave-browser/issues/14087
-  // EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  // EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, WebSocketBlocking) {
@@ -669,7 +673,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('ad_fr.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Make sure the third-party flag is passed into the ad-block library properly
@@ -685,7 +689,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
             EvalJs(contents, base::StringPrintf("setExpectations(1, 0, 0, 0);"
                                                 "addImage('%s')",
                                                 resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Make sure the third-party flag is passed into the ad-block library properly
@@ -700,7 +704,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
             EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
                                                 "addImage('%s')",
                                                 resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // These tests fail intermittently on macOS; see
@@ -815,7 +819,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
             EvalJs(contents, base::StringPrintf("setExpectations(0, 0, 0, 1);"
                                                 "xhr('%s')",
                                                 resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // Disable the list and ensure it is no longer applied
   sub_service_manager->EnableSubscription(subscription_url, false);
@@ -836,7 +840,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
             EvalJs(contents, base::StringPrintf("setExpectations(0, 0, 1, 1);"
                                                 "xhr('%s')",
                                                 resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // Refresh the subscription and ensure that it gets updated
   TestAdBlockSubscriptionServiceManagerObserver sub_observer(
@@ -990,7 +994,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                        "setExpectations(0, 1, 0, 0);"
                                        "addImage('%s')",
                                        direct_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Note one resolution for the root document
   ASSERT_EQ(2ULL, inner_resolver->num_resolve());
 
@@ -1001,7 +1005,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                        "setExpectations(0, 1, 0, 1);"
                                        "xhr('%s')",
                                        chain_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
   ASSERT_EQ(3ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
@@ -1010,7 +1014,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                          base::StringPrintf("setExpectations(0, 1, 1, 1);"
                                             "xhr('%s')",
                                             safe_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint.
@@ -1019,7 +1023,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                          base::StringPrintf("setExpectations(0, 1, 1, 2);"
                                             "xhr('%s')",
                                             bad_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 }
 
@@ -1074,7 +1078,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                        "setExpectations(0, 1, 0, 0);"
                                        "addImage('%s')",
                                        direct_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Note one resolution for the root document
   ASSERT_EQ(2ULL, inner_resolver->num_resolve());
 
@@ -1085,7 +1089,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                        "setExpectations(0, 1, 0, 1);"
                                        "xhr('%s')",
                                        chain_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
   ASSERT_EQ(3ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
@@ -1094,7 +1098,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                          base::StringPrintf("setExpectations(0, 1, 1, 1);"
                                             "xhr('%s')",
                                             safe_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint.
@@ -1103,7 +1107,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                          base::StringPrintf("setExpectations(0, 1, 1, 2);"
                                             "xhr('%s')",
                                             bad_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 
   // The original URL only matches an exception.
@@ -1114,7 +1118,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                        "setExpectations(0, 1, 2, 2);"
                                        "xhr('%s')",
                                        excepted_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(5ULL, inner_resolver->num_resolve());
 }
 
@@ -1173,7 +1177,7 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
                                        "setExpectations(1, 0, 0, 0);"
                                        "addImage('%s')",
                                        direct_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   // Note one resolution for the root document
   ASSERT_EQ(0ULL, inner_resolver->num_resolve());
 
@@ -1183,7 +1187,7 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
                                        "setExpectations(2, 0, 0, 0);"
                                        "addImage('%s')",
                                        chain_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   ASSERT_EQ(0ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
@@ -1192,7 +1196,7 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
                          base::StringPrintf("setExpectations(2, 0, 1, 0);"
                                             "xhr('%s')",
                                             safe_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   ASSERT_EQ(0ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint. It should be
@@ -1201,7 +1205,7 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
                          base::StringPrintf("setExpectations(2, 0, 1, 1);"
                                             "xhr('%s')",
                                             bad_resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   ASSERT_EQ(0ULL, inner_resolver->num_resolve());
 }
 
@@ -1217,7 +1221,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
             EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
                                                 "addImage('%s')",
                                                 resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Frame root URL is used for context rather than the tab URL
@@ -1230,7 +1234,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 1, 0);"
                          "xhr('adbanner.js?1')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   UpdateAdBlockInstanceWithRules("adbanner.js$domain=b.com");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -1239,7 +1243,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 0, 1);"
                          "xhr('adbanner.js?1')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Tags for social buttons work
@@ -1260,7 +1264,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
             EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
                                                 "addImage('%s')",
                                                 resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Lack of tags for social buttons work
@@ -1278,7 +1282,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
             EvalJs(contents, base::StringPrintf("setExpectations(1, 0, 0, 0);"
                                                 "addImage('%s')",
                                                 resource_url.spec().c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Tags are preserved after resetting
@@ -1292,7 +1296,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ResetPreservesTags) {
 
 // Setting prefs sets the right tags
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
-  auto* prefs = browser()->profile()->GetPrefs();
+  auto* prefs = profile()->GetPrefs();
 
   // Default tags exist on startup
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
@@ -1347,7 +1351,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CollapseBlockedImage) {
   EXPECT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // There is no way for JS to directly tell if an element has been collapsed,
   // but the clientHeight property is zero for collapsed elements and nonzero
@@ -1364,7 +1368,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CollapseBlockedIframe) {
   content::WebContents* contents = web_contents();
 
   EXPECT_EQ(true, EvalJs(contents, "addFrame('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // There is no way for JS to directly tell if an element has been collapsed,
   // but the clientHeight property is zero for collapsed elements and nonzero
@@ -1394,7 +1398,7 @@ IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
   EXPECT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // There is no way for JS to directly tell if an element has been collapsed,
   // but the clientHeight property is zero for collapsed elements and nonzero
@@ -1412,7 +1416,7 @@ IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
   content::WebContents* contents = web_contents();
 
   EXPECT_EQ(true, EvalJs(contents, "addFrame('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // There is no way for JS to directly tell if an element has been collapsed,
   // but the clientHeight property is zero for collapsed elements and nonzero
@@ -1446,12 +1450,12 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Default1pBlocking) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(1, 1, 0, 0);"
                          "addImage('https://thirdparty.com/ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Load a page with an image from a first party and a third party, which both
@@ -1469,12 +1473,12 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, SpecialUrlException) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 2, 0, 0);"
                          "addImage('https://thirdparty.com/ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
 // Load a page with an image from a first party and a third party, which both
@@ -1491,12 +1495,12 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest,
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 2, 0, 0);"
                          "addImage('https://thirdparty.com/ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
 // Load a page with an image from a first party and a third party, which both
@@ -1513,12 +1517,12 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 1, 0, 0);"
                          "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   ASSERT_EQ(true, EvalJs(contents,
                          "setExpectations(0, 2, 0, 0);"
                          "addImage('https://thirdparty.com/ad_banner.png')"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
 // Load a page with a script which uses a redirect data URL.
@@ -1549,7 +1553,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
                                  "setExpectations(0, 0, 1, 0);"
                                  "xhr_expect_content('%s', '%s');",
                                  resource_url.spec().c_str(), noopjs.c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // A redirection should only be applied if there's also a matching blocking
@@ -1581,7 +1585,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
                                             "xhr_expect_content('%s', '%s');",
                                             resource_url_1.spec().c_str(),
                                             noopjs.c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   const std::string actual_content = "testing\\n";
   const GURL resource_url_2 =
@@ -1591,7 +1595,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
                                             "xhr_expect_content('%s', '%s');",
                                             resource_url_2.spec().c_str(),
                                             actual_content.c_str())));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 std::unique_ptr<net::test_server::HttpResponse> NoParamHandler(
@@ -1737,7 +1741,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedDataImage"));
 
   // Violations of injected CSP directives do not increment the Shields counter
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Verify that Content Security Policies from multiple `$csp` rules are
@@ -1767,7 +1771,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleMerging) {
   EXPECT_EQ(false, EvalJs(contents, "!!window.loadedDataImage"));
 
   // Violations of injected CSP directives do not increment the Shields counter
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Lists with `hidden` set to `true` should not be shown in `GetRegionalLists`.
@@ -1813,7 +1817,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleShieldsDown) {
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
   EXPECT_EQ(true, EvalJs(contents, "!!window.loadedDataImage"));
 
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 class CosmeticFilteringFlagDisabledTest : public AdBlockServiceTest {
@@ -1858,8 +1862,7 @@ class CosmeticFilteringPlaylistFlagEnabledTest : public AdBlockServiceTest {
 
   content::WebContents* GetBackgroundWebContents() {
     auto* playlist_service =
-        playlist::PlaylistServiceFactory::GetForBrowserContext(
-            browser()->profile());
+        playlist::PlaylistServiceFactory::GetForBrowserContext(profile());
 
     return playlist_service->GetBackgroundWebContentsForTesting();
   }
@@ -2352,7 +2355,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CheckForDeAmpPref) {
   ASSERT_TRUE(result1.error.empty());
   EXPECT_EQ(base::Value(true), result1.value);
 
-  PrefService* prefs = browser()->profile()->GetPrefs();
+  PrefService* prefs = profile()->GetPrefs();
   prefs->SetBoolean(de_amp::kDeAmpPrefEnabled, false);
 
   web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
