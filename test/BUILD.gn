@@ -44,9 +44,13 @@ static_library("test_support") {
   deps = [
     "//brave/browser",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/tor/buildflags",
   ]
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/browser/connection:api" ]
+  }
 }
 
 static_library("brave_test_support_unit") {
@@ -188,6 +192,7 @@ test("brave_unit_tests") {
     "//brave/browser/safebrowsing",
     "//brave/browser/search:unit_tests",
     "//brave/browser/themes",
+    "//brave/browser/ui:unit_tests",
     "//brave/browser/ui/brave_rewards:unit_tests",
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/web_discovery:unit_tests",

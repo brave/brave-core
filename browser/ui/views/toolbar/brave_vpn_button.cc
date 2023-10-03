@@ -199,6 +199,12 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
 BraveVPNButton::~BraveVPNButton() = default;
 
 void BraveVPNButton::OnConnectionStateChanged(ConnectionState state) {
+  if (IsErrorState() && (state == ConnectionState::CONNECTING ||
+                         state == ConnectionState::DISCONNECTING)) {
+    // Skip attempts to connect/disconnet if we had an error before and keep
+    // the button in the error state until we get it clearly fixed.
+    return;
+  }
   UpdateColorsAndInsets();
 }
 
@@ -221,12 +227,14 @@ std::unique_ptr<views::Border> BraveVPNButton::GetBorder(
 }
 
 void BraveVPNButton::UpdateColorsAndInsets() {
+  const bool is_connect_error = IsConnectError();
+  is_error_state_ = is_connect_error;
+
   ui::ColorProvider* cp = GetColorProvider();
   if (!cp) {
     return;
   }
-  const bool is_connect_error = IsConnectError();
-  const bool is_connected = IsConnected();
+
   const auto bg_color =
       cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBackgroundNormal
                                     : kColorBraveVpnButtonBackgroundNormal);
@@ -235,7 +243,6 @@ void BraveVPNButton::UpdateColorsAndInsets() {
   SetEnabledTextColors(cp->GetColor(is_connect_error
                                         ? kColorBraveVpnButtonTextError
                                         : kColorBraveVpnButtonText));
-
   if (is_connect_error) {
     SetImage(
         views::Button::STATE_NORMAL,
@@ -246,6 +253,7 @@ void BraveVPNButton::UpdateColorsAndInsets() {
     image()->SetBackground(std::make_unique<ConnectErrorIconBackground>(
         cp->GetColor(kColorBraveVpnButtonIconErrorInner)));
   } else {
+    const bool is_connected = IsConnected();
     SetImage(
         views::Button::STATE_NORMAL,
         gfx::CreateVectorIcon(
@@ -312,8 +320,15 @@ bool BraveVPNButton::IsConnected() const {
   return service_->IsConnected();
 }
 
+ConnectionState BraveVPNButton::GetVpnConnectionState() const {
+  if (connection_state_for_testing_) {
+    return connection_state_for_testing_.value();
+  }
+  return service_->GetConnectionState();
+}
+
 bool BraveVPNButton::IsConnectError() const {
-  const auto state = service_->GetConnectionState();
+  const auto state = GetVpnConnectionState();
   return (state == ConnectionState::CONNECT_NOT_ALLOWED ||
           state == ConnectionState::CONNECT_FAILED);
 }
