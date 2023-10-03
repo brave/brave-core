@@ -1033,6 +1033,8 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
                 "mLocationBarMediator"));
         Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/LocationBarCoordinator", "mUrlBar"));
+        Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mNativeInitialized"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator", "mWindowAndroid"));
