@@ -407,7 +407,8 @@ extension BraveWallet.SignMessageRequest {
           message: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
           domain: "",
           domainHash: nil,
-          primaryHash: nil
+          primaryHash: nil,
+          meta: nil
         )
       ),
       coin: .eth,
