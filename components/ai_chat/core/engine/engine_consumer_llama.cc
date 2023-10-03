@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/browser/engine/engine_consumer_llama.h"
+#include "brave/components/ai_chat/core/engine/engine_consumer_llama.h"
 
 #include <memory>
 #include <string>
@@ -23,9 +23,9 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/engine/remote_completion_client.h"
 #include "components/grit/brave_components_strings.h"
 
 #include "services/network/public/cpp/shared_url_loader_factory.h"

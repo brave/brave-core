@@ -4,6 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  enable_ai_chat = is_win || is_mac || is_linux || is_android
+  enable_ai_chat = true
   brave_ai_chat_endpoint = ""
 }

@@ -283,6 +283,7 @@ if (enable_ai_chat) {
     "//brave/components/ai_chat/browser",
     "//brave/components/ai_chat/common",
     "//brave/components/ai_chat/common/mojom",
+    "//brave/components/ai_chat/core",
   ]
 }
 

@@ -791,6 +791,7 @@ source_set("ui") {
       "//brave/components/ai_chat/browser",
       "//brave/components/ai_chat/common",
       "//brave/components/ai_chat/common/mojom",
+      "//brave/components/ai_chat/core",
       "//brave/components/ai_chat/resources/page:generated_resources",
     ]
   }

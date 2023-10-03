@@ -355,9 +355,8 @@ test("brave_unit_tests") {
   }
 
   if (enable_ai_chat) {
-    sources +=
-        [ "//brave/components/ai_chat/browser/ai_chat_metrics_unittest.cc" ]
-    deps += [ "//brave/components/ai_chat/browser" ]
+    sources += [ "//brave/components/ai_chat/core/ai_chat_metrics_unittest.cc" ]
+    deps += [ "//brave/components/ai_chat/core" ]
   }
 
   data = [ "data/" ]

@@ -20,6 +20,7 @@ group("ui") {
       deps += [
         "//brave/components/ai_chat/browser",
         "//brave/components/ai_chat/common",
+        "//brave/components/ai_chat/core",
       ]
     }
   }
