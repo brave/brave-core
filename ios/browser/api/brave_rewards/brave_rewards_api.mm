@@ -146,10 +146,11 @@ static const auto kOneDay =
 
 - (instancetype)initWithStateStoragePath:(NSString*)path {
   if ((self = [super init])) {
-    _engineTaskRunner = base::ThreadPool::CreateSequencedTaskRunner(
+    _engineTaskRunner = base::ThreadPool::CreateSingleThreadTaskRunner(
         {base::MayBlock(), base::WithBaseSyncPrimitives(),
          base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
+        base::SingleThreadTaskRunnerThreadMode::DEDICATED);
 
     self.storagePath = path;
     self.commonOps =
