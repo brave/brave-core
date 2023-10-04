@@ -1,5 +1,5 @@
 diff --git a/components/autofill/core/browser/autocomplete_history_manager.cc b/components/autofill/core/browser/autocomplete_history_manager.cc
-index d0a9e5195744f89758c3a9b4c341e6a30e0b23ee..88cd46dd774bde86c817e8214b46c1a5df1bf73b 100644
+index d0a9e5195744f89758c3a9b4c341e6a30e0b23ee..18a5c8ccb6838ca50c3996aa2db13a93fb35028a 100644
 --- a/components/autofill/core/browser/autocomplete_history_manager.cc
 +++ b/components/autofill/core/browser/autocomplete_history_manager.cc
 @@ -118,8 +118,8 @@ bool AutocompleteHistoryManager::OnGetSingleFieldSuggestions(
@@ -28,16 +28,14 @@ index d0a9e5195744f89758c3a9b4c341e6a30e0b23ee..88cd46dd774bde86c817e8214b46c1a5
    }
  }
  
-@@ -314,6 +316,17 @@ void AutocompleteHistoryManager::OnAutofillCleanupReturned(
+@@ -314,6 +316,15 @@ void AutocompleteHistoryManager::OnAutofillCleanupReturned(
    Notify(NotificationType::AutocompleteCleanupDone);
  }
  
 +void AutocompleteHistoryManager::OnConfirmAutocomplete(
 +    std::vector<FormFieldData> autocomplete_saveable_fields,
-+    AutofillClient::ConfirmAutocompleteUserDecision user_decision) {
-+  if (user_decision ==
-+          AutofillClient::ConfirmAutocompleteUserDecision::kAccepted &&
-+      profile_database_) {
++    bool user_decision) {
++  if (user_decision && profile_database_) {
 +    profile_database_->AddFormFields(autocomplete_saveable_fields);
 +    Notify(NotificationType::AutocompleteFormSubmitted);  // maybe fire earlier?
 +  }

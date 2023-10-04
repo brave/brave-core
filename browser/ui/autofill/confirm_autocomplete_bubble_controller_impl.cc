@@ -1,7 +1,3 @@
-// Copyright 2023 The Chromium Authors
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 #include "brave/browser/ui/autofill/confirm_autocomplete_bubble_controller_impl.h"
 
 #include <string>
@@ -19,15 +15,14 @@ ConfirmAutocompleteBubbleControllerImpl::
     ~ConfirmAutocompleteBubbleControllerImpl() = default;
 
 void ConfirmAutocompleteBubbleControllerImpl::ShowBubble(
-    AutofillClient::ConfirmAutocompletePromptCallback
-        confirm_autocomplete_prompt_callback) {
+    base::OnceCallback<void(bool)> callback) {
   if (bubble_view()) {
     return;
   }
 
-  local_confirm_autocomplete_prompt_callback_ =
-      std::move(confirm_autocomplete_prompt_callback);
-  DCHECK(!local_confirm_autocomplete_prompt_callback_.is_null());
+  callback_ = std::move(callback);
+  DCHECK(callback_);
+
   Show();
 }
 
@@ -47,19 +42,15 @@ std::u16string ConfirmAutocompleteBubbleControllerImpl::GetDeclineButtonText()
 }
 
 void ConfirmAutocompleteBubbleControllerImpl::OnAcceptButton() {
-  DCHECK(!local_confirm_autocomplete_prompt_callback_.is_null());
-  std::move(local_confirm_autocomplete_prompt_callback_)
-      .Run(AutofillClient::ConfirmAutocompleteUserDecision::kAccepted);
+  DCHECK(callback_);
+  std::move(callback_).Run(true);
 }
 
 void ConfirmAutocompleteBubbleControllerImpl::OnBubbleClosed(
     PaymentsBubbleClosedReason closed_reason) {
-  if (closed_reason == PaymentsBubbleClosedReason::kCancelled) {
-    std::move(local_confirm_autocomplete_prompt_callback_)
-        .Run(AutofillClient::ConfirmAutocompleteUserDecision::kDeclined);
-  } else if (closed_reason == PaymentsBubbleClosedReason::kClosed) {
-    std::move(local_confirm_autocomplete_prompt_callback_)
-        .Run(AutofillClient::ConfirmAutocompleteUserDecision::kIgnored);
+  if (closed_reason != PaymentsBubbleClosedReason::kAccepted) {
+    DCHECK(callback_);
+    std::move(callback_).Run(false);
   }
 
   set_bubble_view(nullptr);
