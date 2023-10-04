@@ -18,6 +18,20 @@
 #include "components/country_codes/country_codes.h"
 #include "components/search_engines/search_engines_pref_names.h"
 
+namespace TemplateURLPrepopulateData {
+
+// This redeclaration of the upstream prototype for `GetPrepopulatedEngines` is
+// necessary, otherwise the translation unit fails to compile on calls for
+// `GetPrepopulatedEngines` where there's an expectation for the use of the
+// default value of the last two arguents.
+std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines_Unused(
+    PrefService* prefs,
+    size_t* default_search_provider_index,
+    bool include_current_default = false,
+    TemplateURLService* template_url_service = nullptr);
+
+}  // namespace TemplateURLPrepopulateData
+
 #define GetDataVersion GetDataVersion_ChromiumImpl
 #if BUILDFLAG(IS_ANDROID)
 #define GetLocalPrepopulatedEngines GetLocalPrepopulatedEngines_Unused
@@ -595,7 +609,9 @@ int GetDataVersion(PrefService* prefs) {
 // get search engines defined by Brave.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
     PrefService* prefs,
-    size_t* default_search_provider_index) {
+    size_t* default_search_provider_index,
+    bool include_current_default,
+    TemplateURLService* template_url_service) {
   // If there is a set of search engines in the preferences file, it overrides
   // the built-in set.
   if (default_search_provider_index)
