@@ -1,0 +1,20 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/buildflag_header.gni")
+import("buildflags.gni")
+
+# TODO(petemill): Default target for this project could instead be some cpp
+# helpers which create domain names for consumers for the correct environment
+# and can vary based on dynamic cli param overrides.
+
+buildflag_header("brave_domains") {
+  header = "buildflags.h"
+  flags = [
+    "BRAVE_SERVICES_PRODUCTION_DOMAIN=\"$brave_services_production_domain\"",
+    "BRAVE_SERVICES_STAGING_DOMAIN=\"$brave_services_staging_domain\"",
+    "BRAVE_SERVICES_DEV_DOMAIN=\"$brave_services_dev_domain\"",
+  ]
+}

@@ -85,3 +85,11 @@
   font-size: 10px;
   letter-spacing: 0.5px;
 }
+
+.alertCenter {
+  --leo-alert-center-width: calc(100% - 32px); /* remove scrollbar space */
+  position: absolute;
+  left: 0;
+  z-index: 5;
+  width: 100%;
+}

@@ -13,6 +13,8 @@ if (is_official_build) {
 
 static_library("browser") {
   sources = [
+    "ai_chat_feedback_api.cc",
+    "ai_chat_feedback_api.h",
     "ai_chat_tab_helper.cc",
     "ai_chat_tab_helper.h",
     "page_content_fetcher.cc",
@@ -21,12 +23,15 @@ static_library("browser") {
 
   deps = [
     "//base",
+    "//brave/brave_domains",
     "//brave/components/ai_chat/common",
     "//brave/components/ai_chat/common/buildflags",
     "//brave/components/ai_chat/common/mojom",
     "//brave/components/ai_chat/core",
     "//brave/components/api_request_helper",
+    "//brave/components/brave_stats/browser",
     "//brave/components/constants",
+    "//brave/components/l10n/common",
     "//brave/components/resources:strings_grit",
     "//components/favicon/content",
     "//components/favicon/core",
