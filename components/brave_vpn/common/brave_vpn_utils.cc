@@ -55,7 +55,12 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
   DCHECK(IsBraveVPNFeatureEnabled());
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
-  return local_state->GetBoolean(prefs::kBraveVPNWireguardEnabled);
+  auto enabled = local_state->GetBoolean(prefs::kBraveVPNWireguardEnabled);
+#if BUILDFLAG(IS_MAC)
+  enabled = enabled && base::FeatureList::IsEnabled(
+                           brave_vpn::features::kBraveVPNEnableWireguardForOSX);
+#endif  // BUILDFLAG(IS_MAC)
+  return enabled;
 #else
   return false;
 #endif

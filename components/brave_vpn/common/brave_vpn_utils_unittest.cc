@@ -223,3 +223,50 @@ TEST(BraveVPNUtilsUnitTest, FeatureTest) {
   EXPECT_FALSE(brave_vpn::IsBraveVPNFeatureEnabled());
 #endif
 }
+
+#if BUILDFLAG(IS_MAC)
+TEST(BraveVPNUtilsUnitTest, IsBraveVPNWireguardEnabledMac) {
+  {
+    TestingPrefServiceSimple local_state_pref_service;
+    brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+
+    // Prefs are in default state, the wireguard feature is disabled.
+    base::test::ScopedFeatureList scoped_feature_list;
+    scoped_feature_list.InitWithFeatures(
+        {brave_vpn::features::kBraveVPN, skus::features::kSkusFeature}, {});
+    EXPECT_FALSE(local_state_pref_service.GetBoolean(
+        brave_vpn::prefs::kBraveVPNWireguardEnabled));
+    EXPECT_FALSE(
+        brave_vpn::IsBraveVPNWireguardEnabled(&local_state_pref_service));
+
+    // The pref is enabled but the feature is disabled
+    local_state_pref_service.SetBoolean(
+        brave_vpn::prefs::kBraveVPNWireguardEnabled, true);
+    EXPECT_FALSE(
+        brave_vpn::IsBraveVPNWireguardEnabled(&local_state_pref_service));
+  }
+
+  {
+    TestingPrefServiceSimple local_state_pref_service;
+    brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+
+    // // Prefs are in default state, the wireguard feature is enabled.
+    base::test::ScopedFeatureList scoped_feature_list;
+    scoped_feature_list.InitWithFeatures(
+        {brave_vpn::features::kBraveVPN, skus::features::kSkusFeature,
+         brave_vpn::features::kBraveVPNEnableWireguardForOSX},
+        {});
+
+    EXPECT_FALSE(local_state_pref_service.GetBoolean(
+        brave_vpn::prefs::kBraveVPNWireguardEnabled));
+    EXPECT_FALSE(
+        brave_vpn::IsBraveVPNWireguardEnabled(&local_state_pref_service));
+
+    // The pref is enabled but the feature is enabled.
+    local_state_pref_service.SetBoolean(
+        brave_vpn::prefs::kBraveVPNWireguardEnabled, true);
+    EXPECT_TRUE(
+        brave_vpn::IsBraveVPNWireguardEnabled(&local_state_pref_service));
+  }
+}
+#endif

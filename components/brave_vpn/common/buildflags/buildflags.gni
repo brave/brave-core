@@ -13,5 +13,5 @@ declare_args() {
 
 declare_args() {
   # Wireguard is available only on Windows.
-  enable_brave_vpn_wireguard = is_win && enable_brave_vpn
+  enable_brave_vpn_wireguard = (is_mac || is_win) && enable_brave_vpn
 }

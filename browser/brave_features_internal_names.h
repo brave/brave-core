@@ -17,6 +17,9 @@ constexpr char kBraveVPNFeatureInternalName[] = "brave-vpn";
 constexpr char kBraveVPNDnsFeatureInternalName[] = "brave-vpn-dns";
 constexpr char kBraveVPNWireguardFeatureInternalName[] = "brave-vpn-wireguard";
 #endif
+#if BUILDFLAG(IS_MAC)
+constexpr char kBraveVPNWireguardForOSXFeatureInternalName[] =
+    "brave-vpn-wireguard-osx";
 #endif
-
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 #endif  // BRAVE_BROWSER_BRAVE_FEATURES_INTERNAL_NAMES_H_
