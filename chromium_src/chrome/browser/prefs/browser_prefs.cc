@@ -71,95 +71,94 @@
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteProfilePrefs(Profile* profile) {
   // BEGIN_MIGRATE_OBSOLETE_PROFILE_PREFS
+  PrefService* profile_prefs = profile->GetPrefs();
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Added 02/2020.
   // Must be called before ChromiumImpl because it's migrating a Chromium pref
   // to Brave pref.
-  gcm::MigrateGCMPrefs(profile);
+  gcm::MigrateGCMPrefs(profile_prefs);
 #endif
 
   MigrateObsoleteProfilePrefs_ChromiumImpl(profile);
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   // Added 11/2019.
-  MigrateWidevinePrefs(profile);
+  MigrateWidevinePrefs(profile_prefs);
 #endif
-  brave_sync::MigrateBraveSyncPrefs(profile->GetPrefs());
+  brave_sync::MigrateBraveSyncPrefs(profile_prefs);
 
   // Added 12/2019.
-  dark_mode::MigrateBraveDarkModePrefs(profile);
+  dark_mode::MigrateBraveDarkModePrefs(profile_prefs);
 
 #if !BUILDFLAG(IS_ANDROID)
   // Added 9/2020
-  new_tab_page::MigrateNewTabPagePrefs(profile);
+  new_tab_page::MigrateNewTabPagePrefs(profile_prefs);
 
   // Added 06/2022
-  brave::MigrateSearchEngineProviderPrefs(profile);
+  brave::MigrateSearchEngineProviderPrefs(profile_prefs);
 
   // Added 10/2022
-  profile->GetPrefs()->ClearPref(kDefaultBrowserLaunchingCount);
+  profile_prefs->ClearPref(kDefaultBrowserLaunchingCount);
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Added 11/2022
-  profile->GetPrefs()->ClearPref(kDontAskEnableWebDiscovery);
-  profile->GetPrefs()->ClearPref(kBraveSearchVisitCount);
+  profile_prefs->ClearPref(kDontAskEnableWebDiscovery);
+  profile_prefs->ClearPref(kBraveSearchVisitCount);
 #endif
 
-  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(
-      profile->GetPrefs());
-  brave_wallet::MigrateObsoleteProfilePrefs(profile->GetPrefs());
+  brave_wallet::KeyringService::MigrateObsoleteProfilePrefs(profile_prefs);
+  brave_wallet::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added 05/2021
-  profile->GetPrefs()->ClearPref(kBraveNewsIntroDismissed);
+  profile_prefs->ClearPref(kBraveNewsIntroDismissed);
   // Added 07/2021
-  profile->GetPrefs()->ClearPref(prefs::kNetworkPredictionOptions);
+  profile_prefs->ClearPref(prefs::kNetworkPredictionOptions);
 
   // Added 01/2022
-  brave_rewards::MigrateObsoleteProfilePrefs(profile->GetPrefs());
+  brave_rewards::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added 05/2022
-  translate::ClearMigrationBraveProfilePrefs(profile->GetPrefs());
+  translate::ClearMigrationBraveProfilePrefs(profile_prefs);
 
   // Added 06/2022
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  NTPBackgroundPrefs(profile->GetPrefs()).MigrateOldPref();
+  NTPBackgroundPrefs(profile_prefs).MigrateOldPref();
 #endif
 
   // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
-  profile->GetPrefs()->ClearPref(kFTXAccessToken);
-  profile->GetPrefs()->ClearPref(kFTXOauthHost);
-  profile->GetPrefs()->ClearPref(kFTXNewTabPageShowFTX);
-  profile->GetPrefs()->ClearPref(kCryptoDotComNewTabPageShowCryptoDotCom);
-  profile->GetPrefs()->ClearPref(kCryptoDotComHasBoughtCrypto);
-  profile->GetPrefs()->ClearPref(kCryptoDotComHasInteracted);
-  profile->GetPrefs()->ClearPref(kGeminiAccessToken);
-  profile->GetPrefs()->ClearPref(kGeminiRefreshToken);
-  profile->GetPrefs()->ClearPref(kNewTabPageShowGemini);
+  profile_prefs->ClearPref(kFTXAccessToken);
+  profile_prefs->ClearPref(kFTXOauthHost);
+  profile_prefs->ClearPref(kFTXNewTabPageShowFTX);
+  profile_prefs->ClearPref(kCryptoDotComNewTabPageShowCryptoDotCom);
+  profile_prefs->ClearPref(kCryptoDotComHasBoughtCrypto);
+  profile_prefs->ClearPref(kCryptoDotComHasInteracted);
+  profile_prefs->ClearPref(kGeminiAccessToken);
+  profile_prefs->ClearPref(kGeminiRefreshToken);
+  profile_prefs->ClearPref(kNewTabPageShowGemini);
 #endif
 
   // Added 24/11/2022: https://github.com/brave/brave-core/pull/16027
 #if !BUILDFLAG(IS_IOS)
-  profile->GetPrefs()->ClearPref(kBinanceAccessToken);
-  profile->GetPrefs()->ClearPref(kBinanceRefreshToken);
-  profile->GetPrefs()->ClearPref(kNewTabPageShowBinance);
-  profile->GetPrefs()->ClearPref(kBraveSuggestedSiteSuggestionsEnabled);
+  profile_prefs->ClearPref(kBinanceAccessToken);
+  profile_prefs->ClearPref(kBinanceRefreshToken);
+  profile_prefs->ClearPref(kNewTabPageShowBinance);
+  profile_prefs->ClearPref(kBraveSuggestedSiteSuggestionsEnabled);
 #endif
 
 #if defined(TOOLKIT_VIEWS)
   // Added May 2023
-  if (profile->GetPrefs()->GetBoolean(
-          sidebar::kSidebarAlignmentChangedTemporarily)) {
+  if (profile_prefs->GetBoolean(sidebar::kSidebarAlignmentChangedTemporarily)) {
     // If temporarily changed, it means sidebar is set to right.
     // Just clear alignment prefs as default alignment is changed to right.
-    profile->GetPrefs()->ClearPref(prefs::kSidePanelHorizontalAlignment);
+    profile_prefs->ClearPref(prefs::kSidePanelHorizontalAlignment);
   }
 
-  profile->GetPrefs()->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
+  profile_prefs->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
 #endif
 
-  brave_news::p3a::MigrateObsoleteProfilePrefs(profile->GetPrefs());
+  brave_news::p3a::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added September 2023
 #if !BUILDFLAG(IS_IOS)
@@ -227,13 +226,13 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
       "Brave.P2A.AdImpressionsPerSegment.weather",
       "Brave.P2A.AdImpressionsPerSegment.untargeted"};
   for (const char* const pref : kLegacyBraveP2AAdPrefs) {
-    profile->GetPrefs()->ClearPref(pref);
+    profile_prefs->ClearPref(pref);
   }
 #endif
 
   // Added 2023-09
   ntp_background_images::ViewCounterService::MigrateObsoleteProfilePrefs(
-      profile->GetPrefs());
+      profile_prefs);
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

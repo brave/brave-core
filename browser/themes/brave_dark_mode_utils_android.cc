@@ -7,8 +7,7 @@
 
 namespace dark_mode {
 
-void MigrateBraveDarkModePrefs(Profile* profile) {
-}
+void MigrateBraveDarkModePrefs(PrefService* prefs) {}
 
 void RegisterBraveDarkModeLocalStatePrefs(PrefRegistrySimple* registry) {
 }

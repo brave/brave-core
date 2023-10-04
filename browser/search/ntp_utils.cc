@@ -15,8 +15,7 @@
 
 namespace {
 
-void ClearNewTabPageProfilePrefs(Profile* profile) {
-  PrefService* prefs = profile->GetPrefs();
+void ClearNewTabPageProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kNewTabPageShowTopSites);
 }
 
@@ -27,10 +26,9 @@ const char* const kWidgetPrefNames[] = {kNewTabPageShowRewards,
 
 namespace new_tab_page {
 
-void MigrateNewTabPagePrefs(Profile* profile) {
+void MigrateNewTabPagePrefs(PrefService* prefs) {
   // Migrate over to the Chromium setting for shortcuts visible
   // Only sets the value if user has changed it
-  auto* prefs = profile->GetPrefs();
   const PrefService::Preference* top_sites_pref =
       prefs->FindPreference(kNewTabPageShowTopSites);
   if (top_sites_pref->HasUserSetting()) {
@@ -79,7 +77,7 @@ void MigrateNewTabPagePrefs(Profile* profile) {
   }
 
   // Clear deprecated prefs.
-  ClearNewTabPageProfilePrefs(profile);
+  ClearNewTabPageProfilePrefs(prefs);
 }
 
 void RegisterNewTabPagePrefsForMigration(
