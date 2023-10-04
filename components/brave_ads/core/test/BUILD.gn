@@ -365,6 +365,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/history/category_content_value_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/filters/confirmation_history_filter_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/filters/date_range_history_filter_unittest.cc",
+    "//brave/components/brave_ads/core/internal/history/history_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/history_item_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/history_item_value_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/history_manager_observer_mock.cc",
