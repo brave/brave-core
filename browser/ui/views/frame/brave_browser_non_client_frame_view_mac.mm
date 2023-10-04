@@ -62,9 +62,15 @@ void BraveBrowserNonClientFrameViewMac::OnPaint(gfx::Canvas* canvas) {
 }
 
 int BraveBrowserNonClientFrameViewMac::GetTopInset(bool restored) const {
-  if (ShouldShowWindowTitleForVerticalTabs()) {
-    // Set minimum top inset to show caption buttons on frame.
-    return 30;
+  if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
+    if (ShouldShowWindowTitleForVerticalTabs()) {
+      // Set minimum top inset to show caption buttons on frame.
+      return 30;
+    }
+
+    // Bypassing BrowserNonClientFrameViewMac's implementation so that we don't
+    // have any inset when hiding title bar.
+    return 0;
   }
 
   if (!tabs::features::HorizontalTabsUpdateEnabled()) {
