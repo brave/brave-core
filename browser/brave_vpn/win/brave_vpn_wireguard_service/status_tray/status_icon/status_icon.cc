@@ -14,7 +14,6 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/native_popup_menu.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
 #include "ui/gfx/geometry/point.h"
-#include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/icon_util.h"
 
 namespace brave_vpn {
@@ -69,7 +68,11 @@ void StatusIcon::OnMenuCommand(int index, int event_flags) {
   if (!menu_model_->delegate()) {
     return;
   }
-  menu_model_->ExecuteCommand(menu_model_->GetCommandIdAt(index), event_flags);
+  ExecuteCommand(menu_model_->GetCommandIdAt(index), event_flags);
+}
+
+void StatusIcon::ExecuteCommand(int command_id, int event_flags) {
+  menu_model_->ExecuteCommand(command_id, event_flags);
 }
 
 void StatusIcon::ResetIcon() {

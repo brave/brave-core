@@ -73,7 +73,6 @@ void NativePopupMenu::AddMenuItemAt(size_t menu_index) {
   mii.dwTypeData = base::as_writable_wcstr(items_[menu_index]->label);
   // MIIM_STATE
   mii.fState = model_->IsEnabledAt(menu_index) ? MFS_ENABLED : MFS_DISABLED;
-  ;
 
   InsertMenuItem(GetWeakMenuHandle(), menu_index, TRUE, &mii);
 }
