@@ -27,6 +27,8 @@ static_library("internal") {
     "account/confirmations/confirmations.cc",
     "account/confirmations/confirmations.h",
     "account/confirmations/confirmations_delegate.h",
+    "account/confirmations/confirmations_feature.cc",
+    "account/confirmations/confirmations_feature.h",
     "account/confirmations/confirmations_util.cc",
     "account/confirmations/confirmations_util.h",
     "account/confirmations/non_reward/non_reward_confirmation_util.cc",
