@@ -1,0 +1,23 @@
+diff --git a/DEPS b/DEPS
+index 53d0c0fa5f5fac72954d749a6d77b5dab6878f3c..05a8c723ec41653bbd69db4113ef5f1bba46ba06 100644
+--- a/DEPS
++++ b/DEPS
+@@ -1450,6 +1450,18 @@ deps = {
+       'dep_type': 'cipd',
+   },
+ 
++  'src/third_party/google-java-format': {
++      'packages': [
++          {
++              'package': 'chromium/third_party/google-java-format',
++              'version': 'AQn4F5NfPAs_GKX-z3OW_Q7-yJ9N6tPrDnmnDScjkTEC',
++          },
++      ],
++      # Needed on Linux for use on chromium_presubmit.
++      'condition': 'checkout_android or checkout_linux',
++      'dep_type': 'cipd',
++  },
++
+   'src/third_party/hamcrest': {
+       'packages': [
+           {

@@ -1,0 +1,12 @@
+diff --git a/third_party/.gitignore b/third_party/.gitignore
+index 628eed67792444b49985c28697dd02e592ca7c75..03488291a2fcf5c8ce7e2fce71e143ad4802252b 100644
+--- a/third_party/.gitignore
++++ b/third_party/.gitignore
+@@ -120,6 +120,7 @@
+ /glfw/src
+ /gn/
+ /gnu_binutils/
++/google-java-format/*.jar
+ /google-truth/lib/
+ /google_benchmark/src
+ /google_toolbox_for_mac/src
