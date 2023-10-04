@@ -3187,7 +3187,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Solana
     </message>
     <message name="IDS_DOWNLOAD_WALLET_DATA_FILES_PROGRESS" desc="Caption for displaying download progress of Brave Wallet datafiles component">
-      Downloading wallet data file \u2022 <ph name="percentage">%1$d<ex>37</ex></ph>\u0025
+      Downloading wallet data file \u2022 <ph name="percentage">%1$d<ex>37</ex></ph>\u0025\u0025
     </message>
     <message name="IDS_CONNECTED_TO_HOST" desc="Brave Vpn notification statistics text">
       Connected to <ph name="VALUE">%1$s</ph>
