@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc b/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc
-index 284ca5af904c31d01708bed39b5a33d5c89fb502..051ceee036d2d37703d49c35433bf004f7d9f7b8 100644
+index 284ca5af904c31d01708bed39b5a33d5c89fb502..1bf0fdcbb8ccdbc03f1d54096bd01b5200628f2d 100644
 --- a/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc
 +++ b/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc
 @@ -4,6 +4,8 @@
@@ -22,10 +22,10 @@ index 284ca5af904c31d01708bed39b5a33d5c89fb502..051ceee036d2d37703d49c35433bf004
 +    ConfirmAutocompleteBubbleType bubble_type) {
 +  PageActionIconView* icon_view =
 +      toolbar_button_provider_->GetPageActionIconView(
-+          PageActionIconType::kSaveIban);
++          PageActionIconType::kSaveAutofillAddress);
 +  DCHECK(icon_view);
 +  views::View* anchor_view =
-+      toolbar_button_provider_->GetAnchorView(PageActionIconType::kSaveIban);
++      toolbar_button_provider_->GetAnchorView(PageActionIconType::kSaveAutofillAddress);
 +
 +  // TODO(crbug.com/1416270): Add Show() to AutofillBubbleBase and refactor
 +  // below.

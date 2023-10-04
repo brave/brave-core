@@ -19,14 +19,18 @@ class ConfirmAutocompleteBubbleControllerImpl
     : public AutofillBubbleControllerBase,
       public ConfirmAutocompleteBubbleController,
       public SavePaymentIconController,
-      public content::WebContentsUserData<ConfirmAutocompleteBubbleControllerImpl> {
+      public content::WebContentsUserData<
+          ConfirmAutocompleteBubbleControllerImpl> {
  public:
-  ConfirmAutocompleteBubbleControllerImpl(const ConfirmAutocompleteBubbleControllerImpl&) = delete;
-  ConfirmAutocompleteBubbleControllerImpl& operator=(const ConfirmAutocompleteBubbleControllerImpl&) = delete;
+  ConfirmAutocompleteBubbleControllerImpl(
+      const ConfirmAutocompleteBubbleControllerImpl&) = delete;
+  ConfirmAutocompleteBubbleControllerImpl& operator=(
+      const ConfirmAutocompleteBubbleControllerImpl&) = delete;
+
   ~ConfirmAutocompleteBubbleControllerImpl() override;
 
-  void OfferLocalSave(
-      AutofillClient::ConfirmAutocompletePromptCallback confirm_autocomplete_prompt_callback);
+  void OfferLocalSave(AutofillClient::ConfirmAutocompletePromptCallback
+                          confirm_autocomplete_prompt_callback);
 
   // No-op if the bubble is already shown, otherwise, shows the bubble.
   void ReshowBubble();
@@ -35,7 +39,7 @@ class ConfirmAutocompleteBubbleControllerImpl
   std::u16string GetAcceptButtonText() const override;
   std::u16string GetDeclineButtonText() const override;
 
-  void OnAcceptButton(const std::u16string& nickname) override;
+  void OnAcceptButton() override;
   void OnBubbleClosed(PaymentsBubbleClosedReason closed_reason) override;
   ConfirmAutocompleteBubbleType GetBubbleType() const override;
 
@@ -51,17 +55,16 @@ class ConfirmAutocompleteBubbleControllerImpl
   int GetSaveSuccessAnimationStringId() const override;
 
  protected:
-  explicit ConfirmAutocompleteBubbleControllerImpl(content::WebContents* web_contents);
+  explicit ConfirmAutocompleteBubbleControllerImpl(
+      content::WebContents* web_contents);
 
   // AutofillBubbleControllerBase:
   PageActionIconType GetPageActionIconType() override;
   void DoShowBubble() override;
 
  private:
-  friend class content::WebContentsUserData<ConfirmAutocompleteBubbleControllerImpl>;
-
-  // Displays omnibox icon only.
-  void ShowIconOnly();
+  friend class content::WebContentsUserData<
+      ConfirmAutocompleteBubbleControllerImpl>;
 
   // Should outlive this object.
   raw_ptr<PersonalDataManager> personal_data_manager_;
@@ -71,11 +74,13 @@ class ConfirmAutocompleteBubbleControllerImpl
   // Is true only if the [IBAN saved] label animation should be shown.
   bool should_show_iban_saved_label_animation_ = false;
 
-  ConfirmAutocompleteBubbleType current_bubble_type_ = ConfirmAutocompleteBubbleType::kInactive;
+  ConfirmAutocompleteBubbleType current_bubble_type_ =
+      ConfirmAutocompleteBubbleType::kInactive;
 
   // Callback to run once the user makes a decision with respect to the local
   // IBAN offer-to-save prompt.
-  AutofillClient::ConfirmAutocompletePromptCallback local_confirm_autocomplete_prompt_callback_;
+  AutofillClient::ConfirmAutocompletePromptCallback
+      local_confirm_autocomplete_prompt_callback_;
 
   // Whether the bubble is shown after user interacted with the omnibox icon.
   bool is_reshow_ = false;

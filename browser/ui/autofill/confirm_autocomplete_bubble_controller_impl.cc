@@ -71,11 +71,11 @@ void ConfirmAutocompleteBubbleControllerImpl::ReshowBubble() {
 std::u16string ConfirmAutocompleteBubbleControllerImpl::GetWindowTitle() const {
   switch (current_bubble_type_) {
     case ConfirmAutocompleteBubbleType::kLocalSave:
-      return l10n_util::GetStringUTF16(
-          IDS_AUTOFILL_SAVE_IBAN_PROMPT_TITLE_LOCAL);
+      return u"Would you like Brave to save this kind of information and fill "
+             u"it in for you later?";
     case ConfirmAutocompleteBubbleType::kInactive:
       NOTREACHED();
-      return std::u16string();
+      return u"";
   }
 }
 
@@ -83,11 +83,10 @@ std::u16string ConfirmAutocompleteBubbleControllerImpl::GetAcceptButtonText()
     const {
   switch (current_bubble_type_) {
     case ConfirmAutocompleteBubbleType::kLocalSave:
-      return l10n_util::GetStringUTF16(
-          IDS_AUTOFILL_SAVE_IBAN_BUBBLE_LOCAL_SAVE_ACCEPT);
+      return u"Yes";
     case ConfirmAutocompleteBubbleType::kInactive:
       NOTREACHED();
-      return std::u16string();
+      return u"";
   }
 }
 
@@ -95,16 +94,14 @@ std::u16string ConfirmAutocompleteBubbleControllerImpl::GetDeclineButtonText()
     const {
   switch (current_bubble_type_) {
     case ConfirmAutocompleteBubbleType::kLocalSave:
-      return l10n_util::GetStringUTF16(
-          IDS_AUTOFILL_SAVE_IBAN_BUBBLE_LOCAL_SAVE_NO_THANKS);
+      return u"No";
     case ConfirmAutocompleteBubbleType::kInactive:
       NOTREACHED();
-      return std::u16string();
+      return u"";
   }
 }
 
-void ConfirmAutocompleteBubbleControllerImpl::OnAcceptButton(
-    const std::u16string& nickname) {
+void ConfirmAutocompleteBubbleControllerImpl::OnAcceptButton() {
   switch (current_bubble_type_) {
     case ConfirmAutocompleteBubbleType::kLocalSave:
       DCHECK(!local_confirm_autocomplete_prompt_callback_.is_null());
@@ -151,7 +148,8 @@ ConfirmAutocompleteBubbleControllerImpl::
               Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
 }
 
-ConfirmAutocompleteBubbleType ConfirmAutocompleteBubbleControllerImpl::GetBubbleType() const {
+ConfirmAutocompleteBubbleType
+ConfirmAutocompleteBubbleControllerImpl::GetBubbleType() const {
   return current_bubble_type_;
 }
 
