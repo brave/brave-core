@@ -433,7 +433,7 @@
       <if expr="not is_android">
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE" desc="Title for broken website report dialog window">Report a broken site</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Brave's developers know that this site doesn't work properly with Shields:</message>
-        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER" desc="Describes what information is sent to Brave's servers in a broken website report">Note: When you click "Submit", you'll share the site address, your Brave version number, and your IP address with Brave developers. (The IP address will not be stored.)</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER" desc="Describes what information is sent to Brave's servers in a broken website report">Note: The report sent to Brave servers will include the site address, Brave version number, Shields settings, VPN status, and language settings. The IP address will be transmitted but not stored.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the optional details field in the broken website report">Additional details (optional)</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">Contact me at: (optional)</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">Email, Twitter, etc.</message>

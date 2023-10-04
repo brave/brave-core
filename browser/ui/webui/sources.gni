@@ -10,6 +10,7 @@ import("//brave/components/playlist/common/buildflags/buildflags.gni")
 brave_browser_ui_webui_configs_deps = [
   "//base",
   "//brave/browser/ui",
+  "//brave/components/brave_shields/browser",
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/playlist/common/buildflags",
 ]

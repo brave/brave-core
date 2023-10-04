@@ -11,6 +11,7 @@
 
 #include "base/memory/ref_counted.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/common/brave_shields.mojom.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -18,7 +19,7 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
-namespace brave {
+namespace webcompat_reporter {
 
 class WebcompatReportUploader {
  public:
@@ -29,6 +30,13 @@ class WebcompatReportUploader {
   ~WebcompatReportUploader();
 
   void SubmitReport(const GURL& report_url,
+                    const bool shields_enabled,
+                    const std::string& ad_block_setting,
+                    const std::string& fp_block_setting,
+                    const std::string& ad_block_list_names,
+                    const std::string& languages,
+                    const bool language_farbling,
+                    const bool brave_vpn_connected,
                     const base::Value& details,
                     const base::Value& contact);
 
@@ -40,6 +48,6 @@ class WebcompatReportUploader {
   void OnSimpleURLLoaderComplete(std::unique_ptr<std::string> response_body);
 };
 
-}  // namespace brave
+}  // namespace webcompat_reporter
 
 #endif  // BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORT_UPLOADER_H_

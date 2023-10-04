@@ -52,11 +52,11 @@ source_set("ui") {
     "webui/skus_internals_ui.h",
   ]
 
-  # It doesn't make sense to view accelerators on iOS & Android.
+  # It doesn't make sense to view the webcompat webui on iOS & Android.
   if (!is_android && !is_ios) {
     sources += [
-      "webui/webcompat_reporter_ui.cc",
-      "webui/webcompat_reporter_ui.h",
+      "webui/webcompat_reporter/webcompat_reporter_ui.cc",
+      "webui/webcompat_reporter/webcompat_reporter_ui.h",
     ]
   }
 
@@ -548,6 +548,7 @@ source_set("ui") {
     "//components/gcm_driver:gcm_buildflags",
     "//components/image_fetcher/core",
     "//components/infobars/content",
+    "//components/language/core/browser",
     "//components/omnibox/browser:vector_icons",
     "//components/optimization_guide/core:features",
     "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
