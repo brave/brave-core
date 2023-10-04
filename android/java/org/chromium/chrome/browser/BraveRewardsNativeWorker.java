@@ -719,10 +719,11 @@ public class BraveRewardsNativeWorker {
     @CalledByNative
     public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
             int adsReceivedThisMonth, double minEarningsThisMonth, double maxEarningsThisMonth,
-            double earningsLastMonth) {
+            double minEarningsLastMonth, double maxEarningsLastMonth) {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnGetAdsAccountStatement(success, nextPaymentDate, adsReceivedThisMonth,
-                    minEarningsThisMonth, maxEarningsThisMonth, earningsLastMonth);
+                    minEarningsThisMonth, maxEarningsThisMonth, minEarningsLastMonth,
+                    maxEarningsLastMonth);
         }
     }
 
