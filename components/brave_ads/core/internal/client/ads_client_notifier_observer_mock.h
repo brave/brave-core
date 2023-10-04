@@ -36,6 +36,9 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
               OnNotifyDidUpdateResourceComponent,
               (const std::string&, const std::string&));
   MOCK_METHOD(void,
+              OnNotifyDidUnregisterResourceComponent,
+              (const std::string&));
+  MOCK_METHOD(void,
               OnNotifyRewardsWalletDidUpdate,
               (const std::string&, const std::string&));
   MOCK_METHOD(void,

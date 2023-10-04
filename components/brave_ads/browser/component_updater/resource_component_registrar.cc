@@ -40,6 +40,7 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
   if (resource_component_id_ &&
       resource_component_id_ != component->id.data()) {
     Unregister();
+    OnComponentUnregistered(*resource_component_id_);
   }
   resource_component_id_ = component->id.data();
 
@@ -59,6 +60,12 @@ void ResourceComponentRegistrar::OnComponentReady(
     const std::string& /*resource*/) {
   resource_component_registrar_delegate_->OnResourceComponentRegistered(
       component_id, install_dir);
+}
+
+void ResourceComponentRegistrar::OnComponentUnregistered(
+    const std::string& component_id) {
+  resource_component_registrar_delegate_->OnResourceComponentUnregistered(
+      component_id);
 }
 
 }  // namespace brave_ads

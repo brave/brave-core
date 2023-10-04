@@ -21,6 +21,9 @@ class ResourceComponentRegistrarDelegate {
   virtual void OnResourceComponentRegistered(
       const std::string& component_id,
       const base::FilePath& install_dir) = 0;
+
+  virtual void OnResourceComponentUnregistered(
+      const std::string& component_id) = 0;
 };
 
 }  // namespace brave_ads

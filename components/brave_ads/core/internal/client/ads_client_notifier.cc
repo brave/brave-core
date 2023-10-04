@@ -102,6 +102,20 @@ void AdsClientNotifier::NotifyDidUpdateResourceComponent(
   }
 }
 
+void AdsClientNotifier::NotifyDidUnregisterResourceComponent(
+    const std::string& id) const {
+  if (should_queue_notifications_) {
+    pending_notifier_queue_->Add(
+        base::BindOnce(&AdsClientNotifier::NotifyDidUnregisterResourceComponent,
+                       weak_factory_.GetWeakPtr(), id));
+    return;
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnNotifyDidUnregisterResourceComponent(id);
+  }
+}
+
 void AdsClientNotifier::NotifyTabTextContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,

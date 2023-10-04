@@ -56,6 +56,9 @@ class AdsClientNotifier {
   void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                         const std::string& id) const;
 
+  // Invoked when a resource component with |id| has been unregistered.
+  void NotifyDidUnregisterResourceComponent(const std::string& id) const;
+
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that
   // occurred on the way to the current page. The current page is the last one

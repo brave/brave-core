@@ -71,14 +71,6 @@ void ResourceComponent::RegisterComponentForLanguageCode(
       language_code);
 }
 
-void ResourceComponent::NotifyDidUpdateResourceComponent(
-    const std::string& manifest_version,
-    const std::string& id) {
-  for (auto& observer : observers_) {
-    observer.OnDidUpdateResourceComponent(manifest_version, id);
-  }
-}
-
 absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
                                                           const int version) {
   const std::string index = GetResourceKey(id, version);
@@ -113,6 +105,11 @@ void ResourceComponent::OnResourceComponentRegistered(
       base::BindOnce(&LoadFile, install_dir.Append(kManifestFile)),
       base::BindOnce(&ResourceComponent::LoadManifestCallback,
                      weak_factory_.GetWeakPtr(), component_id, install_dir));
+}
+
+void ResourceComponent::OnResourceComponentUnregistered(
+    const std::string& component_id) {
+  NotifyDidUnregisterResourceComponent(component_id);
 }
 
 void ResourceComponent::LoadManifestCallback(const std::string& component_id,
@@ -214,6 +211,21 @@ void ResourceComponent::LoadResourceCallback(
 
   VLOG(1) << "Notifying resource component observers";
   NotifyDidUpdateResourceComponent(manifest_version, component_id);
+}
+
+void ResourceComponent::NotifyDidUpdateResourceComponent(
+    const std::string& manifest_version,
+    const std::string& id) {
+  for (auto& observer : observers_) {
+    observer.OnDidUpdateResourceComponent(manifest_version, id);
+  }
+}
+
+void ResourceComponent::NotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  for (auto& observer : observers_) {
+    observer.OnDidUnregisterResourceComponent(id);
+  }
 }
 
 }  // namespace brave_ads

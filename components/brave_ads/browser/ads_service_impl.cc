@@ -1906,6 +1906,12 @@ void AdsServiceImpl::OnDidUpdateResourceComponent(
   }
 }
 
+void AdsServiceImpl::OnDidUnregisterResourceComponent(const std::string& id) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyDidUnregisterResourceComponent(id);
+  }
+}
+
 void AdsServiceImpl::OnRewardsWalletCreated() {
   GetRewardsWallet();
 }

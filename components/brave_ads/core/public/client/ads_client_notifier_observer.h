@@ -48,6 +48,9 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
       const std::string& manifest_version,
       const std::string& id) {}
 
+  // Invoked when a resource component with |id| has been unregistered.
+  virtual void OnNotifyDidUnregisterResourceComponent(const std::string& id) {}
+
   // Called when the Brave Rewards wallet did update.
   virtual void OnNotifyRewardsWalletDidUpdate(
       const std::string& payment_id,
