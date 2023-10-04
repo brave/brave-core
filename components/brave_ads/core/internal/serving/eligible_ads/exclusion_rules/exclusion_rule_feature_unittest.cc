@@ -18,7 +18,7 @@ TEST(BraveAdsExclusionRuleFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsExclusionRuleFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kExclusionRulesFeature));
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsExclusionRuleFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsExclusionRuleFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kExclusionRulesFeature));
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest, ShouldExcludeAdIfConverted) {

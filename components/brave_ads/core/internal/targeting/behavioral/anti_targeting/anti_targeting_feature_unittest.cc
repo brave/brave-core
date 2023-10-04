@@ -18,7 +18,7 @@ TEST(BraveAdsAntiTargetingFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsAntiTargetingFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kAntiTargetingFeature));
 }
 
 TEST(BraveAdsAntiTargetingFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsAntiTargetingFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsAntiTargetingFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kAntiTargetingFeature));
 }
 
 TEST(BraveAdsAntiTargetingFeatureTest, AntiTargetingResourceVersion) {

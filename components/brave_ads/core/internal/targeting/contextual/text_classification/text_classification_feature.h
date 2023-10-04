@@ -13,21 +13,12 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kTextClassificationFeature);
 
-bool IsTextClassificationFeatureEnabled();
-
 constexpr base::FeatureParam<int> kTextClassificationResourceVersion{
     &kTextClassificationFeature, "resource_version", 1};
 
 constexpr base::FeatureParam<int>
     kTextClassificationPageProbabilitiesHistorySize{
         &kTextClassificationFeature, "page_probabilities_history_size", 5};
-
-// V2 without exploration; 5 page history; Legacy text classifier.
-
-// V2 with exploration; 25 page history; Legacy text classifier.
-// V2 with exploration; 25 page history; New text classifier.
-// V2 without exploration; 25 page history; Legacy text classifier.
-// V2 without exploration; 25 page history; New text classifier.
 
 }  // namespace brave_ads
 

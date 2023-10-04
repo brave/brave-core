@@ -794,7 +794,7 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 }
 
 bool AdsServiceImpl::CheckIfCanShowNotificationAds() {
-  if (!IsNotificationAdFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kNotificationAdFeature)) {
     VLOG(1) << "Notification not made: Ad notifications feature is disabled";
     return false;
   }
@@ -811,13 +811,15 @@ bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
       NotificationHelper::GetInstance()->CanShowNotifications();
 
   const bool can_fallback_to_custom_notification_ads =
-      IsAllowedToFallbackToCustomNotificationAdFeatureEnabled() &&
+      base::FeatureList::IsEnabled(
+          kAllowedToFallbackToCustomNotificationAdFeature) &&
       kCanFallbackToCustomNotificationAds.Get();
   if (!can_fallback_to_custom_notification_ads) {
     ClearPref(prefs::kNotificationAdDidFallbackToCustom);
   }
 
-  const bool should_show = IsCustomNotificationAdFeatureEnabled();
+  const bool should_show =
+      base::FeatureList::IsEnabled(kCustomNotificationAdFeature);
 
   const bool should_fallback =
       !can_show_native_notifications && can_fallback_to_custom_notification_ads;

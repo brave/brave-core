@@ -18,7 +18,7 @@ TEST(BraveAdsConversionsFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsConversionFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kConversionsFeature));
 }
 
 TEST(BraveAdsConversionsFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsConversionsFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsConversionFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kConversionsFeature));
 }
 
 TEST(BraveAdsConversionsFeatureTest, ConversionResourceVersion) {

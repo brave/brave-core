@@ -107,7 +107,7 @@ void TextEmbeddingProcessor::OnHtmlContentDidChange(
                 "HTML content");
   }
 
-  if (!IsTextEmbeddingFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kTextEmbeddingFeature)) {
     return;
   }
 

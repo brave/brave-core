@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kPermissionRulesFeature);
 
-bool IsPermissionRuleFeatureEnabled();
-
 constexpr base::FeatureParam<bool> kShouldOnlyServeAdsInWindowedMode{
     &kPermissionRulesFeature, "should_only_serve_ads_in_windowed_mode", true};
 

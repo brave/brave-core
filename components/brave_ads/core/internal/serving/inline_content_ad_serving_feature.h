@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kInlineContentAdServingFeature);
 
-bool IsInlineContentAdServingFeatureEnabled();
-
 constexpr base::FeatureParam<int> kInlineContentAdServingVersion{
     &kInlineContentAdServingFeature, "version", 2};
 

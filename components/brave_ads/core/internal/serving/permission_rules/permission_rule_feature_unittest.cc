@@ -18,7 +18,7 @@ TEST(BraveAdsPermissionRuleFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsPermissionRuleFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kPermissionRulesFeature));
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsPermissionRuleFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsPermissionRuleFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kPermissionRulesFeature));
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest, ShouldOnlyServeAdsInWindowedMode) {

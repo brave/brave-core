@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kAntiTargetingFeature);
 
-bool IsAntiTargetingFeatureEnabled();
-
 constexpr base::FeatureParam<int> kAntiTargetingResourceVersion{
     &kAntiTargetingFeature, "resource_version", 1};
 

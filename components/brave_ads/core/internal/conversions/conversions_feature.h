@@ -15,8 +15,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kConversionsFeature);
 
-bool IsConversionFeatureEnabled();
-
 constexpr base::FeatureParam<int> kConversionResourceVersion{
     &kConversionsFeature, "resource_version", 1};
 

@@ -17,7 +17,7 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest, IsEnabled) {
 
   // Act
 
-  EXPECT_TRUE(IsNewTabPageAdServingFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kNewTabPageAdServingFeature));
 }
 
 TEST(BraveAdsNewTabPageAdServingFeatureTest, IsDisabled) {
@@ -28,7 +28,7 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsNewTabPageAdServingFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kNewTabPageAdServingFeature));
 }
 
 TEST(BraveAdsNewTabPageAdServingFeatureTest, ServingVersion) {

@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kEpsilonGreedyBanditFeature);
 
-bool IsEpsilonGreedyBanditFeatureEnabled();
-
 constexpr base::FeatureParam<double> kEpsilonGreedyBanditEpsilonValue{
     &kEpsilonGreedyBanditFeature, "epsilon_value", 0.25};
 

@@ -15,10 +15,6 @@ namespace brave_ads {
 BASE_DECLARE_FEATURE(kNotificationAdFeature);
 BASE_DECLARE_FEATURE(kAllowedToFallbackToCustomNotificationAdFeature);
 
-bool IsNotificationAdFeatureEnabled();
-
-bool IsAllowedToFallbackToCustomNotificationAdFeatureEnabled();
-
 // Ad notification timeout in seconds. Set to 0 to never time out
 constexpr base::FeatureParam<int> kNotificationAdTimeout{
     &kNotificationAdFeature, "notification_ad_timeout",

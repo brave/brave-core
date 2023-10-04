@@ -18,7 +18,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsPromotedContentAdFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kPromotedContentAdFeature));
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsPromotedContentAdFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kPromotedContentAdFeature));
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest, MaximumAdsPerHour) {

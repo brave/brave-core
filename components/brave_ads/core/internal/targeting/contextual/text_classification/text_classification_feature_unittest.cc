@@ -18,7 +18,7 @@ TEST(BraveAdsTextClassificationFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsTextClassificationFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kTextClassificationFeature));
 }
 
 TEST(BraveAdsTextClassificationFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsTextClassificationFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsTextClassificationFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kTextClassificationFeature));
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,

@@ -14,8 +14,8 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kSubdivisionFeature);
 
-constexpr base::FeatureParam<base::TimeDelta> kSubdivisionFetchIntervalMinutes{
-    &kSubdivisionFeature, "fetch_interval_minutes", base::Days(1)};
+constexpr base::FeatureParam<base::TimeDelta> kFetchSubdivisionAfter{
+    &kSubdivisionFeature, "fetch_after", base::Days(1)};
 
 }  // namespace brave_ads
 

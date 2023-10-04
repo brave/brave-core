@@ -18,7 +18,7 @@ TEST(BraveAdsUserActivityFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsUserActivityFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kUserActivityFeature));
 }
 
 TEST(BraveAdsUserActivityFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsUserActivityFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsUserActivityFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kUserActivityFeature));
 }
 
 TEST(BraveAdsUserActivityFeatureTest, Triggers) {

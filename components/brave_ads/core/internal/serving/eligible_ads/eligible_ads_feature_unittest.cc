@@ -18,7 +18,7 @@ TEST(BraveAdsEligibleAdFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsEligibleAdFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kEligibleAdFeature));
 }
 
 TEST(BraveAdsEligibleAdFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsEligibleAdFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsEligibleAdFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kEligibleAdFeature));
 }
 
 TEST(BraveAdsEligibleAdFeatureTest, BrowsingHistoryMaxCount) {

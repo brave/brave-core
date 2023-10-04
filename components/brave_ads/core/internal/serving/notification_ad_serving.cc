@@ -89,7 +89,7 @@ void NotificationAdServing::MaybeServeAd() {
 ///////////////////////////////////////////////////////////////////////////////
 
 base::expected<void, std::string> NotificationAdServing::CanServeAd() const {
-  if (!IsNotificationAdServingFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kNotificationAdServingFeature)) {
     return base::unexpected("Notification ad not served: Feature is disabled");
   }
 

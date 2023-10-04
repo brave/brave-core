@@ -14,7 +14,7 @@ namespace brave_ads {
 SegmentList BuildIntentSegments() {
   SegmentList segments;
 
-  if (IsPurchaseIntentFeatureEnabled()) {
+  if (base::FeatureList::IsEnabled(kPurchaseIntentFeature)) {
     base::Extend(segments, GetPurchaseIntentSegments());
   }
 

@@ -18,7 +18,7 @@ TEST(BraveAdsReminderFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsReminderFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kReminderFeature));
 }
 
 TEST(BraveAdsReminderFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsReminderFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsReminderFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kReminderFeature));
 }
 
 TEST(BraveAdsReminderFeatureTest, RemindUserIfClickingTheSameAdAfter) {

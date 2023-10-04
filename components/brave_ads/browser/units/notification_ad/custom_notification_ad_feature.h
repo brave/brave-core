@@ -17,8 +17,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kCustomNotificationAdFeature);
 
-bool IsCustomNotificationAdFeatureEnabled();
-
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 // Ad notification fade animation duration in milliseconds

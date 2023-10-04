@@ -18,7 +18,7 @@ TEST(BraveAdsInlineContentAdServingFeatureTest, IsEnabled) {
   // Act
 
   // Assert
-  EXPECT_TRUE(IsInlineContentAdServingFeatureEnabled());
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kInlineContentAdServingFeature));
 }
 
 TEST(BraveAdsServingFeatureTest, IsDisabled) {
@@ -29,7 +29,7 @@ TEST(BraveAdsServingFeatureTest, IsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsInlineContentAdServingFeatureEnabled());
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kInlineContentAdServingFeature));
 }
 
 TEST(BraveAdsInlineContentAdServingFeatureTest, ServingVersion) {

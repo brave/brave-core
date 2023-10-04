@@ -3,16 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
 BASE_FEATURE(kEligibleAdFeature,
              "EligibleAds",
              base::FEATURE_ENABLED_BY_DEFAULT);
-
-bool IsEligibleAdFeatureEnabled() {
-  return base::FeatureList::IsEnabled(kEligibleAdFeature);
-}
 
 }  // namespace brave_ads
