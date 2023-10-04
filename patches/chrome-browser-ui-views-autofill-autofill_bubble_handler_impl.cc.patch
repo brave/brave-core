@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc b/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc
-index 284ca5af904c31d01708bed39b5a33d5c89fb502..75baf9e8bb192c5552ba924ff0a4428bd686cf4c 100644
+index 284ca5af904c31d01708bed39b5a33d5c89fb502..bab6c080304cce72ab50164126994194c151f049 100644
 --- a/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc
 +++ b/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc
 @@ -4,6 +4,7 @@
@@ -10,24 +10,22 @@ index 284ca5af904c31d01708bed39b5a33d5c89fb502..75baf9e8bb192c5552ba924ff0a4428b
  #include "chrome/app/chrome_command_ids.h"
  #include "chrome/browser/autofill/personal_data_manager_factory.h"
  #include "chrome/browser/profiles/profile.h"
-@@ -150,6 +151,27 @@ AutofillBubbleBase* AutofillBubbleHandlerImpl::ShowIbanBubble(
+@@ -150,6 +151,25 @@ AutofillBubbleBase* AutofillBubbleHandlerImpl::ShowIbanBubble(
    }
  }
  
 +AutofillBubbleBase* AutofillBubbleHandlerImpl::ShowConfirmAutocompleteBubble(
 +    content::WebContents* web_contents,
 +    ConfirmAutocompleteBubbleController* controller) {
++  views::View* anchor_view = toolbar_button_provider_->GetAnchorView(
++      PageActionIconType::kSaveAutofillAddress);
++  ConfirmAutocompleteBubbleView* bubble =
++      new ConfirmAutocompleteBubbleView(anchor_view, web_contents, controller);
++
 +  PageActionIconView* icon_view =
 +      toolbar_button_provider_->GetPageActionIconView(
 +          PageActionIconType::kSaveAutofillAddress);
 +  DCHECK(icon_view);
-+  views::View* anchor_view = toolbar_button_provider_->GetAnchorView(
-+      PageActionIconType::kSaveAutofillAddress);
-+
-+  ConfirmAutocompleteBubbleView* bubble =
-+      new ConfirmAutocompleteBubbleView(anchor_view, web_contents, controller);
-+
-+  DCHECK(bubble);
 +  bubble->SetHighlightedButton(icon_view);
 +
 +  views::BubbleDialogDelegateView::CreateBubble(bubble);
