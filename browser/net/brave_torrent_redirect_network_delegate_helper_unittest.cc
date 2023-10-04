@@ -98,7 +98,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  auto will_redirect = !webtorrent::IsNonWebTorrentRequest(
+  auto will_redirect = webtorrent::ShouldRedirectRequest(
       orig_response_headers.get(), request_info);
   EXPECT_TRUE(will_redirect);
 }
@@ -118,7 +118,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  auto will_redirect = !webtorrent::IsNonWebTorrentRequest(
+  auto will_redirect = webtorrent::ShouldRedirectRequest(
       orig_response_headers.get(), request_info);
   EXPECT_TRUE(will_redirect);
 }
@@ -144,7 +144,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  auto will_redirect = !webtorrent::IsNonWebTorrentRequest(
+  auto will_redirect = webtorrent::ShouldRedirectRequest(
       orig_response_headers.get(), request_info);
   EXPECT_TRUE(will_redirect);
 }
@@ -165,7 +165,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  EXPECT_TRUE(webtorrent::IsNonWebTorrentRequest(orig_response_headers.get(),
+  EXPECT_FALSE(webtorrent::ShouldRedirectRequest(orig_response_headers.get(),
                                                  request_info));
 }
 
@@ -183,7 +183,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  EXPECT_TRUE(webtorrent::IsNonWebTorrentRequest(orig_response_headers.get(),
+  EXPECT_FALSE(webtorrent::ShouldRedirectRequest(orig_response_headers.get(),
                                                  request_info));
 }
 
@@ -203,7 +203,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   request_info->initiator_url = torrent_extension_url();
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  EXPECT_TRUE(webtorrent::IsNonWebTorrentRequest(orig_response_headers.get(),
+  EXPECT_FALSE(webtorrent::ShouldRedirectRequest(orig_response_headers.get(),
                                                  request_info));
 }
 
@@ -224,7 +224,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   request_info->initiator_url = torrent_extension_url();
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  auto will_redirect = !webtorrent::IsNonWebTorrentRequest(
+  auto will_redirect = webtorrent::ShouldRedirectRequest(
       orig_response_headers.get(), request_info);
   EXPECT_TRUE(will_redirect);
 }
@@ -244,6 +244,6 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kXhr;
 
-  EXPECT_TRUE(webtorrent::IsNonWebTorrentRequest(orig_response_headers.get(),
+  EXPECT_FALSE(webtorrent::ShouldRedirectRequest(orig_response_headers.get(),
                                                  request_info));
 }
