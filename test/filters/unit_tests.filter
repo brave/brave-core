@@ -223,6 +223,10 @@
 # This test fails because we disable the privacy sandbox
 -PrivacySandboxServiceTest.MetricsLoggingOccursCorrectly
 
+# These tests fail because we disable
+# privacy_sandbox::kEnforcePrivacySandboxAttestations
+-PrivacySandboxAttestationsInstallerFeatureEnabledTest.*
+
 # This test fails because we intentionally disable the Federated Credential
 # Management API via features::kFedCm
 -FederatedIdentityApiPermissionContextTest.WhitelistedSiteForThirdPartyCookies
