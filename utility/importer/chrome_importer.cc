@@ -149,26 +149,27 @@ std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {
 }
 
 bool PasswordFormToImportedPasswordForm(
-    const password_manager::PasswordForm* form,
-    importer::ImportedPasswordForm* imported_form) {
-  if (form->scheme != password_manager::PasswordForm::Scheme::kHtml &&
-      form->scheme != password_manager::PasswordForm::Scheme::kBasic)
+    const password_manager::PasswordForm& form,
+    importer::ImportedPasswordForm& imported_form) {
+  if (form.scheme != password_manager::PasswordForm::Scheme::kHtml &&
+      form.scheme != password_manager::PasswordForm::Scheme::kBasic) {
     return false;
-
-  if (form->scheme == password_manager::PasswordForm::Scheme::kHtml) {
-    imported_form->scheme = importer::ImportedPasswordForm::Scheme::kHtml;
-  } else {
-    imported_form->scheme = importer::ImportedPasswordForm::Scheme::kBasic;
   }
 
-  imported_form->signon_realm = form->signon_realm;
-  imported_form->url = form->url;
-  imported_form->action = form->action;
-  imported_form->username_element = form->username_element;
-  imported_form->username_value = form->username_value;
-  imported_form->password_element = form->password_element;
-  imported_form->password_value = form->password_value;
-  imported_form->blocked_by_user = form->blocked_by_user;
+  if (form.scheme == password_manager::PasswordForm::Scheme::kHtml) {
+    imported_form.scheme = importer::ImportedPasswordForm::Scheme::kHtml;
+  } else {
+    imported_form.scheme = importer::ImportedPasswordForm::Scheme::kBasic;
+  }
+
+  imported_form.signon_realm = form.signon_realm;
+  imported_form.url = form.url;
+  imported_form.action = form.action;
+  imported_form.username_element = form.username_element;
+  imported_form.username_value = form.username_value;
+  imported_form.password_element = form.password_element;
+  imported_form.password_value = form.password_value;
+  imported_form.blocked_by_user = form.blocked_by_user;
   return true;
 }
 
@@ -467,22 +468,24 @@ void ChromeImporter::ImportPasswords(
     return;
   }
 
-  std::vector<std::unique_ptr<password_manager::PasswordForm>> forms;
+  std::vector<password_manager::PasswordForm> forms;
   bool success = database.GetAutofillableLogins(&forms);
   if (success) {
     for (auto& entry : forms) {
       importer::ImportedPasswordForm form;
-      if (PasswordFormToImportedPasswordForm(entry.get(), &form))
+      if (PasswordFormToImportedPasswordForm(entry, form)) {
         bridge_->SetPasswordForm(form);
+      }
     }
   }
-  std::vector<std::unique_ptr<password_manager::PasswordForm>> blocklist;
+  std::vector<password_manager::PasswordForm> blocklist;
   success = database.GetBlocklistLogins(&blocklist);
   if (success) {
     for (auto& entry : blocklist) {
       importer::ImportedPasswordForm form;
-      if (PasswordFormToImportedPasswordForm(entry.get(), &form))
+      if (PasswordFormToImportedPasswordForm(entry, form)) {
         bridge_->SetPasswordForm(form);
+      }
     }
   }
 }
