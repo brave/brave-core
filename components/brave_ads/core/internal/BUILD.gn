@@ -73,6 +73,8 @@ static_library("internal") {
     "account/issuers/issuer_info.h",
     "account/issuers/issuer_types.h",
     "account/issuers/issuers_constants.h",
+    "account/issuers/issuers_feature.cc",
+    "account/issuers/issuers_feature.h",
     "account/issuers/issuers_info.cc",
     "account/issuers/issuers_info.h",
     "account/issuers/issuers_url_request.cc",

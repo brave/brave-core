@@ -10,8 +10,6 @@ namespace brave_ads {
 
 constexpr int kIssuersServerVersion = 3;
 
-constexpr int kMaximumIssuerPublicKeys = 6;
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_CONSTANTS_H_
