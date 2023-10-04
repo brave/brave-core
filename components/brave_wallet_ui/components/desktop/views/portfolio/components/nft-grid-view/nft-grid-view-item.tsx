@@ -88,7 +88,7 @@ export const NFTGridViewItem = (props: Props) => {
 
   // hooks
   const dispatch = useDispatch()
-  const { addOrRemoveTokenInLocalStorage } = useAssetManagement()
+  const { addOrRemoveTokenInLocalStorage, addNftToDeletedNftsList } = useAssetManagement()
 
   // mutations
   const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()
@@ -144,7 +144,9 @@ export const NFTGridViewItem = (props: Props) => {
   
   const onConfirmDelete = async () => {
     setShowRemoveNftModal(false)
+
     await removeUserToken(token)
+    addNftToDeletedNftsList(token)
   }
 
   return (

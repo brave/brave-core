@@ -129,10 +129,14 @@ const defaultState: WalletState = {
       LOCAL_STORAGE_KEYS.USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
     ) || '[]'
   ),
+  deletedNonFungibleTokenIds: JSON.parse(localStorage.getItem(
+    LOCAL_STORAGE_KEYS.USER_DELETED_NON_FUNGIBLE_TOKEN_IDS
+  ) || '[]'),
   hidePortfolioNFTsTab:
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB) ===
     'true',
   removedNonFungibleTokens: [] as BraveWallet.BlockchainToken[],
+  deletedNonFungibleTokens: [] as BraveWallet.BlockchainToken[],
   filteredOutPortfolioNetworkKeys: parseJSONFromLocalStorage(
     'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
     makeInitialFilteredOutNetworkKeys()
@@ -400,6 +404,20 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
       ) {
         state.removedNonFungibleTokens = payload
+      },
+
+      setDeletedNonFungibleTokenIds(
+        state: WalletState,
+        { payload }: PayloadAction<string[]>
+      ) {
+        state.deletedNonFungibleTokenIds = payload
+      },
+
+      setDeletedNonFungibleTokens(
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
+      ) {
+        state.deletedNonFungibleTokens = payload
       },
 
       setFilteredOutPortfolioNetworkKeys(

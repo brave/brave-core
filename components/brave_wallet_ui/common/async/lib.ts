@@ -217,7 +217,8 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
     const removedAssetIds =
       [
         ...getState().wallet.removedFungibleTokenIds,
-        ...getState().wallet.removedNonFungibleTokenIds
+        ...getState().wallet.removedNonFungibleTokenIds,
+        ...getState().wallet.deletedNonFungibleTokenIds
       ]
     const userVisibleTokensInfo = visibleAssets
       .flat(1)
