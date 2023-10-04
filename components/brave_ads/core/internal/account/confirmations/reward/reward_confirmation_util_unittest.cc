@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
@@ -141,6 +142,52 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
   // Assert
   EXPECT_FALSE(BuildRewardConfirmation(&token_generator_mock_, transaction,
                                        /*user_data*/ {}));
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest,
+       DoNotBuildRewardConfirmationWithInvalidTokenGenerator) {
+  // Arrange
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ false);
+
+  // Act
+
+  // Assert
+  EXPECT_DEATH(BuildRewardConfirmation(/*token_generator*/ nullptr, transaction,
+                                       /*user_data*/
+                                       {}),
+               "Check failed: token_generator");
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest,
+       DoNotBuildRewardConfirmationWithInvalidTransaction) {
+  // Arrange
+  const TransactionInfo transaction;
+
+  // Act
+
+  // Assert
+  EXPECT_DEATH(BuildRewardConfirmation(&token_generator_mock_, transaction,
+                                       /*user_data*/ {}),
+               "Check failed: transaction.IsValid*");
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest,
+       DoNotBuildRewardConfirmationForNonRewardsUser) {
+  // Arrange
+  DisableBraveRewardsForTesting();
+
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value*/ 0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids*/ false);
+
+  // Act
+
+  // Assert
+  EXPECT_DEATH(BuildRewardConfirmation(&token_generator_mock_, transaction,
+                                       /*user_data*/ {}),
+               "Check failed: UserHasJoinedBraveRewards*");
 }
 
 }  // namespace brave_ads
