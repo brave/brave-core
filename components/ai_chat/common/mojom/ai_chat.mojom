@@ -43,7 +43,7 @@ enum ModelCategory {
 enum PremiumStatus {
   Inactive,
   Active,
-  Disconnected,
+  ActiveDisconnected,
 };
 
 struct SiteInfo {

@@ -182,14 +182,29 @@ where
         domain: &str,
     ) -> Result<Option<CredentialSummary>, SkusError> {
         if let Some(orders) = self.client.get_orders().await? {
-            for order in orders {
-                if order.location_matches(&self.environment, domain) {
-                    let wrapped_value =
-                        self.matching_order_credential_summary(&order.id, domain).await;
-                    if wrapped_value.is_err() {
-                        continue;
+            let mut orders: Vec<_> = orders
+                .into_iter()
+                .filter(|order| order.location_matches(&self.environment, domain))
+                .collect();
+            orders.sort_by(|a, b| b.expires_at.cmp(&a.expires_at));
+            if let Some(order) = orders.first() {
+                // We have at least one order for the specified location
+                if let Ok(Some(summary)) =
+                    self.matching_order_credential_summary(&order.id, domain).await
+                {
+                    return Ok(Some(summary));
+                } else {
+                    if let Some(expires_at) = order.expires_at {
+                        let now = Utc::now().naive_utc();
+                        if expires_at > now {
+                            return Ok(Some(CredentialSummary {
+                                order: order.clone(),
+                                remaining_credential_count: 0,
+                                expires_at: None,
+                                active: false,
+                            }));
+                        }
                     }
-                    return wrapped_value;
                 }
             }
         }
