@@ -173,6 +173,7 @@
     <color name="add_custom_filter_summary_color">#666D89</color>
     <color name="add_custom_filter_error_text_color">#FF4B6A</color>
     <color name="add_custom_filter_tint_color">#666D89</color>
+    <color name="add_custom_filter_button_disabled_color">#A8ADBF</color>
 
     <color name="brave_stats_ads_color">#FF7654</color>
     <color name="brave_stats_data_saved_color">#737ADE</color>
