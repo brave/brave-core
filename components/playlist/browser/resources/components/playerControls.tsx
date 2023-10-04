@@ -12,7 +12,8 @@ import Button from '@brave/leo/react/button'
 import { spacing } from '@brave/leo/tokens/css'
 
 import { getPlayerActions } from '../api/getPlayerActions'
-import { ApplicationState, useAutoPlayEnabled } from '../reducers/states'
+import { ApplicationState } from '../reducers/states'
+import { hiddenOnMiniPlayer, hiddenOnNormalPlayer } from '../constants/style'
 
 interface Props {
   videoElement?: HTMLVideoElement | null
@@ -32,30 +33,44 @@ const Container = styled.div`
 
 const StyledButton = styled(Button)`
   --leo-button-padding: ${spacing.s};
-  display: flex;
   align-items: center;
+  display: flex;
+`
+
+const NormalPlayerButton = styled(StyledButton)`
+  ${hiddenOnMiniPlayer}
+`
+
+const MiniPlayerButton = styled(StyledButton)`
+  ${hiddenOnNormalPlayer}
 `
 
 function Control ({
   iconName,
   size,
+  visibility,
   onClick
 }: {
   iconName: string
   size: 'jumbo' | 'large'
+  visibility: 'mini' | 'normal' | 'both'
   onClick: () => void
 }) {
+  const Button =
+    visibility === 'both'
+      ? StyledButton
+      : visibility === 'mini'
+      ? MiniPlayerButton
+      : NormalPlayerButton
   return (
-    <StyledButton kind='plain-faint' size={size} onClick={onClick}>
+    <Button kind='plain-faint' size={size} onClick={onClick}>
       <Icon name={iconName}></Icon>
-    </StyledButton>
+    </Button>
   )
 }
 
 export default function PlayerControls ({ videoElement, className }: Props) {
   const [isPlaying, setPlaying] = React.useState(false)
-
-  const autoPlayEnabled = useAutoPlayEnabled()
 
   const shuffleEnabled = useSelector<ApplicationState, boolean | undefined>(
     applicationState => applicationState.playerState?.shuffleEnabled
@@ -90,6 +105,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
         <Control
           iconName='previous-outline'
           size='jumbo'
+          visibility='normal'
           onClick={() => {
             if (!videoElement) return
 
@@ -103,51 +119,60 @@ export default function PlayerControls ({ videoElement, className }: Props) {
         <Control
           iconName='rewind-15'
           size='jumbo'
+          visibility='normal'
           onClick={() => videoElement && (videoElement.currentTime -= 15)}
         ></Control>
         {isPlaying ? (
           <Control
             iconName='pause-filled'
             size='jumbo'
+            visibility='both'
             onClick={() => videoElement?.pause()}
           ></Control>
         ) : (
           <Control
             iconName='play-filled'
             size='jumbo'
+            visibility='both'
             onClick={() => videoElement?.play()}
           ></Control>
         )}
         <Control
           iconName='forward-15'
           size='jumbo'
+          visibility='normal'
           onClick={() => videoElement && (videoElement.currentTime += 15)}
         ></Control>
         <Control
           iconName='next-outline'
           size='jumbo'
+          visibility='normal'
           onClick={() => getPlayerActions().playNextItem()}
+        ></Control>
+        <Control
+          iconName='close'
+          size='jumbo'
+          visibility='mini'
+          onClick={() => getPlayerActions().unloadPlaylist()}
         ></Control>
       </div>
       <div>
         <Control
-          iconName={autoPlayEnabled ? 'autoplay-on' : 'autoplay-off'}
-          size='large'
-          onClick={() => getPlayerActions().toggleAutoPlay()}
-        ></Control>
-        <Control
           iconName={shuffleEnabled ? 'shuffle-on' : 'shuffle-off'}
           size='large'
+          visibility='normal'
           onClick={() => getPlayerActions().toggleShuffle()}
         ></Control>
         <Control
           iconName='picture-in-picture'
           size='large'
+          visibility='normal'
           onClick={() => videoElement?.requestPictureInPicture()}
         ></Control>
         <Control
           iconName='fullscreen-on'
           size='large'
+          visibility='normal'
           onClick={() => videoElement?.requestFullscreen()}
         ></Control>
       </div>
