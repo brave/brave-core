@@ -40,13 +40,15 @@ import java.util.function.BooleanSupplier;
 
 public class BraveLocationBarCoordinator extends LocationBarCoordinator {
     /*
-     * To be deleted in bytecode. {@link LocationBarCoordinator#mLocationBarMediator} will be used
-     * instead.
+     * {@link LocationBarCoordinator#mLocationBarMediator} is private so we add a private
+     * `mLocationBarMediator` here so this code compiles and then remove it and make {@link
+     * LocationBarCoordinator#mLocationBarMediator} protected via asm.
      */
     private LocationBarMediator mLocationBarMediator;
     /*
-     * To be deleted in bytecode. {@link LocationBarCoordinator#mUrlBar} will be used
-     * instead.
+     * {@link LocationBarCoordinator#mUrlBar} is private so we add a private
+     * `mUrlBar` here so this code compiles and then remove it and make {@link
+     * LocationBarCoordinator#mUrlBar} protected via asm.
      */
     private View mUrlBar;
 
