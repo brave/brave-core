@@ -21,6 +21,7 @@ provideStrings({
   errorNetworkLabel: 'There was a network issue connecting to Leo, check your connection and try again.',
   errorRateLimit: 'Leo is too busy right now. Please try again in a few minutes.',
   retryButtonLabel: 'Retry',
+  dismissButtonLabel: 'Dismiss',
   'introMessage-0': `I'm here to help. What can I assist you with today?`,
   'introMessage-1': 'I have a vast base of knowledge and a large memory able to help with more complex challenges.',
   modelNameSyntax: '$1 by $2',
@@ -28,5 +29,15 @@ provideStrings({
   menuNewChat: 'New chat',
   menuSuggestedQuestions: 'Suggested questions',
   menuSettings: 'Settings',
-  menuTitleModels: 'Available language models'
+  menuTitleModels: 'Available language models',
+  premiumButtonLabel: 'Go Premium',
+  rateLimitReachedTitle: 'Response rate limit reached',
+  rateLimitReachedDesc: "Unlock a higher response rate by subscribing to Premium, or try again later",
+  premiumFeature_1: 'Access to industry-leading LLMs',
+  premiumFeature_2: 'Higher rate limits',
+  premiumLabel: 'Brave Leo Premium',
+  premiumPricing: 'USD \$ $1 /month',
+  unlockPremiumTitle: 'Unlock the full potential of Leo',
+  premiumFeature_1_desc: 'Anthropic Claude + more coming soon',
+  premiumFeature_2_desc: 'Priority access and increased response limits'
 })

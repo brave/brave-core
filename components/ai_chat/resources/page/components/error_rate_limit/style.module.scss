@@ -3,6 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+.common {
+  h1 {
+    margin: 0;
+    padding: 0;
+    font: var(--leo-font-primary-default-semibold);
+  }
+
+  h4 {
+    font: var(--leo-font-primary-heading-h4);
+    margin: 0 0 5px 0;
+  }
+
+  p {
+    margin: 0 0 12px 0;
+    font: var(--leo-font-primary-default-regular);
+  }
+}
+
 .box {
   width: 100%;
   background: var(--leo-color-systemfeedback-warning-background);
@@ -11,17 +29,6 @@
   margin-bottom: 16px;
   display: flex;
   gap: 16px;
-
-  h1 {
-    margin: 0;
-    padding: 0;
-    font: var(--leo-font-primary-default-semibold);
-  }
-
-  p {
-    margin: 0 0 12px 0;
-    font: var(--leo-font-primary-default-regular);
-  }
 }
 
 .icon {
@@ -33,3 +40,4 @@
   display: inline-flex;
   gap: 10px;
 }
+

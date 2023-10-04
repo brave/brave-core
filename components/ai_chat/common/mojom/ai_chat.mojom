@@ -100,6 +100,8 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
+  GetHasUserDismissedPremiumPrompt() => (bool has_dismissed);
+  SetHasUserDismissedPremiumPrompt(bool has_dismissed);
 };
 
 interface ChatUIPage {

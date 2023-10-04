@@ -37,7 +37,17 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"menuSuggestedQuestions", IDS_CHAT_UI_MENU_SUGGESTED_QUESTIONS},
       {"menuSettings", IDS_CHAT_UI_MENU_SETTINGS},
       {"menuTitleModels", IDS_CHAT_UI_MENU_TITLE_MODELS},
-  };
+      {"premiumButtonLabel", IDS_CHAT_UI_PREMIUM_BUTTON_LABEL},
+      {"rateLimitReachedTitle", IDS_CHAT_UI_RATE_LIMIT_REACHED_TITLE},
+      {"rateLimitReachedDesc", IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC},
+      {"premiumFeature_1", IDS_CHAT_UI_PREMIUM_FEATURE_1},
+      {"premiumFeature_2", IDS_CHAT_UI_PREMIUM_FEATURE_2},
+      {"premiumLabel", IDS_CHAT_UI_PREMIUM_LABEL},
+      {"premiumPricing", IDS_CHAT_UI_PREMIUM_PRICING},
+      {"dismissButtonLabel", IDS_CHAT_UI_DISMISS_BUTTON_LABEL},
+      {"unlockPremiumTitle", IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE},
+      {"premiumFeature_1_desc", IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC},
+      {"premiumFeature_2_desc", IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC}};
 
   return kLocalizedStrings;
 }

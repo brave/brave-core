@@ -21,10 +21,13 @@ export interface AIChatContext {
   currentError: mojom.APIError | undefined
   apiHasError: boolean
   shouldDisableUserInput: boolean
+  isPremiumUser: boolean
+  hasUserDissmisedPremiumPrompt: boolean
   setCurrentModel: (model: mojom.Model) => void,
   generateSuggestedQuestions: () => void
   setUserAllowsAutoGenerating: (value: boolean) => void
   handleAgreeClick: () => void
+  dismissPremiumPrompt: () => void
 }
 
 export const defaultContext = {
@@ -37,14 +40,17 @@ export const defaultContext = {
   hasSeenAgreement: false,
   apiHasError: false,
   shouldDisableUserInput: false,
+  isPremiumUser: true,
   userAutoGeneratePref: undefined,
   siteInfo: null,
   favIconUrl: undefined,
   currentError: mojom.APIError.None,
+  hasUserDissmisedPremiumPrompt: false,
   setCurrentModel: () => {},
   generateSuggestedQuestions: () => {},
   setUserAllowsAutoGenerating: () => {},
-  handleAgreeClick: () => {}
+  handleAgreeClick: () => {},
+  dismissPremiumPrompt: () => {}
 }
 
 export default React.createContext<AIChatContext>(defaultContext)

@@ -9,7 +9,7 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
 import DataContext from './context'
 
-function toBlobURL (data: number[] | null) {
+function toBlobURL(data: number[] | null) {
   if (!data) return undefined
 
   const blob = new Blob([new Uint8Array(data)], { type: 'image/*' })
@@ -33,6 +33,8 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
+  const [isPremiumUser] = React.useState(true)
+  const [hasUserDissmisedPremiumPrompt, setHasUserDissmisedPremiumPrompt] = React.useState(loadTimeData.getBoolean("hasUserDismissedPremiumPrompt"))
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -47,7 +49,9 @@ function DataContextProvider (props: DataContextProviderProps) {
   const shouldDisableUserInput = apiHasError || isGenerating
 
   const getConversationHistory = () => {
-    getPageHandlerInstance().pageHandler.getConversationHistory().then(res => setConversationHistory(res.conversationHistory))
+    getPageHandlerInstance()
+      .pageHandler.getConversationHistory()
+      .then((res) => setConversationHistory(res.conversationHistory))
   }
 
   const setUserAllowsAutoGenerating = (value: boolean) => {
@@ -56,11 +60,13 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const getSuggestedQuestions = () => {
-    getPageHandlerInstance().pageHandler.getSuggestedQuestions().then(r => {
-      setSuggestedQuestions(r.questions)
-      setCanGenerateQuestions(r.canGenerate)
-      setUserAutoGeneratePref(r.autoGenerate)
-    })
+    getPageHandlerInstance()
+      .pageHandler.getSuggestedQuestions()
+      .then((r) => {
+        setSuggestedQuestions(r.questions)
+        setCanGenerateQuestions(r.canGenerate)
+        setUserAutoGeneratePref(r.autoGenerate)
+      })
   }
 
   const generateSuggestedQuestions = () => {
@@ -68,26 +74,42 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const getSiteInfo = () => {
-    getPageHandlerInstance().pageHandler.getSiteInfo().then(({ siteInfo }) => {
-      setSiteInfo(siteInfo)
-    })
+    getPageHandlerInstance()
+      .pageHandler.getSiteInfo()
+      .then(({ siteInfo }) => {
+        setSiteInfo(siteInfo)
+      })
   }
 
   const getFaviconData = () => {
-    getPageHandlerInstance().pageHandler.getFaviconImageData().then((data) => {
-      setFavIconUrl(toBlobURL(data.faviconImageData))
-    })
+    getPageHandlerInstance()
+      .pageHandler.getFaviconImageData()
+      .then((data) => {
+        setFavIconUrl(toBlobURL(data.faviconImageData))
+      })
   }
 
   const getCurrentAPIError = () => {
-    getPageHandlerInstance().pageHandler.getAPIResponseError().then((data) => {
-      setCurrentError(data.error)
-    })
+    getPageHandlerInstance()
+      .pageHandler.getAPIResponseError()
+      .then((data) => {
+        setCurrentError(data.error)
+      })
   }
 
   const handleAgreeClick = () => {
     setHasSeenAgreement(true)
     getPageHandlerInstance().pageHandler.markAgreementAccepted()
+  }
+
+  const getHasUserDismissedPremiumPrompt = () => {
+    getPageHandlerInstance().pageHandler.getHasUserDismissedPremiumPrompt()
+      .then(resp => setHasUserDissmisedPremiumPrompt(resp.hasDismissed))
+  }
+
+  const dismissPremiumPrompt = () => {
+    getPageHandlerInstance().pageHandler.setHasUserDismissedPremiumPrompt(true)
+    setHasUserDissmisedPremiumPrompt(true)
   }
 
   const initialiseForTargetTab = () => {
@@ -100,6 +122,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     getSiteInfo()
     getFaviconData()
     getCurrentAPIError()
+    getHasUserDismissedPremiumPrompt()
   }
 
   React.useEffect(() => {
@@ -121,7 +144,8 @@ function DataContextProvider (props: DataContextProviderProps) {
         setSuggestedQuestions(questions)
         setCanGenerateQuestions(!hasGenerated)
         setUserAutoGeneratePref(autoGenerate)
-      })
+      }
+    )
 
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
     getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: mojom.SiteInfo) => setSiteInfo(siteInfo))
@@ -143,18 +167,17 @@ function DataContextProvider (props: DataContextProviderProps) {
     hasSeenAgreement,
     apiHasError,
     shouldDisableUserInput,
+    isPremiumUser,
+    hasUserDissmisedPremiumPrompt,
     setCurrentModel,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,
+    dismissPremiumPrompt
   }
 
   return (
-    <DataContext.Provider
-      value={store}
-    >
-      {props.children}
-    </DataContext.Provider>
+    <DataContext.Provider value={store}>{props.children}</DataContext.Provider>
   )
 }
 

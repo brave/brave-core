@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import { getLocale } from '$web-common/locale'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import ConversationList from '../conversation_list'
@@ -18,6 +19,7 @@ import InputBox from '../input_box'
 import FeatureButtonMenu from '../feature_button_menu'
 import styles from './style.module.scss'
 import ModelIntro from '../model_intro'
+import PremiumSuggestion from '../premium_suggestion'
 
 function Main () {
   const context = React.useContext(DataContext)
@@ -28,20 +30,20 @@ function Main () {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
+  const shouldShowPremiumSuggestionForModel = !context.isPremiumUser && context.currentModel?.isPremium
+
+  const shouldShowPremiumSuggestionStandalone = !context.hasUserDissmisedPremiumPrompt && !siteInfo && !context.isPremiumUser
+
   let conversationListElement = <PrivacyMessage />
   let siteTitleElement = null
   let promptAutoSuggestionElement = null
   let currentErrorElement = null
 
   if (hasSeenAgreement) {
-    conversationListElement = (
-      <ConversationList />
-    )
+    conversationListElement = <ConversationList />
 
     if (siteInfo) {
-      siteTitleElement = (
-        <SiteTitle />
-      )
+      siteTitleElement = <SiteTitle />
     }
 
     if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset) {
@@ -71,8 +73,11 @@ function Main () {
     <main className={styles.main}>
       <div className={styles.header}>
         <div className={styles.logo}>
-          <Icon name="product-brave-leo" />
-          <div className={styles.logoTitle}>Brave <span>Leo</span></div>
+          <Icon name='product-brave-leo' />
+          <div className={styles.logoTitle}>
+            Brave <span>Leo</span>
+          </div>
+          {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
         </div>
         <div className={styles.actions}>
           {hasSeenAgreement && <>
@@ -89,16 +94,40 @@ function Main () {
           context.hasChangedModel && <ModelIntro />
         }
         {siteTitleElement && (
-          <div className={styles.siteTitleBox}>
-            {siteTitleElement}
-          </div>
+          <div className={styles.siteTitleBox}>{siteTitleElement}</div>
         )}
         {conversationListElement}
         {currentErrorElement && (
-          <div className={styles.errorContainer}>
-            {currentErrorElement}
-          </div>
+          <div className={styles.promptContainer}>{currentErrorElement}</div>
         )}
+        {
+          shouldShowPremiumSuggestionForModel && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremiumTitle')}
+                verbose={true}
+              />
+            </div>
+          )
+        }
+        {
+          shouldShowPremiumSuggestionStandalone && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremiumTitle')}
+                verbose={true}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => context.dismissPremiumPrompt()}
+                  >
+                    {getLocale('dismissButtonLabel')}
+                  </Button>
+                }
+              />
+            </div>
+          )
+        }
       </div>
       <div className={styles.inputBox}>
         {promptAutoSuggestionElement}

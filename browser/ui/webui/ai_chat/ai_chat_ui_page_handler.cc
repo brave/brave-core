@@ -203,6 +203,17 @@ void AIChatUIPageHandler::GetAPIResponseError(
   std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
 }
 
+void AIChatUIPageHandler::GetHasUserDismissedPremiumPrompt(
+    GetHasUserDismissedPremiumPromptCallback callback) {
+  std::move(callback).Run(profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kUserDismissedPremiumPrompt));
+}
+
+void AIChatUIPageHandler::SetHasUserDismissedPremiumPrompt(bool has_dismissed) {
+  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kUserDismissedPremiumPrompt,
+                                   has_dismissed);
+}
+
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
                                    true);
