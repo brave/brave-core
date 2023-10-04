@@ -8,11 +8,8 @@
 #include <string>
 
 #include "components/autofill/core/browser/ui/payments/payments_bubble_closed_reasons.h"
-#include "content/public/browser/web_contents.h"
 
 namespace autofill {
-
-enum class ConfirmAutocompleteBubbleType;
 
 class AutofillBubbleBase;
 
@@ -27,21 +24,13 @@ class ConfirmAutocompleteBubbleController {
 
   virtual ~ConfirmAutocompleteBubbleController() = default;
 
-  static ConfirmAutocompleteBubbleController* GetOrCreate(
-      content::WebContents* web_contents);
-
   virtual std::u16string GetWindowTitle() const = 0;
 
   virtual std::u16string GetAcceptButtonText() const = 0;
   virtual std::u16string GetDeclineButtonText() const = 0;
 
-  virtual AutofillBubbleBase* GetPaymentBubbleView() const = 0;
-
   virtual void OnAcceptButton() = 0;
   virtual void OnBubbleClosed(PaymentsBubbleClosedReason closed_reason) = 0;
-
-  // Returns the current state of the bubble.
-  virtual ConfirmAutocompleteBubbleType GetBubbleType() const = 0;
 };
 
 }  // namespace autofill

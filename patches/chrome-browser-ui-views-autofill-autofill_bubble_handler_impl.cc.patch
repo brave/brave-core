@@ -1,50 +1,38 @@
 diff --git a/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc b/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc
-index 284ca5af904c31d01708bed39b5a33d5c89fb502..1bf0fdcbb8ccdbc03f1d54096bd01b5200628f2d 100644
+index 284ca5af904c31d01708bed39b5a33d5c89fb502..75baf9e8bb192c5552ba924ff0a4428bd686cf4c 100644
 --- a/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc
 +++ b/chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.cc
-@@ -4,6 +4,8 @@
+@@ -4,6 +4,7 @@
  
  #include "chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.h"
  
-+#include "brave/browser/ui/autofill/confirm_autocomplete_ui.h"
 +#include "brave/browser/ui/views/autofill/confirm_autocomplete_bubble_view.h"
  #include "chrome/app/chrome_command_ids.h"
  #include "chrome/browser/autofill/personal_data_manager_factory.h"
  #include "chrome/browser/profiles/profile.h"
-@@ -150,6 +152,38 @@ AutofillBubbleBase* AutofillBubbleHandlerImpl::ShowIbanBubble(
+@@ -150,6 +151,27 @@ AutofillBubbleBase* AutofillBubbleHandlerImpl::ShowIbanBubble(
    }
  }
  
 +AutofillBubbleBase* AutofillBubbleHandlerImpl::ShowConfirmAutocompleteBubble(
 +    content::WebContents* web_contents,
-+    ConfirmAutocompleteBubbleController* controller,
-+    bool is_user_gesture,
-+    ConfirmAutocompleteBubbleType bubble_type) {
++    ConfirmAutocompleteBubbleController* controller) {
 +  PageActionIconView* icon_view =
 +      toolbar_button_provider_->GetPageActionIconView(
 +          PageActionIconType::kSaveAutofillAddress);
 +  DCHECK(icon_view);
-+  views::View* anchor_view =
-+      toolbar_button_provider_->GetAnchorView(PageActionIconType::kSaveAutofillAddress);
++  views::View* anchor_view = toolbar_button_provider_->GetAnchorView(
++      PageActionIconType::kSaveAutofillAddress);
 +
-+  // TODO(crbug.com/1416270): Add Show() to AutofillBubbleBase and refactor
-+  // below.
-+  switch (bubble_type) {
-+    case ConfirmAutocompleteBubbleType::kLocalSave: {
-+      ConfirmAutocompleteBubbleView* bubble = new ConfirmAutocompleteBubbleView(
-+          anchor_view, web_contents, controller);
++  ConfirmAutocompleteBubbleView* bubble =
++      new ConfirmAutocompleteBubbleView(anchor_view, web_contents, controller);
 +
-+      DCHECK(bubble);
-+      bubble->SetHighlightedButton(icon_view);
++  DCHECK(bubble);
++  bubble->SetHighlightedButton(icon_view);
 +
-+      views::BubbleDialogDelegateView::CreateBubble(bubble);
-+      bubble->Show(is_user_gesture ? LocationBarBubbleDelegateView::USER_GESTURE
-+                                   : LocationBarBubbleDelegateView::AUTOMATIC);
-+      return bubble;
-+    }
-+    case ConfirmAutocompleteBubbleType::kInactive:
-+      NOTREACHED_NORETURN();
-+  }
++  views::BubbleDialogDelegateView::CreateBubble(bubble);
++  bubble->Show(LocationBarBubbleDelegateView::AUTOMATIC);
++  return bubble;
 +}
 +
  AutofillBubbleBase* AutofillBubbleHandlerImpl::ShowLocalCardMigrationBubble(
