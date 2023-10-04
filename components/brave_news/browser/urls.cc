@@ -7,20 +7,12 @@
 
 #include <string>
 
-#include "base/command_line.h"
-#include "brave/components/brave_news/common/switches.h"
+#include "brave/brave_domains/service_domains.h"
 
 namespace brave_news {
 
 std::string GetHostname() {
-  std::string from_switch =
-      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kBraveNewsHost);
-  if (from_switch.empty()) {
-    return "brave-today-cdn.brave.com";
-  } else {
-    return from_switch;
-  }
+  return brave_domains::GetServicesDomain("brave-today-cdn");
 }
 
 }  // namespace brave_news
