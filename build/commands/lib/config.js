@@ -100,8 +100,6 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 }
 
 const Config = function () {
-  this.sardineClientId = getNPMConfig(['sardine_client_id']) || ''
-  this.sardineClientSecret = getNPMConfig(['sardine_client_secret']) || ''
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
@@ -124,13 +122,18 @@ const Config = function () {
   this.targetEnvironment = getNPMConfig(['target_environment'])
   this.gypTargetArch = 'x64'
   this.targetAndroidBase = 'classic'
+  this.braveServicesProductionDomain = getNPMConfig(['brave_services_production_domain']) || ''
+  this.braveServicesStagingDomain = getNPMConfig(['brave_services_staging_domain']) || ''
+  this.braveServicesDevDomain = getNPMConfig(['brave_services_dev_domain']) || ''
+  this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.braveGoogleApiKey = getNPMConfig(['brave_google_api_key']) || 'AIzaSyAREPLACEWITHYOUROWNGOOGLEAPIKEY2Q'
   this.googleApiEndpoint = getNPMConfig(['brave_google_api_endpoint']) || 'https://www.googleapis.com/geolocation/v1/geolocate?key='
   this.googleDefaultClientId = getNPMConfig(['google_default_client_id']) || ''
   this.googleDefaultClientSecret = getNPMConfig(['google_default_client_secret']) || ''
-  this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
   this.braveZeroExApiKey = getNPMConfig(['brave_zero_ex_api_key']) || ''
+  this.sardineClientId = getNPMConfig(['sardine_client_id']) || ''
+  this.sardineClientSecret = getNPMConfig(['sardine_client_secret']) || ''
   this.bitFlyerProductionClientId = getNPMConfig(['bitflyer_production_client_id']) || ''
   this.bitFlyerProductionClientSecret = getNPMConfig(['bitflyer_production_client_secret']) || ''
   this.bitFlyerProductionFeeAddress = getNPMConfig(['bitflyer_production_fee_address']) || ''
@@ -404,6 +407,9 @@ Config.prototype.buildArgs = function () {
     enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),
     brave_ai_chat_endpoint: this.brave_ai_chat_endpoint,
+    brave_services_production_domain: this.braveServicesProductionDomain,
+    brave_services_staging_domain: this.braveServicesStagingDomain,
+    brave_services_dev_domain: this.braveServicesDevDomain,
     enable_dangling_raw_ptr_checks: this.enable_dangling_raw_ptr_checks,
     ...this.extraGnArgs,
   }
@@ -625,6 +631,9 @@ Config.prototype.buildArgs = function () {
       "//brave/components/resources:strings",
     ]
 
+    delete args.brave_services_production_domain
+    delete args.brave_services_staging_domain
+    delete args.brave_services_dev_domain
     delete args.safebrowsing_api_endpoint
     delete args.safe_browsing_mode
     delete args.proprietary_codecs
