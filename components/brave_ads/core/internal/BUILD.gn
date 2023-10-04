@@ -289,6 +289,8 @@ static_library("internal") {
     "catalog/catalog.cc",
     "catalog/catalog.h",
     "catalog/catalog_constants.h",
+    "catalog/catalog_feature.cc",
+    "catalog/catalog_feature.h",
     "catalog/catalog_info.cc",
     "catalog/catalog_info.h",
     "catalog/catalog_observer.h",

@@ -7,6 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_util.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_util.h"
@@ -26,8 +27,6 @@
 namespace brave_ads {
 
 namespace {
-
-constexpr base::TimeDelta kCatalogLifespan = base::Days(1);
 
 void Delete() {
   database::DeleteCampaigns();
@@ -121,7 +120,7 @@ bool HasCatalogChanged(const std::string& catalog_id) {
 }
 
 bool HasCatalogExpired() {
-  return base::Time::Now() >= GetCatalogLastUpdated() + kCatalogLifespan;
+  return base::Time::Now() >= GetCatalogLastUpdated() + kCatalogLifespan.Get();
 }
 
 }  // namespace brave_ads
