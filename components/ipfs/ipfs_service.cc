@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/files/file_util.h"
+#include "base/hash/hash.h"
 #include "base/memory/raw_ref.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
