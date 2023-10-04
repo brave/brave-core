@@ -71,8 +71,8 @@ void AIChatCredentialManager::OnCredentialSummary(
   std::string summary_string_trimmed;
   base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
                             &summary_string_trimmed);
-  if (summary_string_trimmed.length() == 0) {
-    // no credential found; person needs to login
+
+  if (summary_string_trimmed.empty()) {
     std::move(callback).Run(ai_chat::mojom::PremiumStatus::Inactive);
     return;
   }
@@ -80,21 +80,30 @@ void AIChatCredentialManager::OnCredentialSummary(
   absl::optional<base::Value> records_v = base::JSONReader::Read(
       summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
 
-  // Early return when summary is invalid or it's empty dict.
   if (!records_v || !records_v->is_dict()) {
     std::move(callback).Run(ai_chat::mojom::PremiumStatus::Inactive);
     return;
   }
 
-  // Empty dict - "{}" - all credentials are expired or it's a new user
-  if (records_v->GetDict().empty()) {
-    std::move(callback).Run(ai_chat::mojom::PremiumStatus::Disconnected);
+  const auto& records_dict = records_v->GetDict();
+  // Empty dict - "{}" - all credentials are expired or it's a new user.
+  if (records_dict.empty()) {
+    std::move(callback).Run(ai_chat::mojom::PremiumStatus::Inactive);
     return;
   }
 
-  // For now, if there are any records in CredentialSummary, then we assume
-  // there is a subscription active, even if the "active" property on the
-  // credential summary is literally false.
+  int remaining_count =
+      records_dict.FindInt("remaining_credential_count").value_or(0);
+  const std::string* expires_at = records_dict.FindString("expires_at");
+  // If the user has no more credentials AND expires_at is empty, then
+  // the user is disconnected (needs to refresh). If expires_at is not empty,
+  // the user has just run out of credentials, and they need to wait until a
+  // refresh is available.
+  if (remaining_count == 0 && (!expires_at || expires_at->empty())) {
+    std::move(callback).Run(ai_chat::mojom::PremiumStatus::ActiveDisconnected);
+    return;
+  }
+
   std::move(callback).Run(ai_chat::mojom::PremiumStatus::Active);
 }
 
