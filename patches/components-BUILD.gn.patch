@@ -1,8 +1,8 @@
 diff --git a/components/BUILD.gn b/components/BUILD.gn
-index 0f65455cfdc6f8d409b951eb9deb517a0cffe862..79d73a48dc2bf9d1be6b20f0afd6af7e9eba38df 100644
+index d8b86a56abc8409e9c0452ee671b02d1da06855d..5b6f00671345753070e4bb9541b106903f58b0c0 100644
 --- a/components/BUILD.gn
 +++ b/components/BUILD.gn
-@@ -774,7 +774,7 @@ repack("components_tests_pak") {
+@@ -775,7 +775,7 @@ repack("components_tests_pak") {
    if (is_chrome_branded) {
      sources += [ "${root_gen_dir}/components/strings/components_google_chrome_strings_en-US.pak" ]
    } else {

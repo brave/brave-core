@@ -1,5 +1,5 @@
 diff --git a/headless/BUILD.gn b/headless/BUILD.gn
-index e0ec74566e0474012ac660fc8929853219f5fcc7..67a046ea4135e74ae0e44f4e0bffc015585ec3bf 100644
+index d329d589ef552b798049e2419c98b3f2f79a837f..6415b33bf87293de315be7fc942db661978d34a0 100644
 --- a/headless/BUILD.gn
 +++ b/headless/BUILD.gn
 @@ -96,7 +96,7 @@ repack("resource_pack_strings") {
