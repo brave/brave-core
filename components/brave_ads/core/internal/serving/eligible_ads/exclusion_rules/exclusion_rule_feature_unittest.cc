@@ -66,7 +66,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     GetExcludeAdIfDismissedWithinTimeWindow) {
+     ShouldExcludeAdIfDismissedWithinTimeWindow) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -80,7 +80,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultExcludeAdIfDismissedWithinTimeWindow) {
+     DefaultShouldExcludeAdIfDismissedWithinTimeWindow) {
   // Arrange
 
   // Act
@@ -90,7 +90,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultExcludeAdIfDismissedWithinTimeWindowWhenDisabled) {
+     DefaultShouldExcludeAdIfDismissedWithinTimeWindowWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
@@ -102,7 +102,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     GetExcludeAdIfTransferredWithinTimeWindow) {
+     ShouldExcludeAdIfTransferredWithinTimeWindow) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -116,7 +116,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultExcludeAdIfTransferredWithinTimeWindow) {
+     DefaultShouldExcludeAdIfTransferredWithinTimeWindow) {
   // Arrange
 
   // Act
@@ -127,7 +127,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultExcludeAdIfTransferredWithinTimeWindowWhenDisabled) {
+     DefaultShouldExcludeAdIfTransferredWithinTimeWindowWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
