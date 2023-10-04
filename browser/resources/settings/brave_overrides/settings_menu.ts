@@ -281,6 +281,15 @@ RegisterPolymerTemplateModifications({
       privacyEl.insertAdjacentElement('afterend', web3El)
     }
 
+    // Add leo item
+    const leoAssistantEl = createMenuElement(
+      loadTimeData.getString('leoAssistant'),
+      '/leo-assistant',
+      'product-brave-leo',
+      'leoAssistant',
+    )
+    web3El.insertAdjacentElement('afterend', leoAssistantEl)
+
     // Add Sync item
     const syncEl = createMenuElement(
       loadTimeData.getString('braveSync'),
@@ -288,7 +297,7 @@ RegisterPolymerTemplateModifications({
       'product-sync',
       'braveSync',
     )
-    web3El.insertAdjacentElement('afterend', syncEl)
+    leoAssistantEl.insertAdjacentElement('afterend', syncEl)
 
     // Add search item
     const searchEl = getMenuElement(templateContent, '/search')
@@ -302,15 +311,6 @@ RegisterPolymerTemplateModifications({
       'extensions',
     )
     searchEl.insertAdjacentElement('afterend', extensionEl)
-
-    // Add leo item
-    const leoAssistantEl = createMenuElement(
-      loadTimeData.getString('leoAssistant'),
-      '/leo-assistant',
-      'product-brave-leo',
-      'leoAssistant',
-    )
-    extensionEl.insertAdjacentElement('afterend', leoAssistantEl)
 
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')
