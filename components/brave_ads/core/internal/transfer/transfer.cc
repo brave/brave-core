@@ -120,7 +120,9 @@ void Transfer::LogAdEventCallback(const AdInfo& ad, const bool success) {
 }
 
 void Transfer::Cancel(const int32_t tab_id) {
-  CHECK(last_clicked_ad_);
+  if (!last_clicked_ad_) {
+    return;
+  }
 
   if (transferring_ad_tab_id_ != tab_id) {
     return;
