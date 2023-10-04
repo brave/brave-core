@@ -187,10 +187,10 @@ std::string BuildLlama2Prompt(
     std::string first_message_template;
     if (is_video) {
       first_message_template =
-          l10n_util::GetStringUTF8(IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT_LLAMA2);
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT);
     } else {
       first_message_template =
-          l10n_util::GetStringUTF8(IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT_LLAMA2);
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
     }
     first_user_message = base::ReplaceStringPlaceholders(
         first_message_template, {page_content, raw_first_user_message},

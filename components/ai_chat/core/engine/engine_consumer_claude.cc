@@ -14,12 +14,14 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/i18n/time_formatting.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
@@ -80,8 +82,8 @@ std::string BuildClaudePrompt(
           : base::StrCat(
                 {base::ReplaceStringPlaceholders(
                      l10n_util::GetStringUTF8(
-                         is_video ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
-                                  : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
+                         is_video ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
+                                  : IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT),
                      {page_content}, nullptr),
                  "\n\n"});
 
@@ -90,14 +92,17 @@ std::string BuildClaudePrompt(
           ? ""
           : base::ReplaceStringPlaceholders(
                 l10n_util::GetStringUTF8(
-                    IDS_AI_CHAT_ASSISTANT_HISTORY_PROMPT_SEGMENT),
+                    IDS_AI_CHAT_CLAUDE_HISTORY_PROMPT_SEGMENT),
                 {GetConversationHistoryString(conversation_history)}, nullptr);
 
+  std::string date_and_time_string =
+      base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
   std::string prompt = base::StrCat(
       {kHumanPromptSequence, prompt_segment_article,
        base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(IDS_AI_CHAT_ASSISTANT_PROMPT_SEGMENT),
-           {prompt_segment_history, question_part}, nullptr),
+           l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE),
+           {date_and_time_string, prompt_segment_history, question_part},
+           nullptr),
        kAIPromptSequence, " <response>\n"});
 
   return prompt;
@@ -148,11 +153,12 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
   prompt = base::StrCat(
       {kHumanPromptSequence,
        base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(is_video
-                                        ? IDS_AI_CHAT_VIDEO_PROMPT_SEGMENT
-                                        : IDS_AI_CHAT_ARTICLE_PROMPT_SEGMENT),
+           l10n_util::GetStringUTF8(
+               is_video ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
+                        : IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT),
            {page_content}, nullptr),
-       "\n\n", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROMPT_SEGMENT),
+       "\n\n",
+       l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_QUESTION_PROMPT_SEGMENT),
        kAIPromptSequence, "<response>"});
   CheckPrompt(prompt);
   stop_sequences.push_back("</response>");
