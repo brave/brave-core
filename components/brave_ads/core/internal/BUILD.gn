@@ -1167,7 +1167,6 @@ static_library("internal") {
     "units/search_result_ad/search_result_ad_handler.h",
     "user/user_attention/user_activity/page_transition_util.cc",
     "user/user_attention/user_activity/page_transition_util.h",
-    "user/user_attention/user_activity/user_activity_constants.h",
     "user/user_attention/user_activity/user_activity_event_info.cc",
     "user/user_attention/user_activity/user_activity_event_info.h",
     "user/user_attention/user_activity/user_activity_event_types.h",

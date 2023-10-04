@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_constants.h"
+#include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -645,7 +645,7 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
 TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClosedTab;
-  for (int i = 0; i < kMaximumHistoryItems; i++) {
+  for (int i = 0; i < kMaximumUserActivityEvents.Get(); i++) {
     UserActivityManager::GetInstance().RecordEvent(event_type);
   }
 
@@ -661,7 +661,7 @@ TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
 
-  for (int i = 0; i < kMaximumHistoryItems - 1; i++) {
+  for (int i = 0; i < kMaximumUserActivityEvents.Get() - 1; i++) {
     event.type = event_type;
     event.created_at = Now();
     expected_events.push_back(event);
