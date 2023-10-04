@@ -139,4 +139,40 @@ TEST(BraveAdsExclusionRuleFeatureTest,
             kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
 }
 
+TEST(BraveAdsExclusionRuleFeatureTest,
+     ShouldExcludeAdIfCreativeInstanceExceedsPerHourCap) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_creative_instance_exceeds_per_hour_cap", "7"}});
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(7, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
+}
+
+TEST(BraveAdsExclusionRuleFeatureTest,
+     DefaultShouldExcludeAdIfCreativeInstanceExceedsPerHourCap) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(1, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
+}
+
+TEST(BraveAdsExclusionRuleFeatureTest,
+     DefaultShouldExcludeAdIfCreativeInstanceExceedsPerHourCapWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(1, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
+}
+
 }  // namespace brave_ads
