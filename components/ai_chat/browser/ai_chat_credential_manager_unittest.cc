@@ -117,14 +117,14 @@ TEST_F(AIChatCredentialManagerUnitTest, PutCredentialInCache) {
 
 TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatus) {
   // By default there should be no credentials.
-  TestGetPremiumStatus(ai_chat::mojom::PremiumStatus::Disconnected);
+  TestGetPremiumStatus(ai_chat::mojom::PremiumStatus::ActiveDisconnected);
 
   // Add an expired credential to the cache, should return false.
   CredentialCacheEntry entry;
   entry.credential = "credential";
   entry.expires_at = base::Time::Now() - base::Hours(1);  // Expired
   ai_chat_credential_manager_->PutCredentialInCache(entry);
-  TestGetPremiumStatus(ai_chat::mojom::PremiumStatus::Disconnected);
+  TestGetPremiumStatus(ai_chat::mojom::PremiumStatus::ActiveDisconnected);
 
   // Add valid credential to the cache, GetPremiumStatus should
   // return ai_chat::mojom::PremiumStatus::Active.

@@ -88,7 +88,7 @@ void AIChatCredentialManager::OnCredentialSummary(
 
   // Empty dict - "{}" - all credentials are expired or it's a new user
   if (records_v->GetDict().empty()) {
-    std::move(callback).Run(ai_chat::mojom::PremiumStatus::Disconnected);
+    std::move(callback).Run(ai_chat::mojom::PremiumStatus::ActiveDisconnected);
     return;
   }
 
