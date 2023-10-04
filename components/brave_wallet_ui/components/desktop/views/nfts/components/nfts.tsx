@@ -117,7 +117,8 @@ export const Nfts = (props: Props) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { nonFungibleTokens, isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
-  const tab = useQuery().get('tab')
+  const urlSearchParams = useQuery()
+  const tab = urlSearchParams.get('tab')
   const selectedTab: NftDropdownOptionId = tab === 'collected' || tab === 'hidden' ? tab : 'collected'
 
   // queries
