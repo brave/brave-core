@@ -61,7 +61,7 @@ TEST_F(BraveAdsConversionQueueUtilTest, AddRewardConfirmationQueueItem) {
 TEST_F(BraveAdsConversionQueueUtilTest,
        AddConversionRewardConfirmationQueueItem) {
   // Arrange
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
       /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
 
@@ -86,7 +86,7 @@ TEST_F(BraveAdsConversionQueueUtilTest,
 TEST_F(BraveAdsConversionQueueUtilTest,
        AddVerifiableConversionRewardConfirmationQueueItem) {
   // Arrange
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
 
@@ -131,7 +131,7 @@ TEST_F(BraveAdsConversionQueueUtilTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
       /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
 
@@ -154,7 +154,7 @@ TEST_F(BraveAdsConversionQueueUtilTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
 
@@ -210,9 +210,7 @@ TEST_F(BraveAdsConversionQueueUtilTest, GetRewardConfirmationQueueItem) {
 
   AddConfirmationQueueItem(*confirmation);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(MaybeGetNextConfirmationQueueItem());
 }
 
@@ -230,19 +228,13 @@ TEST_F(BraveAdsConversionQueueUtilTest, GetNonRewardConfirmationQueueItem) {
 
   AddConfirmationQueueItem(*confirmation);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(MaybeGetNextConfirmationQueueItem());
 }
 
 TEST_F(BraveAdsConversionQueueUtilTest,
        DoNotGetConfirmationQueueItemIfQueueIsEmpty) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeGetNextConfirmationQueueItem());
 }
 
@@ -259,13 +251,10 @@ TEST_F(BraveAdsConversionQueueUtilTest, RebuildRewardConfirmationQueueItem) {
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
+  // Act & Assert
   base::MockCallback<RebuildConfirmationQueueItemCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Ne(confirmation)));
-
-  // Act
   RebuildConfirmationQueueItem(*confirmation, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionQueueUtilTest, RebuildNonRewardConfirmationQueueItem) {
@@ -279,13 +268,10 @@ TEST_F(BraveAdsConversionQueueUtilTest, RebuildNonRewardConfirmationQueueItem) {
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
+  // Act & Assert
   base::MockCallback<RebuildConfirmationQueueItemCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(confirmation)));
-
-  // Act
   RebuildConfirmationQueueItem(*confirmation, callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

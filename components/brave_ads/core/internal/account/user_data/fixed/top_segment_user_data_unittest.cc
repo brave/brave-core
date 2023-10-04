@@ -45,9 +45,7 @@ TEST_F(BraveAdsTopSegmentUserDataTest, BuildTopSegmentUserDataForRewardsUser) {
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -71,9 +69,7 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildTopSegmentUserData(transaction).empty());
 }
 
@@ -86,9 +82,7 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
       /*value*/ 0.01, ConfirmationType::kClicked,
       /*should_use_random_uuids*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildTopSegmentUserData(transaction).empty());
 }
 
@@ -99,9 +93,7 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {

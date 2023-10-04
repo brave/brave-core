@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsRedeemPaymentTokensFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kRedeemPaymentTokensFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsRedeemPaymentTokensFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kRedeemPaymentTokensFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kRedeemPaymentTokensFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsRedeemPaymentTokensFeatureTest, RedeemPaymentTokensAfter) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kRedeemPaymentTokensFeature, {{"redeem_after", "3h"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(3), kRedeemPaymentTokensAfter.Get());
 }
 
 TEST(BraveAdsRedeemPaymentTokensFeatureTest, DefaultRedeemPaymentTokensAfter) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kRedeemPaymentTokensAfter.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsRedeemPaymentTokensFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kRedeemPaymentTokensFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kRedeemPaymentTokensAfter.Get());
 }
 

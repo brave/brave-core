@@ -20,23 +20,19 @@ class BraveAdsBrowserIsActivePermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldAllow) {
   // Arrange
-
-  // Act
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldNotAllow) {
   // Arrange
-
-  // Act
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterBackground();
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -48,47 +44,40 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
       kPermissionRulesFeature,
       {{"should_only_serve_ads_if_browser_is_active", "false"}});
 
-  // Act
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterBackground();
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        ShouldNotAllowIfWindowIsActiveAndBrowserIsBackgrounded) {
   // Arrange
-
-  // Act
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterBackground();
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        ShouldNotAllowIfWindowIsInactiveAndBrowserIsForegrounded) {
   // Arrange
-
-  // Act
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterForeground();
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        ShouldNotAllowIfWindowIsInactiveAndBrowserIsBackgrounded) {
   // Arrange
-
-  // Act
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterBackground();
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

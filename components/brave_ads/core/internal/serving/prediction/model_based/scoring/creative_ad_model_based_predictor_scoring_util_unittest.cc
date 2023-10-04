@@ -19,11 +19,8 @@ TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
   CreativeAdPredictorSegmentInputVariableInfo input_variable;
   input_variable.does_match_child = true;
 
-  // Act
-  const double score = ComputeIntentSegmentScore(input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeIntentSegmentScore(input_variable));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
@@ -32,23 +29,14 @@ TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
   CreativeAdPredictorSegmentInputVariableInfo input_variable;
   input_variable.does_match_parent = true;
 
-  // Act
-  const double score = ComputeIntentSegmentScore(input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeIntentSegmentScore(input_variable));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
      ComputeNonMatchingIntentSegmentScore) {
-  // Arrange
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable;
-
-  // Act
-  const double score = ComputeIntentSegmentScore(input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0, ComputeIntentSegmentScore(/*input_variable*/ {}));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
@@ -57,11 +45,8 @@ TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
   CreativeAdPredictorSegmentInputVariableInfo input_variable;
   input_variable.does_match_child = true;
 
-  // Act
-  const double score = ComputeLatentInterestSegmentScore(input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeLatentInterestSegmentScore(input_variable));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
@@ -70,11 +55,8 @@ TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
   CreativeAdPredictorSegmentInputVariableInfo input_variable;
   input_variable.does_match_parent = true;
 
-  // Act
-  const double score = ComputeLatentInterestSegmentScore(input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeLatentInterestSegmentScore(input_variable));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
@@ -82,11 +64,8 @@ TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
   // Arrange
   const CreativeAdPredictorSegmentInputVariableInfo input_variable;
 
-  // Act
-  const double score = ComputeLatentInterestSegmentScore(input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0, ComputeLatentInterestSegmentScore(input_variable));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
@@ -95,11 +74,8 @@ TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
   CreativeAdPredictorSegmentInputVariableInfo input_variable;
   input_variable.does_match_child = true;
 
-  // Act
-  const double score = ComputeInterestSegmentScore(input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeInterestSegmentScore(input_variable));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
@@ -108,115 +84,61 @@ TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
   CreativeAdPredictorSegmentInputVariableInfo input_variable;
   input_variable.does_match_parent = true;
 
-  // Act
-  const double score = ComputeInterestSegmentScore(input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeInterestSegmentScore(input_variable));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
      ComputeNonMatchingInterestSegmentScore) {
-  // Arrange
-  const CreativeAdPredictorSegmentInputVariableInfo input_variable;
-
-  // Act
-  const double score = ComputeInterestSegmentScore(input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0, ComputeInterestSegmentScore(/*input_variable*/ {}));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest, ComputeLastSeenAdScore) {
-  // Arrange
-  const base::TimeDelta last_seen = base::Hours(7);
-
-  // Act
-  const double score = ComputeLastSeenAdScore(last_seen);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.29166666666666669, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.29166666666666669, ComputeLastSeenAdScore(base::Hours(7)));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest, ComputeNeverSeenAdScore) {
-  // Arrange
-  const absl::optional<base::TimeDelta> last_seen;
-
-  // Act
-  const double score = ComputeLastSeenAdScore(last_seen);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenAdScore({}));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
      ComputeLastSeenAdScoreIfExceeds1Day) {
-  // Arrange
-  const base::TimeDelta last_seen = base::Days(1) + base::Milliseconds(1);
-
-  // Act
-  const double score = ComputeLastSeenAdScore(last_seen);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(
+      1.0, ComputeLastSeenAdScore(base::Days(1) + base::Milliseconds(1)));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
      ComputeLastSeenAdvertiserScore) {
-  // Arrange
-  const base::TimeDelta last_seen = base::Hours(7);
-
-  // Act
-  const double score = ComputeLastSeenAdvertiserScore(last_seen);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.29166666666666669, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.29166666666666669,
+                   ComputeLastSeenAdvertiserScore(base::Hours(7)));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
      ComputeNeverSeenAdvertiserScore) {
-  // Arrange
-  const absl::optional<base::TimeDelta> last_seen;
-
-  // Act
-  const double score = ComputeLastSeenAdvertiserScore(last_seen);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenAdvertiserScore({}));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
      ComputeLastSeenAdvertiserScoreIfExceeds1Day) {
-  // Arrange
-  const base::TimeDelta last_seen = base::Days(1) + base::Milliseconds(1);
-
-  // Act
-  const double score = ComputeLastSeenAdvertiserScore(last_seen);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenAdvertiserScore(base::Days(1) +
+                                                       base::Milliseconds(1)));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest, ComputePriorityScore) {
-  // Arrange
-  const int priority = 5;
-
-  // Act
-  const double score = ComputePriorityScore(priority);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.2, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.2, ComputePriorityScore(5));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest, ComputeZeroPriorityScore) {
-  // Arrange
-  const int priority = 0;
-
-  // Act
-  const double score = ComputePriorityScore(priority);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0, ComputePriorityScore(0));
 }
 
 }  // namespace brave_ads

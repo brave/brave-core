@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(
       base::FeatureList::IsEnabled(kCreativeAdModelBasedPredictorFeature));
 }
@@ -28,9 +24,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest, IsDisabled) {
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       base::FeatureList::IsEnabled(kCreativeAdModelBasedPredictorFeature));
 }
@@ -43,19 +37,13 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
       kCreativeAdModelBasedPredictorFeature,
       {{"child_intent_segment_ad_predictor_weight", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kChildIntentSegmentAdPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultChildIntentSegmentAdPredictorWeight) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kChildIntentSegmentAdPredictorWeight.Get());
 }
 
@@ -66,9 +54,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kChildIntentSegmentAdPredictorWeight.Get());
 }
 
@@ -80,19 +66,13 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
       kCreativeAdModelBasedPredictorFeature,
       {{"parent_intent_segment_ad_predictor_weight", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kParentIntentSegmentAdPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultParentIntentSegmentAdPredictorWeight) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kParentIntentSegmentAdPredictorWeight.Get());
 }
 
@@ -103,9 +83,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kParentIntentSegmentAdPredictorWeight.Get());
 }
 
@@ -117,19 +95,13 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
       kCreativeAdModelBasedPredictorFeature,
       {{"child_latent_interest_segment_ad_predictor_weight", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kChildLatentInterestSegmentAdPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultChildLatentInterestSegmentAdPredictorWeight) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kChildLatentInterestSegmentAdPredictorWeight.Get());
 }
 
@@ -140,9 +112,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kChildLatentInterestSegmentAdPredictorWeight.Get());
 }
 
@@ -154,19 +124,13 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
       kCreativeAdModelBasedPredictorFeature,
       {{"parent_latent_interest_segment_ad_predictor_weight", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kParentLatentInterestSegmentAdPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultParentLatentInterestSegmentAdPredictorWeight) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kParentLatentInterestSegmentAdPredictorWeight.Get());
 }
 
@@ -177,9 +141,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kParentLatentInterestSegmentAdPredictorWeight.Get());
 }
 
@@ -191,19 +153,13 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
       kCreativeAdModelBasedPredictorFeature,
       {{"child_interest_segment_ad_predictor_weight", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kChildInterestSegmentAdPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultChildInterestSegmentAdPredictorWeight) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kChildInterestSegmentAdPredictorWeight.Get());
 }
 
@@ -214,9 +170,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kChildInterestSegmentAdPredictorWeight.Get());
 }
 
@@ -228,19 +182,13 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
       kCreativeAdModelBasedPredictorFeature,
       {{"parent_interest_segment_ad_predictor_weight", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kParentInterestSegmentAdPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultParentInterestSegmentAdPredictorWeight) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kParentInterestSegmentAdPredictorWeight.Get());
 }
 
@@ -251,9 +199,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kParentInterestSegmentAdPredictorWeight.Get());
 }
 
@@ -265,19 +211,13 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
       kCreativeAdModelBasedPredictorFeature,
       {{"last_seen_ad_predictor_weight", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kLastSeenAdPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultLastSeenAdPredictorWeight) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kLastSeenAdPredictorWeight.Get());
 }
 
@@ -288,9 +228,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kLastSeenAdPredictorWeight.Get());
 }
 
@@ -302,19 +240,13 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
       kCreativeAdModelBasedPredictorFeature,
       {{"last_seen_advertiser_ad_predictor_weight", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kLastSeenAdvertiserAdPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultLastSeenAdvertiserAdPredictorWeight) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kLastSeenAdvertiserAdPredictorWeight.Get());
 }
 
@@ -325,9 +257,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kLastSeenAdvertiserAdPredictorWeight.Get());
 }
 
@@ -339,19 +269,13 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
       kCreativeAdModelBasedPredictorFeature,
       {{"priority_ad_predictor_weight", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kPriorityAdPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
      DefaultPriorityAdPredictorWeight) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kPriorityAdPredictorWeight.Get());
 }
 
@@ -362,9 +286,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorFeatureTest,
   scoped_feature_list.InitAndDisableFeature(
       kCreativeAdModelBasedPredictorFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(1.0, kPriorityAdPredictorWeight.Get());
 }
 

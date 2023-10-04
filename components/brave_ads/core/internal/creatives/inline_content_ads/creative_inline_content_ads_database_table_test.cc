@@ -33,37 +33,31 @@ class BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest
 TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
        GetForSegmentsAndDimensions) {
   // Arrange
+  const database::table::CreativeInlineContentAds database_table;
+
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeInlineContentAdsCallback>
       callback;
   EXPECT_CALL(callback, Run(/*success*/ true,
                             /*segments*/ SegmentList{"technology & computing"},
                             /*creative_ads*/ ::testing::SizeIs(1)));
-
-  const database::table::CreativeInlineContentAds database_table;
-
-  // Act
   database_table.GetForSegmentsAndDimensions(
       /*segments*/ {"technology & computing"}, /*dimensions*/ "200x100",
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
        GetForDimensions) {
   // Arrange
+  const database::table::CreativeInlineContentAds database_table;
+
+  // Act & Assert
   base::MockCallback<
       database::table::GetCreativeInlineContentAdsForDimensionsCallback>
       callback;
   EXPECT_CALL(callback, Run(/*success*/ true,
                             /*creative_ads*/ ::testing::SizeIs(1)));
-
-  const database::table::CreativeInlineContentAds database_table;
-
-  // Act
   database_table.GetForDimensions("200x100", callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

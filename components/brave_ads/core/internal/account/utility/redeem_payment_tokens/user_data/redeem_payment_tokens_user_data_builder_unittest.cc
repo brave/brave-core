@@ -19,7 +19,7 @@ namespace brave_ads {
 class BraveAdsRedeemPaymentTokensUserDataBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
-  // Arrange
+  // Act & Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
       R"(
           {
@@ -31,14 +31,11 @@ TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
               }
             ]
           })");
+
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-
-  // Act
   BuildRedeemPaymentTokensUserData(BuildPaymentTokensForTesting(/*count*/ 2),
                                    callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

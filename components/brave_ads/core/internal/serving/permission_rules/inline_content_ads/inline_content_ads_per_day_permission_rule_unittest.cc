@@ -20,23 +20,17 @@ class BraveAdsInlineContentAdsPerDayPermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-
-  // Act
   RecordAdEventsForTesting(AdType::kInlineContentAd, ConfirmationType::kServed,
                            /*count*/ kMaximumInlineContentAdsPerDay.Get() - 1);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -46,10 +40,10 @@ TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
   RecordAdEventsForTesting(AdType::kInlineContentAd, ConfirmationType::kServed,
                            /*count*/ kMaximumInlineContentAdsPerDay.Get());
 
-  // Act
+  // Arrange
   AdvanceClockBy(base::Days(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -59,10 +53,9 @@ TEST_F(BraveAdsInlineContentAdsPerDayPermissionRuleTest,
   RecordAdEventsForTesting(AdType::kInlineContentAd, ConfirmationType::kServed,
                            /*count*/ kMaximumInlineContentAdsPerDay.Get());
 
-  // Act
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

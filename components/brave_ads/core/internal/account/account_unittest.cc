@@ -66,47 +66,35 @@ class BraveAdsAccountTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsAccountTest, SetWallet) {
-  // Arrange
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidInitializeWallet);
   EXPECT_CALL(observer_mock_, OnFailedToInitializeWallet).Times(0);
 
-  // Act
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
-
-  // Assert
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyPaymentId) {
-  // Arrange
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(observer_mock_, OnFailedToInitializeWallet);
 
-  // Act
   account_->SetWallet(/*payment_id*/ {}, kWalletRecoverySeed);
-
-  // Assert
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
-  // Arrange
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(observer_mock_, OnFailedToInitializeWallet);
 
-  // Act
   account_->SetWallet(kWalletPaymentId, kInvalidWalletRecoverySeed);
-
-  // Assert
 }
 
 TEST_F(BraveAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
-  // Arrange
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(observer_mock_, OnFailedToInitializeWallet);
 
-  // Act
   account_->SetWallet(kWalletPaymentId, /*recovery_seed*/ "");
-
-  // Assert
 }
 
 TEST_F(BraveAdsAccountTest, GetIssuersForRewardsUser) {
@@ -127,10 +115,8 @@ TEST_F(BraveAdsAccountTest, GetIssuersForRewardsUser) {
 
   NotifyDidInitializeAds();
 
-  // Act
+  // Act & Assert
   EXPECT_EQ(BuildIssuersForTesting(), GetIssuers());
-
-  // Assert
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetIssuersForNonRewardsUser) {
@@ -143,9 +129,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersForNonRewardsUser) {
 
   NotifyDidInitializeAds();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(GetIssuers());
 }
 
@@ -234,9 +218,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetInvalidIssuers) {
 
   NotifyDidInitializeAds();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(GetIssuers());
 }
 
@@ -254,9 +236,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetMissingIssuers) {
 
   NotifyDidInitializeAds();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(GetIssuers());
 }
 
@@ -270,9 +250,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
 
   NotifyDidInitializeAds();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(GetIssuers());
 }
 
@@ -297,15 +275,13 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(observer_mock_, OnStatementOfAccountsDidChange);
 
-  // Act
   account_->Deposit(creative_ad.creative_instance_id, creative_ad.segment,
                     AdType::kNotificationAd, ConfirmationType::kViewed);
-
-  // Assert
 }
 
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
@@ -314,15 +290,13 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
 
   SetConfirmationTokensForTesting(/*count*/ 1);
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(observer_mock_, OnStatementOfAccountsDidChange);
 
-  // Act
   account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
                     ConfirmationType::kClicked);
-
-  // Assert
 }
 
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
@@ -333,15 +307,13 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit).Times(0);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit);
   EXPECT_CALL(observer_mock_, OnStatementOfAccountsDidChange).Times(0);
 
-  // Act
   account_->Deposit(kMissingCreativeInstanceId, kSegment,
                     AdType::kNotificationAd, ConfirmationType::kViewed);
-
-  // Assert
 }
 
 TEST_F(BraveAdsAccountTest, GetStatement) {
@@ -391,6 +363,7 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
 
   SaveTransactionsForTesting(transactions);
 
+  // Act & Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month =
       0.01 * kMinEstimatedEarningsMultiplier.Get();
@@ -405,24 +378,17 @@ TEST_F(BraveAdsAccountTest, GetStatement) {
 
   base::MockCallback<GetStatementOfAccountsCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
-
-  // Act
   Account::GetStatement(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetStatementForNonRewardsUser) {
   // Arrange
   DisableBraveRewardsForTesting();
 
+  // Act & Assert
   base::MockCallback<GetStatementOfAccountsCallback> callback;
   EXPECT_CALL(callback, Run(/*statement*/ ::testing::IsFalse()));
-
-  // Act
   Account::GetStatement(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

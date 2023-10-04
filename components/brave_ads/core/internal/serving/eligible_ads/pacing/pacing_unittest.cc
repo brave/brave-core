@@ -29,19 +29,16 @@ class BraveAdsPacingTest : public UnitTestBase {};
 TEST_F(BraveAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.pass_through_rate = 0.0;
   creative_ads.push_back(creative_ad);
 
-  // Act
+  // Act & Assert
   for (const double number : GetPacingRandomNumbers()) {
     const ScopedPacingRandomNumberSetterForTesting scoped_setter(number);
     const CreativeNotificationAdList paced_creative_ads =
         PaceCreativeAds(creative_ads);
-
-    // Assert
     EXPECT_TRUE(paced_creative_ads.empty());
   }
 }
@@ -49,22 +46,16 @@ TEST_F(BraveAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
 TEST_F(BraveAdsPacingTest, DoNotPaceCreativeAdsWithMaxPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.pass_through_rate = 1.0;
   creative_ads.push_back(creative_ad);
 
-  // Act
+  // Act & Assert
+  const CreativeNotificationAdList expected_paced_creative_ads = {creative_ad};
   for (const double number : GetPacingRandomNumbers()) {
     const ScopedPacingRandomNumberSetterForTesting scoped_setter(number);
-    const CreativeNotificationAdList paced_creative_ads =
-        PaceCreativeAds(creative_ads);
-
-    // Assert
-    const CreativeNotificationAdList expected_paced_creative_ads = {
-        creative_ad};
-    EXPECT_EQ(expected_paced_creative_ads, paced_creative_ads);
+    EXPECT_EQ(expected_paced_creative_ads, PaceCreativeAds(creative_ads));
   }
 }
 
@@ -72,14 +63,14 @@ TEST_F(BraveAdsPacingTest,
        PaceCreativeAdIfPacingIsGreaterThanOrEqualToPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad);
 
-  // Act
   const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.7);
+
+  // Act
   const CreativeNotificationAdList paced_creative_ads =
       PaceCreativeAds(creative_ads);
 
@@ -102,15 +93,12 @@ TEST_F(BraveAdsPacingTest,
   creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
 
-  // Act
   const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
-  const CreativeNotificationAdList paced_creative_ads =
-      PaceCreativeAds(creative_ads);
 
-  // Assert
+  // Act & Assert
   const CreativeNotificationAdList expected_paced_creative_ads = {
       creative_ad_2};
-  EXPECT_EQ(expected_paced_creative_ads, paced_creative_ads);
+  EXPECT_EQ(expected_paced_creative_ads, PaceCreativeAds(creative_ads));
 }
 
 }  // namespace brave_ads

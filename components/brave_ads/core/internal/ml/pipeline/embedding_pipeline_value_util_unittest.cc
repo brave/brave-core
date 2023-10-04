@@ -96,9 +96,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromMalformedValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(kMalformedJson);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(EmbeddingPipelineFromValue(dict));
 }
 
@@ -106,9 +104,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromEmptyValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict("{}");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(EmbeddingPipelineFromValue(dict));
 }
 

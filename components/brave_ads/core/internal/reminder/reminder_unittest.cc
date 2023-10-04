@@ -46,28 +46,18 @@ class BraveAdsReminderTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
-  // Arrange
-
-  // Assert
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
-
-  // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
-
   FastForwardClockBy(base::Seconds(1));
 }
 
 TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
-  // Arrange
-
-  // Assert
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
-
-  // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1);
-
   FastForwardClockBy(base::Seconds(1));
 }
 
@@ -77,12 +67,9 @@ TEST_F(BraveAdsReminderTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kReminderFeature);
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
-
-  // Act
   AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
-
   FastForwardClockBy(base::Seconds(1));
 }
 

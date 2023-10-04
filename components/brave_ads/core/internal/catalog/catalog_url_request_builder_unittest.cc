@@ -26,7 +26,6 @@ TEST_F(BraveAdsCatalogUrlRequestBuilderTest, BuildUrl) {
   expected_url_request->url =
       GURL("https://static.ads.bravesoftware.com/v9/catalog");
   expected_url_request->method = mojom::UrlRequestMethodType::kGet;
-
   EXPECT_EQ(expected_url_request, url_request);
 }
 

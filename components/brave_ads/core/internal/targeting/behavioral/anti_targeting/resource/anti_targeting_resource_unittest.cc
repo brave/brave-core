@@ -40,11 +40,7 @@ class BraveAdsAntiTargetingResourceTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsAntiTargetingResourceTest, IsNotInitialized) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(resource_->IsInitialized());
 }
 
@@ -53,9 +49,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadInvalidResource) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
                                              kAntiTargetingResourceId));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
@@ -74,9 +68,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMissingResource) {
             std::move(callback).Run(std::move(file));
           }));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
@@ -159,22 +151,14 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
 
 TEST_F(BraveAdsAntiTargetingResourceTest,
        LoadResourceWhenDidUpdateResourceComponent) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(
     BraveAdsAntiTargetingResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfInvalidCountryComponentId) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kInvalidCountryComponentId));
 }
 
@@ -185,9 +169,7 @@ TEST_F(
   OptOutOfNotificationAdsForTesting();
   OptOutOfBraveNewsAdsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
@@ -196,9 +178,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest,
   // Arrange
   ASSERT_TRUE(LoadResource(kCountryComponentId));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 

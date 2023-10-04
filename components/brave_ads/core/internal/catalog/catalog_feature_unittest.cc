@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsCatalogFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kCatalogFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsCatalogFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kCatalogFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kCatalogFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsCatalogFeatureTest, CatalogLifespan) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(kCatalogFeature,
                                                          {{"lifespan", "2h"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(2), kCatalogLifespan.Get());
 }
 
 TEST(BraveAdsCatalogFeatureTest, DefaultCatalogLifespan) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kCatalogLifespan.Get());
 }
 
@@ -58,9 +46,7 @@ TEST(BraveAdsCatalogFeatureTest, DefaultCatalogLifespanWhenDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kCatalogFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kCatalogLifespan.Get());
 }
 

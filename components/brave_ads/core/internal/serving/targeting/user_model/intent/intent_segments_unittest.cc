@@ -44,9 +44,7 @@ TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegments) {
 
   targeting_->MockIntent();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_intent_segments =
       TargetingHelperForTesting::IntentExpectation().segments;
   EXPECT_EQ(expected_intent_segments, BuildIntentSegments());

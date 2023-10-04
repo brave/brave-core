@@ -84,9 +84,7 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeInMinutes) {
   const base::Time time =
       TimeFromString("November 18 2020 12:34:56", /*is_local*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ((12 * base::Time::kMinutesPerHour) + 34,
             GetLocalTimeInMinutes(time));
 }
@@ -97,15 +95,11 @@ TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonth) {
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time =
-      AdjustLocalTimeToBeginningOfPreviousMonth(time);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("October 1 2020 00:00:00.000", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time,
+            AdjustLocalTimeToBeginningOfPreviousMonth(time));
 }
 
 TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonthOnCusp) {
@@ -114,15 +108,11 @@ TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonthOnCusp) {
       TimeFromString("January 1 2020 00:00:00.000", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time =
-      AdjustLocalTimeToBeginningOfPreviousMonth(time);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("December 1 2019 00:00:00.000", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time,
+            AdjustLocalTimeToBeginningOfPreviousMonth(time));
 }
 
 TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonth) {
@@ -131,14 +121,10 @@ TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonth) {
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = AdjustLocalTimeToEndOfPreviousMonth(time);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("October 31 2020 23:59:59.999", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, AdjustLocalTimeToEndOfPreviousMonth(time));
 }
 
 TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonthOnTheCusp) {
@@ -147,14 +133,10 @@ TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonthOnTheCusp) {
       TimeFromString("January 1 2020 00:00:00.000", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = AdjustLocalTimeToEndOfPreviousMonth(time);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("December 31 2019 23:59:59.999", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, AdjustLocalTimeToEndOfPreviousMonth(time));
 }
 
 TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonth) {
@@ -163,14 +145,10 @@ TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonth) {
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = AdjustLocalTimeToBeginningOfMonth(time);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("November 1 2020 00:00:00.000", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, AdjustLocalTimeToBeginningOfMonth(time));
 }
 
 TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfMonth) {
@@ -179,14 +157,10 @@ TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfMonth) {
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = AdjustLocalTimeToEndOfMonth(time);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("November 30 2020 23:59:59.999", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, AdjustLocalTimeToEndOfMonth(time));
 }
 
 TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonth) {
@@ -195,14 +169,10 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonth) {
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = GetLocalTimeAtBeginningOfLastMonth();
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("October 1 2020 00:00:00.000", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, GetLocalTimeAtBeginningOfLastMonth());
 }
 
 TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonthOnTheCusp) {
@@ -211,14 +181,10 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonthOnTheCusp) {
       TimeFromString("January 1 2020 00:00:00.000", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = GetLocalTimeAtBeginningOfLastMonth();
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("December 1 2019 00:00:00.000", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, GetLocalTimeAtBeginningOfLastMonth());
 }
 
 TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonth) {
@@ -227,14 +193,10 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonth) {
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = GetLocalTimeAtEndOfLastMonth();
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("October 31 2020 23:59:59.999", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, GetLocalTimeAtEndOfLastMonth());
 }
 
 TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonthOnTheCusp) {
@@ -243,14 +205,10 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonthOnTheCusp) {
       TimeFromString("January 1 2020 00:00:00.000", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = GetLocalTimeAtEndOfLastMonth();
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("December 31 2019 23:59:59.999", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, GetLocalTimeAtEndOfLastMonth());
 }
 
 TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtBeginningOfThisMonth) {
@@ -259,14 +217,10 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtBeginningOfThisMonth) {
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = GetLocalTimeAtBeginningOfThisMonth();
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("November 1 2020 00:00:00.000", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, GetLocalTimeAtBeginningOfThisMonth());
 }
 
 TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
@@ -275,14 +229,10 @@ TEST_P(BraveAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ true);
   AdvanceClockTo(time);
 
-  // Act
-  const base::Time adjusted_time = GetLocalTimeAtEndOfThisMonth();
-
-  // Assert
+  // Act & Assert
   const base::Time expected_adjusted_time =
       TimeFromString("November 30 2020 23:59:59.999", /*is_local*/ true);
-
-  EXPECT_EQ(expected_adjusted_time, adjusted_time);
+  EXPECT_EQ(expected_adjusted_time, GetLocalTimeAtEndOfThisMonth());
 }
 
 TEST_P(BraveAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
@@ -291,9 +241,7 @@ TEST_P(BraveAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
       TimeFromString("November 18 2020 23:45:12.345", /*is_local*/ false);
   AdvanceClockTo(time);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("2020-11-18T23:00:00.000Z", TimeToPrivacyPreservingISO8601(Now()));
 }
 
@@ -315,11 +263,11 @@ TEST_P(BraveAdsTimeUtilTest, CheckLocalMidnightUSPacificTimezone) {
   // Assert
   const base::Time expected_daylight_saving_started_day =
       TimeFromString("March 14 2021 0:0:0.000", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_day =
-      TimeFromString("November 7 2021 0:0:0.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_day,
             adjusted_daylight_saving_started_day);
+
+  const base::Time expected_daylight_saving_ended_day =
+      TimeFromString("November 7 2021 0:0:0.000", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_day,
             adjusted_daylight_saving_ended_day);
 }
@@ -341,11 +289,11 @@ TEST_P(BraveAdsTimeUtilTest, CheckLocalMidnightEuropeLondonTimezone) {
   // Assert
   const base::Time expected_daylight_saving_started_day =
       TimeFromString("March 28 2021 0:0:0.000", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_day =
-      TimeFromString("October 31 2021 0:0:0.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_day,
             adjusted_daylight_saving_started_day);
+
+  const base::Time expected_daylight_saving_ended_day =
+      TimeFromString("October 31 2021 0:0:0.000", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_day,
             adjusted_daylight_saving_ended_day);
 }
@@ -367,11 +315,11 @@ TEST_P(BraveAdsTimeUtilTest, CheckLocalMidnightAustaliaSydneyTimezone) {
   // Assert
   const base::Time expected_daylight_saving_started_day =
       TimeFromString("October 3 2021 0:0:0.000", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_day =
-      TimeFromString("April 4 2021 0:0:0.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_day,
             adjusted_daylight_saving_started_day);
+
+  const base::Time expected_daylight_saving_ended_day =
+      TimeFromString("April 4 2021 0:0:0.000", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_day,
             adjusted_daylight_saving_ended_day);
 }
@@ -388,7 +336,6 @@ TEST_P(BraveAdsTimeUtilTest, CheckLocalMidnightNoDSTTimezone) {
   // Assert
   const base::Time expected_adjusted_time =
       TimeFromString("November 7 2021 0:0:0.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
@@ -418,13 +365,13 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 1 2021 00:00:00.000", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_time =
-      TimeFromString("November 1 2021 00:00:00.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time1);
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time2);
+
+  const base::Time expected_daylight_saving_ended_time =
+      TimeFromString("November 1 2021 00:00:00.000", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_time,
             adjusted_daylight_saving_ended_time1);
   EXPECT_EQ(expected_daylight_saving_ended_time,
@@ -457,11 +404,15 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 1 2021 00:00:00.000", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_time =
-      TimeFromString("October 1 2021 00:00:00.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time1);
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time2);
+  EXPECT_EQ(expected_daylight_saving_started_time,
+            adjusted_daylight_saving_started_time1);
+
+  const base::Time expected_daylight_saving_ended_time =
+      TimeFromString("October 1 2021 00:00:00.000", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time2);
   EXPECT_EQ(expected_daylight_saving_ended_time,
@@ -496,13 +447,13 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_daylight_saving_started_time =
       TimeFromString("October 1 2021 00:00:00.000", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_time =
-      TimeFromString("April 1 2021 00:00:00.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time1);
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time2);
+
+  const base::Time expected_daylight_saving_ended_time =
+      TimeFromString("April 1 2021 00:00:00.000", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_time,
             adjusted_daylight_saving_ended_time1);
   EXPECT_EQ(expected_daylight_saving_ended_time,
@@ -522,7 +473,6 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_adjusted_time =
       TimeFromString("November 1 2021 0:0:0.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
@@ -551,13 +501,13 @@ TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForUSPacificTimezone) {
   // Assert
   const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 31 2021 23:59:59.999", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_time =
-      TimeFromString("November 30 2021 23:59:59.999", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time1);
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time2);
+
+  const base::Time expected_daylight_saving_ended_time =
+      TimeFromString("November 30 2021 23:59:59.999", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_time,
             adjusted_daylight_saving_ended_time1);
   EXPECT_EQ(expected_daylight_saving_ended_time,
@@ -590,13 +540,13 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 31 2021 23:59:59.999", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_time =
-      TimeFromString("October 31 2021 23:59:59.999", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time1);
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time2);
+
+  const base::Time expected_daylight_saving_ended_time =
+      TimeFromString("October 31 2021 23:59:59.999", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_time,
             adjusted_daylight_saving_ended_time1);
   EXPECT_EQ(expected_daylight_saving_ended_time,
@@ -628,13 +578,13 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_daylight_saving_started_time =
       TimeFromString("October 31 2021 23:59:59.999", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_time =
-      TimeFromString("April 30 2021 23:59:59.999", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time1);
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time2);
+
+  const base::Time expected_daylight_saving_ended_time =
+      TimeFromString("April 30 2021 23:59:59.999", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_time,
             adjusted_daylight_saving_ended_time1);
   EXPECT_EQ(expected_daylight_saving_ended_time,
@@ -653,7 +603,6 @@ TEST_P(BraveAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForNoDSTTimezone) {
   // Assert
   const base::Time expected_adjusted_time =
       TimeFromString("November 30 2021 23:59:59.999", /*is_local*/ true);
-
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
@@ -675,11 +624,11 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 1 2021 00:00:00.000", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_time =
-      TimeFromString("November 1 2021 00:00:00.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time);
+
+  const base::Time expected_daylight_saving_ended_time =
+      TimeFromString("November 1 2021 00:00:00.000", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_time,
             adjusted_daylight_saving_ended_time);
 }
@@ -702,11 +651,11 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 1 2021 00:00:00.000", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_time =
-      TimeFromString("October 1 2021 00:00:00.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time);
+
+  const base::Time expected_daylight_saving_ended_time =
+      TimeFromString("October 1 2021 00:00:00.000", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_time,
             adjusted_daylight_saving_ended_time);
 }
@@ -729,11 +678,11 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_daylight_saving_started_time =
       TimeFromString("October 1 2021 00:00:00.000", /*is_local*/ true);
-  const base::Time expected_daylight_saving_ended_time =
-      TimeFromString("April 1 2021 00:00:00.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_daylight_saving_started_time,
             adjusted_daylight_saving_started_time);
+
+  const base::Time expected_daylight_saving_ended_time =
+      TimeFromString("April 1 2021 00:00:00.000", /*is_local*/ true);
   EXPECT_EQ(expected_daylight_saving_ended_time,
             adjusted_daylight_saving_ended_time);
 }
@@ -752,7 +701,6 @@ TEST_P(BraveAdsTimeUtilTest,
   // Assert
   const base::Time expected_adjusted_time =
       TimeFromString("October 1 2021 00:00:00.000", /*is_local*/ true);
-
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 #endif  // BUILDFLAG(IS_LINUX)

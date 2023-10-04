@@ -23,9 +23,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   SetStringPrefValue(prefs::kDiagnosticId,
                      "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -42,9 +40,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   SetStringPrefValue(prefs::kDiagnosticId,
                      "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildDiagnosticIdUserData().empty());
 }
 
@@ -53,9 +49,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   // Arrange
   SetStringPrefValue(prefs::kDiagnosticId, "INVALID");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildDiagnosticIdUserData().empty());
 }
 
@@ -64,9 +58,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   // Arrange
   SetStringPrefValue(prefs::kDiagnosticId, "");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildDiagnosticIdUserData().empty());
 }
 

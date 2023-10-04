@@ -19,9 +19,7 @@ TEST_F(BraveAdsStaticUrlHostTest, GetProductionUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://static.ads.brave.com", GetStaticUrlHost());
 }
 
@@ -30,9 +28,7 @@ TEST_F(BraveAdsStaticUrlHostTest, GetStagingUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://static.ads.bravesoftware.com", GetStaticUrlHost());
 }
 

@@ -52,9 +52,7 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ false);
   const NewTabPageAdInfo expected_ad =
@@ -68,9 +66,7 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {
       BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ false);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad, kPlacementId);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(kJson), NewTabPageAdToValue(ad));
 }
 

@@ -22,9 +22,7 @@ TEST_F(BraveAdsInlineContentAdInfoTest, IsValid) {
       BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ad.IsValid());
 }
 
@@ -32,9 +30,7 @@ TEST_F(BraveAdsInlineContentAdInfoTest, IsInvalid) {
   // Arrange
   const InlineContentAdInfo ad;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ad.IsValid());
 }
 

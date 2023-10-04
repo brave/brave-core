@@ -75,14 +75,10 @@ TEST_F(BraveAdsConversionQueueTest, ProcessConversionInQueue) {
       scoped_delay_before_processing_conversion_queue_item(base::Minutes(21));
   conversion_queue_->Add(conversion);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidProcessConversionQueue(conversion));
-
   EXPECT_CALL(delegate_mock_, OnDidExhaustConversionQueue);
-
-  // Act
   FastForwardClockToNextPendingTask();
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversionsInQueue) {

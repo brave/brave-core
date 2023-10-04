@@ -155,11 +155,7 @@ class BraveAdsDidOverrideFeaturesFromCommandLineUtilTest
 
 TEST_P(BraveAdsDidOverrideFeaturesFromCommandLineUtilTest,
        DidOverrideFeaturesFromCommandLine) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetParam().expected_did_override_from_command_line,
             DidOverrideFeaturesFromCommandLine());
 }

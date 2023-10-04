@@ -37,12 +37,9 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
   creative_set_conversion.verifiable_advertiser_public_key_base64 =
       kVerifiableConversionAdvertiserPublicKey;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const VerifiableConversionInfo expected_verifiable_conversion{
       "waldo", kVerifiableConversionAdvertiserPublicKey};
-
   EXPECT_EQ(expected_verifiable_conversion,
             MaybeBuildVerifiableConversion(
                 /*redirect_chain*/ {GURL("https://foo.com/bar")}, kHtml,
@@ -63,9 +60,7 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest,
 
   CreativeSetConversionInfo creative_set_conversion;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeBuildVerifiableConversion(
       /*redirect_chain*/ {GURL("https://bar.com/foo")}, kHtml,
       resource_id_patterns, creative_set_conversion));

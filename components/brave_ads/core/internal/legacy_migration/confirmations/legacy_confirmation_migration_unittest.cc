@@ -32,13 +32,11 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   // Arrange
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kConfirmationStateFilename));
 
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true));
-
-  // Act
   MigrateConfirmationState(callback.Get());
 
-  // Assert
   EXPECT_TRUE(HasMigratedConfirmation());
 }
 
@@ -47,13 +45,11 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
                                              kConfirmationStateFilename));
 
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ false));
-
-  // Act
   MigrateConfirmationState(callback.Get());
 
-  // Assert
   EXPECT_FALSE(HasMigratedConfirmation());
 }
 

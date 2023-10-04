@@ -22,8 +22,6 @@ class BraveAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, SaveEmpty) {
-  // Arrange
-
   // Act
   database::SaveCreativeNewTabPageAds({});
 
@@ -105,16 +103,13 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
 
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
       callback;
   EXPECT_CALL(callback, Run(/*success*/ true, SegmentList{"food & drink"},
                             CreativeNewTabPageAdList{creative_ad_1}));
-
-  // Act
   database_table_.GetForSegments(
       /*segments*/ {"food & drink"}, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForEmptySegments) {
@@ -123,16 +118,13 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForEmptySegments) {
       BuildCreativeNewTabPageAdsForTesting(/*count*/ 1);
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
       callback;
   EXPECT_CALL(callback, Run(/*success*/ true,
                             /*segments*/ ::testing::IsEmpty(),
                             /*creative_ads*/ ::testing::IsEmpty()));
-
-  // Act
   database_table_.GetForSegments(/*segments*/ {}, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -142,16 +134,13 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
       BuildCreativeNewTabPageAdsForTesting(/*count*/ 1);
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
       callback;
   EXPECT_CALL(callback, Run(/*success*/ true, SegmentList{"NON_EXISTENT"},
                             /*creative_ads*/ ::testing::IsEmpty()));
-
-  // Act
   database_table_.GetForSegments(
       /*segments*/ {"NON_EXISTENT"}, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForMultipleSegments) {
@@ -175,6 +164,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForMultipleSegments) {
 
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
       callback;
   EXPECT_CALL(callback,
@@ -182,12 +172,8 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForMultipleSegments) {
                   SegmentList{"technology & computing", "food & drink"},
                   ::testing::UnorderedElementsAreArray(
                       CreativeNewTabPageAdList{creative_ad_1, creative_ad_2})));
-
-  // Act
   database_table_.GetForSegments(
       /*segments*/ {"technology & computing", "food & drink"}, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -205,15 +191,12 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true,
                             creative_ad_1.creative_instance_id, creative_ad_1));
-
-  // Act
   database_table_.GetForCreativeInstanceId(creative_ad_1.creative_instance_id,
                                            callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
@@ -223,15 +206,12 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
       BuildCreativeNewTabPageAdsForTesting(/*count*/ 1);
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ false, kMissingCreativeInstanceId,
                             CreativeNewTabPageAdInfo{}));
-
-  // Act
   database_table_.GetForCreativeInstanceId(kMissingCreativeInstanceId,
                                            callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetNonExpired) {
@@ -254,24 +234,17 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetNonExpired) {
 
   AdvanceClockBy(base::Milliseconds(1));
 
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
       callback;
   EXPECT_CALL(callback,
               Run(/*success*/ true, SegmentList{creative_ad_2.segment},
                   CreativeNewTabPageAdList{creative_ad_2}));
-
-  // Act
   database_table_.GetAll(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetTableName) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("creative_new_tab_page_ads", database_table_.GetTableName());
 }
 

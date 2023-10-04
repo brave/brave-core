@@ -60,19 +60,15 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillConfirmationTokens) {
        {{net::HTTP_OK, BuildGetSignedTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
   const WalletInfo wallet = GetWalletForTesting();
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(50, ConfirmationTokenCount());
 }
 
@@ -95,24 +91,19 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
           )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens()).Times(0);
+  const WalletInfo wallet = GetWalletForTesting();
 
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
   EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   EXPECT_CALL(delegate_mock_,
               OnCaptchaRequiredToRefillConfirmationTokens(/*captcha_id*/
                                                           "daf85dc8-164e-4eb9-"
                                                           "a4d4-1836055004b3"));
-
-  const WalletInfo wallet = GetWalletForTesting();
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(0, ConfirmationTokenCount());
 }
 
@@ -139,16 +130,11 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, IssuersPublicKeyMismatch) {
 
   const WalletInfo wallet = GetWalletForTesting();
 
-  // Assert
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
   EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
-  // Act
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 }
 
@@ -170,23 +156,17 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
        {{net::HTTP_OK, BuildGetSignedTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  const ::testing::InSequence s;
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens());
-
   const WalletInfo wallet = GetWalletForTesting();
-  refill_confirmation_tokens_->MaybeRefill(wallet);
 
+  // Act & Assert
+  const ::testing::InSequence s;
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens);
+  refill_confirmation_tokens_->MaybeRefill(wallet);
   FastForwardClockToNextPendingTask();
 
-  // Assert
   EXPECT_EQ(50, ConfirmationTokenCount());
 }
 
@@ -201,19 +181,15 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RequestSignedTokensMissingNonce) {
        {{net::HTTP_CREATED, /*response_body*/ "{}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
   const WalletInfo wallet = GetWalletForTesting();
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(0, ConfirmationTokenCount());
 }
 
@@ -237,23 +213,17 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
         {net::HTTP_OK, BuildGetSignedTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  const ::testing::InSequence s;
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens());
-
   const WalletInfo wallet = GetWalletForTesting();
-  refill_confirmation_tokens_->MaybeRefill(wallet);
 
+  // Act & Assert
+  const ::testing::InSequence s;
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens);
+  refill_confirmation_tokens_->MaybeRefill(wallet);
   FastForwardClockToNextPendingTask();
 
-  // Assert
   EXPECT_EQ(50, ConfirmationTokenCount());
 }
 
@@ -271,19 +241,15 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensInvalidResponse) {
        {{net::HTTP_OK, /*response_body*/ "{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
   const WalletInfo wallet = GetWalletForTesting();
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(0, ConfirmationTokenCount());
 }
 
@@ -356,19 +322,15 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensMissingPublicKey) {
             })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
   const WalletInfo wallet = GetWalletForTesting();
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(0, ConfirmationTokenCount());
 }
 
@@ -441,19 +403,15 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
             })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
   const WalletInfo wallet = GetWalletForTesting();
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(0, ConfirmationTokenCount());
 }
 
@@ -476,19 +434,15 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
             })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
   const WalletInfo wallet = GetWalletForTesting();
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(0, ConfirmationTokenCount());
 }
 
@@ -563,19 +517,15 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetInvalidSignedTokens) {
             })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
   const WalletInfo wallet = GetWalletForTesting();
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(0, ConfirmationTokenCount());
 }
 
@@ -586,19 +536,15 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
 
   SetConfirmationTokensForTesting(/*count*/ 50);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
   const WalletInfo wallet = GetWalletForTesting();
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(50, ConfirmationTokenCount());
 }
 
@@ -655,19 +601,15 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
 
   SetConfirmationTokensForTesting(/*count*/ 19);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens());
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens()).Times(0);
-
   const WalletInfo wallet = GetWalletForTesting();
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens);
+  EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 
-  // Assert
   EXPECT_EQ(50, ConfirmationTokenCount());
 }
 

@@ -20,10 +20,9 @@ TEST_F(BraveAdsDeviceIdDiagnosticEntryTest, GetValue) {
   // Arrange
   MockDeviceId();
 
-  // Act
   const DeviceIdDiagnosticEntry diagnostic_entry;
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kDeviceId, diagnostic_entry.GetType());
   EXPECT_EQ("Device Id", diagnostic_entry.GetName());
   EXPECT_EQ(kDeviceId, diagnostic_entry.GetValue());

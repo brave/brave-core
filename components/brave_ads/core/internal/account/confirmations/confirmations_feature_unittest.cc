@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsConfirmationsFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kConfirmationsFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsConfirmationsFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kConfirmationsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kConfirmationsFeature));
 }
 
@@ -37,18 +31,13 @@ TEST(BraveAdsConfirmationsFeatureTest, ProcessConfirmationAfter) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kConfirmationsFeature, {{"process_after", "3h"}});
-  // Act
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(3), kProcessConfirmationAfter.Get());
 }
 
 TEST(BraveAdsConfirmationsFeatureTest, DefaultProcessConfirmationAfter) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Seconds(15), kProcessConfirmationAfter.Get());
 }
 
@@ -57,9 +46,7 @@ TEST(BraveAdsConfirmationsFeatureTest,
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Seconds(15), kProcessConfirmationAfter.Get());
 }
 

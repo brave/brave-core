@@ -16,18 +16,12 @@ namespace brave_ads {
 class BraveAdsCategoryContentUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCategoryContentUtilTest, Build) {
-  // Arrange
-
-  // Act
-  const CategoryContentInfo category_content = BuildCategoryContent(kSegment);
-
-  // Assert
+  // Act & Assert
   CategoryContentInfo expected_category_content;
   expected_category_content.category = kSegment;
   expected_category_content.user_reaction_type =
       mojom::UserReactionType::kNeutral;
-
-  EXPECT_EQ(expected_category_content, category_content);
+  EXPECT_EQ(expected_category_content, BuildCategoryContent(kSegment));
 }
 
 }  // namespace brave_ads

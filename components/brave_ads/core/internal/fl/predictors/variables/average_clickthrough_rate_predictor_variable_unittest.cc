@@ -26,9 +26,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetDataType) {
       std::make_unique<AverageClickthroughRatePredictorVariable>(
           /*time_window*/ base::Days(7));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kDouble,
             predictor_variable->GetDataType());
 }
@@ -40,9 +38,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
       std::make_unique<AverageClickthroughRatePredictorVariable>(
           /*time_window*/ base::Days(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
@@ -63,9 +59,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
 
   AdvanceClockBy(base::Days(2));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
@@ -82,9 +76,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("0", predictor_variable->GetValue());
 }
 
@@ -102,9 +94,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("1", predictor_variable->GetValue());
 }
 
@@ -123,9 +113,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
@@ -144,9 +132,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetValue) {
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("0.3333333333333333", predictor_variable->GetValue());
 }
 

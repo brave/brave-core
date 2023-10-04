@@ -25,11 +25,7 @@ class BraveAdsCatalogUserDataTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsCatalogUserDataTest, BuildCatalogUserDataForRewardsUser) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -47,9 +43,7 @@ TEST_F(BraveAdsCatalogUserDataTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildCatalogUserData().empty());
 }
 

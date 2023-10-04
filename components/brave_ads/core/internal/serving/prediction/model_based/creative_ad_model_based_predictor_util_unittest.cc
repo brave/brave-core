@@ -56,12 +56,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
                              /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
-  // Act
-  const CreativeAdPredictorList<CreativeNotificationAdInfo>
-      creative_ad_predictors =
-          ComputeCreativeAdPredictors(creative_ads, user_model, ad_events);
-
-  // Assert
+  // Act & Assert
   CreativeAdPredictorList<CreativeNotificationAdInfo>
       expected_creative_ad_predictors;
 
@@ -122,7 +117,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   expected_creative_ad_predictor_3.score = 4.5;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_3);
 
-  EXPECT_EQ(expected_creative_ad_predictors, creative_ad_predictors);
+  EXPECT_EQ(expected_creative_ad_predictors,
+            ComputeCreativeAdPredictors(creative_ads, user_model, ad_events));
 }
 
 }  // namespace brave_ads

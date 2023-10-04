@@ -31,9 +31,7 @@ TEST_F(BraveAdsPaymentsIssuerUtilTest, IsValid) {
   IssuersInfo issuers;
   issuers.issuers.push_back(issuer);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IsPaymentsIssuerValid(issuers));
 }
 
@@ -51,9 +49,7 @@ TEST_F(BraveAdsPaymentsIssuerUtilTest, IsInvalid) {
   IssuersInfo issuers;
   issuers.issuers.push_back(issuer);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsPaymentsIssuerValid(issuers));
 }
 

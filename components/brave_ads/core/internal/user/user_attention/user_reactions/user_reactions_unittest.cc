@@ -66,13 +66,10 @@ TEST_F(BraveAdsUserReactionsTest, LikeAd) {
       BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.body);
   const AdContentInfo& ad_content = history_item.ad_content;
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-
-  // Act
   HistoryManager::GetInstance().LikeAd(ad_content);
-
-  // Assert
 }
 
 TEST_F(BraveAdsUserReactionsTest, DislikeAd) {
@@ -86,13 +83,10 @@ TEST_F(BraveAdsUserReactionsTest, DislikeAd) {
       BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.body);
   const AdContentInfo& ad_content = history_item.ad_content;
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-
-  // Act
   HistoryManager::GetInstance().DislikeAd(ad_content);
-
-  // Assert
 }
 
 TEST_F(BraveAdsUserReactionsTest, MarkAdAsInappropriate) {
@@ -106,13 +100,10 @@ TEST_F(BraveAdsUserReactionsTest, MarkAdAsInappropriate) {
       BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.body);
   const AdContentInfo& ad_content = history_item.ad_content;
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-
-  // Act
   HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
-
-  // Assert
 }
 
 TEST_F(BraveAdsUserReactionsTest, SaveAd) {
@@ -126,13 +117,10 @@ TEST_F(BraveAdsUserReactionsTest, SaveAd) {
       BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.body);
   const AdContentInfo& ad_content = history_item.ad_content;
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-
-  // Act
   HistoryManager::GetInstance().ToggleSaveAd(ad_content);
-
-  // Assert
 }
 
 }  // namespace brave_ads

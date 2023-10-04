@@ -16,25 +16,16 @@ TEST(BraveAdsCreativeAdEmbeddingBasedPredictorUtilTest,
   // Arrange
   const std::vector<int> creative_ad_vote_registry = {1, 2, 3};
 
-  // Act
-  const double normalizing_constant =
-      CalculateNormalizingConstantForVoteRegistry(creative_ad_vote_registry);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(6.0, normalizing_constant);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(6.0, CalculateNormalizingConstantForVoteRegistry(
+                            creative_ad_vote_registry));
 }
 
 TEST(BraveAdsCreativeAdEmbeddingBasedPredictorUtilTest,
      CalculateNormalizingConstantForEmptyVoteRegistry) {
-  // Arrange
-  const std::vector<int> creative_ad_vote_registry;
-
-  // Act
-  const double normalizing_constant =
-      CalculateNormalizingConstantForVoteRegistry(creative_ad_vote_registry);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, normalizing_constant);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0, CalculateNormalizingConstantForVoteRegistry(
+                            /*creative_ad_vote_registry*/ {}));
 }
 
 TEST(BraveAdsCreativeAdEmbeddingBasedPredictorUtilTest,

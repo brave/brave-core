@@ -25,9 +25,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
 
   const PerWeekExclusionRule exclusion_rule(/*ad_events*/ {});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -39,9 +37,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfZero) {
 
   const PerWeekExclusionRule exclusion_rule(/*ad_events*/ {});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -59,9 +55,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
 
   const PerWeekExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -83,9 +77,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest,
 
   AdvanceClockBy(base::Days(7));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -106,9 +98,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldExcludeIfExceedsCapWithin1Week) {
 
   AdvanceClockBy(base::Days(7) - base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -127,9 +117,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldExcludeIfExceedsCap) {
 
   const PerWeekExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 

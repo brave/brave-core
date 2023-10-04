@@ -18,9 +18,7 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest, MatchDayOfWeek) {
   CreativeDaypartInfo daypart;
   daypart.days_of_week = "0123456";
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(MatchDayOfWeek(daypart, '3'));
 }
 
@@ -29,9 +27,7 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest, DoNotMatchDayOfWeek) {
   CreativeDaypartInfo daypart;
   daypart.days_of_week = "012456";
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MatchDayOfWeek(daypart, '3'));
 }
 
@@ -41,9 +37,7 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest, MatchTimeSlot) {
   daypart.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
   daypart.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(MatchTimeSlot(daypart,
                             GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35)));
 }
@@ -54,9 +48,7 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest, MatchExactTimeSlot) {
   daypart.start_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
   daypart.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(MatchTimeSlot(daypart,
                             GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35)));
 }
@@ -67,9 +59,7 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest, DoNotMatchTimeSlotAfterEndMinute) {
   daypart.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
   daypart.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 34);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MatchTimeSlot(
       daypart, GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35)));
 }
@@ -81,9 +71,7 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest,
   daypart.start_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 36);
   daypart.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MatchTimeSlot(
       daypart, GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35)));
 }

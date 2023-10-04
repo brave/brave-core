@@ -42,21 +42,13 @@ constexpr char kEmptyJson[] = "[]";
 class BraveAdsPaymentTokenValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, ToValue) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonList(kJson),
             PaymentTokensToValue(BuildPaymentTokensForTesting(/*count*/ 2)));
 }
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, ToEmptyValue) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonList(kEmptyJson), PaymentTokensToValue({}));
 }
 
@@ -64,9 +56,7 @@ TEST_F(BraveAdsPaymentTokenValueUtilTest, FromValue) {
   // Arrange
   const base::Value::List list = base::test::ParseJsonList(kJson);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(BuildPaymentTokensForTesting(/*count*/ 2),
             PaymentTokensFromValue(list));
 }

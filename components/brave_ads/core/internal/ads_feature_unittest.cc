@@ -17,18 +17,12 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldLaunchAsInProcessService) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldLaunchBraveAdsAsAnInProcessServiceFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldLaunchAsInProcessService());
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldNotLaunchAsInProcessService) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldLaunchAsInProcessService());
 }
 
@@ -37,18 +31,12 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysRunService) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysRunBraveAdsServiceFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldAlwaysRunService());
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysRunService) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldAlwaysRunService());
 }
 
@@ -57,18 +45,12 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysTriggerNewTabPageAdEvents) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldAlwaysTriggerNewTabPageAdEvents());
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysTriggerNewTabPageAdEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldAlwaysTriggerNewTabPageAdEvents());
 }
 
@@ -77,18 +59,12 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldSupportSearchResultAds) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldSupportSearchResultAdsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldSupportSearchResultAds());
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldNotSupportSearchResultAds) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldSupportSearchResultAds());
 }
 
@@ -97,18 +73,12 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysTriggerSearchResultAdEvents) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldAlwaysTriggerSearchResultAdEvents());
 }
 
 TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysTriggerSearchResultAdEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldAlwaysTriggerSearchResultAdEvents());
 }
 

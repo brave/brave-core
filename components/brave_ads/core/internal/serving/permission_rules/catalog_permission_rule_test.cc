@@ -32,11 +32,7 @@ class BraveAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, ShouldAllow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -45,9 +41,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   // Arrange
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -56,9 +50,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   // Arrange
   AdvanceClockBy(base::Days(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -67,9 +59,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   // Arrange
   SetCatalogVersion(0);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

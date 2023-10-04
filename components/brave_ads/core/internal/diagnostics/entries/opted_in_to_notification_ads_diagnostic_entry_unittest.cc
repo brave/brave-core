@@ -18,11 +18,9 @@ class BraveAdsOptedInToNotificationAdsDiagnosticEntryTest
 
 TEST_F(BraveAdsOptedInToNotificationAdsDiagnosticEntryTest, IsOptedIn) {
   // Arrange
-
-  // Act
   const OptedInToNotificationAdsDiagnosticEntry diagnostic_entry;
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kOptedInToNotificationAds,
             diagnostic_entry.GetType());
   EXPECT_EQ("Opted-in to notification ads", diagnostic_entry.GetName());
@@ -33,10 +31,9 @@ TEST_F(BraveAdsOptedInToNotificationAdsDiagnosticEntryTest, IsOptedOut) {
   // Arrange
   OptOutOfNotificationAdsForTesting();
 
-  // Act
   const OptedInToNotificationAdsDiagnosticEntry diagnostic_entry;
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kOptedInToNotificationAds,
             diagnostic_entry.GetType());
   EXPECT_EQ("Opted-in to notification ads", diagnostic_entry.GetName());

@@ -26,13 +26,9 @@ TEST(BraveAdsCreativeAdPredictorSamplingUtilTest,
   creative_ad_predictor_2.score = 1.0;
   creative_ad_predictors.push_back(creative_ad_predictor_2);
 
-  // Act
-  const double normalizing_constant =
-      CalculateNormalizingConstantForCreativeAdPredictors(
-          creative_ad_predictors);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(1.5, normalizing_constant);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(1.5, CalculateNormalizingConstantForCreativeAdPredictors(
+                            creative_ad_predictors));
 }
 
 }  // namespace brave_ads

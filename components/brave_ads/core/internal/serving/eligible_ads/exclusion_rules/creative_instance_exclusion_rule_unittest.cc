@@ -25,9 +25,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   const CreativeInstanceExclusionRule exclusion_rule(/*ad_events*/ {});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -46,9 +44,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
 
   AdvanceClockBy(base::Hours(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -84,9 +80,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   AdvanceClockBy(base::Hours(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -106,9 +100,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 

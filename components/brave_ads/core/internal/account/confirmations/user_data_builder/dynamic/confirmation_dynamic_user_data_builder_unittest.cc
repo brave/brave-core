@@ -32,7 +32,7 @@ class BraveAdsConfirmationDynamicUserDataBuilderTest : public UnitTestBase {
 
 TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
        BuildConfirmationUserDataForRewardsUser) {
-  // Arrange
+  // Act & Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
       R"(
           {
@@ -42,11 +42,7 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
 
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-
-  // Act
   BuildDynamicUserData(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
@@ -54,13 +50,10 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
+  // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(/*user_data*/ ::testing::IsEmpty()));
-
-  // Act
   BuildDynamicUserData(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

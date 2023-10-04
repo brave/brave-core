@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsEligibleAdFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kEligibleAdFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsEligibleAdFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kEligibleAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kEligibleAdFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsEligibleAdFeatureTest, BrowsingHistoryMaxCount) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEligibleAdFeature, {{"browsing_history_max_count", "666"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(666, kBrowsingHistoryMaxCount.Get());
 }
 
 TEST(BraveAdsEligibleAdFeatureTest, DefaultBrowsingHistoryMaxCount) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(5'000, kBrowsingHistoryMaxCount.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsEligibleAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kEligibleAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(5'000, kBrowsingHistoryMaxCount.Get());
 }
 
@@ -71,18 +57,12 @@ TEST(BraveAdsEligibleAdFeatureTest, BrowsingHistoryRecentDayRange) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEligibleAdFeature, {{"browsing_history_recent_day_range", "7"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kBrowsingHistoryRecentDayRange.Get());
 }
 
 TEST(BraveAdsEligibleAdFeatureTest, DefaultBrowsingHistoryRecentDayRange) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(180, kBrowsingHistoryRecentDayRange.Get());
 }
 
@@ -92,9 +72,7 @@ TEST(BraveAdsEligibleAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kEligibleAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(180, kBrowsingHistoryRecentDayRange.Get());
 }
 

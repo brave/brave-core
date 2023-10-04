@@ -21,9 +21,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
   const int count = kMinConfirmationTokens.Get() - 1;
   SetConfirmationTokensForTesting(count);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldRefillConfirmationTokens());
 }
 
@@ -33,9 +31,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
   const int count = kMinConfirmationTokens.Get();
   SetConfirmationTokensForTesting(count);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldRefillConfirmationTokens());
 }
 
@@ -44,9 +40,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
   // Arrange
   SetConfirmationTokensForTesting(/*count*/ 10);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kMaxConfirmationTokens.Get() - 10,
             CalculateAmountOfConfirmationTokensToRefill());
 }

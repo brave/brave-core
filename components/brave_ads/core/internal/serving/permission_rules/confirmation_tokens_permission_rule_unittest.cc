@@ -23,9 +23,7 @@ TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
   // Arrange
   SetConfirmationTokensForTesting(/*count*/ 10);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -34,19 +32,13 @@ TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
        ShouldNotAllowIfNoConfirmationTokens) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -55,9 +47,7 @@ TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
   // Arrange
   SetConfirmationTokensForTesting(/*count*/ 9);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

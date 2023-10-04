@@ -76,9 +76,7 @@ TEST_P(BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest,
     NotifyBrowserDidEnterForeground();
   }
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(param.should_serve_at_regular_intervals,
             ShouldServeAtRegularIntervals());
 }

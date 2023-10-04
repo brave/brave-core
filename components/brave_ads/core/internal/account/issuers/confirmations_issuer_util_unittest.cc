@@ -31,9 +31,7 @@ TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsValid) {
   IssuersInfo issuers;
   issuers.issuers.push_back(issuer);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IsConfirmationsIssuerValid(issuers));
 }
 
@@ -51,9 +49,7 @@ TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsInvalid) {
   IssuersInfo issuers;
   issuers.issuers.push_back(issuer);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsConfirmationsIssuerValid(issuers));
 }
 

@@ -31,7 +31,6 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
       "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=716c3381-66e6-46e4-962f-"
       "15d01455b5b9");
   expected_url_request->method = mojom::UrlRequestMethodType::kGet;
-
   EXPECT_EQ(expected_url_request, url_request);
 }
 

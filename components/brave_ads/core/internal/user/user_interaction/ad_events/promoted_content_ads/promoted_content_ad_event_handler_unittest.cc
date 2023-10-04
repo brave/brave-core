@@ -87,14 +87,12 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ true);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFirePromotedContentAdViewedEvent(ad));
 
-  // Act
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kViewed,
             /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -110,16 +108,14 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
               mojom::PromotedContentAdEventType::kViewed},
              /*should_fire_event*/ true);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
                                   ad.placement_id, ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kViewed));
 
-  // Act
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kViewed,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -127,16 +123,14 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
                                   ad.placement_id, ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kViewed));
 
-  // Act
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kViewed,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
@@ -151,14 +145,12 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
               mojom::PromotedContentAdEventType::kViewed},
              /*should_fire_event*/ true);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFirePromotedContentAdClickedEvent(ad));
 
-  // Act
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kClicked,
             /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -176,16 +168,14 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
               mojom::PromotedContentAdEventType::kClicked},
              /*should_fire_event*/ true);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
                                   ad.placement_id, ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kClicked));
 
-  // Act
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kClicked,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -193,6 +183,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
                                   ad.placement_id, ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kClicked));
@@ -200,38 +191,30 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kClicked,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventWithInvalidPlacementId) {
-  // Arrange
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
                                   kInvalidPlacementId, kCreativeInstanceId,
                                   mojom::PromotedContentAdEventType::kServed));
 
-  // Act
   FireEvent(kInvalidPlacementId, kCreativeInstanceId,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
-  // Arrange
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
                                   kPlacementId, kInvalidCreativeInstanceId,
                                   mojom::PromotedContentAdEventType::kServed));
 
-  // Act
   FireEvent(kPlacementId, kInvalidCreativeInstanceId,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -239,16 +222,14 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
                                   ad.placement_id, kMissingCreativeInstanceId,
                                   mojom::PromotedContentAdEventType::kServed));
 
-  // Act
   FireEvent(ad.placement_id, kMissingCreativeInstanceId,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -263,14 +244,12 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFirePromotedContentAdServedEvent(ad));
 
-  // Act
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -284,16 +263,14 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
                                   ad.placement_id, ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kServed));
 
-  // Act
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -308,14 +285,12 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFirePromotedContentAdServedEvent(ad));
 
-  // Act
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
@@ -329,16 +304,14 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
                                   ad.placement_id, ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kServed));
 
-  // Act
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::PromotedContentAdEventType::kServed,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 }  // namespace brave_ads

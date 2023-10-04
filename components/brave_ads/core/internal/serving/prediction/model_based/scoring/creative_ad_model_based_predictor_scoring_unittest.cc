@@ -46,12 +46,9 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
       ComputeCreativeAdPredictorInputVariable(creative_ad, user_model,
                                               ad_events);
 
-  // Act
-  const double score =
-      ComputeCreativeAdPredictorScore(creative_ad, input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(4.083333333333333, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(4.083333333333333, ComputeCreativeAdPredictorScore(
+                                          creative_ad, input_variable));
 }
 
 TEST_F(BraveAdsCreativeAdPredictorScoringTest,
@@ -91,12 +88,9 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
       ComputeCreativeAdPredictorInputVariable(creative_ad, user_model,
                                               ad_events);
 
-  // Act
-  const double score =
-      ComputeCreativeAdPredictorScore(creative_ad, input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(2.2958333333333329, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(2.2958333333333329, ComputeCreativeAdPredictorScore(
+                                           creative_ad, input_variable));
 }
 
 TEST_F(BraveAdsCreativeAdPredictorScoringTest,
@@ -136,12 +130,9 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
       ComputeCreativeAdPredictorInputVariable(creative_ad, user_model,
                                               ad_events);
 
-  // Act
-  const double score =
-      ComputeCreativeAdPredictorScore(creative_ad, input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(
+      0.0, ComputeCreativeAdPredictorScore(creative_ad, input_variable));
 }
 
 }  // namespace brave_ads

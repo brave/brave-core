@@ -22,9 +22,7 @@ TEST_F(BraveAdsNewTabPageAdInfoTest, IsValid) {
       BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ad.IsValid());
 }
 
@@ -32,9 +30,7 @@ TEST_F(BraveAdsNewTabPageAdInfoTest, IsInvalid) {
   // Arrange
   const NewTabPageAdInfo ad;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ad.IsValid());
 }
 

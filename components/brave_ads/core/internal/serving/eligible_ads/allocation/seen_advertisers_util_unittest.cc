@@ -24,9 +24,7 @@ TEST(BraveAdsSeenAdvertisersUtilTest,
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(GetLastSeenAdvertiserAt(/*ad_events*/ {}, creative_ad));
 }
 
@@ -46,9 +44,7 @@ TEST(BraveAdsSeenAdvertisersUtilTest,
   const CreativeNotificationAdInfo creative_ad_2 =
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(GetLastSeenAdvertiserAt(ad_events, creative_ad_2));
 }
 
@@ -71,9 +67,9 @@ TEST(BraveAdsSeenAdvertisersUtilTest, GetLastSeenAdvertiserAt) {
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad_3.advertiser_id = advertiser_id_1;
 
-  AdEventList ad_events;
-
   const base::Time now = Now();
+
+  AdEventList ad_events;
 
   const AdEventInfo ad_event_4 =
       BuildAdEventForTesting(creative_ad_1, AdType::kNotificationAd,
@@ -99,9 +95,7 @@ TEST(BraveAdsSeenAdvertisersUtilTest, GetLastSeenAdvertiserAt) {
                              /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event_1);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(now - base::Hours(3),
             GetLastSeenAdvertiserAt(ad_events, creative_ad_3));
 }

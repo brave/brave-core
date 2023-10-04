@@ -37,7 +37,7 @@ ConversionQueueItemList BuildConversionQueueItemsForTesting(
   return conversion_queue_items;
 }
 
-void SaveConversionQueueItemsForTesting(
+void SaveConversionQueueForTesting(
     const ConversionQueueItemList& conversion_queue_items) {
   const database::table::ConversionQueue database_table;
   database_table.Save(
@@ -45,7 +45,7 @@ void SaveConversionQueueItemsForTesting(
       base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
-void BuildAndSaveConversionQueueItemsForTesting(
+void BuildAndSaveConversionQueueForTesting(
     const AdType& ad_type,
     const ConfirmationType& confirmation_type,
     const bool is_verifiable,
@@ -66,7 +66,7 @@ void BuildAndSaveConversionQueueItemsForTesting(
   const ConversionQueueItemList conversion_queue_items =
       BuildConversionQueueItemsForTesting(conversion, count);
 
-  SaveConversionQueueItemsForTesting(conversion_queue_items);
+  SaveConversionQueueForTesting(conversion_queue_items);
 }
 
 }  // namespace brave_ads

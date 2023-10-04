@@ -27,9 +27,7 @@ TEST_F(BraveAdsPublicKeyUtilTest, PublicKeyExists) {
   IssuerInfo issuer;
   issuer.public_keys.insert({kPublicKey, /*associated_value*/ 0.1});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(PublicKeyExists(issuer, kPublicKey));
 }
 
@@ -38,9 +36,7 @@ TEST_F(BraveAdsPublicKeyUtilTest, PublicKeyDoesNotExist) {
   IssuerInfo issuer;
   issuer.public_keys.insert({kPublicKey, /*associated_value*/ 0.1});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(PublicKeyExists(issuer, kMissingPublicKey));
 }
 
@@ -48,9 +44,7 @@ TEST_F(BraveAdsPublicKeyUtilTest, NoPublicKeys) {
   // Arrange
   const IssuerInfo issuer;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(PublicKeyExists(issuer, kPublicKey));
 }
 

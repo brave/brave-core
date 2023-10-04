@@ -22,11 +22,7 @@ class BraveAdsNotificationAdsPerHourPermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -39,11 +35,10 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   SetMaximumNotificationAdsPerHourForTesting(ads_per_hour);
 
-  // Act
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
                            /*count*/ ads_per_hour);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -56,11 +51,10 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   SetMaximumNotificationAdsPerHourForTesting(ads_per_hour);
 
-  // Act
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
                            /*count*/ ads_per_hour);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -71,11 +65,10 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   SetMaximumNotificationAdsPerHourForTesting(ads_per_hour);
 
-  // Act
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
                            /*count*/ ads_per_hour - 1);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -89,10 +82,9 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
                            /*count*/ ads_per_hour);
 
-  // Act
   AdvanceClockBy(base::Hours(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -106,10 +98,9 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
   RecordAdEventsForTesting(AdType::kNotificationAd, ConfirmationType::kServed,
                            /*count*/ ads_per_hour);
 
-  // Act
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

@@ -23,9 +23,7 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
   AdvanceClockTo(
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -39,9 +37,7 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildSystemTimestampUserData().empty());
 }
 

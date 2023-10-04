@@ -32,14 +32,11 @@ TEST_F(BraveAdsVerifiableConversionIdPatternUtilTest,
            ConversionResourceIdPatternSearchInType::kUrlRedirect,
            /*id_pattern*/ "qux_id=(.*)"}});
 
-  // Act
-  const absl::optional<std::string> conversion_id =
-      MaybeParseVerifiableConversionId(
-          /*redirect_chain*/ {GURL("https://foo.com/bar?qux_id=xyzzy")}, kHtml,
-          resource_id_patterns);
-
-  // Assert
-  EXPECT_EQ("xyzzy", conversion_id);
+  // Act & Assert
+  EXPECT_EQ("xyzzy",
+            MaybeParseVerifiableConversionId(
+                /*redirect_chain*/ {GURL("https://foo.com/bar?qux_id=xyzzy")},
+                kHtml, resource_id_patterns));
 }
 
 TEST_F(BraveAdsVerifiableConversionIdPatternUtilTest,
@@ -53,37 +50,26 @@ TEST_F(BraveAdsVerifiableConversionIdPatternUtilTest,
            /*search_in_type*/ ConversionResourceIdPatternSearchInType::kHtml,
            /*id_pattern*/ R"(<div.*id="xyzzy-id".*>(.*)</div>)"}});
 
-  // Act
-  const absl::optional<std::string> conversion_id =
-      MaybeParseVerifiableConversionId(
-          /*redirect_chain*/ {GURL("https://foo.com/bar?qux_id=xyzzy")}, kHtml,
-          resource_id_patterns);
-
-  // Assert
-  EXPECT_EQ("waldo", conversion_id);
+  // Act & Assert
+  EXPECT_EQ("waldo",
+            MaybeParseVerifiableConversionId(
+                /*redirect_chain*/ {GURL("https://foo.com/bar?qux_id=xyzzy")},
+                kHtml, resource_id_patterns));
 }
 
 TEST_F(BraveAdsVerifiableConversionIdPatternUtilTest,
        ParseDefaultVerifiableConversionId) {
-  // Arrange
-
-  // Act
-  const absl::optional<std::string> conversion_id =
+  // Act & Assert
+  EXPECT_EQ(
+      "fred",
       MaybeParseVerifiableConversionId(
           /*redirect_chain*/ {GURL("https://foo.com/bar?qux_id=xyzzy")}, kHtml,
-          /*resource_id_patterns*/ {});
-
-  // Assert
-  EXPECT_EQ("fred", conversion_id);
+          /*resource_id_patterns*/ {}));
 }
 
 TEST_F(BraveAdsVerifiableConversionIdPatternUtilTest,
        DoNotParseVerifiableConversionId) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeParseVerifiableConversionId(
       /*redirect_chain*/ {}, /*html*/ {}, /*resource_id_patterns*/ {}));
 }

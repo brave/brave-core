@@ -19,9 +19,7 @@ TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasMigrated) {
   // Arrange
   SetBooleanPrefValue(prefs::kHasMigratedClientState, true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(HasMigratedClientState());
 }
 
@@ -29,9 +27,7 @@ TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasNotMigrated) {
   // Arrange
   SetBooleanPrefValue(prefs::kHasMigratedClientState, false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(HasMigratedClientState());
 }
 

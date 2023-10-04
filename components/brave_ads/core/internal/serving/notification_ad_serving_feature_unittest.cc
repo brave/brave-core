@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsNotificationAdServingFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kNotificationAdServingFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kNotificationAdServingFeature));
 }
 
@@ -38,19 +32,13 @@ TEST(BraveAdsNotificationAdServingFeatureTest, NotificationAdServingVersion) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdServingFeature, {{"version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kNotificationAdServingVersion.Get());
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
      DefaultNotificationAdServingVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, kNotificationAdServingVersion.Get());
 }
 
@@ -60,9 +48,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, kNotificationAdServingVersion.Get());
 }
 
@@ -72,19 +58,13 @@ TEST(BraveAdsNotificationAdServingFeatureTest, ServeFirstNotificationAdAfter) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdServingFeature, {{"serve_first_ad_after", "10m"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(10), kServeFirstNotificationAdAfter.Get());
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
      DefaultServeFirstNotificationAdAfter) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(2), kServeFirstNotificationAdAfter.Get());
 }
 
@@ -94,9 +74,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(2), kServeFirstNotificationAdAfter.Get());
 }
 
@@ -108,19 +86,13 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
       kNotificationAdServingFeature,
       {{"minimum_delay_before_serving_an_ad", "10m"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(10), kMinimumDelayBeforeServingNotificationAd.Get());
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
      DefaultMinimumDelayBeforeServingNotificationAd) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(1), kMinimumDelayBeforeServingNotificationAd.Get());
 }
 
@@ -130,9 +102,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(1), kMinimumDelayBeforeServingNotificationAd.Get());
 }
 
@@ -143,19 +113,13 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdServingFeature, {{"retry_serving_ad_after", "10m"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(10), kRetryServingNotificationAdAfter.Get());
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
      DefaultRetryServingNotificationAdAfter) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(2), kRetryServingNotificationAdAfter.Get());
 }
 
@@ -165,9 +129,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(2), kRetryServingNotificationAdAfter.Get());
 }
 

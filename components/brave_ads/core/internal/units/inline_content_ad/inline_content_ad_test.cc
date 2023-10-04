@@ -65,30 +65,23 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_,
               RecordP2AEvents(BuildP2AAdOpportunityEvents(
                   AdType::kInlineContentAd, /*segments*/ {})));
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(kDimensions, ::testing::Ne(absl::nullopt)));
-
-  // Act
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, DoNotServe) {
-  // Arrange
-  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(kDimensions, /*ad*/ ::testing::Eq(absl::nullopt)));
-
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
-  // Act
+  base::MockCallback<MaybeServeInlineContentAdCallback> callback;
+  EXPECT_CALL(callback, Run(kDimensions, /*ad*/ ::testing::Eq(absl::nullopt)));
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
@@ -103,12 +96,10 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
-        // Act
+        // Act & Assert
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
                                     mojom::InlineContentAdEventType::kViewed,
                                     /*should_fire_event*/ true);
-
-        // Assert
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
@@ -130,12 +121,10 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
                                     mojom::InlineContentAdEventType::kViewed,
                                     /*should_fire_event*/ true);
 
-        // Act
+        // Act & Assert
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
                                     mojom::InlineContentAdEventType::kClicked,
                                     /*should_fire_event*/ true);
-
-        // Assert
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());

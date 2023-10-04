@@ -32,16 +32,13 @@ class BraveAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
 TEST_F(BraveAdsConversionsDatabaseTableIntegrationTest,
        GetConversionsFromCatalogResponse) {
   // Arrange
+  const database::table::CreativeSetConversions database_table;
+
+  // Act & Assert
   base::MockCallback<database::table::GetConversionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true,
                             /*creative_set_conversions*/ ::testing::SizeIs(2)));
-
-  const database::table::CreativeSetConversions database_table;
-
-  // Act
   database_table.GetAll(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

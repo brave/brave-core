@@ -26,13 +26,8 @@ TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  // Act
-  const HistoryItemInfo history_item =
-      BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.body);
-
-  // Assert
+  // Act & Assert
   HistoryItemInfo expected_history_item;
-
   expected_history_item.created_at = Now();
   expected_history_item.ad_content.type = ad.type;
   expected_history_item.ad_content.placement_id = ad.placement_id;
@@ -52,8 +47,8 @@ TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
   expected_history_item.category_content.category = ad.segment;
   expected_history_item.category_content.user_reaction_type =
       mojom::UserReactionType::kNeutral;
-
-  EXPECT_EQ(expected_history_item, history_item);
+  EXPECT_EQ(expected_history_item,
+            BuildHistoryItem(ad, ConfirmationType::kViewed, ad.title, ad.body));
 }
 
 }  // namespace brave_ads

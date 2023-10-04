@@ -51,12 +51,11 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation(*confirmation));
 
   EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation).Times(0);
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }
@@ -77,13 +76,12 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation(
                                   *confirmation, /*should_retry*/ false));
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }
@@ -104,13 +102,12 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation(
                                   *confirmation, /*should_retry*/ false));
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }
@@ -131,13 +128,12 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation(
                                   *confirmation, /*should_retry*/ false));
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }
@@ -158,13 +154,12 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation(
                                   *confirmation, /*should_retry*/ true));
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }

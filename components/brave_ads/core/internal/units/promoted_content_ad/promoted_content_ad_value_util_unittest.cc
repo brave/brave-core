@@ -42,9 +42,7 @@ TEST_F(BraveAdsPromotedContentAdValueUtilTest, FromValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const CreativePromotedContentAdInfo creative_ad =
       BuildCreativePromotedContentAdForTesting(
           /*should_use_random_uuids*/ false);
@@ -61,9 +59,7 @@ TEST_F(BraveAdsPromotedContentAdValueUtilTest, ToValue) {
   const PromotedContentAdInfo ad =
       BuildPromotedContentAd(creative_ad, kPlacementId);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(kJson), PromotedContentAdToValue(ad));
 }
 

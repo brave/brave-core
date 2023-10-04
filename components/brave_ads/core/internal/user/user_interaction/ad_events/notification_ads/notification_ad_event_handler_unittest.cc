@@ -57,65 +57,55 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveAd();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdServedEvent(ad));
 
-  // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kServed,
             /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveAd();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdViewedEvent(ad));
 
-  // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kViewed,
             /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveAd();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdClickedEvent(ad));
 
-  // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kClicked,
             /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveAd();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdDismissedEvent(ad));
 
-  // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kDismissed,
             /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveAd();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdTimedOutEvent(ad));
 
-  // Act
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kTimedOut,
             /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest,
@@ -123,15 +113,13 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
   // Arrange
   const NotificationAdInfo ad = BuildAndSaveAd();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFireNotificationAdEvent(
                                   kMissingPlacementId,
                                   mojom::NotificationAdEventType::kViewed));
 
-  // Act
   FireEvent(kMissingPlacementId, mojom::NotificationAdEventType::kViewed,
             /*should_fire_event*/ false);
-
-  // Assert
 }
 
 }  // namespace brave_ads

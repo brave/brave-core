@@ -67,9 +67,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
       GURL("https://www.qux.com/"), GURL("https://quux.com/corge/grault"),
       GURL("https://garbly.com/waldo")};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const CreativeSetConversionList expected_creative_set_conversions = {
       creative_set_conversion_1, creative_set_conversion_4};
   EXPECT_EQ(expected_creative_set_conversions,
@@ -103,23 +101,18 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           /*observation_window*/ base::Days(30));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_3);
 
-  // Act
-  const CreativeSetConversionBuckets buckets =
-      SortCreativeSetConversionsIntoBuckets(creative_set_conversions);
-
-  // Assert
+  // Act & Assert
   CreativeSetConversionBuckets expected_buckets;
   expected_buckets.insert(  // Bucket #1
       {kCreativeSetId, {creative_set_conversion_1, creative_set_conversion_3}});
   expected_buckets.insert(  // Bucket #2
       {creative_set_conversion_2.id, {creative_set_conversion_2}});
-  EXPECT_EQ(expected_buckets, buckets);
+  EXPECT_EQ(expected_buckets,
+            SortCreativeSetConversionsIntoBuckets(creative_set_conversions));
 }
 
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
        SortEmptyCreativeSetConversionsIntoBuckets) {
-  // Arrange
-
   // Act
   const CreativeSetConversionBuckets buckets =
       SortCreativeSetConversionsIntoBuckets({});
@@ -155,9 +148,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           /*observation_window*/ base::Days(3));
   creative_set_conversions.push_back(creative_set_conversion_2);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(creative_set_conversion_1, FindNonExpiredCreativeSetConversion(
                                            creative_set_conversions, ad_event));
 }
@@ -182,9 +173,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           kVerifiableConversionAdvertiserPublicKey);
   creative_set_conversions.push_back(creative_set_conversion);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       FindNonExpiredCreativeSetConversion(creative_set_conversions, ad_event));
 }

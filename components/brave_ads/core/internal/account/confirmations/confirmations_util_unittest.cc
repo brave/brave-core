@@ -29,11 +29,9 @@ class BraveAdsConfirmationsUtilTest : public UnitTestBase {
 
 TEST_F(BraveAdsConfirmationsUtilTest, IsInvalidToken) {
   // Arrange
-
-  // Act
   const ConfirmationInfo confirmation;
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsValid(confirmation));
 }
 
@@ -68,8 +66,6 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
 }
 
 TEST_F(BraveAdsConfirmationsUtilTest, ResetIfNoTokens) {
-  // Arrange
-
   // Act
   ResetTokens();
 

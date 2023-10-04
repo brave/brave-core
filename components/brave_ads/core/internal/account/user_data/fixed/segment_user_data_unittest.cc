@@ -23,9 +23,7 @@ TEST_F(BraveAdsSegmentUserDataTest, BuildSegmentUserDataForRewardsUser) {
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -43,9 +41,7 @@ TEST_F(BraveAdsSegmentUserDataTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildSegmentUserData(transaction).empty());
 }
 
@@ -53,9 +49,7 @@ TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSegmentUserDataIfNoTargeting) {
   // Arrange
   const TransactionInfo transaction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildSegmentUserData(transaction).empty());
 }
 

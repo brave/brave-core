@@ -42,17 +42,11 @@ TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserActive) {
 }
 
 TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactive) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(WasUserActive());
 }
 
 TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
-  // Arrange
-
   // Act
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);

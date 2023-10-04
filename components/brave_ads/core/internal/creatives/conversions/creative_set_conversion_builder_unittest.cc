@@ -25,11 +25,7 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest, BuildCreativeSetConversion) {
       BuildSearchResultAdWithConversionForTesting(
           /*should_use_random_uuids*/ false);
 
-  // Act
-  const absl::optional<CreativeSetConversionInfo> creative_set_conversion =
-      BuildCreativeSetConversion(search_result_ad);
-
-  // Assert
+  // Act & Assert
   CreativeSetConversionInfo expected_creative_set_conversion;
   expected_creative_set_conversion.id = kCreativeSetId;
   expected_creative_set_conversion.url_pattern = "https://brave.com/*";
@@ -38,8 +34,8 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest, BuildCreativeSetConversion) {
   expected_creative_set_conversion.observation_window = base::Days(3);
   expected_creative_set_conversion.expire_at =
       Now() + expected_creative_set_conversion.observation_window;
-
-  EXPECT_EQ(expected_creative_set_conversion, creative_set_conversion);
+  EXPECT_EQ(expected_creative_set_conversion,
+            BuildCreativeSetConversion(search_result_ad));
 }
 
 TEST_F(BraveAdsCreativeSetConversionBuilderTest,
@@ -48,9 +44,7 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest,
   const mojom::SearchResultAdInfoPtr search_result_ad =
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(BuildCreativeSetConversion(search_result_ad));
 }
 

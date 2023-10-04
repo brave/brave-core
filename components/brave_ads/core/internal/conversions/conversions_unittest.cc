@@ -112,7 +112,7 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
@@ -129,15 +129,13 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -156,10 +154,8 @@ TEST_F(BraveAdsConversionsTest,
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -176,15 +172,12 @@ TEST_F(BraveAdsConversionsTest,
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
-
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -202,10 +195,8 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -221,15 +212,12 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
-
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -248,10 +236,8 @@ TEST_F(BraveAdsConversionsTest,
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -268,15 +254,13 @@ TEST_F(BraveAdsConversionsTest,
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -294,10 +278,8 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -313,15 +295,13 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -340,10 +320,8 @@ TEST_F(BraveAdsConversionsTest,
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -360,15 +338,13 @@ TEST_F(BraveAdsConversionsTest,
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -386,10 +362,8 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -405,15 +379,13 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -432,10 +404,8 @@ TEST_F(BraveAdsConversionsTest,
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -452,15 +422,13 @@ TEST_F(BraveAdsConversionsTest,
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreDisabled) {
@@ -479,15 +447,13 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreDisabled) {
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreEnabled) {
@@ -502,15 +468,13 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfAdsAreEnabled) {
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreDisabled) {
@@ -530,15 +494,13 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreDisabled) {
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreEnabled) {
@@ -554,15 +516,13 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfAdsAreEnabled) {
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kClicked,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, MultipleAdConversions) {
@@ -590,6 +550,7 @@ TEST_F(BraveAdsConversionsTest, MultipleAdConversions) {
       ad_3, {ConfirmationType::kServed, ConfirmationType::kViewed,
              ConfirmationType::kClicked});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad_1, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
@@ -600,10 +561,7 @@ TEST_F(BraveAdsConversionsTest, MultipleAdConversions) {
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
@@ -619,15 +577,13 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kDismissed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertAdsIfTheRedirectChainIsEmpty) {
@@ -645,10 +601,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdsIfTheRedirectChainIsEmpty) {
            ConfirmationType::kSaved, ConfirmationType::kUpvoted,
            ConfirmationType::kDownvoted, ConfirmationType::kConversion});
 
-  // Act
+  // Act & Assert
   MaybeConvert(/*redirect_chain*/ {}, kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -667,10 +621,8 @@ TEST_F(BraveAdsConversionsTest,
            ConfirmationType::kSaved, ConfirmationType::kUpvoted,
            ConfirmationType::kDownvoted, ConfirmationType::kConversion});
 
-  // Act
+  // Act & Assert
   MaybeConvert(/*redirect_chain*/ {GURL("foo.bar")}, kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
@@ -688,10 +640,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
            ConfirmationType::kSaved, ConfirmationType::kUpvoted,
            ConfirmationType::kDownvoted, ConfirmationType::kConversion});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -704,10 +654,8 @@ TEST_F(BraveAdsConversionsTest,
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kClicked});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -734,10 +682,9 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad_2, {ConfirmationType::kServed, ConfirmationType::kViewed,
              ConfirmationType::kClicked});
-  // Act
-  MaybeConvert(BuildRedirectChain(), kHtml);
 
-  // Assert
+  // Act & Assert
+  MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
@@ -753,10 +700,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed,
            ConfirmationType::kDismissed});
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -775,15 +720,13 @@ TEST_F(BraveAdsConversionsTest,
 
   AdvanceClockBy(base::Days(3) - base::Milliseconds(1));
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -802,10 +745,8 @@ TEST_F(BraveAdsConversionsTest,
 
   AdvanceClockBy(base::Days(3));
 
-  // Act
+  // Act & Assert
   MaybeConvert(BuildRedirectChain(), kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -824,16 +765,14 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(
       /*redirect_chain*/ {GURL("https://foo.com/bar?qux_id=xyzzy")}, kHtml);
-
-  // Assert
 }
 
 TEST_F(
@@ -854,19 +793,17 @@ TEST_F(
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(
       /*redirect_chain*/ {GURL("https://grault.com/garply"),
                           GURL("https://www.baz.com/bar"),
                           GURL("https://qux.com/quux/plugh")},
       kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -885,16 +822,14 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(
       /*redirect_chain*/ {GURL("https://foo.com/bar?qux=quux")}, kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
@@ -912,6 +847,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(
       observer_mock_,
       OnDidConvertAd(BuildConversion(
@@ -920,11 +856,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
           VerifiableConversionInfo{/*id*/ "xyzzy",
                                    kVerifiableConversionAdvertiserPublicKey})));
 
-  // Act
   MaybeConvert(
       /*redirect_chain*/ {GURL("https://foo.com/bar?qux_id=xyzzy")}, kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -943,16 +876,14 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(
       /*redirect_chain*/ {GURL("https://foo.com/bar")}, kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
@@ -970,6 +901,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(
       observer_mock_,
       OnDidConvertAd(BuildConversion(
@@ -978,11 +910,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
           VerifiableConversionInfo{/*id*/ "waldo",
                                    kVerifiableConversionAdvertiserPublicKey})));
 
-  // Act
   MaybeConvert(BuildRedirectChain(),
                /*html*/ R"(<html><div id="xyzzy-id">waldo</div></html>)");
-
-  // Assert
 }
 
 TEST_F(
@@ -1002,15 +931,13 @@ TEST_F(
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidConvertAd(BuildConversion(
                                   BuildAdEvent(ad, ConfirmationType::kViewed,
                                                /*created_at*/ Now()),
                                   /*verifiable_conversion*/ absl::nullopt)));
 
-  // Act
   MaybeConvert(/*redirect_chain*/ {GURL("https://qux.com/quux/corge")}, kHtml);
-
-  // Assert
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -1029,6 +956,7 @@ TEST_F(BraveAdsConversionsTest,
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServed, ConfirmationType::kViewed});
 
+  // Act & Assert
   EXPECT_CALL(
       observer_mock_,
       OnDidConvertAd(BuildConversion(
@@ -1037,12 +965,9 @@ TEST_F(BraveAdsConversionsTest,
           VerifiableConversionInfo{/*id*/ "fred",
                                    kVerifiableConversionAdvertiserPublicKey})));
 
-  // Act
   MaybeConvert(
       /*redirect_chain*/ {GURL("https://qux.com/quux/corge")},
       /*html*/ R"(<html><meta name="ad-conversion-id" content="fred"></html>)");
-
-  // Assert
 }
 
 }  // namespace brave_ads

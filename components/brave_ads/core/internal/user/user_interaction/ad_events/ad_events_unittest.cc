@@ -27,9 +27,10 @@ TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
   const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed,
                                             /*created_at*/ Now());
 
-  // Act
   base::MockCallback<AdEventCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success*/ true));
+
+  // Act
   RecordAdEvent(ad, ConfirmationType::kServed, record_ad_event_callback.Get());
 
   // Assert
@@ -75,9 +76,10 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
   ad_event_for_ad_3.placement_id = "WALDO.3";
   RecordAdEvent(ad_event_for_ad_3, record_ad_event_callback.Get());
 
-  // Act
   base::MockCallback<AdEventCallback> purge_expired_ad_events_callback;
   EXPECT_CALL(purge_expired_ad_events_callback, Run(/*success*/ true));
+
+  // Act
   PurgeExpiredAdEvents(purge_expired_ad_events_callback.Get());
 
   // Assert
@@ -115,9 +117,10 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
       BuildAdEvent(ad_3, ConfirmationType::kServed, /*created_at*/ Now());
   RecordAdEvent(ad_event_for_ad_3, record_ad_event_callback.Get());
 
-  // Act
   base::MockCallback<AdEventCallback> purge_orphaned_ad_events_callback;
   EXPECT_CALL(purge_orphaned_ad_events_callback, Run(/*success*/ true));
+
+  // Act
   PurgeOrphanedAdEvents(mojom::AdType::kNotificationAd,
                         purge_orphaned_ad_events_callback.Get());
 

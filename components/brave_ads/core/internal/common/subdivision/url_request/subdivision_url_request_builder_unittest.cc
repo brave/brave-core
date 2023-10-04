@@ -26,7 +26,6 @@ TEST_F(BraveAdsSubdivisionUrlRequestBuilderTest, BuildUrl) {
   expected_url_request->url =
       GURL("https://geo.ads.bravesoftware.com/v1/getstate");
   expected_url_request->method = mojom::UrlRequestMethodType::kGet;
-
   EXPECT_EQ(expected_url_request, url_request);
 }
 

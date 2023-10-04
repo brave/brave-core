@@ -12,11 +12,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsCalendarLeapYearUtilTest, IsLeapYear) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   for (int year = 2000; year < 2050; year++) {
     EXPECT_EQ(year % 4 == 0, IsLeapYear(year));
   }

@@ -84,11 +84,7 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
 };
 
 TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(ShouldCreateDatabase(), did_create_database_);
   EXPECT_EQ(ShouldMigrateDatabase(), did_migrate_database_);
   EXPECT_FALSE(failed_to_migrate_database_);

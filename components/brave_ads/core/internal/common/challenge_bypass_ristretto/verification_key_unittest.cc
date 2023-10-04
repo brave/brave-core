@@ -24,9 +24,7 @@ TEST_F(BraveAdsVerificationKeyTest, Sign) {
   // Arrange
   VerificationKey verification_key = GetVerificationKeyForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetVerificationSignatureForTesting(),
             verification_key.Sign(kMessage));
 }
@@ -35,8 +33,7 @@ TEST_F(BraveAdsVerificationKeyTest, Verify) {
   // Arrange
   VerificationKey verification_key = GetVerificationKeyForTesting();
 
-  // Act
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(
       verification_key.Verify(GetVerificationSignatureForTesting(), kMessage));
 }
@@ -46,9 +43,7 @@ TEST_F(BraveAdsVerificationKeyTest,
   // Arrange
   VerificationKey verification_key = GetVerificationKeyForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(verification_key.Verify(
       GetInvalidVerificationSignatureForTesting(), kMessage));
 }

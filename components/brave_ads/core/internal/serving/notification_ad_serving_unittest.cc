@@ -53,12 +53,9 @@ TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeNotificationAd);
-
-  // Act
   MaybeServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
@@ -69,28 +66,20 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeNotificationAd);
-
   EXPECT_CALL(delegate_mock_, OnDidServeNotificationAd);
-
-  // Act
   MaybeServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
   ForcePermissionRulesForTesting();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeNotificationAd);
-
   EXPECT_CALL(delegate_mock_, OnFailedToServeNotificationAd);
-
-  // Act
   MaybeServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdServingTest,
@@ -100,12 +89,9 @@ TEST_F(BraveAdsNotificationAdServingTest,
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNotificationAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeNotificationAd);
-
-  // Act
   MaybeServeAd();
-
-  // Assert
 }
 
 }  // namespace brave_ads

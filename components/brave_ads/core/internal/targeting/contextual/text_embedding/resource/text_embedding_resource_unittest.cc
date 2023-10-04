@@ -40,11 +40,7 @@ class BraveAdsTextEmbeddingResourceTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsTextEmbeddingResourceTest, IsNotInitialized) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(resource_->IsInitialized());
 }
 
@@ -53,9 +49,7 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadInvalidResource) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
                                              kTextEmbeddingResourceId));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kLanguageComponentId));
 }
 
@@ -74,9 +68,7 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, DoNotLoadMissingResource) {
             std::move(callback).Run(std::move(file));
           }));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kLanguageComponentId));
 }
 
@@ -158,22 +150,14 @@ TEST_F(BraveAdsTextEmbeddingResourceTest,
 
 TEST_F(BraveAdsTextEmbeddingResourceTest,
        LoadResourceWhenDidUpdateResourceComponent) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(LoadResource(kLanguageComponentId));
 }
 
 TEST_F(
     BraveAdsTextEmbeddingResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfInvalidLanguageComponentId) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kInvalidLanguageComponentId));
 }
 
@@ -183,9 +167,7 @@ TEST_F(
   // Arrange
   OptOutOfNotificationAdsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kLanguageComponentId));
 }
 
@@ -194,9 +176,7 @@ TEST_F(BraveAdsTextEmbeddingResourceTest,
   // Arrange
   ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(LoadResource(kLanguageComponentId));
 }
 

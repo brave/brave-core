@@ -43,12 +43,9 @@ TEST_F(BraveAdsRedeemRewardConfirmationUtilTest,
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationUtilTest, LogPaymentTokenStatus) {
-  // Arrange
-
-  // Assert
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log);
 
-  // Act
   LogPaymentTokenStatus();
 }
 

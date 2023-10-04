@@ -16,9 +16,7 @@ TEST(BraveAdsAdsUtilTest, IsSupportedRegion) {
   // Arrange
   brave_l10n::test::ScopedDefaultLocale default_locale("en_US");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IsSupportedRegion());
 }
 
@@ -26,9 +24,7 @@ TEST(BraveAdsAdsUtilTest, IsUnsupportedRegion) {
   // Arrange
   brave_l10n::test::ScopedDefaultLocale default_locale(/*cuba*/ "en_CU");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsSupportedRegion());
 }
 

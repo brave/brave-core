@@ -50,23 +50,21 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
 
   SetPaymentTokensForTesting(/*count*/ 1);
 
-  // Act
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRedeemPaymentTokens);
 
-  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens()).Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens).Times(0);
 
   EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
 
   EXPECT_CALL(delegate_mock_, OnWillRetryRedeemingPaymentTokens).Times(0);
 
-  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens()).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens).Times(0);
 
   const WalletInfo wallet = GetWalletForTesting();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
-
   FastForwardClockToNextPendingTask();
 
-  // Assert
   EXPECT_TRUE(PaymentTokensIsEmpty());
 }
 
@@ -84,27 +82,22 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
   const PaymentTokenList payment_tokens =
       SetPaymentTokensForTesting(/*count*/ 1);
 
-  // Act
-  EXPECT_CALL(delegate_mock_, OnDidRedeemPaymentTokens).Times(2);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens()).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption).Times(2);
-
+  EXPECT_CALL(delegate_mock_, OnDidRedeemPaymentTokens);
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
   EXPECT_CALL(delegate_mock_, OnWillRetryRedeemingPaymentTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens()).Times(0);
-
+  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens).Times(0);
   const WalletInfo wallet = GetWalletForTesting();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
-
   FastForwardClockToNextPendingTask();
 
   GetPaymentTokensForTesting().SetTokens(payment_tokens);
 
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRedeemPaymentTokens);
+  EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
   FastForwardClockToNextPendingTask();
 
-  // Assert
   EXPECT_EQ(1U, GetPendingTaskCount());
 }
 
@@ -120,23 +113,16 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
 
   SetPaymentTokensForTesting(/*count*/ 1);
 
-  // Act
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRedeemPaymentTokens);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens()).Times(0);
-
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
-
   EXPECT_CALL(delegate_mock_, OnWillRetryRedeemingPaymentTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens()).Times(0);
-
+  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens).Times(0);
   const WalletInfo wallet = GetWalletForTesting();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
-
   FastForwardClockToNextPendingTask();
 
-  // Assert
   EXPECT_TRUE(PaymentTokensIsEmpty());
 }
 
@@ -144,25 +130,17 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, NoPaymentTokens) {
   // Arrange
   SetTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
 
-  // Act
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemPaymentTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens()).Times(0);
-
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
-
   EXPECT_CALL(delegate_mock_, OnWillRetryRedeemingPaymentTokens).Times(0);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens()).Times(0);
-
+  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens).Times(0);
   const WalletInfo wallet = GetWalletForTesting();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
-
   FastForwardClockToNextPendingTask();
 
-  // Assert
   EXPECT_TRUE(PaymentTokensIsEmpty());
 }
 
@@ -180,26 +158,18 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
 
   SetPaymentTokensForTesting(/*count*/ 1);
 
-  // Act
+  // Act & Assert
   const ::testing::InSequence s;
-
-  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens());
-
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemPaymentTokens);
   EXPECT_CALL(delegate_mock_, OnWillRetryRedeemingPaymentTokens);
-
-  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens());
-
+  EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens);
   EXPECT_CALL(delegate_mock_, OnDidRedeemPaymentTokens);
-
   EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
-
   const WalletInfo wallet = GetWalletForTesting();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
-
   FastForwardClockToNextPendingTask();
   FastForwardClockToNextPendingTask();
 
-  // Assert
   EXPECT_TRUE(PaymentTokensIsEmpty());
 }
 

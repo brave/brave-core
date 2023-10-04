@@ -32,9 +32,7 @@ TEST_F(BraveAdsCategoryContentValueUtilTest, FromValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(BuildCategoryContent(kSegment), CategoryContentFromValue(dict));
 }
 
@@ -42,9 +40,7 @@ TEST_F(BraveAdsCategoryContentValueUtilTest, ToValue) {
   // Arrange
   const CategoryContentInfo category_content = BuildCategoryContent(kSegment);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(kJson),
             CategoryContentToValue(category_content));
 }

@@ -122,7 +122,7 @@ TEST_F(BraveAdsSubdivisionTest, OnDidResetBraveRewards) {
 
   NotifyDidInitializeAds();
 
-  EXPECT_TRUE(HasPendingTasks());
+  ASSERT_TRUE(HasPendingTasks());
 
   // Act
   ads_client_mock_.SetBooleanPref(brave_rewards::prefs::kEnabled, false);
@@ -141,7 +141,7 @@ TEST_F(BraveAdsSubdivisionTest, OnDidOptoutBraveNews) {
 
   NotifyDidInitializeAds();
 
-  EXPECT_TRUE(HasPendingTasks());
+  ASSERT_TRUE(HasPendingTasks());
 
   // Act
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kNewTabPageShowToday,

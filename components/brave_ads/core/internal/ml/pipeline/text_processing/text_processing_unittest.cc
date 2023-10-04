@@ -144,9 +144,7 @@ TEST_F(BraveAdsTextProcessingTest, InitValidModelTest) {
 
   pipeline::TextProcessing text_processing_pipeline;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
 }
 
@@ -160,9 +158,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
 
   pipeline::TextProcessing text_processing_pipeline;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(dict)));
 }
 
@@ -202,9 +198,7 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
   pipeline::TextProcessing text_processing_pipeline;
   EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   for (const auto& text : input_texts) {
     std::unique_ptr<Data> text_data = std::make_unique<TextData>(text);
     const absl::optional<PredictionMap> prediction_map =
@@ -241,12 +235,12 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   // Act
   const absl::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(kTestPage);
+  ASSERT_TRUE(predictions);
 
   // Assert
-  ASSERT_TRUE(predictions);
-  ASSERT_TRUE(predictions->size());
-  ASSERT_LT(predictions->size(), kMaxPredictionsSize);
-  ASSERT_TRUE(predictions->count("crypto-crypto"));
+  EXPECT_FALSE(predictions->empty());
+  EXPECT_LT(predictions->size(), kMaxPredictionsSize);
+  EXPECT_TRUE(predictions->count("crypto-crypto"));
   for (const auto& prediction : *predictions) {
     EXPECT_TRUE(prediction.second <= predictions->at("crypto-crypto"));
   }
@@ -273,12 +267,12 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   // Act
   const absl::optional<PredictionMap> predictions =
       text_processing_pipeline.ClassifyPage(*text);
+  ASSERT_TRUE(predictions);
 
   // Assert
-  ASSERT_TRUE(predictions);
-  ASSERT_GT(predictions->size(), kMinPredictionsSize);
-  ASSERT_LT(predictions->size(), kMaxPredictionsSize);
-  ASSERT_TRUE(predictions->count("crypto-crypto"));
+  EXPECT_GT(predictions->size(), kMinPredictionsSize);
+  EXPECT_LT(predictions->size(), kMaxPredictionsSize);
+  EXPECT_TRUE(predictions->count("crypto-crypto"));
   for (const auto& prediction : *predictions) {
     EXPECT_TRUE(prediction.second <= predictions->at("crypto-crypto"));
   }

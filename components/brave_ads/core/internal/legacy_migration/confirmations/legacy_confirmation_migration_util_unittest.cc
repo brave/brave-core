@@ -19,9 +19,7 @@ TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   // Arrange
   SetBooleanPrefValue(prefs::kHasMigratedConfirmationState, true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(HasMigratedConfirmation());
 }
 
@@ -29,9 +27,7 @@ TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
   // Arrange
   SetBooleanPrefValue(prefs::kHasMigratedConfirmationState, false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(HasMigratedConfirmation());
 }
 

@@ -47,14 +47,10 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
-  // Arrange
-
-  // Act
+  // Act & Assert
   TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
                                 mojom::PromotedContentAdEventType::kViewed,
                                 /*should_fire_event*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
@@ -63,12 +59,10 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
                                 mojom::PromotedContentAdEventType::kViewed,
                                 /*should_fire_event*/ true);
 
-  // Act
+  // Act & Assert
   TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
                                 mojom::PromotedContentAdEventType::kClicked,
                                 /*should_fire_event*/ true);
-
-  // Assert
 }
 
 }  // namespace brave_ads

@@ -25,9 +25,7 @@ TEST_F(BraveAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
 
   const CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogLastUpdated,
             diagnostic_entry.GetType());
   EXPECT_EQ("Catalog last updated", diagnostic_entry.GetName());
@@ -39,9 +37,7 @@ TEST_F(BraveAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogNeverUpdated) {
   // Arrange
   const CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogLastUpdated,
             diagnostic_entry.GetType());
   EXPECT_EQ("Catalog last updated", diagnostic_entry.GetName());

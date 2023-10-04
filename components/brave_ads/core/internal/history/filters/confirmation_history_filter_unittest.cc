@@ -59,8 +59,9 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
 
   HistoryItemList history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7};
 
-  // Act
   const ConfirmationHistoryFilter filter;
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -71,7 +72,6 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
       ad6,  // Ad 4
       ad7   // Ad 5
   };
-
   EXPECT_THAT(expected_history, ::testing::UnorderedElementsAreArray(history));
 }
 
@@ -127,8 +127,9 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
 
   HistoryItemList history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7, ad8};
 
-  // Act
   const ConfirmationHistoryFilter filter;
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -137,7 +138,6 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
       ad7,  // Dismiss
       ad8   // Click
   };
-
   EXPECT_THAT(expected_history, ::testing::UnorderedElementsAreArray(history));
 }
 

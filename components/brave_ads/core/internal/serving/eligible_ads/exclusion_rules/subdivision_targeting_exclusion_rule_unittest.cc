@@ -129,9 +129,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -145,9 +143,7 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {GetParam().country};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -164,9 +160,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -185,9 +179,7 @@ TEST_P(
   creative_ad.geo_targets = {BuildSubdivisionForTestParam(),
                              BuildOtherSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -205,9 +197,7 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {GetParam().country};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -228,9 +218,7 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -252,9 +240,7 @@ TEST_P(
   creative_ad.geo_targets = {BuildSubdivisionForTestParam(),
                              BuildOtherSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -275,9 +261,7 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {GetParam().country};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -314,9 +298,7 @@ TEST_P(
   creative_ad.geo_targets = {BuildSubdivisionForTesting(
       /*country_code*/ "GB", /*subdivision_code*/ "DEV")};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -339,9 +321,7 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {"XX"};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -360,9 +340,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -382,9 +360,7 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {"XX"};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 

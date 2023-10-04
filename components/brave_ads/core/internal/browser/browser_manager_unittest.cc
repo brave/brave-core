@@ -80,8 +80,6 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterBackground) {
 
 TEST_F(BraveAdsBrowserManagerTest,
        OnNotifyDidInitializeAdsWhenBrowserIsActive) {
-  // Arrange
-
   // Act
   NotifyDidInitializeAds();
 

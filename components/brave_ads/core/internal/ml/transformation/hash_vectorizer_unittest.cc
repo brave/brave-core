@@ -44,15 +44,15 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   const HashVectorizer vectorizer;
   const std::map<unsigned, double> frequencies =
       vectorizer.GetFrequencies(*input);
-  ASSERT_EQ(frequencies.size(), idx_list->size());
 
   // Assert
+  EXPECT_EQ(frequencies.size(), idx_list->size());
   for (size_t i = 0; i < frequencies.size(); ++i) {
     const base::Value& idx = (*idx_list)[i];
-    ASSERT_TRUE(idx.is_int());
+    EXPECT_TRUE(idx.is_int());
 
     const base::Value& count = (*count_list)[i];
-    ASSERT_TRUE(count.is_int());
+    EXPECT_TRUE(count.is_int());
 
     EXPECT_LT(count.GetInt() - frequencies.at(idx.GetInt()), kTolerance);
   }
@@ -79,9 +79,7 @@ TEST_F(BraveAdsHashVectorizerTest, ValidJsonScheme) {
             ]
           })");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(dict.FindDict("test"));
   EXPECT_TRUE(dict.FindList("list"));
 }

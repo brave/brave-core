@@ -58,14 +58,10 @@ TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorSamplingTest,
 
   const std::vector<double> creative_ad_probabilities =
       ComputeCreativeAdProbabilitiesForVoteRegistry(creative_ad_vote_registry);
-  CHECK_EQ(creative_ads.size(), creative_ad_probabilities.size());
+  ASSERT_EQ(creative_ads.size(), creative_ad_probabilities.size());
 
-  // Act
-  const absl::optional<CreativeNotificationAdInfo> creative_ad =
-      MaybeSampleCreativeAd(creative_ads, creative_ad_probabilities);
-
-  // Assert
-  EXPECT_TRUE(creative_ad);
+  // Act & Assert
+  EXPECT_TRUE(MaybeSampleCreativeAd(creative_ads, creative_ad_probabilities));
 }
 
 TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorSamplingTest,
@@ -102,14 +98,10 @@ TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorSamplingTest,
 
   const std::vector<double> creative_ad_probabilities =
       ComputeCreativeAdProbabilitiesForVoteRegistry(creative_ad_vote_registry);
-  CHECK_EQ(creative_ads.size(), creative_ad_probabilities.size());
+  ASSERT_EQ(creative_ads.size(), creative_ad_probabilities.size());
 
-  // Act
-  const absl::optional<CreativeNotificationAdInfo> creative_ad =
-      MaybeSampleCreativeAd(creative_ads, creative_ad_probabilities);
-
-  // Assert
-  EXPECT_FALSE(creative_ad);
+  // Act & Assert
+  EXPECT_FALSE(MaybeSampleCreativeAd(creative_ads, creative_ad_probabilities));
 }
 
 }  // namespace brave_ads

@@ -47,6 +47,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
+  // Act & Assert
   UserDataInfo expected_user_data;
   expected_user_data.dynamic = base::test::ParseJsonDict(
       R"(
@@ -77,17 +78,13 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-
-  // Act
   BuildConfirmationUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildConversionConfirmationUserDataForRewardsUser) {
   // Arrange
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
       /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
 
@@ -95,6 +92,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
+  // Act & Assert
   UserDataInfo expected_user_data;
   expected_user_data.dynamic = base::test::ParseJsonDict(
       R"(
@@ -129,17 +127,13 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-
-  // Act
   BuildConfirmationUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildVerifiableConversionConfirmationUserDataForRewardsUser) {
   // Arrange
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
 
@@ -147,6 +141,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
+  // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
     EXPECT_EQ(base::test::ParseJsonDict(
@@ -166,10 +161,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  // Act
   BuildConfirmationUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -181,13 +173,10 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
+  // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(UserDataInfo{}));
-
-  // Act
   BuildConfirmationUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -195,7 +184,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
       /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
 
@@ -203,6 +192,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
+  // Act & Assert
   UserDataInfo expected_user_data;
   expected_user_data.fixed = base::test::ParseJsonDict(
       R"(
@@ -216,11 +206,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(expected_user_data));
-
-  // Act
   BuildConfirmationUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -228,7 +214,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
 
@@ -236,6 +222,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ false);
 
+  // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](const UserDataInfo& user_data) {
     EXPECT_TRUE(user_data.dynamic.empty());
@@ -247,10 +234,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  // Act
   BuildConfirmationUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

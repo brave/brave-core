@@ -146,13 +146,10 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
 
   NotifyDidInitializeAds();
 
-  // Act
-  const SegmentList segments = GetEpsilonGreedyBanditSegments();
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {"science", "travel",
                                          "technology & computing"};
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetEpsilonGreedyBanditSegments());
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
@@ -198,12 +195,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
 
   NotifyDidInitializeAds();
 
-  // Act
-  const SegmentList segments = GetEpsilonGreedyBanditSegments();
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {"science", "technology & computing"};
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetEpsilonGreedyBanditSegments());
 }
 
 }  // namespace brave_ads

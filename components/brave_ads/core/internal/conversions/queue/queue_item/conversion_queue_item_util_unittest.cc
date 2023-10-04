@@ -33,12 +33,9 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
       BuildConversionQueueItem(conversion,
                                /*process_at*/ Now() + base::Hours(1));
 
-  // Act
-  const base::TimeDelta delay =
-      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item);
-
-  // Assert
-  EXPECT_EQ(base::Hours(1), delay);
+  // Act & Assert
+  EXPECT_EQ(base::Hours(1), CalculateDelayBeforeProcessingConversionQueueItem(
+                                conversion_queue_item));
 }
 
 TEST_F(BraveAdsConversionQueueItemDelayTest,
@@ -53,12 +50,10 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion, /*process_at*/ DistantPast());
 
-  // Act
-  const base::TimeDelta delay =
-      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item);
-
-  // Assert
-  EXPECT_EQ(kMinimumDelayBeforeProcessingQueueItem, delay);
+  // Act & Assert
+  EXPECT_EQ(
+      kMinimumDelayBeforeProcessingQueueItem,
+      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item));
 }
 
 TEST_F(BraveAdsConversionQueueItemDelayTest,
@@ -74,12 +69,10 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
       BuildConversionQueueItem(conversion,
                                /*process_at*/ Now() + base::Milliseconds(1));
 
-  // Act
-  const base::TimeDelta delay =
-      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item);
-
-  // Assert
-  EXPECT_EQ(kMinimumDelayBeforeProcessingQueueItem, delay);
+  // Act & Assert
+  EXPECT_EQ(
+      kMinimumDelayBeforeProcessingQueueItem,
+      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item));
 }
 
 }  // namespace brave_ads

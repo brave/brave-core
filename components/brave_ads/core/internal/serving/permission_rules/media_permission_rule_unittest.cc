@@ -20,11 +20,7 @@ class BraveAdsMediaPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsMediaPermissionRuleTest, ShouldAllowIfMediaIsNotPlaying) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -37,10 +33,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
-  // Act
   NotifyTabDidStopPlayingMedia(/*tab_id*/ 1);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -54,11 +49,10 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 2);
 
-  // Act
   NotifyTabDidStopPlayingMedia(/*tab_id*/ 1);
   NotifyTabDidStopPlayingMedia(/*tab_id*/ 2);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -72,10 +66,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 2);
 
-  // Act
   NotifyTabDidStopPlayingMedia(/*tab_id*/ 1);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -86,10 +79,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
       /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_visible*/ true);
 
-  // Act
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -108,9 +100,7 @@ TEST_F(
 
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -121,11 +111,10 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
       /*tab_id*/ 1, /*redirect_chain*/ {GURL("https://brave.com")},
       /*is_visible*/ true);
 
-  // Act
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 2);
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -139,10 +128,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 1);
   NotifyTabDidStartPlayingMedia(/*tab_id*/ 2);
 
-  // Act
   NotifyTabDidStopPlayingMedia(/*tab_id*/ 2);
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

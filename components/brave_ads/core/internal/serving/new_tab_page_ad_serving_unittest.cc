@@ -54,15 +54,12 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
       BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run(/*ad*/ ::testing::Eq(absl::nullopt)));
-
-  // Act
   MaybeServeAd(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
@@ -74,17 +71,14 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   database::SaveCreativeNewTabPageAds({creative_ad});
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeNewTabPageAd);
 
   EXPECT_CALL(delegate_mock_, OnDidServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Ne(absl::nullopt)));
-
-  // Act
   MaybeServeAd(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
@@ -96,34 +90,28 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   creative_ad.wallpapers.clear();
   database::SaveCreativeNewTabPageAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeNewTabPageAd);
 
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run(/*ad*/ ::testing::Eq(absl::nullopt)));
-
-  // Act
   MaybeServeAd(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
   ForcePermissionRulesForTesting();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeNewTabPageAd);
 
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run(/*ad*/ ::testing::Eq(absl::nullopt)));
-
-  // Act
   MaybeServeAd(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsNewTabPageAdServingTest,
@@ -132,15 +120,13 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
   database::SaveCreativeNewTabPageAds({creative_ad});
+
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run(/*ad*/ ::testing::Eq(absl::nullopt)));
-
-  // Act
   MaybeServeAd(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

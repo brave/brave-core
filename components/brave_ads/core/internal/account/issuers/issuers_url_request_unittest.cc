@@ -41,13 +41,11 @@ TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
        {{net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFetchIssuers(BuildIssuersForTesting()));
   EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers).Times(0);
   EXPECT_CALL(delegate_mock_, OnWillRetryFetchingIssuers).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidRetryFetchingIssuers).Times(0);
-
-  // Act
   issuers_url_request_->PeriodicallyFetch();
 }
 
@@ -58,15 +56,13 @@ TEST_F(BraveAdsIssuersUrlRequestTest,
       {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body*/ "{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFetchIssuers).Times(0);
   EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers);
   EXPECT_CALL(delegate_mock_, OnWillRetryFetchingIssuers);
   EXPECT_CALL(delegate_mock_, OnDidRetryFetchingIssuers).Times(0);
-
-  // Act
   issuers_url_request_->PeriodicallyFetch();
 
-  // Assert
   EXPECT_FALSE(GetIssuers());
 }
 
@@ -80,21 +76,18 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
         {net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers);
-  EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers);
-  EXPECT_CALL(delegate_mock_, OnWillRetryFetchingIssuers);
-  EXPECT_CALL(delegate_mock_, OnDidRetryFetchingIssuers);
-
   ON_CALL(delegate_mock_, OnDidFetchIssuers)
       .WillByDefault(::testing::Invoke(
           [](const IssuersInfo& issuers) { SetIssuers(issuers); }));
 
-  // Act
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers);
+  EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers);
+  EXPECT_CALL(delegate_mock_, OnWillRetryFetchingIssuers);
+  EXPECT_CALL(delegate_mock_, OnDidRetryFetchingIssuers);
   issuers_url_request_->PeriodicallyFetch();
-
   FastForwardClockToNextPendingTask();
 
-  // Assert
   EXPECT_TRUE(GetIssuers());
 }
 

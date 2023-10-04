@@ -22,9 +22,7 @@ TEST_F(BraveAdsNotificationAdInfoTest, IsValid) {
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ad.IsValid());
 }
 
@@ -32,9 +30,7 @@ TEST_F(BraveAdsNotificationAdInfoTest, IsInvalid) {
   // Arrange
   const NotificationAdInfo ad;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ad.IsValid());
 }
 

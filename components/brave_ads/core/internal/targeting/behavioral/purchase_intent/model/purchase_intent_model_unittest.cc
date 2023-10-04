@@ -39,9 +39,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsForUnitializedResource) {
   // Arrange
   PurchaseIntentProcessor processor(*resource_);
-
-  const GURL url = GURL("https://www.brave.com/test?foo=bar");
-  processor.Process(url);
+  processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
   // Act
   const SegmentList segments = GetPurchaseIntentSegments();
@@ -55,14 +53,11 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   ASSERT_TRUE(LoadResource());
 
   PurchaseIntentProcessor processor(*resource_);
-
-  const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
-  processor.Process(url_1);
+  processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
   AdvanceClockBy(base::Days(1));
 
-  const GURL url_2 = GURL("https://www.basicattentiontoken.org/test?bar=foo");
-  processor.Process(url_2);
+  processor.Process(GURL("https://www.basicattentiontoken.org/test?bar=foo"));
 
   // Act
   const SegmentList segments = GetPurchaseIntentSegments();
@@ -88,9 +83,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   ASSERT_TRUE(LoadResource());
 
   PurchaseIntentProcessor processor(*resource_);
-
-  const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1");
-  processor.Process(url);
+  processor.Process(GURL("https://duckduckgo.com/?q=segment+keyword+1"));
 
   // Act
   const SegmentList segments = GetPurchaseIntentSegments();
@@ -104,21 +97,13 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   ASSERT_TRUE(LoadResource());
 
   PurchaseIntentProcessor processor(*resource_);
+  processor.Process(GURL("https://www.brave.com/test?foo=bar"));
+  processor.Process(GURL("https://www.basicattentiontoken.org/test?bar=foo"));
+  processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
-  const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
-  processor.Process(url_1);
-
-  const GURL url_2 = GURL("https://www.basicattentiontoken.org/test?bar=foo");
-  processor.Process(url_2);
-
-  processor.Process(url_1);
-
-  // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {"segment 3", "segment 2"};
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetPurchaseIntentSegments());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
@@ -126,19 +111,16 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   // Arrange
   ASSERT_TRUE(LoadResource());
 
-  PurchaseIntentProcessor processor(*resource_);
-
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
+
+  PurchaseIntentProcessor processor(*resource_);
   processor.Process(url);
   processor.Process(url);
   processor.Process(url);
 
-  // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {"segment 1"};
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetPurchaseIntentSegments());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
@@ -147,17 +129,12 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   ASSERT_TRUE(LoadResource());
 
   PurchaseIntentProcessor processor(*resource_);
+  processor.Process(
+      GURL("https://duckduckgo.com/?q=segment+keyword+1+funnel+keyword+2"));
 
-  const GURL url =
-      GURL("https://duckduckgo.com/?q=segment+keyword+1+funnel+keyword+2");
-  processor.Process(url);
-
-  // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {"segment 1"};
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetPurchaseIntentSegments());
 }
 
 }  // namespace brave_ads

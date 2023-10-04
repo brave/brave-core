@@ -27,9 +27,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
                                             /*created_at*/ Now());
   ad_events.push_back(ad_event);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed));
 }
 
@@ -43,9 +41,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEvent) {
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at*/ Now());
   ad_events.push_back(ad_event);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed));
 }
 
@@ -56,9 +52,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, WasAdServed) {
 
   const AdEventList ad_events;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(
       WasAdServed(ad, ad_events, mojom::InlineContentAdEventType::kServed));
 }
@@ -72,9 +66,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, WasAdPreviouslyServed) {
   AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(
       WasAdServed(ad, ad_events, mojom::InlineContentAdEventType::kViewed));
 }
@@ -86,9 +78,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, WasAdNeverServed) {
 
   const AdEventList ad_events;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       WasAdServed(ad, ad_events, mojom::InlineContentAdEventType::kViewed));
 }
@@ -104,9 +94,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, ShouldDebouncePreviouslyViewedAdEvent) {
   AdEventInfo ad_event_2 = BuildAdEvent(ad, ConfirmationType::kViewed, Now());
   ad_events.push_back(ad_event_2);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldDebounceAdEvent(ad, ad_events,
                                     mojom::InlineContentAdEventType::kViewed));
 }
@@ -120,9 +108,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, ShouldNotDebounceViewedAdEvent) {
   AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed, Now());
   ad_events.push_back(ad_event);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldDebounceAdEvent(ad, ad_events,
                                      mojom::InlineContentAdEventType::kViewed));
 }
@@ -140,9 +126,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, ShouldDebouncePreviouslyClickedAdEvent) {
   AdEventInfo ad_event_3 = BuildAdEvent(ad, ConfirmationType::kClicked, Now());
   ad_events.push_back(ad_event_3);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldDebounceAdEvent(ad, ad_events,
                                     mojom::InlineContentAdEventType::kClicked));
 }
@@ -158,9 +142,7 @@ TEST(BraveAdsAdEventHandlerUtilTest, ShouldNotDebounceClickedAdEvent) {
   AdEventInfo ad_event_2 = BuildAdEvent(ad, ConfirmationType::kViewed, Now());
   ad_events.push_back(ad_event_2);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldDebounceAdEvent(
       ad, ad_events, mojom::InlineContentAdEventType::kClicked));
 }

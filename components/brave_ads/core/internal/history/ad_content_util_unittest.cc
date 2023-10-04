@@ -32,11 +32,7 @@ TEST_F(BraveAdsAdContentUtilTest, Build) {
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  // Act
-  const AdContentInfo ad_content =
-      BuildAdContent(ad, ConfirmationType::kViewed, kTitle, kDescription);
-
-  // Assert
+  // Act & Assert
   AdContentInfo expected_ad_content;
   expected_ad_content.type = ad.type;
   expected_ad_content.placement_id = ad.placement_id;
@@ -50,8 +46,8 @@ TEST_F(BraveAdsAdContentUtilTest, Build) {
   expected_ad_content.brand_url = ad.target_url;
   expected_ad_content.user_reaction_type = mojom::UserReactionType::kNeutral;
   expected_ad_content.confirmation_type = ConfirmationType::kViewed;
-
-  EXPECT_EQ(expected_ad_content, ad_content);
+  EXPECT_EQ(expected_ad_content, BuildAdContent(ad, ConfirmationType::kViewed,
+                                                kTitle, kDescription));
 }
 
 }  // namespace brave_ads

@@ -22,8 +22,6 @@ class BraveAdsCreativeSetConversionDatabaseTableTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, EmptySave) {
-  // Arrange
-
   // Act
   database::SaveCreativeSetConversions({});
 
@@ -106,9 +104,9 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
 
   database::SaveCreativeSetConversions(creative_set_conversions);
 
-  // Act
   AdvanceClockBy(base::Days(4));
 
+  // Act
   database::PurgeExpiredCreativeSetConversions();
 
   // Assert
@@ -133,7 +131,6 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
 
   database::SaveCreativeSetConversions(creative_set_conversions_1);
 
-  // Act
   CreativeSetConversionList creative_set_conversions_2;
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
@@ -144,6 +141,7 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
           kVerifiableConversionAdvertiserPublicKey);
   creative_set_conversions_2.push_back(creative_set_conversion_2);
 
+  // Act
   database::SaveCreativeSetConversions(creative_set_conversions_2);
 
   // Assert
@@ -153,12 +151,8 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   database_table_.GetAll(callback.Get());
 }
 
-TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, TableName) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, GetTableName) {
+  // Act & Assert
   EXPECT_EQ("creative_set_conversions", database_table_.GetTableName());
 }
 

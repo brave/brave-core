@@ -22,17 +22,12 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, GetConfirmationToken) {
       SetConfirmationTokensForTesting(/*count*/ 2);
   ASSERT_EQ(2U, confirmation_tokens.size());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(confirmation_tokens.front(), MaybeGetConfirmationToken());
 }
 
 TEST_F(BraveAdsConfirmationTokenUtilTest, DoNotGetConfirmationToken) {
-  // Arrange
-
-  // Act
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeGetConfirmationToken());
 }
 
@@ -79,18 +74,12 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, ConfirmationTokenCount) {
   // Arrange
   SetConfirmationTokensForTesting(/*count*/ 3);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, ConfirmationTokenCount());
 }
 
 TEST_F(BraveAdsConfirmationTokenUtilTest, IsValid) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IsValid(BuildConfirmationTokenForTesting()));
 }
 
@@ -98,9 +87,7 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, IsNotValid) {
   // Arrange
   const ConfirmationTokenInfo confirmation_token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsValid(confirmation_token));
 }
 

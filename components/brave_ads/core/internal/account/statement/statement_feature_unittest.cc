@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsAccountFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kAccountStatementFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsAccountFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAccountStatementFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kAccountStatementFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsAccountFeatureTest, NextPaymentDay) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kAccountStatementFeature, {{"next_payment_day", "5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(5, kNextPaymentDay.Get());
 }
 
 TEST(BraveAdsAccountFeatureTest, DefaultNextPaymentDay) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kNextPaymentDay.Get());
 }
 
@@ -58,9 +46,7 @@ TEST(BraveAdsAccountFeatureTest, DefaultNextPaymentDayWhenDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAccountStatementFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kNextPaymentDay.Get());
 }
 
@@ -71,18 +57,12 @@ TEST(BraveAdsAccountFeatureTest, MinEstimatedEarningsMultiplier) {
       kAccountStatementFeature,
       {{"minimum_estimated_earnings_multiplier", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kMinEstimatedEarningsMultiplier.Get());
 }
 
 TEST(BraveAdsAccountFeatureTest, DefaultMinEstimatedEarningsMultiplier) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.8, kMinEstimatedEarningsMultiplier.Get());
 }
 
@@ -92,9 +72,7 @@ TEST(BraveAdsAccountFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAccountStatementFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.8, kMinEstimatedEarningsMultiplier.Get());
 }
 

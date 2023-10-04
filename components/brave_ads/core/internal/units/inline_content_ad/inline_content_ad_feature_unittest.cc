@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveInlineContentAdFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kInlineContentAdFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveInlineContentAdFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kInlineContentAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kInlineContentAdFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveInlineContentAdFeatureTest, MaximumInlineContentAdsPerHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kInlineContentAdFeature, {{"maximum_ads_per_hour", "42"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(42, kMaximumInlineContentAdsPerHour.Get());
 }
 
 TEST(BraveInlineContentAdFeatureTest, DefaultMaximumInlineContentAdsPerHour) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(6, kMaximumInlineContentAdsPerHour.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveInlineContentAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kInlineContentAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(6, kMaximumInlineContentAdsPerHour.Get());
 }
 
@@ -71,18 +57,12 @@ TEST(BraveInlineContentAdFeatureTest, MaximumInlineContentAdsPerDay) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kInlineContentAdFeature, {{"maximum_ads_per_day", "24"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(24, kMaximumInlineContentAdsPerDay.Get());
 }
 
 TEST(BraveInlineContentAdFeatureTest, DefaultMaximumInlineContentAdsPerDay) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(20, kMaximumInlineContentAdsPerDay.Get());
 }
 
@@ -92,9 +72,7 @@ TEST(BraveInlineContentAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kInlineContentAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(20, kMaximumInlineContentAdsPerDay.Get());
 }
 

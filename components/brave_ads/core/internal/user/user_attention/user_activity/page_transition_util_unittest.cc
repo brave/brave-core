@@ -12,132 +12,80 @@
 namespace brave_ads {
 
 TEST(BraveAdsPageTransitionUtilTest, IsNewNavigation) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IsNewNavigation(kPageTransitionTyped));
 }
 
 TEST(BraveAdsPageTransitionUtilTest,
      DidUseBackOrFowardButtonToTriggerNavigation) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(
       DidUseBackOrFowardButtonToTriggerNavigation(kPageTransitionForwardBack));
 }
 
 TEST(BraveAdsPageTransitionUtilTest, DidUseAddressBarToTriggerNavigation) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(
       DidUseAddressBarToTriggerNavigation(kPageTransitionFromAddressBar));
 }
 
 TEST(BraveAdsPageTransitionUtilTest, DidNavigateToHomePage) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(DidNavigateToHomePage(kPageTransitionHomePage));
 }
 
 TEST(BraveAdsPageTransitionUtilTest, DidTransitionFromExternalApplication) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(DidTransitionFromExternalApplication(kPageTransitionFromAPI));
 }
 
 TEST(BraveAdsPageTransitionUtilTest, ToUserActivityClickedLinkEventType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(UserActivityEventType::kClickedLink,
             ToUserActivityEventType(kPageTransitionLink));
 }
 
 TEST(BraveAdsPageTransitionUtilTest, ToUserActivityTypedUrlEventType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(UserActivityEventType::kTypedUrl,
             ToUserActivityEventType(kPageTransitionTyped));
 }
 
 TEST(BraveAdsPageTransitionUtilTest, ToUserActivityClickedBookmarkEventType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(UserActivityEventType::kClickedBookmark,
             ToUserActivityEventType(kPageTransitionAutoBookmark));
 }
 
 TEST(BraveAdsPageTransitionUtilTest,
      ToUserActivityTypedAndSelectedNonUrlEventType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(UserActivityEventType::kTypedAndSelectedNonUrl,
             ToUserActivityEventType(kPageTransitionGenerated));
 }
 
 TEST(BraveAdsPageTransitionUtilTest, ToUserActivitySubmittedFormEventType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(UserActivityEventType::kSubmittedForm,
             ToUserActivityEventType(kPageTransitionFormSubmit));
 }
 
 TEST(BraveAdsPageTransitionUtilTest,
      ToUserActivityClickedReloadButtonEventType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(UserActivityEventType::kClickedReloadButton,
             ToUserActivityEventType(kPageTransitionReload));
 }
 
 TEST(BraveAdsPageTransitionUtilTest,
      ToUserActivityTypedKeywordOtherThanDefaultSearchProviderEventType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider,
             ToUserActivityEventType(kPageTransitionKeyword));
 }
 
 TEST(BraveAdsPageTransitionUtilTest, ToUserActivityGeneratedKeywordEventType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(UserActivityEventType::kGeneratedKeyword,
             ToUserActivityEventType(kPageTransitionKeywordGenerated));
 }

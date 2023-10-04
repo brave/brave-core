@@ -30,20 +30,16 @@ TEST_F(BraveAdsPriorityTest, PrioritizeNoCreativeAds) {
 TEST_F(BraveAdsPriorityTest, PrioritizeSingleCreativeAd) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-
   CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
   creative_ad.priority = 1;
   creative_ads.push_back(creative_ad);
 
-  // Act
-  const CreativeNotificationAdList prioritized_creative_ads =
-      PrioritizeCreativeAds(creative_ads);
-
-  // Assert
+  // Act & Assert
   const CreativeNotificationAdList expected_prioritized_creative_ads = {
       creative_ad};
-  EXPECT_EQ(expected_prioritized_creative_ads, prioritized_creative_ads);
+  EXPECT_EQ(expected_prioritized_creative_ads,
+            PrioritizeCreativeAds(creative_ads));
 }
 
 TEST_F(BraveAdsPriorityTest, PrioritizeMultipleCreativeAds) {
@@ -65,15 +61,11 @@ TEST_F(BraveAdsPriorityTest, PrioritizeMultipleCreativeAds) {
   creative_ad_3.priority = 1;
   creative_ads.push_back(creative_ad_3);
 
-  // Act
-  const CreativeNotificationAdList prioritized_creative_ads =
-      PrioritizeCreativeAds(creative_ads);
-
-  // Assert
+  // Act & Assert
   const CreativeNotificationAdList expected_prioritized_creative_ads = {
       creative_ad_1, creative_ad_3};
   EXPECT_THAT(expected_prioritized_creative_ads,
-              ::testing::ElementsAreArray(prioritized_creative_ads));
+              ::testing::ElementsAreArray(PrioritizeCreativeAds(creative_ads)));
 }
 
 TEST_F(BraveAdsPriorityTest, DoNotPrioritizeZeroPriorityCreativeAds) {
@@ -90,14 +82,11 @@ TEST_F(BraveAdsPriorityTest, DoNotPrioritizeZeroPriorityCreativeAds) {
   creative_ad_2.priority = 0;
   creative_ads.push_back(creative_ad_2);
 
-  // Act
-  const CreativeNotificationAdList prioritized_creative_ads =
-      PrioritizeCreativeAds(creative_ads);
-
-  // Assert
+  // Act & Assert
   const CreativeNotificationAdList expected_prioritized_creative_ads = {
       creative_ad_1};
-  EXPECT_EQ(expected_prioritized_creative_ads, prioritized_creative_ads);
+  EXPECT_EQ(expected_prioritized_creative_ads,
+            PrioritizeCreativeAds(creative_ads));
 }
 
 }  // namespace brave_ads

@@ -71,11 +71,7 @@ class BraveAdsInvalidDatabaseMigrationTest
 };
 
 TEST_P(BraveAdsInvalidDatabaseMigrationTest, MigrateFromSchema) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(did_create_database_);
   EXPECT_FALSE(did_migrate_database_);
   EXPECT_FALSE(failed_to_migrate_database_);

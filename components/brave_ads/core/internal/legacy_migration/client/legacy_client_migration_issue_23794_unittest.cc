@@ -32,13 +32,11 @@ TEST_F(BraveAdsLegacyClientMigrationIssue23794Test, Migrate) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
                                              kClientStateFilename));
 
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true));
-
-  // Act
   MigrateClientState(callback.Get());
 
-  // Assert
   EXPECT_TRUE(HasMigratedClientState());
 }
 

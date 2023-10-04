@@ -39,9 +39,7 @@ TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
 
   targeting_->MockLatentInterest();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_latent_interest_segments =
       TargetingHelperForTesting::LatentInterestExpectation().segments;
   EXPECT_EQ(expected_latent_interest_segments, BuildLatentInterestSegments());

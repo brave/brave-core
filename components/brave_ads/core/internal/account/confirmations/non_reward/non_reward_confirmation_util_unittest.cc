@@ -43,6 +43,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
+  // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&transaction](const UserDataInfo& user_data) {
@@ -58,10 +59,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
                   BuildNonRewardConfirmation(transaction, user_data));
       });
 
-  // Act
   BuildConfirmationUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
@@ -71,9 +69,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
 
   const TransactionInfo transaction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DEATH(BuildNonRewardConfirmation(transaction, /*user_data*/ {}),
                "Check failed: transaction.IsValid*");
 }
@@ -85,9 +81,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DEATH(BuildNonRewardConfirmation(transaction, /*user_data*/ {}),
                "Check failed: !UserHasJoinedBraveRewards*");
 }

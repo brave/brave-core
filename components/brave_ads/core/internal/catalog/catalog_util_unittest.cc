@@ -27,7 +27,7 @@ TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   ResetCatalog();
 
   // Assert
-  EXPECT_EQ("", ads_client_mock_.GetStringPref(prefs::kCatalogId));
+  EXPECT_TRUE(ads_client_mock_.GetStringPref(prefs::kCatalogId).empty());
   EXPECT_EQ(0, ads_client_mock_.GetIntegerPref(prefs::kCatalogVersion));
   EXPECT_EQ(7'200'000, ads_client_mock_.GetInt64Pref(prefs::kCatalogPing));
   EXPECT_TRUE(
@@ -38,9 +38,7 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogExists) {
   // Arrange
   SetCatalogVersion(1);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(DoesCatalogExist());
 }
 
@@ -48,9 +46,7 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogDoesNotExist) {
   // Arrange
   SetCatalogVersion(0);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DoesCatalogExist());
 }
 
@@ -58,9 +54,7 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogHasChanged) {
   // Arrange
   SetCatalogId(kCatalogId);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(
       HasCatalogChanged(/*catalog_id*/ "150a9518-4db8-4fba-b104-0c420a1d9c0c"));
 }
@@ -69,9 +63,7 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotChanged) {
   // Arrange
   SetCatalogId(kCatalogId);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(HasCatalogChanged(kCatalogId));
 }
 
@@ -79,10 +71,9 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogHasExpired) {
   // Arrange
   SetCatalogLastUpdated(Now());
 
-  // Act
   AdvanceClockBy(base::Days(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(HasCatalogExpired());
 }
 
@@ -90,10 +81,9 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotExpired) {
   // Arrange
   SetCatalogLastUpdated(Now());
 
-  // Act
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(HasCatalogExpired());
 }
 

@@ -67,16 +67,14 @@ TEST_F(BraveAdsConfirmationQueueTest, AddRewardConfirmationToQueue) {
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
+  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
+
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
   EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
                                   *confirmation, Now() + base::Seconds(7)));
-
-  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
-
-  // Act
   confirmation_queue_->Add(*confirmation);
 
-  // Assert
   EXPECT_TRUE(HasPendingTasks());
 }
 
@@ -91,16 +89,14 @@ TEST_F(BraveAdsConfirmationQueueTest, AddNonRewardConfirmationToQueue) {
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
+  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
+
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
   EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
                                   *confirmation, Now() + base::Seconds(7)));
-
-  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
-
-  // Act
   confirmation_queue_->Add(*confirmation);
 
-  // Assert
   EXPECT_TRUE(HasPendingTasks());
 }
 
@@ -136,14 +132,10 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessRewardConfirmationInQueue) {
 
   confirmation_queue_->Add(*confirmation);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
-
   EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
-
-  // Act
   FastForwardClockToNextPendingTask();
-
-  // Assert
 }
 
 TEST_F(BraveAdsConfirmationQueueTest, ProcessNonRewardConfirmationQueue) {
@@ -172,14 +164,10 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessNonRewardConfirmationQueue) {
 
   confirmation_queue_->Add(*confirmation);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
-
   EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
-
-  // Act
   FastForwardClockToNextPendingTask();
-
-  // Assert
 }
 
 TEST_F(BraveAdsConfirmationQueueTest,
@@ -216,7 +204,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
 
     confirmation_queue_->Add(*confirmation);
 
-    EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
+    ASSERT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
   }
 
   {
@@ -224,7 +212,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
 
     confirmation_queue_->Add(*confirmation);
 
-    EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
+    ASSERT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
   }
 
   EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
@@ -235,18 +223,14 @@ TEST_F(BraveAdsConfirmationQueueTest,
 
   ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(21));
 
-  // Act
   FastForwardClockToNextPendingTask();
 
+  // Act & Assert
   RemoveAllPaymentTokens();  // Force |MaybeAddPaymentToken| to succeed.
 
   EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
-
   EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
-
   FastForwardClockToNextPendingTask();
-
-  // Assert
 }
 
 TEST_F(BraveAdsConfirmationQueueTest,
@@ -267,7 +251,6 @@ TEST_F(BraveAdsConfirmationQueueTest,
       BuildNonRewardConfirmation(transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
   {
     EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
     EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
@@ -277,7 +260,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
 
     confirmation_queue_->Add(*confirmation);
 
-    EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
+    ASSERT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
   }
 
   {
@@ -285,7 +268,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
 
     confirmation_queue_->Add(*confirmation);
 
-    EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
+    ASSERT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
   }
 
   EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
@@ -295,16 +278,12 @@ TEST_F(BraveAdsConfirmationQueueTest,
               OnWillProcessConfirmationQueue(
                   *confirmation, Now() + base::Seconds(7) + base::Seconds(21)));
 
-  // Act
   FastForwardClockToNextPendingTask();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
-
   EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
-
   FastForwardClockToNextPendingTask();
-
-  // Assert
 }
 
 }  // namespace brave_ads

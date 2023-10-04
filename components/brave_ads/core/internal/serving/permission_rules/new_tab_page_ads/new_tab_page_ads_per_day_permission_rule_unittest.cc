@@ -20,11 +20,7 @@ class BraveAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -34,9 +30,7 @@ TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
   RecordAdEventsForTesting(AdType::kNewTabPageAd, ConfirmationType::kServed,
                            /*count*/ kMaximumNewTabPageAdsPerDay.Get() - 1);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -46,10 +40,9 @@ TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
   RecordAdEventsForTesting(AdType::kNewTabPageAd, ConfirmationType::kServed,
                            /*count*/ kMaximumNewTabPageAdsPerDay.Get());
 
-  // Act
   AdvanceClockBy(base::Days(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -59,10 +52,9 @@ TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
   RecordAdEventsForTesting(AdType::kNewTabPageAd, ConfirmationType::kServed,
                            /*count*/ kMaximumNewTabPageAdsPerDay.Get());
 
-  // Act
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

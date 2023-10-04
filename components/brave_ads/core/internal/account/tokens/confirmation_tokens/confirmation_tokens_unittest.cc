@@ -23,9 +23,7 @@ TEST_F(BraveAdsConfirmationTokensTest, GetToken) {
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.SetTokens(tokens);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(tokens.at(0), confirmation_tokens.GetToken());
 }
 
@@ -38,9 +36,7 @@ TEST_F(BraveAdsConfirmationTokensTest, GetAllTokens) {
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.SetTokens(tokens);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(tokens, confirmation_tokens.GetAllTokens());
 }
 
@@ -171,9 +167,7 @@ TEST_F(BraveAdsConfirmationTokensTest, TokenDoesExist) {
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.SetTokens({confirmation_token});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(confirmation_tokens.TokenExists(confirmation_token));
 }
 
@@ -181,9 +175,7 @@ TEST_F(BraveAdsConfirmationTokensTest, TokenDoesNotExist) {
   // Arrange
   ConfirmationTokens confirmation_tokens;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       confirmation_tokens.TokenExists(BuildConfirmationTokenForTesting()));
 }
@@ -193,9 +185,7 @@ TEST_F(BraveAdsConfirmationTokensTest, Count) {
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.SetTokens(BuildConfirmationTokensForTesting(/*count*/ 3));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, confirmation_tokens.Count());
 }
 
@@ -203,9 +193,7 @@ TEST_F(BraveAdsConfirmationTokensTest, IsEmpty) {
   // Arrange
   const ConfirmationTokens confirmation_tokens;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(confirmation_tokens.IsEmpty());
 }
 
@@ -217,9 +205,7 @@ TEST_F(BraveAdsConfirmationTokensTest, IsNotEmpty) {
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.SetTokens({confirmation_token});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(confirmation_tokens.IsEmpty());
 }
 

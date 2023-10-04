@@ -11,13 +11,11 @@
 
 namespace brave_ads::database::table {
 
-TEST(BraveAdsDepositsDatabaseTableTest, TableName) {
+TEST(BraveAdsDepositsDatabaseTableTest, GetTableName) {
   // Arrange
   const Deposits database_table;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("deposits", database_table.GetTableName());
 }
 

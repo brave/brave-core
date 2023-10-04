@@ -23,9 +23,7 @@ TEST_F(BraveAdsPaymentTokensTest, GetToken) {
   PaymentTokens payment_tokens;
   payment_tokens.SetTokens(tokens);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const PaymentTokenInfo& expected_token = tokens.at(0);
   EXPECT_EQ(expected_token, payment_tokens.GetToken());
 }
@@ -35,9 +33,7 @@ TEST_F(BraveAdsPaymentTokensTest, GetAllTokens) {
   PaymentTokens payment_tokens;
   payment_tokens.SetTokens(BuildPaymentTokensForTesting(/*count*/ 2));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(BuildPaymentTokensForTesting(/*count*/ 2),
             payment_tokens.GetAllTokens());
 }
@@ -161,9 +157,7 @@ TEST_F(BraveAdsPaymentTokensTest, TokenDoesExist) {
   PaymentTokens payment_tokens;
   payment_tokens.SetTokens({payment_token});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(payment_tokens.TokenExists(payment_token));
 }
 
@@ -171,9 +165,7 @@ TEST_F(BraveAdsPaymentTokensTest, TokenDoesNotExist) {
   // Arrange
   PaymentTokens payment_tokens;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(payment_tokens.TokenExists(BuildPaymentTokenForTesting()));
 }
 
@@ -182,9 +174,7 @@ TEST_F(BraveAdsPaymentTokensTest, Count) {
   PaymentTokens payment_tokens;
   payment_tokens.SetTokens(BuildPaymentTokensForTesting(/*count*/ 3));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3U, payment_tokens.Count());
 }
 
@@ -192,9 +182,7 @@ TEST_F(BraveAdsPaymentTokensTest, IsEmpty) {
   // Arrange
   const PaymentTokens payment_tokens;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(payment_tokens.IsEmpty());
 }
 
@@ -203,9 +191,7 @@ TEST_F(BraveAdsPaymentTokensTest, IsNotEmpty) {
   PaymentTokens payment_tokens;
   payment_tokens.SetTokens(BuildPaymentTokensForTesting(/*count*/ 1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(payment_tokens.IsEmpty());
 }
 

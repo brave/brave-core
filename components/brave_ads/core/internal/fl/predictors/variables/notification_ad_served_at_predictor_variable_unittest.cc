@@ -21,9 +21,7 @@ TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest, GetDataType) {
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<NotificationAdServedAtPredictorVariable>(Now());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kDouble,
             predictor_variable->GetDataType());
 }
@@ -34,9 +32,7 @@ TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest, GetValue) {
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<NotificationAdServedAtPredictorVariable>(now);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("13210646400000000", predictor_variable->GetValue());
 }
 
@@ -46,9 +42,7 @@ TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest,
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<NotificationAdServedAtPredictorVariable>(base::Time());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 

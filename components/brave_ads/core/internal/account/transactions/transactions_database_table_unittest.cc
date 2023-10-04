@@ -19,8 +19,6 @@ namespace brave_ads::database::table {
 class BraveAdsTransactionsDatabaseTableTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
-  // Arrange
-
   // Act
   SaveTransactionsForTesting({});
 
@@ -101,14 +99,12 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
 
   SaveTransactionsForTesting(transactions);
 
+  const Transactions database_table;
+
+  // Act & Assert
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true, TransactionList{transaction_2}));
-
-  // Act
-  const Transactions database_table;
   database_table.GetForDateRange(Now(), DistantFuture(), callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
@@ -137,8 +133,9 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   base::MockCallback<ResultCallback> update_callback;
   EXPECT_CALL(update_callback, Run(/*success*/ true));
 
-  // Act
   const Transactions database_table;
+
+  // Act
   database_table.Update(payment_tokens, update_callback.Get());
 
   // Assert
@@ -169,8 +166,9 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   base::MockCallback<ResultCallback> delete_callback;
   EXPECT_CALL(delete_callback, Run(/*success*/ true));
 
-  // Act
   const Transactions database_table;
+
+  // Act
   database_table.Delete(delete_callback.Get());
 
   // Assert
@@ -180,13 +178,11 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   database_table.GetAll(callback.Get());
 }
 
-TEST_F(BraveAdsTransactionsDatabaseTableTest, TableName) {
+TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTableName) {
   // Arrange
   const Transactions database_table;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("transactions", database_table.GetTableName());
 }
 

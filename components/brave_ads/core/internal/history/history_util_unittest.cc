@@ -33,8 +33,6 @@ HistoryItemInfo BuildAndAddHistoryItem() {
 class BraveAdsHistoryUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsHistoryUtilTest, AddHistory) {
-  // Arrange
-
   // Act
   const HistoryItemInfo history_item = BuildAndAddHistoryItem();
 

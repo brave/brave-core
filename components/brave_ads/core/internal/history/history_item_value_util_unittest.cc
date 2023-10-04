@@ -96,11 +96,9 @@ TEST_F(BraveAdsHistoryItemValueUtilTest, FromValue) {
 
   const base::Value::List list = base::test::ParseJsonList(kJson);
 
-  // Act
-  const HistoryItemList history_items = HistoryItemsFromValue(list);
-
-  // Assert
-  EXPECT_THAT(history_items, ::testing::ElementsAreArray(BuildHistoryItems()));
+  // Act & Assert
+  EXPECT_THAT(HistoryItemsFromValue(list),
+              ::testing::ElementsAreArray(BuildHistoryItems()));
 }
 
 TEST_F(BraveAdsHistoryItemValueUtilTest, ToValue) {
@@ -109,9 +107,7 @@ TEST_F(BraveAdsHistoryItemValueUtilTest, ToValue) {
 
   const HistoryItemList history_items = BuildHistoryItems();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonList(kJson),
             HistoryItemsToValue(history_items));
 }

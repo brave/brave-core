@@ -54,7 +54,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
-  // Act
+  // Act & Assert
   TriggerSearchResultAdEvent(
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
@@ -64,8 +64,6 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
@@ -75,13 +73,13 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
 
   SearchResultAd::DeferTriggeringOfAdViewedEvent();
 
-  // Act
   TriggerSearchResultAdEvent(
       // This ad viewed event triggering will be deferred.
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
+  // Act & Assert
   TriggerSearchResultAdEvent(
       // This ad viewed event will be queued as the previous ad viewed event has
       // not completed.
@@ -90,8 +88,6 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
       /*should_fire*/ true);
 
   SearchResultAd::TriggerDeferredAdViewedEvent();
-
-  // Assert
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
@@ -106,12 +102,10 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
                              mojom::SearchResultAdEventType::kViewed,
                              /*should_fire*/ true);
 
-  // Act
+  // Act & Assert
   TriggerSearchResultAdEvent(search_result_ad.Clone(),
                              mojom::SearchResultAdEventType::kClicked,
                              /*should_fire*/ true);
-
-  // Assert
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
@@ -122,7 +116,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
   DisableBraveRewardsForTesting();
 
-  // Act
+  // Act & Assert
   TriggerSearchResultAdEvent(
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
@@ -132,8 +126,6 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
-
-  // Assert
 }
 
 TEST_F(
@@ -142,13 +134,11 @@ TEST_F(
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
+  // Act & Assert
   TriggerSearchResultAdEvent(
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ false);
-
-  // Assert
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
@@ -161,13 +151,13 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
   SearchResultAd::DeferTriggeringOfAdViewedEvent();
 
-  // Act
   TriggerSearchResultAdEvent(
       // This ad viewed event triggering will be deferred.
       BuildSearchResultAdForTesting(/*should_use_random_uuids*/ true),
       mojom::SearchResultAdEventType::kViewed,
       /*should_fire*/ true);
 
+  // Act & Assert
   TriggerSearchResultAdEvent(
       // This ad viewed event will be queued as the previous ad viewed event has
       // not completed.
@@ -176,8 +166,6 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
       /*should_fire*/ true);
 
   SearchResultAd::TriggerDeferredAdViewedEvent();
-
-  // Assert
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
@@ -195,12 +183,10 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
                              mojom::SearchResultAdEventType::kViewed,
                              /*should_fire*/ true);
 
-  // Act
+  // Act & Assert
   TriggerSearchResultAdEvent(search_result_ad.Clone(),
                              mojom::SearchResultAdEventType::kClicked,
                              /*should_fire*/ true);
-
-  // Assert
 }
 
 TEST_F(
@@ -216,12 +202,10 @@ TEST_F(
                              mojom::SearchResultAdEventType::kViewed,
                              /*should_fire*/ false);
 
-  // Act
+  // Act & Assert
   TriggerSearchResultAdEvent(search_result_ad.Clone(),
                              mojom::SearchResultAdEventType::kClicked,
                              /*should_fire*/ false);
-
-  // Assert
 }
 
 }  // namespace brave_ads

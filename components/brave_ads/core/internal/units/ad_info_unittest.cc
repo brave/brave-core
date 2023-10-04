@@ -19,9 +19,7 @@ TEST_F(BraveAdsAdInfoTest, IsValid) {
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
                                       /*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ad.IsValid());
 }
 
@@ -29,9 +27,7 @@ TEST_F(BraveAdsAdInfoTest, IsInvalid) {
   // Arrange
   const AdInfo ad;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ad.IsValid());
 }
 

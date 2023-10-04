@@ -63,14 +63,11 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
 
   SaveTransactionsForTesting(transactions);
 
+  // Act & Assert
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true,
                             TransactionList{transaction_2, transaction_3}));
-
-  // Act
   GetTransactionsForDateRange(Now(), DistantFuture(), callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsTransactionsTest, RemoveAll) {
@@ -89,13 +86,10 @@ TEST_F(BraveAdsTransactionsTest, RemoveAll) {
 
   SaveTransactionsForTesting(transactions);
 
+  // Act & Assert
   base::MockCallback<RemoveAllTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true));
-
-  // Act
   RemoveAllTransactions(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

@@ -20,9 +20,7 @@ TEST_F(BraveAdsVectorDataTest, DenseVectorDataInitialization) {
   const std::vector<float> vector_5{1.0F, 2.0F, 3.0F, 4.0F, 5.0F};
   const VectorData dense_vector_data_5(vector_5);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(vector_5.size(), dense_vector_data_5.GetDimensionCount());
 }
 
@@ -34,9 +32,7 @@ TEST_F(BraveAdsVectorDataTest, SparseVectorDataInitialization) {
       {0U, 1.0}, {2U, 3.0}, {3U, -2.0}};
   const VectorData sparse_vector_data_6(kDimensionCount, sparse_vector_6);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kDimensionCount, sparse_vector_data_6.GetDimensionCount());
 }
 

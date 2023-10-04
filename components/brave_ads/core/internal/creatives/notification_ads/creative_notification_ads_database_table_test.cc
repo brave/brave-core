@@ -33,19 +33,16 @@ class BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
        GetForSegments) {
   // Arrange
+  const database::table::CreativeNotificationAds database_table;
+
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
   EXPECT_CALL(callback,
               Run(/*success*/ true, SegmentList{"technology & computing"},
                   ::testing::SizeIs(2)));
-
-  const database::table::CreativeNotificationAds database_table;
-
-  // Act
   database_table.GetForSegments(
       /*segments*/ {"technology & computing"}, callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

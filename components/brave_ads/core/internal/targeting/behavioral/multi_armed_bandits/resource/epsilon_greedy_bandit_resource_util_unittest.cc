@@ -26,8 +26,6 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceUtilTest, SetEligibleSegments) {
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceUtilTest, SetNoEligibleSegments) {
-  // Arrange
-
   // Act
   SetEpsilonGreedyBanditEligibleSegments({});
 

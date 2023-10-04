@@ -100,10 +100,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   NotifyDidInitializeAds();
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
-
-  // Act
   ads_client_mock_.SetBooleanPref(prefs::kOptedInToNotificationAds, false);
 }
 
@@ -116,10 +114,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
   NotifyDidInitializeAds();
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
-
-  // Act
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
   ads_client_mock_.SetBooleanPref(brave_news::prefs::kNewTabPageShowToday,
                                   false);
@@ -267,8 +263,6 @@ TEST_F(BraveAdsSubdivisionTargetingTest, ShouldAllowIfSubdivisionCodeNotValid) {
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAutoDetectAndNotAllowIfSubdivisionCodeIsEmpty) {
-  // Arrange
-
   // Act
   NotifyDidInitializeAds();
 

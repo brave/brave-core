@@ -26,9 +26,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(DidReconcileTransactionsThisMonth(transactions));
 }
 
@@ -45,9 +43,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DidReconcileTransactionsThisMonth(transactions));
 }
 
@@ -64,9 +60,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(DidReconcileTransactionsLastMonth(transactions));
 }
 
@@ -81,9 +75,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DidReconcileTransactionsLastMonth(transactions));
 }
 
@@ -95,9 +87,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(DidReconcileTransaction(transaction));
 }
 
@@ -109,9 +99,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DidReconcileTransaction(transaction));
 }
 
@@ -124,9 +112,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
       /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
       /*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(DidReconcileTransactionWithinDateRange(transaction, DistantPast(),
                                                      Now()));
 }
@@ -140,9 +126,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DidReconcileTransactionWithinDateRange(
       transaction, Now() + base::Milliseconds(1), DistantFuture()));
 }

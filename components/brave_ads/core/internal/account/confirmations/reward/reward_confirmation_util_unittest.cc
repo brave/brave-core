@@ -56,9 +56,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       R"(eyJzaWduYXR1cmUiOiJrM3hJalZwc0FYTGNHL0NKRGVLQVphN0g3aGlrMVpyUThIOVpEZC9KVU1SQWdtYk5WY0V6VnhRb2dDZDBjcmlDZnZCQWtsd1hybWNyeVBaaFUxMlg3Zz09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)",
       BuildRewardCredential(*confirmation));
@@ -74,6 +72,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
+  // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([=](const UserDataInfo& user_data) {
     const absl::optional<ConfirmationInfo> confirmation =
@@ -122,10 +121,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
     EXPECT_EQ(expected_confirmation, confirmation);
   });
 
-  // Act
   BuildConfirmationUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
@@ -137,9 +133,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(BuildRewardConfirmation(&token_generator_mock_, transaction,
                                        /*user_data*/ {}));
 }
@@ -151,9 +145,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DEATH(BuildRewardConfirmation(/*token_generator*/ nullptr, transaction,
                                        /*user_data*/
                                        {}),
@@ -165,9 +157,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
   // Arrange
   const TransactionInfo transaction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DEATH(BuildRewardConfirmation(&token_generator_mock_, transaction,
                                        /*user_data*/ {}),
                "Check failed: transaction.IsValid*");
@@ -182,9 +172,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DEATH(BuildRewardConfirmation(&token_generator_mock_, transaction,
                                        /*user_data*/ {}),
                "Check failed: UserHasJoinedBraveRewards*");

@@ -38,12 +38,7 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableTest,
                              /*should_use_random_uuids*/ true);
   ad_events.push_back(ad_event);
 
-  // Act
-  const CreativeAdPredictorInputVariableInfo input_variable =
-      ComputeCreativeAdPredictorInputVariable(creative_ad, user_model,
-                                              ad_events);
-
-  // Assert
+  // Act & Assert
   CreativeAdPredictorInputVariableInfo expected_input_variable;
   expected_input_variable.intent_segment.does_match_child = true;
   expected_input_variable.intent_segment.does_match_parent = true;
@@ -53,8 +48,8 @@ TEST_F(BraveAdsCreativeAdPredictorInputVariableTest,
   expected_input_variable.interest_segment.does_match_parent = true;
   expected_input_variable.last_seen_ad = base::Hours(7);
   expected_input_variable.last_seen_advertiser = base::Hours(7);
-
-  EXPECT_EQ(expected_input_variable, input_variable);
+  EXPECT_EQ(expected_input_variable, ComputeCreativeAdPredictorInputVariable(
+                                         creative_ad, user_model, ad_events));
 }
 
 }  // namespace brave_ads

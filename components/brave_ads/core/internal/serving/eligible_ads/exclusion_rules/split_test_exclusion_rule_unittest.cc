@@ -41,9 +41,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -54,9 +52,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.split_test_group = "GroupA";
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -70,9 +66,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
       CreateFieldTrial(kTrialName);
   field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -87,9 +81,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
       CreateFieldTrial(kTrialName);
   field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -104,9 +96,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
       CreateFieldTrial(kTrialName);
   field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 

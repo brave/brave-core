@@ -16,11 +16,7 @@ class BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest,
        ParseVerifableConversionIdFromHtmlMetaTag) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("fred",
             MaybeParseVerifableConversionIdFromHtmlMetaTag(
                 /*html*/ R"(<meta name="ad-conversion-id" content="fred">)"));
@@ -28,22 +24,14 @@ TEST_F(BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest,
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest,
        DoNotParseMismatchingVerifableConversionIdFromEmptyHtmlMetaTag) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtmlMetaTag(
       /*html*/ R"(<meta name="foo" content="bar">)"));
 }
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest,
        DoNotParseVerifableConversionIdFromEmptyHtmlMetaTag) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtmlMetaTag(/*html*/ {}));
 }
 

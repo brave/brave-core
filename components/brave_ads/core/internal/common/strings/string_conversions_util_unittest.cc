@@ -19,26 +19,16 @@ const std::vector<float> kTestVector = {1.2F, 2.3F, 3.4F, 4.5F, 5.6F};
 }  // namespace
 
 TEST(BraveAdsStringConversionsUtilTest, TrueBoolToString) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("true", BoolToString(true));
 }
 
 TEST(BraveAdsStringConversionsUtilTest, FalseBoolToString) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("false", BoolToString(false));
 }
 
 TEST(BraveAdsStringConversionsUtilTest, DelimitedStringToVector) {
-  // Arrange
-
   // Act
   const std::vector<float> vector =
       DelimitedStringToVector("1.2,2.3,3.4,4.5,5.6", kDelimiter);
@@ -50,8 +40,6 @@ TEST(BraveAdsStringConversionsUtilTest, DelimitedStringToVector) {
 }
 
 TEST(BraveAdsStringConversionsUtilTest, VectorToDelimitedString) {
-  // Arrange
-
   // Act
   const std::vector<float> string_vector = DelimitedStringToVector(
       VectorToDelimitedString(kTestVector, kDelimiter), kDelimiter);
@@ -65,8 +53,6 @@ TEST(BraveAdsStringConversionsUtilTest, VectorToDelimitedString) {
 }
 
 TEST(BraveAdsStringConversionsUtilTest, ReflexiveVectorToDelimitedString) {
-  // Arrange
-
   // Act
   const std::vector<float> string_vector = DelimitedStringToVector(
       VectorToDelimitedString(kTestVector, kDelimiter), kDelimiter);

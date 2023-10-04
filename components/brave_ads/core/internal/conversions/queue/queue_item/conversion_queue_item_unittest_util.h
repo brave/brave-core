@@ -19,10 +19,10 @@ ConversionQueueItemList BuildConversionQueueItemsForTesting(
     const ConversionInfo& conversion,
     size_t count);
 
-void SaveConversionQueueItemsForTesting(
+void SaveConversionQueueForTesting(
     const ConversionQueueItemList& conversion_queue_items);
 
-void BuildAndSaveConversionQueueItemsForTesting(
+void BuildAndSaveConversionQueueForTesting(
     const AdType& ad_type,
     const ConfirmationType& confirmation_type,
     bool is_verifiable,

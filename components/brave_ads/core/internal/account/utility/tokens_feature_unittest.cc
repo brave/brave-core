@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsTokensFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kAccountTokensFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsTokensFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAccountTokensFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kAccountTokensFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsTokensFeatureTest, MinConfirmationTokens) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kAccountTokensFeature, {{"minimum_confirmation_tokens", "7"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kMinConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMinConfirmationTokens) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(20, kMinConfirmationTokens.Get());
 }
 
@@ -58,9 +46,7 @@ TEST(BraveAdsTokensFeatureTest, DefaultMinConfirmationTokensWhenDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAccountTokensFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(20, kMinConfirmationTokens.Get());
 }
 
@@ -70,18 +56,12 @@ TEST(BraveAdsTokensFeatureTest, MaxConfirmationTokens) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kAccountTokensFeature, {{"maximum_confirmation_tokens", "21"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(21, kMaxConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMaxConfirmationTokens) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(50, kMaxConfirmationTokens.Get());
 }
 
@@ -90,9 +70,7 @@ TEST(BraveAdsTokensFeatureTest, DefaultMaxConfirmationTokensWhenDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAccountTokensFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(50, kMaxConfirmationTokens.Get());
 }
 

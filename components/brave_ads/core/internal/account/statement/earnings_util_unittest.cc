@@ -50,22 +50,16 @@ TEST_F(BraveAdsEarningsUtilTest, GetUnreconciledEarnings) {
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_5);
 
-  // Act
-  const double earnings = GetUnreconciledEarnings(transactions);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.09, earnings);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.09, GetUnreconciledEarnings(transactions));
 }
 
 TEST_F(BraveAdsEarningsUtilTest, GetUnreconciledEarningsForNoTransactions) {
   // Arrange
   const TransactionList transactions;
 
-  // Act
-  const double earnings = GetUnreconciledEarnings(transactions);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, earnings);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0, GetUnreconciledEarnings(transactions));
 }
 
 TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
@@ -113,11 +107,8 @@ TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_7);
 
-  // Act
-  const double earnings = GetReconciledEarningsForThisMonth(transactions);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.08, earnings);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.08, GetReconciledEarningsForThisMonth(transactions));
 }
 
 TEST_F(BraveAdsEarningsUtilTest,
@@ -156,11 +147,8 @@ TEST_F(BraveAdsEarningsUtilTest,
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_5);
 
-  // Act
-  const double earnings = GetReconciledEarningsForThisMonth(transactions);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, earnings);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0, GetReconciledEarningsForThisMonth(transactions));
 }
 
 TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
@@ -213,11 +201,8 @@ TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_8);
 
-  // Act
-  const double earnings = GetReconciledEarningsForLastMonth(transactions);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.12, earnings);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.12, GetReconciledEarningsForLastMonth(transactions));
 }
 
 TEST_F(BraveAdsEarningsUtilTest,
@@ -261,11 +246,8 @@ TEST_F(BraveAdsEarningsUtilTest,
       /*should_use_random_uuids*/ true);
   transactions.push_back(transaction_6);
 
-  // Act
-  const double earnings = GetReconciledEarningsForLastMonth(transactions);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, earnings);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(0.0, GetReconciledEarningsForLastMonth(transactions));
 }
 
 }  // namespace brave_ads

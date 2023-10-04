@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsNotificationAdFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kNotificationAdFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsNotificationAdFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kNotificationAdFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsNotificationAdFeatureTest, DefaultNotificationAdsPerHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdFeature, {{"default_ads_per_hour", "42"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(42, kDefaultNotificationAdsPerHour.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest, DefaultDefaultNotificationAdsPerHour) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(10, kDefaultNotificationAdsPerHour.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsNotificationAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(10, kDefaultNotificationAdsPerHour.Get());
 }
 
@@ -71,18 +57,12 @@ TEST(BraveAdsNotificationAdFeatureTest, MaximumNotificationAdsPerDay) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdFeature, {{"maximum_ads_per_day", "24"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(24, kMaximumNotificationAdsPerDay.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest, DefaultMaximumNotificationAdsPerDay) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(100, kMaximumNotificationAdsPerDay.Get());
 }
 
@@ -92,10 +72,14 @@ TEST(BraveAdsNotificationAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(100, kMaximumNotificationAdsPerDay.Get());
+}
+
+TEST(BraveAdsNotificationAdFeatureTest,
+     CanFallbackToCustomNotificationAdsDefault) {
+  // Act & Assert
+  EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest, CanFallbackToCustomNotificationAds) {
@@ -105,19 +89,13 @@ TEST(BraveAdsNotificationAdFeatureTest, CanFallbackToCustomNotificationAds) {
       kNotificationAdFeature,
       {{"can_fallback_to_custom_notifications", "true"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kCanFallbackToCustomNotificationAds.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest,
      DefaultCanFallbackToCustomNotificationAds) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
 }
 
@@ -127,9 +105,7 @@ TEST(BraveAdsNotificationAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
 }
 

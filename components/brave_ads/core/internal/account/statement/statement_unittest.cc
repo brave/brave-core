@@ -36,6 +36,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
 
   SaveTransactionsForTesting(transactions);
 
+  // Act & Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month = 0.0;
   expected_statement->max_earnings_last_month = 0.0;
@@ -49,11 +50,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
-
-  // Act
   BuildStatement(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsStatementTest,
@@ -109,6 +106,7 @@ TEST_F(BraveAdsStatementTest,
 
   SaveTransactionsForTesting(transactions);
 
+  // Act & Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month =
       0.01 * kMinEstimatedEarningsMultiplier.Get();
@@ -123,11 +121,7 @@ TEST_F(BraveAdsStatementTest,
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
-
-  // Act
   BuildStatement(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
@@ -170,6 +164,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
 
   SaveTransactionsForTesting(transactions);
 
+  // Act & Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month =
       0.01 * kMinEstimatedEarningsMultiplier.Get();
@@ -184,17 +179,14 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
-
-  // Act
   BuildStatement(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
   // Arrange
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
+  // Act & Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month = 0.0;
   expected_statement->max_earnings_last_month = 0.0;
@@ -207,11 +199,7 @@ TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
-
-  // Act
   BuildStatement(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
@@ -245,6 +233,7 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
 
   SaveTransactionsForTesting(transactions);
 
+  // Act & Assert
   mojom::StatementInfoPtr expected_statement = mojom::StatementInfo::New();
   expected_statement->min_earnings_last_month =
       0.01 * kMinEstimatedEarningsMultiplier.Get();
@@ -260,11 +249,7 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
-
-  // Act
   BuildStatement(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

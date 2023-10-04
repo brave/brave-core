@@ -17,8 +17,6 @@ namespace brave_ads {
 class BraveAdsPredictorsManagerTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPredictorsManagerTest, GetTrainingSample) {
-  // Arrange
-
   // Act
   const std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample =
       PredictorsManager::GetInstance().GetTrainingSample();

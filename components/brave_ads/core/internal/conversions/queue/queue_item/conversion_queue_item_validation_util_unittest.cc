@@ -35,9 +35,7 @@ TEST(BraveAdsValidationUtilTest, InvalidConversionQueueItem) {
       BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
   conversion_queue_items[0].process_at = base::Time();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("ad_type,process_at", GetConversionQueueItemInvalidFieldsNames(
                                       conversion_queue_items[0]));
 }
@@ -53,9 +51,7 @@ TEST(BraveAdsValidationUtilTest, ValidConversionQueueItem) {
   const ConversionQueueItemList conversion_queue_items =
       BuildConversionQueueItemsForTesting(conversion, /*count*/ 1);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       "", GetConversionQueueItemInvalidFieldsNames(conversion_queue_items[0]));
 }

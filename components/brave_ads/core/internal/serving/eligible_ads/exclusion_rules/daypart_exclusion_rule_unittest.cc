@@ -34,9 +34,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, ShouldIncludeIfNoDayparts) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -52,9 +50,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   daypart.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
   creative_ad.dayparts.push_back(daypart);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -70,9 +66,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   daypart.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
   creative_ad.dayparts.push_back(daypart);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -100,9 +94,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   daypart_3.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
   creative_ad.dayparts.push_back(daypart_3);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -130,9 +122,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   daypart_3.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
   creative_ad.dayparts.push_back(daypart_3);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -147,9 +137,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowForWrongDayOfWeek) {
   daypart.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
   creative_ad.dayparts.push_back(daypart);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -171,9 +159,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   daypart_2.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
   creative_ad.dayparts.push_back(daypart_2);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 

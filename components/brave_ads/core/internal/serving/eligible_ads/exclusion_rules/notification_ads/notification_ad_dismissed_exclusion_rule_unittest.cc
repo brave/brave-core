@@ -38,9 +38,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
 
   const NotificationAdDismissedExclusionRule exclusion_rule(/*ad_events*/ {});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -72,9 +70,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -119,9 +115,7 @@ TEST_F(
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -152,9 +146,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -188,9 +180,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -221,9 +211,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -257,9 +245,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -293,9 +279,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   AdvanceClockBy(base::Days(2));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -327,9 +311,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -360,9 +342,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -397,9 +377,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
@@ -432,9 +410,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 

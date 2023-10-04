@@ -74,9 +74,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       AddHistory(/*count*/ 3,
                  /*should_use_random_creative_instance_uuid*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(history_item));
 }
 
@@ -87,9 +85,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get(),
                  /*should_use_random_creative_instance_uuid*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(DidUserClickTheSameAdMultipleTimes(history_item));
 }
 
@@ -100,9 +96,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       /*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1,
       /*should_use_random_creative_instance_uuid*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(history_item));
 }
 
@@ -113,9 +107,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       /*count*/ kRemindUserIfClickingTheSameAdAfter.Get() * 2,
       /*should_use_random_creative_instance_uuid*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(DidUserClickTheSameAdMultipleTimes(history_item));
 }
 
@@ -126,9 +118,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       /*count*/ (kRemindUserIfClickingTheSameAdAfter.Get() * 2) - 1,
       /*should_use_random_creative_instance_uuid*/ false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(history_item));
 }
 
@@ -177,9 +167,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       /*count*/ kRemindUserIfClickingTheSameAdAfter.Get(),
       /*should_use_random_creative_instance_uuid*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(history_item));
 }
 
@@ -194,21 +182,15 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
   const HistoryItemInfo history_item =
       AddHistory(ad, ConfirmationType::kClicked);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(history_item));
 }
 
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserTheyDoNotNeedToClickToEarnRewards) {
-  // Arrange
-
-  // Assert
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
-
-  // Act
   RemindUserTheyDoNotNeedToClickToEarnRewards();
 }
 
@@ -217,11 +199,9 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
   // Arrange
   RemindUserTheyDoNotNeedToClickToEarnRewards();
 
-  // Assert
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
-
-  // Act
   RemindUserTheyDoNotNeedToClickToEarnRewards();
 }
 

@@ -25,9 +25,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
 
   const PerMonthExclusionRule exclusion_rule(/*ad_events*/ {});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -39,9 +37,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfZero) {
 
   const PerMonthExclusionRule exclusion_rule(/*ad_events*/ {});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -59,9 +55,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
 
   const PerMonthExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -83,9 +77,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
 
   AdvanceClockBy(base::Days(28));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -107,9 +99,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
 
   AdvanceClockBy(base::Days(28) - base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -128,9 +118,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldExcludeIfExceedsCap) {
 
   const PerMonthExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 

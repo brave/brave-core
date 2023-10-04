@@ -28,17 +28,13 @@ TEST_F(BraveAdsConversionQueueItemBuilderTest, BuildConversionQueueItem) {
                                    /*created_at*/ Now()),
                       /*verifiable_conversion*/ absl::nullopt);
 
-  // Act
-  const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(conversion, /*process_at*/ Now());
-
-  // Assert
+  // Act & Assert
   ConversionQueueItemInfo expected_conversion_queue_item;
   expected_conversion_queue_item.conversion = conversion;
   expected_conversion_queue_item.process_at = Now();
   expected_conversion_queue_item.was_processed = false;
-
-  EXPECT_EQ(expected_conversion_queue_item, conversion_queue_item);
+  EXPECT_EQ(expected_conversion_queue_item,
+            BuildConversionQueueItem(conversion, /*process_at*/ Now()));
 }
 
 TEST_F(BraveAdsConversionQueueItemBuilderTest,
@@ -53,17 +49,13 @@ TEST_F(BraveAdsConversionQueueItemBuilderTest,
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
 
-  // Act
-  const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(conversion, /*process_at*/ Now());
-
-  // Assert
+  // Act & Assert
   ConversionQueueItemInfo expected_conversion_queue_item;
   expected_conversion_queue_item.conversion = conversion;
   expected_conversion_queue_item.process_at = Now();
   expected_conversion_queue_item.was_processed = false;
-
-  EXPECT_EQ(expected_conversion_queue_item, conversion_queue_item);
+  EXPECT_EQ(expected_conversion_queue_item,
+            BuildConversionQueueItem(conversion, /*process_at*/ Now()));
 }
 
 }  // namespace brave_ads

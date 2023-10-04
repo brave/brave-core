@@ -38,9 +38,7 @@ TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
       &token_generator_mock_, transaction, /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       base::test::ParseJsonDict(
           R"(

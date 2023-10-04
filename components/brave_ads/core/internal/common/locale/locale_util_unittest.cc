@@ -16,9 +16,7 @@ TEST(BraveAdsLocaleUtilTest, GetLocale) {
   // Arrange
   brave_l10n::test::ScopedDefaultLocale default_locale("en_KY");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("en_KY", GetLocale());
 }
 

@@ -89,7 +89,7 @@ TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
   AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   // Act
-  auto result =
+  const auto result =
       GetAdTypesReceivedForDateRange(transactions, Now(), DistantFuture());
 
   // Assert
@@ -101,8 +101,8 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdTypesReceivedForNoTransactions) {
   const TransactionList transactions;
 
   // Act
-  auto result = GetAdTypesReceivedForDateRange(transactions, DistantPast(),
-                                               DistantFuture());
+  const auto result = GetAdTypesReceivedForDateRange(
+      transactions, DistantPast(), DistantFuture());
 
   // Assert
   EXPECT_TRUE(result.empty());

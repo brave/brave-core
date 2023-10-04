@@ -63,12 +63,9 @@ TEST_F(BraveAdsStringHtmlParserUtilTest, ParseHtmlTagNameAttributeSimple) {
 
   for (const auto& [html, tag_substr, tag_attribute,
                     expected_html_tag_attribute] : samples) {
-    // Act
-    const std::string html_tag_attribute =
-        ParseHtmlTagNameAttribute(html, tag_substr, tag_attribute);
-
-    // Assert
-    EXPECT_EQ(expected_html_tag_attribute, html_tag_attribute);
+    // Act & Assert
+    EXPECT_EQ(expected_html_tag_attribute,
+              ParseHtmlTagNameAttribute(html, tag_substr, tag_attribute));
   }
 }
 

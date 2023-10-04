@@ -27,17 +27,21 @@ class BraveAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
 
 TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
   // Arrange
-  ConversionInfo conversion;
-  conversion.ad_type = AdType::kNotificationAd;
-  conversion.creative_instance_id = "6c9b4c69-1ed8-4dc3-b44d-5b37a479795e";
-  conversion.creative_set_id = "37489815-8786-4ef8-83aa-4b0737f44375";
-  conversion.campaign_id = "6ee347d9-acec-4a80-b108-e9335a5cbd39";
-  conversion.advertiser_id = "80ec0ddb-8dbb-4009-8192-1528faa411ae";
-  conversion.action_type = ConversionActionType::kViewThrough;
+  const database::table::ConversionQueue database_table;
+
+  // Act & Assert
+  ConversionInfo expected_conversion;
+  expected_conversion.ad_type = AdType::kNotificationAd;
+  expected_conversion.creative_instance_id =
+      "6c9b4c69-1ed8-4dc3-b44d-5b37a479795e";
+  expected_conversion.creative_set_id = "37489815-8786-4ef8-83aa-4b0737f44375";
+  expected_conversion.campaign_id = "6ee347d9-acec-4a80-b108-e9335a5cbd39";
+  expected_conversion.advertiser_id = "80ec0ddb-8dbb-4009-8192-1528faa411ae";
+  expected_conversion.action_type = ConversionActionType::kViewThrough;
 
   ConversionQueueItemList expected_conversion_queue_items;
   ConversionQueueItemInfo expected_conversion_queue_item;
-  expected_conversion_queue_item.conversion = conversion;
+  expected_conversion_queue_item.conversion = expected_conversion;
   expected_conversion_queue_item.process_at =
       base::Time::FromDoubleT(1627581449);
   expected_conversion_queue_items.push_back(expected_conversion_queue_item);
@@ -46,13 +50,7 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
   EXPECT_CALL(callback,
               Run(/*success*/ true,
                   ConversionQueueItemList{expected_conversion_queue_item}));
-
-  const database::table::ConversionQueue database_table;
-
-  // Act
   database_table.GetAll(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
@@ -503,17 +501,14 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
 
   AdvanceClockTo(TimeFromString("28 July 2021", /*is_local*/ false));
 
+  const database::table::CreativeSetConversions database_table;
+
+  // Act & Assert
   base::MockCallback<database::table::GetConversionsCallback> callback;
   EXPECT_CALL(callback,
               Run(/*success*/ true, ::testing::UnorderedElementsAreArray(
                                         expected_creative_set_conversions)));
-
-  const database::table::CreativeSetConversions database_table;
-
-  // Act
   database_table.GetAll(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

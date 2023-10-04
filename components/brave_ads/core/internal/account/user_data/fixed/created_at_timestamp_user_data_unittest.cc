@@ -34,9 +34,7 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -54,9 +52,7 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
       /*value*/ 0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids*/ true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildCreatedAtTimestampUserData(transaction).empty());
 }
 

@@ -49,10 +49,8 @@ TEST_F(BraveAdsTransferTest, DoNotTransferInvalidAd) {
   const AdInfo ad;
   transfer_->SetLastClickedAd(ad);
 
-  // Act
+  // Act & Assert
   FastForwardClockBy(kTransferAfter.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsTransferTest,
@@ -68,10 +66,8 @@ TEST_F(BraveAdsTransferTest,
   transfer_->MaybeTransferAd(/*tab_id*/ 1,
                              {GURL("https://basicattentiontoken.org")});
 
-  // Act
+  // Act & Assert
   FastForwardClockBy(kTransferAfter.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
@@ -88,11 +84,9 @@ TEST_F(BraveAdsTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
   EXPECT_CALL(observer_mock_, OnDidTransferAd(ad));
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
 
-  // Act
+  // Act & Assert
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
   FastForwardClockBy(kTransferAfter.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
@@ -124,10 +118,8 @@ TEST_F(BraveAdsTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
     transfer_->MaybeTransferAd(/*tab_id*/ 2, {GURL("https://brave.com")});
   }
 
-  // Act
+  // Act & Assert
   FastForwardClockBy(kTransferAfter.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsTransferTest,
@@ -140,15 +132,13 @@ TEST_F(BraveAdsTransferTest,
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
                                       /*should_use_random_uuids*/ true);
   transfer_->SetLastClickedAd(ad);
+
+  // Act & Assert
   EXPECT_CALL(observer_mock_,
               OnWillTransferAd(ad, Now() + kTransferAfter.Get()));
   EXPECT_CALL(observer_mock_, OnDidTransferAd(ad));
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
-
-  // Act
   FastForwardClockBy(kTransferAfter.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsTransferTest, FailToTransferAdIfNotVisible) {
@@ -160,15 +150,13 @@ TEST_F(BraveAdsTransferTest, FailToTransferAdIfNotVisible) {
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
                                       /*should_use_random_uuids*/ true);
   transfer_->SetLastClickedAd(ad);
+
+  // Act & Assert
   EXPECT_CALL(observer_mock_,
               OnWillTransferAd(ad, Now() + kTransferAfter.Get()));
   EXPECT_CALL(observer_mock_, OnFailedToTransferAd(ad));
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
-
-  // Act
   FastForwardClockBy(kTransferAfter.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsTransferTest,
@@ -182,15 +170,13 @@ TEST_F(BraveAdsTransferTest,
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
                                       /*should_use_random_uuids*/ true);
   transfer_->SetLastClickedAd(ad);
+
+  // Act & Assert
   EXPECT_CALL(observer_mock_,
               OnWillTransferAd(ad, Now() + kTransferAfter.Get()));
   EXPECT_CALL(observer_mock_, OnFailedToTransferAd(ad));
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
-
-  // Act
   FastForwardClockBy(kTransferAfter.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsTransferTest, CancelTransferAdIfTheTabIsClosed) {
@@ -202,15 +188,13 @@ TEST_F(BraveAdsTransferTest, CancelTransferAdIfTheTabIsClosed) {
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
                                       /*should_use_random_uuids*/ true);
   transfer_->SetLastClickedAd(ad);
+
+  // Act & Assert
   EXPECT_CALL(observer_mock_,
               OnWillTransferAd(ad, Now() + kTransferAfter.Get()));
   EXPECT_CALL(observer_mock_, OnCanceledTransfer(ad, /*tab_id*/ 1));
   transfer_->MaybeTransferAd(/*tab_id*/ 1, {GURL("https://brave.com")});
-
-  // Act
   NotifyDidCloseTab(/*tab_id*/ 1);
-
-  // Assert
 }
 
 }  // namespace brave_ads

@@ -24,9 +24,7 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest, GetDataType) {
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<LastNotificationAdWasClickedPredictorVariable>();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kBool,
             predictor_variable->GetDataType());
 }
@@ -37,9 +35,7 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<LastNotificationAdWasClickedPredictorVariable>();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
@@ -58,9 +54,7 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
 
   AdvanceClockBy(base::Days(31));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("-1", predictor_variable->GetValue());
 }
 
@@ -77,9 +71,7 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("1", predictor_variable->GetValue());
 }
 
@@ -96,9 +88,7 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("0", predictor_variable->GetValue());
 }
 

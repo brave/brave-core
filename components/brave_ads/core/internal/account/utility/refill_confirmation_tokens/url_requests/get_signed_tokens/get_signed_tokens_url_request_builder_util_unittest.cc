@@ -14,11 +14,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsBuildGetSignedTokensUrlRequestBuilderUtilTest, GetPath) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       R"(/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=2f0e2891-e7a5-4262-835b-550b13e58e5c)",
       BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce));
