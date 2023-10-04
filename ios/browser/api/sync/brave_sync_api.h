@@ -23,8 +23,6 @@ OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultThrottled;
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
-    BraveSyncAPISyncProtocolErrorResultClearPending;
-OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultTransientError;
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultMigrationDone;

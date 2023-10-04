@@ -57,9 +57,6 @@ BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultThrottled =
         static_cast<NSInteger>(syncer::SyncProtocolErrorType::THROTTLED);
 BraveSyncAPISyncProtocolErrorResult const
-    BraveSyncAPISyncProtocolErrorResultClearPending =
-        static_cast<NSInteger>(syncer::SyncProtocolErrorType::CLEAR_PENDING);
-BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultTransientError =
         static_cast<NSInteger>(syncer::SyncProtocolErrorType::TRANSIENT_ERROR);
 BraveSyncAPISyncProtocolErrorResult const
