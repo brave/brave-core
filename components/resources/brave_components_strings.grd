@@ -547,17 +547,15 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE" desc="">Error: Limited Uphold account functionality</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_WALLET_OWNERSHIP_VERIFICATION_FAILURE_TEXT" desc="">There was a problem validating your browser's request to connect Brave Rewards to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$3</ph> for more help.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_WALLET_OWNERSHIP_VERIFICATION_FAILURE_TITLE" desc="">Error: Request could not be validated</message>
-
       <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on <ph name="TITLE">$1<ex>Brave Private Ads</ex></ph>, you agree to the <ph name="BEGIN_LINK1">$2</ph>Terms of Service<ph name="END_LINK1">$3</ph> and <ph name="BEGIN_LINK2">$4</ph>Privacy Policy<ph name="END_LINK2">$5</ph>.</message>
 
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_HEADER" desc="">Choose an account provider</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_DISCLAIMER" desc="">Custodial account providers are required to verify your identity, which may include submitting a photo ID. See the <ph name="BEGIN_LINK1">$1</ph>Brave Rewards Privacy Policy<ph name="END_LINK1">$2</ph>. See here to <ph name="BEGIN_LINK2">$3</ph>learn more about BAT<ph name="END_LINK2">$4</ph>.</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LIST_ITEM_1" desc="">Store, manage, and withdraw your BAT earnings</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LIST_ITEM_2" desc="">Top up your account with BAT you purchased</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LIST_ITEM_3" desc="">Send on-demand contributions to your favorite sites &amp; creators</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CUSTODIAL_HEADER" desc="">Custodial accounts (requires ID verification)</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CUSTODIAL_TOOLTIP" desc="">Custodial accounts are accounts with trusted third-party services that hold your BAT for you.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_HEADER" desc="">Choose where you'd like to receive BAT</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_LEARN_MORE" desc="">Learn more about regions and support</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_PROVIDER_NOT_AVAILABLE" desc="">Currently not available in your region</message>
-      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_TERMS_LABEL" desc="">I have read and agree to Brave’s <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> &amp; <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_TEXT" desc="">To begin earning Basic Attention Token (BAT) rewards, connect an account. BAT you earn will be automatically transferred to your account every month.</message>
+
       <message name="IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL" desc="A label on Pending Contributions modal showing the date until which the contribution will be pending">
         Pending until <ph name="DATE">$1</ph>
       </message>

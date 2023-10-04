@@ -628,13 +628,12 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "connectAccountNoProviders", IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS },  // NOLINT
         { "connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT },
         { "learnMore", IDS_REWARDS_LEARN_MORE },
-        { "connectWalletHeader", IDS_BRAVE_REWARDS_CONNECT_WALLET_HEADER },  // NOLINT
-        { "connectWalletDisclaimer", IDS_BRAVE_REWARDS_CONNECT_WALLET_DISCLAIMER },  // NOLINT
-        { "connectWalletListItem1", IDS_BRAVE_REWARDS_CONNECT_WALLET_LIST_ITEM_1 },  // NOLINT
-        { "connectWalletListItem2", IDS_BRAVE_REWARDS_CONNECT_WALLET_LIST_ITEM_2 },  // NOLINT
-        { "connectWalletListItem3", IDS_BRAVE_REWARDS_CONNECT_WALLET_LIST_ITEM_3 },  // NOLINT
+        { "connectWalletCustodialHeader", IDS_BRAVE_REWARDS_CONNECT_WALLET_CUSTODIAL_HEADER },  // NOLINT
+        { "connectWalletCustodialTooltip", IDS_BRAVE_REWARDS_CONNECT_WALLET_CUSTODIAL_TOOLTIP },  // NOLINT
+        { "connectWalletHeader", IDS_BRAVE_REWARDS_CONNECT_WALLET_HEADER },
         { "connectWalletLearnMore", IDS_BRAVE_REWARDS_CONNECT_WALLET_LEARN_MORE },  // NOLINT
         { "connectWalletProviderNotAvailable", IDS_BRAVE_REWARDS_CONNECT_WALLET_PROVIDER_NOT_AVAILABLE },  // NOLINT
+        { "connectWalletText", IDS_BRAVE_REWARDS_CONNECT_WALLET_TEXT },
         { "contributionPendingUntil", IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL },  // NOLINT
 
         { "walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK },
