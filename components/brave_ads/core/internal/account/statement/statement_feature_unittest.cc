@@ -12,6 +12,26 @@
 
 namespace brave_ads {
 
+TEST(BraveAdsAccountFeatureTest, IsEnabled) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kAccountStatementFeature));
+}
+
+TEST(BraveAdsAccountFeatureTest, IsDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kAccountStatementFeature);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kAccountStatementFeature));
+}
+
 TEST(BraveAdsAccountFeatureTest, NextPaymentDay) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
@@ -48,7 +68,8 @@ TEST(BraveAdsAccountFeatureTest, MinEstimatedEarningsMultiplier) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAccountStatementFeature, {{"min_estimated_earnings_multiplier", "0.5"}});
+      kAccountStatementFeature,
+      {{"minimum_estimated_earnings_multiplier", "0.5"}});
 
   // Act
 

@@ -12,11 +12,31 @@
 
 namespace brave_ads {
 
+TEST(BraveAdsTokensFeatureTest, IsEnabled) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kAccountTokensFeature));
+}
+
+TEST(BraveAdsTokensFeatureTest, IsDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kAccountTokensFeature);
+
+  // Act
+
+  // Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kAccountTokensFeature));
+}
+
 TEST(BraveAdsTokensFeatureTest, MinConfirmationTokens) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAccountTokensFeature, {{"min_confirmation_tokens", "7"}});
+      kAccountTokensFeature, {{"minimum_confirmation_tokens", "7"}});
 
   // Act
 
@@ -48,7 +68,7 @@ TEST(BraveAdsTokensFeatureTest, MaxConfirmationTokens) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kAccountTokensFeature, {{"max_confirmation_tokens", "21"}});
+      kAccountTokensFeature, {{"maximum_confirmation_tokens", "21"}});
 
   // Act
 

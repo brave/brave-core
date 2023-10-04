@@ -32,7 +32,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kNewTabPageAdFeature));
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, MaximumAdsPerHour) {
+TEST(BraveAdsNewTabPageAdFeatureTest, MaximumNewTabPageAdsPerHour) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -44,7 +44,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, MaximumAdsPerHour) {
   EXPECT_EQ(42, kMaximumNewTabPageAdsPerHour.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerHour) {
+TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumNewTabPageAdsPerHour) {
   // Arrange
 
   // Act
@@ -53,7 +53,8 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerHour) {
   EXPECT_EQ(4, kMaximumNewTabPageAdsPerHour.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
+TEST(BraveAdsNewTabPageAdFeatureTest,
+     DefaultMaximumNewTabPageAdsPerHourWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);
@@ -64,7 +65,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerHourWhenDisabled) {
   EXPECT_EQ(4, kMaximumNewTabPageAdsPerHour.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, MaximumAdsPerDay) {
+TEST(BraveAdsNewTabPageAdFeatureTest, MaximumNewTabPageAdsPerDay) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -76,7 +77,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, MaximumAdsPerDay) {
   EXPECT_EQ(24, kMaximumNewTabPageAdsPerDay.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerDay) {
+TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumNewTabPageAdsPerDay) {
   // Arrange
 
   // Act
@@ -85,7 +86,8 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerDay) {
   EXPECT_EQ(20, kMaximumNewTabPageAdsPerDay.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
+TEST(BraveAdsNewTabPageAdFeatureTest,
+     DefaultMaximumNewTabPageAdsPerDayWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);
@@ -96,7 +98,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
   EXPECT_EQ(20, kMaximumNewTabPageAdsPerDay.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, MinimumWaitTime) {
+TEST(BraveAdsNewTabPageAdFeatureTest, NewTabPageAdMinimumWaitTime) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -108,7 +110,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, MinimumWaitTime) {
   EXPECT_EQ(base::Minutes(10), kNewTabPageAdMinimumWaitTime.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMinimumWaitTime) {
+TEST(BraveAdsNewTabPageAdFeatureTest, DefaultNewTabPageAdMinimumWaitTime) {
   // Arrange
 
   // Act
@@ -117,7 +119,8 @@ TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMinimumWaitTime) {
   EXPECT_EQ(base::Minutes(5), kNewTabPageAdMinimumWaitTime.Get());
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMinimumWaitTimeWhenDisabled) {
+TEST(BraveAdsNewTabPageAdFeatureTest,
+     DefaultNewTabPageAdMinimumWaitTimeWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);

@@ -32,8 +32,7 @@ TEST(BraveAdsEpsilonGreedyBanditFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature));
 }
 
-TEST(BraveAdsEpsilonGreedyBanditFeatureTest,
-     GetEpsilonGreedyBanditEpsilonValue) {
+TEST(BraveAdsEpsilonGreedyBanditFeatureTest, EpsilonGreedyBanditEpsilonValue) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(

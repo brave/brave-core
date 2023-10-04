@@ -17,7 +17,7 @@ constexpr base::FeatureParam<int> kNextPaymentDay{&kAccountStatementFeature,
                                                   "next_payment_day", 7};
 
 constexpr base::FeatureParam<double> kMinEstimatedEarningsMultiplier{
-    &kAccountStatementFeature, "min_estimated_earnings_multiplier", 0.8};
+    &kAccountStatementFeature, "minimum_estimated_earnings_multiplier", 0.8};
 
 }  // namespace brave_ads
 

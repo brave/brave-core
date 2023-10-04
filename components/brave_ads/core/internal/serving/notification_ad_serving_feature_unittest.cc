@@ -32,7 +32,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kNotificationAdServingFeature));
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, ServingVersion) {
+TEST(BraveAdsNotificationAdServingFeatureTest, NotificationAdServingVersion) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -44,7 +44,8 @@ TEST(BraveAdsNotificationAdServingFeatureTest, ServingVersion) {
   EXPECT_EQ(0, kNotificationAdServingVersion.Get());
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, DefaultServingVersion) {
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultNotificationAdServingVersion) {
   // Arrange
 
   // Act
@@ -54,7 +55,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest, DefaultServingVersion) {
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
-     DefaultServingVersionWhenDisabled) {
+     DefaultNotificationAdServingVersionWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
@@ -65,7 +66,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
   EXPECT_EQ(2, kNotificationAdServingVersion.Get());
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, ServeFirstAdAfter) {
+TEST(BraveAdsNotificationAdServingFeatureTest, ServeFirstNotificationAdAfter) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -77,7 +78,8 @@ TEST(BraveAdsNotificationAdServingFeatureTest, ServeFirstAdAfter) {
   EXPECT_EQ(base::Minutes(10), kServeFirstNotificationAdAfter.Get());
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, DefaultServeFirstAdAfter) {
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultServeFirstNotificationAdAfter) {
   // Arrange
 
   // Act
@@ -87,7 +89,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest, DefaultServeFirstAdAfter) {
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
-     DefaultServeFirstAdAfterWhenDisabled) {
+     DefaultServeFirstNotificationAdAfterWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
@@ -98,7 +100,8 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
   EXPECT_EQ(base::Minutes(2), kServeFirstNotificationAdAfter.Get());
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, MinimumDelayBeforeServingAd) {
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     MinimumDelayBeforeServingNotificationAd) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -112,7 +115,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest, MinimumDelayBeforeServingAd) {
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
-     DefaultMinimumDelayBeforeServingAd) {
+     DefaultMinimumDelayBeforeServingNotificationAd) {
   // Arrange
 
   // Act
@@ -122,7 +125,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
-     DefaultMinimumDelayBeforeServingAdWhenDisabled) {
+     DefaultMinimumDelayBeforeServingNotificationAdWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
@@ -133,7 +136,8 @@ TEST(BraveAdsNotificationAdServingFeatureTest,
   EXPECT_EQ(base::Minutes(1), kMinimumDelayBeforeServingNotificationAd.Get());
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, RetryServingAdAfter) {
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     RetryServingNotificationAdAfter) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -145,7 +149,8 @@ TEST(BraveAdsNotificationAdServingFeatureTest, RetryServingAdAfter) {
   EXPECT_EQ(base::Minutes(10), kRetryServingNotificationAdAfter.Get());
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, DefaultRetryServingAdAfter) {
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultRetryServingNotificationAdAfter) {
   // Arrange
 
   // Act
@@ -155,7 +160,7 @@ TEST(BraveAdsNotificationAdServingFeatureTest, DefaultRetryServingAdAfter) {
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
-     DefaultRetryServingAdAfterWhenDisabled) {
+     DefaultRetryServingNotificationAdAfterWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
