@@ -659,7 +659,7 @@ export enum WalletRoutes {
   BackupRecoveryPhrase = '/crypto/backup-wallet/backup-recovery-phrase',
   BackupVerifyRecoveryPhrase = '/crypto/backup-wallet/verify-recovery-phrase',
 
-  // wallet mangement
+  // wallet management
   Restore = '/crypto/restore-wallet',
   Unlock = '/crypto/unlock',
 
