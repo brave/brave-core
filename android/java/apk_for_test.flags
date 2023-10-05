@@ -558,6 +558,7 @@
 
 -keep class org.chromium.chrome.browser.omnibox.LocationBarCoordinator {
     *** mLocationBarMediator;
+    *** mUrlBar;
     public <init>(...);
 }
 
