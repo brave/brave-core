@@ -112,7 +112,6 @@ void FilTxManager::AddUnapprovedTransaction(
     const absl::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_fil_tx_data());
-  // TODO(nvonpentz) Ensure to address is not an OFAC banned address.
   const bool is_mainnet = chain_id == mojom::kFilecoinMainnet;
   auto tx =
       FilTransaction::FromTxData(is_mainnet, tx_data_union->get_fil_tx_data());

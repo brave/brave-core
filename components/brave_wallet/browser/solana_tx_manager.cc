@@ -61,7 +61,6 @@ void SolanaTxManager::AddUnapprovedTransaction(
     const absl::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
   DCHECK(tx_data_union->is_solana_tx_data());
-  // TODO(nvonpentz) Ensure to address is not an OFAC banned address.
 
   auto tx = SolanaTransaction::FromSolanaTxData(
       std::move(tx_data_union->get_solana_tx_data()));

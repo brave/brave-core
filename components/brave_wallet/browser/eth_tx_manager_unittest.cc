@@ -19,6 +19,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -2314,10 +2315,33 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
       base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), false,
                      mojom::TransactionType::Other));
   run_loop->Run();
+
+  // Address on the OFAC SDN list should fail.
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateOfacAddressesList(
+      {"0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a"});
+  run_loop = std::make_unique<base::RunLoop>();
+  eth_tx_manager()->MakeERC721TransferFromData(
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "0xf",
+      contract_safe_transfer_from,
+      base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), false,
+                     mojom::TransactionType::Other));
+  run_loop->Run();
 }
 
 TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
+  // Invalid if to_address is on OFAC SDN list
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateOfacAddressesList(
+      {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f", "", "0xf", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+      mojom::TransactionType::Other);
+
   // Valid
+  registry->UpdateOfacAddressesList({});
   TestMakeERC1155TransferFromDataTxType(
       "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
       "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf", "0x1",

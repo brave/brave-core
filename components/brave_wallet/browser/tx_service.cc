@@ -10,6 +10,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
@@ -45,6 +46,31 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
 
   if (tx_data_union.is_btc_tx_data()) {
     return mojom::CoinType::BTC;
+  }
+
+  NOTREACHED_NORETURN();
+}
+
+std::string GetToAddressFromTxDataUnion(
+    const mojom::TxDataUnion& tx_data_union) {
+  if (tx_data_union.is_eth_tx_data_1559()) {
+    return tx_data_union.get_eth_tx_data_1559()->base_data->to;
+  }
+
+  if (tx_data_union.is_eth_tx_data()) {
+    return tx_data_union.get_eth_tx_data()->to;
+  }
+
+  if (tx_data_union.is_solana_tx_data()) {
+    return tx_data_union.get_solana_tx_data()->to_wallet_address;
+  }
+
+  if (tx_data_union.is_fil_tx_data()) {
+    return tx_data_union.get_fil_tx_data()->to;
+  }
+
+  if (tx_data_union.is_btc_tx_data()) {
+    return tx_data_union.get_btc_tx_data()->to;
   }
 
   NOTREACHED_NORETURN();
@@ -178,6 +204,13 @@ void TxService::AddUnapprovedTransactionWithOrigin(
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(
+          GetToAddressFromTxDataUnion(*tx_data_union))) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
