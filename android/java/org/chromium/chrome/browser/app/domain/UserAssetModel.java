@@ -23,21 +23,20 @@ import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class UserAssetModel {
     private final Object mLock = new Object();
-    private BraveWalletService mBraveWalletService;
-    private JsonRpcService mJsonRpcService;
-    private BlockchainRegistry mBlockchainRegistry;
+    private final BraveWalletService mBraveWalletService;
+    private final JsonRpcService mJsonRpcService;
+    private final BlockchainRegistry mBlockchainRegistry;
     private final WalletCoinAdapter.AdapterType mType;
     private NetworkInfo mSelectedNetwork;
     private List<NetworkInfo> mCryptoNetworks;
-    private CryptoSharedData mSharedData;
-    private MutableLiveData<AssetsResult> _mAssetsResult;
+    private final CryptoSharedData mSharedData;
+    private final MutableLiveData<AssetsResult> _mAssetsResult;
     public LiveData<AssetsResult> mAssetsResult;
 
     public UserAssetModel(BraveWalletService braveWalletService, JsonRpcService jsonRpcService,
@@ -63,34 +62,20 @@ public class UserAssetModel {
                             if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
                                 fetchAllNetworksAssets(nftsOnly);
                             } else {
-                                TokenUtils.getUserAssetsFiltered(mBraveWalletService,
+                                TokenUtils.getVisibleUserAssetsFiltered(mBraveWalletService,
                                         mSelectedNetwork, mSelectedNetwork.coin,
-                                        TokenUtils.TokenType.ALL, userAssets -> {
-                                            TokenUtils.getAllTokensFiltered(mBraveWalletService,
-                                                    mBlockchainRegistry, mSelectedNetwork,
-                                                    mSelectedNetwork.coin,
-                                                    nftsOnly ? TokenUtils.TokenType.NFTS
-                                                             : TokenUtils.TokenType.NON_NFTS,
-                                                    tokens -> {
-                                                        _mAssetsResult.postValue(new AssetsResult(
-                                                                Arrays.asList(tokens),
-                                                                Arrays.asList(userAssets)));
-                                                    });
-                                        });
+                                        TokenUtils.TokenType.ALL,
+                                        userAssets
+                                        -> TokenUtils.getAllTokensFiltered(mBraveWalletService,
+                                                mBlockchainRegistry, mSelectedNetwork,
+                                                nftsOnly ? TokenUtils.TokenType.NFTS
+                                                         : TokenUtils.TokenType.NON_NFTS,
+                                                tokens -> {
+                                                    _mAssetsResult.postValue(
+                                                            new AssetsResult(Arrays.asList(tokens),
+                                                                    Arrays.asList(userAssets)));
+                                                }));
                             }
-                        } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST) {
-                            assert mSelectedNetwork != null;
-                            TokenUtils.getUserAssetsFiltered(mBraveWalletService, mSelectedNetwork,
-                                    mSelectedNetwork.coin, TokenUtils.TokenType.ALL, tokens -> {
-                                        _mAssetsResult.postValue(new AssetsResult(
-                                                Arrays.asList(tokens), Collections.emptyList()));
-                                    });
-                        } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
-                            TokenUtils.getBuyTokensFiltered(mBlockchainRegistry, mSelectedNetwork,
-                                    TokenUtils.TokenType.ALL, tokens -> {
-                                        _mAssetsResult.postValue(new AssetsResult(
-                                                Arrays.asList(tokens), Collections.emptyList()));
-                                    });
                         }
                     });
         }
