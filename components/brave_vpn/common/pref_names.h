@@ -34,6 +34,8 @@ constexpr char kBraveVPNWireguardFallbackDialog[] =
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
 constexpr char kBraveVPNWireguardEnabled[] =
     "brave.brave_vpn.wireguard_enabled";
+constexpr char kBraveVPNWireguardAllowedIPs[] =
+    "brave.brave_vpn.wireguard_allowedips";
 #endif
 constexpr char kBraveVPNWireguardProfileCredentials[] =
     "brave.brave_vpn.wireguard.profile_credentials";

@@ -47,6 +47,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(prefs::kBraveVPNSessionExpiredDate, {});
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   registry->RegisterBooleanPref(prefs::kBraveVPNWireguardEnabled, false);
+  registry->RegisterStringPref(prefs::kBraveVPNWireguardAllowedIPs, "");
 #endif
 }
 

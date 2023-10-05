@@ -976,9 +976,24 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SETTINGS_VPN_PAGE_TITLE" desc="Title of the vpn settings page">
           Brave VPN
         </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_CUSTOMIZE_WIREGUARD_ALLOWED_IPS_LABEL" desc="Title of the WireGuard option label on the vpn settings page to customize allowed ips option in wireguard config">
+          Customize AllowedIPs in WireGuard config
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_CUSTOMIZE_WIREGUARD_ALLOWED_IPS_DESC" desc="Title of the WireGuard option description on the vpn settings page to customize allowed ips option in wireguard config">
+          Exclude some IP blocks from VPN network. Be careful, this can leak your real IP.
+        </message>
         <message name="IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE" desc="Title of the WireGuard option on the vpn settings page">
           Use WireGuard protocol in Brave VPN
         </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_CHANGE_WIREGUARD_ALLOWED_IPS_BUTTON_LABEL" desc="Title of the button on the vpn settings page to change allowed ips config value">
+          Change
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_CHANGE_WIREGUARD_ALLOWED_IPS_DIALOG_TITLE" desc="Title of the dialog on the vpn settings page to change allowed ips config value">
+          Change AllowedIPs in WireGuard config
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_CHANGE_WIREGUARD_ALLOWED_IPS_DIALOG_LABEL" desc="Label of the dialog on the vpn settings page to change allowed ips config value">
+          AllowedIPs
+        </message>        
         <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
           This setting cannot be changed while Brave VPN is connected.
         </message>

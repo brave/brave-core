@@ -7,6 +7,7 @@ import 'chrome://resources/cr_components/settings_prefs/prefs.js';
 import '../relaunch_confirmation_dialog.js';
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
+import './change_allowed_ips_dialog.js';
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {PrefsMixin, PrefsMixinInterface} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
@@ -50,11 +51,15 @@ export class SettingsBraveVpnPageElement
       },
       toggleWireguardSubLabel_: String,
       shouldShowRestart_: Boolean,
+      wireguardAllowedIPsSubLabel_: String,
+      showChangeAllowedIPsDialog_: Boolean,
     }
   }
 
+  private showChangeAllowedIPsDialog_: Boolean;
   private initialProtocolValue_: Boolean;
   private toggleWireguardSubLabel_: String;
+  private wireguardAllowedIPsSubLabel_: String;
   private braveVpnConnected_: Boolean = false;
   private shouldShowRestart_: Boolean = false;
 
@@ -66,11 +71,11 @@ export class SettingsBraveVpnPageElement
     this.initialProtocolValue_ = this.getCurrentPrefValue()
     this.updateState()
     this.addWebUiListener('brave-vpn-state-change', this.onVpnStateChange.bind(this))
+    this.updateAllowedIpsSubLabel()
     // <if expr="is_win">
     this.vpnBrowserProxy_.isBraveVpnConnected().then(this.onVpnStateChange.bind(this))
     // </if>
   }
-
   private onVpnStateChange(connected: boolean) {
     this.braveVpnConnected_ = connected
     if (this.braveVpnConnected_) {
@@ -134,6 +139,22 @@ export class SettingsBraveVpnPageElement
     // Prevent event from bubbling up to the toggle button.
     e.stopPropagation();
     this.performRestart(RestartType.RESTART);
+  }
+  
+  
+  private onChangeAllowedIPsDialogTapped_() {
+    this.showChangeAllowedIPsDialog_ = true
+  }
+  
+  private onChangeAllowedIPsDialogClosed_() {
+    this.showChangeAllowedIPsDialog_ = false
+    
+    this.updateAllowedIpsSubLabel()
+  }
+
+  private updateAllowedIpsSubLabel() {
+    const allowedipfs =  this.getPref('brave.brave_vpn.wireguard_allowedips').value
+    this.wireguardAllowedIPsSubLabel_ = allowedipfs ? allowedipfs : this.i18n('customizeWireguardAllowedIPsDesc') 
   }
 }
 

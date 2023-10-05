@@ -43,6 +43,7 @@ brave_settings_web_component_files = [
   "brave_sync_page/brave_sync_setup.ts",
   "brave_sync_page/brave_sync_subpage.ts",
   "brave_system_page/brave_performance_page.ts",
+  "brave_system_page/change_allowed_ips_dialog.ts",
   "brave_tor_page/brave_tor_bridges_dialog.ts",
   "brave_tor_page/brave_tor_snowflake_install_failed_dialog.ts",
   "brave_tor_page/brave_tor_subpage.ts",

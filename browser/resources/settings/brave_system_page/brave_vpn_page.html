@@ -23,7 +23,24 @@
         </cr-button>
       </template>
     </settings-toggle-button>
+    <div class="settings-box">
+      <div class="flex cr-padded-text">
+        <div>$i18n{customizeWireguardAllowedIPsLabel}</div>
+        <div class="secondary" id="allowedIPs">
+          [[wireguardAllowedIPsSubLabel_]]
+        </div>
+      </div>
+      <cr-button id="changeAllowedIPs"
+          on-click="onChangeAllowedIPsDialogTapped_">
+        $i18n{wireguardChangeAllowedIPsButtonLabel}
+      </cr-button>
+    </div>  
 
   </settings-vpn-page>
+  <template is="dom-if" if="[[showChangeAllowedIPsDialog_]]" restamp>
+    <change-allowed-ips-dialog pref="{{prefs.brave.brave_vpn.wireguard_allowedips}}" prefs="{{prefs}}" on-close="onChangeAllowedIPsDialogClosed_">
+    </change-allowed-ips-dialog>
+  </template>
+
 </template>
 </if>

@@ -168,6 +168,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNWireguardEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNWireguardAllowedIPs] =
+      settings_api::PrefType::PREF_TYPE_STRING;
 #endif
 #endif
 #if defined(TOOLKIT_VIEWS)

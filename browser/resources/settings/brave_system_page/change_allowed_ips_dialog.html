@@ -1,0 +1,18 @@
+<style include="settings-shared">
+</style>
+<cr-dialog show-close-button show-on-attach>
+  <div slot="title">$i18n{changeAllowedIPsDialogTitle}</div>
+  <div slot="body">
+    <cr-input id="url" label="$i18n{changeAllowedIPsDialogLabel}"
+        type="url" placeholder="0.0.0.0/0, ::/0"
+        spellcheck="false"
+        autofocus>
+    </cr-input>
+  </div>
+  <div slot="button-container">
+    <cr-button class="action-button" id="submit" on-click="handleSubmit_"
+        disabled="[[!isSubmitButtonEnabled_]]">
+      Submit
+    </cr-button>
+  </div>
+</cr-dialog>
