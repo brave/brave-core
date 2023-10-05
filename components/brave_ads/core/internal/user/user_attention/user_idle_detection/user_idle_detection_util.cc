@@ -15,7 +15,7 @@ bool MaybeScreenWasLocked(const bool screen_was_locked) {
 }
 
 bool HasExceededMaximumIdleTime(const base::TimeDelta idle_time) {
-  const base::TimeDelta maximum_idle_time = kMaximumIdleTime.Get();
+  const base::TimeDelta maximum_idle_time = kMaximumUserIdleDetectionTime.Get();
   if (maximum_idle_time.is_zero()) {  // Infinite
     return false;
   }

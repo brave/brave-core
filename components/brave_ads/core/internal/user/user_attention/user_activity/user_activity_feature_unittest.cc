@@ -32,7 +32,40 @@ TEST(BraveAdsUserActivityFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kUserActivityFeature));
 }
 
-TEST(BraveAdsUserActivityFeatureTest, Triggers) {
+TEST(BraveAdsUserActivityFeatureTest, MaximumUserActivityEvents) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kUserActivityFeature, {{"maximum_events", "7"}});
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(7, kMaximumUserActivityEvents.Get());
+}
+
+TEST(BraveAdsUserActivityFeatureTest, DefaultMaximumUserActivityEvents) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(3600, kMaximumUserActivityEvents.Get());
+}
+
+TEST(BraveAdsUserActivityFeatureTest,
+     DefaultMaximumUserActivityEventsWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(3600, kMaximumUserActivityEvents.Get());
+}
+
+TEST(BraveAdsUserActivityFeatureTest, UserActivityTriggers) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -44,7 +77,7 @@ TEST(BraveAdsUserActivityFeatureTest, Triggers) {
   EXPECT_EQ("01=0.5;010203=1.0;0203=0.75", kUserActivityTriggers.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultTriggers) {
+TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityTriggers) {
   // Arrange
 
   // Act
@@ -55,7 +88,7 @@ TEST(BraveAdsUserActivityFeatureTest, DefaultTriggers) {
       kUserActivityTriggers.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultTriggersWhenDisabled) {
+TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityTriggersWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
@@ -68,7 +101,7 @@ TEST(BraveAdsUserActivityFeatureTest, DefaultTriggersWhenDisabled) {
       kUserActivityTriggers.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, TimeWindow) {
+TEST(BraveAdsUserActivityFeatureTest, UserActivityTimeWindow) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -80,7 +113,7 @@ TEST(BraveAdsUserActivityFeatureTest, TimeWindow) {
   EXPECT_EQ(base::Hours(2), kUserActivityTimeWindow.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultTimeWindow) {
+TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityTimeWindow) {
   // Arrange
 
   // Act
@@ -89,7 +122,8 @@ TEST(BraveAdsUserActivityFeatureTest, DefaultTimeWindow) {
   EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultTimeWindowWhenDisabled) {
+TEST(BraveAdsUserActivityFeatureTest,
+     DefaultUserActivityTimeWindowWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
@@ -100,7 +134,7 @@ TEST(BraveAdsUserActivityFeatureTest, DefaultTimeWindowWhenDisabled) {
   EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, Threshold) {
+TEST(BraveAdsUserActivityFeatureTest, UserActivityThreshold) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -112,7 +146,7 @@ TEST(BraveAdsUserActivityFeatureTest, Threshold) {
   EXPECT_EQ(7.0, kUserActivityThreshold.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultThreshold) {
+TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityThreshold) {
   // Arrange
 
   // Act
@@ -121,7 +155,8 @@ TEST(BraveAdsUserActivityFeatureTest, DefaultThreshold) {
   EXPECT_EQ(0.0, kUserActivityThreshold.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultThresholdWhenDisabled) {
+TEST(BraveAdsUserActivityFeatureTest,
+     DefaultUserActivityThresholdWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);

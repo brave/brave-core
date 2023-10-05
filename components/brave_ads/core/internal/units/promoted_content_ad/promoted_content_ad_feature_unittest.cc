@@ -32,7 +32,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kPromotedContentAdFeature));
 }
 
-TEST(BraveAdsPromotedContentAdFeatureTest, MaximumAdsPerHour) {
+TEST(BraveAdsPromotedContentAdFeatureTest, MaximumPromotedContentAdsPerHour) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -44,7 +44,8 @@ TEST(BraveAdsPromotedContentAdFeatureTest, MaximumAdsPerHour) {
   EXPECT_EQ(42, kMaximumPromotedContentAdsPerHour.Get());
 }
 
-TEST(BraveAdsPromotedContentAdFeatureTest, DefaultMaximumAdsPerHour) {
+TEST(BraveAdsPromotedContentAdFeatureTest,
+     DefaultMaximumPromotedContentAdsPerHour) {
   // Arrange
 
   // Act
@@ -54,7 +55,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest, DefaultMaximumAdsPerHour) {
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest,
-     DefaultMaximumAdsPerHourWhenDisabled) {
+     DefaultMaximumPromotedContentAdsPerHourWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPromotedContentAdFeature);
@@ -65,7 +66,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest,
   EXPECT_EQ(4, kMaximumPromotedContentAdsPerHour.Get());
 }
 
-TEST(BraveAdsPromotedContentAdFeatureTest, MaximumAdsPerDay) {
+TEST(BraveAdsPromotedContentAdFeatureTest, MaximumPromotedContentAdsPerDay) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -77,7 +78,8 @@ TEST(BraveAdsPromotedContentAdFeatureTest, MaximumAdsPerDay) {
   EXPECT_EQ(24, kMaximumPromotedContentAdsPerDay.Get());
 }
 
-TEST(BraveAdsPromotedContentAdFeatureTest, DefaultMaximumAdsPerDay) {
+TEST(BraveAdsPromotedContentAdFeatureTest,
+     DefaultMaximumPromotedContentAdsPerDay) {
   // Arrange
 
   // Act
@@ -87,7 +89,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest, DefaultMaximumAdsPerDay) {
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest,
-     DefaultMaximumAdsPerDayWhenDisabled) {
+     DefaultMaximumPromotedContentAdsPerDayWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPromotedContentAdFeature);

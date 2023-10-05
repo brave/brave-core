@@ -28,10 +28,6 @@
 
 namespace brave_ads {
 
-namespace {
-constexpr base::TimeDelta kRetryServingAdAfter = base::Minutes(2);
-}  // namespace
-
 NotificationAdServing::NotificationAdServing(
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource) {
@@ -156,7 +152,8 @@ void NotificationAdServing::RetryServingAdAtNextInterval() {
     return;
   }
 
-  const base::Time serve_ad_at = MaybeServeAdAfter(kRetryServingAdAfter);
+  const base::Time serve_ad_at =
+      MaybeServeAdAfter(kRetryServingNotificationAdAfter.Get());
   BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }
 

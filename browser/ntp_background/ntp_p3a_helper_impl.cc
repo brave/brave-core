@@ -251,7 +251,7 @@ void NTPP3AHelperImpl::OnLandingStartCheck(
     return;
   }
   landing_check_timer_.Start(
-      FROM_HERE, brave_ads::kTransferredAfter.Get(),
+      FROM_HERE, brave_ads::kTransferAfter.Get(),
       base::BindOnce(&NTPP3AHelperImpl::OnLandingEndCheck,
                      base::Unretained(this), creative_instance_id,
                      *last_tab_hostname_));

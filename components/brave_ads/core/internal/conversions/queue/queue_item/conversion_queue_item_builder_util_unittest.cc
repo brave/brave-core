@@ -14,13 +14,13 @@ namespace brave_ads {
 
 class BraveAdsConversionQueueItemBuilderUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsConversionQueueItemBuilderUtilTest, ProcessQueueItemAt) {
+TEST_F(BraveAdsConversionQueueItemBuilderUtilTest, ProcessConversionAt) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_FALSE(ProcessQueueItemAt().is_null());
+  EXPECT_FALSE(ProcessConversionAt().is_null());
 }
 
 }  // namespace brave_ads

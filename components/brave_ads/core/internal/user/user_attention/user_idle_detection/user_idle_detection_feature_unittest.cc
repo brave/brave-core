@@ -32,7 +32,40 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kUserIdleDetectionFeature));
 }
 
-TEST(BraveAdsUserIdleDetectionFeatureTest, MaximumIdleTime) {
+TEST(BraveAdsUserIdleDetectionFeatureTest, UserIdleDetectionThreshold) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kUserIdleDetectionFeature, {{"idle_threshold", "1h"}});
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(base::Hours(1), kUserIdleDetectionThreshold.Get());
+}
+
+TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultUserIdleDetectionThreshold) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(base::Seconds(5), kUserIdleDetectionThreshold.Get());
+}
+
+TEST(BraveAdsUserIdleDetectionFeatureTest,
+     DefaultUserIdleDetectionThresholdWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kUserIdleDetectionFeature);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(base::Seconds(5), kUserIdleDetectionThreshold.Get());
+}
+
+TEST(BraveAdsUserIdleDetectionFeatureTest, MaximumUserIdleDetectionTime) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -41,19 +74,21 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, MaximumIdleTime) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Minutes(30), kMaximumIdleTime.Get());
+  EXPECT_EQ(base::Minutes(30), kMaximumUserIdleDetectionTime.Get());
 }
 
-TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultMaximumIdleTime) {
+TEST(BraveAdsUserIdleDetectionFeatureTest,
+     DefaultMaximumUserIdleDetectionTime) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(0), kMaximumIdleTime.Get());
+  EXPECT_EQ(base::Seconds(0), kMaximumUserIdleDetectionTime.Get());
 }
 
-TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultMaximumIdleTimeWhenDisabled) {
+TEST(BraveAdsUserIdleDetectionFeatureTest,
+     DefaultMaximumUserIdleDetectionTimeWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kUserIdleDetectionFeature);
@@ -61,7 +96,7 @@ TEST(BraveAdsUserIdleDetectionFeatureTest, DefaultMaximumIdleTimeWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(0), kMaximumIdleTime.Get());
+  EXPECT_EQ(base::Seconds(0), kMaximumUserIdleDetectionTime.Get());
 }
 
 TEST(BraveAdsUserIdleDetectionFeatureTest, ShouldDetectScreenWasLocked) {

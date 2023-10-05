@@ -30,6 +30,11 @@ constexpr base::FeatureParam<base::TimeDelta>
         &kExclusionRulesFeature,
         "should_exclude_ad_if_transferred_within_time_window", base::Hours(0)};
 
+constexpr base::FeatureParam<int>
+    kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap{
+        &kExclusionRulesFeature,
+        "should_exclude_ad_if_creative_instance_exceeds_per_hour_cap", 1};
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_FEATURE_H_

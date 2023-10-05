@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/history/history_constants.h"
+#include "brave/components/brave_ads/core/internal/history/history_feature.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
@@ -48,7 +48,7 @@ TEST_F(BraveAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   // Arrange
   BuildAndAddHistoryItem();
 
-  AdvanceClockBy(kHistoryTimeWindow + base::Milliseconds(1));
+  AdvanceClockBy(kHistoryTimeWindow.Get() + base::Milliseconds(1));
 
   // Act
   const HistoryItemInfo history_item = BuildAndAddHistoryItem();
@@ -63,7 +63,7 @@ TEST_F(BraveAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
   // Arrange
   const HistoryItemInfo history_item_1 = BuildAndAddHistoryItem();
 
-  AdvanceClockBy(kHistoryTimeWindow);
+  AdvanceClockBy(kHistoryTimeWindow.Get());
 
   // Act
   const HistoryItemInfo history_item_2 = BuildAndAddHistoryItem();

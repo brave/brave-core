@@ -8,7 +8,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/history/history_constants.h"
+#include "brave/components/brave_ads/core/internal/history/history_feature.h"
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_util.h"
@@ -142,7 +142,7 @@ TEST_F(
   AddHistory(ad, ConfirmationType::kClicked);
   AddHistory(ad, ConfirmationType::kClicked);
 
-  AdvanceClockBy(kHistoryTimeWindow - base::Milliseconds(1));
+  AdvanceClockBy(kHistoryTimeWindow.Get() - base::Milliseconds(1));
 
   // Act
   const HistoryItemInfo history_item =
@@ -160,7 +160,7 @@ TEST_F(
       /*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1,
       /*should_use_random_creative_instance_uuid*/ false);
 
-  AdvanceClockBy(kHistoryTimeWindow);
+  AdvanceClockBy(kHistoryTimeWindow.Get());
 
   // Act
   const HistoryItemInfo history_item = AddHistory(

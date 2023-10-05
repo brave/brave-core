@@ -92,7 +92,7 @@ TEST(BraveAdsPermissionRuleFeatureTest,
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
-     ShouldOnlyServeAdsWithValidInternetConnectionWhenDisabled) {
+     DefaultShouldOnlyServeAdsWithValidInternetConnectionWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
@@ -171,6 +171,71 @@ TEST(BraveAdsPermissionRuleFeatureTest,
 
   // Assert
   EXPECT_TRUE(kShouldOnlyServeAdsIfBrowserIsActive.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DoNotDisturbFromHour) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature, {{"do_not_disturb_from_hour", "7"}});
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(7, kDoNotDisturbFromHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DefaultDoNotDisturbFromHour) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(21, kDoNotDisturbFromHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest,
+     DefaultDoNotDisturbFromHourWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(21, kDoNotDisturbFromHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DoNotDisturbToHour) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature, {{"do_not_disturb_to_hour", "7"}});
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(7, kDoNotDisturbToHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DefaultDoNotDisturbToHour) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(6, kDoNotDisturbToHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DefaultDoNotDisturbToHourWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(6, kDoNotDisturbToHour.Get());
 }
 
 }  // namespace brave_ads

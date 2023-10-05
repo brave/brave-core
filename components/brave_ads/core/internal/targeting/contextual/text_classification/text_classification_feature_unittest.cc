@@ -32,8 +32,7 @@ TEST(BraveAdsTextClassificationFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kTextClassificationFeature));
 }
 
-TEST(BraveAdsTextClassificationFeatureTest,
-     GetTextClassificationResourceVersion) {
+TEST(BraveAdsTextClassificationFeatureTest, TextClassificationResourceVersion) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -68,7 +67,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
-     GetTextClassificationProbabilitiesHistorySize) {
+     TextClassificationPageProbabilitiesHistorySize) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -81,7 +80,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
-     DefaultTextClassificationProbabilitiesHistorySize) {
+     DefaultTextClassificationPageProbabilitiesHistorySize) {
   // Arrange
 
   // Act
@@ -91,7 +90,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
-     DefaultTextClassificationProbabilitiesHistorySizeWhenDisabled) {
+     DefaultTextClassificationPageProbabilitiesHistorySizeWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);

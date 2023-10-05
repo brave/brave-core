@@ -29,6 +29,12 @@ constexpr base::FeatureParam<bool> kShouldOnlyServeAdsIfBrowserIsActive{
     &kPermissionRulesFeature, "should_only_serve_ads_if_browser_is_active",
     true};
 
+constexpr base::FeatureParam<int> kDoNotDisturbFromHour{
+    &kPermissionRulesFeature, "do_not_disturb_from_hour", 21};
+
+constexpr base::FeatureParam<int> kDoNotDisturbToHour{
+    &kPermissionRulesFeature, "do_not_disturb_to_hour", 6};
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PERMISSION_RULES_PERMISSION_RULE_FEATURE_H_

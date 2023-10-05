@@ -32,28 +32,28 @@ TEST(BraveAdsTransferFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kTransferFeature));
 }
 
-TEST(BraveAdsTransferFeatureTest, TransferredAfter) {
+TEST(BraveAdsTransferFeatureTest, TransferAfter) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kTransferFeature, {{"transferred_after", "7s"}});
+      kTransferFeature, {{"transfer_after", "7s"}});
 
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(7), kTransferredAfter.Get());
+  EXPECT_EQ(base::Seconds(7), kTransferAfter.Get());
 }
 
-TEST(BraveAdsTransferFeatureTest, DefaultTransferredAfter) {
+TEST(BraveAdsTransferFeatureTest, DefaultTransferAfter) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(10), kTransferredAfter.Get());
+  EXPECT_EQ(base::Seconds(10), kTransferAfter.Get());
 }
 
-TEST(BraveAdsTransferFeatureTest, DefaultTransferredAfterWhenDisabled) {
+TEST(BraveAdsTransferFeatureTest, DefaultTransferAfterWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTransferFeature);
@@ -61,7 +61,39 @@ TEST(BraveAdsTransferFeatureTest, DefaultTransferredAfterWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(base::Seconds(10), kTransferredAfter.Get());
+  EXPECT_EQ(base::Seconds(10), kTransferAfter.Get());
+}
+
+TEST(BraveAdsTransferFeatureTest, TransferCap) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kTransferFeature, {{"transfer_cap", "7"}});
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(7, kTransferCap.Get());
+}
+
+TEST(BraveAdsTransferFeatureTest, DefaultTransferCap) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(1, kTransferCap.Get());
+}
+
+TEST(BraveAdsTransferFeatureTest, DefaultTransferCapWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kTransferFeature);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(1, kTransferCap.Get());
 }
 
 }  // namespace brave_ads

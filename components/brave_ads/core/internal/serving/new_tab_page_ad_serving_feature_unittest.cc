@@ -31,7 +31,7 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kNewTabPageAdServingFeature));
 }
 
-TEST(BraveAdsNewTabPageAdServingFeatureTest, ServingVersion) {
+TEST(BraveAdsNewTabPageAdServingFeatureTest, NewTabPageAdServingVersion) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -43,7 +43,8 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest, ServingVersion) {
   EXPECT_EQ(0, kNewTabPageAdServingVersion.Get());
 }
 
-TEST(BraveAdsNewTabPageAdServingFeatureTest, DefaultServingVersion) {
+TEST(BraveAdsNewTabPageAdServingFeatureTest,
+     DefaultNewTabPageAdServingVersion) {
   // Arrange
 
   // Act
@@ -53,7 +54,7 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest, DefaultServingVersion) {
 }
 
 TEST(BraveAdsNewTabPageAdServingFeatureTest,
-     DefaultServingVersionWhenDisabled) {
+     DefaultNewTabPageAdServingVersionWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNewTabPageAdServingFeature);

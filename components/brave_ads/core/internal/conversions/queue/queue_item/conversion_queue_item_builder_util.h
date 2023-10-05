@@ -12,7 +12,7 @@ class Time;
 
 namespace brave_ads {
 
-base::Time ProcessQueueItemAt();
+base::Time ProcessConversionAt();
 
 }  // namespace brave_ads
 

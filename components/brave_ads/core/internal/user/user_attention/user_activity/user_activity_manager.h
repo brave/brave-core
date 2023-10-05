@@ -65,7 +65,7 @@ class UserActivityManager final : public AdsClientNotifierObserver,
   void OnTabDidStartPlayingMedia(int32_t tab_id) override;
   void OnTabDidStopPlayingMedia(int32_t tab_id) override;
 
-  UserActivityEventList history_;
+  UserActivityEventList user_activity_events_;
 };
 
 }  // namespace brave_ads

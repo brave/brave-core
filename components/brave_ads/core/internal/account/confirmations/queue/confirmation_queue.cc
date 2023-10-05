@@ -10,6 +10,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_util.h"
@@ -17,10 +18,6 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 
 namespace brave_ads {
-
-namespace {
-constexpr base::TimeDelta kProcessQueueItemAfter = base::Seconds(15);
-}  // namespace
 
 ConfirmationQueue::ConfirmationQueue() {
   AdsClientHelper::AddObserver(this);
@@ -52,7 +49,7 @@ bool ConfirmationQueue::ShouldProcessQueueItem() {
 void ConfirmationQueue::ProcessQueueItemAfterDelay(
     const ConfirmationInfo& confirmation) {
   const base::Time process_at = timer_.StartWithPrivacy(
-      FROM_HERE, kProcessQueueItemAfter,
+      FROM_HERE, kProcessConfirmationAfter.Get(),
       base::BindOnce(&ConfirmationQueue::ProcessQueueItem,
                      base::Unretained(this), confirmation));
 
