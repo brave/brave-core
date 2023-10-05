@@ -9,7 +9,7 @@ import BigNumber
 import Strings
 import Combine
 
-public class TransactionConfirmationStore: ObservableObject {
+public class TransactionConfirmationStore: ObservableObject, WalletObserverStore {
   /// The value that are being sent/swapped/approved in this transaction
   @Published var value: String = ""
   /// The symbol of token that are being send/swapped/approved in this transaction
@@ -140,6 +140,12 @@ public class TransactionConfirmationStore: ObservableObject {
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let assetManager: WalletUserAssetManagerType
   private var selectedChain: BraveWallet.NetworkInfo = .init()
+  private var txServiceObserver: TxServiceObserver?
+  private var walletServiceObserver: WalletServiceObserver?
+  
+  var isObserving: Bool {
+    txServiceObserver != nil && walletServiceObserver != nil
+  }
 
   init(
     assetRatioService: BraveWalletAssetRatioService,
@@ -162,12 +168,75 @@ public class TransactionConfirmationStore: ObservableObject {
     self.solTxManagerProxy = solTxManagerProxy
     self.assetManager = userAssetManager
 
-    self.txService.add(self)
-    self.walletService.add(self)
+    self.setupObservers()
     
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
+  }
+  
+  func tearDown() {
+    txServiceObserver = nil
+    walletServiceObserver = nil
+  }
+  
+  func setupObservers() {
+    guard !isObserving else { return }
+    self.txServiceObserver = TxServiceObserver(
+      txService: txService,
+      _onNewUnapprovedTx: { _ in
+        // won't have any new unapproved tx being added if you on tx confirmation panel
+      },
+      _onUnapprovedTxUpdated: { [weak self] txInfo in
+        Task { @MainActor [self] in
+          // refresh the unapproved transaction list, as well as tx details UI
+          // first update `allTxs` with the new updated txInfo(txStatus)
+          if let index = self?.allTxs.firstIndex(where: { $0.id == txInfo.id }) {
+            self?.allTxs[index] = txInfo
+          }
+          
+          // update details UI if the current active tx is updated
+          if self?.activeTransactionId == txInfo.id {
+            self?.updateTransaction(with: txInfo)
+            self?.activeTxStatus = txInfo.txStatus
+          }
+          
+          // if somehow the current active transaction no longer exists
+          // set the first `.unapproved` tx as the new `activeTransactionId`
+          if let unapprovedTxs = self?.unapprovedTxs, !unapprovedTxs.contains(where: { $0.id == self?.activeTransactionId }) {
+            self?.activeTransactionId = self?.unapprovedTxs.first?.id ?? ""
+          }
+        }
+      },
+      _onTransactionStatusChanged: { [weak self] txInfo in
+        Task { @MainActor [self] in
+          // once we come here. it means user either rejects or confirms a transaction
+          
+          // first update `allTxs` with the new updated txInfo(txStatus)
+          if let index = self?.allTxs.firstIndex(where: { $0.id == txInfo.id }) {
+            self?.allTxs[index] = txInfo
+          }
+          
+          // only update the `activeTransactionId` if the current active transaction status
+          // becomes `.rejected`/`.dropped`
+          if self?.activeTransactionId == txInfo.id, txInfo.txStatus == .rejected || txInfo.txStatus == .dropped {
+            let indexOfChangedTx = self?.unapprovedTxs.firstIndex(where: { $0.id == txInfo.id }) ?? 0
+            let newIndex = indexOfChangedTx > 0 ? indexOfChangedTx - 1 : 0
+            self?.activeTransactionId = self?.unapprovedTxs[safe: newIndex]?.id ?? self?.unapprovedTxs.first?.id ?? ""
+          } else {
+            if self?.activeTransactionId == txInfo.id {
+              self?.activeTxStatus = txInfo.txStatus
+            }
+          }
+        }
+      }
+    )
+    self.walletServiceObserver = WalletServiceObserver(
+      walletService: walletService,
+      _onDefaultBaseCurrencyChanged: { [weak self] currency in
+        self?.currencyCode = currency
+      }
+    )
   }
   
   func nextTransaction() {
@@ -726,89 +795,4 @@ public class TransactionConfirmationStore: ObservableObject {
 struct TransactionProviderError {
   let code: Int
   let message: String
-}
-
-extension TransactionConfirmationStore: BraveWalletTxServiceObserver {
-  public func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
-    // won't have any new unapproved tx being added if you on tx confirmation panel
-  }
-  public func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
-    Task { @MainActor in
-      // once we come here. it means user either rejects or confirms a transaction
-      
-      // first update `allTxs` with the new updated txInfo(txStatus)
-      if let index = allTxs.firstIndex(where: { $0.id == txInfo.id }) {
-        allTxs[index] = txInfo
-      }
-      
-      // only update the `activeTransactionId` if the current active transaction status
-      // becomes `.rejected`/`.dropped`
-      if activeTransactionId == txInfo.id, txInfo.txStatus == .rejected || txInfo.txStatus == .dropped {
-        let indexOfChangedTx = unapprovedTxs.firstIndex(where: { $0.id == txInfo.id }) ?? 0
-        let newIndex = indexOfChangedTx > 0 ? indexOfChangedTx - 1 : 0
-        activeTransactionId = unapprovedTxs[safe: newIndex]?.id ?? unapprovedTxs.first?.id ?? ""
-      } else {
-        if activeTransactionId == txInfo.id {
-          activeTxStatus = txInfo.txStatus
-        }
-      }
-    }
-  }
-  public func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
-    Task { @MainActor in
-      // refresh the unapproved transaction list, as well as tx details UI
-      // first update `allTxs` with the new updated txInfo(txStatus)
-      if let index = allTxs.firstIndex(where: { $0.id == txInfo.id }) {
-        allTxs[index] = txInfo
-      }
-      
-      // update details UI if the current active tx is updated
-      if activeTransactionId == txInfo.id {
-        updateTransaction(with: txInfo)
-        activeTxStatus = txInfo.txStatus
-      }
-      
-      // if somehow the current active transaction no longer exists
-      // set the first `.unapproved` tx as the new `activeTransactionId`
-      if !unapprovedTxs.contains(where: { $0.id == activeTransactionId }) {
-        activeTransactionId = unapprovedTxs.first?.id ?? ""
-      }
-    }
-  }
-
-  public func onTxServiceReset() {
-  }
-}
-
-extension TransactionConfirmationStore: BraveWalletBraveWalletServiceObserver {
-  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
-  }
-
-  public func onDefaultWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-
-  public func onDefaultBaseCurrencyChanged(_ currency: String) {
-    currencyCode = currency
-  }
-
-  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
-  }
-
-  public func onNetworkListChanged() {
-  }
-  
-  public func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-  
-  public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-  
-  public func onDiscoverAssetsStarted() {
-  }
-  
-  public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
-  }
-  
-  public func onResetWallet() {
-  }
 }

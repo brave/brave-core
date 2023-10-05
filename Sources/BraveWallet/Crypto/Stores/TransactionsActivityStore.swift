@@ -6,7 +6,7 @@
 import BraveCore
 import SwiftUI
 
-class TransactionsActivityStore: ObservableObject {
+class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   @Published var transactionSummaries: [TransactionSummary] = []
   
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
@@ -36,6 +36,13 @@ class TransactionsActivityStore: ObservableObject {
   private let txService: BraveWalletTxService
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let assetManager: WalletUserAssetManagerType
+  private var keyringServiceObserver: KeyringServiceObserver?
+  private var txServiceObserver: TxServiceObserver?
+  private var walletServiceObserver: WalletServiceObserver?
+  
+  var isObserving: Bool {
+    keyringServiceObserver != nil && txServiceObserver != nil && walletServiceObserver != nil
+  }
   
   init(
     keyringService: BraveWalletKeyringService,
@@ -56,13 +63,58 @@ class TransactionsActivityStore: ObservableObject {
     self.solTxManagerProxy = solTxManagerProxy
     self.assetManager = userAssetManager
     
-    keyringService.add(self)
-    txService.add(self)
-    walletService.add(self)
+    self.setupObservers()
 
     Task { @MainActor in
       self.currencyCode = await walletService.defaultBaseCurrency()
     }
+  }
+  
+  func tearDown() {
+    keyringServiceObserver = nil
+    txServiceObserver = nil
+    walletServiceObserver = nil
+  }
+  
+  func setupObservers() {
+    guard !isObserving else { return }
+    self.keyringServiceObserver = KeyringServiceObserver(
+      keyringService: keyringService,
+      _accountsChanged: { [weak self] in
+        self?.update()
+      },
+      _accountsAdded: { [weak self] _ in
+        self?.update()
+      }
+    )
+    self.txServiceObserver = TxServiceObserver(
+      txService: txService,
+      _onNewUnapprovedTx: { [weak self] _ in
+        self?.update()
+      },
+      _onUnapprovedTxUpdated: { [weak self] _ in
+        self?.update()
+      },
+      _onTransactionStatusChanged: { [weak self] _ in
+        self?.update()
+      },
+      _onTxServiceReset: { [weak self] in
+        self?.update()
+      }
+    )
+    self.walletServiceObserver = WalletServiceObserver(
+      walletService: walletService,
+      _onNetworkListChanged: { [weak self] in
+        Task { @MainActor [self] in
+          // A network was added or removed, update our network filters for the change.
+          guard let rpcService = self?.rpcService else { return }
+          self?.networkFilters = await rpcService.allNetworksForSupportedCoins().map { network in
+            let existingSelectionValue = self?.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
+            return .init(isSelected: existingSelectionValue ?? true, model: network)
+          }
+        }
+      }
+    )
   }
   
   private var updateTask: Task<Void, Never>?
@@ -183,78 +235,4 @@ class TransactionsActivityStore: ObservableObject {
       userAssetManager: assetManager
     )
   }
-}
-
-extension TransactionsActivityStore: BraveWalletKeyringServiceObserver {
-  func keyringCreated(_ keyringId: BraveWallet.KeyringId) { }
-  
-  func keyringRestored(_ keyringId: BraveWallet.KeyringId) { }
-  
-  func keyringReset() { }
-  
-  func locked() { }
-  
-  func unlocked() { }
-  
-  func backedUp() { }
-  
-  func accountsChanged() {
-    update()
-  }
-  
-  func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
-    update()
-  }
-  
-  func autoLockMinutesChanged() { }
-  
-  func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) { }
-  
-  func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) { }
-}
-
-extension TransactionsActivityStore: BraveWalletTxServiceObserver {
-  func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
-    update()
-  }
-  
-  func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
-    update()
-  }
-  
-  func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
-    update()
-  }
-  
-  func onTxServiceReset() {
-    update()
-  }
-}
-
-extension TransactionsActivityStore: BraveWalletBraveWalletServiceObserver {
-  func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) { }
-  
-  func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) { }
-  
-  func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) { }
-  
-  func onDefaultBaseCurrencyChanged(_ currency: String) { }
-  
-  func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) { }
-  
-  func onNetworkListChanged() {
-    Task { @MainActor in
-      // A network was added or removed, update our network filters for the change.
-      self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map { network in
-        let existingSelectionValue = self.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
-        return .init(isSelected: existingSelectionValue ?? true, model: network)
-      }
-    }
-  }
-  
-  func onDiscoverAssetsStarted() { }
-  
-  func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) { }
-  
-  func onResetWallet() { }
 }

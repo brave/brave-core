@@ -28,6 +28,9 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               keyringStore: keyringStore,
               onDismiss: onDismiss
             )
+            .onDisappear {
+              cryptoStore.closeConfirmationStore()
+            }
           case .addSuggestedToken(let request):
             AddSuggestedTokenView(
               token: request.token,

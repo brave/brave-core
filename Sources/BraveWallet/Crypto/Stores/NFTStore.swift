@@ -23,7 +23,7 @@ struct NFTAssetViewModel: Identifiable, Equatable {
   }
 }
 
-public class NFTStore: ObservableObject {
+public class NFTStore: ObservableObject, WalletObserverStore {
   /// The users visible NFTs
   @Published private(set) var userVisibleNFTs: [NFTAssetViewModel] = []
   /// All User Accounts
@@ -58,6 +58,7 @@ public class NFTStore: ObservableObject {
     rpcService: self.rpcService,
     keyringService: self.keyringService,
     assetRatioService: self.assetRatioService,
+    walletService: self.walletService,
     ipfsApi: self.ipfsApi,
     userAssetManager: self.assetManager
   )
@@ -69,11 +70,18 @@ public class NFTStore: ObservableObject {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
+  private var rpcServiceObserver: JsonRpcServiceObserver?
+  private var keyringServiceObserver: KeyringServiceObserver?
+  private var walletServiveObserber: WalletServiceObserver?
   
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
   /// Cache of metadata for NFTs. The key is the token's `id`.
   private var metadataCache: [String: NFTMetadata] = [:]
+  
+  var isObserving: Bool {
+    rpcServiceObserver != nil && keyringServiceObserver != nil && walletServiveObserber != nil
+  }
   
   public init(
     keyringService: BraveWalletKeyringService,
@@ -92,9 +100,7 @@ public class NFTStore: ObservableObject {
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
     
-    self.rpcService.add(self)
-    self.keyringService.add(self)
-    self.walletService.add(self)
+    self.setupObservers()
     
     keyringService.isLocked { [self] isLocked in
       if !isLocked {
@@ -105,6 +111,51 @@ public class NFTStore: ObservableObject {
     Preferences.Wallet.isHidingUnownedNFTsFilter.observe(from: self)
     Preferences.Wallet.isShowingNFTNetworkLogoFilter.observe(from: self)
     Preferences.Wallet.nonSelectedNetworksFilter.observe(from: self)
+  }
+  
+  func tearDown() {
+    rpcServiceObserver = nil
+    keyringServiceObserver = nil
+    walletServiveObserber = nil
+    
+    userAssetsStore.tearDown()
+  }
+  
+  func setupObservers() {
+    guard !isObserving else { return }
+    self.rpcServiceObserver = JsonRpcServiceObserver(
+      rpcService: rpcService,
+      _chainChangedEvent: { [weak self] _, _, _ in
+        self?.update()
+      }
+    )
+    self.keyringServiceObserver = KeyringServiceObserver(
+      keyringService: keyringService,
+      _unlocked: { [weak self] in
+        DispatchQueue.main.async {
+          self?.update()
+        }
+      },
+      _accountsChanged: { [weak self] in
+        self?.update()
+      }
+    )
+    self.walletServiveObserber = WalletServiceObserver(
+      walletService: walletService,
+      _onNetworkListChanged: { [weak self] in
+        // A network was added or removed, `update()` will update `allNetworks`.
+        self?.update()
+      },
+      _onDiscoverAssetsStarted: { [weak self] in
+        self?.isLoadingDiscoverAssets = true
+      },
+      _onDiscoverAssetsCompleted: { [weak self] _ in
+        self?.isLoadingDiscoverAssets = false
+        // assets update will be called via `CryptoStore`
+      }
+    )
+    
+    userAssetsStore.setupObservers()
   }
   
   /// Cache of NFT balances for each account tokenBalances: [token.contractAddress]
@@ -228,84 +279,6 @@ public class NFTStore: ObservableObject {
     assetManager.updateUserAsset(for: token, visible: visible) { [weak self] in
       self?.update()
     }
-  }
-}
-
-extension NFTStore: BraveWalletJsonRpcServiceObserver {
-  public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
-  }
-  
-  public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
-  }
-  
-  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
-    update()
-  }
-}
-
-extension NFTStore: BraveWalletKeyringServiceObserver {
-  public func keyringReset() {
-  }
-  
-  public func accountsChanged() {
-    update()
-  }
-  public func backedUp() {
-  }
-  public func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
-  }
-  public func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
-  }
-  public func locked() {
-  }
-  public func unlocked() {
-    DispatchQueue.main.async { [self] in
-      update()
-    }
-  }
-  public func autoLockMinutesChanged() {
-  }
-  public func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
-  }
-  
-  public func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
-  }
-  
-  public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
-  }
-}
-
-extension NFTStore: BraveWalletBraveWalletServiceObserver {
-  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
-  }
-  
-  public func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-  
-  public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-  
-  public func onDefaultBaseCurrencyChanged(_ currency: String) {
-  }
-  
-  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
-  }
-  
-  public func onNetworkListChanged() {
-    // A network was added or removed, `update()` will update `allNetworks`.
-    update()
-  }
-  
-  public func onDiscoverAssetsStarted() {
-    isLoadingDiscoverAssets = true
-  }
-  
-  public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
-    isLoadingDiscoverAssets = false
-    // assets update will be called via `CryptoStore`
-  }
-  
-  public func onResetWallet() {
   }
 }
 

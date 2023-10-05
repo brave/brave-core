@@ -163,6 +163,7 @@ extension UserAssetsStore {
       rpcService: MockJsonRpcService(),
       keyringService: MockKeyringService(),
       assetRatioService: MockAssetRatioService(),
+      walletService: MockBraveWalletService(),
       ipfsApi: TestIpfsAPI(),
       userAssetManager: TestableWalletUserAssetManager()
     )

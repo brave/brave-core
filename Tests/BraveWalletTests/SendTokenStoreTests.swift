@@ -98,6 +98,7 @@ class SendTokenStoreTests: XCTestCase {
     walletService._ensureSelectedAccountForChain = { coin, chainId, completion in
       completion(selectedAccount.accountId)
     }
+    walletService._addObserver = { _ in }
     let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
     ethTxManagerProxy._makeErc20TransferData = { _, _, completion in
       completion(true, .init())
