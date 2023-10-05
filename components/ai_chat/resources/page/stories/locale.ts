@@ -45,7 +45,7 @@ provideStrings({
   answerDisliked: 'Answer disliked',
   addFeedbackButtonLabel: 'Add feedback',
   copyButtonLabel: 'Copy',
-  likeAnswerButtonLabel: 'Like',
+  likeAnswerButtonLabel: 'Like answer',
   dislikeAnswerButtonLabel: 'Dislike answer',
   provideFeedbackTitle: 'Provide Brave AI Feedback',
   selectFeedbackTopic: 'Select the topic of your feedback?',
