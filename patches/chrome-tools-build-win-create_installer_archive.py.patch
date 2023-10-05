@@ -1,16 +1,16 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 07387a69ada91e01b08043dfdc2029228890f937..dafa83866f9d4305ec2fa5173a5007c73bbe7cc4 100755
+index 56d34d12c48cb90316cc3411dac23b2bae921a67..6b010359e892d3b97569fab5c2b0ca217dc0a06d 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
-@@ -645,6 +645,7 @@ def _ParseOptions():
-            'with the installer archive {x86|x64}.')
+@@ -676,6 +676,7 @@ def _ParseOptions():
+            'archived, to keep output artifacts deterministic.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)
 +  parser.add_option('--skip_signing', action='store_true', default=False)
  
    options, _ = parser.parse_args()
    if not options.build_dir:
-@@ -673,6 +674,7 @@ def _ParseOptions():
+@@ -704,6 +705,7 @@ def _ParseOptions():
  
    return options
  

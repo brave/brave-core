@@ -1,32 +1,46 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index b12ca875746ef64c05cbc9a1de0769a8f3c65f47..71da65021b83e37ef478963e3f9c1b654825232f 100644
+index f42476a2cc24c7d1744a5fa19b3cd2a7c487dc4e..46c8691d05175fe5678a57592a13b733318fd99c 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-@@ -172,6 +172,7 @@ class RecentTabsSubMenuModelTest : public BrowserWithTestWindowTest {
-                              ->GetUnderlyingOpenTabsUIDelegateForTest());
+@@ -175,6 +175,7 @@ class RecentTabsSubMenuModelTest : public BrowserWithTestWindowTest,
+     helper->VerifyExport(session_sync_service_->GetOpenTabsUIDelegate());
    }
  
 +  BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
   private:
    raw_ptr<sync_sessions::SessionSyncService, DanglingUntriaged>
        session_sync_service_;
-@@ -580,8 +581,8 @@ TEST_F(RecentTabsSubMenuModelTest, MaxSessionsAndRecency) {
-   EXPECT_THAT(base::span<const std::u16string>(
-                   recent_tabs_builder.GetTabTitlesSortedByRecency())
-                   .subspan(0, 3),
--              ElementsAre(model.GetLabelAt(5), model.GetLabelAt(8),
--                          model.GetLabelAt(11)));
-+              ElementsAre(model.GetLabelAt(6), model.GetLabelAt(9),
-+                          model.GetLabelAt(12)));
+@@ -643,15 +644,15 @@ TEST_P(RecentTabsSubMenuModelTest, MaxSessionsAndRecency) {
+     EXPECT_THAT(base::span<const std::u16string>(
+                     recent_tabs_builder.GetTabTitlesSortedByRecency())
+                     .subspan(0, 3),
+-                ElementsAre(model.GetLabelAt(6), model.GetLabelAt(9),
+-                            model.GetLabelAt(12)));
++                ElementsAre(model.GetLabelAt(7), model.GetLabelAt(10),
++                            model.GetLabelAt(13)));
+ 
+   } else {
+     EXPECT_THAT(base::span<const std::u16string>(
+                     recent_tabs_builder.GetTabTitlesSortedByRecency())
+                     .subspan(0, 3),
+-                ElementsAre(model.GetLabelAt(5), model.GetLabelAt(8),
+-                            model.GetLabelAt(11)));
++                ElementsAre(model.GetLabelAt(6), model.GetLabelAt(9),
++                            model.GetLabelAt(12)));
+   }
  }
  
- TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
-@@ -618,6 +619,6 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
+@@ -696,10 +697,10 @@ TEST_P(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
    EXPECT_THAT(base::span<const std::u16string>(
                    recent_tabs_builder.GetTabTitlesSortedByRecency())
                    .subspan(0, 4),
--              ElementsAre(model.GetLabelAt(5), model.GetLabelAt(6),
--                          model.GetLabelAt(7), model.GetLabelAt(8)));
-+              ElementsAre(model.GetLabelAt(6), model.GetLabelAt(7),
-+                          model.GetLabelAt(8), model.GetLabelAt(9)));
+-              ElementsAre(model.GetLabelAt(model.GetItemCount() - 4),
++              ElementsAre(model.GetLabelAt(model.GetItemCount() - 5),
++                          model.GetLabelAt(model.GetItemCount() - 4),
+                           model.GetLabelAt(model.GetItemCount() - 3),
+-                          model.GetLabelAt(model.GetItemCount() - 2),
+-                          model.GetLabelAt(model.GetItemCount() - 1)));
++                          model.GetLabelAt(model.GetItemCount() - 2)));
  }
+ 
+ INSTANTIATE_TEST_SUITE_P(All, RecentTabsSubMenuModelTest, ::testing::Bool());

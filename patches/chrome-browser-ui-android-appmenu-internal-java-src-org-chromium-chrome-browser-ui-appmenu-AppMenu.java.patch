@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-index 270267ef3fdd1680666fb757341b4b28e9bcd88b..c129c8542b7a3fe0251faf79702ed960e1c8a92e 100644
+index 0d1a6f26b0bdc1007048051c91682f4fdbde670b..58ea26e71ac571a40eba9689a1e2d251e7747ab3 100644
 --- a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 +++ b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 @@ -219,6 +219,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler
@@ -10,11 +10,3 @@ index 270267ef3fdd1680666fb757341b4b28e9bcd88b..c129c8542b7a3fe0251faf79702ed960
  
          // Turn off window animations for low end devices.
          if (SysUtils.isLowEndDevice()) mPopup.setAnimationStyle(0);
-@@ -295,6 +296,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler
-                 popupHeight, anchorView.getRootView().getLayoutDirection());
-         mPopup.setContentView(contentView);
- 
-+        if (BraveAppMenu.isMenuFromBottom()) popupHeight = visibleDisplayFrame.height() - anchorViewOffset - popupPosition[1];
-         if (popupHeight + popupPosition[1] > visibleDisplayFrame.height() - anchorViewOffset) {
-             mPopup.setHeight(visibleDisplayFrame.height() - anchorViewOffset);
-         }

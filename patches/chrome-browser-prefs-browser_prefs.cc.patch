@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index fc8d276b5191adf8bf3d68107d9b98d74a80be82..6837c8993f08b6b358677baa0ccda3b703d7f320 100644
+index cf011e0ea314322c1b2545e1954f8aa00b33f10c..b64c42b57b500b3eb8735535642c965bb8c98abe 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1605,6 +1605,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
@@ -11,10 +11,10 @@ index fc8d276b5191adf8bf3d68107d9b98d74a80be82..6837c8993f08b6b358677baa0ccda3b7
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -2029,6 +2031,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
- #if BUILDFLAG(ENTERPRISE_DATA_CONTROLS)
-   data_controls::RegisterProfilePrefs(registry);
- #endif  // BUILDFLAG(ENTERPRISE_DATA_CONTROLS)
+@@ -2033,6 +2035,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+   registry->RegisterBooleanPref(prefs::kNativeHostsExecutablesLaunchDirectly,
+                                 false);
+ #endif  // BUILDFLAG(IS_WIN)
 +  brave::RegisterProfilePrefs(registry);
  }
  

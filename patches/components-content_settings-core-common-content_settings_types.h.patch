@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index e465ffdd518f4de20983ea2a561150230b33cd1c..4051520fec56f40956da351370d39f77bcc1d9cc 100644
+index 0a38dcddaf2b0bf50c3c2926b2e5dc29d5bae451..d0c36f7fa6fe4d6f1d29f6d6a6aa840ab91b9ec8 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -365,6 +365,22 @@ enum class ContentSettingsType : int32_t {
-   // request.
-   FILE_SYSTEM_ACCESS_EXTENDED_PERMISSION,
+@@ -369,6 +369,22 @@ enum class ContentSettingsType : int32_t {
+   // heuristics.
+   TPCD_HEURISTICS_GRANTS,
  
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,
