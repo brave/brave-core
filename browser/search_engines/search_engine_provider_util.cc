@@ -48,8 +48,7 @@ void RegisterSearchEngineProviderPrefsForMigration(
       kShowAlternativePrivateSearchEngineProviderToggle, false);
 }
 
-void MigrateSearchEngineProviderPrefs(Profile* profile) {
-  auto* prefs = profile->GetPrefs();
+void MigrateSearchEngineProviderPrefs(PrefService* prefs) {
   const bool need_migrate =
       prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle) &&
       prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider);
