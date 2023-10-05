@@ -56,6 +56,11 @@ extern const base::FeatureParam<double> kBraveNewsChannelSubscribedBoost;
 // visits are calculated as the normalized visit count (i.e. 0 - 1) + this
 // offset.
 extern const base::FeatureParam<double> kBraveNewsSourceVisitsMin;
+
+// The ratio of category to topic clusters. For example 0.8 would indicate that
+// 80% of the clusters should be categories and 20% topics.
+extern const base::FeatureParam<double> kBraveNewsCategoryTopicRatio;
+
 }  // namespace brave_news::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_FEATURES_H_

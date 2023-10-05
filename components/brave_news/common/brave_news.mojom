@@ -24,6 +24,11 @@ enum CardType {
   PROMOTED_ARTICLE
 };
 
+enum ClusterType {
+  CHANNEL,
+  TOPIC
+};
+
 struct FeedItemMetadata {
   string category_name;
   mojo_base.mojom.Time publish_time;
@@ -165,7 +170,7 @@ struct Discover {
 };
 
 struct Cluster {
-  string type;
+  ClusterType type;
   string id;
   array<ArticleElements> articles;
 };

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react';
-import { Cluster as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
+import { Cluster as Info, ClusterType } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import Card from './Card';
 import Article from './Article';
 import styled from 'styled-components';
@@ -28,7 +28,7 @@ export default function Cluster({ info }: Props) {
     </MetaInfoContainer>
     {info.articles.map((a, i) => {
       const info: any = a.article || a.hero
-      return <Article key={i} info={info} hideChannel />
+      return <Article key={i} info={info} hideChannel={info.type === ClusterType.CHANNEL} />
     })}
   </Container>
 }

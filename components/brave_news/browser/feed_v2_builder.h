@@ -17,6 +17,7 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
+#include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
@@ -54,6 +55,9 @@ class FeedV2Builder {
   void OnGotSuggestedPublisherIds(
       const std::vector<std::string>& suggested_ids);
 
+  void GetTopics();
+  void OnGotTopics(TopicsResult topics);
+
   void BuildFeedFromArticles();
 
   void NotifyBuildCompleted(BuildFeedCallback callback);
@@ -64,11 +68,13 @@ class FeedV2Builder {
   raw_ref<PrefService> prefs_;
 
   FeedFetcher fetcher_;
+  TopicsFetcher topics_fetcher_;
   SignalCalculator signal_calculator_;
 
   FeedItems raw_feed_items_;
   Signals signals_;
   std::vector<std::string> suggested_publisher_ids_;
+  TopicsResult topics_;
 
   bool is_building_ = false;
   std::vector<BuildFeedCallback> pending_callbacks_;
