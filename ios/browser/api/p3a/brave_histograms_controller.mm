@@ -56,6 +56,10 @@
   return self;
 }
 
+- (WKWebView*)webView {
+  return _webView;
+}
+
 - (void)dealloc {
   [[_webController view] removeFromSuperview];
   _webController = nullptr;

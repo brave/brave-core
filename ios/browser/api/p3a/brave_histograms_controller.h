@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Displays the `chrome://histograms` web page to verify P3A histograms
 OBJC_EXPORT
 @interface BraveHistogramsController : UIViewController
+@property(readonly) WKWebView* webView;
 - (instancetype)init NS_UNAVAILABLE;
 @end
 
