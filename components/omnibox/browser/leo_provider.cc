@@ -9,10 +9,10 @@
 
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/omnibox/browser/leo_action.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
-#include "components/strings/grit/components_strings.h"
 #include "third_party/metrics_proto/omnibox_input_type.pb.h"
 #include "third_party/omnibox_proto/types.pb.h"
 #include "ui/base/l10n/l10n_util.h"
