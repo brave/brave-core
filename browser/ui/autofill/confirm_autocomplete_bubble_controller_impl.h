@@ -30,7 +30,7 @@ class ConfirmAutocompleteBubbleControllerImpl
   std::u16string GetAcceptButtonText() const override;
   std::u16string GetDeclineButtonText() const override;
   void OnAcceptButton() override;
-  void OnBubbleClosed(PaymentsBubbleClosedReason closed_reason) override;
+  void OnBubbleClosed(views::Widget::ClosedReason closed_reason) override;
 
  protected:
   explicit ConfirmAutocompleteBubbleControllerImpl(

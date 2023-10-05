@@ -47,8 +47,8 @@ void ConfirmAutocompleteBubbleControllerImpl::OnAcceptButton() {
 }
 
 void ConfirmAutocompleteBubbleControllerImpl::OnBubbleClosed(
-    PaymentsBubbleClosedReason closed_reason) {
-  if (closed_reason != PaymentsBubbleClosedReason::kAccepted) {
+    views::Widget::ClosedReason closed_reason) {
+  if (closed_reason != views::Widget::ClosedReason::kAcceptButtonClicked) {
     DCHECK(callback_);
     std::move(callback_).Run(false);
   }

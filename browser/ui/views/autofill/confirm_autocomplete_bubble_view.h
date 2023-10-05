@@ -1,24 +1,23 @@
-// Copyright 2023 The Chromium Authors
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 #ifndef BRAVE_BROWSER_UI_VIEWS_AUTOFILL_CONFIRM_AUTOCOMPLETE_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_AUTOFILL_CONFIRM_AUTOCOMPLETE_BUBBLE_VIEW_H_
 
+#include <string>
+
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/autofill/confirm_autocomplete_bubble_controller.h"
 #include "chrome/browser/ui/autofill/autofill_bubble_base.h"
-#include "chrome/browser/ui/views/controls/obscurable_label_with_toggle_button.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
-#include "ui/views/controls/button/image_button.h"
-#include "ui/views/controls/textfield/textfield.h"
-#include "ui/views/controls/textfield/textfield_controller.h"
 
 namespace content {
 class WebContents;
 }
 
+namespace views {
+class View;
+}
+
 namespace autofill {
+
+class ConfirmAutocompleteBubbleController;
 
 class ConfirmAutocompleteBubbleView : public AutofillBubbleBase,
                                       public LocationBarBubbleDelegateView {
@@ -34,9 +33,11 @@ class ConfirmAutocompleteBubbleView : public AutofillBubbleBase,
 
   void Show(DisplayReason reason);
 
+  // AutofillBubbleBase:
   void Hide() override;
-
+  // View:
   void AddedToWidget() override;
+  // WidgetDelegate:
   std::u16string GetWindowTitle() const override;
   void WindowClosing() override;
 
@@ -50,8 +51,6 @@ class ConfirmAutocompleteBubbleView : public AutofillBubbleBase,
   void OnDialogAccepted();
 
  private:
-  friend class SaveIbanBubbleViewFullFormBrowserTest;
-
   raw_ptr<ConfirmAutocompleteBubbleController> controller_;
 };
 

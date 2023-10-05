@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "components/autofill/core/browser/ui/payments/payments_bubble_closed_reasons.h"
+#include "ui/views/widget/widget.h"
 
 namespace autofill {
 
@@ -22,7 +22,7 @@ class ConfirmAutocompleteBubbleController {
   virtual std::u16string GetAcceptButtonText() const = 0;
   virtual std::u16string GetDeclineButtonText() const = 0;
   virtual void OnAcceptButton() = 0;
-  virtual void OnBubbleClosed(PaymentsBubbleClosedReason closed_reason) = 0;
+  virtual void OnBubbleClosed(views::Widget::ClosedReason closed_reason) = 0;
 };
 
 }  // namespace autofill
