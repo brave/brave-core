@@ -9,10 +9,10 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveStrictPreferenceKeyCheckerClassAdapter extends BraveClassVisitor {
     static String sStrictPreferenceKeyCheckerClassName =
-            "org/chromium/chrome/browser/preferences/StrictPreferenceKeyChecker";
+            "org/chromium/base/shared_preferences/StrictPreferenceKeyChecker";
 
     static String sBraveStrictPreferenceKeyCheckerClassName =
-            "org/chromium/chrome/browser/preferences/BraveStrictPreferenceKeyChecker";
+            "org/chromium/base/shared_preferences/BraveStrictPreferenceKeyChecker";
 
     public BraveStrictPreferenceKeyCheckerClassAdapter(ClassVisitor visitor) {
         super(visitor);

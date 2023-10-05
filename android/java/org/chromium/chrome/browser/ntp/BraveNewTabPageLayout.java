@@ -92,7 +92,6 @@ import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.query_tiles.BraveQueryTileSection;
 import org.chromium.chrome.browser.rate.RateUtils;
@@ -177,7 +176,7 @@ public class BraveNewTabPageLayout
     private int mNewsSessionCardViews;
     private FeedItemsCard mVisibleCard;
     private String mFeedHash;
-    private SharedPreferencesManager.Observer mPreferenceObserver;
+    private SharedPreferences.OnSharedPreferenceChangeListener mPreferenceListener;
     private boolean mComesFromNewTab;
     private boolean mIsTopSitesEnabled;
     private boolean mIsBraveStatsEnabled;
@@ -297,8 +296,9 @@ public class BraveNewTabPageLayout
         mIsDisplayNewsFeed = BraveNewsUtils.shouldDisplayNewsFeed();
 
         initPreferenceObserver();
-        if (mPreferenceObserver != null) {
-            SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
+        if (mPreferenceListener != null) {
+            ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(
+                    mPreferenceListener);
         }
         setNtpViews();
     }
@@ -397,14 +397,14 @@ public class BraveNewTabPageLayout
                 boolean isFromNewTab = BraveActivity.getBraveActivity().isComesFromNewTab();
 
                 Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-                int offsetPosition = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
+                int offsetPosition = (tab != null) ? ContextUtils.getAppSharedPreferences().getInt(
                                              BravePreferenceKeys.BRAVE_RECYCLERVIEW_OFFSET_POSITION
                                                      + tab.getId(),
                                              0)
                                                    : 0;
 
                 int itemPosition = (tab != null)
-                        ? SharedPreferencesManager.getInstance().readInt(
+                        ? ContextUtils.getAppSharedPreferences().getInt(
                                 BravePreferenceKeys.BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0)
                         : 0;
 
@@ -446,19 +446,24 @@ public class BraveNewTabPageLayout
                                         mRecyclerView.getChildAdapterPosition(firstChild);
                                 int verticalOffset = firstChild.getTop();
 
-                                SharedPreferencesManager.getInstance().writeInt(
-                                        BravePreferenceKeys.BRAVE_RECYCLERVIEW_OFFSET_POSITION
-                                                + BraveActivity.getBraveActivity()
-                                                          .getActivityTab()
-                                                          .getId(),
-                                        verticalOffset);
+                                ContextUtils.getAppSharedPreferences()
+                                        .edit()
+                                        .putInt(BravePreferenceKeys
+                                                                .BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                        + BraveActivity.getBraveActivity()
+                                                                  .getActivityTab()
+                                                                  .getId(),
+                                                verticalOffset)
+                                        .apply();
 
-                                SharedPreferencesManager.getInstance().writeInt(
-                                        BravePreferenceKeys.BRAVE_RECYCLERVIEW_POSITION
-                                                + BraveActivity.getBraveActivity()
-                                                          .getActivityTab()
-                                                          .getId(),
-                                        firstVisiblePosition);
+                                ContextUtils.getAppSharedPreferences()
+                                        .edit()
+                                        .putInt(BravePreferenceKeys.BRAVE_RECYCLERVIEW_POSITION
+                                                        + BraveActivity.getBraveActivity()
+                                                                  .getActivityTab()
+                                                                  .getId(),
+                                                firstVisiblePosition)
+                                        .apply();
                             }
                         }
                     } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -528,7 +533,7 @@ public class BraveNewTabPageLayout
                         int lastVisibleItemPosition =
                                 linearLayoutManager.findLastVisibleItemPosition();
 
-                        mFeedHash = SharedPreferencesManager.getInstance().readString(
+                        mFeedHash = ContextUtils.getAppSharedPreferences().getString(
                                 BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, "");
                         //@TODO alex optimize feed availability check
                         if (mBraveNewsController != null) {
@@ -706,14 +711,14 @@ public class BraveNewTabPageLayout
         try {
             Tab tab = BraveActivity.getBraveActivity().getActivityTab();
             if (tab != null) {
-                int itemPosition = SharedPreferencesManager.getInstance().readInt(
+                int itemPosition = ContextUtils.getAppSharedPreferences().getInt(
                         BravePreferenceKeys.BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0);
 
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     if (mNtpAdapter != null && mNtpAdapter.getItemCount() > itemPosition) {
                         RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
                         if (manager instanceof LinearLayoutManager) {
-                            int offsetPosition = SharedPreferencesManager.getInstance().readInt(
+                            int offsetPosition = ContextUtils.getAppSharedPreferences().getInt(
                                     BravePreferenceKeys.BRAVE_RECYCLERVIEW_OFFSET_POSITION
                                             + tab.getId(),
                                     0);
@@ -767,9 +772,9 @@ public class BraveNewTabPageLayout
     }
 
     private void initPreferenceObserver() {
-        mPreferenceObserver = (key) -> {
+        mPreferenceListener = (prefs, key) -> {
             if (TextUtils.equals(key, BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE)) {
-                if (SharedPreferencesManager.getInstance().readBoolean(
+                if (ContextUtils.getAppSharedPreferences().getBoolean(
                             BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, false)) {
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
                         mPrevVisibleNewsCardPosition = mPrevVisibleNewsCardPosition + 1;
@@ -818,9 +823,10 @@ public class BraveNewTabPageLayout
             mBraveNewsController = null;
         }
 
-        // removes preference observer
-        SharedPreferencesManager.getInstance().removeObserver(mPreferenceObserver);
-        mPreferenceObserver = null;
+        // Removes preference listener.
+        ContextUtils.getAppSharedPreferences().unregisterOnSharedPreferenceChangeListener(
+                mPreferenceListener);
+        mPreferenceListener = null;
 
         mRecyclerView.clearOnScrollListeners();
         super.onDetachedFromWindow();
@@ -859,8 +865,10 @@ public class BraveNewTabPageLayout
         mNewContentText.setVisibility(View.GONE);
         mNewContentProgressBar.setVisibility(View.VISIBLE);
         mNewContentLayout.setClickable(false);
-        SharedPreferencesManager.getInstance().writeBoolean(
-                BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, false);
+        ContextUtils.getAppSharedPreferences()
+                .edit()
+                .putBoolean(BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, false)
+                .apply();
 
         getFeed(true);
     }
@@ -895,8 +903,10 @@ public class BraveNewTabPageLayout
 
         mNewsItemsFeedCard.clear();
         BraveNewsUtils.initCurrentAds();
-        SharedPreferencesManager.getInstance().writeString(
-                BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, feed.hash);
+        ContextUtils.getAppSharedPreferences()
+                .edit()
+                .putString(BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, feed.hash)
+                .apply();
 
         if (feed.featuredItem != null) {
             // process Featured item

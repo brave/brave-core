@@ -10,3 +10,11 @@ index 55479f4187323ad0f26dbbda555c0ff3093cc8d5..3ce31b4526993c440c3bee3766e8350d
  
      if (use_clang_profiling) {
        sources += [
+@@ -4500,6 +4501,7 @@ if (is_android) {
+       "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
+       "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
+     ]
++    sources += brave_base_shared_preferences_java_sources
+   }
+ 
+   android_aidl("process_launcher_aidl") {
