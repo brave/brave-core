@@ -50,7 +50,7 @@ UnitTestBase::~UnitTestBase() {
 }
 
 void UnitTestBase::SetUp() {
-  SetUpForTesting(/*is_integration_test*/ false);  // IN-TEST
+  SetUpForTesting(/*is_integration_test=*/false);  // IN-TEST
 }
 
 void UnitTestBase::TearDown() {
@@ -112,7 +112,7 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
   return base::CopyDirectory(from_test_path, to_temp_path,
-                             /*recursive*/ true);
+                             /*recursive=*/true);
 }
 
 bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
@@ -238,7 +238,7 @@ void UnitTestBase::MockAdsClient() {
   MockCanShowNotificationAds(ads_client_mock_, true);
   MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);
 
-  MockGetBrowsingHistory(ads_client_mock_, /*history*/ {});
+  MockGetBrowsingHistory(ads_client_mock_, /*history=*/{});
 }
 
 void UnitTestBase::MockSetBooleanPref(AdsClientMock& mock) {

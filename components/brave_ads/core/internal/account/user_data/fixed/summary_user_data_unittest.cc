@@ -61,7 +61,7 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForNonRewardsUser) {
   DisableBraveRewardsForTesting();
 
   const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count*/ 3);
+      BuildPaymentTokensForTesting(/*count=*/3);
 
   // Act & Assert
   EXPECT_TRUE(BuildSummaryUserData(payment_tokens).empty());

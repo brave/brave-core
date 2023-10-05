@@ -36,7 +36,7 @@ TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
      ComputeNonMatchingIntentSegmentScore) {
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.0, ComputeIntentSegmentScore(/*input_variable*/ {}));
+  EXPECT_DOUBLE_EQ(0.0, ComputeIntentSegmentScore(/*input_variable=*/{}));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
@@ -91,7 +91,7 @@ TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest,
      ComputeNonMatchingInterestSegmentScore) {
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.0, ComputeInterestSegmentScore(/*input_variable*/ {}));
+  EXPECT_DOUBLE_EQ(0.0, ComputeInterestSegmentScore(/*input_variable=*/{}));
 }
 
 TEST(BraveAdsCreativeAdPredictorScoringUtilTest, ComputeLastSeenAdScore) {

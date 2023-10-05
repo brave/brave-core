@@ -18,13 +18,13 @@ namespace brave_ads {
 class BraveAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
   }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
-         {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
+         {{net::HTTP_OK, /*response_body=*/"/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 

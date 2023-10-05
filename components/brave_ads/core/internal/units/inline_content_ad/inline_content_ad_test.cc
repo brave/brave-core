@@ -27,14 +27,14 @@ constexpr char kDimensions[] = "200x100";
 class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
   }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
-           /*response_body*/ "/catalog_with_inline_content_ad.json"}}}};
+           /*response_body=*/"/catalog_with_inline_content_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
@@ -44,7 +44,7 @@ class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
       const mojom::InlineContentAdEventType& event_type,
       const bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
-    EXPECT_CALL(callback, Run(/*success*/ should_fire_event));
+    EXPECT_CALL(callback, Run(/*success=*/should_fire_event));
     GetAds().TriggerInlineContentAdEvent(placement_id, creative_instance_id,
                                          event_type, callback.Get());
   }
@@ -68,7 +68,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_,
               RecordP2AEvents(BuildP2AAdOpportunityEvents(
-                  AdType::kInlineContentAd, /*segments*/ {})));
+                  AdType::kInlineContentAd, /*segments=*/{})));
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(kDimensions, ::testing::Ne(absl::nullopt)));
@@ -80,7 +80,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, DoNotServe) {
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(kDimensions, /*ad*/ ::testing::Eq(absl::nullopt)));
+  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(absl::nullopt)));
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
 }
 
@@ -99,7 +99,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
         // Act & Assert
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
                                     mojom::InlineContentAdEventType::kViewed,
-                                    /*should_fire_event*/ true);
+                                    /*should_fire_event=*/true);
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
@@ -119,12 +119,12 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
 
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
                                     mojom::InlineContentAdEventType::kViewed,
-                                    /*should_fire_event*/ true);
+                                    /*should_fire_event=*/true);
 
         // Act & Assert
         TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
                                     mojom::InlineContentAdEventType::kClicked,
-                                    /*should_fire_event*/ true);
+                                    /*should_fire_event=*/true);
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());

@@ -47,23 +47,23 @@ TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopChildSegments) {
       "interest_1_parent-child",        "interest_2_parent-child"};
   EXPECT_EQ(expected_top_segments,
             GetTopSegments(BuildUserModel(), kTopSegmentsMaxCount,
-                           /*parent_only*/ false));
+                           /*parent_only=*/false));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopChildSegmentsIfEmpty) {
   // Act & Assert
   const SegmentList expected_top_segments;
   EXPECT_EQ(expected_top_segments,
-            GetTopSegments(/*user_model*/ {}, kTopSegmentsMaxCount,
-                           /*parent_only*/ false));
+            GetTopSegments(/*user_model=*/{}, kTopSegmentsMaxCount,
+                           /*parent_only=*/false));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopParentSegmentsIfEmpty) {
   // Act & Assert
   const SegmentList expected_top_segments;
   EXPECT_EQ(expected_top_segments,
-            GetTopSegments(/*user_model*/ {}, kTopSegmentsMaxCount,
-                           /*parent_only*/ true));
+            GetTopSegments(/*user_model=*/{}, kTopSegmentsMaxCount,
+                           /*parent_only=*/true));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopParentSegments) {
@@ -74,7 +74,7 @@ TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopParentSegments) {
       "interest_1_parent",        "interest_2_parent"};
   EXPECT_EQ(expected_top_segments,
             GetTopSegments(BuildUserModel(), kTopSegmentsMaxCount,
-                           /*parent_only*/ true));
+                           /*parent_only=*/true));
 }
 
 }  // namespace brave_ads

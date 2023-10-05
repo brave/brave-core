@@ -31,12 +31,12 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   AdvanceClockTo(
-      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));
+      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local=*/true));
 
   SetCatalogId(kCatalogId);
   SetCatalogLastUpdated(Now());
 
-  AdvanceClockTo(TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local=*/true));
 
   SetLastUnIdleTimeDiagnosticEntry(Now());
 

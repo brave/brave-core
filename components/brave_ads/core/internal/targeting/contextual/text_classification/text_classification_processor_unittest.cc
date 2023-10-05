@@ -42,7 +42,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest,
   TextClassificationProcessor processor(*resource_);
 
   // Act
-  processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
+  processor.Process(/*text=*/"The quick brown fox jumps over the lazy dog");
 
   // Assert
   const TextClassificationProbabilityList& text_classification_probabilities =
@@ -58,7 +58,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   TextClassificationProcessor processor(*resource_);
 
   // Act
-  processor.Process(/*text*/ {});
+  processor.Process(/*text=*/{});
 
   // Assert
   const TextClassificationProbabilityList& text_classification_probabilities =
@@ -85,7 +85,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   TextClassificationProcessor processor(*resource_);
 
   // Act
-  processor.Process(/*text*/ "Some content about technology & computing");
+  processor.Process(/*text=*/"Some content about technology & computing");
 
   // Assert
   const TextClassificationProbabilityList& text_classification_probabilities =
@@ -101,9 +101,9 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   TextClassificationProcessor processor(*resource_);
 
   // Act
-  processor.Process(/*text*/ "Some content about cooking food");
-  processor.Process(/*text*/ "Some content about finance & banking");
-  processor.Process(/*text*/ "Some content about technology & computing");
+  processor.Process(/*text=*/"Some content about cooking food");
+  processor.Process(/*text=*/"Some content about finance & banking");
+  processor.Process(/*text=*/"Some content about technology & computing");
 
   // Assert
   const TextClassificationProbabilityList& text_classification_probabilities =

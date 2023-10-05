@@ -26,7 +26,7 @@ class BraveAdsConfirmationDynamicUserDataBuilderTest : public UnitTestBase {
     MockConfirmationUserData();
 
     AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
+        TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
   }
 };
 
@@ -52,7 +52,7 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(/*user_data*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*user_data=*/::testing::IsEmpty()));
   BuildDynamicUserData(callback.Get());
 }
 

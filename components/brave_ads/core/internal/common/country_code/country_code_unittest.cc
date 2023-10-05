@@ -58,7 +58,7 @@ class BraveAdsCountryCodeTest : public UnitTestBase {
 
 TEST_F(BraveAdsCountryCodeTest, OnDidInitializeAds) {
   // Arrange
-  MockHttpOkUrlResponse(/*country_code*/ "CA", /*subdivision_code*/ "AL");
+  MockHttpOkUrlResponse(/*country_code=*/"CA", /*subdivision_code=*/"AL");
 
   // Act
   NotifyDidInitializeAds();
@@ -71,7 +71,7 @@ TEST_F(BraveAdsCountryCodeTest, PrefsNotEnabledOnDidInitializeAds) {
   // Arrange
   DisableBraveRewardsForTesting();
 
-  MockHttpOkUrlResponse(/*country_code*/ "CA", /*subdivision_code*/ "AL");
+  MockHttpOkUrlResponse(/*country_code=*/"CA", /*subdivision_code=*/"AL");
 
   // Act
   NotifyDidInitializeAds();
@@ -84,7 +84,7 @@ TEST_F(BraveAdsCountryCodeTest, OnDidJoinBraveRewards) {
   // Arrange
   DisableBraveRewardsForTesting();
 
-  MockHttpOkUrlResponse(/*country_code*/ "CA", /*subdivision_code*/ "AL");
+  MockHttpOkUrlResponse(/*country_code=*/"CA", /*subdivision_code=*/"AL");
 
   // Act
   ads_client_mock_.SetBooleanPref(brave_rewards::prefs::kEnabled, true);
@@ -113,7 +113,7 @@ TEST_F(BraveAdsCountryCodeTest, PrefWasChangedBefore) {
 
   ads_client_mock_.SetLocalStatePref(brave_l10n::prefs::kCountryCode,
                                      base::Value("CA"));
-  MockHttpOkUrlResponse(/*country_code*/ "XX", /*subdivision_code*/ "sd");
+  MockHttpOkUrlResponse(/*country_code=*/"XX", /*subdivision_code=*/"sd");
 
   // Act
   ads_client_mock_.SetBooleanPref(brave_rewards::prefs::kEnabled, true);
@@ -127,11 +127,11 @@ TEST_F(BraveAdsCountryCodeTest, RetryAfterInvalidUrlResponseStatusCode) {
   const URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body*/ net::GetHttpReasonPhrase(
+         /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
         {net::HTTP_OK,
          BuildSubdivisionUrlResponseBodyForTesting(
-             /*country_code*/ "US", /*subdivision_code*/ "CA")}}}};
+             /*country_code=*/"US", /*subdivision_code=*/"CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   NotifyDidInitializeAds();
@@ -145,8 +145,8 @@ TEST_F(BraveAdsCountryCodeTest, RetryAfterInvalidUrlResponseStatusCode) {
 
 TEST_F(BraveAdsCountryCodeTest, NoRegionSubdivisionCode) {
   // Arrange
-  MockHttpOkUrlResponse(/*country_code*/ "US",
-                        /*subdivision_code*/ "NO REGION");
+  MockHttpOkUrlResponse(/*country_code=*/"US",
+                        /*subdivision_code=*/"NO REGION");
 
   // Act
   NotifyDidInitializeAds();
@@ -157,7 +157,7 @@ TEST_F(BraveAdsCountryCodeTest, NoRegionSubdivisionCode) {
 
 TEST_F(BraveAdsCountryCodeTest, EmptySubdivisionCode) {
   // Arrange
-  MockHttpOkUrlResponse(/*country_code*/ "US", /*subdivision_code*/ "");
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"");
 
   // Act
   NotifyDidInitializeAds();
@@ -168,7 +168,7 @@ TEST_F(BraveAdsCountryCodeTest, EmptySubdivisionCode) {
 
 TEST_F(BraveAdsCountryCodeTest, EmptyCountryCode) {
   // Arrange
-  MockHttpOkUrlResponse(/*country_code*/ "", /*subdivision_code*/ "CA");
+  MockHttpOkUrlResponse(/*country_code=*/"", /*subdivision_code=*/"CA");
 
   // Act
   NotifyDidInitializeAds();

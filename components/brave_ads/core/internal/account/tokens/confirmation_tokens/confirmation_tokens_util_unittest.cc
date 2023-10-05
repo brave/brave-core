@@ -19,7 +19,7 @@ class BraveAdsConfirmationTokenUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsConfirmationTokenUtilTest, GetConfirmationToken) {
   // Arrange
   const ConfirmationTokenList confirmation_tokens =
-      SetConfirmationTokensForTesting(/*count*/ 2);
+      SetConfirmationTokensForTesting(/*count=*/2);
   ASSERT_EQ(2U, confirmation_tokens.size());
 
   // Act & Assert
@@ -34,7 +34,7 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, DoNotGetConfirmationToken) {
 TEST_F(BraveAdsConfirmationTokenUtilTest, AddConfirmationTokens) {
   // Arrange
   const ConfirmationTokenList confirmation_tokens =
-      BuildConfirmationTokensForTesting(/*count*/ 2);
+      BuildConfirmationTokensForTesting(/*count=*/2);
   ASSERT_EQ(2U, confirmation_tokens.size());
 
   const ConfirmationTokenInfo& token_1 = confirmation_tokens.at(0);
@@ -53,7 +53,7 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, AddConfirmationTokens) {
 TEST_F(BraveAdsConfirmationTokenUtilTest, RemoveConfirmationToken) {
   // Arrange
   const ConfirmationTokenList confirmation_tokens =
-      BuildConfirmationTokensForTesting(/*count*/ 3);
+      BuildConfirmationTokensForTesting(/*count=*/3);
   ASSERT_EQ(3U, confirmation_tokens.size());
 
   const ConfirmationTokenInfo& token_1 = confirmation_tokens.at(0);
@@ -72,7 +72,7 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, RemoveConfirmationToken) {
 
 TEST_F(BraveAdsConfirmationTokenUtilTest, ConfirmationTokenCount) {
   // Arrange
-  SetConfirmationTokensForTesting(/*count*/ 3);
+  SetConfirmationTokensForTesting(/*count=*/3);
 
   // Act & Assert
   EXPECT_EQ(3, ConfirmationTokenCount());

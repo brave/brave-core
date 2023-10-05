@@ -31,7 +31,7 @@ class BraveAdsNonRewardConfirmationUtilTest : public UnitTestBase {
     MockConfirmationUserData();
 
     AdvanceClockTo(
-        TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ false));
+        TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local=*/false));
   }
 };
 
@@ -40,8 +40,8 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
   DisableBraveRewardsForTesting();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
@@ -70,7 +70,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
   const TransactionInfo transaction;
 
   // Act & Assert
-  EXPECT_DEATH(BuildNonRewardConfirmation(transaction, /*user_data*/ {}),
+  EXPECT_DEATH(BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
                "Check failed: transaction.IsValid*");
 }
 
@@ -78,11 +78,11 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
        DoNotBuildNonRewardConfirmationForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_DEATH(BuildNonRewardConfirmation(transaction, /*user_data*/ {}),
+  EXPECT_DEATH(BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
                "Check failed: !UserHasJoinedBraveRewards*");
 }
 

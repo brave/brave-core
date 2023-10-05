@@ -29,10 +29,10 @@ void FireServedEventCallback(
     const InlineContentAdInfo& ad,
     MaybeServeInlineContentAdCallback callback,
     const bool success,
-    const std::string& /*placement_id*/,
-    const mojom::InlineContentAdEventType /*event_type*/) {
+    const std::string& /*placement_id=*/,
+    const mojom::InlineContentAdEventType /*event_type=*/) {
   if (!success) {
-    return std::move(callback).Run(dimensions, /*ad*/ absl::nullopt);
+    return std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
   }
 
   std::move(callback).Run(dimensions, ad);
@@ -40,8 +40,8 @@ void FireServedEventCallback(
 
 void FireEventCallback(TriggerAdEventCallback callback,
                        const bool success,
-                       const std::string& /*placement_id*/,
-                       const mojom::InlineContentAdEventType /*event_type*/) {
+                       const std::string& /*placement_id=*/,
+                       const mojom::InlineContentAdEventType /*event_type=*/) {
   std::move(callback).Run(success);
 }
 
@@ -65,7 +65,7 @@ void InlineContentAdHandler::MaybeServe(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!UserHasOptedInToBraveNewsAds()) {
-    return std::move(callback).Run(dimensions, /*ad*/ absl::nullopt);
+    return std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
   }
 
   serving_.MaybeServeAd(
@@ -85,7 +85,7 @@ void InlineContentAdHandler::TriggerEvent(
          "calling MaybeServe";
 
   if (!UserHasOptedInToBraveNewsAds()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   event_handler_.FireEvent(
@@ -112,7 +112,7 @@ void InlineContentAdHandler::MaybeServeCallback(
 void InlineContentAdHandler::OnOpportunityAroseToServeInlineContentAd() {
   BLOG(1, "Opportunity arose to serve an inline content ad");
 
-  RecordP2AAdOpportunity(AdType::kInlineContentAd, /*segments*/ {});
+  RecordP2AAdOpportunity(AdType::kInlineContentAd, /*segments=*/{});
 }
 
 void InlineContentAdHandler::OnDidServeInlineContentAd(

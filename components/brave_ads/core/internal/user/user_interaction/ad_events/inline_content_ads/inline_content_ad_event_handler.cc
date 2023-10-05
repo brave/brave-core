@@ -148,7 +148,7 @@ void InlineContentAdEventHandler::SuccessfullyFiredEvent(
 
   NotifyDidFireInlineContentAdEvent(ad, event_type);
 
-  std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
+  std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
 }
 
 void InlineContentAdEventHandler::FailedToFireEvent(
@@ -165,7 +165,7 @@ void InlineContentAdEventHandler::FailedToFireEvent(
   NotifyFailedToFireInlineContentAdEvent(placement_id, creative_instance_id,
                                          event_type);
 
-  std::move(callback).Run(/*success*/ false, placement_id, event_type);
+  std::move(callback).Run(/*success=*/false, placement_id, event_type);
 }
 
 void InlineContentAdEventHandler::NotifyDidFireInlineContentAdEvent(

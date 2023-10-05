@@ -24,7 +24,7 @@ namespace {
 
 NotificationAdInfo BuildAndSaveAd() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/false);
   NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   NotificationAdManager::GetInstance().Add(ad);
   return ad;
@@ -45,7 +45,7 @@ class BraveAdsNotificationAdEventHandlerTest : public UnitTestBase {
                  const bool should_fire_event) {
     base::MockCallback<FireNotificationAdEventHandlerCallback> callback;
     EXPECT_CALL(callback,
-                Run(/*success*/ should_fire_event, placement_id, event_type));
+                Run(/*success=*/should_fire_event, placement_id, event_type));
     event_handler_.FireEvent(placement_id, event_type, callback.Get());
   }
 
@@ -61,7 +61,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdServedEvent(ad));
 
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kServed,
-            /*should_fire_event*/ true);
+            /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
@@ -72,7 +72,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdViewedEvent(ad));
 
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kViewed,
-            /*should_fire_event*/ true);
+            /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
@@ -83,7 +83,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdClickedEvent(ad));
 
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kClicked,
-            /*should_fire_event*/ true);
+            /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
@@ -94,7 +94,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdDismissedEvent(ad));
 
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kDismissed,
-            /*should_fire_event*/ true);
+            /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
@@ -105,7 +105,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdTimedOutEvent(ad));
 
   FireEvent(ad.placement_id, mojom::NotificationAdEventType::kTimedOut,
-            /*should_fire_event*/ true);
+            /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest,
@@ -119,7 +119,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
                                   mojom::NotificationAdEventType::kViewed));
 
   FireEvent(kMissingPlacementId, mojom::NotificationAdEventType::kViewed,
-            /*should_fire_event*/ false);
+            /*should_fire_event=*/false);
 }
 
 }  // namespace brave_ads

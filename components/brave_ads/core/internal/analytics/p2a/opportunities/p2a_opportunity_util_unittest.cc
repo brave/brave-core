@@ -22,7 +22,7 @@ TEST(BraveAdsP2AOpportunityUtilTest, BuildP2AAdOpportunityEvents) {
   EXPECT_EQ(
       expected_ad_opportunity_events,
       BuildP2AAdOpportunityEvents(
-          AdType::kNotificationAd, /*segments*/ {
+          AdType::kNotificationAd, /*segments=*/{
               "technology & computing", "personal finance-crypto", "travel"}));
 }
 
@@ -33,7 +33,7 @@ TEST(BraveAdsP2AOpportunityUtilTest,
       "Brave.P2A.ad_notification.opportunities"};
   EXPECT_EQ(
       expected_ad_opportunity_events,
-      BuildP2AAdOpportunityEvents(AdType::kNotificationAd, /*segments*/ {}));
+      BuildP2AAdOpportunityEvents(AdType::kNotificationAd, /*segments=*/{}));
 }
 
 }  // namespace brave_ads

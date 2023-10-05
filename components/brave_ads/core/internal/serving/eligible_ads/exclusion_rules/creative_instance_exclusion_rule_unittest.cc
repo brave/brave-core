@@ -23,7 +23,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
 
-  const CreativeInstanceExclusionRule exclusion_rule(/*ad_events*/ {});
+  const CreativeInstanceExclusionRule exclusion_rule(/*ad_events=*/{});
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
@@ -37,7 +37,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);
@@ -58,22 +58,22 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   const AdEventInfo ad_event_1 = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_1);
 
   const AdEventInfo ad_event_2 = BuildAdEventForTesting(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = BuildAdEventForTesting(
       creative_ad, AdType::kPromotedContentAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_4 = BuildAdEventForTesting(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_4);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);
@@ -93,7 +93,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);

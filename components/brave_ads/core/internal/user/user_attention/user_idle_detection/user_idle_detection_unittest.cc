@@ -20,8 +20,8 @@ TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeActive) {
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log);
-  NotifyUserDidBecomeActive(/*idle_time*/ base::Seconds(10),
-                            /*screen_was_locked*/ false);
+  NotifyUserDidBecomeActive(/*idle_time=*/base::Seconds(10),
+                            /*screen_was_locked=*/false);
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeActive) {
@@ -32,8 +32,8 @@ TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeActive) {
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
-  NotifyUserDidBecomeActive(/*idle_time*/ base::Seconds(10),
-                            /*screen_was_locked*/ false);
+  NotifyUserDidBecomeActive(/*idle_time=*/base::Seconds(10),
+                            /*screen_was_locked=*/false);
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest,
@@ -43,8 +43,8 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(2);
-  NotifyUserDidBecomeActive(/*idle_time*/ base::Seconds(10),
-                            /*screen_was_locked*/ true);
+  NotifyUserDidBecomeActive(/*idle_time=*/base::Seconds(10),
+                            /*screen_was_locked=*/true);
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest,
@@ -56,8 +56,8 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
-  NotifyUserDidBecomeActive(/*idle_time*/ base::Seconds(10),
-                            /*screen_was_locked*/ true);
+  NotifyUserDidBecomeActive(/*idle_time=*/base::Seconds(10),
+                            /*screen_was_locked=*/true);
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeIdle) {

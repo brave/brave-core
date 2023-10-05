@@ -36,7 +36,7 @@ class BraveAdsConfirmationUserDataBuilderTest : public UnitTestBase {
     MockConfirmationUserData();
 
     AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
+        TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
   }
 };
 
@@ -44,8 +44,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildConfirmationUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = BuildTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   UserDataInfo expected_user_data;
@@ -86,11 +86,11 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Arrange
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
-      /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   UserDataInfo expected_user_data;
@@ -135,11 +135,11 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Arrange
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
@@ -170,8 +170,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   DisableBraveRewardsForTesting();
 
   const TransactionInfo transaction = BuildTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
@@ -186,11 +186,11 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
-      /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   UserDataInfo expected_user_data;
@@ -216,11 +216,11 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;

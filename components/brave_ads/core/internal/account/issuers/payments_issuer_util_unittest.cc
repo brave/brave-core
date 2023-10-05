@@ -24,8 +24,8 @@ TEST_F(BraveAdsPaymentsIssuerUtilTest, IsValid) {
 
   for (int i = 0; i < kMaximumIssuerPublicKeys.Get(); ++i) {
     issuer.public_keys.insert(
-        {/*public_key*/ base::Uuid::GenerateRandomV4().AsLowercaseString(),
-         /*associated_value*/ 0.1});
+        {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
+         /*associated_value=*/0.1});
   }
 
   IssuersInfo issuers;
@@ -42,8 +42,8 @@ TEST_F(BraveAdsPaymentsIssuerUtilTest, IsInvalid) {
 
   for (int i = 0; i < kMaximumIssuerPublicKeys.Get() + 1; ++i) {
     issuer.public_keys.insert(
-        {/*public_key*/ base::Uuid::GenerateRandomV4().AsLowercaseString(),
-         /*associated_value*/ 0.1});
+        {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
+         /*associated_value=*/0.1});
   }
 
   IssuersInfo issuers;

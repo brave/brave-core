@@ -26,7 +26,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   // Arrange
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
-      /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   // Act & Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
@@ -49,7 +49,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   // Arrange
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
@@ -71,7 +71,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
-      /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   // Act & Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
@@ -96,7 +96,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
@@ -116,11 +116,11 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   // Arrange
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
-      /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(/*user_data*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*user_data=*/::testing::IsEmpty()));
   BuildConversionUserData(kMissingCreativeInstanceId, callback.Get());
 }
 
@@ -129,11 +129,11 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   // Arrange
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(/*user_data*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*user_data=*/::testing::IsEmpty()));
   BuildConversionUserData(kMissingCreativeInstanceId, callback.Get());
 }
 
@@ -141,7 +141,7 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
        DoNotBuildConversionUserDataIfQueueIsEmpty) {
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(/*user_data*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*user_data=*/::testing::IsEmpty()));
   BuildConversionUserData(kCreativeInstanceId, callback.Get());
 }
 

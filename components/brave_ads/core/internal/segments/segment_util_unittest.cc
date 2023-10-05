@@ -41,7 +41,7 @@ TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromCatalog) {
 
 TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
   // Act
-  const SegmentList segments = GetSegments(/*catalog*/ {});
+  const SegmentList segments = GetSegments(/*catalog=*/{});
 
   // Assert
   EXPECT_TRUE(segments.empty());
@@ -73,7 +73,7 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegments) {
 
 TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
   // Act
-  const SegmentList parent_segments = GetParentSegments(/*segments*/ {});
+  const SegmentList parent_segments = GetParentSegments(/*segments=*/{});
 
   // Assert
   EXPECT_TRUE(parent_segments.empty());

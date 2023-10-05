@@ -91,8 +91,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessUrl) {
       ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
 
   const PurchaseIntentSignalHistoryMap expected_history = {
-      {"segment 2", {PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1)}},
-      {"segment 3", {PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1)}}};
+      {"segment 2", {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}},
+      {"segment 3", {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
@@ -114,11 +114,11 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
 
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 2",
-       {PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1)}},
+       {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1),
+        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}},
       {"segment 3",
-       {PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1)}}};
+       {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1),
+        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
@@ -143,12 +143,12 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 2",
        {PurchaseIntentSignalHistoryInfo(now_before_advancing_clock,
-                                        /*weight*/ 1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1)}},
+                                        /*weight=*/1),
+        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}},
       {"segment 3",
        {PurchaseIntentSignalHistoryInfo(now_before_advancing_clock,
-                                        /*weight*/ 1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1)}}};
+                                        /*weight=*/1),
+        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
@@ -175,9 +175,9 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 1",
        {PurchaseIntentSignalHistoryInfo(now_before_advancing_clock,
-                                        /*weight*/ 1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1)}},
-      {"segment 2", {PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1)}}};
+                                        /*weight=*/1),
+        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}},
+      {"segment 2", {PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
@@ -201,8 +201,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 1",
        {PurchaseIntentSignalHistoryInfo(now_before_advancing_clock,
-                                        /*weight*/ 1),
-        PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 1)}}};
+                                        /*weight=*/1),
+        PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/1)}}};
   EXPECT_EQ(expected_history,
             ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory());
 }
@@ -221,7 +221,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   const PurchaseIntentSignalHistoryMap expected_history = {
       {"segment 1",
        {
-           PurchaseIntentSignalHistoryInfo(Now(), /*weight*/ 3),
+           PurchaseIntentSignalHistoryInfo(Now(), /*weight=*/3),
        }}};
   EXPECT_EQ(expected_history,
             ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory());

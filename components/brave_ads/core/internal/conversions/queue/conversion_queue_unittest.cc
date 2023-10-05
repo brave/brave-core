@@ -38,11 +38,11 @@ class BraveAdsConversionQueueTest : public UnitTestBase {
 TEST_F(BraveAdsConversionQueueTest, AddConversionToQueue) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ false);
+                                      /*should_use_random_uuids=*/false);
 
   const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt);
+      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at=*/Now()),
+      /*verifiable_conversion=*/absl::nullopt);
 
   const ScopedDelayBeforeProcessingConversionQueueItemForTesting
       scoped_delay_before_processing_conversion_queue_item(base::Minutes(5));
@@ -61,11 +61,11 @@ TEST_F(BraveAdsConversionQueueTest, AddConversionToQueue) {
 TEST_F(BraveAdsConversionQueueTest, ProcessConversionInQueue) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ false);
+                                      /*should_use_random_uuids=*/false);
 
   const ConversionInfo conversion = BuildConversion(
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt);
+      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at=*/Now()),
+      /*verifiable_conversion=*/absl::nullopt);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConversionToQueue(conversion));
   EXPECT_CALL(delegate_mock_, OnWillProcessConversionQueue(
@@ -84,10 +84,10 @@ TEST_F(BraveAdsConversionQueueTest, ProcessConversionInQueue) {
 TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversionsInQueue) {
   // Arrange
   const AdInfo ad_1 = BuildAdForTesting(AdType::kNotificationAd,
-                                        /*should_use_random_uuids*/ true);
+                                        /*should_use_random_uuids=*/true);
   const ConversionInfo conversion_1 = BuildConversion(
-      BuildAdEvent(ad_1, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt);
+      BuildAdEvent(ad_1, ConfirmationType::kViewed, /*created_at=*/Now()),
+      /*verifiable_conversion=*/absl::nullopt);
 
   {
     EXPECT_CALL(delegate_mock_, OnDidAddConversionToQueue(conversion_1));
@@ -102,10 +102,10 @@ TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversionsInQueue) {
   }
 
   const AdInfo ad_2 = BuildAdForTesting(AdType::kSearchResultAd,
-                                        /*should_use_random_uuids*/ true);
+                                        /*should_use_random_uuids=*/true);
   const ConversionInfo conversion_2 = BuildConversion(
-      BuildAdEvent(ad_2, ConfirmationType::kViewed, /*created_at*/ Now()),
-      /*verifiable_conversion*/ absl::nullopt);
+      BuildAdEvent(ad_2, ConfirmationType::kViewed, /*created_at=*/Now()),
+      /*verifiable_conversion=*/absl::nullopt);
 
   const ScopedDelayBeforeProcessingConversionQueueItemForTesting
       scoped_delay_before_processing_conversion_queue_item(base::Minutes(21));

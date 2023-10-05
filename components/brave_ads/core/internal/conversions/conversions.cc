@@ -292,7 +292,7 @@ void Conversions::OnDidExhaustConversionQueue() {
 }
 
 void Conversions::OnHtmlContentDidChange(
-    const int32_t /*tab_id*/,
+    const int32_t /*tab_id=*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   MaybeConvert(redirect_chain, html);

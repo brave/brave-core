@@ -36,7 +36,7 @@ class BraveAdsFixedUserDataBuilderTest : public UnitTestBase {
     MockConfirmationUserData();
 
     AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
+        TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
   }
 };
 
@@ -44,8 +44,8 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
        BuildConfirmationUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   const base::Value::Dict expected_user_data =
@@ -80,12 +80,12 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   DisableBraveRewardsForTesting();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(/*user_data*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*user_data=*/::testing::IsEmpty()));
   BuildFixedUserData(transaction, callback.Get());
 }
 
@@ -94,11 +94,11 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   // Arrange
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
-      /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion,
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   const base::Value::Dict expected_user_data =
@@ -138,11 +138,11 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
 
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion,
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
@@ -165,11 +165,11 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   // Arrange
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
-      /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion,
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
@@ -192,11 +192,11 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
 
   BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion,
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;

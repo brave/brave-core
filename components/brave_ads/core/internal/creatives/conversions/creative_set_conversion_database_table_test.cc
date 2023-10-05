@@ -18,13 +18,13 @@ namespace brave_ads {
 class BraveAdsConversionsDatabaseTableIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
   }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
-         {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
+         {{net::HTTP_OK, /*response_body=*/"/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 };
@@ -36,8 +36,8 @@ TEST_F(BraveAdsConversionsDatabaseTableIntegrationTest,
 
   // Act & Assert
   base::MockCallback<database::table::GetConversionsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true,
-                            /*creative_set_conversions*/ ::testing::SizeIs(2)));
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            /*creative_set_conversions=*/::testing::SizeIs(2)));
   database_table.GetAll(callback.Get());
 }
 

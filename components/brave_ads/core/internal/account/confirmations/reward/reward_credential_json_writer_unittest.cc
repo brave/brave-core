@@ -28,22 +28,22 @@ class BraveAdsRewardCredentialJsonWriterTest : public UnitTestBase {
 
 TEST_F(BraveAdsRewardCredentialJsonWriterTest, WriteRewardCredential) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   // Act
   const absl::optional<std::string> reward_credential =
       json::writer::WriteRewardCredential(
           BuildRewardForTesting(*confirmation),
-          /*payload*/ "definition: the weight of a payload");
+          /*payload=*/"definition: the weight of a payload");
   ASSERT_TRUE(reward_credential);
 
   // Assert

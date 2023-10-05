@@ -37,10 +37,10 @@ class BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest
 TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   CreateNonRewardConfirmationUrlRequestBuilder url_request_builder(

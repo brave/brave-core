@@ -86,9 +86,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   const EpsilonGreedyBanditProcessor processor;
 
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
-      /*segment*/ "travel", mojom::NotificationAdEventType::kDismissed});
+      /*segment=*/"travel", mojom::NotificationAdEventType::kDismissed});
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
-      /*segment*/ "personal finance",
+      /*segment=*/"personal finance",
       mojom::NotificationAdEventType::kClicked});
 
   NotifyDidInitializeAds();

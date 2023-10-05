@@ -28,7 +28,7 @@ TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest, GetDataType) {
 
 TEST_F(BraveAdsNotificationAdServedAtPredictorVariableTest, GetValue) {
   // Arrange
-  const base::Time now = TimeFromString("August 19 2019", /*is_local*/ false);
+  const base::Time now = TimeFromString("August 19 2019", /*is_local=*/false);
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<NotificationAdServedAtPredictorVariable>(now);
 

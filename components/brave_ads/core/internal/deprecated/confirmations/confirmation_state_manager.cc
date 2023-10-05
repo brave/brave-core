@@ -161,7 +161,7 @@ void ConfirmationStateManager::LoadCallback(
       BLOG(0, "Failed to load confirmation state");
       BLOG(3, "Failed to parse confirmation state: " << *json);
 
-      return std::move(callback).Run(/*success*/ false);
+      return std::move(callback).Run(/*success=*/false);
     }
 
     BLOG(3, "Successfully loaded confirmation state");
@@ -169,7 +169,7 @@ void ConfirmationStateManager::LoadCallback(
     is_initialized_ = true;
   }
 
-  std::move(callback).Run(/*success*/ true);
+  std::move(callback).Run(/*success=*/true);
 }
 
 void ConfirmationStateManager::Save() {

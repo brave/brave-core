@@ -42,12 +42,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
@@ -55,7 +55,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::SizeIs(1)));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
           IntentUserModelInfo{SegmentList{"foo-bar1", "foo-bar2"}},
@@ -63,7 +63,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
           InterestUserModelInfo{SegmentList{"foo-bar3"},
                                 TextEmbeddingHtmlEventList{}},
       },
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
@@ -71,12 +71,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "foo";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 
@@ -84,8 +84,8 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
-  eligible_ads_->GetForUserModel(/*user_model*/ {}, /*dimensions*/ "200x100",
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::SizeIs(1)));
+  eligible_ads_->GetForUserModel(/*user_model=*/{}, /*dimensions=*/"200x100",
                                  callback.Get());
 }
 
@@ -93,27 +93,27 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
        DoNotGetAdsForNonExistentDimensions) {
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
           IntentUserModelInfo{SegmentList{"intent-foo", "intent-bar"}},
           LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
                                 TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "?x?", callback.Get());
+      /*dimensions=*/"?x?", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
           IntentUserModelInfo{SegmentList{"intent-foo", "intent-bar"}},
           LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
                                 TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 }  // namespace brave_ads

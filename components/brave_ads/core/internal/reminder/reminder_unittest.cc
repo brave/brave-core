@@ -25,7 +25,7 @@ namespace {
 
 void AddHistory(const size_t count) {
   const NotificationAdInfo ad = BuildNotificationAd(
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true));
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true));
 
   for (size_t i = 0; i < count; ++i) {
     HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
@@ -49,7 +49,7 @@ TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_,
               ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes));
-  AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
+  AddHistory(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get());
   FastForwardClockBy(base::Seconds(1));
 }
 
@@ -57,7 +57,7 @@ TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
-  AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get() - 1);
+  AddHistory(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
   FastForwardClockBy(base::Seconds(1));
 }
 
@@ -69,7 +69,7 @@ TEST_F(BraveAdsReminderTest,
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, ShowReminder).Times(0);
-  AddHistory(/*count*/ kRemindUserIfClickingTheSameAdAfter.Get());
+  AddHistory(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get());
   FastForwardClockBy(base::Seconds(1));
 }
 

@@ -18,11 +18,11 @@ namespace {
 void RunTransactionCallback(ResultCallback callback,
                             mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   std::move(callback).Run(
-      /*success*/ command_response->status ==
+      /*success=*/command_response->status ==
       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK);
 }
 

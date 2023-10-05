@@ -60,7 +60,7 @@ ConfirmationTokenList SetConfirmationTokensForTesting(const int count) {
 
 ConfirmationTokenInfo BuildConfirmationTokenForTesting() {
   const ConfirmationTokenList confirmation_tokens =
-      BuildConfirmationTokensForTesting(/*count*/ 1);
+      BuildConfirmationTokensForTesting(/*count=*/1);
   CHECK(!confirmation_tokens.empty());
   return confirmation_tokens.front();
 }

@@ -34,7 +34,7 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true));
+  EXPECT_CALL(callback, Run(/*success=*/true));
   MigrateConfirmationState(callback.Get());
 
   EXPECT_TRUE(HasMigratedConfirmation());
@@ -47,7 +47,7 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ false));
+  EXPECT_CALL(callback, Run(/*success=*/false));
   MigrateConfirmationState(callback.Get());
 
   EXPECT_FALSE(HasMigratedConfirmation());

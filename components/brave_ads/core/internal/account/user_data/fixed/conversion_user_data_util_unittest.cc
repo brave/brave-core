@@ -32,15 +32,15 @@ class BraveAdsConversionUserDataUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ false);
+                                      /*should_use_random_uuids=*/false);
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewed,
-                   /*created_at*/ Now()),
+                   /*created_at=*/Now()),
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
-                               /*process_at*/ Now());
+                               /*process_at=*/Now());
 
   // Act
   const absl::optional<base::Value::Dict> user_data =
@@ -59,14 +59,14 @@ TEST_F(BraveAdsConversionUserDataUtilTest,
        DoNotBuildVerifiableConversionUserData) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ false);
+                                      /*should_use_random_uuids=*/false);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                   /*created_at*/ Now()),
-                      /*verifiable_conversion*/ absl::nullopt);
+                                   /*created_at=*/Now()),
+                      /*verifiable_conversion=*/absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
-                               /*process_at*/ Now());
+                               /*process_at=*/Now());
 
   // Act & Assert
   EXPECT_FALSE(MaybeBuildVerifiableConversionUserData(conversion_queue_item));
@@ -75,14 +75,14 @@ TEST_F(BraveAdsConversionUserDataUtilTest,
 TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ false);
+                                      /*should_use_random_uuids=*/false);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                   /*created_at*/ Now()),
-                      /*verifiable_conversion*/ absl::nullopt);
+                                   /*created_at=*/Now()),
+                      /*verifiable_conversion=*/absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
-                               /*process_at*/ Now());
+                               /*process_at=*/Now());
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(

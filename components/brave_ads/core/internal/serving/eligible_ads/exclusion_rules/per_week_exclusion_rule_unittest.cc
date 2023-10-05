@@ -23,7 +23,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.per_week = 2;
 
-  const PerWeekExclusionRule exclusion_rule(/*ad_events*/ {});
+  const PerWeekExclusionRule exclusion_rule(/*ad_events=*/{});
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
@@ -35,7 +35,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfZero) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.per_week = 0;
 
-  const PerWeekExclusionRule exclusion_rule(/*ad_events*/ {});
+  const PerWeekExclusionRule exclusion_rule(/*ad_events=*/{});
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
@@ -50,7 +50,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PerWeekExclusionRule exclusion_rule(ad_events);
@@ -69,7 +69,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -90,7 +90,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldExcludeIfExceedsCapWithin1Week) {
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -111,7 +111,7 @@ TEST_F(BraveAdsPerWeekExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

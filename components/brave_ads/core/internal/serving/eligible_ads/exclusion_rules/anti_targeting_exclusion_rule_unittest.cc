@@ -44,7 +44,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
        ShouldIncludeIfResourceIsNotInitialized) {
   // Arrange
   const AntiTargetingExclusionRule exclusion_rule(
-      *resource_, /*browsing_history*/ {GURL(kAntiTargetedSite)});
+      *resource_, /*browsing_history=*/{GURL(kAntiTargetedSite)});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -59,7 +59,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   ASSERT_TRUE(LoadResource());
 
   const AntiTargetingExclusionRule exclusion_rule(
-      *resource_, /*browsing_history*/ {GURL(kAntiTargetedSite)});
+      *resource_, /*browsing_history=*/{GURL(kAntiTargetedSite)});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kMissingCreativeSetId;
@@ -74,7 +74,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   ASSERT_TRUE(LoadResource());
 
   const AntiTargetingExclusionRule exclusion_rule(
-      *resource_, /*browsing_history*/ {GURL("https://www.foo.com")});
+      *resource_, /*browsing_history=*/{GURL("https://www.foo.com")});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -89,7 +89,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   ASSERT_TRUE(LoadResource());
 
   const AntiTargetingExclusionRule exclusion_rule(
-      *resource_, /*browsing_history*/ {GURL(kAntiTargetedSite)});
+      *resource_, /*browsing_history=*/{GURL(kAntiTargetedSite)});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;

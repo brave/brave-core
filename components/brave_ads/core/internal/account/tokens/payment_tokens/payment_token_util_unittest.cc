@@ -19,7 +19,7 @@ class BraveAdsPaymentTokenUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsPaymentTokenUtilTest, GetPaymentToken) {
   // Arrange
   const PaymentTokenList payment_tokens =
-      SetPaymentTokensForTesting(/*count*/ 2);
+      SetPaymentTokensForTesting(/*count=*/2);
 
   // Act & Assert
   EXPECT_EQ(payment_tokens.front(), MaybeGetPaymentToken());
@@ -33,7 +33,7 @@ TEST_F(BraveAdsPaymentTokenUtilTest, DoNotGetPaymentToken) {
 TEST_F(BraveAdsPaymentTokenUtilTest, AddPaymentTokens) {
   // Arrange
   const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count*/ 2);
+      BuildPaymentTokensForTesting(/*count=*/2);
   ASSERT_EQ(2U, payment_tokens.size());
 
   const PaymentTokenInfo& token_1 = payment_tokens.at(0);
@@ -52,7 +52,7 @@ TEST_F(BraveAdsPaymentTokenUtilTest, AddPaymentTokens) {
 TEST_F(BraveAdsPaymentTokenUtilTest, RemovePaymentToken) {
   // Arrange
   const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count*/ 3);
+      BuildPaymentTokensForTesting(/*count=*/3);
   ASSERT_EQ(3U, payment_tokens.size());
 
   const PaymentTokenInfo& token_1 = payment_tokens.at(0);
@@ -71,7 +71,7 @@ TEST_F(BraveAdsPaymentTokenUtilTest, RemovePaymentToken) {
 
 TEST_F(BraveAdsPaymentTokenUtilTest, PaymentTokenCount) {
   // Arrange
-  SetPaymentTokensForTesting(/*count*/ 3);
+  SetPaymentTokensForTesting(/*count=*/3);
 
   // Act & Assert
   EXPECT_EQ(3U, PaymentTokenCount());

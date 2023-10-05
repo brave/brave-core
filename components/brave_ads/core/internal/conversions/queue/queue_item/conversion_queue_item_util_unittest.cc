@@ -24,14 +24,14 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateDelayBeforeProcessingConversionQueueItem) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ true);
+                                      /*should_use_random_uuids=*/true);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                   /*created_at*/ Now()),
-                      /*verifiable_conversion*/ absl::nullopt);
+                                   /*created_at=*/Now()),
+                      /*verifiable_conversion=*/absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
-                               /*process_at*/ Now() + base::Hours(1));
+                               /*process_at=*/Now() + base::Hours(1));
 
   // Act & Assert
   EXPECT_EQ(base::Hours(1), CalculateDelayBeforeProcessingConversionQueueItem(
@@ -42,13 +42,13 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateDelayBeforeProcessingPastDueConversionQueueItem) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ true);
+                                      /*should_use_random_uuids=*/true);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                   /*created_at*/ DistantPast()),
-                      /*verifiable_conversion*/ absl::nullopt);
+                                   /*created_at=*/DistantPast()),
+                      /*verifiable_conversion=*/absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(conversion, /*process_at*/ DistantPast());
+      BuildConversionQueueItem(conversion, /*process_at=*/DistantPast());
 
   // Act & Assert
   EXPECT_EQ(
@@ -60,14 +60,14 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateMinimumDelayBeforeProcessingConversionQueueItem) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ true);
+                                      /*should_use_random_uuids=*/true);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                   /*created_at*/ Now()),
-                      /*verifiable_conversion*/ absl::nullopt);
+                                   /*created_at=*/Now()),
+                      /*verifiable_conversion=*/absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
-                               /*process_at*/ Now() + base::Milliseconds(1));
+                               /*process_at=*/Now() + base::Milliseconds(1));
 
   // Act & Assert
   EXPECT_EQ(

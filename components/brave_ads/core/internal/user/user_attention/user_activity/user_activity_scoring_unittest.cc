@@ -173,7 +173,7 @@ TEST_F(BraveAdsUserActivityScoringTest,
        GetUserActivityScoreForEmptyEventSequence) {
   // Arrange
   const UserActivityTriggerList triggers =
-      ToUserActivityTriggers(/*param_value*/ {});
+      ToUserActivityTriggers(/*param_value=*/{});
 
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);

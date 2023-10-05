@@ -25,8 +25,8 @@ namespace brave_ads {
 namespace {
 
 using ArmBucketMap =
-    base::flat_map</*value*/ double, EpsilonGreedyBanditArmList>;
-using ArmBucketPair = std::pair</*value*/ double, EpsilonGreedyBanditArmList>;
+    base::flat_map</*value=*/double, EpsilonGreedyBanditArmList>;
+using ArmBucketPair = std::pair</*value=*/double, EpsilonGreedyBanditArmList>;
 using ArmBucketList = std::vector<ArmBucketPair>;
 
 constexpr size_t kTopArmCount = 3;

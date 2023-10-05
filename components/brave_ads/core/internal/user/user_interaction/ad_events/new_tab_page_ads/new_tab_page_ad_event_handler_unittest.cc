@@ -26,7 +26,7 @@ namespace {
 
 NewTabPageAdInfo BuildAndSaveAd() {
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ false);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/false);
   database::SaveCreativeNewTabPageAds({creative_ad});
   return BuildNewTabPageAd(creative_ad);
 }
@@ -47,7 +47,7 @@ class BraveAdsNewTabPageAdEventHandlerTest : public UnitTestBase {
                  const bool should_fire_event) {
     base::MockCallback<FireNewTabPageAdEventHandlerCallback> callback;
     EXPECT_CALL(callback,
-                Run(/*success*/ should_fire_event, placement_id, event_type));
+                Run(/*success=*/should_fire_event, placement_id, event_type));
     event_handler_.FireEvent(placement_id, creative_instance_id, event_type,
                              callback.Get());
   }
@@ -75,7 +75,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest, FireServedEvent) {
 
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kServed,
-            /*should_fire_event*/ true);
+            /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerTest, FireViewedEvent) {
@@ -86,14 +86,14 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest, FireViewedEvent) {
 
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kServed,
-            /*should_fire_event*/ true);
+            /*should_fire_event=*/true);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNewTabPageAdViewedEvent(ad));
 
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kViewed,
-            /*should_fire_event*/ true);
+            /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
@@ -107,7 +107,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
   FireEvents(ad.placement_id, ad.creative_instance_id,
              {mojom::NewTabPageAdEventType::kServed,
               mojom::NewTabPageAdEventType::kViewed},
-             /*should_fire_event*/ true);
+             /*should_fire_event=*/true);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFireNewTabPageAdEvent(
@@ -115,7 +115,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
                                   mojom::NewTabPageAdEventType::kViewed));
 
   FireEvent(ad.placement_id, ad.creative_instance_id,
-            mojom::NewTabPageAdEventType::kViewed, /*should_fire_event*/ false);
+            mojom::NewTabPageAdEventType::kViewed, /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
@@ -129,7 +129,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
                                   mojom::NewTabPageAdEventType::kViewed));
 
   FireEvent(ad.placement_id, ad.creative_instance_id,
-            mojom::NewTabPageAdEventType::kViewed, /*should_fire_event*/ false);
+            mojom::NewTabPageAdEventType::kViewed, /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerTest, FireClickedEvent) {
@@ -142,13 +142,13 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest, FireClickedEvent) {
   FireEvents(ad.placement_id, ad.creative_instance_id,
              {mojom::NewTabPageAdEventType::kServed,
               mojom::NewTabPageAdEventType::kViewed},
-             /*should_fire_event*/ true);
+             /*should_fire_event=*/true);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNewTabPageAdClickedEvent(ad));
 
   FireEvent(ad.placement_id, ad.creative_instance_id,
-            mojom::NewTabPageAdEventType::kClicked, /*should_fire_event*/ true);
+            mojom::NewTabPageAdEventType::kClicked, /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
@@ -164,7 +164,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
              {mojom::NewTabPageAdEventType::kServed,
               mojom::NewTabPageAdEventType::kViewed,
               mojom::NewTabPageAdEventType::kClicked},
-             /*should_fire_event*/ true);
+             /*should_fire_event=*/true);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFireNewTabPageAdEvent(
@@ -173,7 +173,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
 
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kClicked,
-            /*should_fire_event*/ false);
+            /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
@@ -188,7 +188,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
 
   FireEvent(ad.placement_id, ad.creative_instance_id,
             mojom::NewTabPageAdEventType::kClicked,
-            /*should_fire_event*/ false);
+            /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
@@ -200,7 +200,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
 
   FireEvent(kInvalidPlacementId, kCreativeInstanceId,
             mojom::NewTabPageAdEventType::kServed,
-            /*should_fire_event*/ false);
+            /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
@@ -212,7 +212,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
 
   FireEvent(kPlacementId, kInvalidCreativeInstanceId,
             mojom::NewTabPageAdEventType::kServed,
-            /*should_fire_event*/ false);
+            /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
@@ -227,7 +227,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerTest,
 
   FireEvent(ad.placement_id, kMissingCreativeInstanceId,
             mojom::NewTabPageAdEventType::kServed,
-            /*should_fire_event*/ false);
+            /*should_fire_event=*/false);
 }
 
 }  // namespace brave_ads

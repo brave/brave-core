@@ -18,10 +18,10 @@ class Time;
 
 namespace brave_ads {
 
-base::flat_map<std::string, int32_t> GetAdTypesReceivedForDateRange(
-    const TransactionList& transactions,
-    base::Time from_time,
-    base::Time to_time);
+base::flat_map</*ad_type=*/std::string, /*count=*/int32_t>
+GetAdTypesReceivedForDateRange(const TransactionList& transactions,
+                               base::Time from_time,
+                               base::Time to_time);
 
 }  // namespace brave_ads
 

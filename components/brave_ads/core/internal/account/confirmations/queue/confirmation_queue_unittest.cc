@@ -56,15 +56,15 @@ class BraveAdsConfirmationQueueTest : public UnitTestBase {
 
 TEST_F(BraveAdsConfirmationQueueTest, AddRewardConfirmationToQueue) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
@@ -83,10 +83,10 @@ TEST_F(BraveAdsConfirmationQueueTest, AddNonRewardConfirmationToQueue) {
   DisableBraveRewardsForTesting();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
@@ -104,7 +104,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessRewardConfirmationInQueue) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   const URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(
@@ -115,13 +115,13 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessRewardConfirmationInQueue) {
        {{net::HTTP_OK, BuildFetchPaymentTokenUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
@@ -149,11 +149,11 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessNonRewardConfirmationQueue) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction,
-                                 /*user_data*/ {});
+                                 /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
@@ -175,7 +175,7 @@ TEST_F(BraveAdsConfirmationQueueTest,
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   const URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(
@@ -186,13 +186,13 @@ TEST_F(BraveAdsConfirmationQueueTest,
        {{net::HTTP_OK, BuildFetchPaymentTokenUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetConfirmationTokensForTesting(/*count*/ 2);
+  SetConfirmationTokensForTesting(/*count=*/2);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   {
@@ -245,10 +245,10 @@ TEST_F(BraveAdsConfirmationQueueTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   {

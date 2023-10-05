@@ -50,7 +50,7 @@ TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   ForcePermissionRulesForTesting();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -63,7 +63,7 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -86,7 +86,7 @@ TEST_F(BraveAdsNotificationAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert

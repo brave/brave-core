@@ -29,7 +29,7 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
   // Arrange
   RecordAdEventsForTesting(
       AdType::kPromotedContentAd, ConfirmationType::kServed,
-      /*count*/ kMaximumPromotedContentAdsPerDay.Get() - 1);
+      /*count=*/kMaximumPromotedContentAdsPerDay.Get() - 1);
 
   // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -40,7 +40,7 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
   // Arrange
   RecordAdEventsForTesting(AdType::kPromotedContentAd,
                            ConfirmationType::kServed,
-                           /*count*/ kMaximumPromotedContentAdsPerDay.Get());
+                           /*count=*/kMaximumPromotedContentAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1));
 
@@ -53,7 +53,7 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
   // Arrange
   RecordAdEventsForTesting(AdType::kPromotedContentAd,
                            ConfirmationType::kServed,
-                           /*count*/ kMaximumPromotedContentAdsPerDay.Get());
+                           /*count=*/kMaximumPromotedContentAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 

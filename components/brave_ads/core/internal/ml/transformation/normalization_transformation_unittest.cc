@@ -42,8 +42,8 @@ TEST_F(BraveAdsNormalizationTransformationTest, NormalizationTest) {
   std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
   const HashedNGramsTransformation hashed_ngrams(
-      /*bucket_count*/ 10,
-      /*subgrams*/ std::vector<int>{3, 4});
+      /*bucket_count=*/10,
+      /*subgrams=*/std::vector<int>{3, 4});
   const NormalizationTransformation normalization;
 
   // Act

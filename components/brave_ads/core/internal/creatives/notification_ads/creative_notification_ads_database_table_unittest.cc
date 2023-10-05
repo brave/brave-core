@@ -27,15 +27,15 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, SaveEmpty) {
   // Assert
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, /*segments*/ ::testing::IsEmpty(),
-                            /*creative_ads*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*success=*/true, /*segments=*/::testing::IsEmpty(),
+                            /*creative_ads=*/::testing::IsEmpty()));
   database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, Save) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count*/ 2);
+      BuildCreativeNotificationAdsForTesting(/*count=*/2);
 
   // Act
   database::SaveCreativeNotificationAds(creative_ads);
@@ -43,7 +43,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, Save) {
   // Assert
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true,
+  EXPECT_CALL(callback, Run(/*success=*/true,
                             SegmentList{"architecture", "arts & entertainment"},
                             testing::UnorderedElementsAreArray(creative_ads)));
   database_table_.GetAll(callback.Get());
@@ -54,7 +54,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, SaveInBatches) {
   database_table_.SetBatchSize(2);
 
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count*/ 3);
+      BuildCreativeNotificationAdsForTesting(/*count=*/3);
 
   // Act
   database::SaveCreativeNotificationAds(creative_ads);
@@ -62,7 +62,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, SaveInBatches) {
   // Assert
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true,
+  EXPECT_CALL(callback, Run(/*success=*/true,
                             SegmentList{"architecture", "arts & entertainment",
                                         "automotive"},
                             testing::UnorderedElementsAreArray(creative_ads)));
@@ -72,7 +72,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, SaveInBatches) {
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, DoNotSaveDuplicates) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count*/ 1);
+      BuildCreativeNotificationAdsForTesting(/*count=*/1);
   database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
@@ -82,7 +82,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, DoNotSaveDuplicates) {
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
   EXPECT_CALL(callback,
-              Run(/*success*/ true, SegmentList{"architecture"}, creative_ads));
+              Run(/*success=*/true, SegmentList{"architecture"}, creative_ads));
   database_table_.GetAll(callback.Get());
 }
 
@@ -91,12 +91,12 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetForSegments) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
   creative_ads.push_back(creative_ad_2);
 
@@ -105,40 +105,40 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetForSegments) {
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, SegmentList{"food & drink"},
+  EXPECT_CALL(callback, Run(/*success=*/true, SegmentList{"food & drink"},
                             CreativeNotificationAdList{creative_ad_1}));
-  database_table_.GetForSegments(/*segments*/ {"food & drink"}, callback.Get());
+  database_table_.GetForSegments(/*segments=*/{"food & drink"}, callback.Get());
 }
 
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetForEmptySegments) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count*/ 1);
+      BuildCreativeNotificationAdsForTesting(/*count=*/1);
   database::SaveCreativeNotificationAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true,
-                            /*segments*/ ::testing::IsEmpty(),
-                            /*creative_ads*/ ::testing::IsEmpty()));
-  database_table_.GetForSegments(/*segments*/ {}, callback.Get());
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            /*segments=*/::testing::IsEmpty(),
+                            /*creative_ads=*/::testing::IsEmpty()));
+  database_table_.GetForSegments(/*segments=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        GetForNonExistentSegment) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count*/ 1);
+      BuildCreativeNotificationAdsForTesting(/*count=*/1);
   database::SaveCreativeNotificationAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, SegmentList{"NON_EXISTENT"},
-                            /*creative_ads*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*success=*/true, SegmentList{"NON_EXISTENT"},
+                            /*creative_ads=*/::testing::IsEmpty()));
   database_table_.GetForSegments(
-      /*segments*/ {"NON_EXISTENT"}, callback.Get());
+      /*segments=*/{"NON_EXISTENT"}, callback.Get());
 }
 
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
@@ -147,17 +147,17 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "automotive";
   creative_ads.push_back(creative_ad_3);
 
@@ -168,12 +168,12 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
       callback;
   EXPECT_CALL(
       callback,
-      Run(/*success*/ true,
+      Run(/*success=*/true,
           SegmentList{"technology & computing", "food & drink"},
           ::testing::UnorderedElementsAreArray(
               CreativeNotificationAdList{creative_ad_1, creative_ad_2})));
   database_table_.GetForSegments(
-      /*segments*/ {"technology & computing", "food & drink"}, callback.Get());
+      /*segments=*/{"technology & computing", "food & drink"}, callback.Get());
 }
 
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetNonExpired) {
@@ -181,13 +181,13 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetNonExpired) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.start_at = DistantPast();
   creative_ad_1.end_at = Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.start_at = DistantPast();
   creative_ad_2.end_at = DistantFuture();
   creative_ads.push_back(creative_ad_2);
@@ -200,7 +200,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetNonExpired) {
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
   EXPECT_CALL(callback,
-              Run(/*success*/ true, SegmentList{creative_ad_2.segment},
+              Run(/*success=*/true, SegmentList{creative_ad_2.segment},
                   CreativeNotificationAdList{creative_ad_2}));
   database_table_.GetAll(callback.Get());
 }

@@ -40,7 +40,7 @@ void FailedToInitialize(InitializeCallback callback) {
   // failure dumps.
   base::debug::DumpWithoutCrashing();
 
-  std::move(callback).Run(/*success*/ false);
+  std::move(callback).Run(/*success=*/false);
 }
 
 }  // namespace
@@ -91,14 +91,14 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
 void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
     BLOG(0, "Shutdown failed as not initialized");
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   NotificationAdManager::GetInstance().CloseAll();
 
   NotificationAdManager::GetInstance().RemoveAll();
 
-  std::move(callback).Run(/*success*/ true);
+  std::move(callback).Run(/*success=*/true);
 }
 
 absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
@@ -112,7 +112,7 @@ void AdsImpl::TriggerNotificationAdEvent(
     const mojom::NotificationAdEventType event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ad_handler_.TriggerNotificationAdEvent(placement_id, event_type,
@@ -121,7 +121,7 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*ad*/ absl::nullopt);
+    return std::move(callback).Run(/*ad=*/absl::nullopt);
   }
 
   ad_handler_.MaybeServeNewTabPageAd(std::move(callback));
@@ -133,7 +133,7 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     const mojom::NewTabPageAdEventType event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ad_handler_.TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
@@ -146,7 +146,7 @@ void AdsImpl::TriggerPromotedContentAdEvent(
     const mojom::PromotedContentAdEventType event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ad_handler_.TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
@@ -157,7 +157,7 @@ void AdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(dimensions, /*ad*/ absl::nullopt);
+    return std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
   }
 
   ad_handler_.MaybeServeInlineContentAd(dimensions, std::move(callback));
@@ -169,7 +169,7 @@ void AdsImpl::TriggerInlineContentAdEvent(
     const mojom::InlineContentAdEventType event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ad_handler_.TriggerInlineContentAdEvent(placement_id, creative_instance_id,
@@ -181,7 +181,7 @@ void AdsImpl::TriggerSearchResultAdEvent(
     const mojom::SearchResultAdEventType event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ad_handler_.TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
@@ -194,7 +194,7 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
   CHECK(mojom::IsKnownEnumValue(ad_type));
 
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   PurgeOrphanedAdEvents(
@@ -205,13 +205,13 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
              const bool success) {
             if (!success) {
               BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
-              return std::move(callback).Run(/*success*/ false);
+              return std::move(callback).Run(/*success=*/false);
             }
 
             RebuildAdEventCache();
 
             BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
-            std::move(callback).Run(/*success*/ true);
+            std::move(callback).Run(/*success=*/true);
           },
           ad_type, std::move(callback)));
 }
@@ -227,7 +227,7 @@ HistoryItemList AdsImpl::GetHistory(const HistoryFilterType filter_type,
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*statement*/ nullptr);
+    return std::move(callback).Run(/*statement=*/nullptr);
   }
 
   Account::GetStatement(std::move(callback));
@@ -235,7 +235,7 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*diagnostics*/ absl::nullopt);
+    return std::move(callback).Run(/*diagnostics=*/absl::nullopt);
   }
 
   DiagnosticManager::GetInstance().GetDiagnostics(std::move(callback));
@@ -416,7 +416,7 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
 
   AdsClientHelper::GetInstance()->NotifyPendingObservers();
 
-  std::move(callback).Run(/*success*/ true);
+  std::move(callback).Run(/*success=*/true);
 }
 
 void AdsImpl::OnStatementOfAccountsDidChange() {

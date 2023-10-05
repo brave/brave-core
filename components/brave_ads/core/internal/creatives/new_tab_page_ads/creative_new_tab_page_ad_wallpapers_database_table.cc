@@ -134,7 +134,7 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateSql(
       "INSERT OR REPLACE INTO $1 (creative_instance_id, image_url, "
       "focal_point_x, focal_point_y) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 4, binded_parameters_count)},
+                           /*parameters_count=*/4, binded_parameters_count)},
       nullptr);
 }
 

@@ -52,13 +52,13 @@ class BraveAdsInvalidDatabaseMigrationTest
   // DatabaseManagerObserver:
   void OnDidCreateDatabase() override { did_create_database_ = true; }
 
-  void OnDidMigrateDatabase(const int /*from_version*/,
-                            const int /*to_version*/) override {
+  void OnDidMigrateDatabase(const int /*from_version=*/,
+                            const int /*to_version=*/) override {
     did_migrate_database_ = true;
   }
 
-  void OnFailedToMigrateDatabase(const int /*from_version*/,
-                                 const int /*to_version*/) override {
+  void OnFailedToMigrateDatabase(const int /*from_version=*/,
+                                 const int /*to_version=*/) override {
     failed_to_migrate_database_ = true;
   }
 

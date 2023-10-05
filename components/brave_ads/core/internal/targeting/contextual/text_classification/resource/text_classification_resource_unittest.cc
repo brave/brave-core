@@ -57,9 +57,9 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   // Arrange
   ON_CALL(ads_client_mock_, LoadFileResource(kTextClassificationResourceId,
                                              ::testing::_, ::testing::_))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
-                               LoadFileCallback callback) {
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& /*id=*/, const int /*version=*/,
+             LoadFileCallback callback) {
             const base::FilePath path =
                 GetFileResourcePath().AppendASCII(kMissingResourceId);
 
@@ -78,7 +78,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -92,7 +92,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   ASSERT_FALSE(LoadResource(kLanguageComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -104,7 +104,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());

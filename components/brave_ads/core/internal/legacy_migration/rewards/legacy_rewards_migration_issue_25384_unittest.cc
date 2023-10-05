@@ -35,7 +35,7 @@ TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true));
+  EXPECT_CALL(callback, Run(/*success=*/true));
   rewards::Migrate(callback.Get());
 
   EXPECT_TRUE(ads_client_mock_.GetBooleanPref(prefs::kHasMigratedRewardsState));

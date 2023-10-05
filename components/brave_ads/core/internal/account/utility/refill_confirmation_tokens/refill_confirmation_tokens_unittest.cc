@@ -50,7 +50,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillConfirmationTokens) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
@@ -77,14 +77,14 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
        {{net::HTTP_CREATED,
          BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
       {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
-       {{net::HTTP_UNAUTHORIZED, /*response_body*/ R"(
+       {{net::HTTP_UNAUTHORIZED, /*response_body=*/R"(
             {
               "captcha_id": "daf85dc8-164e-4eb9-a4d4-1836055004b3"
             }
@@ -99,7 +99,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   EXPECT_CALL(delegate_mock_,
-              OnCaptchaRequiredToRefillConfirmationTokens(/*captcha_id*/
+              OnCaptchaRequiredToRefillConfirmationTokens(/*captcha_id=*/
                                                           "daf85dc8-164e-4eb9-"
                                                           "a4d4-1836055004b3"));
   refill_confirmation_tokens_->MaybeRefill(wallet);
@@ -109,7 +109,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
 
 TEST_F(BraveAdsRefillConfirmationTokensTest, IssuersPublicKeyMismatch) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
@@ -143,12 +143,12 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body*/ net::GetHttpReasonPhrase(
+         /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
         {net::HTTP_CREATED,
          BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
@@ -174,11 +174,11 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RequestSignedTokensMissingNonce) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
-       {{net::HTTP_CREATED, /*response_body*/ "{}"}}}};
+       {{net::HTTP_CREATED, /*response_body=*/"{}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const WalletInfo wallet = GetWalletForTesting();
@@ -198,7 +198,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
@@ -208,7 +208,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
          BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
       {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body*/ net::GetHttpReasonPhrase(
+         /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
         {net::HTTP_OK, BuildGetSignedTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -231,14 +231,14 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensInvalidResponse) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
        {{net::HTTP_CREATED,
          BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
       {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
-       {{net::HTTP_OK, /*response_body*/ "{INVALID}"}}}};
+       {{net::HTTP_OK, /*response_body=*/"{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const WalletInfo wallet = GetWalletForTesting();
@@ -257,14 +257,14 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensMissingPublicKey) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
        {{net::HTTP_CREATED,
          BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
       {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
-       {{net::HTTP_OK, /*response_body*/ R"(
+       {{net::HTTP_OK, /*response_body=*/R"(
             {
               "batchProof": "nZBm4sojuuKV91w9/Hcevh3r0SSmx7Cu26oeUko7hwIXYQJXjuFabmJ40nNToVm7UAkiaQvoKDFViqfpHcwxAA==",
               "signedTokens": [
@@ -339,14 +339,14 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
        {{net::HTTP_CREATED,
          BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
       {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
-       {{net::HTTP_OK, /*response_body*/ R"(
+       {{net::HTTP_OK, /*response_body=*/R"(
             {
               "signedTokens": [
                 "3KQ0o6IgVLHpKLzH01cGxA89om8CvOrW+anxorhJISk=",
@@ -420,14 +420,14 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
        {{net::HTTP_CREATED,
          BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
       {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
-       {{net::HTTP_OK, /*response_body*/ R"(
+       {{net::HTTP_OK, /*response_body=*/R"(
             {
               "batchProof": "emZH1a/Y+Q/ub1n7FuWZdkS/989iw4wNl2AnSNMmCQgy4f4ocjDJbHsWMnXWJUAIDPMHilVNJ1SXVctZ8TleBw==",
               "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="
@@ -450,14 +450,14 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetInvalidSignedTokens) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 50);
+  MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
        {{net::HTTP_CREATED,
          BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
       {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
-       {{net::HTTP_OK, /*response_body*/ R"(
+       {{net::HTTP_OK, /*response_body=*/R"(
             {
             {
               "batchProof": "nZBm4sojuuKV91w9/Hcevh3r0SSmx7Cu26oeUko7hwIXYQJXjuFabmJ40nNToVm7UAkiaQvoKDFViqfpHcwxAA==",
@@ -534,7 +534,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  SetConfirmationTokensForTesting(/*count*/ 50);
+  SetConfirmationTokensForTesting(/*count=*/50);
 
   const WalletInfo wallet = GetWalletForTesting();
 
@@ -552,14 +552,14 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 31);
+  MockTokenGenerator(token_generator_mock_, /*count=*/31);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
        {{net::HTTP_CREATED,
          BuildRequestSignedTokensUrlResponseBodyForTesting()}}},
       {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
-       {{net::HTTP_OK, /*response_body*/ R"(
+       {{net::HTTP_OK, /*response_body=*/R"(
             {
               "batchProof": "gCF+6wrxT9bRFX+yjbdwPeWNZ8/wuDg6uZPy0Ea0yA2cfq5yEMpMfYMoH4BHW6EBbWR5QaOo1mVg+O9syYD3CA==",
               "signedTokens": [
@@ -599,7 +599,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
             })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetConfirmationTokensForTesting(/*count*/ 19);
+  SetConfirmationTokensForTesting(/*count=*/19);
 
   const WalletInfo wallet = GetWalletForTesting();
 

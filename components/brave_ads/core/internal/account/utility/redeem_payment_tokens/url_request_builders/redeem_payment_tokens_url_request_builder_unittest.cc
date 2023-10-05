@@ -31,7 +31,7 @@ class BraveAdsRedeemPaymentTokensUrlRequestBuilderTest : public UnitTestBase {};
 TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count*/ 7);
+      BuildPaymentTokensForTesting(/*count=*/7);
 
   // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;

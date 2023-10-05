@@ -157,13 +157,13 @@ TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggers) {
   expected_triggers.push_back(trigger);
   EXPECT_EQ(
       expected_triggers,
-      ToUserActivityTriggers(/*param_value*/ "05=.3;0C1305=1.0;0C13=0.5"));
+      ToUserActivityTriggers(/*param_value=*/"05=.3;0C1305=1.0;0C13=0.5"));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggersForInvalidTrigger) {
   // Act
   const UserActivityTriggerList triggers =
-      ToUserActivityTriggers(/*param_value*/ "INVALID");
+      ToUserActivityTriggers(/*param_value=*/"INVALID");
 
   // Assert
   EXPECT_TRUE(triggers.empty());
@@ -179,13 +179,13 @@ TEST_F(BraveAdsUserActivityUtilTest,
   expected_triggers.push_back(trigger);
   EXPECT_EQ(
       expected_triggers,
-      ToUserActivityTriggers(/*param_value*/ "05=.3;0C1305=;=0.5;C1305=1.0"));
+      ToUserActivityTriggers(/*param_value=*/"05=.3;0C1305=;=0.5;C1305=1.0"));
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggersForEmptyTrigger) {
   // Act
   const UserActivityTriggerList triggers =
-      ToUserActivityTriggers(/*param_value*/ {});
+      ToUserActivityTriggers(/*param_value=*/{});
 
   // Assert
   EXPECT_TRUE(triggers.empty());

@@ -51,12 +51,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
@@ -70,13 +70,13 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
           IntentUserModelInfo{}, LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"technology & computing-software"},
                                 TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeInlineContentAds({creative_ad});
 
@@ -88,13 +88,13 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
           IntentUserModelInfo{}, LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"technology & computing-software"},
                                 TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act & Assert
@@ -104,7 +104,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"finance-banking"},
                                           TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
@@ -112,17 +112,17 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
@@ -138,19 +138,19 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad}));
-  eligible_ads_->GetForUserModel(/*user_model*/ {}, /*dimensions*/ "200x100",
+  eligible_ads_->GetForUserModel(/*user_model=*/{}, /*dimensions=*/"200x100",
                                  callback.Get());
 }
 
@@ -158,36 +158,36 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
        DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"UNMATCHED"},
                                           TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
        DoNotGetAdsForNonExistentDimensions) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"technology & computing"},
                                           TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "?x?", callback.Get());
+      /*dimensions=*/"?x?", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
@@ -195,12 +195,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
@@ -217,7 +217,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
@@ -225,13 +225,13 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
@@ -248,7 +248,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
@@ -256,19 +256,19 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ad_2.priority = 1;
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);
@@ -283,7 +283,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100", callback.Get());
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 }  // namespace brave_ads

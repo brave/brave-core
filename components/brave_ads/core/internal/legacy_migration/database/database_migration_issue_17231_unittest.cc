@@ -48,7 +48,7 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
 
   base::MockCallback<database::table::GetConversionQueueCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*success*/ true,
+              Run(/*success=*/true,
                   ConversionQueueItemList{expected_conversion_queue_item}));
   database_table.GetAll(callback.Get());
 }
@@ -499,14 +499,14 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
         expected_creative_set_conversion);
   }
 
-  AdvanceClockTo(TimeFromString("28 July 2021", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("28 July 2021", /*is_local=*/false));
 
   const database::table::CreativeSetConversions database_table;
 
   // Act & Assert
   base::MockCallback<database::table::GetConversionsCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*success*/ true, ::testing::UnorderedElementsAreArray(
+              Run(/*success=*/true, ::testing::UnorderedElementsAreArray(
                                         expected_creative_set_conversions)));
   database_table.GetAll(callback.Get());
 }

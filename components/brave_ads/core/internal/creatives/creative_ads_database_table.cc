@@ -26,7 +26,7 @@
 namespace brave_ads::database::table {
 
 using CreativeAdMap =
-    std::map</*creative_ad_uuid*/ std::string, CreativeAdInfo>;
+    std::map</*creative_ad_uuid=*/std::string, CreativeAdInfo>;
 
 namespace {
 
@@ -137,8 +137,8 @@ void GetForCreativeInstanceIdCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id,
-                                   /*creative_ad*/ {});
+    return std::move(callback).Run(/*success=*/false, creative_instance_id,
+                                   /*creative_ad=*/{});
   }
 
   const CreativeAdList creative_ads =
@@ -146,13 +146,13 @@ void GetForCreativeInstanceIdCallback(
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative ad");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id,
-                                   /*creative_ad*/ {});
+    return std::move(callback).Run(/*success=*/false, creative_instance_id,
+                                   /*creative_ad=*/{});
   }
 
   const CreativeAdInfo& creative_ad = creative_ads.front();
 
-  std::move(callback).Run(/*success*/ true, creative_instance_id, creative_ad);
+  std::move(callback).Run(/*success=*/true, creative_instance_id, creative_ad);
 }
 
 void MigrateToV29(mojom::DBTransactionInfo* transaction) {
@@ -202,7 +202,7 @@ void CreativeAds::GetForCreativeInstanceId(
   const CreativeAdInfo creative_ad;
 
   if (creative_instance_id.empty()) {
-    return std::move(callback).Run(/*success*/ false, creative_instance_id,
+    return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    creative_ad);
   }
 
@@ -268,7 +268,7 @@ std::string CreativeAds::BuildInsertOrUpdateSql(
       "per_week, per_month, total_max, value, split_test_group, target_url) "
       "VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 9, binded_parameters_count)},
+                           /*parameters_count=*/9, binded_parameters_count)},
       nullptr);
 }
 

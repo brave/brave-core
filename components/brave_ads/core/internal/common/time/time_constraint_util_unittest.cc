@@ -18,7 +18,7 @@ class BraveAdsTimeConstraintUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespectIfNoHistory) {
   // Act & Assert
   EXPECT_TRUE(DoesHistoryRespectRollingTimeConstraint(
-      /*history*/ {}, /*time_constraint*/ base::Days(1), /*cap*/ 1));
+      /*history=*/{}, /*time_constraint=*/base::Days(1), /*cap=*/1));
 }
 
 TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespect) {
@@ -30,7 +30,7 @@ TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespect) {
 
   // Act & Assert
   EXPECT_TRUE(DoesHistoryRespectRollingTimeConstraint(
-      history, /*time_constraint*/ base::Days(1), /*cap*/ 1));
+      history, /*time_constraint=*/base::Days(1), /*cap=*/1));
 }
 
 TEST_F(BraveAdsTimeConstraintUtilTest, DoesNotRespect) {
@@ -40,7 +40,7 @@ TEST_F(BraveAdsTimeConstraintUtilTest, DoesNotRespect) {
 
   // Act & Assert
   EXPECT_FALSE(DoesHistoryRespectRollingTimeConstraint(
-      history, /*time_constraint*/ base::Days(1), /*cap*/ 1));
+      history, /*time_constraint=*/base::Days(1), /*cap=*/1));
 }
 
 }  // namespace brave_ads

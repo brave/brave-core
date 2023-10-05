@@ -19,13 +19,13 @@ class BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest
     : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
   }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
-         {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
+         {{net::HTTP_OK, /*response_body=*/"/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 };
@@ -38,11 +38,11 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   // Act & Assert
   base::MockCallback<database::table::GetCreativeInlineContentAdsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true,
-                            /*segments*/ SegmentList{"technology & computing"},
-                            /*creative_ads*/ ::testing::SizeIs(1)));
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            /*segments=*/SegmentList{"technology & computing"},
+                            /*creative_ads=*/::testing::SizeIs(1)));
   database_table.GetForSegmentsAndDimensions(
-      /*segments*/ {"technology & computing"}, /*dimensions*/ "200x100",
+      /*segments=*/{"technology & computing"}, /*dimensions=*/"200x100",
       callback.Get());
 }
 
@@ -55,8 +55,8 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   base::MockCallback<
       database::table::GetCreativeInlineContentAdsForDimensionsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true,
-                            /*creative_ads*/ ::testing::SizeIs(1)));
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            /*creative_ads=*/::testing::SizeIs(1)));
   database_table.GetForDimensions("200x100", callback.Get());
 }
 

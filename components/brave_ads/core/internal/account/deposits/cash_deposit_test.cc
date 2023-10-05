@@ -20,13 +20,13 @@ namespace brave_ads {
 class BraveAdsCashDepositIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
   }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
-         {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
+         {{net::HTTP_OK, /*response_body=*/"/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 };
@@ -37,7 +37,7 @@ TEST_F(BraveAdsCashDepositIntegrationTest, GetValue) {
 
   // Act & Assert
   base::MockCallback<GetDepositCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, /*value*/ 1.0));
+  EXPECT_CALL(callback, Run(/*success=*/true, /*value=*/1.0));
   deposit.GetValue(kCreativeInstanceId, callback.Get());
 }
 
@@ -48,7 +48,7 @@ TEST_F(BraveAdsCashDepositIntegrationTest,
 
   // Act & Assert
   base::MockCallback<GetDepositCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ false, /*value*/ 0.0));
+  EXPECT_CALL(callback, Run(/*success=*/false, /*value=*/0.0));
   deposit.GetValue(kMissingCreativeInstanceId, callback.Get());
 }
 

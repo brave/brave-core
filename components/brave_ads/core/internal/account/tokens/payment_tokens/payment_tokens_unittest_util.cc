@@ -69,7 +69,7 @@ PaymentTokenInfo BuildPaymentTokenForTesting(
 
 PaymentTokenInfo BuildPaymentTokenForTesting() {
   const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count*/ 1);
+      BuildPaymentTokensForTesting(/*count=*/1);
   CHECK(!payment_tokens.empty());
   return payment_tokens.front();
 }

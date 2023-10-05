@@ -34,7 +34,7 @@ TEST_F(BraveAdsLegacyClientMigrationIssue23794Test, Migrate) {
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true));
+  EXPECT_CALL(callback, Run(/*success=*/true));
   MigrateClientState(callback.Get());
 
   EXPECT_TRUE(HasMigratedClientState());

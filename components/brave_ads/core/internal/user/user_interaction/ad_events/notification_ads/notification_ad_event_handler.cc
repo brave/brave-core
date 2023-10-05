@@ -66,7 +66,7 @@ void NotificationAdEventHandler::SuccessfullyFiredEvent(
 
   NotifyDidFireNotificationAdEvent(ad, event_type);
 
-  std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
+  std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
 }
 
 void NotificationAdEventHandler::FailedToFireEvent(
@@ -80,7 +80,7 @@ void NotificationAdEventHandler::FailedToFireEvent(
 
   NotifyFailedToFireNotificationAdEvent(placement_id, event_type);
 
-  std::move(callback).Run(/*success*/ false, placement_id, event_type);
+  std::move(callback).Run(/*success=*/false, placement_id, event_type);
 }
 
 void NotificationAdEventHandler::NotifyDidFireNotificationAdEvent(

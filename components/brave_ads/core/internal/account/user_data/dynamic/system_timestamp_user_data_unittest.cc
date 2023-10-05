@@ -21,7 +21,7 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
        BuildSystemTimestampUserDataForRewardsUser) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
+      TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(

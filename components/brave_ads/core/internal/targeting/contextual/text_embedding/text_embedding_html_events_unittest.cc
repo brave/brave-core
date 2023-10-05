@@ -45,7 +45,7 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, LogEvent) {
 
   base::MockCallback<LogTextEmbeddingHtmlEventCallback>
       log_text_embedding_html_event_callback;
-  EXPECT_CALL(log_text_embedding_html_event_callback, Run(/*success*/ true));
+  EXPECT_CALL(log_text_embedding_html_event_callback, Run(/*success=*/true));
 
   // Act
   LogTextEmbeddingHtmlEvent(text_embedding_html_event,
@@ -54,7 +54,7 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, LogEvent) {
   // Assert
   base::MockCallback<database::table::GetTextEmbeddingHtmlEventsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, TextEmbeddingHtmlEventList{
+  EXPECT_CALL(callback, Run(/*success=*/true, TextEmbeddingHtmlEventList{
                                                   text_embedding_html_event}));
   GetTextEmbeddingHtmlEventsFromDatabase(callback.Get());
 }
@@ -73,7 +73,7 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   base::MockCallback<LogTextEmbeddingHtmlEventCallback>
       purge_stale_text_embedding_html_events_callback;
   EXPECT_CALL(purge_stale_text_embedding_html_events_callback,
-              Run(/*success*/ true));
+              Run(/*success=*/true));
 
   // Act
   PurgeStaleTextEmbeddingHtmlEvents(
@@ -85,7 +85,7 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
       callback;
   EXPECT_CALL(
       callback,
-      Run(/*success*/ true,
+      Run(/*success=*/true,
           ::testing::SizeIs(::testing::Le(text_embedding_history_size))));
   GetTextEmbeddingHtmlEventsFromDatabase(callback.Get());
 }

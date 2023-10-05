@@ -21,7 +21,7 @@ TEST_F(BraveAdsNonCashDepositTest, GetValue) {
 
   // Act & Assert
   base::MockCallback<GetDepositCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, /*value*/ 0.0));
+  EXPECT_CALL(callback, Run(/*success=*/true, /*value=*/0.0));
   deposit.GetValue(kCreativeInstanceId, callback.Get());
 }
 

@@ -96,7 +96,7 @@ void TextClassificationResource::Reset() {
 }
 
 void TextClassificationResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
+    const std::string& /*locale=*/) {
   MaybeLoad();
 }
 

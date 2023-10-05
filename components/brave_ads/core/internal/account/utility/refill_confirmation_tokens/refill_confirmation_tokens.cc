@@ -57,7 +57,7 @@ void RefillConfirmationTokens::MaybeRefill(const WalletInfo& wallet) {
 
   if (!HasIssuers()) {
     BLOG(0, "Failed to refill confirmation tokens due to missing issuers");
-    return FailedToRefill(/*should_retry*/ false);
+    return FailedToRefill(/*should_retry=*/false);
   }
 
   if (!ShouldRefillConfirmationTokens()) {
@@ -135,12 +135,12 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
   if (url_response.status_code == net::kHttpUpgradeRequired) {
     return base::unexpected(std::make_tuple(
         "Failed to request signed tokens as a browser upgrade is required",
-        /*should_retry*/ false));
+        /*should_retry=*/false));
   }
 
   if (url_response.status_code != net::HTTP_CREATED) {
     return base::unexpected(std::make_tuple("Failed to request signed tokens",
-                                            /*should_retry*/ true));
+                                            /*should_retry=*/true));
   }
 
   const absl::optional<base::Value::Dict> dict =
@@ -148,13 +148,13 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
   if (!dict) {
     return base::unexpected(std::make_tuple(
         base::StrCat({"Failed to parse response: ", url_response.body}),
-        /*should_retry*/ false));
+        /*should_retry=*/false));
   }
 
   nonce_ = ParseNonce(*dict);
   if (!nonce_) {
     return base::unexpected(
-        std::make_tuple("Failed to parse nonce", /*should_retry*/ false));
+        std::make_tuple("Failed to parse nonce", /*should_retry=*/false));
   }
 
   return base::ok();
@@ -201,14 +201,14 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
   if (url_response.status_code == net::kHttpUpgradeRequired) {
     return base::unexpected(
         std::make_tuple("Failed to get signed tokens as a browser upgrade is "
-                        "required", /*should_retry*/
+                        "required", /*should_retry=*/
                         false));
   }
 
   if (url_response.status_code != net::HTTP_OK &&
       url_response.status_code != net::HTTP_UNAUTHORIZED) {
     return base::unexpected(std::make_tuple("Failed to get signed tokens",
-                                            /*should_retry*/ true));
+                                            /*should_retry=*/true));
   }
 
   const absl::optional<base::Value::Dict> dict =
@@ -216,14 +216,14 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
   if (!dict) {
     return base::unexpected(std::make_tuple(
         base::StrCat({"Failed to parse response: ", url_response.body}),
-        /*should_retry*/ false));
+        /*should_retry=*/false));
   }
 
   if (url_response.status_code == net::HTTP_UNAUTHORIZED) {
     ParseAndRequireCaptcha(*dict);
 
     return base::unexpected(std::make_tuple(
-        "Captcha is required to refill confirmation tokens", /*should_retry*/
+        "Captcha is required to refill confirmation tokens", /*should_retry=*/
         false));
   }
 
@@ -233,7 +233,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
     BLOG(0, result.error());
     return base::unexpected(
         std::make_tuple("Failed to parse and unblinded signed tokens",
-                        /*should_retry*/ false));
+                        /*should_retry=*/false));
   }
   const auto& [unblinded_tokens, public_key] = result.value();
   BuildAndAddConfirmationTokens(unblinded_tokens, public_key, wallet_);

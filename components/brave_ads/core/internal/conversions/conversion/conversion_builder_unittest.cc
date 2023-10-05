@@ -24,7 +24,7 @@ namespace brave_ads {
 TEST(BraveAdsConversionBuilderTest, BuildConversion) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ false);
+                                      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   ConversionInfo expected_conversion;
@@ -37,14 +37,14 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
   expected_conversion.action_type = ConversionActionType::kViewThrough;
   EXPECT_EQ(expected_conversion,
             BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                         /*created_at*/ Now()),
-                            /*verifiable_conversion*/ absl::nullopt));
+                                         /*created_at=*/Now()),
+                            /*verifiable_conversion=*/absl::nullopt));
 }
 
 TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ false);
+                                      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   ConversionInfo expected_conversion;
@@ -59,7 +59,7 @@ TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
       kVerifiableConversionId, kVerifiableConversionAdvertiserPublicKey};
   EXPECT_EQ(expected_conversion,
             BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                         /*created_at*/ Now()),
+                                         /*created_at=*/Now()),
                             VerifiableConversionInfo{
                                 kVerifiableConversionId,
                                 kVerifiableConversionAdvertiserPublicKey}));

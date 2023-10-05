@@ -16,7 +16,7 @@ CreativeSetConversionInfo BuildCreativeSetConversionForTesting(
     const base::TimeDelta observation_window) {
   return BuildVerifiableCreativeSetConversionForTesting(
       creative_set_id, url_pattern, observation_window,
-      /*verifiable_advertiser_public_key_base64*/ absl::nullopt);
+      /*verifiable_advertiser_public_key_base64=*/absl::nullopt);
 }
 
 void BuildAndSaveCreativeSetConversionForTesting(
@@ -25,7 +25,7 @@ void BuildAndSaveCreativeSetConversionForTesting(
     const base::TimeDelta observation_window) {
   BuildAndSaveVerifiableCreativeSetConversionForTesting(
       creative_set_id, url_pattern, observation_window,
-      /*verifiable_advertiser_public_key_base64*/ absl::nullopt);
+      /*verifiable_advertiser_public_key_base64=*/absl::nullopt);
 }
 
 CreativeSetConversionInfo BuildVerifiableCreativeSetConversionForTesting(

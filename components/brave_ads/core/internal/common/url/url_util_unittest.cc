@@ -159,43 +159,43 @@ TEST(BraveAdsUrlUtilTest, MalformedUrlIsNotSupported) {
 TEST(BraveAdsUrlUtilTest, UrlMatchesPatternWithNoWildcards) {
   // Act & Assert
   EXPECT_TRUE(MatchUrlPattern(GURL("https://www.foo.com/"),
-                              /*pattern*/ "https://www.foo.com/"));
+                              /*pattern=*/"https://www.foo.com/"));
 }
 
 TEST(BraveAdsUrlUtilTest, UrlWithPathMatchesPatternWithNoWildcards) {
   // Act & Assert
   EXPECT_TRUE(MatchUrlPattern(GURL("https://www.foo.com/bar"),
-                              /*pattern*/ "https://www.foo.com/bar"));
+                              /*pattern=*/"https://www.foo.com/bar"));
 }
 
 TEST(BraveAdsUrlUtilTest, UrlDoesNotMatchPattern) {
   // Act & Assert
   EXPECT_FALSE(
-      MatchUrlPattern(GURL("https://www.foo.com/"), /*pattern*/ "www.foo.com"));
+      MatchUrlPattern(GURL("https://www.foo.com/"), /*pattern=*/"www.foo.com"));
 }
 
 TEST(BraveAdsUrlUtilTest, UrlDoesNotMatchPatternWithMissingEmptyPath) {
   // Act & Assert
   EXPECT_FALSE(MatchUrlPattern(GURL("https://www.foo.com/"),
-                               /*pattern*/ "https://www.foo.com"));
+                               /*pattern=*/"https://www.foo.com"));
 }
 
 TEST(BraveAdsUrlUtilTest, UrlMatchesEndWildcardPattern) {
   // Act & Assert
   EXPECT_TRUE(MatchUrlPattern(GURL("https://www.foo.com/bar?key=test"),
-                              /*pattern*/ "https://www.foo.com/bar*"));
+                              /*pattern=*/"https://www.foo.com/bar*"));
 }
 
 TEST(BraveAdsUrlUtilTest, UrlMatchesMidWildcardPattern) {
   // Act & Assert
   EXPECT_TRUE(MatchUrlPattern(GURL("https://www.foo.com/woo-bar-hoo"),
-                              /*pattern*/ "https://www.foo.com/woo*hoo"));
+                              /*pattern=*/"https://www.foo.com/woo*hoo"));
 }
 
 TEST(BraveAdsUrlUtilTest, UrlDoesNotMatchMidWildcardPattern) {
   // Act & Assert
   EXPECT_FALSE(MatchUrlPattern(GURL("https://www.foo.com/woo"),
-                               /*pattern*/ "https://www.foo.com/woo*hoo"));
+                               /*pattern=*/"https://www.foo.com/woo*hoo"));
 }
 
 TEST(BraveAdsUrlUtilTest, SameDomainOrHost) {

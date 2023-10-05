@@ -53,7 +53,7 @@ TEST_F(BraveAdsIssuersUrlRequestTest,
        DoNotFetchIssuersIfInvalidJsonResponseBody) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body*/ "{INVALID}"}}}};
+      {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body=*/"{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
@@ -71,7 +71,7 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body*/ net::GetHttpReasonPhrase(
+         /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
         {net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);

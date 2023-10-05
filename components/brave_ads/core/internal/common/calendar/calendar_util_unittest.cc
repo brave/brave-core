@@ -21,7 +21,7 @@ TEST(BraveAdsCalendarUtilTest, GetLastDayOfMonth) {
   // Act & Assert
   for (int i = 0; i < 12; ++i) {
     EXPECT_EQ(kLastDayForMonth[i],
-              GetLastDayOfMonth(/*year*/ 2021, /*month*/ i + 1));
+              GetLastDayOfMonth(/*year=*/2021, /*month=*/i + 1));
   }
 }
 
@@ -33,20 +33,20 @@ TEST(BraveAdsCalendarUtilTest, GetLastDayOfMonthForLeapYear) {
   // Act & Assert
   for (int i = 0; i < 12; ++i) {
     EXPECT_EQ(kLastDayForMonth[i],
-              GetLastDayOfMonth(/*year*/ 2020, /*month*/ i + 1));
+              GetLastDayOfMonth(/*year=*/2020, /*month=*/i + 1));
   }
 }
 
 TEST(BraveAdsCalendarUtilTest, GetDayOfWeekForYearMonthAndDay) {
   // Act & Assert
-  EXPECT_EQ(6, GetDayOfWeek(/*year*/ 2020, /*month*/ 2, /*day*/ 29));
+  EXPECT_EQ(6, GetDayOfWeek(/*year=*/2020, /*month=*/2, /*day=*/29));
 }
 
 TEST(BraveAdsCalendarUtilTest, GetDayOfWeek) {
   // Act & Assert
   EXPECT_EQ(3,
-            GetDayOfWeek(TimeFromString("November 18 1970", /*is_local*/ false),
-                         /*is_local*/ false));
+            GetDayOfWeek(TimeFromString("November 18 1970", /*is_local=*/false),
+                         /*is_local=*/false));
 }
 
 }  // namespace brave_ads

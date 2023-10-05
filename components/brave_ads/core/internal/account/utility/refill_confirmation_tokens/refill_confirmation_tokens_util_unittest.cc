@@ -38,7 +38,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
 TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
        CalculateAmountOfConfirmationTokensToRefill) {
   // Arrange
-  SetConfirmationTokensForTesting(/*count*/ 10);
+  SetConfirmationTokensForTesting(/*count=*/10);
 
   // Act & Assert
   EXPECT_EQ(kMaxConfirmationTokens.Get() - 10,

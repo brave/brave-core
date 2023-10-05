@@ -49,7 +49,7 @@ AdEventInfo BuildAdEventForTesting(const CreativeAdInfo& creative_ad,
 
 void RecordAdEventForTesting(const AdType& type,
                              const ConfirmationType& confirmation_type) {
-  RecordAdEventsForTesting(type, confirmation_type, /*count*/ 1);
+  RecordAdEventsForTesting(type, confirmation_type, /*count=*/1);
 }
 
 void RecordAdEventsForTesting(const AdType& type,

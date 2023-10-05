@@ -18,7 +18,7 @@ class BraveAdsLastUnIdleTimeDiagnosticEntryTest : public UnitTestBase {};
 TEST_F(BraveAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("Mon, 8 July 1996 12:34:56", /*is_local*/ true));
+      TimeFromString("Mon, 8 July 1996 12:34:56", /*is_local=*/true));
 
   LastUnIdleTimeDiagnosticEntry diagnostic_entry(Now());
 

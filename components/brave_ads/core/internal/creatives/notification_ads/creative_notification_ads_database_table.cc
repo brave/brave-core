@@ -31,7 +31,7 @@
 namespace brave_ads::database::table {
 
 using CreativeNotificationAdMap =
-    std::map</*creative_ad_uuid*/ std::string, CreativeNotificationAdInfo>;
+    std::map</*creative_ad_uuid=*/std::string, CreativeNotificationAdInfo>;
 
 namespace {
 
@@ -180,14 +180,14 @@ void GetForSegmentsCallback(const SegmentList& segments,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative notification ads");
-    return std::move(callback).Run(/*success*/ false, segments,
-                                   /*creative_ads*/ {});
+    return std::move(callback).Run(/*success=*/false, segments,
+                                   /*creative_ads=*/{});
   }
 
   const CreativeNotificationAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(command_response));
 
-  std::move(callback).Run(/*success*/ true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, creative_ads);
 }
 
 void GetAllCallback(GetCreativeNotificationAdsCallback callback,
@@ -196,8 +196,8 @@ void GetAllCallback(GetCreativeNotificationAdsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative notification ads");
-    return std::move(callback).Run(/*success*/ false, /*segments*/ {},
-                                   /*creative_ads*/ {});
+    return std::move(callback).Run(/*success=*/false, /*segments=*/{},
+                                   /*creative_ads=*/{});
   }
 
   const CreativeNotificationAdList creative_ads =
@@ -205,7 +205,7 @@ void GetAllCallback(GetCreativeNotificationAdsCallback callback,
 
   const SegmentList segments = GetSegments(creative_ads);
 
-  std::move(callback).Run(/*success*/ true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, creative_ads);
 }
 
 void MigrateToV29(mojom::DBTransactionInfo* transaction) {
@@ -234,7 +234,7 @@ void CreativeNotificationAds::Save(
     const CreativeNotificationAdList& creative_ads,
     ResultCallback callback) {
   if (creative_ads.empty()) {
-    return std::move(callback).Run(/*success*/ true);
+    return std::move(callback).Run(/*success=*/true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -273,8 +273,8 @@ void CreativeNotificationAds::GetForSegments(
     const SegmentList& segments,
     GetCreativeNotificationAdsCallback callback) const {
   if (segments.empty()) {
-    return std::move(callback).Run(/*success*/ true, segments,
-                                   /*creative_ads*/ {});
+    return std::move(callback).Run(/*success=*/true, segments,
+                                   /*creative_ads=*/{});
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -399,7 +399,7 @@ std::string CreativeNotificationAds::BuildInsertOrUpdateSql(
       "INSERT OR REPLACE INTO $1 (creative_instance_id, creative_set_id, "
       "campaign_id, title, body) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 5, binded_parameters_count)},
+                           /*parameters_count=*/5, binded_parameters_count)},
       nullptr);
 }
 

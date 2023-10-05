@@ -23,7 +23,7 @@ constexpr base::TimeDelta kTimeConstraint = base::Days(1);
 bool DoesRespectCap(const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
       history, kTimeConstraint,
-      /*cap*/ kMaximumPromotedContentAdsPerDay.Get());
+      /*cap=*/kMaximumPromotedContentAdsPerDay.Get());
 }
 
 }  // namespace

@@ -29,7 +29,8 @@ std::string CatalogLastUpdatedDiagnosticEntry::GetValue() const {
     return {};
   }
 
-  return LongFriendlyDateAndTime(last_updated_at, /*use_sentence_style*/ false);
+  return LongFriendlyDateAndTime(last_updated_at,
+                                 /*use_sentence_style=*/false);
 }
 
 }  // namespace brave_ads

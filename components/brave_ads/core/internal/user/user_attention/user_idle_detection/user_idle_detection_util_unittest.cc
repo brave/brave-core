@@ -22,7 +22,7 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest, WasLocked) {
       kUserIdleDetectionFeature, {{"should_detect_screen_was_locked", "true"}});
 
   // Act & Assert
-  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked*/ true));
+  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked=*/true));
 }
 
 TEST_F(BraveAdsUserIdleDetectionUtilTest,
@@ -33,7 +33,7 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest,
       kUserIdleDetectionFeature, {{"should_detect_screen_was_locked", "true"}});
 
   // Act & Assert
-  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked*/ true));
+  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked=*/true));
 }
 
 TEST_F(BraveAdsUserIdleDetectionUtilTest, WasNotLocked) {
@@ -43,7 +43,7 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest, WasNotLocked) {
       kUserIdleDetectionFeature, {{"should_detect_screen_was_locked", "true"}});
 
   // Act & Assert
-  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked*/ false));
+  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked=*/false));
 }
 
 TEST_F(BraveAdsUserIdleDetectionUtilTest,
@@ -55,7 +55,7 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest,
       {{"should_detect_screen_was_locked", "false"}});
 
   // Act & Assert
-  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked*/ true));
+  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked=*/true));
 }
 
 TEST_F(BraveAdsUserIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {

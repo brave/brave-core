@@ -25,7 +25,7 @@ TEST(BraveAdsCreativeAdEmbeddingBasedPredictorUtilTest,
      CalculateNormalizingConstantForEmptyVoteRegistry) {
   // Act & Assert
   EXPECT_DOUBLE_EQ(0.0, CalculateNormalizingConstantForVoteRegistry(
-                            /*creative_ad_vote_registry*/ {}));
+                            /*creative_ad_vote_registry=*/{}));
 }
 
 TEST(BraveAdsCreativeAdEmbeddingBasedPredictorUtilTest,

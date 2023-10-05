@@ -39,7 +39,7 @@ TEST_F(BraveAdsTextClassificationModelTest,
        DoNotGetSegmentsForUninitializedResource) {
   // Arrange
   TextClassificationProcessor processor(*resource_);
-  processor.Process(/*text*/ "The quick brown fox jumps over the lazy dog");
+  processor.Process(/*text=*/"The quick brown fox jumps over the lazy dog");
 
   // Act
   const SegmentList segments = GetTextClassificationSegments();
@@ -69,7 +69,7 @@ TEST_F(BraveAdsTextClassificationModelTest,
   ASSERT_TRUE(LoadResource());
 
   TextClassificationProcessor processor(*resource_);
-  processor.Process(/*text*/ "Some content about technology & computing");
+  processor.Process(/*text=*/"Some content about technology & computing");
 
   // Act & Assert
   const SegmentList expected_segments = {

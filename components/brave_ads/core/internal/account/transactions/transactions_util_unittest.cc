@@ -17,20 +17,20 @@ class BraveAdsTransactionsUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
 
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
   const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.03, ConfirmationType::kClicked,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.03, ConfirmationType::kClicked,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   // Act
@@ -43,21 +43,21 @@ TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
 
 TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
 
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.03, ConfirmationType::kClicked,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.03, ConfirmationType::kClicked,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
   // Act
   const TransactionList transactions_for_date_range =

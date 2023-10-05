@@ -99,7 +99,7 @@ void GetCallback(GetTransactionsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
-    return std::move(callback).Run(/*success*/ false, /*transactions*/ {});
+    return std::move(callback).Run(/*success=*/false, /*transactions=*/{});
   }
 
   CHECK(command_response->result);
@@ -111,7 +111,7 @@ void GetCallback(GetTransactionsCallback callback,
     transactions.push_back(transaction);
   }
 
-  std::move(callback).Run(/*success*/ true, transactions);
+  std::move(callback).Run(/*success=*/true, transactions);
 }
 
 void MigrateToV18(mojom::DBTransactionInfo* transaction) {
@@ -148,7 +148,7 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
       "ad_type", "confirmation_type", "reconciled_at"};
 
   CopyTableColumns(transaction, "transactions", "transactions_temp", columns,
-                   /*should_drop*/ true);
+                   /*should_drop=*/true);
 
   // Rename temporary table.
   RenameTable(transaction, "transactions_temp", "transactions");
@@ -194,7 +194,7 @@ void MigrateToV32(mojom::DBTransactionInfo* transaction) {
 void Transactions::Save(const TransactionList& transactions,
                         ResultCallback callback) {
   if (transactions.empty()) {
-    return std::move(callback).Run(/*success*/ true);
+    return std::move(callback).Run(/*success=*/true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -353,7 +353,7 @@ std::string Transactions::BuildInsertOrUpdateSql(
       "INSERT OR REPLACE INTO $1 (id, created_at, creative_instance_id, "
       "value, segment, ad_type, confirmation_type, reconciled_at) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 8, binded_parameters_count)},
+                           /*parameters_count=*/8, binded_parameters_count)},
       nullptr);
 }
 

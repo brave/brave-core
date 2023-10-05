@@ -90,14 +90,14 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
     const char* region = "";
 
     if (GetParam().country ==
-        std::string_view("US") /*United States of America*/) {
-      if (GetParam().region == std::string_view("FL") /*Florida*/) {
+        std::string_view("US") /*United States of America=*/) {
+      if (GetParam().region == std::string_view("FL") /*Florida=*/) {
         region = "CA";  // Alabama
       } else {
         region = "FL";  // Florida
       }
-    } else if (GetParam().country == std::string_view("CA") /*Canada*/) {
-      if (GetParam().region == std::string_view("QC") /*Quebec*/) {
+    } else if (GetParam().country == std::string_view("CA") /*Canada=*/) {
+      if (GetParam().region == std::string_view("QC") /*Quebec=*/) {
         region = "AB";  // Alberta
       } else {
         region = "QC";  // Quebec
@@ -277,7 +277,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTesting(
-      /*country_code*/ "US", /*subdivision_code*/ "XX")};
+      /*country_code=*/"US", /*subdivision_code=*/"XX")};
 
   // Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
@@ -296,7 +296,7 @@ TEST_P(
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTesting(
-      /*country_code*/ "GB", /*subdivision_code*/ "DEV")};
+      /*country_code=*/"GB", /*subdivision_code=*/"DEV")};
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
@@ -312,7 +312,7 @@ TEST_P(
       {BuildSubdivisionUrlPath(),
        {{net::HTTP_OK,
          BuildSubdivisionUrlResponseBodyForTesting(
-             /*country_code*/ "XX", /*subdivision_code*/ "NO REGION")}}}};
+             /*country_code=*/"XX", /*subdivision_code=*/"NO REGION")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   NotifyDidInitializeAds();

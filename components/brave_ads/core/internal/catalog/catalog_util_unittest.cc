@@ -55,8 +55,8 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogHasChanged) {
   SetCatalogId(kCatalogId);
 
   // Act & Assert
-  EXPECT_TRUE(
-      HasCatalogChanged(/*catalog_id*/ "150a9518-4db8-4fba-b104-0c420a1d9c0c"));
+  EXPECT_TRUE(HasCatalogChanged(
+      /*catalog_id=*/"150a9518-4db8-4fba-b104-0c420a1d9c0c"));
 }
 
 TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotChanged) {

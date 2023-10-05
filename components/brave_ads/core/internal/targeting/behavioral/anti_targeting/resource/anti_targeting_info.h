@@ -19,7 +19,7 @@ namespace brave_ads {
 
 using AntiTargetingSiteList = std::set<GURL>;
 using AntiTargetingCreativeSetMap =
-    std::map</*creative_set_id*/ std::string, AntiTargetingSiteList>;
+    std::map</*creative_set_id=*/std::string, AntiTargetingSiteList>;
 
 struct AntiTargetingInfo final {
   AntiTargetingInfo();

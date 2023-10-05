@@ -33,7 +33,7 @@ class BraveAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
-           /*response_body*/ base::StrCat({"/", catalog})}}}};
+           /*response_body=*/base::StrCat({"/", catalog})}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
 
     NotifyDidInitializeAds();

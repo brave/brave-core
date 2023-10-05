@@ -20,55 +20,55 @@ class BraveAdsStatementUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
   // Arrange
-  AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("31 January 2020", /*is_local=*/false));
 
   const base::Time next_token_redemption_at =
-      TimeFromString("5 February 2020", /*is_local*/ false);
+      TimeFromString("5 February 2020", /*is_local=*/false);
   SetTimePrefValue(prefs::kNextTokenRedemptionAt, next_token_redemption_at);
 
   // Act & Assert
   const base::Time expected_next_payment_date =
-      TimeFromString("7 March 2020 23:59:59.999", /*is_local*/ false);
+      TimeFromString("7 March 2020 23:59:59.999", /*is_local=*/false);
   EXPECT_EQ(expected_next_payment_date,
-            GetNextPaymentDate(/*transactions*/ {}));
+            GetNextPaymentDate(/*transactions=*/{}));
 }
 
 TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
 
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.02, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.02, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = BuildTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
   const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kClicked,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.0, ConfirmationType::kClicked,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.03, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.03, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.02, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.02, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   TransactionInfo transaction_6 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.02, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.02, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transaction_6.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_6);
 
@@ -82,36 +82,36 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
 
 TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
 
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = BuildTransactionForTesting(
-      /*value*/ 0.02, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.02, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   TransactionInfo transaction_2 = BuildTransactionForTesting(
-      /*value*/ 0.02, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.02, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/true);
   transaction_2.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
   const TransactionInfo transaction_4 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kClicked,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.0, ConfirmationType::kClicked,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 = BuildTransactionForTesting(
-      /*value*/ 0.03, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.03, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   // Act
@@ -124,30 +124,30 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
 
 TEST_F(BraveAdsStatementUtilTest, GetAdTypesReceivedThisMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
 
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
   const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kClicked,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.0, ConfirmationType::kClicked,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.03, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.03, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.02, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.02, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   // Act

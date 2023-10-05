@@ -29,7 +29,7 @@ ConversionQueueItemList BuildConversionQueueItemsForTesting(
 
   for (size_t i = 0; i < count; ++i) {
     const ConversionQueueItemInfo conversion_queue_item =
-        BuildConversionQueueItem(conversion, /*process_at*/ Now());
+        BuildConversionQueueItem(conversion, /*process_at=*/Now());
 
     conversion_queue_items.push_back(conversion_queue_item);
   }
@@ -60,7 +60,7 @@ void BuildAndSaveConversionQueueForTesting(
   }
 
   const ConversionInfo conversion =
-      BuildConversion(BuildAdEvent(ad, confirmation_type, /*created_at*/ Now()),
+      BuildConversion(BuildAdEvent(ad, confirmation_type, /*created_at=*/Now()),
                       verifiable_conversion);
 
   const ConversionQueueItemList conversion_queue_items =

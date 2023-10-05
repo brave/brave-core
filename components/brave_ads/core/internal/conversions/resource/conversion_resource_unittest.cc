@@ -56,9 +56,9 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
   // Arrange
   ON_CALL(ads_client_mock_,
           LoadFileResource(kConversionResourceId, ::testing::_, ::testing::_))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
-                               LoadFileCallback callback) {
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& /*id=*/, const int /*version=*/,
+             LoadFileCallback callback) {
             const base::FilePath path =
                 GetFileResourcePath().AppendASCII(kMissingResourceId);
 
@@ -73,7 +73,7 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
 
 TEST_F(BraveAdsConversionResourceTest, LoadResourceWhenLocaleDidChange) {
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -88,7 +88,7 @@ TEST_F(
   OptOutOfBraveNewsAdsForTesting();
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
   task_environment_.RunUntilIdle();
 
   // Assert

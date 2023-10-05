@@ -502,7 +502,7 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
       BLOG(0, "Failed to load client state");
       BLOG(3, "Failed to parse client state: " << *json);
 
-      return std::move(callback).Run(/*success*/ false);
+      return std::move(callback).Run(/*success=*/false);
     }
 
     BLOG(3, "Successfully loaded client state");
@@ -510,7 +510,7 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     is_initialized_ = true;
   }
 
-  std::move(callback).Run(/*success */ true);
+  std::move(callback).Run(/*success =*/true);
 }
 
 bool ClientStateManager::FromJson(const std::string& json) {

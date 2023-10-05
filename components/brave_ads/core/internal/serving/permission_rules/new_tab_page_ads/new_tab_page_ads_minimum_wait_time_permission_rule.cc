@@ -23,7 +23,7 @@ constexpr int kMinimumWaitTimeCap = 1;
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
-      history, /*time_constraint*/ kNewTabPageAdMinimumWaitTime.Get(),
+      history, /*time_constraint=*/kNewTabPageAdMinimumWaitTime.Get(),
       kMinimumWaitTimeCap);
 }
 

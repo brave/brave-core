@@ -24,7 +24,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetDataType) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(
-          /*time_window*/ base::Days(7));
+          /*time_window=*/base::Days(7));
 
   // Act & Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kDouble,
@@ -36,7 +36,7 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(
-          /*time_window*/ base::Days(1));
+          /*time_window=*/base::Days(1));
 
   // Act & Assert
   EXPECT_EQ("-1", predictor_variable->GetValue());
@@ -47,10 +47,10 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(
-          /*time_window*/ base::Days(1));
+          /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -68,10 +68,10 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(
-          /*time_window*/ base::Days(1));
+          /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -85,10 +85,10 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(
-          /*time_window*/ base::Days(1));
+          /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -103,10 +103,10 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest,
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(
-          /*time_window*/ base::Days(1));
+          /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -121,10 +121,10 @@ TEST_F(BraveAdsAverageClickthroughRatePredictorVariableTest, GetValue) {
   // Arrange
   std::unique_ptr<PredictorVariableInterface> predictor_variable =
       std::make_unique<AverageClickthroughRatePredictorVariable>(
-          /*time_window*/ base::Days(1));
+          /*time_window=*/base::Days(1));
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
