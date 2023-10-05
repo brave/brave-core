@@ -46,6 +46,8 @@ inline constexpr char kVPNPanelHost[] = "vpn-panel.top-chrome";
 inline constexpr char kBraveUIWalletPageURL[] = "chrome://wallet/";
 inline constexpr char kWalletPageHost[] = "wallet";
 #if BUILDFLAG(IS_ANDROID)
+inline constexpr char kWalletPagePath[] = "/crypto/portfolio/assets";
+inline constexpr char kWalletUnlockPagePath[] = "/crypto/unlock";
 inline constexpr char kWalletBuyPagePath[] = "/crypto/fund-wallet";
 inline constexpr char kWalletSendPagePath[] = "/send";
 inline constexpr char kWalletSwapPagePath[] = "/swap";

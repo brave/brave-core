@@ -11,6 +11,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -19,6 +20,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
@@ -37,6 +39,7 @@ public class WalletUtils {
     private static final String ACCOUNT_INFO = "accountInfo";
     private static final String BLOCKCHAIN_TOKEN = "blockchainToken";
     private static final String NETWORK_INFO = "networkInfo";
+    private static String TAG = "WalletUtils";
 
     private static String getNewAccountPrefixForCoin(@CoinType.EnumType int coinType) {
         switch (coinType) {
@@ -154,6 +157,15 @@ public class WalletUtils {
         return NetworkInfo.deserialize(ByteBuffer.wrap(bytes));
     }
 
+    public static void openWebWallet() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.openNewOrSelectExistingTab(BraveActivity.BRAVE_WALLET_URL, true);
+            TabUtils.bringChromeTabbedActivityToTheTop(activity);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "Error while opening wallet tab.", e);
+        }
+    }
     public static void openWalletHelpCenter(Context context) {
         if (context == null) return;
         TabUtils.openUrlInCustomTab(context, WalletConstants.WALLET_HELP_CENTER);

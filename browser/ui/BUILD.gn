@@ -51,6 +51,10 @@ source_set("ui") {
     "webui/brave_webui_source.h",
     "webui/skus_internals_ui.cc",
     "webui/skus_internals_ui.h",
+    "webui/brave_wallet/market/market_ui.cc",
+    "webui/brave_wallet/market/market_ui.h",
+    "webui/brave_wallet/nft/nft_ui.cc",
+    "webui/brave_wallet/nft/nft_ui.h",
   ]
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
@@ -534,6 +538,9 @@ source_set("ui") {
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",
+    "//brave/components/brave_wallet_ui/market:market_display_generated",
+    "//brave/components/brave_wallet_ui/nft:nft_display_generated",
+    "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
