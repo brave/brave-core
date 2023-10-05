@@ -33,7 +33,7 @@ class BraveAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
-           /*response_body*/ base::StrCat({"/", catalog})}}}};
+           /*response_body=*/base::StrCat({"/", catalog})}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
 
     NotifyDidInitializeAds();
@@ -45,18 +45,12 @@ class BraveAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest, IsNotInitialized) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(resource_->IsInitialized());
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
        LoadResourceIfNotificationAdsAndBraveNewsAdsAreEnabled) {
-  // Arrange
-
   // Act
   LoadResource("catalog.json");
 
@@ -89,8 +83,6 @@ TEST_F(BraveAdsEpsilonGreedyBanditResourceTest,
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceTest, LoadResourceIfEmptyCatalog) {
-  // Arrange
-
   // Act
   LoadResource("empty_catalog.json");
 

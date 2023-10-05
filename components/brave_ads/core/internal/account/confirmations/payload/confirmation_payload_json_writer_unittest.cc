@@ -28,15 +28,15 @@ class BraveAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {
 TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
        WriteRewardConfirmationPayload) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   // Act
@@ -64,11 +64,11 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
   DisableBraveRewardsForTesting();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
       BuildNonRewardConfirmation(transaction,
-                                 /*user_data*/ {});
+                                 /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   // Act

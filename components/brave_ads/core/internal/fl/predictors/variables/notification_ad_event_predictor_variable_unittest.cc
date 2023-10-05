@@ -36,9 +36,7 @@ TEST(BraveAdsNotificationAdEventPredictorVariableTest, GetDataType) {
   const NotificationAdEventPredictorVariable predictor_variable(
       mojom::NotificationAdEventType::kViewed);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kString,
             predictor_variable.GetDataType());
 }
@@ -48,9 +46,7 @@ TEST(BraveAdsNotificationAdEventPredictorVariableTest, GetValueWhenClicked) {
   const mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kClicked;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetEventTypeAsString(event_type), GetValueForEventType(event_type));
 }
 
@@ -59,9 +55,7 @@ TEST(BraveAdsNotificationAdEventPredictorVariableTest, GetValueWhenDismissed) {
   const mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kDismissed;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetEventTypeAsString(event_type), GetValueForEventType(event_type));
 }
 
@@ -70,9 +64,7 @@ TEST(BraveAdsNotificationAdEventPredictorVariableTest, GetValueWhenTimedOut) {
   const mojom::NotificationAdEventType event_type =
       mojom::NotificationAdEventType::kTimedOut;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetEventTypeAsString(event_type), GetValueForEventType(event_type));
 }
 

@@ -30,113 +30,98 @@ class BraveAdsNextPaymentDateUtilTest : public UnitTestBase {
 TEST_F(BraveAdsNextPaymentDateUtilTest,
        TimeNowIsBeforeNextPaymentDayWithReconciledTransactionsLastMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("1 January 2020", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("1 January 2020", /*is_local=*/false));
 
   TransactionList transactions;
   const TransactionInfo transaction = BuildTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction);
 
-  AdvanceClockTo(TimeFromString("1 February 2020", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("1 February 2020", /*is_local=*/false));
 
   const base::Time next_token_redemption_at =
-      TimeFromString("5 February 2020", /*is_local*/ false);
+      TimeFromString("5 February 2020", /*is_local=*/false);
 
-  // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, transactions);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_next_payment_date =
-      TimeFromString("5 February 2020 23:59:59.999", /*is_local*/ false);
-  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+      TimeFromString("5 February 2020 23:59:59.999", /*is_local=*/false);
+  EXPECT_EQ(expected_next_payment_date,
+            CalculateNextPaymentDate(next_token_redemption_at, transactions));
 }
 
 TEST_F(BraveAdsNextPaymentDateUtilTest,
        TimeNowIsBeforeNextPaymentDayWithNoReconciledTransactionsLastMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("1 February 2020", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("1 February 2020", /*is_local=*/false));
 
   const TransactionList transactions;
 
   const base::Time next_token_redemption_at =
-      TimeFromString("5 February 2020", /*is_local*/ false);
+      TimeFromString("5 February 2020", /*is_local=*/false);
 
-  // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, transactions);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_next_payment_date =
-      TimeFromString("5 March 2020 23:59:59.999", /*is_local*/ false);
-  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+      TimeFromString("5 March 2020 23:59:59.999", /*is_local=*/false);
+  EXPECT_EQ(expected_next_payment_date,
+            CalculateNextPaymentDate(next_token_redemption_at, transactions));
 }
 
 TEST_F(BraveAdsNextPaymentDateUtilTest,
        TimeNowIsAfterNextPaymentDayWithReconciledTransactionsThisMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("31 January 2020", /*is_local=*/false));
 
   TransactionList transactions;
   const TransactionInfo transaction = BuildTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed, /*reconciled_at*/ Now(),
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*should_use_random_uuids=*/true);
   transactions.push_back(transaction);
 
   const base::Time next_token_redemption_at =
-      TimeFromString("5 February 2020", /*is_local*/ false);
+      TimeFromString("5 February 2020", /*is_local=*/false);
 
-  // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, transactions);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_next_payment_date =
-      TimeFromString("5 February 2020 23:59:59.999", /*is_local*/ false);
-  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+      TimeFromString("5 February 2020 23:59:59.999", /*is_local=*/false);
+  EXPECT_EQ(expected_next_payment_date,
+            CalculateNextPaymentDate(next_token_redemption_at, transactions));
 }
 
 TEST_F(
     BraveAdsNextPaymentDateUtilTest,
     TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsThisMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
   // Arrange
-  AdvanceClockTo(TimeFromString("11 January 2020", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("11 January 2020", /*is_local=*/false));
 
   const TransactionList transactions;
 
   const base::Time next_token_redemption_at =
-      TimeFromString("31 January 2020", /*is_local*/ false);
+      TimeFromString("31 January 2020", /*is_local=*/false);
 
-  // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, transactions);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_next_payment_date =
-      TimeFromString("5 February 2020 23:59:59.999", /*is_local*/ false);
-  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+      TimeFromString("5 February 2020 23:59:59.999", /*is_local=*/false);
+  EXPECT_EQ(expected_next_payment_date,
+            CalculateNextPaymentDate(next_token_redemption_at, transactions));
 }
 
 TEST_F(
     BraveAdsNextPaymentDateUtilTest,
     TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsNextMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
   // Arrange
-  AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("31 January 2020", /*is_local=*/false));
 
   const TransactionList transactions;
 
   const base::Time next_token_redemption_at =
-      TimeFromString("5 February 2020", /*is_local*/ false);
+      TimeFromString("5 February 2020", /*is_local=*/false);
 
-  // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, transactions);
-
-  // Assert
+  // Act & Assert
   const base::Time expected_next_payment_date =
-      TimeFromString("5 March 2020 23:59:59.999", /*is_local*/ false);
-  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+      TimeFromString("5 March 2020 23:59:59.999", /*is_local=*/false);
+  EXPECT_EQ(expected_next_payment_date,
+            CalculateNextPaymentDate(next_token_redemption_at, transactions));
 }
 
 }  // namespace brave_ads

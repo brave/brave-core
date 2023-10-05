@@ -40,11 +40,7 @@ class BraveAdsTextClassificationResourceTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsTextClassificationResourceTest, IsNotInitialized) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(resource_->IsInitialized());
 }
 
@@ -53,9 +49,7 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadInvalidResource) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
                                              kTextClassificationResourceId));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kLanguageComponentId));
 }
 
@@ -63,9 +57,9 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   // Arrange
   ON_CALL(ads_client_mock_, LoadFileResource(kTextClassificationResourceId,
                                              ::testing::_, ::testing::_))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
-                               LoadFileCallback callback) {
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& /*id=*/, const int /*version=*/,
+             LoadFileCallback callback) {
             const base::FilePath path =
                 GetFileResourcePath().AppendASCII(kMissingResourceId);
 
@@ -74,9 +68,7 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
             std::move(callback).Run(std::move(file));
           }));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kLanguageComponentId));
 }
 
@@ -86,7 +78,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -100,7 +92,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   ASSERT_FALSE(LoadResource(kLanguageComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -112,7 +104,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -159,22 +151,14 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 
 TEST_F(BraveAdsTextClassificationResourceTest,
        LoadResourceWhenDidUpdateResourceComponent) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(LoadResource(kLanguageComponentId));
 }
 
 TEST_F(
     BraveAdsTextClassificationResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfInvalidLanguageComponentId) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kInvalidLanguageComponentId));
 }
 
@@ -184,9 +168,7 @@ TEST_F(
   // Arrange
   OptOutOfNotificationAdsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kLanguageComponentId));
 }
 
@@ -195,9 +177,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   // Arrange
   ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(LoadResource(kLanguageComponentId));
 }
 

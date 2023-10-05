@@ -77,7 +77,7 @@ constexpr char kJson[] =
 
 HistoryItemList BuildHistoryItems() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
 
   const HistoryItemInfo history_item =
@@ -92,26 +92,22 @@ class BraveAdsHistoryItemValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsHistoryItemValueUtilTest, FromValue) {
   // Arrange
-  AdvanceClockTo(TimeFromString("22 March 2023", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("22 March 2023", /*is_local=*/false));
 
   const base::Value::List list = base::test::ParseJsonList(kJson);
 
-  // Act
-  const HistoryItemList history_items = HistoryItemsFromValue(list);
-
-  // Assert
-  EXPECT_THAT(history_items, ::testing::ElementsAreArray(BuildHistoryItems()));
+  // Act & Assert
+  EXPECT_THAT(HistoryItemsFromValue(list),
+              ::testing::ElementsAreArray(BuildHistoryItems()));
 }
 
 TEST_F(BraveAdsHistoryItemValueUtilTest, ToValue) {
   // Arrange
-  AdvanceClockTo(TimeFromString("22 March 2023", /*is_local*/ false));
+  AdvanceClockTo(TimeFromString("22 March 2023", /*is_local=*/false));
 
   const HistoryItemList history_items = BuildHistoryItems();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonList(kJson),
             HistoryItemsToValue(history_items));
 }

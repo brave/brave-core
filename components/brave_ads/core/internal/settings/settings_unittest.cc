@@ -19,11 +19,7 @@ namespace brave_ads {
 class BraveAdsSettingsTest : public UnitTestBase {};
 
 TEST_F(BraveAdsSettingsTest, UserHasJoinedBraveRewards) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(UserHasJoinedBraveRewards());
 }
 
@@ -31,18 +27,12 @@ TEST_F(BraveAdsSettingsTest, UserHasNotJoinedBraveRewards) {
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(UserHasJoinedBraveRewards());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasOptedInToBraveNewsAds) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(UserHasOptedInToBraveNewsAds());
 }
 
@@ -50,18 +40,12 @@ TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToBraveNews) {
   // Arrange
   OptOutOfBraveNewsAdsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(UserHasOptedInToBraveNewsAds());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasOptedInToNewTabPageAds) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(UserHasOptedInToNewTabPageAds());
 }
 
@@ -69,18 +53,12 @@ TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNewTabPageAds) {
   // Arrange
   OptOutOfNewTabPageAdsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasOptedInToNotificationAds) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(UserHasOptedInToNotificationAds());
 }
 
@@ -88,9 +66,7 @@ TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNotificationAds) {
   // Arrange
   OptOutOfNotificationAdsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(UserHasOptedInToNotificationAds());
 }
 
@@ -100,11 +76,9 @@ TEST_F(BraveAdsSettingsTest, MaximumNotificationAdsPerHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdFeature, {{"default_ads_per_hour", "2"}});
 
-  SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 3);
+  SetInt64PrefValue(prefs::kMaximumNotificationAdsPerHour, 3);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, GetMaximumNotificationAdsPerHour());
 }
 
@@ -114,9 +88,7 @@ TEST_F(BraveAdsSettingsTest, DefaultMaximumNotificationAdsPerHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdFeature, {{"default_ads_per_hour", "2"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, GetMaximumNotificationAdsPerHour());
 }
 

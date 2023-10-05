@@ -12,11 +12,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsSubdivisionUrlRequestBuilderUtilTest, GetPath) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("/v1/getstate", BuildSubdivisionUrlPath());
 }
 

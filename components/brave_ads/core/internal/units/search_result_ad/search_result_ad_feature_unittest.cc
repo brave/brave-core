@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsSearchResultAdFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kSearchResultAdFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsSearchResultAdFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kSearchResultAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kSearchResultAdFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsSearchResultAdFeatureTest, MaximumSearchResultAdsPerHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kSearchResultAdFeature, {{"maximum_ads_per_hour", "42"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(42, kMaximumSearchResultAdsPerHour.Get());
 }
 
 TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumSearchResultAdsPerHour) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(10, kMaximumSearchResultAdsPerHour.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsSearchResultAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kSearchResultAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(10, kMaximumSearchResultAdsPerHour.Get());
 }
 
@@ -71,18 +57,12 @@ TEST(BraveAdsSearchResultAdFeatureTest, MaximumSearchResultAdsPerDay) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kSearchResultAdFeature, {{"maximum_ads_per_day", "24"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(24, kMaximumSearchResultAdsPerDay.Get());
 }
 
 TEST(BraveAdsSearchResultAdFeatureTest, DefaultMaximumSearchResultAdsPerDay) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(40, kMaximumSearchResultAdsPerDay.Get());
 }
 
@@ -92,9 +72,7 @@ TEST(BraveAdsSearchResultAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kSearchResultAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(40, kMaximumSearchResultAdsPerDay.Get());
 }
 

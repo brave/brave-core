@@ -43,24 +43,25 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, LogEvent) {
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
       BuildTextEmbeddingHtmlEvent(text_embedding);
 
-  base::MockCallback<LogTextEmbeddingHtmlEventCallback> log_event_callback;
-  EXPECT_CALL(log_event_callback, Run(/*success*/ true));
+  base::MockCallback<LogTextEmbeddingHtmlEventCallback>
+      log_text_embedding_html_event_callback;
+  EXPECT_CALL(log_text_embedding_html_event_callback, Run(/*success=*/true));
 
   // Act
   LogTextEmbeddingHtmlEvent(text_embedding_html_event,
-                            log_event_callback.Get());
+                            log_text_embedding_html_event_callback.Get());
 
   // Assert
   base::MockCallback<database::table::GetTextEmbeddingHtmlEventsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, TextEmbeddingHtmlEventList{
+  EXPECT_CALL(callback, Run(/*success=*/true, TextEmbeddingHtmlEventList{
                                                   text_embedding_html_event}));
   GetTextEmbeddingHtmlEventsFromDatabase(callback.Get());
 }
 
 TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   // Arrange
-  for (int i = 0; i < kTextEmbeddingHistorySize.Get() + 3; i++) {
+  for (int i = 0; i < kTextEmbeddingHistorySize.Get() + 3; ++i) {
     const ml::pipeline::TextEmbeddingInfo text_embedding =
         ml::pipeline::BuildTextEmbeddingForTesting();
     const TextEmbeddingHtmlEventInfo text_embedding_html_event =
@@ -69,12 +70,14 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
     LogTextEmbeddingHtmlEvent(text_embedding_html_event, base::DoNothing());
   }
 
+  base::MockCallback<LogTextEmbeddingHtmlEventCallback>
+      purge_stale_text_embedding_html_events_callback;
+  EXPECT_CALL(purge_stale_text_embedding_html_events_callback,
+              Run(/*success=*/true));
+
   // Act
-  {
-    base::MockCallback<LogTextEmbeddingHtmlEventCallback> callback;
-    EXPECT_CALL(callback, Run(/*success*/ true));
-    PurgeStaleTextEmbeddingHtmlEvents(callback.Get());
-  }
+  PurgeStaleTextEmbeddingHtmlEvents(
+      purge_stale_text_embedding_html_events_callback.Get());
 
   // Assert
   const size_t text_embedding_history_size = kTextEmbeddingHistorySize.Get();
@@ -82,7 +85,7 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
       callback;
   EXPECT_CALL(
       callback,
-      Run(/*success*/ true,
+      Run(/*success=*/true,
           ::testing::SizeIs(::testing::Le(text_embedding_history_size))));
   GetTextEmbeddingHtmlEventsFromDatabase(callback.Get());
 }

@@ -12,11 +12,7 @@
 namespace brave_ads::json::reader {
 
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ParseValidJson) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("US-CA", ParseSubdivision(
                          R"(
                             {
@@ -26,21 +22,13 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ParseValidJson) {
 }
 
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, DoNotParseInvalidJson) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseSubdivision("{INVALID}"));
 }
 
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
      DoNotParseIfMissingCountry) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseSubdivision(
       R"(
           {
@@ -50,11 +38,7 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
 
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
      DoNotParseifEmptyCountry) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseSubdivision(
       R"(
           {
@@ -65,11 +49,7 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
 
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
      DoNotParseIfMissingRegion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseSubdivision(
       R"(
           {
@@ -78,11 +58,7 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
 }
 
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, DoNotParseIfEmptyRegion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseSubdivision(
       R"(
           {

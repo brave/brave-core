@@ -17,18 +17,12 @@ TEST(BraveAdsEpsilonGreedyBanditFeatureTest, IsEnabled) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kEpsilonGreedyBanditFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature));
 }
 
 TEST(BraveAdsEpsilonGreedyBanditFeatureTest, IsDisabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature));
 }
 
@@ -38,19 +32,13 @@ TEST(BraveAdsEpsilonGreedyBanditFeatureTest, EpsilonGreedyBanditEpsilonValue) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEpsilonGreedyBanditFeature, {{"epsilon_value", "0.33"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0.33, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 
 TEST(BraveAdsEpsilonGreedyBanditFeatureTest,
      DefaultEpsilonGreedyBanditEpsilonValue) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0.25, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 
@@ -60,9 +48,7 @@ TEST(BraveAdsEpsilonGreedyBanditFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kEpsilonGreedyBanditFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0.25, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 

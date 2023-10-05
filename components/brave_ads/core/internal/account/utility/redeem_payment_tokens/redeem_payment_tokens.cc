@@ -94,7 +94,7 @@ void RedeemPaymentTokens::RedeemCallback(
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code != net::HTTP_OK) {
-    return FailedToRedeem(/*should_retry*/ true);
+    return FailedToRedeem(/*should_retry=*/true);
   }
 
   SuccessfullyRedeemed(payment_tokens);

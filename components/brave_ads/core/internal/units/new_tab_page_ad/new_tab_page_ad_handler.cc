@@ -32,10 +32,10 @@ void FireServedEventCallback(
     const NewTabPageAdInfo& ad,
     MaybeServeNewTabPageAdCallback callback,
     const bool success,
-    const std::string& /*placement_id*/,
-    const mojom::NewTabPageAdEventType /*event_type*/) {
+    const std::string& /*placement_id=*/,
+    const mojom::NewTabPageAdEventType /*event_type=*/) {
   if (!success) {
-    return std::move(callback).Run(/*ad*/ absl::nullopt);
+    return std::move(callback).Run(/*ad=*/absl::nullopt);
   }
 
   std::move(callback).Run(ad);
@@ -43,8 +43,8 @@ void FireServedEventCallback(
 
 void FireEventCallback(TriggerAdEventCallback callback,
                        const bool success,
-                       const std::string& /*placement_id*/,
-                       const mojom::NewTabPageAdEventType /*event_type*/) {
+                       const std::string& /*placement_id=*/,
+                       const mojom::NewTabPageAdEventType /*event_type=*/) {
   std::move(callback).Run(success);
 }
 
@@ -66,12 +66,12 @@ NewTabPageAdHandler::~NewTabPageAdHandler() = default;
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
   if (!UserHasOptedInToNewTabPageAds()) {
-    return std::move(callback).Run(/*ad*/ absl::nullopt);
+    return std::move(callback).Run(/*ad=*/absl::nullopt);
   }
 
   if (!ShouldAlwaysTriggerNewTabPageAdEvents() &&
       !UserHasJoinedBraveRewards()) {
-    return std::move(callback).Run(/*ad*/ absl::nullopt);
+    return std::move(callback).Run(/*ad=*/absl::nullopt);
   }
 
   serving_.MaybeServeAd(base::BindOnce(&NewTabPageAdHandler::MaybeServeCallback,
@@ -87,12 +87,12 @@ void NewTabPageAdHandler::TriggerEvent(
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (!UserHasOptedInToNewTabPageAds()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   if (!UserHasJoinedBraveRewards() &&
       !ShouldAlwaysTriggerNewTabPageAdEvents()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   if (!UserHasJoinedBraveRewards() &&
@@ -133,9 +133,9 @@ void NewTabPageAdHandler::TriggerServedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
     const std::string& placement_id,
-    const mojom::NewTabPageAdEventType /*event_type*/) {
+    const mojom::NewTabPageAdEventType /*event_type=*/) {
   if (!success) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   event_handler_.FireEvent(
@@ -146,7 +146,7 @@ void NewTabPageAdHandler::TriggerServedEventCallback(
 void NewTabPageAdHandler::OnOpportunityAroseToServeNewTabPageAd() {
   BLOG(1, "Opportunity arose to serve a new tab page ad");
 
-  RecordP2AAdOpportunity(AdType::kNewTabPageAd, /*segments*/ {});
+  RecordP2AAdOpportunity(AdType::kNewTabPageAd, /*segments=*/{});
 }
 
 void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {

@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsUserActivityFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kUserActivityFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsUserActivityFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kUserActivityFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsUserActivityFeatureTest, MaximumUserActivityEvents) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserActivityFeature, {{"maximum_events", "7"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kMaximumUserActivityEvents.Get());
 }
 
 TEST(BraveAdsUserActivityFeatureTest, DefaultMaximumUserActivityEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3600, kMaximumUserActivityEvents.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsUserActivityFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3600, kMaximumUserActivityEvents.Get());
 }
 
@@ -71,18 +57,12 @@ TEST(BraveAdsUserActivityFeatureTest, UserActivityTriggers) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserActivityFeature, {{"triggers", "01=0.5;010203=1.0;0203=0.75"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("01=0.5;010203=1.0;0203=0.75", kUserActivityTriggers.Get());
 }
 
 TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityTriggers) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0",
       kUserActivityTriggers.Get());
@@ -93,9 +73,7 @@ TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityTriggersWhenDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0",
       kUserActivityTriggers.Get());
@@ -107,18 +85,12 @@ TEST(BraveAdsUserActivityFeatureTest, UserActivityTimeWindow) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserActivityFeature, {{"time_window", "2h"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(2), kUserActivityTimeWindow.Get());
 }
 
 TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityTimeWindow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
@@ -128,9 +100,7 @@ TEST(BraveAdsUserActivityFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
@@ -140,18 +110,12 @@ TEST(BraveAdsUserActivityFeatureTest, UserActivityThreshold) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserActivityFeature, {{"threshold", "7.0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7.0, kUserActivityThreshold.Get());
 }
 
 TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityThreshold) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0.0, kUserActivityThreshold.Get());
 }
 
@@ -161,9 +125,7 @@ TEST(BraveAdsUserActivityFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0.0, kUserActivityThreshold.Get());
 }
 

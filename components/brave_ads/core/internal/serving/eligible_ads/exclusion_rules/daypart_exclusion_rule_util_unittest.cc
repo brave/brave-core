@@ -18,9 +18,7 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest, MatchDayOfWeek) {
   CreativeDaypartInfo daypart;
   daypart.days_of_week = "0123456";
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(MatchDayOfWeek(daypart, '3'));
 }
 
@@ -29,63 +27,53 @@ TEST(BraveAdsDaypartExclusionRuleUtilTest, DoNotMatchDayOfWeek) {
   CreativeDaypartInfo daypart;
   daypart.days_of_week = "012456";
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MatchDayOfWeek(daypart, '3'));
 }
 
 TEST(BraveAdsDaypartExclusionRuleUtilTest, MatchTimeSlot) {
   // Arrange
   CreativeDaypartInfo daypart;
-  daypart.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
-  daypart.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
+  daypart.start_minute = GetMinutesForTesting(/*hours=*/0, /*minutes=*/0);
+  daypart.end_minute = GetMinutesForTesting(/*hours=*/23, /*minutes=*/59);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(MatchTimeSlot(daypart,
-                            GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35)));
+                            GetMinutesForTesting(/*hours=*/5, /*minutes=*/35)));
 }
 
 TEST(BraveAdsDaypartExclusionRuleUtilTest, MatchExactTimeSlot) {
   // Arrange
   CreativeDaypartInfo daypart;
-  daypart.start_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
-  daypart.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
+  daypart.start_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/35);
+  daypart.end_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/35);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(MatchTimeSlot(daypart,
-                            GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35)));
+                            GetMinutesForTesting(/*hours=*/5, /*minutes=*/35)));
 }
 
 TEST(BraveAdsDaypartExclusionRuleUtilTest, DoNotMatchTimeSlotAfterEndMinute) {
   // Arrange
   CreativeDaypartInfo daypart;
-  daypart.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
-  daypart.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 34);
+  daypart.start_minute = GetMinutesForTesting(/*hours=*/0, /*minutes=*/0);
+  daypart.end_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/34);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MatchTimeSlot(
-      daypart, GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35)));
+      daypart, GetMinutesForTesting(/*hours=*/5, /*minutes=*/35)));
 }
 
 TEST(BraveAdsDaypartExclusionRuleUtilTest,
      DoNotMatchTimeSlotBeforeStartMinute) {
   // Arrange
   CreativeDaypartInfo daypart;
-  daypart.start_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 36);
-  daypart.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
+  daypart.start_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/36);
+  daypart.end_minute = GetMinutesForTesting(/*hours=*/23, /*minutes=*/59);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MatchTimeSlot(
-      daypart, GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35)));
+      daypart, GetMinutesForTesting(/*hours=*/5, /*minutes=*/35)));
 }
 
 }  // namespace brave_ads

@@ -33,11 +33,9 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   creative_ad.creative_instance_id = kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
-  const TransferredExclusionRule exclusion_rule(/*ad_events*/ {});
+  const TransferredExclusionRule exclusion_rule(/*ad_events=*/{});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -60,15 +58,13 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad_2, AdType::kNotificationAd, ConfirmationType::kTransferred,
-      Now(), /*should_use_random_uuids*/ true);
+      Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
   const TransferredExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
@@ -92,31 +88,29 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
 
   const AdEventInfo ad_event_1 = BuildAdEventForTesting(
       creative_ad_2, AdType::kNotificationAd, ConfirmationType::kTransferred,
-      Now(), /*should_use_random_uuids*/ true);
+      Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_1);
 
   const AdEventInfo ad_event_2 = BuildAdEventForTesting(
       creative_ad_2, AdType::kNewTabPageAd, ConfirmationType::kTransferred,
-      Now(), /*should_use_random_uuids*/ true);
+      Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = BuildAdEventForTesting(
       creative_ad_2, AdType::kPromotedContentAd, ConfirmationType::kTransferred,
-      Now(), /*should_use_random_uuids*/ true);
+      Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_4 = BuildAdEventForTesting(
       creative_ad_2, AdType::kSearchResultAd, ConfirmationType::kTransferred,
-      Now(), /*should_use_random_uuids*/ true);
+      Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
@@ -135,16 +129,14 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kTransferred,
-      Now(), /*should_use_random_uuids*/ true);
+      Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -163,16 +155,14 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kTransferred,
-      Now(), /*should_use_random_uuids*/ true);
+      Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2) - base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -191,16 +181,14 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kTransferred,
-      Now(), /*should_use_random_uuids*/ true);
+      Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -223,16 +211,14 @@ TEST_F(BraveAdsTransferredExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad_2, AdType::kNotificationAd, ConfirmationType::kTransferred,
-      Now(), /*should_use_random_uuids*/ true);
+      Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const TransferredExclusionRule exclusion_rule(ad_events);
 
   AdvanceClockBy(base::Days(2));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 

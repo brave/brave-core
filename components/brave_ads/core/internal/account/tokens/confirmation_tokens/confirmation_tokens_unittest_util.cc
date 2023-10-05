@@ -60,7 +60,7 @@ ConfirmationTokenList SetConfirmationTokensForTesting(const int count) {
 
 ConfirmationTokenInfo BuildConfirmationTokenForTesting() {
   const ConfirmationTokenList confirmation_tokens =
-      BuildConfirmationTokensForTesting(/*count*/ 1);
+      BuildConfirmationTokensForTesting(/*count=*/1);
   CHECK(!confirmation_tokens.empty());
   return confirmation_tokens.front();
 }
@@ -86,7 +86,7 @@ ConfirmationTokenList BuildConfirmationTokensForTesting(const int count) {
 
   ConfirmationTokenList confirmation_tokens;
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; ++i) {
     const std::string& unblinded_token_base64 =
         unblinded_tokens_base64.at(i % modulo);
     const ConfirmationTokenInfo confirmation_token =

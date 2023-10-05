@@ -23,7 +23,7 @@ constexpr char kClientIssue23794Filename[] = "client_issue_23794.json";
 class BraveAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    SetBooleanPref(prefs::kHasMigratedClientState, false);
+    SetBooleanPrefValue(prefs::kHasMigratedClientState, false);
   }
 };
 
@@ -32,13 +32,11 @@ TEST_F(BraveAdsLegacyClientMigrationIssue23794Test, Migrate) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kClientIssue23794Filename,
                                              kClientStateFilename));
 
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*success=*/true));
   MigrateClientState(callback.Get());
 
-  // Assert
   EXPECT_TRUE(HasMigratedClientState());
 }
 

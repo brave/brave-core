@@ -37,7 +37,7 @@ base::Value::Dict BuildTopSegmentUserData(const TransactionInfo& transaction) {
   base::Value::List list;
 
   if (const absl::optional<std::string> top_segment =
-          GetTopSegment(BuildInterestSegments(), /*parent_only*/ false)) {
+          GetTopSegment(BuildInterestSegments(), /*parent_only=*/false)) {
     auto dict = base::Value::Dict().Set(kInterestSegmentKey, *top_segment);
     list.Append(std::move(dict));
   }

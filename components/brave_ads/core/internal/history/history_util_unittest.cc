@@ -22,7 +22,7 @@ namespace {
 
 HistoryItemInfo BuildAndAddHistoryItem() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   return AddHistory(ad, ConfirmationType::kViewed, ad.title, ad.body);
@@ -33,8 +33,6 @@ HistoryItemInfo BuildAndAddHistoryItem() {
 class BraveAdsHistoryUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsHistoryUtilTest, AddHistory) {
-  // Arrange
-
   // Act
   const HistoryItemInfo history_item = BuildAndAddHistoryItem();
 

@@ -21,9 +21,7 @@ TEST_F(BraveAdsLocaleDiagnosticEntryTest, GetValue) {
 
   const LocaleDiagnosticEntry diagnostic_entry;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kLocale, diagnostic_entry.GetType());
   EXPECT_EQ("Locale", diagnostic_entry.GetName());
   EXPECT_EQ("en_KY", diagnostic_entry.GetValue());

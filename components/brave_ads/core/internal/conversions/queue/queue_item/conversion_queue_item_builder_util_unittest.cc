@@ -15,11 +15,7 @@ namespace brave_ads {
 class BraveAdsConversionQueueItemBuilderUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsConversionQueueItemBuilderUtilTest, ProcessConversionAt) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ProcessConversionAt().is_null());
 }
 

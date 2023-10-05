@@ -120,7 +120,7 @@ absl::optional<LinearModel> ParsePipelineClassifier(
     return absl::nullopt;
   }
 
-  std::map</*class_name*/ std::string, /*weights*/ VectorData> class_weights;
+  std::map</*class_name=*/std::string, /*weights=*/VectorData> class_weights;
   for (const std::string& class_name : classes) {
     const auto* const list = class_weights_dict->FindList(class_name);
     if (!list) {
@@ -145,8 +145,8 @@ absl::optional<LinearModel> ParsePipelineClassifier(
     return absl::nullopt;
   }
 
-  std::map</*class_name*/ std::string, /*bias*/ double> biases;
-  for (size_t i = 0; i < biases_list->size(); i++) {
+  std::map</*class_name=*/std::string, /*bias=*/double> biases;
+  for (size_t i = 0; i < biases_list->size(); ++i) {
     const base::Value& bias = (*biases_list)[i];
     if (!bias.is_double() && !bias.is_int()) {
       return absl::nullopt;

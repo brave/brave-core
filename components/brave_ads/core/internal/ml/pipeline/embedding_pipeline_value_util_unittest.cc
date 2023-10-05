@@ -85,7 +85,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
     const VectorData& token_embedding_vector_data = iter->second;
 
     // Assert
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; ++i) {
       EXPECT_NEAR(expected_embedding.GetData().at(i),
                   token_embedding_vector_data.GetData().at(i), 0.001F);
     }
@@ -96,9 +96,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromMalformedValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(kMalformedJson);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(EmbeddingPipelineFromValue(dict));
 }
 
@@ -106,9 +104,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromEmptyValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict("{}");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(EmbeddingPipelineFromValue(dict));
 }
 

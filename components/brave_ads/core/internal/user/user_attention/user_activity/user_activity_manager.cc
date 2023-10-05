@@ -154,27 +154,27 @@ void UserActivityManager::OnBrowserDidEnterBackground() {
   RecordEvent(UserActivityEventType::kBrowserDidEnterBackground);
 }
 
-void UserActivityManager::OnTabDidChangeFocus(const int32_t /*tab_id*/) {
+void UserActivityManager::OnTabDidChangeFocus(const int32_t /*tab_id=*/) {
   RecordEvent(UserActivityEventType::kTabChangedFocus);
 }
 
-void UserActivityManager::OnTabDidChange(const TabInfo& /*tab*/) {
+void UserActivityManager::OnTabDidChange(const TabInfo& /*tab=*/) {
   RecordEvent(UserActivityEventType::kTabUpdated);
 }
 
-void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
+void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab=*/) {
   RecordEvent(UserActivityEventType::kOpenedNewTab);
 }
 
-void UserActivityManager::OnDidCloseTab(const int32_t /*tab_id*/) {
+void UserActivityManager::OnDidCloseTab(const int32_t /*tab_id=*/) {
   RecordEvent(UserActivityEventType::kClosedTab);
 }
 
-void UserActivityManager::OnTabDidStartPlayingMedia(const int32_t /*tab_id*/) {
+void UserActivityManager::OnTabDidStartPlayingMedia(const int32_t /*tab_id=*/) {
   RecordEvent(UserActivityEventType::kTabStartedPlayingMedia);
 }
 
-void UserActivityManager::OnTabDidStopPlayingMedia(const int32_t /*tab_id*/) {
+void UserActivityManager::OnTabDidStopPlayingMedia(const int32_t /*tab_id=*/) {
   RecordEvent(UserActivityEventType::kTabStoppedPlayingMedia);
 }
 

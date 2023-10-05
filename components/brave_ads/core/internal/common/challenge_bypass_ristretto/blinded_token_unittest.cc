@@ -22,9 +22,7 @@ TEST_F(BraveAdsBlindedTokenTest, FailToInitialize) {
   // Arrange
   const BlindedToken blinded_token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(blinded_token.has_value());
 }
 
@@ -32,9 +30,7 @@ TEST_F(BraveAdsBlindedTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const BlindedToken blinded_token("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(blinded_token.has_value());
 }
 
@@ -42,15 +38,11 @@ TEST_F(BraveAdsBlindedTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const BlindedToken blinded_token(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(blinded_token.has_value());
 }
 
 TEST_F(BraveAdsBlindedTokenTest, DecodeBase64) {
-  // Arrange
-
   // Act
   const BlindedToken blinded_token =
       BlindedToken::DecodeBase64(kBlindedTokenBase64);
@@ -60,8 +52,6 @@ TEST_F(BraveAdsBlindedTokenTest, DecodeBase64) {
 }
 
 TEST_F(BraveAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
-  // Arrange
-
   // Act
   const BlindedToken blinded_token = BlindedToken::DecodeBase64("");
 
@@ -70,8 +60,6 @@ TEST_F(BraveAdsBlindedTokenTest, FailToDecodeEmptyBase64) {
 }
 
 TEST_F(BraveAdsBlindedTokenTest, FailToDecodeInvalidBase64) {
-  // Arrange
-
   // Act
   const BlindedToken blinded_token = BlindedToken::DecodeBase64(kInvalidBase64);
 
@@ -83,9 +71,7 @@ TEST_F(BraveAdsBlindedTokenTest, EncodeBase64) {
   // Arrange
   const BlindedToken blinded_token(kBlindedTokenBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kBlindedTokenBase64, blinded_token.EncodeBase64());
 }
 
@@ -93,9 +79,7 @@ TEST_F(BraveAdsBlindedTokenTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const BlindedToken blinded_token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(blinded_token.EncodeBase64());
 }
 
@@ -103,9 +87,7 @@ TEST_F(BraveAdsBlindedTokenTest, IsEqual) {
   // Arrange
   const BlindedToken blinded_token(kBlindedTokenBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(blinded_token, blinded_token);
 }
 
@@ -113,9 +95,7 @@ TEST_F(BraveAdsBlindedTokenTest, IsEqualWhenUninitialized) {
   // Arrange
   const BlindedToken blinded_token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(blinded_token, blinded_token);
 }
 
@@ -123,9 +103,7 @@ TEST_F(BraveAdsBlindedTokenTest, IsEmptyBase64Equal) {
   // Arrange
   const BlindedToken blinded_token("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(blinded_token, blinded_token);
 }
 
@@ -133,21 +111,13 @@ TEST_F(BraveAdsBlindedTokenTest, IsInvalidBase64Equal) {
   // Arrange
   const BlindedToken blinded_token(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(blinded_token, blinded_token);
 }
 
 TEST_F(BraveAdsBlindedTokenTest, IsNotEqual) {
-  // Arrange
-
-  // Act
-  const BlindedToken blinded_token(kBlindedTokenBase64);
-  const BlindedToken different_blinded_token(kInvalidBase64);
-
-  // Assert
-  EXPECT_NE(different_blinded_token, blinded_token);
+  // Act & Assert
+  EXPECT_NE(BlindedToken(kBlindedTokenBase64), BlindedToken(kInvalidBase64));
 }
 
 TEST_F(BraveAdsBlindedTokenTest, OutputStream) {

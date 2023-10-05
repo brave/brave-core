@@ -442,18 +442,13 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithSingleCampaign);
   ASSERT_TRUE(json);
 
-  // Act
-  const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
-  ASSERT_TRUE(catalog);
-
-  // Assert
+  // Act & Assert
   CatalogInfo expected_catalog;
   expected_catalog.id = kCatalogId;
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
-
-  EXPECT_EQ(expected_catalog, catalog);
+  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*json));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
@@ -463,19 +458,14 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
       ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
   ASSERT_TRUE(json);
 
-  // Act
-  const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
-  ASSERT_TRUE(catalog);
-
-  // Assert
+  // Act & Assert
   CatalogInfo expected_catalog;
   expected_catalog.id = kCatalogId;
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
   expected_catalog.campaigns.push_back(BuildCatalogCampaign2());
-
-  EXPECT_EQ(expected_catalog, catalog);
+  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*json));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
@@ -484,25 +474,16 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
       ReadFileFromTestPathAndParseTagsToString(kEmptyCatalog);
   ASSERT_TRUE(json);
 
-  // Act
-  const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
-  ASSERT_TRUE(catalog);
-
-  // Assert
+  // Act & Assert
   CatalogInfo expected_catalog;
   expected_catalog.id = kCatalogId;
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
-
-  EXPECT_EQ(expected_catalog, catalog);
+  EXPECT_EQ(expected_catalog, json::reader::ReadCatalog(*json));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, InvalidCatalog) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(json::reader::ReadCatalog(kInvalidCatalog));
 }
 

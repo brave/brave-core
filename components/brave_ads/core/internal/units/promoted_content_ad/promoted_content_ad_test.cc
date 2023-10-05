@@ -19,7 +19,7 @@ namespace brave_ads {
 class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
 
     ForcePermissionRulesForTesting();
   }
@@ -28,7 +28,7 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
-           /*response_body*/ "/catalog_with_promoted_content_ad.json"}}}};
+           /*response_body=*/"/catalog_with_promoted_content_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
 
     EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
@@ -40,35 +40,29 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
       const mojom::PromotedContentAdEventType& event_type,
       const bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
-    EXPECT_CALL(callback, Run(/*success*/ should_fire_event));
+    EXPECT_CALL(callback, Run(/*success=*/should_fire_event));
     GetAds().TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
                                            event_type, callback.Get());
   }
 };
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
-  // Arrange
-
-  // Act
+  // Act & Assert
   TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
                                 mojom::PromotedContentAdEventType::kViewed,
-                                /*should_fire_event*/ true);
-
-  // Assert
+                                /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
                                 mojom::PromotedContentAdEventType::kViewed,
-                                /*should_fire_event*/ true);
+                                /*should_fire_event=*/true);
 
-  // Act
+  // Act & Assert
   TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
                                 mojom::PromotedContentAdEventType::kClicked,
-                                /*should_fire_event*/ true);
-
-  // Assert
+                                /*should_fire_event=*/true);
 }
 
 }  // namespace brave_ads

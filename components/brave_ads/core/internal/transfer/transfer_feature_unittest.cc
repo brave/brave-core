@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsTransferFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kTransferFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsTransferFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTransferFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kTransferFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsTransferFeatureTest, TransferAfter) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kTransferFeature, {{"transfer_after", "7s"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Seconds(7), kTransferAfter.Get());
 }
 
 TEST(BraveAdsTransferFeatureTest, DefaultTransferAfter) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Seconds(10), kTransferAfter.Get());
 }
 
@@ -58,9 +46,7 @@ TEST(BraveAdsTransferFeatureTest, DefaultTransferAfterWhenDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTransferFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Seconds(10), kTransferAfter.Get());
 }
 
@@ -70,18 +56,12 @@ TEST(BraveAdsTransferFeatureTest, TransferCap) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kTransferFeature, {{"transfer_cap", "7"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kTransferCap.Get());
 }
 
 TEST(BraveAdsTransferFeatureTest, DefaultTransferCap) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kTransferCap.Get());
 }
 
@@ -90,9 +70,7 @@ TEST(BraveAdsTransferFeatureTest, DefaultTransferCapWhenDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTransferFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kTransferCap.Get());
 }
 

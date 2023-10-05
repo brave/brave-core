@@ -110,7 +110,7 @@ void AntiTargetingResource::Reset() {
 }
 
 void AntiTargetingResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
+    const std::string& /*locale=*/) {
   MaybeLoad();
 }
 

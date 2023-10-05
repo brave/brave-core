@@ -69,7 +69,7 @@ PaymentTokenInfo BuildPaymentTokenForTesting(
 
 PaymentTokenInfo BuildPaymentTokenForTesting() {
   const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count*/ 1);
+      BuildPaymentTokensForTesting(/*count=*/1);
   CHECK(!payment_tokens.empty());
   return payment_tokens.front();
 }
@@ -93,7 +93,7 @@ PaymentTokenList BuildPaymentTokensForTesting(const int count) {
 
   PaymentTokenList payment_tokens;
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; ++i) {
     const std::string& payment_token_base64 =
         payment_tokens_base64.at(i % modulo);
     const PaymentTokenInfo payment_token =

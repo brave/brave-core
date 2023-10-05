@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsHistoryFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kHistoryFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsHistoryFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kHistoryFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kHistoryFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsHistoryFeatureTest, HistoryTimeWindow) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kHistoryFeature, {{"time_window", "1d"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kHistoryTimeWindow.Get());
 }
 
 TEST(BraveAdsHistoryFeatureTest, DefaultHistoryTimeWindow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(30), kHistoryTimeWindow.Get());
 }
 
@@ -58,9 +46,7 @@ TEST(BraveAdsHistoryFeatureTest, DefaultHistoryTimeWindowWhenDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kHistoryFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(30), kHistoryTimeWindow.Get());
 }
 

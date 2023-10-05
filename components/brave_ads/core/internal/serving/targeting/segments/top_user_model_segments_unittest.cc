@@ -35,106 +35,66 @@ UserModelInfo BuildUserModel() {
 class BraveAdsTopUserModelSegmentsTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTopUserModelSegmentsTest, GetTopChildSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {
       "intent_1_parent-child",          "intent_2_parent-child",
       "latent_interest_1_parent-child", "latent_interest_2_parent-child",
       "interest_1_parent-child",        "interest_2_parent-child"};
-
   EXPECT_EQ(expected_top_segments, GetTopChildSegments(BuildUserModel()));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsTest, GetTopParentSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {
       "intent_1_parent",          "intent_2_parent",
       "latent_interest_1_parent", "latent_interest_2_parent",
       "interest_1_parent",        "interest_2_parent"};
-
   EXPECT_EQ(expected_top_segments, GetTopParentSegments(BuildUserModel()));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsTest, GetTopChildIntentSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {"intent_1_parent-child",
                                              "intent_2_parent-child"};
-
   EXPECT_EQ(expected_top_segments, GetTopChildIntentSegments(BuildUserModel()));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsTest, GetTopParentIntentSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {"intent_1_parent",
                                              "intent_2_parent"};
-
   EXPECT_EQ(expected_top_segments,
             GetTopParentIntentSegments(BuildUserModel()));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsTest, GetTopChildLatentInterestSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {"latent_interest_1_parent-child",
                                              "latent_interest_2_parent-child"};
-
   EXPECT_EQ(expected_top_segments,
             GetTopChildLatentInterestSegments(BuildUserModel()));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsTest, GetTopParentLatentInterestSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {"latent_interest_1_parent",
                                              "latent_interest_2_parent"};
-
   EXPECT_EQ(expected_top_segments,
             GetTopParentLatentInterestSegments(BuildUserModel()));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsTest, GetTopChildInterestSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {"interest_1_parent-child",
                                              "interest_2_parent-child"};
-
   EXPECT_EQ(expected_top_segments,
             GetTopChildInterestSegments(BuildUserModel()));
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsTest, GetTopParentInterestSegments) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {"interest_1_parent",
                                              "interest_2_parent"};
-
   EXPECT_EQ(expected_top_segments,
             GetTopParentInterestSegments(BuildUserModel()));
 }

@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsTextClassificationFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kTextClassificationFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsTextClassificationFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kTextClassificationFeature));
 }
 
@@ -38,19 +32,13 @@ TEST(BraveAdsTextClassificationFeatureTest, TextClassificationResourceVersion) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kTextClassificationFeature, {{"resource_version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kTextClassificationResourceVersion.Get());
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
      DefaultTextClassificationResourceVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kTextClassificationResourceVersion.Get());
 }
 
@@ -60,9 +48,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kTextClassificationResourceVersion.Get());
 }
 
@@ -73,19 +59,13 @@ TEST(BraveAdsTextClassificationFeatureTest,
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kTextClassificationFeature, {{"page_probabilities_history_size", "3"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
      DefaultTextClassificationPageProbabilitiesHistorySize) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(5, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
@@ -95,9 +75,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(5, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 

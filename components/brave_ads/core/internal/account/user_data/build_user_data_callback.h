@@ -12,7 +12,7 @@
 namespace brave_ads {
 
 using BuildUserDataCallback =
-    base::OnceCallback<void(/*user_data*/ base::Value::Dict)>;
+    base::OnceCallback<void(/*user_data=*/base::Value::Dict)>;
 
 }  // namespace brave_ads
 

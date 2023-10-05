@@ -138,8 +138,8 @@ void Catalog::OnFailedToFetchCatalog() {
   NotifyFailedToUpdateCatalog();
 }
 
-void Catalog::OnDidMigrateDatabase(const int /*from_version*/,
-                                   const int /*to_version*/) {
+void Catalog::OnDidMigrateDatabase(const int /*from_version=*/,
+                                   const int /*to_version=*/) {
   ResetCatalog();
 }
 

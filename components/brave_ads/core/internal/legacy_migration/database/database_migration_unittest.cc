@@ -65,13 +65,13 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
   // DatabaseManagerObserver:
   void OnDidCreateDatabase() override { did_create_database_ = true; }
 
-  void OnDidMigrateDatabase(const int /*from_version*/,
-                            const int /*to_version*/) override {
+  void OnDidMigrateDatabase(const int /*from_version=*/,
+                            const int /*to_version=*/) override {
     did_migrate_database_ = true;
   }
 
-  void OnFailedToMigrateDatabase(const int /*from_version*/,
-                                 const int /*to_version*/) override {
+  void OnFailedToMigrateDatabase(const int /*from_version=*/,
+                                 const int /*to_version=*/) override {
     failed_to_migrate_database_ = true;
   }
 
@@ -84,11 +84,7 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
 };
 
 TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(ShouldCreateDatabase(), did_create_database_);
   EXPECT_EQ(ShouldMigrateDatabase(), did_migrate_database_);
   EXPECT_FALSE(failed_to_migrate_database_);

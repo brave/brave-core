@@ -123,7 +123,7 @@ std::string Dayparts::BuildInsertOrUpdateSql(
       "INSERT OR REPLACE INTO $1 (campaign_id, days_of_week, start_minute, "
       "end_minute) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 4, binded_parameters_count)},
+                           /*parameters_count=*/4, binded_parameters_count)},
       nullptr);
 }
 

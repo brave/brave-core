@@ -21,11 +21,7 @@ class BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest
 
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -36,10 +32,9 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 
   RecordAdEventForTesting(AdType::kNotificationAd, ConfirmationType::kServed);
 
-  // Act
   AdvanceClockBy(base::Minutes(12));
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -50,10 +45,9 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 
   RecordAdEventForTesting(AdType::kNotificationAd, ConfirmationType::kServed);
 
-  // Act
   AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

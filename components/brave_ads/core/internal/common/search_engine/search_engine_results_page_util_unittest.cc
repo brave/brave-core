@@ -14,41 +14,25 @@
 namespace brave_ads {
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest, IsSearchEngineResultsPage) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   for (const auto& url : GetSearchEngineResultsPageUrls()) {
     EXPECT_TRUE(IsSearchEngineResultsPage(url));
   }
 }
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest, IsNotSearchEngineResultsPage) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsSearchEngineResultsPage(GURL("https://brave.com/")));
 }
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest,
      IsNotSearchEngineResultsPageWithInvalidUrl) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsSearchEngineResultsPage(GURL("INVALID")));
 }
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   for (const auto& url : GetSearchEngineResultsPageUrls()) {
     const absl::optional<std::string> search_term_query_value =
         ExtractSearchTermQueryValue(url);
@@ -60,21 +44,13 @@ TEST(BraveAdsSearchEngineResultsPageUtilTest, ExtractSearchTermQueryValue) {
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest,
      FailToExtractSearchTermQueryValueFromUrlWithMissingQuery) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ExtractSearchTermQueryValue(GURL("https://google.com/")));
 }
 
 TEST(BraveAdsSearchEngineResultsPageUtilTest,
      FailToExtractSearchTermQueryValueFromInvalidUrl) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ExtractSearchTermQueryValue(GURL("INVALID")));
 }
 

@@ -51,19 +51,16 @@ TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeInlineContentAd);
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*dimensions*/ "200x100",
-                            /*ad*/ ::testing::Eq(absl::nullopt)));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*dimensions=*/"200x100",
+                            /*ad=*/::testing::Eq(absl::nullopt)));
   MaybeServeAd("200x100", callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
@@ -71,22 +68,19 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeInlineContentAd);
 
   EXPECT_CALL(delegate_mock_, OnDidServeInlineContentAd);
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*dimensions*/ "200x100", ::testing::Ne(absl::nullopt)));
-
-  // Act
+              Run(/*dimensions=*/"200x100", ::testing::Ne(absl::nullopt)));
   MaybeServeAd("200x100", callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest,
@@ -95,40 +89,34 @@ TEST_F(BraveAdsInlineContentAdServingTest,
   ForcePermissionRulesForTesting();
 
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeInlineContentAd);
 
   EXPECT_CALL(delegate_mock_, OnFailedToServeInlineContentAd);
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*dimensions*/ "?x?", /*ad*/ ::testing::Eq(absl::nullopt)));
-
-  // Act
+              Run(/*dimensions=*/"?x?", /*ad=*/::testing::Eq(absl::nullopt)));
   MaybeServeAd("?x?", callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeInlineContentAd);
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*dimensions*/ "200x100",
-                            /*ad*/ ::testing::Eq(absl::nullopt)));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*dimensions=*/"200x100",
+                            /*ad=*/::testing::Eq(absl::nullopt)));
   MaybeServeAd("200x100", callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

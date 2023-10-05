@@ -17,21 +17,17 @@ class BraveAdsLegacyClientMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasMigrated) {
   // Arrange
-  SetBooleanPref(prefs::kHasMigratedClientState, true);
+  SetBooleanPrefValue(prefs::kHasMigratedClientState, true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(HasMigratedClientState());
 }
 
 TEST_F(BraveAdsLegacyClientMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  SetBooleanPref(prefs::kHasMigratedClientState, false);
+  SetBooleanPrefValue(prefs::kHasMigratedClientState, false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(HasMigratedClientState());
 }
 

@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsExclusionRuleFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kExclusionRulesFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsExclusionRuleFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kExclusionRulesFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsExclusionRuleFeatureTest, ShouldExcludeAdIfConverted) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kExclusionRulesFeature, {{"should_exclude_ad_if_converted", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldExcludeAdIfConverted.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest, DefaultShouldExcludeAdIfConverted) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldExcludeAdIfConverted.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldExcludeAdIfConverted.Get());
 }
 
@@ -73,19 +59,13 @@ TEST(BraveAdsExclusionRuleFeatureTest,
       kExclusionRulesFeature,
       {{"should_exclude_ad_if_dismissed_within_time_window", "1d"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kShouldExcludeAdIfDismissedWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultShouldExcludeAdIfDismissedWithinTimeWindow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(0), kShouldExcludeAdIfDismissedWithinTimeWindow.Get());
 }
 
@@ -95,9 +75,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(0), kShouldExcludeAdIfDismissedWithinTimeWindow.Get());
 }
 
@@ -109,19 +87,13 @@ TEST(BraveAdsExclusionRuleFeatureTest,
       kExclusionRulesFeature,
       {{"should_exclude_ad_if_transferred_within_time_window", "1d"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultShouldExcludeAdIfTransferredWithinTimeWindow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(0),
             kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
 }
@@ -132,9 +104,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(0),
             kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
 }
@@ -147,19 +117,13 @@ TEST(BraveAdsExclusionRuleFeatureTest,
       kExclusionRulesFeature,
       {{"should_exclude_ad_if_creative_instance_exceeds_per_hour_cap", "7"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultShouldExcludeAdIfCreativeInstanceExceedsPerHourCap) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
 }
 
@@ -169,9 +133,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
 }
 

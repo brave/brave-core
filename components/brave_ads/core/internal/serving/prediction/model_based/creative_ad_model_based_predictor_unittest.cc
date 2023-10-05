@@ -26,7 +26,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
   // Arrange
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/
                                             true);
   creative_ads.push_back(creative_ad);
 
@@ -39,15 +39,11 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
-  // Act
-  const absl::optional<CreativeNotificationAdInfo> predicted_creative_ad =
-      MaybePredictCreativeAd(creative_ads, user_model, ad_events);
-
-  // Assert
-  EXPECT_TRUE(predicted_creative_ad);
+  // Act & Assert
+  EXPECT_TRUE(MaybePredictCreativeAd(creative_ads, user_model, ad_events));
 }
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
@@ -67,7 +63,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
 
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/
                                             true);
   creative_ads.push_back(creative_ad);
 
@@ -80,15 +76,11 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now(),
-      /*should_use_random_uuids*/ true);
+      /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
-  // Act
-  const absl::optional<CreativeNotificationAdInfo> predicted_creative_ad =
-      MaybePredictCreativeAd(creative_ads, user_model, ad_events);
-
-  // Assert
-  EXPECT_FALSE(predicted_creative_ad);
+  // Act & Assert
+  EXPECT_FALSE(MaybePredictCreativeAd(creative_ads, user_model, ad_events));
 }
 
 }  // namespace brave_ads

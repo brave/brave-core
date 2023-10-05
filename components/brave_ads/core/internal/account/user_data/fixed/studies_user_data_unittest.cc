@@ -32,9 +32,7 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForRewardsUser) {
 
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -71,18 +69,12 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
 
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildStudiesUserData().empty());
 }
 
 TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {

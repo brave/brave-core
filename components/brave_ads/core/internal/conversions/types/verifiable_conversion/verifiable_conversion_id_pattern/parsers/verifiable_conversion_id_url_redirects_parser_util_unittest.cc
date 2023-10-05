@@ -28,38 +28,26 @@ constexpr char kIdPattern[] = "qux_id=(.*)";
 
 TEST(BraveAdsVerifiableConversionIdUrlParserUtilTest,
      ParseVerifableConversionIdFromUrlRedirects) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("xyzzy", MaybeParseVerifableConversionIdFromUrlRedirects(
-                         /*redirect_chain*/ {GURL(kMatchingUrl)},
+                         /*redirect_chain=*/{GURL(kMatchingUrl)},
                          ConversionResourceIdPatternInfo{
                              kUrlPattern, kSearchInType, kIdPattern}));
 }
 
 TEST(BraveAdsVerifiableConversionIdUrlParserUtilTest,
      DoNotParseMismatchingVerifableConversionIdFromUrlRedirects) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeParseVerifableConversionIdFromUrlRedirects(
-      /*redirect_chain*/ {GURL(kMismatchingUrl)},
+      /*redirect_chain=*/{GURL(kMismatchingUrl)},
       ConversionResourceIdPatternInfo{kUrlPattern, kSearchInType, kIdPattern}));
 }
 
 TEST(BraveAdsVerifiableConversionIdUrlParserUtilTest,
      DoNotParseVerifableConversionIdFromEmptyUrlRedirects) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeParseVerifableConversionIdFromUrlRedirects(
-      /*redirect_chain*/ {},
+      /*redirect_chain=*/{},
       ConversionResourceIdPatternInfo{kUrlPattern, kSearchInType, kIdPattern}));
 }
 

@@ -14,11 +14,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsPurchaseIntentFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kPurchaseIntentFeature));
 }
 
@@ -27,9 +23,7 @@ TEST(BraveAdsPurchaseIntentFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kPurchaseIntentFeature));
 }
 
@@ -39,18 +33,12 @@ TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentResourceVersion) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kPurchaseIntentFeature, {{"resource_version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kPurchaseIntentResourceVersion.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, DefaultPurchaseIntentResourceVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kPurchaseIntentResourceVersion.Get());
 }
 
@@ -60,9 +48,7 @@ TEST(BraveAdsPurchaseIntentFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kPurchaseIntentResourceVersion.Get());
 }
 
@@ -72,18 +58,12 @@ TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentThreshold) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(kPurchaseIntentFeature,
                                                          {{"threshold", "5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(5, kPurchaseIntentThreshold.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, DefaultPurchaseIntentThreshold) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, kPurchaseIntentThreshold.Get());
 }
 
@@ -93,9 +73,7 @@ TEST(BraveAdsPurchaseIntentFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, kPurchaseIntentThreshold.Get());
 }
 
@@ -105,18 +83,12 @@ TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentTimeWindow) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kPurchaseIntentFeature, {{"time_window", "1d"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kPurchaseIntentTimeWindow.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, DefaultPurchaseIntentTimeWindow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(7), kPurchaseIntentTimeWindow.Get());
 }
 
@@ -126,9 +98,7 @@ TEST(BraveAdsPurchaseIntentFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(7), kPurchaseIntentTimeWindow.Get());
 }
 

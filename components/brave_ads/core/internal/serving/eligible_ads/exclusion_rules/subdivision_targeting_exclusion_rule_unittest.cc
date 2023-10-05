@@ -90,14 +90,14 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
     const char* region = "";
 
     if (GetParam().country ==
-        std::string_view("US") /*United States of America*/) {
-      if (GetParam().region == std::string_view("FL") /*Florida*/) {
+        std::string_view("US") /*United States of America=*/) {
+      if (GetParam().region == std::string_view("FL") /*Florida=*/) {
         region = "CA";  // Alabama
       } else {
         region = "FL";  // Florida
       }
-    } else if (GetParam().country == std::string_view("CA") /*Canada*/) {
-      if (GetParam().region == std::string_view("QC") /*Quebec*/) {
+    } else if (GetParam().country == std::string_view("CA") /*Canada=*/) {
+      if (GetParam().region == std::string_view("QC") /*Quebec=*/) {
         region = "AB";  // Alberta
       } else {
         region = "QC";  // Quebec
@@ -129,9 +129,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -139,22 +137,20 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     ShouldIncludeIfSubdivisionTargetingIsNotAllowedForGeoTargetWithNoRegion) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, false);
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {GetParam().country};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        ShouldIncludeIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
   MockUrlResponseForTestParam();
 
@@ -164,9 +160,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -174,7 +168,7 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     ShouldIncludeIfSubdivisionTargetingIsSupportedAndAutoDetectedForMultipleGeoTargets) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
   MockUrlResponseForTestParam();
 
@@ -185,9 +179,7 @@ TEST_P(
   creative_ad.geo_targets = {BuildSubdivisionForTestParam(),
                              BuildOtherSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -195,7 +187,7 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     ShouldIncludeIfSubdivisionTargetingIsSupportedAndAutoDetectedForGeoTargetWithNoRegion) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
   MockUrlResponseForTestParam();
 
@@ -205,9 +197,7 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {GetParam().country};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -215,10 +205,10 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     ShouldIncludeIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelected) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision,
-                BuildSubdivisionForTestParam());
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
+                     BuildSubdivisionForTestParam());
 
   MockUrlResponseForTestParam();
 
@@ -228,9 +218,7 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -238,10 +226,10 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     ShouldIncludeIfSubdivisionTargetingIsSupportedAndSubdivisionWasManuallySelectedForMultipleGeoTargets) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision,
-                BuildSubdivisionForTestParam());
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
+                     BuildSubdivisionForTestParam());
 
   MockUrlResponseForTestParam();
 
@@ -252,9 +240,7 @@ TEST_P(
   creative_ad.geo_targets = {BuildSubdivisionForTestParam(),
                              BuildOtherSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -262,10 +248,10 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     ShouldIncludeIfSubdivisionTargetingIsSupportedAndManuallySelectedForGeoTargetWithNoRegion) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision,
-                BuildSubdivisionForTestParam());
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
+                     BuildSubdivisionForTestParam());
 
   MockUrlResponseForTestParam();
 
@@ -275,16 +261,14 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {GetParam().country};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        ShouldExcludeIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
   MockUrlResponseForTestParam();
 
@@ -293,7 +277,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTesting(
-      /*country_code*/ "US", /*subdivision_code*/ "XX")};
+      /*country_code=*/"US", /*subdivision_code=*/"XX")};
 
   // Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
@@ -303,7 +287,7 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     ShouldExcludeIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
   MockUrlResponseForTestParam();
 
@@ -312,11 +296,9 @@ TEST_P(
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTesting(
-      /*country_code*/ "GB", /*subdivision_code*/ "DEV")};
+      /*country_code=*/"GB", /*subdivision_code=*/"DEV")};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -324,13 +306,13 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     ShouldIncludeIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
   const URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
        {{net::HTTP_OK,
          BuildSubdivisionUrlResponseBodyForTesting(
-             /*country_code*/ "XX", /*subdivision_code*/ "NO REGION")}}}};
+             /*country_code=*/"XX", /*subdivision_code=*/"NO REGION")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   NotifyDidInitializeAds();
@@ -339,18 +321,16 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {"XX"};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
        ShouldExcludeIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision, "DISABLED");
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision, "DISABLED");
 
   MockUrlResponseForTestParam();
 
@@ -360,9 +340,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 
@@ -370,9 +348,9 @@ TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
     ShouldIncludeIfSubdivisionTargetingIsDisabledForNonSubdivisionGeoTarget) {
   // Arrange
-  SetBooleanPref(prefs::kShouldAllowSubdivisionTargeting, true);
+  SetBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision, "DISABLED");
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision, "DISABLED");
 
   MockUrlResponseForTestParam();
 
@@ -382,9 +360,7 @@ TEST_P(
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.geo_targets = {"XX"};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
 }
 

@@ -50,15 +50,12 @@ TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   ForcePermissionRulesForTesting();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeNotificationAd);
-
-  // Act
   MaybeServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
@@ -66,46 +63,35 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   ForcePermissionRulesForTesting();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeNotificationAd);
-
   EXPECT_CALL(delegate_mock_, OnDidServeNotificationAd);
-
-  // Act
   MaybeServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
   ForcePermissionRulesForTesting();
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeNotificationAd);
-
   EXPECT_CALL(delegate_mock_, OnFailedToServeNotificationAd);
-
-  // Act
   MaybeServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
+  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeNotificationAd);
-
-  // Act
   MaybeServeAd();
-
-  // Assert
 }
 
 }  // namespace brave_ads

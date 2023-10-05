@@ -22,9 +22,7 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAllowForRewardsUser) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -32,18 +30,12 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAlwaysAllowForNonRewardsUser) {
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldNotAllowIfNoIssuers) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

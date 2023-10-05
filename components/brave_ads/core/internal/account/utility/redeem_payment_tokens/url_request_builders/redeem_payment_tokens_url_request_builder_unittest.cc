@@ -31,8 +31,9 @@ class BraveAdsRedeemPaymentTokensUrlRequestBuilderTest : public UnitTestBase {};
 TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count*/ 7);
+      BuildPaymentTokensForTesting(/*count=*/7);
 
+  // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&payment_tokens](base::Value::Dict user_data) {
@@ -54,10 +55,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
         EXPECT_EQ(url_request, expected_url_request);
       });
 
-  // Act
   BuildRedeemPaymentTokensUserData(payment_tokens, callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

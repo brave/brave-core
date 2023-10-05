@@ -31,7 +31,7 @@
 namespace brave_ads::database::table {
 
 using CreativeInlineContentAdMap =
-    std::map</*creative_ad_uuid*/ std::string, CreativeInlineContentAdInfo>;
+    std::map</*creative_ad_uuid=*/std::string, CreativeInlineContentAdInfo>;
 
 namespace {
 
@@ -187,8 +187,8 @@ void GetForCreativeInstanceIdCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ad");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id,
-                                   /*creative_ad*/ {});
+    return std::move(callback).Run(/*success=*/false, creative_instance_id,
+                                   /*creative_ad=*/{});
   }
 
   const CreativeInlineContentAdList creative_ads =
@@ -196,13 +196,13 @@ void GetForCreativeInstanceIdCallback(
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative inline content ad");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id,
-                                   /*creative_ad*/ {});
+    return std::move(callback).Run(/*success=*/false, creative_instance_id,
+                                   /*creative_ad=*/{});
   }
 
   const CreativeInlineContentAdInfo& creative_ad = creative_ads.front();
 
-  std::move(callback).Run(/*success*/ true, creative_instance_id, creative_ad);
+  std::move(callback).Run(/*success=*/true, creative_instance_id, creative_ad);
 }
 
 void GetForSegmentsAndDimensionsCallback(
@@ -213,14 +213,14 @@ void GetForSegmentsAndDimensionsCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
-    return std::move(callback).Run(/*success*/ false, segments,
-                                   /*creative_ad*/ {});
+    return std::move(callback).Run(/*success=*/false, segments,
+                                   /*creative_ad=*/{});
   }
 
   const CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(command_response));
 
-  std::move(callback).Run(/*success*/ true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, creative_ads);
 }
 
 void GetForDimensionsCallback(
@@ -230,13 +230,13 @@ void GetForDimensionsCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative inline content ads");
-    return std::move(callback).Run(/*success*/ false, /*creative_ad*/ {});
+    return std::move(callback).Run(/*success=*/false, /*creative_ad=*/{});
   }
 
   const CreativeInlineContentAdList creative_ads =
       GetCreativeAdsFromResponse(std::move(command_response));
 
-  std::move(callback).Run(/*success*/ true, creative_ads);
+  std::move(callback).Run(/*success=*/true, creative_ads);
 }
 
 void GetAllCallback(GetCreativeInlineContentAdsCallback callback,
@@ -245,8 +245,8 @@ void GetAllCallback(GetCreativeInlineContentAdsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative inline content ads");
-    return std::move(callback).Run(/*success*/ false, /*segments*/ {},
-                                   /*creative_ads*/ {});
+    return std::move(callback).Run(/*success=*/false, /*segments=*/{},
+                                   /*creative_ads=*/{});
   }
 
   const CreativeInlineContentAdList creative_ads =
@@ -254,7 +254,7 @@ void GetAllCallback(GetCreativeInlineContentAdsCallback callback,
 
   const SegmentList segments = GetSegments(creative_ads);
 
-  std::move(callback).Run(/*success*/ true, segments, creative_ads);
+  std::move(callback).Run(/*success=*/true, segments, creative_ads);
 }
 
 void MigrateToV29(mojom::DBTransactionInfo* transaction) {
@@ -284,7 +284,7 @@ void CreativeInlineContentAds::Save(
     const CreativeInlineContentAdList& creative_ads,
     ResultCallback callback) {
   if (creative_ads.empty()) {
-    return std::move(callback).Run(/*success*/ true);
+    return std::move(callback).Run(/*success=*/true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -321,8 +321,8 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetCreativeInlineContentAdCallback callback) const {
   if (creative_instance_id.empty()) {
-    return std::move(callback).Run(/*success*/ false, creative_instance_id,
-                                   /*creative_ads*/ {});
+    return std::move(callback).Run(/*success=*/false, creative_instance_id,
+                                   /*creative_ads=*/{});
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -358,8 +358,8 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
     const std::string& dimensions,
     GetCreativeInlineContentAdsCallback callback) const {
   if (segments.empty() || dimensions.empty()) {
-    return std::move(callback).Run(/*success*/ true, segments,
-                                   /*creative_ads*/ {});
+    return std::move(callback).Run(/*success=*/true, segments,
+                                   /*creative_ads=*/{});
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -406,7 +406,7 @@ void CreativeInlineContentAds::GetForDimensions(
     const std::string& dimensions,
     GetCreativeInlineContentAdsForDimensionsCallback callback) const {
   if (dimensions.empty()) {
-    return std::move(callback).Run(/*success*/ true, /*creative_ads*/ {});
+    return std::move(callback).Run(/*success=*/true, /*creative_ads=*/{});
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -526,7 +526,7 @@ std::string CreativeInlineContentAds::BuildInsertOrUpdateSql(
       "campaign_id, title, description, image_url, dimensions, cta_text) "
       "VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 8, binded_parameters_count)},
+                           /*parameters_count=*/8, binded_parameters_count)},
       nullptr);
 }
 

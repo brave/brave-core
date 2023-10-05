@@ -94,7 +94,7 @@ void GetCallback(GetAdEventsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get ad events");
-    return std::move(callback).Run(/*success*/ false, /*ad_events*/ {});
+    return std::move(callback).Run(/*success=*/false, /*ad_events=*/{});
   }
 
   CHECK(command_response->result);
@@ -105,7 +105,7 @@ void GetCallback(GetAdEventsCallback callback,
     ad_events.push_back(ad_event);
   }
 
-  std::move(callback).Run(/*success*/ true, ad_events);
+  std::move(callback).Run(/*success=*/true, ad_events);
 }
 
 void MigrateToV5(mojom::DBTransactionInfo* transaction) {
@@ -147,7 +147,7 @@ void MigrateToV13(mojom::DBTransactionInfo* transaction) {
                                             "timestamp"};
 
   CopyTableColumns(transaction, "ad_events", "ad_events_temp", columns,
-                   /*should_drop*/ true);
+                   /*should_drop=*/true);
 
   // Rename temporary table.
   RenameTable(transaction, "ad_events_temp", "ad_events");
@@ -191,7 +191,7 @@ void MigrateToV28(mojom::DBTransactionInfo* transaction) {
 
   CopyTableColumns(transaction, "ad_events", "ad_events_temp", from_columns,
                    to_columns,
-                   /*should_drop*/ true);
+                   /*should_drop=*/true);
 
   // Rename temporary table.
   RenameTable(transaction, "ad_events_temp", "ad_events");
@@ -392,7 +392,7 @@ std::string AdEvents::BuildInsertOrUpdateSql(
       "campaign_id, creative_set_id, creative_instance_id, advertiser_id, "
       "segment, created_at) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 9, binded_parameters_count)},
+                           /*parameters_count=*/9, binded_parameters_count)},
       nullptr);
 }
 

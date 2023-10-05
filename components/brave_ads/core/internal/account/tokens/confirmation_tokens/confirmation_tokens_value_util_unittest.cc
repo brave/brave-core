@@ -38,14 +38,10 @@ constexpr char kEmptyJson[] = "[]";
 class BraveAdsConfirmationTokenValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsConfirmationTokenValueUtilTest, ToValue) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonList(kJson),
             ConfirmationTokensToValue(
-                BuildConfirmationTokensForTesting(/*count*/ 2)));
+                BuildConfirmationTokensForTesting(/*count=*/2)));
 }
 
 TEST_F(BraveAdsConfirmationTokenValueUtilTest, ToEmptyValue) {
@@ -63,10 +59,8 @@ TEST_F(BraveAdsConfirmationTokenValueUtilTest, FromValue) {
   // Arrange
   const base::Value::List list = base::test::ParseJsonList(kJson);
 
-  // Act
-
-  // Assert
-  EXPECT_EQ(BuildConfirmationTokensForTesting(/*count*/ 2),
+  // Act & Assert
+  EXPECT_EQ(BuildConfirmationTokensForTesting(/*count=*/2),
             ConfirmationTokensFromValue(list));
 }
 

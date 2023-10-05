@@ -13,10 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsNewTabPageAdServingFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kNewTabPageAdServingFeature));
 }
 
@@ -25,9 +22,7 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNewTabPageAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kNewTabPageAdServingFeature));
 }
 
@@ -37,19 +32,13 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest, NewTabPageAdServingVersion) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNewTabPageAdServingFeature, {{"version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kNewTabPageAdServingVersion.Get());
 }
 
 TEST(BraveAdsNewTabPageAdServingFeatureTest,
      DefaultNewTabPageAdServingVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, kNewTabPageAdServingVersion.Get());
 }
 
@@ -59,9 +48,7 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kNewTabPageAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, kNewTabPageAdServingVersion.Get());
 }
 

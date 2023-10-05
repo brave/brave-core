@@ -19,15 +19,13 @@ class BraveAdsCatalogLastUpdatedDiagnosticEntryTest : public UnitTestBase {};
 TEST_F(BraveAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));
+      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local=*/true));
 
   SetCatalogLastUpdated(Now());
 
   const CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogLastUpdated,
             diagnostic_entry.GetType());
   EXPECT_EQ("Catalog last updated", diagnostic_entry.GetName());
@@ -39,9 +37,7 @@ TEST_F(BraveAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogNeverUpdated) {
   // Arrange
   const CatalogLastUpdatedDiagnosticEntry diagnostic_entry;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogLastUpdated,
             diagnostic_entry.GetType());
   EXPECT_EQ("Catalog last updated", diagnostic_entry.GetName());

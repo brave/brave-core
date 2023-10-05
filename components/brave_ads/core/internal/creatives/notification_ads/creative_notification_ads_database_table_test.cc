@@ -19,13 +19,13 @@ class BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest
     : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
   }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
-         {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
+         {{net::HTTP_OK, /*response_body=*/"/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 };
@@ -33,19 +33,16 @@ class BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
        GetForSegments) {
   // Arrange
+  const database::table::CreativeNotificationAds database_table;
+
+  // Act & Assert
   base::MockCallback<database::table::GetCreativeNotificationAdsCallback>
       callback;
   EXPECT_CALL(callback,
-              Run(/*success*/ true, SegmentList{"technology & computing"},
+              Run(/*success=*/true, SegmentList{"technology & computing"},
                   ::testing::SizeIs(2)));
-
-  const database::table::CreativeNotificationAds database_table;
-
-  // Act
   database_table.GetForSegments(
-      /*segments*/ {"technology & computing"}, callback.Get());
-
-  // Assert
+      /*segments=*/{"technology & computing"}, callback.Get());
 }
 
 }  // namespace brave_ads

@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsReminderFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kReminderFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsReminderFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kReminderFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kReminderFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsReminderFeatureTest, RemindUserIfClickingTheSameAdAfter) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kReminderFeature, {{"remind_user_if_clicking_the_same_ad_after", "1"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
 TEST(BraveAdsReminderFeatureTest, DefaultRemindUserIfClickingTheSameAdAfter) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsReminderFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kReminderFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 

@@ -31,15 +31,13 @@ class BraveAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
 
 TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
   // Arrange
-  SetBooleanPref(prefs::kHasMigratedRewardsState, false);
+  SetBooleanPrefValue(prefs::kHasMigratedRewardsState, false);
 
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*success=*/true));
   rewards::Migrate(callback.Get());
 
-  // Assert
   EXPECT_TRUE(ads_client_mock_.GetBooleanPref(prefs::kHasMigratedRewardsState));
 }
 

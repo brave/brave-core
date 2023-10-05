@@ -46,7 +46,7 @@ base::Time DistantFuture() {
   // January 2038. However, I only like to think about so far into the future
   // because it comes soon enough.
   return base::Time::FromDoubleT(
-      /*Tuesday, 19 January 2038 03:14:07*/ 2147483647);
+      /*Tuesday, 19 January 2038 03:14:07=*/2147483647);
 }
 
 std::string DistantFutureAsISO8601() {

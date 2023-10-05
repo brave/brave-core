@@ -20,9 +20,7 @@ TEST_F(BraveAdsVectorDataTest, DenseVectorDataInitialization) {
   const std::vector<float> vector_5{1.0F, 2.0F, 3.0F, 4.0F, 5.0F};
   const VectorData dense_vector_data_5(vector_5);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(vector_5.size(), dense_vector_data_5.GetDimensionCount());
 }
 
@@ -34,9 +32,7 @@ TEST_F(BraveAdsVectorDataTest, SparseVectorDataInitialization) {
       {0U, 1.0}, {2U, 3.0}, {3U, -2.0}};
   const VectorData sparse_vector_data_6(kDimensionCount, sparse_vector_6);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kDimensionCount, sparse_vector_data_6.GetDimensionCount());
 }
 
@@ -169,7 +165,7 @@ TEST_F(BraveAdsVectorDataTest, AddElementWise) {
   vector_data_3.AddElementWise(vector_data_4);
 
   // Assert
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; ++i) {
     EXPECT_NEAR(vector_sum_1_2.at(i), vector_data_1.GetData().at(i), 0.001F);
     EXPECT_NEAR(vector_sum_2_1.at(i), vector_data_2.GetData().at(i), 0.001F);
     EXPECT_NEAR(vector_sum_3_4.at(i), vector_data_3.GetData().at(i), 0.001F);
@@ -195,7 +191,7 @@ TEST_F(BraveAdsVectorDataTest, DivideByScalar) {
   vector_data_4.DivideByScalar(-0.25F);
 
   // Assert
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; ++i) {
     EXPECT_NEAR(vector_1_division.at(i), vector_data_1.GetData().at(i), 0.001F);
     EXPECT_NEAR(vector_2_division.at(i), vector_data_2.GetData().at(i), 0.001F);
     EXPECT_NEAR(vector_3_division.at(i), vector_data_3.GetData().at(i), 0.001F);

@@ -21,11 +21,7 @@ class BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest
 
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -34,10 +30,9 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEventForTesting(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  // Act
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get());
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -46,10 +41,9 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEventForTesting(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  // Act
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get() - base::Milliseconds(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

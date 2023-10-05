@@ -37,10 +37,10 @@ class BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest
 TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   CreateNonRewardConfirmationUrlRequestBuilder url_request_builder(
@@ -56,7 +56,6 @@ TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
   EXPECT_EQ(url_request, expected_url_request);
 }
 

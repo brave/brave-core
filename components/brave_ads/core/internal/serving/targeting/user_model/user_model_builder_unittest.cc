@@ -79,26 +79,20 @@ TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
   // Arrange
   targeting_->Mock();
 
+  // Act & Assert
   base::MockCallback<BuildUserModelCallback> callback;
   EXPECT_CALL(callback, Run(TargetingHelperForTesting::Expectation()));
-
-  // Act
   BuildUserModel(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModelIfNoTargeting) {
   // Arrange
   const UserModelInfo expected_user_model;
 
+  // Act & Assert
   base::MockCallback<BuildUserModelCallback> callback;
   EXPECT_CALL(callback, Run(expected_user_model));
-
-  // Act
   BuildUserModel(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

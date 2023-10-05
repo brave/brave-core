@@ -115,7 +115,7 @@ std::string Embeddings::BuildInsertOrUpdateSql(
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (creative_set_id, embedding) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 2, binded_parameters_count)},
+                           /*parameters_count=*/2, binded_parameters_count)},
       nullptr);
 }
 

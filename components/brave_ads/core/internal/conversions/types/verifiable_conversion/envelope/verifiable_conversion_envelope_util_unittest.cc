@@ -44,9 +44,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
   verifiable_conversion.advertiser_public_key_base64 =
       kVerifiableConversionAdvertiserPublicKey;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(verifiable_conversion));
 }
 
@@ -59,19 +57,13 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
   verifiable_conversion.advertiser_public_key_base64 =
       kVerifiableConversionAdvertiserPublicKey;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(verifiable_conversion));
 }
 
 TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
      DoNotSealEnvelopeWithInvalidMessage) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(
       VerifiableConversionInfo{kInvalidVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey}));
@@ -79,11 +71,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
 
 TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
      DoNotSealEnvelopeWithInvalidPublicKey) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(VerifiableConversionInfo{
       kVerifiableConversionId,
       kInvalidVerifiableConversionAdvertiserPublicKey}));

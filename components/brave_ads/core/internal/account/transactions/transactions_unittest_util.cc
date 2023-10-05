@@ -53,7 +53,7 @@ TransactionInfo BuildUnreconciledTransactionForTesting(
     const ConfirmationType& confirmation_type,
     const bool should_use_random_uuids) {
   return BuildTransactionForTesting(
-      value, confirmation_type, /*reconciled_at*/ {}, should_use_random_uuids);
+      value, confirmation_type, /*reconciled_at=*/{}, should_use_random_uuids);
 }
 
 }  // namespace brave_ads

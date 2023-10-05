@@ -40,11 +40,7 @@ class BraveAdsPurchaseIntentResourceTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, IsNotInitialized) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(resource_->IsInitialized());
 }
 
@@ -53,9 +49,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadInvalidResource) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
                                              kPurchaseIntentResourceId));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
@@ -63,9 +57,9 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
   // Arrange
   ON_CALL(ads_client_mock_, LoadFileResource(kPurchaseIntentResourceId,
                                              ::testing::_, ::testing::_))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
-                               LoadFileCallback callback) {
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& /*id=*/, const int /*version=*/,
+             LoadFileCallback callback) {
             const base::FilePath path =
                 GetFileResourcePath().AppendASCII(kMissingResourceId);
 
@@ -74,9 +68,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
             std::move(callback).Run(std::move(file));
           }));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
@@ -85,7 +77,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResourceWhenLocaleDidChange) {
   ASSERT_TRUE(LoadResource(kCountryComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -101,7 +93,7 @@ TEST_F(
   ASSERT_FALSE(LoadResource(kCountryComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_FALSE(resource_->IsInitialized());
@@ -113,7 +105,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
   ASSERT_TRUE(LoadResource(kCountryComponentId));
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
 
   // Assert
   EXPECT_TRUE(resource_->IsInitialized());
@@ -161,22 +153,14 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
        LoadResourceWhenDidUpdateResourceComponent) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(
     BraveAdsPurchaseIntentResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfInvalidCountryComponentId) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kInvalidCountryComponentId));
 }
 
@@ -187,9 +171,7 @@ TEST_F(
   OptOutOfNotificationAdsForTesting();
   OptOutOfBraveNewsAdsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
@@ -198,9 +180,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
   // Arrange
   ASSERT_TRUE(LoadResource(kCountryComponentId));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 

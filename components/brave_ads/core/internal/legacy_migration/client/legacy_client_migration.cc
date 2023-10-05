@@ -23,20 +23,20 @@ namespace brave_ads {
 namespace {
 
 void FailedToMigrate(InitializeCallback callback) {
-  std::move(callback).Run(/*success*/ false);
+  std::move(callback).Run(/*success=*/false);
 }
 
 void SuccessfullyMigrated(InitializeCallback callback) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kHasMigratedClientState,
                                                  true);
-  std::move(callback).Run(/*success*/ true);
+  std::move(callback).Run(/*success=*/true);
 }
 
 }  // namespace
 
 void MigrateClientState(InitializeCallback callback) {
   if (HasMigratedClientState()) {
-    return std::move(callback).Run(/*success*/ true);
+    return std::move(callback).Run(/*success=*/true);
   }
 
   AdsClientHelper::GetInstance()->Load(

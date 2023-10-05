@@ -119,7 +119,7 @@ void Account::Deposit(const std::string& creative_instance_id,
 // static
 void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   if (!UserHasJoinedBraveRewards()) {
-    return std::move(callback).Run(/*statement*/ nullptr);
+    return std::move(callback).Run(/*statement=*/nullptr);
   }
 
   return BuildStatement(std::move(callback));

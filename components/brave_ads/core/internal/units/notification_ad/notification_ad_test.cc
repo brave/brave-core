@@ -21,20 +21,20 @@ namespace brave_ads {
 class BraveAdsNotificationAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
   }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
-           /*response_body*/ "/catalog_with_notification_ad.json"}}}};
+           /*response_body=*/"/catalog_with_notification_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
   void ServeAd() {
-    NotifyUserDidBecomeActive(/*idle_time*/ base::TimeDelta::Min(),
-                              /*screen_was_locked*/ false);
+    NotifyUserDidBecomeActive(/*idle_time=*/base::TimeDelta::Min(),
+                              /*screen_was_locked=*/false);
   }
 };
 
@@ -42,35 +42,28 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents);
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd);
 
-  // Act
   ServeAd();
 }
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
-  // Arrange
+  // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
-  // Act
   ServeAd();
-
-  // Assert
 }
 
 TEST_F(BraveAdsNotificationAdIntegrationTest,
        ShouldNotServeAtRegularIntervals) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
 }
 
@@ -85,18 +78,15 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
+        // Act & Assert
         base::MockCallback<TriggerAdEventCallback> callback;
-        EXPECT_CALL(callback, Run).WillOnce([&ad](const bool success) {
-          // Assert
-          EXPECT_TRUE(success);
-          ASSERT_TRUE(
-              NotificationAdManager::GetInstance().Exists(ad.placement_id));
-        });
-
-        // Act
+        EXPECT_CALL(callback, Run(/*success=*/true));
         GetAds().TriggerNotificationAdEvent(
             ad.placement_id, mojom::NotificationAdEventType::kViewed,
             callback.Get());
+
+        EXPECT_TRUE(
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
   ServeAd();
@@ -111,17 +101,19 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
+        // Act & Assert
         EXPECT_CALL(ads_client_mock_, AddTrainingSample);
 
         EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id));
 
         base::MockCallback<TriggerAdEventCallback> callback;
-        EXPECT_CALL(callback, Run(/*success*/ true));
-
-        // Act
+        EXPECT_CALL(callback, Run(/*success=*/true));
         GetAds().TriggerNotificationAdEvent(
             ad.placement_id, mojom::NotificationAdEventType::kClicked,
             callback.Get());
+
+        EXPECT_FALSE(
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
   ServeAd();
@@ -136,20 +128,17 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
-        base::MockCallback<TriggerAdEventCallback> callback;
-        EXPECT_CALL(callback, Run).WillOnce([&ad](const bool success) {
-          // Assert
-          EXPECT_TRUE(success);
-          EXPECT_FALSE(
-              NotificationAdManager::GetInstance().Exists(ad.placement_id));
-        });
-
+        // Act & Assert
         EXPECT_CALL(ads_client_mock_, AddTrainingSample);
 
-        // Act
+        base::MockCallback<TriggerAdEventCallback> callback;
+        EXPECT_CALL(callback, Run(/*success=*/true));
         GetAds().TriggerNotificationAdEvent(
             ad.placement_id, mojom::NotificationAdEventType::kDismissed,
             callback.Get());
+
+        EXPECT_FALSE(
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
   ServeAd();
@@ -164,20 +153,17 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
-        base::MockCallback<TriggerAdEventCallback> callback;
-        EXPECT_CALL(callback, Run).WillOnce([&ad](const bool success) {
-          // Assert
-          EXPECT_TRUE(success);
-          EXPECT_FALSE(
-              NotificationAdManager::GetInstance().Exists(ad.placement_id));
-        });
-
+        // Act & Assert
         EXPECT_CALL(ads_client_mock_, AddTrainingSample);
 
-        // Act
+        base::MockCallback<TriggerAdEventCallback> callback;
+        EXPECT_CALL(callback, Run(/*success=*/true));
         GetAds().TriggerNotificationAdEvent(
             ad.placement_id, mojom::NotificationAdEventType::kTimedOut,
             callback.Get());
+
+        EXPECT_FALSE(
+            NotificationAdManager::GetInstance().Exists(ad.placement_id));
       }));
 
   ServeAd();

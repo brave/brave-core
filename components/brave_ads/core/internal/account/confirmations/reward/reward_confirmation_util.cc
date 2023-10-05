@@ -41,7 +41,7 @@ absl::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
   RewardInfo reward;
 
   // Token
-  const std::vector<cbr::Token> tokens = token_generator->Generate(/*count*/ 1);
+  const std::vector<cbr::Token> tokens = token_generator->Generate(/*count=*/1);
   CHECK(!tokens.empty());
   reward.token = tokens.front();
 

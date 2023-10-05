@@ -17,18 +17,12 @@ TEST(BraveAdsTextEmbeddingFeatureTest, IsEnabled) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kTextEmbeddingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kTextEmbeddingFeature));
 }
 
 TEST(BraveAdsTextEmbeddingFeatureTest, IsDisabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kTextEmbeddingFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsTextEmbeddingFeatureTest, TextEmbeddingResourceVersion) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kTextEmbeddingFeature, {{"resource_version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kTextEmbeddingResourceVersion.Get());
 }
 
 TEST(BraveAdsTextEmbeddingFeatureTest, DefaultTextEmbeddingResourceVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kTextEmbeddingResourceVersion.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsTextEmbeddingFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTextEmbeddingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kTextEmbeddingResourceVersion.Get());
 }
 
@@ -71,18 +57,12 @@ TEST(BraveAdsTextEmbeddingFeatureTest, TextEmbeddingsHistorySize) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kTextEmbeddingFeature, {{"history_size", "42"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(42, kTextEmbeddingHistorySize.Get());
 }
 
 TEST(BraveAdsTextEmbeddingFeatureTest, DefaultTextEmbeddingsHistorySize) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(10, kTextEmbeddingHistorySize.Get());
 }
 
@@ -92,9 +72,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTextEmbeddingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(10, kTextEmbeddingHistorySize.Get());
 }
 

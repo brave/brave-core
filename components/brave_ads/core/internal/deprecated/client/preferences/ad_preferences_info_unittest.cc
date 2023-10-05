@@ -42,19 +42,19 @@ void ParseJsonAndCompareWithSampleAdPreferencesInfo(const std::string& json) {
   AdPreferencesInfo ad_preferences;
 
   // Act
-  EXPECT_TRUE(ad_preferences.FromJson(json));
+  ASSERT_TRUE(ad_preferences.FromJson(json));
 
   // Assert
-  ASSERT_EQ(1U, ad_preferences.filtered_advertisers.size());
+  EXPECT_EQ(1U, ad_preferences.filtered_advertisers.size());
   EXPECT_EQ("filtered_advertiser_id",
             ad_preferences.filtered_advertisers[0].id);
-  ASSERT_EQ(1U, ad_preferences.filtered_categories.size());
+  EXPECT_EQ(1U, ad_preferences.filtered_categories.size());
   EXPECT_EQ("filtered_category_name",
             ad_preferences.filtered_categories[0].name);
-  ASSERT_EQ(1U, ad_preferences.saved_ads.size());
+  EXPECT_EQ(1U, ad_preferences.saved_ads.size());
   EXPECT_EQ("creative_instance_id",
             ad_preferences.saved_ads[0].creative_instance_id);
-  ASSERT_EQ(1U, ad_preferences.flagged_ads.size());
+  EXPECT_EQ(1U, ad_preferences.flagged_ads.size());
   EXPECT_EQ("creative_set_id", ad_preferences.flagged_ads[0].creative_set_id);
 }
 

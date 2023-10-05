@@ -13,10 +13,8 @@
 namespace brave_ads {
 
 TEST(BraveAdsSummaryUserDataUtilTest, BuildBucketsIfNoPaymentTokens) {
-  // Arrange
-
   // Act
-  const AdTypeBucketMap buckets = BuildBuckets(/*payment_tokens*/ {});
+  const AdTypeBucketMap buckets = BuildBuckets(/*payment_tokens=*/{});
 
   // Assert
   EXPECT_TRUE(buckets.empty());
@@ -42,9 +40,7 @@ TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
       ConfirmationType::kViewed, AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const AdTypeBucketMap expected_buckets = {
       {"ad_notification", {{"click", 1}, {"view", 2}}},
       {"inline_content_ad", {{"view", 1}}}};

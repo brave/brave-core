@@ -32,8 +32,6 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
 }
 
 TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
-  // Arrange
-
   // Act
   const IssuersInfo issuers = BuildIssuersForTesting(
       3'600'000,
@@ -66,9 +64,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IssuerExistsForType(IssuerType::kConfirmations));
 }
 
@@ -81,9 +77,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
 
   SetIssuers(issuers);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IssuerExistsForType(IssuerType::kConfirmations));
 }
 
@@ -91,9 +85,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IssuerExistsForType(IssuerType::kPayments));
 }
 
@@ -107,9 +99,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
 
   SetIssuers(issuers);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IssuerExistsForType(IssuerType::kPayments));
 }
 
@@ -117,52 +107,40 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  // Act
-  const bool does_exist = PublicKeyExistsForIssuerType(
+  // Act & Assert
+  EXPECT_TRUE(PublicKeyExistsForIssuerType(
       IssuerType::kConfirmations,
-      /*public_key*/ "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=");
-
-  // Assert
-  EXPECT_TRUE(does_exist);
+      /*public_key=*/"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  // Act
-  const bool does_exist = PublicKeyExistsForIssuerType(
+  // Act & Assert
+  EXPECT_FALSE(PublicKeyExistsForIssuerType(
       IssuerType::kConfirmations,
-      /*public_key*/ "Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=");
-
-  // Assert
-  EXPECT_FALSE(does_exist);
+      /*public_key=*/"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg="));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  // Act
-  const bool does_exist = PublicKeyExistsForIssuerType(
+  // Act & Assert
+  EXPECT_TRUE(PublicKeyExistsForIssuerType(
       IssuerType::kPayments,
-      /*public_key*/ "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=");
-
-  // Assert
-  EXPECT_TRUE(does_exist);
+      /*public_key=*/"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
   // Arrange
   BuildAndSetIssuersForTesting();
 
-  // Act
-  const bool does_exist = PublicKeyExistsForIssuerType(
+  // Act & Assert
+  EXPECT_FALSE(PublicKeyExistsForIssuerType(
       IssuerType::kPayments,
-      /*public_key*/ "zNWjpwIbghgXvTol3XPLKV3NJoEFtvUoPMiKstiWm3A=");
-
-  // Assert
-  EXPECT_FALSE(does_exist);
+      /*public_key=*/"zNWjpwIbghgXvTol3XPLKV3NJoEFtvUoPMiKstiWm3A="));
 }
 
 TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
@@ -174,15 +152,12 @@ TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   IssuerInfo expected_issuer;
   expected_issuer.type = IssuerType::kPayments;
   expected_issuer.public_keys = {
       {"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}};
-
   EXPECT_EQ(expected_issuer, GetIssuerForType(issuers, IssuerType::kPayments));
 }
 
@@ -194,9 +169,7 @@ TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
       {});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(GetIssuerForType(issuers, IssuerType::kPayments));
 }
 
@@ -214,9 +187,7 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {
        {"JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=", 0.1},
        {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IsIssuersValid(issuers));
 }
 
@@ -236,11 +207,8 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersInvalid) {
        {"+iyhYDv7W6cuFAD1tzsJIEQKEStTX9B/Tt62tqt+tG0=", 0.1},
        {"oMx8hW6w8w/AUGoJMAMbrdeV1FoqrRkoR3BVa+5lDDk=", 0.1}});
 
-  // Act
-  const bool is_valid = IsIssuersValid(issuers);
-
-  // Assert
-  EXPECT_FALSE(is_valid);
+  // Act & Assert
+  EXPECT_FALSE(IsIssuersValid(issuers));
 }
 
 }  // namespace brave_ads

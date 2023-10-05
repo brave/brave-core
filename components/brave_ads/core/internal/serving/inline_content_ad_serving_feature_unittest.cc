@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsInlineContentAdServingFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kInlineContentAdServingFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsServingFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kInlineContentAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kInlineContentAdServingFeature));
 }
 
@@ -38,19 +32,13 @@ TEST(BraveAdsInlineContentAdServingFeatureTest, InlineContentAdServingVersion) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kInlineContentAdServingFeature, {{"version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kInlineContentAdServingVersion.Get());
 }
 
 TEST(BraveAdsInlineContentAdServingFeatureTest,
      DefaultInlineContentAdServingVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, kInlineContentAdServingVersion.Get());
 }
 
@@ -60,9 +48,7 @@ TEST(BraveAdsInlineContentAdServingFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kInlineContentAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, kInlineContentAdServingVersion.Get());
 }
 

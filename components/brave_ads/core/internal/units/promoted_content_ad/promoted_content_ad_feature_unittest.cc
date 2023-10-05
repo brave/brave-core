@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsPromotedContentAdFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kPromotedContentAdFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPromotedContentAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kPromotedContentAdFeature));
 }
 
@@ -38,19 +32,13 @@ TEST(BraveAdsPromotedContentAdFeatureTest, MaximumPromotedContentAdsPerHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kPromotedContentAdFeature, {{"maximum_ads_per_hour", "42"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(42, kMaximumPromotedContentAdsPerHour.Get());
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest,
      DefaultMaximumPromotedContentAdsPerHour) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(4, kMaximumPromotedContentAdsPerHour.Get());
 }
 
@@ -60,9 +48,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPromotedContentAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(4, kMaximumPromotedContentAdsPerHour.Get());
 }
 
@@ -72,19 +58,13 @@ TEST(BraveAdsPromotedContentAdFeatureTest, MaximumPromotedContentAdsPerDay) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kPromotedContentAdFeature, {{"maximum_ads_per_day", "24"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(24, kMaximumPromotedContentAdsPerDay.Get());
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest,
      DefaultMaximumPromotedContentAdsPerDay) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(20, kMaximumPromotedContentAdsPerDay.Get());
 }
 
@@ -94,9 +74,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPromotedContentAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(20, kMaximumPromotedContentAdsPerDay.Get());
 }
 

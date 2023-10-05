@@ -45,8 +45,9 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const base::Time from_time = base::Time::FromDoubleT(444444444);
   const base::Time to_time = DistantFuture();
 
-  // Act
   const DateRangeHistoryFilter filter(from_time, to_time);
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -58,7 +59,6 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   expected_history.push_back(history_item);
   history_item.created_at = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
-
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
@@ -70,8 +70,9 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const base::Time from_time = base::Time::FromDoubleT(777777777);
   const base::Time to_time = DistantFuture();
 
-  // Act
   const DateRangeHistoryFilter filter(from_time, to_time);
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -86,8 +87,9 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const base::Time from_time = DistantPast();
   const base::Time to_time = base::Time::FromDoubleT(444444444);
 
-  // Act
   const DateRangeHistoryFilter filter(from_time, to_time);
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -99,7 +101,6 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   expected_history.push_back(history_item);
   history_item.created_at = base::Time::FromDoubleT(222222222);
   expected_history.push_back(history_item);
-
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
@@ -111,8 +112,9 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const base::Time from_time = DistantPast();
   const base::Time to_time = base::Time::FromDoubleT(111111111);
 
-  // Act
   const DateRangeHistoryFilter filter(from_time, to_time);
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -127,8 +129,9 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const base::Time from_time = DistantPast();
   const base::Time to_time = DistantFuture();
 
-  // Act
   const DateRangeHistoryFilter filter(from_time, to_time);
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -144,7 +147,6 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   expected_history.push_back(history_item);
   history_item.created_at = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
-
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
@@ -156,8 +158,9 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   const base::Time from_time = DistantFuture();
   const base::Time to_time = DistantPast();
 
-  // Act
   const DateRangeHistoryFilter filter(from_time, to_time);
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -171,8 +174,9 @@ TEST(BraveAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   const base::Time from_time = base::Time::FromDoubleT(444444444);
   const base::Time to_time = DistantFuture();
 
-  // Act
   const DateRangeHistoryFilter filter(from_time, to_time);
+
+  // Act
   history = filter.Apply(history);
 
   // Assert

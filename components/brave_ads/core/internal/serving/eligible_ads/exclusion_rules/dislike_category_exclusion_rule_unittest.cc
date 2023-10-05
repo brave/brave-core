@@ -25,9 +25,7 @@ TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldInclude) {
   CreativeAdInfo creative_ad;
   creative_ad.segment = kSegment;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -42,9 +40,7 @@ TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldExclude) {
 
   ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 

@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsConversionsFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kConversionsFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsConversionsFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kConversionsFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsConversionsFeatureTest, ConversionResourceVersion) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kConversionsFeature, {{"resource_version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kConversionResourceVersion.Get());
 }
 
 TEST(BraveAdsConversionsFeatureTest, DefaultConversionResourceVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kConversionResourceVersion.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsConversionsFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kConversionResourceVersion.Get());
 }
 
@@ -71,18 +57,12 @@ TEST(BraveAdsConversionsFeatureTest, HtmlMetaTagConversionIdPattern) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kConversionsFeature, {{"html_meta_tag_id_pattern", "*"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("*", kHtmlMetaTagConversionIdPattern.Get());
 }
 
 TEST(BraveAdsConversionsFeatureTest, DefaultHtmlMetaTagConversionIdPattern) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~",
             kHtmlMetaTagConversionIdPattern.Get());
 }
@@ -93,9 +73,7 @@ TEST(BraveAdsConversionsFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~",
             kHtmlMetaTagConversionIdPattern.Get());
 }
@@ -105,18 +83,13 @@ TEST(BraveAdsConversionsFeatureTest, ProcessConversionAfter) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kConversionsFeature, {{"process_after", "3h"}});
-  // Act
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(3), kProcessConversionAfter.Get());
 }
 
 TEST(BraveAdsConversionsFeatureTest, DefaultProcessConversionAfter) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kProcessConversionAfter.Get());
 }
 
@@ -126,9 +99,7 @@ TEST(BraveAdsConversionsFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kProcessConversionAfter.Get());
 }
 

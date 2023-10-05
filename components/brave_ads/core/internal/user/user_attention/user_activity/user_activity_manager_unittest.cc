@@ -34,7 +34,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -56,7 +55,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -78,7 +76,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -101,7 +98,6 @@ TEST_F(BraveAdsUserActivityManagerTest,
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -123,7 +119,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -145,7 +140,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -166,7 +160,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClickedLinkEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -188,7 +181,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -209,7 +201,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordClosedTabEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -231,7 +222,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -253,7 +243,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -275,7 +264,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordNewNavigationEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -298,7 +286,6 @@ TEST_F(BraveAdsUserActivityManagerTest,
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -319,7 +306,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -341,7 +327,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -363,7 +348,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -385,7 +369,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -406,7 +389,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -428,7 +410,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -451,7 +432,6 @@ TEST_F(BraveAdsUserActivityManagerTest,
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -472,7 +452,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordTypedUrlEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -494,7 +473,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -516,7 +494,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -538,7 +515,6 @@ TEST_F(BraveAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
   event.type = event_type;
   event.created_at = Now();
   expected_events.push_back(event);
-
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
 }
 
@@ -556,7 +532,6 @@ TEST_F(BraveAdsUserActivityManagerTest, DoNotRecordEventForNonRewardsUser) {
   const UserActivityEventList events =
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
-
   EXPECT_TRUE(events.empty());
 }
 
@@ -599,7 +574,7 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
 
   AdvanceClockBy(base::Hours(1));
 
-  const base::Time time = Now();
+  const base::Time now = Now();
 
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabUpdated);
@@ -621,22 +596,27 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
 
   // Assert
   UserActivityEventList expected_events;
+
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kTabUpdated;
-  event.created_at = time;
+  event.created_at = now;
   expected_events.push_back(event);
+
   event.type = UserActivityEventType::kTypedAndSelectedNonUrl;
-  event.created_at = time;
+  event.created_at = now;
   expected_events.push_back(event);
+
   event.type =
       UserActivityEventType::kTypedKeywordOtherThanDefaultSearchProvider;
-  event.created_at = time;
+  event.created_at = now;
   expected_events.push_back(event);
+
   event.type = UserActivityEventType::kTypedUrl;
-  event.created_at = time;
+  event.created_at = now;
   expected_events.push_back(event);
+
   event.type = UserActivityEventType::kUsedAddressBar;
-  event.created_at = time;
+  event.created_at = now;
   expected_events.push_back(event);
 
   EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
@@ -645,14 +625,14 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
 TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   // Arrange
   const UserActivityEventType event_type = UserActivityEventType::kClosedTab;
-  for (int i = 0; i < kMaximumUserActivityEvents.Get(); i++) {
+  for (int i = 0; i < kMaximumUserActivityEvents.Get(); ++i) {
     UserActivityManager::GetInstance().RecordEvent(event_type);
   }
 
-  // Act
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
+  // Act
   const UserActivityEventList events =
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
@@ -661,7 +641,7 @@ TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
 
-  for (int i = 0; i < kMaximumUserActivityEvents.Get() - 1; i++) {
+  for (int i = 0; i < kMaximumUserActivityEvents.Get() - 1; ++i) {
     event.type = event_type;
     event.created_at = Now();
     expected_events.push_back(event);

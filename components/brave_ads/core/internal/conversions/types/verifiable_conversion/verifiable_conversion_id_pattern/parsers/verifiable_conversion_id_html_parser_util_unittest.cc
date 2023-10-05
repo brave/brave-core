@@ -32,11 +32,7 @@ class BraveAdsVerifiableConversionIdHtmlParserUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
        ParseVerifableConversionIdFromHtml) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("waldo",
             MaybeParseVerifableConversionIdFromHtml(
                 kMatchingHtml, ConversionResourceIdPatternInfo{
@@ -45,11 +41,7 @@ TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
        DoNotParseMismatchingVerifableConversionIdFromHtml) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtml(
       kMismatchingHtml,
       ConversionResourceIdPatternInfo{kUrlPattern, kSearchInType, kIdPattern}));
@@ -57,11 +49,7 @@ TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
        DoNotParseVerifableConversionIdFromEmptyHtml) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtml(
       kEmptyHtml,
       ConversionResourceIdPatternInfo{kUrlPattern, kSearchInType, kIdPattern}));

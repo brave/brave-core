@@ -17,18 +17,13 @@ TEST(BraveAdsSignedTokenUtilTest, TokensToRawTokens) {
   // Arrange
   const std::vector<SignedToken> tokens = GetSignedTokensForTesting();
 
-  // Act
-  const std::vector<challenge_bypass_ristretto::SignedToken> raw_tokens =
-      ToRawSignedTokens(tokens);
-
-  // Assert
+  // Act & Assert
   std::vector<challenge_bypass_ristretto::SignedToken> expected_raw_tokens;
   expected_raw_tokens.reserve(tokens.size());
   for (const auto& token : tokens) {
     expected_raw_tokens.push_back(token.get());
   }
-
-  EXPECT_EQ(expected_raw_tokens, raw_tokens);
+  EXPECT_EQ(expected_raw_tokens, ToRawSignedTokens(tokens));
 }
 
 TEST(BraveAdsSignedTokenUtilTest, EmptyTokensToRawTokens) {

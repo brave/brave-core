@@ -19,11 +19,7 @@ class BraveAdsLocaleUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLocaleUserDataTest,
        BuildLocaleUserDataForReleaseBuildChannelAndRewardsUser) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -37,9 +33,7 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildLocaleUserData().empty());
 }
 
@@ -72,9 +66,7 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_CX"};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {

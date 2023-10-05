@@ -23,7 +23,7 @@ class BraveAdsCreatedAtTimestampUserDataTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
+        TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
   }
 };
 
@@ -31,12 +31,10 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
        BuildCreatedAtTimestampUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -51,12 +49,10 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
   DisableBraveRewardsForTesting();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildCreatedAtTimestampUserData(transaction).empty());
 }
 

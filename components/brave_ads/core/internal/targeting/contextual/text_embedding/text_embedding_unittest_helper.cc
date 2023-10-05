@@ -18,7 +18,7 @@ TextEmbeddingHelperForTesting::~TextEmbeddingHelperForTesting() = default;
 
 void TextEmbeddingHelperForTesting::Mock() {
   processor_.Process(
-      /*html*/
+      /*html=*/
       R"(<meta property="og:title" content="This simple unittest mock checks for embedding accuracy." />)");
 }
 

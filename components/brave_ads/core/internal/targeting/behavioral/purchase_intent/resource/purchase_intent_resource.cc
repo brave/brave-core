@@ -94,7 +94,7 @@ void PurchaseIntentResource::Reset() {
 }
 
 void PurchaseIntentResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
+    const std::string& /*locale=*/) {
   MaybeLoad();
 }
 

@@ -15,7 +15,7 @@
 namespace brave_ads {
 
 template <typename T>
-base::flat_map</*priority*/ int, /*creative_ads*/ T>
+base::flat_map</*priority=*/int, /*creative_ads=*/T>
 SortCreativeAdsIntoPrioritizedBuckets(const T& creative_ads) {
   base::flat_map<int, T> buckets;
 
@@ -37,7 +37,7 @@ SortCreativeAdsIntoPrioritizedBuckets(const T& creative_ads) {
 }
 
 template <typename T>
-std::pair</*priority*/ int, /*creative_ads*/ T> GetHighestPriorityBucket(
+std::pair</*priority=*/int, /*creative_ads=*/T> GetHighestPriorityBucket(
     const base::flat_map<int, T>& buckets) {
   CHECK(!buckets.empty());
 

@@ -29,9 +29,7 @@ TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfNoEmbeddingV2) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -45,9 +43,7 @@ TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfEmbeddingV2) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.embedding = {1.0, 2.0, 3.0, 4.0, 5.0};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -60,9 +56,7 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfNoEmbeddingV3) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -75,9 +69,7 @@ TEST_F(EmbeddingExclusionRuleTest, DisallowIfEmptyEmbeddingV3) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -91,9 +83,7 @@ TEST_F(EmbeddingExclusionRuleTest, ShouldIncludeIfEmbeddingV3) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.embedding = {1.0, 2.0, 3.0, 4.0, 5.0};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 

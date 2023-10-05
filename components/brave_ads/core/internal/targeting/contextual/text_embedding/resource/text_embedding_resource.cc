@@ -93,7 +93,7 @@ void TextEmbeddingResource::Reset() {
 }
 
 void TextEmbeddingResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
+    const std::string& /*locale=*/) {
   MaybeLoad();
 }
 

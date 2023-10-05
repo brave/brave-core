@@ -24,30 +24,30 @@ struct ParamInfo final {
   bool can_show_while_browser_is_backgrounded;
   bool should_serve_at_regular_intervals;
 } constexpr kTests[] = {
-    {/*should_opt_in */ false, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ false,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ false, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ true,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ false, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ false,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ false, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ true,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ true, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ false,
-     /*should_serve_at_regular_intervals*/ false},
-    {/*should_opt_in */ true, /* should_browser_enter_foreground*/ false,
-     /*can_show_while_browser_is_backgrounded */ true,
-     /*should_serve_at_regular_intervals*/ true},
-    {/*should_opt_in */ true, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ false,
-     /*should_serve_at_regular_intervals*/ true},
-    {/*should_opt_in */ true, /* should_browser_enter_foreground*/ true,
-     /*can_show_while_browser_is_backgrounded */ true,
-     /*should_serve_at_regular_intervals*/ true}};
+    {/*should_opt_in =*/false, /* should_browser_enter_foreground=*/false,
+     /*can_show_while_browser_is_backgrounded =*/false,
+     /*should_serve_at_regular_intervals=*/false},
+    {/*should_opt_in =*/false, /* should_browser_enter_foreground=*/false,
+     /*can_show_while_browser_is_backgrounded =*/true,
+     /*should_serve_at_regular_intervals=*/false},
+    {/*should_opt_in =*/false, /* should_browser_enter_foreground=*/true,
+     /*can_show_while_browser_is_backgrounded =*/false,
+     /*should_serve_at_regular_intervals=*/false},
+    {/*should_opt_in =*/false, /* should_browser_enter_foreground=*/true,
+     /*can_show_while_browser_is_backgrounded =*/true,
+     /*should_serve_at_regular_intervals=*/false},
+    {/*should_opt_in =*/true, /* should_browser_enter_foreground=*/false,
+     /*can_show_while_browser_is_backgrounded =*/false,
+     /*should_serve_at_regular_intervals=*/false},
+    {/*should_opt_in =*/true, /* should_browser_enter_foreground=*/false,
+     /*can_show_while_browser_is_backgrounded =*/true,
+     /*should_serve_at_regular_intervals=*/true},
+    {/*should_opt_in =*/true, /* should_browser_enter_foreground=*/true,
+     /*can_show_while_browser_is_backgrounded =*/false,
+     /*should_serve_at_regular_intervals=*/true},
+    {/*should_opt_in =*/true, /* should_browser_enter_foreground=*/true,
+     /*can_show_while_browser_is_backgrounded =*/true,
+     /*should_serve_at_regular_intervals=*/true}};
 
 }  // namespace
 
@@ -58,7 +58,7 @@ class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    SetBooleanPref(prefs::kOptedInToNotificationAds, param.should_opt_in);
+    SetBooleanPrefValue(prefs::kOptedInToNotificationAds, param.should_opt_in);
 
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
@@ -76,9 +76,7 @@ TEST_P(BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest,
     NotifyBrowserDidEnterForeground();
   }
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(param.should_serve_at_regular_intervals,
             ShouldServeAtRegularIntervals());
 }

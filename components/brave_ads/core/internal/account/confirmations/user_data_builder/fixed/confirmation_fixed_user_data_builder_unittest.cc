@@ -36,7 +36,7 @@ class BraveAdsFixedUserDataBuilderTest : public UnitTestBase {
     MockConfirmationUserData();
 
     AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
+        TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
   }
 };
 
@@ -44,9 +44,10 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
        BuildConfirmationUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
+  // Act & Assert
   const base::Value::Dict expected_user_data =
       base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
           R"(
@@ -70,11 +71,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
 
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-
-  // Act
   BuildFixedUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest,
@@ -83,29 +80,27 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   DisableBraveRewardsForTesting();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
+  // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(/*user_data*/ ::testing::IsEmpty()));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*user_data=*/::testing::IsEmpty()));
   BuildFixedUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest,
        BuildConversionConfirmationUserDataForRewardsUser) {
   // Arrange
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
-      /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion,
+      /*should_use_random_uuids=*/false);
 
+  // Act & Assert
   const base::Value::Dict expected_user_data =
       base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
           R"(
@@ -133,11 +128,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
 
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-
-  // Act
   BuildFixedUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest,
@@ -145,14 +136,15 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*is_verifiable*/ false, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion,
+      /*should_use_random_uuids=*/false);
 
+  // Act & Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
       R"(
           {
@@ -165,24 +157,21 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
 
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-
-  // Act
   BuildFixedUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest,
        BuildVerifiableConversionConfirmationUserDataForRewardsUser) {
   // Arrange
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kViewed,
-      /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion,
+      /*should_use_random_uuids=*/false);
 
+  // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
     std::string json;
@@ -193,10 +182,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  // Act
   BuildFixedUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest,
@@ -204,14 +190,15 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  BuildAndSaveConversionQueueItemsForTesting(
+  BuildAndSaveConversionQueueForTesting(
       AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*is_verifiable*/ true, /*should_use_random_uuids*/ false, /*count*/ 1);
+      /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.0, ConfirmationType::kConversion,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.0, ConfirmationType::kConversion,
+      /*should_use_random_uuids=*/false);
 
+  // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([](base::Value::Dict user_data) {
     std::string json;
@@ -221,10 +208,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  // Act
   BuildFixedUserData(transaction, callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

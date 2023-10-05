@@ -20,9 +20,7 @@ TEST_F(BraveAdsTokenTest, Random) {
   // Arrange
   const Token token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(token.has_value());
 }
 
@@ -30,9 +28,7 @@ TEST_F(BraveAdsTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const Token token("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(token.has_value());
 }
 
@@ -40,15 +36,11 @@ TEST_F(BraveAdsTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const Token token(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(token.has_value());
 }
 
 TEST_F(BraveAdsTokenTest, DecodeBase64) {
-  // Arrange
-
   // Act
   const Token token = Token::DecodeBase64(kTokenBase64);
 
@@ -57,8 +49,6 @@ TEST_F(BraveAdsTokenTest, DecodeBase64) {
 }
 
 TEST_F(BraveAdsTokenTest, FailToDecodeEmptyBase64) {
-  // Arrange
-
   // Act
   const Token token = Token::DecodeBase64("");
 
@@ -67,8 +57,6 @@ TEST_F(BraveAdsTokenTest, FailToDecodeEmptyBase64) {
 }
 
 TEST_F(BraveAdsTokenTest, FailToDecodeInvalidBase64) {
-  // Arrange
-
   // Act
   const Token token = Token::DecodeBase64(kInvalidBase64);
 
@@ -80,9 +68,7 @@ TEST_F(BraveAdsTokenTest, EncodeBase64) {
   // Arrange
   const Token token(kTokenBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kTokenBase64, token.EncodeBase64());
 }
 
@@ -90,9 +76,7 @@ TEST_F(BraveAdsTokenTest, EncodeRandomBase64) {
   // Arrange
   const Token token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(token.EncodeBase64());
 }
 
@@ -100,9 +84,7 @@ TEST_F(BraveAdsTokenTest, IsEqual) {
   // Arrange
   const Token token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(token, token);
 }
 
@@ -110,9 +92,7 @@ TEST_F(BraveAdsTokenTest, IsEmptyBase64Equal) {
   // Arrange
   const Token token("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(token, token);
 }
 
@@ -120,9 +100,7 @@ TEST_F(BraveAdsTokenTest, IsInvalidBase64Equal) {
   // Arrange
   const Token token(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(token, token);
 }
 
@@ -130,9 +108,7 @@ TEST_F(BraveAdsTokenTest, IsNotEqual) {
   // Arrange
   const Token token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const Token different_token;
   EXPECT_NE(different_token, token);
 }

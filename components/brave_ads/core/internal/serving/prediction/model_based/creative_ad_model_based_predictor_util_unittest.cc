@@ -26,19 +26,19 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/
                                             true);
   creative_ad_1.segment = "parent-child";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/
                                             true);
   creative_ad_2.segment = "xyzzy-thud";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/
                                             true);
   creative_ad_3.segment = "parent";
   creative_ads.push_back(creative_ad_3);
@@ -53,15 +53,10 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   const AdEventInfo ad_event =
       BuildAdEventForTesting(creative_ad_2, AdType::kNotificationAd,
                              ConfirmationType::kViewed, Now() - base::Hours(3),
-                             /*should_use_random_uuids*/ true);
+                             /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
-  // Act
-  const CreativeAdPredictorList<CreativeNotificationAdInfo>
-      creative_ad_predictors =
-          ComputeCreativeAdPredictors(creative_ads, user_model, ad_events);
-
-  // Assert
+  // Act & Assert
   CreativeAdPredictorList<CreativeNotificationAdInfo>
       expected_creative_ad_predictors;
 
@@ -122,7 +117,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   expected_creative_ad_predictor_3.score = 4.5;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_3);
 
-  EXPECT_EQ(expected_creative_ad_predictors, creative_ad_predictors);
+  EXPECT_EQ(expected_creative_ad_predictors,
+            ComputeCreativeAdPredictors(creative_ads, user_model, ad_events));
 }
 
 }  // namespace brave_ads

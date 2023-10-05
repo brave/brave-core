@@ -20,10 +20,11 @@ namespace brave_ads {
 
 namespace {
 
-void FireEventCallback(TriggerAdEventCallback callback,
-                       const bool success,
-                       const std::string& /*placement_id*/,
-                       const mojom::PromotedContentAdEventType /*event_type*/) {
+void FireEventCallback(
+    TriggerAdEventCallback callback,
+    const bool success,
+    const std::string& /*placement_id=*/,
+    const mojom::PromotedContentAdEventType /*event_type=*/) {
   std::move(callback).Run(success);
 }
 
@@ -48,7 +49,7 @@ void PromotedContentAdHandler::TriggerEvent(
          "calling TriggerEvent with kViewed";
 
   if (!UserHasOptedInToBraveNewsAds()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   if (event_type == mojom::PromotedContentAdEventType::kViewed) {
@@ -72,9 +73,9 @@ void PromotedContentAdHandler::TriggerServedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
     const std::string& placement_id,
-    const mojom::PromotedContentAdEventType /*event_type*/) {
+    const mojom::PromotedContentAdEventType /*event_type=*/) {
   if (!success) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   event_handler_.FireEvent(

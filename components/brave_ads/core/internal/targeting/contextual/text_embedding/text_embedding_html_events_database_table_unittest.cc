@@ -13,13 +13,11 @@ namespace brave_ads::database::table {
 
 class BraveAdsTextEmbeddingHtmlEventsDatabaseTableTest : public UnitTestBase {};
 
-TEST(BraveAdsTextEmbeddingHtmlEventsDatabaseTableTest, TableName) {
+TEST(BraveAdsTextEmbeddingHtmlEventsDatabaseTableTest, GetTableName) {
   // Arrange
   const TextEmbeddingHtmlEvents database_table;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("text_embedding_html_events", database_table.GetTableName());
 }
 

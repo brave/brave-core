@@ -21,10 +21,8 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest, WasLocked) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserIdleDetectionFeature, {{"should_detect_screen_was_locked", "true"}});
 
-  // Act
-
-  // Assert
-  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked*/ true));
+  // Act & Assert
+  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked=*/true));
 }
 
 TEST_F(BraveAdsUserIdleDetectionUtilTest,
@@ -34,10 +32,8 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest,
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserIdleDetectionFeature, {{"should_detect_screen_was_locked", "true"}});
 
-  // Act
-
-  // Assert
-  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked*/ true));
+  // Act & Assert
+  EXPECT_TRUE(MaybeScreenWasLocked(/*screen_was_locked=*/true));
 }
 
 TEST_F(BraveAdsUserIdleDetectionUtilTest, WasNotLocked) {
@@ -46,10 +42,8 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest, WasNotLocked) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserIdleDetectionFeature, {{"should_detect_screen_was_locked", "true"}});
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked*/ false));
+  // Act & Assert
+  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked=*/false));
 }
 
 TEST_F(BraveAdsUserIdleDetectionUtilTest,
@@ -60,10 +54,8 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest,
       kUserIdleDetectionFeature,
       {{"should_detect_screen_was_locked", "false"}});
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked*/ true));
+  // Act & Assert
+  EXPECT_FALSE(MaybeScreenWasLocked(/*screen_was_locked=*/true));
 }
 
 TEST_F(BraveAdsUserIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
@@ -72,9 +64,7 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserIdleDetectionFeature, {{"maximum_idle_time", "10s"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(HasExceededMaximumIdleTime(base::Seconds(10)));
 }
 
@@ -85,9 +75,7 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest,
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserIdleDetectionFeature, {{"maximum_idle_time", "0s"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(HasExceededMaximumIdleTime(base::TimeDelta::Max()));
 }
 
@@ -97,9 +85,7 @@ TEST_F(BraveAdsUserIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kUserIdleDetectionFeature, {{"maximum_idle_time", "10s"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(HasExceededMaximumIdleTime(base::Seconds(11)));
 }
 

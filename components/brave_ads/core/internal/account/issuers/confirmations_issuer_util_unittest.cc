@@ -22,18 +22,16 @@ TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsValid) {
   IssuerInfo issuer;
   issuer.type = IssuerType::kConfirmations;
 
-  for (int i = 0; i < kMaximumIssuerPublicKeys.Get(); i++) {
+  for (int i = 0; i < kMaximumIssuerPublicKeys.Get(); ++i) {
     issuer.public_keys.insert(
-        {/*public_key*/ base::Uuid::GenerateRandomV4().AsLowercaseString(),
-         /*associated_value*/ 0.1});
+        {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
+         /*associated_value=*/0.1});
   }
 
   IssuersInfo issuers;
   issuers.issuers.push_back(issuer);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IsConfirmationsIssuerValid(issuers));
 }
 
@@ -42,18 +40,16 @@ TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsInvalid) {
   IssuerInfo issuer;
   issuer.type = IssuerType::kConfirmations;
 
-  for (int i = 0; i < kMaximumIssuerPublicKeys.Get() + 1; i++) {
+  for (int i = 0; i < kMaximumIssuerPublicKeys.Get() + 1; ++i) {
     issuer.public_keys.insert(
-        {/*public_key*/ base::Uuid::GenerateRandomV4().AsLowercaseString(),
-         /*associated_value*/ 0.1});
+        {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
+         /*associated_value=*/0.1});
   }
 
   IssuersInfo issuers;
   issuers.issuers.push_back(issuer);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsConfirmationsIssuerValid(issuers));
 }
 

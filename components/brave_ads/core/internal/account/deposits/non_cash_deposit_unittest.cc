@@ -17,14 +17,12 @@ class BraveAdsNonCashDepositTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNonCashDepositTest, GetValue) {
   // Arrange
-  base::MockCallback<GetDepositCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true, /*value*/ 0.0));
-
-  // Act
   NonCashDeposit deposit;
-  deposit.GetValue(kCreativeInstanceId, callback.Get());
 
-  // Assert
+  // Act & Assert
+  base::MockCallback<GetDepositCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true, /*value=*/0.0));
+  deposit.GetValue(kCreativeInstanceId, callback.Get());
 }
 
 }  // namespace brave_ads

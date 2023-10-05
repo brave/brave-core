@@ -45,69 +45,60 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad_2}));
-
-  // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{
           IntentUserModelInfo{}, LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"technology & computing-software"},
                                 TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeNewTabPageAds({creative_ad});
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad}));
-
-  // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{
           IntentUserModelInfo{}, LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"technology & computing-software"},
                                 TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad}));
-
-  // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"finance-banking"},
                                           TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
@@ -115,87 +106,74 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback,
               Run(::testing::UnorderedElementsAreArray(
                   CreativeNewTabPageAdList{creative_ad_1, creative_ad_3})));
-
-  // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad}));
-
-  // Act
-  eligible_ads_->GetForUserModel(/*user_model*/ {}, callback.Get());
-
-  // Assert
+  eligible_ads_->GetForUserModel(/*user_model=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeNewTabPageAds({creative_ad});
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"UNMATCHED"},
                                           TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
-  // Arrange
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
@@ -203,12 +181,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
@@ -217,18 +195,15 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad_1);
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad_2}));
-
-  // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
@@ -236,33 +211,30 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNewTabPageAds(creative_ads);
 
-  base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
-  EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad_2}));
-
   const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
 
-  // Act
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
+  EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad_2}));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
@@ -270,37 +242,34 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ad_2.priority = 1;
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);
 
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
   EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad_1}));
-
-  // Act
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

@@ -20,11 +20,7 @@ class BraveAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, ShouldAllow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -32,9 +28,7 @@ TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, ShouldNotAllow) {
   // Arrange
   MockIsNetworkConnectionAvailable(ads_client_mock_, false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -48,9 +42,7 @@ TEST_F(BraveAdsNetworkConnectionPermissionRuleTest,
 
   MockIsNetworkConnectionAvailable(ads_client_mock_, false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 

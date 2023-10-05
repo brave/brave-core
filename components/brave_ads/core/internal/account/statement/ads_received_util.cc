@@ -13,16 +13,17 @@ base::flat_map<std::string, int32_t> GetAdTypesReceivedForDateRange(
     const TransactionList& transactions,
     base::Time from_time,
     base::Time to_time) {
-  base::flat_map<std::string, int32_t> map;
+  base::flat_map<std::string, int32_t> ad_types_received;
 
   for (const auto& transaction : transactions) {
     if (transaction.confirmation_type == ConfirmationType::kViewed &&
         transaction.created_at >= from_time &&
         transaction.created_at <= to_time) {
-      map[transaction.ad_type.ToString()] += 1;
+      ad_types_received[transaction.ad_type.ToString()]++;
     }
   }
-  return map;
+
+  return ad_types_received;
 }
 
 }  // namespace brave_ads

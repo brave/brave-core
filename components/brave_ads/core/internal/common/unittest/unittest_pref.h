@@ -13,7 +13,7 @@
 
 namespace brave_ads {
 
-using PrefMap = base::flat_map</*uuid*/ std::string, PrefInfo>;
+using PrefMap = base::flat_map</*uuid=*/std::string, PrefInfo>;
 PrefMap& Prefs();
 
 PrefInfo& Pref(const std::string& path);

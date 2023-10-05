@@ -18,11 +18,7 @@ class BraveAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, ShouldAllow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -30,9 +26,7 @@ TEST_F(BraveAdsAllowNotificationsPermissionRuleTest, ShouldNotAllow) {
   // Arrange
   MockCanShowNotificationAds(ads_client_mock_, false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

@@ -44,11 +44,7 @@ class BraveAdsEnvironmentCommandLineSwitchParserUtilTest
 
 TEST_P(BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
        ParseEnvironmentCommandLineSwitch) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetParam().expected_environment_type,
             GlobalState::GetInstance()->Flags().environment_type);
 }

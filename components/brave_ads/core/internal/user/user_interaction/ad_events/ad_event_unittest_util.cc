@@ -49,7 +49,7 @@ AdEventInfo BuildAdEventForTesting(const CreativeAdInfo& creative_ad,
 
 void RecordAdEventForTesting(const AdType& type,
                              const ConfirmationType& confirmation_type) {
-  RecordAdEventsForTesting(type, confirmation_type, /*count*/ 1);
+  RecordAdEventsForTesting(type, confirmation_type, /*count=*/1);
 }
 
 void RecordAdEventsForTesting(const AdType& type,
@@ -61,7 +61,7 @@ void RecordAdEventsForTesting(const AdType& type,
   const std::string ad_type_as_string = type.ToString();
   const std::string confirmation_type_as_string = confirmation_type.ToString();
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; ++i) {
     AdsClientHelper::GetInstance()->CacheAdEventForInstanceId(
         id, ad_type_as_string, confirmation_type_as_string, Now());
   }
@@ -73,7 +73,7 @@ void RecordAdEventForTesting(const AdEventInfo& ad_event) {
 }
 
 void RecordAdEventsForTesting(const AdEventInfo& ad_event, const int count) {
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; ++i) {
     RecordAdEventForTesting(ad_event);
   }
 }

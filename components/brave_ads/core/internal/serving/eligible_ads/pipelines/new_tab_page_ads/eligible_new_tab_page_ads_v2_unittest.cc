@@ -41,29 +41,26 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::SizeIs(1)));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{SegmentList{"foo-bar1", "foo-bar2"}},
                     LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"foo-bar3"},
                                           TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
@@ -71,32 +68,27 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "foo";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNewTabPageAds(creative_ads);
 
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::SizeIs(1)));
-
-  // Act
-  eligible_ads_->GetForUserModel(/*user_model*/ {}, callback.Get());
-
-  // Assert
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::SizeIs(1)));
+  eligible_ads_->GetForUserModel(/*user_model=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
-  // Arrange
+  // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads*/ ::testing::IsEmpty()));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
           IntentUserModelInfo{SegmentList{"intent-foo", "intent-boo"}},
@@ -104,8 +96,6 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
           InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"},
                                 TextEmbeddingHtmlEventList{}}},
       callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

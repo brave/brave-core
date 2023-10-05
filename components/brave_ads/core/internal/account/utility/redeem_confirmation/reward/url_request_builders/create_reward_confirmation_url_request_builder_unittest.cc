@@ -38,15 +38,15 @@ class BraveAdsCreateRewardConfirmationUrlRequestBuilderTest
 TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountry) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
@@ -61,7 +61,6 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
   EXPECT_EQ(url_request, expected_url_request);
 }
 
@@ -70,15 +69,15 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_AS"};
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
@@ -93,7 +92,6 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
   EXPECT_EQ(url_request, expected_url_request);
 }
 
@@ -102,15 +100,15 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
@@ -125,7 +123,6 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
   EXPECT_EQ(url_request, expected_url_request);
 }
 
@@ -134,15 +131,15 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   // Arrange
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
@@ -157,7 +154,6 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
   EXPECT_EQ(url_request, expected_url_request);
 }
 
@@ -168,15 +164,15 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
@@ -191,7 +187,6 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
   EXPECT_EQ(url_request, expected_url_request);
 }
 
@@ -202,15 +197,15 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
 
   MockBuildChannel(BuildChannelType::kNightly);
 
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(*confirmation);
@@ -225,7 +220,6 @@ TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest,
   expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
   EXPECT_EQ(url_request, expected_url_request);
 }
 

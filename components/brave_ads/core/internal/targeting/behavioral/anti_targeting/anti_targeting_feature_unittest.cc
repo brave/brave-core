@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsAntiTargetingFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kAntiTargetingFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsAntiTargetingFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAntiTargetingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kAntiTargetingFeature));
 }
 
@@ -38,18 +32,12 @@ TEST(BraveAdsAntiTargetingFeatureTest, AntiTargetingResourceVersion) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kAntiTargetingFeature, {{"resource_version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kAntiTargetingResourceVersion.Get());
 }
 
 TEST(BraveAdsAntiTargetingFeatureTest, DefaultAntiTargetingResourceVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kAntiTargetingResourceVersion.Get());
 }
 
@@ -59,9 +47,7 @@ TEST(BraveAdsAntiTargetingFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kAntiTargetingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kAntiTargetingResourceVersion.Get());
 }
 

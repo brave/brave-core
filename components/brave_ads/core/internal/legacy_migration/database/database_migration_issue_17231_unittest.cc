@@ -27,32 +27,30 @@ class BraveAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
 
 TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
   // Arrange
-  ConversionInfo conversion;
-  conversion.ad_type = AdType::kNotificationAd;
-  conversion.creative_instance_id = "6c9b4c69-1ed8-4dc3-b44d-5b37a479795e";
-  conversion.creative_set_id = "37489815-8786-4ef8-83aa-4b0737f44375";
-  conversion.campaign_id = "6ee347d9-acec-4a80-b108-e9335a5cbd39";
-  conversion.advertiser_id = "80ec0ddb-8dbb-4009-8192-1528faa411ae";
-  conversion.action_type = ConversionActionType::kViewThrough;
+  const database::table::ConversionQueue database_table;
+
+  // Act & Assert
+  ConversionInfo expected_conversion;
+  expected_conversion.ad_type = AdType::kNotificationAd;
+  expected_conversion.creative_instance_id =
+      "6c9b4c69-1ed8-4dc3-b44d-5b37a479795e";
+  expected_conversion.creative_set_id = "37489815-8786-4ef8-83aa-4b0737f44375";
+  expected_conversion.campaign_id = "6ee347d9-acec-4a80-b108-e9335a5cbd39";
+  expected_conversion.advertiser_id = "80ec0ddb-8dbb-4009-8192-1528faa411ae";
+  expected_conversion.action_type = ConversionActionType::kViewThrough;
 
   ConversionQueueItemList expected_conversion_queue_items;
   ConversionQueueItemInfo expected_conversion_queue_item;
-  expected_conversion_queue_item.conversion = conversion;
+  expected_conversion_queue_item.conversion = expected_conversion;
   expected_conversion_queue_item.process_at =
       base::Time::FromDoubleT(1627581449);
   expected_conversion_queue_items.push_back(expected_conversion_queue_item);
 
   base::MockCallback<database::table::GetConversionQueueCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*success*/ true,
+              Run(/*success=*/true,
                   ConversionQueueItemList{expected_conversion_queue_item}));
-
-  const database::table::ConversionQueue database_table;
-
-  // Act
   database_table.GetAll(callback.Get());
-
-  // Assert
 }
 
 TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
@@ -488,7 +486,7 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
   // creative_id_conversions database table in database_issue_17231.sqlite
   // contains 189 rows of which two are duplicates, these duplicate rows are
   // removed after migration to the creative_set_conversions database table.
-  for (int i = 0; i < 187; i++) {
+  for (int i = 0; i < 187; ++i) {
     CreativeSetConversionInfo expected_creative_set_conversion;
     expected_creative_set_conversion.id = creative_set_ids.at(i);
     expected_creative_set_conversion.url_pattern = url_patterns.at(i);
@@ -501,19 +499,16 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
         expected_creative_set_conversion);
   }
 
-  AdvanceClockTo(TimeFromString("28 July 2021", /*is_local*/ false));
-
-  base::MockCallback<database::table::GetConversionsCallback> callback;
-  EXPECT_CALL(callback,
-              Run(/*success*/ true, ::testing::UnorderedElementsAreArray(
-                                        expected_creative_set_conversions)));
+  AdvanceClockTo(TimeFromString("28 July 2021", /*is_local=*/false));
 
   const database::table::CreativeSetConversions database_table;
 
-  // Act
+  // Act & Assert
+  base::MockCallback<database::table::GetConversionsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(/*success=*/true, ::testing::UnorderedElementsAreArray(
+                                        expected_creative_set_conversions)));
   database_table.GetAll(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

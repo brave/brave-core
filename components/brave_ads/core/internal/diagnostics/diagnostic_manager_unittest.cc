@@ -31,15 +31,16 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
   AdvanceClockTo(
-      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));
+      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local=*/true));
 
   SetCatalogId(kCatalogId);
   SetCatalogLastUpdated(Now());
 
-  AdvanceClockTo(TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ true));
+  AdvanceClockTo(TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local=*/true));
 
   SetLastUnIdleTimeDiagnosticEntry(Now());
 
+  // Act & Assert
   const base::Value::List expected_list = base::test::ParseJsonList(
       R"(
           [
@@ -76,13 +77,10 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
               "value": "Monday, July 8, 1996 at 9:25:00\u202fAM"
             }
           ])");
+
   base::MockCallback<GetDiagnosticsCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_list))));
-
-  // Act
   DiagnosticManager::GetInstance().GetDiagnostics(callback.Get());
-
-  // Assert
 }
 
 }  // namespace brave_ads

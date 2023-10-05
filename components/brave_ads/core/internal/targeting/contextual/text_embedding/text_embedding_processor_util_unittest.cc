@@ -31,9 +31,8 @@ TEST_F(BraveAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
       {" ", {}},
       {{}, {}}};
 
-  // Act
+  // Act & Assert
   for (const auto& [text, expected_sanitized_text] : samples) {
-    // Assert
     EXPECT_EQ(expected_sanitized_text, SanitizeText(text));
   }
 }

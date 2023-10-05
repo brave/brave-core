@@ -24,7 +24,7 @@ constexpr char kInvalidJsonFilename[] = "invalid.json";
 class BraveAdsLegacyConfirmationMigrationTest : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
+    SetBooleanPrefValue(prefs::kHasMigratedConfirmationState, false);
   }
 };
 
@@ -32,13 +32,11 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   // Arrange
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kConfirmationStateFilename));
 
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*success=*/true));
   MigrateConfirmationState(callback.Get());
 
-  // Assert
   EXPECT_TRUE(HasMigratedConfirmation());
 }
 
@@ -47,13 +45,11 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, InvalidState) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
                                              kConfirmationStateFilename));
 
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ false));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*success=*/false));
   MigrateConfirmationState(callback.Get());
 
-  // Assert
   EXPECT_FALSE(HasMigratedConfirmation());
 }
 

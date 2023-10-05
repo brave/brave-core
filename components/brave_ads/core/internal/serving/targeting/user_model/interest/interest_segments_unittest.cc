@@ -48,9 +48,7 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
 
   targeting_->MockInterest();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_interest_segments =
       TargetingHelperForTesting::InterestExpectation().segments;
   EXPECT_EQ(expected_interest_segments, BuildInterestSegments());

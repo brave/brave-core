@@ -44,7 +44,6 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
-
   EXPECT_EQ(30U, arms.size());
   EXPECT_EQ(0U, arms.count("foo"));
   EXPECT_EQ(0U, arms.count("bar"));
@@ -69,7 +68,6 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
   expected_arm.segment = segment;
   expected_arm.value = 1.0;
   expected_arm.pulls = 0;
-
   EXPECT_EQ(expected_arm, arm);
 }
 
@@ -80,9 +78,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
 
   const EpsilonGreedyBanditProcessor processor;
 
-  // Act
   NotifyDidInitializeAds();
 
+  // Act
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
       segment, mojom::NotificationAdEventType::kDismissed});
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
@@ -102,7 +100,6 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   expected_arm.segment = segment;
   expected_arm.value = 0.0;
   expected_arm.pulls = 4;
-
   EXPECT_EQ(expected_arm, arm);
 }
 
@@ -113,9 +110,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
 
   const EpsilonGreedyBanditProcessor processor;
 
-  // Act
   NotifyDidInitializeAds();
 
+  // Act
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
       segment, mojom::NotificationAdEventType::kClicked});
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
@@ -135,7 +132,6 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   expected_arm.segment = segment;
   expected_arm.value = 0.5;
   expected_arm.pulls = 4;
-
   EXPECT_EQ(expected_arm, arm);
 }
 
@@ -146,9 +142,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
 
   const EpsilonGreedyBanditProcessor processor;
 
-  // Act
   NotifyDidInitializeAds();
 
+  // Act
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
       segment, mojom::NotificationAdEventType::kClicked});
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
@@ -168,7 +164,6 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
   expected_arm.segment = segment;
   expected_arm.value = 1.0;
   expected_arm.pulls = 4;
-
   EXPECT_EQ(expected_arm, arm);
 }
 
@@ -178,9 +173,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessSegmentNotInResource) {
 
   const EpsilonGreedyBanditProcessor processor;
 
-  // Act
   NotifyDidInitializeAds();
 
+  // Act
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
       segment, mojom::NotificationAdEventType::kTimedOut});
 
@@ -195,9 +190,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
 
   const EpsilonGreedyBanditProcessor processor;
 
-  // Act
   NotifyDidInitializeAds();
 
+  // Act
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
       segment, mojom::NotificationAdEventType::kTimedOut});
 
@@ -211,36 +206,32 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, ProcessChildSegment) {
   expected_arm.segment = parent_segment;
   expected_arm.value = 0.0;
   expected_arm.pulls = 1;
-
   EXPECT_EQ(expected_arm, arm);
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest,
        InitializeArmsFromResourceWithEmptySegments) {
   // Arrange
-  {
-    EpsilonGreedyBanditArmMap arms;
+  EpsilonGreedyBanditArmMap arms;
 
-    EpsilonGreedyBanditArmInfo arm_1;
-    arm_1.segment = "travel";
-    arm_1.pulls = 0;
-    arm_1.value = 1.0;
-    arms["travel"] = arm_1;
+  EpsilonGreedyBanditArmInfo arm_1;
+  arm_1.segment = "travel";
+  arm_1.pulls = 0;
+  arm_1.value = 1.0;
+  arms["travel"] = arm_1;
 
-    EpsilonGreedyBanditArmInfo arm_2;
-    arm_2.pulls = 0;
-    arm_2.value = 1.0;
-    arms[""] = arm_2;
-
-    SetEpsilonGreedyBanditArms(arms);
-  }
+  EpsilonGreedyBanditArmInfo arm_2;
+  arm_2.pulls = 0;
+  arm_2.value = 1.0;
+  arms[""] = arm_2;
 
   // Act
-  const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
+  SetEpsilonGreedyBanditArms(arms);
 
   // Assert
-  EXPECT_EQ(1U, arms.size());
-  EXPECT_EQ(1U, arms.count("travel"));
+  const EpsilonGreedyBanditArmMap expected_arms = GetEpsilonGreedyBanditArms();
+  EXPECT_EQ(1U, expected_arms.size());
+  EXPECT_EQ(1U, expected_arms.count("travel"));
 }
 
 }  // namespace brave_ads

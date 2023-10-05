@@ -16,15 +16,15 @@
 namespace brave_ads {
 
 using TextClassificationProbabilityMap =
-    std::map</*segment*/ std::string, /*page_score*/ double>;
+    std::map</*segment=*/std::string, /*page_score=*/double>;
 using TextClassificationProbabilityList =
     base::circular_deque<TextClassificationProbabilityMap>;
 
 using SegmentProbabilityPair =
-    std::pair</*segment*/ std::string, /*probability*/ double>;
+    std::pair</*segment=*/std::string, /*probability=*/double>;
 using SegmentProbabilityList = std::vector<SegmentProbabilityPair>;
 using SegmentProbabilityMap =
-    std::map</*segment*/ std::string, /*page_score*/ double>;
+    std::map</*segment=*/std::string, /*page_score=*/double>;
 
 }  // namespace brave_ads
 

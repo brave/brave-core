@@ -26,7 +26,7 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
        ComputeCreativeAdPredictorScoreForDefaultWeights) {
   // Arrange
   CreativeAdInfo creative_ad =
-      BuildCreativeAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "parent-child";
 
   const UserModelInfo user_model{
@@ -39,19 +39,16 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
   const AdEventInfo ad_event =
       BuildAdEventForTesting(creative_ad, AdType::kNotificationAd,
                              ConfirmationType::kViewed, Now() - base::Hours(7),
-                             /*should_use_random_uuids*/ true);
+                             /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeAdPredictorInputVariableInfo input_variable =
       ComputeCreativeAdPredictorInputVariable(creative_ad, user_model,
                                               ad_events);
 
-  // Act
-  const double score =
-      ComputeCreativeAdPredictorScore(creative_ad, input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(4.083333333333333, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(4.083333333333333, ComputeCreativeAdPredictorScore(
+                                          creative_ad, input_variable));
 }
 
 TEST_F(BraveAdsCreativeAdPredictorScoringTest,
@@ -71,7 +68,7 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
        {"priority_ad_predictor_weight", "0.1"}});
 
   CreativeAdInfo creative_ad =
-      BuildCreativeAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "parent-child";
 
   const UserModelInfo user_model{
@@ -84,19 +81,16 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
   const AdEventInfo ad_event =
       BuildAdEventForTesting(creative_ad, AdType::kNotificationAd,
                              ConfirmationType::kViewed, Now() - base::Hours(7),
-                             /*should_use_random_uuids*/ true);
+                             /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeAdPredictorInputVariableInfo input_variable =
       ComputeCreativeAdPredictorInputVariable(creative_ad, user_model,
                                               ad_events);
 
-  // Act
-  const double score =
-      ComputeCreativeAdPredictorScore(creative_ad, input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(2.2958333333333329, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(2.2958333333333329, ComputeCreativeAdPredictorScore(
+                                           creative_ad, input_variable));
 }
 
 TEST_F(BraveAdsCreativeAdPredictorScoringTest,
@@ -116,7 +110,7 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
        {"priority_ad_predictor_weight", "0.0"}});
 
   CreativeAdInfo creative_ad =
-      BuildCreativeAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "parent-child";
 
   const UserModelInfo user_model{
@@ -129,19 +123,16 @@ TEST_F(BraveAdsCreativeAdPredictorScoringTest,
   const AdEventInfo ad_event =
       BuildAdEventForTesting(creative_ad, AdType::kNotificationAd,
                              ConfirmationType::kViewed, Now() - base::Hours(7),
-                             /*should_use_random_uuids*/ true);
+                             /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeAdPredictorInputVariableInfo input_variable =
       ComputeCreativeAdPredictorInputVariable(creative_ad, user_model,
                                               ad_events);
 
-  // Act
-  const double score =
-      ComputeCreativeAdPredictorScore(creative_ad, input_variable);
-
-  // Assert
-  EXPECT_DOUBLE_EQ(0.0, score);
+  // Act & Assert
+  EXPECT_DOUBLE_EQ(
+      0.0, ComputeCreativeAdPredictorScore(creative_ad, input_variable));
 }
 
 }  // namespace brave_ads

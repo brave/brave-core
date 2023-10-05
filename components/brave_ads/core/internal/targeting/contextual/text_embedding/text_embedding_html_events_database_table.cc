@@ -85,8 +85,8 @@ void GetAllCallback(GetTextEmbeddingHtmlEventsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get text embedding HTML events");
-    return std::move(callback).Run(/*success*/ false,
-                                   /*text_embedding_html_events*/ {});
+    return std::move(callback).Run(/*success=*/false,
+                                   /*text_embedding_html_events=*/{});
   }
 
   CHECK(command_response->result);
@@ -99,7 +99,7 @@ void GetAllCallback(GetTextEmbeddingHtmlEventsCallback callback,
     text_embedding_html_events.push_back(text_embedding_html_event);
   }
 
-  std::move(callback).Run(/* success */ true, text_embedding_html_events);
+  std::move(callback).Run(/* success =*/true, text_embedding_html_events);
 }
 
 void MigrateToV25(mojom::DBTransactionInfo* transaction) {
@@ -233,7 +233,7 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateSql(
       "INSERT OR REPLACE INTO $1 (created_at, locale, hashed_text_base64, "
       "embedding) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 4, binded_parameters_count)},
+                           /*parameters_count=*/4, binded_parameters_count)},
       nullptr);
 }
 

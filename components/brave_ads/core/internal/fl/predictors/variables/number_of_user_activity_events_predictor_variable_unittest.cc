@@ -24,9 +24,7 @@ TEST_F(BraveAdsNumberOfUserActivityEventsPredictorVariableTest, GetDataType) {
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(brave_federated::mojom::DataType::kInt,
             predictor_variable->GetDataType());
 }
@@ -39,9 +37,7 @@ TEST_F(BraveAdsNumberOfUserActivityEventsPredictorVariableTest,
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("0", predictor_variable->GetValue());
 }
 
@@ -68,9 +64,7 @@ TEST_F(BraveAdsNumberOfUserActivityEventsPredictorVariableTest, GetValue) {
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("2", predictor_variable->GetValue());
 }
 

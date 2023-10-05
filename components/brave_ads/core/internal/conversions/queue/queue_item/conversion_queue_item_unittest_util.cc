@@ -27,9 +27,9 @@ ConversionQueueItemList BuildConversionQueueItemsForTesting(
     const size_t count) {
   ConversionQueueItemList conversion_queue_items;
 
-  for (size_t i = 0; i < count; i++) {
+  for (size_t i = 0; i < count; ++i) {
     const ConversionQueueItemInfo conversion_queue_item =
-        BuildConversionQueueItem(conversion, /*process_at*/ Now());
+        BuildConversionQueueItem(conversion, /*process_at=*/Now());
 
     conversion_queue_items.push_back(conversion_queue_item);
   }
@@ -37,7 +37,7 @@ ConversionQueueItemList BuildConversionQueueItemsForTesting(
   return conversion_queue_items;
 }
 
-void SaveConversionQueueItemsForTesting(
+void SaveConversionQueueForTesting(
     const ConversionQueueItemList& conversion_queue_items) {
   const database::table::ConversionQueue database_table;
   database_table.Save(
@@ -45,7 +45,7 @@ void SaveConversionQueueItemsForTesting(
       base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
-void BuildAndSaveConversionQueueItemsForTesting(
+void BuildAndSaveConversionQueueForTesting(
     const AdType& ad_type,
     const ConfirmationType& confirmation_type,
     const bool is_verifiable,
@@ -60,13 +60,13 @@ void BuildAndSaveConversionQueueItemsForTesting(
   }
 
   const ConversionInfo conversion =
-      BuildConversion(BuildAdEvent(ad, confirmation_type, /*created_at*/ Now()),
+      BuildConversion(BuildAdEvent(ad, confirmation_type, /*created_at=*/Now()),
                       verifiable_conversion);
 
   const ConversionQueueItemList conversion_queue_items =
       BuildConversionQueueItemsForTesting(conversion, count);
 
-  SaveConversionQueueItemsForTesting(conversion_queue_items);
+  SaveConversionQueueForTesting(conversion_queue_items);
 }
 
 }  // namespace brave_ads

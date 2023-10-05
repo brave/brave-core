@@ -53,7 +53,7 @@ KeyPairInfo GenerateSignKeyPairFromSecret(const std::vector<uint8_t>& secret) {
   std::vector<uint8_t> secret_key = secret;
   secret_key.resize(crypto_sign_SECRETKEYBYTES);
   std::vector<uint8_t> public_key(crypto_sign_PUBLICKEYBYTES);
-  crypto_sign_keypair(public_key.data(), secret_key.data(), /*seeded*/ 1);
+  crypto_sign_keypair(public_key.data(), secret_key.data(), /*seeded=*/1);
 
   KeyPairInfo key_pair;
   key_pair.public_key = public_key;

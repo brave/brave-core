@@ -14,7 +14,7 @@
 namespace brave_ads {
 
 using EpsilonGreedyBanditArmMap =
-    base::flat_map</*segment*/ std::string, EpsilonGreedyBanditArmInfo>;
+    base::flat_map</*segment=*/std::string, EpsilonGreedyBanditArmInfo>;
 
 }  // namespace brave_ads
 

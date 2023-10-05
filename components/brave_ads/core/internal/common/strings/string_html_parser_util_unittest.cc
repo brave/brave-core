@@ -26,9 +26,9 @@ TEST_F(BraveAdsStringHtmlParserUtilTest, ParseHtmlTagNameAttributeSimple) {
   const std::string non_html_meta_tag =
       R"(<div href="brave.com" content="this is info ">)";
   const std::vector<std::tuple<
-      /*html*/ std::string, /*tag_substr*/ std::string,
-      /*tag_attribute*/ std::string,
-      /*expected_html_tag_attribute*/ std::string>>
+      /*html=*/std::string, /*tag_substr=*/std::string,
+      /*tag_attribute=*/std::string,
+      /*expected_html_tag_attribute=*/std::string>>
       samples = {
           {html_meta_tag, "og:title", "content", "this is info "},
           {html_meta_tag, "title", "content", "this is info "},
@@ -63,12 +63,9 @@ TEST_F(BraveAdsStringHtmlParserUtilTest, ParseHtmlTagNameAttributeSimple) {
 
   for (const auto& [html, tag_substr, tag_attribute,
                     expected_html_tag_attribute] : samples) {
-    // Act
-    const std::string html_tag_attribute =
-        ParseHtmlTagNameAttribute(html, tag_substr, tag_attribute);
-
-    // Assert
-    EXPECT_EQ(expected_html_tag_attribute, html_tag_attribute);
+    // Act & Assert
+    EXPECT_EQ(expected_html_tag_attribute,
+              ParseHtmlTagNameAttribute(html, tag_substr, tag_attribute));
   }
 }
 

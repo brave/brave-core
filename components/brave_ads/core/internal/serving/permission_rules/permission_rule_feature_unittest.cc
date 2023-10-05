@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsPermissionRuleFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(base::FeatureList::IsEnabled(kPermissionRulesFeature));
 }
 
@@ -26,9 +22,7 @@ TEST(BraveAdsPermissionRuleFeatureTest, IsDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(base::FeatureList::IsEnabled(kPermissionRulesFeature));
 }
 
@@ -39,19 +33,13 @@ TEST(BraveAdsPermissionRuleFeatureTest, ShouldOnlyServeAdsInWindowedMode) {
       kPermissionRulesFeature,
       {{"should_only_serve_ads_in_windowed_mode", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldOnlyServeAdsInWindowedMode.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsInWindowedMode) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsInWindowedMode.Get());
 }
 
@@ -61,9 +49,7 @@ TEST(BraveAdsPermissionRuleFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsInWindowedMode.Get());
 }
 
@@ -75,19 +61,13 @@ TEST(BraveAdsPermissionRuleFeatureTest,
       kPermissionRulesFeature,
       {{"should_only_serve_ads_with_valid_internet_connection", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldOnlyServeAdsWithValidInternetConnection.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsWithValidInternetConnection) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsWithValidInternetConnection.Get());
 }
 
@@ -97,9 +77,7 @@ TEST(BraveAdsPermissionRuleFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsWithValidInternetConnection.Get());
 }
 
@@ -110,19 +88,13 @@ TEST(BraveAdsPermissionRuleFeatureTest, ShouldOnlyServeAdsIfMediaIsNotPlaying) {
       kPermissionRulesFeature,
       {{"should_only_serve_ads_if_media_is_not_playing", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldOnlyServeAdsIfMediaIsNotPlaying.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsIfMediaIsNotPlaying) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsIfMediaIsNotPlaying.Get());
 }
 
@@ -132,9 +104,7 @@ TEST(BraveAdsPermissionRuleFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsIfMediaIsNotPlaying.Get());
 }
 
@@ -145,19 +115,13 @@ TEST(BraveAdsPermissionRuleFeatureTest, ShouldOnlyServeAdsIfBrowserIsActive) {
       kPermissionRulesFeature,
       {{"should_only_serve_ads_if_browser_is_active", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldOnlyServeAdsIfBrowserIsActive.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsIfBrowserIsActive) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsIfBrowserIsActive.Get());
 }
 
@@ -167,9 +131,7 @@ TEST(BraveAdsPermissionRuleFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsIfBrowserIsActive.Get());
 }
 
@@ -179,18 +141,12 @@ TEST(BraveAdsPermissionRuleFeatureTest, DoNotDisturbFromHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kPermissionRulesFeature, {{"do_not_disturb_from_hour", "7"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kDoNotDisturbFromHour.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest, DefaultDoNotDisturbFromHour) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(21, kDoNotDisturbFromHour.Get());
 }
 
@@ -200,9 +156,7 @@ TEST(BraveAdsPermissionRuleFeatureTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(21, kDoNotDisturbFromHour.Get());
 }
 
@@ -212,18 +166,12 @@ TEST(BraveAdsPermissionRuleFeatureTest, DoNotDisturbToHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kPermissionRulesFeature, {{"do_not_disturb_to_hour", "7"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kDoNotDisturbToHour.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest, DefaultDoNotDisturbToHour) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(6, kDoNotDisturbToHour.Get());
 }
 
@@ -232,9 +180,7 @@ TEST(BraveAdsPermissionRuleFeatureTest, DefaultDoNotDisturbToHourWhenDisabled) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(6, kDoNotDisturbToHour.Get());
 }
 

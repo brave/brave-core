@@ -50,9 +50,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest, ParseCaptchaId) {
             "captcha_id": "daf85dc8-164e-4eb9-a4d4-1836055004b3"
           })");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("daf85dc8-164e-4eb9-a4d4-1836055004b3", ParseCaptchaId(dict));
 }
 
@@ -60,9 +58,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest, DoNotParseMissingCaptchaId) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict("{}");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseCaptchaId(dict));
 }
 
@@ -112,7 +108,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
        DoNotParseAndUnblindInvalidSignedTokens) {
   // Arrange
   base::Value::Dict dict = BuildUrlResponseBody();
-  dict.Set("signedTokens", base::Value::List().Append(/*invalid*/ 0));
+  dict.Set("signedTokens", base::Value::List().Append(/*invalid=*/0));
 
   // Act
   const auto result = ParseAndUnblindSignedTokens(
@@ -152,14 +148,12 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
 
 TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
        BuildAndAddConfirmationTokens) {
-  // Arrange
-
   // Act
   BuildAndAddConfirmationTokens(cbr::GetUnblindedTokensForTesting(),
                                 cbr::GetPublicKeyForTesting(),
                                 GetWalletForTesting());
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(GetConfirmationTokensForTesting().IsEmpty());
 }
 

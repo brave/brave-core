@@ -33,41 +33,28 @@ TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromCatalog) {
   const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
   ASSERT_TRUE(catalog);
 
-  // Act
-  const SegmentList segments = GetSegments(*catalog);
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {"technology & computing",
                                          "untargeted"};
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetSegments(*catalog));
 }
 
 TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
-  // Arrange
-
   // Act
-  const SegmentList segments = GetSegments(/*catalog*/ {});
+  const SegmentList segments = GetSegments(/*catalog=*/{});
 
   // Assert
   EXPECT_TRUE(segments.empty());
 }
 
 TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentFromParentChildSegment) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("technology & computing",
             GetParentSegment("technology & computing-software"));
 }
 
 TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentFromParentSegment) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("technology & computing",
             GetParentSegment("technology & computing"));
 }
@@ -78,20 +65,15 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegments) {
                                 "personal finance-personal finance",
                                 "automotive"};
 
-  // Act
-  const SegmentList parent_segments = GetParentSegments(segments);
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_parent_segments = {
       "technology & computing", "personal finance", "automotive"};
-  EXPECT_EQ(expected_parent_segments, parent_segments);
+  EXPECT_EQ(expected_parent_segments, GetParentSegments(segments));
 }
 
 TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
-  // Arrange
-
   // Act
-  const SegmentList parent_segments = GetParentSegments(/*segments*/ {});
+  const SegmentList parent_segments = GetParentSegments(/*segments=*/{});
 
   // Assert
   EXPECT_TRUE(parent_segments.empty());
@@ -102,11 +84,9 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   CategoryContentInfo category_content;
   category_content.category = "parent-child";
   category_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-
-  // Act
   ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldFilterSegment("parent-child"));
 }
 
@@ -115,11 +95,9 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   CategoryContentInfo category_content;
   category_content.category = "parent-child";
   category_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-
-  // Act
   ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
 }
 
@@ -128,11 +106,9 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   CategoryContentInfo category_content;
   category_content.category = "parent";
   category_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-
-  // Act
   ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldFilterSegment("parent"));
 }
 
@@ -141,11 +117,9 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   CategoryContentInfo category_content;
   category_content.category = "parent";
   category_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-
-  // Act
   ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldFilterSegment("foo"));
 }
 
@@ -155,11 +129,9 @@ TEST_F(BraveAdsSegmentUtilTest,
   CategoryContentInfo category_content;
   category_content.category = "parent";
   category_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-
-  // Act
   ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldFilterSegment("parent-child"));
 }
 
@@ -169,29 +141,19 @@ TEST_F(BraveAdsSegmentUtilTest,
   CategoryContentInfo category_content;
   category_content.category = "parent";
   category_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-
-  // Act
   ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
 }
 
 TEST_F(BraveAdsSegmentUtilTest, HasChildSegment) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(HasChildSegment("technology & computing-windows"));
 }
 
 TEST_F(BraveAdsSegmentUtilTest, DoesNotHaveChildSegment) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(HasChildSegment("technology & computing"));
 }
 

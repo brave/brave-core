@@ -74,7 +74,7 @@ void RedeemRewardConfirmation::Redeem(
   if (!HasIssuers()) {
     BLOG(1, "Failed to redeem confirmation token due to missing issuers");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ true);
+        confirmation, /*should_retry=*/true);
   }
 
   if (!confirmation.was_created) {
@@ -148,25 +148,25 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
     mutable_confirmation.was_created = false;
 
     return redeem_confirmation.FailedToRedeemConfirmation(
-        mutable_confirmation, /*should_retry*/ true);
+        mutable_confirmation, /*should_retry=*/true);
   }
 
   if (url_response.status_code == net::HTTP_BAD_REQUEST) {
     BLOG(1, "Credential is invalid");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
 
   if (url_response.status_code == net::HTTP_ACCEPTED) {
     BLOG(1, "Payment token is not ready");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ true);
+        confirmation, /*should_retry=*/true);
   }
 
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch payment token");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ true);
+        confirmation, /*should_retry=*/true);
   }
 
   const absl::optional<base::Value> root =
@@ -174,7 +174,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   if (!root || !root->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ true);
+        confirmation, /*should_retry=*/true);
   }
   const base::Value::Dict& dict = root->GetDict();
 
@@ -183,7 +183,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   if (!id) {
     BLOG(0, "Response is missing id");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
 
   // Validate id
@@ -192,7 +192,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
                            << " does not match confirmation transaction id "
                            << confirmation.transaction_id);
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
 
   // Get payment token
@@ -200,7 +200,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   if (!payment_token_dict) {
     BLOG(1, "Response is missing paymentToken");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
 
   // Get public key
@@ -209,14 +209,14 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   if (!public_key_base64) {
     BLOG(0, "Response is missing paymentToken/publicKey");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
 
   const cbr::PublicKey public_key = cbr::PublicKey(*public_key_base64);
   if (!public_key.has_value()) {
     BLOG(0, "Invalid paymentToken/publicKey");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
 
   if (!PublicKeyExistsForIssuerType(IssuerType::kPayments,
@@ -224,7 +224,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
     BLOG(0, "Response paymentToken/publicKey "
                 << *public_key_base64 << " does not exist in payment issuers");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ true);
+        confirmation, /*should_retry=*/true);
   }
 
   // Get batch dleq proof
@@ -233,14 +233,14 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing paymentToken/batchProof");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
   cbr::BatchDLEQProof batch_dleq_proof =
       cbr::BatchDLEQProof(*batch_dleq_proof_base64);
   if (!batch_dleq_proof.has_value()) {
     BLOG(0, "Invalid paymentToken/batchProof");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
 
   // Get signed tokens
@@ -249,7 +249,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing paymentToken/signedTokens");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
 
   std::vector<cbr::SignedToken> signed_tokens;
@@ -259,7 +259,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
     if (!signed_token.has_value()) {
       BLOG(0, "Invalid paymentToken/signedToken");
       return redeem_confirmation.FailedToRedeemConfirmation(
-          confirmation, /*should_retry*/ false);
+          confirmation, /*should_retry=*/false);
     }
 
     signed_tokens.push_back(signed_token);
@@ -269,14 +269,14 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   if (!confirmation.reward->token.has_value()) {
     BLOG(0, "Invalid confirmation reward token");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
   const std::vector<cbr::Token> tokens = {confirmation.reward->token};
 
   if (!confirmation.reward->blinded_token.has_value()) {
     BLOG(0, "Invalid confirmation reward blinded token");
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
   const std::vector<cbr::BlindedToken> blinded_tokens = {
       confirmation.reward->blinded_token};
@@ -290,7 +290,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
     BLOG(1, "  Batch DLEQ proof: " << *batch_dleq_proof_base64);
     BLOG(1, "  Public key: " << *public_key_base64);
     return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry*/ false);
+        confirmation, /*should_retry=*/false);
   }
 
   PaymentTokenInfo payment_token;
@@ -306,7 +306,7 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
 
     return redeem_confirmation.FailedToRedeemConfirmation(
         confirmation,
-        /*should_retry*/ false);
+        /*should_retry=*/false);
   }
 
   redeem_confirmation.SuccessfullyRedeemedConfirmation(confirmation);
