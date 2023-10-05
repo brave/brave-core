@@ -312,8 +312,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
   task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
 
   EXPECT_EQ(points_requests_made, 7U);
-  // Should not send metrics, since they are in current epoch
-  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
 
   ResetInterceptorStores();
   current_epoch++;

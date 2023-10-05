@@ -53,11 +53,9 @@ void ConstellationLogStore::UpdateMessage(const std::string& histogram_name,
   base::Value::Dict* epoch_dict = update->EnsureDict(epoch_key);
   epoch_dict->Set(histogram_name, msg);
 
-  if (current_epoch_ != epoch) {
-    LogKey key(epoch, histogram_name);
-    log_[key] = msg;
-    unsent_entries_.insert(key);
-  }
+  LogKey key(epoch, histogram_name);
+  log_[key] = msg;
+  unsent_entries_.insert(key);
 }
 
 void ConstellationLogStore::RemoveMessageIfExists(const LogKey& key) {
@@ -167,11 +165,6 @@ void ConstellationLogStore::LoadPersistedUnsentLogs() {
       continue;
     }
     uint8_t item_epoch = (uint8_t)parsed_epoch;
-
-    if (current_epoch_ == item_epoch) {
-      // Do not load/send messages from the current epoch
-      continue;
-    }
 
     if ((current_epoch_ - item_epoch) >= keep_epoch_count_) {
       // If epoch is too old, delete it
