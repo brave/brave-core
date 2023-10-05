@@ -39,7 +39,19 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.function.BooleanSupplier;
 
 public class BraveLocationBarCoordinator extends LocationBarCoordinator {
+    /*
+     * {@link LocationBarCoordinator#mLocationBarMediator} is private so we add a private
+     * `mLocationBarMediator` here so this code compiles and then remove it and make {@link
+     * LocationBarCoordinator#mLocationBarMediator} protected via asm.
+     */
     private LocationBarMediator mLocationBarMediator;
+    /*
+     * {@link LocationBarCoordinator#mUrlBar} is private so we add a private
+     * `mUrlBar` here so this code compiles and then remove it and make {@link
+     * LocationBarCoordinator#mUrlBar} protected via asm.
+     */
+    private View mUrlBar;
+
     private View mQRButton;
 
     public BraveLocationBarCoordinator(View locationBarLayout, View autocompleteAnchorView,
@@ -80,6 +92,10 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 browserControlsVisibilityDelegate, reportExceptionCallback, backPressManager,
                 omniboxSuggestionsDropdownScrollListener, openHistoryClustersDelegate,
                 tabModelSelectorSupplier);
+
+        if (mUrlBar != null) {
+            ((UrlBar) mUrlBar).setSelectAllOnFocus(true);
+        }
 
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {
             mQRButton = locationBarLayout.findViewById(R.id.qr_button);
