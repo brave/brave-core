@@ -17,6 +17,7 @@ import BraveWallet
 import Preferences
 import CertificateUtilities
 import AVFoundation
+import Playlist
 
 // MARK: - TopToolbarDelegate
 

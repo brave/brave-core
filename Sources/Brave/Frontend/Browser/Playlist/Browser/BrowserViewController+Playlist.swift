@@ -13,12 +13,13 @@ import UIKit
 import Growth
 import os.log
 import Onboarding
+import Playlist
 
 extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSharingScriptHandlerDelegate {
   static var didShowStorageFullWarning = false
   func createPlaylistPopover(item: PlaylistInfo, tab: Tab?) -> PopoverController {
     
-    let folderName = PlaylistItem.getItem(uuid: item.tagId)?.playlistFolder?.title ?? Strings.PlaylistFolders.playlistSavedFolderTitle
+    let folderName = PlaylistItem.getItem(uuid: item.tagId)?.playlistFolder?.title ?? Strings.Playlist.defaultPlaylistTitle
 
     return PopoverController(
       content: PlaylistPopoverView(folderName: folderName) { [weak self] action in

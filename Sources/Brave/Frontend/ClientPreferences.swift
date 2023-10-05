@@ -53,9 +53,6 @@ extension Preferences {
     public static let nightModeEnabled = Option<Bool>(key: "general.night-mode-enabled", default: false)
     /// Specifies whether the bookmark button is present on toolbar
     static let showBookmarkToolbarShortcut = Option<Bool>(key: "general.show-bookmark-toolbar-shortcut", default: UIDevice.isIpad)
-    /// Sets Desktop UA for iPad by default (iOS 13+ & iPad only).
-    /// Do not read it directly, prefer to use `UserAgent.shouldUseDesktopMode` instead.
-    static let alwaysRequestDesktopSite = Option<Bool>(key: "general.always-request-desktop-site", default: UIDevice.isIpad)
     /// Controls whether or not media should continue playing in the background
     static let mediaAutoBackgrounding = Option<Bool>(key: "general.media-auto-backgrounding", default: false)
     /// Controls whether or not youtube videos should play with the highest quality by default
@@ -200,43 +197,6 @@ extension Preferences {
     static let lastCosmeticFiltersCSSUpdate = Option<Date?>(key: "last-cosmetic-filters-css-update", default: nil)
     /// When cosmetic filters Scriptlets were last time updated on the device.
     static let lastCosmeticFiltersScripletsUpdate = Option<Date?>(key: "last-cosmetic-filters-scriptlets-update", default: nil)
-  }
-
-  final public class Playlist {
-    /// The Option to show video list left or right side
-    static let listViewSide = Option<String>(key: "playlist.listViewSide", default: PlayListSide.left.rawValue)
-    /// The count of how many times  Add to Playlist URL-Bar onboarding has been shown
-    static let addToPlaylistURLBarOnboardingCount = Option<Int>(key: "playlist.addToPlaylistURLBarOnboardingCount", default: 0)
-    /// The last played item url
-    static let lastPlayedItemUrl = Option<String?>(key: "playlist.last.played.item.url", default: nil)
-    /// The last played item time
-    static let lastPlayedItemTime = Option<Double>(key: "playlist.last.played.item.time", default: 0.0)
-    /// Whether to play the video when controller loaded
-    static let firstLoadAutoPlay = Option<Bool>(key: "playlist.firstLoadAutoPlay", default: false)
-    /// The Option to download video yes / no / only wi-fi
-    static let autoDownloadVideo = Option<String>(key: "playlist.autoDownload", default: PlayListDownloadType.on.rawValue)
-    /// The Option to disable playlist MediaSource web-compatibility
-    static let webMediaSourceCompatibility = Option<Bool>(key: "playlist.webMediaSourceCompatibility", default: UIDevice.isIpad)
-    /// The option to start the playback where user left-off
-    static let playbackLeftOff = Option<Bool>(key: "playlist.playbackLeftOff", default: true)
-    /// The option to disable long-press-to-add-to-playlist gesture.
-    static let enableLongPressAddToPlaylist =
-      Option<Bool>(key: "playlist.longPressAddToPlaylist", default: true)
-    /// The option to enable or disable the 3-dot menu badge for playlist
-    static let enablePlaylistMenuBadge =
-      Option<Bool>(key: "playlist.enablePlaylistMenuBadge", default: true)
-    /// The option to enable or disable the URL-Bar button for playlist
-    static let enablePlaylistURLBarButton =
-      Option<Bool>(key: "playlist.enablePlaylistURLBarButton", default: true)
-    /// The option to enable or disable the continue where left-off playback in CarPlay
-    static let enableCarPlayRestartPlayback =
-      Option<Bool>(key: "playlist.enableCarPlayRestartPlayback", default: false)
-    /// The last time all playlist folders were synced
-    static let lastPlaylistFoldersSyncTime =
-      Option<Date?>(key: "playlist.lastPlaylistFoldersSyncTime", default: nil)
-    /// Sync shared folders automatically preference
-    static let syncSharedFoldersAutomatically =
-      Option<Bool>(key: "playlist.syncSharedFoldersAutomatically", default: true)
   }
     
   final public class PrivacyReports {

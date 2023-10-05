@@ -10,6 +10,7 @@ import Data
 import Preferences
 import Shared
 import os.log
+import Playlist
 
 enum PlaylistItemAddedState {
   case none

@@ -10,7 +10,7 @@ import AVFoundation
 import CarPlay
 import MediaPlayer
 import Combine
-
+import Playlist
 import Preferences
 import Shared
 import SDWebImage
@@ -76,7 +76,7 @@ class PlaylistViewController: UIViewController {
     self.openInNewTab = openInNewTab
     self.openPlaylistSettingsMenu = openPlaylistSettingsMenu
     self.player = mediaPlayer
-    self.mediaStreamer = PlaylistMediaStreamer(playerView: playerView)
+    self.mediaStreamer = PlaylistMediaStreamer(playerView: playerView, webLoaderFactory: LivePlaylistWebLoaderFactory())
     self.isPrivateBrowsing = isPrivateBrowsing
     self.folderSharingUrl = nil
     

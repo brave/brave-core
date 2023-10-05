@@ -8,6 +8,8 @@ import AVFoundation
 import Shared
 import Data
 import os.log
+import BraveShared
+import UserAgent
 
 protocol PlaylistDownloadManagerDelegate: AnyObject {
   func onDownloadProgressUpdate(id: String, percentComplete: Double)
@@ -41,7 +43,7 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
   private var didRestoreSession = false
   weak var delegate: PlaylistDownloadManagerDelegate?
 
-  static var playlistDirectory: URL? {
+  public static var playlistDirectory: URL? {
     FileManager.default.getOrCreateFolder(
       name: "Playlist",
       excludeFromBackups: true,
@@ -194,9 +196,18 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
   }
 
   fileprivate static func uniqueDownloadPathForFilename(_ filename: String) throws -> URL? {
-    let filename = HTTPDownload.stripUnicode(fromFilename: filename)
+    let filename = Self.stripUnicode(fromFilename: filename)
     let playlistDirectory = PlaylistDownloadManager.playlistDirectory
     return try playlistDirectory?.uniquePathForFilename(filename)
+  }
+  
+  // Used to avoid name spoofing using Unicode RTL char to change file extension
+  private static func stripUnicode(fromFilename string: String) -> String {
+    let validFilenameSet = CharacterSet(charactersIn: ":/")
+      .union(.newlines)
+      .union(.controlCharacters)
+      .union(.illegalCharacters)
+    return string.components(separatedBy: validFilenameSet).joined()
   }
 }
 
@@ -211,7 +222,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
   func restoreSession(_ session: AVAssetDownloadURLSession, completion: @escaping () -> Void) {
     session.getAllTasks { [weak self] tasks in
       defer {
-        ensureMainThread {
+        DispatchQueue.main.async {
           completion()
         }
       }
@@ -435,7 +446,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
   func restoreSession(_ session: URLSession, completion: @escaping () -> Void) {
     session.getAllTasks { [weak self] tasks in
       defer {
-        ensureMainThread {
+        DispatchQueue.main.async {
           completion()
         }
       }
@@ -447,7 +458,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
           continue
         }
 
-        ensureMainThread {
+        DispatchQueue.main.async {
           if task.state != .completed,
             let item = PlaylistItem.getItem(uuid: itemId),
             let assetUrl = URL(string: item.mediaSrc) {

@@ -6,13 +6,14 @@ import XCTest
 import Shared
 import Preferences
 import WebKit
+@testable import UserAgent
 @testable import Brave
 
 class UserAgentTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    Preferences.General.alwaysRequestDesktopSite.reset()
+    Preferences.UserAgent.alwaysRequestDesktopSite.reset()
   }
 
   let desktopUARegex: (String) -> Bool = { ua in

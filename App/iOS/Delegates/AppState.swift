@@ -15,6 +15,7 @@ import Preferences
 import Storage
 import BraveNews
 import os.log
+import UserAgent
 
 private let adsRewardsLog = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ads-rewards")
 

@@ -8,7 +8,7 @@ import UIKit
 import BraveCore
 import os.log
 
-class BasicAuthCredentialsManager: NSObject, URLSessionDataDelegate {
+public class BasicAuthCredentialsManager: NSObject, URLSessionDataDelegate {
   private static var credentials = [String: URLCredential]()  // ["origin:port": credential]
   
   public static let validDomains: Set<String> = [
@@ -21,11 +21,11 @@ class BasicAuthCredentialsManager: NSObject, URLSessionDataDelegate {
     "playlist.bravesoftware.com"
   ]
   
-  static func setCredential(origin: String, credential: URLCredential?) {
+  public static func setCredential(origin: String, credential: URLCredential?) {
     credentials[origin] = credential
   }
 
-  func urlSession(
+  public func urlSession(
     _ session: URLSession,
     didReceive challenge: URLAuthenticationChallenge
   ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
@@ -87,7 +87,7 @@ class BasicAuthCredentialsManager: NSObject, URLSessionDataDelegate {
     return (.performDefaultHandling, nil)
   }
 
-  func urlSession(
+  public func urlSession(
     _ session: URLSession,
     task: URLSessionTask,
     didReceive challenge: URLAuthenticationChallenge

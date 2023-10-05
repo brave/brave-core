@@ -16,6 +16,7 @@ import Favicon
 import Growth
 import SafariServices
 import LocalAuthentication
+import BraveShared
 
 extension WKNavigationAction {
   /// Allow local requests only if the request is privileged.

@@ -8,6 +8,7 @@ import Preferences
 import Shared
 import Data
 import UIKit
+import Playlist
 
 class PlaylistDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 

@@ -9,14 +9,12 @@ import Shared
 import BraveShared
 import Preferences
 import BraveUI
+import Playlist
 
 // MARK: - PlayListSide
 
-enum PlayListSide: String, CaseIterable, RepresentableOptionType {
-  case left
-  case right
-
-  var displayString: String {
+extension PlayListSide: RepresentableOptionType {
+  public var displayString: String {
     switch self {
     case .left:
       return Strings.PlayList.playlistSidebarLocationOptionLeft
@@ -28,12 +26,8 @@ enum PlayListSide: String, CaseIterable, RepresentableOptionType {
 
 // MARK: - PlayListDownloadType
 
-enum PlayListDownloadType: String, CaseIterable, RepresentableOptionType {
-  case on
-  case off
-  case wifi
-
-  var displayString: String {
+extension PlayListDownloadType: RepresentableOptionType {
+  public var displayString: String {
     switch self {
     case .on:
       return Strings.PlayList.playlistAutoSaveOptionOn
@@ -200,6 +194,7 @@ class PlaylistSettingsViewController: TableViewController {
                 UIAlertAction(
                   title: Strings.PlayList.playlistResetAlertTitle, style: .default,
                   handler: { _ in
+                    PlaylistCarplayManager.shared.destroyPiP()
                     PlaylistManager.shared.deleteAllItems(cacheOnly: false)
                   }))
               alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))

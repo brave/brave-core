@@ -14,6 +14,7 @@ import BraveUI
 import Preferences
 import Favicon
 import os.log
+import Playlist
 
 // MARK: UITableViewDataSource
 

@@ -29,6 +29,8 @@ import BraveWallet
 import Preferences
 import BraveShields
 import PrivateCDN
+import Playlist
+import UserAgent
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

@@ -7,7 +7,7 @@ import Foundation
 import AVFoundation
 import Combine
 import CoreData
-
+import UIKit
 import Shared
 import Data
 import Preferences
@@ -23,7 +23,7 @@ public class PlaylistManager: NSObject {
   
   private var _playbackTask: Task<Void, Error>?
   
-  var playbackTask: Task<Void, Error>? {
+  public var playbackTask: Task<Void, Error>? {
     get {
       _playbackTask
     }
@@ -73,7 +73,7 @@ public class PlaylistManager: NSObject {
     deleteUserManagedAssets()
   }
 
-  var currentFolder: PlaylistFolder? {
+  public var currentFolder: PlaylistFolder? {
     didSet {
       frc.delegate = nil
 
@@ -92,73 +92,73 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  var onFolderRemovedOrUpdated: AnyPublisher<Void, Never> {
+  public var onFolderRemovedOrUpdated: AnyPublisher<Void, Never> {
     onFolderDeleted.eraseToAnyPublisher()
   }
 
-  var contentWillChange: AnyPublisher<Void, Never> {
+  public var contentWillChange: AnyPublisher<Void, Never> {
     onContentWillChange.eraseToAnyPublisher()
   }
 
-  var contentDidChange: AnyPublisher<Void, Never> {
+  public var contentDidChange: AnyPublisher<Void, Never> {
     onContentDidChange.eraseToAnyPublisher()
   }
 
-  var objectDidChange: AnyPublisher<(object: Any, indexPath: IndexPath?, type: NSFetchedResultsChangeType, newIndexPath: IndexPath?), Never> {
+  public var objectDidChange: AnyPublisher<(object: Any, indexPath: IndexPath?, type: NSFetchedResultsChangeType, newIndexPath: IndexPath?), Never> {
     onObjectChange.eraseToAnyPublisher()
   }
 
-  var downloadProgressUpdated: AnyPublisher<(id: String, percentComplete: Double), Never> {
+  public var downloadProgressUpdated: AnyPublisher<(id: String, percentComplete: Double), Never> {
     onDownloadProgressUpdate.eraseToAnyPublisher()
   }
 
-  var downloadStateChanged: AnyPublisher<(id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?, error: Error?), Never> {
+  public var downloadStateChanged: AnyPublisher<(id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?, error: Error?), Never> {
     onDownloadStateChanged.eraseToAnyPublisher()
   }
 
-  var onCurrentFolderDidChange: AnyPublisher<(), Never> {
+  public var onCurrentFolderDidChange: AnyPublisher<(), Never> {
     onCurrentFolderChanged.eraseToAnyPublisher()
   }
 
-  var allItems: [PlaylistInfo] {
+  public var allItems: [PlaylistInfo] {
     frc.fetchedObjects?.map({ PlaylistInfo(item: $0) }) ?? []
   }
 
-  var numberOfAssets: Int {
+  public var numberOfAssets: Int {
     frc.fetchedObjects?.count ?? 0
   }
 
-  var fetchedObjects: [PlaylistItem] {
+  public var fetchedObjects: [PlaylistItem] {
     frc.fetchedObjects ?? []
   }
   
-  func updateLastPlayed(item: PlaylistInfo, playTime: Double) {
+  public func updateLastPlayed(item: PlaylistInfo, playTime: Double) {
     let lastPlayedTime = Preferences.Playlist.playbackLeftOff.value ? playTime : 0.0
     Preferences.Playlist.lastPlayedItemUrl.value = item.pageSrc
     PlaylistItem.updateLastPlayed(itemId: item.tagId, pageSrc: item.pageSrc, lastPlayedOffset: lastPlayedTime)
   }
 
-  func itemAtIndex(_ index: Int) -> PlaylistInfo? {
+  public func itemAtIndex(_ index: Int) -> PlaylistInfo? {
     if index >= 0 && index < numberOfAssets {
       return PlaylistInfo(item: frc.object(at: IndexPath(row: index, section: 0)))
     }
     return nil
   }
 
-  func assetAtIndex(_ index: Int) -> AVURLAsset? {
+  public func assetAtIndex(_ index: Int) -> AVURLAsset? {
     if let item = itemAtIndex(index) {
       return asset(for: item.tagId, mediaSrc: item.src)
     }
     return nil
   }
 
-  func index(of itemId: String) -> Int? {
+  public func index(of itemId: String) -> Int? {
     frc.fetchedObjects?.firstIndex(where: { $0.uuid == itemId })
   }
 
-  func reorderItems(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath, completion: (() -> Void)?) {
+  public func reorderItems(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath, completion: (() -> Void)?) {
     guard var objects = frc.fetchedObjects else {
-      ensureMainThread {
+      DispatchQueue.main.async {
         completion?()
       }
       return
@@ -166,7 +166,7 @@ public class PlaylistManager: NSObject {
 
     frc.managedObjectContext.perform { [weak self] in
       defer {
-        ensureMainThread {
+        DispatchQueue.main.async {
           completion?()
         }
       }
@@ -189,7 +189,7 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  func state(for itemId: String) -> PlaylistDownloadManager.DownloadState {
+  public func state(for itemId: String) -> PlaylistDownloadManager.DownloadState {
     if downloadManager.downloadTask(for: itemId) != nil {
       return .inProgress
     }
@@ -203,7 +203,7 @@ public class PlaylistManager: NSObject {
     return .invalid
   }
 
-  func sizeOfDownloadedItem(for itemId: String) -> String? {
+  public func sizeOfDownloadedItem(for itemId: String) -> String? {
     var isDirectory: ObjCBool = false
     if let asset = downloadManager.localAsset(for: itemId),
       FileManager.default.fileExists(atPath: asset.url.path, isDirectory: &isDirectory) {
@@ -243,7 +243,7 @@ public class PlaylistManager: NSObject {
     return nil
   }
 
-  func reloadData() {
+  public func reloadData() {
     do {
       try frc.performFetch()
     } catch {
@@ -261,18 +261,18 @@ public class PlaylistManager: NSObject {
   
   public func setupPlaylistFolder() {
     if let savedFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID) {
-      if savedFolder.title != Strings.PlaylistFolders.playlistSavedFolderTitle {
+      if savedFolder.title != Strings.Playlist.defaultPlaylistTitle {
         // This title may change so we should update it
-        savedFolder.title = Strings.PlaylistFolders.playlistSavedFolderTitle
+        savedFolder.title = Strings.Playlist.defaultPlaylistTitle
       }
     } else {
-      PlaylistFolder.addFolder(title: Strings.PlaylistFolders.playlistSavedFolderTitle, uuid: PlaylistFolder.savedFolderUUID) { uuid in
+      PlaylistFolder.addFolder(title: Strings.Playlist.defaultPlaylistTitle, uuid: PlaylistFolder.savedFolderUUID) { uuid in
         Logger.module.debug("Created Playlist Folder: \(uuid)")
       }
     }
   }
 
-  func download(item: PlaylistInfo) {
+  public func download(item: PlaylistInfo) {
     guard downloadManager.downloadTask(for: item.tagId) == nil, let assetUrl = URL(string: item.src) else { return }
     Task {
       let mimeType = await PlaylistMediaStreamer.getMimeType(assetUrl)
@@ -290,11 +290,11 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  func cancelDownload(itemId: String) {
+  public func cancelDownload(itemId: String) {
     downloadManager.cancelDownload(itemId: itemId)
   }
 
-  func delete(folder: PlaylistFolder, _ completion: ((_ success: Bool) -> Void)? = nil) {
+  public func delete(folder: PlaylistFolder, _ completion: ((_ success: Bool) -> Void)? = nil) {
     var success = true
     var itemsToDelete = [PlaylistInfo]()
 
@@ -353,7 +353,7 @@ public class PlaylistManager: NSObject {
   }
 
   @discardableResult
-  func delete(item: PlaylistInfo) -> Bool {
+  public func delete(item: PlaylistInfo) -> Bool {
     cancelDownload(itemId: item.tagId)
 
     if let index = assetInformation.firstIndex(where: { $0.itemId == item.tagId }) {
@@ -379,7 +379,7 @@ public class PlaylistManager: NSObject {
   }
 
   @discardableResult
-  func deleteCache(item: PlaylistInfo) -> Bool {
+  public func deleteCache(item: PlaylistInfo) -> Bool {
     cancelDownload(itemId: item.tagId)
 
     if let cacheItem = PlaylistItem.getItem(uuid: item.tagId),
@@ -403,15 +403,7 @@ public class PlaylistManager: NSObject {
     return true
   }
 
-  func deleteAllItems(cacheOnly: Bool) {
-    // This is the only way to have the system kill picture in picture as the restoration controller is deallocated
-    // And that means the video is deallocated, its AudioSession is stopped, and the Picture-In-Picture controller is deallocated.
-    // This is because `AVPictureInPictureController` is NOT a view controller and there is no way to dismiss it
-    // other than to deallocate the restoration controller.
-    // We could also call `AVPictureInPictureController.stopPictureInPicture` BUT we'd still have to deallocate all resources.
-    // At least this way, we deallocate both AND pip is stopped in the destructor of `PlaylistViewController->ListController`
-    PlaylistCarplayManager.shared.playlistController = nil
-
+  public func deleteAllItems(cacheOnly: Bool) {
     guard let playlistItems = frc.fetchedObjects else {
       Logger.module.error("An error occured while fetching Playlist Objects")
       return
@@ -483,7 +475,7 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  func autoDownload(item: PlaylistInfo) {
+  public func autoDownload(item: PlaylistInfo) {
     guard let downloadType = PlayListDownloadType(rawValue: Preferences.Playlist.autoDownloadVideo.value) else {
       return
     }
@@ -500,7 +492,7 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  func isDiskSpaceEncumbered() -> Bool {
+  public func isDiskSpaceEncumbered() -> Bool {
     let freeSpace = availableDiskSpace() ?? 0
     let totalSpace = totalDiskSpace() ?? 0
     let usedSpace = totalSpace - freeSpace
@@ -570,7 +562,7 @@ extension PlaylistManager: NSFetchedResultsControllerDelegate {
 }
 
 extension PlaylistManager {
-  func getAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval?) -> Void) {
+  public func getAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval?) -> Void) {
     if assetInformation.contains(where: { $0.itemId == item.tagId }) {
       completion(nil)
       return
@@ -682,7 +674,7 @@ extension PlaylistManager {
         if trackStatus == .cancelled || durationStatus == .cancelled {
           Logger.module.error("Asset Duration Fetch Cancelled")
 
-          ensureMainThread {
+          DispatchQueue.main.async {
             completion(nil)
           }
           return
@@ -693,13 +685,13 @@ extension PlaylistManager {
             // Media item is expired.. permission is denied
             Logger.module.debug("Playlist Media Item Expired: \(item.pageSrc)")
 
-            ensureMainThread {
+            DispatchQueue.main.async {
               completion(nil)
             }
           } else {
             Logger.module.error("An unknown error occurred while attempting to fetch track and duration information: \(error.localizedDescription)")
 
-            ensureMainThread {
+            DispatchQueue.main.async {
               completion(nil)
             }
           }
@@ -718,7 +710,7 @@ extension PlaylistManager {
           duration = asset.duration
         }
 
-        ensureMainThread {
+        DispatchQueue.main.async {
           if duration.isIndefinite {
             completion(TimeInterval.infinity)
           } else if abs(duration.seconds.distance(to: 0.0)) > tolerance {
@@ -756,7 +748,7 @@ extension PlaylistManager {
 
 extension PlaylistManager {
   @MainActor
-  static func syncSharedFolder(sharedFolderUrl: String) async throws {
+  public static func syncSharedFolder(sharedFolderUrl: String) async throws {
     guard let folder = PlaylistFolder.getSharedFolder(sharedFolderUrl: sharedFolderUrl),
           let folderId = folder.uuid else {
       return
@@ -780,7 +772,7 @@ extension PlaylistManager {
   }
   
   @MainActor
-  static func syncSharedFolders() async throws {
+  public static func syncSharedFolders() async throws {
     let folderURLs = PlaylistFolder.getSharedFolders().compactMap({ $0.sharedFolderUrl })
     await withTaskGroup(of: Void.self) { group in
       folderURLs.forEach { url in

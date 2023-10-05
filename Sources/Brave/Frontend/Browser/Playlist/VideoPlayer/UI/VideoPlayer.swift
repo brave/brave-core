@@ -9,7 +9,7 @@ import BraveShared
 import Shared
 import AVKit
 import AVFoundation
-
+import Playlist
 import MediaPlayer
 
 protocol VideoViewDelegate: AnyObject {

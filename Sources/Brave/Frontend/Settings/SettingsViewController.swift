@@ -359,7 +359,7 @@ class SettingsViewController: TableViewController {
       general.rows.append(
         .boolRow(
           title: Strings.alwaysRequestDesktopSite,
-          option: Preferences.General.alwaysRequestDesktopSite,
+          option: Preferences.UserAgent.alwaysRequestDesktopSite,
           image: UIImage(braveSystemNamed: "leo.window.cursor"))
       )
     }

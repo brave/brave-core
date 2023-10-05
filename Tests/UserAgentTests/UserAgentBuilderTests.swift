@@ -4,7 +4,7 @@
 
 import XCTest
 import WebKit
-@testable import Shared
+@testable import UserAgent
 
 private class MockPhoneDevice: UIDevice {
   override var userInterfaceIdiom: UIUserInterfaceIdiom { .phone }

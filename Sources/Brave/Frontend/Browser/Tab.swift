@@ -13,6 +13,7 @@ import Data
 import os.log
 import BraveWallet
 import Favicon
+import UserAgent
 
 protocol TabContentScriptLoader {
   static func loadUserScript(named: String) -> String?

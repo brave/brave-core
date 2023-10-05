@@ -11,6 +11,7 @@ import Shared
 import Data
 import Preferences
 import os.log
+import Playlist
 
 /// Lightweight class that manages a single MediaPlayer item
 /// The MediaPlayer is then passed to any controller that needs to use it.
@@ -52,6 +53,16 @@ public class PlaylistCarplayManager: NSObject {
       }
     }
   }
+  
+  public func destroyPiP() {
+    // This is the only way to have the system kill picture in picture as the restoration controller is deallocated
+    // And that means the video is deallocated, its AudioSession is stopped, and the Picture-In-Picture controller is deallocated.
+    // This is because `AVPictureInPictureController` is NOT a view controller and there is no way to dismiss it
+    // other than to deallocate the restoration controXller.
+    // We could also call `AVPictureInPictureController.stopPictureInPicture` BUT we'd still have to deallocate all resources.
+    // At least this way, we deallocate both AND pip is stopped in the destructor of `PlaylistViewController->ListController`
+    playlistController = nil
+  }
 
   // There can only ever be one instance of this class
   // Because there can only be a single AudioSession and MediaPlayer
@@ -84,7 +95,7 @@ public class PlaylistCarplayManager: NSObject {
     // If there is no media player, create one,
     // pass it to the car-play controller
     let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
-    let mediaStreamer = PlaylistMediaStreamer(playerView: currentWindow ?? UIView())
+    let mediaStreamer = PlaylistMediaStreamer(playerView: currentWindow ?? UIView(), webLoaderFactory: LivePlaylistWebLoaderFactory())
 
     // Construct the CarPlay UI
     let carPlayController = PlaylistCarplayController(

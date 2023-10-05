@@ -12,13 +12,15 @@ import MediaPlayer
 import Shared
 import Storage
 import os.log
+import UserAgent
 
-class PlaylistMediaStreamer {
+public class PlaylistMediaStreamer {
   private weak var playerView: UIView?
   private weak var certStore: CertStore?
-  private var webLoader: PlaylistWebLoader?
+  private var webLoader: (any PlaylistWebLoader)?
+  private var webLoaderFactory: any PlaylistWebLoaderFactory
 
-  enum PlaybackError: Error {
+  public enum PlaybackError: Error {
     case none
     case cancelled
     case expired
@@ -26,12 +28,13 @@ class PlaylistMediaStreamer {
     case other(Error)
   }
 
-  init(playerView: UIView) {
+  public init(playerView: UIView, webLoaderFactory: PlaylistWebLoaderFactory) {
     self.playerView = playerView
+    self.webLoaderFactory = webLoaderFactory
   }
 
   @MainActor
-  func loadMediaStreamingAsset(_ item: PlaylistInfo) async throws -> PlaylistInfo {
+  public func loadMediaStreamingAsset(_ item: PlaylistInfo) async throws -> PlaylistInfo {
     // We need to check if the item is cached locally.
     // If the item is cached (downloaded)
     // then we can play it directly without having to stream it.
@@ -58,7 +61,7 @@ class PlaylistMediaStreamer {
     return item
   }
   
-  static func loadAssetPlayability(asset: AVURLAsset) async -> Bool {
+  public static func loadAssetPlayability(asset: AVURLAsset) async -> Bool {
     let isAssetPlayable = { () -> Bool in
       let status = asset.status(of: .isPlayable)
       if case .loaded(let value) = status {
@@ -95,20 +98,20 @@ class PlaylistMediaStreamer {
   private func streamingFallback(_ item: PlaylistInfo) async throws -> PlaylistInfo {
     // Fallback to web stream
     try await withTaskCancellationHandler { @MainActor in
-      self.webLoader = PlaylistWebLoader().then {
-        // If we don't do this, youtube shows ads 100% of the time.
-        // It's some weird race-condition in WKWebView where the content blockers may not load until
-        // The WebView is visible!
-        self.playerView?.insertSubview($0, at: 0)
-      }
+      let webLoader = self.webLoaderFactory.makeWebLoader()
+      // If we don't do this, youtube shows ads 100% of the time.
+      // It's some weird race-condition in WKWebView where the content blockers may not load until
+      // The WebView is visible!
+      self.playerView?.insertSubview(webLoader, at: 0)
+      self.webLoader = webLoader
       
       guard let url = URL(string: item.pageSrc) else {
         throw PlaybackError.cannotLoadMedia
       }
       
-      let newItem = await webLoader?.load(url: url)
-      webLoader?.removeFromSuperview()
-      webLoader = nil
+      let newItem = await webLoader.load(url: url)
+      webLoader.removeFromSuperview()
+      self.webLoader = nil
       
       guard let newItem = newItem, URL(string: newItem.src) != nil else {
         throw PlaybackError.cannotLoadMedia
@@ -134,7 +137,7 @@ class PlaylistMediaStreamer {
       }
         
       Task {
-        try await Task.sleep(seconds: 1)
+        try await Task.sleep(nanoseconds: NSEC_PER_SEC)
         PlaylistManager.shared.autoDownload(item: updatedItem)
       }
       return item
@@ -159,7 +162,7 @@ class PlaylistMediaStreamer {
 
   // MARK: - Static
 
-  static func setNowPlayingInfo(_ item: PlaylistInfo, withPlayer player: MediaPlayer) {
+  public static func setNowPlayingInfo(_ item: PlaylistInfo, withPlayer player: MediaPlayer) {
     let mediaType: MPNowPlayingInfoMediaType =
       item.mimeType.contains("video") ? .video : .audio
 
@@ -178,7 +181,7 @@ class PlaylistMediaStreamer {
     MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
   }
 
-  static func updateNowPlayingInfo(_ player: MediaPlayer) {
+  public static func updateNowPlayingInfo(_ player: MediaPlayer) {
     let mediaType: MPNowPlayingInfoMediaType = player.currentItem?.isVideoTracksAvailable() == true ? .video : .audio
     let duration = player.currentItem?.asset.duration.seconds ?? 0.0
 
@@ -193,11 +196,11 @@ class PlaylistMediaStreamer {
     MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
   }
 
-  static func clearNowPlayingInfo() {
+  public static func clearNowPlayingInfo() {
     MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
   }
 
-  static func setNowPlayingMediaArtwork(image: UIImage?) {
+  public static func setNowPlayingMediaArtwork(image: UIImage?) {
     if let image = image {
       let artwork = MPMediaItemArtwork(
         boundsSize: image.size,
@@ -212,7 +215,7 @@ class PlaylistMediaStreamer {
     }
   }
 
-  static func setNowPlayingMediaArtwork(artwork: MPMediaItemArtwork?) {
+  public static func setNowPlayingMediaArtwork(artwork: MPMediaItemArtwork?) {
     if let artwork = artwork {
       var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
       nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
@@ -220,7 +223,7 @@ class PlaylistMediaStreamer {
     }
   }
 
-  static func getMimeType(_ url: URL) async -> String? {
+  public static func getMimeType(_ url: URL) async -> String? {
     let request: URLRequest = {
       var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10.0)
 
