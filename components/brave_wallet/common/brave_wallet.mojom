@@ -1962,6 +1962,9 @@ interface BraveWalletService {
   // Converts a set of ETH addresses to FIL delegated addresses
   ConvertFEVMToFVMAddress(bool is_mainnet, array<string> fevm_addresses) => (map<string, string> result);
 
+  // Returns receiving address for an account. For ETC/SOL/FIL it's account
+  // address. For BTC it checks if 'next receive address' is still not
+  // transacted and tries next one if it is(prefs are changed).
   GenerateReceiveAddress(AccountId account_id)
     => (string? address, string? error_message);
 };

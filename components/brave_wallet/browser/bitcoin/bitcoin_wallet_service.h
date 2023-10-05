@@ -52,6 +52,7 @@ class BitcoinWalletService : public KeyedService,
                     bool change,
                     RunDiscoveryCallback callback) override;
 
+  // address -> related utxo list
   using UtxoMap = std::map<std::string, bitcoin_rpc::UnspentOutputs>;
   using GetUtxosCallback =
       base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
