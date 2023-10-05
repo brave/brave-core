@@ -785,6 +785,22 @@ class SettingsViewController: TableViewController {
             let histogramsController = self.p3aUtilities.histogramsController().then {
               $0.title = "Histograms (p3a)"
             }
+            if #available(iOS 16.0, *) {
+              // TODO: Replace this with property access when exposed from brave-core side
+              let webView = histogramsController.value(forKey: "_webView") as! WKWebView // swiftlint:disable:this force_cast
+              webView.isFindInteractionEnabled = true
+              histogramsController.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                systemItem: .search,
+                primaryAction: .init { [weak webView] _ in
+                  guard let findInteraction = webView?.findInteraction,
+                        !findInteraction.isFindNavigatorVisible else {
+                    return
+                  }
+                  findInteraction.searchText = ""
+                  findInteraction.presentFindNavigator(showingReplace: false)
+                }
+              )
+            }
             self.navigationController?.pushViewController(histogramsController, animated: true)
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
