@@ -205,12 +205,18 @@ void BraveVPNButton::OnConnectionStateChanged(ConnectionState state) {
     // the button in the error state until we get it clearly fixed.
     return;
   }
+  UpdateButtonState();
   UpdateColorsAndInsets();
+}
+
+void BraveVPNButton::UpdateButtonState() {
+  is_error_state_ = IsConnectError();
 }
 
 void BraveVPNButton::OnPurchasedStateChanged(
     brave_vpn::mojom::PurchasedState state,
     const absl::optional<std::string>& description) {
+  UpdateButtonState();
   if (IsPurchased()) {
     UpdateColorsAndInsets();
   }
@@ -227,23 +233,20 @@ std::unique_ptr<views::Border> BraveVPNButton::GetBorder(
 }
 
 void BraveVPNButton::UpdateColorsAndInsets() {
-  const bool is_connect_error = IsConnectError();
-  is_error_state_ = is_connect_error;
-
   ui::ColorProvider* cp = GetColorProvider();
   if (!cp) {
     return;
   }
 
   const auto bg_color =
-      cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBackgroundNormal
-                                    : kColorBraveVpnButtonBackgroundNormal);
+      cp->GetColor(is_error_state_ ? kColorBraveVpnButtonErrorBackgroundNormal
+                                   : kColorBraveVpnButtonBackgroundNormal);
   SetBackground(views::CreateRoundedRectBackground(bg_color, kButtonRadius));
 
-  SetEnabledTextColors(cp->GetColor(is_connect_error
+  SetEnabledTextColors(cp->GetColor(is_error_state_
                                         ? kColorBraveVpnButtonTextError
                                         : kColorBraveVpnButtonText));
-  if (is_connect_error) {
+  if (is_error_state_) {
     SetImage(
         views::Button::STATE_NORMAL,
         gfx::CreateVectorIcon(kVpnIndicatorErrorIcon,
@@ -271,16 +274,16 @@ void BraveVPNButton::UpdateColorsAndInsets() {
   // border color are mixed as both have alpha value.
   // Draw border only for error state.
   SetBorder(GetBorder(color_utils::GetResultingPaintColor(
-      cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBorder
-                                    : kColorBraveVpnButtonBorder),
+      cp->GetColor(is_error_state_ ? kColorBraveVpnButtonErrorBorder
+                                   : kColorBraveVpnButtonBorder),
       bg_color)));
 
   auto* ink_drop_host = views::InkDrop::Get(this);
 
   // Use different ink drop hover color for each themes.
   auto target_base_color = color_utils::GetResultingPaintColor(
-      cp->GetColor(is_connect_error ? kColorBraveVpnButtonErrorBackgroundHover
-                                    : kColorBraveVpnButtonBorder),
+      cp->GetColor(is_error_state_ ? kColorBraveVpnButtonErrorBackgroundHover
+                                   : kColorBraveVpnButtonBorder),
       bg_color);
   bool need_ink_drop_color_update =
       target_base_color != ink_drop_host->GetBaseColor();

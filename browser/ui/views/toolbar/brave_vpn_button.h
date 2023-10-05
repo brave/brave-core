@@ -63,6 +63,7 @@ class BraveVPNButton : public ToolbarButton,
   bool IsPurchased() const;
   std::unique_ptr<views::Border> GetBorder(SkColor border_color) const;
   void OnButtonPressed(const ui::Event& event);
+  void UpdateButtonState();
 
   bool is_error_state_ = false;
   absl::optional<brave_vpn::mojom::ConnectionState>
