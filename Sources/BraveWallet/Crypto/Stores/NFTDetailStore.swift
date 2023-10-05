@@ -48,13 +48,15 @@ struct NFTMetadata: Codable, Equatable {
   }
 }
 
-class NFTDetailStore: ObservableObject {
+class NFTDetailStore: ObservableObject, WalletObserverStore {
   private let rpcService: BraveWalletJsonRpcService
   private let ipfsApi: IpfsAPI
   let nft: BraveWallet.BlockchainToken
   @Published var isLoading: Bool = false
   @Published var nftMetadata: NFTMetadata?
   @Published var networkInfo: BraveWallet.NetworkInfo = .init()
+  
+  var isObserving: Bool = false
 
   init(
     rpcService: BraveWalletJsonRpcService,

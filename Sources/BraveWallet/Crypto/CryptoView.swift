@@ -137,6 +137,9 @@ public struct CryptoView: View {
                   ),
                   networkStore: store.networkStore
                 )
+                .onDisappear {
+                  store.closeAccountActivityStore(for: walletStore.keyringStore.selectedAccount)
+                }
                 .toolbar {
                   dismissButtonToolbarContents
                 }

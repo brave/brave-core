@@ -7,7 +7,7 @@ import BraveCore
 import BraveShared
 import SwiftUI
 
-class NetworkSelectionStore: ObservableObject {
+class NetworkSelectionStore: ObservableObject, WalletObserverStore {
   
   enum Mode: Equatable {
     case select(isForOrigin: Bool)
@@ -25,6 +25,8 @@ class NetworkSelectionStore: ObservableObject {
   @Published var isPresentingAddAccount: Bool = false
   /// The network the user wishes to choose for adding a custom asset
   @Published var networkSelectionInForm: BraveWallet.NetworkInfo?
+  
+  var isObserving: Bool = false
   
   init(
     mode: Mode = .select(isForOrigin: false),

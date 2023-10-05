@@ -14,7 +14,7 @@ struct CoinViewModel: Identifiable {
   var priceChangePercentage24h: String
 }
 
-public class MarketStore: ObservableObject {
+public class MarketStore: ObservableObject, WalletObserverStore {
   /// Avalaible coins in market
   @Published var coins: [BraveWallet.CoinMarket] = []
   /// Currency code for prices
@@ -39,6 +39,7 @@ public class MarketStore: ObservableObject {
     $0.minimumFractionDigits = 2
     $0.roundingMode = .up
   }
+  var isObserving: Bool = false
   
   init(
     assetRatioService: BraveWalletAssetRatioService,

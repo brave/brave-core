@@ -10,7 +10,7 @@ import Data
 import Preferences
 import Combine
 
-public class SettingsStore: ObservableObject {
+public class SettingsStore: ObservableObject, WalletObserverStore {
   /// The number of minutes to wait until the Brave Wallet is automatically locked
   @Published var autoLockInterval: AutoLockInterval = .minute {
     didSet {
@@ -80,6 +80,12 @@ public class SettingsStore: ObservableObject {
   private let txService: BraveWalletTxService
   let ipfsApi: IpfsAPI
   private let keychain: KeychainType
+  private var keyringServiceObserver: KeyringServiceObserver?
+  private var walletServiceObserver: WalletServiceObserver?
+  
+  var isObserving: Bool {
+    keyringServiceObserver != nil && walletServiceObserver != nil
+  }
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -96,8 +102,30 @@ public class SettingsStore: ObservableObject {
     self.ipfsApi = ipfsApi
     self.keychain = keychain
 
-    keyringService.add(self)
-    walletService.add(self)
+    self.setupObservers()
+  }
+  
+  func tearDown() {
+    keyringServiceObserver = nil
+    walletServiceObserver = nil
+  }
+  
+  func setupObservers() {
+    guard !isObserving else { return }
+    self.keyringServiceObserver = KeyringServiceObserver(
+      keyringService: keyringService,
+      _autoLockMinutesChanged: { [weak self] in
+        self?.keyringService.autoLockMinutes { minutes in
+          self?.autoLockInterval = .init(value: minutes)
+        }
+      }
+    )
+    self.walletServiceObserver = WalletServiceObserver(
+      walletService: walletService,
+      _onDefaultBaseCurrencyChanged: { [weak self] currency in
+        self?.currencyCode = CurrencyCode(code: currency)
+      }
+    )
   }
   
   func setup() {
@@ -166,76 +194,18 @@ public class SettingsStore: ObservableObject {
   }
 }
 
-extension SettingsStore: BraveWalletKeyringServiceObserver {
-  public func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
+#if DEBUG
+// for testing
+extension SettingsStore {
+  func autoLockMinutesChanged() {
+    keyringServiceObserver?.autoLockMinutesChanged()
   }
   
-  public func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
-  }
-  
-  public func keyringReset() {
-  }
-  
-  public func locked() {
-  }
-  
-  public func unlocked() {
-  }
-  
-  public func backedUp() {
-  }
-  
-  public func accountsChanged() {
-  }
-  
-  public func autoLockMinutesChanged() {
-    keyringService.autoLockMinutes { [weak self] minutes in
-      self?.autoLockInterval = .init(value: minutes)
-    }
-  }
-  
-  public func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
-  }
-  
-  public func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
-  }
-  
-  public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
+  func onDefaultBaseCurrencyChanged(_ currency: String) {
+    walletServiceObserver?.onDefaultBaseCurrencyChanged(currency)
   }
 }
-
-extension SettingsStore: BraveWalletBraveWalletServiceObserver {
-  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
-  }
-  
-  public func onDefaultWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-  
-  public func onDefaultBaseCurrencyChanged(_ currency: String) {
-    currencyCode = CurrencyCode(code: currency)
-  }
-  
-  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
-  }
-  
-  public func onNetworkListChanged() {
-  }
-  
-  public func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-  
-  public func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-  
-  public func onDiscoverAssetsStarted() {
-  }
-  
-  public func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
-  }
-  
-  public func onResetWallet() {
-  }
-}
+#endif
 
 struct CurrencyCode: Hashable, Identifiable {
   let code: String

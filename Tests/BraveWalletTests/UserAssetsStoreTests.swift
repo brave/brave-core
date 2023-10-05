@@ -24,7 +24,7 @@ class UserAssetsStoreTests: XCTestCase {
     .fil: [.mockFilToken]
   ]
   
-  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService) {
+  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService, BraveWallet.TestBraveWalletService) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     
@@ -43,12 +43,15 @@ class UserAssetsStoreTests: XCTestCase {
     }
     
     let assetRatioService = BraveWallet.TestAssetRatioService()
+    
+    let walletService = BraveWallet.TestBraveWalletService()
+    walletService._addObserver = { _ in }
 
-    return (keyringService, rpcService, blockchainRegistry, assetRatioService)
+    return (keyringService, rpcService, blockchainRegistry, assetRatioService, walletService)
   }
   
   func testUpdate() {
-    let (keyringService, rpcService, blockchainRegistry, assetRatioService) = setupServices()
+    let (keyringService, rpcService, blockchainRegistry, assetRatioService, walletService) = setupServices()
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { networks in
       var result: [NetworkAssets] = []
@@ -94,6 +97,7 @@ class UserAssetsStoreTests: XCTestCase {
       rpcService: rpcService,
       keyringService: keyringService,
       assetRatioService: assetRatioService,
+      walletService: walletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )
@@ -143,7 +147,7 @@ class UserAssetsStoreTests: XCTestCase {
   }
   
   @MainActor func testUpdateWithNetworkFilter() async {
-    let (keyringService, rpcService, blockchainRegistry, assetRatioService) = setupServices()
+    let (keyringService, rpcService, blockchainRegistry, assetRatioService, walletService) = setupServices()
     
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { networks in
@@ -190,6 +194,7 @@ class UserAssetsStoreTests: XCTestCase {
       rpcService: rpcService,
       keyringService: keyringService,
       assetRatioService: assetRatioService,
+      walletService: walletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )

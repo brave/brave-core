@@ -91,6 +91,11 @@ class SettingsViewController: TableViewController {
 
     super.init(style: .insetGrouped)
   }
+  
+  deinit {
+    keyringStore?.tearDown()
+    cryptoStore?.tearDown()
+  }
 
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) {
@@ -841,6 +846,9 @@ class SettingsViewController: TableViewController {
           Row(
             text: Strings.Wallet.web3,
             selection: { [unowned self] in
+              // iOS17 memory leak issue #8160
+              keyringStore?.setupObservers()
+              cryptoStore?.setupObservers()
               let web3SettingsView = Web3SettingsView(
                 settingsStore: settingsStore,
                 networkStore: cryptoStore?.networkStore,

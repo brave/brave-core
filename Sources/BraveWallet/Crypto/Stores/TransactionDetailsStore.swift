@@ -6,7 +6,7 @@
 import SwiftUI
 import BraveCore
 
-class TransactionDetailsStore: ObservableObject {
+class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   
   let transaction: BraveWallet.TransactionInfo
   @Published private(set) var parsedTransaction: ParsedTransaction?
@@ -39,6 +39,8 @@ class TransactionDetailsStore: ObservableObject {
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
+  
+  var isObserving: Bool = false
   
   init(
     transaction: BraveWallet.TransactionInfo,

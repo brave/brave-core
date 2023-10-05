@@ -10,7 +10,7 @@ import BigNumber
 import Combine
 
 /// A store contains data for sending tokens
-public class SendTokenStore: ObservableObject {
+public class SendTokenStore: ObservableObject, WalletObserverStore {
   /// User's asset with selected account and chain
   @Published var userAssets: [BraveWallet.BlockchainToken] = []
   /// The current selected token to send. Default with nil value.
@@ -153,6 +153,12 @@ public class SendTokenStore: ObservableObject {
   private var metadataCache: [String: NFTMetadata] = [:]
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
+  private var keyringServiceObserver: KeyringServiceObserver?
+  private var rpcServiceObserver: JsonRpcServiceObserver?
+  
+  var isObserving: Bool {
+    keyringServiceObserver != nil && rpcServiceObserver != nil
+  }
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -179,8 +185,44 @@ public class SendTokenStore: ObservableObject {
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
 
-    self.keyringService.add(self)
-    self.rpcService.add(self)
+    self.setupObservers()
+  }
+  
+  func tearDown() {
+    keyringServiceObserver = nil
+    rpcServiceObserver = nil
+    
+    selectTokenStore.tearDown()
+  }
+  
+  func setupObservers() {
+    guard !isObserving else { return }
+    self.keyringServiceObserver = KeyringServiceObserver(
+      keyringService: keyringService,
+      _selectedWalletAccountChanged: { [weak self] _ in
+        guard let self else { return }
+        self.selectedSendTokenBalance = nil
+        self.addressError = nil
+        self.update() // `selectedSendTokenBalance` needs updated for new account
+        self.validateSendAddress() // `sendAddress` may equal selected account address
+      }
+    )
+    self.rpcServiceObserver = JsonRpcServiceObserver(
+      rpcService: rpcService,
+      _chainChangedEvent: { [weak self] _, coin, _ in
+        guard let self else { return }
+        self.selectedSendToken = nil
+        self.selectedSendTokenBalance = nil
+        if coin != .eth { // if changed to ethereum coin network, address is still valid
+          // offchain resolve is for ENS-only, for other coin types the address is invalid
+          self.isOffchainResolveRequired = false
+        }
+        self.update() // `selectedSendToken` & `selectedSendTokenBalance` need updated for new chain
+        self.validateSendAddress() // `sendAddress` may no longer be valid if coin type changed
+      }
+    )
+    
+    self.selectTokenStore.setupObservers()
   }
   
   func suggestedAmountTapped(_ amount: ShortcutAmountGrid.Amount) {
@@ -657,60 +699,4 @@ public class SendTokenStore: ObservableObject {
   }
 }
 
-extension SendTokenStore: BraveWalletKeyringServiceObserver {
-  public func keyringReset() {
-  }
 
-  public func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
-  }
-
-  public func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
-  }
-
-  public func locked() {
-  }
-
-  public func unlocked() {
-  }
-
-  public func backedUp() {
-  }
-
-  public func accountsChanged() {
-  }
-
-  public func autoLockMinutesChanged() {
-  }
-
-  public func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
-    selectedSendTokenBalance = nil
-    addressError = nil
-    update() // `selectedSendTokenBalance` needs updated for new account
-    validateSendAddress() // `sendAddress` may equal selected account address
-  }
-  
-  public func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
-  }
-  
-  public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
-  }
-}
-
-extension SendTokenStore: BraveWalletJsonRpcServiceObserver {
-  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
-    selectedSendToken = nil
-    selectedSendTokenBalance = nil
-    if coin != .eth { // if changed to ethereum coin network, address is still valid
-      // offchain resolve is for ENS-only, for other coin types the address is invalid
-      isOffchainResolveRequired = false
-    }
-    update() // `selectedSendToken` & `selectedSendTokenBalance` need updated for new chain
-    validateSendAddress() // `sendAddress` may no longer be valid if coin type changed
-  }
-
-  public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
-  }
-
-  public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
-  }
-}

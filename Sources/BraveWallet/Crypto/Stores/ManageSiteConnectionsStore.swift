@@ -29,10 +29,12 @@ extension Array where Element == SiteConnection {
   }
 }
 
-class ManageSiteConnectionsStore: ObservableObject {
+class ManageSiteConnectionsStore: ObservableObject, WalletObserverStore {
   @Published var siteConnections: [SiteConnection] = []
   
   var keyringStore: KeyringStore
+  
+  var isObserving: Bool = false
   
   init(keyringStore: KeyringStore) {
     self.keyringStore = keyringStore

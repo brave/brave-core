@@ -32,7 +32,7 @@ enum AssetDetailType: Identifiable {
   }
 }
 
-class AssetDetailStore: ObservableObject {
+class AssetDetailStore: ObservableObject, WalletObserverStore {
   @Published private(set) var isInitialState: Bool = true
   @Published private(set) var isLoadingPrice: Bool = false
   @Published private(set) var isLoadingChart: Bool = false
@@ -81,6 +81,9 @@ class AssetDetailStore: ObservableObject {
   /// A list of tokens that are supported with the current selected network for all supported
   /// on-ramp providers.
   private var allBuyTokensAllOptions: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] = [:]
+  private var keyringServiceObserver: KeyringServiceObserver?
+  private var txServiceObserver: TxServiceObserver?
+  private var walletServiceObserver: WalletServiceObserver?
   let assetDetailType: AssetDetailType
   var assetDetailToken: BraveWallet.BlockchainToken {
     switch assetDetailType {
@@ -102,6 +105,10 @@ class AssetDetailStore: ObservableObject {
         $0.name = coinMarket.name
       }
     }
+  }
+  
+  var isObserving: Bool {
+    keyringServiceObserver != nil && txServiceObserver != nil && walletServiceObserver != nil
   }
 
   init(
@@ -127,13 +134,39 @@ class AssetDetailStore: ObservableObject {
     self.assetManager = userAssetManager
     self.assetDetailType = assetDetailType
 
-    self.keyringService.add(self)
-    self.txService.add(self)
-    self.walletService.add(self)
-
+    self.setupObservers()
+    
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
+  }
+  
+  func tearDown() {
+    keyringServiceObserver = nil
+    txServiceObserver = nil
+    walletServiceObserver = nil
+  }
+  
+  func setupObservers() {
+    guard !isObserving else { return }
+    self.keyringServiceObserver = KeyringServiceObserver(
+      keyringService: keyringService,
+      _accountsChanged: { [weak self] in
+        self?.update()
+      }
+    )
+    self.txServiceObserver = TxServiceObserver(
+      txService: txService,
+      _onTransactionStatusChanged: { [weak self] _ in
+        self?.update()
+      }
+    )
+    self.walletServiceObserver = WalletServiceObserver(
+      walletService: walletService,
+      _onDefaultBaseCurrencyChanged: { [weak self] currency in
+        self?.currencyCode = currency
+      }
+    )
   }
 
   private let percentFormatter = NumberFormatter().then {
@@ -368,86 +401,5 @@ class AssetDetailStore: ObservableObject {
     } else {
       return false
     }
-  }
-}
-
-extension AssetDetailStore: BraveWalletKeyringServiceObserver {
-  func keyringReset() {
-  }
-
-  func accountsChanged() {
-    update()
-  }
-
-  func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
-  }
-
-  func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
-  }
-
-  func locked() {
-  }
-
-  func unlocked() {
-  }
-
-  func backedUp() {
-  }
-
-  func autoLockMinutesChanged() {
-  }
-
-  func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
-  }
-  
-  func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
-  }
-  
-  func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
-  }
-}
-
-extension AssetDetailStore: BraveWalletTxServiceObserver {
-  func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
-  }
-  func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
-  }
-  func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
-    update()
-  }
-  func onTxServiceReset() {
-  }  
-}
-
-extension AssetDetailStore: BraveWalletBraveWalletServiceObserver {
-  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
-  }
-
-  public func onDefaultWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-
-  public func onDefaultBaseCurrencyChanged(_ currency: String) {
-    currencyCode = currency
-  }
-
-  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
-  }
-
-  public func onNetworkListChanged() {
-  }
-  
-  func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-  
-  func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
-  }
-  
-  func onDiscoverAssetsStarted() {
-  }
-  
-  func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
-  }
-
-  func onResetWallet() {
   }
 }

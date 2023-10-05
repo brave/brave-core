@@ -52,6 +52,7 @@ public enum PresentingContext {
 public class WalletHostingViewController: UIHostingController<CryptoView> {
   public weak var delegate: BraveWalletDelegate?
   private var cancellable: AnyCancellable?
+  private var walletStore: WalletStore?
   
   public init(
     walletStore: WalletStore,
@@ -98,6 +99,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
           self.dismiss(animated: true)
         }
       }
+    self.walletStore = walletStore
   }
   
   @available(*, unavailable)
@@ -107,6 +109,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
   
   deinit {
     gesture.view?.removeGestureRecognizer(gesture)
+    walletStore?.isPresentingFullWallet = false
   }
   
   private let gesture: WalletInteractionGestureRecognizer
@@ -115,6 +118,11 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
     super.viewDidAppear(animated)
     view.window?.addGestureRecognizer(gesture)
     UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
+  }
+  
+  public override func viewDidLoad() {
+    super.viewDidLoad()
+    walletStore?.isPresentingFullWallet = true
   }
   
   // MARK: -
