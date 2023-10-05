@@ -23,7 +23,7 @@ class ConfirmAutocompleteBubbleControllerImpl
 
   ~ConfirmAutocompleteBubbleControllerImpl() override;
 
-  void ShowBubble(base::OnceCallback<void(bool)> callback);
+  void ShowBubble(base::OnceCallback<void(absl::optional<bool>)> callback);
 
   // ConfirmAutocompleteBubbleController:
   std::u16string GetWindowTitle() const override;
@@ -41,7 +41,7 @@ class ConfirmAutocompleteBubbleControllerImpl
   void DoShowBubble() override;
 
  private:
-  base::OnceCallback<void(bool)> callback_;
+  base::OnceCallback<void(absl::optional<bool>)> callback_;
 
   friend class content::WebContentsUserData<
       ConfirmAutocompleteBubbleControllerImpl>;

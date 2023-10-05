@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.cc b/chrome/browser/ui/autofill/chrome_autofill_client.cc
-index f858890be28658620fbed4e023e38c319b988f93..078e730f05f4b003a5a7db1d2ebf8bfdf00f768a 100644
+index f858890be28658620fbed4e023e38c319b988f93..d1b63122bd111eef050277da79d4b70ca70cd82d 100644
 --- a/chrome/browser/ui/autofill/chrome_autofill_client.cc
 +++ b/chrome/browser/ui/autofill/chrome_autofill_client.cc
 @@ -15,6 +15,7 @@
@@ -15,7 +15,7 @@ index f858890be28658620fbed4e023e38c319b988f93..078e730f05f4b003a5a7db1d2ebf8bfd
  }
  
 +void ChromeAutofillClient::ConfirmAutocomplete(
-+    base::OnceCallback<void(bool)> callback) const {
++    base::OnceCallback<void(absl::optional<bool>)> callback) const {
 +  ConfirmAutocompleteBubbleControllerImpl::CreateForWebContents(web_contents());
 +  ConfirmAutocompleteBubbleControllerImpl::FromWebContents(web_contents())
 +      ->ShowBubble(std::move(callback));

@@ -1,5 +1,5 @@
 diff --git a/components/autofill/core/browser/autocomplete_history_manager.h b/components/autofill/core/browser/autocomplete_history_manager.h
-index 5ced0394d39fb416af59a8706c73f5099a991eeb..809006589478847fe68982453ebfb334b8bfd62a 100644
+index 5ced0394d39fb416af59a8706c73f5099a991eeb..9a62248f854b9846bd71c6f989af68618c262d25 100644
 --- a/components/autofill/core/browser/autocomplete_history_manager.h
 +++ b/components/autofill/core/browser/autocomplete_history_manager.h
 @@ -12,6 +12,7 @@
@@ -25,7 +25,7 @@ index 5ced0394d39fb416af59a8706c73f5099a991eeb..809006589478847fe68982453ebfb334
  
 +  void OnConfirmAutocomplete(
 +      std::vector<FormFieldData> autocomplete_saveable_fields,
-+      bool user_decision);
++      absl::optional<bool> user_decision);
 +
    // Returns true if the given |field| and its value are valid to be saved as a
    // new or updated Autocomplete entry.

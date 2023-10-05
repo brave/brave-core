@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.h b/chrome/browser/ui/autofill/chrome_autofill_client.h
-index 22fbf3f0c1a949c272ee290f4ec7dd4b3d6459f6..acd1348b727920380257cb9bd661f70546bfd0d8 100644
+index 22fbf3f0c1a949c272ee290f4ec7dd4b3d6459f6..1943a9b64b9f83096f39b046f9872bdde7aba760 100644
 --- a/chrome/browser/ui/autofill/chrome_autofill_client.h
 +++ b/chrome/browser/ui/autofill/chrome_autofill_client.h
 @@ -187,6 +187,8 @@ class ChromeAutofillClient : public ContentAutofillClient,
@@ -7,7 +7,7 @@ index 22fbf3f0c1a949c272ee290f4ec7dd4b3d6459f6..acd1348b727920380257cb9bd661f705
                                bool should_show_prompt,
                                LocalSaveIbanPromptCallback callback) override;
 +  void ConfirmAutocomplete(
-+      base::OnceCallback<void(bool)> callback) const override;
++      base::OnceCallback<void(absl::optional<bool>)> callback) const override;
    void ShowWebauthnOfferDialog(
        WebauthnDialogCallback offer_dialog_callback) override;
    void ShowWebauthnVerifyPendingDialog(

@@ -1,5 +1,5 @@
 diff --git a/components/autofill/core/browser/autocomplete_history_manager.cc b/components/autofill/core/browser/autocomplete_history_manager.cc
-index d0a9e5195744f89758c3a9b4c341e6a30e0b23ee..5b423284d1f4ca2d0d451fe8548f0a953c673135 100644
+index d0a9e5195744f89758c3a9b4c341e6a30e0b23ee..3378ef2b710bc641e960f737846cd32750504e49 100644
 --- a/components/autofill/core/browser/autocomplete_history_manager.cc
 +++ b/components/autofill/core/browser/autocomplete_history_manager.cc
 @@ -118,8 +118,8 @@ bool AutocompleteHistoryManager::OnGetSingleFieldSuggestions(
@@ -33,17 +33,20 @@ index d0a9e5195744f89758c3a9b4c341e6a30e0b23ee..5b423284d1f4ca2d0d451fe8548f0a95
    }
  }
  
-@@ -314,6 +321,16 @@ void AutocompleteHistoryManager::OnAutofillCleanupReturned(
+@@ -314,6 +321,19 @@ void AutocompleteHistoryManager::OnAutofillCleanupReturned(
    Notify(NotificationType::AutocompleteCleanupDone);
  }
  
 +void AutocompleteHistoryManager::OnConfirmAutocomplete(
 +    std::vector<FormFieldData> autocomplete_saveable_fields,
-+    bool user_decision) {
-+  pref_service_->SetBoolean("brave.autocomplete", user_decision);
-+  if (user_decision && profile_database_) {
-+    profile_database_->AddFormFields(autocomplete_saveable_fields);
-+    Notify(NotificationType::AutocompleteFormSubmitted);  // maybe fire earlier?
++    absl::optional<bool> user_decision) {
++  if (user_decision) {
++    pref_service_->SetBoolean("brave.autocomplete", *user_decision);
++    if (*user_decision && profile_database_) {
++      profile_database_->AddFormFields(autocomplete_saveable_fields);
++      Notify(
++          NotificationType::AutocompleteFormSubmitted);  // maybe fire earlier?
++    }
 +  }
 +}
 +

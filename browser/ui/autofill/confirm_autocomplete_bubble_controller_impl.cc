@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "absl/types/optional.h"
 #include "chrome/browser/ui/autofill/autofill_bubble_handler.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -15,7 +16,7 @@ ConfirmAutocompleteBubbleControllerImpl::
     ~ConfirmAutocompleteBubbleControllerImpl() = default;
 
 void ConfirmAutocompleteBubbleControllerImpl::ShowBubble(
-    base::OnceCallback<void(bool)> callback) {
+    base::OnceCallback<void(absl::optional<bool>)> callback) {
   if (bubble_view()) {
     return;
   }
@@ -50,7 +51,10 @@ void ConfirmAutocompleteBubbleControllerImpl::OnBubbleClosed(
     views::Widget::ClosedReason closed_reason) {
   if (closed_reason != views::Widget::ClosedReason::kAcceptButtonClicked) {
     DCHECK(callback_);
-    std::move(callback_).Run(false);
+    std::move(callback_).Run(
+        closed_reason == views::Widget::ClosedReason::kCancelButtonClicked
+            ? absl::make_optional(false)
+            : absl::nullopt);
   }
 
   set_bubble_view(nullptr);
