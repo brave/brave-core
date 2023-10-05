@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_deposit_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_fund_wallet_page_generated_map.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_send_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -59,32 +60,11 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
   }
 
   // Add required resources.
-  if (url.path() == kWalletSwapPagePath) {
-    webui::SetupWebUIDataSource(
-        source,
-        base::make_span(kBraveWalletSwapPageGenerated,
-                        kBraveWalletSwapPageGeneratedSize),
-        IDR_BRAVE_WALLET_SWAP_PAGE_HTML);
-  } else if (url.path() == kWalletSendPagePath) {
-    webui::SetupWebUIDataSource(
-        source,
-        base::make_span(kBraveWalletSendPageGenerated,
-                        kBraveWalletSendPageGeneratedSize),
-        IDR_BRAVE_WALLET_SEND_PAGE_HTML);
-
-  } else if (url.path() == kWalletBuyPagePath) {
-    webui::SetupWebUIDataSource(
-        source,
-        base::make_span(kBraveWalletFundWalletPageGenerated,
-                        kBraveWalletFundWalletPageGeneratedSize),
-        IDR_BRAVE_WALLET_FUND_WALLET_PAGE_HTML);
-
-  } else if (url.path() == kWalletDepositPagePath) {
-    webui::SetupWebUIDataSource(
-        source,
-        base::make_span(kBraveWalletDepositPageGenerated,
-                        kBraveWalletDepositPageGeneratedSize),
-        IDR_BRAVE_WALLET_DEPOSIT_PAGE_HTML);
+  if (url.path() == kWalletPagePath) {
+    webui::SetupWebUIDataSource(source,
+                                base::make_span(kBraveWalletPageGenerated,
+                                                kBraveWalletPageGeneratedSize),
+                                IDR_WALLET_PAGE_HTML);
   } else {
     NOTREACHED() << "Failed to find page resources for:" << url.path();
   }

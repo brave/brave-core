@@ -4053,6 +4053,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_REQUEST_ID" desc="Sign in with Brave Wallet Request ID label">
       Request ID
     </message>
+    <message name="IDS_OPEN_WEB_WALLET" desc="Label for open in browser web wallet action">
+      Open web wallet
+    </message>
   </messages>
   </release>
 </grit>

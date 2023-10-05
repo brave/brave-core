@@ -45,12 +45,12 @@
       </if>
 
       <!-- WebUI wallet resources -->
+      <include name="IDR_WALLET_PAGE_HTML" file="../brave_wallet_ui/page/wallet_page.html" type="BINDATA" />
+      <include name="IDR_BRAVE_WALLET_NFT_DISPLAY_HTML" file="../brave_wallet_ui/nft/nft.html" type="BINDATA" />
+      <include name="IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML" file="../brave_wallet_ui/market/market.html" type="BINDATA" />
       <if expr="not is_android">
-        <include name="IDR_WALLET_PAGE_HTML" file="../brave_wallet_ui/page/wallet_page.html" type="BINDATA" />
         <include name="IDR_WALLET_PANEL_HTML" file="../brave_wallet_ui/panel/wallet_panel.html" type="BINDATA" />
         <include name="IDR_BRAVE_WALLET_LEDGER_BRIDGE_HTML" file="../brave_wallet_ui/ledger/ledger.html" type="BINDATA" />
-        <include name="IDR_BRAVE_WALLET_NFT_DISPLAY_HTML" file="../brave_wallet_ui/nft/nft.html" type="BINDATA" />
-        <include name="IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML" file="../brave_wallet_ui/market/market.html" type="BINDATA" />
         <include name="IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML" file="../brave_wallet_ui/trezor/trezor.html" type="BINDATA" />
       </if>
 

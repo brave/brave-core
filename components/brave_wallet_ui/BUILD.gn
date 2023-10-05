@@ -9,36 +9,41 @@ import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/repack.gni")
 
 repack("resources") {
+  deps = [
+    "//brave/components/brave_wallet_ui/market:market_display_generated",
+    "//brave/components/brave_wallet_ui/nft:nft_display_generated",
+    "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
+  ]
+
+  sources = [
+    "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_page_generated.pak",
+    "$root_gen_dir/brave/components/market_display/resources/market_display_generated.pak",
+    "$root_gen_dir/brave/components/nft_display/resources/nft_display_generated.pak",
+  ]
   if (is_android) {
-    deps = [
+    deps += [
       "//brave/components/brave_wallet_ui/page/screens/android-buy/android:brave_wallet_fund_wallet_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/fund-wallet/android:brave_wallet_deposit_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/send/android:brave_wallet_send_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
     ]
 
-    sources = [
+    sources += [
       "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_deposit_page_generated.pak",
       "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_fund_wallet_page_generated.pak",
       "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_send_page_generated.pak",
       "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_swap_page_generated.pak",
     ]
   } else {
-    deps = [
+    deps += [
       "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
-      "//brave/components/brave_wallet_ui/market:market_display_generated",
-      "//brave/components/brave_wallet_ui/nft:nft_display_generated",
-      "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
       "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
     ]
 
-    sources = [
-      "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_page_generated.pak",
+    sources += [
       "$root_gen_dir/brave/components/brave_wallet_panel/resources/brave_wallet_panel_generated.pak",
       "$root_gen_dir/brave/components/ledger_bridge/resources/ledger_bridge_generated.pak",
-      "$root_gen_dir/brave/components/market_display/resources/market_display_generated.pak",
-      "$root_gen_dir/brave/components/nft_display/resources/nft_display_generated.pak",
       "$root_gen_dir/brave/components/trezor_bridge/resources/trezor_bridge_generated.pak",
     ]
   }

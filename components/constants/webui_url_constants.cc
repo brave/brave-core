@@ -40,6 +40,50 @@ const char kVPNPanelHost[] = "vpn-panel.top-chrome";
 const char kBraveUIWalletPageURL[] = "chrome://wallet/";
 const char kWalletPageHost[] = "wallet";
 #if BUILDFLAG(IS_ANDROID)
+const char kWalletPagePaths[300][100] = {
+    // WalletOrigin
+    "chrome://wallet",
+    // fund wallet page
+    "/crypto/fund-wallet",
+    "/crypto/deposit-funds",
+    "/crypto/deposit-funds/account",
+    // market
+    "/crypto/market",
+    // accounts
+    "/crypto/accounts",
+    // add account modals
+    "/crypto/accounts/add-account",
+    "/crypto/accounts/add-account/create/",
+    // import account modals
+    "/crypto/accounts/add-account/import/",
+    // wallet backup
+    "/crypto/backup-wallet",
+    "/crypto/backup-wallet/explain-recovery-phrase",
+    "/crypto/backup-wallet/backup-recovery-phrase",
+    "/crypto/backup-wallet/verify-recovery-phrase",
+    // wallet management
+    "/crypto/restore-wallet",
+    "/crypto/unlock",
+    // Activity (Transactions)
+    "/crypto/activity",
+    // portfolio
+    "/crypto/portfolio",
+    "/crypto/portfolio/assets",
+    "/crypto/portfolio/nfts",
+    // portfolio asset modals
+    "/crypto/portfolio/add-asset",
+    // swap
+    "/swap",
+    // send
+    "/send",
+    // dev bitcoin screen
+    "/dev-bitcoin",
+    // NFT Pining
+    "/crypto/local-ipfs-node",
+    "/crypto/inspect-nfts",
+    
+};
+const char kWalletPagePath[] = "/crypto/portfolio/assets";
 const char kWalletBuyPagePath[] = "/fund-wallet";
 const char kWalletSendPagePath[] = "/send";
 const char kWalletSwapPagePath[] = "/swap";

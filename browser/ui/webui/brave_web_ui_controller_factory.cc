@@ -192,6 +192,15 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   return nullptr;
 }
 
+bool IsWalletPath(const std::string& path) {
+  for (const std::string& wallet_path : kWalletPagePaths) {
+    if (wallet_path == path) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // Returns a function that can be used to create the right type of WebUI for a
 // tab, based on its URL. Returns NULL if the URL doesn't have WebUI associated
 // with it.
@@ -217,11 +226,12 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       (url.host_piece() == kIPFSWebUIHost &&
        ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
+// TODO(pav): Add regular expression path matching for desktop dynamic paths
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost &&
        (url.path() == kWalletSwapPagePath ||
         url.path() == kWalletSendPagePath || url.path() == kWalletBuyPagePath ||
-        url.path() == kWalletDepositPagePath)) ||
+        url.path() == kWalletDepositPagePath || IsWalletPath(url.path()))) ||
 #else
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&

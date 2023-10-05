@@ -110,6 +110,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             }
         } else if (item.getItemId() == R.id.help_center) {
             WalletUtils.openWalletHelpCenter(this);
+        } else if (item.getItemId() == R.id.open_web_wallet) {
+            WalletUtils.openWebWallet();
         }
         return super.onOptionsItemSelected(item);
     }
