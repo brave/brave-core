@@ -5,7 +5,6 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_features_internal_names.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "chrome/browser/flag_descriptions.h"
 #include "chrome/common/channel_info.h"
@@ -35,13 +34,6 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
     return true;
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST) && BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
-  // It's deprecated. Hide from brave://flags.
-  if (base::EqualsCaseInsensitiveASCII(kBraveVPNWireguardFeatureInternalName,
-                                       internal_name)) {
-    return true;
-  }
-#endif
   if (base::EqualsCaseInsensitiveASCII(flag_descriptions::kHttpsUpgradesName,
                                        internal_name)) {
     return true;
