@@ -165,7 +165,7 @@ TEST_F(BraveAdsVectorDataTest, AddElementWise) {
   vector_data_3.AddElementWise(vector_data_4);
 
   // Assert
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; ++i) {
     EXPECT_NEAR(vector_sum_1_2.at(i), vector_data_1.GetData().at(i), 0.001F);
     EXPECT_NEAR(vector_sum_2_1.at(i), vector_data_2.GetData().at(i), 0.001F);
     EXPECT_NEAR(vector_sum_3_4.at(i), vector_data_3.GetData().at(i), 0.001F);
@@ -191,7 +191,7 @@ TEST_F(BraveAdsVectorDataTest, DivideByScalar) {
   vector_data_4.DivideByScalar(-0.25F);
 
   // Assert
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; ++i) {
     EXPECT_NEAR(vector_1_division.at(i), vector_data_1.GetData().at(i), 0.001F);
     EXPECT_NEAR(vector_2_division.at(i), vector_data_2.GetData().at(i), 0.001F);
     EXPECT_NEAR(vector_3_division.at(i), vector_data_3.GetData().at(i), 0.001F);

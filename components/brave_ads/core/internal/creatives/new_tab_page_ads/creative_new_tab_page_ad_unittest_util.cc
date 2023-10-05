@@ -21,7 +21,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAdsForTesting(const int count) {
 
   CreativeNewTabPageAdList creative_ads;
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; ++i) {
     CreativeNewTabPageAdInfo creative_ad =
         BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids*/ true);
     creative_ad.segment = kSegments[i % std::size(kSegments)];

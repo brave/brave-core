@@ -146,7 +146,7 @@ absl::optional<LinearModel> ParsePipelineClassifier(
   }
 
   std::map</*class_name*/ std::string, /*bias*/ double> biases;
-  for (size_t i = 0; i < biases_list->size(); i++) {
+  for (size_t i = 0; i < biases_list->size(); ++i) {
     const base::Value& bias = (*biases_list)[i];
     if (!bias.is_double() && !bias.is_int()) {
       return absl::nullopt;

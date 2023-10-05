@@ -27,7 +27,7 @@ ConversionQueueItemList BuildConversionQueueItemsForTesting(
     const size_t count) {
   ConversionQueueItemList conversion_queue_items;
 
-  for (size_t i = 0; i < count; i++) {
+  for (size_t i = 0; i < count; ++i) {
     const ConversionQueueItemInfo conversion_queue_item =
         BuildConversionQueueItem(conversion, /*process_at*/ Now());
 

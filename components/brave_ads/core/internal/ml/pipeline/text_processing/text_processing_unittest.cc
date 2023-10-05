@@ -115,7 +115,7 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
   ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
-  for (size_t i = 0; i < train_texts.size(); i++) {
+  for (size_t i = 0; i < train_texts.size(); ++i) {
     std::unique_ptr<Data> text_data =
         std::make_unique<TextData>(train_texts[i]);
     const absl::optional<PredictionMap> prediction_map =
@@ -125,7 +125,7 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
   }
 
   // Assert
-  for (size_t i = 0; i < prediction_maps.size(); i++) {
+  for (size_t i = 0; i < prediction_maps.size(); ++i) {
     const PredictionMap& prediction_map = prediction_maps[i];
     for (const auto& pred : prediction_map) {
       const double other_prediction = pred.second;

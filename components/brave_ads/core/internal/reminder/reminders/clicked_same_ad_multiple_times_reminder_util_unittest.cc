@@ -36,7 +36,7 @@ HistoryItemInfo AddHistory(
   HistoryItemInfo history_item;
 
   AdInfo ad;
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; ++i) {
     if (i == 0 || should_use_random_creative_instance_uuid) {
       ad = BuildAdForTesting(AdType::kNotificationAd,
                              /*should_use_random_uuids*/ true);

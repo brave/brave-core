@@ -100,7 +100,7 @@ void MigrateFromVersion(const int from_version, ResultCallback callback) {
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
-  for (int i = from_version + 1; i <= to_version; i++) {
+  for (int i = from_version + 1; i <= to_version; ++i) {
     MigrateToVersion(&*transaction, i);
   }
 

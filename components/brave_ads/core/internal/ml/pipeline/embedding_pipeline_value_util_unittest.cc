@@ -85,7 +85,7 @@ TEST_F(BraveAdsEmbeddingPipelineValueUtilTest, FromValue) {
     const VectorData& token_embedding_vector_data = iter->second;
 
     // Assert
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; ++i) {
       EXPECT_NEAR(expected_embedding.GetData().at(i),
                   token_embedding_vector_data.GetData().at(i), 0.001F);
     }

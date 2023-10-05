@@ -486,7 +486,7 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
   // creative_id_conversions database table in database_issue_17231.sqlite
   // contains 189 rows of which two are duplicates, these duplicate rows are
   // removed after migration to the creative_set_conversions database table.
-  for (int i = 0; i < 187; i++) {
+  for (int i = 0; i < 187; ++i) {
     CreativeSetConversionInfo expected_creative_set_conversion;
     expected_creative_set_conversion.id = creative_set_ids.at(i);
     expected_creative_set_conversion.url_pattern = url_patterns.at(i);

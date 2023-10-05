@@ -18,7 +18,7 @@ CreativePromotedContentAdList BuildCreativePromotedContentAdsForTesting(
 
   CreativePromotedContentAdList creative_ads;
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; ++i) {
     CreativePromotedContentAdInfo creative_ad =
         BuildCreativePromotedContentAdForTesting(
             /*should_use_random_uuids*/ true);

@@ -23,7 +23,7 @@ absl::optional<T> MaybeSampleCreativeAd(
 
   double sum = 0.0;
 
-  for (size_t i = 0; i < creative_ads.size(); i++) {
+  for (size_t i = 0; i < creative_ads.size(); ++i) {
     sum += creative_ad_probabilities.at(i);
 
     if (rand <= sum || base::IsApproximatelyEqual(

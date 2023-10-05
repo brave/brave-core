@@ -96,7 +96,7 @@ BuildTransactionsForReconciledTransactionsThisMonth(
 
   // Add |transaction_count - 1| transactions with a value of 0.0 to migrate ads
   // received this month
-  for (int i = 0; i < payment->transaction_count - 1; i++) {
+  for (int i = 0; i < payment->transaction_count - 1; ++i) {
     reconciled_transactions.push_back(BuildTransaction(time,
                                                        /*value*/ 0.0));
   }

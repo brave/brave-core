@@ -20,7 +20,7 @@ CreativeInlineContentAdList BuildCreativeInlineContentAdsForTesting(
 
   CreativeInlineContentAdList creative_ads;
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; ++i) {
     CreativeInlineContentAdInfo creative_ad =
         BuildCreativeInlineContentAdForTesting(
             /*should_use_random_uuids*/ true);

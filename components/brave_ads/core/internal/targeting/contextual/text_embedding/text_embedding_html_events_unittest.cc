@@ -61,7 +61,7 @@ TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, LogEvent) {
 
 TEST_F(BraveAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
   // Arrange
-  for (int i = 0; i < kTextEmbeddingHistorySize.Get() + 3; i++) {
+  for (int i = 0; i < kTextEmbeddingHistorySize.Get() + 3; ++i) {
     const ml::pipeline::TextEmbeddingInfo text_embedding =
         ml::pipeline::BuildTextEmbeddingForTesting();
     const TextEmbeddingHtmlEventInfo text_embedding_html_event =

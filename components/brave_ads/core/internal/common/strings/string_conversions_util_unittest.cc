@@ -34,7 +34,7 @@ TEST(BraveAdsStringConversionsUtilTest, DelimitedStringToVector) {
       DelimitedStringToVector("1.2,2.3,3.4,4.5,5.6", kDelimiter);
 
   // Assert
-  for (size_t i = 0; i < vector.size(); i++) {
+  for (size_t i = 0; i < vector.size(); ++i) {
     EXPECT_NEAR(kTestVector[i], vector[i], 0.001F);
   }
 }
@@ -47,7 +47,7 @@ TEST(BraveAdsStringConversionsUtilTest, VectorToDelimitedString) {
   // Assert
   const std::vector<float> expected_vector =
       DelimitedStringToVector("1.2,2.3,3.4,4.5,5.6", kDelimiter);
-  for (size_t i = 0; i < kTestVector.size(); i++) {
+  for (size_t i = 0; i < kTestVector.size(); ++i) {
     EXPECT_NEAR(expected_vector[i], string_vector[i], 0.001F);
   }
 }
@@ -58,7 +58,7 @@ TEST(BraveAdsStringConversionsUtilTest, ReflexiveVectorToDelimitedString) {
       VectorToDelimitedString(kTestVector, kDelimiter), kDelimiter);
 
   // Assert
-  for (size_t i = 0; i < kTestVector.size(); i++) {
+  for (size_t i = 0; i < kTestVector.size(); ++i) {
     EXPECT_NEAR(kTestVector[i], string_vector[i], 0.001F);
   }
 }

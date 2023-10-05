@@ -19,7 +19,7 @@ CreativeNotificationAdList BuildCreativeNotificationAdsForTesting(
 
   CreativeNotificationAdList creative_ads;
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; ++i) {
     CreativeNotificationAdInfo creative_ad =
         BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
     creative_ad.segment = kSegments[i % std::size(kSegments)];
