@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_CREDENTIAL_MANAGER_H_
-#define BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_CREDENTIAL_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_AI_CHAT_CREDENTIAL_MANAGER_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_AI_CHAT_CREDENTIAL_MANAGER_H_
 
 #include <string>
 
@@ -78,4 +78,4 @@ class AIChatCredentialManager {
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_BROWSER_AI_CHAT_CREDENTIAL_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_AI_CHAT_CREDENTIAL_MANAGER_H_

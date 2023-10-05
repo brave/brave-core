@@ -9,8 +9,8 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/ai_chat/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/engine/remote_completion_client.h"
 

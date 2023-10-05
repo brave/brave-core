@@ -13,6 +13,8 @@ if (is_official_build) {
 
 static_library("core") {
   sources = [
+    "ai_chat_credential_manager.cc",
+    "ai_chat_credential_manager.h",
     "ai_chat_metrics.cc",
     "ai_chat_metrics.h",
     "constants.cc",
