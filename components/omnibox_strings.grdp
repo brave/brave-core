@@ -287,8 +287,4 @@
   <message name="IDS_OMNIBOX_ONE_LINE_CALCULATOR_SUGGESTION_TEMPLATE" desc="The string displayed when a calculator answer is suggested.">
     <ph name="EXPRESSION">$1</ph> = <ph name="ANSWER">$2</ph>
   </message>
-
-  <message name="IDS_OMNIBOX_ASK_LEO_DESCRIPTION" desc="The label in the omnibox explaning that the match item will open Leo">
-    Ask Leo
-  </message>
 </grit-part>
