@@ -23,7 +23,7 @@ constexpr char kClientIssue23794Filename[] = "client_issue_23794.json";
 class BraveAdsLegacyClientMigrationIssue23794Test : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    SetBooleanPref(prefs::kHasMigratedClientState, false);
+    SetBooleanPrefValue(prefs::kHasMigratedClientState, false);
   }
 };
 

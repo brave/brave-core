@@ -31,7 +31,7 @@ class BraveAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
 
 TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
   // Arrange
-  SetBooleanPref(prefs::kHasMigratedRewardsState, false);
+  SetBooleanPrefValue(prefs::kHasMigratedRewardsState, false);
 
   base::MockCallback<InitializeCallback> callback;
   EXPECT_CALL(callback, Run(/*success*/ true));

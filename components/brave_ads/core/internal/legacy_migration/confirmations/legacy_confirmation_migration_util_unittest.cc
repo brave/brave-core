@@ -17,7 +17,7 @@ class BraveAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
   // Arrange
-  SetBooleanPref(prefs::kHasMigratedConfirmationState, true);
+  SetBooleanPrefValue(prefs::kHasMigratedConfirmationState, true);
 
   // Act
 
@@ -27,7 +27,7 @@ TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasMigrated) {
 
 TEST_F(BraveAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
   // Arrange
-  SetBooleanPref(prefs::kHasMigratedConfirmationState, false);
+  SetBooleanPrefValue(prefs::kHasMigratedConfirmationState, false);
 
   // Act
 

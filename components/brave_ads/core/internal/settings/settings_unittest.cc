@@ -100,7 +100,7 @@ TEST_F(BraveAdsSettingsTest, MaximumNotificationAdsPerHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdFeature, {{"default_ads_per_hour", "2"}});
 
-  SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, 3);
+  SetInt64PrefValue(prefs::kMaximumNotificationAdsPerHour, 3);
 
   // Act
 

@@ -174,8 +174,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowIfDisabledAndCountryIsSupported) {
   // Arrange
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision,
-                kSubdivisionTargetingDisabled);
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
+                     kSubdivisionTargetingDisabled);
   MockHttpOkUrlResponse(/*country_code*/ "US", /*subdivision_code*/ "CA");
 
   // Act
@@ -190,8 +190,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowIfDisabledAndCountryIsUnsupported) {
   // Arrange
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision,
-                kSubdivisionTargetingDisabled);
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
+                     kSubdivisionTargetingDisabled);
   MockHttpOkUrlResponse(/*country_code*/ "XX", /*subdivision_code*/ "XX");
 
   // Act
@@ -206,7 +206,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowAndAutoDetectIfCountryIsSupported) {
   // Arrange
-  SetStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision, "US-CA");
+  SetStringPrefValue(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
+                     "US-CA");
 
   // Act
   NotifyDidInitializeAds();
@@ -222,7 +223,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowAndAutoDetectIfSubdivisionCodeIsUnsupported) {
   // Arrange
-  SetStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision, "XX-XX");
+  SetStringPrefValue(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
+                     "XX-XX");
 
   // Act
   NotifyDidInitializeAds();
@@ -251,8 +253,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 
 TEST_F(BraveAdsSubdivisionTargetingTest, ShouldAllowIfSubdivisionCodeNotValid) {
   // Arrange
-  SetStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
-                "CA-NO REGION");
+  SetStringPrefValue(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
+                     "CA-NO REGION");
 
   // Act
   NotifyDidInitializeAds();
@@ -304,7 +306,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowWhenUserSelectSubdivisionWithSameCountry) {
   // Arrange
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision, "US-FL");
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision, "US-FL");
   MockHttpOkUrlResponse(/*country_code*/ "US", /*subdivision_code*/ "CA");
 
   // Act
@@ -324,7 +326,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldAllowWhenUserSelectSubdivisionAndAutodetectedCountryIsSupported) {
   // Arrange
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision, "US-FL");
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision, "US-FL");
   MockHttpOkUrlResponse(/*country_code*/ "CA", /*subdivision_code*/ "AL");
 
   // Act
@@ -342,7 +344,7 @@ TEST_F(
     BraveAdsSubdivisionTargetingTest,
     ShouldNotAllowWhenUserSelectSubdivisionAndAutodetectedCountryIsUnsupported) {
   // Arrange
-  SetStringPref(prefs::kSubdivisionTargetingSubdivision, "US-FL");
+  SetStringPrefValue(prefs::kSubdivisionTargetingSubdivision, "US-FL");
   MockHttpOkUrlResponse(/*country_code*/ "XX", /*subdivision_code*/ "XX");
 
   // Act

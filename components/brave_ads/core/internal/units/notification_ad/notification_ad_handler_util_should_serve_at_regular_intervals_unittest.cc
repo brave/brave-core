@@ -58,7 +58,7 @@ class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    SetBooleanPref(prefs::kOptedInToNotificationAds, param.should_opt_in);
+    SetBooleanPrefValue(prefs::kOptedInToNotificationAds, param.should_opt_in);
 
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
