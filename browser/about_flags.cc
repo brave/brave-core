@@ -7,6 +7,7 @@
 
 #include <initializer_list>
 
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -947,6 +948,20 @@ namespace {
   static_assert(
       std::initializer_list<FeatureEntry>{BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES}
           .size());
+}
+
+// Called to skip feature entries on brave://flags page without affecting
+// features state.
+bool BraveShouldSkipConditionalFeatureEntry(
+    const flags_ui::FlagsStorage* storage,
+    const FeatureEntry& entry) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD) && BUILDFLAG(IS_WIN)
+  if (base::EqualsCaseInsensitiveASCII(kBraveVPNWireguardFeatureInternalName,
+                                       entry.internal_name)) {
+    return true;
+  }
+#endif
+  return false;
 }
 
 }  // namespace
