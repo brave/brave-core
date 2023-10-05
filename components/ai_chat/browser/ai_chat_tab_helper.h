@@ -12,8 +12,8 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/ai_chat/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/engine/engine_consumer.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/prefs/pref_change_registrar.h"

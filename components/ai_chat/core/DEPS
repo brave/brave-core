@@ -1,4 +1,6 @@
 include_rules = [
   "+services/network/public",
   "+absl/types/optional.h",
+  "+brave/components/skus/common",
+  "+brave/components/ai_chat/common/mojom",
 ]
