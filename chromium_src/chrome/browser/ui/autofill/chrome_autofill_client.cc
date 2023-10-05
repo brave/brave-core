@@ -4,11 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
+
 #include "base/memory/ptr_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/payments/webauthn_dialog_controller_impl.h"
 #include "chrome/browser/ui/page_info/page_info_dialog.h"
+#include "components/optimization_guide/core/optimization_guide_features.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 
 namespace autofill {
@@ -33,6 +35,13 @@ bool IsPrivateProfile(content::WebContents* web_contents) {
 class BraveChromeAutofillClient : public ChromeAutofillClient {
  public:
   using ChromeAutofillClient::ChromeAutofillClient;
+
+  AutofillOptimizationGuide* GetAutofillOptimizationGuide() const override {
+    if (optimization_guide::features::IsOptimizationHintsEnabled()) {
+      return ChromeAutofillClient::GetAutofillOptimizationGuide();
+    }
+    return nullptr;
+  }
 
   bool IsAutocompleteEnabled() const override {
     auto enabled = ChromeAutofillClient::IsAutocompleteEnabled();
