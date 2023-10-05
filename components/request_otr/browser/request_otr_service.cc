@@ -14,7 +14,6 @@
 #include "brave/components/request_otr/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 
 namespace request_otr {
@@ -38,6 +37,12 @@ void RequestOTRService::OnRulesReady(const std::string& json_content) {
 }
 
 bool RequestOTRService::ShouldOfferOTR(const GURL& url) {
+  // If the user has already asked for this origin to be OTR, don't offer to go
+  // OTR again.
+  if (IsOTR(url)) {
+    return false;
+  }
+
   // Check host cache
   const std::string etldp1 = RequestOTRRule::GetETLDForRequestOTR(url.host());
   if (!base::Contains(host_cache_, etldp1)) {
@@ -58,7 +63,7 @@ bool RequestOTRService::OfferedOTR(const GURL& url) {
     return false;
   }
   return base::Contains(offered_otr_cache_,
-                        net::URLToEphemeralStorageDomain(url));
+                        url::Origin::Create(url).Serialize());
 }
 
 void RequestOTRService::SetOfferedOTR(const GURL& url) {
@@ -66,7 +71,7 @@ void RequestOTRService::SetOfferedOTR(const GURL& url) {
     return;
   }
 
-  offered_otr_cache_[net::URLToEphemeralStorageDomain(url)] =
+  offered_otr_cache_[url::Origin::Create(url).Serialize()] =
       url::Origin::Create(url);
 }
 
@@ -75,7 +80,7 @@ bool RequestOTRService::IsOTR(const GURL& url) {
     return false;
   }
   return base::Contains(requested_otr_cache_,
-                        net::URLToEphemeralStorageDomain(url));
+                        url::Origin::Create(url).Serialize());
 }
 
 void RequestOTRService::SetOTR(const GURL& url, bool enabled) {
@@ -91,7 +96,7 @@ void RequestOTRService::RequestOTR(const GURL& url) {
     return;
   }
 
-  requested_otr_cache_[net::URLToEphemeralStorageDomain(url)] =
+  requested_otr_cache_[url::Origin::Create(url).Serialize()] =
       url::Origin::Create(url);
 }
 
@@ -99,9 +104,9 @@ void RequestOTRService::WithdrawOTR(const GURL& url) {
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return;
   }
-  std::string domain = net::URLToEphemeralStorageDomain(url);
-  offered_otr_cache_.erase(domain);
-  requested_otr_cache_.erase(domain);
+  std::string key = url::Origin::Create(url).Serialize();
+  offered_otr_cache_.erase(key);
+  requested_otr_cache_.erase(key);
 }
 
 // static

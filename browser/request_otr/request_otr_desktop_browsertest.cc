@@ -170,14 +170,20 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
     loop.Run();
     return history_count;
   }
+
+  content::WebContents* LoadURLInNewTab(const GURL& url) {
+    ui_test_utils::AllBrowserTabAddedWaiter add_tab;
+    EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    return add_tab.Wait();
+  }
 };
 
 class RequestOTRBrowserTest : public RequestOTRBrowserTestBase {
  public:
   RequestOTRBrowserTest() {
-    feature_list_.InitWithFeatures(
-        {kBraveRequestOTRTab, net::features::kBraveFirstPartyEphemeralStorage},
-        {});
+    feature_list_.InitAndEnableFeature(kBraveRequestOTRTab);
   }
 
  private:
@@ -388,6 +394,24 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
                               "window.open('sensitive.a.com/simple.html');"));
   ASSERT_EQ(content::EvalJs(GetActiveWebContents(), kWindowOpenerScript), "");
+}
+
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, OpenSensitiveSiteInTwoTabs) {
+  InstallMockExtension();
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(url);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed Off-The-Record" button. This should navigate to
+  // the originally requested page in off-the-record mode.
+  ClickAndWaitForNavigation("primary-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Open same sensitive site in new tab and verify that this goes directly
+  // to the site without showing the interstitial.
+  ASSERT_FALSE(chrome_browser_interstitials::IsShowingInterstitial(
+      LoadURLInNewTab(url)));
 }
 
 // Define a subclass that disables the feature so we can ensure that nothing
