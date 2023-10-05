@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_SEARCH_NTP_UTILS_H_
 #define BRAVE_BROWSER_SEARCH_NTP_UTILS_H_
 
-class Profile;
+class PrefService;
 
 namespace user_prefs {
 class PrefRegistrySyncable;
@@ -15,7 +15,7 @@ class PrefRegistrySyncable;
 namespace new_tab_page {
 
 // APIs for prefs.
-void MigrateNewTabPagePrefs(Profile* profile);
+void MigrateNewTabPagePrefs(PrefService* prefs);
 void RegisterNewTabPagePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
 
