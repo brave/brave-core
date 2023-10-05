@@ -160,6 +160,18 @@
   <message name="IDS_SETTINGS_BRAVE_AUTOFILL_PRIVATE_WINDOWS_DESC" desc="The description for the label to enable autofill in private profiles">
     Info from regular windows can be read/auto-filled in private windows
   </message>
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_ENABLE_PROFILES_TOGGLE_LABEL" desc="Label for a toggle that allows users to control whether information, such as names, phone numbers, email addresses, etc. should be saved and forms should be autocompleted with them.">
+    Save and fill addresses
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_ENABLE_PROFILES_TOGGLE_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether information, such as names, phone numbers, email addresses, etc. should be saved and forms should be autocompleted with them.">
+    Includes information such as billing and delivery addresses
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_ENABLE_AUTOCOMPLETE_TOGGLE_LABEL" desc="Label for a toggle that allows users to control whether information, such as names, phone numbers, email addresses, etc. should be saved and forms should be autocompleted with them.">
+    Save and fill other information
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_AUTOFILL_ENABLE_AUTOCOMPLETE_TOGGLE_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether information, such as names, phone numbers, email addresses, etc. should be saved and forms should be autocompleted with them.">
+    Includes information such as names, phone numbers and email addresses
+  </message>
 
   <!-- Settings / New tab page -->
   <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">

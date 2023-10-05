@@ -132,6 +132,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_NUMBER;
 
   // autofill prefs
+  (*s_brave_allowlist)[kBraveAutocomplete] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kBraveAutofillPrivateWindows] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
