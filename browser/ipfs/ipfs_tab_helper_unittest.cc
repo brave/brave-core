@@ -5,7 +5,9 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/bind.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -14,15 +16,229 @@
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/version_info/channel.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/public/test/web_contents_tester.h"
 #include "content/test/test_web_contents.h"
+#include "gmock/gmock.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
 #include "services/network/test/test_network_context.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace content {
+class NavigationHandleMock : public content::NavigationHandle {
+ public:
+  MOCK_METHOD(int64_t, GetNavigationId, (), (override));
+  MOCK_METHOD(ukm::SourceId, GetNextPageUkmSourceId, (), (override));
+  MOCK_METHOD(const GURL&, GetURL, (), (override));
+  MOCK_METHOD(SiteInstance*, GetStartingSiteInstance, (), (override));
+  MOCK_METHOD(SiteInstance*, GetSourceSiteInstance, (), (override));
+  MOCK_METHOD(bool, IsInMainFrame, (), (const override));
+  MOCK_METHOD(bool, IsInPrimaryMainFrame, (), (const override));
+  MOCK_METHOD(bool, IsInOutermostMainFrame, (), (override));
+  MOCK_METHOD(bool, IsInPrerenderedMainFrame, (), (const override));
+  MOCK_METHOD(bool, IsPrerenderedPageActivation, (), (const override));
+  MOCK_METHOD(bool, IsInFencedFrameTree, (), (const override));
+  MOCK_METHOD(FrameType, GetNavigatingFrameType, (), (const override));
+  MOCK_METHOD(bool, IsRendererInitiated, (), (override));
+  MOCK_METHOD(blink::mojom::NavigationInitiatorActivationAndAdStatus,
+              GetNavigationInitiatorActivationAndAdStatus,
+              (),
+              (override));
+  MOCK_METHOD(bool, IsSameOrigin, (), (override));
+  MOCK_METHOD(int, GetFrameTreeNodeId, (), (override));
+  MOCK_METHOD(RenderFrameHost*, GetParentFrame, (), (override));
+  MOCK_METHOD(RenderFrameHost*, GetParentFrameOrOuterDocument, (), (override));
+  MOCK_METHOD(base::TimeTicks, NavigationStart, (), (override));
+  MOCK_METHOD(base::TimeTicks, NavigationInputStart, (), (override));
+  MOCK_METHOD(const NavigationHandleTiming&,
+              GetNavigationHandleTiming,
+              (),
+              (override));
+  MOCK_METHOD(bool, WasStartedFromContextMenu, (), (override));
+  MOCK_METHOD(const GURL&, GetSearchableFormURL, (), (override));
+  MOCK_METHOD(const std::string&, GetSearchableFormEncoding, (), (override));
+  MOCK_METHOD(ReloadType, GetReloadType, (), (override));
+  MOCK_METHOD(RestoreType, GetRestoreType, (), (override));
+  MOCK_METHOD(const GURL&, GetBaseURLForDataURL, (), (override));
+  MOCK_METHOD(bool, IsPost, (), (override));
+  MOCK_METHOD(const blink::mojom::Referrer&, GetReferrer, (), (override));
+  MOCK_METHOD(void,
+              SetReferrer,
+              (blink::mojom::ReferrerPtr referrer),
+              (override));
+  MOCK_METHOD(bool, HasUserGesture, (), (override));
+  MOCK_METHOD(ui::PageTransition, GetPageTransition, (), (override));
+  MOCK_METHOD(NavigationUIData*, GetNavigationUIData, (), (override));
+  MOCK_METHOD(bool, IsExternalProtocol, (), (override));
+  MOCK_METHOD(bool, IsServedFromBackForwardCache, (), (override));
+  MOCK_METHOD(bool, IsPageActivation, (), (const override));
+  MOCK_METHOD(net::Error, GetNetErrorCode, (), (override));
+  MOCK_METHOD(RenderFrameHost*, GetRenderFrameHost, (), (const override));
+  MOCK_METHOD(GlobalRenderFrameHostId,
+              GetPreviousRenderFrameHostId,
+              (),
+              (override));
+  MOCK_METHOD(int, GetExpectedRenderProcessHostId, (), (override));
+  MOCK_METHOD(bool, IsSameDocument, (), (const override));
+  MOCK_METHOD(bool, WasServerRedirect, (), (override));
+  MOCK_METHOD(const std::vector<GURL>&, GetRedirectChain, (), (override));
+  MOCK_METHOD(bool, HasCommitted, (), (const override));
+  MOCK_METHOD(bool, IsErrorPage, (), (const override));
+  MOCK_METHOD(bool, HasSubframeNavigationEntryCommitted, (), (override));
+  MOCK_METHOD(bool, DidReplaceEntry, (), (override));
+  MOCK_METHOD(bool, ShouldUpdateHistory, (), (override));
+  MOCK_METHOD(const GURL&, GetPreviousPrimaryMainFrameURL, (), (override));
+  MOCK_METHOD(net::IPEndPoint, GetSocketAddress, (), (override));
+  MOCK_METHOD(const net::HttpRequestHeaders&,
+              GetRequestHeaders,
+              (),
+              (override));
+  MOCK_METHOD(void,
+              RemoveRequestHeader,
+              (const std::string& header_name),
+              (override));
+  MOCK_METHOD(void,
+              SetRequestHeader,
+              (const std::string& header_name, const std::string& header_value),
+              (override));
+  MOCK_METHOD(void,
+              SetCorsExemptRequestHeader,
+              (const std::string& header_name, const std::string& header_value),
+              (override));
+  MOCK_METHOD(
+      void,
+      SetLCPPNavigationHint,
+      (const blink::mojom::LCPCriticalPathPredictorNavigationTimeHint& hint),
+      (override));
+  MOCK_METHOD(
+      const blink::mojom::LCPCriticalPathPredictorNavigationTimeHintPtr&,
+      GetLCPPNavigationHint,
+      (),
+      (override));
+  MOCK_METHOD(const net::HttpResponseHeaders*,
+              GetResponseHeaders,
+              (),
+              (override));
+  MOCK_METHOD(net::HttpResponseInfo::ConnectionInfo,
+              GetConnectionInfo,
+              (),
+              (override));
+  MOCK_METHOD(const absl::optional<net::SSLInfo>&, GetSSLInfo, (), (override));
+  MOCK_METHOD(const absl::optional<net::AuthChallengeInfo>&,
+              GetAuthChallengeInfo,
+              (),
+              (override));
+  MOCK_METHOD(net::ResolveErrorInfo, GetResolveErrorInfo, (), (override));
+  MOCK_METHOD(net::IsolationInfo, GetIsolationInfo, (), (override));
+  MOCK_METHOD(const GlobalRequestID&, GetGlobalRequestID, (), (override));
+  MOCK_METHOD(bool, IsDownload, (), (override));
+  MOCK_METHOD(bool, IsFormSubmission, (), (override));
+  MOCK_METHOD(bool, WasInitiatedByLinkClick, (), (override));
+  MOCK_METHOD(bool, IsSignedExchangeInnerResponse, (), (override));
+  MOCK_METHOD(bool,
+              HasPrefetchedAlternativeSubresourceSignedExchange,
+              (),
+              (override));
+  MOCK_METHOD(bool, WasResponseCached, (), (override));
+  MOCK_METHOD(const net::ProxyServer&, GetProxyServer, (), (override));
+  MOCK_METHOD(const std::string&, GetHrefTranslate, (), (override));
+  MOCK_METHOD(const absl::optional<blink::Impression>&,
+              GetImpression,
+              (),
+              (override));
+  MOCK_METHOD(const absl::optional<blink::LocalFrameToken>&,
+              GetInitiatorFrameToken,
+              (),
+              (override));
+  MOCK_METHOD(int, GetInitiatorProcessId, (), (override));
+  MOCK_METHOD(const absl::optional<url::Origin>&,
+              GetInitiatorOrigin,
+              (),
+              (override));
+  MOCK_METHOD(const absl::optional<GURL>&, GetInitiatorBaseUrl, (), (override));
+  MOCK_METHOD(const std::vector<std::string>&, GetDnsAliases, (), (override));
+  MOCK_METHOD(bool, IsSameProcess, (), (override));
+  MOCK_METHOD(NavigationEntry*, GetNavigationEntry, (), (override));
+  MOCK_METHOD(int, GetNavigationEntryOffset, (), (override));
+  MOCK_METHOD(void,
+              RegisterSubresourceOverride,
+              (blink::mojom::TransferrableURLLoaderPtr transferrable_loader),
+              (override));
+  MOCK_METHOD(void,
+              ForceEnableOriginTrials,
+              (const std::vector<std::string>& trials),
+              (override));
+  MOCK_METHOD(void, SetIsOverridingUserAgent, (bool override_ua), (override));
+  MOCK_METHOD(void, SetSilentlyIgnoreErrors, (), (override));
+  MOCK_METHOD(network::mojom::WebSandboxFlags,
+              SandboxFlagsInherited,
+              (),
+              (override));
+  MOCK_METHOD(network::mojom::WebSandboxFlags,
+              SandboxFlagsToCommit,
+              (),
+              (override));
+  MOCK_METHOD(bool, IsWaitingToCommit, (), (override));
+  MOCK_METHOD(bool, WasResourceHintsReceived, (), (override));
+  MOCK_METHOD(bool, IsPdf, (), (override));
+  MOCK_METHOD(void,
+              WriteIntoTrace,
+              (perfetto::TracedProto<TraceProto> context),
+              (const override));
+  MOCK_METHOD(bool,
+              SetNavigationTimeout,
+              (base::TimeDelta timeout),
+              (override));
+  MOCK_METHOD(void,
+              SetAllowCookiesFromBrowser,
+              (bool allow_cookies_from_browser),
+              (override));
+  MOCK_METHOD(void,
+              GetResponseBody,
+              (ResponseBodyCallback callback),
+              (override));
+  MOCK_METHOD(PrerenderTriggerType, GetPrerenderTriggerType, (), (override));
+  MOCK_METHOD(std::string, GetPrerenderEmbedderHistogramSuffix, (), (override));
+  MOCK_METHOD(base::SafeRef<NavigationHandle>, GetSafeRef, (), (override));
+  MOCK_METHOD(void,
+              RegisterThrottleForTesting,
+              (std::unique_ptr<NavigationThrottle> navigation_throttle),
+              (override));
+  MOCK_METHOD(bool, IsDeferredForTesting, (), (override));
+  MOCK_METHOD(bool,
+              IsCommitDeferringConditionDeferredForTesting,
+              (),
+              (override));
+  MOCK_METHOD(CommitDeferringCondition*,
+              GetCommitDeferringConditionForTesting,
+              (),
+              (override));
+  MOCK_METHOD(bool, ExistingDocumentWasDiscarded, (), (const override));
+  MOCK_METHOD(blink::RuntimeFeatureStateContext&,
+              GetMutableRuntimeFeatureStateContext,
+              (),
+              (override));
+
+  void SetUp(const net::Error get_net_error,
+             const bool is_error_page,
+             net::HttpResponseHeaders* parsed_headers) {
+    ON_CALL(*this, IsInMainFrame()).WillByDefault(::testing::Return(true));
+    ON_CALL(*this, HasCommitted()).WillByDefault(::testing::Return(true));
+    ON_CALL(*this, IsSameDocument()).WillByDefault(::testing::Return(false));
+    ON_CALL(*this, GetNetErrorCode())
+        .WillByDefault(::testing::Return(get_net_error));
+    ON_CALL(*this, IsErrorPage())
+        .WillByDefault(::testing::Return(is_error_page));
+    ON_CALL(*this, GetResponseHeaders())
+        .WillByDefault(::testing::Return(parsed_headers));
+  }
+};
+}  // namespace content
 
 namespace ipfs {
 
@@ -31,6 +247,14 @@ constexpr char kCid1[] =
     "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi";
 constexpr char kIPNSCid1[] =
     "k51qzi5uqu5dlvj2baxnqndepeb86cbk3ng7n3i46uzyxzyqj2xjonzllnv0v8";
+
+void HeadersToRaw(std::string* headers) {
+  std::replace(headers->begin(), headers->end(), '\n', '\0');
+  if (!headers->empty()) {
+    *headers += '\0';
+  }
+}
+
 }  // namespace
 
 class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
@@ -103,6 +327,41 @@ class IpfsTabHelperUnitTest : public testing::Test {
   GURL redirect_url() { return redirect_url_; }
 
   void ResetRedirectUrl() { redirect_url_ = GURL(); }
+
+  void DetectPageLoadingErrorFallbackTest(
+      const GURL url,
+      const GURL redirected_to_url,
+      base::OnceCallback<void(ipfs::IPFSTabHelper*,
+                              content::NavigationHandleMock*)> callback,
+      const net::Error get_net_error,
+      const bool is_error_page,
+      net::HttpResponseHeaders* parsed_headers,
+      const int is_error_page_call_count,
+      const int get_net_error_code_call_count) {
+    content::NavigationHandleMock navHandlerMocked;
+    navHandlerMocked.SetUp(get_net_error, is_error_page, parsed_headers);
+    EXPECT_CALL(navHandlerMocked, IsInMainFrame()).Times(::testing::AtLeast(1));
+    EXPECT_CALL(navHandlerMocked, HasCommitted()).Times(::testing::AtLeast(1));
+    EXPECT_CALL(navHandlerMocked, IsSameDocument())
+        .Times(::testing::AtLeast(1));
+    EXPECT_CALL(navHandlerMocked, GetResponseHeaders())
+        .Times(::testing::AtLeast(1));
+    EXPECT_CALL(navHandlerMocked, GetNetErrorCode())
+        .Times(::testing::AtLeast(get_net_error_code_call_count));
+    EXPECT_CALL(navHandlerMocked, IsErrorPage())
+        .Times(::testing::AtLeast(is_error_page_call_count));
+
+    auto* helper = ipfs_tab_helper();
+    ASSERT_TRUE(helper);
+    helper->SetInitialNavigationData(url);
+    helper->SetPageURLForTesting(redirected_to_url);
+    helper->SetSetShowFallbackInfobarCallbackForTesting(
+        base::BindLambdaForTesting([&](const GURL& initial_navigation_url) {
+          EXPECT_EQ(url, initial_navigation_url);
+        }));
+
+    std::move(callback).Run(helper, &navHandlerMocked);
+  }
 
  private:
   void OnRedirect(const GURL& gurl) { redirect_url_ = gurl; }
@@ -720,6 +979,93 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_NoRedirect_WhenNoDnsLinkRecord) {
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
+}
+
+TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
+  const GURL url("https://ipfs.io/ipns/brantly-eth/page?query#ref");
+  const GURL redirected_to_url("ipns://brantly.eth/page?query#ref");
+
+  std::string headers = "HTTP/1.1 500 Internal Server Error\n";
+  HeadersToRaw(&headers);
+  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>(headers);
+  DetectPageLoadingErrorFallbackTest(
+      url, redirected_to_url,
+      base::BindLambdaForTesting([](ipfs::IPFSTabHelper* helper,
+                                    content::NavigationHandleMock* nav_handle) {
+        helper->DidFinishNavigation(nav_handle);
+      }),
+      net::Error::OK, false, parsed.get(), 1, 0);
+}
+
+TEST_F(IpfsTabHelperUnitTest,
+       DetectPageLoadingError_RedirectToLocalGateway_ShowInfobar) {
+  const GURL url(
+      "https://drweb.link/ipns/"
+      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+  const GURL redirected_to_url(
+      "http://localhost:48080/ipns/"
+      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+
+  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
+  DetectPageLoadingErrorFallbackTest(
+      url, redirected_to_url,
+      base::BindLambdaForTesting([](ipfs::IPFSTabHelper* helper,
+                                    content::NavigationHandleMock* nav_handle) {
+        helper->DidFinishNavigation(nav_handle);
+      }),
+      net::Error::ERR_FAILED, true, parsed.get(), 1, 1);
+}
+
+TEST_F(IpfsTabHelperUnitTest,
+       DetectPageLoadingError_RedirectToIpfsSchema_ShowInfobar) {
+  const GURL url(
+      "http://localhost:48080/ipns/"
+      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+  const GURL redirected_to_url(
+      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+
+  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
+  DetectPageLoadingErrorFallbackTest(
+      url, redirected_to_url,
+      base::BindLambdaForTesting([](ipfs::IPFSTabHelper* helper,
+                                    content::NavigationHandleMock* nav_handle) {
+        helper->DidFinishNavigation(nav_handle);
+      }),
+      net::Error::ERR_FAILED, true, parsed.get(), 0, 0);
+}
+
+TEST_F(IpfsTabHelperUnitTest,
+       DetectPageLoadingError_RedirectToRemoteGateway_ShowInfobar) {
+  const GURL url(
+      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+  const GURL redirected_to_url(
+      "https://drweb.link/ipns/"
+      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+
+  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
+  DetectPageLoadingErrorFallbackTest(
+      url, redirected_to_url,
+      base::BindLambdaForTesting(
+          [&](ipfs::IPFSTabHelper* helper,
+              content::NavigationHandleMock* nav_handle) {
+            helper->DidFinishNavigation(nav_handle);
+          }),
+      net::Error::ERR_FAILED, true, parsed.get(), 1, 1);
+}
+
+TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_NoRedirectAsNonIPFSLink) {
+  const GURL url("https://abcaddress.moc/");
+  const GURL redirected_to_url("https://abcaddress.moc/");
+
+  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
+  DetectPageLoadingErrorFallbackTest(
+      url, redirected_to_url,
+      base::BindLambdaForTesting(
+          [&](ipfs::IPFSTabHelper* helper,
+              content::NavigationHandleMock* nav_handle) {
+            helper->DidFinishNavigation(nav_handle);
+          }),
+      net::Error::ERR_FAILED, true, parsed.get(), 0, 0);
 }
 
 }  // namespace ipfs

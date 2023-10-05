@@ -53,6 +53,8 @@ if (!is_android) {
     ]
     if (!is_android) {
       brave_browser_infobar_sources += [
+        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.cc",
+        "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h",
         "//brave/browser/infobars/brave_ipfs_infobar_delegate.cc",
         "//brave/browser/infobars/brave_ipfs_infobar_delegate.h",
       ]

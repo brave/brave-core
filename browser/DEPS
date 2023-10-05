@@ -134,4 +134,7 @@ specific_include_rules = {
   "brave_content_browser_client.cc": [
     "+content/browser/renderer_host/render_frame_host_impl.h",
   ],
+  "ipfs_tab_helper_unittest.cc": [
+    "+gmock/gmock.h",
+  ],
 }

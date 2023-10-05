@@ -53,11 +53,17 @@ class IPFSTabHelper : public content::WebContentsObserver,
   void SetPageURLForTesting(const GURL& url) {
     current_page_url_for_testing_ = url;
   }
+  void SetSetShowFallbackInfobarCallbackForTesting(
+      base::RepeatingCallback<void(const GURL&)> callback) {
+    show_fallback_infobar_callback_for_testing_ = callback;
+  }
 
   void SetRediretCallbackForTesting(
       base::RepeatingCallback<void(const GURL&)> callback) {
     redirect_callback_for_testing_ = callback;
   }
+
+  void SetInitialNavigationData(const GURL& url);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
@@ -105,8 +111,22 @@ class IPFSTabHelper : public content::WebContentsObserver,
                            GatewayIPNS_Redirect_LibP2PKey_NoAutoRedirect);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
                            GatewayIPNS_No_Redirect_WhenNoDnsLink);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           DetectPageLoadingError_ShowInfobar);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      DetectPageLoadingError_RedirectToLocalGateway_ShowInfobar);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      DetectPageLoadingError_RedirectToIpfsSchema_ShowInfobar);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      DetectPageLoadingError_RedirectToRemoteGateway_ShowInfobar);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           DetectPageLoadingError_NoRedirectAsNonIPFSLink);
   friend class content::WebContentsUserData<IPFSTabHelper>;
   friend class BraveIPFSInfoBarDelegateObserverImpl;
+  friend class BraveIPFSFallbackInfoBarDelegateObserverImpl;
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
   GURL GetCurrentPageURL() const;
@@ -127,6 +147,8 @@ class IPFSTabHelper : public content::WebContentsObserver,
   // content::WebContentsObserver
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void DidStartNavigation(content::NavigationHandle* handle) override;
+
   void UpdateLocationBar();
 
   void CheckDNSLinkRecord(const GURL& gurl,
@@ -141,11 +163,17 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   void LoadUrl(const GURL& gurl);
 
+  void SetFallbackAddress(const GURL& original_url);
+
+  void ShowBraveIPFSFallbackInfoBar(const GURL& initial_navigation_url);
+
   const raw_ptr<PrefService> pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
   GURL ipfs_resolved_url_;
   GURL current_page_url_for_testing_;
   base::RepeatingCallback<void(const GURL&)> redirect_callback_for_testing_;
+  base::RepeatingCallback<void(const GURL&)>
+      show_fallback_infobar_callback_for_testing_;
   std::unique_ptr<IPFSHostResolver> resolver_;
   base::WeakPtrFactory<IPFSTabHelper> weak_ptr_factory_{this};
 
