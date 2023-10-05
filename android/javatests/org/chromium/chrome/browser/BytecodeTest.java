@@ -29,6 +29,7 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.Callback;
 import org.chromium.base.jank_tracker.JankTracker;
+import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -520,7 +521,7 @@ public class BytecodeTest {
                 methodExists("org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
                         "onItemSelected", true, boolean.class, int.class));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/preferences/StrictPreferenceKeyChecker",
+                methodExists("org/chromium/base/shared_preferences/StrictPreferenceKeyChecker",
                         "isKeyInUse", true, boolean.class, String.class));
     }
 
@@ -877,9 +878,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
                 ContextMenuItemDelegate.class, Supplier.class, int.class, ExternalAuthUtils.class,
                 Context.class, ContextMenuParams.class, ContextMenuNativeDelegate.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/preferences/StrictPreferenceKeyChecker",
-                "org/chromium/chrome/browser/preferences/BraveStrictPreferenceKeyChecker"));
+        Assert.assertTrue(
+                constructorsMatch("org/chromium/base/shared_preferences/StrictPreferenceKeyChecker",
+                        "org/chromium/base/shared_preferences/BraveStrictPreferenceKeyChecker",
+                        PreferenceKeyRegistry.class));
     }
 
     @Test

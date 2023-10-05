@@ -3,4 +3,4 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_browser_preferences_java_sources = [ "//brave/android/java/org/chromium/chrome/browser/preferences/BraveStrictPreferenceKeyChecker.java" ]
+brave_base_shared_preferences_java_sources = [ "//brave/base/android/java/src/org/chromium/base/shared_preferences/BraveStrictPreferenceKeyChecker.java" ]
