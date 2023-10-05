@@ -38,6 +38,8 @@ var package = Package(
     .library(name: "Preferences", targets: ["Preferences"]),
     .library(name: "PrivateCDN", targets: ["PrivateCDN"]),
     .library(name: "CertificateUtilities", targets: ["CertificateUtilities"]),
+    .library(name: "Playlist", targets: ["Playlist"]),
+    .library(name: "UserAgent", targets: ["UserAgent"]),
     .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
@@ -280,6 +282,8 @@ var package = Package(
       ],
       plugins: ["LoggerPlugin"]
     ),
+    .target(name: "UserAgent", dependencies: ["Preferences"]),
+    .testTarget(name: "UserAgentTests", dependencies: ["UserAgent", "Brave"]),
     .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(
       name: "BraveSharedTests",
@@ -321,6 +325,11 @@ var package = Package(
     .target(name: "Strings"),
     .target(name: "RuntimeWarnings"),
     .target(name: "PrivateCDN", dependencies: ["SDWebImage"]),
+    .target(
+      name: "Playlist",
+      dependencies: ["Data", "BraveShared", "Shared", "Storage", "Preferences", "Strings", "CodableHelpers", "UserAgent", "Then"],
+      plugins: ["LoggerPlugin"]
+    ),
     .testTarget(name: "PrivateCDNTests", dependencies: ["PrivateCDN"]),
     .testTarget(name: "GrowthTests", dependencies: ["Growth", "Shared", "BraveShared", "BraveVPN"]),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
@@ -359,6 +368,8 @@ var braveTarget: PackageDescription.Target = .target(
     "Preferences",
     "Favicon",
     "CertificateUtilities",
+    "Playlist",
+    "UserAgent",
     .product(name: "Lottie", package: "lottie-ios"),
     .product(name: "Collections", package: "swift-collections"),
   ],

@@ -10,6 +10,7 @@ import AVKit
 import CoreData
 import Combine
 import os.log
+import BraveShared
 
 // Third-Party
 import SDWebImage
@@ -19,6 +20,7 @@ import Shared
 import Data
 import SwiftUI
 import Growth
+import Playlist
 
 // MARK: - PlaylistListViewController
 
@@ -704,7 +706,7 @@ extension PlaylistListViewController {
           }
         }
         
-        let items = try await PlaylistSharedFolderNetwork.fetchMediaItemInfo(item: model, viewForInvisibleWebView: self.playerView.window ?? self.playerView.superview ?? self.playerView)
+        let items = try await PlaylistSharedFolderNetwork.fetchMediaItemInfo(item: model, viewForInvisibleWebView: self.playerView.window ?? self.playerView.superview ?? self.playerView, webLoaderFactory: LivePlaylistWebLoaderFactory())
         try Task.checkCancellation()
         
         try folder.playlistItems?.forEach({ playlistItem in

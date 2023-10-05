@@ -10,6 +10,7 @@ import CoreData
 import Shared
 import BraveShared
 import BraveUI
+import Playlist
 
 private struct PlaylistFolderImage: View {
   let item: PlaylistItem

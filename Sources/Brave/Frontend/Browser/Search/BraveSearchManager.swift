@@ -9,6 +9,7 @@ import Shared
 import BraveShared
 import WebKit
 import os.log
+import UserAgent
 
 // A helper class to handle Brave Search fallback needs.
 class BraveSearchManager: NSObject {

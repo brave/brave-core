@@ -11,6 +11,7 @@ import BraveCore
 import BraveNews
 import Favicon
 import os.log
+import Playlist
 
 // A base protocol for something that can be cleared.
 protocol Clearable {
@@ -188,6 +189,7 @@ class PlayListCacheClearable: Clearable {
   }
 
   func clear() async throws {
+    PlaylistCarplayManager.shared.destroyPiP()
     PlaylistManager.shared.deleteAllItems(cacheOnly: true)
     
     // Backup in case there is folder corruption, so we delete the cache anyway
@@ -210,6 +212,7 @@ class PlayListDataClearable: Clearable {
   }
 
   func clear() async throws {
+    PlaylistCarplayManager.shared.destroyPiP()
     PlaylistManager.shared.deleteAllItems(cacheOnly: false)
     
     // Backup in case there is folder corruption, so we delete the cache anyway

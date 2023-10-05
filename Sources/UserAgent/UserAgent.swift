@@ -3,7 +3,6 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Shared
 import Preferences
 import UIKit
 
@@ -16,10 +15,9 @@ public struct UserAgent {
   }
 
   public static var shouldUseDesktopMode: Bool {
-    if UIDevice.isIpad {
-      return Preferences.General.alwaysRequestDesktopSite.value
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      return Preferences.UserAgent.alwaysRequestDesktopSite.value
     }
-
     return false
   }
 }

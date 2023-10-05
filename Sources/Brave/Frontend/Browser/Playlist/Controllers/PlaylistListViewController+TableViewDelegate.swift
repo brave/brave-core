@@ -12,6 +12,7 @@ import Data
 import MediaPlayer
 import os.log
 import Preferences
+import Playlist
 
 private extension PlaylistListViewController {
   func shareItem(_ item: PlaylistInfo, anchorView: UIView?) {

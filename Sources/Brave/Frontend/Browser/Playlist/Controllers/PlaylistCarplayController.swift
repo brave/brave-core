@@ -13,6 +13,7 @@ import Shared
 import CoreData
 import Favicon
 import os.log
+import Playlist
 
 private enum PlaylistCarPlayTemplateID: String {
   case folders

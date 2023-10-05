@@ -9,20 +9,21 @@ import Data
 import CoreData
 import CodableHelpers
 import OSLog
+import BraveShared
 
-struct PlaylistSharedFolderModel: Decodable {
-  let version: String
-  let folderId: String
-  let folderName: String
-  @URLString private(set) var folderImage: URL?
-  let creatorName: String
-  @URLString private(set) var creatorLink: URL?
-  let updateAt: String
-  fileprivate(set) var folderUrl: String?
-  fileprivate(set) var eTag: String?
-  fileprivate(set) var mediaItems: [PlaylistInfo]
+public struct PlaylistSharedFolderModel: Decodable {
+  public let version: String
+  public let folderId: String
+  public let folderName: String
+  @URLString public private(set) var folderImage: URL?
+  public let creatorName: String
+  @URLString public private(set) var creatorLink: URL?
+  public let updateAt: String
+  public fileprivate(set) var folderUrl: String?
+  public fileprivate(set) var eTag: String?
+  public fileprivate(set) var mediaItems: [PlaylistInfo]
   
-  init(from decoder: Decoder) throws {
+  public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     version = try container.decode(String.self, forKey: .version)
     folderId = try container.decode(String.self, forKey: .folderId)
@@ -74,15 +75,15 @@ struct PlaylistSharedFolderModel: Decodable {
   }
 }
 
-struct PlaylistSharedFolderNetwork {
-  enum Status: String, Error {
+public struct PlaylistSharedFolderNetwork {
+  public enum Status: String, Error {
     case invalidURL
     case invalidResponse
     case cacheNotModified
   }
   
   @MainActor
-  static func fetchPlaylist(folderUrl: String) async throws -> PlaylistSharedFolderModel {
+  public static func fetchPlaylist(folderUrl: String) async throws -> PlaylistSharedFolderModel {
     guard let playlistURL = URL(string: folderUrl)?.appendingPathComponent("playlist").appendingPathExtension("json") else {
       throw Status.invalidURL
     }
@@ -96,7 +97,7 @@ struct PlaylistSharedFolderNetwork {
       request.httpMethod = method
       headers.forEach({ request.setValue($0.value, forHTTPHeaderField: $0.key) })
       
-      let (data, response) = try await NetworkManager(session: session).dataRequest(with: request)
+      let (data, response) = try await session.data(for: request)
       guard let response = response as? HTTPURLResponse,
                 response.statusCode == 304 || response.statusCode >= 200 || response.statusCode <= 299 else {
         throw Status.invalidResponse
@@ -121,7 +122,7 @@ struct PlaylistSharedFolderNetwork {
   }
   
   @MainActor
-  static func createInMemoryStorage(for model: PlaylistSharedFolderModel) async -> PlaylistFolder {
+  public static func createInMemoryStorage(for model: PlaylistSharedFolderModel) async -> PlaylistFolder {
     await withCheckedContinuation { continuation in
       // Create a local shared folder
       PlaylistFolder.addInMemoryFolder(title: model.folderName,
@@ -140,7 +141,7 @@ struct PlaylistSharedFolderNetwork {
   }
   
   @MainActor
-  static func saveToDiskStorage(memoryFolder: PlaylistFolder) async -> String {
+  public static func saveToDiskStorage(memoryFolder: PlaylistFolder) async -> String {
     await withCheckedContinuation({ continuation in
       PlaylistFolder.saveInMemoryFolderToDisk(folder: memoryFolder) { folderId in
         PlaylistItem.saveInMemoryItemsToDisk(items: Array(memoryFolder.playlistItems ?? []), folderUUID: folderId) {
@@ -150,16 +151,17 @@ struct PlaylistSharedFolderNetwork {
     })
   }
   
-  static func fetchMediaItemInfo(item: PlaylistSharedFolderModel, viewForInvisibleWebView: UIView) async throws -> [PlaylistInfo] {
+  public static func fetchMediaItemInfo(item: PlaylistSharedFolderModel, viewForInvisibleWebView: UIView, webLoaderFactory: any PlaylistWebLoaderFactory) async throws -> [PlaylistInfo] {
     @Sendable @MainActor
     func fetchTask(item: PlaylistInfo) async throws -> PlaylistInfo {
       guard let url = URL(string: item.pageSrc) else {
         throw PlaylistMediaStreamer.PlaybackError.cannotLoadMedia
       }
       
-      let webLoader = PlaylistWebLoader().then {
-        viewForInvisibleWebView.insertSubview($0, at: 0)
-      }
+      let webLoader = webLoaderFactory.makeWebLoader()
+//      let webLoader = PlaylistWebLoader().then {
+      viewForInvisibleWebView.insertSubview(webLoader, at: 0)
+//      }
       
       guard let newItem = await webLoader.load(url: url) else {
         // Destroy the web loader.

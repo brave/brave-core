@@ -10,14 +10,16 @@ import Combine
 import MediaPlayer
 import Shared
 import os.log
+import Then
+import UserAgent
 
-enum MediaPlaybackError: Error {
+public enum MediaPlaybackError: Error {
   case cancelled
   case cannotLoadAsset(status: AVKeyValueStatus)
   case other(Error)
 }
 
-class MediaPlayer: NSObject {
+public class MediaPlayer: NSObject {
   public enum RepeatMode: CaseIterable {
     case none
     case repeatOne
@@ -37,8 +39,8 @@ class MediaPlayer: NSObject {
   private(set) public var supportedPlaybackRates = [1.0, 1.5, 2.0]
   private(set) public var pendingMediaItem: AVPlayerItem?
   private(set) public var pictureInPictureController: AVPictureInPictureController?
-  private(set) var repeatState: RepeatMode = .none
-  private(set) var shuffleState: ShuffleMode = .none
+  private(set) public var repeatState: RepeatMode = .none
+  private(set) public var shuffleState: ShuffleMode = .none
   private(set) var previousRate: Float = 0.0
 
   public var isPlaying: Bool {
@@ -75,7 +77,7 @@ class MediaPlayer: NSObject {
     playerLayer.superlayer != nil
   }
 
-  override init() {
+  override public init() {
     super.init()
 
     playerLayer.player = self.player
@@ -120,12 +122,12 @@ class MediaPlayer: NSObject {
     UIApplication.shared.endReceivingRemoteControlEvents()
   }
   
-  func clear() {
+  public func clear() {
     player.replaceCurrentItem(with: nil)
     pendingMediaItem = nil
   }
 
-  func load(url: URL) async throws -> Bool {
+  public func load(url: URL) async throws -> Bool {
     try await load(asset: AVURLAsset(url: url, options: AVAsset.defaultOptions))
   }
 
@@ -134,7 +136,7 @@ class MediaPlayer: NSObject {
   /// If an existing item is loaded, you should seek to offset zero to restart playback.
   /// If a new item is loaded, you should call play to begin playback.
   /// Returns an error on failure.
-  func load(asset: AVURLAsset) async throws -> Bool {
+  public func load(asset: AVURLAsset) async throws -> Bool {
     // If the same asset is being loaded again.
     // Just play it.
     if let currentItem = player.currentItem, currentItem.asset.isKind(of: AVURLAsset.self) && player.status == .readyToPlay {
@@ -154,7 +156,7 @@ class MediaPlayer: NSObject {
     return true  // New Item loaded
   }
 
-  func play() {
+  public func play() {
     if !isPlaying {
       player.play()
       
@@ -165,7 +167,7 @@ class MediaPlayer: NSObject {
     }
   }
 
-  func pause() {
+  public func pause() {
     if isPlaying {
       if #unavailable(iOS 16) {
         previousRate = player.rate
@@ -175,7 +177,7 @@ class MediaPlayer: NSObject {
     }
   }
 
-  func stop() {
+  public func stop() {
     if isPlaying {
       if #unavailable(iOS 16) {
         previousRate = player.rate
@@ -186,15 +188,15 @@ class MediaPlayer: NSObject {
     }
   }
 
-  func seekPreviousTrack() {
+  public func seekPreviousTrack() {
     previousTrackSubscriber.send(EventNotification(mediaPlayer: self, event: .previousTrack))
   }
 
-  func seekNextTrack() {
+  public func seekNextTrack() {
     nextTrackSubscriber.send(EventNotification(mediaPlayer: self, event: .nextTrack))
   }
 
-  func seekBackwards() {
+  public func seekBackwards() {
     if let currentItem = player.currentItem {
       let currentTime = currentItem.currentTime().seconds
       var seekTime = currentTime - seekInterval
@@ -213,7 +215,7 @@ class MediaPlayer: NSObject {
     }
   }
 
-  func seekForwards() {
+  public func seekForwards() {
     if let currentItem = player.currentItem {
       let currentTime = currentItem.currentTime().seconds
       let seekTime = currentTime + seekInterval
@@ -230,7 +232,7 @@ class MediaPlayer: NSObject {
     }
   }
 
-  func seek(to time: TimeInterval) {
+  public func seek(to time: TimeInterval) {
     if let currentItem = player.currentItem {
       var seekTime = time
       if seekTime < 0.0 {
@@ -254,7 +256,7 @@ class MediaPlayer: NSObject {
     }
   }
 
-  func toggleRepeatMode() {
+  public func toggleRepeatMode() {
     let command = MPRemoteCommandCenter.shared().changeRepeatModeCommand
     switch repeatState {
     case .none:
@@ -274,7 +276,7 @@ class MediaPlayer: NSObject {
         event: .changeRepeatMode))
   }
 
-  func toggleShuffleMode() {
+  public func toggleShuffleMode() {
     let command = MPRemoteCommandCenter.shared().changeShuffleModeCommand
     switch shuffleState {
     case .none:
@@ -291,7 +293,7 @@ class MediaPlayer: NSObject {
         event: .changeShuffleMode))
   }
 
-  func toggleGravity() {
+  public func toggleGravity() {
     switch playerLayer.videoGravity {
     case .resize:
       playerLayer.videoGravity = .resizeAspect
@@ -309,7 +311,7 @@ class MediaPlayer: NSObject {
         event: .playerGravityChanged))
   }
 
-  func setPlaybackRate(rate: Float) {
+  public func setPlaybackRate(rate: Float) {
     if #available(iOS 16, *) {
       player.defaultRate = rate
       player.rate = rate
@@ -325,12 +327,12 @@ class MediaPlayer: NSObject {
   }
 
   @discardableResult
-  func attachLayer() -> CALayer {
+  public func attachLayer() -> CALayer {
     playerLayer.player = player
     return playerLayer
   }
   
-  func addTimeObserver(interval: Int, onTick: @escaping (CMTime) -> Void) -> Any {
+  public func addTimeObserver(interval: Int, onTick: @escaping (CMTime) -> Void) -> Any {
     let interval = CMTimeMake(value: Int64(interval), timescale: 1000)
     return player.addPeriodicTimeObserver(
       forInterval: interval, queue: .main,
@@ -374,7 +376,7 @@ class MediaPlayer: NSObject {
 }
 
 extension MediaPlayer {
-  enum Event {
+  public enum Event {
     case pause
     case play
     case stop
@@ -394,9 +396,9 @@ extension MediaPlayer {
     case playerGravityChanged
   }
 
-  struct EventNotification {
-    let mediaPlayer: MediaPlayer
-    let event: Event
+  public struct EventNotification {
+    public let mediaPlayer: MediaPlayer
+    public let event: Event
   }
 
   public func publisher(for event: Event) -> AnyPublisher<EventNotification, Never> {
@@ -681,7 +683,7 @@ extension AVPlayerItem {
   }
   
   /// Returns whether or not the assetTrack has audio tracks OR the asset has audio tracks
-  func isAudioTracksAvailable() -> Bool {
+  public func isAudioTracksAvailable() -> Bool {
     tracks.filter({ $0.assetTrack?.mediaType == .audio }).isEmpty == false
   }
 
@@ -690,7 +692,7 @@ extension AVPlayerItem {
   /// We do this because for m3u8 HLS streams,
   /// tracks may not always be available and the particle effect will show even on videos..
   /// It's best to assume this type of media is a video stream.
-  func isVideoTracksAvailable() -> Bool {
+  public func isVideoTracksAvailable() -> Bool {
     if !isReadyToPlay {
       return true
     }
@@ -726,7 +728,7 @@ extension AVPlayerItem {
 
 extension AVAsset {
   /// Returns whether or not the asset has audio tracks
-  func isAudioTracksAvailable() -> Bool {
+  public func isAudioTracksAvailable() -> Bool {
     !tracks.filter({ $0.mediaType == .audio }).isEmpty
   }
 
@@ -735,11 +737,11 @@ extension AVAsset {
   /// We do this because for m3u8 HLS streams,
   /// tracks may not always be available and the particle effect will show even on videos..
   /// It's best to assume this type of media is a video stream.
-  func isVideoTracksAvailable() -> Bool {
+  public func isVideoTracksAvailable() -> Bool {
     !tracks.filter({ $0.mediaType == .video }).isEmpty
   }
   
-  static var defaultOptions: [String: Any] {
+  public static var defaultOptions: [String: Any] {
     let userAgent = UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile
     var options: [String: Any] = [:]
     if #available(iOS 16, *) {

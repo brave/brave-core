@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 import BraveUI
+import Playlist
 
 // MARK: - Reordering of cells
 

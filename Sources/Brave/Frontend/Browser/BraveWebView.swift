@@ -6,6 +6,7 @@ import Foundation
 import WebKit
 import Shared
 import BraveShared
+import UserAgent
 
 class BraveWebView: WKWebView {
   lazy var findInPageDelegate: WKWebViewFindStringFindDelegate? = {
