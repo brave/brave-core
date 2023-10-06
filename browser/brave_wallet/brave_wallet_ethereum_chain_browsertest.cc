@@ -84,7 +84,7 @@ const char kScriptRunEmptyAndCheckChainResult[] = R"(
 
 std::string EncodeQuery(const std::string& query) {
   url::RawCanonOutputT<char> buffer;
-  url::EncodeURIComponent(query.data(), query.size(), &buffer);
+  url::EncodeURIComponent(query, &buffer);
   return std::string(buffer.data(), buffer.length());
 }
 

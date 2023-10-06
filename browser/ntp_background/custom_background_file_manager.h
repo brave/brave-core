@@ -96,9 +96,8 @@ class CustomBackgroundFileManager final {
         const auto path = value.path().substr(1);
         DCHECK(!path.empty()) << "URL path is empty " << value;
         url::RawCanonOutputT<char16_t> decoded_value;
-        url::DecodeURLEscapeSequences(path.data(), path.length(),
-                                      url::DecodeURLMode::kUTF8OrIsomorphic,
-                                      &decoded_value);
+        url::DecodeURLEscapeSequences(
+            path, url::DecodeURLMode::kUTF8OrIsomorphic, &decoded_value);
         value_ = base::UTF16ToUTF8(
             std::u16string(decoded_value.data(), decoded_value.length()));
       } else {
@@ -136,7 +135,7 @@ class CustomBackgroundFileManager final {
         // Do percent encoding and compose it with base url so that it can
         // be used as webui data url.
         url::RawCanonOutputT<char> encoded;
-        url::EncodeURIComponent(value_.c_str(), value_.length(), &encoded);
+        url::EncodeURIComponent(value_, &encoded);
         return GURL(ntp_background_images::kCustomWallpaperURL +
                     std::string(encoded.data(), encoded.length()));
       } else {
