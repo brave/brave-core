@@ -126,14 +126,17 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                 } else {
                     // Other NFTs.
                     nftDataModels.add(new NftDataModel(userAsset,
-                            NetworkUtils.findNetwork(allNetworkList, userAsset.chainId), null));
+                            NetworkUtils.findNetwork(
+                                    allNetworkList, userAsset.chainId, userAsset.coin),
+                            null));
                 }
             }
         }
         nftMetaDataHandler.setWhenAllCompletedAction(() -> {
             for (AsyncUtils.BaseGetNftMetadataContext metadata : nftMetadataList) {
                 nftDataModels.add(new NftDataModel(metadata.asset,
-                        NetworkUtils.findNetwork(allNetworkList, metadata.asset.chainId),
+                        NetworkUtils.findNetwork(
+                                allNetworkList, metadata.asset.chainId, metadata.asset.coin),
                         new NftMetadata(metadata.tokenMetadata, metadata.errorCode,
                                 metadata.errorMessage)));
             }

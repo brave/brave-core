@@ -45,20 +45,18 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         VISIBLE_ASSETS_LIST,
         EDIT_VISIBLE_ASSETS_LIST,
         ACCOUNTS_LIST,
-        SELECT_ACCOUNTS_LIST,
-        BUY_ASSETS_LIST,
-        SEND_ASSETS_LIST;
+        SELECT_ACCOUNTS_LIST
     }
 
     private Context context;
     private List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-    private List<WalletListItemModel> walletListItemModelListCopy = new ArrayList<>();
-    private List<Integer> mCheckedPositions = new ArrayList<>();
+    private final List<WalletListItemModel> walletListItemModelListCopy = new ArrayList<>();
+    private final List<Integer> mCheckedPositions = new ArrayList<>();
     private OnWalletListItemClick onWalletListItemClick;
     private int walletListItemType;
     private AdapterType mType;
-    private ExecutorService mExecutor;
-    private Handler mHandler;
+    private final ExecutorService mExecutor;
+    private final Handler mHandler;
     private int previousSelectedPos;
 
     public WalletCoinAdapter(AdapterType type) {
@@ -78,8 +76,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WalletListItemModel walletListItemModel = walletListItemModelList.get(position);
-        // When ViewHolder is re-used, it has the obeservers which are fired when
-        // we modifying checkbox. This may cause unwanted modifying of the model
+        // When ViewHolder is re-used, it has the observers which are fired when
+        // we modifying checkbox. This may cause unwanted modifying of the model.
         holder.resetObservers();
 
         holder.titleText.setText(walletListItemModel.getTitle());
@@ -101,16 +99,6 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             if (walletListItemType == Utils.TRANSACTION_ITEM) {
                 onWalletListItemClick.onTransactionClick(walletListItemModel.getTransactionInfo());
             } else if (walletListItemType == Utils.ASSET_ITEM) {
-                if (mType == AdapterType.BUY_ASSETS_LIST || mType == AdapterType.SEND_ASSETS_LIST) {
-                    for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
-                        WalletListItemModel item = walletListItemModelListCopy.get(i);
-                        if (item.getTitle().equals(holder.titleText.getText())
-                                || item.getSubTitle().equals(holder.subTitleText.getText())) {
-                            mCheckedPositions.add((Integer) i);
-                            break;
-                        }
-                    }
-                }
                 if (mType != AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                     onWalletListItemClick.onAssetClick(walletListItemModel.getBlockchainToken());
                 }
@@ -161,7 +149,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             holder.text2Text.setVisibility(View.GONE);
             if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                 holder.assetCheck.setVisibility(View.VISIBLE);
-                holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());
+                holder.assetCheck.setChecked(walletListItemModel.isVisible());
                 holder.assetCheck.setOnCheckedChangeListener(
                         new CompoundButton.OnCheckedChangeListener() {
                             @Override
@@ -218,11 +206,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                     onWalletListItemClick.onMaybeShowTrashButton(
                             walletListItemModel, holder.iconTrash);
                     holder.iconTrash.setOnClickListener(
-                            v -> { onWalletListItemClick.onTrashIconClick(walletListItemModel); });
+                            v -> onWalletListItemClick.onTrashIconClick(walletListItemModel));
                 }
             }
-        } else if (mType == AdapterType.ACCOUNTS_LIST
-                || mType == AdapterType.SELECT_ACCOUNTS_LIST) {
+        } else {
             holder.iconImg.setImageResource(android.R.color.transparent);
             if (walletListItemModel.getAccountInfo() != null) {
                 Utils.setBlockiesBitmapResourceFromAccount(mExecutor, mHandler, holder.iconImg,
@@ -236,14 +223,13 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             });
             if (mType == AdapterType.SELECT_ACCOUNTS_LIST) {
                 holder.ivSelected.setVisibility(
-                        walletListItemModel.getIsUserSelected() ? View.VISIBLE : View.INVISIBLE);
+                        walletListItemModel.isVisible() ? View.VISIBLE : View.INVISIBLE);
             }
         }
     }
 
     private boolean isAssetSelectionType() {
-        return mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
-                || mType == AdapterType.SEND_ASSETS_LIST;
+        return mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST;
     }
 
     @Override
@@ -263,7 +249,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             mCheckedPositions.clear();
         }
         for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
-            if (walletListItemModelListCopy.get(i).getIsUserSelected()) {
+            if (walletListItemModelListCopy.get(i).isVisible()) {
                 mCheckedPositions.add((Integer) i);
             }
         }
@@ -320,10 +306,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     private void updateSelectedNetwork(int selectedAccountPosition) {
-        walletListItemModelList.get(previousSelectedPos).setIsUserSelected(false);
+        walletListItemModelList.get(previousSelectedPos).isVisible(false);
         notifyItemChanged(previousSelectedPos);
 
-        walletListItemModelList.get(selectedAccountPosition).setIsUserSelected(true);
+        walletListItemModelList.get(selectedAccountPosition).isVisible(true);
         previousSelectedPos = selectedAccountPosition;
         notifyItemChanged(selectedAccountPosition);
     }
