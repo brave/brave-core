@@ -70,8 +70,9 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
   const TransactionInfo transaction;
 
   // Act & Assert
-  EXPECT_DEATH(BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
-               "Check failed: transaction.IsValid*");
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
+      "Check failed: transaction.IsValid*");
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
@@ -82,8 +83,9 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_DEATH(BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
-               "Check failed: !UserHasJoinedBraveRewards*");
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
+      "Check failed: !UserHasJoinedBraveRewards*");
 }
 
 }  // namespace brave_ads
