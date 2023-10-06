@@ -92,7 +92,6 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Toolbar.MenuOpens",
     "Brave.Sync.Status.2",
     "Brave.Sync.ProgressTokenEverReset",
-    "Brave.Uptime.BrowserOpenMinutes",
     "Brave.VerticalTabs.GroupTabs",
     "Brave.VerticalTabs.OpenTabs",
     "Brave.VerticalTabs.PinnedTabs",
@@ -221,6 +220,7 @@ constexpr inline auto kCollectedExpressHistograms =
     "Brave.Rewards.EnabledInstallationTime",
     "Brave.Today.IsEnabled",
     "Brave.Today.UsageDaily",
+    "Brave.Uptime.BrowserOpenTime",
     "Brave.Wallet.UsageDaily"
 });
 
