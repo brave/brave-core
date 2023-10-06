@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/tipping_banner_tablet_ui_background">
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/tippingBannerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout="@layout/rewards_tipping_banner_fragment" />
+
+
+    <LinearLayout
+        android:id="@+id/tipping_panel_view"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/tippingPanelFragment2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout="@layout/brave_rewards_tippingpanel_fragment"
+            />
+
+        <TextView
+            android:id="@+id/processing_fee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="@string/processing_fee"
+            android:textColor="@color/terms_of_service_text_color_default"
+            android:textSize="12sp"
+             />
+
+        <TextView
+            android:id="@+id/proceed_terms_of_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="14dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:textColor="@color/terms_of_service_text_color_default"
+            android:textSize="12sp"
+             />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

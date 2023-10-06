@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <include
+        android:id="@+id/rewards_tipping_success_fragment"
+        layout="@layout/rewards_tipping_success_contribution_fragment"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/rewards_tipping_tip_fragment"
+        layout="@layout/brave_rewards_tippingpanel_fragment" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

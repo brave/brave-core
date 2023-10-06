@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/publisher_info_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal">
+
+    <ImageView
+        android:id="@+id/top_tipping_banner_ui_background_scenery"
+        android:layout_width="match_parent"
+        android:layout_height="223dp"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tipping_default_background"
+        />
+
+    <TextView
+        android:id="@+id/tipping_publisher_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="36dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/rewards_panel_notification_text_color"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_tipping_banner_ui_background_scenery" />
+
+    <ImageView
+        android:id="@+id/verified_tick_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/tipping_publisher_name"
+        app:layout_constraintStart_toEndOf="@+id/tipping_publisher_name"
+        app:layout_constraintTop_toTopOf="@+id/tipping_publisher_name"
+        app:srcCompat="@drawable/verification_tick_mark" />
+
+
+    <TextView
+        android:id="@+id/tipping_details_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="392dp"
+        android:fontFamily="sans-serif"
+        android:paddingEnd="32dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/tipping_details_description_text_color"
+        android:textSize="14sp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="262dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tipping_publisher_name" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@drawable/transparent_shadow_background"
+        app:layout_constraintBottom_toBottomOf="@id/tipping_details_description"
+        app:layout_constraintEnd_toEndOf="@+id/tipping_details_description"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/align_other_social"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="@null"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/link_discord"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+        app:srcCompat="@drawable/social_discord_color" />
+
+    <ImageView
+        android:id="@+id/link_discord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/link_facebook"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/align_other_social"
+        app:layout_constraintTop_toTopOf="@id/align_other_social"
+        app:srcCompat="@drawable/social_discord_color" />
+
+    <ImageView
+        android:id="@+id/link_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/link_instagram"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_discord"
+        app:layout_constraintTop_toTopOf="@id/align_other_social"
+        app:srcCompat="@drawable/social_facebook_color" />
+
+    <ImageView
+        android:id="@+id/link_instagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/link_twitter"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_facebook"
+        app:layout_constraintTop_toTopOf="@id/align_other_social"
+        app:srcCompat="@drawable/social_instagram_color" />
+
+    <ImageView
+        android:id="@+id/link_twitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/link_youtube"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_instagram"
+        app:layout_constraintTop_toTopOf="@id/align_other_social"
+        app:srcCompat="@drawable/social_twitter_color" />
+
+    <ImageView
+        android:id="@+id/link_youtube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/link_github"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_twitter"
+        app:layout_constraintTop_toTopOf="@id/align_other_social"
+        app:srcCompat="@drawable/social_youtube_color" />
+
+    <ImageView
+        android:id="@+id/link_github"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/link_reddit"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_youtube"
+        app:layout_constraintTop_toTopOf="@id/align_other_social"
+        app:srcCompat="@drawable/social_github_color" />
+
+    <ImageView
+        android:id="@+id/link_reddit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/link_vimeo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_github"
+        app:layout_constraintTop_toTopOf="@id/align_other_social"
+        app:srcCompat="@drawable/social_reddit_color" />
+
+    <ImageView
+        android:id="@+id/link_vimeo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/link_twitch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_reddit"
+        app:layout_constraintTop_toTopOf="@id/align_other_social"
+        app:srcCompat="@drawable/social_vimeo_color" />
+
+    <ImageView
+        android:id="@+id/link_twitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/link_vimeo"
+        app:layout_constraintTop_toTopOf="@id/align_other_social"
+        app:srcCompat="@drawable/social_twitch_color" />
+
+    <ImageView
+        android:id="@+id/publisher_favicon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="120dp"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top_tipping_banner_ui_background_scenery"
+        />
+
+    <View
+        android:id="@+id/placeholder_background1"
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/tipping_banner_view_background"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/close_it"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="72dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/link_twitch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_twitter"
+        app:layout_constraintTop_toBottomOf="@+id/tipping_details_description"
+        app:srcCompat="@drawable/social_youtube_color" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/send_tip_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="72dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/link_twitch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_twitter"
+        app:layout_constraintTop_toBottomOf="@+id/tipping_details_description"
+        app:srcCompat="@drawable/social_youtube_color" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/use_web3_wallet_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="72dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/link_twitch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/link_twitter"
+        app:layout_constraintTop_toBottomOf="@+id/tipping_details_description"
+        app:srcCompat="@drawable/social_youtube_color" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

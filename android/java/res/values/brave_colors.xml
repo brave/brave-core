@@ -210,6 +210,8 @@
     <color name="topsite_bg_color">#DADCE8</color>
 
     <color name="white_alpha_50">#80FFFFFF</color>
+    <color name="verification_tick_mark_background">#5F5CF1</color>
+
 
     <color name="brave_rewards_modal_text_color">#495057</color>
     <color name="brave_rewards_modal_theme_color">#4C54D2</color>
@@ -362,4 +364,6 @@
     <color name="rewards_private_ads_icon_color13">#6AB6F4</color>
     <color name="rewards_manage_ads_color">#3F39E8</color>
     <color name="rewards_estimated_earning_close_color">#697284</color>
+    <color name="rewards_tipping_progress_bar">@android:color/black</color>
+
 </resources>
