@@ -138,12 +138,10 @@
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_EXTENSIONS" desc="This text describes that potentially harmful extensions need to be reviewed by the user. The placeholder will be a numeral.">
     {NUM_EXTENSIONS, plural,
-     =1 {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>1 extension<ph name="END_BOLD">&lt;/b&gt;</ph> that was taken down from the Web Store}
-     other {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{NUM_EXTENSIONS} extensions<ph name="END_BOLD">&lt;/b&gt;</ph> that were taken down from the Web Store}}
+     =1 {Review 1 extension that was taken down from the Web Store}
+     other {Review {NUM_EXTENSIONS} extensions that were taken down from the Web Store}}
   </message>
   <if expr="_google_chrome">
-    </if>
-  <if expr="chrome_root_store_supported">
     </if>
   <if expr="chromeos_ash">
     </if>
@@ -183,6 +181,9 @@
   </message>
   <if expr="chromeos_lacros">
     </if>
+  <message name="IDS_SETTINGS_TRACKING_PROTECTION_BULLET_ONE_DESCRIPTION" desc="Description of the first bullet for tracking protection settings. Explains what limiting third-party cookies means.">
+    Most sites can’t use third-party cookies to track you as you browse and sites can’t use third-party cookies in Private mode.
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies in Private.">
     Third-party cookies are blocked in Private mode
   </message>
@@ -192,9 +193,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_SITE_EXCEPTION_DESC" desc="The text displayed in order to explain to a user that a content setting only applies to the current Private session.">
     This custom setting will be removed when you close all your Private windows
   </message>
-  <if expr="chromeos_ash">
-    </if>
-
   <if expr="not chromeos_ash">
     </if>
 
@@ -211,4 +209,7 @@
   <if expr="is_win and _google_chrome">
     </if>
 
+  <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_INCOGNITO_SUBHEADER" desc="The subheader of the second item in the 'User Education Module' in the Safety Hub page. This item explains Private mode.">
+    Private mode keeps <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>your browsing private from others<ph name="END_LINK">&lt;/a&gt;</ph> who use your device
+  </message>
   </grit-part>
