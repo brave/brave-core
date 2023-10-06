@@ -14,7 +14,7 @@
 namespace blink {
 
 // AddFeature doesn't check if origin_trials::IsTrialValid.
-void OriginTrialContext::AddFeature(OriginTrialFeature feature) {
+void OriginTrialContext::AddFeature(blink::mojom::OriginTrialFeature feature) {
   if (origin_trials::IsTrialDisabledInBrave(feature))
     return;
 

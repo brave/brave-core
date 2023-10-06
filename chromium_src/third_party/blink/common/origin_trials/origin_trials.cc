@@ -51,19 +51,19 @@ bool IsTrialDisabledInBrave(std::string_view trial_name) {
   return false;
 }
 
-bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
+bool IsTrialDisabledInBrave(blink::mojom::OriginTrialFeature feature) {
   // When updating also update the array in the overload above.
   // clang-format off
-  static const OriginTrialFeature kBraveDisabledTrialFeatures[] =
+  static const blink::mojom::OriginTrialFeature kBraveDisabledTrialFeatures[] =
       {   // NOLINT
-          OriginTrialFeature::kAdInterestGroupAPI,
-          OriginTrialFeature::kDigitalGoods,
-          OriginTrialFeature::kFencedFrames,
-          OriginTrialFeature::kFledge,
-          OriginTrialFeature::kParakeet,
-          OriginTrialFeature::kPrivacySandboxAdsAPIs,
-          OriginTrialFeature::kPrivateStateTokens,
-          OriginTrialFeature::kWebEnvironmentIntegrity,
+          blink::mojom::OriginTrialFeature::kAdInterestGroupAPI,
+          blink::mojom::OriginTrialFeature::kDigitalGoods,
+          blink::mojom::OriginTrialFeature::kFencedFrames,
+          blink::mojom::OriginTrialFeature::kFledge,
+          blink::mojom::OriginTrialFeature::kParakeet,
+          blink::mojom::OriginTrialFeature::kPrivacySandboxAdsAPIs,
+          blink::mojom::OriginTrialFeature::kPrivateStateTokens,
+          blink::mojom::OriginTrialFeature::kWebEnvironmentIntegrity,
       };
   // clang-format on
 
