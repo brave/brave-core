@@ -66,6 +66,8 @@ export const {
   setHidePortfolioBalances,
   setRemovedFungibleTokenIds,
   setRemovedNonFungibleTokenIds,
+  setDeletedNonFungibleTokenIds,
+  setDeletedNonFungibleTokens,
   setHidePortfolioNFTsTab,
   setRemovedNonFungibleTokens,
   setFilteredOutPortfolioNetworkKeys,

@@ -104,6 +104,7 @@ export const Nfts = (props: Props) => {
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
   const isRefreshingTokens = useSafeWalletSelector(WalletSelectors.isRefreshingNetworksAndTokens)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const deletedNonFungibleTokenIds = useUnsafeWalletSelector(WalletSelectors.deletedNonFungibleTokenIds)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -221,11 +222,14 @@ export const Nfts = (props: Props) => {
 
   const [allSpamNfts, allSpamNftsIds] = React.useMemo(() => {
     // filter out NFTs user has marked not spam
-    // and hidden NFTs
-    const nonSpamAndHidden = userNonSpamNftIds.concat(hiddenNftsIds)
+    // hidden NFTs,
+    // and deleted NFTs
+    const excludedNftIds = userNonSpamNftIds
+      .concat(hiddenNftsIds)
+      .concat(deletedNonFungibleTokenIds)
     const simpleHashList = simpleHashSpamNfts.filter(
       (nft) =>
-        !nonSpamAndHidden.includes(getAssetIdKey(nft))
+        !excludedNftIds.includes(getAssetIdKey(nft))
     )
     const simpleHashListIds = simpleHashList.map((nft) => getAssetIdKey(nft))
     // add NFTs user has marked as NFT if they are not in the list
@@ -241,7 +245,7 @@ export const Nfts = (props: Props) => {
       fullSpamList,
       fullSpamList.map((nft) => getAssetIdKey(nft))
     ]
-  }, [userMarkedSpamNfts, simpleHashSpamNfts, hiddenNftsIds, userNonSpamNftIds])
+  }, [userMarkedSpamNfts, simpleHashSpamNfts, hiddenNftsIds, userNonSpamNftIds, deletedNonFungibleTokenIds])
 
   const [sortedNfts, sortedHiddenNfts, sortedSpamNfts] = React.useMemo(() => {
     if (searchValue === '') {
