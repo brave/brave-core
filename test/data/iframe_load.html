@@ -1,0 +1,13 @@
+<html><head><title>iframe test</title></head>
+<body>
+<iframe src="about:blank" id="test"></iframe>
+<script>
+function requestedUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const url = urlParams.get('url');
+    return atob(url);
+}
+var iframe = document.getElementById("test");
+iframe.src = requestedUrl();
+</script>
+</body></html>
