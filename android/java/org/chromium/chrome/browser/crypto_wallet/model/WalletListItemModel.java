@@ -27,7 +27,7 @@ public class WalletListItemModel {
     private String mText2;
     private BlockchainToken mBlockchainToken;
     private AccountInfo mAccountInfo;
-    private boolean mIsUserSelected;
+    private boolean mVisible;
     private double mTotalGas;
     private double mTotalGasFiat;
     private String[] mAddressesForBitmap;
@@ -193,12 +193,12 @@ public class WalletListItemModel {
         return mText2;
     }
 
-    public boolean getIsUserSelected() {
-        return mIsUserSelected;
+    public boolean isVisible() {
+        return mVisible;
     }
 
-    public void setIsUserSelected(boolean isUserSelected) {
-        mIsUserSelected = isUserSelected;
+    public void isVisible(final boolean visible) {
+        mVisible = visible;
     }
 
     public boolean isErc721() {
