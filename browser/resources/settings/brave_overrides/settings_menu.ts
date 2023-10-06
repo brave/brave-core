@@ -211,17 +211,6 @@ RegisterStyleOverride(
 
 RegisterPolymerTemplateModifications({
   'settings-menu': (templateContent) => {
-    // Add title
-    const titleEl = document.createElement('h1')
-    titleEl.id = 'settingsHeader'
-    titleEl.textContent = loadTimeData.getString('settings')
-    const menuEl = templateContent.querySelector('#menu')
-    if (!menuEl) {
-      console.error('[Brave Settings Overrides] Could not find menu element to add title after')
-    } else {
-      menuEl.insertAdjacentElement('afterbegin', titleEl)
-    }
-
     // Hide performance menu. We moved it under system menu instead.
     const performanceEl = getMenuElement(templateContent, '/performance')
     if (performanceEl) {
