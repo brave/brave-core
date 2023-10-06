@@ -252,6 +252,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &net::features::kEnableWebTransportDraft07,
     &net::features::kPartitionedCookies,
     &net::features::kThirdPartyPartitionedStorageAllowedByDefault,
+    &net::features::kThirdPartyStoragePartitioning,
     &network::features::kFledgePst,
     &network::features::kPrivateStateTokens,
     &network_time::kNetworkTimeServiceQuerying,
