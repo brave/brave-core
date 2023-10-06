@@ -146,10 +146,11 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_DEATH(BuildRewardConfirmation(/*token_generator=*/nullptr, transaction,
-                                       /*user_data=*/
-                                       {}),
-               "Check failed: token_generator");
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildRewardConfirmation(/*token_generator=*/nullptr, transaction,
+                              /*user_data=*/
+                              {}),
+      "Check failed: token_generator");
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
@@ -158,9 +159,10 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
   const TransactionInfo transaction;
 
   // Act & Assert
-  EXPECT_DEATH(BuildRewardConfirmation(&token_generator_mock_, transaction,
-                                       /*user_data=*/{}),
-               "Check failed: transaction.IsValid*");
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildRewardConfirmation(&token_generator_mock_, transaction,
+                              /*user_data=*/{}),
+      "Check failed: transaction.IsValid*");
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
@@ -173,9 +175,10 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_DEATH(BuildRewardConfirmation(&token_generator_mock_, transaction,
-                                       /*user_data=*/{}),
-               "Check failed: UserHasJoinedBraveRewards*");
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildRewardConfirmation(&token_generator_mock_, transaction,
+                              /*user_data=*/{}),
+      "Check failed: UserHasJoinedBraveRewards*");
 }
 
 }  // namespace brave_ads
