@@ -31,7 +31,6 @@
     <color name="brave_wallet_day_night_negative_ripple_color">#E1E3E4</color>
     <color name="brave_wallet_dn_error_text_bg_color">#F0F2FF</color>
     <color name="brave_wallet_dn_highlight_bg_color">#FFFFFF</color>
-    <color name="wallet_dn_bg_primary">#F8F9FA</color>
     <color name="brave_wallet_day_night_bull">#FF2AC194</color>
     <color name="brave_wallet_day_night_bear">#FFEE6374</color>
     <color name="brave_wallet_day_night_chip_background_color">#EDEEF1</color>
@@ -224,7 +223,7 @@
     <color name="wallet_toolbar_bg_color">#F8F9FA</color>
     <color name="chip_outline_selected_color">#F8F9FA</color>
     <color name="tab_color">#FF4081</color>
-    <color name="wallet_bg">#FFFFFF</color>
+    <color name="wallet_bg">#F8F9FA</color>
     <color name="wallet_edittext_outline_color">#AEB1C2</color>
     <color name="wallet_warning_box_bg_color">#FFFFFF</color>
     <color name="recovery_phrase_warning_text_color">#868E96</color>
