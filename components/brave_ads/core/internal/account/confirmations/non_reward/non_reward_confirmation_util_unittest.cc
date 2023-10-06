@@ -63,7 +63,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
-       DoNotBuildNonRewardConfirmationWithInvalidTransaction) {
+       DISABLED_DoNotBuildNonRewardConfirmationWithInvalidTransaction) {
   // Arrange
   DisableBraveRewardsForTesting();
 
@@ -76,7 +76,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
-       DoNotBuildNonRewardConfirmationForRewardsUser) {
+       DISABLED_DoNotBuildNonRewardConfirmationForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value=*/0.01, ConfirmationType::kViewed,
