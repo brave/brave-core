@@ -83,8 +83,10 @@ public class NetworkSelectorModel {
                 // Selected local network can be "All networks"
                 allNetworkList.add(0, allNetwork);
             }
-            updateLocalNetwork(allNetworkList, mSelectedChainId,
-                    mNetworkModel.getNetwork(mSelectedChainId).coin);
+            final NetworkInfo network = mNetworkModel.getNetwork(mSelectedChainId);
+            if (network != null) {
+                updateLocalNetwork(allNetworkList, mSelectedChainId, network.coin);
+            }
             return networkListsCopy;
         });
     }
