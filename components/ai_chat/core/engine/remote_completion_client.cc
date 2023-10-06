@@ -17,7 +17,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/core/constants.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -31,6 +31,7 @@ namespace ai_chat {
 namespace {
 
 constexpr char kAIChatCompletionPath[] = "v1/complete";
+const char kAIChatHostnamePart[] = "ai-chat";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
@@ -95,21 +96,14 @@ std::string CreateJSONRequestBody(base::ValueView node) {
 }
 
 const GURL GetEndpointBaseUrl(bool premium) {
-  auto* endpoint = premium ? BUILDFLAG(BRAVE_AI_CHAT_PREMIUM_ENDPOINT)
-                           : BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT);
+  auto* endpoint_suffix = premium ? "-premium.bsg" : ".bsg";
+  auto endpoint = brave_domains::GetServicesDomain(
+      base::StrCat({kAIChatHostnamePart, endpoint_suffix}));
 
-  // Simply log if we have empty endpoint, it's probably just a local
-  // non-configured build.
-  if (strlen(endpoint) != 0) {
-    static base::NoDestructor<GURL> url{
-        base::StrCat({url::kHttpsScheme, "://", endpoint})};
-    return *url;
-  } else {
-    LOG(ERROR) << "BRAVE_AI_CHAT_ENDPOINT or BRAVE_AI_CHAT_PREMIUM_ENDPOINT "
-                  "was empty. Must supply an AI Chat"
-                  "endpoint via build flag to use the AI Chat feature.";
-    return GURL::EmptyGURL();
-  }
+  static base::NoDestructor<GURL> url{base::StrCat(
+      {url::kHttpsScheme, url::kStandardSchemeSeparator, endpoint})};
+
+  return *url;
 }
 
 }  // namespace

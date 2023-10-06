@@ -12,6 +12,7 @@
 #include "base/json/values_util.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -22,7 +23,7 @@
 
 namespace {
 
-const char kLeoSkuDomain[] = "leo.bravesoftware.com";
+const char kLeoSkuHostnamePart[] = "leo";
 
 }  // namespace
 
@@ -54,14 +55,17 @@ void AIChatCredentialManager::GetPremiumStatus(
     }
   }
 
+  const std::string leo_sku_domain =
+      brave_domains::GetServicesDomain(kLeoSkuHostnamePart);
+
   // If there aren't any valid in the cache, we must check the CredentialSummary
   // from from the SKU service.
   EnsureMojoConnected();
   skus_service_->CredentialSummary(
-      kLeoSkuDomain,
+      leo_sku_domain,
       base::BindOnce(&AIChatCredentialManager::OnCredentialSummary,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     kLeoSkuDomain));
+                     leo_sku_domain));
 }
 
 void AIChatCredentialManager::OnCredentialSummary(
@@ -177,13 +181,15 @@ void AIChatCredentialManager::OnGetPremiumStatus(
     std::move(callback).Run(absl::nullopt);
     return;
   }
+  const std::string leo_sku_domain =
+      brave_domains::GetServicesDomain(kLeoSkuHostnamePart);
 
   EnsureMojoConnected();
   skus_service_->PrepareCredentialsPresentation(
-      kLeoSkuDomain, "*",
+      leo_sku_domain, "*",
       base::BindOnce(&AIChatCredentialManager::OnPrepareCredentialsPresentation,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     kLeoSkuDomain));
+                     leo_sku_domain));
 }
 
 void AIChatCredentialManager::OnPrepareCredentialsPresentation(

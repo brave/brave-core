@@ -223,8 +223,6 @@ const Config = function () {
   this.use_goma = getNPMConfig(['brave_use_goma']) || false
   this.goma_offline = false
   this.use_libfuzzer = false
-  this.brave_ai_chat_endpoint = getNPMConfig(['brave_ai_chat_endpoint']) || ''
-  this.brave_ai_chat_premium_endpoint = getNPMConfig(['brave_ai_chat_premium_endpoint']) || ''
   this.androidAabToApk = false
   this.enable_dangling_raw_ptr_checks = false
 
@@ -407,8 +405,6 @@ Config.prototype.buildArgs = function () {
     use_libfuzzer: this.use_libfuzzer,
     enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),
-    brave_ai_chat_endpoint: this.brave_ai_chat_endpoint,
-    brave_ai_chat_premium_endpoint: this.brave_ai_chat_premium_endpoint,
     brave_services_production_domain: this.braveServicesProductionDomain,
     brave_services_staging_domain: this.braveServicesStagingDomain,
     brave_services_dev_domain: this.braveServicesDevDomain,
@@ -689,8 +685,6 @@ Config.prototype.buildArgs = function () {
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
     delete args.brave_variations_server_url
-    delete args.brave_ai_chat_endpoint
-    delete args.brave_ai_chat_premium_endpoint
     delete args.enable_dangling_raw_ptr_checks
   }
 
