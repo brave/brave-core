@@ -600,6 +600,11 @@ public class BrowserViewController: UIViewController {
     traitCollection.horizontalSizeClass == .compact &&
     traitCollection.verticalSizeClass == .regular &&
     traitCollection.userInterfaceIdiom == .phone
+    
+    // Reinserts the fav controller whos parent is based on bottom bar
+    if let favoritesController {
+      insertFavoritesControllerView(favoritesController: favoritesController)
+    }
   }
 
   public override func viewSafeAreaInsetsDidChange() {
