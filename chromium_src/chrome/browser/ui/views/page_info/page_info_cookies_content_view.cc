@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/page_info/page_info_cookies_content_view.h"
 
+#include "chrome/browser/ui/views/page_info/page_info_main_view.h"
+
 #define SetCookieInfo SetCookieInfo_ChromiumImpl
 #include "src/chrome/browser/ui/views/page_info/page_info_cookies_content_view.cc"
 #undef SetCookieInfo
