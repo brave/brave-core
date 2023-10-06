@@ -123,11 +123,12 @@
 
 
 
-    <color name="wallet_text_color">#F0F2FF</color>
+    <color name="wallet_text_color">#F6F7F8</color>
     <color name="wallet_secondary_text_color">#84889C</color>
     <color name="wallet_secondary_layout_text_color">#C2C4CF</color>
     <color name="recovery_phrase_text_color">#1E2029</color>
-    <color name="wallet_toolbar_bg_color">#1E2029</color>
+    <color name="rounded_filled_background">#1E2029</color>
+    <color name="wallet_toolbar_bg_color">#000000</color>
     <color name="chip_outline_selected_color">#17171F</color>
     <color name="wallet_bg">#17171F</color>
     <color name="wallet_edittext_outline_color">#3B3E4F</color>
