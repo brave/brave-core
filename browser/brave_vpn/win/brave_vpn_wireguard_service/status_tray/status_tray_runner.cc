@@ -25,6 +25,7 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
@@ -259,9 +260,14 @@ void StatusTrayRunner::OnRasConnectionStateChanged() {
 
 void StatusTrayRunner::OnWireguardServiceStateChanged(int mask) {
   UpdateConnectionState();
-  SubscribeForWireguardNotifications(
-      IsVPNConnected() ? GetBraveVpnWireguardTunnelServiceName()
-                       : GetBraveVpnWireguardServiceName());
+  auto service_name = IsVPNConnected() ? GetBraveVpnWireguardTunnelServiceName()
+                                       : GetBraveVpnWireguardServiceName();
+  if (!brave_vpn::IsWindowsServiceRunning(service_name)) {
+    StopWireguardObserver();
+    return;
+  }
+
+  SubscribeForWireguardNotifications(service_name);
 }
 
 void StatusTrayRunner::OnDisconnected(bool success) {
