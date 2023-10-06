@@ -12,7 +12,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 // NOLINTNEXTLINE
-// npm run test -- brave_unit_tests --filter="*RewardsProtocolNavigationThrottleTest*"
+// npm run test -- brave_unit_tests
+// --filter="*RewardsProtocolNavigationThrottleTest*"
 
 using ::testing::TestWithParam;
 using ::testing::Values;
