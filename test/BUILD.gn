@@ -363,7 +363,15 @@ test("brave_unit_tests") {
       "//brave/components/ai_chat/core/ai_chat_credential_manager_unittest.cc",
       "//brave/components/ai_chat/core/ai_chat_metrics_unittest.cc",
     ]
-    deps += [ "//brave/components/ai_chat/core" ]
+
+    deps += [
+      "//brave/components/ai_chat/common",
+      "//brave/components/ai_chat/common/mojom",
+      "//brave/components/ai_chat/core",
+      "//brave/components/skus/browser",
+      "//brave/components/skus/common",
+      "//brave/components/skus/common:mojom",
+    ]
   }
 
   data = [ "data/" ]

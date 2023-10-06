@@ -7,11 +7,6 @@ import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
-if (is_official_build) {
-  assert(brave_ai_chat_endpoint != "")
-  assert(brave_ai_chat_premium_endpoint != "")
-}
-
 static_library("browser") {
   sources = [
     "ai_chat_feedback_api.cc",
