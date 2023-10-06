@@ -80,6 +80,13 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
         "foobar.onion",
         "/server-redirect-307?" + reflect_referrer_same_origin_url_.spec());
     images_url_ = https_server_.GetURL("foobar.onion", "/referrer_images.html");
+
+    iframe_inner_url_ = https_server_.GetURL("a.com", "/reflect-referrer.html");
+    iframe_outer_url_ = https_server_.GetURL("a.com", "/iframe_load.html");
+    onion_iframe_inner_url_ =
+        https_server_.GetURL("foobar.onion", "/reflect-referrer.html");
+    onion_iframe_outer_url_ =
+        https_server_.GetURL("foobar.onion", "/iframe_load.html");
   }
 
   void HandleRequest(const net::test_server::HttpRequest& request) {
@@ -177,6 +184,11 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return images_url().ReplaceComponents(replacements);
   }
 
+  const GURL& iframe_inner_url() { return iframe_inner_url_; }
+  const GURL& iframe_outer_url() { return iframe_outer_url_; }
+  const GURL& onion_iframe_inner_url() { return onion_iframe_inner_url_; }
+  const GURL& onion_iframe_outer_url() { return onion_iframe_outer_url_; }
+
   const std::string& last_referrer(const GURL& url) {
     base::AutoLock auto_lock(last_headers_lock_);
     GURL::Replacements replacements;
@@ -226,6 +238,10 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL reflect_referrer_same_origin_url_;
   GURL reflect_referrer_same_origin_redirect_url_;
   GURL images_url_;
+  GURL iframe_inner_url_;
+  GURL iframe_outer_url_;
+  GURL onion_iframe_inner_url_;
+  GURL onion_iframe_outer_url_;
   std::map<GURL, std::string> last_referrer_;
   std::map<GURL, std::string> last_origin_;
   mutable base::Lock last_headers_lock_;
@@ -487,5 +503,64 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
   EXPECT_EQ(last_origin(image_url("7")), "");  // nocors
   EXPECT_EQ(last_referrer(image_url("8")), "");
   EXPECT_EQ(last_origin(image_url("8")), "null");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       OnionAncestorOrigins) {
+  net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+  tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
+  Browser* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->profile());
+
+  // Same-origin .onion iframes
+  {
+    const GURL inner_url = onion_iframe_inner_url();
+    const GURL same_origin_test_url = url(inner_url, onion_iframe_outer_url());
+    NavigateToURLAndWaitForRedirects(tor_browser, same_origin_test_url,
+                                     same_origin_test_url);
+    EXPECT_EQ(last_referrer(inner_url), same_origin_test_url.spec());
+
+    content::RenderFrameHost* inner_frame =
+        ChildFrameAt(contents(tor_browser)->GetPrimaryMainFrame(), 0);
+    std::string real_value =
+        content::EvalJs(inner_frame, "getAncestors()").ExtractString();
+    std::string onion_origin =
+        url::Origin::Create(onion_iframe_outer_url()).GetURL().spec();
+    onion_origin.pop_back();  // remove trailing slash
+    EXPECT_EQ(real_value, "[" + onion_origin + "]");
+  }
+
+  // Cross-origin .onion outer iframe
+  {
+    const GURL inner_url = iframe_inner_url();
+    const GURL cross_origin_test_url = url(inner_url, onion_iframe_outer_url());
+    NavigateToURLAndWaitForRedirects(tor_browser, cross_origin_test_url,
+                                     cross_origin_test_url);
+    EXPECT_EQ(last_referrer(inner_url), "");
+
+    content::RenderFrameHost* inner_frame =
+        ChildFrameAt(contents(tor_browser)->GetPrimaryMainFrame(), 0);
+    std::string real_value =
+        content::EvalJs(inner_frame, "getAncestors()").ExtractString();
+    EXPECT_EQ(real_value, "[\"null\"]");
+  }
+
+  // Cross-origin .onion inner iframe
+  {
+    const GURL inner_url = onion_iframe_inner_url();
+    const GURL cross_origin_test_url = url(inner_url, iframe_outer_url());
+    NavigateToURLAndWaitForRedirects(tor_browser, cross_origin_test_url,
+                                     cross_origin_test_url);
+    std::string iframe_origin =
+        url::Origin::Create(iframe_outer_url()).GetURL().spec();
+    EXPECT_EQ(last_referrer(inner_url), iframe_origin);
+
+    content::RenderFrameHost* inner_frame =
+        ChildFrameAt(contents(tor_browser)->GetPrimaryMainFrame(), 0);
+    std::string real_value =
+        content::EvalJs(inner_frame, "getAncestors()").ExtractString();
+    iframe_origin.pop_back();  // remove trailing slash
+    EXPECT_EQ(real_value, "[" + iframe_origin + "]");
+  }
 }
 #endif
