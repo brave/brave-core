@@ -8,7 +8,6 @@ import { mapLimit } from 'async'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
-  AddSitePermissionPayloadType,
   RemoveSitePermissionPayloadType,
   SetUserAssetVisiblePayloadType,
   UnlockWalletPayloadType,
@@ -315,12 +314,6 @@ handler.on(WalletActions.selectPortfolioTimeline.type, async (store: Store, payl
 handler.on(WalletActions.removeSitePermission.type, async (store: Store, payload: RemoveSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
   await braveWalletService.resetPermission(payload.accountId)
-  await refreshWalletInfo(store)
-})
-
-handler.on(WalletActions.addSitePermission.type, async (store: Store, payload: AddSitePermissionPayloadType) => {
-  const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.addPermission(payload.accountId)
   await refreshWalletInfo(store)
 })
 

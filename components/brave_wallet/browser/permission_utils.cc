@@ -218,4 +218,16 @@ absl::optional<blink::PermissionType> CoinTypeToPermissionType(
   }
 }
 
+absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
+    mojom::CoinType coin_type) {
+  switch (coin_type) {
+    case mojom::CoinType::ETH:
+      return permissions::RequestType::kBraveEthereum;
+    case mojom::CoinType::SOL:
+      return permissions::RequestType::kBraveSolana;
+    default:
+      return absl::nullopt;
+  }
+}
+
 }  // namespace brave_wallet

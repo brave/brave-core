@@ -89,10 +89,6 @@ export type RemoveSitePermissionPayloadType = {
   accountId: BraveWallet.AccountId
 }
 
-export type AddSitePermissionPayloadType = {
-  accountId: BraveWallet.AccountId
-}
-
 export type GetCoinMarketPayload = {
   vsAsset: string
   limit: number
