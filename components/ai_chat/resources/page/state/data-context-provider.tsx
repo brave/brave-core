@@ -135,6 +135,8 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.openURL({ url: URL_REFRESH_PREMIUM_SESSION })
   }
 
+  const dismissArticleLongPrompt = () => {}
+
   const initialiseForTargetTab = async () => {
     // Replace state from backend
     // TODO(petemill): Perhaps we need a simple GetState mojom function
@@ -214,7 +216,8 @@ function DataContextProvider (props: DataContextProviderProps) {
     handleAgreeClick,
     dismissPremiumPrompt,
     getCanShowPremiumPrompt,
-    userRefreshPremiumSession
+    userRefreshPremiumSession,
+    dismissArticleLongPrompt
   }
 
   return (

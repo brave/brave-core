@@ -61,6 +61,9 @@ provideStrings({
   ratingError: 'Your rating could not be submitted, please check network connection and try again',
   feedbackError: 'Your feedback could not be submitted, please check network connection and try again',
   premiumRefreshWarningDescription: 'Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.',
-  premiumRefreshWarningAction: 'Refresh'
-
+  premiumRefreshWarningAction: 'Refresh',
+  clearChatButtonLabel: 'Clear chat',
+  errorContextLimitReaching: 'This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it',
+  gotItButtonLabel: 'Got it',
+  pageContentTooLongWarning: 'The page you\'re trying to summarize is too long. Some context could be missing from the conversation.'
 })

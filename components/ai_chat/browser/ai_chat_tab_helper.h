@@ -55,7 +55,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
         bool has_generated,
         mojom::AutoGenerateQuestionsPref auto_generate) {}
     virtual void OnFaviconImageDataChanged() {}
-    virtual void OnPageHasContent() {}
+    virtual void OnPageHasContent(bool page_contents_is_truncated) {}
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
@@ -90,6 +90,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   mojom::APIError GetCurrentAPIError();
   void GetPremiumStatus(
       ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
+  void ResetAPIError();
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -120,7 +121,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnSuggestedQuestionsResponse(int64_t for_navigation_id,
                                     std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();
-  void OnPageHasContentChanged();
+  void OnPageHasContentChanged(bool page_contents_is_truncated);
 
   // content::WebContentsObserver:
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
@@ -138,6 +139,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
   void SetAPIError(const mojom::APIError& error);
+  bool IsPageContentsTruncated();
 
   raw_ptr<PrefService> pref_service_;
   std::unique_ptr<EngineConsumer> engine_ = nullptr;

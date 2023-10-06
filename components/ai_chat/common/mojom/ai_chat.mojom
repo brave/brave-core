@@ -26,7 +26,8 @@ enum AutoGenerateQuestionsPref {
 enum APIError {
   None,
   ConnectionIssue,
-  RateLimitReached
+  RateLimitReached,
+  ContextLimitReaching
 };
 
 enum ModelEngineType {
@@ -48,6 +49,7 @@ enum PremiumStatus {
 
 struct SiteInfo {
   string title;
+  bool is_content_truncated;
 };
 
 // Represents a single turn in a conversation.
@@ -117,6 +119,7 @@ interface PageHandler {
   RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
   SendFeedback(string category, string feedback, string rating_id) => (bool is_success);
   GetPremiumStatus() => (PremiumStatus result);
+  ResetAPIError();
 };
 
 interface ChatUIPage {

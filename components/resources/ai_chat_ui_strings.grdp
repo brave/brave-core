@@ -184,4 +184,16 @@
   <message name="IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR" desc="An error message when the user's feedback could not be submitted">
     Your feedback could not be submitted, please check network connection and try again
   </message>
+  <message name="IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING" desc="An error message when the user's chat history is reaching to maximum threshold">
+    This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it
+  </message>
+  <message name="IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL" desc="An button label for clearing chat history">
+    Clear Chat
+  </message>
+  <message name="IDS_CHAT_UI_GOT_IT_BUTTON_LABEL" desc="An button label for dismissing a warning">
+    Got it
+  </message>
+  <message name="IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING" desc="A warning issued when the user is trying to summarize a long content page">
+    The page you're trying to summarize is too long. Some context could be missing from the conversation.
+  </message>
 </grit-part>

@@ -150,6 +150,8 @@ void AIChatTabHelper::InitEngine() {
             ->GetURLLoaderFactoryForBrowserProcess(),
         credential_manager_.get());
   }
+
+  OnPageHasContentChanged(IsPageContentsTruncated());
 }
 
 bool AIChatTabHelper::HasUserOptedIn() {
@@ -300,16 +302,11 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
     return;
   }
 
-  // tokens + max_new_tokens must be <= 4096 (llama2)
-  // 8092 chars, ~3,098 tokens (reserved for article)
-  // 1k chars, ~380 tokens (reserved for prompt)
-  contents_text = contents_text.substr(0, 8092);
-
   is_video_ = is_video;
   article_text_ = contents_text;
   engine_->SanitizeInput(article_text_);
 
-  OnPageHasContentChanged();
+  OnPageHasContentChanged(IsPageContentsTruncated());
 
   // Now that we have article text, we can suggest to summarize it
   DCHECK(suggested_questions_.empty())
@@ -344,7 +341,7 @@ void AIChatTabHelper::CleanUp() {
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
-    obs.OnPageHasContent();
+    obs.OnPageHasContent(/* page_contents_is_truncated */ false);
   }
 }
 
@@ -561,9 +558,9 @@ void AIChatTabHelper::OnSuggestedQuestionsChanged() {
   }
 }
 
-void AIChatTabHelper::OnPageHasContentChanged() {
+void AIChatTabHelper::OnPageHasContentChanged(bool page_contents_is_truncated) {
   for (auto& obs : observers_) {
-    obs.OnPageHasContent();
+    obs.OnPageHasContent(page_contents_is_truncated);
   }
 }
 
@@ -639,6 +636,21 @@ void AIChatTabHelper::SetAPIError(const mojom::APIError& error) {
   for (Observer& obs : observers_) {
     obs.OnAPIResponseError(current_error_);
   }
+}
+
+bool AIChatTabHelper::IsPageContentsTruncated() {
+  bool page_contents_is_truncated = false;
+
+  if (!article_text_.empty()) {
+    page_contents_is_truncated = static_cast<int>(article_text_.length()) >
+                                 engine_->GetPageContentCharacterLimit();
+  }
+
+  return page_contents_is_truncated;
+}
+
+void AIChatTabHelper::ResetAPIError() {
+  SetAPIError(mojom::APIError::None);
 }
 
 void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {

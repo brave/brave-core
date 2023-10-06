@@ -263,6 +263,14 @@ void EngineConsumerLlamaRemote::ClearAllQueries() {
   api_->ClearAllQueries();
 }
 
+int EngineConsumerLlamaRemote::GetPageContentCharacterLimit() {
+  // tokens + max_new_tokens must be <= 4096 (llama2)
+  // 8092 chars, ~3,098 toks reserved for article
+  // 1k chars, ~380 toks reserved for prompt
+  // 400 toks reserved for max_tokens_to_sample
+  return 8092;
+}
+
 void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
@@ -333,8 +341,10 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  std::string prompt = BuildLlama2Prompt(conversation_history, page_content,
-                                         is_video, human_input);
+  const std::string& truncated_page_content =
+      page_content.substr(0, GetPageContentCharacterLimit());
+  std::string prompt = BuildLlama2Prompt(
+      conversation_history, truncated_page_content, is_video, human_input);
   DCHECK(api_);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));

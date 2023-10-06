@@ -71,7 +71,8 @@ const SAMPLE_QUESTIONS = [
 ]
 
 const SITE_INFO = {
-  title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass'
+  title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
+  isContentTruncated: false
 }
 
 interface StoryArgs {

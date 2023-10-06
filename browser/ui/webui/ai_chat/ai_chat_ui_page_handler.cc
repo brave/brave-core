@@ -311,6 +311,12 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
                               std::move(on_complete));
 }
 
+void AIChatUIPageHandler::ResetAPIError() {
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->ResetAPIError();
+  }
+}
+
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   profile_->GetPrefs()->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
                                 base::Time::Now());
@@ -359,7 +365,7 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
   }
 }
 
-void AIChatUIPageHandler::OnPageHasContent() {
+void AIChatUIPageHandler::OnPageHasContent(bool page_contents_is_truncated) {
   if (page_.is_bound()) {
     auto site_info = BuildSiteInfo();
 

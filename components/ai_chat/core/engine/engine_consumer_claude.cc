@@ -145,6 +145,11 @@ void EngineConsumerClaudeRemote::ClearAllQueries() {
   api_->ClearAllQueries();
 }
 
+int EngineConsumerClaudeRemote::GetPageContentCharacterLimit() {
+  //  limit is: 100k tokens / ~75k words
+  return 75000;
+}
+
 void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
@@ -194,8 +199,10 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  std::string prompt = BuildClaudePrompt(human_input, page_content, is_video,
-                                         conversation_history);
+  const std::string& truncated_page_content =
+      page_content.substr(0, GetPageContentCharacterLimit());
+  std::string prompt = BuildClaudePrompt(human_input, truncated_page_content,
+                                         is_video, conversation_history);
   CheckPrompt(prompt);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));

@@ -22,6 +22,7 @@ import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import styles from './style.module.scss'
+import ErrorContextLimitReaching from '../error_context_limit_reaching'
 
 function Main() {
   const context = React.useContext(DataContext)
@@ -75,6 +76,12 @@ function Main() {
         <ErrorRateLimit
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
         />
+      )
+    }
+
+    if (apiHasError && currentError === mojom.APIError.ContextLimitReaching) {
+      currentErrorElement = (
+        <ErrorContextLimitReaching />
       )
     }
   }
