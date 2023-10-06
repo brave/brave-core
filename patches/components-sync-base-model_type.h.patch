@@ -1,0 +1,13 @@
+diff --git a/components/sync/base/model_type.h b/components/sync/base/model_type.h
+index 8e423e993701c104d4a669c04a46aaa9beb93cc9..2c44991316671a4b8b207e451a71183debb5c66d 100644
+--- a/components/sync/base/model_type.h
++++ b/components/sync/base/model_type.h
+@@ -381,7 +381,7 @@ constexpr ModelTypeSet LowPriorityUserTypes() {
+   return {
+       // Downloading History may take a while, but should not block the download
+       // of other data types.
+-      HISTORY,
++      HISTORY_DELETE_DIRECTIVES,  // Directives must be synced after history entities. If history delete directives are processed before retrieving history upon initial sync, relevant entries will not be deleted.
+       // User Events should not block or delay commits for other data types.
+       USER_EVENTS};
+ }
