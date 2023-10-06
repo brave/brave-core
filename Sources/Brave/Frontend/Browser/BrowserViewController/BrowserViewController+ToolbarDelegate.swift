@@ -661,6 +661,18 @@ extension BrowserViewController: TopToolbarDelegate {
     
     favoritesController?.view.isHidden = true
   }
+  
+  func insertFavoritesControllerView(favoritesController: FavoritesViewController) {
+    if let ntpController = self.activeNewTabPageViewController, ntpController.parent != nil {
+      view.insertSubview(favoritesController.view, aboveSubview: ntpController.view)
+    } else {
+      // Two different behaviors here:
+      // 1. For bottom bar we do not want to show the status bar color
+      // 2. For top bar we do so it matches the address bar background
+      let subview = isUsingBottomBar ? statusBarOverlay : footer
+      view.insertSubview(favoritesController.view, aboveSubview: subview)
+    }
+  }
 
   private func displayFavoritesController() {
     if favoritesController == nil {
@@ -730,15 +742,7 @@ extension BrowserViewController: TopToolbarDelegate {
       self.favoritesController = favoritesController
 
       addChild(favoritesController)
-      if let ntpController = self.activeNewTabPageViewController, ntpController.parent != nil {
-        view.insertSubview(favoritesController.view, aboveSubview: ntpController.view)
-      } else {
-        // Two different behaviors here:
-        // 1. For bottom bar we do not want to show the status bar color
-        // 2. For top bar we do so it matches the address bar background
-        let subview = isUsingBottomBar ? statusBarOverlay : footer
-        view.insertSubview(favoritesController.view, aboveSubview: subview)
-      }
+      insertFavoritesControllerView(favoritesController: favoritesController)
       favoritesController.didMove(toParent: self)
 
       favoritesController.view.snp.makeConstraints {
