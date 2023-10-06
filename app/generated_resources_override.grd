@@ -763,9 +763,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_win">
         </if>
-      <if expr="is_win">
-        </if>
-
       <if expr="is_macosx">
         </if>
       <if expr="not is_macosx">
@@ -1234,9 +1231,6 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="not is_android">
       </if>
     <if expr="is_android">
-      </if>
-
-    <if expr="enable_search_engine_choice">
       </if>
 
     </messages>
