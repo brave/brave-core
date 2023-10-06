@@ -8,6 +8,9 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -76,7 +79,7 @@ public class NetworkUtils {
         return sAllNetworksOption;
     }
 
-    public static boolean isAllNetwork(NetworkInfo networkInfo) {
+    public static boolean isAllNetwork(@Nullable final NetworkInfo networkInfo) {
         if (networkInfo == null) return false;
         return networkInfo.chainId.equals("all");
     }
@@ -89,14 +92,20 @@ public class NetworkUtils {
     }
 
     /**
-     * Get the NetworkInfo object of given chainId
-     * @param networkInfos all networks
-     * @param chainId of network to be found
-     * @return found network or null
+     * Gets the network info object of given chainId and symbol.
+     * @param networks All networks available.
+     * @param chainId Chain Id of the network to be found.
+     * @param coin Coin type of the network to be found.
+     * @return Network info or {@code null} if the network was not found.
      */
-    public static NetworkInfo findNetwork(List<NetworkInfo> networkInfos, String chainId) {
-        if (networkInfos.isEmpty() || TextUtils.isEmpty(chainId)) return null;
-        return JavaUtils.find(networkInfos, networkInfo -> networkInfo.chainId.equals(chainId));
+    @Nullable
+    public static NetworkInfo findNetwork(
+            @NonNull List<NetworkInfo> networks, @Nullable String chainId, int coin) {
+        if (networks.isEmpty() || TextUtils.isEmpty(chainId)) {
+            return null;
+        }
+        return JavaUtils.find(networks,
+                networkInfo -> networkInfo.chainId.equals(chainId) && networkInfo.coin == coin);
     }
 
     public static boolean isTestNetwork(String chainId) {

@@ -286,8 +286,8 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
 
                     // First fill in data that does not require remote queries
                     TokenUtils.getAllTokensFiltered(getBraveWalletService(),
-                            getBlockchainRegistry(), mTxNetwork, mTxNetwork.coin,
-                            TokenUtils.TokenType.ALL, tokenList -> {
+                            getBlockchainRegistry(), mTxNetwork, TokenUtils.TokenType.ALL,
+                            tokenList -> {
                                 SolanaTransactionsGasHelper solanaTransactionsGasHelper =
                                         new SolanaTransactionsGasHelper(
                                                 (BraveWalletBaseActivity) getActivity(),
