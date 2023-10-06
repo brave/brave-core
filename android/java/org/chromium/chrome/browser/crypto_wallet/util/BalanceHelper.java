@@ -256,7 +256,7 @@ public class BalanceHelper {
                 AccountInfo[] accountInfoArray = AssetUtils.filterAccountsByNetwork(
                         allAccounts.accounts, network.coin, network.chainId);
 
-                TokenUtils.getUserAssetsFiltered(
+                TokenUtils.getVisibleUserAssetsFiltered(
                         braveWalletService, network, coinType, TokenUtils.TokenType.ALL, tokens -> {
                             // Assets balances.
                             GetNativeAssetsBalancesResponseContext getNativeAssetsBalancesContext =
