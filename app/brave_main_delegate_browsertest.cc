@@ -307,7 +307,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &segmentation_platform::features::kSegmentationPlatformDeviceTier,
     &segmentation_platform::features::kSegmentationPlatformFeature,
     &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
-    &send_tab_to_self::kSendTabToSelfSigninPromo,
     &shared_highlighting::kIOSSharedHighlightingV2,
     &shared_highlighting::kSharedHighlightingManager,
     &subresource_filter::kAdTagging,
