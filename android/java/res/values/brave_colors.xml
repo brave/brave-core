@@ -27,7 +27,6 @@
 
     <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_day_night_toolbar_icon_color">#495057</color>
-    <color name="brave_wallet_day_night_text_color">@android:color/black</color>
     <color name="brave_wallet_day_night_icon_color">#212529</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#E1E3E4</color>
     <color name="brave_wallet_dn_error_text_bg_color">#F0F2FF</color>
@@ -217,7 +216,7 @@
 
     <color name="shields_tooltip_arrow_color_1">#DD295B</color>
 
-    <color name="wallet_text_color">#212529</color>
+    <color name="wallet_text_color">#0D0F14</color>
     <color name="wallet_secondary_text_color">#686978</color>
     <color name="wallet_secondary_layout_text_color">#495057</color>
     <color name="recovery_phrase_text_color">#F8F9FA</color>

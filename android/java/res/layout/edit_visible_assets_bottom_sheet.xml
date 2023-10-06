@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:paddingVertical="2dp"
-            android:textColor="@color/brave_wallet_day_night_text_color"
+            android:textColor="@color/wallet_text_color"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -71,7 +71,7 @@
     <style name="BraveWalletTextView" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/brave_wallet_day_night_text_color</item>
+        <item name="android:textColor">@color/wallet_text_color</item>
         <item name="android:textColorLink">@color/brave_link</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -79,7 +79,7 @@
     <style name="BraveWalletTextViewTitle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/brave_wallet_day_night_text_color</item>
+        <item name="android:textColor">@color/wallet_text_color</item>
         <item name="android:textColorLink">@color/brave_link</item>
         <item name="android:textAppearance">?attr/textAppearanceListItem</item>
         <item name="android:textStyle">bold</item>
@@ -97,7 +97,7 @@
         <item name="buttonStyle">?android:attr/borderlessButtonStyle</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/brave_wallet_day_night_text_color</item>
+        <item name="android:textColor">@color/wallet_text_color</item>
         <item name="android:background">@drawable/crypto_wallet_hollow_button</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>

@@ -25,7 +25,7 @@
             android:layout_gravity="center"
             android:background="@drawable/wallet_chip_outline"
 
-            app:tabSelectedTextColor="@color/brave_wallet_day_night_text_color"
+            app:tabSelectedTextColor="@color/wallet_text_color"
             app:tabTextAppearance="@style/BraveTabTextAppearance"
             app:tabGravity="fill"
             app:tabIndicatorColor="@android:color/transparent"
