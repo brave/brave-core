@@ -96,13 +96,13 @@ GURL TransformUrl(const GURL& url) {
   DCHECK(url.is_valid());
 
   return GURL(base::StrCat(
-      {"chrome://rewards/",
+      {base::StrCat({"chrome", url::kStandardSchemeSeparator, "rewards/"}),
        base::TrimString(url.path(), "/", base::TrimPositions::TRIM_LEADING),
        url.has_query() ? "?" + base::EscapeExternalHandlerValue(url.query())
                        : ""}));
 }
 
-void LoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
+void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
   if (!web_contents) {
     return;
   }
@@ -152,13 +152,13 @@ void LoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
 NavigationThrottle::ThrottleCheckResult
 RewardsProtocolNavigationThrottle::MaybeRedirect() {
   WebContents* web_contents = navigation_handle()->GetWebContents();
-  if (!web_contents || !navigation_handle()->IsInMainFrame()) {
+  if (!web_contents || !navigation_handle()->IsInPrimaryMainFrame()) {
     return NavigationThrottle::PROCEED;
   }
 
   GURL original_url = navigation_handle()->GetURL();
   if (original_url.SchemeIs("rewards")) {
-    LoadRewardsURL(original_url, web_contents);
+    MaybeLoadRewardsURL(original_url, web_contents);
     return NavigationThrottle::CANCEL;
   }
 

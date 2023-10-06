@@ -1063,6 +1063,12 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
       ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
 
+  // Rewards
+  throttles.insert(
+      throttles.begin(),
+      std::make_unique<brave_rewards::RewardsProtocolNavigationThrottle>(
+          handle));
+
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
       NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(handle);
@@ -1130,12 +1136,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
                           context))) {
     throttles.push_back(std::move(debounce_throttle));
   }
-
-  // Rewards
-  throttles.insert(
-      throttles.begin(),
-      std::make_unique<brave_rewards::RewardsProtocolNavigationThrottle>(
-          handle));
 
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.
