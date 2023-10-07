@@ -27,6 +27,7 @@
 <translation id="4988333904713528597">همیشه در <ph name="HOST"/> به پخش خودکار اجازه داده شود</translation>
 <translation id="4150684676757176434">پخش خودکار همچنان مسدود شود</translation>
 <translation id="3477357195688115718">Brave ایمنی و امنیت افزونه‌ها را بررسی نمی‌کند. تنها درصورتی‌که به برنامه‌نویس اعتماد دارید، این افزونه را نصب کنید.</translation>
+<translation id="2928844661231356557">اعطای دسترسی به دستگاه بلوتوث به سایت امکان می‌دهد اطلاعات قابل تشخیص‌دهنده هویت و بالقوه حساس شما را بخواند. فقط به سایت‌هایی که به آن‌ها اعتماد دارید اجازه دهید به دستگاه‌های بلوتوث دسترسی داشته باشند. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">پنجره های Tor</translation>
 <translation id="7965178729203412357">هویت تور جدید</translation>
 <translation id="6924909138923993900">اتصال Tor جدید برای این سایت</translation>
@@ -205,11 +206,14 @@
 <translation id="5268098808165185458">در حال کپی کردن متن از تصویر...</translation>
 <translation id="4046485130884276245">متن از تصویر کپی شد</translation>
 <translation id="3639779775496569782">کپی کردن متن ناموفق بود</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2506438154311626334">استفاده از پروتکل WireGuard در Brave VPN</translation>
+<translation id="8519170191215826548">این تنظیم هنگام متصل بودن Brave VPN قابل تغییر نیست.</translation>
+<translation id="5620961847363372221">باید مرورگر مجدداً راه‌اندازی شود.</translation>
 <translation id="4235920711083356755">نمایش دکمه VPN</translation>
 <translation id="4070612712151038707">دکمه VPN را در نوار ابزار نمایش می‌دهد</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">تغییر وضعیت VPN</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">درباره Brave VPN</translation>
 <translation id="4378551569595875038">در حال اتصال...</translation>
 <translation id="3368922792935385530">متصل</translation>
@@ -218,13 +222,11 @@
 <translation id="1863950594388384201">نمایش دکمه VPN در نوار ابزار</translation>
 <translation id="5187139277471084437">پنهان کردن دکمه VPN در نوار ابزار</translation>
 <translation id="1177917174080821247">نمایش آیکون VPN</translation>
-<translation id="7645031001744446123">مخفی کردن آیکون VPN</translation>
 <translation id="8041089156583427627">ارسال بازخورد</translation>
 <translation id="4049186905514157504">مدیریت طرح من</translation>
 <translation id="7570585565843385325">نمایش دکمه VPN در نوار ابزار</translation>
 <translation id="5310426188697803101">پنهان کردن دکمه VPN در نوار ابزار</translation>
 <translation id="639450633459241724">نمایش آیکون VPN</translation>
-<translation id="7430264749441182065">مخفی کردن آیکون VPN</translation>
 <translation id="945522503751344254">ارسال بازخورد</translation>
 <translation id="3015685033234401792">مدیریت طرح من</translation>
 <translation id="4989337484121655457">دسترسی کامل به دیسک الزامی است</translation>
@@ -273,6 +275,14 @@
 <translation id="8152485753254079984">لیست پخش جدید</translation>
 <translation id="5397019762993984652">افزودن از پوشه پخش بعدی</translation>
 <translation id="7525067979554623046">ایجاد کنید</translation>
+<translation id="9065203028668620118">ویرایش کنید</translation>
+<translation id="6527303717912515753">به اشتراک بگذارید</translation>
+<translation id="760410268786807021">برای پخش آفلاین نگه داشته شود</translation>
+<translation id="705344722465356351">برداشتن محتواهای پخش‌شده</translation>
+<translation id="1173894706177603556">نام را تغییر دهید</translation>
+<translation id="7765158879357617694">انتقال دهید</translation>
+<translation id="6648536728577053364">برداشتن داده‌های آفلاین</translation>
+<translation id="5181358966317519720">برداشتن از فهرست پخش</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
@@ -312,6 +322,8 @@
 <translation id="2025435450953474282">مقالات به‌طور خودکار در حالت پرونده‌خوان بارگیری می‌شوند و در زمان شما صرفه‌جویی می‌شود</translation>
 <translation id="2422927186524098759">نوار کناری</translation>
 <translation id="832432428796481785">نمایش دکمه نوار کناری</translation>
+<translation id="5581036754486769849">مجاز کردن تکمیل خودکار در پنجره‌های خصوصی</translation>
+<translation id="2262012219398520969">اطلاعات پنجره‌های معمولی را می‌توان در پنجره‌های خصوصی خواند/به‌طور خودکار تکمیل کرد</translation>
 <translation id="7781069478569868053">صفحه برگه جدید</translation>
 <translation id="1988804048511540801">صفحه برگه جدید نشان می‌دهد</translation>
 <translation id="2970343821770026391">داشبورد</translation>

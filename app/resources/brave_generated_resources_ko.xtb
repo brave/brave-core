@@ -28,6 +28,7 @@
 <translation id="4988333904713528597"><ph name="HOST"/>에서 자동 재생 항상 허용하기</translation>
 <translation id="4150684676757176434">계속해서 자동 재생 차단</translation>
 <translation id="3477357195688115718">Brave는 확장 프로그램의 보안 및 안전을 검토하지 않습니다. 개발자를 신뢰하는 경우에만 이 확장 프로그램을 설치하세요.</translation>
+<translation id="2928844661231356557">블루투스 기기 액세스를 부여하면 사이트가 귀하에 대한 식별 정보 및 심지어 민감한 정보까지도 읽을 수 있습니다. 신뢰할 수 있는 사이트에만 블루투스 기기 액세스를 허용하세요. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor 창</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
 <translation id="6924909138923993900">이 사이트용 새 Tor 연결</translation>
@@ -206,11 +207,14 @@
 <translation id="5268098808165185458">이미지에서 텍스트 복사 중...</translation>
 <translation id="4046485130884276245">이미지에서 텍스트 복사됨</translation>
 <translation id="3639779775496569782">텍스트 복사 실패</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2506438154311626334">Brave VPN에서 WireGuard 프로토콜 사용</translation>
+<translation id="8519170191215826548">Brave VPN이 연결되어 있을 때는 이 설정을 변경할 수 없습니다.</translation>
+<translation id="5620961847363372221">브라우저 재시작이 필요합니다.</translation>
 <translation id="4235920711083356755">VPN 버튼 표시</translation>
 <translation id="4070612712151038707">툴바에 VPN 버튼 표시</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">VPN 토글</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Brave VPN 정보</translation>
 <translation id="4378551569595875038">연결 중...</translation>
 <translation id="3368922792935385530">연결됨</translation>
@@ -219,13 +223,11 @@
 <translation id="1863950594388384201">툴바에 VPN 버튼 표시</translation>
 <translation id="5187139277471084437">툴바에서 VPN 버튼 숨기기</translation>
 <translation id="1177917174080821247">VPN 트레이 아이콘 표시</translation>
-<translation id="7645031001744446123">VPN 트레이 아이콘 숨기기</translation>
 <translation id="8041089156583427627">의견 보내기</translation>
 <translation id="4049186905514157504">내 플랜 관리</translation>
 <translation id="7570585565843385325">툴바에 VPN 버튼 표시</translation>
 <translation id="5310426188697803101">툴바에서 VPN 버튼 숨기기</translation>
 <translation id="639450633459241724">VPN 트레이 아이콘 표시</translation>
-<translation id="7430264749441182065">VPN 트레이 아이콘 숨기기</translation>
 <translation id="945522503751344254">의견 보내기</translation>
 <translation id="3015685033234401792">내 플랜 관리</translation>
 <translation id="4989337484121655457">전체 디스크 액세스 권한(Full Disk Access) 필요</translation>
@@ -274,6 +276,14 @@
 <translation id="8152485753254079984">새 재생목록</translation>
 <translation id="5397019762993984652">나중에 재생 폴더에서 추가</translation>
 <translation id="7525067979554623046">만들기</translation>
+<translation id="9065203028668620118">수정</translation>
+<translation id="6527303717912515753">공유</translation>
+<translation id="760410268786807021">오프라인 재생 용도로 유지</translation>
+<translation id="705344722465356351">재생된 콘텐츠 제거</translation>
+<translation id="1173894706177603556">이름 바꾸기</translation>
+<translation id="7765158879357617694">이동</translation>
+<translation id="6648536728577053364">오프라인 데이터 제거</translation>
+<translation id="5181358966317519720">재생목록에서 제거</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="4472575034687746823">시작하기</translation>
@@ -313,6 +323,8 @@
 <translation id="2025435450953474282">기사가 리더 모드로 자동 로드되어 시간 절약</translation>
 <translation id="2422927186524098759">사이드바</translation>
 <translation id="832432428796481785">사이드바 버튼 표시</translation>
+<translation id="5581036754486769849">비공개 창 내 자동완성 허용</translation>
+<translation id="2262012219398520969">일반 창에 있는 정보를 읽어 비공개 창 내에서 자동완성할 수 있습니다.</translation>
 <translation id="7781069478569868053">새 탭 페이지</translation>
 <translation id="1988804048511540801">새 탭 페이지 표시</translation>
 <translation id="2970343821770026391">대시보드</translation>

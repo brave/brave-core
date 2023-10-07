@@ -4,6 +4,7 @@
 <translation id="8631427463833030968">Quản lý quảng cáo</translation>
 <translation id="7630214457764713113">Sao chép liên kết sạch</translation>
 <translation id="885805571521218129">Điều này phản ánh phạm vi thu nhập ước tính của bạn cho Brave Quảng cáo trong tháng này.</translation>
+<translation id="818003031290137834">Bây giờ bạn đã kết nối với ZebPay, bất kỳ số dư nào trước đây bạn có sẽ được gửi vào tài khoản ZebPay của bạn như là một phần của khoản thanh toán thu nhập tiếp theo của bạn. Khi nhận được, bạn sẽ thấy số BAT của bạn được phản ánh trong số dư Phần thưởng của bạn.</translation>
 <translation id="3478449063771497234">Đã tắt thông báo</translation>
 <translation id="2862978891748913252">Chọn quốc gia của bạn</translation>
 <translation id="3970520675790340955">Chọn quốc gia của bạn để chúng tôi có thể hiển thị cho bạn các tùy chọn và quảng cáo phù hợp cho khu vực của bạn.</translation>
@@ -112,6 +113,22 @@
 <translation id="8047754398610073499">Chặn thông báo chấp thuận cookie</translation>
 <translation id="2621893359845808115">Chặn cửa sổ bật lên của trang web yêu cầu bạn chấp nhận / từ chối cookie trên trang web của họ</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="6486983549008741930">Lọc nội dung</translation>
+<translation id="2398817776566547893">Bật bộ lọc tùy chỉnh chặn các trình theo dõi theo khu vực và ngôn ngữ cụ thể và Phiền toái</translation>
+<translation id="8578397014396032341">Lọc nội dung</translation>
+<translation id="4516904298421534459">Lọc danh sách</translation>
+<translation id="4435215931544457255">Danh sách cộng đồng phổ biến bổ sung. Lưu ý rằng việc bật quá nhiều bộ lọc sẽ làm giảm tốc độ duyệt web.</translation>
+<translation id="2033882091175404255">Danh sách bộ lọc tùy chỉnh</translation>
+<translation id="3657456536609186343">Danh sách bộ lọc tùy chỉnh</translation>
+<translation id="5086877031935002480">Thêm danh sách bộ lọc tùy chỉnh</translation>
+<translation id="4180818901996404761">URL danh sách bộ lọc tùy chỉnh</translation>
+<translation id="7558501402160423480">Nhập URL danh sách bộ lọc tại đây</translation>
+<translation id="8775144690796719618">URL không hợp lệ</translation>
+<translation id="1841059687646820793">Sửa danh sách bộ lọc tùy chỉnh</translation>
+<translation id="5075097652958438037">Thêm các danh sách bổ sung do cộng đồng đáng tin cậy của bạn tạo và duy trì.\n\nChỉ đăng ký danh sách từ các tổ chức mà bạn tin tưởng. Trình duyệt của bạn sẽ kiểm tra định kỳ các bản cập nhật danh sách từ URL bạn nhập, tiết lộ địa chỉ IP của bạn cho máy chủ của họ.</translation>
+<translation id="3365863382631355729">Đã cập nhật gần nhất <ph name="TIME"/></translation>
+<translation id="802154636333426148">Tải xuống không thành công</translation>
+<translation id="7824440849056209910"><ph name="TIME"/> Cập nhật không thành công</translation>
 <translation id="3872060236937011862">Giá <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Dịch vụ Cung cấp Tên miền Ethereum</translation>
 <translation id="531747189990625622">Dịch vụ tên miền Solana</translation>
@@ -425,6 +442,10 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6632345639591919543">Bạn đang kiếm được token khi xem hình ảnh này.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Bạn đang kiếm được token khi xem hình ảnh này.</translation>
 <translation id="7877201489035217175">Tìm hiểu thêm về hình ảnh được tài trợ</translation>
+<translation id="8164992819127316581">Khoản thanh toán cho phần thưởng <ph name="CURRENT_MONTH"/> sẽ bắt đầu được xử lý trước <ph name="PAYOUT_DATE"/>.</translation>
+<translation id="33967210973550414">Quá trình thanh toán cho phần thưởng <ph name="CURRENT_MONTH"/> đang được tiến hành. <ph name="CHECK_STATUS"/></translation>
+<translation id="1622952853310946314">Việc thanh toán phần thưởng <ph name="CURRENT_MONTH"/> đã hoàn tất. <ph name="SUPPORT"/></translation>
+<translation id="7717357606512850995">Kiểm tra trạng thái</translation>
 <translation id="828092975561478703">Với mỗi hình ảnh được tài trợ mà bạn xem, bạn nhận được 70% doanh thu bằng token. Với Quảng cáo của Brave, bạn luôn kiểm soát các quảng cáo bạn nhìn thấy.</translation>
 <translation id="3624048886326677117">Chặn trình theo dõi &amp; quảng cáo (Tích cực)</translation>
 <translation id="7151914815476509258">Chặn trình theo dõi &amp; quảng cáo (Tiêu chuẩn)</translation>
@@ -519,6 +540,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2731539192954672606">Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư, đồng thời tự động hỗ trợ các website và người sáng tạo nội dung mà bạn yêu thích.</translation>
 <translation id="631124996535890460">Bằng cách tiếp tục, bạn đồng ý với <ph name="TERMS_OF_SERVICE"/> và <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Privacy Policy</translation>
+<translation id="8363792084628930008">Bằng cách bật Phần thưởng, bạn đồng ý với <ph name="TERMS_OF_SERVICE"/> và <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Hãy tham gia một hành trình ngắn</translation>
 <translation id="7930505144430343145">Chào mừng bạn đến với Brave Rewards!</translation>
 <translation id="3477340970981564961">Brave Private Ads thưởng cho bạn các token để ủng hộ những nhà sáng tạo nội dung không giống như các quảng cáo truyền thống, đồng thời giữ bí mật thông tin cá nhân của bạn.</translation>
@@ -577,6 +599,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2708402071160162126">CẢNH BÁO: Không bao giờ chia sẻ cụm từ khôi phục của bạn. Bất cứ ai có cụm từ này có thể lấy đi vĩnh viễn tài sản của bạn.</translation>
 <translation id="111912712268284159">Tôi đã sao lưu cụm từ của mình ở một nơi an toàn.</translation>
 <translation id="6896758677409633944">Sao chép</translation>
+<translation id="1544192797660353713">Ví</translation>
 <translation id="375882617301124395">Sao lưu ví tiền mã hóa của bạn</translation>
 <translation id="8289942708804097960">Mua tiền mã hóa bằng thẻ tín dụng hoặc ghi nợ.</translation>
 <translation id="841880029259839903">Gửi tiền điện tử hoặc chuyển từ tài khoản này sang tài khoản khác.</translation>
@@ -603,7 +626,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="5493402808936397665">Bật sinh trắc học để nhanh chóng mở khóa ví của bạn mà không cần nhập mật khẩu.</translation>
 <translation id="8030647312184163932">Mở khóa bằng vân tay</translation>
 <translation id="4090490645603511157">Sử dụng sinh trắc học để nhanh chóng mở khóa ví của bạn mà không cần nhập mật khẩu.</translation>
-<translation id="1544192797660353713">Ví</translation>
 <translation id="6901810042765869341">Nhập cụm từ khôi phục của bạn để khôi phục tài khoản tiền điện tử Brave Wallet của bạn.</translation>
 <translation id="9120654436199628567">Khôi phục tài khoản tiền mã hóa</translation>
 <translation id="4811736040444856406">Hiển thị cụm từ khôi phục</translation>
@@ -649,9 +671,9 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8475984867371585028">Chỉnh sửa NFT nhìn thấy</translation>
 <translation id="5050890334032852465">Lưu danh sách theo dõi tài khoản</translation>
 <translation id="7755766175599167100">Tìm kiếm token</translation>
-<translation id="3956169227169516344">Chọn phương thức mua hàng</translation>
 <translation id="8488282162676695335">Ví Brave</translation>
 <translation id="3784455785234192852">Khóa</translation>
+<translation id="4412698727486357573">Trung tâm trợ giúp</translation>
 <translation id="8796429300536029044">Chi tiết NFT</translation>
 <translation id="3866249974567520381">Mô tả</translation>
 <translation id="4378475168089649292">Blockchain</translation>
@@ -663,10 +685,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="414639769490080648">Số phút phải chờ cho đến khi Ví Brave được tự động khóa lại</translation>
 <translation id="2326850911705720398">Thiết lập lại và xóa dữ liệu ví</translation>
 <translation id="6567712397896147805">Bạn có chắc chắn muốn đặt lại Ví Brave của mình không? Nếu ví của bạn không được sao lưu thì việc đặt lại sẽ khiến bạn mất tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên quan). Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
-<translation id="6915083716464390008">Chọn một trong các tùy chọn sau</translation>
-<translation id="7667423728712601865">Mua tiền mã hóa bằng thẻ Visa hoặc Mastercard.</translation>
-<translation id="3101839349578102016">Mua ngay bằng tài khoản ngân hàng của bạn. Phí thấp hơn.</translation>
-<translation id="7269640984027668973">Mua bằng <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Xóa giao dịch &amp; thông tin số giao dịch</translation>
 <translation id="5693968582510626466">Việc xóa các giao dịch có thể hữu ích cho các nhà phát triển hoặc khi xóa trạng thái trên máy chủ cục bộ</translation>
 <translation id="5421107279168565467">Bạn có chắc chắn muốn đặt lại thông tin giao dịch và số giao dịch không? Tùy chọn này chủ yếu được sử dụng bởi các nhà phát triển đang chạy máy chủ thử nghiệm nội bộ. Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
@@ -689,7 +707,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3510283489391432976">Chọn vị trí địa lý/quốc gia của bạn</translation>
 <translation id="4390800080658195654">Giữ bạn ẩn danh trên mạng</translation>
 <translation id="639981156979733813">Hỗ trợ tốc độ lên đến 100 Mbps</translation>
-<translation id="1190117345570417902">Sử dụng đường hầm VPN được mã hóa an toàn Wireguard</translation>
+<translation id="765343799669302337">Sử dụng đường hầm VPN được mã hóa an toàn của WireGuard</translation>
 <translation id="1571230671455380494">Chúng tôi sẽ không bao giờ chia sẻ hoặc bán thông tin của bạn</translation>
 <translation id="276866628038850725">Tất cả các gói đều bao gồm dùng thử 7 ngày miễn phí!</translation>
 <translation id="1532536259167115948">Đăng ký hàng tháng <ph name="TRIAL_TEXT"/></translation>
@@ -699,7 +717,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1163809943099641131">Một năm</translation>
 <translation id="6277055349883621705">Gia hạn hàng năm tiết kiệm 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / năm</translation>
-<translation id="4487678670820292781">119,88$</translation>
 <translation id="2655185358771731232">Dùng thử miễn phí trong 7 ngày. Sau 7 ngày, bạn sẽ được tính phí theo giá gói. Tất cả các gói đăng ký được tự động gia hạn nhưng có thể hủy trước khi gia hạn.</translation>
 <translation id="6053992191006521518">Dùng thử MIỄN PHÍ</translation>
 <translation id="721747358270435486">Cài đặt VPN</translation>
@@ -764,7 +781,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="5317780077021120954">Lưu</translation>
 <translation id="4979796155378508955">Giao dịch có thể không được truyền vào mạng nếu giá trị số giao dịch tùy chỉnh không tuần tự hoặc có các lỗi khác.</translation>
 <translation id="6122742277607781713">Danh mục</translation>
-<translation id="3567988240819868195">Thị trường</translation>
+<translation id="1736419249208073774">Khám phá</translation>
 <translation id="4576965889365503638">THÔNG TIN</translation>
 <translation id="152455748535966757">Thứ hạng</translation>
 <translation id="4958716607782044952">Khối lượng 24h</translation>
@@ -840,7 +857,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="3506416339268164412">Địa chỉ nhận là địa chỉ hợp đồng của một token</translation>
 <translation id="3494964159182650590">Tóm tắt Tiền thưởng</translation>
 <translation id="590733288489975971">Rewards từ Ads</translation>
-<translation id="7091980679045978090">Doanh thu ước tính</translation>
+<translation id="1886682615222609631">Tiền kiếm được cho đến nay</translation>
 <translation id="1767561995429774671">Đóng góp</translation>
 <translation id="7335371657242627509">Bao gồm trong Tự động Đóng góp</translation>
 <translation id="6727102863431372879">Đặt</translation>
@@ -928,7 +945,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="6044189892950611565">Kênh thông báo cho Trình duyệt Brave</translation>
 <translation id="1173919438868967364">Chọn tài khoản</translation>
 <translation id="8922793255489232731">Không thể tải múi giờ phù hợp cho: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">Đang tải xuống tệp dữ liệu ví \u2022 <ph name="percentage"/>\u0025</translation>
+<translation id="8901748741234750758">Đang tải xuống tệp dữ liệu ví \u2022 <ph name="percentage"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Đã kết nối với <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Dùng thử</translation>
 <translation id="7733890291091968191">Hiển thị thông báo Web3</translation>
@@ -962,9 +979,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="8423380132356660250">Mở ứng dụng <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Đang cập nhật cấu hình VPN...</translation>
 <translation id="7457027586454688423">Nhập mật khẩu Ví Brave của bạn</translation>
-<translation id="6588595775439619209">Chặn thông báo cookie</translation>
-<translation id="264682546981571963">Mệt mỏi với các thông báo đồng ý cookie?</translation>
-<translation id="4986297793092101884">Brave đã chặn cookie của bên thứ ba. Chúng tôi cũng có thể chặn thông báo chấp thuận cookie.</translation>
 <translation id="4784306439879850873">Lưu ý rằng Brave không thể xác thực điều gì sẽ xảy ra nếu bạn ký. Một chữ ký có thể cho phép hầu như mọi thao tác trong tài khoản của bạn hoặc thay mặt bạn, bao gồm (nhưng không chỉ giới hạn ở) việc cấp toàn quyền kiểm soát tài khoản và tài sản kỹ thuật số của bạn cho trang web đưa ra yêu cầu. Chỉ ký nếu bạn chắc chắn rằng mình muốn thực hiện hành động này và tin tưởng trang web yêu cầu.</translation>
 <translation id="3474375934783434676">Tự chịu trách nhiệm khi ký</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> của <ph name="SIZE"/></translation>
@@ -1068,6 +1082,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2781668117338732220">Mạng phụ</translation>
 <translation id="282560918037172384">Mạng thử nghiệm</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="8849001918648564819">Đã ẩn</translation>
 <translation id="707569835145765061">Hành động bắt buộc: Kết nối tài khoản lưu ký nếu không vBAT của bạn sẽ bị mất</translation>
 <translation id="1776742005329298234">Vào <ph name="DUE_DATE"/>, chúng tôi sẽ ngừng hỗ trợ cho số dư BAT ảo hiện có. Kết nối tài khoản lưu ký trước ngày này để chúng tôi có thể chuyển số dư kiếm được của bạn sang tài khoản lưu ký của bạn, nếu không số dư của bạn sẽ bị mất.</translation>
 <translation id="5089752671190341407">Bạn vẫn còn thời gian để đóng góp vBAT của mình cho những người sáng tạo nội dung yêu thích của mình</translation>
@@ -1161,4 +1176,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="346505172740911461">Giá thị trường</translation>
 <translation id="4709355193533327244">Chưa có giao dịch nào để xem.</translation>
 <translation id="4931644613135313937">Khi bạn thực hiện giao dịch, bạn sẽ có thể xem giao dịch đó ở đây.</translation>
+<translation id="5494920125229734069">Chọn tất cả</translation>
+<translation id="5972844218283131174">Bỏ chọn tất cả</translation>
+<translation id="6322030314101903925">Không có tài sản có sẵn</translation>
 </translationbundle>

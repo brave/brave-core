@@ -4,6 +4,7 @@
 <translation id="8631427463833030968">Kelola iklan</translation>
 <translation id="7630214457764713113">Salin tautan yang bersih</translation>
 <translation id="885805571521218129">Ini menggambarkan perkiraan rentang pendapatan Anda untuk Iklan Brave bulan ini.</translation>
+<translation id="818003031290137834">Kini, setelah Anda terhubung dengan ZebPay, setiap saldo yang sebelumnya telah Anda setorkan ke akun ZebPay Anda sebagai bagian dari pembayaran pendapatan Anda yang berikutnya. Setelah pembayaran itu diterima, Anda akan melihat BAT Anda yang terefleksikan di saldo Imbalan Anda.</translation>
 <translation id="3478449063771497234">Notifikasi dinonaktifkan</translation>
 <translation id="2862978891748913252">Pilih negara Anda</translation>
 <translation id="3970520675790340955">Pilih negara Anda sehingga kami dapat menunjukkan kepada Anda opsi dan iklan yang tepat untuk wilayah Anda.</translation>
@@ -112,6 +113,22 @@
 <translation id="8047754398610073499">Pemberitahuan izin pemblokiran kuki</translation>
 <translation id="2621893359845808115">Memblokir pesan timbul situs web yang meminta Anda untuk menerima/menolak kuki di situs mereka</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="6486983549008741930">Penyaringan Konten</translation>
+<translation id="2398817776566547893">Mengaktifkan filter khusus yang memblokir pelacak serta Gangguan regional dan berbahasa tertentu</translation>
+<translation id="8578397014396032341">Filter Konten</translation>
+<translation id="4516904298421534459">Daftar filter</translation>
+<translation id="4435215931544457255">Daftar komunitas populer tambahan. Perhatikanlah bahwa mengaktifkan terlalu banyak filter akan menurunkan kecepatan perambanan.</translation>
+<translation id="2033882091175404255">Daftar filter khusus</translation>
+<translation id="3657456536609186343">Daftar filter khusus</translation>
+<translation id="5086877031935002480">Tambahkan daftar filter khusus</translation>
+<translation id="4180818901996404761">URL Daftar Filter Khusus</translation>
+<translation id="7558501402160423480">Masukkan URL daftar filter di sini</translation>
+<translation id="8775144690796719618">URL tidak valid</translation>
+<translation id="1841059687646820793">Sunting daftar filter khusus</translation>
+<translation id="5075097652958438037">Tambahkan daftar tambahan yang dibuat dan dikelola oleh komunitas tepercaya Anda.\n\nBerlanggananlah hanya pada daftar dari entitas yang Anda percayai. Peramban Anda akan secara periodik memeriksa pembaruan daftar dari URL yang Anda tuliskan, mengungkap alamat IP Anda ke peladen mereka.</translation>
+<translation id="3365863382631355729">Terakhir diperbarui <ph name="TIME"/></translation>
+<translation id="802154636333426148">Download gagal</translation>
+<translation id="7824440849056209910">Pembaruan gagal <ph name="TIME"/></translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> Harga (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -425,6 +442,10 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="6632345639591919543">Anda memperoleh token karena melihat gambar ini.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Anda memperoleh token dari melihat gambar ini.</translation>
 <translation id="7877201489035217175">Pelajari lebih jauh tentang gambar sponsor</translation>
+<translation id="8164992819127316581">Pembayaran imbalan <ph name="CURRENT_MONTH"/> akan mulai diproses sebelum <ph name="PAYOUT_DATE"/>.</translation>
+<translation id="33967210973550414">Pembayaran imbalan  <ph name="CURRENT_MONTH"/> sedang diproses. <ph name="CHECK_STATUS"/></translation>
+<translation id="1622952853310946314">Pembayaran imbalan <ph name="CURRENT_MONTH"/> telah selesai. <ph name="SUPPORT"/></translation>
+<translation id="7717357606512850995">Periksa status</translation>
 <translation id="828092975561478703">Untuk setiap gambar sponsor yang dilihat, Anda menerima 70% dari pemasukan dalam bentuk token. Dengan Brave Ads, Anda selalu memegang kendali untuk iklan yang Anda lihat.</translation>
 <translation id="3624048886326677117">Memblokir pelacak &amp; iklan (Agresif)</translation>
 <translation id="7151914815476509258">Memblokir pelacak &amp; iklan (Standar)</translation>
@@ -519,6 +540,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2731539192954672606">Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung situs dan pembuat konten favorit Anda secara otomatis.</translation>
 <translation id="631124996535890460">Dengan melanjutkan, Anda menyetujui <ph name="TERMS_OF_SERVICE"/> dan <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Kebijakan Privasi</translation>
+<translation id="8363792084628930008">Dengan mengaktifkan Imbalan, Anda menyetujui <ph name="TERMS_OF_SERVICE"/> dan <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Mari ikuti tur singkat</translation>
 <translation id="7930505144430343145">Selamat datang di Brave Rewards!</translation>
 <translation id="3477340970981564961">Berbeda dengan iklan tradisional, Iklan Privat Brave menghadiahi Anda token untuk mendukung kreator konten, sembari menjaga informasi personal Anda tetap privat.</translation>
@@ -577,6 +599,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2708402071160162126">PERINGATAN: Jangan pernah membagikan frasa pemulihan Anda. Siapa pun yang mengetahui frasa ini dapat mengambil aset Anda selamanya.</translation>
 <translation id="111912712268284159">Saya telah menyimpan frasa saya di tempat aman.</translation>
 <translation id="6896758677409633944">Salin</translation>
+<translation id="1544192797660353713">Dompet</translation>
 <translation id="375882617301124395">Cadangkan dompet kripto Anda</translation>
 <translation id="8289942708804097960">Beli kripto dengan kartu kredit atau debit.</translation>
 <translation id="841880029259839903">Kirim kripto atau transfer dari satu akun ke akun lainnya.</translation>
@@ -603,7 +626,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="5493402808936397665">Aktifkan biometrik untuk membuka kunci dompet Anda dengan cepat tanpa memasukkan kata sandi Anda.</translation>
 <translation id="8030647312184163932">Buka kunci sidik jari</translation>
 <translation id="4090490645603511157">Gunakan biometrik untuk membuka kunci dompet Anda dengan cepat tanpa memasukkan kata sandi Anda.</translation>
-<translation id="1544192797660353713">Dompet</translation>
 <translation id="6901810042765869341">Masukkan frasa pemulihan Anda untuk memulihkan akun kripto Brave Wallet Anda.</translation>
 <translation id="9120654436199628567">Pulihkan akun kripto</translation>
 <translation id="4811736040444856406">Tampilkan frasa pemulihan</translation>
@@ -649,9 +671,9 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8475984867371585028">Sunting NFT yang dapat dilihat</translation>
 <translation id="5050890334032852465">Simpan daftar pengawasan akun</translation>
 <translation id="7755766175599167100">Cari token</translation>
-<translation id="3956169227169516344">Pilih Metode Pembelian</translation>
 <translation id="8488282162676695335">Dompet Brave.</translation>
 <translation id="3784455785234192852">Kunci</translation>
+<translation id="4412698727486357573">Pusat bantuan</translation>
 <translation id="8796429300536029044">Detail NFT</translation>
 <translation id="3866249974567520381">Deskripsi</translation>
 <translation id="4378475168089649292">Rantai blok</translation>
@@ -663,10 +685,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="414639769490080648">Jumlah menit untuk menunggu hingga Brave Wallet terkunci secara otomatis</translation>
 <translation id="2326850911705720398">Atur ulang dan hapus data dompet</translation>
 <translation id="6567712397896147805">Anda yakin ingin mengatur ulang Dompet Brave Anda? Jika dompet Anda tidak dicadangkan, mengatur ulang akan menyebabkan Anda kehilangan semua data akun (termasuk setiap dana yang terkait). Ketik "<ph name="CONFIRMATION_PHRASE"/>" untuk mengonfirmasi.</translation>
-<translation id="6915083716464390008">Pilih salah satu opsi berikut ini</translation>
-<translation id="7667423728712601865">Beli kripto dengan Visa atau Mastercard.</translation>
-<translation id="3101839349578102016">Beli instan dengan rekening bank Anda. Biaya lebih rendah.</translation>
-<translation id="7269640984027668973">Beli dengan <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Hapus info transaksi &amp; info saat ini</translation>
 <translation id="5693968582510626466">Menghapus transaksi dapat berguna bagi pengembang atau saat menghapus kondisi pada peladen lokal</translation>
 <translation id="5421107279168565467">Anda yakin ingin mengatur ulang informasi transaksi dan informasi saat ini? Opsi ini biasanya digunakan oleh pengembang yang sedang menjalankan peladen uji coba lokal. Ketik "<ph name="CONFIRMATION_PHRASE"/>" untuk mengonfirmasi.</translation>
@@ -689,7 +707,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="3510283489391432976">Memilih lokasi geografis/negara Anda</translation>
 <translation id="4390800080658195654">Menjaga Anda tetap anonim saat daring</translation>
 <translation id="639981156979733813">Mendukung kecepatan hingga 100Mbps</translation>
-<translation id="1190117345570417902">Menggunakan lorong VPN terenkripsi aman Wireguard</translation>
+<translation id="765343799669302337">Menggunakan lorong VPN terenkripsi aman WireGuard</translation>
 <translation id="1571230671455380494">Kami tidak akan membagikan atau menjual info Anda</translation>
 <translation id="276866628038850725">Semua paket mencakup masa percobaan gratis 7 hari!</translation>
 <translation id="1532536259167115948">Langganan bulanan <ph name="TRIAL_TEXT"/></translation>
@@ -699,7 +717,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="1163809943099641131">Satu Tahun</translation>
 <translation id="6277055349883621705">Perpanjang setiap tahun hemat 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / tahun</translation>
-<translation id="4487678670820292781">$119,88</translation>
 <translation id="2655185358771731232">Coba gratis selama 7 hari. Setelah 7 hari, Anda akan dikenai harga paket. Semua paket langganan dapat diperpanjang secara otomatis namun dapat dibatalkan sebelum perpanjangan.</translation>
 <translation id="6053992191006521518">Cobalah secara GRATIS</translation>
 <translation id="721747358270435486">Instal VPN</translation>
@@ -764,7 +781,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="5317780077021120954">Simpan</translation>
 <translation id="4979796155378508955">Transaksi mungkin tidak akan disebarkan ke jaringan jika nilai khusus saat ini tidak berurutan atau memiliki kesalahan lain.</translation>
 <translation id="6122742277607781713">Portofolio</translation>
-<translation id="3567988240819868195">Pasar</translation>
+<translation id="1736419249208073774">Jelajahi</translation>
 <translation id="4576965889365503638">INFORMASI</translation>
 <translation id="152455748535966757">Peringkat</translation>
 <translation id="4958716607782044952">Volume 24 jam</translation>
@@ -840,7 +857,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="3506416339268164412">Alamat penerima adalah alamat kontrak token</translation>
 <translation id="3494964159182650590">Ringkasan Rewards</translation>
 <translation id="590733288489975971">Imbalan dari Ads</translation>
-<translation id="7091980679045978090">Perkiraan pendapatan</translation>
+<translation id="1886682615222609631">Pendapatan sejauh ini</translation>
 <translation id="1767561995429774671">Kontribusi</translation>
 <translation id="7335371657242627509">Sertakan di Konribusi Otomatis</translation>
 <translation id="6727102863431372879">Set</translation>
@@ -928,7 +945,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6044189892950611565">Saluran notifikasi untuk Peramban Brave</translation>
 <translation id="1173919438868967364">Pilih Akun</translation>
 <translation id="8922793255489232731">Tidak bisa mendapatkan zona waktu yang sesuai untuk : <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">Mengunduh berkas data dompet \u2022 <ph name="percentage"/>\u0025</translation>
+<translation id="8901748741234750758">Mengunduh berkas data dompet \u2022 <ph name="percentage"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Tersambung ke <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Percobaan</translation>
 <translation id="7733890291091968191">Tampilkan notifikasi Web3</translation>
@@ -962,9 +979,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="8423380132356660250">Buka aplikasi <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Memperbarui Profil VPN ...</translation>
 <translation id="7457027586454688423">Masukkan kata sandi Dompet Brave Anda</translation>
-<translation id="6588595775439619209">Blokir pemberitahuan kuki</translation>
-<translation id="264682546981571963">Bosan dengan pemberitahuan persetujuan kuki?</translation>
-<translation id="4986297793092101884">Brave sudah memblokir kuki pihak ketiga. Kami juga dapat memblokir pemberitahuan persetujuan kuki.</translation>
 <translation id="4784306439879850873">Perhatikanlah bahwa Brave tidak dapat memverifikasi hal yang akan terjadi jika Anda memberikan tanda tangan. Tanda tangan dapat mengotorisasi hampir setiap pengoperasian di akun Anda atau atas nama Anda, termasuk (namun tidak terbatas pada) memberikan kendali penuh atas akun dan aset kripto Anda ke situs yang mengajukan permintaan. Berikan tanda tangan hanya jika Anda yakin akan mengambil tindakan ini, dan jika Anda memercayai situs yang mengajukan permintaan ini.</translation>
 <translation id="3474375934783434676">Tanda tangani dengan menanggung risiko Anda sendiri</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> dari <ph name="SIZE"/></translation>
@@ -1068,6 +1082,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="2781668117338732220">Jaringan Sekunder</translation>
 <translation id="282560918037172384">Jaringan Pengujian</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="8849001918648564819">Tersembunyi</translation>
 <translation id="707569835145765061">Tindakan yang perlu dilakukan: Hubungkan ke akun kustodian atau vBAT Anda akan hilang</translation>
 <translation id="1776742005329298234">Pada <ph name="DUE_DATE"/>, kami akan mengakhiri dukungan untuk saldo BAT virtual yang ada. Hubungkan dengan akun kustodian sebelum tanggal ini sehingga kami dapat mentransfer saldo penghasilan Anda ke akun kustodian Anda, atau saldo Anda akan hilang.</translation>
 <translation id="5089752671190341407">Anda masih punya waktu untuk mengontribusikan vBAT Anda ke kreator favorit Anda</translation>
@@ -1161,4 +1176,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="346505172740911461">Harga Pasar</translation>
 <translation id="4709355193533327244">Belum ada transaksi yang dapat dilihat.</translation>
 <translation id="4931644613135313937">Setelah Anda melakukan transaksi, Anda akan dapat melihatnya di sini.</translation>
+<translation id="5494920125229734069">Pilih semua</translation>
+<translation id="5972844218283131174">Batalkan semua pilihan</translation>
+<translation id="6322030314101903925">Tidak ada aset yang tersedia</translation>
 </translationbundle>

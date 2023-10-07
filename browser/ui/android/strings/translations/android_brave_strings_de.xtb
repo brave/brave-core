@@ -4,6 +4,7 @@
 <translation id="8631427463833030968">Anzeigen verwalten</translation>
 <translation id="7630214457764713113">Reinen Link kopieren</translation>
 <translation id="885805571521218129">Dies stellt Ihre geschätzte Verdienstspanne für Brave-Anzeigen dar.</translation>
+<translation id="818003031290137834">Da Sie nun mit ZebPay verbunden sind, wird Ihr früheres Guthaben mit der nächsten Verdienstauszahlung auf Ihr ZebPay-Konto überwiesen. Sobald die Auszahlung erfolgt ist, wird Ihr BAT-Guthaben in Ihrem Belohnungen-Konto angezeigt.</translation>
 <translation id="3478449063771497234">Benachrichtigungen sind deaktiviert</translation>
 <translation id="2862978891748913252">Wählen Sie Ihr Land aus</translation>
 <translation id="3970520675790340955">Wählen Sie Ihr Land aus, damit wir Ihnen die richtigen Optionen und Anzeigen für Ihre Region anzeigen können.</translation>
@@ -112,6 +113,22 @@
 <translation id="8047754398610073499">Cookie-Einwilligungshinweise blockieren</translation>
 <translation id="2621893359845808115">Blockiert Website-Pop-ups, mit denen Sie darum geben werden, Cookies auf der Website zu akzeptieren bzw. abzulehnen</translation>
 <translation id="7534079972563542000">Unaufhaltsame Domains</translation>
+<translation id="6486983549008741930">Inhaltsfilterung</translation>
+<translation id="2398817776566547893">Aktivieren Sie benutzerdefinierte Filter, die regionale und sprachspezifische Tracker und Belästigungen blockieren.</translation>
+<translation id="8578397014396032341">Inhaltsfilter</translation>
+<translation id="4516904298421534459">Listen filtern</translation>
+<translation id="4435215931544457255">Weitere beliebte Community-Listen. Bitte beachten Sie, dass die Aktivierung von zu vielen Filtern die Surfgeschwindigkeit verringert.</translation>
+<translation id="2033882091175404255">Benutzerdefinierte Filterlisten</translation>
+<translation id="3657456536609186343">Benutzerdefinierte Filterliste</translation>
+<translation id="5086877031935002480">Benutzerdefinierte Filterliste hinzufügen</translation>
+<translation id="4180818901996404761">URL der benutzerdefinierten Filterliste</translation>
+<translation id="7558501402160423480">URL der Filterliste hier eingeben</translation>
+<translation id="8775144690796719618">Ungültige URL</translation>
+<translation id="1841059687646820793">Benutzerdefinierte Filterliste bearbeiten</translation>
+<translation id="5075097652958438037">Fügen Sie zusätzliche Listen hinzu, die von Ihrer vertrauenswürdigen Community erstellt und gepflegt werden.\n\nAbonnieren Sie nur Listen von Einheiten, denen Sie vertrauen. Ihr Browser überprüft regelmäßig über die angegebene URL, ob die Liste aktualisiert wurde, wodurch der Server Ihre IP-Adresse erfährt.</translation>
+<translation id="3365863382631355729">Letzte Aktualisierung: <ph name="TIME"/></translation>
+<translation id="802154636333426148">Downloadfehler</translation>
+<translation id="7824440849056209910"><ph name="TIME"/> Aktualisierung fehlgeschlagen</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> Preis (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -425,6 +442,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6632345639591919543">Sie verdienen Tokens für das Ansehen dieses Bildes.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Sie verdienen Tokens für das Ansehen dieses Bildes.</translation>
 <translation id="7877201489035217175">Mehr über gesponserte Bilder erfahren</translation>
+<translation id="8164992819127316581">Die Auszahlung der Belohnungen vom<ph name="CURRENT_MONTH"/> wird bis zum <ph name="PAYOUT_DATE"/> verarbeitet.</translation>
+<translation id="33967210973550414">Die Auszahlung der Belohnungen vom <ph name="CURRENT_MONTH"/> ist in Arbeit. <ph name="CHECK_STATUS"/></translation>
+<translation id="1622952853310946314">Die Auszahlung der Belohnungen vom <ph name="CURRENT_MONTH"/> ist abgeschlossen. <ph name="SUPPORT"/></translation>
+<translation id="7717357606512850995">Status überprüfen</translation>
 <translation id="828092975561478703">Für jedes gesponserte Bild, das Sie sich ansehen, erhalten Sie 70 % der Einnahmen in Tokens. Mit Brave Ads haben Sie die Werbung, die Sie sehen, immer unter Kontrolle.</translation>
 <translation id="3624048886326677117">Tracker und Werbung blockieren (aggressiv)</translation>
 <translation id="7151914815476509258">Tracker und Werbung blockieren (Standard)</translation>
@@ -519,6 +540,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2731539192954672606">Verdienen Sie Token, indem Sie Werbeanzeigen ansehen, die Ihre Privatsphäre respektieren, und unterstützen Sie automatisch Ihre Lieblingswebsites und liebsten Inhaltsersteller.</translation>
 <translation id="631124996535890460">Durch Fortfahren stimmen Sie den <ph name="TERMS_OF_SERVICE"/> und der <ph name="PRIVACY_POLICY"/> zu.</translation>
 <translation id="8804164990146287819">Datenschutzrichtlinie</translation>
+<translation id="8363792084628930008">Durch die Aktivierung der Belohnungen stimmen Sie den <ph name="TERMS_OF_SERVICE"/> und der <ph name="PRIVACY_POLICY"/> zu.</translation>
 <translation id="185034574799484512">Machen wir eine schnelle Tour</translation>
 <translation id="7930505144430343145">Willkommen bei Brave Rewards!</translation>
 <translation id="3477340970981564961">Anders als herkömmliche Werbung belohnt Brave Private Ads Sie mit Tokens, um Inhaltsersteller zu unterstützen, und schützt dabei Ihre persönlichen Informationen.</translation>
@@ -577,6 +599,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2708402071160162126">WARNUNG: Teilen Sie niemals Ihre Wiederherstellungsphrase. Wer diese Phrase besitzt, kann sich Ihre Assets permanent aneignen.</translation>
 <translation id="111912712268284159">Ich habe meine Formulierung an einem sicheren Ort gespeichert.</translation>
 <translation id="6896758677409633944">Kopieren</translation>
+<translation id="1544192797660353713">Wallet</translation>
 <translation id="375882617301124395">Sichern Sie Ihre Krypto-Wallet</translation>
 <translation id="8289942708804097960">Kryptowährung mit Kredit- oder Debitkarte kaufen.</translation>
 <translation id="841880029259839903">Kryptowährungen senden oder zwischen Konten überweisen.</translation>
@@ -603,7 +626,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5493402808936397665">Biometrie aktivieren, um ohne Passwort Zugriff auf dein Wallet zu haben.</translation>
 <translation id="8030647312184163932">Fingerabdruck entsperren</translation>
 <translation id="4090490645603511157">Verwenden Sie Biometrie, um Ihre Wallet schnell zu entsperren, ohne Ihr Passwort einzugeben.</translation>
-<translation id="1544192797660353713">Wallet</translation>
 <translation id="6901810042765869341">Gib deine Formulierung zur Wiederherstellung ein, um dein Brave Wallet Krypto-Konto wiederherzustellen.</translation>
 <translation id="9120654436199628567">Krypto-Konto wiederherstellen</translation>
 <translation id="4811736040444856406">Formulierung zur Wiederherstellung anzeigen</translation>
@@ -649,9 +671,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8475984867371585028">Sichtbare NFTs bearbeiten</translation>
 <translation id="5050890334032852465">Konto-Überwachungsliste speichern</translation>
 <translation id="7755766175599167100">Token suchen</translation>
-<translation id="3956169227169516344">Kaufmethode wählen</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Sperren</translation>
+<translation id="4412698727486357573">Hilfe-Center</translation>
 <translation id="8796429300536029044">NFT-Detail</translation>
 <translation id="3866249974567520381">Beschreibung</translation>
 <translation id="4378475168089649292">Blockchain</translation>
@@ -663,10 +685,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="414639769490080648">Die Anzahl der Minuten, die gewartet werden soll, bis die Brave Wallet automatisch gesperrt wird</translation>
 <translation id="2326850911705720398">Wallet-Daten zurücksetzen und löschen</translation>
 <translation id="6567712397896147805">Sind Sie sicher, dass Sie Ihre Brave Wallet zurücksetzen möchten? Wenn Ihre Wallet nicht gesichert ist, verlieren Sie beim Zurücksetzen alle Kontodaten (einschließlich aller damit verbundenen Guthaben). Tippen Sie "<ph name="CONFIRMATION_PHRASE"/>" zur Bestätigung.</translation>
-<translation id="6915083716464390008">Wählen Sie eine der folgenden Optionen aus</translation>
-<translation id="7667423728712601865">Kryptowährung mit Visa oder Mastercard kaufen.</translation>
-<translation id="3101839349578102016">Sofortkauf mit Ihrem Bankkonto. Niedrigere Gebühren.</translation>
-<translation id="7269640984027668973">Kaufen mit <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Transaktion löschen &amp; Nonce-Info</translation>
 <translation id="5693968582510626466">Das Löschen von Transaktionen kann für Entwickler oder beim Löschen des Status auf einem lokalen Server nützlich sein</translation>
 <translation id="5421107279168565467">Möchten Sie die Transaktions- und Nonce-Informationen wirklich zurücksetzen? Diese Option wird hauptsächlich von Entwicklern verwendet, die einen lokalen Testserver betreiben. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
@@ -689,7 +707,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3510283489391432976">Wählen Sie Ihren Standort/Ihren Land</translation>
 <translation id="4390800080658195654">Hält Sie online anonym</translation>
 <translation id="639981156979733813">Unterstützt Geschwindigkeiten von bis zu 100 Mbit/s</translation>
-<translation id="1190117345570417902">Verwendet einen sicheren verschlüsselten Wireguard-VPN-Tunnel</translation>
+<translation id="765343799669302337">Verwendet einen sicheren verschlüsselten WireGuard-VPN-Tunnel</translation>
 <translation id="1571230671455380494">Wir teilen oder verkaufen Ihre Daten niemals</translation>
 <translation id="276866628038850725">Alle Abos beinhalten eine kostenlose 7-Tage-Testversion!</translation>
 <translation id="1532536259167115948">Monatsabo <ph name="TRIAL_TEXT"/></translation>
@@ -699,7 +717,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1163809943099641131">Ein Jahr</translation>
 <translation id="6277055349883621705">Jährlich erneuern, 16 % sparen</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="4487678670820292781">119,88 USD</translation>
 <translation id="2655185358771731232">Sieben Tage kostenlos ausprobieren. Nach sieben Tagen wird Ihnen der Abopreis in Rechnung gestellt. Alle Abonnements werden automatisch verlängert, können aber vor der Verlängerung gekündigt werden.</translation>
 <translation id="6053992191006521518">KOSTENLOS testen</translation>
 <translation id="721747358270435486">VPN installieren</translation>
@@ -764,7 +781,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5317780077021120954">Speichern</translation>
 <translation id="4979796155378508955">Die Transaktion wird möglicherweise nicht an das Netzwerk weitergegeben, wenn der benutzerdefinierte Nonce-Wert nicht sequenziell ist oder andere Fehler aufweist.</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="3567988240819868195">Markt</translation>
+<translation id="1736419249208073774">Entdecken</translation>
 <translation id="4576965889365503638">INFORMATION</translation>
 <translation id="152455748535966757">Rang</translation>
 <translation id="4958716607782044952">24-Std.-Volumen</translation>
@@ -840,7 +857,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="3506416339268164412">Die Empfangsadresse ist die Vertragsadresse eines Tokens</translation>
 <translation id="3494964159182650590">Belohnungs-Übersicht</translation>
 <translation id="590733288489975971">Belohnungen aus Ads</translation>
-<translation id="7091980679045978090">Geschätzter Verdienst</translation>
+<translation id="1886682615222609631">Bisherige Einnahmen</translation>
 <translation id="1767561995429774671">Beitragen</translation>
 <translation id="7335371657242627509">Zu Auto-Beitrag hinzufügen</translation>
 <translation id="6727102863431372879">Festlegen</translation>
@@ -928,7 +945,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6044189892950611565">Benachrichtigungskanal für den Brave-Browser</translation>
 <translation id="1173919438868967364">Konto auswählen</translation>
 <translation id="8922793255489232731">Passende Zeitzone für <ph name="VALUE"/> konnte nicht abgerufen werden</translation>
-<translation id="7084757528071133475">Herunterladen der Walletdatei \u2022 <ph name="percentage"/> %%</translation>
+<translation id="8901748741234750758">Herunterladen der Walletdatei \u2022 <ph name="percentage"/> \u0025\u0025</translation>
 <translation id="6471216025161697462">Verbunden mit <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Testversion</translation>
 <translation id="7733890291091968191">Web3-Benachrichtigung anzeigen</translation>
@@ -962,9 +979,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="8423380132356660250"><ph name="APP_NAME"/>-App öffnen</translation>
 <translation id="168154537623654021">VPN-Profil wird aktualisiert …</translation>
 <translation id="7457027586454688423">Geben Sie Ihr Brave Wallet-Passwort ein</translation>
-<translation id="6588595775439619209">Cookie-Hinweise blockieren</translation>
-<translation id="264682546981571963">Keine Lust mehr auf Cookie-Einwilligungshinweise?</translation>
-<translation id="4986297793092101884">Brave blockiert bereits Cookies von Drittanbietern. Wir können auch Cookie-Einwilligungshinweise blockieren.</translation>
 <translation id="4784306439879850873">Beachten Sie, dass Brave nicht überprüfen kann, was passiert, wenn Sie unterschreiben. Eine Signatur könnte fast jeden Vorgang in Ihrem Konto oder in Ihrem Namen autorisieren, einschließlich (aber nicht beschränkt auf) die vollständige Kontrolle über Ihr Konto und die Krypto-Assets an die Website, die die Anfrage stellt, zu geben. Unterschreiben Sie nur, wenn Sie diese Aktion wirklich ausführen möchten und der anfragenden Website vertrauen.</translation>
 <translation id="3474375934783434676">Unterschreiben auf eigene Gefahr</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> von <ph name="SIZE"/></translation>
@@ -1068,6 +1082,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2781668117338732220">Sekundärnetzwerke</translation>
 <translation id="282560918037172384">Testnetzwerke</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="8849001918648564819">Ausgeblendet</translation>
 <translation id="707569835145765061">Aktion erforderlich: Verknüpfen Sie ein Depotkonto oder Ihr vBAT geht verloren</translation>
 <translation id="1776742005329298234">Am <ph name="DUE_DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Verknüpfen Sie vor diesem Datum ein Depotkonto, damit wir Ihr verdientes Guthaben auf Ihr Depotkonto übertragen können. Andernfalls geht Ihr Guthaben verloren.</translation>
 <translation id="5089752671190341407">Sie haben noch Zeit, mit Ihren vBAT Ihre Lieblingsersteller zu unterstützen</translation>
@@ -1161,4 +1176,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="346505172740911461">Marktpreis</translation>
 <translation id="4709355193533327244">Es gibt noch keine Transaktionen, die angezeigt werden können</translation>
 <translation id="4931644613135313937">Sobald Sie eine Transaktion durchgeführt haben, können Sie sie hier einsehen.</translation>
+<translation id="5494920125229734069">Alle auswählen</translation>
+<translation id="5972844218283131174">Gesamte Auswahl aufheben</translation>
+<translation id="6322030314101903925">Keine Vermögenswerte verfügbar</translation>
 </translationbundle>

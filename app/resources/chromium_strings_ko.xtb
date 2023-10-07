@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">설치 다시 시작</translation>
 <translation id="7099479769133613710">다시 실행하여 ChromeOS 업데이트</translation>
 <translation id="2479110114759182442">Brave에서는 이 확장 프로그램을 검토할 것을 권장합니다.</translation>
+<translation id="3814674848168165531">사이트에서 페이지에 있는 링크를 비공개로 미리 로드해 달라고 요청하면 Brave은 Brave 서버를 사용합니다. 이렇게 하면 미리 로드된 사이트에서 사용자의 신원을 숨길 수 있지만 Brave은 어떤 사이트가 미리 로드되는지 학습하게 됩니다.</translation>
 <translation id="1065672644894730302">환경설정을 읽을 수 없습니다.
 
 일부 기능을 사용할 수 없으며 환경설정의 변경사항이 저장되지 않습니다.</translation>
@@ -119,6 +120,8 @@
 <translation id="2100587595569959771">Brave의 광고 개인 최적화에 관해 자세히 알아보기</translation>
 <translation id="1807774211756215222">새 Brave 탭에서 링크 열기(&amp;T)</translation>
 <translation id="2106568569080763501">Brave을 사용하면 웹에서 전화번호를 클릭하여 Skype로 통화할 수 있습니다.</translation>
+<translation id="308146532933302843">Brave에서 일부 다운로드를 차단하는 이유 알아보기</translation>
+<translation id="6324134303015966238">Brave은 사용자가 방문할 가능성이 있는 페이지를 미리 로드하여 사용자가 방문할 때 페이지를 더 빠르게 로드합니다.</translation>
 <translation id="2401189691232800402">ChromeOS 시스템</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">ChromeOS 도움말 보기</translation>
@@ -143,6 +146,7 @@
 <translation id="5757460455745382269">Brave UI가 이 언어로 표시됩니다.</translation>
 <translation id="4222932583846282852">취소 중...</translation>
 <translation id="1853997773668795891">Brave 데이터를 이 계정에 연결하시겠습니까?</translation>
+<translation id="4732930052828648898">표준 보호 모드보다 더 많은 사이트에서 데이터를 분석하여 위험한 사이트에 관해 경고합니다. Brave이 이전에 몰랐던 사이트도 여기에 포함됩니다. Brave 경고를 건너뛸 수 있습니다.</translation>
 <translation id="3262506503470845422">Brave 도움말 보기</translation>
 <translation id="4281844954008187215">서비스 약관</translation>
 <translation id="7691786510374174420">확인되지 않은 오류로 설치에 실패했습니다. Brave이 실행 중인 경우 종료한 후 다시 실행하세요.</translation>
@@ -213,7 +217,6 @@
 <translation id="5225261774087485064">방문하는 사이트에서는 일반적으로 사용 경험을 개인화하기 위해 내가 관심을 보인 항목을 기억합니다. 또한 사이트에서는 내 관심분야에 관한 정보를 Brave에 저장할 수 있습니다.</translation>
 <translation id="6003112304606738118">다운로드 중... <ph name="HOURS"/>시간 남음</translation>
 <translation id="6040143037577758943">닫기</translation>
-<translation id="1268000445919601231">Brave에서 일부 다운로드를 차단</translation>
 <translation id="505042220086416644">이전보다 더 빨라진 Brave 새 버전을 사용할 수 있습니다.</translation>
 <translation id="9071554113102421877">&amp;Brave에서 열기</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/>이(가) Brave에 추가됨</translation>
@@ -227,6 +230,7 @@
 <translation id="991182453936521413">Brave이 곧 종료되고 데이터가 삭제됩니다</translation>
 <translation id="7006260220514217183">세이프 브라우징이 사용 중지되어 있습니다. 사용 설정하는 것이 좋습니다.</translation>
 <translation id="4060970194201477024">여기에서 Brave 프로필 간에 전환할 수 있습니다.</translation>
+<translation id="7815000350132166985">사용자가 쿠키를 허용하면 Brave에서 미리 로드할 때 쿠키를 사용할 수 있습니다.</translation>
 <translation id="3156047523158042818">설정에 따라 Brave에서 쿠키와 현재 URL을 전송할 수도 있습니다.</translation>
 <translation id="4368341489795135329"><ph name="TARGET_DEVICE_NAME"/>에서 Brave에 로그인되어 있는지 확인한 다음 다시 전송해 보세요.</translation>
 <translation id="8320964054148936490">컴퓨터에 이미 최신 버전의 Brave이 있습니다. 소프트웨어가 작동하지 않으면 Brave의 설치를 제거한 뒤 다시 시도하세요.</translation>
@@ -251,12 +255,14 @@
 <translation id="3256100650978957522">컴퓨터 화면에 표시된 Brave 로고입니다.</translation>
 <translation id="6373767849825830651">Brave은 빠른 속도로 웹페이지와 애플리케이션을 실행하는 웹 브라우저입니다. 빠르고 안정적이며 사용하기에 편리합니다. Brave에 내장된 멀웨어 및 악성 코드 방지 기능을 사용하여 더욱 안전하게 웹을 검색하세요.</translation>
 <translation id="2139300032719313227">ChromeOS 다시 시작</translation>
+<translation id="638302211119176182">Brave은 사용자가 방문할 때 페이지를 더 빠르게 로드할 수 있도록 사용자가 방문할 가능성이 높은 페이지를 미리 로드합니다.</translation>
 <translation id="1684121725014454063">Brave 프로필에 오신 것을 환영합니다</translation>
 <translation id="2675662665675552980">또한 Brave을 시작할 때 표시되는 페이지를 설정합니다.</translation>
 <translation id="648319183876919572">향상된 세이프 브라우징은 위험한 웹사이트와 다운로드로부터 사용자를 보호합니다.</translation>
 <translation id="5590013613412457132">Brave 설치 제거</translation>
 <translation id="3617744907966785605"><ph name="TIMEOUT_DURATION"/> 동안 사용하지 않으면 조직에서 Brave을 종료합니다. 인터넷 사용 기록이 삭제되었습니다. 여기에는 방문 기록, 자동 완성, 다운로드가 포함될 수 있습니다.</translation>
 <translation id="8646609321956191980">각 프로필에는 북마크, 방문 기록, 비밀번호 등과 같은 Brave 정보가 보관됩니다.</translation>
+<translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Brave에서 데이터를 비공개로 유지하는 방법<ph name="END_LINK"/> 자세히 알아보기</translation>
 <translation id="2535436634051789953">다른 Brave 프로필의 비밀번호를 보도록 전환할 수 있습니다.</translation>
 <translation id="2312399718665761438">맞춤법 오류를 수정하기 위해 Brave에서 사용자가 입력하는 텍스트를 Brave로 전송합니다.</translation>
 <translation id="3507835409099344374">Brave 알림 설정으로 이동</translation>

@@ -28,6 +28,7 @@
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST"/></translation>
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
 <translation id="3477357195688115718">Brave 不會審查擴充功能是否安全。請唯有在您信賴開發人員的情況下，才安裝此擴充功能。</translation>
+<translation id="2928844661231356557">授權存取藍牙裝置將允許網站讀取有關您的身分識別資訊和潛在的敏感資訊。建議僅允許您信任的網站存取藍牙裝置。<ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Tor 視窗</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
 <translation id="6924909138923993900">此網站的新 Tor 連線</translation>
@@ -206,11 +207,14 @@
 <translation id="5268098808165185458">正在從圖片複製文字…</translation>
 <translation id="4046485130884276245">已從圖片複製文字</translation>
 <translation id="3639779775496569782">複製文字失敗</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2506438154311626334">在 Brave VPN 中使用 WireGuard 協定</translation>
+<translation id="8519170191215826548">連線至 Brave VPN 時無法變更此設定。</translation>
+<translation id="5620961847363372221">需要重新啟動瀏覽器。</translation>
 <translation id="4235920711083356755">顯示 VPN 按鈕</translation>
 <translation id="4070612712151038707">在工具列中顯示 VPN 按鈕</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">切換 VPN</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">關於 Brave VPN</translation>
 <translation id="4378551569595875038">連線中...</translation>
 <translation id="3368922792935385530">已連線</translation>
@@ -219,13 +223,11 @@
 <translation id="1863950594388384201">在工具列中顯示 VPN 按鈕</translation>
 <translation id="5187139277471084437">在工具列中隱藏 VPN 按鈕</translation>
 <translation id="1177917174080821247">顯示 VPN 工作列圖示</translation>
-<translation id="7645031001744446123">隱藏 VPN 工作列圖示</translation>
 <translation id="8041089156583427627">提供意見</translation>
 <translation id="4049186905514157504">管理我的方案</translation>
 <translation id="7570585565843385325">在工具列中顯示 VPN 按鈕</translation>
 <translation id="5310426188697803101">在工具列中隱藏 VPN 按鈕</translation>
 <translation id="639450633459241724">顯示 VPN 工作列圖示</translation>
-<translation id="7430264749441182065">隱藏 VPN 工作列圖示</translation>
 <translation id="945522503751344254">提供意見</translation>
 <translation id="3015685033234401792">管理我的方案</translation>
 <translation id="4989337484121655457">需要完整的硬碟存取權限</translation>
@@ -274,6 +276,14 @@
 <translation id="8152485753254079984">新增播放清單</translation>
 <translation id="5397019762993984652">從稍後播放資料夾中新增</translation>
 <translation id="7525067979554623046">建立</translation>
+<translation id="9065203028668620118">編輯</translation>
+<translation id="6527303717912515753">分享</translation>
+<translation id="760410268786807021">保留供離線播放</translation>
+<translation id="705344722465356351">移除已播放的內容</translation>
+<translation id="1173894706177603556">重新命名</translation>
+<translation id="7765158879357617694">移動</translation>
+<translation id="6648536728577053364">移除離線資料</translation>
+<translation id="5181358966317519720">從播放清單中移除</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -313,6 +323,8 @@
 <translation id="2025435450953474282">文章會自動以閱讀器模式載入，節省您的時間</translation>
 <translation id="2422927186524098759">側邊欄</translation>
 <translation id="832432428796481785">顯示側邊欄按鈕</translation>
+<translation id="5581036754486769849">在無痕式視窗中允許自動填入</translation>
+<translation id="2262012219398520969">可在無痕式視窗中讀取/自動填入一般視窗中的資訊</translation>
 <translation id="7781069478569868053">新分頁</translation>
 <translation id="1988804048511540801">新的索引標籤頁顯示</translation>
 <translation id="2970343821770026391">儀表板​​</translation>
@@ -390,7 +402,7 @@
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
 <translation id="8792121506918889955">WebRTC IP 處理政策</translation>
-<translation id="6165508094623778733">了解更多</translation>
+<translation id="6165508094623778733">深入瞭解</translation>
 <translation id="8798099450830957504">預設</translation>
 <translation id="1822560017823072927">預設公共和隱私介面</translation>
 <translation id="5825943197137337319">僅限預設公用介面</translation>

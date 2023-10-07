@@ -28,6 +28,7 @@
 <translation id="4988333904713528597">ยินยอมให้ทำการเล่นแบบอัตโนมัติบน <ph name="HOST"/> เสมอ</translation>
 <translation id="4150684676757176434">ทำการบล็อกการเล่นอัตโนมัติต่อ</translation>
 <translation id="3477357195688115718">Brave จะไม่ตรวจสอบความมั่นคงและความปลอดภัยของส่วนขยาย โปรดติดตั้งส่วนขยายนี้ในกรณีที่คุณเชื่อมั่นในผู้พัฒนาเท่านั้น</translation>
+<translation id="2928844661231356557">การให้สิทธิ์การเข้าถึงอุปกรณ์บลูทูธจะทำให้เว็บไซต์สามารถอ่านข้อมูลที่ระบุตัวตนและอาจมีความละเอียดอ่อนเกี่ยวกับคุณได้ อนุญาตเฉพาะเว็บไซต์ที่คุณเชื่อถือให้เข้าถึงอุปกรณ์บลูทูธเท่านั้น <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">ทอร์วินโดว์</translation>
 <translation id="7965178729203412357">ตัวตน Tor ใหม่</translation>
 <translation id="6924909138923993900">การเชื่อมต่อ Tor ใหม่สำหรับเว็บไซต์นี้</translation>
@@ -206,11 +207,14 @@
 <translation id="5268098808165185458">กำลังคัดลอกข้อความจากรูปภาพ...</translation>
 <translation id="4046485130884276245">คัดลอกข้อความจากรูปภาพแล้ว</translation>
 <translation id="3639779775496569782">การคัดลอกข้อความล้มเหลว</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2506438154311626334">ใช้โปรโตคอล WireGuard ใน Brave VPN</translation>
+<translation id="8519170191215826548">การตั้งค่านี้ไม่สามารถเปลี่ยนแปลงได้ในขณะที่เชื่อมต่อกับ Brave VPN</translation>
+<translation id="5620961847363372221">จำเป็นต้องรีสตาร์ทเบราว์เซอร์</translation>
 <translation id="4235920711083356755">แสดงปุ่ม VPN</translation>
 <translation id="4070612712151038707">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">เปิด/ปิด VPN</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">เกี่ยวกับ Brave VPN</translation>
 <translation id="4378551569595875038">กำลังเชื่อมต่อ...</translation>
 <translation id="3368922792935385530">เชื่อมต่อแล้ว</translation>
@@ -219,13 +223,11 @@
 <translation id="1863950594388384201">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
 <translation id="5187139277471084437">ซ่อนปุ่ม VPN ในแถบเครื่องมือ</translation>
 <translation id="1177917174080821247">แสดงไอคอนแถบ VPN</translation>
-<translation id="7645031001744446123">ซ่อนไอคอนแถบ VPN</translation>
 <translation id="8041089156583427627">ส่งความคิดเห็น</translation>
 <translation id="4049186905514157504">จัดการการสมัครสมาชิกของฉัน</translation>
 <translation id="7570585565843385325">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
 <translation id="5310426188697803101">ซ่อนปุ่ม VPN ในแถบเครื่องมือ</translation>
 <translation id="639450633459241724">แสดงไอคอนแถบ VPN</translation>
-<translation id="7430264749441182065">ซ่อนไอคอนแถบ VPN</translation>
 <translation id="945522503751344254">ส่งความคิดเห็น</translation>
 <translation id="3015685033234401792">จัดการแผนของฉัน</translation>
 <translation id="4989337484121655457">จำเป็นต้องให้สิทธิ์เข้าถึงดิสก์ทั้งหมด</translation>
@@ -274,6 +276,14 @@
 <translation id="8152485753254079984">เพลย์ลิสต์ใหม่</translation>
 <translation id="5397019762993984652">เพิ่มจากโฟลเดอร์เล่นภายหลังของคุณ</translation>
 <translation id="7525067979554623046">สร้าง</translation>
+<translation id="9065203028668620118">แก้ไข</translation>
+<translation id="6527303717912515753">แชร์</translation>
+<translation id="760410268786807021">เก็บไว้เล่นแบบออฟไลน์</translation>
+<translation id="705344722465356351">ลบเนื้อหาที่เล่นไปแล้ว</translation>
+<translation id="1173894706177603556">เปลี่ยนชื่อ</translation>
+<translation id="7765158879357617694">ย้าย</translation>
+<translation id="6648536728577053364">ลบข้อมูลออฟไลน์</translation>
+<translation id="5181358966317519720">ลบออกจากเพลย์ลิสต์</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="4472575034687746823">เริ่มต้น</translation>
@@ -313,6 +323,8 @@
 <translation id="2025435450953474282">โหลดบทความโดยอัตโนมัติในโหมดผู้อ่านเพื่อประหยัดเวลาของคุณ</translation>
 <translation id="2422927186524098759">แถบด้านข้าง</translation>
 <translation id="832432428796481785">แสดงปุ่มแถบด้านข้าง</translation>
+<translation id="5581036754486769849">อนุญาตให้ป้อนอัตโนมัติได้ในหน้าต่างแบบส่วนตัว</translation>
+<translation id="2262012219398520969">ข้อมูลจากหน้าต่างปกติสามารถอ่าน/ป้อนอัตโนมัติในหน้าต่างแบบส่วนตัวได้</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
 <translation id="1988804048511540801">การแสดงหน้าแท็บใหม่</translation>
 <translation id="2970343821770026391">แดชบอร์ด</translation>
