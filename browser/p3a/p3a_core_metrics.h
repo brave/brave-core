@@ -17,11 +17,8 @@
 #error This file should only be included on desktop.
 #endif
 
-#include <list>
-
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
-#include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/resource_coordinator/usage_clock.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 
@@ -40,15 +37,22 @@ class BraveUptimeTracker {
   static void CreateInstance(PrefService* local_state);
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterPrefsForMigration(PrefRegistrySimple* registry);
+  static void MigrateObsoletePrefs(PrefService* local_state);
 
  private:
   void RecordUsage();
   void RecordP3A();
 
+  void ResetReportFrame();
+
+  raw_ptr<PrefService> local_state_;
   resource_coordinator::UsageClock usage_clock_;
   base::RepeatingTimer timer_;
   base::TimeDelta current_total_usage_;
-  WeeklyStorage state_;
+
+  base::Time report_frame_start_time_;
+  base::TimeDelta report_frame_time_sum_;
 };
 
 // BraveWindowTracker is under !OS_ANDROID guard because

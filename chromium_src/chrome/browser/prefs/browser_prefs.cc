@@ -30,6 +30,7 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/p3a/p3a_core_metrics.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #endif
 
@@ -263,6 +264,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   local_state->ClearPref(kDefaultBrowserPromptEnabled);
+  brave::BraveUptimeTracker::MigrateObsoletePrefs(local_state);
 #endif
 
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
