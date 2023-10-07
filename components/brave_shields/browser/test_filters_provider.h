@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
@@ -22,14 +23,13 @@ class TestFiltersProvider : public AdBlockFiltersProvider,
                             public AdBlockResourceProvider {
  public:
   TestFiltersProvider(const std::string& rules, const std::string& resources);
-  TestFiltersProvider(const std::string& rules,
-                      const std::string& resources,
-                      bool engine_is_default,
-                      uint8_t permission_mask = 0);
+  TestFiltersProvider(const base::FilePath& dat_location,
+                      const std::string& resources);
   ~TestFiltersProvider() override;
 
-  void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
-                     base::OnceCallback<void()>) override;
+  void LoadDATBuffer(
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)> cb) override;
 
   void LoadResources(
       base::OnceCallback<void(const std::string& resources_json)> cb) override;
@@ -37,9 +37,9 @@ class TestFiltersProvider : public AdBlockFiltersProvider,
   std::string GetNameForDebugging() override;
 
  private:
+  DATFileDataBuffer dat_buffer_;
   std::string rules_;
   std::string resources_;
-  uint8_t permission_mask_;
 };
 
 }  // namespace brave_shields

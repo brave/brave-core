@@ -19,9 +19,9 @@
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
-#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
@@ -92,7 +92,10 @@ using brave_shields::features::kCosmeticFilteringJsPerformance;
 AdBlockServiceTest::AdBlockServiceTest()
     : ws_server_(net::SpawnedTestServer::TYPE_WS,
                  net::GetWebSocketTestDataDirectory()),
-      https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {}
+      https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {
+  brave_shields::SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
+      kDefaultAdBlockComponentTestId, kDefaultAdBlockComponentTest64PublicKey);
+}
 AdBlockServiceTest::~AdBlockServiceTest() = default;
 
 void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
@@ -147,10 +150,26 @@ HostContentSettingsMap* AdBlockServiceTest::content_settings() {
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
     const std::string& rules,
-    const std::string& resources,
-    uint8_t permission_mask) {
+    const std::string& resources) {
+  auto source_provider =
+      std::make_unique<brave_shields::TestFiltersProvider>(rules, resources);
+
+  brave_shields::AdBlockService* ad_block_service =
+      g_brave_browser_process->ad_block_service();
+  ad_block_service->UseSourceProvidersForTest(source_provider.get(),
+                                              source_provider.get());
+
+  source_providers_.push_back(std::move(source_provider));
+
+  WaitForAdBlockServiceThreads();
+}
+
+void AdBlockServiceTest::UpdateAdBlockInstanceWithDAT(
+    const base::FilePath& dat_location,
+    const std::string& resources) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
   auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
-      rules, resources, true, permission_mask);
+      dat_location, resources);
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
@@ -165,8 +184,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
 void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
     const std::string& rules,
     const std::string& resources) {
-  auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
-      rules, resources, false);
+  auto source_provider =
+      std::make_unique<brave_shields::TestFiltersProvider>(rules, resources);
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
@@ -207,31 +226,18 @@ void AdBlockServiceTest::GetTestDataDir(base::FilePath* test_data_dir) {
   base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
 }
 
-bool AdBlockServiceTest::InstallDefaultAdBlockComponent(
-    const std::string& component_dir) {
+bool AdBlockServiceTest::InstallDefaultAdBlockExtension(
+    const std::string& extension_dir) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
-  g_brave_browser_process->ad_block_service()
-      ->component_service_manager()
-      ->SetFilterListCatalog({brave_shields::FilterListCatalogEntry(
-          "default", "", "Brave Ad Block Updater", {}, "",
-          "Default lists for Brave Browser", true, true, true, 0,
-          kDefaultAdBlockComponentTestId,
-          kDefaultAdBlockComponentTest64PublicKey, "", "")});
-  const extensions::Extension* ad_block_component = LoadExtensionAsComponent(
-      test_data_dir.AppendASCII("adblock-data").AppendASCII(component_dir));
-  if (!ad_block_component) {
+  const extensions::Extension* ad_block_extension = LoadExtensionAsComponent(
+      test_data_dir.AppendASCII("adblock-data").AppendASCII(extension_dir));
+  if (!ad_block_extension)
     return false;
-  }
 
-  auto& component_providers = g_brave_browser_process->ad_block_service()
-                                  ->component_service_manager()
-                                  ->regional_filters_providers();
-  EXPECT_EQ(component_providers.size(), 1UL);
-  auto& default_provider = component_providers.at("default");
-  EXPECT_TRUE(default_provider);
-  default_provider->OnComponentReady(ad_block_component->path());
-
+  g_brave_browser_process->ad_block_service()
+      ->default_filters_provider()
+      ->OnComponentReady(ad_block_extension->path());
   WaitForAdBlockServiceThreads();
 
   return true;
@@ -262,11 +268,12 @@ class EngineTestObserver : public brave_shields::AdBlockEngine::TestObserver {
   raw_ptr<brave_shields::AdBlockEngine> engine_ = nullptr;
 };
 
-bool AdBlockServiceTest::InstallRegionalAdBlockComponent(
+bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
     const std::string& uuid,
     bool enable_list) {
-  // Ensure the default engine is initialized first
-  EXPECT_TRUE(InstallDefaultAdBlockComponent());
+  // The regional adblock engines depend on the default engine for resource
+  // loads.
+  EXPECT_TRUE(InstallDefaultAdBlockExtension());
   auto* default_engine =
       g_brave_browser_process->ad_block_service()->default_engine_.get();
   EngineTestObserver default_engine_observer(default_engine);
@@ -278,38 +285,36 @@ bool AdBlockServiceTest::InstallRegionalAdBlockComponent(
   filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
       "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
-      "Removes advertisements from French websites", false, false, false, 0,
       kRegionalAdBlockComponentTestId, kRegionalAdBlockComponentTest64PublicKey,
-      "", ""));
+      "Removes advertisements from French websites", "", ""));
   g_brave_browser_process->ad_block_service()
-      ->component_service_manager()
+      ->regional_service_manager()
       ->SetFilterListCatalog(filter_list_catalog);
 
   if (enable_list) {
-    const extensions::Extension* ad_block_component =
+    const extensions::Extension* ad_block_extension =
         LoadExtensionAsComponent(test_data_dir.AppendASCII("adblock-data")
                                      .AppendASCII("adblock-regional"));
-    if (!ad_block_component) {
+    if (!ad_block_extension)
       return false;
-    }
 
     g_brave_browser_process->ad_block_service()
-        ->component_service_manager()
+        ->regional_service_manager()
         ->EnableFilterList(uuid, true);
 
     const auto& regional_filters_providers =
         g_brave_browser_process->ad_block_service()
-            ->component_service_manager()
+            ->regional_service_manager()
             ->regional_filters_providers();
 
-    EXPECT_EQ(regional_filters_providers.size(), 2ULL);
+    EXPECT_EQ(regional_filters_providers.size(), 1ULL);
 
     auto* regional_engine = g_brave_browser_process->ad_block_service()
                                 ->additional_filters_engine_.get();
     EngineTestObserver regional_engine_observer(regional_engine);
     auto regional_filters_provider = regional_filters_providers.find(uuid);
     regional_filters_provider->second->OnComponentReady(
-        ad_block_component->path());
+        ad_block_extension->path());
     regional_engine_observer.Wait();
   }
 
@@ -346,7 +351,7 @@ void AdBlockServiceTest::DisableAggressiveMode() {
 
 // Load a page with an ad image, and make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -364,7 +369,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
 // blocked by custom filters.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        NotAdsDoNotGetBlockedByCustomBlocker) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateCustomAdBlockInstanceWithRules("*ad_banner.png");
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -383,7 +388,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // Load a page with an ad image, and make sure it is blocked by custom
 // filters.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   UpdateAdBlockInstanceWithRules("");
@@ -404,7 +409,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
 // Load a page with an ad image, with a corresponding exception installed in
 // the custom filters, and make sure it is not blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultBlockCustomException) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   UpdateAdBlockInstanceWithRules("*ad_banner.png");
@@ -424,7 +429,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultBlockCustomException) {
 // Load a page with an image blocked by custom filters, with a corresponding
 // exception installed in the default filters, and make sure it is not blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CustomBlockDefaultException) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   UpdateAdBlockInstanceWithRules("@@ad_banner.png");
   UpdateCustomAdBlockInstanceWithRules("*ad_banner.png");
@@ -444,7 +449,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CustomBlockDefaultException) {
 // blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        NotAdsDoNotGetBlockedByDefaultBlocker) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -458,15 +463,15 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Load a page with an ad image, and make sure it is blocked by a filter from a
-// regional list component.
+// Load a page with an ad image, and make sure it is blocked by the
+// regional blocker.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
   g_browser_process->SetApplicationLocale("fr");
   ASSERT_STREQ(g_browser_process->GetApplicationLocale().c_str(), "fr");
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
-  ASSERT_TRUE(InstallRegionalAdBlockComponent(kAdBlockEasyListFranceUUID));
+  ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -480,7 +485,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
 }
 
 // Load a page with an image which is not an ad, and make sure it is
-// NOT blocked by a filter from a regional list.
+// NOT blocked by the regional blocker.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        NotAdsDoNotGetBlockedByRegionalBlocker) {
   g_browser_process->SetApplicationLocale("fr");
@@ -488,7 +493,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
-  ASSERT_TRUE(InstallRegionalAdBlockComponent(kAdBlockEasyListFranceUUID));
+  ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -504,7 +509,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // Load a page with several of the same adblocked xhr requests, it should only
 // count 1.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -526,7 +531,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {
 
 // Load a page with different adblocked xhr requests, it should count each.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoDiffAdsGetCountedAsTwo) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -548,7 +553,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoDiffAdsGetCountedAsTwo) {
 
 // New tab continues to count blocking the same resource
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -574,7 +579,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
 
 // XHRs and ads in a cross-site iframe are blocked as well.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL("a.com", "/iframe_blocking.html");
@@ -605,7 +610,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
 
 // Checks nothing is blocked if shields are off.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL url = embedded_test_server()->GetURL("a.com", "/iframe_blocking.html");
@@ -640,7 +645,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
 
 // Requests made by a service worker should be blocked as well.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("adbanner.js");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -657,7 +662,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, WebSocketBlocking) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("*$websocket");
 
   ASSERT_TRUE(ws_server_.Start());
@@ -674,10 +679,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, WebSocketBlocking) {
                                              ws_url.spec().c_str())));
 }
 
-// Load a page with an ad image which is matched by a filter in the additional
-// engine, but make sure it is saved by an exception in the default engine.
-// This test is the same as AdsGetBlockedByRegionalBlocker except for at the
-// start it adds an exception rule to the default engine.
+// Load a page with an ad image which is matched on the regional blocker,
+// but make sure it is saved by the default ad_block_client's exception.
+// This test is the same as AdsGetBlockedByRegionalBlocker except for at
+// the start it adds an exception rule to the non regional adblocker.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        ExceptionAdsAreAllowedAcrossClients) {
   g_browser_process->SetApplicationLocale("fr");
@@ -685,7 +690,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
-  ASSERT_TRUE(InstallRegionalAdBlockComponent(kAdBlockEasyListFranceUUID));
+  ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
   UpdateAdBlockInstanceWithRules("*ad_fr*\n@@*ad_fr.png*");
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -700,7 +705,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
 // Make sure the third-party flag is passed into the ad-block library properly
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("||a.com$third-party");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -720,7 +725,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
 // Make sure the third-party flag is passed into the ad-block library properly
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        AdBlockThirdPartyWorksForThirdPartyHost) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("||a.com$third-party");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
@@ -786,7 +791,7 @@ class TestAdBlockSubscriptionServiceManagerObserver
 // The download in this test fails intermittently with a network error code,
 // although it doesn't seem to occur in real usage.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL subscription_url =
       embedded_test_server()->GetURL("lists.com", "/list.txt");
@@ -896,7 +901,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToCustomSubscription) {
 
 // Make sure the state of a list that cannot be fetched is as expected
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeTo404List) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL subscription_url =
       embedded_test_server()->GetURL("lists.com", "/this/list/does/not/exist");
@@ -941,7 +946,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeTo404List) {
 
 // Make sure that a list cannot be subscribed to twice
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToListUrlTwice) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL subscription_url =
       embedded_test_server()->GetURL("lists.com", "/this/list/does/not/exist");
@@ -984,7 +989,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeToListUrlTwice) {
 // issue the correct number of DNS resolutions
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        MAYBE_CnameCloakedRequestsGetBlocked) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("||cname-cloak-endpoint.tracking.com^");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("a.com", kAdBlockTestPage);
@@ -1067,7 +1072,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // to its CNAME-uncloaked equivalent.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        MAYBE_CnameCloakedRequestsCanBeExcepted) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "||cname-cloak-endpoint.tracking.com^\n"
       "@@a.com*/logo.png?unblock^");
@@ -1174,7 +1179,7 @@ class CnameUncloakingFlagDisabledTest : public AdBlockServiceTest {
 // Make sure that CNAME uncloaking does not occur when the CNAME uncloaking
 // flag is disabled.
 IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("||cname-cloak-endpoint.tracking.com^");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("a.com", kAdBlockTestPage);
@@ -1253,7 +1258,7 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
 
 // Load an image from a specific subdomain, and make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("||sp1.nypost.com$third-party");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
@@ -1271,7 +1276,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
 
 // Frame root URL is used for context rather than the tab URL
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("adbanner.js$domain=a.com");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL url = embedded_test_server()->GetURL("a.com", "/iframe_blocking.html");
@@ -1296,7 +1301,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
 
 // Tags for social buttons work
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       base::StringPrintf("||example.com^$tag=%s",
                          brave_shields::kFacebookEmbeds)
@@ -1320,7 +1325,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
 
 // Lack of tags for social buttons work
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("||example.com^$tag=sup");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
@@ -1341,7 +1346,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
 
 // Tags are preserved after resetting
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ResetPreservesTags) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   g_brave_browser_process->ad_block_service()->EnableTag(
       brave_shields::kFacebookEmbeds, true);
   WaitForAdBlockServiceThreads();
@@ -1399,7 +1404,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
 
 // Load a page with a blocked image, and make sure it is collapsed.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CollapseBlockedImage) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -1422,7 +1427,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CollapseBlockedImage) {
 
 // Load a page with a blocked iframe, and make sure it is collapsed.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CollapseBlockedIframe) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -1454,7 +1459,7 @@ class CollapseBlockedElementsFlagDisabledTest : public AdBlockServiceTest {
 // Load a page with a blocked image, and make sure it is not collapsed.
 IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
                        DontCollapseBlockedImage) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -1478,7 +1483,7 @@ IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
 // Load a page with a blocked iframe, and make sure it is not collapsed.
 IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
                        DontCollapseBlockedIframe) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
@@ -1511,7 +1516,7 @@ class Default1pBlockingFlagDisabledTest : public AdBlockServiceTest {
 // match the same filter in the default engine. Ensure the third-party one is
 // blocked while the first-party one is allowed.
 IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Default1pBlocking) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   DisableAggressiveMode();
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   UpdateAdBlockInstanceWithRules("^ad_banner.png");
@@ -1536,7 +1541,7 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Default1pBlocking) {
 // match the same filter in the default engine. They should both be blocked on
 // special URLs like this one.
 IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, SpecialUrlException) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   DisableAggressiveMode();
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   UpdateAdBlockInstanceWithRules("^ad_banner.png");
@@ -1563,7 +1568,7 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, SpecialUrlException) {
 // ensure that both are blocked.
 IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest,
                        Aggressive1pBlocking) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   UpdateAdBlockInstanceWithRules("^ad_banner.png");
 
@@ -1587,7 +1592,7 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest,
 // match the same filter in the custom filters engine. Ensure that both are
 // blocked.
 IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   DisableAggressiveMode();
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   UpdateCustomAdBlockInstanceWithRules("^ad_banner.png");
@@ -1611,7 +1616,7 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
 
 // Load a page with a script which uses a redirect data URL.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("js_mock_me.js$redirect=noopjs",
                                  R"(
       [
@@ -1646,8 +1651,18 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
 // A redirection should only be applied if there's also a matching blocking
 // rule.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  // The DAT for this test contains the following rules:
+  //   .js?block=true
+  //   js_mock_me.js$redirect-rule=noopjs
+  // At the time of this test's writing, `redirect-rule` parsing is currently
+  // not supported by the engine, but it should work correctly when the CRX
+  // packager eventually begins shipping DATs that include them.
+  base::FilePath test_data_dir;
+  GetTestDataDir(&test_data_dir);
 
+  base::FilePath dat_location = test_data_dir.AppendASCII("adblock-data")
+                                    .AppendASCII("redirect-rule.dat");
   std::string resources = R"([{
         "name": "noop.js",
         "aliases": ["noopjs"],
@@ -1656,10 +1671,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
         },
         "content": "KGZ1bmN0aW9uKCkgewogICAgJ3VzZSBzdHJpY3QnOwp9KSgpOwo="
       }])";
-  UpdateAdBlockInstanceWithRules(
-      ".js?block=true\n"
-      "js_mock_me.js$redirect-rule=noopjs",
-      resources);
+  UpdateAdBlockInstanceWithDAT(dat_location, resources);
 
   WaitForAdBlockServiceThreads();
 
@@ -1715,7 +1727,7 @@ std::unique_ptr<net::test_server::HttpResponse> NoParamHandler(
 
 // `$removeparam` should be respected for subresource requests
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   UpdateAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
@@ -1748,7 +1760,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
 
 // `$removeparam` should be respected for top-level navigations
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamTopLevelNavigation) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   UpdateAdBlockInstanceWithRules("*$document,removeparam=evil");
@@ -1771,7 +1783,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamTopLevelNavigation) {
 
 // `$removeparam` should not be activated in default blocking mode
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultNoRemoveparam) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   DisableAggressiveMode();
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -1798,7 +1810,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultNoRemoveparam) {
 // Verify that scripts violating a Content Security Policy from a `$csp` rule
 // are not loaded.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "||example.com^$csp=script-src 'nonce-abcdef' 'unsafe-eval' 'self'");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -1827,7 +1839,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
 // The policy resulting from two of the same kind of directive will be the
 // union of both.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleMerging) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "||example.com^$csp=script-src 'nonce-abcdef' 'unsafe-eval' 'self'");
   UpdateCustomAdBlockInstanceWithRules(
@@ -1854,32 +1866,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleMerging) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Lists with `hidden` set to `true` should not be shown in `GetRegionalLists`.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, HiddenListsNotPresented) {
-  std::vector<brave_shields::FilterListCatalogEntry> filter_list_catalog;
-  filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
-      "uuid1", "https://example.com", "Hidden list", {},
-      "https://support.example.com", "first list", true, false, false, 0,
-      "testid1", "pubkey1", "", ""));
-  filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
-      "uuid2", "https://example.com", "Normal list", {},
-      "https://support.example.com", "second list", false, false, false, 0,
-      "testid2", "pubkey2", "", ""));
-  g_brave_browser_process->ad_block_service()
-      ->component_service_manager()
-      ->SetFilterListCatalog(filter_list_catalog);
-
-  auto regional_lists = g_brave_browser_process->ad_block_service()
-                            ->component_service_manager()
-                            ->GetRegionalLists();
-
-  ASSERT_EQ(regional_lists.size(), 1UL);
-}
-
 // Verify that scripts violating a Content Security Policy from a `$csp` rule
 // are not loaded.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleShieldsDown) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "||example.com^$csp=script-src 'nonce-abcdef' 'unsafe-eval' 'self'");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -1916,7 +1906,7 @@ class CosmeticFilteringFlagDisabledTest : public AdBlockServiceTest {
 // Ensure no cosmetic filtering occurs when the feature flag is disabled
 IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
                        CosmeticFilteringSimple) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
@@ -1961,7 +1951,7 @@ class CosmeticFilteringPlaylistFlagEnabledTest : public AdBlockServiceTest {
 // background web contents.
 IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
                        AllowCosmeticFiltering) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   const GURL url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
 
@@ -1985,7 +1975,7 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
 
 // Ensure no cosmetic filtering occurs when the shields setting is disabled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   brave_shields::SetCosmeticFilteringControlType(
       content_settings(), brave_shields::ControlType::ALLOW, GURL());
   UpdateAdBlockInstanceWithRules(
@@ -2010,7 +2000,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {
 
 // Test simple cosmetic filtering
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
@@ -2041,7 +2031,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
 // Test that cosmetic filtering is applied independently in a third-party child
 // frame
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringFrames) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("frame.com##.ad\n");
 
   GURL tab_url =
@@ -2078,7 +2068,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringFrames) {
 // blocking mode
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CosmeticFilteringHasPseudoclassStandard) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   DisableAggressiveMode();
   UpdateAdBlockInstanceWithRules("b.com##.container:has(#promotion)\n");
 
@@ -2097,7 +2087,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // aggressive blocking mode
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CosmeticFilteringHasPseudoclassAggressive) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("b.com##.container:has(#promotion)\n");
 
   GURL tab_url =
@@ -2127,7 +2117,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
 // Test cosmetic filtering ignores content determined to be 1st party
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   DisableAggressiveMode();
   UpdateAdBlockInstanceWithRules(
       "appspot.com##.fpsponsored\n"
@@ -2166,7 +2156,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
 
 // Test cosmetic filtering bypasses 1st party checks in Aggressive mode
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
 
   GURL tab_url =
@@ -2184,7 +2174,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
 
 // Test cosmetic filtering on elements added dynamically
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("##.blockme\n##.hide-innerhtml");
 
   GURL tab_url =
@@ -2216,7 +2206,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
 // Test cosmetic filtering on elements added dynamically, using a rule from the
 // custom filters
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamicCustom) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   ASSERT_TRUE(g_brave_browser_process->ad_block_service()
                   ->custom_filters_provider()
                   ->UpdateCustomFilters("##.blockme"));
@@ -2244,7 +2234,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamicCustom) {
 // `generichide` exception rule, both for elements added dynamically and
 // elements present at page load
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringGenerichide) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "##.blockme\n"
       "##img[src=\"https://example.com/logo.png\"]\n"
@@ -2269,7 +2259,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringGenerichide) {
 
 // Test custom style rules
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringCustomStyle) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("b.com##.ad:style(padding-bottom: 10px)");
 
   GURL tab_url =
@@ -2287,7 +2277,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringCustomStyle) {
 
 // Test rules overridden by hostname-specific exception rules
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "##.ad\n"
       "b.com#@#.ad\n"
@@ -2314,7 +2304,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
 
 // Test scriptlet injection that modifies window attributes
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   std::string scriptlet =
       "(function() {"
       "  const send = window.getComputedStyle;"
@@ -2346,64 +2336,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
   EXPECT_EQ(base::Value(true), result.value);
 }
 
-// Test that permissioned scriptlets can only be injected from appropriately
-// permissioned lists
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ScriptletInjectionPermissions) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
-  std::string scriptlet =
-      "(function() {"
-      "  window.success = true;"
-      "})();";
-  std::string scriptlet_base64;
-  base::Base64Encode(scriptlet, &scriptlet_base64);
-  std::string resources =
-      "[{"
-      "\"name\": \"set-success.js\","
-      "\"aliases\": [],"
-      "\"kind\": {\"mime\": \"application/javascript\"},"
-      "\"permission\": 3,"  // i.e. 0b00000011
-      "\"content\": \"" +
-      scriptlet_base64 + "\"}]";
-  std::string rules = "b.com##+js(set-success)";
-
-  GURL tab_url =
-      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
-  content::WebContents* contents;
-
-  // Add the list with default (i.e. no) permissions
-  UpdateAdBlockInstanceWithRules(rules, resources);
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
-  contents = browser()->tab_strip_model()->GetActiveWebContents();
-
-  {
-    auto result = EvalJs(contents, R"(window.success === undefined)");
-    EXPECT_EQ(base::Value(true), result.value);
-  }
-
-  // Add a list with different but still insufficient permissions
-  UpdateAdBlockInstanceWithRules(rules, resources, 5);
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
-  contents = browser()->tab_strip_model()->GetActiveWebContents();
-
-  {
-    auto result = EvalJs(contents, R"(window.success === undefined)");
-    EXPECT_EQ(base::Value(true), result.value);
-  }
-
-  // Finally add a list with sufficient permissions
-  UpdateAdBlockInstanceWithRules(rules, resources, 7);
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
-  contents = browser()->tab_strip_model()->GetActiveWebContents();
-
-  {
-    auto result = EvalJs(contents, R"(window.success)");
-    EXPECT_EQ(base::Value(true), result.value);
-  }
-}
-
 class ScriptletDebugLogsFlagEnabledTest : public AdBlockServiceTest {
  public:
   ScriptletDebugLogsFlagEnabledTest() {
@@ -2417,7 +2349,7 @@ class ScriptletDebugLogsFlagEnabledTest : public AdBlockServiceTest {
 // Test that scriptlet injection has access to `canDebug` inside of
 // `scriptletGlobals`, and that it is set to `true`.
 IN_PROC_BROWSER_TEST_F(ScriptletDebugLogsFlagEnabledTest, CanDebugSetToTrue) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   std::string scriptlet =
       "(function() {"
       "  if (scriptletGlobals.get('canDebug')) {"
@@ -2492,7 +2424,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CheckForDeAmpPref) {
 
 // Test scriptlet injection that modifies window attributes
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   std::string scriptlet =
       "(function() {"
       "  window.JSON.parse = function() { return {} }"
@@ -2522,7 +2454,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
 // marker on its `display` style.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        DISABLED_CosmeticFilteringOverridesImportant) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("###inline-block-important");
 
   GURL tab_url =
@@ -2544,7 +2476,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // exception policy.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CustomCosmeticFilteringOverridesImportant) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateCustomAdBlockInstanceWithRules("###inline-block-important");
 
   GURL tab_url =
@@ -2589,11 +2521,11 @@ class CookieListPrefObserver {
 // List UUID to be enabled, until manually enabled and then disabled again.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
   ASSERT_TRUE(
-      InstallRegionalAdBlockComponent(brave_shields::kCookieListUuid, false));
+      InstallRegionalAdBlockExtension(brave_shields::kCookieListUuid, false));
 
   {
     const auto lists = g_brave_browser_process->ad_block_service()
-                           ->component_service_manager()
+                           ->regional_service_manager()
                            ->GetRegionalLists();
     // Although never explicitly enabled, it should be presented as enabled by
     // default at first.
@@ -2605,14 +2537,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
   {
     CookieListPrefObserver pref_observer(g_browser_process->local_state());
     g_brave_browser_process->ad_block_service()
-        ->component_service_manager()
+        ->regional_service_manager()
         ->EnableFilterList(brave_shields::kCookieListUuid, false);
     pref_observer.Wait();
   }
 
   {
     const auto lists = g_brave_browser_process->ad_block_service()
-                           ->component_service_manager()
+                           ->regional_service_manager()
                            ->GetRegionalLists();
     // It should be actually disabled now.
     ASSERT_EQ(1UL, lists.size());
@@ -2665,7 +2597,7 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
                        CosmeticFilteringDynamic) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules(
       "##.div-class-100\n##.div-class-500\n##.div-class-1000");
 
@@ -2709,7 +2641,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
                        CosmeticFilteringSubframeDynamic) {
-  ASSERT_TRUE(InstallDefaultAdBlockComponent());
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("##.div-class-500");
 
   GURL tab_url =

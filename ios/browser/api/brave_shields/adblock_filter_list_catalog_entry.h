@@ -17,13 +17,9 @@ OBJC_EXPORT
 @property(readonly) NSString* title;
 @property(readonly) NSArray<NSString*>* languages;
 @property(readonly) NSString* supportURL;
-@property(readonly) NSString* desc;
-@property(readonly) bool hidden;
-@property(readonly) bool defaultEnabled;
-@property(readonly) bool firstPartyProtections;
-@property(readonly) uint8_t permissionMask;
 @property(readonly) NSString* componentId;
 @property(readonly) NSString* base64PublicKey;
+@property(readonly) NSString* desc;
 @property(readonly) NSString* iosComponentId;
 @property(readonly) NSString* iosBase64PublicKey;
 - (instancetype)init NS_UNAVAILABLE;
