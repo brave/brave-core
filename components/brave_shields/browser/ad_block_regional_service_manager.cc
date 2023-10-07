@@ -98,8 +98,9 @@ bool AdBlockRegionalServiceManager::NeedsLocaleListsMigration(
 
 void AdBlockRegionalServiceManager::StartRegionalServices() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!local_state_)
+  if (!local_state_) {
     return;
+  }
 
   if (filter_list_catalog_.size() == 0) {
     return;
@@ -173,8 +174,9 @@ void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
     const std::string& uuid,
     bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!local_state_)
+  if (!local_state_) {
     return;
+  }
   ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
   base::Value::Dict regional_filter_dict;
   regional_filter_dict.Set("enabled", enabled);

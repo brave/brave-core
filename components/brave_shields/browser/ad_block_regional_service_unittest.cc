@@ -21,7 +21,7 @@ TEST(AdBlockRegionalServiceTest, UserModelLanguages) {
       "https://support.brave.com", "componentid", "base64publickey",
       "Filter list for testing purposes", "", ""));
 
-  std::vector<std::string> languages({ "fr", "fR", "fr-FR", "fr-ca" });
+  std::vector<std::string> languages({"fr", "fR", "fr-FR", "fr-ca"});
   std::for_each(
       languages.begin(), languages.end(), [&](const std::string& language) {
         EXPECT_EQ(

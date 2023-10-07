@@ -232,8 +232,9 @@ bool AdBlockServiceTest::InstallDefaultAdBlockExtension(
   GetTestDataDir(&test_data_dir);
   const extensions::Extension* ad_block_extension = LoadExtensionAsComponent(
       test_data_dir.AppendASCII("adblock-data").AppendASCII(extension_dir));
-  if (!ad_block_extension)
+  if (!ad_block_extension) {
     return false;
+  }
 
   g_brave_browser_process->ad_block_service()
       ->default_filters_provider()
@@ -295,8 +296,9 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
     const extensions::Extension* ad_block_extension =
         LoadExtensionAsComponent(test_data_dir.AppendASCII("adblock-data")
                                      .AppendASCII("adblock-regional"));
-    if (!ad_block_extension)
+    if (!ad_block_extension) {
       return false;
+    }
 
     g_brave_browser_process->ad_block_service()
         ->regional_service_manager()

@@ -470,7 +470,7 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
 }
 
 // static
-void SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
+void SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(  // IN-TEST
     const std::string& component_id,
     const std::string& component_base64_public_key) {
   g_ad_block_default_component_id_ = component_id;
