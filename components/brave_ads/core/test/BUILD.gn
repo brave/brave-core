@@ -572,7 +572,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_info_unittest.cc",
     "//brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_test.cc",
-    "//brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_value_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/units/search_result_ad/search_result_ad_test.cc",
     "//brave/components/brave_ads/core/internal/user/user_attention/user_activity/page_transition_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_feature_unittest.cc",
