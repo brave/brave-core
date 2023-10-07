@@ -1167,7 +1167,7 @@ static_library("internal") {
     "units/promoted_content_ad/promoted_content_ad_handler.cc",
     "units/promoted_content_ad/promoted_content_ad_handler.h",
     "units/promoted_content_ad/promoted_content_ad_info.cc",
-    "units/promoted_content_ad/promoted_content_ad_value_util.cc",
+    "units/promoted_content_ad/promoted_content_ad_info.h",
     "units/search_result_ad/search_result_ad_feature.cc",
     "units/search_result_ad/search_result_ad_handler.cc",
     "units/search_result_ad/search_result_ad_handler.h",

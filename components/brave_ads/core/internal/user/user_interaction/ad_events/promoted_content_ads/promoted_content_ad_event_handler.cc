@@ -14,10 +14,10 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/promoted_content_ads/promoted_content_ad_permission_rules.h"
+#include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/promoted_content_ads/promoted_content_ad_event_factory.h"
-#include "brave/components/brave_ads/core/public/units/promoted_content_ad/promoted_content_ad_info.h"
 
 namespace brave_ads {
 

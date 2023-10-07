@@ -7,9 +7,9 @@
 
 #include <utility>
 
+#include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/promoted_content_ad/promoted_content_ad_info.h"
 
 namespace brave_ads {
 
