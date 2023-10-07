@@ -26,7 +26,6 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/engine_test_observer.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -160,10 +159,7 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
 
   source_providers_.push_back(std::move(source_provider));
 
-  auto* engine =
-      g_brave_browser_process->ad_block_service()->default_engine_.get();
-  EngineTestObserver engine_observer(engine);
-  engine_observer.Wait();
+  WaitForAdBlockServiceThreads();
 }
 
 void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
@@ -179,10 +175,7 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
 
   source_providers_.push_back(std::move(source_provider));
 
-  auto* engine = g_brave_browser_process->ad_block_service()
-                     ->additional_filters_engine_.get();
-  EngineTestObserver engine_observer(engine);
-  engine_observer.Wait();
+  WaitForAdBlockServiceThreads();
 }
 
 void AdBlockServiceTest::AssertTagExists(const std::string& tag,
@@ -243,6 +236,31 @@ bool AdBlockServiceTest::InstallDefaultAdBlockComponent(
 
   return true;
 }
+
+// A test observer that allows blocking waits for an AdBlockEngine to be
+// updated with new rules.
+class EngineTestObserver : public brave_shields::AdBlockEngine::TestObserver {
+ public:
+  // Constructs an EngineTestObserver which will observe the given adblock
+  // engine for filter data updates.
+  explicit EngineTestObserver(brave_shields::AdBlockEngine* engine)
+      : engine_(engine) {
+    engine_->AddObserverForTest(this);
+  }
+  ~EngineTestObserver() override { engine_->RemoveObserverForTest(); }
+
+  EngineTestObserver(const EngineTestObserver& other) = delete;
+  EngineTestObserver& operator=(const EngineTestObserver& other) = delete;
+
+  // Blocks until the engine is updated
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  void OnEngineUpdated() override { run_loop_.Quit(); }
+
+  base::RunLoop run_loop_;
+  raw_ptr<brave_shields::AdBlockEngine> engine_ = nullptr;
+};
 
 bool AdBlockServiceTest::InstallRegionalAdBlockComponent(
     const std::string& uuid,
@@ -1573,6 +1591,7 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
   DisableAggressiveMode();
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   UpdateCustomAdBlockInstanceWithRules("^ad_banner.png");
+  WaitForAdBlockServiceThreads();
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -1641,6 +1660,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
       ".js?block=true\n"
       "js_mock_me.js$redirect-rule=noopjs",
       resources);
+
+  WaitForAdBlockServiceThreads();
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 

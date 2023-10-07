@@ -128,7 +128,6 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     filters_provider_ = std::make_unique<TestFiltersProvider>(rules, resources);
     g_brave_browser_process->ad_block_service()->UseSourceProvidersForTest(
         filters_provider_.get(), filters_provider_.get());
-    task_environment_.RunUntilIdle();
   }
 
   // Returns true if the request handler deferred control back to the calling

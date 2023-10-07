@@ -42,14 +42,12 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
   static AdBlockFiltersProviderManager* GetInstance();
 
-  void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+  void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
+                     base::OnceCallback<void()>) override;
 
-  void LoadFilterSetForEngine(
-      bool is_for_default_engine,
-      base::OnceCallback<
-          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>);
+  void LoadFilterSetForEngine(bool is_for_default_engine,
+                              rust::Box<adblock::FilterSet>* filter_set,
+                              base::OnceCallback<void()> cb);
 
   // AdBlockFiltersProvider::Observer
   void OnChanged() override;
@@ -63,12 +61,6 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
  private:
   friend base::NoDestructor<AdBlockFiltersProviderManager>;
-
-  void FinishCombinating(
-      base::OnceCallback<
-          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
-      std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
-          results);
 
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;

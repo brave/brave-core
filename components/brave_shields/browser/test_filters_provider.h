@@ -28,9 +28,8 @@ class TestFiltersProvider : public AdBlockFiltersProvider,
                       uint8_t permission_mask = 0);
   ~TestFiltersProvider() override;
 
-  void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+  void LoadFilterSet(rust::Box<adblock::FilterSet>* filter_set,
+                     base::OnceCallback<void()>) override;
 
   void LoadResources(
       base::OnceCallback<void(const std::string& resources_json)> cb) override;

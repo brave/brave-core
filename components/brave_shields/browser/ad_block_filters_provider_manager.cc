@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "base/barrier_callback.h"
+#include "base/barrier_closure.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
@@ -60,47 +60,27 @@ void AdBlockFiltersProviderManager::OnChanged() {
 
 // Use LoadDATBufferForEngine instead, for Filter Provider Manager.
 void AdBlockFiltersProviderManager::LoadFilterSet(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) {
+    rust::Box<adblock::FilterSet>* filter_set,
+    base::OnceCallback<void()>) {
   NOTREACHED();
 }
 
 void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
     bool is_for_default_engine,
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+    rust::Box<adblock::FilterSet>* filter_set,
+    base::OnceCallback<void()> cb) {
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
-  const auto collect_and_merge = base::BarrierCallback<
-      base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>(
-      filters_providers.size(),
-      base::BindOnce(&AdBlockFiltersProviderManager::FinishCombinating,
-                     weak_factory_.GetWeakPtr(), std::move(cb)));
+  const auto collect_and_merge =
+      base::BarrierClosure(filters_providers.size(), std::move(cb));
   for (auto* const provider : filters_providers) {
     task_tracker_.PostTask(
         base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
         base::BindOnce(&AdBlockFiltersProvider::LoadFilterSet,
-                       provider->AsWeakPtr(), std::move(collect_and_merge)));
+                       provider->AsWeakPtr(), filter_set,
+                       std::move(collect_and_merge)));
   }
-}
-
-// static
-void RunAllResults(
-    std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
-        results,
-    rust::Box<adblock::FilterSet>* filter_set) {
-  for (auto& cb : results) {
-    std::move(cb).Run(filter_set);
-  }
-}
-
-void AdBlockFiltersProviderManager::FinishCombinating(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
-    std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
-        results) {
-  std::move(cb).Run(base::BindOnce(&RunAllResults, std::move(results)));
 }
 
 }  // namespace brave_shields

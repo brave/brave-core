@@ -126,21 +126,3 @@ source_set("component_installer") {
     "//crypto",
   ]
 }
-
-if (!is_ios) {
-  source_set("test_support") {
-    testonly = true
-    sources = [
-      "engine_test_observer.cc",
-      "engine_test_observer.h",
-      "test_filters_provider.cc",
-      "test_filters_provider.h",
-    ]
-
-    deps = [
-      "//base",
-      "//brave/components/brave_component_updater/browser",
-      "//brave/components/brave_shields/browser:browser",
-    ]
-  }
-}
