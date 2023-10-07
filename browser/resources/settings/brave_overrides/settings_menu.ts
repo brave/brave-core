@@ -339,8 +339,11 @@ RegisterPolymerTemplateModifications({
     const graphicsEl = document.createElement('div')
     graphicsEl.setAttribute('class', 'brave-about-graphic')
 
-    const icon = document.createElement('leo-icon')
-    icon.setAttribute('name', 'brave-icon-release-color')
+    // Use per-channel logo image.
+    const icon = document.createElement('img')
+    icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
+    icon.setAttribute('width', '24px')
+    icon.setAttribute('height', '24px')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')
