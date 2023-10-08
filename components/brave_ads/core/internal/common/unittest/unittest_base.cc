@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_registry.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_value.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
