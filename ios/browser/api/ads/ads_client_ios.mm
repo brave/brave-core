@@ -251,7 +251,8 @@ void AdsClientIOS::RecordP2AEvents(const std::vector<std::string>& events) {
   [bridge_ recordP2AEvents:events];
 }
 
-void AdsClientIOS::AddTrainingSample(
+void AdsClientIOS::AddFederatedLearningPredictorTrainingSample(
     std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
-  [bridge_ addTrainingSample:std::move(training_sample)];
+  [bridge_
+      addFederatedLearningPredictorTrainingSample:std::move(training_sample)];
 }

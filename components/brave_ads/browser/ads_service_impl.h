@@ -348,8 +348,9 @@ class AdsServiceImpl : public AdsService,
   // business logic.
   void RecordP2AEvents(const std::vector<std::string>& events) override;
 
-  void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
-                             training_sample) override;
+  void AddFederatedLearningPredictorTrainingSample(
+      std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample)
+      override;
 
   void GetBooleanPref(const std::string& path,
                       GetBooleanPrefCallback callback) override;

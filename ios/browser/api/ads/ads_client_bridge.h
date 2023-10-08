@@ -82,7 +82,7 @@
 - (void)setLocalStatePref:(const std::string&)path value:(base::Value)value;
 - (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path;
 - (void)recordP2AEvents:(const std::vector<std::string>&)events;
-- (void)addTrainingSample:
+- (void)addFederatedLearningPredictorTrainingSample:
     (const std::vector<brave_federated::mojom::CovariateInfoPtr>)
         training_sample;
 

@@ -1733,7 +1733,7 @@ void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {
   }
 }
 
-void AdsServiceImpl::AddTrainingSample(
+void AdsServiceImpl::AddFederatedLearningPredictorTrainingSample(
     std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
   if (!notification_ad_timing_data_store_) {
     return;

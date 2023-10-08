@@ -112,8 +112,8 @@ interface BatAdsClient {
 
   RecordP2AEvents(array<string> events);
 
-  AddTrainingSample(array<brave_federated.mojom.CovariateInfo>
-                          training_sample);
+  AddFederatedLearningPredictorTrainingSample(
+      array<brave_federated.mojom.CovariateInfo> training_sample);
 
   [Sync]
   GetBooleanPref(string path) => (bool value);

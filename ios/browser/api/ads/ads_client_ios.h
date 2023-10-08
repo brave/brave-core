@@ -93,7 +93,7 @@ class AdsClientIOS : public brave_ads::AdsClient {
   absl::optional<base::Value> GetLocalStatePref(
       const std::string& path) const override;
   void RecordP2AEvents(const std::vector<std::string>& events) override;
-  void AddTrainingSample(
+  void AddFederatedLearningPredictorTrainingSample(
       const std::vector<brave_federated::mojom::CovariateInfoPtr>
           training_sample) override;
 };
