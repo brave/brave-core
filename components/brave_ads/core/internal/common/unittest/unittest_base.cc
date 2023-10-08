@@ -6,23 +6,24 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 #include <cstdint>
+#include <utility>
 
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
-#include "base/json/json_writer.h"
-#include "base/notreached.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_registry.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_value.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_registry_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_registry.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -30,7 +31,6 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
-#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 
@@ -66,7 +66,9 @@ void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
 
   InitializeCommandLineSwitches();
 
-  RegisterPrefs();
+  RegisterProfilePrefs();
+
+  RegisterLocalStatePrefs();
 
   MockAdsClient();
 
@@ -203,29 +205,15 @@ void UnitTestBase::MockAdsClient() {
       temp_dir_.GetPath().AppendASCII(kDatabaseFilename));
   MockRunDBTransaction(ads_client_mock_, *database_);
 
-  MockGetBooleanPref(ads_client_mock_);
-  MockSetBooleanPref(ads_client_mock_);
-  MockGetIntegerPref(ads_client_mock_);
-  MockSetIntegerPref(ads_client_mock_);
-  MockGetDoublePref(ads_client_mock_);
-  MockSetDoublePref(ads_client_mock_);
-  MockGetStringPref(ads_client_mock_);
-  MockSetStringPref(ads_client_mock_);
-  MockGetInt64Pref(ads_client_mock_);
-  MockSetInt64Pref(ads_client_mock_);
-  MockGetUint64Pref(ads_client_mock_);
-  MockSetUint64Pref(ads_client_mock_);
-  MockGetTimePref(ads_client_mock_);
-  MockSetTimePref(ads_client_mock_);
-  MockGetDictPref(ads_client_mock_);
-  MockSetDictPref(ads_client_mock_);
-  MockGetListPref(ads_client_mock_);
-  MockSetListPref(ads_client_mock_);
-  MockClearPref(ads_client_mock_);
-  MockHasPrefPath(ads_client_mock_);
-  MockGetLocalStatePref(ads_client_mock_);
+  MockGetProfilePref(ads_client_mock_);
+  MockSetProfilePref();
+  MockClearProfilePref(ads_client_mock_);
+  MockHasProfilePrefPath(ads_client_mock_);
 
-  MockSetLocalStatePref(ads_client_mock_);
+  MockGetLocalStatePref(ads_client_mock_);
+  MockSetLocalStatePref();
+  MockClearLocalStatePref(ads_client_mock_);
+  MockHasLocalStatePrefPath(ads_client_mock_);
 
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -241,106 +229,20 @@ void UnitTestBase::MockAdsClient() {
   MockGetBrowsingHistory(ads_client_mock_, /*history=*/{});
 }
 
-void UnitTestBase::MockSetBooleanPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetBooleanPref)
-      .WillByDefault(
-          ::testing::Invoke([=](const std::string& path, const bool value) {
-            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetIntegerPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetIntegerPref)
-      .WillByDefault(
-          ::testing::Invoke([=](const std::string& path, const int value) {
-            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetDoublePref(AdsClientMock& mock) {
-  ON_CALL(mock, SetDoublePref)
-      .WillByDefault(
-          ::testing::Invoke([=](const std::string& path, const double value) {
-            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetStringPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetStringPref)
-      .WillByDefault(::testing::Invoke(
-          [=](const std::string& path, const std::string& value) {
-            SetPrefValue(path, value);
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetInt64Pref(AdsClientMock& mock) {
-  ON_CALL(mock, SetInt64Pref)
-      .WillByDefault(
-          ::testing::Invoke([=](const std::string& path, const int64_t value) {
-            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetUint64Pref(AdsClientMock& mock) {
-  ON_CALL(mock, SetUint64Pref)
-      .WillByDefault(
-          ::testing::Invoke([=](const std::string& path, const uint64_t value) {
-            SetPrefValue(path, base::NumberToString(static_cast<int>(value)));
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetDictPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetDictPref)
-      .WillByDefault(::testing::Invoke(
-          [=](const std::string& path, base::Value::Dict value) {
-            std::string json;
-            CHECK(base::JSONWriter::Write(value, &json));
-            SetPrefValue(path, json);
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetListPref(AdsClientMock& mock) {
-  ON_CALL(mock, SetListPref)
-      .WillByDefault(::testing::Invoke(
-          [=](const std::string& path, base::Value::List value) {
-            std::string json;
-            CHECK(base::JSONWriter::Write(value, &json));
-            SetPrefValue(path, json);
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
-  ON_CALL(mock, SetTimePref)
-      .WillByDefault(::testing::Invoke(
-          [=](const std::string& path, const base::Time value) {
-            SetPrefValue(
-                path, base::NumberToString(
-                          value.ToDeltaSinceWindowsEpoch().InMicroseconds()));
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetLocalStatePref(AdsClientMock& mock) {
-  ON_CALL(mock, SetLocalStatePref)
+void UnitTestBase::MockSetProfilePref() {
+  ON_CALL(ads_client_mock_, SetProfilePref)
       .WillByDefault(
           ::testing::Invoke([=](const std::string& path, base::Value value) {
-            switch (value.type()) {
-              case base::Value::Type::STRING: {
-                SetPrefValue(path, value.GetString());
-                break;
-              }
-              default: {
-                NOTREACHED_NORETURN();
-              }
-            }
+            SetProfilePrefValue(path, std::move(value));
+            NotifyPrefDidChange(path);
+          }));
+}
+
+void UnitTestBase::MockSetLocalStatePref() {
+  ON_CALL(ads_client_mock_, SetLocalStatePref)
+      .WillByDefault(
+          ::testing::Invoke([=](const std::string& path, base::Value value) {
+            SetLocalStatePrefValue(path, std::move(value));
             NotifyPrefDidChange(path);
           }));
 }

@@ -9,10 +9,23 @@ namespace brave_ads {
 
 PrefInfo::PrefInfo() = default;
 
-PrefInfo::PrefInfo(const PrefInfo& other) = default;
-PrefInfo& PrefInfo::operator=(const PrefInfo& other) = default;
+PrefInfo::PrefInfo(const PrefInfo& other) {
+  *this = other;
+}
+
+PrefInfo& PrefInfo::operator=(const PrefInfo& other) {
+  if (this != &other) {
+    default_value = other.default_value.Clone();
+    if (other.value) {
+      value = other.value->Clone();
+    }
+  }
+
+  return *this;
+}
 
 PrefInfo::PrefInfo(PrefInfo&& other) noexcept = default;
+
 PrefInfo& PrefInfo::operator=(PrefInfo&& other) noexcept = default;
 
 PrefInfo::~PrefInfo() = default;
