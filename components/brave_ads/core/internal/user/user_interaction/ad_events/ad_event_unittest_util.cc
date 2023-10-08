@@ -13,7 +13,7 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
-#include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
+#include "brave/components/brave_ads/core/internal/common/instance_id.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"

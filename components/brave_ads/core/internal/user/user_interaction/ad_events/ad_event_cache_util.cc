@@ -10,7 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
-#include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
+#include "brave/components/brave_ads/core/internal/common/instance_id.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
