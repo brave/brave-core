@@ -1,0 +1,18 @@
+diff --git a/components/history/core/browser/sync/history_sync_bridge.cc b/components/history/core/browser/sync/history_sync_bridge.cc
+index fa9299a9e658e6f79a311a4d578ed9dfa72365e3..41696837ac83c59ca8ce05ee4f8ca4c63d32b429 100644
+--- a/components/history/core/browser/sync/history_sync_bridge.cc
++++ b/components/history/core/browser/sync/history_sync_bridge.cc
+@@ -443,11 +443,8 @@ std::unique_ptr<syncer::EntityData> MakeEntityData(
+ 
+   history->set_originator_cluster_id(local_cluster_id);
+ 
+-  // The entity name is used for debugging purposes; choose something that's a
+-  // decent tradeoff between "unique" and "readable".
+-  entity_data->name =
+-      base::StringPrintf("%s-%s", history->originator_cache_guid().c_str(),
+-                         redirect_visits.back().url_row.url().spec().c_str());
++  // The entity name is used for debugging purposes.
++  entity_data->name = history->originator_cache_guid();
+ 
+   return entity_data;
+ }
