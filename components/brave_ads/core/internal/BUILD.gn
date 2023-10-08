@@ -373,7 +373,6 @@ static_library("internal") {
     "common/locale/country_code_anonymity_util.h",
     "common/locale/locale_util.cc",
     "common/locale/locale_util.h",
-    "common/logging_util.cc",
     "common/logging_util.h",
     "common/net/http/http_status_code.h",
     "common/platform/platform_helper.cc",
