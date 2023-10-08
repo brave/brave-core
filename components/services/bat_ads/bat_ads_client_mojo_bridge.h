@@ -105,33 +105,17 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
       std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample)
       override;
 
-  bool GetBooleanPref(const std::string& path) const override;
-  void SetBooleanPref(const std::string& path, bool value) override;
-  int GetIntegerPref(const std::string& path) const override;
-  void SetIntegerPref(const std::string& path, int value) override;
-  double GetDoublePref(const std::string& path) const override;
-  void SetDoublePref(const std::string& path, double value) override;
-  std::string GetStringPref(const std::string& path) const override;
-  void SetStringPref(const std::string& path,
-                     const std::string& value) override;
-  int64_t GetInt64Pref(const std::string& path) const override;
-  void SetInt64Pref(const std::string& path, int64_t value) override;
-  uint64_t GetUint64Pref(const std::string& path) const override;
-  void SetUint64Pref(const std::string& path, uint64_t value) override;
-  base::Time GetTimePref(const std::string& path) const override;
-  void SetTimePref(const std::string& path, base::Time value) override;
-  absl::optional<base::Value::Dict> GetDictPref(
+  absl::optional<base::Value> GetProfilePref(
       const std::string& path) const override;
-  void SetDictPref(const std::string& path, base::Value::Dict value) override;
-  absl::optional<base::Value::List> GetListPref(
-      const std::string& path) const override;
-  void SetListPref(const std::string& path, base::Value::List value) override;
-  void ClearPref(const std::string& path) override;
-  bool HasPrefPath(const std::string& path) const override;
+  void SetProfilePref(const std::string& path, base::Value value) override;
+  void ClearProfilePref(const std::string& path) override;
+  bool HasProfilePrefPath(const std::string& path) const override;
 
   absl::optional<base::Value> GetLocalStatePref(
       const std::string& path) const override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
+  void ClearLocalStatePref(const std::string& path) override;
+  bool HasLocalStatePrefPath(const std::string& path) const override;
 
   void Log(const char* file,
            int line,

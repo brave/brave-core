@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -291,12 +290,12 @@ void UnitTestBase::SetUpUnitTest() {
         ASSERT_TRUE(success) << "Failed to create or open database";
       }));
 
-  global_state_->GetClientStateManager().Load(
+  global_state_->GetClientStateManager().LoadState(
       base::BindOnce([](const bool success) {
         ASSERT_TRUE(success) << "Failed to load client state";
       }));
 
-  global_state_->GetConfirmationStateManager().Load(
+  global_state_->GetConfirmationStateManager().LoadState(
       GetWalletForTesting(),  // IN-TEST
       base::BindOnce([](const bool success) {
         ASSERT_TRUE(success) << "Failed to load confirmation state";

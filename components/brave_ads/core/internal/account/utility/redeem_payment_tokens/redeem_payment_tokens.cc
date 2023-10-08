@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/url_request_builders/redeem_payment_tokens_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/user_data/redeem_payment_tokens_user_data_builder.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
@@ -82,10 +82,9 @@ void RedeemPaymentTokens::BuildRedeemPaymentTokensUserDataCallback(
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request),
-      base::BindOnce(&RedeemPaymentTokens::RedeemCallback,
-                     weak_factory_.GetWeakPtr(), payment_tokens));
+  UrlRequest(std::move(url_request),
+             base::BindOnce(&RedeemPaymentTokens::RedeemCallback,
+                            weak_factory_.GetWeakPtr(), payment_tokens));
 }
 
 void RedeemPaymentTokens::RedeemCallback(

@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
@@ -24,7 +24,8 @@ TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
 
   const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /*is_local=*/false);
-  SetTimePrefValue(prefs::kNextTokenRedemptionAt, next_token_redemption_at);
+  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt,
+                          next_token_redemption_at);
 
   // Act & Assert
   const base::Time expected_next_payment_date =

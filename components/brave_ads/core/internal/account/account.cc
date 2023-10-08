@@ -24,7 +24,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -39,8 +39,7 @@ namespace {
 
 bool ShouldReset() {
   return UserHasJoinedBraveRewards() &&
-         AdsClientHelper::GetInstance()->GetBooleanPref(
-             prefs::kShouldMigrateVerifiedRewardsUser);
+         GetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser);
 }
 
 void UpdateIssuers(const IssuersInfo& issuers) {
@@ -58,13 +57,13 @@ Account::Account(TokenGeneratorInterface* token_generator)
     : token_generator_(token_generator) {
   CHECK(token_generator_);
 
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 
   InitializeConfirmations();
 }
 
 Account::~Account() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 void Account::AddObserver(AccountObserver* observer) {
@@ -325,8 +324,7 @@ void Account::MaybeReset() {
 
   ResetAndFetchIssuers();
 
-  AdsClientHelper::GetInstance()->SetBooleanPref(
-      prefs::kShouldMigrateVerifiedRewardsUser, false);
+  SetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, false);
 }
 
 void Account::ResetAndFetchIssuers() {
@@ -456,8 +454,7 @@ void Account::OnDidRetryRefillingConfirmationTokens() {
 void Account::OnCaptchaRequiredToRefillConfirmationTokens(
     const std::string& captcha_id) {
   if (wallet_) {
-    AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
-        wallet_->payment_id, captcha_id);
+    ShowScheduledCaptchaNotification(wallet_->payment_id, captcha_id);
   }
 }
 

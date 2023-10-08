@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
@@ -92,7 +92,7 @@ void RedeemRewardConfirmation::CreateConfirmation(
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  AdsClientHelper::GetInstance()->UrlRequest(
+  UrlRequest(
       std::move(url_request),
       base::BindOnce(&RedeemRewardConfirmation::CreateConfirmationCallback,
                      std::move(redeem_confirmation), confirmation));
@@ -120,7 +120,7 @@ void RedeemRewardConfirmation::FetchPaymentToken(
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  AdsClientHelper::GetInstance()->UrlRequest(
+  UrlRequest(
       std::move(url_request),
       base::BindOnce(&RedeemRewardConfirmation::FetchPaymentTokenCallback,
                      std::move(redeem_confirmation), confirmation));

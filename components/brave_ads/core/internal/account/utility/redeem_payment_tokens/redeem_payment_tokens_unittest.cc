@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "net/http/http_status_code.h"
@@ -46,7 +46,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
        {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
 
   SetPaymentTokensForTesting(/*count=*/1);
 
@@ -77,7 +77,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
         {net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
 
   const PaymentTokenList payment_tokens =
       SetPaymentTokensForTesting(/*count=*/1);
@@ -109,7 +109,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
        {{net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
 
   SetPaymentTokensForTesting(/*count=*/1);
 
@@ -128,7 +128,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
 
 TEST_F(BraveAdsRedeemPaymentTokensTest, NoPaymentTokens) {
   // Arrange
-  SetTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
@@ -154,7 +154,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
         {net::HTTP_OK, BuildRedeemPaymentTokensUrlResponseBodyForTesting()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
 
   SetPaymentTokensForTesting(/*count=*/1);
 

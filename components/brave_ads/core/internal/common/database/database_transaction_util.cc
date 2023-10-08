@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database {
@@ -30,7 +30,7 @@ void RunTransactionCallback(ResultCallback callback,
 
 void RunTransaction(mojom::DBTransactionInfoPtr transaction,
                     ResultCallback callback) {
-  AdsClientHelper::GetInstance()->RunDBTransaction(
+  RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&RunTransactionCallback, std::move(callback)));
 }

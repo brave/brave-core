@@ -12,7 +12,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -464,9 +464,8 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
+  RunDBTransaction(std::move(transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void ConversionQueue::GetUnprocessed(
@@ -484,9 +483,8 @@ void ConversionQueue::GetUnprocessed(
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
+  RunDBTransaction(std::move(transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void ConversionQueue::GetForCreativeInstanceId(
@@ -510,10 +508,9 @@ void ConversionQueue::GetForCreativeInstanceId(
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction),
-      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
-                     std::move(callback)));
+  RunDBTransaction(std::move(transaction),
+                   base::BindOnce(&GetForCreativeInstanceIdCallback,
+                                  creative_instance_id, std::move(callback)));
 }
 
 std::string ConversionQueue::GetTableName() const {

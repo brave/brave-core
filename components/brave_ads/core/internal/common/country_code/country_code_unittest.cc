@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/country_code/country_code.h"
 
-#include "base/values.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_unittest_util.h"
@@ -21,6 +21,14 @@
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
+
+namespace {
+
+absl::optional<std::string> GetCountryCode() {
+  return GetLocalStateStringPref(brave_l10n::prefs::kCountryCode);
+}
+
+}  // namespace
 
 class BraveAdsCountryCodeTest : public UnitTestBase {
  public:
@@ -39,15 +47,6 @@ class BraveAdsCountryCodeTest : public UnitTestBase {
          {{net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
                              country_code, subdivision_code)}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
-  }
-
-  absl::optional<std::string> GetCountryCode() const {
-    auto pref_value =
-        ads_client_mock_.GetLocalStatePref(brave_l10n::prefs::kCountryCode);
-    if (!pref_value || !pref_value->is_string()) {
-      return absl::nullopt;
-    }
-    return pref_value->GetString();
   }
 
  protected:
@@ -87,7 +86,7 @@ TEST_F(BraveAdsCountryCodeTest, OnDidJoinBraveRewards) {
   MockHttpOkUrlResponse(/*country_code=*/"CA", /*subdivision_code=*/"AL");
 
   // Act
-  ads_client_mock_.SetBooleanPref(brave_rewards::prefs::kEnabled, true);
+  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
 
   // Assert
   EXPECT_EQ(GetCountryCode(), "CA");
@@ -97,11 +96,10 @@ TEST_F(BraveAdsCountryCodeTest, OnDidChangePrefOutside) {
   // Arrange
   DisableBraveRewardsForTesting();
 
-  ads_client_mock_.SetLocalStatePref(brave_l10n::prefs::kCountryCode,
-                                     base::Value("CA"));
+  SetLocalStateStringPref(brave_l10n::prefs::kCountryCode, "CA");
 
   // Act
-  ads_client_mock_.SetBooleanPref(brave_rewards::prefs::kEnabled, true);
+  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
 
   // Assert
   EXPECT_EQ(GetCountryCode(), "CA");
@@ -111,12 +109,12 @@ TEST_F(BraveAdsCountryCodeTest, PrefWasChangedBefore) {
   // Arrange
   DisableBraveRewardsForTesting();
 
-  ads_client_mock_.SetLocalStatePref(brave_l10n::prefs::kCountryCode,
-                                     base::Value("CA"));
+  SetLocalStateStringPref(brave_l10n::prefs::kCountryCode, "CA");
+
   MockHttpOkUrlResponse(/*country_code=*/"XX", /*subdivision_code=*/"sd");
 
   // Act
-  ads_client_mock_.SetBooleanPref(brave_rewards::prefs::kEnabled, true);
+  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
 
   // Assert
   EXPECT_EQ(GetCountryCode(), "XX");

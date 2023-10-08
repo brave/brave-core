@@ -604,7 +604,8 @@ void AdsServiceImpl::MaybeShowOnboardingNotification() {
   }
 
   if (NotificationHelper::GetInstance()->ShowOnboardingNotification()) {
-    SetBooleanPref(prefs::kShouldShowOnboardingNotification, false);
+    SetProfilePref(prefs::kShouldShowOnboardingNotification,
+                   base::Value(false));
   }
 }
 
@@ -815,7 +816,7 @@ bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
           kAllowedToFallbackToCustomNotificationAdFeature) &&
       kCanFallbackToCustomNotificationAds.Get();
   if (!can_fallback_to_custom_notification_ads) {
-    ClearPref(prefs::kNotificationAdDidFallbackToCustom);
+    ClearProfilePref(prefs::kNotificationAdDidFallbackToCustom);
   }
 
   const bool should_show =
@@ -824,7 +825,8 @@ bool AdsServiceImpl::ShouldShowCustomNotificationAds() {
   const bool should_fallback =
       !can_show_native_notifications && can_fallback_to_custom_notification_ads;
   if (should_fallback) {
-    SetBooleanPref(prefs::kNotificationAdDidFallbackToCustom, true);
+    SetProfilePref(prefs::kNotificationAdDidFallbackToCustom,
+                   base::Value(true));
   }
 
   const bool did_fallback = profile_->GetPrefs()->GetBoolean(
@@ -1749,110 +1751,24 @@ void AdsServiceImpl::AddFederatedLearningPredictorTrainingSample(
       }));
 }
 
-void AdsServiceImpl::GetBooleanPref(const std::string& path,
-                                    GetBooleanPrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetBoolean(path));
+void AdsServiceImpl::GetProfilePref(const std::string& path,
+                                    GetProfilePrefCallback callback) {
+  std::move(callback).Run(profile_->GetPrefs()->GetValue(path).Clone());
 }
 
-void AdsServiceImpl::SetBooleanPref(const std::string& path, const bool value) {
-  profile_->GetPrefs()->SetBoolean(path, value);
+void AdsServiceImpl::SetProfilePref(const std::string& path,
+                                    base::Value value) {
+  profile_->GetPrefs()->Set(path, value);
   NotifyPrefChanged(path);
 }
 
-void AdsServiceImpl::GetIntegerPref(const std::string& path,
-                                    GetIntegerPrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetInteger(path));
-}
-
-void AdsServiceImpl::SetIntegerPref(const std::string& path, const int value) {
-  profile_->GetPrefs()->SetInteger(path, value);
-  NotifyPrefChanged(path);
-}
-
-void AdsServiceImpl::GetDoublePref(const std::string& path,
-                                   GetDoublePrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetDouble(path));
-}
-
-void AdsServiceImpl::SetDoublePref(const std::string& path,
-                                   const double value) {
-  profile_->GetPrefs()->SetDouble(path, value);
-  NotifyPrefChanged(path);
-}
-
-void AdsServiceImpl::GetStringPref(const std::string& path,
-                                   GetStringPrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetString(path));
-}
-
-void AdsServiceImpl::SetStringPref(const std::string& path,
-                                   const std::string& value) {
-  profile_->GetPrefs()->SetString(path, value);
-  NotifyPrefChanged(path);
-}
-
-void AdsServiceImpl::GetInt64Pref(const std::string& path,
-                                  GetInt64PrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetInt64(path));
-}
-
-void AdsServiceImpl::SetInt64Pref(const std::string& path,
-                                  const int64_t value) {
-  profile_->GetPrefs()->SetInt64(path, value);
-  NotifyPrefChanged(path);
-}
-
-void AdsServiceImpl::GetUint64Pref(const std::string& path,
-                                   GetUint64PrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetUint64(path));
-}
-
-void AdsServiceImpl::SetUint64Pref(const std::string& path,
-                                   const uint64_t value) {
-  profile_->GetPrefs()->SetUint64(path, value);
-  NotifyPrefChanged(path);
-}
-
-void AdsServiceImpl::GetTimePref(const std::string& path,
-                                 GetTimePrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetTime(path));
-}
-
-void AdsServiceImpl::SetTimePref(const std::string& path,
-                                 const base::Time value) {
-  profile_->GetPrefs()->SetTime(path, value);
-  NotifyPrefChanged(path);
-}
-
-void AdsServiceImpl::GetDictPref(const std::string& path,
-                                 GetDictPrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetDict(path).Clone());
-}
-
-void AdsServiceImpl::SetDictPref(const std::string& path,
-                                 base::Value::Dict value) {
-  profile_->GetPrefs()->SetDict(path, std::move(value));
-  NotifyPrefChanged(path);
-}
-
-void AdsServiceImpl::GetListPref(const std::string& path,
-                                 GetListPrefCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetList(path).Clone());
-}
-
-void AdsServiceImpl::SetListPref(const std::string& path,
-                                 base::Value::List value) {
-  profile_->GetPrefs()->SetList(path, std::move(value));
-  NotifyPrefChanged(path);
-}
-
-void AdsServiceImpl::ClearPref(const std::string& path) {
+void AdsServiceImpl::ClearProfilePref(const std::string& path) {
   profile_->GetPrefs()->ClearPref(path);
   NotifyPrefChanged(path);
 }
 
-void AdsServiceImpl::HasPrefPath(const std::string& path,
-                                 HasPrefPathCallback callback) {
+void AdsServiceImpl::HasProfilePrefPath(const std::string& path,
+                                        HasProfilePrefPathCallback callback) {
   std::move(callback).Run(profile_->GetPrefs()->HasPrefPath(path));
 }
 
@@ -1865,6 +1781,17 @@ void AdsServiceImpl::SetLocalStatePref(const std::string& path,
                                        base::Value value) {
   local_state_->Set(path, value);
   NotifyPrefChanged(path);
+}
+
+void AdsServiceImpl::ClearLocalStatePref(const std::string& path) {
+  local_state_->ClearPref(path);
+  NotifyPrefChanged(path);
+}
+
+void AdsServiceImpl::HasLocalStatePrefPath(
+    const std::string& path,
+    HasLocalStatePrefPathCallback callback) {
+  std::move(callback).Run(local_state_->HasPrefPath(path));
 }
 
 void AdsServiceImpl::Log(const std::string& file,
@@ -1919,7 +1846,7 @@ void AdsServiceImpl::OnRewardsWalletCreated() {
 }
 
 void AdsServiceImpl::OnExternalWalletConnected() {
-  SetBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, true);
+  SetProfilePref(prefs::kShouldMigrateVerifiedRewardsUser, base::Value(true));
 
   ShowReminder(mojom::ReminderType::kExternalWalletConnected);
 }

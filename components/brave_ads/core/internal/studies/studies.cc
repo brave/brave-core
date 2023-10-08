@@ -5,17 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/studies/studies.h"
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 
 namespace brave_ads {
 
 Studies::Studies() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 Studies::~Studies() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

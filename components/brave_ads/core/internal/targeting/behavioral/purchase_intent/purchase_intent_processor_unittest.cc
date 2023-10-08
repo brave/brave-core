@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 
-#include <cstdint>
 #include <memory>
 
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"

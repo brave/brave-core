@@ -43,7 +43,7 @@ void RebuildConfirmationCallback(const ConfirmationInfo& confirmation,
 
 void AddConfirmationQueueItem(const ConfirmationInfo& confirmation) {
   ConfirmationStateManager::GetInstance().AddConfirmation(confirmation);
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 }
 
 void RemoveConfirmationQueueItem(const ConfirmationInfo& confirmation) {
@@ -54,7 +54,7 @@ void RemoveConfirmationQueueItem(const ConfirmationInfo& confirmation) {
                     << confirmation.transaction_id);
   }
 
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 }
 
 absl::optional<ConfirmationInfo> MaybeGetNextConfirmationQueueItem() {

@@ -89,7 +89,7 @@ bool IsValid(const ConfirmationInfo& confirmation) {
 
 void ResetTokens() {
   ConfirmationStateManager::GetInstance().reset_confirmations();
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 
   RemoveAllConfirmationTokens();
 

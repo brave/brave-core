@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/network_connection_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
 
 namespace brave_ads {
@@ -17,7 +17,7 @@ bool DoesRespectCap() {
     return true;
   }
 
-  return AdsClientHelper::GetInstance()->IsNetworkConnectionAvailable();
+  return IsNetworkConnectionAvailable();
 }
 
 }  // namespace

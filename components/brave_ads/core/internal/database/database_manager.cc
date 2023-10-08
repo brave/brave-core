@@ -9,7 +9,7 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
@@ -50,7 +50,7 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  AdsClientHelper::GetInstance()->RunDBTransaction(
+  RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));

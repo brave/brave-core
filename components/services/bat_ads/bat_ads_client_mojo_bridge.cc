@@ -292,175 +292,37 @@ void BatAdsClientMojoBridge::Log(const char* file,
   }
 }
 
-bool BatAdsClientMojoBridge::GetBooleanPref(const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
-    return false;
-  }
-
-  bool value = false;
-  bat_ads_client_->GetBooleanPref(path, &value);
-  return value;
-}
-
-void BatAdsClientMojoBridge::SetBooleanPref(const std::string& path,
-                                            const bool value) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetBooleanPref(path, value);
-  }
-}
-
-int BatAdsClientMojoBridge::GetIntegerPref(const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
-    return 0;
-  }
-
-  int value = 0;
-  bat_ads_client_->GetIntegerPref(path, &value);
-  return value;
-}
-
-void BatAdsClientMojoBridge::SetIntegerPref(const std::string& path,
-                                            const int value) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetIntegerPref(path, value);
-  }
-}
-
-double BatAdsClientMojoBridge::GetDoublePref(const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
-    return 0.0;
-  }
-
-  double value = 0.0;
-  bat_ads_client_->GetDoublePref(path, &value);
-  return value;
-}
-
-void BatAdsClientMojoBridge::SetDoublePref(const std::string& path,
-                                           const double value) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetDoublePref(path, value);
-  }
-}
-
-std::string BatAdsClientMojoBridge::GetStringPref(
-    const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
-    return {};
-  }
-
-  std::string value;
-  bat_ads_client_->GetStringPref(path, &value);
-  return value;
-}
-
-void BatAdsClientMojoBridge::SetStringPref(const std::string& path,
-                                           const std::string& value) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetStringPref(path, value);
-  }
-}
-
-int64_t BatAdsClientMojoBridge::GetInt64Pref(const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
-    return 0;
-  }
-
-  int64_t value = 0;
-  bat_ads_client_->GetInt64Pref(path, &value);
-  return value;
-}
-
-void BatAdsClientMojoBridge::SetInt64Pref(const std::string& path,
-                                          const int64_t value) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetInt64Pref(path, value);
-  }
-}
-
-uint64_t BatAdsClientMojoBridge::GetUint64Pref(const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
-    return 0;
-  }
-
-  uint64_t value = 0;
-  bat_ads_client_->GetUint64Pref(path, &value);
-  return value;
-}
-
-void BatAdsClientMojoBridge::SetUint64Pref(const std::string& path,
-                                           const uint64_t value) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetUint64Pref(path, value);
-  }
-}
-
-base::Time BatAdsClientMojoBridge::GetTimePref(const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
-    return {};
-  }
-
-  base::Time value;
-  bat_ads_client_->GetTimePref(path, &value);
-  return value;
-}
-
-void BatAdsClientMojoBridge::SetTimePref(const std::string& path,
-                                         const base::Time value) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetTimePref(path, value);
-  }
-}
-
-absl::optional<base::Value::Dict> BatAdsClientMojoBridge::GetDictPref(
+absl::optional<base::Value> BatAdsClientMojoBridge::GetProfilePref(
     const std::string& path) const {
   if (!bat_ads_client_.is_bound()) {
     return absl::nullopt;
   }
 
-  absl::optional<base::Value::Dict> value;
-  bat_ads_client_->GetDictPref(path, &value);
+  absl::optional<base::Value> value;
+  bat_ads_client_->GetProfilePref(path, &value);
   return value;
 }
 
-void BatAdsClientMojoBridge::SetDictPref(const std::string& path,
-                                         base::Value::Dict value) {
+void BatAdsClientMojoBridge::SetProfilePref(const std::string& path,
+                                            base::Value value) {
   if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetDictPref(path, std::move(value));
+    bat_ads_client_->SetProfilePref(path, std::move(value));
   }
 }
 
-absl::optional<base::Value::List> BatAdsClientMojoBridge::GetListPref(
-    const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
-    return absl::nullopt;
-  }
-
-  absl::optional<base::Value::List> value;
-  bat_ads_client_->GetListPref(path, &value);
-  return value;
-}
-
-void BatAdsClientMojoBridge::SetListPref(const std::string& path,
-                                         base::Value::List value) {
+void BatAdsClientMojoBridge::ClearProfilePref(const std::string& path) {
   if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetListPref(path, std::move(value));
+    bat_ads_client_->ClearProfilePref(path);
   }
 }
 
-void BatAdsClientMojoBridge::ClearPref(const std::string& path) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ClearPref(path);
-  }
-}
-
-bool BatAdsClientMojoBridge::HasPrefPath(const std::string& path) const {
+bool BatAdsClientMojoBridge::HasProfilePrefPath(const std::string& path) const {
   if (!bat_ads_client_.is_bound()) {
     return false;
   }
 
   bool value = false;
-  bat_ads_client_->HasPrefPath(path, &value);
+  bat_ads_client_->HasProfilePrefPath(path, &value);
   return value;
 }
 
@@ -480,6 +342,23 @@ void BatAdsClientMojoBridge::SetLocalStatePref(const std::string& path,
   if (bat_ads_client_.is_bound()) {
     bat_ads_client_->SetLocalStatePref(path, std::move(value));
   }
+}
+
+void BatAdsClientMojoBridge::ClearLocalStatePref(const std::string& path) {
+  if (bat_ads_client_.is_bound()) {
+    bat_ads_client_->ClearLocalStatePref(path);
+  }
+}
+
+bool BatAdsClientMojoBridge::HasLocalStatePrefPath(
+    const std::string& path) const {
+  if (!bat_ads_client_.is_bound()) {
+    return false;
+  }
+
+  bool value = false;
+  bat_ads_client_->HasLocalStatePrefPath(path, &value);
+  return value;
 }
 
 }  // namespace bat_ads

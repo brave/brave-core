@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_util.h"
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -21,8 +22,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUtilTest, SetNextTokenRedemptionAt) {
   SetNextTokenRedemptionAt(DistantFuture());
 
   // Act & Assert
-  EXPECT_FALSE(
-      ads_client_mock_.GetTimePref(prefs::kNextTokenRedemptionAt).is_null());
+  EXPECT_FALSE(GetProfileTimePref(prefs::kNextTokenRedemptionAt).is_null());
 }
 
 TEST_F(BraveAdsRedeemPaymentTokensUtilTest, ScheduleNextTokenRedemptionAt) {

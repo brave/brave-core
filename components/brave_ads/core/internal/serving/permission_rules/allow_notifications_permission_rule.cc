@@ -5,14 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/allow_notifications_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 
 namespace brave_ads {
 
 namespace {
 
 bool DoesRespectCap() {
-  return AdsClientHelper::GetInstance()->CanShowNotificationAds();
+  return CanShowNotificationAds();
 }
 
 }  // namespace

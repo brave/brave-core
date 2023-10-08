@@ -9,7 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/instance_id.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_event_info.h"
@@ -29,7 +29,7 @@ void RebuildAdEventCache() {
 
         const std::string& id = GetInstanceId();
 
-        AdsClientHelper::GetInstance()->ResetAdEventCacheForInstanceId(id);
+        ResetAdEventCacheForInstanceId(id);
 
         for (const auto& ad_event : ad_events) {
           if (ad_event.IsValid()) {
@@ -40,21 +40,19 @@ void RebuildAdEventCache() {
 }
 
 void CacheAdEvent(const AdEventInfo& ad_event) {
-  AdsClientHelper::GetInstance()->CacheAdEventForInstanceId(
-      GetInstanceId(), ad_event.type.ToString(),
-      ad_event.confirmation_type.ToString(), ad_event.created_at);
+  CacheAdEventForInstanceId(GetInstanceId(), ad_event.type.ToString(),
+                            ad_event.confirmation_type.ToString(),
+                            ad_event.created_at);
 }
 
 std::vector<base::Time> GetCachedAdEvents(
     const AdType& ad_type,
     const ConfirmationType& confirmation_type) {
-  return AdsClientHelper::GetInstance()->GetCachedAdEvents(
-      ad_type.ToString(), confirmation_type.ToString());
+  return GetCachedAdEvents(ad_type.ToString(), confirmation_type.ToString());
 }
 
 void ResetAdEventCache() {
-  AdsClientHelper::GetInstance()->ResetAdEventCacheForInstanceId(
-      GetInstanceId());
+  ResetAdEventCacheForInstanceId(GetInstanceId());
 }
 
 }  // namespace brave_ads
