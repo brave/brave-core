@@ -209,13 +209,10 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
 
 TEST_F(BraveAdsTextProcessingTest, EmptyModelTest) {
   // Arrange
-  // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success =
-      text_processing_pipeline.SetPipeline(base::Value::Dict());
 
-  // Assert
-  EXPECT_FALSE(success);
+  // Act & Assert
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline({}));
 }
 
 TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {

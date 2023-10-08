@@ -510,7 +510,7 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     is_initialized_ = true;
   }
 
-  std::move(callback).Run(/*success =*/true);
+  std::move(callback).Run(/*success=*/true);
 }
 
 bool ClientStateManager::FromJson(const std::string& json) {

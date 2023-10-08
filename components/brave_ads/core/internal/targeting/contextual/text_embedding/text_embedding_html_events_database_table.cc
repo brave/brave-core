@@ -99,7 +99,7 @@ void GetAllCallback(GetTextEmbeddingHtmlEventsCallback callback,
     text_embedding_html_events.push_back(text_embedding_html_event);
   }
 
-  std::move(callback).Run(/* success =*/true, text_embedding_html_events);
+  std::move(callback).Run(/* success=*/true, text_embedding_html_events);
 }
 
 void MigrateToV25(mojom::DBTransactionInfo* transaction) {

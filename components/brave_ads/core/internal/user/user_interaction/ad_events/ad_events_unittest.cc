@@ -47,7 +47,7 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
                      /*is_local=*/false));  // Happy 1st Birthday Rory!
 
   const base::TimeDelta three_months =
-      base::Days(/*march=*/31 + /*april=*/30 + /*may=*/31);
+      base::Days(/*march*/ 31 + /*april*/ 30 + /*may*/ 31);
   AdvanceClockBy(three_months);
 
   base::MockCallback<AdEventCallback> record_ad_event_callback;

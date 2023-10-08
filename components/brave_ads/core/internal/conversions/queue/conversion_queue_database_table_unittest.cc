@@ -149,7 +149,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
                                         /*should_use_random_uuids=*/true);
   const ConversionInfo conversion_1 = BuildConversion(
       BuildAdEvent(ad_1, ConfirmationType::kViewed,
-                   /*process_at=*/Now()),
+                   /*created_at=*/Now()),
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
   ConversionQueueItemInfo conversion_queue_item_1 =
