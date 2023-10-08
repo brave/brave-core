@@ -73,9 +73,9 @@ void Rewriter::SetFontSize(const std::string& font_size) {
   }
 }
 
-void Rewriter::SetContentStyle(const std::string& content_style) {
-  if (!content_style.empty()) {
-    rewriter_set_content_style(raw_, content_style.c_str());
+void Rewriter::SetColumnWidth(const std::string& column_width) {
+  if (!column_width.empty()) {
+    rewriter_set_column_width(raw_, column_width.c_str());
   }
 }
 

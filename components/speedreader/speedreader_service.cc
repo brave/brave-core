@@ -26,6 +26,7 @@ namespace speedreader {
 
 namespace {
 
+using mojom::ColumnWidth;
 using mojom::FontFamily;
 using mojom::FontSize;
 using mojom::PlaybackSpeed;
@@ -73,6 +74,8 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                 static_cast<int>(FontSize::k100));
   registry->RegisterIntegerPref(kSpeedreaderPrefFontFamily,
                                 static_cast<int>(FontFamily::kSans));
+  registry->RegisterIntegerPref(kSpeedreaderPrefColumnWidth,
+                                static_cast<int>(ColumnWidth::kNarrow));
   registry->RegisterStringPref(kSpeedreaderPrefTtsVoice, "");
   registry->RegisterIntegerPref(kSpeedreaderPrefTtsSpeed,
                                 static_cast<int>(PlaybackSpeed::k100));
@@ -179,6 +182,8 @@ void SpeedreaderService::SetAppearanceSettings(
                      static_cast<int>(appearance_settings.fontSize));
   prefs_->SetInteger(kSpeedreaderPrefFontFamily,
                      static_cast<int>(appearance_settings.fontFamily));
+  prefs_->SetInteger(kSpeedreaderPrefColumnWidth,
+                     static_cast<int>(appearance_settings.columnWidth));
 
   for (auto& o : observers_) {
     o.OnAppearanceSettingsChanged(appearance_settings);
@@ -194,6 +199,8 @@ mojom::AppearanceSettings SpeedreaderService::GetAppearanceSettings() const {
       static_cast<FontSize>(prefs_->GetInteger(kSpeedreaderPrefFontSize));
   appearance_settings.fontFamily =
       static_cast<FontFamily>(prefs_->GetInteger(kSpeedreaderPrefFontFamily));
+  appearance_settings.columnWidth =
+      static_cast<ColumnWidth>(prefs_->GetInteger(kSpeedreaderPrefColumnWidth));
 
   return appearance_settings;
 }
@@ -250,6 +257,16 @@ std::string SpeedreaderService::GetFontFamilyName() const {
     case FontFamily::kDyslexic:
       return "dyslexic";
   }
+}
+
+std::string SpeedreaderService::GetColumnWidth() const {
+  switch (GetAppearanceSettings().columnWidth) {
+    case ColumnWidth::kNarrow:
+      return "narrow";
+    case ColumnWidth::kWide:
+      return "wide";
+  }
+  return "narrow";
 }
 
 }  // namespace speedreader

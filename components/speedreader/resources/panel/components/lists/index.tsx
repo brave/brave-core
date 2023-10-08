@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import * as S from './style'
-import { FontFamily, FontSize, PlaybackSpeed, PlaybackState } from '../../api/browser'
+import { FontFamily, FontSize, PlaybackSpeed, PlaybackState, ColumnWidth } from '../../api/browser'
 import classnames from '$web-common/classnames'
 import { loadTimeData } from '$web-common/loadTimeData'
 import Icon from '@brave/leo/react/icon'
@@ -72,6 +72,21 @@ const fontStyleOptions = [
     family: FontFamily.kDyslexic,
     iconName: 'readermode-dislexyc',
     title: getLocale('braveReaderModeAppearanceFontDyslexic')
+  }
+]
+
+const columnWidthOptions = [
+  {
+    id: 'column-width-narrow',
+    columnWidth: ColumnWidth.kNarrow,
+    iconName: 'readermode-column-default',
+    title: getLocale('braveReaderModeAppearanceColumnWidthNarrow')
+  },
+  {
+    id: 'column-width-wide',
+    columnWidth: ColumnWidth.kWide,
+    iconName: 'readermode-column-wide',
+    title: getLocale('braveReaderModeAppearanceColumnWidthWide')
   }
 ]
 
@@ -168,6 +183,35 @@ export function FontStyleList(props: FontStyleListProps) {
             isSelected={props.activeFontFamily === entry.family}
             inGroup={true}
             onClick={handleClick.bind(this, entry.family)}
+          >
+            <Icon name={entry.iconName} />
+          </ControlButton>
+        )
+      })}
+    </ListBox>
+  )
+}
+
+interface ColumnWidthListProps {
+  columnWidth: ColumnWidth
+  onClick?: Function
+}
+
+export function ColumnWidthList(props: ColumnWidthListProps) {
+  const handleClick = (columnWidth: ColumnWidth) => {
+    props.onClick?.(columnWidth)
+  }
+  return (
+    <ListBox>
+      {columnWidthOptions.map(entry => {
+        return (
+          <ControlButton
+            id={entry?.id}
+            key={entry.columnWidth}
+            title={entry.title}
+            isSelected={props.columnWidth === entry.columnWidth}
+            inGroup={true}
+            onClick={handleClick.bind(this, entry.columnWidth)}
           >
             <Icon name={entry.iconName} />
           </ControlButton>

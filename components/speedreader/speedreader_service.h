@@ -82,6 +82,7 @@ class SpeedreaderService : public KeyedService {
   std::string GetThemeName() const;
   std::string GetFontSizeName() const;
   std::string GetFontFamilyName() const;
+  std::string GetColumnWidth() const;
 
   SpeedreaderService(const SpeedreaderService&) = delete;
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;

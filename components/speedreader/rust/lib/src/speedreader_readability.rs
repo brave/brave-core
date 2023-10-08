@@ -19,7 +19,7 @@ where
     theme: Option<String>,
     font_family: Option<String>,
     font_size: Option<String>,
-    content_style: Option<String>,
+    column_width: Option<String>,
     parser: Option<Parser<Sink>>,
     url: Url,
     output_sink: O,
@@ -42,8 +42,8 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
         self.font_size = Some(String::from(size));
     }
 
-    fn set_content_style(&mut self, style: &str) {
-        self.content_style = Some(String::from(style));
+    fn set_column_width(&mut self, width: &str) {
+        self.column_width = Some(String::from(width));
     }
 
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError> {
@@ -74,7 +74,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
                         self.theme.clone(),
                         self.font_family.clone(),
                         self.font_size.clone(),
-                        self.content_style.clone(),
+                        self.column_width.clone(),
                         &HashMap::new(),
                     )?;
                     self.output_sink.handle_chunk(extracted.content.as_bytes());
@@ -104,7 +104,7 @@ impl<O: OutputSink> SpeedReaderReadability<O> {
                 theme: None,
                 font_family: None,
                 font_size: None,
-                content_style: None,                
+                column_width: None,
                 parser: Some(parser),
                 url,
                 output_sink,

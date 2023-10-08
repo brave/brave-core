@@ -526,7 +526,7 @@ iframe {
 @media only screen and (min-width: 780px) {
   #article {
     margin: 0 auto;
-    max-width: 590px;
+    max-width: var(--column-width);
   }
 }
 
@@ -565,6 +565,7 @@ html[data-theme='light'] {
   --summary-text-color: #6B7084;
   --quote-text-color: #6B7084;
   --vertical-delemiter-color: #E2E3E7;
+  --column-width: 590px;
 }
 
 html[data-theme='sepia'] {
@@ -651,6 +652,14 @@ html[data-font-family='dyslexic'] {
 
 html[data-content-style='text-only'] img {
   display: none !important;
+}
+
+html[data-column-width='narrow'] {
+  --column-width: 590px;
+}
+
+html[data-column-width='wide'] {
+  --column-width: 1000px;
 }
 
 .tts-highlighted,

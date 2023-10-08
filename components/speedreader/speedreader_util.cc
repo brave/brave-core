@@ -188,10 +188,11 @@ void DistillPage(const GURL& url,
     std::move(callback).Run(r.result, r.body, r.transformed);
   };
 
-  auto rewriter = rewriter_service->MakeRewriter(
-      url, speedreader_service->GetThemeName(),
-      speedreader_service->GetFontFamilyName(),
-      speedreader_service->GetFontSizeName(), "");
+  auto rewriter =
+      rewriter_service->MakeRewriter(url, speedreader_service->GetThemeName(),
+                                     speedreader_service->GetFontFamilyName(),
+                                     speedreader_service->GetFontSizeName(),
+                                     speedreader_service->GetColumnWidth());
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},
