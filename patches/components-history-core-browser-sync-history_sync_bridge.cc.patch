@@ -1,0 +1,15 @@
+diff --git a/components/history/core/browser/sync/history_sync_bridge.cc b/components/history/core/browser/sync/history_sync_bridge.cc
+index fa9299a9e658e6f79a311a4d578ed9dfa72365e3..138992c7548f23180da9849a75eafb06dfc9991e 100644
+--- a/components/history/core/browser/sync/history_sync_bridge.cc
++++ b/components/history/core/browser/sync/history_sync_bridge.cc
+@@ -445,9 +445,7 @@ std::unique_ptr<syncer::EntityData> MakeEntityData(
+ 
+   // The entity name is used for debugging purposes; choose something that's a
+   // decent tradeoff between "unique" and "readable".
+-  entity_data->name =
+-      base::StringPrintf("%s-%s", history->originator_cache_guid().c_str(),
+-                         redirect_visits.back().url_row.url().spec().c_str());
++  entity_data->name = history->originator_cache_guid();
+ 
+   return entity_data;
+ }
