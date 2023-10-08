@@ -108,7 +108,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
        DoNotParseAndUnblindInvalidSignedTokens) {
   // Arrange
   base::Value::Dict dict = BuildUrlResponseBody();
-  dict.Set("signedTokens", base::Value::List().Append(/*invalid=*/0));
+  dict.Set("signedTokens", base::Value::List().Append(/*invalid*/ 0));
 
   // Act
   const auto result = ParseAndUnblindSignedTokens(

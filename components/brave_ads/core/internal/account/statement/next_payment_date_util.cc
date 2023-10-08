@@ -73,9 +73,8 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
   next_payment_date_exploded.millisecond = 999;
 
   base::Time next_payment_date;
-  const bool success = base::Time::FromUTCExploded(next_payment_date_exploded,
-                                                   &next_payment_date);
-  CHECK(success);
+  CHECK(base::Time::FromUTCExploded(next_payment_date_exploded,
+                                    &next_payment_date));
 
   return next_payment_date;
 }
