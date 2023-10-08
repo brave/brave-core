@@ -219,10 +219,11 @@ void BatAdsClientMojoBridge::RecordP2AEvents(
   }
 }
 
-void BatAdsClientMojoBridge::AddTrainingSample(
+void BatAdsClientMojoBridge::AddFederatedLearningPredictorTrainingSample(
     std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
   if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->AddTrainingSample(std::move(training_sample));
+    bat_ads_client_->AddFederatedLearningPredictorTrainingSample(
+        std::move(training_sample));
   }
 }
 

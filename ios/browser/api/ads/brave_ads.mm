@@ -2052,7 +2052,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   // Not needed on iOS
 }
 
-- (void)addTrainingSample:
+- (void)addFederatedLearningPredictorTrainingSample:
     (std::vector<brave_federated::mojom::CovariateInfoPtr>)training_sample {
   // Not needed on iOS
 }

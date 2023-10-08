@@ -105,7 +105,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, RecordP2AEvents, (const std::vector<std::string>& events));
 
   MOCK_METHOD(void,
-              AddTrainingSample,
+              AddFederatedLearningPredictorTrainingSample,
               (const std::vector<brave_federated::mojom::CovariateInfoPtr>
                    training_sample));
 

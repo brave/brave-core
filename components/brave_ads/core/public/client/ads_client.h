@@ -137,8 +137,8 @@ class ADS_EXPORT AdsClient {
   // Record P2A (Private Advertising Analytics) |events|.
   virtual void RecordP2AEvents(const std::vector<std::string>& events) = 0;
 
-  // Add |training_sample|.
-  virtual void AddTrainingSample(
+  // Add federated learning |training_sample|.
+  virtual void AddFederatedLearningPredictorTrainingSample(
       std::vector<brave_federated::mojom::CovariateInfoPtr>
           training_sample) = 0;
 
