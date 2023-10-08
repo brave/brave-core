@@ -91,7 +91,7 @@ absl::optional<PublicKeyMap> ParsePublicKeys(const base::Value::Dict& dict) {
     if (!associated_value) {
       return absl::nullopt;
     }
-    double associated_value_as_double = 0.0;
+    double associated_value_as_double;
     base::StringToDouble(*associated_value, &associated_value_as_double);
 
     public_keys.insert({*public_key, associated_value_as_double});
