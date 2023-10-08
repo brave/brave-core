@@ -59,7 +59,7 @@ base::Time CalculateBeginningOfNextMonth(const base::Time time) {
 
   const base::Time midnight = GetLocalMidnight(time);
   const base::Time shifted_midnight =
-      midnight + base::Days(GetLastDayOfMonth(exploded.year, exploded.month) -
+      midnight + base::Days(DaysPerMonth(exploded.year, exploded.month) -
                             exploded.day_of_month + 1);
   return CorrectLocalMidnightForDaylightSaving(shifted_midnight,
                                                /*expected_day_of_month=*/1);
@@ -128,7 +128,7 @@ base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time time) {
   exploded.day_of_month = 1;
 
   exploded.day_of_week =
-      GetDayOfWeek(exploded.year, exploded.month, exploded.day_of_month);
+      DayOfWeek(exploded.year, exploded.month, exploded.day_of_month);
 
   exploded.hour = 0;
   exploded.minute = 0;
@@ -155,10 +155,10 @@ base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time time) {
     exploded.year--;
   }
 
-  exploded.day_of_month = GetLastDayOfMonth(exploded.year, exploded.month);
+  exploded.day_of_month = DaysPerMonth(exploded.year, exploded.month);
 
   exploded.day_of_week =
-      GetDayOfWeek(exploded.year, exploded.month, exploded.day_of_month);
+      DayOfWeek(exploded.year, exploded.month, exploded.day_of_month);
 
   exploded.hour = 23;
   exploded.minute = 59;
@@ -182,7 +182,7 @@ base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time time) {
   exploded.day_of_month = 1;
 
   exploded.day_of_week =
-      GetDayOfWeek(exploded.year, exploded.month, exploded.day_of_month);
+      DayOfWeek(exploded.year, exploded.month, exploded.day_of_month);
 
   exploded.hour = 0;
   exploded.minute = 0;
@@ -203,10 +203,10 @@ base::Time AdjustLocalTimeToEndOfMonth(const base::Time time) {
   time.LocalExplode(&exploded);
   CHECK(exploded.HasValidValues());
 
-  exploded.day_of_month = GetLastDayOfMonth(exploded.year, exploded.month);
+  exploded.day_of_month = DaysPerMonth(exploded.year, exploded.month);
 
   exploded.day_of_week =
-      GetDayOfWeek(exploded.year, exploded.month, exploded.day_of_month);
+      DayOfWeek(exploded.year, exploded.month, exploded.day_of_month);
 
   exploded.hour = 23;
   exploded.minute = 59;

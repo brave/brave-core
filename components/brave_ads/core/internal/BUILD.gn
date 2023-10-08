@@ -318,8 +318,6 @@ static_library("internal") {
     "client/ads_client_notifier_queue.h",
     "client/ads_client_util.cc",
     "client/ads_client_util.h",
-    "common/calendar/calendar_leap_year_util.cc",
-    "common/calendar/calendar_leap_year_util.h",
     "common/calendar/calendar_util.cc",
     "common/calendar/calendar_util.h",
     "common/challenge_bypass_ristretto/batch_dleq_proof.cc",
