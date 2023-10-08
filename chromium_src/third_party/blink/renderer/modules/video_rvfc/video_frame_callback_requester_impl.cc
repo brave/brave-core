@@ -6,17 +6,15 @@
 #include "third_party/blink/renderer/modules/video_rvfc/video_frame_callback_requester_impl.h"
 
 #include "third_party/abseil-cpp/absl/container/internal/layout.h"
-
-#define kCoarseResolution kCoarseResolution [[maybe_unused]]
+#include "third_party/blink/renderer/core/timing/time_clamper.h"
 
 #define FloorToMultiple(X) \
   FloorToMultiple(         \
       base::Microseconds(TimeClamper::CoarseResolutionMicroseconds()))
 
-#define static_assert(...) static_assert(true)
+#define kCoarseResolutionMicroseconds kCoarseResolutionMicroseconds_ChromiumImpl
 
 #include "src/third_party/blink/renderer/modules/video_rvfc/video_frame_callback_requester_impl.cc"
 
-#undef kCoarseResolution
 #undef FloorToMultiple
-#undef static_assert
+#undef kCoarseResolutionMicroseconds
