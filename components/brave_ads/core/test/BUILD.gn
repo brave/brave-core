@@ -211,6 +211,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/search_engine/search_engine_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/strings/string_conversions_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/strings/string_html_parser_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/common/strings/string_strip_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/subdivision/subdivision_observer_mock.cc",
     "//brave/components/brave_ads/core/internal/common/subdivision/subdivision_observer_mock.h",
     "//brave/components/brave_ads/core/internal/common/subdivision/subdivision_unittest.cc",
