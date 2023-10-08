@@ -21,7 +21,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_value_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
