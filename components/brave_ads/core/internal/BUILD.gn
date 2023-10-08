@@ -171,7 +171,6 @@ static_library("internal") {
     "account/user_data/fixed/studies_user_data.h",
     "account/user_data/fixed/summary_user_data.cc",
     "account/user_data/fixed/summary_user_data.h",
-    "account/user_data/fixed/summary_user_data_alias.h",
     "account/user_data/fixed/summary_user_data_util.cc",
     "account/user_data/fixed/summary_user_data_util.h",
     "account/user_data/fixed/top_segment_user_data.cc",
