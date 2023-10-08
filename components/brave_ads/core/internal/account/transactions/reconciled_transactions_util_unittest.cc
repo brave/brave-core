@@ -18,7 +18,8 @@ class BraveAdsReconciledTransactionsUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsReconciledTransactionsUtilTest,
        DidReconcileTransactionsThisMonth) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("Wed, 16 Sep 2015 23:01",
+                                /*is_local=*/true));  // Hello Millie!!!
 
   TransactionList transactions;
   const TransactionInfo transaction = BuildTransactionForTesting(
@@ -120,7 +121,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 TEST_F(BraveAdsReconciledTransactionsUtilTest,
        HasTransactionNotReconciledForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("Sat, 20 Aug 2016 02:52",
+                                /*is_local=*/true));  // Hello Elica!!!
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
       /*value=*/0.01, ConfirmationType::kViewed,

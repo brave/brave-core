@@ -41,7 +41,7 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClockTo(TimeFromString("31 August 2019", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("31 August 2019", /*is_local=*/true));  //
 
   const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
       /*value=*/0.01, ConfirmationType::kViewed,
