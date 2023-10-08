@@ -46,7 +46,7 @@ void FireEventCallback(TriggerAdEventCallback callback,
 
 void MaybeCloseAllNotifications() {
   if (!UserHasOptedInToNotificationAds()) {
-    NotificationAdManager::GetInstance().CloseAll();
+    NotificationAdManager::GetInstance().RemoveAll(/*should_close=*/true);
   }
 }
 
@@ -184,7 +184,7 @@ void NotificationAdHandler::OnDidServeNotificationAd(
               << "  body: " << ad.body << "\n"
               << "  targetUrl: " << ad.target_url);
 
-  ShowNotificationAd(ad);
+  NotificationAdManager::GetInstance().Add(ad);
 
   serving_.MaybeServeAdAtNextRegularInterval();
 }
@@ -218,7 +218,8 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  CloseNotificationAd(ad.placement_id);
+  NotificationAdManager::GetInstance().Remove(ad.placement_id,
+                                              /*should_close=*/true);
 
   transfer_->SetLastClickedAd(ad);
 
@@ -241,7 +242,8 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  DismissNotificationAd(ad.placement_id);
+  NotificationAdManager::GetInstance().Remove(ad.placement_id,
+                                              /*should_close=*/false);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kDismissed);
 
@@ -262,7 +264,9 @@ void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  NotificationAdTimedOut(ad.placement_id);
+  NotificationAdManager::GetInstance().Remove(ad.placement_id,
+                                              /*should_close=*/false);
+
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
