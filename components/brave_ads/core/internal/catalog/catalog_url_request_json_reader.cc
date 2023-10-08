@@ -10,7 +10,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/json/json_helper.h"
@@ -26,8 +26,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   document.Parse(json.c_str());
 
   const std::string json_schema =
-      AdsClientHelper::GetInstance()->LoadDataResource(
-          data::resource::kCatalogJsonSchemaFilename);
+      LoadDataResource(data::resource::kCatalogJsonSchemaFilename);
 
   if (!helper::json::Validate(&document, json_schema)) {
     BLOG(1, helper::json::GetLastError(&document));

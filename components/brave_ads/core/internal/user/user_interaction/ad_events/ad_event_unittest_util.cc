@@ -12,7 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/instance_id.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -62,8 +62,8 @@ void RecordAdEventsForTesting(const AdType& type,
   const std::string confirmation_type_as_string = confirmation_type.ToString();
 
   for (int i = 0; i < count; ++i) {
-    AdsClientHelper::GetInstance()->CacheAdEventForInstanceId(
-        id, ad_type_as_string, confirmation_type_as_string, Now());
+    CacheAdEventForInstanceId(id, ad_type_as_string,
+                              confirmation_type_as_string, Now());
   }
 }
 

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -28,12 +28,12 @@ bool DoesRequireResource() {
 
 EpsilonGreedyBanditResource::EpsilonGreedyBanditResource(Catalog& catalog)
     : catalog_(catalog) {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
   catalog_->AddObserver(this);
 }
 
 EpsilonGreedyBanditResource::~EpsilonGreedyBanditResource() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
   catalog_->RemoveObserver(this);
 }
 

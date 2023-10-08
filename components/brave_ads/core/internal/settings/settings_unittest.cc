@@ -7,7 +7,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
@@ -76,7 +76,7 @@ TEST_F(BraveAdsSettingsTest, MaximumNotificationAdsPerHour) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdFeature, {{"default_ads_per_hour", "2"}});
 
-  SetInt64PrefValue(prefs::kMaximumNotificationAdsPerHour, 3);
+  SetProfileInt64PrefValue(prefs::kMaximumNotificationAdsPerHour, 3);
 
   // Act & Assert
   EXPECT_EQ(3, GetMaximumNotificationAdsPerHour());

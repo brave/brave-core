@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -41,8 +41,7 @@ base::expected<void, std::string> MaybeAddPaymentToken(
 
 void LogPaymentTokenStatus() {
   const base::Time next_token_redemption_at =
-      AdsClientHelper::GetInstance()->GetTimePref(
-          prefs::kNextTokenRedemptionAt);
+      GetProfileTimePref(prefs::kNextTokenRedemptionAt);
 
   BLOG(1, "You have " << PaymentTokenCount()
                       << " payment tokens which will be redeemed "

@@ -352,43 +352,19 @@ class AdsServiceImpl : public AdsService,
       std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample)
       override;
 
-  void GetBooleanPref(const std::string& path,
-                      GetBooleanPrefCallback callback) override;
-  void GetIntegerPref(const std::string& path,
-                      GetIntegerPrefCallback callback) override;
-  void GetDoublePref(const std::string& path,
-                     GetDoublePrefCallback callback) override;
-  void GetStringPref(const std::string& path,
-                     GetStringPrefCallback callback) override;
-  void GetInt64Pref(const std::string& path,
-                    GetInt64PrefCallback callback) override;
-  void GetUint64Pref(const std::string& path,
-                     GetUint64PrefCallback callback) override;
-  void GetTimePref(const std::string& path,
-                   GetTimePrefCallback callback) override;
-  void GetDictPref(const std::string& path,
-                   GetDictPrefCallback callback) override;
-  void GetListPref(const std::string& path,
-                   GetListPrefCallback callback) override;
-  void HasPrefPath(const std::string& path,
-                   HasPrefPathCallback callback) override;
-
-  void SetBooleanPref(const std::string& path, bool value) override;
-  void SetIntegerPref(const std::string& path, int value) override;
-  void SetDoublePref(const std::string& path, double value) override;
-  void SetStringPref(const std::string& path,
-                     const std::string& value) override;
-  void SetInt64Pref(const std::string& path, int64_t value) override;
-  void SetUint64Pref(const std::string& path, uint64_t value) override;
-  void SetTimePref(const std::string& path, base::Time value) override;
-  void SetDictPref(const std::string& path, base::Value::Dict value) override;
-  void SetListPref(const std::string& path, base::Value::List value) override;
-
-  void ClearPref(const std::string& path) override;
+  void GetProfilePref(const std::string& path,
+                      GetProfilePrefCallback callback) override;
+  void SetProfilePref(const std::string& path, base::Value value) override;
+  void ClearProfilePref(const std::string& path) override;
+  void HasProfilePrefPath(const std::string& path,
+                          HasProfilePrefPathCallback callback) override;
 
   void GetLocalStatePref(const std::string& path,
                          GetLocalStatePrefCallback callback) override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
+  void ClearLocalStatePref(const std::string& path) override;
+  void HasLocalStatePrefPath(const std::string& path,
+                             HasLocalStatePrefPathCallback callback) override;
 
   void Log(const std::string& file,
            int32_t line,

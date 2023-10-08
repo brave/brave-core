@@ -15,16 +15,16 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_factory.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 
 namespace brave_ads {
 
 ConfirmationQueue::ConfirmationQueue() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 ConfirmationQueue::~ConfirmationQueue() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
   delegate_ = nullptr;
 }
 

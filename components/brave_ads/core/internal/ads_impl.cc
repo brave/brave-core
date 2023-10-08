@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
@@ -94,9 +94,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  NotificationAdManager::GetInstance().CloseAll();
-
-  NotificationAdManager::GetInstance().RemoveAll();
+  NotificationAdManager::GetInstance().RemoveAll(/*should_close=*/true);
 
   std::move(callback).Run(/*success=*/true);
 }
@@ -350,7 +348,7 @@ void AdsImpl::MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  ClientStateManager::GetInstance().Load(base::BindOnce(
+  ClientStateManager::GetInstance().LoadState(base::BindOnce(
       &AdsImpl::LoadClientStateCallback, weak_factory_.GetWeakPtr(),
       std::move(wallet), std::move(callback)));
 }
@@ -387,7 +385,7 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
     }
   }
 
-  ConfirmationStateManager::GetInstance().Load(
+  ConfirmationStateManager::GetInstance().LoadState(
       new_wallet, base::BindOnce(&AdsImpl::LoadConfirmationStateCallback,
                                  weak_factory_.GetWeakPtr(), std::move(wallet),
                                  std::move(callback)));
@@ -413,14 +411,14 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
     account_.SetWallet(wallet->payment_id, wallet->recovery_seed);
   }
 
-  AdsClientHelper::GetInstance()->NotifyPendingObservers();
+  NotifyPendingAdsClientObservers();
 
   std::move(callback).Run(/*success=*/true);
 }
 
 void AdsImpl::OnStatementOfAccountsDidChange() {
   // TODO(https://github.com/brave/brave-browser/issues/28726): Decouple.
-  AdsClientHelper::GetInstance()->UpdateAdRewards();
+  UpdateAdRewards();
 }
 
 }  // namespace brave_ads

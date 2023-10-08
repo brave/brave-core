@@ -17,8 +17,8 @@ bool DoesRespectCap() {
     return true;
   }
 
-  return BrowserManager::GetInstance().IsBrowserActive() &&
-         BrowserManager::GetInstance().IsBrowserInForeground();
+  return BrowserManager::GetInstance().IsActive() &&
+         BrowserManager::GetInstance().IsInForeground();
 }
 
 }  // namespace

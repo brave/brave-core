@@ -20,8 +20,8 @@ bool DoesRespectCap() {
     return true;
   }
 
-  if (BrowserManager::GetInstance().IsBrowserActive() &&
-      BrowserManager::GetInstance().IsBrowserInForeground()) {
+  if (BrowserManager::GetInstance().IsActive() &&
+      BrowserManager::GetInstance().IsInForeground()) {
     return true;
   }
 

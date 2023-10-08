@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/earnings_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
@@ -36,8 +36,7 @@ TransactionList FilterTransactionsForEstimatedEarnings(
 
 base::Time GetNextPaymentDate(const TransactionList& transactions) {
   const base::Time next_token_redemption_at =
-      AdsClientHelper::GetInstance()->GetTimePref(
-          prefs::kNextTokenRedemptionAt);
+      GetProfileTimePref(prefs::kNextTokenRedemptionAt);
 
   const base::Time next_payment_date =
       CalculateNextPaymentDate(next_token_redemption_at, transactions);

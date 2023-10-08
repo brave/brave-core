@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/version_info/version_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -26,14 +26,12 @@ bool WasBrowserUpgraded() {
   const std::string version_number = GetBrowserVersionNumber();
 
   const std::string last_version_number =
-      AdsClientHelper::GetInstance()->GetStringPref(
-          prefs::kBrowserVersionNumber);
+      GetProfileStringPref(prefs::kBrowserVersionNumber);
 
   was_upgraded = version_number != last_version_number;
 
   if (was_upgraded) {
-    AdsClientHelper::GetInstance()->SetStringPref(prefs::kBrowserVersionNumber,
-                                                  version_number);
+    SetProfileStringPref(prefs::kBrowserVersionNumber, version_number);
   }
 
   return *was_upgraded;

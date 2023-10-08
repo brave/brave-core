@@ -27,7 +27,7 @@ constexpr char kDimensions[] = "200x100";
 class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
+    UnitTestBase::SetUp(/*is_integration_test=*/true);
 
     NotifyTabDidChange(
         /*tab_id=*/1, /*redirect_chain=*/{GURL("brave://newtab")},

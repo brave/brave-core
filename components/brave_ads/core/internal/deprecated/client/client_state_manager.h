@@ -42,7 +42,7 @@ class ClientStateManager final {
 
   static ClientStateManager& GetInstance();
 
-  void Load(InitializeCallback callback);
+  void LoadState(InitializeCallback callback);
 
   const FilteredAdvertiserList& GetFilteredAdvertisers() const;
   const FilteredCategoryList& GetFilteredCategories() const;
@@ -89,7 +89,7 @@ class ClientStateManager final {
   GetTextClassificationProbabilitiesHistory() const;
 
  private:
-  void Save();
+  void SaveState();
 
   void LoadCallback(InitializeCallback callback,
                     const absl::optional<std::string>& json);

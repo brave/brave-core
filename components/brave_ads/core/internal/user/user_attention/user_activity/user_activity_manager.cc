@@ -9,7 +9,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -43,13 +43,13 @@ void LogEvent(const UserActivityEventType event_type) {
 }  // namespace
 
 UserActivityManager::UserActivityManager() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
   BrowserManager::GetInstance().AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 UserActivityManager::~UserActivityManager() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
   BrowserManager::GetInstance().RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }

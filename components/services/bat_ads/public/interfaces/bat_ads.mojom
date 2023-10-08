@@ -116,39 +116,18 @@ interface BatAdsClient {
       array<brave_federated.mojom.CovariateInfo> training_sample);
 
   [Sync]
-  GetBooleanPref(string path) => (bool value);
-  SetBooleanPref(string path, bool value);
+  GetProfilePref(string path) => (mojo_base.mojom.Value? value);
+  SetProfilePref(string path, mojo_base.mojom.Value value);
+  ClearProfilePref(string path);
   [Sync]
-  GetIntegerPref(string path) => (int32 value);
-  SetIntegerPref(string path, int32 value);
-  [Sync]
-  GetDoublePref(string path) => (double value);
-  SetDoublePref(string path, double value);
-  [Sync]
-  GetStringPref(string path) => (string value);
-  SetStringPref(string path, string value);
-  [Sync]
-  GetInt64Pref(string path) => (int64 value);
-  SetInt64Pref(string path, int64 value);
-  [Sync]
-  GetUint64Pref(string path) => (uint64 value);
-  SetUint64Pref(string path, uint64 value);
-  [Sync]
-  GetTimePref(string path) => (mojo_base.mojom.Time value);
-  SetTimePref(string path, mojo_base.mojom.Time value);
-  [Sync]
-  GetDictPref(string path) => (mojo_base.mojom.DictionaryValue? value);
-  SetDictPref(string path, mojo_base.mojom.DictionaryValue value);
-  [Sync]
-  GetListPref(string path) => (mojo_base.mojom.ListValue? value);
-  SetListPref(string path, mojo_base.mojom.ListValue value);
-  ClearPref(string path);
-  [Sync]
-  HasPrefPath(string path) => (bool value);
+  HasProfilePrefPath(string path) => (bool value);
 
   [Sync]
   GetLocalStatePref(string path) => (mojo_base.mojom.Value? value);
   SetLocalStatePref(string path, mojo_base.mojom.Value value);
+  ClearLocalStatePref(string path);
+  [Sync]
+  HasLocalStatePrefPath(string path) => (bool value);
 
   Log(string file, int32 line, int32 verbose_level, string message);
 };
