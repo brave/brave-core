@@ -34,7 +34,7 @@ absl::optional<TransactionInfo> ParseTransaction(
     return absl::nullopt;
   }
 
-  double created_at_as_double = 0.0;
+  double created_at_as_double;
   if (!base::StringToDouble(*created_at, &created_at_as_double)) {
     return absl::nullopt;
   }

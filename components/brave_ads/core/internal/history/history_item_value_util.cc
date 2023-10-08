@@ -57,7 +57,7 @@ HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
     history_item.created_at = base::ValueToTime(value).value_or(base::Time());
   } else if (const auto* const legacy_string_value =
                  dict.FindString(kLegacyCreatedAtKey)) {
-    double value_as_double = 0.0;
+    double value_as_double;
     if (base::StringToDouble(*legacy_string_value, &value_as_double)) {
       history_item.created_at = base::Time::FromDoubleT(value_as_double);
     }
