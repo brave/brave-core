@@ -21,13 +21,14 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
        BuildSystemTimestampUserDataForRewardsUser) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
+      TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"({"systemTimestamp":"2020-11-18T12:00:00.000Z"})"),
+                R"(
+                    {
+                      "systemTimestamp": "2020-11-18T12:00:00.000Z"
+                    })"),
             BuildSystemTimestampUserData());
 }
 
@@ -36,9 +37,7 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildSystemTimestampUserData().empty());
 }
 

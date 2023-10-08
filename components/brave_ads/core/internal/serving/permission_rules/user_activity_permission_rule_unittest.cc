@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/user_activity_permission_rule.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
@@ -22,17 +20,10 @@ class BraveAdsUserActivityPermissionRuleTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    base::FieldTrialParams params;
-    params["triggers"] = "0D=1.0;0E=1.0;08=1.0";
-    params["time_window"] = "1h";
-    params["threshold"] = "2.0";
-    std::vector<base::test::FeatureRefAndParams> enabled_features;
-    enabled_features.emplace_back(kUserActivityFeature, params);
-
-    const std::vector<base::test::FeatureRef> disabled_features;
-
-    scoped_feature_list_.InitWithFeaturesAndParameters(enabled_features,
-                                                       disabled_features);
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        kUserActivityFeature, {{"triggers", "0D=1.0;0E=1.0;08=1.0"},
+                               {"time_window", "1h"},
+                               {"threshold", "2.0"}});
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -43,14 +34,12 @@ class BraveAdsUserActivityPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
        ShouldAllowIfUserActivityScoreIsEqualToTheThreshold) {
   // Arrange
-
-  // Act
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -59,17 +48,13 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
        ShouldAllowIfUserActivityScoreIsGreaterThanTheThreshold) {
   // Arrange
-
-  // Act
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
   UserActivityManager::GetInstance().RecordEvent(
@@ -77,19 +62,17 @@ TEST_F(BraveAdsUserActivityPermissionRuleTest,
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsUserActivityPermissionRuleTest,
        ShouldNotAllowIfUserActivityScoreIsLessThanTheThreshold) {
   // Arrange
-
-  // Act
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

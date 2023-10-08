@@ -13,10 +13,13 @@ from typing import List, Optional
 
 import components.path_util as path_util
 
+# pylint: disable=import-error
+# pytype: disable=import-error
 with path_util.SysPath(path_util.GetTelemetryDir()):
   with path_util.SysPath(path_util.GetChromiumPerfDir()):
-    from core.perf_benchmark import \
-        PerfBenchmark  # pylint: disable=import-error
+    from core.perf_benchmark import PerfBenchmark
+# pylint: enable=import-error
+# pytype: enable=import-error
 
 
 class CommonOptions:

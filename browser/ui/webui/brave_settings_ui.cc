@@ -28,6 +28,7 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
@@ -156,7 +157,13 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   html_source->AddBoolean("isBraveVPNEnabled",
                           brave_vpn::IsBraveVPNEnabled(profile));
-#endif
+#if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  html_source->AddBoolean(
+      "isBraveVPNWireguardEnabledOnMac",
+      base::FeatureList::IsEnabled(
+          brave_vpn::features::kBraveVPNEnableWireguardForOSX));
+#endif  // BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   html_source->AddBoolean(
       "isSpeedreaderFeatureEnabled",

@@ -10,12 +10,14 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.ByteArrayStringUnion;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
+import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.brave_wallet.mojom.SignTransactionRequest;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -218,6 +220,17 @@ public class DappsModel implements KeyringServiceObserver {
         }
     }
 
+    public void notifySignMessageRequestProcessed(boolean isApproved, int id) {
+        notifySignMessageRequestProcessed(isApproved, id, null, null);
+    }
+    public void notifySignMessageRequestProcessed(
+            boolean isApproved, int id, ByteArrayStringUnion signature, String error) {
+        mBraveWalletService.notifySignMessageRequestProcessed(isApproved, id, signature, error);
+    }
+    public void getPendingSignMessageRequests(Callbacks.Callback1<SignMessageRequest[]> callback) {
+        mBraveWalletService.getPendingSignMessageRequests(callback::call);
+    }
+
     private void updateWalletBadgeVisibilityInternal() {
         if (mBraveWalletService == null || mJsonRpcService == null || mPendingTxHelper == null) {
             return;
@@ -286,7 +299,7 @@ public class DappsModel implements KeyringServiceObserver {
     public void keyringCreated(@KeyringId.EnumType int keyringId) {}
 
     @Override
-    public void keyringRestored(@KeyringId.EnumType int keyringId) {}
+    public void walletRestored() {}
 
     @Override
     public void keyringReset() {}

@@ -28,7 +28,7 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
 
   ~PurchaseIntentResource() override;
 
-  bool IsInitialized() const { return static_cast<bool>(purchase_intent_); }
+  bool IsInitialized() const { return !!purchase_intent_; }
 
   const absl::optional<PurchaseIntentInfo>& get() const {
     return purchase_intent_;
@@ -50,6 +50,7 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                           const std::string& id) override;
+  void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
   absl::optional<PurchaseIntentInfo> purchase_intent_;
 

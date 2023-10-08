@@ -36,27 +36,19 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   creative_ad.creative_instance_id = kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
-  const NotificationAdDismissedExclusionRule exclusion_rule(/*ad_events*/ {});
+  const NotificationAdDismissedExclusionRule exclusion_rule(/*ad_events=*/{});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedOnce) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -71,16 +63,14 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -88,16 +78,10 @@ TEST_F(
     BraveAdsDismissedExclusionRuleTest,
     ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedOnceForMultipleAdTypes) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -106,50 +90,42 @@ TEST_F(
   AdEventList ad_events;
 
   const AdInfo ad_1 = BuildAdForTesting(AdType::kNotificationAd,
-                                        /*should_use_random_uuids*/ true);
+                                        /*should_use_random_uuids=*/true);
   const AdEventInfo ad_event_1 =
       BuildAdEvent(ad_1, ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_1);
 
   const AdInfo ad_2 = BuildAdForTesting(AdType::kNewTabPageAd,
-                                        /*should_use_random_uuids*/ true);
+                                        /*should_use_random_uuids=*/true);
   const AdEventInfo ad_event_2 =
       BuildAdEvent(ad_2, ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_2);
 
   const AdInfo ad_3 = BuildAdForTesting(AdType::kPromotedContentAd,
-                                        /*should_use_random_uuids*/ true);
+                                        /*should_use_random_uuids=*/true);
   const AdEventInfo ad_event_3 =
       BuildAdEvent(ad_3, ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_3);
 
   const AdInfo ad_4 = BuildAdForTesting(AdType::kSearchResultAd,
-                                        /*should_use_random_uuids*/ true);
+                                        /*should_use_random_uuids=*/true);
   const AdEventInfo ad_event_4 =
       BuildAdEvent(ad_4, ConfirmationType::kDismissed, Now());
   ad_events.push_back(ad_event_4);
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdWithin2DaysIfDismissedThenClicked) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -163,32 +139,24 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdAfter2DaysIfDismissedThenClicked) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -202,7 +170,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -212,25 +180,17 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdWithin2DaysIfClickedThenDismissed) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -244,32 +204,24 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdAfter2DaysIfClickedThenDismissed) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -283,7 +235,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -293,25 +245,17 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdAfter2DaysIfClickedThenDismissedTwice) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -326,7 +270,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -335,25 +279,17 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 
   AdvanceClockBy(base::Days(2));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldExcludeWithSameCampaignIdWithin2DaysIfClickedThenDismissedTwice) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -368,32 +304,24 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithSameCampaignIdIfClickedThenDismissedTwiceWhenDisabled) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "0s";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "0s"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -408,31 +336,23 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
   }
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdWithin2Days) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "2d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = kCreativeInstanceId;
@@ -450,16 +370,14 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad_2, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 
@@ -482,7 +400,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   for (const auto& confirmation_type : confirmation_types) {
     const AdEventInfo ad_event = BuildAdEventForTesting(
         creative_ad_2, AdType::kNotificationAd, confirmation_type, Now(),
-        /*should_use_random_uuids*/ true);
+        /*should_use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -492,9 +410,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
   AdvanceClockBy(base::Days(2) -
                  (base::Minutes(5) * confirmation_types.size()));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 

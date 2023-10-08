@@ -23,47 +23,47 @@ constexpr int kTopInterestSegmentsMaxCount = 3;
 
 SegmentList GetTopChildSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model, kTopSegmentsMaxCount,
-                        /*parent_only*/ false);
+                        /*parent_only=*/false);
 }
 
 SegmentList GetTopParentSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model, kTopSegmentsMaxCount,
-                        /*parent_only*/ true);
+                        /*parent_only=*/true);
 }
 
 SegmentList GetTopChildIntentSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.intent.segments, kTopIntentSegmentsMaxCount,
-                        /*parent_only*/ false);
+                        /*parent_only=*/false);
 }
 
 SegmentList GetTopParentIntentSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.intent.segments, kTopIntentSegmentsMaxCount,
-                        /*parent_only*/ true);
+                        /*parent_only=*/true);
 }
 
 SegmentList GetTopChildLatentInterestSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.latent_interest.segments,
                         kTopLatentInterestSegmentsMaxCount,
-                        /*parent_only*/ false);
+                        /*parent_only=*/false);
 }
 
 SegmentList GetTopParentLatentInterestSegments(
     const UserModelInfo& user_model) {
   return GetTopSegments(user_model.latent_interest.segments,
                         kTopLatentInterestSegmentsMaxCount,
-                        /*parent_only*/ true);
+                        /*parent_only=*/true);
 }
 
 SegmentList GetTopChildInterestSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.interest.segments,
                         kTopInterestSegmentsMaxCount,
-                        /*parent_only*/ false);
+                        /*parent_only=*/false);
 }
 
 SegmentList GetTopParentInterestSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.interest.segments,
                         kTopInterestSegmentsMaxCount,
-                        /*parent_only*/ true);
+                        /*parent_only=*/true);
 }
 
 }  // namespace brave_ads

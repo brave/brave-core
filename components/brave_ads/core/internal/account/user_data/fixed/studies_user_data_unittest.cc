@@ -32,13 +32,23 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForRewardsUser) {
 
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act
-
-  // Assert
-  EXPECT_EQ(
-      base::test::ParseJsonDict(
-          R"({"studies":[{"group":"GroupB","name":"BraveAds.BarStudy"},{"group":"GroupA","name":"BraveAds.FooStudy"}]})"),
-      BuildStudiesUserData());
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "studies": [
+                        {
+                          "group": "GroupB",
+                          "name": "BraveAds.BarStudy"
+                        },
+                        {
+                          "group": "GroupA",
+                          "name": "BraveAds.FooStudy"
+                        }
+                      ]
+                    }
+                )"),
+            BuildStudiesUserData());
 }
 
 TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
@@ -59,19 +69,17 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
 
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildStudiesUserData().empty());
 }
 
 TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"studies":[]})"),
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "studies": []
+                    })"),
             BuildStudiesUserData());
 }
 

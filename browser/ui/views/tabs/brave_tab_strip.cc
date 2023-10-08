@@ -10,6 +10,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
@@ -37,10 +38,20 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
+#include "ui/gfx/canvas.h"
 #include "ui/views/layout/flex_layout.h"
 
+using tabs::features::HorizontalTabsUpdateEnabled;
+
 BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
-    : TabStrip(std::move(controller)) {}
+    : TabStrip(std::move(controller)) {
+  if (HorizontalTabsUpdateEnabled()) {
+    // In order for active tab shadow effects to be applied consistently across
+    // platforms, an ancestor of the active tab and shadow need to be painted to
+    // a layer.
+    SetPaintToLayer();
+  }
+}
 
 BraveTabStrip::~BraveTabStrip() = default;
 
@@ -80,6 +91,12 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
     return false;
   }
 
+  if (HorizontalTabsUpdateEnabled()) {
+    // We never automatically draw strokes around tabs. For pinned tabs, we draw
+    // the stroke when generating the tab drawing path.
+    return false;
+  }
+
   if (!TabStrip::ShouldDrawStrokes()) {
     return false;
   }
@@ -102,15 +119,6 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   const float contrast_ratio =
       color_utils::GetContrastRatio(background_color, frame_color);
   return contrast_ratio < kBraveMinimumContrastRatioForOutlines;
-}
-
-int BraveTabStrip::GetStrokeThickness() const {
-  if (ShouldShowVerticalTabs()) {
-    // Bypass checking ShouldDrawStrokes().
-    return 1;
-  }
-
-  return TabStrip::GetStrokeThickness();
 }
 
 void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
@@ -162,6 +170,8 @@ void BraveTabStrip::MaybeStartDrag(
 
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
+
+  UpdateTabStripMargins();
 
   if (BrowserView::GetBrowserViewForBrowser(GetBrowser())) {
     UpdateTabContainer();
@@ -375,6 +385,29 @@ void BraveTabStrip::UpdateTabContainer() {
   }
 }
 
+void BraveTabStrip::UpdateTabStripMargins() {
+  if (!HorizontalTabsUpdateEnabled()) {
+    return;
+  }
+
+  gfx::Insets margins;
+
+  if (!ShouldShowVerticalTabs()) {
+    // There should be a medium size gap between the left edge of the tabstrip
+    // and the visual left edge of the first tab. Set a left margin that takes
+    // into account the visual tab inset.
+    margins.set_left(brave_tabs::kHorizontalTabStripLeftMargin -
+                     brave_tabs::kHorizontalTabInset);
+    DCHECK_GE(margins.left(), 0);
+
+    // Set a top margin to match the space under tabs (where the group underline
+    // is rendered), so that everything remains centered.
+    margins.set_top(brave_tabs::kHorizontalTabStripVerticalSpacing);
+  }
+
+  SetProperty(views::kMarginsKey, margins);
+}
+
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
 }
@@ -395,6 +428,18 @@ void BraveTabStrip::Layout() {
   }
 
   TabStrip::Layout();
+}
+
+void BraveTabStrip::OnPaintBackground(gfx::Canvas* canvas) {
+  // Unlike upstream, we are painting this view to an opaque layer in order to
+  // support layer-based shadows under the active tab. Paint a background so
+  // that all pixels are painted appropriately.
+  ui::ColorId color_id = ShouldShowVerticalTabs() ? kColorToolbar
+                         : GetWidget()->ShouldPaintAsActive()
+                             ? kColorTabBackgroundInactiveFrameActive
+                             : kColorTabBackgroundInactiveFrameInactive;
+
+  canvas->DrawColor(GetColorProvider()->GetColor(color_id));
 }
 
 BEGIN_METADATA(BraveTabStrip, TabStrip)

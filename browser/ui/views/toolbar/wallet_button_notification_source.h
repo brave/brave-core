@@ -55,9 +55,9 @@ class WalletButtonNotificationSource
 
   // brave_wallet::KeyringServiceObserverBase
   void KeyringCreated(brave_wallet::mojom::KeyringId keyring_id) override;
-  void KeyringRestored(brave_wallet::mojom::KeyringId keyring_id) override;
+  void WalletRestored() override;
 
-  void OnKeyringReady(brave_wallet::mojom::KeyringId keyring_id);
+  void OnWalletReady();
   void CheckTxStatus();
   void OnTxStatusResolved(uint32_t count);
   void OnKeyringInfoResolved(brave_wallet::mojom::KeyringInfoPtr keyring_info);

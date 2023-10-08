@@ -15,22 +15,19 @@ namespace brave_ads {
 class BraveAdsEpsilonGreedyBanditResourceUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceUtilTest, SetEligibleSegments) {
-  const SegmentList expected_segments = {"foo", "bar"};
-
   // Arrange
+  const SegmentList segments = {"foo", "bar"};
 
   // Act
-  SetEpsilonGreedyBanditEligibleSegments(expected_segments);
+  SetEpsilonGreedyBanditEligibleSegments(segments);
 
   // Assert
-  EXPECT_EQ(expected_segments, GetEpsilonGreedyBanditEligibleSegments());
+  EXPECT_EQ(segments, GetEpsilonGreedyBanditEligibleSegments());
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditResourceUtilTest, SetNoEligibleSegments) {
-  // Arrange
-
   // Act
-  SetEpsilonGreedyBanditEligibleSegments(SegmentList{});
+  SetEpsilonGreedyBanditEligibleSegments({});
 
   // Assert
   const SegmentList segments = GetEpsilonGreedyBanditEligibleSegments();

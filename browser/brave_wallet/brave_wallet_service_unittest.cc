@@ -50,6 +50,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/storage_key/storage_key.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -686,27 +687,14 @@ class BraveWalletServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void CheckAddresses(const std::vector<std::string>& addresses,
-                      bool* valid_addresses) {
-    ASSERT_NE(valid_addresses, nullptr);
-
-    base::RunLoop run_loop;
-    keyring_service_->GetKeyringInfo(
-        brave_wallet::mojom::kDefaultKeyringId,
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          *valid_addresses = false;
-          if (keyring_info->account_infos.size() == addresses.size()) {
-            for (size_t i = 0; i < addresses.size(); ++i) {
-              *valid_addresses =
-                  (keyring_info->account_infos[i]->address == addresses[i]);
-              if (!*valid_addresses) {
-                break;
-              }
-            }
-          }
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+  std::vector<std::string> GetAddresses() {
+    std::vector<std::string> result;
+    for (auto& account_info : keyring_service_->GetAllAccountInfos()) {
+      if (account_info->account_id->coin == mojom::CoinType::ETH) {
+        result.push_back(account_info->address);
+      }
+    }
+    return result;
   }
 
   void AddSuggestToken(mojom::BlockchainTokenPtr suggested_token,
@@ -2333,9 +2321,7 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
 
   error_message.clear();
-  const char* valid_mnemonic =
-      "drip caution abandon festival order clown oven regular absorb evidence "
-      "crew where";
+  const char* valid_mnemonic = kMnemonicDripCaution;
   SimulateOnGetImportInfo(new_password, true,
                           ImportInfo({valid_mnemonic, false, 3}),
                           ImportError::kNone, &success, &error_message);
@@ -2349,13 +2335,11 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
     EXPECT_TRUE(is_valid_password);
     EXPECT_TRUE(is_valid_mnemonic);
 
-    bool is_valid_addresses = false;
     const std::vector<std::string> expected_addresses(
         {"0x084DCb94038af1715963F149079cE011C4B22961",
          "0xE60A2209372AF1049C4848B1bF0136258c35f268",
          "0xb41c52De621B42A3a186ae1e608073A546195C9C"});
-    CheckAddresses(expected_addresses, &is_valid_addresses);
-    EXPECT_TRUE(is_valid_addresses);
+    EXPECT_EQ(expected_addresses, GetAddresses());
   }
 
   const char* valid_legacy_mnemonic =
@@ -2377,14 +2361,12 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
     EXPECT_TRUE(is_valid_password);
     EXPECT_TRUE(is_valid_mnemonic);
 
-    bool is_valid_addresses = false;
     const std::vector<std::string> expected_addresses(
         {"0xea3C17c81E3baC3472d163b2c8b12ddDAa027874",
          "0xEc1BB5a4EC94dE9107222c103907CCC720fA3854",
          "0x8cb80Ef1d274ED215A4C08B31b77e5A813eD8Ea1",
          "0x3899D70A5D45368807E38Ef2c1EB5E4f07542e4f"});
-    CheckAddresses(expected_addresses, &is_valid_addresses);
-    EXPECT_TRUE(is_valid_addresses);
+    EXPECT_EQ(expected_addresses, GetAddresses());
   }
 
   const char* invalid_mnemonic = "not correct seed word";
@@ -3014,11 +2996,8 @@ TEST_F(BraveWalletServiceUnitTest, EnsureSelectedAccountForChain) {
   const char* new_password = "brave1234!";
   bool success;
   std::string error_message;
-  const char* valid_mnemonic =
-      "drip caution abandon festival order clown oven regular absorb evidence "
-      "crew where";
   SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({valid_mnemonic, false, 1}),
+                          ImportInfo({kMnemonicDripCaution, false, 1}),
                           ImportError::kNone, &success, &error_message);
 
   auto accounts = std::move(keyring_service_->GetAllAccountsSync()->accounts);

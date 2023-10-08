@@ -15,17 +15,17 @@ namespace brave_ads {
 namespace {
 
 constexpr char kSegmentsAsJson[] =
-    R"(["technology & computing","personal finance-banking","food & drink-restaurants"])";
-constexpr char kNoSegmentsAsJson[] = "[]";
+    R"(
+        [
+          "technology & computing",
+          "personal finance-banking",
+          "food & drink-restaurants"
+        ])";
 
 }  // namespace
 
 TEST(BraveAdsSegmentValueUtilTest, SegmentsToValue) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       base::test::ParseJsonList(kSegmentsAsJson),
       SegmentsToValue({"technology & computing", "personal finance-banking",
@@ -33,8 +33,6 @@ TEST(BraveAdsSegmentValueUtilTest, SegmentsToValue) {
 }
 
 TEST(BraveAdsSegmentValueUtilTest, NoSegmentsToValue) {
-  // Arrange
-
   // Act
   const base::Value::List list = SegmentsToValue({});
 
@@ -46,9 +44,7 @@ TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
   // Arrange
   const base::Value::List list = base::test::ParseJsonList(kSegmentsAsJson);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {"technology & computing",
                                          "personal finance-banking",
                                          "food & drink-restaurants"};
@@ -57,7 +53,7 @@ TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
 
 TEST(BraveAdsSegmentValueUtilTest, NoSegmentsFromValue) {
   // Arrange
-  const base::Value::List list = base::test::ParseJsonList(kNoSegmentsAsJson);
+  const base::Value::List list = base::test::ParseJsonList("[]");
 
   // Act
   const SegmentList segments = SegmentsFromValue(list);

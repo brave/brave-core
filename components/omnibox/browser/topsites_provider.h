@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_TOPSITES_PROVIDER_H_
 
 #include <string>
-#include <vector>
+#include <string_view>
 
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
@@ -31,15 +31,13 @@ class TopSitesProvider : public AutocompleteProvider {
 
   static const int kRelevance;
 
-  static std::vector<std::string> top_sites_;
-
   void AddMatch(const std::u16string& match_string,
                 const ACMatchClassifications& styles);
 
   static ACMatchClassifications StylesForSingleMatch(
-      const std::string &input_text,
-      const std::string &site,
-      const size_t &foundPos);
+      std::string_view input_text,
+      std::string_view site,
+      const size_t& foundPos);
 
   raw_ptr<AutocompleteProviderClient> client_ = nullptr;
 };

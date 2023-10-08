@@ -11,9 +11,9 @@
 
 namespace brave_ads {
 
-void NotificationAdEventTimedOut::FireEvent(const NotificationAdInfo& /*ad*/,
+void NotificationAdEventTimedOut::FireEvent(const NotificationAdInfo& /*ad=*/,
                                             ResultCallback callback) {
-  std::move(callback).Run(/*success*/ true);
+  std::move(callback).Run(/*success=*/true);
 }
 
 }  // namespace brave_ads

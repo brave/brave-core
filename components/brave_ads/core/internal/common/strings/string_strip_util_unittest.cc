@@ -12,21 +12,13 @@
 namespace brave_ads {
 
 TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const std::string stripped_text = StripNonAlphaCharacters("");
   EXPECT_TRUE(stripped_text.empty());
 }
 
 TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharactersFromWhitespace) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const std::string stripped_text = StripNonAlphaCharacters("   ");
   EXPECT_TRUE(stripped_text.empty());
 }
@@ -43,10 +35,7 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
       "わがよたれぞ　つねならむ うゐのおくやま　けふこえて あさきゆめみじ　"
       "ゑひもせず  ";  // The Quick Brown Fox... Pangrams
 
-  // Act
-  const std::string stripped_content = StripNonAlphaCharacters(content);
-
-  // Assert
+  // Act & Assert
   const std::string expected_stripped_content =
       "The quick brown fox jumps over the lazy dog Les naïfs ægithales hâtifs "
       "pondant à Noël où il gèle sont sûrs d être déçus en voyant leurs drôles "
@@ -54,28 +43,19 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaCharacters) {
       "Zwerg ξεσκεπάζω την ψυχοφθόρα βδελυγμία いろはにほへど ちりぬるを "
       "わがよたれぞ つねならむ うゐのおくやま けふこえて あさきゆめみじ "
       "ゑひもせず";
-
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaCharacters(content));
 }
 
 TEST(BraveAdsStringStripUtilTest,
      StripNonAlphaNumericCharactersFromEmptyContent) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const std::string stripped_text = StripNonAlphaNumericCharacters("");
   EXPECT_TRUE(stripped_text.empty());
 }
 
 TEST(BraveAdsStringStripUtilTest,
      StripNonAlphaNumericCharactersFromWhitespace) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   const std::string stripped_text = StripNonAlphaNumericCharacters("   ");
   EXPECT_TRUE(stripped_text.empty());
 }
@@ -92,10 +72,7 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
       "わがよたれぞ　つねならむ うゐのおくやま　けふこえて あさきゆめみじ　"
       "ゑひもせず  ";  // The Quick Brown Fox... Pangrams
 
-  // Act
-  const std::string stripped_content = StripNonAlphaNumericCharacters(content);
-
-  // Assert
+  // Act & Assert
   const std::string expected_stripped_content =
       "The quick brown fox jumps over the lazy dog 123 000 0 0123456789 0x7F "
       "x123x a1b2c3 Les naïfs ægithales hâtifs pondant à Noël où il gèle sont "
@@ -103,8 +80,7 @@ TEST(BraveAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
       "von Xylophonmusik quält jeden größeren Zwerg ξεσκεπάζω την ψυχοφθόρα "
       "βδελυγμία いろはにほへど ちりぬるを わがよたれぞ つねならむ "
       "うゐのおくやま けふこえて あさきゆめみじ ゑひもせず";
-
-  EXPECT_EQ(expected_stripped_content, stripped_content);
+  EXPECT_EQ(expected_stripped_content, StripNonAlphaNumericCharacters(content));
 }
 
 }  // namespace brave_ads

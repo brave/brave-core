@@ -38,7 +38,7 @@ void BuildTextEmbeddingHtmlEventsCallback(
 
 void BuildTextEmbeddingHtmlEvents(UserModelInfo user_model,
                                   BuildUserModelCallback callback) {
-  if (!IsTextEmbeddingFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kTextEmbeddingFeature)) {
     return std::move(callback).Run(user_model);
   }
 

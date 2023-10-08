@@ -18,11 +18,9 @@ class BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest : public UnitTestBase {
 
 TEST_F(BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest, IsOptedIn) {
   // Arrange
-
-  // Act
   const OptedInToNewTabPageAdsDiagnosticEntry diagnostic_entry;
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kOptedInToNewTabPageAds,
             diagnostic_entry.GetType());
   EXPECT_EQ("Opted-in to new tab page ads", diagnostic_entry.GetName());
@@ -31,12 +29,11 @@ TEST_F(BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest, IsOptedIn) {
 
 TEST_F(BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest, IsOptedOut) {
   // Arrange
-  DisableNewTabPageAdsForTesting();
+  OptOutOfNewTabPageAdsForTesting();
 
-  // Act
   const OptedInToNewTabPageAdsDiagnosticEntry diagnostic_entry;
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kOptedInToNewTabPageAds,
             diagnostic_entry.GetType());
   EXPECT_EQ("Opted-in to new tab page ads", diagnostic_entry.GetName());

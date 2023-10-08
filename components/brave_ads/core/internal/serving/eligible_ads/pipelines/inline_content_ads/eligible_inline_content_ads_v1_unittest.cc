@@ -6,16 +6,16 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_v1.h"
 
 #include <memory>
-#include <utility>
 
-#include "base/functional/bind.h"
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing_random_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
@@ -51,82 +51,60 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeInlineContentAds(creative_ads);
 
-  // Act
-  CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
-
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad_2}));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
           IntentUserModelInfo{}, LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"technology & computing-software"},
                                 TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100",
-      base::BindOnce(
-          [](const CreativeInlineContentAdList& expected_creative_ads,
-             const CreativeInlineContentAdList& creative_ads) {
-            // Assert
-            EXPECT_EQ(expected_creative_ads, creative_ads);
-          },
-          std::move(expected_creative_ads)));
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeInlineContentAds({creative_ad});
 
-  // Act
-  CreativeInlineContentAdList expected_creative_ads = {creative_ad};
-
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad}));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
           IntentUserModelInfo{}, LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"technology & computing-software"},
                                 TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100",
-      base::BindOnce(
-          [](const CreativeInlineContentAdList& expected_creative_ads,
-             const CreativeInlineContentAdList& creative_ads) {
-            // Assert
-            EXPECT_EQ(expected_creative_ads, creative_ads);
-          },
-          std::move(expected_creative_ads)));
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
-  creative_ad.segment = "untargeted";
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
-  // Act
-  CreativeInlineContentAdList expected_creative_ads = {creative_ad};
-
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad}));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"finance-banking"},
                                           TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100",
-      base::BindOnce(
-          [](const CreativeInlineContentAdList& expected_creative_ads,
-             const CreativeInlineContentAdList& creative_ads) {
-            // Assert
-            EXPECT_EQ(expected_creative_ads, creative_ads);
-          },
-          std::move(expected_creative_ads)));
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
@@ -134,100 +112,82 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
   database::SaveCreativeInlineContentAds(creative_ads);
 
-  // Act
-  CreativeInlineContentAdList expected_creative_ads = {creative_ad_1,
-                                                       creative_ad_3};
-
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback,
+              Run(::testing::UnorderedElementsAreArray(
+                  CreativeInlineContentAdList{creative_ad_1, creative_ad_3})));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100",
-      base::BindOnce(
-          [](const CreativeInlineContentAdList& expected_creative_ads,
-             const CreativeInlineContentAdList& creative_ads) {
-            // Assert
-            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
-          },
-          std::move(expected_creative_ads)));
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
-  creative_ad.segment = "untargeted";
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
-  // Act
-  CreativeInlineContentAdList expected_creative_ads = {creative_ad};
-
-  eligible_ads_->GetForUserModel(
-      /*user_model*/ {}, /*dimensions*/ "200x100",
-      base::BindOnce(
-          [](const CreativeInlineContentAdList& expected_creative_ads,
-             const CreativeInlineContentAdList& creative_ads) {
-            // Assert
-            EXPECT_EQ(expected_creative_ads, creative_ads);
-          },
-          std::move(expected_creative_ads)));
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad}));
+  eligible_ads_->GetForUserModel(/*user_model=*/{}, /*dimensions=*/"200x100",
+                                 callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
        DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeInlineContentAds({creative_ad});
 
-  // Act
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"UNMATCHED"},
                                           TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100",
-      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(creative_ads.empty());
-      }));
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
        DoNotGetAdsForNonExistentDimensions) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeInlineContentAds({creative_ad});
 
-  // Act
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"technology & computing"},
                                           TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "?x?",
-      base::BindOnce([](const CreativeInlineContentAdList& creative_ads) {
-        // Assert
-        EXPECT_TRUE(creative_ads.empty());
-      }));
+      /*dimensions=*/"?x?", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
@@ -235,12 +195,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
@@ -249,22 +209,15 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad_1);
   ClientStateManager::GetInstance().UpdateSeenAd(ad);
 
-  // Act
-  CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
-
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad_2}));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100",
-      base::BindOnce(
-          [](const CreativeInlineContentAdList& expected_creative_ads,
-             const CreativeInlineContentAdList& creative_ads) {
-            // Assert
-            EXPECT_EQ(expected_creative_ads, creative_ads);
-          },
-          std::move(expected_creative_ads)));
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
@@ -272,37 +225,30 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeInlineContentAds(creative_ads);
 
-  // Act
   const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
 
-  CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
-
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad_2}));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100",
-      base::BindOnce(
-          [](const CreativeInlineContentAdList& expected_creative_ads,
-             const CreativeInlineContentAdList& creative_ads) {
-            // Assert
-            EXPECT_EQ(expected_creative_ads, creative_ads);
-          },
-          std::move(expected_creative_ads)));
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
@@ -310,41 +256,34 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ad_2.priority = 1;
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);
 
   database::SaveCreativeInlineContentAds(creative_ads);
 
-  // Act
-  CreativeInlineContentAdList expected_creative_ads = {creative_ad_1};
-
+  // Act & Assert
+  base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
+  EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad_1}));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{
                         SegmentList{"technology & computing", "food & drink"},
                         TextEmbeddingHtmlEventList{}}},
-      /*dimensions*/ "200x100",
-      base::BindOnce(
-          [](const CreativeInlineContentAdList& expected_creative_ads,
-             const CreativeInlineContentAdList& creative_ads) {
-            // Assert
-            EXPECT_EQ(expected_creative_ads, creative_ads);
-          },
-          std::move(expected_creative_ads)));
+      /*dimensions=*/"200x100", callback.Get());
 }
 
 }  // namespace brave_ads

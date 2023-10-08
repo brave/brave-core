@@ -11,6 +11,7 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
@@ -230,6 +231,7 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
     auto* registry = pref_service_.registry();
     NTPBackgroundImagesService::RegisterLocalStatePrefs(registry);
     brave::RegisterPrefsForBraveReferralsService(registry);
+    brave_l10n::RegisterL10nLocalStatePrefs(registry);
   }
 
   void Init() {

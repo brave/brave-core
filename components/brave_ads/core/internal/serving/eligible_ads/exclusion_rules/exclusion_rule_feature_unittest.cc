@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,173 +13,128 @@
 namespace brave_ads {
 
 TEST(BraveAdsExclusionRuleFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsExclusionRuleFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kExclusionRulesFeature));
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kExclusionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsExclusionRuleFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kExclusionRulesFeature));
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest, ShouldExcludeAdIfConverted) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_converted"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature, {{"should_exclude_ad_if_converted", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldExcludeAdIfConverted.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest, DefaultShouldExcludeAdIfConverted) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldExcludeAdIfConverted.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultShouldExcludeAdIfConvertedWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kExclusionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldExcludeAdIfConverted.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     GetExcludeAdIfDismissedWithinTimeWindow) {
+     ShouldExcludeAdIfDismissedWithinTimeWindow) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_dismissed_within_time_window"] = "24h";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_dismissed_within_time_window", "1d"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kShouldExcludeAdIfDismissedWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultExcludeAdIfDismissedWithinTimeWindow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+     DefaultShouldExcludeAdIfDismissedWithinTimeWindow) {
+  // Act & Assert
   EXPECT_EQ(base::Hours(0), kShouldExcludeAdIfDismissedWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultExcludeAdIfDismissedWithinTimeWindowWhenDisabled) {
+     DefaultShouldExcludeAdIfDismissedWithinTimeWindowWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kExclusionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(0), kShouldExcludeAdIfDismissedWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     GetExcludeAdIfTransferredWithinTimeWindow) {
+     ShouldExcludeAdIfTransferredWithinTimeWindow) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_transferred_within_time_window"] = "24h";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_transferred_within_time_window", "1d"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultExcludeAdIfTransferredWithinTimeWindow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+     DefaultShouldExcludeAdIfTransferredWithinTimeWindow) {
+  // Act & Assert
   EXPECT_EQ(base::Hours(0),
             kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
-     DefaultExcludeAdIfTransferredWithinTimeWindowWhenDisabled) {
+     DefaultShouldExcludeAdIfTransferredWithinTimeWindowWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kExclusionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(0),
             kShouldExcludeAdIfTransferredWithinTimeWindow.Get());
+}
+
+TEST(BraveAdsExclusionRuleFeatureTest,
+     ShouldExcludeAdIfCreativeInstanceExceedsPerHourCap) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_creative_instance_exceeds_per_hour_cap", "7"}});
+
+  // Act & Assert
+  EXPECT_EQ(7, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
+}
+
+TEST(BraveAdsExclusionRuleFeatureTest,
+     DefaultShouldExcludeAdIfCreativeInstanceExceedsPerHourCap) {
+  // Act & Assert
+  EXPECT_EQ(1, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
+}
+
+TEST(BraveAdsExclusionRuleFeatureTest,
+     DefaultShouldExcludeAdIfCreativeInstanceExceedsPerHourCapWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
+
+  // Act & Assert
+  EXPECT_EQ(1, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
 }
 
 }  // namespace brave_ads

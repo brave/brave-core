@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/publisher_info_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tipping_rewards_background_color"
+    tools:context=".rewards.tipping.RewardsTippingBannerActivity">
+
+    <ImageView
+        android:id="@+id/top_tipping_banner_ui_background_scenery"
+        android:layout_width="match_parent"
+        android:layout_height="105dp"
+        android:scaleType="fitXY"
+        android:contentDescription="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tipping_default_background" />
+
+    <ImageView
+        android:id="@+id/close_it"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@id/close_it_background"
+        app:layout_constraintEnd_toEndOf="@id/close_it_background"
+        app:layout_constraintStart_toStartOf="@id/close_it_background"
+        app:layout_constraintTop_toTopOf="@id/close_it_background"
+        app:srcCompat="@drawable/ic_baseline_close_24"
+        app:tint="#D9D9D9" />
+
+    <ImageView
+        android:id="@+id/close_it_background"
+        android:layout_width="40dp"
+        android:contentDescription="@null"
+        android:layout_height="40dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rewards_tipping_close_button_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scroll_view_tipping"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/placeholder_background1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/publisher_favicon">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tipping_publisher_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/rewards_panel_notification_text_color"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/verified_tick_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@null"
+                app:layout_constraintBottom_toBottomOf="@id/tipping_publisher_name"
+                app:layout_constraintStart_toEndOf="@id/tipping_publisher_name"
+                app:layout_constraintTop_toTopOf="@id/tipping_publisher_name"
+                app:srcCompat="@drawable/rewards_verified_tick_icon" />
+
+            <TextView
+                android:id="@+id/tipping_details_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/rewards_tip_default_creator_description"
+                android:textColor="@color/tipping_details_description_text_color"
+                android:textSize="14sp"
+                android:lineSpacingExtra="3sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tipping_publisher_name" />
+
+            <ImageView
+                android:id="@+id/link_discord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="72dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/link_facebook"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+                app:srcCompat="@drawable/social_discord_color" />
+
+            <ImageView
+                android:id="@+id/link_facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/link_instagram"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/link_discord"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+                app:srcCompat="@drawable/social_facebook_color" />
+
+            <ImageView
+                android:id="@+id/link_instagram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toStartOf="@id/link_twitter"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/link_facebook"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+                app:srcCompat="@drawable/social_instagram_color" />
+
+            <ImageView
+                android:id="@+id/link_twitter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toStartOf="@id/link_youtube"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/link_instagram"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+                app:srcCompat="@drawable/social_twitter_color" />
+
+            <ImageView
+                android:id="@+id/link_youtube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toStartOf="@id/link_github"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/link_twitter"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+                app:srcCompat="@drawable/social_youtube_color" />
+
+            <ImageView
+                android:id="@+id/link_github"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/link_reddit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/link_youtube"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+                app:srcCompat="@drawable/social_github_color" />
+
+            <ImageView
+                android:id="@+id/link_reddit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toStartOf="@id/link_vimeo"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/link_github"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+                app:srcCompat="@drawable/social_reddit_color" />
+
+            <ImageView
+                android:id="@+id/link_vimeo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toStartOf="@id/link_twitch"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/link_reddit"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+                app:srcCompat="@drawable/social_vimeo_color" />
+
+            <ImageView
+                android:id="@+id/link_twitch"
+                android:layout_width="22dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="24dp"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/link_vimeo"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@id/tipping_details_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/social_twitch_color"
+                 />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/publisher_favicon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="24dp"
+        android:contentDescription="@null"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/top_tipping_banner_ui_background_scenery"
+         />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/placeholder_background1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tipping_banner_view_background"
+        android:layout_marginBottom="16dp"
+        android:layout_marginHorizontal="8dp"
+        android:padding="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/support_this_creator"
+            android:textColor="@color/rewards_panel_notification_text_color"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/send_tip_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/tipping_send_button_background"
+            android:text="@string/use_brave_rewards"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/textView4"
+             />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/use_web3_wallet_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/brave_rewards_use_web3_background"
+            android:text="@string/use_web3_wallet"
+            android:textAllCaps="false"
+            android:textColor="@color/use_web3_wallet_button_text_color"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/send_tip_button"
+            app:layout_goneMarginTop="24dp"
+             />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/transparent_shadow_background"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:background="@drawable/transparent_shadow_background"
+        app:layout_constraintBottom_toBottomOf="@id/scroll_view_tipping" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

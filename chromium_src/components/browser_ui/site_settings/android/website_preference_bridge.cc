@@ -5,6 +5,7 @@
 
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_manager.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
 
 // Default is ALLOW
 #define BACKGROUND_SYNC \

@@ -30,7 +30,6 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
     return true;
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST) && BUILDFLAG(IS_ANDROID)
-
   if (base::EqualsCaseInsensitiveASCII(flag_descriptions::kHttpsUpgradesName,
                                        internal_name)) {
     return true;

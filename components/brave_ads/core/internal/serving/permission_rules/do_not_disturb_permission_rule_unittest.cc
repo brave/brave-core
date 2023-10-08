@@ -22,14 +22,12 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterBackground();
 
-  AdvanceClockToMidnight(/*is_local*/ true);
+  AdvanceClockToMidnight(/*is_local=*/true);
 
-  // Act
+  // Act & Assert
   {
     // Verify 5:59 AM
     AdvanceClockBy(base::Hours(5) + base::Minutes(59));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_FALSE(permission_rule.ShouldAllow().has_value());
   }
@@ -37,8 +35,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 6:00 AM
     AdvanceClockBy(base::Minutes(1));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -46,8 +42,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 8:59 PM
     AdvanceClockBy(base::Hours(14) + base::Minutes(59));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -55,8 +49,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 9:00 PM
     AdvanceClockBy(base::Minutes(1));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_FALSE(permission_rule.ShouldAllow().has_value());
   }
@@ -70,14 +62,12 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local*/ true);
+  AdvanceClockToMidnight(/*is_local=*/true);
 
-  // Act
+  // Act & Assert
   {
     // Verify 5:59 AM
     AdvanceClockBy(base::Hours(5) + base::Minutes(59));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -85,8 +75,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 6:00 AM
     AdvanceClockBy(base::Minutes(1));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -94,8 +82,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 8:59 PM
     AdvanceClockBy(base::Hours(14) + base::Minutes(59));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -103,8 +89,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   {
     // Verify 9:00 PM
     AdvanceClockBy(base::Minutes(1));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -117,13 +101,11 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local*/ true);
+  AdvanceClockToMidnight(/*is_local=*/true);
 
-  // Act
+  // Act & Assert
   {
     // Verify 00:00 AM
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -131,8 +113,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -145,13 +125,11 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local*/ true);
+  AdvanceClockToMidnight(/*is_local=*/true);
 
-  // Act
+  // Act & Assert
   {
     // Verify 00:00 AM
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -159,8 +137,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -173,13 +149,11 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local*/ true);
+  AdvanceClockToMidnight(/*is_local=*/true);
 
-  // Act
+  // Act & Assert
   {
     // Verify 00:00 AM
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -187,8 +161,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -201,13 +173,11 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local*/ true);
+  AdvanceClockToMidnight(/*is_local=*/true);
 
-  // Act
+  // Act & Assert
   {
     // Verify 00:00 AM
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }
@@ -215,8 +185,6 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   {
     // Verify 12:00 PM
     AdvanceClockBy(base::Hours(12));
-
-    // Assert
     const DoNotDisturbPermissionRule permission_rule;
     EXPECT_TRUE(permission_rule.ShouldAllow().has_value());
   }

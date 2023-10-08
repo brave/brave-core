@@ -8,7 +8,7 @@
     >
 
     <ImageView
-        android:id="@+id/bottomsheet_top_bar"
+        android:id="@+id/bottomsheet_top_bar1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

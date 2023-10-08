@@ -11,17 +11,16 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -190,9 +189,6 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     https_server_for_files()->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(https_server_for_files()->Start());
 
-    brave_wallet_service_ =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-            browser()->profile());
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(browser()->profile());
     tx_service_ = TxServiceFactory::GetServiceForContext(browser()->profile());
@@ -230,17 +226,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   TestTxServiceObserver* observer() { return &observer_; }
 
   void RestoreWallet() {
-    const char mnemonic[] =
-        "drip caution abandon festival order clown oven regular absorb "
-        "evidence crew where";
-    base::RunLoop run_loop;
-    keyring_service_->RestoreWallet(
-        mnemonic, "brave123", false,
-        base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+        kMnemonicDripCaution, kTestWalletPassword, false));
 
     default_account_ =
         keyring_service_->GetAllAccountsSync()->accounts[0]->Clone();
@@ -257,7 +244,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void UnlockWallet() {
     base::RunLoop run_loop;
-    keyring_service_->Unlock("brave123",
+    keyring_service_->Unlock(kTestWalletPassword,
                              base::BindLambdaForTesting([&](bool success) {
                                ASSERT_TRUE(success);
                                run_loop.Quit();
@@ -340,13 +327,10 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void AddEthereumPermission(const mojom::AccountIdPtr& account_id) {
-    base::RunLoop run_loop;
-    brave_wallet_service_->AddPermission(
-        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    EXPECT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+        blink::PermissionType::BRAVE_ETHEREUM, browser()->profile(),
+        web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin(),
+        account_id->address));
   }
 
   const mojom::AccountInfoPtr& default_account() const {
@@ -604,7 +588,6 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   mojom::AccountInfoPtr default_account_;
 
  private:

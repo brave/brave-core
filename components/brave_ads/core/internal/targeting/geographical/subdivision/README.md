@@ -1,4 +1,4 @@
-# Subdivision
+# Subdivision Targeting
 
 Target ads to an area within a country.
 

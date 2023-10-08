@@ -22,13 +22,9 @@ class BraveAdsAdEventBuilderTest : public UnitTestBase {};
 TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ false);
+                                      /*should_use_random_uuids=*/false);
 
-  // Act
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now());
-
-  // Assert
+  // Act & Assert
   AdEventInfo expected_ad_event;
   expected_ad_event.type = AdType::kNotificationAd;
   expected_ad_event.confirmation_type = ConfirmationType::kViewed;
@@ -39,24 +35,19 @@ TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
   expected_ad_event.advertiser_id = kAdvertiserId;
   expected_ad_event.segment = kSegment;
   expected_ad_event.created_at = Now();
-
-  EXPECT_EQ(expected_ad_event, ad_event);
+  EXPECT_EQ(expected_ad_event,
+            BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at=*/Now()));
 }
 
 TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ false);
+                                      /*should_use_random_uuids=*/false);
 
   const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at*/ Now());
+      BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at=*/Now());
 
-  // Act
-  const AdEventInfo rebuilt_ad_event =
-      RebuildAdEvent(ad_event, ConfirmationType::kConversion,
-                     /*created_at*/ DistantFuture());
-
-  // Assert
+  // Act & Assert
   AdEventInfo expected_rebuilt_ad_event;
   expected_rebuilt_ad_event.type = AdType::kNotificationAd;
   expected_rebuilt_ad_event.confirmation_type = ConfirmationType::kConversion;
@@ -67,8 +58,9 @@ TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
   expected_rebuilt_ad_event.advertiser_id = kAdvertiserId;
   expected_rebuilt_ad_event.segment = kSegment;
   expected_rebuilt_ad_event.created_at = DistantFuture();
-
-  EXPECT_EQ(expected_rebuilt_ad_event, rebuilt_ad_event);
+  EXPECT_EQ(expected_rebuilt_ad_event,
+            RebuildAdEvent(ad_event, ConfirmationType::kConversion,
+                           /*created_at=*/DistantFuture()));
 }
 
 }  // namespace brave_ads

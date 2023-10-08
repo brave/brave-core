@@ -16,6 +16,7 @@ namespace gfx {
 class Rect;
 }  // namespace gfx
 
+class Tab;
 class TabStripLayoutHelper;
 class TabWidthConstraints;
 class TabStripController;
@@ -31,14 +32,17 @@ constexpr int kVerticalTabMinWidth = kVerticalTabHeight;
 constexpr int kVerticalTabsSpacing = 4;
 constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 
-constexpr int kUnpinnedTabBorderRadius = 4;
-constexpr int kPinnedTabBorderRadius = 8;
+int GetTabCornerRadius(const Tab& tab);
 
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
     absl::optional<int> width,
     bool is_floating_mode);
+
+std::vector<gfx::Rect> CalculateBoundsForHorizontalDraggedViews(
+    const std::vector<TabSlotView*>& views,
+    TabStrip* tab_strip);
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     const std::vector<TabSlotView*>& views,

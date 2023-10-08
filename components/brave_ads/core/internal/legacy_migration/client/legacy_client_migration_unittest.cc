@@ -23,7 +23,7 @@ constexpr char kInvalidJsonFilename[] = "invalid.json";
 class BraveAdsLegacyClientMigrationTest : public UnitTestBase {
  protected:
   void SetUpMocks() override {
-    SetBooleanPref(prefs::kHasMigratedClientState, false);
+    SetBooleanPrefValue(prefs::kHasMigratedClientState, false);
   }
 };
 
@@ -31,15 +31,12 @@ TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
   // Arrange
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kClientStateFilename));
 
-  // Assert
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(HasMigratedClientState());
-  });
-
-  // Act
+  EXPECT_CALL(callback, Run(/*success=*/true));
   MigrateClientState(callback.Get());
+
+  EXPECT_TRUE(HasMigratedClientState());
 }
 
 TEST_F(BraveAdsLegacyClientMigrationTest, InvalidState) {
@@ -47,15 +44,12 @@ TEST_F(BraveAdsLegacyClientMigrationTest, InvalidState) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
                                              kClientStateFilename));
 
-  // Assert
+  // Act & Assert
   base::MockCallback<InitializeCallback> callback;
-  EXPECT_CALL(callback, Run).WillOnce([](const bool success) {
-    EXPECT_FALSE(success);
-    EXPECT_FALSE(HasMigratedClientState());
-  });
-
-  // Act
+  EXPECT_CALL(callback, Run(/*success=*/false));
   MigrateClientState(callback.Get());
+
+  EXPECT_FALSE(HasMigratedClientState());
 }
 
 }  // namespace brave_ads

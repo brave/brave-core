@@ -2,7 +2,7 @@
   "configurations": [{
     "dashboard-bot-name": "asus-w10-slow-laptop-typical",
     "browser-type": "brave",
-    "profile": "brave-typical-win-v1.55.98",
+    "profile": "brave-typical-win-v1.60.41",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
     "save-artifacts": false,

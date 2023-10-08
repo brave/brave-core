@@ -28,11 +28,7 @@ class BraveAdsGlobalStateTest : public ::testing::Test {
 };
 
 TEST_F(BraveAdsGlobalStateTest, HasInstance) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(GlobalState::HasInstance());
 }
 
@@ -40,9 +36,7 @@ TEST_F(BraveAdsGlobalStateTest, HasNoInstanceAfterDestruction) {
   // Arrange
   global_state_.reset();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(GlobalState::HasInstance());
 }
 

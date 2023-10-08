@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,218 +13,175 @@
 namespace brave_ads {
 
 TEST(BraveAdsPermissionRuleFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsPermissionRuleFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kPermissionRulesFeature));
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPermissionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsPermissionRuleFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kPermissionRulesFeature));
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest, ShouldOnlyServeAdsInWindowedMode) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_only_serve_ads_in_windowed_mode"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPermissionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature,
+      {{"should_only_serve_ads_in_windowed_mode", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldOnlyServeAdsInWindowedMode.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsInWindowedMode) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsInWindowedMode.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsInWindowedModeWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPermissionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsInWindowedMode.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      ShouldOnlyServeAdsWithValidInternetConnection) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_only_serve_ads_with_valid_internet_connection"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPermissionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature,
+      {{"should_only_serve_ads_with_valid_internet_connection", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldOnlyServeAdsWithValidInternetConnection.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsWithValidInternetConnection) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsWithValidInternetConnection.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
-     ShouldOnlyServeAdsWithValidInternetConnectionWhenDisabled) {
+     DefaultShouldOnlyServeAdsWithValidInternetConnectionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPermissionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsWithValidInternetConnection.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest, ShouldOnlyServeAdsIfMediaIsNotPlaying) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_only_serve_ads_if_media_is_not_playing"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPermissionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature,
+      {{"should_only_serve_ads_if_media_is_not_playing", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldOnlyServeAdsIfMediaIsNotPlaying.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsIfMediaIsNotPlaying) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsIfMediaIsNotPlaying.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsIfMediaIsNotPlayingWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPermissionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsIfMediaIsNotPlaying.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest, ShouldOnlyServeAdsIfBrowserIsActive) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_only_serve_ads_if_browser_is_active"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPermissionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature,
+      {{"should_only_serve_ads_if_browser_is_active", "false"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(kShouldOnlyServeAdsIfBrowserIsActive.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsIfBrowserIsActive) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsIfBrowserIsActive.Get());
 }
 
 TEST(BraveAdsPermissionRuleFeatureTest,
      DefaultShouldOnlyServeAdsIfBrowserIsActiveWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPermissionRulesFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(kShouldOnlyServeAdsIfBrowserIsActive.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DoNotDisturbFromHour) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature, {{"do_not_disturb_from_hour", "7"}});
+
+  // Act & Assert
+  EXPECT_EQ(7, kDoNotDisturbFromHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DefaultDoNotDisturbFromHour) {
+  // Act & Assert
+  EXPECT_EQ(21, kDoNotDisturbFromHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest,
+     DefaultDoNotDisturbFromHourWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
+
+  // Act & Assert
+  EXPECT_EQ(21, kDoNotDisturbFromHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DoNotDisturbToHour) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature, {{"do_not_disturb_to_hour", "7"}});
+
+  // Act & Assert
+  EXPECT_EQ(7, kDoNotDisturbToHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DefaultDoNotDisturbToHour) {
+  // Act & Assert
+  EXPECT_EQ(6, kDoNotDisturbToHour.Get());
+}
+
+TEST(BraveAdsPermissionRuleFeatureTest, DefaultDoNotDisturbToHourWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kPermissionRulesFeature);
+
+  // Act & Assert
+  EXPECT_EQ(6, kDoNotDisturbToHour.Get());
 }
 
 }  // namespace brave_ads

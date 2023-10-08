@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,74 +13,42 @@
 namespace brave_ads {
 
 TEST(BraveAdsInlineContentAdServingFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsInlineContentAdServingFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kInlineContentAdServingFeature));
 }
 
 TEST(BraveAdsServingFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kInlineContentAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kInlineContentAdServingFeature);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsInlineContentAdServingFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kInlineContentAdServingFeature));
 }
 
-TEST(BraveAdsInlineContentAdServingFeatureTest, ServingVersion) {
+TEST(BraveAdsInlineContentAdServingFeatureTest, InlineContentAdServingVersion) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "0";
-  enabled_features.emplace_back(kInlineContentAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kInlineContentAdServingFeature, {{"version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kInlineContentAdServingVersion.Get());
 }
 
-TEST(BraveAdsInlineContentAdServingFeatureTest, DefaultServingVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST(BraveAdsInlineContentAdServingFeatureTest,
+     DefaultInlineContentAdServingVersion) {
+  // Act & Assert
   EXPECT_EQ(2, kInlineContentAdServingVersion.Get());
 }
 
 TEST(BraveAdsInlineContentAdServingFeatureTest,
-     DefaultServingVersionWhenDisabled) {
+     DefaultInlineContentAdServingVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kInlineContentAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kInlineContentAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, kInlineContentAdServingVersion.Get());
 }
 

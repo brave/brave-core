@@ -86,7 +86,7 @@ void TextEmbeddingProcessor::Process(const std::string& html) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void TextEmbeddingProcessor::OnHtmlContentDidChange(
-    const int32_t /*tab_id*/,
+    const int32_t /*tab_id=*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   if (redirect_chain.empty()) {
@@ -107,7 +107,7 @@ void TextEmbeddingProcessor::OnHtmlContentDidChange(
                 "HTML content");
   }
 
-  if (!IsTextEmbeddingFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kTextEmbeddingFeature)) {
     return;
   }
 

@@ -93,7 +93,7 @@ void TextEmbeddingResource::Reset() {
 }
 
 void TextEmbeddingResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
+    const std::string& /*locale=*/) {
   MaybeLoad();
 }
 
@@ -118,6 +118,17 @@ void TextEmbeddingResource::OnNotifyDidUpdateResourceComponent(
   manifest_version_ = manifest_version;
 
   MaybeLoad();
+}
+
+void TextEmbeddingResource::OnNotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  if (!IsValidLanguageComponentId(id)) {
+    return;
+  }
+
+  manifest_version_.reset();
+
+  Reset();
 }
 
 }  // namespace brave_ads

@@ -118,6 +118,9 @@
     E_CPONLY(kColorBravePlaylistNewPlaylistDialogNameLabel)           \
     E_CPONLY(kColorBravePlaylistNewPlaylistDialogItemsLabel)
 
+#define BRAVE_OMNIBOX_COLOR_IDS \
+    E_CPONLY(kColorBraveOmniboxResultViewSeparator)
+
 #define BRAVE_COLOR_IDS               \
     BRAVE_COMMON_COLOR_IDS            \
     BRAVE_SEARCH_CONVERSION_COLOR_IDS \
@@ -125,7 +128,8 @@
     BRAVE_SPEEDREADER_COLOR_IDS       \
     BRAVE_VPN_COLOR_IDS               \
     BRAVE_VERTICAL_TAB_COLOR_IDS      \
-    BRAVE_PLAYLIST_COLOR_IDS
+    BRAVE_PLAYLIST_COLOR_IDS          \
+    BRAVE_OMNIBOX_COLOR_IDS
 
 #include "ui/color/color_id_macros.inc"
 

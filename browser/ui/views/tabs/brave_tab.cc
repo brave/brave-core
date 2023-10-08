@@ -7,7 +7,9 @@
 
 #include <algorithm>
 
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -90,10 +92,8 @@ class ShadowLayer : public ui::Layer, public ui::LayerDelegate {
     // bounds.
     gfx::Rect shadow_bounds(size());
     shadow_bounds.Inset(GetBlurRegionInsets());
-    const int kCornerRadius =
-        (tab_->data().pinned ? tabs::kPinnedTabBorderRadius
-                             : tabs::kUnpinnedTabBorderRadius);
-    recorder.canvas()->DrawRoundRect(shadow_bounds, kCornerRadius, flags);
+    const int radius = tabs::GetTabCornerRadius(*tab_);
+    recorder.canvas()->DrawRoundRect(shadow_bounds, radius, flags);
   }
 
   void OnDeviceScaleFactorChanged(float old_device_scale_factor,
@@ -160,7 +160,12 @@ absl::optional<SkColor> BraveTab::GetGroupColor() const {
     return {};
   }
 
-  return Tab::GetGroupColor();
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return Tab::GetGroupColor();
+  }
+
+  // Unlike upstream, tabs that are within a group are not given a border color.
+  return {};
 }
 
 void BraveTab::UpdateIconVisibility() {
@@ -288,8 +293,11 @@ bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
 }
 
 void BraveTab::UpdateShadowForActiveTab() {
-  if (IsActive() &&
-      tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+  bool can_render_shadows =
+      tabs::features::HorizontalTabsUpdateEnabled() ||
+      tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser());
+
+  if (IsActive() && can_render_shadows) {
     shadow_layer_ = CreateShadowLayer();
     AddLayerToBelowThis();
     LayoutShadowLayer();
@@ -315,8 +323,13 @@ void BraveTab::LayoutShadowLayer() {
   CHECK(shadow_layer_->parent());
   CHECK(layer());
   DCHECK_EQ(layer()->parent(), shadow_layer_->parent());
-  shadow_layer_->SetBounds(
-      ShadowLayer::GetShadowLayerBounds(layer()->bounds()));
+  auto bounds = ShadowLayer::GetShadowLayerBounds(layer()->bounds());
+  if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+    // For horizontal tabs, inset the shadow layer to match the visual rounded
+    // rectangle of the tab, which is inset from the tab view.
+    bounds.Inset(gfx::Insets::VH(0, brave_tabs::kHorizontalTabInset));
+  }
+  shadow_layer_->SetBounds(bounds);
 }
 
 void BraveTab::AddLayerToBelowThis() {

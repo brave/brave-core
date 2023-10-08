@@ -125,5 +125,17 @@
         android:visibility="gone"
         android:elevation="9dp"
          />
+    <ProgressBar
+        android:id="@+id/fetchBalanceProgressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:indeterminateTint="@color/rewards_tipping_progress_bar"
+        android:elevation="9dp"
+         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

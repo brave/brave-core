@@ -4,26 +4,35 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { ConversationTurn, AutoGenerateQuestionsPref, SiteInfo, APIError } from '../api/page_handler'
+import * as mojom from '../api/page_handler'
 
-interface Store {
-  conversationHistory: ConversationTurn[]
+export interface AIChatContext {
+  allModels: mojom.Model[]
+  currentModel?: mojom.Model
+  hasChangedModel: boolean
+  conversationHistory: mojom.ConversationTurn[]
   suggestedQuestions: string[]
   isGenerating: boolean
   canGenerateQuestions: boolean
   hasSeenAgreement: boolean
-  userAutoGeneratePref: AutoGenerateQuestionsPref | undefined
-  siteInfo: SiteInfo | null
+  userAutoGeneratePref: mojom.AutoGenerateQuestionsPref | undefined
+  siteInfo: mojom.SiteInfo | null
   favIconUrl: string | undefined
-  currentError: APIError | undefined
+  currentError: mojom.APIError | undefined
   apiHasError: boolean
   shouldDisableUserInput: boolean
+  isPremiumUser: boolean
+  hasUserDissmisedPremiumPrompt: boolean
+  setCurrentModel: (model: mojom.Model) => void,
   generateSuggestedQuestions: () => void
   setUserAllowsAutoGenerating: (value: boolean) => void
   handleAgreeClick: () => void
+  dismissPremiumPrompt: () => void
 }
 
-const defaultStore = {
+export const defaultContext = {
+  allModels: [],
+  hasChangedModel: false,
   conversationHistory: [],
   suggestedQuestions: [],
   isGenerating: false,
@@ -31,15 +40,17 @@ const defaultStore = {
   hasSeenAgreement: false,
   apiHasError: false,
   shouldDisableUserInput: false,
+  isPremiumUser: true,
   userAutoGeneratePref: undefined,
   siteInfo: null,
   favIconUrl: undefined,
-  currentError: APIError.None,
+  currentError: mojom.APIError.None,
+  hasUserDissmisedPremiumPrompt: false,
+  setCurrentModel: () => {},
   generateSuggestedQuestions: () => {},
   setUserAllowsAutoGenerating: () => {},
-  handleAgreeClick: () => {}
+  handleAgreeClick: () => {},
+  dismissPremiumPrompt: () => {}
 }
 
-const DataContext = React.createContext<Store>(defaultStore)
-
-export default DataContext
+export default React.createContext<AIChatContext>(defaultContext)

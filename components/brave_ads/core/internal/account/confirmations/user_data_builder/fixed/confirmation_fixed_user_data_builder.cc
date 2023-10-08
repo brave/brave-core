@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/rotating_hash_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/segment_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/studies_user_data.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/fixed/top_segment_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
@@ -38,6 +39,7 @@ void BuildFixedUserDataCallback(const TransactionInfo& transaction,
   user_data.Merge(BuildRotatingHashUserData(transaction));
   user_data.Merge(BuildSegmentUserData(transaction));
   user_data.Merge(BuildStudiesUserData());
+  user_data.Merge(BuildTopSegmentUserData(transaction));
   user_data.Merge(BuildVersionNumberUserData());
 
   std::move(callback).Run(std::move(user_data));
@@ -49,7 +51,7 @@ void BuildFixedUserData(const TransactionInfo& transaction,
                         BuildUserDataCallback callback) {
   if (transaction.confirmation_type != ConfirmationType::kConversion) {
     return BuildFixedUserDataCallback(transaction, std::move(callback),
-                                      /*conversion_user_data*/ {});
+                                      /*conversion_user_data=*/{});
   }
 
   BuildConversionUserData(transaction.creative_instance_id,

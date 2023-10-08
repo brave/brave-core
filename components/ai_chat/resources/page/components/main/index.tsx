@@ -6,8 +6,10 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-
-import styles from './style.module.scss'
+import { getLocale } from '$web-common/locale'
+import AlertCenter from '@brave/leo/react/alertCenter'
+import getPageHandlerInstance, * as mojom from '../../api/page_handler'
+import DataContext from '../../state/context'
 import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
 import SiteTitle from '../site_title'
@@ -15,20 +17,28 @@ import PromptAutoSuggestion from '../prompt_auto_suggestion'
 import ErrorConnection from '../error_connection'
 import ErrorRateLimit from '../error_rate_limit'
 import InputBox from '../input_box'
-import getPageHandlerInstance, { AutoGenerateQuestionsPref, APIError } from '../../api/page_handler'
-import DataContext from '../../state/context'
+import FeatureButtonMenu from '../feature_button_menu'
+import styles from './style.module.scss'
+import ModelIntro from '../model_intro'
+import PremiumSuggestion from '../premium_suggestion'
 
-function Main () {
-  const { siteInfo, userAutoGeneratePref, hasSeenAgreement,
-    currentError, apiHasError } = React.useContext(DataContext)
-
-  const handleSettingsClick = () => {
-    getPageHandlerInstance().pageHandler.openBraveLeoSettings()
-  }
+function Main() {
+  const context = React.useContext(DataContext)
+  const {
+    siteInfo,
+    userAutoGeneratePref,
+    hasSeenAgreement,
+    currentError,
+    apiHasError
+  } = context
 
   const handleEraseClick = () => {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
+
+  const shouldShowPremiumSuggestionForModel = !context.isPremiumUser && context.currentModel?.isPremium
+
+  const shouldShowPremiumSuggestionStandalone = !context.hasUserDissmisedPremiumPrompt && !siteInfo && !context.isPremiumUser
 
   let conversationListElement = <PrivacyMessage />
   let siteTitleElement = null
@@ -36,23 +46,17 @@ function Main () {
   let currentErrorElement = null
 
   if (hasSeenAgreement) {
-    conversationListElement = (
-      <ConversationList />
-    )
+    conversationListElement = <ConversationList />
 
     if (siteInfo) {
-      siteTitleElement = (
-        <SiteTitle />
-      )
+      siteTitleElement = <SiteTitle />
     }
 
-    if (userAutoGeneratePref === AutoGenerateQuestionsPref.Unset && userAutoGeneratePref) {
-      promptAutoSuggestionElement = (
-        <PromptAutoSuggestion />
-      )
+    if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset) {
+      promptAutoSuggestionElement = <PromptAutoSuggestion />
     }
 
-    if (apiHasError && currentError === APIError.ConnectionIssue) {
+    if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
@@ -60,7 +64,7 @@ function Main () {
       )
     }
 
-    if (apiHasError && currentError === APIError.RateLimitReached) {
+    if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
       currentErrorElement = (
         <ErrorRateLimit
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
@@ -73,34 +77,66 @@ function Main () {
     <main className={styles.main}>
       <div className={styles.header}>
         <div className={styles.logo}>
-          <Icon name="product-brave-leo" />
-          <div className={styles.logoTitle}>Brave <span>Leo</span></div>
+          <Icon name='product-brave-leo' />
+          <div className={styles.logoTitle}>
+            Brave <span>Leo</span>
+          </div>
+          {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
         </div>
         <div className={styles.actions}>
           {hasSeenAgreement && (
-            <Button kind="plain-faint" aria-label="Erase conversation history"
-            title="Erase conversation history" onClick={handleEraseClick}>
-                <Icon name="erase" />
-            </Button>
+            <>
+              <Button
+                kind='plain-faint'
+                aria-label='Erase conversation history'
+                title='Erase conversation history'
+                onClick={handleEraseClick}
+              >
+                <Icon name='erase' />
+              </Button>
+              <FeatureButtonMenu />
+            </>
           )}
-          <Button kind="plain-faint" aria-label="Settings"
-          title="Settings" onClick={handleSettingsClick}>
-              <Icon name="settings" />
-          </Button>
         </div>
       </div>
       <div className={styles.scroller}>
+        <AlertCenter position='top-left' className={styles.alertCenter} />
         {siteTitleElement && (
-          <div className={styles.siteTitleBox}>
-            {siteTitleElement}
-          </div>
+          <div className={styles.siteTitleBox}>{siteTitleElement}</div>
         )}
+        {context.hasChangedModel && <ModelIntro />}
         {conversationListElement}
         {currentErrorElement && (
-          <div className={styles.errorContainer}>
-            {currentErrorElement}
-          </div>
+          <div className={styles.promptContainer}>{currentErrorElement}</div>
         )}
+        {
+          shouldShowPremiumSuggestionForModel && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremiumTitle')}
+                verbose={true}
+              />
+            </div>
+          )
+        }
+        {
+          shouldShowPremiumSuggestionStandalone && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremiumTitle')}
+                verbose={true}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => context.dismissPremiumPrompt()}
+                  >
+                    {getLocale('dismissButtonLabel')}
+                  </Button>
+                }
+              />
+            </div>
+          )
+        }
       </div>
       <div className={styles.inputBox}>
         {promptAutoSuggestionElement}

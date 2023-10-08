@@ -78,28 +78,28 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void GetForCreativeInstanceIdCallback(
-    const std::string& /*creative_instance_id*/,
+    const std::string& /*creative_instance_id=*/,
     GetDepositsCallback callback,
     mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");
-    return std::move(callback).Run(/*success*/ false,
-                                   /*deposit*/ absl::nullopt);
+    return std::move(callback).Run(/*success=*/false,
+                                   /*deposit=*/absl::nullopt);
   }
 
   CHECK(command_response->result);
 
   if (command_response->result->get_records().empty()) {
-    return std::move(callback).Run(/*success*/ true, /*deposit*/ absl::nullopt);
+    return std::move(callback).Run(/*success=*/true, /*deposit=*/absl::nullopt);
   }
 
   const mojom::DBRecordInfoPtr record =
       std::move(command_response->result->get_records().front());
   DepositInfo deposit = GetFromRecord(&*record);
 
-  std::move(callback).Run(/*success*/ true, std::move(deposit));
+  std::move(callback).Run(/*success=*/true, std::move(deposit));
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
@@ -130,7 +130,7 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -168,8 +168,8 @@ void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                                         GetDepositsCallback callback) const {
   if (creative_instance_id.empty()) {
-    return std::move(callback).Run(/*success*/ false,
-                                   /*deposit*/ absl::nullopt);
+    return std::move(callback).Run(/*success=*/false,
+                                   /*deposit=*/absl::nullopt);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -252,7 +252,7 @@ std::string Deposits::BuildInsertOrUpdateSql(
       "INSERT OR REPLACE INTO $1 (creative_instance_id, value, expire_at) "
       "VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 3, binded_parameters_count)},
+                           /*parameters_count=*/3, binded_parameters_count)},
       nullptr);
 }
 
@@ -267,8 +267,8 @@ std::string Deposits::BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
       "INSERT OR REPLACE INTO $1 (creative_instance_id, value, expire_at) "
       "VALUES $2;",
       {GetTableName(),
-       BuildBindingParameterPlaceholders(/*parameters_count*/ 3,
-                                         /*binded_parameters_count*/ 1)},
+       BuildBindingParameterPlaceholders(/*parameters_count=*/3,
+                                         /*binded_parameters_count=*/1)},
       nullptr);
 }
 

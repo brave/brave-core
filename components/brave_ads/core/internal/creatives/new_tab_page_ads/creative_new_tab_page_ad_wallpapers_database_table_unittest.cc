@@ -11,13 +11,11 @@
 
 namespace brave_ads::database::table {
 
-TEST(BraveAdsCreativeNewTabPageAdWallpapersDatabaseTableTest, TableName) {
+TEST(BraveAdsCreativeNewTabPageAdWallpapersDatabaseTableTest, GetTableName) {
   // Arrange
   const CreativeNewTabPageAdWallpapers database_table;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("creative_new_tab_page_ad_wallpapers",
             database_table.GetTableName());
 }

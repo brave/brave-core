@@ -9,10 +9,6 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace base {
-class Time;
-}  // namespace base
-
 namespace brave_ads {
 
 class RedeemPaymentTokensDelegateMock : public RedeemPaymentTokensDelegate {

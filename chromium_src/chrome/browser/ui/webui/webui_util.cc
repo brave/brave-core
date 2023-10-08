@@ -28,13 +28,11 @@ bool IsChromeUntrustedDataSource(content::WebUIDataSource* source) {
 }
 
 constexpr char kBraveCSP[] =
-    "script-src chrome://resources "
-    "chrome://test "
+    "script-src chrome://resources chrome://webui-test "
     "'self';";
 
 constexpr char kBraveUntrustedCSP[] =
     "script-src chrome-untrusted://resources "
-    "chrome://test "
     "'self';";
 }  // namespace
 

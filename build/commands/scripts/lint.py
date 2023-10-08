@@ -22,7 +22,8 @@ import git_common
 
 def HasFormatErrors():
     # For more options, see vendor/depot_tools/git_cl.py
-    cmd = ['cl', 'format', '--diff']
+    # Temporarily disable java until we get necessary DEPS in C119.
+    cmd = ['cl', 'format', '--diff', '--no-java']
     diff = git_cl.RunGit(cmd).encode('utf-8')
     if diff:
         # Verify that git cl format generates a diff

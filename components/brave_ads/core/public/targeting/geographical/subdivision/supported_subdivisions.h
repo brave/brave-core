@@ -8,21 +8,24 @@
 
 #include <string_view>
 
+#include <string>
+
 #include "base/containers/flat_map.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/public/export.h"
 
 namespace brave_ads {
 
-using SupportedSubdivisions = base::flat_map</*subdivision*/ std::string_view,
-                                             /*name*/ std::string_view>;
+using SupportedSubdivisions = base::flat_map</*subdivision=*/std::string_view,
+                                             /*name=*/std::string_view>;
 
 using SupportedSubdivisionMap =
-    base::flat_map</*country_code*/ std::string_view, SupportedSubdivisions>;
+    base::flat_map</*country_code=*/std::string_view, SupportedSubdivisions>;
 
 ADS_EXPORT const SupportedSubdivisionMap& GetSupportedSubdivisions();
 
-ADS_EXPORT base::Value::List GetSupportedSubdivisionsAsValueList();
+base::Value::List GetSupportedSubdivisionsAsValueList(
+    const std::string& country_code);
 
 }  // namespace brave_ads
 

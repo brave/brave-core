@@ -6,15 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_GAIA_INFO_UPDATE_SERVICE_FACTORY_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_GAIA_INFO_UPDATE_SERVICE_FACTORY_H_
 
-// Include to prevent redefining BuildServiceInstanceFor
+// Include to prevent redefining BuildServiceInstanceForBrowserContext
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-#define BuildServiceInstanceFor                                          \
-  BuildServiceInstanceFor_ChromiumImpl(content::BrowserContext* context) \
-      const;                                                             \
-  KeyedService* BuildServiceInstanceFor
+#define BuildServiceInstanceForBrowserContext         \
+  BuildServiceInstanceForBrowserContext_ChromiumImpl( \
+      content::BrowserContext* context) const;        \
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext
 
 #include "src/chrome/browser/profiles/gaia_info_update_service_factory.h"  // IWYU pragma: export
-#undef BuildServiceInstanceFor
+#undef BuildServiceInstanceForBrowserContext
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_GAIA_INFO_UPDATE_SERVICE_FACTORY_H_

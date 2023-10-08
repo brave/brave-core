@@ -136,7 +136,6 @@ test("brave_unit_tests") {
     "//brave/components/brave_shields/browser/cosmetic_merge_unittest.cc",
     "//brave/components/brave_shields/browser/csp_merge_unittest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_recently_used_cache_unittest.cpp",
-    "//brave/components/brave_shields/browser/test_filters_provider.cc",
     "//brave/components/brave_sync/crypto/crypto_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_utils_unittest.cc",
@@ -206,6 +205,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_news/browser/test:brave_news_unit_tests",
     "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_private_cdn",
+    "//brave/components/brave_referrals/browser:unit_tests",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_rewards/core/test",
@@ -215,6 +215,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_search_conversion:unit_tests",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/browser:test_support",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_shields/common:mojom",
     "//brave/components/brave_sync:crypto",
@@ -354,9 +355,8 @@ test("brave_unit_tests") {
   }
 
   if (enable_ai_chat) {
-    sources +=
-        [ "//brave/components/ai_chat/browser/ai_chat_metrics_unittest.cc" ]
-    deps += [ "//brave/components/ai_chat/browser" ]
+    sources += [ "//brave/components/ai_chat/core/ai_chat_metrics_unittest.cc" ]
+    deps += [ "//brave/components/ai_chat/core" ]
   }
 
   data = [ "data/" ]
@@ -805,7 +805,6 @@ test("brave_browser_tests") {
     "//brave/components/brave_rewards/browser/test/rewards_publisher_browsertest.cc",
     "//brave/components/brave_rewards/browser/test/rewards_state_browsertest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_service_browsertest.cc",
-    "//brave/components/brave_shields/browser/test_filters_provider.cc",
     "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_autoplay_browsertest.cc",
     "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_browsertest.cc",
     "//brave/third_party/blink/renderer/modules/brave/navigator_browsertest.cc",
@@ -871,6 +870,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_search/browser",
     "//brave/components/brave_search/common",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/browser:test_support",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_vpn/common/buildflags",
@@ -1233,24 +1233,18 @@ if (is_android) {
       "//base:base_java_test_support",
       "//brave/components/brave_wallet/common:mojom_java",
       "//chrome/android:chrome_apk_pak_assets",
-      "//chrome/android:chrome_public_base_module_java_for_test",
       "//chrome/browser/android/lifecycle:java",
       "//chrome/browser/back_press/android:java",
       "//chrome/browser/browser_controls/android:java",
       "//chrome/browser/contextmenu:java",
       "//chrome/browser/feed/android:java",
-      "//chrome/browser/flags:java",
       "//chrome/browser/fullscreen/android:java",
-      "//chrome/browser/language/android:java",
       "//chrome/browser/password_manager/android:java",
-      "//chrome/browser/preferences:java",
       "//chrome/browser/prefetch/android:java",
-      "//chrome/browser/privacy_sandbox/android:java",
       "//chrome/browser/profiles/android:java",
       "//chrome/browser/safe_browsing/android:java",
       "//chrome/browser/safety_check/android:java",
       "//chrome/browser/settings:test_support_java",
-      "//chrome/browser/share:java",
       "//chrome/browser/tab:java",
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/ui/android/appmenu:java",
@@ -1282,6 +1276,7 @@ if (is_android) {
       "//components/variations/android:variations_java",
       "//content/public/android:content_full_java",
       "//third_party/androidx:androidx_appcompat_appcompat_java",
+      "//third_party/androidx:androidx_fragment_fragment_java",
       "//third_party/androidx:androidx_preference_preference_java",
       "//third_party/androidx:androidx_recyclerview_recyclerview_java",
       "//third_party/androidx:androidx_test_runner_java",

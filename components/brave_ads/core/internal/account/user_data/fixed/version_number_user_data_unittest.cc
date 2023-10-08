@@ -21,15 +21,15 @@ class BraveAdsVersionNumberUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
        BuildVersionNumberUserDataForRewardsUser) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  const std::string expected_json = base::ReplaceStringPlaceholders(
-      R"({"versionNumber":"$1"})", {GetBrowserVersionNumber()}, nullptr);
-  EXPECT_EQ(base::test::ParseJsonDict(expected_json),
-            BuildVersionNumberUserData());
+  // Act & Assert
+  const base::Value::Dict expected_user_data =
+      base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
+          R"(
+              {
+                "versionNumber": "$1"
+              })",
+          {GetBrowserVersionNumber()}, nullptr));
+  EXPECT_EQ(expected_user_data, BuildVersionNumberUserData());
 }
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
@@ -37,9 +37,7 @@ TEST_F(BraveAdsVersionNumberUserDataTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildVersionNumberUserData().empty());
 }
 

@@ -20,10 +20,9 @@ TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, CatalogId) {
   // Arrange
   SetCatalogId(kCatalogId);
 
-  // Act
   const CatalogIdDiagnosticEntry diagnostic_entry;
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());
   EXPECT_EQ("Catalog ID", diagnostic_entry.GetName());
   EXPECT_EQ(kCatalogId, diagnostic_entry.GetValue());
@@ -31,11 +30,9 @@ TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, CatalogId) {
 
 TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {
   // Arrange
-
-  // Act
   const CatalogIdDiagnosticEntry diagnostic_entry;
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());
   EXPECT_EQ("Catalog ID", diagnostic_entry.GetName());
   EXPECT_EQ("", diagnostic_entry.GetValue());

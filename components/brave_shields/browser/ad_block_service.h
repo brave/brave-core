@@ -28,6 +28,7 @@
 #include "url/gurl.h"
 
 class AdBlockServiceTest;
+class EphemeralStorage1pDomainBlockBrowserTest;
 class DebounceBrowserTest;
 class PrefService;
 
@@ -67,7 +68,9 @@ class AdBlockService {
     ~SourceProviderObserver() override;
 
    private:
-    void OnFilterSetLoaded(std::unique_ptr<rust::Box<adblock::FilterSet>>);
+    void OnFilterSetCallbackLoaded(
+        base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
+    void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
 
     // AdBlockFiltersProvider::Observer
     void OnChanged() override;
@@ -139,6 +142,7 @@ class AdBlockService {
 
  private:
   friend class ::AdBlockServiceTest;
+  friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::DebounceBrowserTest;
 
   static std::string g_ad_block_dat_file_version_;

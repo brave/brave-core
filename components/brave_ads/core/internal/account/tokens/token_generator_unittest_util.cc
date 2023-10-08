@@ -151,7 +151,7 @@ std::vector<cbr::Token> BuildTokensForTesting(const size_t count) {
 
   std::vector<cbr::Token> tokens;
 
-  for (size_t i = 0; i < count; i++) {
+  for (size_t i = 0; i < count; ++i) {
     const std::string& token_base64 = GetTokensForTesting().at(i % modulo);
     const cbr::Token token = cbr::Token(token_base64);
     CHECK(token.has_value());

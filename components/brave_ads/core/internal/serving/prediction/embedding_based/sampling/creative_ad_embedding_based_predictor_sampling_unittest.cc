@@ -27,22 +27,22 @@ TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorSamplingTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.embedding = {-0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.embedding = {0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_3.embedding = {-0.0853, 0.1789, -0.4221};
   creative_ads.push_back(creative_ad_3);
 
   CreativeNotificationAdInfo creative_ad_4 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
   creative_ad_4.embedding = {0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_4);
@@ -58,14 +58,10 @@ TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorSamplingTest,
 
   const std::vector<double> creative_ad_probabilities =
       ComputeCreativeAdProbabilitiesForVoteRegistry(creative_ad_vote_registry);
-  CHECK_EQ(creative_ads.size(), creative_ad_probabilities.size());
+  ASSERT_EQ(creative_ads.size(), creative_ad_probabilities.size());
 
-  // Act
-  const absl::optional<CreativeNotificationAdInfo> creative_ad =
-      MaybeSampleCreativeAd(creative_ads, creative_ad_probabilities);
-
-  // Assert
-  EXPECT_TRUE(creative_ad);
+  // Act & Assert
+  EXPECT_TRUE(MaybeSampleCreativeAd(creative_ads, creative_ad_probabilities));
 }
 
 TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorSamplingTest,
@@ -74,22 +70,22 @@ TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorSamplingTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_1.embedding = {-0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_2.embedding = {0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_3.embedding = {-0.0853, 0.1789, -0.4221};
   creative_ads.push_back(creative_ad_3);
 
   CreativeNotificationAdInfo creative_ad_4 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
   creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
   creative_ad_4.embedding = {0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_4);
@@ -102,14 +98,10 @@ TEST_F(BraveAdsCreativeAdEmbeddingBasedPredictorSamplingTest,
 
   const std::vector<double> creative_ad_probabilities =
       ComputeCreativeAdProbabilitiesForVoteRegistry(creative_ad_vote_registry);
-  CHECK_EQ(creative_ads.size(), creative_ad_probabilities.size());
+  ASSERT_EQ(creative_ads.size(), creative_ad_probabilities.size());
 
-  // Act
-  const absl::optional<CreativeNotificationAdInfo> creative_ad =
-      MaybeSampleCreativeAd(creative_ads, creative_ad_probabilities);
-
-  // Assert
-  EXPECT_FALSE(creative_ad);
+  // Act & Assert
+  EXPECT_FALSE(MaybeSampleCreativeAd(creative_ads, creative_ad_probabilities));
 }
 
 }  // namespace brave_ads

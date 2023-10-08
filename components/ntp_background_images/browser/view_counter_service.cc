@@ -48,6 +48,10 @@ constexpr char kSponsoredNewTabsHistogramName[] =
     "Brave.NTP.SponsoredNewTabsCreated";
 constexpr int kSponsoredNewTabsBuckets[] = {0, 10, 20, 30, 40, 50};
 
+// Obsolete pref
+constexpr char kObsoleteCountToBrandedWallpaperPref[] =
+    "brave.count_to_branded_wallpaper";
+
 }  // namespace
 
 namespace ntp_background_images {
@@ -60,11 +64,8 @@ void ViewCounterService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 void ViewCounterService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(
-      prefs::kBrandedWallpaperNotificationDismissed, false);
-  registry->RegisterIntegerPref(
-      prefs::kCountToBrandedWallpaper,
-      features::kInitialCountToBrandedWallpaper.Get());
+  registry->RegisterBooleanPref(prefs::kBrandedWallpaperNotificationDismissed,
+                                false);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
   // Integer type is used because this pref is used by radio button group in
@@ -73,6 +74,17 @@ void ViewCounterService::RegisterProfilePrefs(
       prefs::kNewTabPageSuperReferralThemesOption, SUPER_REFERRAL);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowBackgroundImage, true);
+}
+
+void ViewCounterService::RegisterProfilePrefsForMigration(
+    user_prefs::PrefRegistrySyncable* registry) {
+  // Added 09/2023
+  registry->RegisterIntegerPref(kObsoleteCountToBrandedWallpaperPref, 0);
+}
+
+void ViewCounterService::MigrateObsoleteProfilePrefs(PrefService* prefs) {
+  // Added 09/2023
+  prefs->ClearPref(kObsoleteCountToBrandedWallpaperPref);
 }
 
 ViewCounterService::ViewCounterService(

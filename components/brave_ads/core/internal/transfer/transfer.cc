@@ -41,7 +41,7 @@ void Transfer::RemoveObserver(TransferObserver* observer) {
 
 void Transfer::MaybeTransferAd(const int32_t tab_id,
                                const std::vector<GURL>& redirect_chain) {
-  if (!last_clicked_ad_.IsValid()) {
+  if (!last_clicked_ad_) {
     return;
   }
 
@@ -49,7 +49,7 @@ void Transfer::MaybeTransferAd(const int32_t tab_id,
     return BLOG(1, "Already transferring ad for tab id " << tab_id);
   }
 
-  if (!DomainOrHostExists(redirect_chain, last_clicked_ad_.target_url)) {
+  if (!DomainOrHostExists(redirect_chain, last_clicked_ad_->target_url)) {
     return BLOG(1, "Visited URL does not match the last clicked ad");
   }
 
@@ -60,26 +60,29 @@ void Transfer::MaybeTransferAd(const int32_t tab_id,
 
 void Transfer::TransferAd(const int32_t tab_id,
                           const std::vector<GURL>& redirect_chain) {
+  CHECK(last_clicked_ad_);
+
   timer_.Stop();
 
   transferring_ad_tab_id_ = tab_id;
 
   const base::Time transfer_ad_at = timer_.Start(
-      FROM_HERE, kTransferredAfter.Get(),
+      FROM_HERE, kTransferAfter.Get(),
       base::BindOnce(&Transfer::TransferAdCallback, base::Unretained(this),
                      tab_id, redirect_chain));
 
-  BLOG(1, "Transfer ad for " << last_clicked_ad_.target_url << " "
+  BLOG(1, "Transfer ad for " << last_clicked_ad_->target_url << " "
                              << FriendlyDateAndTime(transfer_ad_at));
 
-  NotifyWillTransferAd(last_clicked_ad_, transfer_ad_at);
+  NotifyWillTransferAd(*last_clicked_ad_, transfer_ad_at);
 }
 
 void Transfer::TransferAdCallback(const int32_t tab_id,
                                   const std::vector<GURL>& redirect_chain) {
-  const AdInfo ad = last_clicked_ad_;
+  CHECK(last_clicked_ad_);
 
-  last_clicked_ad_ = {};
+  const AdInfo ad = *last_clicked_ad_;
+  last_clicked_ad_.reset();
 
   transferring_ad_tab_id_ = 0;
 
@@ -109,6 +112,7 @@ void Transfer::TransferAdCallback(const int32_t tab_id,
 void Transfer::LogAdEventCallback(const AdInfo& ad, const bool success) {
   if (!success) {
     BLOG(1, "Failed to log transferred ad event");
+
     return FailedToTransferAd(ad);
   }
 
@@ -116,6 +120,10 @@ void Transfer::LogAdEventCallback(const AdInfo& ad, const bool success) {
 }
 
 void Transfer::Cancel(const int32_t tab_id) {
+  if (!last_clicked_ad_) {
+    return;
+  }
+
   if (transferring_ad_tab_id_ != tab_id) {
     return;
   }
@@ -125,10 +133,10 @@ void Transfer::Cancel(const int32_t tab_id) {
   }
 
   BLOG(1, "Canceled ad transfer for creative instance id "
-              << last_clicked_ad_.creative_instance_id << " with tab id "
+              << last_clicked_ad_->creative_instance_id << " with tab id "
               << tab_id);
 
-  NotifyCanceledTransfer(last_clicked_ad_, tab_id);
+  NotifyCanceledTransfer(*last_clicked_ad_, tab_id);
 }
 
 void Transfer::SuccessfullyTransferredAd(const AdInfo& ad) const {

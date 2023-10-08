@@ -13,20 +13,33 @@
 #include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
+#include "brave/components/brave_ads/core/internal/history/history_feature.h"
+#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_feature.h"
 #include "brave/components/brave_ads/core/internal/units/inline_content_ad/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_feature.h"
+#include "brave/components/brave_ads/core/public/transfer/transfer_feature.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/units/search_result_ad/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/public/user/user_attention/user_idle_detection/user_idle_detection_feature.h"
@@ -36,14 +49,35 @@ namespace brave_ads {
 namespace {
 
 const base::Feature* const kFeatures[] = {
-    &kAccountStatementFeature,   &kAccountTokensFeature,
-    &kAntiTargetingFeature,      &kConversionsFeature,
-    &kEligibleAdFeature,         &kEpsilonGreedyBanditFeature,
-    &kExclusionRulesFeature,     &kInlineContentAdFeature,
-    &kNewTabPageAdFeature,       &kNotificationAdFeature,
-    &kPermissionRulesFeature,    &kPromotedContentAdFeature,
-    &kPurchaseIntentFeature,     &kSearchResultAdFeature,
-    &kTextClassificationFeature, &kUserActivityFeature,
+    &kAccountStatementFeature,
+    &kAccountTokensFeature,
+    &kAntiTargetingFeature,
+    &kCatalogFeature,
+    &kConfirmationsFeature,
+    &kConversionsFeature,
+    &kCreativeAdModelBasedPredictorFeature,
+    &kEligibleAdFeature,
+    &kEpsilonGreedyBanditFeature,
+    &kExclusionRulesFeature,
+    &kHistoryFeature,
+    &kInlineContentAdFeature,
+    &kInlineContentAdServingFeature,
+    &kIssuersFeature,
+    &kNewTabPageAdFeature,
+    &kNewTabPageAdServingFeature,
+    &kNotificationAdFeature,
+    &kNotificationAdServingFeature,
+    &kPermissionRulesFeature,
+    &kPromotedContentAdFeature,
+    &kPurchaseIntentFeature,
+    &kRedeemPaymentTokensFeature,
+    &kReminderFeature,
+    &kSearchResultAdFeature,
+    &kSubdivisionFeature,
+    &kTextClassificationFeature,
+    &kTextEmbeddingFeature,
+    &kTransferFeature,
+    &kUserActivityFeature,
     &kUserIdleDetectionFeature};
 
 constexpr char kFeaturesSeparators[] = ",:<";

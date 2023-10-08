@@ -52,7 +52,7 @@ void NewTabPageAdServing::MaybeServeAd(
 ///////////////////////////////////////////////////////////////////////////////
 
 base::expected<void, std::string> NewTabPageAdServing::CanServeAd() const {
-  if (!IsNewTabPageAdServingFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kNewTabPageAdServingFeature)) {
     return base::unexpected("New tab page ad not served: Feature is disabled");
   }
 
@@ -125,7 +125,7 @@ void NewTabPageAdServing::FailedToServeAd(
     MaybeServeNewTabPageAdCallback callback) const {
   NotifyFailedToServeNewTabPageAd();
 
-  std::move(callback).Run(/*ad*/ absl::nullopt);
+  std::move(callback).Run(/*ad=*/absl::nullopt);
 }
 
 void NewTabPageAdServing::NotifyOpportunityAroseToServeNewTabPageAd() const {

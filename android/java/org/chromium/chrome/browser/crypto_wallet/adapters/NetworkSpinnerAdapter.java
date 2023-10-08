@@ -76,7 +76,7 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
         TextView name = (TextView) view.findViewById(R.id.network_name_text);
         name.setText(mNetworkInfoList.get(position).chainName);
         ImageView networkPicture = view.findViewById(R.id.network_picture);
-        Utils.setBlockiesBitmapResource(mExecutor, mHandler, networkPicture,
+        Utils.setTextGeneratedBlockies(mExecutor, mHandler, networkPicture,
                 mNetworkInfoList.get(position).chainName, false);
 
         return view;

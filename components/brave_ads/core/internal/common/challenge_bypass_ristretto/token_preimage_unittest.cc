@@ -20,9 +20,7 @@ TEST_F(BraveAdsTokenPreimageTest, FailToInitialize) {
   // Arrange
   const TokenPreimage token_preimage;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(token_preimage.has_value());
 }
 
@@ -30,9 +28,7 @@ TEST_F(BraveAdsTokenPreimageTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const TokenPreimage token_preimage("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(token_preimage.has_value());
 }
 
@@ -40,15 +36,11 @@ TEST_F(BraveAdsTokenPreimageTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const TokenPreimage token_preimage(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(token_preimage.has_value());
 }
 
 TEST_F(BraveAdsTokenPreimageTest, DecodeBase64) {
-  // Arrange
-
   // Act
   const TokenPreimage token_preimage =
       TokenPreimage::DecodeBase64(kTokenPreimageBase64);
@@ -58,8 +50,6 @@ TEST_F(BraveAdsTokenPreimageTest, DecodeBase64) {
 }
 
 TEST_F(BraveAdsTokenPreimageTest, FailToDecodeEmptyBase64) {
-  // Arrange
-
   // Act
   const TokenPreimage token_preimage = TokenPreimage::DecodeBase64("");
 
@@ -68,8 +58,6 @@ TEST_F(BraveAdsTokenPreimageTest, FailToDecodeEmptyBase64) {
 }
 
 TEST_F(BraveAdsTokenPreimageTest, FailToDecodeInvalidBase64) {
-  // Arrange
-
   // Act
   const TokenPreimage token_preimage =
       TokenPreimage::DecodeBase64(kInvalidBase64);
@@ -82,9 +70,7 @@ TEST_F(BraveAdsTokenPreimageTest, EncodeBase64) {
   // Arrange
   const TokenPreimage token_preimage(kTokenPreimageBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kTokenPreimageBase64, token_preimage.EncodeBase64());
 }
 
@@ -92,9 +78,7 @@ TEST_F(BraveAdsTokenPreimageTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const TokenPreimage token_preimage;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(token_preimage.EncodeBase64());
 }
 
@@ -102,9 +86,7 @@ TEST_F(BraveAdsTokenPreimageTest, IsEqual) {
   // Arrange
   const TokenPreimage token_preimage(kTokenPreimageBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(token_preimage, token_preimage);
 }
 
@@ -112,9 +94,7 @@ TEST_F(BraveAdsTokenPreimageTest, IsEqualWhenUninitialized) {
   // Arrange
   const TokenPreimage token_preimage;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(token_preimage, token_preimage);
 }
 
@@ -122,9 +102,7 @@ TEST_F(BraveAdsTokenPreimageTest, IsEmptyBase64Equal) {
   // Arrange
   const TokenPreimage token_preimage("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(token_preimage, token_preimage);
 }
 
@@ -132,9 +110,7 @@ TEST_F(BraveAdsTokenPreimageTest, IsInvalidBase64Equal) {
   // Arrange
   const TokenPreimage token_preimage(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(token_preimage, token_preimage);
 }
 
@@ -142,9 +118,7 @@ TEST_F(BraveAdsTokenPreimageTest, IsNotEqual) {
   // Arrange
   const TokenPreimage token_preimage(kTokenPreimageBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const TokenPreimage different_token_preimage(kInvalidBase64);
   EXPECT_NE(different_token_preimage, token_preimage);
 }

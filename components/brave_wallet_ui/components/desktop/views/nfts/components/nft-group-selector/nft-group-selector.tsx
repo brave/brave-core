@@ -21,7 +21,7 @@ export type NftDropdownOptionId = 'collected' | 'hidden'
 export interface NftDropdownOption {
   id: NftDropdownOptionId
   label: string
-  labelSummary: string | number;
+  labelSummary: string | number
 }
 
 interface Props {
@@ -30,14 +30,14 @@ interface Props {
   onSelect: (optionId: NftDropdownOption) => void
 }
 
-export const NftDropdown = ({selectedOptionId, options, onSelect }: Props) => {
+export const NftDropdown = ({ selectedOptionId, options, onSelect }: Props) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
   const selectedOption =
     options.find((option) => option.id === selectedOptionId) ?? options[0]
 
   const onSelectOption = (option: NftDropdownOption) => {
     setIsOpen(false)
-    if(selectedOption.id === option.id) return
+    if (selectedOption.id === option.id) return
     onSelect(option)
   }
 
@@ -45,9 +45,11 @@ export const NftDropdown = ({selectedOptionId, options, onSelect }: Props) => {
     <DropdownContainer>
       <DropdownButton onClick={() => setIsOpen((open) => !open)}>
         <DropdownButtonText>{selectedOption.label}</DropdownButtonText>
-        <DropdownButtonLabel>
-          {selectedOption.labelSummary}
-        </DropdownButtonLabel>
+        {selectedOption.labelSummary !== 0 ? (
+          <DropdownButtonLabel>
+            {selectedOption.labelSummary}
+          </DropdownButtonLabel>
+        ) : null}
         <DropDownIcon name='carat-down' isOpen={isOpen} />
       </DropdownButton>
       <DropDown isOpen={isOpen}>

@@ -33,6 +33,11 @@ BASE_FEATURE(kBraveVPNUseWireguardService,
              "BraveVPNUseWireguardService",
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
+#if BUILDFLAG(IS_MAC)
+BASE_FEATURE(kBraveVPNEnableWireguardForOSX,
+             "kBraveVPNEnableWireguardForOSX",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 }  // namespace features
 
 }  // namespace brave_vpn

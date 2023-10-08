@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,122 +13,94 @@
 namespace brave_ads {
 
 TEST(BraveAdsConversionsFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsConversionFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kConversionsFeature));
 }
 
 TEST(BraveAdsConversionsFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversionsFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsConversionFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kConversionsFeature));
 }
 
 TEST(BraveAdsConversionsFeatureTest, ConversionResourceVersion) {
   // Arrange
-  base::FieldTrialParams params;
-  params["resource_version"] = "0";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kConversionsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kConversionsFeature, {{"resource_version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kConversionResourceVersion.Get());
 }
 
 TEST(BraveAdsConversionsFeatureTest, DefaultConversionResourceVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kConversionResourceVersion.Get());
 }
 
 TEST(BraveAdsConversionsFeatureTest,
      DefaultConversionResourceVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversionsFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kConversionResourceVersion.Get());
 }
 
-TEST(BraveAdsConversionsFeatureTest, ConversionIdPattern) {
+TEST(BraveAdsConversionsFeatureTest, HtmlMetaTagConversionIdPattern) {
   // Arrange
-  base::FieldTrialParams params;
-  params["html_meta_tag_id_pattern"] = "*";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kConversionsFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kConversionsFeature, {{"html_meta_tag_id_pattern", "*"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("*", kHtmlMetaTagConversionIdPattern.Get());
 }
 
-TEST(BraveAdsConversionsFeatureTest, DefaultConversionIdPattern) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST(BraveAdsConversionsFeatureTest, DefaultHtmlMetaTagConversionIdPattern) {
+  // Act & Assert
   EXPECT_EQ(R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~",
             kHtmlMetaTagConversionIdPattern.Get());
 }
 
-TEST(BraveAdsConversionsFeatureTest, DefaultConversionIdPatternWhenDisabled) {
+TEST(BraveAdsConversionsFeatureTest,
+     DefaultHtmlMetaTagConversionIdPatternWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversionsFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~",
             kHtmlMetaTagConversionIdPattern.Get());
+}
+
+TEST(BraveAdsConversionsFeatureTest, ProcessConversionAfter) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kConversionsFeature, {{"process_after", "3h"}});
+
+  // Act & Assert
+  EXPECT_EQ(base::Hours(3), kProcessConversionAfter.Get());
+}
+
+TEST(BraveAdsConversionsFeatureTest, DefaultProcessConversionAfter) {
+  // Act & Assert
+  EXPECT_EQ(base::Days(1), kProcessConversionAfter.Get());
+}
+
+TEST(BraveAdsConversionsFeatureTest,
+     DefaultProcessConversionAfterWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kConversionsFeature);
+
+  // Act & Assert
+  EXPECT_EQ(base::Days(1), kProcessConversionAfter.Get());
 }
 
 }  // namespace brave_ads

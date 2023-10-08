@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base"
+    "local>brave/renovate-config"
   ],
   "labels": [
     "CI/skip",

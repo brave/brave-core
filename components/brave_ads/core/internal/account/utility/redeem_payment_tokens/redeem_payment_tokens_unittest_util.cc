@@ -20,8 +20,7 @@ std::string BuildRedeemPaymentTokensUrlResponseBodyForTesting() {
                   "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
                 }
               ]
-            }
-          )";
+            })";
 }
 
 }  // namespace brave_ads

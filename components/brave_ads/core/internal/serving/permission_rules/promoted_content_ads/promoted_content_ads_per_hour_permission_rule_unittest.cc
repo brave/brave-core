@@ -21,24 +21,18 @@ class BraveAdsPromotedContentAdsPerHourPermissionRuleTest
 
 TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-
-  // Act
   RecordAdEventsForTesting(
       AdType::kPromotedContentAd, ConfirmationType::kServed,
-      /*count*/ kMaximumPromotedContentAdsPerHour.Get() - 1);
+      /*count=*/kMaximumPromotedContentAdsPerHour.Get() - 1);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -47,12 +41,11 @@ TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
   // Arrange
   RecordAdEventsForTesting(AdType::kPromotedContentAd,
                            ConfirmationType::kServed,
-                           /*count*/ kMaximumPromotedContentAdsPerHour.Get());
+                           /*count=*/kMaximumPromotedContentAdsPerHour.Get());
 
-  // Act
   AdvanceClockBy(base::Hours(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -61,12 +54,11 @@ TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
   // Arrange
   RecordAdEventsForTesting(AdType::kPromotedContentAd,
                            ConfirmationType::kServed,
-                           /*count*/ kMaximumPromotedContentAdsPerHour.Get());
+                           /*count=*/kMaximumPromotedContentAdsPerHour.Get());
 
-  // Act
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

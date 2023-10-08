@@ -50,8 +50,8 @@ class BraveWhatsNewTest : public testing::Test {
 
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
-  raw_ptr<TestingProfile> profile_ = nullptr;
   TestingProfileManager testing_profile_manager_;
+  raw_ptr<TestingProfile> profile_ = nullptr;
 };
 
 TEST_F(BraveWhatsNewTest, SupportedLangTest) {

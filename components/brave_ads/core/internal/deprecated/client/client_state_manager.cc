@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/history/history_constants.h"
+#include "brave/components/brave_ads/core/internal/history/history_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/units/ad_info.h"
@@ -108,7 +108,7 @@ void ClientStateManager::AppendHistory(const HistoryItemInfo& history_item) {
 
   client_.history_items.push_front(history_item);
 
-  const base::Time distant_past = base::Time::Now() - kHistoryTimeWindow;
+  const base::Time distant_past = base::Time::Now() - kHistoryTimeWindow.Get();
 
   const auto iter =
       std::remove_if(client_.history_items.begin(), client_.history_items.end(),
@@ -502,7 +502,7 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
       BLOG(0, "Failed to load client state");
       BLOG(3, "Failed to parse client state: " << *json);
 
-      return std::move(callback).Run(/*success*/ false);
+      return std::move(callback).Run(/*success=*/false);
     }
 
     BLOG(3, "Successfully loaded client state");
@@ -510,7 +510,7 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     is_initialized_ = true;
   }
 
-  std::move(callback).Run(/*success */ true);
+  std::move(callback).Run(/*success =*/true);
 }
 
 bool ClientStateManager::FromJson(const std::string& json) {

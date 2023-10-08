@@ -196,10 +196,10 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       hw_address, "hw",
       mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Hardware", "123"));
   std::vector<mojom::AccountInfoPtr> account_infos;
-  account_infos.push_back(std::move(primary_account));
-  account_infos.push_back(std::move(ledger_account));
-  account_infos.push_back(std::move(trezor_account));
-  account_infos.push_back(std::move(hw_account));
+  account_infos.push_back(primary_account.Clone());
+  account_infos.push_back(ledger_account.Clone());
+  account_infos.push_back(trezor_account.Clone());
+  account_infos.push_back(hw_account.Clone());
 
   // Test both EIP1559 and legacy gas fee fields are specified.
   std::string json(
@@ -222,25 +222,21 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   ASSERT_TRUE(tx_data);
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
                                  true /* network_supports_eip1559 */,
-                                 account_infos, from));
-  EXPECT_TRUE(
-      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, ledger_address));
+                                 account_infos, primary_account->account_id));
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 base::ToLowerASCII(ledger_address)));
-  EXPECT_TRUE(
-      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
+                                 ledger_account->account_id));
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 base::ToLowerASCII(trezor_address)));
+                                 trezor_account->account_id));
   // From is not found in the account infos, can happen when keyring is locked.
-  EXPECT_TRUE(ShouldCreate1559Tx(
-      tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
+                                 true /* network_supports_eip1559 */, {},
+                                 primary_account->account_id));
   // Network doesn't support EIP1559
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
+                                  primary_account->account_id));
   // Keyring doesn't support EIP1559
-  EXPECT_FALSE(
-      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, hw_address));
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                  base::ToLowerASCII(hw_address)));
+                                  hw_account->account_id));
 
   // Test only EIP1559 gas fee fields are specified.
   json =
@@ -261,8 +257,9 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   ASSERT_TRUE(tx_data);
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
                                  true /* network_supports_eip1559 */,
-                                 account_infos, from));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
+                                 account_infos, primary_account->account_id));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
+                                  primary_account->account_id));
 
   // Test only legacy gas field is specified.
   json =
@@ -281,8 +278,9 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   ASSERT_TRUE(tx_data);
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(),
                                   true /* network_supports_eip1559 */,
-                                  account_infos, from));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
+                                  account_infos, primary_account->account_id));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
+                                  primary_account->account_id));
 
   // Test no gas fee fields are specified.
   json =
@@ -297,28 +295,24 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       })";
   tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, from));
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 base::ToLowerASCII(from)));
-  EXPECT_TRUE(
-      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, ledger_address));
+                                 primary_account->account_id));
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 base::ToLowerASCII(ledger_address)));
-  EXPECT_TRUE(
-      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, trezor_address));
+                                 ledger_account->account_id));
   EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 base::ToLowerASCII(trezor_address)));
+                                 trezor_account->account_id));
   // From is not found in the account infos, can happen when keyring is locked.
-  EXPECT_TRUE(ShouldCreate1559Tx(
-      tx_data.Clone(), true /* network_supports_eip1559 */, {}, from));
+  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
+                                 true /* network_supports_eip1559 */, {},
+                                 primary_account->account_id));
 
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos, from));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
+                                  primary_account->account_id));
+  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
+                                  primary_account->account_id));
   // Keyring does't support EIP1559
-  EXPECT_FALSE(
-      ShouldCreate1559Tx(tx_data.Clone(), true, account_infos, hw_address));
   EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                  base::ToLowerASCII(hw_address)));
+                                  hw_account->account_id));
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthSignParams) {
@@ -827,10 +821,11 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   base::Value::Dict domain;
   std::vector<uint8_t> domain_hash;
   std::vector<uint8_t> primary_hash;
+  mojom::EthSignTypedDataMetaPtr meta;
 
   EXPECT_TRUE(ParseEthSignTypedDataParams(json, &address, &message, &domain,
                                           EthSignTypedDataHelper::Version::kV4,
-                                          &domain_hash, &primary_hash));
+                                          &domain_hash, &primary_hash, &meta));
 
   EXPECT_EQ(address, "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
   EXPECT_EQ(message, expected_message);
@@ -858,6 +853,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   ASSERT_TRUE(message_to_sign);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
             expected_message_to_sign);
+  EXPECT_FALSE(meta);
 
   // Test with extra fields in the message.
   json = base::StringPrintf(json_tmpl.c_str(), R"({
@@ -874,7 +870,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   })");
   EXPECT_TRUE(ParseEthSignTypedDataParams(json, &address, &message, &domain,
                                           EthSignTypedDataHelper::Version::kV4,
-                                          &domain_hash, &primary_hash));
+                                          &domain_hash, &primary_hash, &meta));
   // OK: extraneous message properties are sanitized.
   EXPECT_EQ(message, expected_message);
 
@@ -892,6 +888,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   ASSERT_TRUE(message_to_sign);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
             expected_message_to_sign);
+  EXPECT_FALSE(meta);
 }
 
 TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {

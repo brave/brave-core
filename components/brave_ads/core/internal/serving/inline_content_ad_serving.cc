@@ -53,7 +53,7 @@ void InlineContentAdServing::MaybeServeAd(
 ///////////////////////////////////////////////////////////////////////////////
 
 base::expected<void, std::string> InlineContentAdServing::CanServeAd() const {
-  if (!IsInlineContentAdServingFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kInlineContentAdServingFeature)) {
     return base::unexpected(
         "Inline content ad not served: Feature is disabled");
   }
@@ -133,7 +133,7 @@ void InlineContentAdServing::FailedToServeAd(
     MaybeServeInlineContentAdCallback callback) const {
   NotifyFailedToServeInlineContentAd();
 
-  std::move(callback).Run(dimensions, /*ad*/ absl::nullopt);
+  std::move(callback).Run(dimensions, /*ad=*/absl::nullopt);
 }
 
 void InlineContentAdServing::NotifyOpportunityAroseToServeInlineContentAd()

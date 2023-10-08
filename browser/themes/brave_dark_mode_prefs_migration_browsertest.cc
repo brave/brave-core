@@ -24,7 +24,7 @@ IN_PROC_BROWSER_TEST_F(DarkModePrefsMigrationTest, PrefMigrationTest) {
   browser()->profile()->GetPrefs()->SetInteger(kBraveThemeType, dark_mode_type);
 
   // Migrate and check it's done properly with previous profile prefs value.
-  dark_mode::MigrateBraveDarkModePrefs(browser()->profile());
+  dark_mode::MigrateBraveDarkModePrefs(browser()->profile()->GetPrefs());
   EXPECT_FALSE(g_browser_process->local_state()->
       FindPreference(kBraveDarkMode)->IsDefaultValue());
   EXPECT_EQ(dark_mode_type,

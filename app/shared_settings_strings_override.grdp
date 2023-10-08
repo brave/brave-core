@@ -10,12 +10,6 @@
     <else>
       </else>
   </if>
-  <if expr="chromeos_ash">
-    </if>
-
-  <if expr="chromeos_lacros">
-    </if>
-
   <if expr="is_chromeos">
     </if>
 

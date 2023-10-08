@@ -27,7 +27,7 @@ mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
 bool ShouldCreate1559Tx(mojom::TxData1559Ptr tx_data_1559,
                         bool network_supports_eip1559,
                         const std::vector<mojom::AccountInfoPtr>& account_infos,
-                        const std::string& address);
+                        const mojom::AccountIdPtr& account_id);
 
 bool NormalizeEthRequest(const std::string& input_json,
                          std::string* output_json);
@@ -58,7 +58,8 @@ bool ParseEthSignTypedDataParams(const std::string& json,
                                  base::Value::Dict* domain,
                                  EthSignTypedDataHelper::Version version,
                                  std::vector<uint8_t>* domain_hash_out,
-                                 std::vector<uint8_t>* primary_hash_out);
+                                 std::vector<uint8_t>* primary_hash_out,
+                                 mojom::EthSignTypedDataMetaPtr* meta_out);
 
 bool ParseSwitchEthereumChainParams(const std::string& json,
                                     std::string* chain_id);

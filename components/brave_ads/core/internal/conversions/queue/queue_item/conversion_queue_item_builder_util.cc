@@ -7,21 +7,19 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 
 namespace brave_ads {
 
 namespace {
-
-constexpr base::TimeDelta kProcessQueueItemAfter = base::Days(1);
-constexpr base::TimeDelta kDebugProcessQueueItemAfter = base::Minutes(1);
-
+constexpr base::TimeDelta kDebugProcessConversionAfter = base::Minutes(1);
 }  // namespace
 
-base::Time ProcessQueueItemAt() {
-  return base::Time::Now() + (ShouldDebug()
-                                  ? kDebugProcessQueueItemAfter
-                                  : RandTimeDelta(kProcessQueueItemAfter));
+base::Time ProcessConversionAt() {
+  return base::Time::Now() +
+         (ShouldDebug() ? kDebugProcessConversionAfter
+                        : RandTimeDelta(kProcessConversionAfter.Get()));
 }
 
 }  // namespace brave_ads

@@ -222,7 +222,7 @@ bool DebounceRule::ValidateAndParsePatternRegex(
   // Get matching capture groups by applying regex to the path
   size_t number_of_capturing_groups =
       pattern_regex.NumberOfCapturingGroups() + 1;
-  std::vector<re2::StringPiece> match_results(number_of_capturing_groups);
+  std::vector<std::string_view> match_results(number_of_capturing_groups);
 
   if (!pattern_regex.Match(path, 0, path.size(), RE2::UNANCHORED,
                            match_results.data(), match_results.size())) {
@@ -237,7 +237,7 @@ bool DebounceRule::ValidateAndParsePatternRegex(
   // Build parsed_value string by appending matches, ignoring the first match
   // which will be the whole match
   std::for_each(std::begin(match_results) + 1, std::end(match_results),
-                [parsed_value](re2::StringPiece matched_string) {
+                [parsed_value](std::string_view matched_string) {
                   if (!matched_string.empty()) {
                     parsed_value->append(matched_string);
                   }

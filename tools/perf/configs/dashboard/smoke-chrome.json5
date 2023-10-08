@@ -2,7 +2,7 @@
   "configurations": [{
     "dashboard-bot-name": "test-agent",
     "browser-type": "chrome",
-    "profile": "chrome-typical-win-114",
+    "profile": "chrome-typical-win-117",
     "extra-browser-args": ["--disable-features=CalculateNativeWinOcclusion"],
     "extra-benchmark-args": [],
     "save-artifacts": true,

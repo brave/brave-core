@@ -18,14 +18,16 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 
-import { color } from '@brave/leo/tokens/css'
+import { color, font, spacing } from '@brave/leo/tokens/css'
 import LeoButton from '@brave/leo/react/button'
 
 import { PlaylistItem as PlaylistItemMojo } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m'
 
+import EmptyFolderIcon from '../assets/playlist-empty-folder.svg'
 import { SortablePlaylistItem, PlaylistItem } from './playlistItem'
 import {
   PlaylistEditMode,
+  useInitialized,
   useLastPlayerState,
   usePlaylist,
   usePlaylistEditMode
@@ -40,6 +42,7 @@ import {
   useDraggedOrder,
   useSensorsWithThreshold
 } from '../utils/dragDropUtils'
+import { getLocalizedString } from '../utils/l10n'
 
 interface MatchParams {
   playlistId: string
@@ -114,11 +117,86 @@ function EditActionsContainer ({
   )
 }
 
+function useItemIdFromHash () {
+  const [idFromHash, setIdFromHash] = React.useState<string>('')
+
+  React.useEffect(() => {
+    const getId = () => window.location.hash.replace('#', '')
+    const updateId = () => setIdFromHash(getId())
+    updateId()
+    window.addEventListener('hashchange', updateId)
+    return () => window.removeEventListener('hashchange', updateId)
+  }, [])
+  return idFromHash
+}
+
+function useScrollToItem (itemId: string | undefined) {
+  const [el, setEl] = React.useState<HTMLAnchorElement | null>(null)
+
+  React.useEffect(() => {
+    if (el) window.scrollTo({ top: el.offsetTop })
+  }, [el, itemId])
+
+  return setEl
+}
+
+const StyledEmptyFolderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  align-self: stretch;
+  align-items: center;
+  width: 100vw;
+  height: calc(100vh - var(--header-height));
+`
+
+const StyledEmptyFolderMessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: ${spacing['2Xl']};
+  flex: 1 0 0;
+`
+
+const StyledEmptyFolderIcon = styled.div`
+  content: url(${`/${EmptyFolderIcon}`});
+`
+
+const StyledEmptyFolderMessage = styled.div`
+  color: ${color.text.tertiary};
+  text-align: center;
+  font: ${font.primary.default.regular};
+  padding: 0px 40px;
+`
+
+const StyledSuggestedItemsContainer = styled.div`
+  width: 100%;
+  height: 230px;
+`
+
+export function EmptyPlaylistFolder () {
+  return (
+    <StyledEmptyFolderContainer>
+      <StyledEmptyFolderMessageContainer>
+        <StyledEmptyFolderIcon />
+        <StyledEmptyFolderMessage>
+          {getLocalizedString('bravePlaylistEmptyFolderMessage')}
+        </StyledEmptyFolderMessage>
+      </StyledEmptyFolderMessageContainer>
+      <StyledSuggestedItemsContainer>
+        {/* TODO(sko) Not implemented yet */}
+      </StyledSuggestedItemsContainer>
+    </StyledEmptyFolderContainer>
+  )
+}
+
 export default function PlaylistFolder ({
   match
 }: RouteComponentProps<MatchParams>) {
   const playlist = usePlaylist(match.params.playlistId)
   const lastPlayerState = useLastPlayerState()
+  const initialized = useInitialized()
 
   React.useEffect(() => {
     // When playlist updated and player is working, notify that the current
@@ -166,10 +244,19 @@ export default function PlaylistFolder ({
 
   const [draggedId, setDraggedId] = useDraggedId()
   const [draggedOrder, setDraggedOrder] = useDraggedOrder<PlaylistItemMojo>()
-
   const sensors = useSensorsWithThreshold()
 
+  const itemIdFromHash = useItemIdFromHash()
+  const anchorElemRef = useScrollToItem(itemIdFromHash)
+
   if (!playlist) {
+    if (!initialized) {
+      // When Playlist web ui is loaded with a certain folder in the path, e.g.
+      // chrome://playlist/playlist/{playlist_id}, the App state could be uninitialized yet.
+      // We should wait for it to be loaded rather than redirect to the index page.
+      return null
+    }
+
     // After deleting a playlist from header, this could happen. In this case,
     // redirect to the index page.
     return <Redirect to='/' />
@@ -181,6 +268,10 @@ export default function PlaylistFolder ({
       ? lastPlayerState.currentList?.items ?? playlist?.items
       : playlist?.items)
 
+  if (!itemsToRender.length) {
+    return <EmptyPlaylistFolder />
+  }
+
   const getPlaylistItem = (
     item: PlaylistItemMojo | undefined,
     forDragOverlay: boolean,
@@ -188,14 +279,19 @@ export default function PlaylistFolder ({
   ) => {
     if (!item) return null
 
+    const ref =
+      !forDragOverlay && item.id === itemIdFromHash ? anchorElemRef : null
+
     const Item = forDragOverlay ? PlaylistItem : SortablePlaylistItem
     return (
       <Item
         key={item.id}
         playlist={playlist}
         item={item}
+        ref={ref}
         isEditing={editMode === PlaylistEditMode.BULK_EDIT}
         isSelected={selectedSet.has(item.id)}
+        isHighlighted={!!ref}
         canReorder={
           editMode !== PlaylistEditMode.BULK_EDIT &&
           !lastPlayerState?.shuffleEnabled

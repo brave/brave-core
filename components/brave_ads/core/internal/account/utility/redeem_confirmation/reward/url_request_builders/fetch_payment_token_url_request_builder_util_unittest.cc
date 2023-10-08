@@ -13,11 +13,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsFetchPaymentTokenUrlRequestBuilderUtilTest, GetPath) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
       BuildFetchPaymentTokenUrlPath(kTransactionId));

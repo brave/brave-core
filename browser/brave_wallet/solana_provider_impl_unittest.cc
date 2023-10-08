@@ -33,6 +33,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/permissions/brave_permission_manager.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
@@ -142,8 +143,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
         brave_wallet::TxServiceFactory::GetServiceForContext(browser_context());
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
-            PermissionManagerFactory::GetInstance()->BuildServiceInstanceFor(
-                browser_context()))));
+            PermissionManagerFactory::GetInstance()
+                ->BuildServiceInstanceForBrowserContext(browser_context())
+                .release())));
     auto* host_content_settings_map =
         HostContentSettingsMapFactory::GetForProfile(browser_context());
     ASSERT_TRUE(host_content_settings_map);
@@ -269,13 +271,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
   }
 
   void AddSolanaPermission(const mojom::AccountIdPtr& account_id) {
-    base::RunLoop run_loop;
-    brave_wallet_service_->AddPermission(
-        account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    EXPECT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+        blink::PermissionType::BRAVE_SOLANA, browser_context(), GetOrigin(),
+        account_id->address));
   }
 
   std::string Connect(absl::optional<base::Value::Dict> arg,
@@ -483,13 +481,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
  protected:
   std::unique_ptr<SolanaProviderImpl> provider_;
   std::unique_ptr<MockEventsListener> observer_;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
 
  private:
   std::unique_ptr<ScopedTestingLocalState> local_state_;
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
-  raw_ptr<TxService> tx_service_ = nullptr;
   std::unique_ptr<content::TestWebContents> web_contents_;
   content::BrowserTaskEnvironment browser_task_environment_;
   content::TestWebContentsFactory factory_;
@@ -498,6 +492,13 @@ class SolanaProviderImplUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+
+  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<TxService> tx_service_ = nullptr;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+
+ protected:
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
 };
 
 TEST_F(SolanaProviderImplUnitTest, Connect) {

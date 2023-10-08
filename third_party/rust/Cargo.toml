@@ -608,10 +608,6 @@ package = "getrandom"
 path = "group/v0_12/crate"
 package = "group"
 
-[patch.crates-io.hashbrown_v0_11]
-path = "../../../third_party/rust/hashbrown/v0_11/crate"
-package = "hashbrown"
-
 [patch.crates-io.hashbrown_v0_12]
 path = "hashbrown/v0_12/crate"
 package = "hashbrown"
@@ -669,7 +665,7 @@ path = "idna/v0_3/crate"
 package = "idna"
 
 [patch.crates-io.indexmap_v1]
-path = "../../../third_party/rust/indexmap/v1/crate"
+path = "indexmap/v1/crate"
 package = "indexmap"
 
 [patch.crates-io.iovec_v0_1]
@@ -817,7 +813,7 @@ path = "num_traits/v0_2/crate"
 package = "num-traits"
 
 [patch.crates-io.once_cell_v1]
-path = "../../../third_party/rust/once_cell/v1/crate"
+path = "once_cell/v1/crate"
 package = "once_cell"
 
 [patch.crates-io.opaque-debug_v0_3]
@@ -1237,7 +1233,7 @@ path = "tinyvec/v1/crate"
 package = "tinyvec"
 
 [patch.crates-io.toml_v0_5]
-path = "../../../third_party/rust/toml/v0_5/crate"
+path = "toml/v0_5/crate"
 package = "toml"
 
 [patch.crates-io.tracing-attributes_v0_1]

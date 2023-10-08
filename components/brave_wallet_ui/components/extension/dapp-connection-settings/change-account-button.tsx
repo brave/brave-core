@@ -8,6 +8,8 @@ import Button from '@brave/leo/react/button'
 import { useDispatch } from 'react-redux'
 
 // Actions
+import { PanelActions } from '../../../panel/actions'
+
 import {
   WalletActions
 } from '../../../common/actions'
@@ -49,13 +51,15 @@ import {
 
 // Styled Components
 import {
+  ActiveIndicator,
   DescriptionText,
   NameText
 } from './dapp-connection-settings.style'
 import {
   Row,
   Column,
-  VerticalSpace
+  VerticalSpace,
+  HorizontalSpace
 } from '../../shared/style'
 
 interface Props {
@@ -120,8 +124,8 @@ export const ChangeAccountButton = (props: Props) => {
   // Methods
   const onClickConnect = React.useCallback(() => {
     dispatch(
-      WalletActions
-        .addSitePermission({ accountId: account.accountId })
+      PanelActions
+        .requestSitePermission({ accountId: account.accountId })
     )
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)
@@ -182,12 +186,25 @@ export const ChangeAccountButton = (props: Props) => {
           >
             {account.name}
           </NameText>
-          <DescriptionText
-            textSize='12px'
-            isBold={false}
+          <Row
+            width='unset'
+            justifyContent='flex-start'
           >
-            {reduceAddress(account.accountId.address)}
-          </DescriptionText>
+            <DescriptionText
+              textSize='12px'
+              isBold={false}
+            >
+              {reduceAddress(account.accountId.address)}
+            </DescriptionText>
+            {isActive &&
+              <>
+                <HorizontalSpace space='8px' />
+                <ActiveIndicator>
+                  {getLocale('braveWalletActive')}
+                </ActiveIndicator>
+              </>
+            }
+          </Row>
           {accountFiatValue.isUndefined() ? (
             <>
               <VerticalSpace space='3px' />

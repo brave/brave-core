@@ -9,7 +9,6 @@
 #include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_unittest_util.h"
@@ -22,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
@@ -37,28 +37,26 @@ class BraveAdsRewardConfirmationUtilTest : public UnitTestBase {
     MockConfirmationUserData();
 
     AdvanceClockTo(
-        TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ false));
+        TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local=*/false));
   }
 
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  TokenGeneratorMock token_generator_mock_;
 };
 
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data*/ {});
+      &token_generator_mock_, transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       R"(eyJzaWduYXR1cmUiOiJrM3hJalZwc0FYTGNHL0NKRGVLQVphN0g3aGlrMVpyUThIOVpEZC9KVU1SQWdtYk5WY0V6VnhRb2dDZDBjcmlDZnZCQWtsd1hybWNyeVBaaFUxMlg3Zz09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)",
       BuildRewardCredential(*confirmation));
@@ -66,15 +64,15 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
 
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
-  // Assert
+  // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run).WillOnce([=](const UserDataInfo& user_data) {
     const absl::optional<ConfirmationInfo> confirmation =
@@ -93,36 +91,94 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
     expected_confirmation.reward = BuildRewardForTesting(*confirmation);
 
     expected_confirmation.user_data.dynamic = base::test::ParseJsonDict(
-        R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"1996-07-08T09:00:00.000Z"})");
+        R"(
+            {
+              "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+              "systemTimestamp": "1996-07-08T09:00:00.000Z"
+            })");
 
-    const std::string expected_fixed_data = base::ReplaceStringPlaceholders(
-        R"({"buildChannel":"release","catalog":[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"1996-07-08T09:00:00.000Z","platform":"windows","rotating_hash":"jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=","segment":"untargeted","studies":[],"versionNumber":"$1"})",
-        {GetBrowserVersionNumber()}, nullptr);
     expected_confirmation.user_data.fixed =
-        base::test::ParseJsonDict(expected_fixed_data);
-    ASSERT_TRUE(IsValid(expected_confirmation));
+        base::test::ParseJsonDict(base::ReplaceStringPlaceholders(
+            R"(
+                {
+                  "buildChannel": "release",
+                  "catalog": [
+                    {
+                      "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+                    }
+                  ],
+                  "countryCode": "US",
+                  "createdAtTimestamp": "1996-07-08T09:00:00.000Z",
+                  "platform": "windows",
+                  "rotating_hash": "jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=",
+                  "segment": "untargeted",
+                  "studies": [],
+                  "topSegment": [],
+                  "versionNumber": "$1"
+                })",
+            {GetBrowserVersionNumber()}, nullptr));
 
     EXPECT_EQ(expected_confirmation, confirmation);
   });
 
-  // Act
   BuildConfirmationUserData(transaction, callback.Get());
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
        DoNotBuildRewardConfirmationIfNoConfirmationTokens) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(BuildRewardConfirmation(&token_generator_mock_, transaction,
-                                       /*user_data*/ {}));
+                                       /*user_data=*/{}));
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest,
+       DISABLED_DoNotBuildRewardConfirmationWithInvalidTokenGenerator) {
+  // Arrange
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
+
+  // Act & Assert
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildRewardConfirmation(/*token_generator=*/nullptr, transaction,
+                              /*user_data=*/
+                              {}),
+      "Check failed: token_generator");
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest,
+       DISABLED_DoNotBuildRewardConfirmationWithInvalidTransaction) {
+  // Arrange
+  const TransactionInfo transaction;
+
+  // Act & Assert
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildRewardConfirmation(&token_generator_mock_, transaction,
+                              /*user_data=*/{}),
+      "Check failed: transaction.IsValid*");
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest,
+       DISABLED_DoNotBuildRewardConfirmationForNonRewardsUser) {
+  // Arrange
+  DisableBraveRewardsForTesting();
+
+  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
+
+  // Act & Assert
+  EXPECT_DEATH_IF_SUPPORTED(
+      BuildRewardConfirmation(&token_generator_mock_, transaction,
+                              /*user_data=*/{}),
+      "Check failed: UserHasJoinedBraveRewards*");
 }
 
 }  // namespace brave_ads

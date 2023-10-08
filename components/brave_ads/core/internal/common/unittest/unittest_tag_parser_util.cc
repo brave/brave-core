@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.h"
 
+#include <string_view>
 #include <vector>
 
 #include "base/check.h"
@@ -84,7 +85,7 @@ absl::optional<std::string> ParseTimeTagValue(const std::string& value) {
 }
 
 std::vector<std::string> ParseTagsForText(const std::string& text) {
-  re2::StringPiece text_string_piece(text);
+  std::string_view text_string_piece(text);
   const RE2 r("<(.*)>");
 
   std::vector<std::string> tags;

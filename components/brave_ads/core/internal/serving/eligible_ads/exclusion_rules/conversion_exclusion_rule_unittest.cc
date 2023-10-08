@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -35,11 +33,9 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  const ConversionExclusionRule exclusion_rule(/*ad_events*/ {});
+  const ConversionExclusionRule exclusion_rule(/*ad_events=*/{});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -51,30 +47,21 @@ TEST_F(BraveAdsConversionExclusionRuleTest, ShouldExcludeIfAlreadyConverted) {
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kConversion,
-      /*created_at*/ Now(), /*should_use_random_uuids*/ true);
+      /*created_at=*/Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const ConversionExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
 TEST_F(BraveAdsConversionExclusionRuleTest,
        ShouldIncludeIfAlreadyConvertedAndExclusionRuleDisabled) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_exclude_ad_if_converted"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kExclusionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature, {{"should_exclude_ad_if_converted", "false"}});
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetIds[0];
@@ -82,14 +69,12 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kConversion,
-      /*created_at*/ Now(), /*should_use_random_uuids*/ true);
+      /*created_at=*/Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const ConversionExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
 }
 
@@ -105,14 +90,12 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEventForTesting(
       creative_ad_2, AdType::kNotificationAd, ConfirmationType::kConversion,
-      /*created_at*/ Now(), /*should_use_random_uuids*/ true);
+      /*created_at=*/Now(), /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const ConversionExclusionRule exclusion_rule(ad_events);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad_1).has_value());
 }
 

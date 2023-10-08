@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
@@ -20,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_constants.h"
 #include "brave/components/brave_ads/core/internal/conversions/actions/conversion_action_types_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/queue/queue_item/conversion_queue_item_validation_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -128,8 +131,8 @@ void GetCallback(GetConversionQueueCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    return std::move(callback).Run(/*success*/ false,
-                                   /*conversions_queue_items*/ {});
+    return std::move(callback).Run(/*success=*/false,
+                                   /*conversions_queue_items=*/{});
   }
 
   CHECK(command_response->result);
@@ -139,10 +142,20 @@ void GetCallback(GetConversionQueueCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const ConversionQueueItemInfo conversion_queue_item =
         GetFromRecord(&*record);
+    // TODO(https://github.com/brave/brave-browser/issues/33239): Validate all
+    // Brave Ads data when loading from database
+    if (!conversion_queue_item.IsValid()) {
+      SCOPED_CRASH_KEY_STRING256(
+          "BraveAdsConversion", "invalidFieldsNames",
+          GetConversionQueueItemInvalidFieldsNames(conversion_queue_item));
+      base::debug::DumpWithoutCrashing();
+      continue;
+    }
+
     conversion_queue_items.push_back(conversion_queue_item);
   }
 
-  std::move(callback).Run(/*success*/ true, conversion_queue_items);
+  std::move(callback).Run(/*success=*/true, conversion_queue_items);
 }
 
 void GetForCreativeInstanceIdCallback(
@@ -153,8 +166,8 @@ void GetForCreativeInstanceIdCallback(
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    return std::move(callback).Run(/*success*/ false, creative_instance_id,
-                                   /*conversion_queue_items*/ {});
+    return std::move(callback).Run(/*success=*/false, creative_instance_id,
+                                   /*conversion_queue_items=*/{});
   }
 
   CHECK(command_response->result);
@@ -167,7 +180,7 @@ void GetForCreativeInstanceIdCallback(
     conversion_queue_items.push_back(conversion_queue_item);
   }
 
-  std::move(callback).Run(/*success*/ true, creative_instance_id,
+  std::move(callback).Run(/*success=*/true, creative_instance_id,
                           conversion_queue_items);
 }
 
@@ -209,7 +222,7 @@ void MigrateToV11(mojom::DBTransactionInfo* transaction) {
       "advertiser_id", "conversion_id",   "timestamp"};
 
   CopyTableColumns(transaction, "conversion_queue", "conversion_queue_temp",
-                   columns, /*should_drop*/ true);
+                   columns, /*should_drop=*/true);
 
   // Rename temporary table
   RenameTable(transaction, "conversion_queue_temp", "conversion_queue");
@@ -242,7 +255,7 @@ void MigrateToV21(mojom::DBTransactionInfo* transaction) {
       "timestamp"};
 
   CopyTableColumns(transaction, "conversion_queue", "conversion_queue_temp",
-                   columns, /*should_drop*/ true);
+                   columns, /*should_drop=*/true);
 
   // Rename temporary table
   RenameTable(transaction, "conversion_queue_temp", "conversion_queue");
@@ -283,7 +296,7 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
 
   CopyTableColumns(transaction, "conversion_queue", "conversion_queue_temp",
                    columns,
-                   /*should_drop*/ true);
+                   /*should_drop=*/true);
 
   // Rename temporary table
   RenameTable(transaction, "conversion_queue_temp", "conversion_queue");
@@ -320,7 +333,7 @@ void MigrateToV28(mojom::DBTransactionInfo* transaction) {
 
   CopyTableColumns(transaction, "conversion_queue", "conversion_queue_temp",
                    from_columns, to_columns,
-                   /*should_drop*/ true);
+                   /*should_drop=*/true);
 
   // Rename temporary table
   RenameTable(transaction, "conversion_queue_temp", "conversion_queue");
@@ -378,7 +391,7 @@ void MigrateToV30(mojom::DBTransactionInfo* transaction) {
       "was_processed"};
 
   CopyTableColumns(transaction, "conversion_queue", "conversion_queue_temp",
-                   from_columns, to_columns, /*should_drop*/ true);
+                   from_columns, to_columns, /*should_drop=*/true);
 
   // Rename temporary table
   RenameTable(transaction, "conversion_queue_temp", "conversion_queue");
@@ -392,7 +405,7 @@ void ConversionQueue::Save(
     const ConversionQueueItemList& conversion_queue_items,
     ResultCallback callback) const {
   if (conversion_queue_items.empty()) {
-    return std::move(callback).Run(/*success*/ true);
+    return std::move(callback).Run(/*success=*/true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -480,8 +493,8 @@ void ConversionQueue::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetConversionQueueForCreativeInstanceIdCallback callback) const {
   if (creative_instance_id.empty()) {
-    return std::move(callback).Run(/*success*/ false, creative_instance_id,
-                                   /*conversion_queue_items*/ {});
+    return std::move(callback).Run(/*success=*/false, creative_instance_id,
+                                   /*conversion_queue_items=*/{});
   }
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -600,7 +613,7 @@ std::string ConversionQueue::BuildInsertOrUpdateSql(
       "verifiable_conversion_id, verifiable_advertiser_public_key, process_at, "
       "was_processed) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 11, binded_parameters_count)},
+                           /*parameters_count=*/11, binded_parameters_count)},
       nullptr);
 }
 

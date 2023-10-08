@@ -25,6 +25,8 @@ class NTPUtilsTest : public ::testing::Test {
 
   Profile* profile() { return profile_.get(); }
 
+  PrefService* GetPrefs() { return profile_->GetPrefs(); }
+
  protected:
   // BrowserTaskEnvironment is needed before TestingProfile
   content::BrowserTaskEnvironment task_environment_;
@@ -34,22 +36,22 @@ class NTPUtilsTest : public ::testing::Test {
 
 TEST_F(NTPUtilsTest, MigratesHideWidgetTrue) {
   // Manually turn all off
-  auto* prefs = profile()->GetPrefs();
+  auto* prefs = GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, false);
   // Migrate
-  new_tab_page::MigrateNewTabPagePrefs(profile());
+  new_tab_page::MigrateNewTabPagePrefs(GetPrefs());
   // Expect migrated to off
   EXPECT_TRUE(prefs->GetBoolean(kNewTabPageHideAllWidgets));
 }
 
 TEST_F(NTPUtilsTest, MigratesHideWidgetFalse) {
   // Manually turn some off
-  auto* prefs = profile()->GetPrefs();
+  auto* prefs = GetPrefs();
   prefs->SetBoolean(kNewTabPageShowRewards, false);
   prefs->SetBoolean(kNewTabPageShowBraveTalk, true);
   // Migrate
-  new_tab_page::MigrateNewTabPagePrefs(profile());
+  new_tab_page::MigrateNewTabPagePrefs(GetPrefs());
   // Expect not migrated
   EXPECT_FALSE(prefs->GetBoolean(kNewTabPageHideAllWidgets));
 }
@@ -57,8 +59,8 @@ TEST_F(NTPUtilsTest, MigratesHideWidgetFalse) {
 TEST_F(NTPUtilsTest, MigratesHideWidgetFalseDefault) {
   // Don't manually change any settings
   // Migrate
-  new_tab_page::MigrateNewTabPagePrefs(profile());
+  new_tab_page::MigrateNewTabPagePrefs(GetPrefs());
   // Expect not migrated
-  auto* prefs = profile()->GetPrefs();
+  auto* prefs = GetPrefs();
   EXPECT_FALSE(prefs->GetBoolean(kNewTabPageHideAllWidgets));
 }

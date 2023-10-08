@@ -75,11 +75,6 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
     brave_stats::BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(
         &stats_updated_callback);
 
-    auto stats_threshold_callback = base::BindRepeating(
-        &BraveStatsUpdaterBrowserTest::OnThresholdStatsUpdated,
-        base::Unretained(this));
-    brave_stats::BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
-        &stats_threshold_callback);
     PlatformBrowserTest::SetUp();
   }
 
@@ -87,8 +82,6 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
     brave::BraveReferralsService::SetReferralInitializedCallbackForTesting(
         nullptr);
     brave_stats::BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(nullptr);
-    brave_stats::BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
-        nullptr);
     PlatformBrowserTest::TearDown();
   }
 
@@ -147,24 +140,6 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
     wait_for_standard_stats_updated_loop_->Run();
   }
 
-  void OnThresholdStatsUpdated(const GURL& update_url) {
-    if (wait_for_threshold_stats_updated_loop_) {
-      wait_for_threshold_stats_updated_loop_->Quit();
-    }
-
-    on_threshold_stats_updated_ = true;
-    update_url_ = update_url;
-  }
-
-  void WaitForThresholdStatsUpdatedCallback() {
-    if (wait_for_threshold_stats_updated_loop_ || on_threshold_stats_updated_) {
-      return;
-    }
-
-    wait_for_threshold_stats_updated_loop_ = std::make_unique<base::RunLoop>();
-    wait_for_threshold_stats_updated_loop_->Run();
-  }
-
   void DisableStatsUsagePing() {
     g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, false);
   }
@@ -172,14 +147,12 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
  private:
   std::unique_ptr<base::RunLoop> wait_for_referral_initialized_loop_;
   std::unique_ptr<base::RunLoop> wait_for_standard_stats_updated_loop_;
-  std::unique_ptr<base::RunLoop> wait_for_threshold_stats_updated_loop_;
 
   std::string referral_code_;
   GURL update_url_;
 
   bool on_referral_initialized_ = false;
   bool on_standard_stats_updated_ = false;
-  bool on_threshold_stats_updated_ = false;
 };
 
 // Run the stats updater and verify that it sets the first check preference
@@ -195,43 +168,19 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
 }
 
-// Run the stats updater and verify the threshold endpoint is reached
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
-                       StatsUpdaterThresholdSetsFirstCheckPreference) {
-  EXPECT_TRUE(
-      g_brave_browser_process->brave_stats_updater()->MaybeDoThresholdPing(3));
-
-  WaitForReferralInitializeCallback();
-  WaitForThresholdStatsUpdatedCallback();
-
-  // We get //1/usage/brave-core-threshold here, so ignore the first slash.
-  EXPECT_STREQ(GetUpdateURL().path().c_str() + 1,
-               "/1/usage/brave-core-threshold");
-
-  // First check and Threshold check should be set.
-  EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
-  EXPECT_TRUE(
-      g_browser_process->local_state()->GetBoolean(kThresholdCheckMade));
-}
-
 // The stats updater should not reach the endpoint
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        StatsUpdaterUsagePingDisabledFirstCheck) {
   DisableStatsUsagePing();
 
-  EXPECT_FALSE(
-      g_brave_browser_process->brave_stats_updater()->MaybeDoThresholdPing(3));
   WaitForReferralInitializeCallback();
   WaitForStandardStatsUpdatedCallback();
-  WaitForThresholdStatsUpdatedCallback();
 
   // Dummy URL confirms no request was triggered
   EXPECT_STREQ(GetUpdateURL().host().c_str(), "no-thanks.invalid");
 
   // No prefs should be updated
   EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
-  EXPECT_FALSE(
-      g_browser_process->local_state()->GetBoolean(kThresholdCheckMade));
 }
 
 // Run the stats updater with no active referral and verify that the

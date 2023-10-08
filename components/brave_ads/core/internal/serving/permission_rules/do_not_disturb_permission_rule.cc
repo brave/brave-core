@@ -9,13 +9,11 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
 
 namespace brave_ads {
 
 namespace {
-
-constexpr int kDoNotDisturbFromHour = 21;  // 9pm
-constexpr int kDoNotDisturbToHour = 6;     // 6am
 
 bool DoesRespectCap() {
   if (PlatformHelper::GetInstance().GetType() != PlatformType::kAndroid) {
@@ -32,8 +30,8 @@ bool DoesRespectCap() {
   time.LocalExplode(&exploded);
   CHECK(exploded.HasValidValues());
 
-  return exploded.hour >= kDoNotDisturbToHour &&
-         exploded.hour < kDoNotDisturbFromHour;
+  return exploded.hour >= kDoNotDisturbToHour.Get() &&
+         exploded.hour < kDoNotDisturbFromHour.Get();
 }
 
 }  // namespace

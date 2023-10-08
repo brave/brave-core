@@ -27,9 +27,7 @@ TEST_F(BraveAdsSigningKeyTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const SigningKey signing_key("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(signing_key.has_value());
 }
 
@@ -37,15 +35,11 @@ TEST_F(BraveAdsSigningKeyTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const SigningKey signing_key(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(signing_key.has_value());
 }
 
 TEST_F(BraveAdsSigningKeyTest, DecodeBase64) {
-  // Arrange
-
   // Act
   const SigningKey signing_key = SigningKey::DecodeBase64(kSigningKeyBase64);
 
@@ -54,8 +48,6 @@ TEST_F(BraveAdsSigningKeyTest, DecodeBase64) {
 }
 
 TEST_F(BraveAdsSigningKeyTest, FailToDecodeEmptyBase64) {
-  // Arrange
-
   // Act
   const SigningKey signing_key = SigningKey::DecodeBase64("");
 
@@ -64,8 +56,6 @@ TEST_F(BraveAdsSigningKeyTest, FailToDecodeEmptyBase64) {
 }
 
 TEST_F(BraveAdsSigningKeyTest, FailToDecodeInvalidBase64) {
-  // Arrange
-
   // Act
   const SigningKey signing_key = SigningKey::DecodeBase64(kInvalidBase64);
 
@@ -77,9 +67,7 @@ TEST_F(BraveAdsSigningKeyTest, EncodeBase64) {
   // Arrange
   const SigningKey signing_key(kSigningKeyBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kSigningKeyBase64, signing_key.EncodeBase64());
 }
 
@@ -87,9 +75,7 @@ TEST_F(BraveAdsSigningKeyTest, Sign) {
   // Arrange
   const SigningKey signing_key(kSigningKeyBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetSignedTokenForTesting(),
             signing_key.Sign(GetBlindedTokenForTesting()));
 }
@@ -98,9 +84,7 @@ TEST_F(BraveAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
   // Arrange
   const SigningKey signing_key(kSigningKeyBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(signing_key.Sign(GetInvalidBlindedTokenForTesting()));
 }
 
@@ -108,9 +92,7 @@ TEST_F(BraveAdsSigningKeyTest, RederiveUnblindedToken) {
   // Arrange
   SigningKey signing_key(kSigningKeyBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetUnblindedTokenForTesting(),
             signing_key.RederiveUnblindedToken(GetTokenPreimageForTesting()));
 }
@@ -120,9 +102,7 @@ TEST_F(BraveAdsSigningKeyTest,
   // Arrange
   SigningKey signing_key(kSigningKeyBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       signing_key.RederiveUnblindedToken(GetInvalidTokenPreimageForTesting()));
 }
@@ -131,9 +111,7 @@ TEST_F(BraveAdsSigningKeyTest, GetPublicKey) {
   // Arrange
   SigningKey signing_key(kSigningKeyBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(PublicKey(kPublicKeyBase64), signing_key.GetPublicKey());
 }
 
@@ -141,9 +119,7 @@ TEST_F(BraveAdsSigningKeyTest, IsEqual) {
   // Arrange
   const SigningKey signing_key;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(signing_key, signing_key);
 }
 
@@ -151,9 +127,7 @@ TEST_F(BraveAdsSigningKeyTest, IsEmptyBase64Equal) {
   // Arrange
   const SigningKey signing_key("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(signing_key, signing_key);
 }
 
@@ -161,9 +135,7 @@ TEST_F(BraveAdsSigningKeyTest, IsInvalidBase64Equal) {
   // Arrange
   const SigningKey signing_key(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(signing_key, signing_key);
 }
 
@@ -171,9 +143,7 @@ TEST_F(BraveAdsSigningKeyTest, IsNotEqual) {
   // Arrange
   const SigningKey signing_key;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const SigningKey different_signing_key;
   EXPECT_NE(different_signing_key, signing_key);
 }

@@ -97,9 +97,9 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
   if (!using_gtk_caption_button) {
     auto* window_order_provider =
         views::WindowButtonOrderProvider::GetInstance();
-    return {views::kCaptionButtonWidth *
+    return {views::GetCaptionButtonWidth() *
                 window_order_provider->leading_buttons().size(),
-            views::kCaptionButtonWidth *
+            views::GetCaptionButtonWidth() *
                 window_order_provider->trailing_buttons().size()};
   }
 

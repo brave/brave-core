@@ -13,10 +13,19 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNotificationAdServingFeature);
 
-bool IsNotificationAdServingFeatureEnabled();
-
 constexpr base::FeatureParam<int> kNotificationAdServingVersion{
     &kNotificationAdServingFeature, "version", 2};
+
+constexpr base::FeatureParam<base::TimeDelta> kServeFirstNotificationAdAfter{
+    &kNotificationAdServingFeature, "serve_first_ad_after", base::Minutes(2)};
+
+constexpr base::FeatureParam<base::TimeDelta>
+    kMinimumDelayBeforeServingNotificationAd{
+        &kNotificationAdServingFeature, "minimum_delay_before_serving_an_ad",
+        base::Minutes(1)};
+
+constexpr base::FeatureParam<base::TimeDelta> kRetryServingNotificationAdAfter{
+    &kNotificationAdServingFeature, "retry_serving_ad_after", base::Minutes(2)};
 
 }  // namespace brave_ads
 

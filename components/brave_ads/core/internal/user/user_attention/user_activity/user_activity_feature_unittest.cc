@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,167 +13,119 @@
 namespace brave_ads {
 
 TEST(BraveAdsUserActivityFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsUserActivityFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kUserActivityFeature));
 }
 
 TEST(BraveAdsUserActivityFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kUserActivityFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsUserActivityFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kUserActivityFeature));
 }
 
-TEST(BraveAdsUserActivityFeatureTest, Triggers) {
+TEST(BraveAdsUserActivityFeatureTest, MaximumUserActivityEvents) {
   // Arrange
-  base::FieldTrialParams params;
-  params["triggers"] = "01=0.5;010203=1.0;0203=0.75";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kUserActivityFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kUserActivityFeature, {{"maximum_events", "7"}});
 
-  // Act
+  // Act & Assert
+  EXPECT_EQ(7, kMaximumUserActivityEvents.Get());
+}
 
-  // Assert
+TEST(BraveAdsUserActivityFeatureTest, DefaultMaximumUserActivityEvents) {
+  // Act & Assert
+  EXPECT_EQ(3600, kMaximumUserActivityEvents.Get());
+}
+
+TEST(BraveAdsUserActivityFeatureTest,
+     DefaultMaximumUserActivityEventsWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
+
+  // Act & Assert
+  EXPECT_EQ(3600, kMaximumUserActivityEvents.Get());
+}
+
+TEST(BraveAdsUserActivityFeatureTest, UserActivityTriggers) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kUserActivityFeature, {{"triggers", "01=0.5;010203=1.0;0203=0.75"}});
+
+  // Act & Assert
   EXPECT_EQ("01=0.5;010203=1.0;0203=0.75", kUserActivityTriggers.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultTriggers) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityTriggers) {
+  // Act & Assert
   EXPECT_EQ(
       "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0",
       kUserActivityTriggers.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultTriggersWhenDisabled) {
+TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityTriggersWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kUserActivityFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(
       "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0",
       kUserActivityTriggers.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, TimeWindow) {
+TEST(BraveAdsUserActivityFeatureTest, UserActivityTimeWindow) {
   // Arrange
-  base::FieldTrialParams params;
-  params["time_window"] = "2h";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kUserActivityFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kUserActivityFeature, {{"time_window", "2h"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Hours(2), kUserActivityTimeWindow.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultTimeWindow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityTimeWindow) {
+  // Act & Assert
   EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultTimeWindowWhenDisabled) {
+TEST(BraveAdsUserActivityFeatureTest,
+     DefaultUserActivityTimeWindowWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kUserActivityFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(15), kUserActivityTimeWindow.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, Threshold) {
+TEST(BraveAdsUserActivityFeatureTest, UserActivityThreshold) {
   // Arrange
-  base::FieldTrialParams params;
-  params["threshold"] = "7.0";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kUserActivityFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kUserActivityFeature, {{"threshold", "7.0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7.0, kUserActivityThreshold.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultThreshold) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityThreshold) {
+  // Act & Assert
   EXPECT_EQ(0.0, kUserActivityThreshold.Get());
 }
 
-TEST(BraveAdsUserActivityFeatureTest, DefaultThresholdWhenDisabled) {
+TEST(BraveAdsUserActivityFeatureTest,
+     DefaultUserActivityThresholdWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kUserActivityFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0.0, kUserActivityThreshold.Get());
 }
 

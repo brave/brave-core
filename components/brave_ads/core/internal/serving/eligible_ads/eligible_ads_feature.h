@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kEligibleAdFeature);
 
-bool IsEligibleAdFeatureEnabled();
-
 constexpr base::FeatureParam<int> kBrowsingHistoryMaxCount{
     &kEligibleAdFeature, "browsing_history_max_count", 5'000};
 

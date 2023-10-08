@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,75 +13,124 @@
 namespace brave_ads {
 
 TEST(BraveAdsNotificationAdServingFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsNotificationAdServingFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kNotificationAdServingFeature));
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsNotificationAdServingFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kNotificationAdServingFeature));
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, ServingVersion) {
+TEST(BraveAdsNotificationAdServingFeatureTest, NotificationAdServingVersion) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "0";
-  enabled_features.emplace_back(kNotificationAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kNotificationAdServingVersion.Get());
 }
 
-TEST(BraveAdsNotificationAdServingFeatureTest, DefaultServingVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultNotificationAdServingVersion) {
+  // Act & Assert
   EXPECT_EQ(2, kNotificationAdServingVersion.Get());
 }
 
 TEST(BraveAdsNotificationAdServingFeatureTest,
-     DefaultServingVersionWhenDisabled) {
+     DefaultNotificationAdServingVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, kNotificationAdServingVersion.Get());
+}
+
+TEST(BraveAdsNotificationAdServingFeatureTest, ServeFirstNotificationAdAfter) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"serve_first_ad_after", "10m"}});
+
+  // Act & Assert
+  EXPECT_EQ(base::Minutes(10), kServeFirstNotificationAdAfter.Get());
+}
+
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultServeFirstNotificationAdAfter) {
+  // Act & Assert
+  EXPECT_EQ(base::Minutes(2), kServeFirstNotificationAdAfter.Get());
+}
+
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultServeFirstNotificationAdAfterWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
+
+  // Act & Assert
+  EXPECT_EQ(base::Minutes(2), kServeFirstNotificationAdAfter.Get());
+}
+
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     MinimumDelayBeforeServingNotificationAd) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature,
+      {{"minimum_delay_before_serving_an_ad", "10m"}});
+
+  // Act & Assert
+  EXPECT_EQ(base::Minutes(10), kMinimumDelayBeforeServingNotificationAd.Get());
+}
+
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultMinimumDelayBeforeServingNotificationAd) {
+  // Act & Assert
+  EXPECT_EQ(base::Minutes(1), kMinimumDelayBeforeServingNotificationAd.Get());
+}
+
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultMinimumDelayBeforeServingNotificationAdWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
+
+  // Act & Assert
+  EXPECT_EQ(base::Minutes(1), kMinimumDelayBeforeServingNotificationAd.Get());
+}
+
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     RetryServingNotificationAdAfter) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdServingFeature, {{"retry_serving_ad_after", "10m"}});
+
+  // Act & Assert
+  EXPECT_EQ(base::Minutes(10), kRetryServingNotificationAdAfter.Get());
+}
+
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultRetryServingNotificationAdAfter) {
+  // Act & Assert
+  EXPECT_EQ(base::Minutes(2), kRetryServingNotificationAdAfter.Get());
+}
+
+TEST(BraveAdsNotificationAdServingFeatureTest,
+     DefaultRetryServingNotificationAdAfterWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdServingFeature);
+
+  // Act & Assert
+  EXPECT_EQ(base::Minutes(2), kRetryServingNotificationAdAfter.Get());
 }
 
 }  // namespace brave_ads

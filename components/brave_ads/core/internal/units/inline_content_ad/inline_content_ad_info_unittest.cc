@@ -19,12 +19,10 @@ class BraveAdsInlineContentAdInfoTest : public UnitTestBase {};
 TEST_F(BraveAdsInlineContentAdInfoTest, IsValid) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids*/ true);
+      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ad.IsValid());
 }
 
@@ -32,9 +30,7 @@ TEST_F(BraveAdsInlineContentAdInfoTest, IsInvalid) {
   // Arrange
   const InlineContentAdInfo ad;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ad.IsValid());
 }
 

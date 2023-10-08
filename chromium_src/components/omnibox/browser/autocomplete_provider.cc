@@ -10,6 +10,7 @@
 // metrics and the name is mostly useful for debugging.
 #define TYPE_BOOKMARK   \
   TYPE_BRAVE_COMMANDER: \
+  case TYPE_BRAVE_LEO:  \
   case TYPE_BOOKMARK
 #include "src/components/omnibox/browser/autocomplete_provider.cc"
 #undef TYPE_BOOKMARK

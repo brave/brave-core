@@ -56,12 +56,12 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, EligableSegmentsAreEmpty) {
 
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
   // Arrange
-  SetEpsilonGreedyBanditEligibleSegments(
-      SupportedEpsilonGreedyBanditSegments());
-
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEpsilonGreedyBanditFeature, {{"epsilon_value", "0.25"}});
+
+  SetEpsilonGreedyBanditEligibleSegments(
+      SupportedEpsilonGreedyBanditSegments());
 
   const EpsilonGreedyBanditProcessor processor;
 
@@ -76,19 +76,19 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
 
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   // Arrange
-  SetEpsilonGreedyBanditEligibleSegments(
-      SupportedEpsilonGreedyBanditSegments());
-
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEpsilonGreedyBanditFeature, {{"epsilon_value", "1.0"}});
 
+  SetEpsilonGreedyBanditEligibleSegments(
+      SupportedEpsilonGreedyBanditSegments());
+
   const EpsilonGreedyBanditProcessor processor;
 
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
-      /*segment*/ "travel", mojom::NotificationAdEventType::kDismissed});
+      /*segment=*/"travel", mojom::NotificationAdEventType::kDismissed});
   processor.Process(EpsilonGreedyBanditFeedbackInfo{
-      /*segment*/ "personal finance",
+      /*segment=*/"personal finance",
       mojom::NotificationAdEventType::kClicked});
 
   NotifyDidInitializeAds();
@@ -103,15 +103,15 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
 
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   // Arrange
-  SetEpsilonGreedyBanditEligibleSegments(
-      SupportedEpsilonGreedyBanditSegments());
-
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEpsilonGreedyBanditFeature, {{"epsilon_value", "0.0"}});
 
-  // Set all values to zero by choosing a zero-reward action due to
-  // optimistic initial values for arms
+  SetEpsilonGreedyBanditEligibleSegments(
+      SupportedEpsilonGreedyBanditSegments());
+
+  // Set all values to zero by choosing a zero-reward action due to optimistic
+  // initial values for arms
   const EpsilonGreedyBanditProcessor processor;
   NotifyDidInitializeAds();
 
@@ -146,27 +146,23 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
 
   NotifyDidInitializeAds();
 
-  // Act
-  const SegmentList segments = GetEpsilonGreedyBanditSegments();
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {"science", "travel",
                                          "technology & computing"};
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetEpsilonGreedyBanditSegments());
 }
 
 TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   // Arrange
-  SetEpsilonGreedyBanditEligibleSegments(
-      SegmentList{"science", "technology & computing", "invalid_segment"});
-
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kEpsilonGreedyBanditFeature, {{"epsilon_value", "0.0"}});
 
-  // Set all values to zero by choosing a zero-reward action due to
-  // optimistic initial values for arms
+  SetEpsilonGreedyBanditEligibleSegments(
+      SegmentList{"science", "technology & computing", "invalid_segment"});
+
+  // Set all values to zero by choosing a zero-reward action due to optimistic
+  // initial values for arms
   const EpsilonGreedyBanditProcessor processor;
   for (const std::string& segment : SupportedEpsilonGreedyBanditSegments()) {
     processor.Process(EpsilonGreedyBanditFeedbackInfo{
@@ -199,12 +195,9 @@ TEST_F(BraveAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
 
   NotifyDidInitializeAds();
 
-  // Act
-  const SegmentList segments = GetEpsilonGreedyBanditSegments();
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_segments = {"science", "technology & computing"};
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_EQ(expected_segments, GetEpsilonGreedyBanditSegments());
 }
 
 }  // namespace brave_ads

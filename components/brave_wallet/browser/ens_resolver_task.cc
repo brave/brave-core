@@ -28,6 +28,7 @@
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace brave_wallet {
 namespace {
@@ -181,15 +182,6 @@ absl::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
   return result;
 }
 
-class ScopedWorkOnTask {
- public:
-  explicit ScopedWorkOnTask(EnsResolverTask* task) : task_(task) {}
-  ~ScopedWorkOnTask() { task_->WorkOnTask(); }
-
- private:
-  raw_ptr<EnsResolverTask> task_ = nullptr;
-};
-
 EnsResolverTask::EnsResolverTask(
     DoneCallback done_callback,
     APIRequestHelper* api_request_helper,
@@ -296,7 +288,7 @@ void EnsResolverTask::FetchEnsResolver() {
 
 void EnsResolverTask::OnFetchEnsResolverDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -342,7 +334,7 @@ void EnsResolverTask::FetchEnsip10Support() {
 
 void EnsResolverTask::OnFetchEnsip10SupportDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -378,7 +370,7 @@ void EnsResolverTask::FetchEnsRecord() {
 
 void EnsResolverTask::OnFetchEnsRecordDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -429,7 +421,7 @@ void EnsResolverTask::FetchWithEnsip10Resolve() {
 
 void EnsResolverTask::OnFetchWithEnsip10ResolveDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -534,7 +526,7 @@ void EnsResolverTask::FetchOffchainData() {
 }
 
 void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());
@@ -575,7 +567,7 @@ void EnsResolverTask::FetchOffchainCallback() {
 
 void EnsResolverTask::OnFetchOffchainCallbackDone(
     APIRequestResult api_request_result) {
-  ScopedWorkOnTask work_on_task(this);
+  absl::Cleanup cleanup([this]() { this->WorkOnTask(); });
 
   if (!api_request_result.Is2XXResponseCode()) {
     task_error_.emplace(MakeInternalError());

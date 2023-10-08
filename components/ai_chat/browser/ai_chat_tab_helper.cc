@@ -14,18 +14,19 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
-#include "brave/components/ai_chat/browser/ai_chat_metrics.h"
-#include "brave/components/ai_chat/browser/constants.h"
-#include "brave/components/ai_chat/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/browser/engine/engine_consumer_claude.h"
-#include "brave/components/ai_chat/browser/engine/engine_consumer_llama.h"
 #include "brave/components/ai_chat/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
+#include "brave/components/ai_chat/core/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/engine/engine_consumer_claude.h"
+#include "brave/components/ai_chat/core/engine/engine_consumer_llama.h"
+#include "brave/components/ai_chat/core/models.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -64,26 +65,33 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
       base::BindRepeating(
           &AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions,
           weak_ptr_factory_.GetWeakPtr()));
-  // TODO(petemill): Engines and model names should be selectable
+  // Engines and model names are be selectable
   // per conversation, not static.
-  if (UsesLlama2PromptTemplate(features::kAIModelName.Get())) {
-    VLOG(1) << "Started tab helper for AI engine: llama";
-    engine_ = std::make_unique<EngineConsumerLlamaRemote>(
-        web_contents->GetBrowserContext()
-            ->GetDefaultStoragePartition()
-            ->GetURLLoaderFactoryForBrowserProcess());
-  } else {
-    VLOG(1) << "Started tab helper for AI engine: claude";
-    engine_ = std::make_unique<EngineConsumerClaudeRemote>(
-        web_contents->GetBrowserContext()
-            ->GetDefaultStoragePartition()
-            ->GetURLLoaderFactoryForBrowserProcess());
-  }
+  // Start with default.
+  // TODO(petemill): Default should come from pref value.
+  model_key_ = features::kAIModelKey.Get();
+  InitEngine();
+  DCHECK(engine_);
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
+
+void AIChatTabHelper::ChangelModel(const std::string& model_key) {
+  DCHECK(!model_key.empty());
+  // Check that the key exists
+  if (kAllModels.find(model_key) == kAllModels.end()) {
+    NOTREACHED() << "No matching model found for key: " << model_key;
+    return;
+  }
+  model_key_ = model_key;
+  InitEngine();
+}
+
+const mojom::Model& AIChatTabHelper::GetCurrentModel() {
+  return kAllModels.find(model_key_)->second;
+}
 
 const std::vector<ConversationTurn>& AIChatTabHelper::GetConversationHistory() {
   return chat_history_;
@@ -92,8 +100,44 @@ const std::vector<ConversationTurn>& AIChatTabHelper::GetConversationHistory() {
 void AIChatTabHelper::OnConversationActiveChanged(bool is_conversation_active) {
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
+  if (MaybePopPendingRequests()) {
+    return;
+  }
   MaybeGeneratePageText();
   MaybeGenerateQuestions();
+}
+
+void AIChatTabHelper::InitEngine() {
+  DCHECK(!model_key_.empty());
+  auto model_match = kAllModels.find(model_key_);
+  // Make sure we get a valid model, defaulting to static default or first.
+  if (model_match == kAllModels.end()) {
+    NOTREACHED() << "Model was not part of static model list";
+    // Use default
+    model_match = kAllModels.find(kModelsDefaultKey);
+    const auto is_found = model_match != kAllModels.end();
+    DCHECK(is_found);
+    if (!is_found) {
+      model_match = kAllModels.begin();
+    }
+  }
+  auto model = model_match->second;
+  // TODO(petemill): Engine enum on model to decide which one
+  if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
+    VLOG(1) << "Started tab helper for AI engine: llama";
+    engine_ = std::make_unique<EngineConsumerLlamaRemote>(
+        model, web_contents()
+                   ->GetBrowserContext()
+                   ->GetDefaultStoragePartition()
+                   ->GetURLLoaderFactoryForBrowserProcess());
+  } else {
+    VLOG(1) << "Started tab helper for AI engine: claude";
+    engine_ = std::make_unique<EngineConsumerClaudeRemote>(
+        model, web_contents()
+                   ->GetBrowserContext()
+                   ->GetDefaultStoragePartition()
+                   ->GetURLLoaderFactoryForBrowserProcess());
+  }
 }
 
 bool AIChatTabHelper::HasUserOptedIn() {
@@ -101,7 +145,10 @@ bool AIChatTabHelper::HasUserOptedIn() {
 }
 
 void AIChatTabHelper::OnUserOptedIn() {
-  MaybeGeneratePageText();
+  if (!MaybePopPendingRequests()) {
+    MaybeGeneratePageText();
+  }
+
   if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
     ai_chat_metrics_->RecordEnabled();
   }
@@ -154,10 +201,35 @@ void AIChatTabHelper::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
+bool AIChatTabHelper::MaybePopPendingRequests() {
+  if (!is_conversation_active_ || !HasUserOptedIn()) {
+    return false;
+  }
+
+  if (!pending_request_) {
+    return false;
+  }
+
+  mojom::ConversationTurn request = std::move(*pending_request_);
+  pending_request_.reset();
+  MakeAPIRequestWithConversationHistoryUpdate(std::move(request));
+  return true;
+}
+
 void AIChatTabHelper::MaybeGeneratePageText() {
   const GURL url = web_contents()->GetLastCommittedURL();
 
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
+    return;
+  }
+
+  // User might have already asked questions before the page is loaded. It'd be
+  // strange if we generate contents based on the page.
+  // TODO(sko) This makes it impossible to ask something like "Summarize this
+  // page" once a user already asked a question. But for now we'd like to keep
+  // it simple and not confuse users with the context changing. We'll see what
+  // users say.
+  if (!chat_history_.empty()) {
     return;
   }
 
@@ -245,6 +317,7 @@ void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
   article_text_.clear();
   suggested_questions_.clear();
+  pending_request_.reset();
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
   has_generated_questions_ = false;
@@ -309,6 +382,11 @@ void AIChatTabHelper::GenerateQuestions() {
     return;
   }
 
+  // Don't generate suggested questions if there's already on-going conversions
+  if (!chat_history_.empty()) {
+    return;
+  }
+
   has_generated_questions_ = true;
   OnSuggestedQuestionsChanged();
   // Make API request for questions.
@@ -341,10 +419,13 @@ void AIChatTabHelper::OnSuggestedQuestionsResponse(
 
 void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
     mojom::ConversationTurn turn) {
-  // This function should not be presented in the UI if the user has not
-  // opted-in yet.
-  DCHECK(HasUserOptedIn());
-  DCHECK(is_conversation_active_);
+  if (!is_conversation_active_ || !HasUserOptedIn()) {
+    // This function should not be presented in the UI if the user has not
+    // opted-in yet.
+    pending_request_ =
+        std::make_unique<mojom::ConversationTurn>(std::move(turn));
+    return;
+  }
 
   DCHECK(turn.character_type == CharacterType::HUMAN);
 
@@ -451,6 +532,7 @@ void AIChatTabHelper::OnEngineCompletionComplete(
     // handle failure
     SetAPIError(std::move(result.error()));
   }
+
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnAPIRequestInProgress(IsRequestInProgress());

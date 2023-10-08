@@ -17,8 +17,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNewTabPageAdFeature);
 
-bool IsNewTabPageAdFeatureEnabled();
-
 constexpr base::FeatureParam<int> kMaximumNewTabPageAdsPerHour{
     &kNewTabPageAdFeature, "maximum_ads_per_hour", 4};
 

@@ -39,12 +39,6 @@
 
 namespace brave_wallet {
 
-namespace {
-
-const char kPasswordBrave[] = "brave";
-
-}  // namespace
-
 class TestBraveWalletServiceObserverForAssetDiscoveryManager
     : public brave_wallet::BraveWalletServiceObserverBase {
  public:
@@ -303,8 +297,8 @@ TEST_F(AssetDiscoveryManagerUnitTest, AccountsAdded) {
   base::Time current_assets_last_discovered_at =
       GetPrefs()->GetTime(kBraveWalletLastDiscoveredAssetsAt);
   ASSERT_EQ(current_assets_last_discovered_at, base::Time());
-  keyring_service_->RestoreWallet(kMnemonicDivideCruise, kPasswordBrave, false,
-                                  base::DoNothing());
+  ASSERT_TRUE(keyring_service_->RestoreWalletSync(kMnemonicDivideCruise,
+                                                  kTestWalletPassword, false));
   wallet_service_observer_->WaitForOnDiscoverAssetsCompleted({});
   base::Time previous_assets_last_discovered_at =
       current_assets_last_discovered_at;

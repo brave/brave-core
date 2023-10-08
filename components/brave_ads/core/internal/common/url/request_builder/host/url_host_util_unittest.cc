@@ -20,9 +20,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetStaticUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://static.ads.brave.com", GetStaticUrlHost());
 }
 
@@ -31,9 +29,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetGeoUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://geo.ads.brave.com", GetGeoUrlHost());
 }
 
@@ -42,9 +38,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://mywallet.ads.brave.com", GetNonAnonymousUrlHost());
 }
 
@@ -53,9 +47,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://anonymous.ads.brave.com", GetAnonymousUrlHost());
 }
 
@@ -64,9 +56,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousSearchUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://search.anonymous.ads.brave.com",
             GetAnonymousSearchUrlHost());
 }

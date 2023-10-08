@@ -28,7 +28,7 @@ ConversionQueue::~ConversionQueue() {
 
 void ConversionQueue::Add(const ConversionInfo& conversion) {
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(conversion, ProcessQueueItemAt());
+      BuildConversionQueueItem(conversion, ProcessConversionAt());
   CHECK(conversion_queue_item.IsValid());
 
   const database::table::ConversionQueue database_table;

@@ -17,17 +17,18 @@ class Time;
 
 namespace brave_ads {
 
-// Unlike |ads_client_mock_->Set*Pref| in |UnitTestBase|, |Set*Pref| will not
-// notify observers.
-void SetBooleanPref(const std::string& path, bool value);
-void SetIntegerPref(const std::string& path, int value);
-void SetDoublePref(const std::string& path, double value);
-void SetStringPref(const std::string& path, const std::string& value);
-void SetInt64Pref(const std::string& path, int64_t value);
-void SetUint64Pref(const std::string& path, uint64_t value);
-void SetDictPref(const std::string& path, base::Value::Dict value = {});
-void SetListPref(const std::string& path, base::Value::List value = {});
-void SetTimePref(const std::string& path, base::Time value);
+// Unlike |ads_client_mock_->Set*Pref| in |UnitTestBase|, |Set*PrefValue| will
+// not notify observers.
+void SetBooleanPrefValue(const std::string& path, bool value);
+void SetIntegerPrefValue(const std::string& path, int value);
+void SetDoublePrefValue(const std::string& path, double value);
+void SetStringPrefValue(const std::string& path, const std::string& value);
+void SetInt64PrefValue(const std::string& path, int64_t value);
+void SetUint64PrefValue(const std::string& path, uint64_t value);
+void SetDictPrefValue(const std::string& path, base::Value::Dict value = {});
+void SetListPrefValue(const std::string& path, base::Value::List value = {});
+void SetTimePrefValue(const std::string& path, base::Time value);
+void SetLocalStatePrefValue(const std::string& path, const std::string& value);
 
 }  // namespace brave_ads
 

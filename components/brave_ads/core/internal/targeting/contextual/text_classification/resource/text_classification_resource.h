@@ -30,9 +30,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   ~TextClassificationResource() override;
 
-  bool IsInitialized() const {
-    return static_cast<bool>(text_processing_pipeline_);
-  }
+  bool IsInitialized() const { return !!text_processing_pipeline_; }
 
   const absl::optional<ml::pipeline::TextProcessing>& get() const {
     return text_processing_pipeline_;
@@ -55,6 +53,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                           const std::string& id) override;
+  void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
   absl::optional<ml::pipeline::TextProcessing> text_processing_pipeline_;
 

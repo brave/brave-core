@@ -2,7 +2,7 @@ n{
   "configurations": [{
     "dashboard-bot-name": "mac-mini-m1-typical",
     "browser-type": "chrome.no-trials",
-    "profile": "chrome-typical-win-114",
+    "profile": "chrome-typical-win-117",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
   }],

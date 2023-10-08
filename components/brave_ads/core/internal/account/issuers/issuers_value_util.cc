@@ -113,10 +113,10 @@ base::Value::List IssuersToValue(const IssuerList& issuers) {
 
     base::Value::List public_keys_list;
     for (const auto& [public_key, associated_value] : issuer.public_keys) {
-      base::Value::Dict public_key_dict;
-      public_key_dict.Set(kPublicKeyKey, public_key);
-      public_key_dict.Set(kAssociatedValueKey,
-                          base::NumberToString(associated_value));
+      auto public_key_dict =
+          base::Value::Dict()
+              .Set(kPublicKeyKey, public_key)
+              .Set(kAssociatedValueKey, base::NumberToString(associated_value));
 
       public_keys_list.Append(std::move(public_key_dict));
     }

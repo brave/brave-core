@@ -287,7 +287,7 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
   }
 
   if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559,
-                         keyring_info->account_infos, from)) {
+                         keyring_service_->GetAllAccountInfos(), account_id)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
     tx_service_->AddUnapprovedTransactionWithOrigin(
@@ -656,6 +656,7 @@ void EthereumProviderImpl::SignTypedMessage(
     const std::string& message,
     const std::vector<uint8_t>& domain_hash,
     const std::vector<uint8_t>& primary_hash,
+    mojom::EthSignTypedDataMetaPtr meta,
     base::Value::Dict domain,
     RequestCallback callback,
     base::Value id) {
@@ -700,7 +701,7 @@ void EthereumProviderImpl::SignTypedMessage(
   mojom::SignDataUnionPtr sign_data =
       mojom::SignDataUnion::NewEthSignTypedData(mojom::EthSignTypedData::New(
           message, domain_string, base::HexEncode(domain_hash),
-          base::HexEncode(primary_hash)));
+          base::HexEncode(primary_hash), std::move(meta)));
 
   SignMessageInternal(account_id, std::move(sign_data),
                       std::move(*message_to_sign), std::move(callback),
@@ -971,20 +972,23 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     base::Value::Dict domain;
     std::vector<uint8_t> domain_hash_out;
     std::vector<uint8_t> primary_hash_out;
+
+    mojom::EthSignTypedDataMetaPtr meta;
+
     if (method == kEthSignTypedDataV4) {
-      if (!ParseEthSignTypedDataParams(normalized_json_request, &address,
-                                       &message, &domain,
-                                       EthSignTypedDataHelper::Version::kV4,
-                                       &domain_hash_out, &primary_hash_out)) {
+      if (!ParseEthSignTypedDataParams(
+              normalized_json_request, &address, &message, &domain,
+              EthSignTypedDataHelper::Version::kV4, &domain_hash_out,
+              &primary_hash_out, &meta)) {
         SendErrorOnRequest(error, error_message, std::move(callback),
                            std::move(id));
         return;
       }
     } else {
-      if (!ParseEthSignTypedDataParams(normalized_json_request, &address,
-                                       &message, &domain,
-                                       EthSignTypedDataHelper::Version::kV3,
-                                       &domain_hash_out, &primary_hash_out)) {
+      if (!ParseEthSignTypedDataParams(
+              normalized_json_request, &address, &message, &domain,
+              EthSignTypedDataHelper::Version::kV3, &domain_hash_out,
+              &primary_hash_out, &meta)) {
         SendErrorOnRequest(error, error_message, std::move(callback),
                            std::move(id));
         return;
@@ -992,7 +996,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     }
 
     SignTypedMessage(address, message, domain_hash_out, primary_hash_out,
-                     std::move(domain), std::move(callback), std::move(id));
+                     std::move(meta), std::move(domain), std::move(callback),
+                     std::move(id));
   } else if (method == kEthGetEncryptionPublicKey) {
     std::string address;
     if (!ParseEthGetEncryptionPublicKeyParams(normalized_json_request,
@@ -1113,8 +1118,10 @@ void EthereumProviderImpl::RequestEthereumPermissions(
   }
 
   std::vector<std::string> addresses;
-  for (const auto& account_info : keyring_info->account_infos) {
-    addresses.push_back(account_info->address);
+  for (auto& account_info : keyring_service_->GetAllAccountInfos()) {
+    if (account_info->account_id->coin == mojom::CoinType::ETH) {
+      addresses.push_back(account_info->address);
+    }
   }
 
   if (keyring_info->is_locked) {
@@ -1233,8 +1240,10 @@ EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
       brave_wallet::mojom::kDefaultKeyringId);
 
   std::vector<std::string> addresses;
-  for (const auto& account_info : keyring_info->account_infos) {
-    addresses.push_back(base::ToLowerASCII(account_info->address));
+  for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
+    if (account_info->account_id->coin == mojom::CoinType::ETH) {
+      addresses.push_back(base::ToLowerASCII(account_info->address));
+    }
   }
 
   const auto selected_account =

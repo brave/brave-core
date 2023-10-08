@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -325,23 +324,6 @@ public class Utils {
                 callback.call(false);
             }
         });
-    }
-
-    public static String[] makeNetworksAbbrevList(Activity activity, NetworkInfo[] allNetworks) {
-        List<String> categories = new ArrayList<String>();
-
-        for (NetworkInfo network : allNetworks) {
-            // Disables localhost on Release builds
-            if ((network.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)
-                        && 0
-                                != (activity.getApplicationInfo().flags
-                                        & ApplicationInfo.FLAG_DEBUGGABLE))
-                    || !network.chainId.equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
-                categories.add(getNetworkShortText(network));
-            }
-        }
-
-        return categories.toArray(new String[0]);
     }
 
     public static NetworkInfo getNetworkInfoByChainId(
@@ -848,10 +830,11 @@ public class Utils {
         return bitmap;
     }
 
-    public static void setBlockiesBitmapResource(ExecutorService executor, Handler handler,
-            ImageView iconImg, String source, boolean makeLowerCase) {
+    public static void setTextGeneratedBlockies(ExecutorService executor, Handler handler,
+            ImageView iconImg, String blockieSourceText, boolean makeLowerCase,
+            boolean isCircular) {
         executor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
+            final Bitmap bitmap = Blockies.createIcon(blockieSourceText, makeLowerCase, isCircular);
             handler.post(() -> {
                 if (iconImg != null) {
                     iconImg.setImageBitmap(bitmap);
@@ -860,19 +843,26 @@ public class Utils {
         });
     }
 
+    public static void setTextGeneratedBlockies(ExecutorService executor, Handler handler,
+            ImageView iconImg, String blockieSourceText, boolean makeLowerCase) {
+        setTextGeneratedBlockies(
+                executor, handler, iconImg, blockieSourceText, makeLowerCase, true);
+    }
+
     public static void setBlockiesBitmapResourceFromAccount(ExecutorService executor,
-            Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase) {
+            Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase,
+            boolean isCircular) {
         // TODO(apaymyshev): need to hash uniqueKey string for bitcoin accounts(same as for desktop)
         String source =
                 accountInfo.address != null ? accountInfo.address : accountInfo.accountId.uniqueKey;
-        executor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
-            handler.post(() -> {
-                if (iconImg != null) {
-                    iconImg.setImageBitmap(bitmap);
-                }
-            });
-        });
+        setTextGeneratedBlockies(executor, handler, iconImg, source, makeLowerCase, isCircular);
+    }
+
+    public static void setBlockiesBitmapResourceFromAccount(ExecutorService executor,
+            Handler handler, ImageView iconImg, AccountInfo accountInfo, boolean makeLowerCase) {
+        // TODO(apaymyshev): need to hash uniqueKey string for bitcoin accounts(same as for desktop)
+        setBlockiesBitmapResourceFromAccount(
+                executor, handler, iconImg, accountInfo, makeLowerCase, true);
     }
 
     public static void setBlockiesBackground(ExecutorService executor, Handler handler, View view,
@@ -1008,10 +998,6 @@ public class Utils {
      * Java port of the same function in components/brave_wallet_ui/options/asset-options.ts.
      */
     public static BlockchainToken makeNetworkAsset(NetworkInfo network) {
-        String logo;
-
-        logo = getNetworkIconName(network);
-
         BlockchainToken asset = new BlockchainToken();
         asset.name = network.symbolName;
         asset.symbol = network.symbol;
@@ -1019,7 +1005,7 @@ public class Utils {
         asset.isErc20 = false;
         asset.isErc721 = false;
         asset.isNft = false;
-        asset.logo = logo;
+        asset.logo = getNetworkIconName(network);
         asset.decimals = network.decimals;
         asset.visible = true;
         asset.chainId = network.chainId;
@@ -1130,7 +1116,7 @@ public class Utils {
     public static List<AccountInfo> filterAccountsByCoin(
             AccountInfo[] accounts, @CoinType.EnumType int coinType) {
         return Arrays.stream(accounts)
-                .filter(account -> { return account.accountId.coin == coinType; })
+                .filter(account -> account.accountId.coin == coinType)
                 .collect(Collectors.toList());
     }
 
@@ -1248,7 +1234,8 @@ public class Utils {
                 }
 
                 var txNetwork = JavaUtils.safeVal(
-                        NetworkUtils.findNetwork(allNetworks, txInfo.chainId), selectedNetwork);
+                        NetworkUtils.findNetwork(allNetworks, txInfo.chainId, selectedNetwork.coin),
+                        selectedNetwork);
                 ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo, txNetwork,
                         accounts, assetPrices, solanaEstimatedTxFee, fullTokenList,
                         nativeAssetsBalances, blockchainTokensBalances);
@@ -1540,7 +1527,8 @@ public class Utils {
         Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetKey, 0.0d);
         String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
         Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetKey, 0.0d);
-        NetworkInfo assetNetwork = NetworkUtils.findNetwork(allNetworkInfos, userAsset.chainId);
+        NetworkInfo assetNetwork =
+                NetworkUtils.findNetwork(allNetworkInfos, userAsset.chainId, userAsset.coin);
         String subtitle = assetNetwork == null
                 ? userAsset.symbol
                 : resources.getString(R.string.brave_wallet_portfolio_asset_network_description,
@@ -1695,8 +1683,7 @@ public class Utils {
     }
 
     public static boolean isNativeToken(NetworkInfo selectedNetwork, BlockchainToken token) {
-        if (token.symbol.equals(selectedNetwork.symbol)) return true;
-        return false;
+        return token.symbol.equals(selectedNetwork.symbol);
     }
 
     public static int getCoinIcon(int coinType) {

@@ -8,7 +8,6 @@
 package org.chromium.chrome.browser.rewards.tipping;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +19,7 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -28,15 +28,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.json.JSONException;
 
@@ -51,15 +48,16 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class RewardsTippingPanelFragment
-        extends BottomSheetDialogFragment implements BraveRewardsObserver {
-    final public static String TAG_FRAGMENT = "tipping_panel_tag";
+public class RewardsTippingPanelFragment extends Fragment implements BraveRewardsObserver {
+    public static final String TAG_FRAGMENT = "tipping_panel_tag";
     private static final String TAG = "TippingPanelFragment";
 
     private static final String WEB3_URL = "web3_url";
@@ -96,17 +94,18 @@ public class RewardsTippingPanelFragment
     private boolean mIsBatCurrency;
     private BraveRewardsExternalWallet mExternalWallet;
     private ProgressBar mTipProgressBar;
+    private ProgressBar mFetchBalanceProgressBar;
 
     private TextView mUsdSymbol1;
     private TextView mUsdSymbol2;
     private boolean mEnoughFundWarningShown;
     private TextView mCustodianText;
+    private boolean mIsTablet;
 
-    public static RewardsTippingPanelFragment newInstance(int tabId, String web3Url) {
+    public static RewardsTippingPanelFragment newInstance(int tabId) {
         RewardsTippingPanelFragment fragment = new RewardsTippingPanelFragment();
         Bundle args = new Bundle();
         args.putInt(RewardsTippingBannerActivity.TAB_ID_EXTRA, tabId);
-        args.putString(WEB3_URL, web3Url);
         fragment.setArguments(args);
         return fragment;
     }
@@ -114,51 +113,34 @@ public class RewardsTippingPanelFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
         init();
     }
 
     private void init() {
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         mBraveRewardsNativeWorker.AddObserver(this);
-        mBraveRewardsNativeWorker.GetExternalWallet();
     }
 
     @Override
-    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
-        try {
-            RewardsTippingPanelFragment fragment =
-                    (RewardsTippingPanelFragment) manager.findFragmentByTag(
-                            RewardsTippingPanelFragment.TAG_FRAGMENT);
-            FragmentTransaction transaction = manager.beginTransaction();
-            if (fragment != null) {
-                transaction.remove(fragment);
-            }
-            transaction.add(this, tag);
-            transaction.commitAllowingStateLoss();
-        } catch (IllegalStateException e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstance) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstance);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         final View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.brave_rewards_tippingpanel_fragment, null);
-        dialog.setContentView(view);
+                                  .inflate(R.layout.brave_rewards_tippingpanel_fragment_base, null);
+        mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
         if (getArguments() != null) {
             mCurrentTabId = getArguments().getInt(RewardsTippingBannerActivity.TAB_ID_EXTRA);
-            mWeb3Url = getArguments().getString(WEB3_URL);
+            mBraveRewardsNativeWorker.GetPublisherBanner(
+                    mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId));
         }
         mContentView = view;
         mSendButton = view.findViewById(R.id.send_tip_button);
         mWeb3WalletButton = view.findViewById(R.id.use_web3_wallet_button);
         mTipProgressBar = view.findViewById(R.id.send_tip_progress_bar);
+        mFetchBalanceProgressBar = view.findViewById(R.id.fetchBalanceProgressBar);
         mCustodianText = view.findViewById(R.id.custodian_text);
 
         init(view);
-        setBalanceText(view);
+        mBraveRewardsNativeWorker.fetchBalance();
         initTipChoice(mToggle);
         setAlreadyMonthlyContributionSetMessage();
         sendTipButtonClick(view);
@@ -167,10 +149,21 @@ public class RewardsTippingPanelFragment
         setCustodianIconAndName(view);
         updateTermsOfServicePlaceHolder(view);
         checkEnoughFund();
-        setupFullHeight(dialog);
         setMonthlyInformationClick(view);
 
-        return dialog;
+        return view;
+    }
+
+    @Override
+    public void onBalance(boolean success) {
+        mFetchBalanceProgressBar.setVisibility(View.GONE);
+        if (success) {
+            try {
+                setBalanceText();
+            } catch (NullPointerException e) {
+                Log.e(TAG, "BraveRewardsPanel onBalance " + e);
+            }
+        }
     }
 
     private void setMonthlyInformationClick(View view) {
@@ -285,11 +278,20 @@ public class RewardsTippingPanelFragment
         }
     }
 
+    public void replaceSuccessUI() {
+        new RewardsTippingSuccessContribution(getActivity(), mContentView, mAmountSelected);
+        View tippingSuccessFragment =
+                mContentView.findViewById(R.id.rewards_tipping_success_fragment);
+        View tippingTipFragment = mContentView.findViewById(R.id.rewards_tipping_tip_fragment);
+        tippingTipFragment.setVisibility(View.GONE);
+
+        tippingSuccessFragment.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onSendContribution(boolean result) {
         if (result) {
-            RewardsTippingSuccessContributionFragment.showTippingSuccessContributionUi(
-                    (AppCompatActivity) getActivity(), mAmountSelected);
+            replaceSuccessUI();
             mSendButton.setText(R.string.send);
         } else {
             showErrorLayout();
@@ -341,8 +343,7 @@ public class RewardsTippingPanelFragment
                 getActivity(), R.color.monthly_contributions_text_color, (textView) -> {
                     TabUtils.openUrlInNewTab(
                             false, BraveActivity.BRAVE_REWARDS_SETTINGS_MONTHLY_URL);
-                    getActivity().setResult(Activity.RESULT_OK);
-                    getActivity().finish();
+                    dismissRewardsPanel();
                 });
 
         BraveRewardsHelper.setSpan(getActivity(), text, textSpannableString,
@@ -403,8 +404,7 @@ public class RewardsTippingPanelFragment
     private void web3ButtonClick(View view) {
         mWeb3WalletButton.setOnClickListener(v -> {
             TabUtils.openUrlInNewTab(false, mWeb3Url);
-            getActivity().setResult(Activity.RESULT_OK);
-            getActivity().finish();
+            dismissRewardsPanel();
         });
     }
 
@@ -413,8 +413,7 @@ public class RewardsTippingPanelFragment
             if (mIsLogoutState) {
                 if (mExternalWallet != null) {
                     TabUtils.openUrlInNewTab(false, mExternalWallet.getLoginUrl());
-                    getActivity().setResult(Activity.RESULT_OK);
-                    getActivity().finish();
+                    dismissRewardsPanel();
                 }
             } else {
                 SwitchCompat isMonthly = view.findViewById(R.id.monthly_switch);
@@ -446,7 +445,7 @@ public class RewardsTippingPanelFragment
         });
     }
 
-    private TextWatcher textChangeListener = new TextWatcher() {
+    private TextWatcher mTextChangeListener = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -481,7 +480,7 @@ public class RewardsTippingPanelFragment
 
         mCurrency1ValueTextView = view.findViewById(R.id.currencyOneEditText1);
         mCurrency2ValueTextView = view.findViewById(R.id.exchange_amount1);
-        mCurrency1ValueEditTextView.addTextChangedListener(textChangeListener);
+        mCurrency1ValueEditTextView.addTextChangedListener(mTextChangeListener);
         mRate = mBraveRewardsNativeWorker.GetWalletRate();
         mRadioTipAmount[0] = view.findViewById(R.id.tipChoice1);
         mRadioTipAmount[1] = view.findViewById(R.id.tipChoice2);
@@ -489,11 +488,11 @@ public class RewardsTippingPanelFragment
         mRadioTipAmount[3] = view.findViewById(R.id.tipChoiceCustom);
 
         for (TextView tb : mRadioTipAmount) {
-            tb.setOnClickListener(radio_clicker);
+            tb.setOnClickListener(mRadioClicker);
         }
     }
 
-    void setBalanceText(View view) {
+    void setBalanceText() {
         double balance = DEFAULT_AMOUNT;
         BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
         if (rewards_balance != null) {
@@ -506,7 +505,7 @@ public class RewardsTippingPanelFragment
         df.setMinimumFractionDigits(3);
         String walletAmount = df.format(balance) + " " + BraveRewardsHelper.BAT_TEXT;
 
-        ((TextView) view.findViewById(R.id.wallet_amount_text)).setText(walletAmount);
+        ((TextView) mContentView.findViewById(R.id.wallet_amount_text)).setText(walletAmount);
     }
 
     private void checkEnoughFund() {
@@ -588,8 +587,11 @@ public class RewardsTippingPanelFragment
         }
     }
 
-    private View.OnClickListener radio_clicker = view -> {
-        mCurrency1ValueEditTextView.removeTextChangedListener(textChangeListener);
+    private View.OnClickListener mRadioClicker = view -> {
+        if (mFetchBalanceProgressBar.getVisibility() == View.VISIBLE) {
+            return;
+        }
+        mCurrency1ValueEditTextView.removeTextChangedListener(mTextChangeListener);
 
         TextView tb_pressed = (TextView) view;
         if (!tb_pressed.isSelected()) {
@@ -630,30 +632,22 @@ public class RewardsTippingPanelFragment
         mAmountSelected = selectedAmount();
 
         checkEnoughFund();
-        mCurrency1ValueEditTextView.addTextChangedListener(textChangeListener);
+        mCurrency1ValueEditTextView.addTextChangedListener(mTextChangeListener);
     };
 
     private double selectedAmount() {
         double amount = 0.0;
 
         try {
-            if (mIsBatCurrency)
+            if (mIsBatCurrency) {
                 amount = Double.parseDouble(mCurrency1ValueEditTextView.getText().toString());
-            else
+            } else {
                 amount = Double.parseDouble(mCurrency2ValueTextView.getText().toString());
+            }
         } catch (NumberFormatException e) {
         }
 
         return amount;
-    }
-
-    public static void showTippingPanelBottomSheet(
-            AppCompatActivity activity, int tabId, String web3Url) {
-        if (activity != null) {
-            RewardsTippingPanelFragment dialog =
-                    RewardsTippingPanelFragment.newInstance(tabId, web3Url);
-            dialog.show(activity.getSupportFragmentManager(), TAG_FRAGMENT);
-        }
     }
 
     private double roundExchangeUp(double batValue) {
@@ -691,6 +685,34 @@ public class RewardsTippingPanelFragment
         super.onDestroyView();
         if (null != mBraveRewardsNativeWorker) {
             mBraveRewardsNativeWorker.RemoveObserver(this);
+        }
+    }
+
+    private void dismissRewardsPanel() {
+        if (mIsTablet) {
+            try {
+                BraveActivity braveActivity = BraveActivity.getBraveActivity();
+                braveActivity.dismissRewardsPanel();
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "setShareYourSupportClickListener " + e);
+            }
+        } else {
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
+        }
+    }
+
+    @Override
+    public void onPublisherBanner(String jsonBannerInfo) {
+        try {
+            BraveRewardsBannerInfo bannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
+            mWeb3Url = bannerInfo.getWeb3Url();
+            if (!TextUtils.isEmpty(mWeb3Url)) {
+                mWeb3WalletButton.setVisibility(View.VISIBLE);
+            }
+            mBraveRewardsNativeWorker.GetExternalWallet();
+        } catch (JSONException e) {
+            Log.e(TAG, "TippingBanner -> CreatorPanel:onAttach JSONException error " + e);
         }
     }
 }

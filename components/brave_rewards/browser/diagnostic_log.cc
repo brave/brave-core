@@ -21,7 +21,7 @@ const size_t kDividerLength = 80;
 
 std::string FormatTime(const base::Time& time) {
   return base::UTF16ToUTF8(
-      base::TimeFormatWithPattern(time, "MMM dd, YYYY h::mm::ss.S a"));
+      base::LocalizedTimeFormatWithPattern(time, "MMM dd, YYYY h::mm::ss.S a"));
 }
 
 std::string GetLogVerboseLevelName(int verbose_level) {

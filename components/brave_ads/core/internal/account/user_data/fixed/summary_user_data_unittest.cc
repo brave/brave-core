@@ -36,13 +36,24 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
       ConfirmationType::kViewed, AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 
-  // Act
-
-  // Assert
-  EXPECT_EQ(
-      base::test::ParseJsonDict(
-          R"({"totals":[{"ad_format":"ad_notification","click":1,"view":2},{"ad_format":"inline_content_ad","view":1}]})"),
-      BuildSummaryUserData(payment_tokens));
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "totals": [
+                        {
+                          "ad_format": "ad_notification",
+                          "click": 1,
+                          "view": 2
+                        },
+                        {
+                          "ad_format": "inline_content_ad",
+                          "view": 1
+                        }
+                      ]
+                    }
+                )"),
+            BuildSummaryUserData(payment_tokens));
 }
 
 TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForNonRewardsUser) {
@@ -50,11 +61,9 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForNonRewardsUser) {
   DisableBraveRewardsForTesting();
 
   const PaymentTokenList payment_tokens =
-      BuildPaymentTokensForTesting(/*count*/ 3);
+      BuildPaymentTokensForTesting(/*count=*/3);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildSummaryUserData(payment_tokens).empty());
 }
 
@@ -62,10 +71,12 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataIfNoPaymentTokens) {
   // Arrange
   const PaymentTokenList payment_tokens;
 
-  // Act
-
-  // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"totals":[]})"),
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "totals": []
+                    })"),
             BuildSummaryUserData(payment_tokens));
 }
 

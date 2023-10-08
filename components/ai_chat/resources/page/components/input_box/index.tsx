@@ -18,17 +18,17 @@ const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.80
 
 function InputBox () {
   const [inputText, setInputText] = React.useState('')
-  const { hasSeenAgreement, handleAgreeClick, shouldDisableUserInput } = React.useContext(DataContext)
+  const context = React.useContext(DataContext)
 
   const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
 
-  const isInputDisabled = shouldDisableUserInput || isCharLimitExceeded
+  const isInputDisabled = context.shouldDisableUserInput || isCharLimitExceeded || (!context.isPremiumUser && context.currentModel?.isPremium)
 
-  if (!hasSeenAgreement) {
+  if (!context.hasSeenAgreement) {
     return (
       <div className={styles.container}>
-        <button className={styles.buttonAgree} onClick={handleAgreeClick}>{getLocale('acceptButtonLabel')}</button>
+        <button className={styles.buttonAgree} onClick={context.handleAgreeClick}>{getLocale('acceptButtonLabel')}</button>
       </div>
     )
   }

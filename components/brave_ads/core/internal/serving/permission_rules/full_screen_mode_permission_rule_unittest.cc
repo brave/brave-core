@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/full_screen_mode_permission_rule.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -22,11 +20,7 @@ class BraveAdsFullScreenModePermissionRuleTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAllow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -36,9 +30,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnAndroid) {
 
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -48,9 +40,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnIOS) {
 
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -58,31 +48,21 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldNotAllow) {
   // Arrange
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest,
        ShouldAllowIfPermissionRuleIsDisabled) {
   // Arrange
-  base::FieldTrialParams params;
-  params["should_only_serve_ads_in_windowed_mode"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPermissionRulesFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPermissionRulesFeature,
+      {{"should_only_serve_ads_in_windowed_mode", "false"}});
 
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 

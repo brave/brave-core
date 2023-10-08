@@ -29,6 +29,13 @@ static_library("browser") {
     "//services/network/public/cpp",
   ]
 
+  if (is_mac) {
+    sources += [
+      "file_extended_attribute.cc",
+      "file_extended_attribute.h",
+    ]
+  }
+
   if (is_android) {
     sources += [
       "android_brave_referrer.cc",
@@ -45,5 +52,21 @@ static_library("browser") {
 if (is_android) {
   generate_jni("jni_headers") {
     sources = [ "//brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = []
+  deps = []
+
+  if (is_mac) {
+    sources += [ "file_extended_attribute_unittest.cc" ]
+    deps += [
+      ":browser",
+      "//base",
+      "//base/test:test_support",
+      "//testing/gtest",
+    ]
   }
 }

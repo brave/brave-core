@@ -19,11 +19,15 @@ import {
 } from '../reducers/states'
 import { useHistorySynchronization } from '../playerEventSink'
 
-const HeaderWrapper = styled.header<{ isPlaylistPlayerPage: boolean }>`
+const AppContainer = styled.div<{ isPlaylistPlayerPage: boolean }>`
+  --header-height: ${({ isPlaylistPlayerPage }) =>
+    isPlaylistPlayerPage ? '74px' : '56px'};
+`
+
+const HeaderWrapper = styled.header`
   position: sticky;
   width: 100%;
-  height: ${({ isPlaylistPlayerPage }) =>
-    isPlaylistPlayerPage ? '74px' : '56px'};
+  height: var(--header-height);
   top: 0;
   z-index: 1;
 `
@@ -35,33 +39,34 @@ export default function App () {
   const editMode = usePlaylistEditMode()
 
   return (
-    <>
-      <Route
-        path={'/playlist/:playlistId'}
-        children={({ match }) => {
-          const playlistId = match?.params.playlistId
-          return (
-            <>
-              <HeaderWrapper isPlaylistPlayerPage={!!playlistId}>
-                <Header playlistId={playlistId} />
-              </HeaderWrapper>
-              <VideoFrame
-                visible={
-                  !!lastPlayerState?.currentItem &&
-                  editMode !== PlaylistEditMode.BULK_EDIT
-                }
-                isMiniPlayer={lastPlayerState?.currentList?.id !== playlistId}
-              />
-            </>
-          )
-        }}
-      />
-      <section>
-        <Switch>
-          <Route path='/playlist/:playlistId' component={PlaylistFolder} />
-          <Route path='/' component={PlaylistsCatalog}></Route>
-        </Switch>
-      </section>
-    </>
+    <Route
+      path={'/playlist/:playlistId'}
+      children={({ match }) => {
+        const playlistId = match?.params.playlistId
+        return (
+          <AppContainer isPlaylistPlayerPage={!!playlistId}>
+            <HeaderWrapper>
+              <Header playlistId={playlistId} />
+            </HeaderWrapper>
+            <VideoFrame
+              visible={
+                !!lastPlayerState?.currentItem &&
+                editMode !== PlaylistEditMode.BULK_EDIT
+              }
+              isMiniPlayer={lastPlayerState?.currentList?.id !== playlistId}
+            />
+            <section>
+              <Switch>
+                <Route
+                  path='/playlist/:playlistId'
+                  component={PlaylistFolder}
+                />
+                <Route path='/' component={PlaylistsCatalog}></Route>
+              </Switch>
+            </section>
+          </AppContainer>
+        )
+      }}
+    />
   )
 }

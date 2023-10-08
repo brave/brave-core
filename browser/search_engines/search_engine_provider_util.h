@@ -21,7 +21,7 @@ void SetBraveAsDefaultPrivateSearchProvider(PrefService* prefs);
 // For prefs migration.
 void RegisterSearchEngineProviderPrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
-void MigrateSearchEngineProviderPrefs(Profile* profile);
+void MigrateSearchEngineProviderPrefs(PrefService* prefs);
 
 // Initialize default provider for private profile.
 void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile);

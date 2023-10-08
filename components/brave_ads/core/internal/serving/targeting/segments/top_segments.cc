@@ -41,4 +41,16 @@ SegmentList GetTopSegments(const SegmentList& segments,
                            max_count);
 }
 
+absl::optional<std::string> GetTopSegment(const SegmentList& segments,
+                                          const bool parent_only) {
+  const SegmentList top_segments =
+      FilterTopSegments(parent_only ? GetParentSegments(segments) : segments,
+                        /*max_count=*/1);
+  if (top_segments.empty()) {
+    return absl::nullopt;
+  }
+
+  return top_segments.front();
+}
+
 }  // namespace brave_ads

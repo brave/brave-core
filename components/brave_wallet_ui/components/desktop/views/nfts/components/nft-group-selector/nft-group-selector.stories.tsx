@@ -6,12 +6,18 @@
 import * as React from 'react'
 import { NftDropdownOption, NftDropdown } from './nft-group-selector'
 
-const options: NftDropdownOption[] = [{ id: 'collected', label: 'Collected' }]
+const options: NftDropdownOption[] = [
+  { id: 'collected', label: 'Collected', labelSummary: '1' }
+]
 
 export const _NftGroupSelector = () => {
-  return <NftDropdown selectedOption={options[0]} options={options} onSelect={(optionId) => console.log(optionId)}/>
+  return (
+    <NftDropdown
+      selectedOptionId={options[0].id}
+      options={options}
+      onSelect={(optionId) => console.log(optionId)}
+    />
+  )
 }
 
-_NftGroupSelector.storyName = 'NftGroupSelector'
-
-export default _NftGroupSelector
+export default _NftGroupSelector.storyName = 'Nft Group Selector'

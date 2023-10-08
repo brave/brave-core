@@ -39,8 +39,8 @@ namespace brave_ads {
 namespace {
 
 using AdEventHistoryMap =
-    base::flat_map</*type_id*/ std::string, std::vector<base::Time>>;
-using AdEventMap = base::flat_map</*uuid*/ std::string, AdEventHistoryMap>;
+    base::flat_map</*type_id=*/std::string, std::vector<base::Time>>;
+using AdEventMap = base::flat_map</*uuid=*/std::string, AdEventHistoryMap>;
 
 AdEventMap& AdEventCache() {
   static base::NoDestructor<AdEventMap> ad_events;
@@ -143,10 +143,10 @@ void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock) {
 
 void MockSave(AdsClientMock& mock) {
   ON_CALL(mock, Save)
-      .WillByDefault(::testing::Invoke([](const std::string& /*name*/,
-                                          const std::string& /*value*/,
+      .WillByDefault(::testing::Invoke([](const std::string& /*name=*/,
+                                          const std::string& /*value=*/,
                                           SaveCallback callback) {
-        std::move(callback).Run(/*success*/ true);
+        std::move(callback).Run(/*success=*/true);
       }));
 }
 
@@ -173,7 +173,7 @@ void MockLoadFileResource(AdsClientMock& mock,
                           const base::ScopedTempDir& temp_dir) {
   ON_CALL(mock, LoadFileResource)
       .WillByDefault(::testing::Invoke(
-          [&temp_dir](const std::string& id, const int /*version*/,
+          [&temp_dir](const std::string& id, const int /*version=*/,
                       LoadFileCallback callback) {
             base::FilePath path = temp_dir.GetPath().AppendASCII(id);
 
@@ -319,6 +319,14 @@ void MockHasPrefPath(const AdsClientMock& mock) {
       .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
         return HasPrefPathValue(path);
       }));
+}
+
+void MockGetLocalStatePref(const AdsClientMock& mock) {
+  ON_CALL(mock, GetLocalStatePref)
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& path) -> absl::optional<base::Value> {
+            return base::Value(GetPrefValue(path));
+          }));
 }
 
 }  // namespace brave_ads

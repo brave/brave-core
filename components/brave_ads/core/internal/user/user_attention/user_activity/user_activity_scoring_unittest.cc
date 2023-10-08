@@ -42,11 +42,8 @@ TEST_F(BraveAdsUserActivityScoringTest, GetUserActivityScore) {
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
-  // Act
-  const double score = GetUserActivityScore(triggers, events);
-
-  // Assert
-  EXPECT_EQ(1.8, score);
+  // Act & Assert
+  EXPECT_EQ(1.8, GetUserActivityScore(triggers, events));
 }
 
 TEST_F(BraveAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
@@ -76,11 +73,8 @@ TEST_F(BraveAdsUserActivityScoringTest, GetUserActivityScoreForTimeWindow) {
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
-  // Act
-  const double score = GetUserActivityScore(triggers, events);
-
-  // Assert
-  EXPECT_EQ(1.5, score);
+  // Act & Assert
+  EXPECT_EQ(1.5, GetUserActivityScore(triggers, events));
 }
 
 TEST_F(BraveAdsUserActivityScoringTest,
@@ -109,11 +103,8 @@ TEST_F(BraveAdsUserActivityScoringTest,
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
-  // Act
-  const double score = GetUserActivityScore(triggers, events);
-
-  // Assert
-  EXPECT_EQ(0.0, score);
+  // Act & Assert
+  EXPECT_EQ(0.0, GetUserActivityScore(triggers, events));
 }
 
 TEST_F(BraveAdsUserActivityScoringTest,
@@ -143,11 +134,8 @@ TEST_F(BraveAdsUserActivityScoringTest,
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
-  // Act
-  const double score = GetUserActivityScore(triggers, events);
-
-  // Assert
-  EXPECT_EQ(2.0, score);
+  // Act & Assert
+  EXPECT_EQ(2.0, GetUserActivityScore(triggers, events));
 }
 
 TEST_F(BraveAdsUserActivityScoringTest,
@@ -177,18 +165,15 @@ TEST_F(BraveAdsUserActivityScoringTest,
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
-  // Act
-  const double score = GetUserActivityScore(triggers, events);
-
-  // Assert
-  EXPECT_EQ(1.8, score);
+  // Act & Assert
+  EXPECT_EQ(1.8, GetUserActivityScore(triggers, events));
 }
 
 TEST_F(BraveAdsUserActivityScoringTest,
        GetUserActivityScoreForEmptyEventSequence) {
   // Arrange
   const UserActivityTriggerList triggers =
-      ToUserActivityTriggers(/*param_value*/ {});
+      ToUserActivityTriggers(/*param_value=*/{});
 
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClickedLink);
@@ -211,11 +196,8 @@ TEST_F(BraveAdsUserActivityScoringTest,
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Hours(1));
 
-  // Act
-  const double score = GetUserActivityScore(triggers, events);
-
-  // Assert
-  EXPECT_EQ(0.0, score);
+  // Act & Assert
+  EXPECT_EQ(0.0, GetUserActivityScore(triggers, events));
 }
 
 }  // namespace brave_ads

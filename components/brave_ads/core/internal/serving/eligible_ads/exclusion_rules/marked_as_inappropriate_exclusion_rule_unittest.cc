@@ -25,9 +25,7 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldInclude) {
   creative_ad.creative_instance_id = kCreativeInstanceId;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -42,9 +40,7 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldExclude) {
   ad_content.is_flagged = false;
   ClientStateManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 

@@ -37,10 +37,10 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/new_debug_unreachable/v1:lib",
+    "//brave/third_party/rust/once_cell/v1:lib",
     "//brave/third_party/rust/parking_lot/v0_12:lib",
     "//brave/third_party/rust/phf_shared/v0_10:lib",
     "//brave/third_party/rust/precomputed_hash/v0_1:lib",
-    "//third_party/rust/once_cell/v1:lib",
     "//third_party/rust/serde/v1:lib",
   ]
   aliased_deps = {

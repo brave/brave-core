@@ -26,7 +26,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacing.m};
-  max-width: 800px;
+  max-width: 560px;
   margin: 0 auto;
 `
 

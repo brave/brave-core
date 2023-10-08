@@ -19,16 +19,22 @@ namespace brave_ads {
 class BraveAdsRedeemPaymentTokensUserDataBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
-  // Arrange
-
-  // Assert
+  // Act & Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
-      R"({"platform":"windows","totals":[{"ad_format":"ad_notification","view":2}]})");
+      R"(
+          {
+            "platform": "windows",
+            "totals": [
+              {
+                "ad_format": "ad_notification",
+                "view": 2
+              }
+            ]
+          })");
+
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-
-  // Act
-  BuildRedeemPaymentTokensUserData(BuildPaymentTokensForTesting(/*count*/ 2),
+  BuildRedeemPaymentTokensUserData(BuildPaymentTokensForTesting(/*count=*/2),
                                    callback.Get());
 }
 

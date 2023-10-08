@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 
+#include <string_view>
+
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -52,7 +54,7 @@ void ExtractAddresses(permissions::RequestType type,
   DCHECK(!origin.opaque() && address_queue);
 
   std::string origin_string(origin.Serialize());
-  re2::StringPiece input(origin_string);
+  std::string_view input(origin_string);
   std::string match;
   re2::RE2* regex;
   if (type == permissions::RequestType::kBraveEthereum) {
@@ -211,6 +213,18 @@ absl::optional<blink::PermissionType> CoinTypeToPermissionType(
       return blink::PermissionType::BRAVE_ETHEREUM;
     case mojom::CoinType::SOL:
       return blink::PermissionType::BRAVE_SOLANA;
+    default:
+      return absl::nullopt;
+  }
+}
+
+absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
+    mojom::CoinType coin_type) {
+  switch (coin_type) {
+    case mojom::CoinType::ETH:
+      return permissions::RequestType::kBraveEthereum;
+    case mojom::CoinType::SOL:
+      return permissions::RequestType::kBraveSolana;
     default:
       return absl::nullopt;
   }

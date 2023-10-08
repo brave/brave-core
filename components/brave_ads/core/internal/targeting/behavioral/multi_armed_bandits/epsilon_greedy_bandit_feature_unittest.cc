@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -16,76 +14,41 @@ namespace brave_ads {
 
 TEST(BraveAdsEpsilonGreedyBanditFeatureTest, IsEnabled) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  enabled_features.emplace_back(kEpsilonGreedyBanditFeature, params);
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kEpsilonGreedyBanditFeature);
 
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsEpsilonGreedyBanditFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature));
 }
 
 TEST(BraveAdsEpsilonGreedyBanditFeatureTest, IsDisabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsEpsilonGreedyBanditFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature));
 }
 
-TEST(BraveAdsEpsilonGreedyBanditFeatureTest,
-     GetEpsilonGreedyBanditEpsilonValue) {
+TEST(BraveAdsEpsilonGreedyBanditFeatureTest, EpsilonGreedyBanditEpsilonValue) {
   // Arrange
-  base::FieldTrialParams params;
-  params["epsilon_value"] = "0.33";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kEpsilonGreedyBanditFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kEpsilonGreedyBanditFeature, {{"epsilon_value", "0.33"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0.33, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 
 TEST(BraveAdsEpsilonGreedyBanditFeatureTest,
      DefaultEpsilonGreedyBanditEpsilonValue) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0.25, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 
 TEST(BraveAdsEpsilonGreedyBanditFeatureTest,
      DefaultEpsilonGreedyBanditEpsilonValueWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kEpsilonGreedyBanditFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kEpsilonGreedyBanditFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0.25, kEpsilonGreedyBanditEpsilonValue.Get());
 }
 

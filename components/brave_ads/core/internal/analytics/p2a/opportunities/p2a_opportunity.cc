@@ -19,7 +19,7 @@ constexpr int kTopSegmentsMaxCount = 1;
 void RecordP2AAdOpportunity(const AdType& ad_type,
                             const SegmentList& segments) {
   const SegmentList top_segments =
-      GetTopSegments(segments, kTopSegmentsMaxCount, /*parent_only*/ false);
+      GetTopSegments(segments, kTopSegmentsMaxCount, /*parent_only=*/false);
 
   AdsClientHelper::GetInstance()->RecordP2AEvents(
       BuildP2AAdOpportunityEvents(ad_type, top_segments));

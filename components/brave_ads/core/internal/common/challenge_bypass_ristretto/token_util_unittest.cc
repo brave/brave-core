@@ -17,18 +17,13 @@ TEST(BraveAdsTokenUtilTest, TokensToRawTokens) {
   // Arrange
   const std::vector<Token> tokens = GetTokensForTesting();
 
-  // Act
-  const std::vector<challenge_bypass_ristretto::Token> raw_tokens =
-      ToRawTokens(tokens);
-
-  // Assert
+  // Act & Assert
   std::vector<challenge_bypass_ristretto::Token> expected_raw_tokens;
   expected_raw_tokens.reserve(tokens.size());
   for (const auto& token : tokens) {
     expected_raw_tokens.push_back(token.get());
   }
-
-  EXPECT_EQ(expected_raw_tokens, raw_tokens);
+  EXPECT_EQ(expected_raw_tokens, ToRawTokens(tokens));
 }
 
 TEST(BraveAdsTokenUtilTest, EmptyTokensToRawTokens) {

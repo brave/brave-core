@@ -70,15 +70,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
-    public <init>(...);
-    *** mHasClearedOmniboxForFocus;
-}
-
--keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
     *** mGoogleActivityControls;
     *** mSyncEncryption;
@@ -567,6 +558,7 @@
 
 -keep class org.chromium.chrome.browser.omnibox.LocationBarCoordinator {
     *** mLocationBarMediator;
+    *** mUrlBar;
     public <init>(...);
 }
 
@@ -590,6 +582,7 @@
     *** mIsTablet;
     *** mNativeInitialized;
     *** mIsLocationBarFocusedFromNtpScroll;
+    *** mShouldClearOmniboxOnFocus;
     *** mContext;
     *** mBrandedColorScheme;
     *** mAssistantVoiceSearchServiceSupplier;

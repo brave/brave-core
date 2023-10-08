@@ -1,6 +1,7 @@
 include_rules = [
   "+ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h",
   "+brave/common",
+  "+brave/components/ai_chat",
   "+brave/components/constants",
   "+components/component_updater",
   "+components/gcm_driver/gcm_driver.h",

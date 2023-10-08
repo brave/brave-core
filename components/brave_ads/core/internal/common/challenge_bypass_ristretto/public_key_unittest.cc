@@ -20,9 +20,7 @@ TEST_F(BraveAdsPublicKeyTest, FailToInitialize) {
   // Arrange
   const PublicKey public_key;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(public_key.has_value());
 }
 
@@ -30,9 +28,7 @@ TEST_F(BraveAdsPublicKeyTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const PublicKey public_key("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(public_key.has_value());
 }
 
@@ -40,15 +36,11 @@ TEST_F(BraveAdsPublicKeyTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const PublicKey public_key(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(public_key.has_value());
 }
 
 TEST_F(BraveAdsPublicKeyTest, DecodeBase64) {
-  // Arrange
-
   // Act
   const PublicKey public_key = PublicKey::DecodeBase64(kPublicKeyBase64);
 
@@ -57,8 +49,6 @@ TEST_F(BraveAdsPublicKeyTest, DecodeBase64) {
 }
 
 TEST_F(BraveAdsPublicKeyTest, FailToDecodeEmptyBase64) {
-  // Arrange
-
   // Act
   const PublicKey public_key = PublicKey::DecodeBase64("");
 
@@ -67,8 +57,6 @@ TEST_F(BraveAdsPublicKeyTest, FailToDecodeEmptyBase64) {
 }
 
 TEST_F(BraveAdsPublicKeyTest, FailToDecodeInvalidBase64) {
-  // Arrange
-
   // Act
   const PublicKey public_key = PublicKey::DecodeBase64(kInvalidBase64);
 
@@ -80,9 +68,7 @@ TEST_F(BraveAdsPublicKeyTest, EncodeBase64) {
   // Arrange
   const PublicKey public_key(kPublicKeyBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kPublicKeyBase64, public_key.EncodeBase64());
 }
 
@@ -90,9 +76,7 @@ TEST_F(BraveAdsPublicKeyTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const PublicKey public_key;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(public_key.EncodeBase64());
 }
 
@@ -100,9 +84,7 @@ TEST_F(BraveAdsPublicKeyTest, IsEqual) {
   // Arrange
   const PublicKey public_key(kPublicKeyBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(public_key, public_key);
 }
 
@@ -110,9 +92,7 @@ TEST_F(BraveAdsPublicKeyTest, IsEqualWhenUninitialized) {
   // Arrange
   const PublicKey public_key;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(public_key, public_key);
 }
 
@@ -120,9 +100,7 @@ TEST_F(BraveAdsPublicKeyTest, IsEmptyBase64Equal) {
   // Arrange
   const PublicKey public_key("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(public_key, public_key);
 }
 
@@ -130,9 +108,7 @@ TEST_F(BraveAdsPublicKeyTest, IsInvalidBase64Equal) {
   // Arrange
   const PublicKey public_key(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(public_key, public_key);
 }
 
@@ -140,9 +116,7 @@ TEST_F(BraveAdsPublicKeyTest, IsNotEqual) {
   // Arrange
   const PublicKey public_key(kPublicKeyBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const PublicKey different_public_key(kInvalidBase64);
   EXPECT_NE(different_public_key, public_key);
 }

@@ -110,7 +110,7 @@ void AntiTargetingResource::Reset() {
 }
 
 void AntiTargetingResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
+    const std::string& /*locale=*/) {
   MaybeLoad();
 }
 
@@ -137,6 +137,17 @@ void AntiTargetingResource::OnNotifyDidUpdateResourceComponent(
   manifest_version_ = manifest_version;
 
   MaybeLoad();
+}
+
+void AntiTargetingResource::OnNotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  if (!IsValidCountryComponentId(id)) {
+    return;
+  }
+
+  manifest_version_.reset();
+
+  Reset();
 }
 
 }  // namespace brave_ads

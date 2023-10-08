@@ -63,12 +63,12 @@ void ConversionResource::LoadCallback(
 }
 
 void ConversionResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
+    const std::string& /*locale=*/) {
   Load();
 }
 
 void ConversionResource::OnNotifyDidUpdateResourceComponent(
-    const std::string& /*manifest_version*/,
+    const std::string& /*manifest_version=*/,
     const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     Load();

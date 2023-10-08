@@ -48,6 +48,9 @@ class BraveContentSettingsAgentImpl
 
   bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) override;
 
+  // RenderFrameObserver:
+  void DidCommitProvisionalLoad(ui::PageTransition transition) override;
+
  protected:
   bool AllowScript(bool enabled_per_settings) override;
   bool AllowScriptFromSource(bool enabled_per_settings,
@@ -98,7 +101,7 @@ class BraveContentSettingsAgentImpl
   GURL blocked_script_url_;
 
   // Status of "reduce language identifiability" feature.
-  bool reduce_language_enabled_;
+  bool reduce_language_enabled_ = false;
 
   base::flat_map<url::Origin, blink::WebSecurityOrigin>
       cached_ephemeral_storage_origins_;

@@ -24,62 +24,55 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateDelayBeforeProcessingConversionQueueItem) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ true);
+                                      /*should_use_random_uuids=*/true);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                   /*created_at*/ Now()),
-                      /*verifiable_conversion*/ absl::nullopt);
+                                   /*created_at=*/Now()),
+                      /*verifiable_conversion=*/absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
-                               /*process_at*/ Now() + base::Hours(1));
+                               /*process_at=*/Now() + base::Hours(1));
 
-  // Act
-  const base::TimeDelta delay =
-      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item);
-
-  // Assert
-  EXPECT_EQ(base::Hours(1), delay);
+  // Act & Assert
+  EXPECT_EQ(base::Hours(1), CalculateDelayBeforeProcessingConversionQueueItem(
+                                conversion_queue_item));
 }
 
 TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateDelayBeforeProcessingPastDueConversionQueueItem) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ true);
+                                      /*should_use_random_uuids=*/true);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                   /*created_at*/ DistantPast()),
-                      /*verifiable_conversion*/ absl::nullopt);
+                                   /*created_at=*/DistantPast()),
+                      /*verifiable_conversion=*/absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(conversion, /*process_at*/ DistantPast());
+      BuildConversionQueueItem(conversion, /*process_at=*/DistantPast());
 
-  // Act
-  const base::TimeDelta delay =
-      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item);
-
-  // Assert
-  EXPECT_EQ(kMinimumDelayBeforeProcessingQueueItem, delay);
+  // Act & Assert
+  EXPECT_EQ(
+      kMinimumDelayBeforeProcessingQueueItem,
+      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item));
 }
 
 TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateMinimumDelayBeforeProcessingConversionQueueItem) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ true);
+                                      /*should_use_random_uuids=*/true);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                   /*created_at*/ Now()),
-                      /*verifiable_conversion*/ absl::nullopt);
+                                   /*created_at=*/Now()),
+                      /*verifiable_conversion=*/absl::nullopt);
   const ConversionQueueItemInfo conversion_queue_item =
       BuildConversionQueueItem(conversion,
-                               /*process_at*/ Now() + base::Milliseconds(1));
+                               /*process_at=*/Now() + base::Milliseconds(1));
 
-  // Act
-  const base::TimeDelta delay =
-      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item);
-
-  // Assert
-  EXPECT_EQ(kMinimumDelayBeforeProcessingQueueItem, delay);
+  // Act & Assert
+  EXPECT_EQ(
+      kMinimumDelayBeforeProcessingQueueItem,
+      CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item));
 }
 
 }  // namespace brave_ads

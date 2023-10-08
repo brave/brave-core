@@ -57,7 +57,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsWeb3Provider) {
   // AskDeprecated changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
                          static_cast<int>(mojom::DefaultWallet::AskDeprecated));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -65,7 +65,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsWeb3Provider) {
   // BraveWallet changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
                          static_cast<int>(mojom::DefaultWallet::BraveWallet));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -74,7 +74,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsWeb3Provider) {
   GetPrefs()->SetInteger(
       kBraveWalletWeb3ProviderDeprecated,
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -82,7 +82,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsWeb3Provider) {
   // Ask changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
                          static_cast<int>(mojom::DefaultWallet::AskDeprecated));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -90,7 +90,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsWeb3Provider) {
   // CryptoWallets changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
                          static_cast<int>(mojom::DefaultWallet::CryptoWallets));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -98,7 +98,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsWeb3Provider) {
   // None remains None
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
                          static_cast<int>(mojom::DefaultWallet::None));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::None,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -109,7 +109,7 @@ TEST_F(BraveWalletPrefsUnitTest,
   // AskDeprecated changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kDefaultWalletDeprecated,
                          static_cast<int>(mojom::DefaultWallet::AskDeprecated));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -117,7 +117,7 @@ TEST_F(BraveWalletPrefsUnitTest,
   // BraveWallet changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kDefaultWalletDeprecated,
                          static_cast<int>(mojom::DefaultWallet::BraveWallet));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -126,7 +126,7 @@ TEST_F(BraveWalletPrefsUnitTest,
   GetPrefs()->SetInteger(
       kDefaultWalletDeprecated,
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -134,7 +134,7 @@ TEST_F(BraveWalletPrefsUnitTest,
   // Ask changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kDefaultWalletDeprecated,
                          static_cast<int>(mojom::DefaultWallet::AskDeprecated));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -142,7 +142,7 @@ TEST_F(BraveWalletPrefsUnitTest,
   // CryptoWallets changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kDefaultWalletDeprecated,
                          static_cast<int>(mojom::DefaultWallet::CryptoWallets));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -150,7 +150,7 @@ TEST_F(BraveWalletPrefsUnitTest,
   // None remains None
   GetPrefs()->SetInteger(kDefaultWalletDeprecated,
                          static_cast<int>(mojom::DefaultWallet::None));
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::None,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultEthereumWallet)));
@@ -164,7 +164,7 @@ TEST_F(BraveWalletPrefsUnitTest,
       GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
   auto* pref = GetPrefs()->FindPreference(kBraveWalletTransactions);
   ASSERT_TRUE(pref && pref->IsDefaultValue());
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_TRUE(pref && pref->IsDefaultValue());
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
@@ -190,7 +190,7 @@ TEST_F(BraveWalletPrefsUnitTest,
     update->SetByDottedPath("ropsten.meta3", tx1.Clone());
   }
 
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   const auto& dict = GetPrefs()->GetDict(kBraveWalletTransactions);
   const auto* tx1_value = dict.FindDictByDottedPath("ethereum.mainnet.meta1");
   const auto* tx2_value = dict.FindDictByDottedPath("ethereum.mainnet.meta2");
@@ -217,7 +217,7 @@ TEST_F(BraveWalletPrefsUnitTest,
   EXPECT_TRUE(pref && !pref->IsDefaultValue());
   EXPECT_TRUE(GetPrefs()->GetDict(kBraveWalletTransactions).empty());
 
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_TRUE(pref && pref->IsDefaultValue());
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
@@ -241,7 +241,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
               ElementsAreArray({mojom::kSolanaDevnet, mojom::kSolanaTestnet,
                                 mojom::kLocalhostChainId}));
 
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   // Still same when nothing to migrate.
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH),
               ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
@@ -256,7 +256,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
 
   GetPrefs()->SetBoolean(kShowWalletTestNetworksDeprecated, false);
 
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   // Still same when test networks toggle was explicitly off.
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH),
               ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
@@ -272,7 +272,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
 
   GetPrefs()->SetBoolean(kShowWalletTestNetworksDeprecated, true);
 
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
   // Test networks are removed from hidden list after successfull migration.
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH), SizeIs(0));
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::FIL),
@@ -310,7 +310,7 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateAddChainIdToTransactionInfo) {
     update->SetByDottedPath("solana", std::move(tx2));
     update->SetByDottedPath("filecoin", std::move(tx3));
   }
-  MigrateObsoleteProfilePrefs(GetPrefs());
+  brave_wallet::MigrateObsoleteProfilePrefs(GetPrefs());
 
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletTransactionsChainIdMigrated));
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletTransactionsChainIdMigrated));

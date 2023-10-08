@@ -128,28 +128,27 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
         mojom::SolanaProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
   } else {
-    const auto keyring_info = keyring_service_->GetKeyringInfoSync(
-        brave_wallet::mojom::KeyringId::kSolana);
+    std::vector<mojom::AccountInfoPtr> sol_accounts;
     std::vector<std::string> addresses;
-    for (const auto& account_info : keyring_info->account_infos) {
-      addresses.push_back(account_info->address);
+    for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
+      if (account_info->account_id->coin == mojom::CoinType::SOL) {
+        sol_accounts.push_back(account_info.Clone());
+        addresses.push_back(account_info->address);
+      }
     }
     // filter out already permitted accounts if exists
     const auto allowed_accounts =
         delegate_->GetAllowedAccounts(mojom::CoinType::SOL, addresses);
     if (allowed_accounts) {
-      addresses.erase(base::ranges::remove_if(
-                          addresses,
-                          [&allowed_accounts](const auto& address) {
-                            return base::Contains(*allowed_accounts, address);
-                          }),
-                      addresses.end());
+      base::EraseIf(addresses, [&allowed_accounts](const auto& address) {
+        return base::Contains(*allowed_accounts, address);
+      });
     }
     delegate_->RequestPermissions(
         mojom::CoinType::SOL, addresses,
-        base::BindOnce(
-            &SolanaProviderImpl::OnConnect, weak_factory_.GetWeakPtr(),
-            std::move(keyring_info->account_infos), std::move(callback)));
+        base::BindOnce(&SolanaProviderImpl::OnConnect,
+                       weak_factory_.GetWeakPtr(), std::move(sol_accounts),
+                       std::move(callback)));
   }
 
   // To show wallet icon on android if wallet is unlocked

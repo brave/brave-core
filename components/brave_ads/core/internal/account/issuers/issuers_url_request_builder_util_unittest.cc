@@ -12,11 +12,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsIssuersUrlRequestBuilderUtilTest, GetPath) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("/v3/issuers", BuildIssuersUrlPath());
 }
 

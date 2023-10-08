@@ -29,30 +29,38 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
 
   ~AdsClientNotifierObserverMock() override;
 
-  MOCK_METHOD0(OnNotifyDidInitializeAds, void());
-  MOCK_METHOD1(OnNotifyLocaleDidChange, void(const std::string&));
-  MOCK_METHOD1(OnNotifyPrefDidChange, void(const std::string&));
-  MOCK_METHOD2(OnNotifyDidUpdateResourceComponent,
-               void(const std::string&, const std::string&));
-  MOCK_METHOD2(OnNotifyRewardsWalletDidUpdate,
-               void(const std::string&, const std::string&));
-  MOCK_METHOD3(OnNotifyTabTextContentDidChange,
-               void(int32_t, const std::vector<GURL>&, const std::string&));
-  MOCK_METHOD3(OnNotifyTabHtmlContentDidChange,
-               void(int32_t, const std::vector<GURL>&, const std::string&));
-  MOCK_METHOD1(OnNotifyTabDidStartPlayingMedia, void(int32_t));
-  MOCK_METHOD1(OnNotifyTabDidStopPlayingMedia, void(int32_t));
-  MOCK_METHOD3(OnNotifyTabDidChange,
-               void(int32_t, const std::vector<GURL>&, bool));
-  MOCK_METHOD1(OnNotifyDidCloseTab, void(int32_t));
-  MOCK_METHOD1(OnNotifyUserGestureEventTriggered, void(int32_t));
-  MOCK_METHOD0(OnNotifyUserDidBecomeIdle, void());
-  MOCK_METHOD2(OnNotifyUserDidBecomeActive, void(base::TimeDelta, bool));
-  MOCK_METHOD0(OnNotifyBrowserDidEnterForeground, void());
-  MOCK_METHOD0(OnNotifyBrowserDidEnterBackground, void());
-  MOCK_METHOD0(OnNotifyBrowserDidBecomeActive, void());
-  MOCK_METHOD0(OnNotifyBrowserDidResignActive, void());
-  MOCK_METHOD0(OnNotifyDidSolveAdaptiveCaptcha, void());
+  MOCK_METHOD(void, OnNotifyDidInitializeAds, ());
+  MOCK_METHOD(void, OnNotifyLocaleDidChange, (const std::string&));
+  MOCK_METHOD(void, OnNotifyPrefDidChange, (const std::string&));
+  MOCK_METHOD(void,
+              OnNotifyDidUpdateResourceComponent,
+              (const std::string&, const std::string&));
+  MOCK_METHOD(void,
+              OnNotifyDidUnregisterResourceComponent,
+              (const std::string&));
+  MOCK_METHOD(void,
+              OnNotifyRewardsWalletDidUpdate,
+              (const std::string&, const std::string&));
+  MOCK_METHOD(void,
+              OnNotifyTabTextContentDidChange,
+              (int32_t, const std::vector<GURL>&, const std::string&));
+  MOCK_METHOD(void,
+              OnNotifyTabHtmlContentDidChange,
+              (int32_t, const std::vector<GURL>&, const std::string&));
+  MOCK_METHOD(void, OnNotifyTabDidStartPlayingMedia, (int32_t));
+  MOCK_METHOD(void, OnNotifyTabDidStopPlayingMedia, (int32_t));
+  MOCK_METHOD(void,
+              OnNotifyTabDidChange,
+              (int32_t, const std::vector<GURL>&, bool));
+  MOCK_METHOD(void, OnNotifyDidCloseTab, (int32_t));
+  MOCK_METHOD(void, OnNotifyUserGestureEventTriggered, (int32_t));
+  MOCK_METHOD(void, OnNotifyUserDidBecomeIdle, ());
+  MOCK_METHOD(void, OnNotifyUserDidBecomeActive, (base::TimeDelta, bool));
+  MOCK_METHOD(void, OnNotifyBrowserDidEnterForeground, ());
+  MOCK_METHOD(void, OnNotifyBrowserDidEnterBackground, ());
+  MOCK_METHOD(void, OnNotifyBrowserDidBecomeActive, ());
+  MOCK_METHOD(void, OnNotifyBrowserDidResignActive, ());
+  MOCK_METHOD(void, OnNotifyDidSolveAdaptiveCaptcha, ());
 };
 
 }  // namespace brave_ads

@@ -83,7 +83,7 @@ export const NetworkCheckboxes = (props: Props) => {
                     .toString()
                 )
               }
-              onChanged={
+              onChange={
                 () => onCheckNetwork(
                   networkEntityAdapter
                     .selectId(network)

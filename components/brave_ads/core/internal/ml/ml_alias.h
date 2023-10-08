@@ -15,7 +15,7 @@
 
 namespace brave_ads::ml {
 
-using PredictionMap = std::map</*class*/ std::string, /*prediction*/ double>;
+using PredictionMap = std::map</*class=*/std::string, /*prediction=*/double>;
 using TransformationPtr = std::unique_ptr<Transformation>;
 using TransformationVector = std::vector<TransformationPtr>;
 

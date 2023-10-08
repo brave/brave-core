@@ -26,21 +26,22 @@ class BraveAdsConfirmationDynamicUserDataBuilderTest : public UnitTestBase {
     MockConfirmationUserData();
 
     AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false));
+        TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
   }
 };
 
 TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
        BuildConfirmationUserDataForRewardsUser) {
-  // Arrange
-
-  // Assert
+  // Act & Assert
   const base::Value::Dict expected_user_data = base::test::ParseJsonDict(
-      R"({"diagnosticId":"c1298fde-7fdb-401f-a3ce-0b58fe86e6e2","systemTimestamp":"2020-11-18T12:00:00.000Z"})");
+      R"(
+          {
+            "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+            "systemTimestamp": "2020-11-18T12:00:00.000Z"
+          })");
+
   base::MockCallback<BuildUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-
-  // Act
   BuildDynamicUserData(callback.Get());
 }
 
@@ -49,11 +50,9 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Assert
+  // Act & Assert
   base::MockCallback<BuildUserDataCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::IsEmpty()));
-
-  // Act
+  EXPECT_CALL(callback, Run(/*user_data=*/::testing::IsEmpty()));
   BuildDynamicUserData(callback.Get());
 }
 

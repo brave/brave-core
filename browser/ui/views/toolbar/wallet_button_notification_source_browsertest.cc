@@ -45,24 +45,17 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
   }
 
   void RestoreWallet() {
-    const char mnemonic[] =
-        "drip caution abandon festival order clown oven regular absorb "
-        "evidence crew where";
-    base::RunLoop run_loop;
-    keyring_service_->RestoreWallet(
-        mnemonic, "brave123", false,
-        base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+        brave_wallet::kMnemonicDripCaution, brave_wallet::kTestWalletPassword,
+        false));
   }
 
   void CreateWallet() {
     base::RunLoop run_loop;
     keyring_service_->CreateWallet(
-        "brave123", base::BindLambdaForTesting(
-                        [&](const std::string&) { run_loop.Quit(); }));
+        brave_wallet::kTestWalletPassword,
+        base::BindLambdaForTesting(
+            [&](const std::string&) { run_loop.Quit(); }));
     run_loop.Run();
   }
 

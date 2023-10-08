@@ -23,14 +23,11 @@ TEST_F(BraveAdsTopSegmentsTest, GetTopChildSegments) {
   const SegmentList segments = {"parent_1-child", "parent_2-child",
                                 "parent_3-child"};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {"parent_1-child",
                                              "parent_2-child"};
-
   EXPECT_EQ(expected_top_segments, GetTopSegments(segments, kSegmentsMaxCount,
-                                                  /*parent_only*/ false));
+                                                  /*parent_only=*/false));
 }
 
 TEST_F(BraveAdsTopSegmentsTest, GetTopParentSegments) {
@@ -38,22 +35,16 @@ TEST_F(BraveAdsTopSegmentsTest, GetTopParentSegments) {
   const SegmentList segments = {"parent_1-child", "parent_2-child",
                                 "parent_3-child"};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const SegmentList expected_top_segments = {"parent_1", "parent_2"};
-
   EXPECT_EQ(expected_top_segments, GetTopSegments(segments, kSegmentsMaxCount,
-                                                  /*parent_only*/ true));
+                                                  /*parent_only=*/true));
 }
 
 TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopSegments) {
-  // Arrange
-  const SegmentList segments;
-
   // Act
-  const SegmentList top_segments =
-      GetTopSegments(segments, kSegmentsMaxCount, /*parent_only*/ false);
+  const SegmentList top_segments = GetTopSegments(
+      /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false);
 
   // Assert
   EXPECT_TRUE(top_segments.empty());

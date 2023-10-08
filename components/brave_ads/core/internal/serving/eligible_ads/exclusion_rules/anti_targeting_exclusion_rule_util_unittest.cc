@@ -19,9 +19,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest, HasVisitedAntiTargetedSites) {
   const AntiTargetingSiteList anti_targeting_sites = {
       GURL("https://www.foo.com"), GURL("https://www.bar.com")};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(
       HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
 }
@@ -34,9 +32,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
   const AntiTargetingSiteList anti_targeting_sites = {
       GURL("HTTPS://WWW.FOO.COM"), GURL("HTTPS://WWW.BAR.COM")};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(
       HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
 }
@@ -50,9 +46,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
       GURL("https://www.brave.com"),
       GURL("https://www.basicattentiontoken.org")};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
 }
@@ -64,9 +58,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 
   const AntiTargetingSiteList anti_targeting_sites = {GURL("INVALID")};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
 }
@@ -78,9 +70,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 
   const AntiTargetingSiteList anti_targeting_sites = {GURL("INVALID")};
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
 }
@@ -92,9 +82,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 
   const AntiTargetingSiteList anti_targeting_sites;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
 }
@@ -106,9 +94,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 
   const AntiTargetingSiteList anti_targeting_sites;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(
       HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
 }

@@ -48,6 +48,7 @@ export const AddressText = styled.div`
   text-align: center;
   color: ${(p) => p.theme.color.text02};
   letter-spacing: 0.01em;
+  word-break: break-all;
 `
 export const AddressTextLabel = styled(AddressText)`
   font-weight: 600;

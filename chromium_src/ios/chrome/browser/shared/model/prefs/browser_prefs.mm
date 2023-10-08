@@ -8,6 +8,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/p3a_service.h"
@@ -38,6 +39,7 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
+  brave_l10n::RegisterL10nLocalStatePrefs(registry);
 }
 
 void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {

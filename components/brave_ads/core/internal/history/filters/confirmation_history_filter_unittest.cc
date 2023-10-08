@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/history/filters/confirmation_history_filter.h"
 
-#include "base/containers/circular_deque.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_container_util.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -60,8 +59,9 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
 
   HistoryItemList history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7};
 
-  // Act
   const ConfirmationHistoryFilter filter;
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -72,8 +72,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
       ad6,  // Ad 4
       ad7   // Ad 5
   };
-
-  EXPECT_TRUE(ContainersEq(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::UnorderedElementsAreArray(history));
 }
 
 TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
@@ -128,8 +127,9 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
 
   HistoryItemList history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7, ad8};
 
-  // Act
   const ConfirmationHistoryFilter filter;
+
+  // Act
   history = filter.Apply(history);
 
   // Assert
@@ -138,8 +138,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
       ad7,  // Dismiss
       ad8   // Click
   };
-
-  EXPECT_TRUE(ContainersEq(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::UnorderedElementsAreArray(history));
 }
 
 }  // namespace brave_ads

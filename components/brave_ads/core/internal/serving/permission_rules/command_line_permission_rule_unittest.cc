@@ -26,9 +26,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 
   GlobalState::GetInstance()->Flags().did_override_from_command_line = false;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -40,9 +38,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 
   GlobalState::GetInstance()->Flags().did_override_from_command_line = false;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -54,9 +50,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 
   GlobalState::GetInstance()->Flags().did_override_from_command_line = true;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -68,9 +62,7 @@ TEST_F(BraveAdsCommandLinePermissionRuleTest,
 
   GlobalState::GetInstance()->Flags().did_override_from_command_line = true;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 

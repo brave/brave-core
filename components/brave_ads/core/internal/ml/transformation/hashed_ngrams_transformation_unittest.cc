@@ -73,7 +73,7 @@ TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
       static_cast<VectorData*>(hashed_data.get());
 
   // Assert
-  ASSERT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
+  EXPECT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
   EXPECT_EQ(kHashBucketCount, hashed_vector_data->GetData().size());
 }
 

@@ -58,14 +58,11 @@ class BraveStatsUpdater : public ProfileManagerObserver {
 
   void Start();
   void Stop();
-  bool MaybeDoThresholdPing(int score);
 
   using StatsUpdatedCallback = base::RepeatingCallback<void(const GURL& url)>;
 
   static void SetStatsUpdatedCallbackForTesting(
       StatsUpdatedCallback* stats_updated_callback);
-  static void SetStatsThresholdCallbackForTesting(
-      StatsUpdatedCallback* stats_threshold_callback);
   void SetURLLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   void SetUsageServerForTesting(const std::string& usage_server);
@@ -92,13 +89,10 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   void DetectUncertainFuture();
   void StartServerPingStartupTimer();
   void QueueServerPing();
-  void SendUserTriggeredPing();
   void SendServerPing();
 
   bool IsAdsEnabled();
   bool IsReferralInitialized();
-  bool HasDoneThresholdPing();
-  void DisableThresholdPing();
 
   // ProfileManagerObserver:
   void OnProfileAdded(Profile* profile) override;
@@ -107,7 +101,6 @@ class BraveStatsUpdater : public ProfileManagerObserver {
 
   friend class ::BraveStatsUpdaterBrowserTest;
 
-  int threshold_score_ = 0;
   ProcessArch arch_ = ProcessArch::kArchSkip;
   bool stats_startup_complete_ = false;
   raw_ptr<PrefService> pref_service_ = nullptr;
@@ -127,6 +120,8 @@ class BraveStatsUpdater : public ProfileManagerObserver {
 
 // Registers the preferences used by BraveStatsUpdater
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
 }  // namespace brave_stats
 

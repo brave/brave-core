@@ -41,8 +41,9 @@ class ADS_EXPORT AdEventCache final {
   void ResetForInstanceId(const std::string& id);
 
  private:
-  base::flat_map<std::string,
-                 base::flat_map<std::string, std::vector<base::Time>>>
+  base::flat_map<
+      /*uuid=*/std::string,
+      base::flat_map</*ad_type=*/std::string, std::vector<base::Time>>>
       ad_event_cache_;
 };
 

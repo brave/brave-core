@@ -38,6 +38,7 @@ class BraveNTPCustomBackgroundServiceDelegateUnitTest : public testing::Test {
   }
 
   void TearDown() override {
+    profile_ = nullptr;
     service_delegate_.reset();
     profile_manager_->DeleteAllTestingProfiles();
     profile_manager_.reset();

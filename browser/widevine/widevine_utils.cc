@@ -20,7 +20,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/permissions/permission_request_manager.h"
@@ -72,8 +71,7 @@ void DeleteOldWidevineBinary() {
 }
 #endif
 
-void ClearWidevinePrefs(Profile* profile) {
-  PrefService* prefs = profile->GetPrefs();
+void ClearWidevinePrefs(PrefService* prefs) {
   prefs->ClearPref(kWidevineEnabled);
 }
 
@@ -143,7 +141,7 @@ void SetWidevineEnabled(bool opted_in) {
   g_browser_process->local_state()->SetBoolean(kWidevineEnabled, opted_in);
 }
 
-void MigrateWidevinePrefs(Profile* profile) {
+void MigrateWidevinePrefs(PrefService* prefs) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   auto* local_state = g_browser_process->local_state();
@@ -151,13 +149,12 @@ void MigrateWidevinePrefs(Profile* profile) {
   // they were explicitly set by primary prefs' value. After that, we don't
   // need to try migration again and prefs from profiles are already cleared.
   if (local_state->FindPreference(kWidevineEnabled)->IsDefaultValue()) {
-    PrefService* prefs = profile->GetPrefs();
     local_state->SetBoolean(kWidevineEnabled,
                             prefs->GetBoolean(kWidevineEnabled));
   }
 
   // Clear deprecated prefs.
-  ClearWidevinePrefs(profile);
+  ClearWidevinePrefs(prefs);
 }
 
 void RegisterWidevineLocalstatePrefsForMigration(PrefRegistrySimple* registry) {

@@ -26,26 +26,23 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
   // Arrange
   ConversionResourceIdPatternMap resource_id_patterns;
   resource_id_patterns.insert(
-      {/*url_pattern*/ "https://foo.com/bar",
+      {/*url_pattern=*/"https://foo.com/bar",
        ConversionResourceIdPatternInfo{
-           /*url_pattern*/ "https://foo.com/bar",
-           /*search_in_type*/
+           /*url_pattern=*/"https://foo.com/bar",
+           /*search_in_type=*/
            ConversionResourceIdPatternSearchInType::kHtml,
-           /*id_pattern*/ R"(<div.*id="xyzzy-id".*>(.*)</div>)"}});
+           /*id_pattern=*/R"(<div.*id="xyzzy-id".*>(.*)</div>)"}});
 
   CreativeSetConversionInfo creative_set_conversion;
   creative_set_conversion.verifiable_advertiser_public_key_base64 =
       kVerifiableConversionAdvertiserPublicKey;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const VerifiableConversionInfo expected_verifiable_conversion{
       "waldo", kVerifiableConversionAdvertiserPublicKey};
-
   EXPECT_EQ(expected_verifiable_conversion,
             MaybeBuildVerifiableConversion(
-                /*redirect_chain*/ {GURL("https://foo.com/bar")}, kHtml,
+                /*redirect_chain=*/{GURL("https://foo.com/bar")}, kHtml,
                 resource_id_patterns, creative_set_conversion));
 }
 
@@ -54,20 +51,18 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest,
   // Arrange
   ConversionResourceIdPatternMap resource_id_patterns;
   resource_id_patterns.insert(
-      {/*url_pattern*/ "https://foo.com/bar?qux_id=*",
+      {/*url_pattern=*/"https://foo.com/bar?qux_id=*",
        ConversionResourceIdPatternInfo{
-           /*url_pattern*/ "https://foo.com/bar?qux_id=*",
-           /*search_in_type*/
+           /*url_pattern=*/"https://foo.com/bar?qux_id=*",
+           /*search_in_type=*/
            ConversionResourceIdPatternSearchInType::kUrlRedirect,
-           /*id_pattern*/ "qux_id=(.*)"}});
+           /*id_pattern=*/"qux_id=(.*)"}});
 
   CreativeSetConversionInfo creative_set_conversion;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(MaybeBuildVerifiableConversion(
-      /*redirect_chain*/ {GURL("https://bar.com/foo")}, kHtml,
+      /*redirect_chain=*/{GURL("https://bar.com/foo")}, kHtml,
       resource_id_patterns, creative_set_conversion));
 }
 

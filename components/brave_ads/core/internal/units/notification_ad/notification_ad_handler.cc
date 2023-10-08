@@ -39,8 +39,8 @@ namespace {
 
 void FireEventCallback(TriggerAdEventCallback callback,
                        const bool success,
-                       const std::string& /*placement_id*/,
-                       const mojom::NotificationAdEventType /*event_type*/) {
+                       const std::string& /*placement_id=*/,
+                       const mojom::NotificationAdEventType /*event_type=*/) {
   std::move(callback).Run(success);
 }
 
@@ -95,7 +95,7 @@ void NotificationAdHandler::TriggerEvent(
          "calling TriggerEvent with kViewed";
 
   if (!UserHasOptedInToNotificationAds()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   if (event_type == mojom::NotificationAdEventType::kViewed) {
@@ -116,9 +116,9 @@ void NotificationAdHandler::FireServedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
     const std::string& placement_id,
-    const mojom::NotificationAdEventType /*event_type*/) {
+    const mojom::NotificationAdEventType /*event_type=*/) {
   if (!success) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   event_handler_.FireEvent(

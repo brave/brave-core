@@ -20,9 +20,7 @@ TEST_F(BraveAdsSignedTokenTest, FailToInitialize) {
   // Arrange
   const SignedToken signed_token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(signed_token.has_value());
 }
 
@@ -30,9 +28,7 @@ TEST_F(BraveAdsSignedTokenTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const SignedToken signed_token("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(signed_token.has_value());
 }
 
@@ -40,15 +36,11 @@ TEST_F(BraveAdsSignedTokenTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const SignedToken signed_token(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(signed_token.has_value());
 }
 
 TEST_F(BraveAdsSignedTokenTest, DecodeBase64) {
-  // Arrange
-
   // Act
   const SignedToken signed_token =
       SignedToken::DecodeBase64(kSignedTokenBase64);
@@ -58,8 +50,6 @@ TEST_F(BraveAdsSignedTokenTest, DecodeBase64) {
 }
 
 TEST_F(BraveAdsSignedTokenTest, FailToDecodeEmptyBase64) {
-  // Arrange
-
   // Act
   const SignedToken signed_token = SignedToken::DecodeBase64("");
 
@@ -68,8 +58,6 @@ TEST_F(BraveAdsSignedTokenTest, FailToDecodeEmptyBase64) {
 }
 
 TEST_F(BraveAdsSignedTokenTest, FailToDecodeInvalidBase64) {
-  // Arrange
-
   // Act
   const SignedToken signed_token = SignedToken::DecodeBase64(kInvalidBase64);
 
@@ -81,9 +69,7 @@ TEST_F(BraveAdsSignedTokenTest, EncodeBase64) {
   // Arrange
   const SignedToken signed_token(kSignedTokenBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kSignedTokenBase64, signed_token.EncodeBase64());
 }
 
@@ -91,9 +77,7 @@ TEST_F(BraveAdsSignedTokenTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const SignedToken signed_token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(signed_token.EncodeBase64());
 }
 
@@ -101,9 +85,7 @@ TEST_F(BraveAdsSignedTokenTest, IsEqual) {
   // Arrange
   const SignedToken signed_token(kSignedTokenBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(signed_token, signed_token);
 }
 
@@ -111,9 +93,7 @@ TEST_F(BraveAdsSignedTokenTest, IsEqualWhenUninitialized) {
   // Arrange
   const SignedToken signed_token;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(signed_token, signed_token);
 }
 
@@ -121,9 +101,7 @@ TEST_F(BraveAdsSignedTokenTest, IsEmptyBase64Equal) {
   // Arrange
   const SignedToken signed_token("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(signed_token, signed_token);
 }
 
@@ -131,9 +109,7 @@ TEST_F(BraveAdsSignedTokenTest, IsInvalidBase64Equal) {
   // Arrange
   const SignedToken signed_token(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(signed_token, signed_token);
 }
 
@@ -141,9 +117,7 @@ TEST_F(BraveAdsSignedTokenTest, IsNotEqual) {
   // Arrange
   const SignedToken signed_token(kSignedTokenBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const SignedToken different_signed_token(kInvalidBase64);
   EXPECT_NE(different_signed_token, signed_token);
 }

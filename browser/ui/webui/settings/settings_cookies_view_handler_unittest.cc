@@ -51,20 +51,23 @@ class CookiesViewHandlerTest : public ChromeRenderViewHostTestHarness {
     handler_.reset();
     web_ui_.reset();
 
+    mock_browsing_data_local_storage_helper_ = nullptr;
+    mock_browsing_data_cookie_helper_ = nullptr;
+
     ChromeRenderViewHostTestHarness::TearDown();
   }
 
   void SetupTreeModelForTesting() {
-    mock_browsing_data_cookie_helper =
+    mock_browsing_data_cookie_helper_ =
         base::MakeRefCounted<browsing_data::MockCookieHelper>(
             profile()->GetDefaultStoragePartition());
-    mock_browsing_data_local_storage_helper =
+    mock_browsing_data_local_storage_helper_ =
         base::MakeRefCounted<browsing_data::MockLocalStorageHelper>(
             profile()->GetDefaultStoragePartition());
 
     auto container = std::make_unique<LocalDataContainer>(
-        mock_browsing_data_cookie_helper,
-        /*database_helper=*/nullptr, mock_browsing_data_local_storage_helper,
+        mock_browsing_data_cookie_helper_,
+        /*database_helper=*/nullptr, mock_browsing_data_local_storage_helper_,
         /*session_storage_helper=*/nullptr,
         /*indexed_db_helper=*/nullptr,
         /*file_system_helper=*/nullptr,
@@ -75,23 +78,23 @@ class CookiesViewHandlerTest : public ChromeRenderViewHostTestHarness {
     auto mock_cookies_tree_model = std::make_unique<CookiesTreeModel>(
         std::move(container), profile()->GetExtensionSpecialStoragePolicy());
 
-    mock_browsing_data_local_storage_helper->AddLocalStorageForStorageKey(
+    mock_browsing_data_local_storage_helper_->AddLocalStorageForStorageKey(
         blink::StorageKey::CreateFromStringForTesting(kTestOrigin1), 2);
-    mock_browsing_data_local_storage_helper->AddLocalStorageForStorageKey(
+    mock_browsing_data_local_storage_helper_->AddLocalStorageForStorageKey(
         blink::StorageKey::CreateFromStringForTesting(kTestOrigin2), 3);
 
-    mock_browsing_data_cookie_helper->AddCookieSamples(GURL(kTestOrigin1),
-                                                       kTestCookie1);
-    mock_browsing_data_cookie_helper->AddCookieSamples(GURL(kTestOrigin2),
-                                                       kTestCookie2);
+    mock_browsing_data_cookie_helper_->AddCookieSamples(GURL(kTestOrigin1),
+                                                        kTestCookie1);
+    mock_browsing_data_cookie_helper_->AddCookieSamples(GURL(kTestOrigin2),
+                                                        kTestCookie2);
 
     handler()->SetCookiesTreeModelForTesting(
         std::move(mock_cookies_tree_model));
   }
 
   void NotifyTreeModel() {
-    mock_browsing_data_local_storage_helper->Notify();
-    mock_browsing_data_cookie_helper->Notify();
+    mock_browsing_data_local_storage_helper_->Notify();
+    mock_browsing_data_cookie_helper_->Notify();
   }
 
   void SetupHandlerWithTreeModel() {
@@ -125,9 +128,9 @@ class CookiesViewHandlerTest : public ChromeRenderViewHostTestHarness {
   // Ref pointers to storage helpers used in the tree model used for testing.
   // Retained to allow control over batch update completion.
   scoped_refptr<browsing_data::MockLocalStorageHelper>
-      mock_browsing_data_local_storage_helper;
+      mock_browsing_data_local_storage_helper_;
   scoped_refptr<browsing_data::MockCookieHelper>
-      mock_browsing_data_cookie_helper;
+      mock_browsing_data_cookie_helper_;
 };
 
 TEST_F(CookiesViewHandlerTest, ImmediateTreeOperation) {

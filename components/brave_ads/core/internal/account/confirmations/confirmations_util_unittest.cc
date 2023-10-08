@@ -24,33 +24,31 @@ namespace brave_ads {
 
 class BraveAdsConfirmationsUtilTest : public UnitTestBase {
  protected:
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  TokenGeneratorMock token_generator_mock_;
 };
 
 TEST_F(BraveAdsConfirmationsUtilTest, IsInvalidToken) {
   // Arrange
-
-  // Act
   const ConfirmationInfo confirmation;
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsValid(confirmation));
 }
 
 TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 2);
+  SetConfirmationTokensForTesting(/*count=*/2);
 
-  SetPaymentTokensForTesting(/*count*/ 1);
+  SetPaymentTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
   const absl::optional<ConfirmationInfo> confirmation =
       BuildRewardConfirmation(&token_generator_mock_, transaction,
-                              /*user_data*/ {});
+                              /*user_data=*/{});
   ASSERT_TRUE(confirmation);
   ConfirmationStateManager::GetInstance().AddConfirmation(*confirmation);
 
@@ -68,8 +66,6 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
 }
 
 TEST_F(BraveAdsConfirmationsUtilTest, ResetIfNoTokens) {
-  // Arrange
-
   // Act
   ResetTokens();
 

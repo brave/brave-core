@@ -23,7 +23,7 @@ class BraveAdsDaypartExclusionRuleTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     AdvanceClockTo(TimeFromString("Sun, 19 Mar 2023 05:35",
-                                  /*is_local*/ true));  // Hello Rory!!!
+                                  /*is_local=*/true));  // Hello Rory!!!
   }
 
   const DaypartExclusionRule exclusion_rule_;
@@ -34,9 +34,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, ShouldIncludeIfNoDayparts) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -48,13 +46,11 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
 
   CreativeDaypartInfo daypart;
   daypart.days_of_week = "0";  // Sunday
-  daypart.start_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
-  daypart.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
+  daypart.start_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/35);
+  daypart.end_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/35);
   creative_ad.dayparts.push_back(daypart);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -66,13 +62,11 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
 
   CreativeDaypartInfo daypart;
   daypart.days_of_week = "0123456";
-  daypart.start_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
-  daypart.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
+  daypart.start_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/35);
+  daypart.end_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/35);
   creative_ad.dayparts.push_back(daypart);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -84,25 +78,23 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
 
   CreativeDaypartInfo daypart_1;
   daypart_1.days_of_week = "1";  // Monday
-  daypart_1.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
-  daypart_1.end_minute = GetMinutesForTesting(/*hours*/ 4, /*minutes*/ 35);
+  daypart_1.start_minute = GetMinutesForTesting(/*hours=*/0, /*minutes=*/0);
+  daypart_1.end_minute = GetMinutesForTesting(/*hours=*/4, /*minutes=*/35);
   creative_ad.dayparts.push_back(daypart_1);
 
   CreativeDaypartInfo daypart_2;
   daypart_2.days_of_week = "23";  // Tuesday and Wednesday
-  daypart_2.start_minute = GetMinutesForTesting(/*hours*/ 4, /*minutes*/ 36);
-  daypart_2.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
+  daypart_2.start_minute = GetMinutesForTesting(/*hours=*/4, /*minutes=*/36);
+  daypart_2.end_minute = GetMinutesForTesting(/*hours=*/23, /*minutes=*/59);
   creative_ad.dayparts.push_back(daypart_2);
 
   CreativeDaypartInfo daypart_3;
   daypart_3.days_of_week = "0";  // Sunday
-  daypart_3.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
-  daypart_3.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 35);
+  daypart_3.start_minute = GetMinutesForTesting(/*hours=*/0, /*minutes=*/0);
+  daypart_3.end_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/35);
   creative_ad.dayparts.push_back(daypart_3);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -114,25 +106,23 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
 
   CreativeDaypartInfo daypart_1;
   daypart_1.days_of_week = "1";  // Monday
-  daypart_1.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
-  daypart_1.end_minute = GetMinutesForTesting(/*hours*/ 4, /*minutes*/ 35);
+  daypart_1.start_minute = GetMinutesForTesting(/*hours=*/0, /*minutes=*/0);
+  daypart_1.end_minute = GetMinutesForTesting(/*hours=*/4, /*minutes=*/35);
   creative_ad.dayparts.push_back(daypart_1);
 
   CreativeDaypartInfo daypart_2;
   daypart_2.days_of_week = "0";  // Sunday
-  daypart_2.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
-  daypart_2.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 34);
+  daypart_2.start_minute = GetMinutesForTesting(/*hours=*/0, /*minutes=*/0);
+  daypart_2.end_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/34);
   creative_ad.dayparts.push_back(daypart_2);
 
   CreativeDaypartInfo daypart_3;
   daypart_3.days_of_week = "0";  // Sunday
-  daypart_3.start_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 36);
-  daypart_3.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
+  daypart_3.start_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/36);
+  daypart_3.end_minute = GetMinutesForTesting(/*hours=*/23, /*minutes=*/59);
   creative_ad.dayparts.push_back(daypart_3);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -143,13 +133,11 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowForWrongDayOfWeek) {
 
   CreativeDaypartInfo daypart;
   daypart.days_of_week = "2";  // Tuesday
-  daypart.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
-  daypart.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
+  daypart.start_minute = GetMinutesForTesting(/*hours=*/0, /*minutes=*/0);
+  daypart.end_minute = GetMinutesForTesting(/*hours=*/23, /*minutes=*/59);
   creative_ad.dayparts.push_back(daypart);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -161,19 +149,17 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
 
   CreativeDaypartInfo daypart_1;
   daypart_1.days_of_week = "0";  // Sunday
-  daypart_1.start_minute = GetMinutesForTesting(/*hours*/ 0, /*minutes*/ 0);
-  daypart_1.end_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 34);
+  daypart_1.start_minute = GetMinutesForTesting(/*hours=*/0, /*minutes=*/0);
+  daypart_1.end_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/34);
   creative_ad.dayparts.push_back(daypart_1);
 
   CreativeDaypartInfo daypart_2;
   daypart_2.days_of_week = "0";  // Sunday
-  daypart_2.start_minute = GetMinutesForTesting(/*hours*/ 5, /*minutes*/ 36);
-  daypart_2.end_minute = GetMinutesForTesting(/*hours*/ 23, /*minutes*/ 59);
+  daypart_2.start_minute = GetMinutesForTesting(/*hours=*/5, /*minutes=*/36);
+  daypart_2.end_minute = GetMinutesForTesting(/*hours=*/23, /*minutes=*/59);
   creative_ad.dayparts.push_back(daypart_2);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 

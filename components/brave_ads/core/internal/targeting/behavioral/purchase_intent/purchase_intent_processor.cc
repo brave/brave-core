@@ -181,9 +181,9 @@ uint16_t PurchaseIntentProcessor::GetFunnelWeightForSearchQuery(
 }
 
 void PurchaseIntentProcessor::OnTextContentDidChange(
-    const int32_t /*tab_id*/,
+    const int32_t /*tab_id=*/,
     const std::vector<GURL>& redirect_chain,
-    const std::string& /*text*/) {
+    const std::string& /*text=*/) {
   if (redirect_chain.empty()) {
     return;
   }

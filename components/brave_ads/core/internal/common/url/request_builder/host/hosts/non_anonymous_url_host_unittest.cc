@@ -19,9 +19,7 @@ TEST_F(BraveAdsNonAnonymousUrlHostTest, GetProductionUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://mywallet.ads.brave.com", GetNonAnonymousUrlHost());
 }
 
@@ -30,9 +28,7 @@ TEST_F(BraveAdsNonAnonymousUrlHostTest, GetStagingUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://mywallet.ads.bravesoftware.com", GetNonAnonymousUrlHost());
 }
 

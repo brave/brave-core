@@ -11,11 +11,13 @@
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 
+namespace base {
+class TimeDelta;
+}  // namespace base
+
 namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kConversionsFeature);
-
-bool IsConversionFeatureEnabled();
 
 constexpr base::FeatureParam<int> kConversionResourceVersion{
     &kConversionsFeature, "resource_version", 1};
@@ -23,6 +25,9 @@ constexpr base::FeatureParam<int> kConversionResourceVersion{
 constexpr base::FeatureParam<std::string> kHtmlMetaTagConversionIdPattern{
     &kConversionsFeature, "html_meta_tag_id_pattern",
     R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~"};
+
+constexpr base::FeatureParam<base::TimeDelta> kProcessConversionAfter{
+    &kConversionsFeature, "process_after", base::Days(1)};
 
 }  // namespace brave_ads
 

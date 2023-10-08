@@ -36,6 +36,9 @@
     <color name="brave_wallet_day_night_bull">#FF2AC194</color>
     <color name="brave_wallet_day_night_bear">#FFEE6374</color>
     <color name="brave_wallet_day_night_chip_selected">#EDEEF1</color>
+    <color name="brave_wallet_dn_button_color">#3F39E8</color>
+    <!-- Brave wallet 2.0 colors -->
+    <color name="brave_wallet_dn_panel_bg">#EDEEF1</color>
 
     <!-- Text colors -->
     <color name="brave_theme_subtitle_text">#868E96</color>
@@ -97,7 +100,6 @@
     <color name="brave_theme_color">#fb542b</color>
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
     <color name="brave_add_widget_button_pressed">#737ADE</color>
-    <color name="brave_button_color">#4C54D2</color>
     <color name="brave_button_pressed">#7278C5</color>
 
     <!--  Wallet gradient colors  -->
@@ -208,6 +210,8 @@
     <color name="topsite_bg_color">#DADCE8</color>
 
     <color name="white_alpha_50">#80FFFFFF</color>
+    <color name="verification_tick_mark_background">#5F5CF1</color>
+
 
     <color name="brave_rewards_modal_text_color">#495057</color>
     <color name="brave_rewards_modal_theme_color">#4C54D2</color>
@@ -233,9 +237,7 @@
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
 
-    <color name="wallet_sign_msg_err_icon_color">#E6667C</color>
-    <color name="wallet_sign_msg_err_message_color">#E8E6E7</color>
-    <color name="wallet_sign_msg_err_bg_color">#FF44141B</color>
+    <color name="wallet_sign_msg_err_bg_color">#FFF1F1</color>
 
     <color name="vpn_callout_bg_color">#381E85</color>
     <color name="brave_plan_bg">#27155E</color>
@@ -362,4 +364,6 @@
     <color name="rewards_private_ads_icon_color13">#6AB6F4</color>
     <color name="rewards_manage_ads_color">#3F39E8</color>
     <color name="rewards_estimated_earning_close_color">#697284</color>
+    <color name="rewards_tipping_progress_bar">@android:color/black</color>
+
 </resources>

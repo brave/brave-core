@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/resource/conversion_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -28,20 +29,17 @@ class BraveAdsConversionResourceTest : public UnitTestBase {
     resource_ = std::make_unique<ConversionResource>();
   }
 
-  void LoadResource(const std::string& id) {
+  bool LoadResource(const std::string& id) {
     NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion, id);
     task_environment_.RunUntilIdle();
+    return resource_->IsInitialized();
   }
 
   std::unique_ptr<ConversionResource> resource_;
 };
 
 TEST_F(BraveAdsConversionResourceTest, IsNotInitialized) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(resource_->IsInitialized());
 }
 
@@ -50,20 +48,17 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadInvalidResource) {
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidResourceId,
                                              kConversionResourceId));
 
-  // Act
-  LoadResource(kCountryComponentId);
-
-  // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  EXPECT_CALL(ads_client_mock_, LoadFileResource(kConversionResourceId,
-                                                 ::testing::_, ::testing::_))
-      .WillOnce(
-          ::testing::Invoke([](const std::string& /*id*/, const int /*version*/,
-                               LoadFileCallback callback) {
+  ON_CALL(ads_client_mock_,
+          LoadFileResource(kConversionResourceId, ::testing::_, ::testing::_))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& /*id=*/, const int /*version=*/,
+             LoadFileCallback callback) {
             const base::FilePath path =
                 GetFileResourcePath().AppendASCII(kMissingResourceId);
 
@@ -72,18 +67,13 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
             std::move(callback).Run(std::move(file));
           }));
 
-  // Act
-  LoadResource(kCountryComponentId);
-
-  // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_FALSE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(BraveAdsConversionResourceTest, LoadResourceWhenLocaleDidChange) {
-  // Arrange
-
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -94,11 +84,11 @@ TEST_F(
     BraveAdsConversionResourceTest,
     LoadResourceWhenLocaleDidChangeIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAdsForTesting();
-  DisableBraveNewsAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
   // Act
-  NotifyLocaleDidChange(/*locale*/ "en_GB");
+  NotifyLocaleDidChange(/*locale=*/"en_GB");
   task_environment_.RunUntilIdle();
 
   // Assert
@@ -107,39 +97,26 @@ TEST_F(
 
 TEST_F(BraveAdsConversionResourceTest,
        LoadResourceWhenDidUpdateResourceComponent) {
-  // Arrange
-
-  // Act
-  LoadResource(kCountryComponentId);
-
-  // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 
 TEST_F(
     BraveAdsConversionResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfInvalidCountryComponentId) {
-  // Arrange
-
-  // Act
-  LoadResource(kInvalidCountryComponentId);
-
-  // Assert
-  EXPECT_FALSE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_FALSE(LoadResource(kInvalidCountryComponentId));
 }
 
 TEST_F(
     BraveAdsConversionResourceTest,
     LoadResourceWhenDidUpdateResourceComponentIfNotificationAdsAndBraveNewsAdsAreDisabled) {
   // Arrange
-  DisableNotificationAdsForTesting();
-  DisableBraveNewsAdsForTesting();
+  OptOutOfNotificationAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
-  // Act
-  LoadResource(kCountryComponentId);
-
-  // Assert
-  EXPECT_TRUE(resource_->IsInitialized());
+  // Act & Assert
+  EXPECT_TRUE(LoadResource(kCountryComponentId));
 }
 
 }  // namespace brave_ads

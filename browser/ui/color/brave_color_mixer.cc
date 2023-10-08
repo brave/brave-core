@@ -185,6 +185,8 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabForegroundActiveFrameActive] = {kLightToolbarIcon};
   mixer[kColorTabForegroundInactiveFrameActive] = {
       kColorTabForegroundActiveFrameActive};
+  mixer[kColorTabStrokeFrameActive] = {SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
+  mixer[kColorTabStrokeFrameInactive] = {kColorTabStrokeFrameActive};
   mixer[kColorToolbar] = {kLightToolbar};
   mixer[kColorToolbarButtonIcon] = {kColorTabForegroundActiveFrameActive};
   mixer[kColorToolbarButtonIconInactive] = {
@@ -646,6 +648,9 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ false)};
+
+  mixer[kColorBraveOmniboxResultViewSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
 }
 
 void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -667,6 +672,9 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ true, /*incognito*/ false)};
+
+  mixer[kColorBraveOmniboxResultViewSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
 }
 
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,

@@ -45,6 +45,7 @@ import { getBalance } from '../../../../../utils/balance-utils'
 import { AccountsGroupByOption, NetworksGroupByOption } from '../../../../../options/group-assets-by-options'
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 import { getAssetIdKey } from '../../../../../utils/asset-utils'
+import { useQuery } from '../../../../../common/hooks/use-query'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -103,6 +104,7 @@ export const Nfts = (props: Props) => {
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
   const isRefreshingTokens = useSafeWalletSelector(WalletSelectors.isRefreshingNetworksAndTokens)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const deletedNonFungibleTokenIds = useUnsafeWalletSelector(WalletSelectors.deletedNonFungibleTokenIds)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -110,13 +112,15 @@ export const Nfts = (props: Props) => {
   const [showNftDiscoveryModal, setShowNftDiscoveryModal] = React.useState<boolean>(
     localStorage.getItem(LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN) === null
   )
-  const [selectedOptionId, setSelectedOptionId] = React.useState<NftDropdownOptionId>('collected')
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
   const { nonFungibleTokens, isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
+  const urlSearchParams = useQuery()
+  const tab = urlSearchParams.get('tab')
+  const selectedTab: NftDropdownOptionId = tab === 'collected' || tab === 'hidden' ? tab : 'collected'
 
   // queries
   const { data: isNftAutoDiscoveryEnabled } = useGetNftDiscoveryEnabledStatusQuery()
@@ -166,7 +170,10 @@ export const Nfts = (props: Props) => {
   }, [])
 
   const onSelectOption = React.useCallback((selectedOption: NftDropdownOption) => {
-    setSelectedOptionId(selectedOption.id)
+    history.push({
+      pathname: WalletRoutes.PortfolioNFTs,
+      search: `?tab=${selectedOption.id}`
+    })
   }, [])
 
   const searchNfts = React.useCallback((item: BraveWallet.BlockchainToken) => {
@@ -215,11 +222,14 @@ export const Nfts = (props: Props) => {
 
   const [allSpamNfts, allSpamNftsIds] = React.useMemo(() => {
     // filter out NFTs user has marked not spam
-    // and hidden NFTs
-    const nonSpamAndHidden = userNonSpamNftIds.concat(hiddenNftsIds)
+    // hidden NFTs,
+    // and deleted NFTs
+    const excludedNftIds = userNonSpamNftIds
+      .concat(hiddenNftsIds)
+      .concat(deletedNonFungibleTokenIds)
     const simpleHashList = simpleHashSpamNfts.filter(
       (nft) =>
-        !nonSpamAndHidden.includes(getAssetIdKey(nft))
+        !excludedNftIds.includes(getAssetIdKey(nft))
     )
     const simpleHashListIds = simpleHashList.map((nft) => getAssetIdKey(nft))
     // add NFTs user has marked as NFT if they are not in the list
@@ -235,7 +245,7 @@ export const Nfts = (props: Props) => {
       fullSpamList,
       fullSpamList.map((nft) => getAssetIdKey(nft))
     ]
-  }, [userMarkedSpamNfts, simpleHashSpamNfts, hiddenNftsIds, userNonSpamNftIds])
+  }, [userMarkedSpamNfts, simpleHashSpamNfts, hiddenNftsIds, userNonSpamNftIds, deletedNonFungibleTokenIds])
 
   const [sortedNfts, sortedHiddenNfts, sortedSpamNfts] = React.useMemo(() => {
     if (searchValue === '') {
@@ -269,7 +279,7 @@ export const Nfts = (props: Props) => {
   }, [sortedHiddenNfts, sortedSpamNfts, sortedNfts])
 
   const renderedList = React.useMemo(() => {
-    switch (selectedOptionId) {
+    switch (selectedTab) {
       case 'collected':
         return sortedNfts
       case 'hidden':
@@ -277,7 +287,7 @@ export const Nfts = (props: Props) => {
       default:
         return sortedNfts;
     }
-  }, [selectedOptionId, sortedNfts, sortedHiddenNfts, sortedSpamNfts])
+  }, [selectedTab, sortedNfts, sortedHiddenNfts, sortedSpamNfts])
 
   // Returns a list of assets based on provided account
   const getFilteredNftsByAccount = React.useCallback(
@@ -435,7 +445,7 @@ export const Nfts = (props: Props) => {
       >
         {!showSearchBar && (
           <NftDropdown
-            selectedOptionId={selectedOptionId}
+            selectedOptionId={selectedTab}
             options={dropDownOptions}
             onSelect={onSelectOption}
           />

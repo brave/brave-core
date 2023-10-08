@@ -401,6 +401,13 @@ interface PanelHandler {
   Focus();
 
   IsSolanaAccountConnected(string account) => (bool connected);
+
+  // Create a permission request for users based on active web contents.
+  // The flow will be similar to dapp request permission except it is initiated
+  // from panel. Desktop front end will be opened with same #connectWitSite ref
+  // and we need to call ConnectToSite or CancelConnectToSite based on user
+  // decision.
+  RequestPermission(AccountId account_id) => (bool success);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -705,7 +712,6 @@ struct KeyringInfo {
   bool is_keyring_created;
   bool is_locked;
   bool is_backed_up;
-  array<AccountInfo> account_infos;
 };
 
 struct WalletInfo {
@@ -762,8 +768,8 @@ interface KeyringServiceObserver {
   // Fired when a keyring is created
   KeyringCreated(KeyringId keyring_id);
 
-  // Fired when a keyring is restored
-  KeyringRestored(KeyringId keyring_id);
+  // Fired when wallet is restored
+  WalletRestored();
 
   // Fired when a keyring is reset
   KeyringReset();
@@ -1314,16 +1320,16 @@ interface JsonRpcService {
   GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
   // Fetches symbol of an ERC20 or ERC721 token.
-  GetEthTokenSymbol(string chain_id,
-                    string contract_address) => (string symbol,
-                                                 ProviderError error,
-                                                 string error_message);
+  GetEthTokenSymbol(string contract_address,
+                    string chain_id) => (string symbol,
+                                         ProviderError error,
+                                         string error_message);
 
   // Fetches decimals of an ERC20 or ERC721 token.
-  GetEthTokenDecimals(string chain_id,
-                      string contract_address) => (string decimals,
-                                                   ProviderError error,
-                                                   string error_message);
+  GetEthTokenDecimals(string contract_address,
+                      string chain_id) => (string decimals,
+                                           ProviderError error,
+                                           string error_message);
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
 
@@ -1675,6 +1681,19 @@ struct EthStandardSignData {
   string message;
 };
 
+struct CowSwapOrder {
+  string sell_token;
+  string sell_amount;
+  string buy_token;
+  string buy_amount;
+  string receiver;
+  string deadline;
+};
+
+union EthSignTypedDataMeta {
+  CowSwapOrder cow_swap_order;
+};
+
 // https://eips.ethereum.org/EIPS/eip-712
 struct EthSignTypedData {
   // message for display
@@ -1683,6 +1702,8 @@ struct EthSignTypedData {
   // These fields are for hardware eip712 signing
   string? domain_hash;
   string? primary_hash;
+
+  EthSignTypedDataMeta? meta;
 };
 
 // https://eips.ethereum.org/EIPS/eip-4361
@@ -1853,10 +1874,6 @@ interface BraveWalletService {
   // currently selected account does not support it.
   GetNetworkForSelectedAccountOnActiveOrigin() => (NetworkInfo? network);
   SetNetworkForSelectedAccountOnActiveOrigin(string chain_id) => (bool success);
-
-  // Adds the permission for the account on active origin.
-  AddPermission(AccountId account_id)
-    => (bool success);
 
   // Filters accounts with permissions on active origin.
   HasPermission(array<AccountId> accounts)

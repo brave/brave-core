@@ -77,11 +77,11 @@
     </message>
 
     <!-- Email consent dialog for price tracking -->
-    <message name="IDS_PRICE_TRACKING_EMAIL_CONSENT_BODY" desc="The main body text that is shown in the price drop email consent dialog offering to send an email notification when the product price drops on any site.">
-      Get emails sent to <ph name="EMAIL">$1<ex>example@example.com</ex></ph> when the price drops on any site.
+    <message name="IDS_PRICE_TRACKING_EMAIL_CONSENT_BODY" desc="The main body text that is shown in the price drop email consent dialog offering to send an email notification when the product price drops on any site." translateable="false">
+      Get emails sent to <ph name="EMAIL">$1<ex>example@example.com</ex></ph> when the price of items you track drops on any site.
     </message>
-    <message name="IDS_PRICE_TRACKING_EMAIL_CONSENT_TITLE" desc="The title of the dialog that shows after a user has tracked a product asking for consent to send price drop email notifications.">
-      Want emails when the price drops?
+    <message name="IDS_PRICE_TRACKING_EMAIL_CONSENT_TITLE" desc="The title of the dialog that shows after a user has tracked a product asking for consent to send price drop email notifications." translateable="false">
+      Want emails when prices drop?
     </message>
     <message name="IDS_PRICE_TRACKING_EMAIL_CONSENT_LEARN_MORE_LINK_TEXT" desc="The text that will link to a help article that explains price tracking shown in the price drop email consent dialog.">
       Learn more about price tracking
@@ -207,6 +207,20 @@
       Something went wrong.
     </message>
 
+    <message name="IDS_SHOPPING_COLLECTION_IPH_TITLE" desc="The title of the in-product-help explaining what the shopping list bookmark folder is.">
+      What is the Shopping list?
+    </message>
+    <if expr="use_titlecase">
+      <message name="IDS_SHOPPING_COLLECTION_IPH_BODY" desc="The body text of the in-product-help explaining what the shopping list bookmark folder is.">
+        A new smart folder that helps you save all your shopping pages in one place, and automatically track prices, get price insights, and more.
+      </message>
+    </if> <!-- use_titlecase -->
+    <if expr="not use_titlecase">
+      <message name="IDS_SHOPPING_COLLECTION_IPH_BODY" desc="The body text of the in-product-help explaining what the shopping list bookmark folder is.">
+        A new smart folder that helps you save all your shopping pages in one place, and automatically track prices, get price insights, and more
+      </message>
+    </if> <!-- not use_titlecase -->
+
     <!-- For Desktop Price Insights -->
     <if expr="use_titlecase">
       <message name="IDS_SHOPPING_INSIGHTS_SIDE_PANEL_TITLE" desc="The title name of the Shopping Insights feature in the side panel combo box.">
@@ -279,6 +293,18 @@
     <message name="IDS_PRICE_HISTORY_DESCRIPTION" desc="The description of the Price History section in the Shopping Insights side panel explaining how the prices are gathered.">
       Typical prices are based on stores across the web over the past 90 days.
     </message>
+    <if expr="is_win or is_linux">
+      <then>
+        <message name="IDS_PRICE_HISTORY_GRAPH_ACCESSIBILITY" desc="Accessibility string for the price history graph indicating how users can review the price changes on the graph.">
+          Browse mode, you can change to Forms mode to use the left/right arrow to review price changes on the graph
+        </message>
+      </then>
+      <else>
+        <message name="IDS_PRICE_HISTORY_GRAPH_ACCESSIBILITY" desc="Accessibility string for the price history graph indicating how users can review the price changes on the graph.">
+          You can use the left/right arrow to review price changes on the graph
+        </message>
+      </else>
+    </if>
     <message name="IDS_SHOPPING_INSIGHTS_COLLECT_FEEDBACK" desc="Text shown in Shopping Insights side panel. Clicking this link will pop up the feedback dialog which allows users to share feedback about the feature.">
       Give feedback
     </message>
@@ -325,6 +351,9 @@
     </message>
     <message name="IDS_DISCOUNT_CODE_COPY_BUTTON_TEXT" desc="The copy button text. User uses this button to copy the discount code, so that they can paste the code during checkout.">
       Copy
+    </message>
+    <message name="IDS_TWO_STRINGS_CONNECTOR" desc="This is used to connect two sentences together by using a ending period and a space. The first sentence does not contain an ending period, but the second sentence will.">
+      <ph name="FIRST_STRING">$1<ex>Use this code at checkout</ex></ph>. <ph name="SECOND_STRING">$2<ex>Valid until Aug 15 2023.</ex></ph>
     </message>
     <if expr="use_titlecase">
       <message name="IDS_DISCOUNT_TERMS_AND_CONDITIONS" desc="This text is used in two places. 1) Use as title for the 'Terms and condition' dialog which shows users the additional qualification of the discount. 2) Use as a linked text in the discount dialog, when user clicks the text, it opens the 'Terms and conditions' dialog.">
@@ -398,7 +427,8 @@
   <message name="IDS_PRICE_DROP_POPUP_UNTRACK_BUTTON" desc="Text shown on the price drop popup notification below the content text. When users click this button, we untrack this product and will no longer send its price drop to users." formatter_data="android_java">
     Untrack price
   </message>
+
   <message name="IDS_SHOPPING_COLLECTION_FOLDER_NAME" desc="The name of bookmark folder that is automatically created when a user bookmarks a product page.">
-    Shopping collection
+    Shopping list
   </message>
 </grit-part>

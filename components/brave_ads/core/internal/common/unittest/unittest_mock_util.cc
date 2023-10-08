@@ -137,7 +137,7 @@ void MockGetBrowsingHistory(AdsClientMock& mock,
                             const std::vector<GURL>& history) {
   ON_CALL(mock, GetBrowsingHistory)
       .WillByDefault(::testing::Invoke(
-          [history](const size_t max_count, const size_t /*recent_day_range*/,
+          [history](const size_t max_count, const size_t /*recent_day_range=*/,
                     GetBrowsingHistoryCallback callback) {
             CHECK_LE(history.size(), max_count);
 
@@ -155,7 +155,7 @@ void MockUrlResponses(AdsClientMock& mock,
                 GetNextUrlResponseForRequest(url_request, url_responses);
             if (!url_response) {
               // URL request should not be mocked.
-              return std::move(callback).Run(/*url_response*/ {});
+              return std::move(callback).Run(/*url_response=*/{});
             }
 
             std::move(callback).Run(*url_response);

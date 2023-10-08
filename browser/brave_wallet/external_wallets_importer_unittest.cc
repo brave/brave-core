@@ -9,16 +9,13 @@
 
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
-#include "base/test/task_environment.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 namespace {
-const char* valid_mnemonic =
-    "drip caution abandon festival order clown oven regular absorb evidence "
-    "crew where";
 // encrypted valid_mnemonic
 const char* valid_data =
     "{\"data\": {\"KeyringController\": {\"vault\": "
@@ -218,7 +215,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo) {
   SimulateGetImportInfo("brave4ever", valid_data, &result, &info, &error);
   EXPECT_TRUE(result);
   EXPECT_EQ(error, ImportError::kNone);
-  EXPECT_EQ(info.mnemonic, valid_mnemonic);
+  EXPECT_EQ(info.mnemonic, kMnemonicDripCaution);
   EXPECT_FALSE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 1u);
 }
@@ -231,7 +228,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_UTF8Mnemonic) {
                         &info, &error);
   EXPECT_TRUE(result);
   EXPECT_EQ(error, ImportError::kNone);
-  EXPECT_EQ(info.mnemonic, valid_mnemonic);
+  EXPECT_EQ(info.mnemonic, kMnemonicDripCaution);
   EXPECT_FALSE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 1u);
 }

@@ -127,7 +127,7 @@ std::string Campaigns::BuildInsertOrUpdateSql(
       "INSERT OR REPLACE INTO $1 (campaign_id, start_at, end_at, daily_cap, "
       "advertiser_id, priority, ptr) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 7, binded_parameters_count)},
+                           /*parameters_count=*/7, binded_parameters_count)},
       nullptr);
 }
 

@@ -66,15 +66,8 @@ class SolanaTransactionUnitTest : public testing::Test {
                             const std::string& mnemonic,
                             const std::string& password,
                             bool is_legacy_brave_wallet) {
-    bool success = false;
-    base::RunLoop run_loop;
-    service->RestoreWallet(mnemonic, password, is_legacy_brave_wallet,
-                           base::BindLambdaForTesting([&](bool v) {
-                             success = v;
-                             run_loop.Quit();
-                           }));
-    run_loop.Run();
-    return success;
+    return service->RestoreWalletSync(mnemonic, password,
+                                      is_legacy_brave_wallet);
   }
 
   static mojom::AccountInfoPtr AddAccount(KeyringService* service,

@@ -6,6 +6,7 @@
 #include <map>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/ptr_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -46,14 +47,10 @@ class RewardsServiceJPTest : public testing::Test {
     profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
     ASSERT_TRUE(profile_);
 #if BUILDFLAG(ENABLE_GREASELION)
-    auto* rewards_ = new RewardsServiceImpl(profile(), nullptr);
+    rewards_service_ = std::make_unique<RewardsServiceImpl>(profile(), nullptr);
 #else
-    auto* rewards_ = new RewardsServiceImpl(profile());
+    rewards_service_ = std::make_unique<RewardsServiceImpl>(profile());
 #endif
-    RewardsServiceFactory::SetServiceForTesting(std::move(rewards_));
-    rewards_service_ = static_cast<RewardsServiceImpl*>(
-        RewardsServiceFactory::GetForProfile(profile()));
-    ASSERT_TRUE(RewardsServiceFactory::GetInstance());
     ASSERT_TRUE(rewards_service());
 
     profile()->GetPrefs()->SetString(prefs::kDeclaredGeo, "JP");
@@ -61,12 +58,12 @@ class RewardsServiceJPTest : public testing::Test {
 
   void TearDown() override {
     TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
-    delete rewards_service_;
+    rewards_service_ = nullptr;
     profile_.reset();
   }
 
   Profile* profile() { return profile_.get(); }
-  RewardsServiceImpl* rewards_service() { return rewards_service_; }
+  RewardsServiceImpl* rewards_service() { return rewards_service_.get(); }
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
   void EnableGemini() {
@@ -87,9 +84,9 @@ class RewardsServiceJPTest : public testing::Test {
   // base::test::ScopedTaskEnvironment
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<Profile> profile_;
-  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   base::ScopedTempDir temp_dir_;
   std::unique_ptr<brave_l10n::test::ScopedDefaultLocale> scoped_default_locale_;
+  std::unique_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
 };
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)

@@ -37,14 +37,13 @@ TEST_F(BraveAdsLinearTest, ThreeClassesPredictionTest) {
   const PredictionMap predictions_3 = linear.Predict(class_3_vector_data);
 
   // Assert
-  ASSERT_GT(predictions_1.at("class_1"), predictions_1.at("class_2"));
-  ASSERT_GT(predictions_1.at("class_1"), predictions_1.at("class_3"));
+  EXPECT_GT(predictions_1.at("class_1"), predictions_1.at("class_2"));
+  EXPECT_GT(predictions_1.at("class_1"), predictions_1.at("class_3"));
+  EXPECT_TRUE(predictions_3.at("class_3") > predictions_3.at("class_1"));
 
-  ASSERT_GT(predictions_2.at("class_2"), predictions_2.at("class_1"));
-  ASSERT_GT(predictions_2.at("class_2"), predictions_2.at("class_3"));
-
-  EXPECT_TRUE(predictions_3.at("class_3") > predictions_3.at("class_1") &&
-              predictions_3.at("class_3") > predictions_3.at("class_2"));
+  EXPECT_GT(predictions_2.at("class_2"), predictions_2.at("class_1"));
+  EXPECT_GT(predictions_2.at("class_2"), predictions_2.at("class_3"));
+  EXPECT_TRUE(predictions_3.at("class_3") > predictions_3.at("class_2"));
 }
 
 TEST_F(BraveAdsLinearTest, BiasesPredictionTest) {
@@ -124,8 +123,8 @@ TEST_F(BraveAdsLinearTest, TopPredictionsTest) {
       linear_biased.GetTopCountPredictions(point_3, kPredictionLimits[1]);
 
   // Assert
-  ASSERT_EQ(weights.size(), predictions_1.size());
-  ASSERT_EQ(kPredictionLimits[0], predictions_2.size());
+  EXPECT_EQ(weights.size(), predictions_1.size());
+  EXPECT_EQ(kPredictionLimits[0], predictions_2.size());
   EXPECT_EQ(kPredictionLimits[1], predictions_3.size());
 }
 

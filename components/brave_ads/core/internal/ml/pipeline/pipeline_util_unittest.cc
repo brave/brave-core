@@ -32,9 +32,7 @@ TEST_F(BraveAdsPipelineUtilTest, ParsePipelineValueTest) {
 
   base::Value::Dict dict = base::test::ParseJsonDict(*json);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(pipeline::ParsePipelineValue(std::move(dict)));
 }
 

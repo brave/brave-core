@@ -463,4 +463,22 @@ bool BatAdsClientMojoBridge::HasPrefPath(const std::string& path) const {
   return value;
 }
 
+absl::optional<base::Value> BatAdsClientMojoBridge::GetLocalStatePref(
+    const std::string& path) const {
+  if (!bat_ads_client_.is_bound()) {
+    return absl::nullopt;
+  }
+
+  absl::optional<base::Value> value;
+  bat_ads_client_->GetLocalStatePref(path, &value);
+  return value;
+}
+
+void BatAdsClientMojoBridge::SetLocalStatePref(const std::string& path,
+                                               base::Value value) {
+  if (bat_ads_client_.is_bound()) {
+    bat_ads_client_->SetLocalStatePref(path, std::move(value));
+  }
+}
+
 }  // namespace bat_ads

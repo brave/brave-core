@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,73 +13,42 @@
 namespace brave_ads {
 
 TEST(BraveAdsNewTabPageAdServingFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  EXPECT_TRUE(IsNewTabPageAdServingFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kNewTabPageAdServingFeature));
 }
 
 TEST(BraveAdsNewTabPageAdServingFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNewTabPageAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNewTabPageAdServingFeature);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsNewTabPageAdServingFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kNewTabPageAdServingFeature));
 }
 
-TEST(BraveAdsNewTabPageAdServingFeatureTest, ServingVersion) {
+TEST(BraveAdsNewTabPageAdServingFeatureTest, NewTabPageAdServingVersion) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["version"] = "0";
-  enabled_features.emplace_back(kNewTabPageAdServingFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNewTabPageAdServingFeature, {{"version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kNewTabPageAdServingVersion.Get());
 }
 
-TEST(BraveAdsNewTabPageAdServingFeatureTest, DefaultServingVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST(BraveAdsNewTabPageAdServingFeatureTest,
+     DefaultNewTabPageAdServingVersion) {
+  // Act & Assert
   EXPECT_EQ(2, kNewTabPageAdServingVersion.Get());
 }
 
 TEST(BraveAdsNewTabPageAdServingFeatureTest,
-     DefaultServingVersionWhenDisabled) {
+     DefaultNewTabPageAdServingVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNewTabPageAdServingFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNewTabPageAdServingFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(2, kNewTabPageAdServingVersion.Get());
 }
 

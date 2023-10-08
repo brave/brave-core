@@ -18,7 +18,7 @@
 #endif
 
 #if BUILDFLAG(IS_MAC)
-#include "base/mac/foundation_util.h"
+#include "base/apple/foundation_util.h"
 #include "base/strings/sys_string_conversions.h"
 #endif
 
@@ -31,7 +31,7 @@ namespace {
 #if !BUILDFLAG(IS_ANDROID)
 base::FilePath GetResourcesPakFilePath() {
 #if BUILDFLAG(IS_MAC)
-  return base::mac::PathForFrameworkBundleResource("brave_resources.pak");
+  return base::apple::PathForFrameworkBundleResource("brave_resources.pak");
 #else
   base::FilePath pak_path;
   base::PathService::Get(base::DIR_ASSETS, &pak_path);
@@ -50,7 +50,7 @@ base::FilePath GetScaledResourcesPakFilePath(
                              ? "brave_100_percent.pak"
                              : "brave_200_percent.pak";
 #if BUILDFLAG(IS_MAC)
-  return base::mac::PathForFrameworkBundleResource(pak_file);
+  return base::apple::PathForFrameworkBundleResource(pak_file);
 #else
   base::FilePath pak_path;
   base::PathService::Get(base::DIR_ASSETS, &pak_path);

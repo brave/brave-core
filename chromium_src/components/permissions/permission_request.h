@@ -25,6 +25,10 @@ class PermissionRequest : public PermissionRequest_ChromiumImpl {
                     PermissionDecidedCallback permission_decided_callback,
                     base::OnceClosure delete_callback);
 
+  PermissionRequest(PermissionRequestData request_data,
+                    PermissionDecidedCallback permission_decided_callback,
+                    base::OnceClosure delete_callback);
+
   PermissionRequest(const PermissionRequest&) = delete;
   PermissionRequest& operator=(const PermissionRequest&) = delete;
 

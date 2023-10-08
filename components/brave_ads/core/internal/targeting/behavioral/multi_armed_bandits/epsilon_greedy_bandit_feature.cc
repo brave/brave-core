@@ -3,16 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_feature.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
 BASE_FEATURE(kEpsilonGreedyBanditFeature,
              "EpsilonGreedyBandit",
              base::FEATURE_DISABLED_BY_DEFAULT);
-
-bool IsEpsilonGreedyBanditFeatureEnabled() {
-  return base::FeatureList::IsEnabled(kEpsilonGreedyBanditFeature);
-}
 
 }  // namespace brave_ads

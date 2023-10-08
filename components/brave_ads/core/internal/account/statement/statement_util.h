@@ -20,14 +20,14 @@ namespace brave_ads {
 
 base::Time GetNextPaymentDate(const TransactionList& transactions);
 
-std::pair</*range_low*/ double, /*range_high*/ double>
+std::pair</*range_low=*/double, /*range_high=*/double>
 GetEstimatedEarningsForThisMonth(const TransactionList& transactions);
 
-std::pair</*range_low*/ double, /*range_high*/ double>
+std::pair</*range_low=*/double, /*range_high=*/double>
 GetEstimatedEarningsForLastMonth(const TransactionList& transactions);
 
-base::flat_map<std::string, int32_t> GetAdTypesReceivedThisMonth(
-    const TransactionList& transactions);
+base::flat_map</*ad_type=*/std::string, /*count=*/int32_t>
+GetAdTypesReceivedThisMonth(const TransactionList& transactions);
 
 }  // namespace brave_ads
 

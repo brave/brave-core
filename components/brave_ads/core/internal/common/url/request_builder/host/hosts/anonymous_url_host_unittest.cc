@@ -19,9 +19,7 @@ TEST_F(BraveAdsAnonymousUrlHostTest, GetProductionUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://anonymous.ads.brave.com", GetAnonymousUrlHost());
 }
 
@@ -30,9 +28,7 @@ TEST_F(BraveAdsAnonymousUrlHostTest, GetStagingUrlHost) {
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("https://anonymous.ads.bravesoftware.com", GetAnonymousUrlHost());
 }
 

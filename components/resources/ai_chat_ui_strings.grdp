@@ -48,4 +48,125 @@
   <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
      Retry
   </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEFAULT" desc="AI Chat intro message for the default model">
+    I'm here to help. What can I assist you with today?
+  </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_EXPANDED" desc="AI Chat intro message for the expanded model">
+    I have a vast base of knowledge and a large memory able to help with more complex challenges.
+  </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model">
+    Hi! My name is Claude. I was created by Anthropic to be helpful, harmless, and honest.
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
+    <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat">
+    Chat
+  </message>
+  <message name="IDS_CHAT_UI_MENU_NEW_CHAT" desc="Menu item for new chat">
+    New chat
+  </message>
+  <message name="IDS_CHAT_UI_MENU_SUGGESTED_QUESTIONS" desc="Menu item for whether to enable suggested questions during chat conversations">
+    Suggest questions
+  </message>
+  <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
+    Settings
+  </message>
+  <message name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
+    Available language models
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_BUTTON_LABEL" desc="A button label to subscribe for premium model">
+     Go Premium
+  </message>
+   <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_TITLE" desc="An error message when the user has reached API limit">
+     Response rate limit reached
+  </message>
+  <message name="IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC" desc="A description to unlock premium features">
+     Unlock a higher response rate by subscribing to Premium, or try again
+        later
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1" desc="A premium feature">
+     Access to industry-leading LLMs
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2" desc="A premium feature">
+     Higher rate limits
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_LABEL" translateable="false" desc="A label for Brave premium products">
+     Brave Leo Premium
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_PRICING" desc="Price label to subscribe for Premium model">
+    USD $ <ph name="PRICE_VALUE">$1<ex>15</ex></ph> /month
+  </message>
+  <message name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
+    Dismiss
+  </message>
+  <message name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
+    Unlock the full potential of Leo
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC" desc="A premium feature that allows access to various models">
+    Anthropic Claude + more coming soon
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature that allows priority access">
+    Priority access and increased response limits
+  </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_SENT" desc="Notification message for successful feedback submission">
+    Feedback sent successfully
+  </message>
+  <message name="IDS_CHAT_UI_ANSWER_DISLIKED" desc="Notification for a disliked answer">
+    Answer disliked
+  </message>
+  <message name="IDS_CHAT_UI_ANSWER_LIKED" desc="Notification for a liked answer">
+    Answer liked
+  </message>
+  <message name="IDS_CHAT_UI_ADD_FEEDBACK_BUTTON_LABEL" desc="Button label to add feedback">
+    Add feedback
+  </message>
+  <message name="IDS_CHAT_UI_COPY_BUTTON_LABEL" desc="Button label to copy text">
+    Copy
+  </message>
+  <message name="IDS_CHAT_UI_LIKE_ANSWER_BUTTON_LABEL" desc="Button label to like an answer">
+    Like
+  </message>
+  <message name="IDS_CHAT_UI_DISLIKE_ANSWER_BUTTON_LABEL" desc="Button label to dislike an answer">
+    Dislike answer
+  </message>
+  <message name="IDS_CHAT_UI_PROVIDE_FEEDBACK_TITLE" desc="Title for feedback provision section">
+    Provide Brave AI Feedback
+  </message>
+  <message name="IDS_CHAT_UI_SELECT_FEEDBACK_TOPIC" desc="Prompt to select feedback topic">
+    Select the topic of your feedback
+  </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_CATEGORY_LABEL" desc="Label asking for the category of feedback">
+    What's your feedback about?
+  </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_DESCRIPTION_LABEL" desc="Label prompting user to provide feedback">
+    Provide feedback here
+  </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_PREMIUM_NOTE" desc="Note about the benefits of a premium subscription">
+    Brave Leo Premium provides access to an expanded set of language models for even greater answer nuance. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+  </message>
+  <message name="IDS_CHAT_UI_SUBMIT_BUTTON_LABEL" desc="Button label to submit data/form">
+    Submit
+  </message>
+  <message name="IDS_CHAT_UI_CANCEL_BUTTON_LABEL" desc="Button label to cancel action">
+    Cancel
+  </message>
+  <message name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful">
+    Not helpful
+  </message>
+  <message name="IDS_CHAT_UI_OPTION_INCORRECT" desc="Select option for feedback form if the answer is not correct">
+    Incorrect
+  </message>
+  <message name="IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL" desc="Select option for feedback form if the answer is unsafe or harmful">
+    Unsafe/harmful
+  </message>
+  <message name="IDS_CHAT_UI_OPTION_OTHER" desc="Select option for feedback form if the answer is other kind">
+    Other
+  </message>
+  <message name="IDS_CHAT_UI_RATING_ERROR" desc="An error message when the user's rating could not be submitted">
+    Your rating could not be submitted, please check network connection and try again
+  </message>
+  <message name="IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR" desc="An error message when the user's feedback could not be submitted">
+    Your feedback could not be submitted, please check network connection and try again
+  </message>
 </grit-part>

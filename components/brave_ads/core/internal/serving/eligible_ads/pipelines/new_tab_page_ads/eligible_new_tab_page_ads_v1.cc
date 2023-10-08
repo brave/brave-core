@@ -58,7 +58,7 @@ void EligibleNewTabPageAdsV1::GetEligibleAdsForUserModelCallback(
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Failed to get ad events");
-    return std::move(callback).Run(/*eligible_ads*/ {});
+    return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
   GetBrowsingHistory(std::move(user_model), ad_events, std::move(callback));
@@ -114,11 +114,11 @@ void EligibleNewTabPageAdsV1::GetForChildSegmentsCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
-    const SegmentList& /*segments*/,
+    const SegmentList& /*segments=*/,
     const CreativeNewTabPageAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for child segments");
-    return std::move(callback).Run(/*eligible_ads*/ {});
+    return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
   const CreativeNewTabPageAdList eligible_creative_ads =
@@ -165,11 +165,11 @@ void EligibleNewTabPageAdsV1::GetForParentSegmentsCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
-    const SegmentList& /*segments*/,
+    const SegmentList& /*segments=*/,
     const CreativeNewTabPageAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for parent segments");
-    return std::move(callback).Run(/*eligible_ads*/ {});
+    return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
   const CreativeNewTabPageAdList eligible_creative_ads =
@@ -206,11 +206,11 @@ void EligibleNewTabPageAdsV1::GetForUntargetedCallback(
     const BrowsingHistoryList& browsing_history,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
-    const SegmentList& /*segments*/,
+    const SegmentList& /*segments=*/,
     const CreativeNewTabPageAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for untargeted segment");
-    return std::move(callback).Run(/*eligible_ads*/ {});
+    return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
   const CreativeNewTabPageAdList eligible_creative_ads =
@@ -218,7 +218,7 @@ void EligibleNewTabPageAdsV1::GetForUntargetedCallback(
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size()
                                       << " ads for untargeted segment");
-    return std::move(callback).Run(/*eligible_ads*/ {});
+    return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
   std::move(callback).Run(eligible_creative_ads);

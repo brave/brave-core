@@ -20,13 +20,15 @@ class BraveAdsSegmentUserDataTest : public UnitTestBase {};
 TEST_F(BraveAdsSegmentUserDataTest, BuildSegmentUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
-  // Act
-
-  // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"segment":"untargeted"})"),
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "segment": "untargeted"
+                    })"),
             BuildSegmentUserData(transaction));
 }
 
@@ -36,22 +38,18 @@ TEST_F(BraveAdsSegmentUserDataTest,
   DisableBraveRewardsForTesting();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildSegmentUserData(transaction).empty());
 }
 
-TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSegmentUserDataIfEmptySegment) {
+TEST_F(BraveAdsSegmentUserDataTest, DoNotBuildSegmentUserDataIfNoTargeting) {
   // Arrange
   const TransactionInfo transaction;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildSegmentUserData(transaction).empty());
 }
 

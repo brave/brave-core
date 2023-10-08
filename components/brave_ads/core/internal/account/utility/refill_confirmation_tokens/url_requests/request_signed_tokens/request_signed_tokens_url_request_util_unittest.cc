@@ -17,22 +17,14 @@ namespace brave_ads {
 class BraveAdsRequestSignedTokensUrlRequestUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRequestSignedTokensUrlRequestUtilTest, ParseNonce) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kGetSignedTokensNonce,
             ParseNonce(base::test::ParseJsonDict(
                 BuildRequestSignedTokensUrlResponseBodyForTesting())));
 }
 
 TEST_F(BraveAdsRequestSignedTokensUrlRequestUtilTest, DoNotParseMissingNonce) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ParseNonce(base::test::ParseJsonDict("{}")));
 }
 

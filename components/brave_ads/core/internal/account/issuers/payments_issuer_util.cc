@@ -8,7 +8,7 @@
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_constants.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -28,7 +28,7 @@ bool IsPaymentsIssuerValid(const IssuersInfo& issuers) {
     buckets[associated_value]++;
 
     const int count = buckets[associated_value];
-    if (count > kMaximumIssuerPublicKeys) {
+    if (count > kMaximumIssuerPublicKeys.Get()) {
       return false;
     }
   }

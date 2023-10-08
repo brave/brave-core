@@ -13,8 +13,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kPermissionRulesFeature);
 
-bool IsPermissionRuleFeatureEnabled();
-
 constexpr base::FeatureParam<bool> kShouldOnlyServeAdsInWindowedMode{
     &kPermissionRulesFeature, "should_only_serve_ads_in_windowed_mode", true};
 
@@ -30,6 +28,12 @@ constexpr base::FeatureParam<bool> kShouldOnlyServeAdsIfMediaIsNotPlaying{
 constexpr base::FeatureParam<bool> kShouldOnlyServeAdsIfBrowserIsActive{
     &kPermissionRulesFeature, "should_only_serve_ads_if_browser_is_active",
     true};
+
+constexpr base::FeatureParam<int> kDoNotDisturbFromHour{
+    &kPermissionRulesFeature, "do_not_disturb_from_hour", 21};
+
+constexpr base::FeatureParam<int> kDoNotDisturbToHour{
+    &kPermissionRulesFeature, "do_not_disturb_to_hour", 6};
 
 }  // namespace brave_ads
 

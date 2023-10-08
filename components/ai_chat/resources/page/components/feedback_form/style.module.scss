@@ -1,0 +1,73 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.form {
+  --leo-control-font: var(--leo-font-secondary-default-regular);
+
+  margin-top: 16px;
+  max-width: 500px;
+  font: var(--leo-control-font);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: 8px;
+
+  h4 {
+    padding: 24px 16px;
+    font: var(--leo-font-secondary-heading-h4);
+    margin: 0;
+  }
+
+  fieldset {
+    border: 0;
+    padding: 0 16px;
+    margin-bottom: 16px;
+  }
+
+  textarea {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    resize: none;
+    background-color: transparent;
+    border: 1px solid var(--leo-color-divider-strong);
+    border-radius: 8px;
+
+
+    &:focus-within {
+      outline: none;
+      box-shadow: var(--leo-effect-focus-state);
+      border-color: transparent;
+    }
+
+    &::placeholder {
+      color: var(--leo-color-text-tertiary);
+    }
+  }
+}
+
+.dropdown {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  justify-content: end;
+  gap: 16px;
+
+  leo-button {
+    flex: 0 1 auto;
+  }
+}
+
+.note {
+  margin: 0 16px 16px 16px;
+  padding: 16px;
+  border-radius: 8px;
+  background: linear-gradient(91.61deg, rgba(248, 190, 218, 0.1) 18.42%, rgba(173, 153, 255, 0.1) 85.72%);
+
+  a {
+    color: var(--leo-color-text-interactive);
+    text-decoration: none;
+  }
+}

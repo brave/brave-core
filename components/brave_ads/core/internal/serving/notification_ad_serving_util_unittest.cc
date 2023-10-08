@@ -21,9 +21,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
 }
 
@@ -32,9 +30,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
 }
 
@@ -43,9 +39,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
 }
 
@@ -54,9 +48,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
 }
 
@@ -65,15 +57,11 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
 }
 
 TEST_F(BraveAdsNotificationAdServingUtilTest, SetServeAdAt) {
-  // Arrange
-
   // Act
   SetServeAdAt(DistantFuture());
 
@@ -83,11 +71,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest, SetServeAdAt) {
 
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        CalculateDelayBeforeServingTheFirstAd) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(2), CalculateDelayBeforeServingAnAd());
 }
 
@@ -96,9 +80,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
   // Arrange
   SetServeAdAt(DistantPast());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(1), CalculateDelayBeforeServingAnAd());
 }
 
@@ -106,9 +88,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest, CalculateDelayBeforeServingAnAd) {
   // Arrange
   SetServeAdAt(DistantFuture());
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DistantFuture() - Now(), CalculateDelayBeforeServingAnAd());
 }
 
@@ -119,9 +99,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 
   AdvanceClockBy(base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Minutes(1), CalculateDelayBeforeServingAnAd());
 }
 

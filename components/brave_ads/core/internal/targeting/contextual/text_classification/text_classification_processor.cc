@@ -77,7 +77,7 @@ void TextClassificationProcessor::Process(const std::string& text) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void TextClassificationProcessor::OnTextContentDidChange(
-    const int32_t /*tab_id*/,
+    const int32_t /*tab_id=*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   if (redirect_chain.empty()) {

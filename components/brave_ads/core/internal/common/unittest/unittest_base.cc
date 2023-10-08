@@ -13,6 +13,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
@@ -49,7 +50,7 @@ UnitTestBase::~UnitTestBase() {
 }
 
 void UnitTestBase::SetUp() {
-  SetUpForTesting(/*is_integration_test*/ false);  // IN-TEST
+  SetUpForTesting(/*is_integration_test=*/false);  // IN-TEST
 }
 
 void UnitTestBase::TearDown() {
@@ -111,7 +112,7 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
   return base::CopyDirectory(from_test_path, to_temp_path,
-                             /*recursive*/ true);
+                             /*recursive=*/true);
 }
 
 bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
@@ -222,6 +223,9 @@ void UnitTestBase::MockAdsClient() {
   MockSetListPref(ads_client_mock_);
   MockClearPref(ads_client_mock_);
   MockHasPrefPath(ads_client_mock_);
+  MockGetLocalStatePref(ads_client_mock_);
+
+  MockSetLocalStatePref(ads_client_mock_);
 
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
@@ -234,7 +238,7 @@ void UnitTestBase::MockAdsClient() {
   MockCanShowNotificationAds(ads_client_mock_, true);
   MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);
 
-  MockGetBrowsingHistory(ads_client_mock_, /*history*/ {});
+  MockGetBrowsingHistory(ads_client_mock_, /*history=*/{});
 }
 
 void UnitTestBase::MockSetBooleanPref(AdsClientMock& mock) {
@@ -320,6 +324,23 @@ void UnitTestBase::MockSetTimePref(AdsClientMock& mock) {
             SetPrefValue(
                 path, base::NumberToString(
                           value.ToDeltaSinceWindowsEpoch().InMicroseconds()));
+            NotifyPrefDidChange(path);
+          }));
+}
+
+void UnitTestBase::MockSetLocalStatePref(AdsClientMock& mock) {
+  ON_CALL(mock, SetLocalStatePref)
+      .WillByDefault(
+          ::testing::Invoke([=](const std::string& path, base::Value value) {
+            switch (value.type()) {
+              case base::Value::Type::STRING: {
+                SetPrefValue(path, value.GetString());
+                break;
+              }
+              default: {
+                NOTREACHED_NORETURN();
+              }
+            }
             NotifyPrefDidChange(path);
           }));
 }

@@ -22,7 +22,7 @@ class BraveAdsRotatingHashUserDataTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
+    AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local=*/false));
   }
 };
 
@@ -32,16 +32,16 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   MockDeviceId();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
-  // Act
-
-  // Assert
-  EXPECT_EQ(
-      base::test::ParseJsonDict(
-          R"({"rotating_hash":"j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="})"),
-      BuildRotatingHashUserData(transaction));
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "rotating_hash": "j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="
+                    })"),
+            BuildRotatingHashUserData(transaction));
 }
 
 TEST_F(BraveAdsRotatingHashUserDataTest,
@@ -52,12 +52,10 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   MockDeviceId();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildRotatingHashUserData(transaction).empty());
 }
 
@@ -65,12 +63,10 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
        DoNotBuildRotatingHashUserDataIfMissingDeviceId) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Value::Dict(), BuildRotatingHashUserData(transaction));
 }
 

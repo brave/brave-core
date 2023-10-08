@@ -16,7 +16,8 @@ namespace brave_ads {
 namespace {
 
 void MockDiagnosticId() {
-  SetStringPref(prefs::kDiagnosticId, "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
+  SetStringPrefValue(prefs::kDiagnosticId,
+                     "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 }
 
 }  // namespace

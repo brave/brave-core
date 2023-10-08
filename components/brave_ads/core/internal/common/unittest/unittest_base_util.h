@@ -41,6 +41,8 @@ void MockGetListPref(const AdsClientMock& mock);
 void MockClearPref(AdsClientMock& mock);
 void MockHasPrefPath(const AdsClientMock& mock);
 
+void MockGetLocalStatePref(const AdsClientMock& mock);
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_BASE_UTIL_H_

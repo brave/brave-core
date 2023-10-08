@@ -20,9 +20,7 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToInitialize) {
   // Arrange
   const VerificationSignature verification_signature;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(verification_signature.has_value());
 }
 
@@ -30,9 +28,7 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToInitializeWithEmptyBase64) {
   // Arrange
   const VerificationSignature verification_signature("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(verification_signature.has_value());
 }
 
@@ -40,15 +36,11 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToInitializeWithInvalidBase64) {
   // Arrange
   const VerificationSignature verification_signature(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(verification_signature.has_value());
 }
 
 TEST_F(BraveAdsVerificationSignatureTest, DecodeBase64) {
-  // Arrange
-
   // Act
   const VerificationSignature verification_signature =
       VerificationSignature::DecodeBase64(kVerificationSignatureBase64);
@@ -58,8 +50,6 @@ TEST_F(BraveAdsVerificationSignatureTest, DecodeBase64) {
 }
 
 TEST_F(BraveAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
-  // Arrange
-
   // Act
   const VerificationSignature verification_signature =
       VerificationSignature::DecodeBase64("");
@@ -69,8 +59,6 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
 }
 
 TEST_F(BraveAdsVerificationSignatureTest, FailToDecodeInvalidBase64) {
-  // Arrange
-
   // Act
   const VerificationSignature verification_signature =
       VerificationSignature::DecodeBase64(kInvalidBase64);
@@ -84,9 +72,7 @@ TEST_F(BraveAdsVerificationSignatureTest, EncodeBase64) {
   const VerificationSignature verification_signature(
       kVerificationSignatureBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(kVerificationSignatureBase64,
             verification_signature.EncodeBase64());
 }
@@ -95,9 +81,7 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
   const VerificationSignature verification_signature;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(verification_signature.EncodeBase64());
 }
 
@@ -106,9 +90,7 @@ TEST_F(BraveAdsVerificationSignatureTest, IsEqual) {
   const VerificationSignature verification_signature(
       kVerificationSignatureBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(verification_signature, verification_signature);
 }
 
@@ -116,9 +98,7 @@ TEST_F(BraveAdsVerificationSignatureTest, IsEqualWhenUninitialized) {
   // Arrange
   const VerificationSignature verification_signature;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(verification_signature, verification_signature);
 }
 
@@ -126,9 +106,7 @@ TEST_F(BraveAdsVerificationSignatureTest, IsEmptyBase64Equal) {
   // Arrange
   const VerificationSignature verification_signature("");
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(verification_signature, verification_signature);
 }
 
@@ -136,9 +114,7 @@ TEST_F(BraveAdsVerificationSignatureTest, IsInvalidBase64Equal) {
   // Arrange
   const VerificationSignature verification_signature(kInvalidBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(verification_signature, verification_signature);
 }
 
@@ -147,9 +123,7 @@ TEST_F(BraveAdsVerificationSignatureTest, IsNotEqual) {
   const VerificationSignature verification_signature(
       kVerificationSignatureBase64);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const VerificationSignature different_verification_signature(kInvalidBase64);
   EXPECT_NE(different_verification_signature, verification_signature);
 }

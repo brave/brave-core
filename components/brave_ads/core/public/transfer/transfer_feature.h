@@ -17,8 +17,11 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kTransferFeature);
 
-constexpr base::FeatureParam<base::TimeDelta> kTransferredAfter{
-    &kTransferFeature, "transferred_after", base::Seconds(10)};
+constexpr base::FeatureParam<base::TimeDelta> kTransferAfter{
+    &kTransferFeature, "transfer_after", base::Seconds(10)};
+
+constexpr base::FeatureParam<int> kTransferCap{&kTransferFeature,
+                                               "transfer_cap", 1};
 
 }  // namespace brave_ads
 

@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/no_destructor.h"
-#include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {
 
@@ -75,11 +74,11 @@ const SupportedSubdivisionMap& GetSupportedSubdivisions() {
   return *kSupportedSubdivisions;
 }
 
-base::Value::List GetSupportedSubdivisionsAsValueList() {
+base::Value::List GetSupportedSubdivisionsAsValueList(
+    const std::string& country_code) {
   const auto& supported_subdivisions = GetSupportedSubdivisions();
 
-  const auto iter =
-      supported_subdivisions.find(brave_l10n::GetDefaultISOCountryCodeString());
+  const auto iter = supported_subdivisions.find(country_code);
   if (iter == supported_subdivisions.cend()) {
     return {};
   }

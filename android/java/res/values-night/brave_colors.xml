@@ -16,7 +16,6 @@
     <!-- Theme colors -->
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_80</color>
     <color name="brave_link">#A0A5EB</color>
-    <color name="brave_button_color">#4C54D2</color>
     <color name="brave_button_pressed">#575CA4</color>
 
     <color name="onboarding_text_color">#F0F2FF</color>
@@ -47,6 +46,9 @@
     <color name="brave_wallet_dn_highlight_bg_color">#1F1F27</color>
     <color name="wallet_dn_bg_primary">#17171F</color>
     <color name="brave_wallet_day_night_chip_selected">#2F2F2E</color>
+    <color name="brave_wallet_dn_button_color">#3F39E8</color>
+    <!-- Brave wallet 2.0 colors -->
+    <color name="brave_wallet_dn_panel_bg">@color/wallet_dn_bg_primary</color>
 
     <!-- Text colors -->
     <color name="brave_theme_subtitle_text">#C2C4CF</color>
@@ -133,6 +135,7 @@
     <color name="recovery_phrase_warning_text_color">#C2C4CF</color>
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
+    <color name="wallet_sign_msg_err_bg_color">#FF460A10</color>
 
     <color name="rewards_panel_bg_color">#17171F</color>
     <color name="rewards_panel_text_color">#FFFFFF</color>
@@ -237,4 +240,6 @@
     <color name="rewards_private_ads_icon_color12">#AF1769</color>
     <color name="rewards_private_ads_icon_color13">#0C5FA3</color>
     <color name="rewards_estimated_earning_close_color">#EDEEF1</color>
+    <color name="rewards_tipping_progress_bar">@android:color/white</color>
+
 </resources>

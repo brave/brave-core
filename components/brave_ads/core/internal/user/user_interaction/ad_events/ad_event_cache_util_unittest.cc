@@ -22,12 +22,12 @@ class BraveAdsAdEventCacheUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsAdEventCacheUtilTest, RebuildAdEventCache) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ true);
+                                      /*should_use_random_uuids=*/true);
   const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed,
-                                            /*created_at*/ Now());
+                                            /*created_at=*/Now());
 
   base::MockCallback<AdEventCallback> callback;
-  EXPECT_CALL(callback, Run(/*success*/ true));
+  EXPECT_CALL(callback, Run(/*success=*/true));
   RecordAdEvent(ad_event, callback.Get());
 
   ResetAdEventCache();
@@ -37,7 +37,6 @@ TEST_F(BraveAdsAdEventCacheUtilTest, RebuildAdEventCache) {
 
   // Assert
   const std::vector<base::Time> expected_cached_ad_events = {Now()};
-
   EXPECT_EQ(
       expected_cached_ad_events,
       GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kServed));
@@ -46,16 +45,15 @@ TEST_F(BraveAdsAdEventCacheUtilTest, RebuildAdEventCache) {
 TEST_F(BraveAdsAdEventCacheUtilTest, CacheAdEvent) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ true);
+                                      /*should_use_random_uuids=*/true);
   const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed,
-                                            /*created_at*/ Now());
+                                            /*created_at=*/Now());
 
   // Act
   CacheAdEvent(ad_event);
 
   // Assert
   const std::vector<base::Time> expected_cached_ad_events = {Now()};
-
   EXPECT_EQ(
       expected_cached_ad_events,
       GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kServed));
@@ -64,29 +62,27 @@ TEST_F(BraveAdsAdEventCacheUtilTest, CacheAdEvent) {
 TEST_F(BraveAdsAdEventCacheUtilTest, GetCachedAdEvents) {
   // Arrange
   const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids*/ true);
+                                      /*should_use_random_uuids=*/true);
 
   const AdEventInfo ad_event_1 = BuildAdEvent(ad, ConfirmationType::kServed,
-                                              /*created_at*/ Now());
+                                              /*created_at=*/Now());
   CacheAdEvent(ad_event_1);
 
   const AdEventInfo ad_event_2 = BuildAdEvent(ad, ConfirmationType::kViewed,
-                                              /*created_at*/ Now());
+                                              /*created_at=*/Now());
   CacheAdEvent(ad_event_2);
 
   const AdEventInfo ad_event_3 =
       BuildAdEvent(ad, ConfirmationType::kServed,
-                   /*created_at*/ Now() + base::Hours(1));
+                   /*created_at=*/Now() + base::Hours(1));
   CacheAdEvent(ad_event_3);
 
-  // Act
-  const std::vector<base::Time> cached_ad_events =
-      GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kServed);
-
-  // Assert
+  // Act & Assert
   const std::vector<base::Time> expected_cached_ad_events = {
       ad_event_1.created_at, ad_event_3.created_at};
-  EXPECT_EQ(expected_cached_ad_events, cached_ad_events);
+  EXPECT_EQ(
+      expected_cached_ad_events,
+      GetCachedAdEvents(AdType::kNotificationAd, ConfirmationType::kServed));
 }
 
 }  // namespace brave_ads

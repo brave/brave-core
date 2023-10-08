@@ -290,7 +290,7 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void updateSelectedAccountInfo() {
-        Utils.setBlockiesBitmapResource(
+        Utils.setTextGeneratedBlockies(
                 mExecutor, mHandler, mAccountImage, mSelectedAccount.address, true);
         Utils.setBlockiesBackground(
                 mExecutor, mHandler, mContainerConstraintLayout, mSelectedAccount.address, true);

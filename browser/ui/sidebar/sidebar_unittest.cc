@@ -78,11 +78,11 @@ class SidebarModelTest : public testing::Test {
 
   content::BrowserTaskEnvironment browser_task_environment_;
   testing::NiceMock<MockSidebarModelObserver> observer_;
-  raw_ptr<SidebarService> service_ = nullptr;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<SidebarModel> model_;
   base::ScopedObservation<SidebarModel, SidebarModel::Observer> observation_{
       &observer_};
+  raw_ptr<SidebarService> service_ = nullptr;
 };
 
 TEST_F(SidebarModelTest, ItemsChangedTest) {

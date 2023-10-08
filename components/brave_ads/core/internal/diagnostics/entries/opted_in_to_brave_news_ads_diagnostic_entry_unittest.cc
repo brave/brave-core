@@ -17,11 +17,9 @@ class BraveAdsOptedInToBraveNewsAdsDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BraveAdsOptedInToBraveNewsAdsDiagnosticEntryTest, IsOptedIn) {
   // Arrange
-
-  // Act
   const OptedInToBraveNewsAdsDiagnosticEntry diagnostic_entry;
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kOptedInToBraveNewsAds,
             diagnostic_entry.GetType());
   EXPECT_EQ("Opted-in to Brave News ads", diagnostic_entry.GetName());
@@ -30,12 +28,11 @@ TEST_F(BraveAdsOptedInToBraveNewsAdsDiagnosticEntryTest, IsOptedIn) {
 
 TEST_F(BraveAdsOptedInToBraveNewsAdsDiagnosticEntryTest, IsOptedOut) {
   // Arrange
-  DisableBraveNewsAdsForTesting();
+  OptOutOfBraveNewsAdsForTesting();
 
-  // Act
   const OptedInToBraveNewsAdsDiagnosticEntry diagnostic_entry;
 
-  // Assert
+  // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kOptedInToBraveNewsAds,
             diagnostic_entry.GetType());
   EXPECT_EQ("Opted-in to Brave News ads", diagnostic_entry.GetName());

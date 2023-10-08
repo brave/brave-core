@@ -235,7 +235,7 @@ void SearchResultAdEventHandler::SuccessfullyFiredEvent(
 
   NotifyDidFireSearchResultAdEvent(ad, event_type);
 
-  std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
+  std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
 }
 
 void SearchResultAdEventHandler::FailedToFireEvent(
@@ -250,7 +250,7 @@ void SearchResultAdEventHandler::FailedToFireEvent(
 
   NotifyFailedToFireSearchResultAdEvent(ad, event_type);
 
-  std::move(callback).Run(/*success*/ false, ad.placement_id, event_type);
+  std::move(callback).Run(/*success=*/false, ad.placement_id, event_type);
 }
 
 void SearchResultAdEventHandler::NotifyDidFireSearchResultAdEvent(

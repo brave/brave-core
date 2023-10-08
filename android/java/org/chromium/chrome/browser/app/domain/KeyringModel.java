@@ -144,6 +144,15 @@ public class KeyringModel implements KeyringServiceObserver {
         mKeyringService.addObserver(observer);
     }
 
+    public AccountInfo getAccount(String address) {
+        List<AccountInfo> accountInfoList = mAccountInfos.getValue();
+        if (accountInfoList == null || accountInfoList.isEmpty()) return null;
+        for (AccountInfo accountInfo : accountInfoList) {
+            if (accountInfo.address.equals(address)) return accountInfo;
+        }
+        return null;
+    }
+
     private void handleAddAccountResult(AccountInfo result, Callbacks.Callback1<Boolean> callback) {
         mCryptoSharedActions.updateCoinType();
         mCryptoSharedActions.onNewAccountAdded();
@@ -156,7 +165,7 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringRestored(@KeyringId.EnumType int keyringId) {
+    public void walletRestored() {
         update();
     }
 

@@ -15,7 +15,6 @@ import {
   ImportAccountErrorType
 } from '../../constants/types'
 import {
-  AddSitePermissionPayloadType,
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged,
   DefaultEthereumWalletChanged,
@@ -129,10 +128,14 @@ const defaultState: WalletState = {
       LOCAL_STORAGE_KEYS.USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
     ) || '[]'
   ),
+  deletedNonFungibleTokenIds: JSON.parse(localStorage.getItem(
+    LOCAL_STORAGE_KEYS.USER_DELETED_NON_FUNGIBLE_TOKEN_IDS
+  ) || '[]'),
   hidePortfolioNFTsTab:
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB) ===
     'true',
   removedNonFungibleTokens: [] as BraveWallet.BlockchainToken[],
+  deletedNonFungibleTokens: [] as BraveWallet.BlockchainToken[],
   filteredOutPortfolioNetworkKeys: parseJSONFromLocalStorage(
     'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
     makeInitialFilteredOutNetworkKeys()
@@ -170,7 +173,7 @@ export const WalletAsyncActions = {
   selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
   keyringCreated: createAction('keyringCreated'),
-  keyringRestored: createAction('keyringRestored'),
+  walletRestored: createAction('walletRestored'),
   keyringReset: createAction('keyringReset'),
   locked: createAction('locked'),
   unlocked: createAction('unlocked'),
@@ -196,8 +199,6 @@ export const WalletAsyncActions = {
   removeSitePermission: createAction<RemoveSitePermissionPayloadType>(
     'removeSitePermission'
   ),
-  addSitePermission:
-    createAction<AddSitePermissionPayloadType>('addSitePermission'),
   refreshNetworksAndTokens:
     createAction<RefreshOpts>('refreshNetworksAndTokens'),
   expandWalletNetworks: createAction('expandWalletNetworks'), // replace with chrome.tabs.create helper
@@ -400,6 +401,20 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
       ) {
         state.removedNonFungibleTokens = payload
+      },
+
+      setDeletedNonFungibleTokenIds(
+        state: WalletState,
+        { payload }: PayloadAction<string[]>
+      ) {
+        state.deletedNonFungibleTokenIds = payload
+      },
+
+      setDeletedNonFungibleTokens(
+        state: WalletState,
+        { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
+      ) {
+        state.deletedNonFungibleTokens = payload
       },
 
       setFilteredOutPortfolioNetworkKeys(

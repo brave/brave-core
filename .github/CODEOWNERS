@@ -10,6 +10,9 @@ DEPS @brave/deps-reviewers
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 
+# Renderer code
+**/renderer/**/* @brave/renderer-reviewers
+
 # Rust deps
 **/Cargo.* @brave/rust-deps-reviewers
 third_party/rust @bridiver

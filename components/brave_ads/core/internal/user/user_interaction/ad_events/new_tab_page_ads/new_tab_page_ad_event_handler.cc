@@ -144,7 +144,7 @@ void NewTabPageAdEventHandler::SuccessfullyFiredEvent(
 
   NotifyDidFireNewTabPageAdEvent(ad, event_type);
 
-  std::move(callback).Run(/*success*/ true, ad.placement_id, event_type);
+  std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
 }
 
 void NewTabPageAdEventHandler::FailedToFireEvent(
@@ -161,7 +161,7 @@ void NewTabPageAdEventHandler::FailedToFireEvent(
   NotifyFailedToFireNewTabPageAdEvent(placement_id, creative_instance_id,
                                       event_type);
 
-  std::move(callback).Run(/*success*/ false, placement_id, event_type);
+  std::move(callback).Run(/*success=*/false, placement_id, event_type);
 }
 
 void NewTabPageAdEventHandler::NotifyDidFireNewTabPageAdEvent(

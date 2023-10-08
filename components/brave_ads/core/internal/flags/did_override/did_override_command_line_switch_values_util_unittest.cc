@@ -57,11 +57,7 @@ class BraveAdsDidOverrideCommandLineSwitchValuesUtilTest
 
 TEST_P(BraveAdsDidOverrideCommandLineSwitchValuesUtilTest,
        DidOverrideCommandLineSwitchValues) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(GetParam().expected_did_override_command_line_switch,
             DidOverrideCommandLineSwitchValues());
 }

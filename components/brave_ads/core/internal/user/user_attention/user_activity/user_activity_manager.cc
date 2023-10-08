@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/page_transition_util.h"
-#include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_constants.h"
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_feature.h"
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_scoring.h"
 #include "brave/components/brave_ads/core/internal/user/user_attention/user_activity/user_activity_trigger_info.h"
@@ -69,10 +68,11 @@ void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
   user_activity_event.type = event_type;
   user_activity_event.created_at = base::Time::Now();
 
-  history_.push_back(user_activity_event);
+  user_activity_events_.push_back(user_activity_event);
 
-  if (history_.size() > kMaximumHistoryItems) {
-    history_.pop_front();
+  if (user_activity_events_.size() >
+      static_cast<size_t>(kMaximumUserActivityEvents.Get())) {
+    user_activity_events_.pop_front();
   }
 
   LogEvent(event_type);
@@ -80,7 +80,7 @@ void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
 
 UserActivityEventList UserActivityManager::GetHistoryForTimeWindow(
     const base::TimeDelta time_window) const {
-  UserActivityEventList filtered_history = history_;
+  UserActivityEventList filtered_history = user_activity_events_;
 
   const base::Time time = base::Time::Now() - time_window;
 
@@ -154,27 +154,27 @@ void UserActivityManager::OnBrowserDidEnterBackground() {
   RecordEvent(UserActivityEventType::kBrowserDidEnterBackground);
 }
 
-void UserActivityManager::OnTabDidChangeFocus(const int32_t /*id*/) {
+void UserActivityManager::OnTabDidChangeFocus(const int32_t /*tab_id=*/) {
   RecordEvent(UserActivityEventType::kTabChangedFocus);
 }
 
-void UserActivityManager::OnTabDidChange(const TabInfo& /*tab*/) {
+void UserActivityManager::OnTabDidChange(const TabInfo& /*tab=*/) {
   RecordEvent(UserActivityEventType::kTabUpdated);
 }
 
-void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
+void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab=*/) {
   RecordEvent(UserActivityEventType::kOpenedNewTab);
 }
 
-void UserActivityManager::OnDidCloseTab(const int32_t /*id*/) {
+void UserActivityManager::OnDidCloseTab(const int32_t /*tab_id=*/) {
   RecordEvent(UserActivityEventType::kClosedTab);
 }
 
-void UserActivityManager::OnTabDidStartPlayingMedia(const int32_t /*id*/) {
+void UserActivityManager::OnTabDidStartPlayingMedia(const int32_t /*tab_id=*/) {
   RecordEvent(UserActivityEventType::kTabStartedPlayingMedia);
 }
 
-void UserActivityManager::OnTabDidStopPlayingMedia(const int32_t /*id*/) {
+void UserActivityManager::OnTabDidStopPlayingMedia(const int32_t /*tab_id=*/) {
   RecordEvent(UserActivityEventType::kTabStoppedPlayingMedia);
 }
 

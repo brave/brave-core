@@ -8,6 +8,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -16,16 +17,10 @@
 
 namespace brave_wallet {
 
-namespace {
-const char mnemonic[] =
-    "scare piece awesome elite long drift control cabbage glass dash coral "
-    "angry";
-}  // namespace
-
 TEST(SolanaKeyringUnitTest, ConstructRootHDKey) {
   SolanaKeyring keyring;
   std::unique_ptr<std::vector<uint8_t>> seed =
-      MnemonicToSeed(std::string(mnemonic), "");
+      MnemonicToSeed(kMnemonicScarePiece, "");
   keyring.ConstructRootHDKey(*seed, "m/44'/501'");
 
   EXPECT_EQ(keyring.root_->EncodePrivateKeyForExport(),
@@ -36,7 +31,7 @@ TEST(SolanaKeyringUnitTest, ConstructRootHDKey) {
 TEST(SolanaKeyringUnitTest, Accounts) {
   SolanaKeyring keyring;
   std::unique_ptr<std::vector<uint8_t>> seed =
-      MnemonicToSeed(std::string(mnemonic), "");
+      MnemonicToSeed(kMnemonicScarePiece, "");
   keyring.ConstructRootHDKey(*seed, "m/44'/501'");
 
   keyring.AddAccounts(1);
@@ -91,7 +86,7 @@ TEST(SolanaKeyringUnitTest, Accounts) {
 TEST(SolanaKeyringUnitTest, SignMessage) {
   SolanaKeyring keyring;
   std::unique_ptr<std::vector<uint8_t>> seed =
-      MnemonicToSeed(std::string(mnemonic), "");
+      MnemonicToSeed(kMnemonicScarePiece, "");
   keyring.ConstructRootHDKey(*seed, "m/44'/501'");
 
   keyring.AddAccounts(1);

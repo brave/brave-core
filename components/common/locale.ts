@@ -12,11 +12,13 @@ import { loadTimeData } from './loadTimeData'
  */
 export const getLocale = (key: string, replacements?: Record<string, string>) => {
   if (!key) {
+    console.error('locale string requires a key!')
     return key
   }
 
   let returnVal = loadTimeData.getString(key)
   if (!returnVal) {
+    console.error(`locale string not found for key: ${key}`)
     return key
   }
 

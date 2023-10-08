@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,148 +13,100 @@
 namespace brave_ads {
 
 TEST(BraveAdsNotificationAdFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsNotificationAdFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kNotificationAdFeature));
 }
 
 TEST(BraveAdsNotificationAdFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsNotificationAdFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kNotificationAdFeature));
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, DefaultAdsPerHour) {
+TEST(BraveAdsNotificationAdFeatureTest, DefaultNotificationAdsPerHour) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["default_ads_per_hour"] = "42";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature, {{"default_ads_per_hour", "42"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(42, kDefaultNotificationAdsPerHour.Get());
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, DefaultDefaultAdsPerHour) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST(BraveAdsNotificationAdFeatureTest, DefaultDefaultNotificationAdsPerHour) {
+  // Act & Assert
   EXPECT_EQ(10, kDefaultNotificationAdsPerHour.Get());
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, DefaultDefaultAdsPerHourWhenDisabled) {
+TEST(BraveAdsNotificationAdFeatureTest,
+     DefaultDefaultNotificationAdsPerHourWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(10, kDefaultNotificationAdsPerHour.Get());
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, MaximumAdsPerDay) {
+TEST(BraveAdsNotificationAdFeatureTest, MaximumNotificationAdsPerDay) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["maximum_ads_per_day"] = "24";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature, {{"maximum_ads_per_day", "24"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(24, kMaximumNotificationAdsPerDay.Get());
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, DefaultMaximumAdsPerDay) {
-  // Arrange
-
-  // Act
-
-  // Assert
+TEST(BraveAdsNotificationAdFeatureTest, DefaultMaximumNotificationAdsPerDay) {
+  // Act & Assert
   EXPECT_EQ(100, kMaximumNotificationAdsPerDay.Get());
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, DefaultMaximumAdsPerDayWhenDisabled) {
+TEST(BraveAdsNotificationAdFeatureTest,
+     DefaultMaximumNotificationAdsPerDayWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kNotificationAdFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(100, kMaximumNotificationAdsPerDay.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest,
      CanFallbackToCustomNotificationAdsDefault) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(false, kCanFallbackToCustomNotificationAds.Get());
+  // Act & Assert
+  EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest, CanFallbackToCustomNotificationAds) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["can_fallback_to_custom_notifications"] = "true";
-  enabled_features.emplace_back(kNotificationAdFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kNotificationAdFeature,
+      {{"can_fallback_to_custom_notifications", "true"}});
 
-  // Act
+  // Act & Assert
+  EXPECT_TRUE(kCanFallbackToCustomNotificationAds.Get());
+}
 
-  // Assert
-  EXPECT_EQ(true, kCanFallbackToCustomNotificationAds.Get());
+TEST(BraveAdsNotificationAdFeatureTest,
+     DefaultCanFallbackToCustomNotificationAds) {
+  // Act & Assert
+  EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
+}
+
+TEST(BraveAdsNotificationAdFeatureTest,
+     DefaultCanFallbackToCustomNotificationAdsWhenDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
+
+  // Act & Assert
+  EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
 }
 
 }  // namespace brave_ads

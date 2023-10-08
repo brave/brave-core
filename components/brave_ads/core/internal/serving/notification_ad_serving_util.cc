@@ -8,14 +8,12 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
-
-constexpr base::TimeDelta kServeFirstAdAfter = base::Minutes(2);
-constexpr base::TimeDelta kMinimumDelayBeforeServingAnAd = base::Minutes(1);
 
 bool HasPreviouslyServedAnAd() {
   return AdsClientHelper::GetInstance()->HasPrefPath(prefs::kServeAdAt);
@@ -49,16 +47,16 @@ base::Time ServeAdAt() {
 
 base::TimeDelta CalculateDelayBeforeServingAnAd() {
   if (!HasPreviouslyServedAnAd()) {
-    return kServeFirstAdAfter;
+    return kServeFirstNotificationAdAfter.Get();
   }
 
   if (ShouldHaveServedAdInThePast() || ShouldServeAd()) {
-    return kMinimumDelayBeforeServingAnAd;
+    return kMinimumDelayBeforeServingNotificationAd.Get();
   }
 
   const base::TimeDelta delay = DelayBeforeServingAnAd();
-  if (delay < kMinimumDelayBeforeServingAnAd) {
-    return kMinimumDelayBeforeServingAnAd;
+  if (delay < kMinimumDelayBeforeServingNotificationAd.Get()) {
+    return kMinimumDelayBeforeServingNotificationAd.Get();
   }
 
   return delay;

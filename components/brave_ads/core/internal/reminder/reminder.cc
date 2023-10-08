@@ -18,7 +18,7 @@ namespace {
 constexpr base::TimeDelta kMaybeShowReminderAfter = base::Milliseconds(100);
 
 void MaybeShowReminder(const HistoryItemInfo& history_item) {
-  if (!IsReminderFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(kReminderFeature)) {
     return;
   }
 

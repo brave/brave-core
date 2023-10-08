@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_GCM_DRIVER_BRAVE_GCM_UTILS_H_
 #define BRAVE_BROWSER_GCM_DRIVER_BRAVE_GCM_UTILS_H_
 
-class Profile;
+class PrefService;
 
 namespace user_prefs {
 class PrefRegistrySyncable;
@@ -15,7 +15,7 @@ class PrefRegistrySyncable;
 namespace gcm {
 
 void RegisterGCMProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-void MigrateGCMPrefs(Profile* profile);
+void MigrateGCMPrefs(PrefService* prefs);
 
 }  // namespace gcm
 

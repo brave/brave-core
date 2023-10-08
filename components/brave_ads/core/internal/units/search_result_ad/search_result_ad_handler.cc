@@ -32,8 +32,8 @@ bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
 void FireEventCallback(TriggerAdEventCallback callback,
                        const bool success,
-                       const std::string& /*placement_id*/,
-                       const mojom::SearchResultAdEventType /*event_type*/) {
+                       const std::string& /*placement_id=*/,
+                       const mojom::SearchResultAdEventType /*event_type=*/) {
   std::move(callback).Run(success);
 }
 
@@ -57,7 +57,7 @@ void SearchResultAd::TriggerEvent(
 
   if (!UserHasJoinedBraveRewards() &&
       !ShouldAlwaysTriggerSearchResultAdEvents()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   if (event_type == mojom::SearchResultAdEventType::kViewed) {
@@ -88,7 +88,7 @@ void SearchResultAd::TriggerDeferredAdViewedEvent() {
   g_deferred_search_result_ad_for_testing
       ->trigger_ad_viewed_event_in_progress_ = false;
   g_deferred_search_result_ad_for_testing->MaybeTriggerAdViewedEventFromQueue(
-      /*intentional*/ base::DoNothing());
+      /*intentional=*/base::DoNothing());
   g_deferred_search_result_ad_for_testing = nullptr;
 }
 
@@ -98,10 +98,10 @@ void SearchResultAd::FireServedEventCallback(
     mojom::SearchResultAdInfoPtr ad_mojom,
     TriggerAdEventCallback callback,
     const bool success,
-    const std::string& /*placement_id*/,
-    const mojom::SearchResultAdEventType /*event_type*/) {
+    const std::string& /*placement_id=*/,
+    const mojom::SearchResultAdEventType /*event_type=*/) {
   if (!success) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
   ad_viewed_event_queue_.push_front(std::move(ad_mojom));
@@ -114,7 +114,7 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue(
          !trigger_ad_viewed_event_in_progress_));
 
   if (ad_viewed_event_queue_.empty() || trigger_ad_viewed_event_in_progress_) {
-    return std::move(callback).Run(/*success*/ true);
+    return std::move(callback).Run(/*success=*/true);
   }
   trigger_ad_viewed_event_in_progress_ = true;
 
@@ -131,7 +131,7 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue(
 void SearchResultAd::FireAdViewedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
-    const std::string& /*placement_id*/,
+    const std::string& /*placement_id=*/,
     const mojom::SearchResultAdEventType event_type) {
   CHECK(mojom::IsKnownEnumValue(event_type));
   CHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewed);

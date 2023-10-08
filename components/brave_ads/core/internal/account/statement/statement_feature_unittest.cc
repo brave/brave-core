@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -14,94 +12,67 @@
 
 namespace brave_ads {
 
+TEST(BraveAdsAccountFeatureTest, IsEnabled) {
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kAccountStatementFeature));
+}
+
+TEST(BraveAdsAccountFeatureTest, IsDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kAccountStatementFeature);
+
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kAccountStatementFeature));
+}
+
 TEST(BraveAdsAccountFeatureTest, NextPaymentDay) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["next_payment_day"] = "5";
-  enabled_features.emplace_back(kAccountStatementFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountStatementFeature, {{"next_payment_day", "5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(5, kNextPaymentDay.Get());
 }
 
 TEST(BraveAdsAccountFeatureTest, DefaultNextPaymentDay) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kNextPaymentDay.Get());
 }
 
 TEST(BraveAdsAccountFeatureTest, DefaultNextPaymentDayWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAccountStatementFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kAccountStatementFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kNextPaymentDay.Get());
 }
 
 TEST(BraveAdsAccountFeatureTest, MinEstimatedEarningsMultiplier) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["min_estimated_earnings_multiplier"] = "0.5";
-  enabled_features.emplace_back(kAccountStatementFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountStatementFeature,
+      {{"minimum_estimated_earnings_multiplier", "0.5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.5, kMinEstimatedEarningsMultiplier.Get());
 }
 
 TEST(BraveAdsAccountFeatureTest, DefaultMinEstimatedEarningsMultiplier) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.8, kMinEstimatedEarningsMultiplier.Get());
 }
 
 TEST(BraveAdsAccountFeatureTest,
      DefaultMinEstimatedEarningsMultiplierWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAccountStatementFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kAccountStatementFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_DOUBLE_EQ(0.8, kMinEstimatedEarningsMultiplier.Get());
 }
 

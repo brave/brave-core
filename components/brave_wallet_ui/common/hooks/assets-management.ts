@@ -43,7 +43,9 @@ export function useAssetManagement () {
     useUnsafeWalletSelector(WalletSelectors.removedFungibleTokenIds)
   const removedNonFungibleTokenIds =
     useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokenIds)
-
+  const deletedNonFungibleTokenIds = useUnsafeWalletSelector(
+    WalletSelectors.deletedNonFungibleTokenIds
+  )
 
   // redux
   const dispatch = useDispatch()
@@ -101,6 +103,21 @@ export function useAssetManagement () {
       }
 
     }, [removedNonFungibleTokenIds, removedFungibleTokenIds])
+
+  const addNftToDeletedNftsList = React.useCallback(
+    (token: BraveWallet.BlockchainToken) => {
+      const assetId = getAssetIdKey(token)
+      const newList = [...deletedNonFungibleTokenIds, assetId]
+      // update state
+      dispatch(WalletActions.setDeletedNonFungibleTokenIds(newList))
+      // persist array
+      localStorage.setItem(
+        LOCAL_STORAGE_KEYS.USER_DELETED_NON_FUNGIBLE_TOKEN_IDS,
+        JSON.stringify(newList)
+      )
+    },
+    [deletedNonFungibleTokenIds]
+  )
 
   const onAddUserAsset = React.useCallback(
     (
@@ -182,7 +199,8 @@ export function useAssetManagement () {
     onUpdateVisibleAssets,
     onAddCustomAsset,
     makeTokenVisible,
-    addOrRemoveTokenInLocalStorage
+    addOrRemoveTokenInLocalStorage,
+    addNftToDeletedNftsList
   }
 }
 

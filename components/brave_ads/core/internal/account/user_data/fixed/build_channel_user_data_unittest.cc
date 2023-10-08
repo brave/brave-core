@@ -17,12 +17,12 @@ class BraveAdsBuildChannelUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsBuildChannelUserDataTest,
        BuildBuildChannelUserDataForRewardsUser) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(R"({"buildChannel":"release"})"),
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "buildChannel": "release"
+                    })"),
             BuildBuildChannelUserData());
 }
 
@@ -31,9 +31,7 @@ TEST_F(BraveAdsBuildChannelUserDataTest,
   // Arrange
   DisableBraveRewardsForTesting();
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(BuildBuildChannelUserData().empty());
 }
 

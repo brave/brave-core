@@ -17,10 +17,10 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kUserIdleDetectionFeature);
 
-constexpr base::FeatureParam<base::TimeDelta> kIdleThreshold{
+constexpr base::FeatureParam<base::TimeDelta> kUserIdleDetectionThreshold{
     &kUserIdleDetectionFeature, "idle_threshold", base::Seconds(5)};
 
-constexpr base::FeatureParam<base::TimeDelta> kMaximumIdleTime{
+constexpr base::FeatureParam<base::TimeDelta> kMaximumUserIdleDetectionTime{
     &kUserIdleDetectionFeature, "maximum_idle_time", base::Seconds(0)};
 
 constexpr base::FeatureParam<bool> kShouldDetectScreenWasLocked{

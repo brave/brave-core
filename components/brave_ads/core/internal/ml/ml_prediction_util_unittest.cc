@@ -27,12 +27,11 @@ TEST_F(BraveAdsMLPredictionUtilTest, SoftmaxTest) {
   // Act
   const PredictionMap predictions = Softmax(group_1);
 
+  // Assert
   double sum = 0.0;
   for (auto const& prediction : predictions) {
     sum += prediction.second;
   }
-
-  // Assert
   ASSERT_GT(predictions.at("c3"), predictions.at("c1"));
   ASSERT_GT(predictions.at("c3"), predictions.at("c2"));
   ASSERT_GT(predictions.at("c2"), predictions.at("c1"));
@@ -56,16 +55,17 @@ TEST_F(BraveAdsMLPredictionUtilTest, ExtendedSoftmaxTest) {
   const PredictionMap predictions_2 = Softmax(group_2);
 
   // Assert
-  ASSERT_LT(std::fabs(predictions_1.at("c1") - predictions_2.at("c1")),
+  EXPECT_LT(std::fabs(predictions_1.at("c1") - predictions_2.at("c1")),
             kTolerance);
-  ASSERT_LT(std::fabs(predictions_1.at("c2") - predictions_2.at("c2")),
-            kTolerance);
-  ASSERT_LT(std::fabs(predictions_1.at("c3") - predictions_2.at("c3")),
-            kTolerance);
+  EXPECT_TRUE(std::fabs(predictions_1.at("c1") - 0.09003057) < kTolerance);
 
-  EXPECT_TRUE(std::fabs(predictions_1.at("c1") - 0.09003057) < kTolerance &&
-              std::fabs(predictions_1.at("c2") - 0.24472847) < kTolerance &&
-              std::fabs(predictions_1.at("c3") - 0.66524095) < kTolerance);
+  EXPECT_LT(std::fabs(predictions_1.at("c2") - predictions_2.at("c2")),
+            kTolerance);
+  EXPECT_TRUE(std::fabs(predictions_1.at("c2") - 0.24472847) < kTolerance);
+
+  EXPECT_LT(std::fabs(predictions_1.at("c3") - predictions_2.at("c3")),
+            kTolerance);
+  EXPECT_TRUE(std::fabs(predictions_1.at("c3") - 0.66524095) < kTolerance);
 }
 
 }  // namespace brave_ads::ml

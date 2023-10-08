@@ -28,9 +28,7 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
 
   ~TextEmbeddingResource() override;
 
-  bool IsInitialized() const {
-    return static_cast<bool>(embedding_processing_);
-  }
+  bool IsInitialized() const { return !!embedding_processing_; }
 
   const absl::optional<ml::pipeline::EmbeddingProcessing>& get() const {
     return embedding_processing_;
@@ -53,6 +51,7 @@ class TextEmbeddingResource final : public AdsClientNotifierObserver {
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                           const std::string& id) override;
+  void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
   absl::optional<ml::pipeline::EmbeddingProcessing> embedding_processing_;
 

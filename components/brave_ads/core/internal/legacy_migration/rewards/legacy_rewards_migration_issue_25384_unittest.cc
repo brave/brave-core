@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
+#include "base/test/mock_callback.h"
 
-#include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -30,15 +31,13 @@ class BraveAdsLegacyRewardsMigrationIssue25384Test : public UnitTestBase {
 
 TEST_F(BraveAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
   // Arrange
-  SetBooleanPref(prefs::kHasMigratedRewardsState, false);
+  SetBooleanPrefValue(prefs::kHasMigratedRewardsState, false);
 
-  EXPECT_CALL(ads_client_mock_, Load(kConfirmationStateFilename, ::testing::_));
+  // Act & Assert
+  base::MockCallback<InitializeCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  rewards::Migrate(callback.Get());
 
-  // Act
-  rewards::Migrate(
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
-
-  // Assert
   EXPECT_TRUE(ads_client_mock_.GetBooleanPref(prefs::kHasMigratedRewardsState));
 }
 

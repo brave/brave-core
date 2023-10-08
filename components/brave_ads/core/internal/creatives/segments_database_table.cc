@@ -114,7 +114,7 @@ std::string Segments::BuildInsertOrUpdateSql(
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (creative_set_id, segment) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 2, binded_parameters_count)},
+                           /*parameters_count=*/2, binded_parameters_count)},
       nullptr);
 }
 

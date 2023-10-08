@@ -24,7 +24,6 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
     private final int mMinimumHeight;
     private final UrlBarEditingTextStateProvider mUrlBarEditingTextProvider;
     private final AutocompleteDelegate mUrlBarDelegate;
-    public static final int BRAVE_SEARCH_PROMO_GROUP = 100;
 
     /**
      * @param context An Android context.
@@ -46,7 +45,7 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
                 mUrlBarDelegate.loadUrl("https://search.brave.com/search?q="
                                 + mUrlBarEditingTextProvider.getTextWithoutAutocomplete()
                                 + "&action=makeDefault",
-                        PageTransition.LINK, System.currentTimeMillis());
+                        PageTransition.LINK, System.currentTimeMillis(), /*openInNewTab=*/false);
             }
 
             @Override
@@ -72,7 +71,7 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
     }
 
     @Override
-    public void onUrlFocusChange(boolean hasFocus) {}
+    public void onOmniboxSessionStateChange(boolean activated) {}
 
     @Override
     public void onNativeInitialized() {}

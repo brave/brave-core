@@ -31,10 +31,9 @@ class BraveAdsRedeemNonRewardConfirmationTest : public UnitTestBase {
     DisableBraveRewardsForTesting();
   }
 
-  ::testing::NiceMock<RedeemConfirmationDelegateMock>
-      redeem_confirmation_delegate_mock_;
+  RedeemConfirmationDelegateMock delegate_mock_;
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
-      confirmation_delegate_weak_factory_{&redeem_confirmation_delegate_mock_};
+      confirmation_delegate_weak_factory_{&delegate_mock_};
 };
 
 TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
@@ -46,20 +45,17 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
-  // Assert
-  EXPECT_CALL(redeem_confirmation_delegate_mock_,
-              OnDidRedeemConfirmation(*confirmation));
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation(*confirmation));
 
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnFailedToRedeemConfirmation)
-      .Times(0);
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation).Times(0);
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }
@@ -70,25 +66,22 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   const URLResponseMap url_responses = {
       {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
        {{net::HTTP_BAD_REQUEST,
-         /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_BAD_REQUEST)}}}};
+         /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_BAD_REQUEST)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
-  // Assert
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(
-      redeem_confirmation_delegate_mock_,
-      OnFailedToRedeemConfirmation(*confirmation, /*should_retry*/ false));
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation(
+                                  *confirmation, /*should_retry=*/false));
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }
@@ -99,25 +92,22 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   const URLResponseMap url_responses = {
       {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
        {{net::HTTP_CONFLICT,
-         /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_CONFLICT)}}}};
+         /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_CONFLICT)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
-  // Assert
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(
-      redeem_confirmation_delegate_mock_,
-      OnFailedToRedeemConfirmation(*confirmation, /*should_retry*/ false));
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation(
+                                  *confirmation, /*should_retry=*/false));
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }
@@ -128,25 +118,22 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   const URLResponseMap url_responses = {
       {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
        {{net::HTTP_CREATED,
-         /*response_body*/ net::GetHttpReasonPhrase(net::HTTP_CREATED)}}}};
+         /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_CREATED)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
-  // Assert
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(
-      redeem_confirmation_delegate_mock_,
-      OnFailedToRedeemConfirmation(*confirmation, /*should_retry*/ false));
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation(
+                                  *confirmation, /*should_retry=*/false));
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }
@@ -156,26 +143,23 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
   const URLResponseMap url_responses = {
       {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body*/ net::GetHttpReasonPhrase(
+         /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
-  // Assert
-  EXPECT_CALL(redeem_confirmation_delegate_mock_, OnDidRedeemConfirmation)
-      .Times(0);
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
-  EXPECT_CALL(
-      redeem_confirmation_delegate_mock_,
-      OnFailedToRedeemConfirmation(*confirmation, /*should_retry*/ true));
+  EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation(
+                                  *confirmation, /*should_retry=*/true));
 
-  // Act
   RedeemNonRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 }

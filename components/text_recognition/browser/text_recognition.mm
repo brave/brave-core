@@ -8,10 +8,10 @@
 #import <Foundation/Foundation.h>
 #import <Vision/Vision.h>
 
+#include "base/apple/foundation_util.h"
+#include "base/apple/scoped_cftyperef.h"
 #include "base/logging.h"
-#include "base/mac/foundation_util.h"
 #include "base/mac/mac_util.h"
-#include "base/mac/scoped_cftyperef.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "skia/ext/skia_utils_base.h"
@@ -66,7 +66,8 @@ std::vector<std::string> GetTextFromImage(const SkBitmap& image) {
     }
 
     NSError* error = nil;
-    base::ScopedCFTypeRef<CGImageRef> cg_image(SkCreateCGImageRef(image));
+    base::apple::ScopedCFTypeRef<CGImageRef> cg_image(
+        SkCreateCGImageRef(image));
     VNImageRequestHandler* requestHandler =
         [[VNImageRequestHandler alloc] initWithCGImage:cg_image.get()
                                                options:@{}];

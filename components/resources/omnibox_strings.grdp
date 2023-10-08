@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+  <message name="IDS_OMNIBOX_OPEN_HERE_HINT"
+    desc="The button text contents to say that this suggestion will open the link in this tab, rather than switching to an existing one.">
+    Open here
+  </message>
+  <message name="IDS_ACC_OPEN_HERE_SUFFIX" desc="Suffix for open here suggestions to explain keystroke used to open a new tab, rather than switching to a currently open one.">
+    <ph name="OPEN_HERE_SUFFIX">$1<ex>Brave http://brave.com bookmark</ex></ph>, currently open,
+    press Tab then Enter to switch to the open tab </message>
+  <message name="IDS_ACC_OPEN_HERE_BUTTON" desc="Announcement when open here button focused.">
+    Open here button, press Enter to open this url in the current tab, instead of switching to the
+    existing tab
+  </message>
+  <message name="IDS_OMNIBOX_ASK_LEO_DESCRIPTION" desc="The label in the omnibox explaning that the match item will open Leo">
+    Ask Leo
+  </message>
+</grit-part>

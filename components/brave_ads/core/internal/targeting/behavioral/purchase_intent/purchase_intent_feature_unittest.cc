@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -16,166 +14,91 @@
 namespace brave_ads {
 
 TEST(BraveAdsPurchaseIntentFeatureTest, IsEnabled) {
-  // Arrange
-
-  // Act
-
-  // Assert
-  EXPECT_TRUE(IsPurchaseIntentFeatureEnabled());
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kPurchaseIntentFeature));
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, IsDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPurchaseIntentFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  // Act
-
-  // Assert
-  EXPECT_FALSE(IsPurchaseIntentFeatureEnabled());
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kPurchaseIntentFeature));
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentResourceVersion) {
   // Arrange
-  base::FieldTrialParams params;
-  params["resource_version"] = "0";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPurchaseIntentFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPurchaseIntentFeature, {{"resource_version", "0"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(0, kPurchaseIntentResourceVersion.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, DefaultPurchaseIntentResourceVersion) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kPurchaseIntentResourceVersion.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest,
      DefaultPurchaseIntentResourceVersionWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPurchaseIntentFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(1, kPurchaseIntentResourceVersion.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentThreshold) {
   // Arrange
-  base::FieldTrialParams params;
-  params["threshold"] = "5";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPurchaseIntentFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(kPurchaseIntentFeature,
+                                                         {{"threshold", "5"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(5, kPurchaseIntentThreshold.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, DefaultPurchaseIntentThreshold) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, kPurchaseIntentThreshold.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest,
      DefaultPurchaseIntentThresholdWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPurchaseIntentFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(3, kPurchaseIntentThreshold.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, PurchaseIntentTimeWindow) {
   // Arrange
-  base::FieldTrialParams params;
-  params["time_window"] = "1d";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kPurchaseIntentFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kPurchaseIntentFeature, {{"time_window", "1d"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(1), kPurchaseIntentTimeWindow.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest, DefaultPurchaseIntentTimeWindow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(7), kPurchaseIntentTimeWindow.Get());
 }
 
 TEST(BraveAdsPurchaseIntentFeatureTest,
      DefaultPurchaseIntentTimeWindowWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kPurchaseIntentFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::Days(7), kPurchaseIntentTimeWindow.Get());
 }
 

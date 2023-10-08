@@ -65,7 +65,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (r.SITE_SETTINGS_SITE_DETAILS) {
     r.BRAVE_SITE_SETTINGS_COOKIES_DETAILS =
       r.SITE_SETTINGS_SITE_DETAILS.createChild('/cookies/detail');
-  } else {
+  } else if (!isGuest) {
     console.error('[Brave Settings Overrides] could not find expected route /content/siteDetails')
   }
   if (pageVisibility.leoAssistant) {

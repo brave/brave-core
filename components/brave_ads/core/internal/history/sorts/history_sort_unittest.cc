@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/history/sorts/history_sort_factory.h"
 
-#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -38,13 +38,8 @@ HistoryItemList GetUnsortedHistory() {
 }  // namespace
 
 TEST(BraveAdsHistorySortTest, NoSortOrder) {
-  // Arrange
-
-  // Act
-  const auto sort = HistorySortFactory::Build(HistorySortType::kNone);
-
-  // Assert
-  EXPECT_EQ(nullptr, sort);
+  // Act & Assert
+  EXPECT_EQ(nullptr, HistorySortFactory::Build(HistorySortType::kNone));
 }
 
 TEST(BraveAdsHistorySortTest, DescendingSortOrder) {
@@ -70,8 +65,7 @@ TEST(BraveAdsHistorySortTest, DescendingSortOrder) {
   expected_history.push_back(history_item);
   history_item.created_at = base::Time::FromDoubleT(111111111);
   expected_history.push_back(history_item);
-
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
 TEST(BraveAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
@@ -92,6 +86,12 @@ TEST(BraveAdsHistorySortTest, AscendingSortOrder) {
   // Arrange
   const auto sort = HistorySortFactory::Build(HistorySortType::kAscendingOrder);
 
+  HistoryItemList history = GetUnsortedHistory();
+
+  // Act
+  history = sort->Apply(history);
+
+  // Assert
   HistoryItemList expected_history;
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromDoubleT(111111111);
@@ -104,14 +104,7 @@ TEST(BraveAdsHistorySortTest, AscendingSortOrder) {
   expected_history.push_back(history_item);
   history_item.created_at = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
-
-  HistoryItemList history = GetUnsortedHistory();
-
-  // Act
-  history = sort->Apply(history);
-
-  // Assert
-  EXPECT_TRUE(base::ranges::equal(expected_history, history));
+  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
 
 TEST(BraveAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {

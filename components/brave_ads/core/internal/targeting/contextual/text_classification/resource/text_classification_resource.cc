@@ -96,7 +96,7 @@ void TextClassificationResource::Reset() {
 }
 
 void TextClassificationResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
+    const std::string& /*locale=*/) {
   MaybeLoad();
 }
 
@@ -122,6 +122,17 @@ void TextClassificationResource::OnNotifyDidUpdateResourceComponent(
   manifest_version_ = manifest_version;
 
   MaybeLoad();
+}
+
+void TextClassificationResource::OnNotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  if (!IsValidLanguageComponentId(id)) {
+    return;
+  }
+
+  manifest_version_.reset();
+
+  Reset();
 }
 
 }  // namespace brave_ads

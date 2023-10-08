@@ -15,6 +15,7 @@ namespace brave_ads {
 
 struct TabInfo final {
   TabInfo();
+  TabInfo(int32_t id, std::vector<GURL> redirect_chain, bool is_playing_media);
 
   TabInfo(const TabInfo&);
   TabInfo& operator=(const TabInfo&);

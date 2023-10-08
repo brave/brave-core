@@ -29,20 +29,20 @@ class BraveAdsConfirmationsTest : public UnitTestBase {
     confirmations_ = std::make_unique<Confirmations>(&token_generator_mock_);
   }
 
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  TokenGeneratorMock token_generator_mock_;
 
   std::unique_ptr<Confirmations> confirmations_;
 };
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count*/ 1);
+  MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count*/ 1);
+  SetConfirmationTokensForTesting(/*count=*/1);
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
 
   // Act
   confirmations_->Confirm(transaction);
@@ -56,8 +56,8 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
   DisableBraveRewardsForTesting();
 
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ true);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
 
   // Act
   confirmations_->Confirm(transaction);

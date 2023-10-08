@@ -7,7 +7,6 @@
 
 #include "base/values.h"
 #include "brave/components/constants/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 
@@ -23,8 +22,7 @@ void RegisterGCMProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kBraveGCMChannelStatus, false);
 }
 
-void MigrateGCMPrefs(Profile* profile) {
-  PrefService* prefs = profile->GetPrefs();
+void MigrateGCMPrefs(PrefService* prefs) {
   // The default was false (see above).
   auto* pref = prefs->FindPreference(kGCMChannelStatus);
   if (pref && !pref->IsDefaultValue())

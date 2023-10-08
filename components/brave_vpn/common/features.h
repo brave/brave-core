@@ -18,6 +18,9 @@ BASE_DECLARE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI);
 BASE_DECLARE_FEATURE(kBraveVPNDnsProtection);
 BASE_DECLARE_FEATURE(kBraveVPNUseWireguardService);
 #endif
+#if BUILDFLAG(IS_MAC)
+BASE_DECLARE_FEATURE(kBraveVPNEnableWireguardForOSX);
+#endif
 }  // namespace features
 }  // namespace brave_vpn
 

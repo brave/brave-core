@@ -71,7 +71,7 @@ export const PanelTitle = styled.span`
   margin-bottom: 15px;
 `
 
-export const MessageBox = styled.div<{ height?: string }>`
+export const MessageBox = styled.div<{ height?: string; width?: string }>`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -79,8 +79,8 @@ export const MessageBox = styled.div<{ height?: string }>`
   border: 1px solid ${(p) => p.theme.color.divider01};
   box-sizing: border-box;
   border-radius: 4px;
-  width: 255px;
-  height: ${(p) => p.height ? p.height : '140px'};
+  width: ${(p) => (p.width ? p.width : '255px')};
+  height: ${(p) => (p.height ? p.height : '140px')};
   padding: 8px 14px;
   margin-bottom: 14px;
   overflow-x: hidden;
@@ -121,4 +121,17 @@ export const ButtonRow = styled.div`
 
 export const WarningTitleRow = styled(WarningBoxTitleRow)`
   margin-bottom: 8px;
+`
+
+export const HeaderTitle = styled.div`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: ${(p) => p.theme.color.text01};
+  margin: 4px 0 8px 0;
 `

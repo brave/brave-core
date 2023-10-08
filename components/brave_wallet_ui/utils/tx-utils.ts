@@ -22,7 +22,7 @@ import {
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import {
   MAX_UINT256,
-  NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+  NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
   UNKNOWN_TOKEN_COINGECKO_ID
 } from '../common/constants/magics'
 import { SwapExchangeProxy } from '../common/constants/registry'
@@ -433,7 +433,7 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
   const fillTokens: BraveWallet.BlockchainToken[] = (fillContracts || [])
     .map(path => '0x' + path)
     .map(address =>
-      address === NATIVE_ASSET_CONTRACT_ADDRESS_0X
+      address === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
         ? nativeAsset
         : findTokenByContractAddress(address, tokensList) ||
         // token not found
@@ -1681,12 +1681,13 @@ export const parseTransactionWithPrices = ({
   return {
     token,
     sellToken,
+    sellAmountWei,
     weiTransferredValue,
     value: normalizedTransferredValue,
     ...txBase,
     ...getTransactionFiatValues({
       gasFee,
-      sellAmountWei: sellAmountWei?.value?.toString(),
+      sellAmountWei: sellAmountWei?.format(),
       networkSpotPrice,
       normalizedTransferredValue,
       spotPriceRegistry,

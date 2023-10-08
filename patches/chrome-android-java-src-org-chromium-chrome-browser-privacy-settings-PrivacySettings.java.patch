@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index 242926889212725eabff3db27caa8bb4827f7421..9186f3601f548b7288c1e3ec1e4b54f6902be07c 100644
+index a6013d2f2e272dd03a52338d228820ea80ae41bf..1be145a65be30c266f5d11bfe132f753fa9011c4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 @@ -60,7 +60,7 @@ import org.chromium.ui.text.SpanApplier;

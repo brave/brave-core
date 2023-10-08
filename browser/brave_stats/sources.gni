@@ -4,8 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 brave_browser_brave_stats_updater_sources = [
-  "//brave/browser/brave_stats/brave_stats_tab_helper.cc",
-  "//brave/browser/brave_stats/brave_stats_tab_helper.h",
   "//brave/browser/brave_stats/brave_stats_updater.cc",
   "//brave/browser/brave_stats/brave_stats_updater.h",
   "//brave/browser/brave_stats/brave_stats_updater_params.cc",
@@ -32,8 +30,6 @@ brave_browser_brave_stats_updater_deps = [
   "//chrome/browser/ui",
   "//chrome/common",
   "//components/prefs",
-  "//content/public/browser",
   "//net",
   "//services/network/public/cpp",
-  "//ui/base",
 ]

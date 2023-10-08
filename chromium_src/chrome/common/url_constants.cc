@@ -196,6 +196,10 @@ const char kSafeBrowsingHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "15222663599629-Safe-Browsing-in-Brave";
 
+const char kSafeBrowsingHelpCenterUpdatedURL[] = "https://support.brave.com/";
+
+const char kSafeBrowsingInChromeHelpCenterURL[] = "https://support.brave.com/";
+
 const char kSafetyTipHelpCenterURL[] =
     "https://support.brave.com/hc/en-us/articles/17550072876045-Lookalike-URLs";
 

@@ -12,6 +12,13 @@
   padding: 16px;
   background-color: var(--leo-color-page-background);
   margin-top: 16px;
+  position: relative;
+}
+
+@media (pointer: fine) {
+  .turn:not(:hover) > .turnActions {
+    display: none;
+  }
 }
 
 .turnAI {
@@ -78,4 +85,19 @@
   margin: 0;
   white-space: pre-wrap;
   padding-top: 5px;
+}
+
+.feedbackFormPortal {
+  padding: 0 16px;
+}
+
+.turnActions {
+  position: absolute;
+  inset: 16px 16px 0 auto;
+  z-index: 3;
+}
+
+.turnMenuButton {
+  position: sticky;
+  top: 16px;
 }

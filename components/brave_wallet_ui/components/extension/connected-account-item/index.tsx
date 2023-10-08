@@ -7,6 +7,7 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 
 // Actions
+import { PanelActions } from '../../../panel/actions'
 import { WalletActions } from '../../../common/actions'
 
 // Types
@@ -83,7 +84,8 @@ export const ConnectedAccountItem = (props: Props) => {
 
   // methods
   const onClickConnect = React.useCallback(() => {
-    dispatch(WalletActions.addSitePermission({ accountId: account.accountId }))
+    dispatch(PanelActions
+      .requestSitePermission({ accountId: account.accountId }))
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }

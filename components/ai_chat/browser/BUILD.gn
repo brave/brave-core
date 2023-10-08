@@ -13,33 +13,26 @@ if (is_official_build) {
 
 static_library("browser") {
   sources = [
-    "ai_chat_metrics.cc",
-    "ai_chat_metrics.h",
+    "ai_chat_feedback_api.cc",
+    "ai_chat_feedback_api.h",
     "ai_chat_tab_helper.cc",
     "ai_chat_tab_helper.h",
-    "constants.cc",
-    "constants.h",
-    "engine/engine_consumer.h",
-    "engine/engine_consumer_claude.cc",
-    "engine/engine_consumer_claude.h",
-    "engine/engine_consumer_llama.cc",
-    "engine/engine_consumer_llama.h",
-    "engine/remote_completion_client.cc",
-    "engine/remote_completion_client.h",
     "page_content_fetcher.cc",
     "page_content_fetcher.h",
   ]
 
   deps = [
     "//base",
+    "//brave/brave_domains",
     "//brave/components/ai_chat/common",
     "//brave/components/ai_chat/common/buildflags",
     "//brave/components/ai_chat/common/mojom",
+    "//brave/components/ai_chat/core",
     "//brave/components/api_request_helper",
+    "//brave/components/brave_stats/browser",
     "//brave/components/constants",
-    "//brave/components/p3a_utils",
+    "//brave/components/l10n/common",
     "//brave/components/resources:strings_grit",
-    "//brave/components/time_period_storage",
     "//components/favicon/content",
     "//components/favicon/core",
     "//components/prefs",
@@ -49,7 +42,6 @@ static_library("browser") {
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
-    "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//url",
   ]

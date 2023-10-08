@@ -109,12 +109,12 @@ export const FilterDropdownSection = (props: Props) => {
         </div>
         {dropdownOptions.map((option) =>
 
-          <dropdown-option
+          <leo-option
             value={option.id}
             key={option.id}
           >
             {getLocale(option.name)}
-          </dropdown-option>
+          </leo-option>
         )}
       </DropdownFilter>
     </Row>

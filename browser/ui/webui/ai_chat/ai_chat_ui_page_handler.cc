@@ -6,19 +6,25 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 #include <vector>
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/ai_chat/browser/constants.h"
+#include "brave/common/brave_channel_info.h"
+#include "brave/components/ai_chat/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/common/pref_names.h"
+#include "brave/components/ai_chat/core/constants.h"
+#include "brave/components/ai_chat/core/models.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -43,14 +49,17 @@ AIChatUIPageHandler::AIChatUIPageHandler(
       receiver_(this, std::move(receiver)) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_contents is nullptr in that case
-  if (chat_context_web_contents != nullptr) {
+  const bool is_standalone = chat_context_web_contents == nullptr;
+  if (!is_standalone) {
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
-    bool is_visible = (chat_context_web_contents->GetVisibility() ==
-                       content::Visibility::VISIBLE)
-                          ? true
-                          : false;
+    // Report visibility of AI Chat UI to the Conversation, so that
+    // automatic actions are only performed when neccessary.
+    bool is_visible =
+        (owner_web_contents->GetVisibility() == content::Visibility::VISIBLE)
+            ? true
+            : false;
     active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
   } else {
     // TODO(petemill): Enable conversation without the TabHelper. Conversation
@@ -62,6 +71,12 @@ AIChatUIPageHandler::AIChatUIPageHandler(
 
   favicon_service_ = FaviconServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS);
+
+  feedback_api_ = std::make_unique<AIChatFeedbackAPI>(
+      owner_web_contents->GetBrowserContext()
+          ->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      brave::GetChannelName());
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -69,6 +84,24 @@ AIChatUIPageHandler::~AIChatUIPageHandler() = default;
 void AIChatUIPageHandler::SetClientPage(
     mojo::PendingRemote<ai_chat::mojom::ChatUIPage> page) {
   page_.Bind(std::move(page));
+}
+
+void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
+  std::vector<mojom::ModelPtr> models(kAllModelKeysDisplayOrder.size());
+  // Ensure we return only in intended display order
+  std::transform(kAllModelKeysDisplayOrder.cbegin(),
+                 kAllModelKeysDisplayOrder.cend(), models.begin(),
+                 [](auto& model_key) {
+                   auto model_match = kAllModels.find(model_key);
+                   DCHECK(model_match != kAllModels.end());
+                   return model_match->second.Clone();
+                 });
+  std::move(callback).Run(std::move(models),
+                          active_chat_tab_helper_->GetCurrentModel().Clone());
+}
+
+void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {
+  active_chat_tab_helper_->ChangelModel(model_key);
 }
 
 void AIChatUIPageHandler::SubmitHumanConversationEntry(
@@ -143,14 +176,13 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
                                  ui::PAGE_TRANSITION_LINK, false});
 }
 
-void AIChatUIPageHandler::OpenBraveLeoWiki() {
+void AIChatUIPageHandler::OpenURL(const GURL& url) {
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
-  contents_to_navigate->OpenURL(
-      {GURL("https://github.com/brave/brave-browser/wiki/Brave-Leo"),
-       content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-       ui::PAGE_TRANSITION_LINK, false});
+  contents_to_navigate->OpenURL({url, content::Referrer(),
+                                 WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                 ui::PAGE_TRANSITION_LINK, false});
 }
 
 void AIChatUIPageHandler::DisconnectPageContents() {
@@ -178,6 +210,73 @@ void AIChatUIPageHandler::GetAPIResponseError(
     return;
   }
   std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
+}
+
+void AIChatUIPageHandler::GetHasUserDismissedPremiumPrompt(
+    GetHasUserDismissedPremiumPromptCallback callback) {
+  std::move(callback).Run(profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kUserDismissedPremiumPrompt));
+}
+
+void AIChatUIPageHandler::SetHasUserDismissedPremiumPrompt(bool has_dismissed) {
+  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kUserDismissedPremiumPrompt,
+                                   has_dismissed);
+}
+
+void AIChatUIPageHandler::RateMessage(bool is_liked,
+                                      uint32_t turn_id,
+                                      RateMessageCallback callback) {
+  auto on_complete = base::BindOnce(
+      [](RateMessageCallback callback, APIRequestResult result) {
+        if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
+          std::string id = *result.value_body().GetDict().FindString("id");
+          std::move(callback).Run(id);
+          return;
+        }
+        std::move(callback).Run(absl::nullopt);
+      },
+      std::move(callback));
+
+  if (active_chat_tab_helper_) {
+    const std::vector<mojom::ConversationTurn>& history =
+        active_chat_tab_helper_->GetConversationHistory();
+
+    // TODO(petemill): Something more robust than relying on message index,
+    // and probably a message uuid.
+    uint32_t current_turn_id = turn_id + 1;
+
+    if (current_turn_id <= history.size()) {
+      base::span<const mojom::ConversationTurn> history_slice =
+          base::make_span(history).first(current_turn_id);
+
+      feedback_api_->SendRating(is_liked, history_slice,
+                                active_chat_tab_helper_->GetCurrentModel().name,
+                                std::move(on_complete));
+
+      return;
+    }
+  }
+
+  std::move(callback).Run(absl::nullopt);
+}
+
+void AIChatUIPageHandler::SendFeedback(const std::string& category,
+                                       const std::string& feedback,
+                                       const std::string& rating_id,
+                                       SendFeedbackCallback callback) {
+  auto on_complete = base::BindOnce(
+      [](SendFeedbackCallback callback, APIRequestResult result) {
+        if (result.Is2XXResponseCode()) {
+          std::move(callback).Run(true);
+          return;
+        }
+
+        std::move(callback).Run(false);
+      },
+      std::move(callback));
+
+  feedback_api_->SendFeedback(category, feedback, rating_id,
+                              std::move(on_complete));
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {

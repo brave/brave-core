@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabWindowManager;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.ui.base.WindowAndroid;
@@ -38,7 +39,19 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.function.BooleanSupplier;
 
 public class BraveLocationBarCoordinator extends LocationBarCoordinator {
+    /*
+     * {@link LocationBarCoordinator#mLocationBarMediator} is private so we add a private
+     * `mLocationBarMediator` here so this code compiles and then remove it and make {@link
+     * LocationBarCoordinator#mLocationBarMediator} protected via asm.
+     */
     private LocationBarMediator mLocationBarMediator;
+    /*
+     * {@link LocationBarCoordinator#mUrlBar} is private so we add a private
+     * `mUrlBar` here so this code compiles and then remove it and make {@link
+     * LocationBarCoordinator#mUrlBar} protected via asm.
+     */
+    private View mUrlBar;
+
     private View mQRButton;
 
     public BraveLocationBarCoordinator(View locationBarLayout, View autocompleteAnchorView,
@@ -66,7 +79,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @Nullable BackPressManager backPressManager,
             @NonNull OmniboxSuggestionsDropdownScrollListener
                     omniboxSuggestionsDropdownScrollListener,
-            @Nullable OpenHistoryClustersDelegate openHistoryClustersDelegate) {
+            @Nullable OpenHistoryClustersDelegate openHistoryClustersDelegate,
+            @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
         super(locationBarLayout, autocompleteAnchorView, profileObservableSupplier,
                 privacyPreferencesManager, locationBarDataProvider, actionModeCallback,
                 windowDelegate, windowAndroid, activityTabSupplier, modalDialogManagerSupplier,
@@ -76,7 +90,12 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier,
                 merchantTrustSignalsCoordinatorSupplier, omniboxActionDelegate,
                 browserControlsVisibilityDelegate, reportExceptionCallback, backPressManager,
-                omniboxSuggestionsDropdownScrollListener, openHistoryClustersDelegate);
+                omniboxSuggestionsDropdownScrollListener, openHistoryClustersDelegate,
+                tabModelSelectorSupplier);
+
+        if (mUrlBar != null) {
+            ((UrlBar) mUrlBar).setSelectAllOnFocus(true);
+        }
 
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {
             mQRButton = locationBarLayout.findViewById(R.id.qr_button);

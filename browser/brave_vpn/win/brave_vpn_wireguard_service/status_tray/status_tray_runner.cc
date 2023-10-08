@@ -25,6 +25,7 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/status_icon.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/status_tray.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
@@ -150,7 +151,10 @@ void StatusTrayRunner::SetupStatusIcon() {
 
 void StatusTrayRunner::ExecuteCommand(int command_id, int event_flags) {
   switch (command_id) {
-    case IDC_BRAVE_VPN_TRAY_EXIT_ICON:
+    case IDC_BRAVE_VPN_TRAY_EXIT:
+      SignalExit();
+      break;
+    case IDC_BRAVE_VPN_TRAY_HIDE_ICON:
       EnableVPNTrayIcon(false);
       SignalExit();
       break;
@@ -192,7 +196,7 @@ void StatusTrayRunner::OnMenuWillShow(ui::SimpleMenuModel* source) {
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM));
   source->AddSeparator(ui::NORMAL_SEPARATOR);
   source->AddItem(
-      IDC_BRAVE_VPN_TRAY_EXIT_ICON,
+      IDC_BRAVE_VPN_TRAY_HIDE_ICON,
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM));
 }
 
@@ -259,9 +263,14 @@ void StatusTrayRunner::OnRasConnectionStateChanged() {
 
 void StatusTrayRunner::OnWireguardServiceStateChanged(int mask) {
   UpdateConnectionState();
-  SubscribeForWireguardNotifications(
-      IsVPNConnected() ? GetBraveVpnWireguardTunnelServiceName()
-                       : GetBraveVpnWireguardServiceName());
+  auto service_name = IsVPNConnected() ? GetBraveVpnWireguardTunnelServiceName()
+                                       : GetBraveVpnWireguardServiceName();
+  if (!brave_vpn::IsWindowsServiceRunning(service_name)) {
+    StopWireguardObserver();
+    return;
+  }
+
+  SubscribeForWireguardNotifications(service_name);
 }
 
 void StatusTrayRunner::OnDisconnected(bool success) {
@@ -325,7 +334,7 @@ HRESULT StatusTrayRunner::Run() {
     return S_OK;
   }
 
-  if (StatusTray::IconWindowExists()) {
+  if (brave_vpn::IsBraveVpnTrayIconRunning()) {
     VLOG(1) << "Tray icon is already visible.";
     return S_OK;
   }

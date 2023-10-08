@@ -19,7 +19,8 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kUserActivityFeature);
 
-bool IsUserActivityFeatureEnabled();
+constexpr base::FeatureParam<int> kMaximumUserActivityEvents{
+    &kUserActivityFeature, "maximum_events", 3600};
 
 constexpr base::FeatureParam<std::string> kUserActivityTriggers{
     &kUserActivityFeature, "triggers",

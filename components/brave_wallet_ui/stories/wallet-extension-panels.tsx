@@ -526,7 +526,8 @@ export const _SignData = () => {
         message: 'Sign below to authenticate with CryptoKitties.',
         domain: '',
         domainHash: undefined,
-        primaryHash: undefined
+        primaryHash: undefined,
+        meta: undefined
       },
       ethSiweData: undefined,
       solanaSignData: undefined

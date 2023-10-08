@@ -12,38 +12,22 @@
 namespace brave_ads::locale {
 
 TEST(BraveAdsCountryCodeUtilTest, IsCountryCodeMemberOfAnonymitySet) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IsCountryCodeMemberOfAnonymitySet("US"));
 }
 
 TEST(BraveAdsCountryCodeUtilTest, IsCountryCodeNotMemberOfAnonymitySet) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsCountryCodeMemberOfAnonymitySet("XX"));
 }
 
 TEST(BraveAdsCountryCodeUtilTest, ShouldClassifyCountryCodeAsOther) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(ShouldClassifyCountryCodeAsOther("CX"));
 }
 
 TEST(BraveAdsCountryCodeUtilTest, ShouldNotClassifyCountryCodeAsOther) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ShouldClassifyCountryCodeAsOther("XX"));
 }
 

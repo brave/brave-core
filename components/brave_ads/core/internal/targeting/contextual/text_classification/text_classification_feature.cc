@@ -3,16 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
 BASE_FEATURE(kTextClassificationFeature,
              "TextClassification",
              base::FEATURE_ENABLED_BY_DEFAULT);
-
-bool IsTextClassificationFeatureEnabled() {
-  return base::FeatureList::IsEnabled(kTextClassificationFeature);
-}
 
 }  // namespace brave_ads

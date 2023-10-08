@@ -16,15 +16,9 @@ namespace brave_ads {
 class BraveAdsTimeConstraintUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespectIfNoHistory) {
-  // Arrange
-  const std::vector<base::Time> history;
-
-  // Act
-  const bool does_respect = DoesHistoryRespectRollingTimeConstraint(
-      history, /*time_constraint*/ base::Days(1), /*cap*/ 1);
-
-  // Assert
-  EXPECT_TRUE(does_respect);
+  // Act & Assert
+  EXPECT_TRUE(DoesHistoryRespectRollingTimeConstraint(
+      /*history=*/{}, /*time_constraint=*/base::Days(1), /*cap=*/1));
 }
 
 TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespect) {
@@ -34,12 +28,9 @@ TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespect) {
 
   AdvanceClockBy(base::Days(1));
 
-  // Act
-  const bool does_respect = DoesHistoryRespectRollingTimeConstraint(
-      history, /*time_constraint*/ base::Days(1), /*cap*/ 1);
-
-  // Assert
-  EXPECT_TRUE(does_respect);
+  // Act & Assert
+  EXPECT_TRUE(DoesHistoryRespectRollingTimeConstraint(
+      history, /*time_constraint=*/base::Days(1), /*cap=*/1));
 }
 
 TEST_F(BraveAdsTimeConstraintUtilTest, DoesNotRespect) {
@@ -47,12 +38,9 @@ TEST_F(BraveAdsTimeConstraintUtilTest, DoesNotRespect) {
   std::vector<base::Time> history;
   history.push_back(Now());
 
-  // Act
-  const bool does_respect = DoesHistoryRespectRollingTimeConstraint(
-      history, /*time_constraint*/ base::Days(1), /*cap*/ 1);
-
-  // Assert
-  EXPECT_FALSE(does_respect);
+  // Act & Assert
+  EXPECT_FALSE(DoesHistoryRespectRollingTimeConstraint(
+      history, /*time_constraint=*/base::Days(1), /*cap=*/1));
 }
 
 }  // namespace brave_ads

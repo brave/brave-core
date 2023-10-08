@@ -20,8 +20,7 @@ TEST(BraveAdsTokenGeneratorTest, Generate) {
   const std::vector<cbr::Token> tokens = token_generator.Generate(5);
 
   // Assert
-  const size_t count = tokens.size();
-  EXPECT_EQ(5U, count);
+  EXPECT_EQ(5U, tokens.size());
 }
 
 TEST(BraveAdsTokenGeneratorTest, GenerateZero) {

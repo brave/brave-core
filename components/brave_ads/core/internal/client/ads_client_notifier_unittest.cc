@@ -40,6 +40,7 @@ void Notify(const AdsClientNotifier& queued_notifier) {
   queued_notifier.NotifyPrefDidChange(kPrefPath);
   queued_notifier.NotifyDidUpdateResourceComponent(kManifestVersion,
                                                    kResourceId);
+  queued_notifier.NotifyDidUnregisterResourceComponent(kResourceId);
   queued_notifier.NotifyRewardsWalletDidUpdate(kPaymentId, kRecoverySeed);
   queued_notifier.NotifyTabTextContentDidChange(
       kTabId, {GURL(kRedirectChainUrl)}, kText);
@@ -69,6 +70,8 @@ void ExpectNotifierCalls(AdsClientNotifierObserverMock& observer,
       .Times(expected_calls_count);
   EXPECT_CALL(observer,
               OnNotifyDidUpdateResourceComponent(kManifestVersion, kResourceId))
+      .Times(expected_calls_count);
+  EXPECT_CALL(observer, OnNotifyDidUnregisterResourceComponent(kResourceId))
       .Times(expected_calls_count);
   EXPECT_CALL(observer,
               OnNotifyRewardsWalletDidUpdate(kPaymentId, kRecoverySeed))
@@ -119,31 +122,25 @@ TEST(BraveAdsAdsClientNotifierTest, FireQueuedNotifications) {
   // Arrange
   AdsClientNotifier queued_notifier;
   queued_notifier.set_should_queue_notifications_for_testing(
-      /*should_queue_notifications*/ true);
+      /*should_queue_notifications=*/true);
 
   ::testing::StrictMock<AdsClientNotifierObserverMock> observer;
   queued_notifier.AddObserver(&observer);
 
-  // Act
-  ExpectNotifierCalls(observer, /*expected_calls_count*/ 0);
+  // Act & Assert
+  ExpectNotifierCalls(observer, /*expected_calls_count=*/0);
   Notify(queued_notifier);
+  EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&observer));
 
-  // Assert
-  ::testing::Mock::VerifyAndClearExpectations(&observer);
-
-  // Act
-  ExpectNotifierCalls(observer, /*expected_calls_count*/ 1);
+  // Act & Assert
+  ExpectNotifierCalls(observer, /*expected_calls_count=*/1);
   queued_notifier.NotifyPendingObservers();
+  EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&observer));
 
-  // Assert
-  ::testing::Mock::VerifyAndClearExpectations(&observer);
-
-  // Act
-  ExpectNotifierCalls(observer, /*expected_calls_count*/ 1);
+  // Act & Assert
+  ExpectNotifierCalls(observer, /*expected_calls_count=*/1);
   Notify(queued_notifier);
-
-  // Assert
-  ::testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&observer));
 
   queued_notifier.RemoveObserver(&observer);
 }
@@ -151,37 +148,32 @@ TEST(BraveAdsAdsClientNotifierTest, FireQueuedNotifications) {
 TEST(BraveAdsAdsClientNotifierTest, NotificationsNotFiredIfWereQueued) {
   // Arrange
   ::testing::StrictMock<AdsClientNotifierObserverMock> observer;
-  ExpectNotifierCalls(observer, /*expected_calls_count*/ 0);
+  ExpectNotifierCalls(observer, /*expected_calls_count=*/0);
 
-  // Act
-  {
-    AdsClientNotifier queued_notifier;
-    queued_notifier.set_should_queue_notifications_for_testing(
-        /*should_queue_notifications*/ true);
+  AdsClientNotifier queued_notifier;
+  queued_notifier.set_should_queue_notifications_for_testing(
+      /*should_queue_notifications=*/true);
 
-    queued_notifier.AddObserver(&observer);
-    Notify(queued_notifier);
-    queued_notifier.RemoveObserver(&observer);
-  }
+  queued_notifier.AddObserver(&observer);
 
-  // Assert
+  // Act & Assert
+  Notify(queued_notifier);
+  queued_notifier.RemoveObserver(&observer);
 }
 
 TEST(BraveAdsAdsClientNotifierTest, ShouldNotQueueNotifications) {
   // Arrange
   ::testing::StrictMock<AdsClientNotifierObserverMock> observer;
-  ExpectNotifierCalls(observer, /*expected_calls_count*/ 1);
+  ExpectNotifierCalls(observer, /*expected_calls_count=*/1);
 
   AdsClientNotifier queued_notifier;
   queued_notifier.set_should_queue_notifications_for_testing(
-      /*should_queue_notifications*/ false);
+      /*should_queue_notifications=*/false);
   queued_notifier.AddObserver(&observer);
 
-  // Act
+  // Act & Assert
   Notify(queued_notifier);
   queued_notifier.RemoveObserver(&observer);
-
-  // Assert
 }
 
 }  // namespace brave_ads

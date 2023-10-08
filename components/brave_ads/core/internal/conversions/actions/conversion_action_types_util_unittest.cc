@@ -13,66 +13,42 @@
 namespace brave_ads {
 
 TEST(BraveAdsConversionActionTypesUtilTest, ToViewThroughConversionActionType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(ConversionActionType::kViewThrough,
             ToConversionActionType(ConfirmationType::kViewed));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,
      ToClickThroughConversionActionType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(ConversionActionType::kClickThrough,
             ToConversionActionType(ConfirmationType::kClicked));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,
      StringToViewThroughConversionActionType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(ConversionActionType::kViewThrough,
             StringToConversionActionType("view"));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,
      StringToClickThroughConversionActionType) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(ConversionActionType::kClickThrough,
             StringToConversionActionType("click"));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,
      ViewThroughConversionActionTypeToString) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("view",
             ConversionActionTypeToString(ConversionActionType::kViewThrough));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,
      ClickThroughConversionActionTypeToString) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("click",
             ConversionActionTypeToString(ConversionActionType::kClickThrough));
 }

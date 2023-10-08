@@ -10,7 +10,6 @@
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
@@ -18,22 +17,6 @@
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 
 namespace brave_ads {
-
-size_t GetTransactionCountForTesting() {
-  size_t count = 0;
-
-  GetTransactionsForDateRange(
-      DistantPast(), DistantFuture(),
-      base::BindOnce(
-          [](size_t* count, const bool success,
-             const TransactionList& transactions) mutable {
-            CHECK(success);
-            *count = transactions.size();
-          },
-          &count));
-
-  return count;
-}
 
 void SaveTransactionsForTesting(const TransactionList& transactions) {
   database::table::Transactions database_table;
@@ -70,7 +53,7 @@ TransactionInfo BuildUnreconciledTransactionForTesting(
     const ConfirmationType& confirmation_type,
     const bool should_use_random_uuids) {
   return BuildTransactionForTesting(
-      value, confirmation_type, /*reconciled_at*/ {}, should_use_random_uuids);
+      value, confirmation_type, /*reconciled_at=*/{}, should_use_random_uuids);
 }
 
 }  // namespace brave_ads

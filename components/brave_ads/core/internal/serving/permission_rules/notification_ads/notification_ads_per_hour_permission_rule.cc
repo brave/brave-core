@@ -24,7 +24,7 @@ constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 bool DoesRespectCap(const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
       history, kTimeConstraint,
-      /*cap*/ GetMaximumNotificationAdsPerHour());
+      /*cap=*/GetMaximumNotificationAdsPerHour());
 }
 
 }  // namespace

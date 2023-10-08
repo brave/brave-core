@@ -14,25 +14,16 @@
 namespace brave_ads {
 
 TEST(BraveAdsWalletUtilTest, ToWallet) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   WalletInfo expected_wallet;
   expected_wallet.payment_id = kWalletPaymentId;
   expected_wallet.public_key = kWalletPublicKey;
   expected_wallet.secret_key = kWalletSecretKey;
-
   EXPECT_EQ(expected_wallet, ToWallet(kWalletPaymentId, kWalletRecoverySeed));
 }
 
 TEST(BraveAdsWalletUtilTest, ToInvalidWallet) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(ToWallet(kWalletPaymentId, kInvalidWalletRecoverySeed));
 }
 

@@ -12,8 +12,8 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/ai_chat/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/engine/engine_consumer.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_handle.h"
@@ -61,6 +61,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
+  void ChangelModel(const std::string& model_key);
+  const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurn>& GetConversationHistory();
   // Whether the UI for this conversation is open or not. Determines
   // whether content is retrieved and queries are sent for the conversation
@@ -92,10 +94,12 @@ class AIChatTabHelper : public content::WebContentsObserver,
   AIChatTabHelper(content::WebContents* web_contents,
                   AIChatMetrics* ai_chat_metrics);
 
+  void InitEngine();
   bool HasUserOptedIn();
   void OnUserOptedIn();
   void OnPermissionChangedAutoGenerateQuestions();
   std::string GetConversationHistoryString();
+  bool MaybePopPendingRequests();
   void MaybeGeneratePageText();
   void MaybeGenerateQuestions();
   void CleanUp();
@@ -135,6 +139,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   base::ObserverList<Observer> observers_;
 
   // TODO(nullhook): Abstract the data model
+  std::string model_key_;
   std::vector<mojom::ConversationTurn> chat_history_;
   std::string article_text_;
   bool is_conversation_active_ = false;
@@ -151,6 +156,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   mojom::APIError current_error_ = mojom::APIError::None;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+
+  std::unique_ptr<mojom::ConversationTurn> pending_request_;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

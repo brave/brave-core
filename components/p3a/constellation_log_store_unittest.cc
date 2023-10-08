@@ -73,16 +73,11 @@ class P3AConstellationLogStoreTest : public testing::Test {
   TestingPrefServiceSimple local_state;
 };
 
-TEST_F(P3AConstellationLogStoreTest, CurrentEpochNoStage) {
+TEST_F(P3AConstellationLogStoreTest, CurrentEpochStaging) {
   log_store->SetCurrentEpoch(1);
 
-  ASSERT_FALSE(log_store->has_unsent_logs());
-  ASSERT_FALSE(log_store->has_staged_log());
-
-  UpdateSomeMessages(1, 5);
-
-  ASSERT_FALSE(log_store->has_unsent_logs());
-  ASSERT_FALSE(log_store->has_staged_log());
+  UpdateSomeMessages(1, 8);
+  ConsumeMessages(8);
 }
 
 TEST_F(P3AConstellationLogStoreTest, PreviousEpochStaging) {
@@ -113,7 +108,7 @@ TEST_F(P3AConstellationLogStoreTest, PreviousEpochsStaging) {
   UpdateSomeMessages(4, 10);
 
   // Should consume messages from first three epochs
-  ConsumeMessages(14);
+  ConsumeMessages(24);
 }
 
 TEST_F(P3AConstellationLogStoreTest, UpdatePreviousEpochMessage) {

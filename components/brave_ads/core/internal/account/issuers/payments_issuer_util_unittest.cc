@@ -7,7 +7,7 @@
 
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_constants.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
@@ -22,18 +22,16 @@ TEST_F(BraveAdsPaymentsIssuerUtilTest, IsValid) {
   IssuerInfo issuer;
   issuer.type = IssuerType::kPayments;
 
-  for (int i = 0; i < kMaximumIssuerPublicKeys; i++) {
+  for (int i = 0; i < kMaximumIssuerPublicKeys.Get(); ++i) {
     issuer.public_keys.insert(
-        {/*public_key*/ base::Uuid::GenerateRandomV4().AsLowercaseString(),
-         /*associated_value*/ 0.1});
+        {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
+         /*associated_value=*/0.1});
   }
 
   IssuersInfo issuers;
   issuers.issuers.push_back(issuer);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(IsPaymentsIssuerValid(issuers));
 }
 
@@ -42,18 +40,16 @@ TEST_F(BraveAdsPaymentsIssuerUtilTest, IsInvalid) {
   IssuerInfo issuer;
   issuer.type = IssuerType::kPayments;
 
-  for (int i = 0; i < kMaximumIssuerPublicKeys + 1; i++) {
+  for (int i = 0; i < kMaximumIssuerPublicKeys.Get() + 1; ++i) {
     issuer.public_keys.insert(
-        {/*public_key*/ base::Uuid::GenerateRandomV4().AsLowercaseString(),
-         /*associated_value*/ 0.1});
+        {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
+         /*associated_value=*/0.1});
   }
 
   IssuersInfo issuers;
   issuers.issuers.push_back(issuer);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(IsPaymentsIssuerValid(issuers));
 }
 

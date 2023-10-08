@@ -18,13 +18,13 @@ namespace brave_ads {
 class BraveAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
+    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
   }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
-         {{net::HTTP_OK, /*response_body*/ "/catalog.json"}}}};
+         {{net::HTTP_OK, /*response_body=*/"/catalog.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
@@ -32,11 +32,7 @@ class BraveAdsCatalogPermissionRuleIntegrationTest : public UnitTestBase {
 };
 
 TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest, ShouldAllow) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -45,9 +41,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   // Arrange
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -56,9 +50,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   // Arrange
   AdvanceClockBy(base::Days(1));
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 
@@ -67,9 +59,7 @@ TEST_F(BraveAdsCatalogPermissionRuleIntegrationTest,
   // Arrange
   SetCatalogVersion(0);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(permission_rule_.ShouldAllow().has_value());
 }
 

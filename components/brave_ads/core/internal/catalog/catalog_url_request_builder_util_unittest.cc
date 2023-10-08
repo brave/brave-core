@@ -12,11 +12,7 @@
 namespace brave_ads {
 
 TEST(BraveAdsCatalogUrlRequestBuilderUtilTest, GetPath) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ("/v9/catalog", BuildCatalogUrlPath());
 }
 

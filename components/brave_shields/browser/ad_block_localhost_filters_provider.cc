@@ -16,6 +16,11 @@ namespace brave_shields {
 
 namespace {
 
+void AddDATBufferToFilterSet(DATFileDataBuffer buffer,
+                             rust::Box<adblock::FilterSet>* filter_set) {
+  (*filter_set)->add_filter_list(buffer);
+}
+
 const char kLocalhostBadfilters[] = R"(
 ||0.0.0.0^$third-party,domain=~[::]|~[::ffff:0:0],badfilter
 ||[::]^$third-party,domain=~0.0.0.0|~[::ffff:0:0],badfilter
@@ -38,17 +43,18 @@ std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
 }
 
 void AdBlockLocalhostFiltersProvider::LoadFilterSet(
-    rust::Box<adblock::FilterSet>* filter_set,
-    base::OnceCallback<void()> cb) {
+    base::OnceCallback<
+        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto buffer = std::vector<unsigned char>(std::begin(kLocalhostBadfilters),
                                            std::end(kLocalhostBadfilters));
-  (*filter_set)->add_filter_list(buffer);
 
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(cb)));
+      FROM_HERE,
+      base::BindOnce(std::move(cb),
+                     base::BindOnce(&AddDATBufferToFilterSet, buffer)));
 }
 
 void AdBlockLocalhostFiltersProvider::AddObserver(

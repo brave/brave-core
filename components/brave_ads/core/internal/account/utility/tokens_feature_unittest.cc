@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
 
-#include <vector>
-
 #include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -14,93 +12,65 @@
 
 namespace brave_ads {
 
+TEST(BraveAdsTokensFeatureTest, IsEnabled) {
+  // Act & Assert
+  EXPECT_TRUE(base::FeatureList::IsEnabled(kAccountTokensFeature));
+}
+
+TEST(BraveAdsTokensFeatureTest, IsDisabled) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(kAccountTokensFeature);
+
+  // Act & Assert
+  EXPECT_FALSE(base::FeatureList::IsEnabled(kAccountTokensFeature));
+}
+
 TEST(BraveAdsTokensFeatureTest, MinConfirmationTokens) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["min_confirmation_tokens"] = "7";
-  enabled_features.emplace_back(kAccountTokensFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountTokensFeature, {{"minimum_confirmation_tokens", "7"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(7, kMinConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMinConfirmationTokens) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(20, kMinConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMinConfirmationTokensWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAccountTokensFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kAccountTokensFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(20, kMinConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, MaxConfirmationTokens) {
   // Arrange
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams params;
-  params["max_confirmation_tokens"] = "21";
-  enabled_features.emplace_back(kAccountTokensFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountTokensFeature, {{"maximum_confirmation_tokens", "21"}});
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(21, kMaxConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMaxConfirmationTokens) {
-  // Arrange
-
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(50, kMaxConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMaxConfirmationTokensWhenDisabled) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAccountTokensFeature);
-
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
+  scoped_feature_list.InitAndDisableFeature(kAccountTokensFeature);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(50, kMaxConfirmationTokens.Get());
 }
 

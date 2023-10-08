@@ -116,7 +116,7 @@ std::string GeoTargets::BuildInsertOrUpdateSql(
   return base::ReplaceStringPlaceholders(
       "INSERT OR REPLACE INTO $1 (campaign_id, geo_target) VALUES $2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 2, binded_parameters_count)},
+                           /*parameters_count=*/2, binded_parameters_count)},
       nullptr);
 }
 

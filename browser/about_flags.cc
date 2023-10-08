@@ -7,6 +7,7 @@
 
 #include <initializer_list>
 
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -40,6 +41,7 @@
 #include "components/flags_ui/feature_entry.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
+#include "components/omnibox/common/omnibox_features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -92,6 +94,14 @@
   })
 #if BUILDFLAG(IS_WIN)
 
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                  \
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      kBraveVPNWireguardFeatureInternalName,                                 \
+      "Enable experimental WireGuard Brave VPN service",                     \
+      "Experimental WireGuard VPN support. Deprecated.",                     \
+      kOsWin,                                                                \
+      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNUseWireguardService), \
+  })
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES                                    \
   EXPAND_FEATURE_ENTRIES({                                               \
       kBraveVPNDnsFeatureInternalName,                                   \
@@ -101,13 +111,26 @@
       kOsWin,                                                            \
       FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection),   \
   })
-#else
+#elif BUILDFLAG(IS_MAC)
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
-#endif
-#else
+
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                    \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      kBraveVPNWireguardForOSXFeatureInternalName,                             \
+      "Enable experimental WireGuard Brave VPN for OSX",                       \
+      "Experimental WireGuard VPN support.",                                   \
+      kOsMac,                                                                  \
+      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNEnableWireguardForOSX), \
+  })
+#else  // BUILDFLAG(IS_MAC)
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
+#endif  // BUILDFLAG(IS_WIN)
+#else   // BUILDFLAG(ENABLE_BRAVE_VPN)
 #define BRAVE_VPN_FEATURE_ENTRIES
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
-#endif
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \
   EXPAND_FEATURE_ENTRIES({                              \
@@ -361,16 +384,24 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_SHARED_PINNED_TABS                                  \
-  EXPAND_FEATURE_ENTRIES({                                        \
-      "brave-shared-pinned-tabs",                                 \
-      "Shared pinned tab",                                        \
-      "Pinned tabs are shared across windows",                    \
-      kOsWin | kOsMac | kOsLinux,                                 \
-      FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs), \
-  })
+#define BRAVE_TABS_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES(                                                 \
+      {                                                                   \
+          "brave-shared-pinned-tabs",                                     \
+          "Shared pinned tab",                                            \
+          "Pinned tabs are shared across windows",                        \
+          kOsWin | kOsMac | kOsLinux,                                     \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs),     \
+      },                                                                  \
+      {                                                                   \
+          "brave-horizontal-tabs-update",                                 \
+          "Updated horizontal tabs design",                               \
+          "Updates the look and feel or horizontal tabs",                 \
+          kOsWin | kOsMac | kOsLinux,                                     \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveHorizontalTabsUpdate), \
+      })
 #else
-#define BRAVE_SHARED_PINNED_TABS
+#define BRAVE_TABS_FEATURE_ENTRIES
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -394,6 +425,16 @@
 #define BRAVE_AI_CHAT
 #define BRAVE_AI_CHAT_HISTORY
 #endif
+
+#define BRAVE_OMNIBOX_FEATURES                                              \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-omnibox-tab-switch-by-default",                                \
+      "Brave Tab Switch by Default",                                        \
+      "Prefer switching to already open tabs, rather than navigating in a " \
+      "new tab",                                                            \
+      kOsWin | kOsLinux | kOsMac,                                           \
+      FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),              \
+  })
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
@@ -877,6 +918,7 @@
   BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                         \
   BRAVE_VPN_FEATURE_ENTRIES                                                    \
   BRAVE_VPN_DNS_FEATURE_ENTRIES                                                \
+  BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
@@ -887,9 +929,10 @@
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
-  BRAVE_SHARED_PINNED_TABS                                                     \
+  BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
+  BRAVE_OMNIBOX_FEATURES                                                       \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {
@@ -905,6 +948,20 @@ namespace {
   static_assert(
       std::initializer_list<FeatureEntry>{BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES}
           .size());
+}
+
+// Called to skip feature entries on brave://flags page without affecting
+// features state.
+bool BraveShouldSkipConditionalFeatureEntry(
+    const flags_ui::FlagsStorage* storage,
+    const FeatureEntry& entry) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD) && BUILDFLAG(IS_WIN)
+  if (base::EqualsCaseInsensitiveASCII(kBraveVPNWireguardFeatureInternalName,
+                                       entry.internal_name)) {
+    return true;
+  }
+#endif
+  return false;
 }
 
 }  // namespace

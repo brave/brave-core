@@ -25,7 +25,24 @@ constexpr char kTitle[] = "title";
 constexpr char kDescription[] = "description";
 
 constexpr char kJson[] =
-    R"({"adAction":"view","adType":"ad_notification","advertiserId":"5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2","brand":"title","brandDisplayUrl":"brave.com","brandInfo":"description","brandUrl":"https://brave.com/","campaignId":"84197fc8-830a-4a8e-8339-7a70c2bfa104","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","creativeSetId":"c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123","flaggedAd":false,"likeAction":0,"placementId":"9bac9ae4-693c-4569-9b3e-300e357780cf","savedAd":false,"segment":"untargeted"})";
+    R"(
+        {
+          "adAction": "view",
+          "adType": "ad_notification",
+          "advertiserId": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
+          "brand": "title",
+          "brandDisplayUrl": "brave.com",
+          "brandInfo": "description",
+          "brandUrl": "https://brave.com/",
+          "campaignId": "84197fc8-830a-4a8e-8339-7a70c2bfa104",
+          "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+          "creativeSetId": "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123",
+          "flaggedAd": false,
+          "likeAction": 0,
+          "placementId": "9bac9ae4-693c-4569-9b3e-300e357780cf",
+          "savedAd": false,
+          "segment": "untargeted"
+        })";
 
 }  // namespace
 
@@ -35,11 +52,9 @@ TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
   const AdContentInfo expected_ad_content =
       BuildAdContent(ad, ConfirmationType::kViewed, kTitle, kDescription);
@@ -49,14 +64,12 @@ TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
 TEST_F(BraveAdsAdContentValueUtilTest, ToValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids*/ false);
+      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
   const AdContentInfo ad_content =
       BuildAdContent(ad, ConfirmationType::kViewed, kTitle, kDescription);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(kJson), AdContentToValue(ad_content));
 }
 

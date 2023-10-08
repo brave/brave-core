@@ -373,4 +373,26 @@ TEST(PermissionUtilsUnitTest, SyncingWithCreatePermissionLifetimeOptions) {
       absl::nullopt);
 }
 
+TEST(PermissionUtilsUnitTest, CoinTypeToPermissionType) {
+  auto type = CoinTypeToPermissionType(mojom::CoinType::ETH);
+  ASSERT_TRUE(type);
+  EXPECT_EQ(*type, blink::PermissionType::BRAVE_ETHEREUM);
+  type = CoinTypeToPermissionType(mojom::CoinType::SOL);
+  ASSERT_TRUE(type);
+  EXPECT_EQ(*type, blink::PermissionType::BRAVE_SOLANA);
+  EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::FIL));
+  EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::BTC));
+}
+
+TEST(PermissionUtilsUnitTest, CoinTypeToPermissionRequestType) {
+  auto request = CoinTypeToPermissionRequestType(mojom::CoinType::ETH);
+  ASSERT_TRUE(request);
+  EXPECT_EQ(*request, permissions::RequestType::kBraveEthereum);
+  request = CoinTypeToPermissionRequestType(mojom::CoinType::SOL);
+  ASSERT_TRUE(request);
+  EXPECT_EQ(*request, permissions::RequestType::kBraveSolana);
+  EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::FIL));
+  EXPECT_FALSE(CoinTypeToPermissionType(mojom::CoinType::BTC));
+}
+
 }  // namespace brave_wallet

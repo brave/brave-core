@@ -25,10 +25,12 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
             boolean isDialogUi, OneshotSupplier<BookmarkDelegate> bookmarkDelegateSupplier,
             BookmarkModel bookmarkModel, BookmarkOpener bookmarkOpener,
-            BookmarkUiPrefs bookmarkUiPrefs, ModalDialogManager modalDialogManager) {
+            BookmarkUiPrefs bookmarkUiPrefs, ModalDialogManager modalDialogManager,
+            Runnable endSearchRunnable) {
         super(context, selectableListLayout, selectionDelegate, searchDelegate,
                 dragReorderableRecyclerViewAdapter, isDialogUi, bookmarkDelegateSupplier,
-                bookmarkModel, bookmarkOpener, bookmarkUiPrefs, modalDialogManager);
+                bookmarkModel, bookmarkOpener, bookmarkUiPrefs, modalDialogManager,
+                endSearchRunnable);
 
         if (mToolbar instanceof BraveBookmarkToolbar) {
             ((BraveBookmarkToolbar) mToolbar).setBraveBookmarkDelegate(bookmarkDelegateSupplier);

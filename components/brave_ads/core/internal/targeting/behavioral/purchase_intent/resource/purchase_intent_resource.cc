@@ -94,7 +94,7 @@ void PurchaseIntentResource::Reset() {
 }
 
 void PurchaseIntentResource::OnNotifyLocaleDidChange(
-    const std::string& /*locale*/) {
+    const std::string& /*locale=*/) {
   MaybeLoad();
 }
 
@@ -121,6 +121,17 @@ void PurchaseIntentResource::OnNotifyDidUpdateResourceComponent(
   manifest_version_ = manifest_version;
 
   MaybeLoad();
+}
+
+void PurchaseIntentResource::OnNotifyDidUnregisterResourceComponent(
+    const std::string& id) {
+  if (!IsValidCountryComponentId(id)) {
+    return;
+  }
+
+  manifest_version_.reset();
+
+  Reset();
 }
 
 }  // namespace brave_ads

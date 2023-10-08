@@ -4,10 +4,10 @@
 {
   "SRCDIR": "../..",
   "brave/common/extensions/api/brave_api_resources.grd": {
-    "includes": [50800],
+    "includes": [50700],
   },
   "brave/components/resources/brave_components_resources.grd": {
-    "includes": [50810],
+    "includes": [50710],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_adblock/brave_adblock.grd": {

@@ -1,0 +1,88 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.actionsBox {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.boxPremium {
+  width: 100%;
+  background: linear-gradient(91.61deg, rgba(248, 190, 218, 0.1) 18.42%, rgba(173, 153, 255, 0.1) 85.72%);
+  border-radius: 16px;
+  padding: 16px;
+  max-width: 440px;
+  margin: 0 auto;
+
+  h1 {
+    margin: 0;
+    padding: 0;
+    font: var(--leo-font-primary-default-semibold);
+  }
+
+  h4 {
+    font: var(--leo-font-primary-heading-h4);
+    margin: 0 0 5px 0;
+  }
+
+  p {
+    margin: 0 0 12px 0;
+    font: var(--leo-font-primary-default-regular);
+  }
+}
+
+.featuresListing {
+  --leo-icon-size: 20px;
+
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+
+  li {
+    list-style-type: none;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+
+    &:last-child {
+      border: 0;
+    }
+
+    p {
+      margin: 0;
+      font: var(--leo-font-primary-small-regular);
+      color: var(--leo-color-blue-40);
+    }
+  }
+
+  .priceList {
+    background-color: var(--leo-color-container-background);
+    color: var(--leo-color-text-primary);
+    padding: 20px 16px;
+    justify-content: space-between;
+    font: var(--leo-font-primary-default-semibold);
+
+    data {
+      font: var(--leo-font-primary-heading-h3);
+      color: var(--leo-color-text-primary);
+      margin: 0 5px;
+    }
+  }
+
+  leo-icon {
+    color: var(--leo-color-blue-30);
+  }
+}
+
+.price {
+  color: var(--leo-color-text-tertiary);
+  display: inline-flex;
+  align-items: center;
+}

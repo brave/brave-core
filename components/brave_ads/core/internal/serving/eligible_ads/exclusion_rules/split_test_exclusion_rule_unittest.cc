@@ -24,7 +24,7 @@ scoped_refptr<base::FieldTrial> CreateFieldTrial(
     const std::string& trial_name) {
   base::MockEntropyProvider entropy_provider(0.9);
   return base::FieldTrialList::FactoryGetFieldTrial(
-      trial_name, /*total_probability*/ 100, "default_group_name",
+      trial_name, /*total_probability=*/100, "default_group_name",
       entropy_provider);
 }
 
@@ -41,9 +41,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -54,9 +52,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.split_test_group = "GroupA";
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -68,11 +64,9 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
 
   const scoped_refptr<base::FieldTrial> field_trial =
       CreateFieldTrial(kTrialName);
-  field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
+  field_trial->AppendGroup(kGroupName, /*group_probability=*/100);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -85,11 +79,9 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
 
   const scoped_refptr<base::FieldTrial> field_trial =
       CreateFieldTrial(kTrialName);
-  field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
+  field_trial->AppendGroup(kGroupName, /*group_probability=*/100);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -102,11 +94,9 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
 
   const scoped_refptr<base::FieldTrial> field_trial =
       CreateFieldTrial(kTrialName);
-  field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
+  field_trial->AppendGroup(kGroupName, /*group_probability=*/100);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 

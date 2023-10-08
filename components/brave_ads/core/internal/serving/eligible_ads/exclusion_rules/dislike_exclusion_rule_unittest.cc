@@ -24,9 +24,7 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldInclude) {
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = kAdvertiserId;
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
@@ -40,9 +38,7 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExclude) {
   ad_content.user_reaction_type = mojom::UserReactionType::kNeutral;
   ClientStateManager::GetInstance().ToggleDislikeAd(ad_content);
 
-  // Act
-
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 

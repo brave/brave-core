@@ -47,7 +47,7 @@ base::Time CalculateBeginningOfMonth(const base::Time time) {
   const base::Time shifted_midnight =
       midnight - base::Days(exploded.day_of_month - 1);
   return CorrectLocalMidnightForDaylightSaving(shifted_midnight,
-                                               /*expected_day_of_month*/ 1);
+                                               /*expected_day_of_month=*/1);
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
@@ -62,7 +62,7 @@ base::Time CalculateBeginningOfNextMonth(const base::Time time) {
       midnight + base::Days(GetLastDayOfMonth(exploded.year, exploded.month) -
                             exploded.day_of_month + 1);
   return CorrectLocalMidnightForDaylightSaving(shifted_midnight,
-                                               /*expected_day_of_month*/ 1);
+                                               /*expected_day_of_month=*/1);
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this

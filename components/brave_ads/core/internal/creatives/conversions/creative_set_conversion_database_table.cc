@@ -93,8 +93,8 @@ void GetCallback(GetConversionsCallback callback,
       command_response->status !=
           mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative set conversions");
-    return std::move(callback).Run(/*success*/ false,
-                                   /*conversion_queue_items*/ {});
+    return std::move(callback).Run(/*success=*/false,
+                                   /*conversion_queue_items=*/{});
   }
 
   CHECK(command_response->result);
@@ -107,7 +107,7 @@ void GetCallback(GetConversionsCallback callback,
     creative_set_conversions.push_back(creative_set_conversion);
   }
 
-  std::move(callback).Run(/*success*/ true, creative_set_conversions);
+  std::move(callback).Run(/*success=*/true, creative_set_conversions);
 }
 
 void MigrateToV23(mojom::DBTransactionInfo* transaction) {
@@ -152,7 +152,7 @@ void MigrateToV28(mojom::DBTransactionInfo* transaction) {
 
   CopyTableColumns(transaction, "creative_ad_conversions",
                    "creative_ad_conversions_temp", from_columns, to_columns,
-                   /*should_drop*/ true);
+                   /*should_drop=*/true);
 
   // Rename temporary table.
   RenameTable(transaction, "creative_ad_conversions_temp",
@@ -198,7 +198,7 @@ void MigrateToV30(mojom::DBTransactionInfo* transaction) {
 
   CopyTableColumns(transaction, "creative_ad_conversions",
                    "creative_set_conversions_temp", from_columns, to_columns,
-                   /*should_drop*/ true);
+                   /*should_drop=*/true);
 
   // Rename temporary table.
   RenameTable(transaction, "creative_set_conversions_temp",
@@ -226,7 +226,7 @@ void MigrateToV31(mojom::DBTransactionInfo* transaction) {
 
   CopyTableColumns(transaction, "creative_set_conversions",
                    "creative_set_conversions_temp", columns,
-                   /*should_drop*/ true);
+                   /*should_drop=*/true);
 
   // Rename temporary table.
   RenameTable(transaction, "creative_set_conversions_temp",
@@ -239,7 +239,7 @@ void CreativeSetConversions::Save(
     const CreativeSetConversionList& creative_set_conversions,
     ResultCallback callback) {
   if (creative_set_conversions.empty()) {
-    return std::move(callback).Run(/*success*/ true);
+    return std::move(callback).Run(/*success=*/true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -358,7 +358,7 @@ std::string CreativeSetConversions::BuildInsertOrUpdateSql(
       "verifiable_advertiser_public_key, observation_window, expire_at) VALUES "
       "$2;",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count*/ 5, binded_parameters_count)},
+                           /*parameters_count=*/5, binded_parameters_count)},
       nullptr);
 }
 

@@ -90,12 +90,12 @@ class PrivacySandboxSettingsTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
-  raw_ptr<MockPrivacySandboxDelegate> mock_delegate_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 
   std::unique_ptr<PrivacySandboxSettings> privacy_sandbox_settings_;
+  raw_ptr<MockPrivacySandboxDelegate> mock_delegate_;
 };
 
 TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {

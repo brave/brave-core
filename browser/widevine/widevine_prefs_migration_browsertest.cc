@@ -29,7 +29,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePrefsMigrationTest, PrefMigrationTest) {
                                                kWidevineEnabledTestValue);
 
   // Migrate and check it's done properly with previous profile prefs value.
-  MigrateWidevinePrefs(browser()->profile());
+  MigrateWidevinePrefs(browser()->profile()->GetPrefs());
   EXPECT_FALSE(g_browser_process->local_state()
                    ->FindPreference(kWidevineEnabled)
                    ->IsDefaultValue());

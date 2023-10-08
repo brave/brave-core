@@ -18,9 +18,8 @@ namespace brave_ads {
 namespace {
 
 constexpr char kExpectedUrl[] =
-    "https://anonymous.ads.bravesoftware.com/v3/confirmation/"
-    "8b742869-6e4a-490c-ac31-31b49130098a";
-constexpr char kExpectedContent[] =
+    R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a)";
+constexpr char kExpectedUrlRequestContent[] =
     R"({"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})";
 
 }  // namespace
@@ -38,10 +37,10 @@ class BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest
 TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
-      /*value*/ 0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids*/ false);
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data*/ {});
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   CreateNonRewardConfirmationUrlRequestBuilder url_request_builder(
@@ -54,10 +53,9 @@ TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {"accept: application/json"};
-  expected_url_request->content = kExpectedContent;
+  expected_url_request->content = kExpectedUrlRequestContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
   EXPECT_EQ(url_request, expected_url_request);
 }
 
