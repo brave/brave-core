@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/credentials/brave_vpn_wireguard_profile_credentials.h"
-#include "brave/components/brave_vpn/common/wireguard/constants.h"
+#include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
 class PrefService;
 

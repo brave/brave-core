@@ -5,6 +5,8 @@
 
 #include "brave/browser/about_flags.cc"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "chrome/common/channel_info.h"
+#include "components/autofill/core/browser/autofill_experiments.h"
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/components/commander/common/features.h"
@@ -14,5 +16,12 @@
 #define kQuickCommands kBraveCommander
 #endif
 
+#define GetChannel                                                        \
+  GetChannel();                                                           \
+  if (flags_ui::BraveShouldSkipConditionalFeatureEntry(storage, entry)) { \
+    return true;                                                          \
+  }                                                                       \
+  chrome::GetChannel
 #include "src/chrome/browser/about_flags.cc"
+#undef GetChannel
 #undef kQuickCommands

@@ -7,6 +7,7 @@
 
 #include <initializer_list>
 
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -92,6 +93,14 @@
   })
 #if BUILDFLAG(IS_WIN)
 
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                  \
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      kBraveVPNWireguardFeatureInternalName,                                 \
+      "Enable experimental WireGuard Brave VPN service",                     \
+      "Experimental WireGuard VPN support. Deprecated.",                     \
+      kOsWin,                                                                \
+      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNUseWireguardService), \
+  })
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES                                    \
   EXPAND_FEATURE_ENTRIES({                                               \
       kBraveVPNDnsFeatureInternalName,                                   \
@@ -103,10 +112,12 @@
   })
 #else
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
 #endif
 #else
 #define BRAVE_VPN_FEATURE_ENTRIES
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
+#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
 #endif
 
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \
@@ -899,6 +910,7 @@
   BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                         \
   BRAVE_VPN_FEATURE_ENTRIES                                                    \
   BRAVE_VPN_DNS_FEATURE_ENTRIES                                                \
+  BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
@@ -928,6 +940,20 @@ namespace {
   static_assert(
       std::initializer_list<FeatureEntry>{BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES}
           .size());
+}
+
+// Called to skip feature entries on brave://flags page without affecting
+// features state.
+bool BraveShouldSkipConditionalFeatureEntry(
+    const flags_ui::FlagsStorage* storage,
+    const FeatureEntry& entry) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD) && BUILDFLAG(IS_WIN)
+  if (base::EqualsCaseInsensitiveASCII(kBraveVPNWireguardFeatureInternalName,
+                                       entry.internal_name)) {
+    return true;
+  }
+#endif
+  return false;
 }
 
 }  // namespace

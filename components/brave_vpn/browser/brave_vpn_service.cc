@@ -38,7 +38,7 @@
 #include "url/url_util.h"
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 #endif
 
 namespace brave_vpn {

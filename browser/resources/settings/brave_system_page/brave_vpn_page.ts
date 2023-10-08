@@ -66,7 +66,9 @@ export class SettingsBraveVpnPageElement
     this.initialProtocolValue_ = this.getCurrentPrefValue()
     this.updateState()
     this.addWebUiListener('brave-vpn-state-change', this.onVpnStateChange.bind(this))
+    // <if expr="is_win">
     this.vpnBrowserProxy_.isBraveVpnConnected().then(this.onVpnStateChange.bind(this))
+    // </if>
   }
 
   private onVpnStateChange(connected: boolean) {
@@ -116,9 +118,11 @@ export class SettingsBraveVpnPageElement
     this.updateState();
     if (!this.getCurrentPrefValue())
       return
+    // <if expr="is_win">
     // If user enabled Wireguard service we have to check if it was registered.
     this.vpnBrowserProxy_.isWireguardServiceRegistered().then(
       this.isWireguardServiceRegistered.bind(this))
+    // </if>
   }
 
   private onRestartClick_(e: Event) {

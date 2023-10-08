@@ -10,6 +10,10 @@
 #include "chrome/common/channel_info.h"
 #include "components/version_info/version_info.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+#include "brave/browser/brave_features_internal_names.h"
+#endif
+
 #define IsFlagExpired IsFlagExpired_ChromiumImpl
 #include "src/chrome/browser/unexpire_flags.cc"
 #undef IsFlagExpired
@@ -30,7 +34,6 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
     return true;
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST) && BUILDFLAG(IS_ANDROID)
-
   if (base::EqualsCaseInsensitiveASCII(flag_descriptions::kHttpsUpgradesName,
                                        internal_name)) {
     return true;

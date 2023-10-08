@@ -71,7 +71,7 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
