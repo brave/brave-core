@@ -57,9 +57,7 @@ You can copy files to the simulated user profile (temp path) using `CopyFileFrom
 
 ## Mocking Prefs
 
-Prefs must be registered in [unittest_pref_registry_util.cc](./unittest_pref_registry_util.cc).
-
-You can call `ads_client_mock_->Set*Pref` to set a pref and notify listeners. If you do not want to notify listeners, you can call `Set*Pref`, which will only set the pref. See [unittest_pref_util.h](./unittest_pref_util.h).
+Profile and local state prefs must be registered in [unittest_profile_pref_registry.cc](./unittest_profile_pref_registry.cc) and [unittest_local_state_pref_registry.cc](./unittest_local_state_pref_registry.cc). You can call `SetProfile*Pref` or `SetLocalState*Pref` to set a pref and notify listeners. If you do not want to notify listeners, call `SetProfile*PrefValue` or `SetLocalState*PrefValue`. See [unittest_profile_pref_value.h](./unittest_profile_pref_value.h) and [unittest_local_state_pref_value.h](./unittest_local_state_pref_value.h).
 
 ## Mocking Server Responses
 

@@ -26,9 +26,9 @@ void MockPlatformHelper(const PlatformHelperMock& mock, PlatformType type);
 void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
                                       bool is_available);
 
-void MockIsBrowserActive(const AdsClientMock& mock, bool is_browser_active);
+void MockIsBrowserActive(const AdsClientMock& mock, bool is_active);
 void MockIsBrowserInFullScreenMode(const AdsClientMock& mock,
-                                   bool is_browser_in_full_screen_mode);
+                                   bool is_full_screen_mode);
 
 void MockCanShowNotificationAds(AdsClientMock& mock, bool can_show);
 void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(

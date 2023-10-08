@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
 
-#include <cstdint>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,22 +15,20 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/json/json_reader.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_current_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_local_state_pref_value_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -212,112 +209,24 @@ void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
           }));
 }
 
-void MockGetBooleanPref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetBooleanPref)
+void MockGetProfilePref(const AdsClientMock& mock) {
+  ON_CALL(mock, GetProfilePref)
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& path) -> absl::optional<base::Value> {
+            return GetProfilePrefValue(path);
+          }));
+}
+
+void MockClearProfilePref(AdsClientMock& mock) {
+  ON_CALL(mock, ClearProfilePref)
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& path) { ClearProfilePrefValue(path); }));
+}
+
+void MockHasProfilePrefPath(const AdsClientMock& mock) {
+  ON_CALL(mock, HasProfilePrefPath)
       .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
-        int value;
-        CHECK(base::StringToInt(GetPrefValue(path), &value));
-        return static_cast<bool>(value);
-      }));
-}
-
-void MockGetIntegerPref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetIntegerPref)
-      .WillByDefault(::testing::Invoke([](const std::string& path) -> int {
-        int value;
-        CHECK(base::StringToInt(GetPrefValue(path), &value));
-        return value;
-      }));
-}
-
-void MockGetDoublePref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetDoublePref)
-      .WillByDefault(::testing::Invoke([](const std::string& path) -> double {
-        double value;
-        CHECK(base::StringToDouble(GetPrefValue(path), &value));
-        return value;
-      }));
-}
-
-void MockGetStringPref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetStringPref)
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& path) -> std::string {
-            return GetPrefValue(path);
-          }));
-}
-
-void MockGetInt64Pref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetInt64Pref)
-      .WillByDefault(::testing::Invoke([](const std::string& path) -> int64_t {
-        int64_t value;
-        CHECK(base::StringToInt64(GetPrefValue(path), &value));
-        return value;
-      }));
-}
-
-void MockGetUint64Pref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetUint64Pref)
-      .WillByDefault(::testing::Invoke([](const std::string& path) -> uint64_t {
-        uint64_t value;
-        CHECK(base::StringToUint64(GetPrefValue(path), &value));
-        return value;
-      }));
-}
-
-void MockGetTimePref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetTimePref)
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& path) -> base::Time {
-            int64_t value;
-            CHECK(base::StringToInt64(GetPrefValue(path), &value));
-            return base::Time::FromDeltaSinceWindowsEpoch(
-                base::Microseconds(value));
-          }));
-}
-
-void MockGetDictPref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetDictPref)
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& path) -> absl::optional<base::Value::Dict> {
-            const absl::optional<base::Value> root =
-                base::JSONReader::Read(GetPrefValue(path));
-            if (!root) {
-              return absl::nullopt;
-            }
-
-            const base::Value::Dict* const dict = root->GetIfDict();
-            CHECK(dict);
-            return dict->Clone();
-          }));
-}
-
-void MockGetListPref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetListPref)
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& path) -> absl::optional<base::Value::List> {
-            const absl::optional<base::Value> root =
-                base::JSONReader::Read(GetPrefValue(path));
-            if (!root) {
-              return absl::nullopt;
-            }
-
-            const base::Value::List* const list = root->GetIfList();
-            CHECK(list);
-            return list->Clone();
-          }));
-}
-
-void MockClearPref(AdsClientMock& mock) {
-  ON_CALL(mock, ClearPref)
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& path) { ClearPrefValue(path); }));
-}
-
-void MockHasPrefPath(const AdsClientMock& mock) {
-  ON_CALL(mock, HasPrefPath)
-      .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
-        return HasPrefPathValue(path);
+        return HasProfilePrefPathValue(path);
       }));
 }
 
@@ -325,8 +234,21 @@ void MockGetLocalStatePref(const AdsClientMock& mock) {
   ON_CALL(mock, GetLocalStatePref)
       .WillByDefault(::testing::Invoke(
           [](const std::string& path) -> absl::optional<base::Value> {
-            return base::Value(GetPrefValue(path));
+            return GetLocalStatePrefValue(path);
           }));
+}
+
+void MockClearLocalStatePref(AdsClientMock& mock) {
+  ON_CALL(mock, ClearLocalStatePref)
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& path) { ClearLocalStatePrefValue(path); }));
+}
+
+void MockHasLocalStatePrefPath(const AdsClientMock& mock) {
+  ON_CALL(mock, HasLocalStatePrefPath)
+      .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
+        return HasLocalStatePrefPathValue(path);
+      }));
 }
 
 }  // namespace brave_ads

@@ -129,16 +129,9 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
 
   void MockAdsClient();
 
-  void MockSetBooleanPref(AdsClientMock& mock);
-  void MockSetIntegerPref(AdsClientMock& mock);
-  void MockSetDoublePref(AdsClientMock& mock);
-  void MockSetStringPref(AdsClientMock& mock);
-  void MockSetInt64Pref(AdsClientMock& mock);
-  void MockSetUint64Pref(AdsClientMock& mock);
-  void MockSetDictPref(AdsClientMock& mock);
-  void MockSetListPref(AdsClientMock& mock);
-  void MockSetTimePref(AdsClientMock& mock);
-  void MockSetLocalStatePref(AdsClientMock& mock);
+  void MockSetProfilePref();
+
+  void MockSetLocalStatePref();
 
   void SetUpTest();
   void SetUpIntegrationTest();
