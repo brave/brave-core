@@ -69,6 +69,7 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
+  BraveUptimeTracker::RegisterPrefsForMigration(registry);
 #endif
 
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
