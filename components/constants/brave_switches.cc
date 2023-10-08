@@ -12,9 +12,6 @@ namespace switches {
 // in debug mode with auto-reloading.
 const char kDisableBraveExtension[] = "disable-brave-extension";
 
-// Allows disabling the Brave Rewards extension.
-const char kDisableBraveRewardsExtension[] = "disable-brave-rewards-extension";
-
 // This switch disables update module(Sparkle).
 const char kDisableBraveUpdate[] = "disable-brave-update";
 
