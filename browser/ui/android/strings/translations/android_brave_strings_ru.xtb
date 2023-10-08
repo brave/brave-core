@@ -945,7 +945,7 @@
 <translation id="6044189892950611565">Канал уведомлений для браузера Brave</translation>
 <translation id="1173919438868967364">Выберите счет</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/>: не удалось найти подходящий часовой пояс.</translation>
-<translation id="8901748741234750758">Файл с данными кошелька скачивается… \u2022 <ph name="percentage"/> \u0025\u0025</translation>
+<translation id="8901748741234750758">Файл с данными кошелька скачивается… \u2022 <ph name="PERCENTAGE"/> \u0025\u0025</translation>
 <translation id="6471216025161697462">Подключено к <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">(пробная версия)</translation>
 <translation id="7733890291091968191">Показать уведомления Web3</translation>

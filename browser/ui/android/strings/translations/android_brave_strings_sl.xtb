@@ -951,7 +951,7 @@ je v teku.
 <translation id="6044189892950611565">Kanal za obvestila za Brave Browser</translation>
 <translation id="1173919438868967364">Izberite račun</translation>
 <translation id="8922793255489232731">Ni bilo mogoče dobiti ustreznega časovnega pasu za: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Prenos podatkovne datoteke denarnice \u2022<ph name="percentage"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Prenos podatkovne datoteke denarnice \u2022<ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Povezani z <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Poskusna doba</translation>
 <translation id="7733890291091968191">Prikaži obvestila Web3</translation>

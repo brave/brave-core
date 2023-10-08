@@ -945,7 +945,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6044189892950611565">Brave-selaimen ilmoituskanava</translation>
 <translation id="1173919438868967364">Valitse tili</translation>
 <translation id="8922793255489232731">Vastaavaa aikavyöhykettä ei löytynyt kohteelle: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Ladataan lompakon datatiedostoa \u2022 <ph name="percentage"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Ladataan lompakon datatiedostoa \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Yhteys muodostettu kohteeseen <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Kokeilujakso</translation>
 <translation id="7733890291091968191">Näytä Web3-ilmoitukset</translation>

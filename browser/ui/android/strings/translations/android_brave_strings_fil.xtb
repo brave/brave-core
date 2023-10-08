@@ -945,7 +945,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6044189892950611565">Channel ng notification para sa Brave Browser</translation>
 <translation id="1173919438868967364">Pumili ng Account</translation>
 <translation id="8922793255489232731">Hindi nakuha ang katugmang timezone para sa : <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Dina-download ang file ng data ng wallet \u2022 <ph name="percentage"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Dina-download ang file ng data ng wallet \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Nakakonekta sa <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Trial</translation>
 <translation id="7733890291091968191">Magpakita ng mga Web3 notification</translation>

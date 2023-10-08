@@ -945,7 +945,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6044189892950611565">Aviseringskanal för Brave webbläsare</translation>
 <translation id="1173919438868967364">Välj konto</translation>
 <translation id="8922793255489232731">Det gick inte att få en matchande tidszon för: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Laddar ned datafil för plånbok \u2022 <ph name="percentage"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Laddar ned datafil för plånbok \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Ansluten till <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Provversion</translation>
 <translation id="7733890291091968191">Visa web3-notiser</translation>

@@ -945,7 +945,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="6044189892950611565">Varslingskanal for Brave-nettleseren</translation>
 <translation id="1173919438868967364">Velg konto</translation>
 <translation id="8922793255489232731">Kunne ikke finne tidssonen for: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Laster ned lommebokdatafil \u2022 <ph name="percentage"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Laster ned lommebokdatafil \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Koblet til <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prøveperiode</translation>
 <translation id="7733890291091968191">Vis Web3-varsler</translation>

@@ -948,7 +948,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="6044189892950611565">Kanal obavijesti preglednika Brave</translation>
 <translation id="1173919438868967364">Odabir računa</translation>
 <translation id="8922793255489232731">Nije bilo moguće pronaći odgovarajuću vremensku zonu za : <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Preuzimanje datoteke s podatcima novčanika \u2022 <ph name="percentage"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Preuzimanje datoteke s podatcima novčanika \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Povezano s <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Probna verzija</translation>
 <translation id="7733890291091968191">Prikaz obavijesti Web3</translation>
