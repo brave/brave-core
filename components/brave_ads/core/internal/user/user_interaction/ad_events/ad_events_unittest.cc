@@ -43,7 +43,7 @@ TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
 TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("Tue, 19 Mar 2023 05:35:00",
+      TimeFromString("Tue, 19 Mar 2024 05:35:00",
                      /*is_local=*/false));  // Happy 1st Birthday Rory!
 
   const base::TimeDelta three_months =

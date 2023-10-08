@@ -48,7 +48,6 @@ You can mock file resources loaded with `LoadFileResource` by placing your mocke
 
 You can mock files loaded with `LoadFile` by placing your mocked files in the following directory:
 
-
     .
     └── brave/components/brave_ads/core/
         └── test/
@@ -79,7 +78,7 @@ Mocked responses for URL requests can be defined inline or read from a text file
 
     MockUrlResponses(ads_client_mock_, url_responses);
 
-Inline responses can contain `<time:period>` tags for mocking timestamps, where `period` can be `now`, `distant_past`, `distant_future`, `+/-# seconds`, `+/-# minutes`, `+/-# hours` or `+/-# days`, i.e.
+Inline or text file responses can contain `<time:period>` tags for mocking timestamps, where `period` can be `now`, `distant_past`, `distant_future`, `+/-# seconds`, `+/-# minutes`, `+/-# hours` or `+/-# days`, i.e.
 
     const URLResponseMap url_responses = {
       "/foo/bar", {
@@ -124,8 +123,8 @@ See [settings_unittest_util.h](../../settings/settings_unittest_util.h).
 | mock  | type  | default  | example  |
 |---|---|---|---|
 | Device identifier  |  |  | `MockDeviceId();`  |
-| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kRelease);`  |
-| Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);`  |
+| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `MockBuildChannel(BuildChannelType::kNightly);`  |
+| Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);`  |
 | Is network connection available  | boolean  | `true`  | `MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
 | Is browser active  | boolean  | `true`  | `MockIsBrowserActive(ads_client_mock_, false);`  |
 | Is browser in full-screen mode  | boolean  | `false`  | `MockIsBrowserInFullScreenMode(ads_client_mock_, true);`  |
