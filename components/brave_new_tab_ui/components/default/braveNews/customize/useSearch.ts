@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import getBraveNewsController, { FeedSearchResultItem } from '../../../../../brave_news/browser/resources/shared/api'
-import { useBraveNews, useChannels } from './Context'
+import { useBraveNews, useChannels } from '../../../../../brave_news/browser/resources/shared/Context'
 
 export const QUERY_MIN_LENGTH_FILTER_SOURCES = 2
 

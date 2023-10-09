@@ -7,6 +7,7 @@ import { FeedItemMetadata, Article as Info } from 'gen/brave/components/brave_ne
 import * as React from 'react';
 import styled from 'styled-components';
 import Flex from '$web-common/Flex'
+import Link, { validateScheme } from '$web-common/Link'
 import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import ArticleMetaRow from './ArticleMetaRow';
 import Card, { Title } from './Card';
@@ -30,7 +31,11 @@ const ArticleImage = styled.img`
 
   border-radius: 6px;
 `
-export const openArticle = (article: FeedItemMetadata) => window.location.href = article.url.url
+export const openArticle = (article: FeedItemMetadata) => {
+  const href = article.url.url
+  validateScheme(href)
+  window.location.href = href
+}
 
 export default function Article({ info, hideChannel }: Props) {
   const { url: imageUrl, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, { useCache: true })
@@ -40,7 +45,7 @@ export default function Article({ info, hideChannel }: Props) {
     <ArticleMetaRow article={info.data} hideChannel={hideChannel} />
     <Flex direction='row' gap={spacing.m} justify='space-between'>
       <Title>
-        <a href={url}>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</a>
+        <Link href={url}>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</Link>
       </Title>
       <ArticleImage src={imageUrl} />
     </Flex>

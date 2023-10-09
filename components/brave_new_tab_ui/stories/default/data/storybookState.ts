@@ -83,6 +83,7 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     featureFlagBraveNTPSponsoredImagesWallpaper: true,
     featureCustomBackgroundEnabled: true,
     featureFlagBraveNewsPromptEnabled: true,
+    featureFlagBraveNewsFeedV2Enabled: false,
     searchPromotionEnabled: false,
     forceSettingsTab: select('Open settings tab?', [undefined, ...Object.keys(SettingsTabType)], undefined),
     showBackgroundImage: boolean('Show background image?', true),

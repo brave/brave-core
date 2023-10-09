@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import getBraveNewsController from '../../../brave_news/browser/resources/shared/api'
+import getBraveNewsController from './api'
 import {
   BraveNewsControllerRemote,
   FeedListenerInterface,
@@ -15,7 +15,7 @@ export const addFeedListener = (listener: (feedHash: string) => void) =>
     #receiver = new FeedListenerReceiver(this)
     #controller: BraveNewsControllerRemote
 
-    constructor () {
+    constructor() {
       this.#controller = getBraveNewsController()
 
       if (process.env.NODE_ENV !== 'test') {
@@ -25,7 +25,7 @@ export const addFeedListener = (listener: (feedHash: string) => void) =>
       }
     }
 
-    onUpdateAvailable (feedHash: string): void {
+    onUpdateAvailable(feedHash: string): void {
       listener(feedHash)
     }
   })()

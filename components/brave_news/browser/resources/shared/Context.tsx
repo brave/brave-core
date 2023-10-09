@@ -5,11 +5,10 @@
 
 import * as React from 'react'
 import { useCallback, useMemo, useState, useEffect } from 'react'
-import { useNewTabPref } from '../../../../hooks/usePref'
-import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled } from '../../../../../brave_news/browser/resources/shared/api'
-import Modal from './Modal'
-import { PublishersCachingWrapper } from '../../../../api/brave_news/publishersCache'
-import { ChannelsCachingWrapper } from '../../../../api/brave_news/channelsCache'
+import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled, Configuration } from './api'
+import { PublishersCachingWrapper } from './publishersCache'
+import { ChannelsCachingWrapper } from './channelsCache'
+import { ConfigurationCachingWrapper } from './configurationCache'
 
 // Leave possibility for more pages open.
 type NewsPage = null
@@ -47,37 +46,39 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   subscribedPublisherIds: [],
   channels: {},
   suggestedPublisherIds: [],
-  updateSuggestedPublisherIds: () => {},
+  updateSuggestedPublisherIds: () => { },
   isOptInPrefEnabled: undefined,
   isShowOnNTPPrefEnabled: undefined,
-  toggleBraveNewsOnNTP: (enabled: boolean) => {}
+  toggleBraveNewsOnNTP: (enabled: boolean) => { }
 })
 
 const publishersCache = new PublishersCachingWrapper()
 const channelsCache = new ChannelsCachingWrapper()
+const configurationCache = new ConfigurationCachingWrapper()
 
-export function BraveNewsContextProvider (props: { children: React.ReactNode }) {
+export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const [locale, setLocale] = useState('')
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
   const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
-  // TODO(petemill): Pref should come from the API since it isn't NTP-related. We should
-  // not use useNewTabPref here so that we can move Brave News to a shared component.
-  // But for now we're tied to NTP.
-  const [isOptInPrefEnabled, setOptInPrefEnabled] = useNewTabPref('isBraveNewsOptedIn')
-  const [isShowOnNTPPrefEnabled, setShowOnNTPPrefEnabled] = useNewTabPref('showToday')
+  const [configuration, setConfiguration] = useState<Configuration>(configurationCache.value)
 
   // Get the default locale on load.
   useEffect(() => {
     getBraveNewsController().getLocale().then(({ locale }) => setLocale(locale))
-  }, [isOptInPrefEnabled, isShowOnNTPPrefEnabled])
+  }, [configuration.isOptedIn, configuration.showOnNTP])
 
   React.useEffect(() => {
     const handler = (channels: Channels) => setChannels(channels)
 
     channelsCache.addListener(handler)
     return () => channelsCache.removeListener(handler)
+  }, [])
+
+  React.useEffect(() => {
+    configurationCache.addListener(setConfiguration)
+    return () => configurationCache.removeListener(setConfiguration)
   }, [])
 
   const updateSuggestedPublisherIds = useCallback(async () => {
@@ -110,11 +111,10 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
 
   const toggleBraveNewsOnNTP = (shouldEnable: boolean) => {
     if (shouldEnable) {
-      setOptInPrefEnabled(true)
-      setShowOnNTPPrefEnabled(true)
+      configurationCache.set({ isOptedIn: true, showOnNTP: true })
       return
     }
-    setShowOnNTPPrefEnabled(false)
+    configurationCache.set({ showOnNTP: false })
   }
 
   const context = useMemo<BraveNewsContext>(() => ({
@@ -128,14 +128,13 @@ export function BraveNewsContextProvider (props: { children: React.ReactNode }) 
     filteredPublisherIds,
     subscribedPublisherIds,
     updateSuggestedPublisherIds,
-    isOptInPrefEnabled,
-    isShowOnNTPPrefEnabled,
+    isOptInPrefEnabled: configuration.isOptedIn,
+    isShowOnNTPPrefEnabled: configuration.showOnNTP,
     toggleBraveNewsOnNTP
-  }), [customizePage, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, isOptInPrefEnabled, isShowOnNTPPrefEnabled, toggleBraveNewsOnNTP])
+  }), [customizePage, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}
-    <Modal />
   </BraveNewsContext.Provider>
 }
 

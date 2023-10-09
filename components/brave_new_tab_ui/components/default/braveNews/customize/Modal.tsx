@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import LoadingComponent from '../../../loading'
-import { useBraveNews } from './Context'
+import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
 
 const Configure = React.lazy(() => import('./Configure'))
 
@@ -24,7 +24,7 @@ const Dialog = styled.dialog`
   color:  ${p => p.theme.color.contextMenuForeground};
 `
 
-export default function BraveNewsModal () {
+export default function BraveNewsModal() {
   const { customizePage, setCustomizePage } = useBraveNews()
   const dialogRef = React.useRef<HTMLDialogElement & { showModal: () => void, close: () => void, open: boolean }>()
 
@@ -49,7 +49,7 @@ export default function BraveNewsModal () {
   // Only render the dialog if it should be shown, since
   // it is a complex view.
   return shouldRender ? <Dialog ref={dialogRef as any}>
-    <React.Suspense fallback={<LoadingComponent/>}>
+    <React.Suspense fallback={<LoadingComponent />}>
       <Configure />
     </React.Suspense>
   </Dialog> : null

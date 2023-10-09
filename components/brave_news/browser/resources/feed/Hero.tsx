@@ -9,6 +9,7 @@ import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { openArticle } from './Article';
 import ArticleMetaRow from './ArticleMetaRow';
 import Card, { Title } from './Card';
+import Link from '$web-common/Link';
 
 interface Props {
   info: Info
@@ -34,7 +35,7 @@ export default function HeroArticle({ info }: Props) {
     <HeroImage src={url} />
     <ArticleMetaRow article={info.data} />
     <Title>
-      <a href={info.data.url.url}>{info.data.title}</a>
+      <Link href={info.data.url.url}>{info.data.title}</Link>
     </Title>
   </Card>
 }

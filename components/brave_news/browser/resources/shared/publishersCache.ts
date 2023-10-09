@@ -10,17 +10,17 @@ import {
   PublishersListenerReceiver,
   UserEnabled
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
-import getBraveNewsController, { isDirectFeed } from '../../../brave_news/browser/resources/shared/api'
+import getBraveNewsController, { isDirectFeed } from './api'
 
-import { CachingWrapper } from '$web-common/mojomCache'
+import { EntityCachingWrapper } from '$web-common/mojomCache'
 
 export class PublishersCachingWrapper
-  extends CachingWrapper<Publisher>
+  extends EntityCachingWrapper<Publisher>
   implements PublishersListenerInterface {
   private receiver = new PublishersListenerReceiver(this)
   private controller: BraveNewsControllerRemote
 
-  constructor () {
+  constructor() {
     super()
 
     this.controller = getBraveNewsController()
@@ -33,7 +33,7 @@ export class PublishersCachingWrapper
     }
   }
 
-  setPublisherFollowed (publisherId: string, enabled: boolean) {
+  setPublisherFollowed(publisherId: string, enabled: boolean) {
     const copy = {
       ...this.cache
     }

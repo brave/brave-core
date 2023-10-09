@@ -8,7 +8,7 @@ import * as Actions from '../actions/today_actions'
 import { ApplicationState } from '../reducers'
 import getBraveNewsController, * as BraveNews from '../../brave_news/browser/resources/shared/api'
 import store from '../store'
-import { addFeedListener } from '../api/brave_news/feedListener'
+import { addFeedListener } from '../../brave_news/browser/resources/shared/feedListener'
 
 addFeedListener((hash) => {
   const current = store.getState().today.feed?.hash

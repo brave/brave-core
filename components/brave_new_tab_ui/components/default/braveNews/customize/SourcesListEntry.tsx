@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
 import Flex from '$web-common/Flex'
 import { useLazyFavicon } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
-import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
+import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../../../../../brave_news/browser/resources/shared/Context'
 import { getTranslatedChannelName } from './ChannelCard'
 import { channelIcons as ChannelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
 

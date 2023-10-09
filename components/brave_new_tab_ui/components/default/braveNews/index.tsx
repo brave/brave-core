@@ -11,6 +11,8 @@ import * as BraveNewsElement from './default'
 import CardOptIn from './cards/cardOptIn'
 import CardLoading from './cards/cardLoading'
 import { useNewTabPref } from '../../../hooks/usePref'
+import { defaultState } from '../../../storage/new_tab_storage'
+import { FeedV2 } from './FeedV2'
 const Content = React.lazy(() => import('./content'))
 
 export type OnReadFeedItem = (args: TodayActions.ReadFeedItemPayload) => any
@@ -49,10 +51,10 @@ export const attributeNameCardCount = 'data-today-card-count'
 
 const intersectionOptions = { root: null, rootMargin: '0px', threshold: 0.25 }
 
-export default function BraveNewsSection (props: Props) {
+export default function BraveNewsSection(props: Props) {
   const dispatch = useDispatch()
   const [optedIn, setOptedIn] = useNewTabPref('isBraveNewsOptedIn')
-  const [,setShowToday] = useNewTabPref('showToday')
+  const [, setShowToday] = useNewTabPref('showToday')
 
   // Don't ask for initial data more than once
   const hasRequestedLoad = React.useRef(false)
@@ -93,9 +95,9 @@ export default function BraveNewsSection (props: Props) {
     // When we have an element to observe, set it as the target.
     // Don't do anything if we don't need data.
     if (!loadDataObserver ||
-          !loadDataTrigger.current ||
-          !optedIn ||
-          !!props.feed) {
+      !loadDataTrigger.current ||
+      !optedIn ||
+      !!props.feed) {
       return
     }
     loadDataObserver.observe(loadDataTrigger.current)
@@ -119,15 +121,16 @@ export default function BraveNewsSection (props: Props) {
         ref={loadDataTrigger}
         style={{ position: 'sticky', top: '100px' }}
       />
-      { !optedIn &&
-      <>
-        <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={() => setShowToday(false)} />
-      </>
+      {!optedIn &&
+        <>
+          <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={() => setShowToday(false)} />
+        </>
       }
-      { shouldDisplayContent &&
-      <React.Suspense fallback={(<CardLoading />)}>
-        <Content {...props} />
-      </React.Suspense>
+      {shouldDisplayContent && (defaultState.featureFlagBraveNewsFeedV2Enabled
+        ? <FeedV2 />
+        : <React.Suspense fallback={(<CardLoading />)}>
+          <Content {...props} />
+        </React.Suspense>)
       }
 
     </BraveNewsElement.Section>

@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { CachingWrapper } from '$web-common/mojomCache'
+import { EntityCachingWrapper } from '$web-common/mojomCache'
 import {
   Command,
   CommandsServiceRemote,
@@ -14,7 +14,7 @@ import {
 export const api = CommandsService.getRemote()
 
 export class CommandsCache
-  extends CachingWrapper<Command>
+  extends EntityCachingWrapper<Command>
   implements CommandsListenerInterface {
   private receiver = new CommandsListenerReceiver(this)
   private controller: CommandsServiceRemote

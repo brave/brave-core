@@ -9,6 +9,7 @@ import styled, { css } from 'styled-components';
 import { FeedType, useInspectContext } from './context';
 import Card from './feed/Card';
 import { isPublisherEnabled } from './shared/api';
+import { useBraveNews } from './shared/Context';
 
 const DEFAULT_SHOW_COUNT = 4;
 
@@ -108,7 +109,8 @@ export function Item(props: { id: FeedType, name: string }) {
 }
 
 export default function Sidebar() {
-  const { channels, publishers, signals } = useInspectContext()
+  const  {channels, publishers} = useBraveNews()
+  const { signals } = useInspectContext()
 
   const [showingMoreChannels, setShowingMoreChannels] = React.useState(false)
   const [showingMorePublishers, setShowingMorePublishers] = React.useState(false)

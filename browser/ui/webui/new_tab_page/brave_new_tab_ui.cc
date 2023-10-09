@@ -77,6 +77,10 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
                      base::FeatureList::IsEnabled(
                          brave_news::features::kBraveNewsCardPeekFeature));
 
+  source->AddBoolean(
+      "featureFlagBraveNewsFeedV2Enabled",
+      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeedUpdate));
+
   web_ui->AddMessageHandler(base::WrapUnique(BraveNewTabMessageHandler::Create(
       source, profile, was_restored && !is_visible)));
   web_ui->AddMessageHandler(

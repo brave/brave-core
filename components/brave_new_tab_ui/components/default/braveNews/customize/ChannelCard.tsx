@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import * as React from 'react'
 import Flex from '$web-common/Flex'
 import FollowButton from './FollowButton'
-import { useChannelSubscribed } from './Context'
+import { useChannelSubscribed } from '../../../../../brave_news/browser/resources/shared/Context'
 import { channelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
 import { getLocale } from '$web-common/locale'
 

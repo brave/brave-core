@@ -21,7 +21,7 @@ import {
 
 import { getLocale } from '../../../common/locale'
 import { Publishers } from '../../../brave_news/browser/resources/shared/api'
-import { BraveNewsContext } from '../../components/default/braveNews/customize/Context'
+import { BraveNewsContext } from '../../../brave_news/browser/resources/shared/Context'
 
 // Icons
 import { CloseStrokeIcon } from 'brave-ui/components/icons'

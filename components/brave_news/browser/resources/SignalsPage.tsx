@@ -14,6 +14,7 @@ import Flex from '$web-common/Flex'
 import { Channel, Publisher } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import styled from 'styled-components';
 import FeedStats, { getFeedStats } from './FeedStats';
+import { useBraveNews } from './shared/Context';
 
 interface Props {
 }
@@ -58,7 +59,9 @@ const getPublisherKey = (p: Publisher) => p.publisherId
 const getPublisherName = (p: Publisher) => p.publisherName
 
 export default function SignalsPage(props: Props) {
-  const { publishers, channels, feed, truncate, setTruncate } = useInspectContext();
+  const { feed, truncate, setTruncate } = useInspectContext();
+  const { channels, publishers } = useBraveNews();
+
   const [show, setShow] = React.useState<'all' | 'publishers' | 'channels'>('all')
   const [sort, setSort] = React.useState<'name' | 'subscribed' | 'visitWeight' | 'shownCount'>('visitWeight')
   const [filter, setFilter] = React.useState('')

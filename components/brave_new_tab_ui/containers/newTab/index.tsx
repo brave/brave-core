@@ -33,7 +33,8 @@ import { BraveNewsState } from '../../reducers/today'
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import Settings, { TabType as SettingsTabType } from './settings'
 
-import { BraveNewsContextProvider } from '../../components/default/braveNews/customize/Context'
+import { BraveNewsContextProvider } from '../../../brave_news/browser/resources/shared/Context'
+import BraveNewsModal from '../../components/default/braveNews/customize/Modal'
 import BraveNewsHint from '../../components/default/braveNews/hint'
 import GridWidget from './gridWidget'
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
@@ -760,6 +761,7 @@ class NewTabPage extends React.Component<Props, State> {
               onSave={this.saveNewTopSite}
             /> : null
         }
+        <BraveNewsModal/>
         </BraveNewsContextProvider>
       </Page.App>
     )

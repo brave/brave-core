@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import Flex from '$web-common/Flex'
 import FollowButton from './FollowButton'
 import { getCardColor } from './colors'
-import { usePublisher, usePublisherFollowed } from './Context'
+import { usePublisher, usePublisherFollowed } from '../../../../../brave_news/browser/resources/shared/Context'
 import { useLazyUnpaddedImageUrl } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
 import getBraveNewsController from '../../../../../brave_news/browser/resources/shared/api'
 

@@ -6,10 +6,10 @@
 import * as React from 'react'
 import styled, { createGlobalStyle, css } from 'styled-components'
 import { requestAnimationFrameThrottle } from '../../../../common/throttle'
+import { defaultState } from '../../../storage/new_tab_storage'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'
-const CLASSNAME_PAGE_STUCK = 'page-stuck'
 
 const singleColumnSmallViewport = css`
  @media screen and (max-width: ${breakpointEveryBlock}) {
@@ -36,7 +36,7 @@ type PageProps = {
   showBrandedWallpaper: boolean
 } & HasImageProps
 
-function getItemRowCount (p: PageProps): number {
+function getItemRowCount(p: PageProps): number {
   let right = (p.showClock ? 1 : 0) + (p.showCryptoContent ? 2 : 0)
   let left = (p.showStats ? 1 : 0) + (p.showTopSites ? 1 : 0)
   // Has space for branded logo to sit next to something on right?
@@ -46,7 +46,7 @@ function getItemRowCount (p: PageProps): number {
   return Math.max(left, right) + 1 // extra 1 for footer
 }
 
-const StyledPage = styled('div')<PageProps>`
+const StyledPage = styled('div') <PageProps>`
   /* Increase the explicit row count when adding new widgets
      so that the footer goes in the correct location always,
      yet can still merge upwards to previous rows. */
@@ -84,22 +84,20 @@ const StyledPage = styled('div')<PageProps>`
   /* Fix the main NTP content so, when Brave News is in-view,
   NTP items remain in the same place, and still allows NTP
   Page to scroll to the bottom before that starts happening. */
-  .${CLASSNAME_PAGE_STUCK} & {
-    z-index: 3;
-    position: fixed;
-    bottom: 0;
-    /* Blur out the content when Brave News is interacted
-      with. We need the opacity to fade out our background image.
-      We need the background image to overcome the bug
-      where a backdrop-filter element's ancestor which has
-      a filter must also have a background. When this bug is
-      fixed then this element won't need the background.
-    */
-    opacity: calc(1 - var(--ntp-extra-content-effect-multiplier));
-    filter: blur(var(--blur-amount));
-    background: var(--default-bg-color);
-    ${getPageBackground}
-  }
+  z-index: 3;
+  position: fixed;
+  bottom: 0;
+  /* Blur out the content when Brave News is interacted
+    with. We need the opacity to fade out our background image.
+    We need the background image to overcome the bug
+    where a backdrop-filter element's ancestor which has
+    a filter must also have a background. When this bug is
+    fixed then this element won't need the background.
+  */
+  opacity: calc(1 - var(--ntp-extra-content-effect-multiplier));
+  filter: blur(var(--blur-amount));
+  background: var(--default-bg-color);
+  ${getPageBackground}
 
   @media screen and (max-width: ${breakpointEveryBlock}) {
     display: flex;
@@ -138,16 +136,13 @@ export const Page: React.FunctionComponent<PageProps> = (props) => {
             : (scrollPast - blurLowerLimit) / (blurUpperLimit - blurLowerLimit)
         if (root) {
           root.style.setProperty('--ntp-extra-content-effect-multiplier', blurAmount.toString())
-          root.style.setProperty('--ntp-fixed-content-height', Math.round(element.clientHeight) + 'px')
-          root.classList.add(CLASSNAME_PAGE_STUCK)
         }
       } else {
         if (root) {
           root.style.setProperty('--ntp-extra-content-effect-multiplier', '0')
-          root.style.setProperty('--ntp-fixed-content-height', '0px')
-          root.classList.remove(CLASSNAME_PAGE_STUCK)
         }
       }
+      root?.style.setProperty('--ntp-fixed-content-height', Math.round(element.clientHeight) + 'px')
     })
 
     window.addEventListener('scroll', sub)
@@ -198,11 +193,11 @@ export const GridItemSponsoredImageClickArea = styled.section<{ otherWidgetsHidd
 
   @media screen and (max-width: ${breakpointEveryBlock}) {
     ${(p) =>
-      p.otherWidgetsHidden
-        ? css`
+    p.otherWidgetsHidden
+      ? css`
             flex-grow: 2;
           `
-        : css`
+      : css`
             display: none
           `}
   }
@@ -243,11 +238,9 @@ export const GridItemBrandedLogo = styled(GridItemCredits)`
     position: fixed;
     bottom: var(--ntp-page-padding);
     left: var(--ntp-page-padding);
-    .${CLASSNAME_PAGE_STUCK} & {
       // When page is also position: fixed, then we are relative to that
       bottom: 0;
       left: 0;
-    }
   }
 `
 
@@ -269,7 +262,7 @@ export const GridItemNavigation = styled('section')`
   }
 `
 
-export const GridItemNavigationBraveNews = styled('div')<{}>`
+export const GridItemNavigationBraveNews = styled('div') <{}>`
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -281,7 +274,7 @@ export const GridItemNavigationBraveNews = styled('div')<{}>`
   }
 `
 
-export const Footer = styled('footer')<{}>`
+export const Footer = styled('footer') <{}>`
   /* Child items are primary Grid items and can slot in to free spaces,
      so this element doesn't do anything on wider viewport widths. */
   display: contents;
@@ -309,7 +302,25 @@ export const FooterContent = styled('div')`
   }
 `
 
-function getPageBackground (p: HasImageProps) {
+// Gets the value of the CSS `background` property.
+function getBackground(p: HasImageProps) {
+  if (!p.hasImage) {
+    return p.colorForBackground || `linear-gradient(to bottom right, #4D54D1, #A51C7B 50%, #EE4A37 100%)`
+  }
+
+  if (p.hasImage && p.imageSrc) {
+    return `linear-gradient(
+      rgba(0, 0, 0, 0.8),
+      rgba(0, 0, 0, 0) 35%,
+      rgba(0, 0, 0, 0) 80%,
+      rgba(0, 0, 0, 0.6) 100%
+    ), url("${p.imageSrc}")`
+  }
+
+  return ''
+}
+
+function getPageBackground(p: HasImageProps) {
   // Page background is duplicated since a backdrop-filter's
   // ancestor which has blur must also have background.
   // In our case, Widgets are the backdrop-filter element
@@ -331,27 +342,19 @@ function getPageBackground (p: HasImageProps) {
       right: 0;
       display: block;
       transition: opacity .5s ease-in-out;
-      ${p => !p.hasImage && css`
-        background: ${p.colorForBackground || 'linear-gradient(to bottom right, #4D54D1, #A51C7B 50%, #EE4A37 100%);'}
-      `};
       ${p => p.hasImage && p.imageSrc && css`
         opacity: var(--bg-opacity);
-        background: linear-gradient(
-              rgba(0, 0, 0, 0.8),
-              rgba(0, 0, 0, 0) 35%,
-              rgba(0, 0, 0, 0) 80%,
-              rgba(0, 0, 0, 0.6) 100%
-            ), url("${p.imageSrc}");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
       `};
       background-position: center center;
+      background: ${getBackground};
     }
   `
 }
 
-export const App = styled('div')<AppProps & HasImageProps>`
+export const App = styled('div') <AppProps & HasImageProps>`
   --bg-opacity: ${p => p.imageHasLoaded ? 1 : 0};
   position: relative;
   padding-top: var(--ntp-fixed-content-height, "0px");
@@ -362,9 +365,19 @@ export const App = styled('div')<AppProps & HasImageProps>`
   transition: opacity .125s ease-out;
   opacity: ${p => p.dataIsReady ? 1 : 0};
   ${getPageBackground}
+
+  ${defaultState.featureFlagBraveNewsFeedV2Enabled && css`
+  &::before {
+      /* The FeedV2 has a semi-transparent white overlay. This is done via a
+       * linear-gradient to not break any of the FeedV1 features. */
+      --background-color: rgba(255,255,255, calc(0.3 * var(--ntp-extra-content-effect-multiplier)));
+      background: linear-gradient(var(--background-color), var(--background-color)), ${getBackground};
+        filter: blur(calc(var(--ntp-extra-content-effect-multiplier) * 64px));
+    }
+  `}
 `
 
-export const Link = styled('a')<{}>`
+export const Link = styled('a') <{}>`
   text-decoration: none;
   transition: color 0.15s ease, filter 0.15s ease;
   color: rgba(255, 255, 255, 0.8);
@@ -374,7 +387,7 @@ export const Link = styled('a')<{}>`
   }
 `
 
-export const Label = styled('span')<{}>`
+export const Label = styled('span') <{}>`
   text-decoration: none;
   transition: color 0.15s ease, filter 0.15s ease;
   color: rgba(255, 255, 255, 0.8);
@@ -384,7 +397,7 @@ export const Label = styled('span')<{}>`
   }
 `
 
-export const PhotoName = styled('div')<{}>`
+export const PhotoName = styled('div') <{}>`
   align-self: flex-end;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
@@ -394,7 +407,7 @@ export const PhotoName = styled('div')<{}>`
   white-space: nowrap;
 `
 
-export const Navigation = styled('nav')<{}>`
+export const Navigation = styled('nav') <{}>`
   align-self: flex-end;
   display: flex;
   justify-content: flex-end;
@@ -407,7 +420,7 @@ interface IconButtonProps {
   isClickMenu?: boolean
 }
 
-export const IconLink = styled('a')<{}>`
+export const IconLink = styled('a') <{}>`
   display: block;
   width: 24px;
   height: 24px;
@@ -422,7 +435,7 @@ export const IconLink = styled('a')<{}>`
   }
 `
 
-export const IconButton = styled('button')<IconButtonProps>`
+export const IconButton = styled('button') <IconButtonProps>`
   pointer-events: ${p => p.clickDisabled && 'none'};
   display: flex;
   width: 24px;
@@ -453,7 +466,7 @@ interface IconButtonSideTextProps {
 // element can be a <button> and we can use :focus-visible
 // and not :focus-within which cannot be combined with :focus-visble.
 
-export const IconButtonSideText = styled('label')<IconButtonSideTextProps>`
+export const IconButtonSideText = styled('label') <IconButtonSideTextProps>`
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
@@ -483,7 +496,7 @@ interface IconButtonContainerProps {
   textDirection: string
 }
 
-export const IconButtonContainer = styled('div')<IconButtonContainerProps>`
+export const IconButtonContainer = styled('div') <IconButtonContainerProps>`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
