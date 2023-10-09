@@ -172,6 +172,7 @@ test("brave_unit_tests") {
     "//brave/app:command_ids",
     "//brave/app:unit_tests",
     "//brave/base:base_unittests",
+    "//brave/brave_domains:unit_tests",
     "//brave/browser",
     "//brave/browser:unit_tests",
     "//brave/browser/brave_wallet",

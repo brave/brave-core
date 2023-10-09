@@ -6,15 +6,40 @@
 import("//build/buildflag_header.gni")
 import("buildflags.gni")
 
-# TODO(petemill): Default target for this project could instead be some cpp
-# helpers which create domain names for consumers for the correct environment
-# and can vary based on dynamic cli param overrides.
+source_set("brave_domains") {
+  sources = [
+    "service_domains.cc",
+    "service_domains.h",
+  ]
 
-buildflag_header("brave_domains") {
+  deps = [
+    ":buildflags",
+    "//base",
+  ]
+}
+
+buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
     "BRAVE_SERVICES_PRODUCTION_DOMAIN=\"$brave_services_production_domain\"",
     "BRAVE_SERVICES_STAGING_DOMAIN=\"$brave_services_staging_domain\"",
     "BRAVE_SERVICES_DEV_DOMAIN=\"$brave_services_dev_domain\"",
+  ]
+
+  # Consumers should use the brave_domains helper functions.
+  visibility = [ ":*" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "service_domains_unittest.cc" ]
+
+  deps = [
+    ":brave_domains",
+    ":buildflags",
+    "//base",
+    "//testing/gmock",
+    "//testing/gtest",
   ]
 }
