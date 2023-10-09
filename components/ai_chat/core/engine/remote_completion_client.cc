@@ -31,7 +31,6 @@ namespace ai_chat {
 namespace {
 
 constexpr char kAIChatCompletionPath[] = "v1/complete";
-const char kAIChatHostnamePart[] = "ai-chat";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
