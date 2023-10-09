@@ -12,7 +12,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/brave_domains/buildflags.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -57,11 +57,10 @@ std::string CreateJSONRequestBody(base::ValueView node) {
 }
 
 const GURL GetEndpointBaseUrl() {
-  auto* services_domain = BUILDFLAG(BRAVE_SERVICES_PRODUCTION_DOMAIN);
+  auto domain = brave_domains::GetServicesDomain(kFeedbackHostnamePart);
 
   static base::NoDestructor<GURL> url{
-      base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
-                    kFeedbackHostnamePart, ".", services_domain})};
+      base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator, domain})};
   return *url;
 }
 

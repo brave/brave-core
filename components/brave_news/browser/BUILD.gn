@@ -50,6 +50,7 @@ static_library("browser") {
 
   deps = [
     "//base",
+    "//brave/brave_domains",
     "//brave/components/api_request_helper",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_news/api",
