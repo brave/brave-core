@@ -135,6 +135,7 @@
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
     <color name="wallet_sign_msg_err_bg_color">#FF460A10</color>
+    <color name="wallet_divider_line">#66687485</color>
 
     <color name="rewards_panel_bg_color">#17171F</color>
     <color name="rewards_panel_text_color">#FFFFFF</color>

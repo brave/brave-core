@@ -19,18 +19,25 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="0dp">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/wallet_toolbar_bg_color"
-                android:translationZ="10dp"
                 app:title="@string/wallet"
                 app:titleCentered="true"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:titleTextColor="@color/wallet_text_color" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/wallet_divider_line"
+                app:layout_scrollFlags="scroll|enterAlways|snap" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
@@ -55,20 +62,17 @@
             android:orientation="vertical"
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
 
-            <ImageView
-                android:id="@+id/bottom_container_top_shadow"
+            <View
+                android:id="@+id/bottom_container_top_divider"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_shadow_height"
-                android:scaleType="fitXY"
-                android:scaleY="-1"
-                android:src="@drawable/modern_toolbar_shadow"
-                tools:ignore="ContentDescription" />
+                android:layout_height="1dp"
+                android:background="@color/wallet_divider_line" />
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/wallet_bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:background="@color/wallet_toolbar_bg_color"
+                app:itemBackground="@color/wallet_bg"
                 app:itemTextColor="@color/wallet_bottom_navigation_color"
                 app:itemHorizontalTranslationEnabled="false"
                 app:itemIconTint="@color/wallet_bottom_navigation_color"
