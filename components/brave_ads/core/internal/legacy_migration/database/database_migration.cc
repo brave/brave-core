@@ -96,7 +96,7 @@ void MigrateToVersion(mojom::DBTransactionInfo* transaction,
 
 void MigrateFromVersion(const int from_version, ResultCallback callback) {
   const int to_version = database::kVersion;
-  CHECK(from_version < to_version);
+  CHECK_LT(from_version, to_version);
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
 
