@@ -1515,11 +1515,11 @@ void RewardsDOMHandler::OnGetStatement(
   dict.Set("adsMinEarningsLastMonth", statement->min_earnings_last_month);
   dict.Set("adsMaxEarningsLastMonth", statement->max_earnings_last_month);
 
-  base::Value::Dict ad_types_received;
-  for (const auto& [ad_type, count] : statement->ad_types_received_this_month) {
-    ad_types_received.Set(ad_type, base::Value(count));
+  base::Value::Dict ads_summary;
+  for (const auto& [ad_type, count] : statement->ads_summary_this_month) {
+    ads_summary.Set(ad_type, base::Value(count));
   }
-  dict.Set("adTypesReceivedThisMonth", std::move(ad_types_received));
+  dict.Set("adTypesReceivedThisMonth", std::move(ads_summary));
 
   CallJavascriptFunction("brave_rewards.statement", dict);
 }

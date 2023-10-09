@@ -10,6 +10,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ads_received_util.h"
+#include "brave/components/brave_ads/core/internal/account/statement/ads_summary_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/earnings_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
@@ -68,12 +69,20 @@ std::pair<double, double> GetEstimatedEarningsForLastMonth(
   return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
-base::flat_map<std::string, int32_t> GetAdTypesReceivedThisMonth(
+int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {
+  const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
+  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
+
+  return static_cast<int32_t>(
+      GetAdsReceivedForDateRange(transactions, from_time, to_time));
+}
+
+base::flat_map<std::string, int32_t> GetAdsSummaryThisMonth(
     const TransactionList& transactions) {
   const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
-  return GetAdTypesReceivedForDateRange(transactions, from_time, to_time);
+  return GetAdsSummaryForDateRange(transactions, from_time, to_time);
 }
 
 }  // namespace brave_ads

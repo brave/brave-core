@@ -51,6 +51,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/issuers/payments_issuer_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/issuers/public_key_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/statement/ads_received_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/account/statement/ads_summary_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/statement/earnings_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/statement/next_payment_date_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/statement/statement_feature_unittest.cc",
