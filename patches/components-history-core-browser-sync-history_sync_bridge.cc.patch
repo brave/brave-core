@@ -1,16 +1,8 @@
 diff --git a/components/history/core/browser/sync/history_sync_bridge.cc b/components/history/core/browser/sync/history_sync_bridge.cc
-index fa9299a9e658e6f79a311a4d578ed9dfa72365e3..e8fc579d335b0219454dc472df9cec2a883ef34a 100644
+index fa9299a9e658e6f79a311a4d578ed9dfa72365e3..41696837ac83c59ca8ce05ee4f8ca4c63d32b429 100644
 --- a/components/history/core/browser/sync/history_sync_bridge.cc
 +++ b/components/history/core/browser/sync/history_sync_bridge.cc
-@@ -10,6 +10,7 @@
- #include "base/functional/bind.h"
- #include "base/logging.h"
- #include "base/metrics/histogram_functions.h"
-+#include "base/strings/strcat.h"
- #include "base/strings/string_number_conversions.h"
- #include "base/strings/stringprintf.h"
- #include "base/strings/utf_string_conversions.h"
-@@ -443,11 +444,8 @@ std::unique_ptr<syncer::EntityData> MakeEntityData(
+@@ -443,11 +443,8 @@ std::unique_ptr<syncer::EntityData> MakeEntityData(
  
    history->set_originator_cluster_id(local_cluster_id);
  
@@ -20,7 +12,7 @@ index fa9299a9e658e6f79a311a4d578ed9dfa72365e3..e8fc579d335b0219454dc472df9cec2a
 -      base::StringPrintf("%s-%s", history->originator_cache_guid().c_str(),
 -                         redirect_visits.back().url_row.url().spec().c_str());
 +  // The entity name is used for debugging purposes.
-+  entity_data->name = base::StrCat({history->originator_cache_guid(), "_", base::NumberToString(history->visit_time_windows_epoch_micros())});
++  entity_data->name = history->originator_cache_guid();
  
    return entity_data;
  }
