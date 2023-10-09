@@ -8,6 +8,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,6 +25,7 @@
 #include "content/public/test/web_contents_tester.h"
 #include "content/test/test_web_contents.h"
 #include "gmock/gmock.h"
+#include "gtest/gtest.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
 #include "services/network/test/test_network_context.h"
@@ -158,6 +160,10 @@ class NavigationHandleMock : public content::NavigationHandle {
   MOCK_METHOD(int, GetInitiatorProcessId, (), (override));
   MOCK_METHOD(const absl::optional<url::Origin>&,
               GetInitiatorOrigin,
+              (),
+              (override));
+  MOCK_METHOD(network::mojom::WebSandboxFlags,
+              SandboxFlagsInitiator,
               (),
               (override));
   MOCK_METHOD(const absl::optional<GURL>&, GetInitiatorBaseUrl, (), (override));
@@ -313,7 +319,9 @@ class IpfsTabHelperUnitTest : public testing::Test {
     profile_->GetPrefs()->SetBoolean(kIPFSAutoRedirectToConfiguredGateway,
                                      value);
   }
-
+  void SetIpfsCompanionEnabledFlag(bool value) {
+    profile_->GetPrefs()->SetBoolean(kIPFSCompanionEnabled, value);
+  }
   ipfs::IPFSTabHelper* ipfs_tab_helper() {
     return ipfs::IPFSTabHelper::FromWebContents(web_contents_.get());
   }
@@ -353,13 +361,11 @@ class IpfsTabHelperUnitTest : public testing::Test {
 
     auto* helper = ipfs_tab_helper();
     ASSERT_TRUE(helper);
-    helper->SetInitialNavigationData(url);
     helper->SetPageURLForTesting(redirected_to_url);
     helper->SetSetShowFallbackInfobarCallbackForTesting(
         base::BindLambdaForTesting([&](const GURL& initial_navigation_url) {
           EXPECT_EQ(url, initial_navigation_url);
         }));
-
     std::move(callback).Run(helper, &navHandlerMocked);
   }
 
@@ -982,65 +988,45 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_NoRedirect_WhenNoDnsLinkRecord) {
 }
 
 TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
-  const GURL url("https://ipfs.io/ipns/brantly-eth/page?query#ref");
-  const GURL redirected_to_url("ipns://brantly.eth/page?query#ref");
+  const GURL url(
+      "https://ipfs.io/ipns/"
+      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+  const GURL redirected_to_url(
+      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+
+  SetIpfsCompanionEnabledFlag(false);
 
   std::string headers = "HTTP/1.1 500 Internal Server Error\n";
   HeadersToRaw(&headers);
   auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>(headers);
   DetectPageLoadingErrorFallbackTest(
       url, redirected_to_url,
-      base::BindLambdaForTesting([](ipfs::IPFSTabHelper* helper,
-                                    content::NavigationHandleMock* nav_handle) {
-        helper->DidFinishNavigation(nav_handle);
-      }),
+      base::BindLambdaForTesting(
+          [&](ipfs::IPFSTabHelper* helper,
+              content::NavigationHandleMock* nav_handle) {
+            helper->SetPageURLForTesting(url);
+            helper->DidFinishNavigation(nav_handle);
+            EXPECT_EQ(helper->initial_navigation_url_.value(), url);
+            EXPECT_FALSE(helper->auto_redirect_blocked_);
+
+            helper->SetPageURLForTesting(redirected_to_url);
+            helper->DidFinishNavigation(nav_handle);
+            EXPECT_FALSE(helper->initial_navigation_url_.has_value());
+
+            helper->SetFallbackAddress(url);
+            EXPECT_TRUE(helper->auto_redirect_blocked_);
+          }),
       net::Error::OK, false, parsed.get(), 1, 0);
 }
 
-TEST_F(IpfsTabHelperUnitTest,
-       DetectPageLoadingError_RedirectToLocalGateway_ShowInfobar) {
+TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_HeadersOk_ShowInfobar) {
   const GURL url(
       "https://drweb.link/ipns/"
       "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
   const GURL redirected_to_url(
-      "http://localhost:48080/ipns/"
-      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
 
-  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
-  DetectPageLoadingErrorFallbackTest(
-      url, redirected_to_url,
-      base::BindLambdaForTesting([](ipfs::IPFSTabHelper* helper,
-                                    content::NavigationHandleMock* nav_handle) {
-        helper->DidFinishNavigation(nav_handle);
-      }),
-      net::Error::ERR_FAILED, true, parsed.get(), 1, 1);
-}
-
-TEST_F(IpfsTabHelperUnitTest,
-       DetectPageLoadingError_RedirectToIpfsSchema_ShowInfobar) {
-  const GURL url(
-      "http://localhost:48080/ipns/"
-      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
-  const GURL redirected_to_url(
-      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
-
-  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
-  DetectPageLoadingErrorFallbackTest(
-      url, redirected_to_url,
-      base::BindLambdaForTesting([](ipfs::IPFSTabHelper* helper,
-                                    content::NavigationHandleMock* nav_handle) {
-        helper->DidFinishNavigation(nav_handle);
-      }),
-      net::Error::ERR_FAILED, true, parsed.get(), 0, 0);
-}
-
-TEST_F(IpfsTabHelperUnitTest,
-       DetectPageLoadingError_RedirectToRemoteGateway_ShowInfobar) {
-  const GURL url(
-      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
-  const GURL redirected_to_url(
-      "https://drweb.link/ipns/"
-      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+  SetIpfsCompanionEnabledFlag(false);
 
   auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
   DetectPageLoadingErrorFallbackTest(
@@ -1048,22 +1034,57 @@ TEST_F(IpfsTabHelperUnitTest,
       base::BindLambdaForTesting(
           [&](ipfs::IPFSTabHelper* helper,
               content::NavigationHandleMock* nav_handle) {
+            helper->initial_navigation_url_ = url;
             helper->DidFinishNavigation(nav_handle);
+            EXPECT_FALSE(helper->initial_navigation_url_.has_value());
+
+            helper->SetFallbackAddress(url);
+            EXPECT_TRUE(helper->auto_redirect_blocked_);
           }),
       net::Error::ERR_FAILED, true, parsed.get(), 1, 1);
+}
+
+TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_IPFSCompanion_Enabled) {
+  const GURL url(
+      "https://drweb.link/ipns/"
+      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+  const GURL redirected_to_url(
+      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+
+  SetIpfsCompanionEnabledFlag(true);
+
+  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
+  DetectPageLoadingErrorFallbackTest(
+      url, redirected_to_url,
+      base::BindLambdaForTesting(
+          [&](ipfs::IPFSTabHelper* helper,
+              content::NavigationHandleMock* nav_handle) {
+            helper->SetPageURLForTesting(url);
+            helper->DidFinishNavigation(nav_handle);
+
+            EXPECT_FALSE(helper->initial_navigation_url_.has_value());
+            EXPECT_FALSE(helper->auto_redirect_blocked_);
+          }),
+      net::Error::ERR_FAILED, true, parsed.get(), 0, 0);
 }
 
 TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_NoRedirectAsNonIPFSLink) {
   const GURL url("https://abcaddress.moc/");
   const GURL redirected_to_url("https://abcaddress.moc/");
 
+  SetIpfsCompanionEnabledFlag(false);
+
   auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
   DetectPageLoadingErrorFallbackTest(
       url, redirected_to_url,
       base::BindLambdaForTesting(
           [&](ipfs::IPFSTabHelper* helper,
               content::NavigationHandleMock* nav_handle) {
+            helper->initial_navigation_url_.reset();
+            helper->SetPageURLForTesting(url);
             helper->DidFinishNavigation(nav_handle);
+            EXPECT_FALSE(helper->initial_navigation_url_.has_value());
+            EXPECT_FALSE(helper->auto_redirect_blocked_);
           }),
       net::Error::ERR_FAILED, true, parsed.get(), 0, 0);
 }

@@ -18,6 +18,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class NavigationHandle;
@@ -62,8 +63,6 @@ class IPFSTabHelper : public content::WebContentsObserver,
       base::RepeatingCallback<void(const GURL&)> callback) {
     redirect_callback_for_testing_ = callback;
   }
-
-  void SetInitialNavigationData(const GURL& url);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
@@ -113,15 +112,10 @@ class IPFSTabHelper : public content::WebContentsObserver,
                            GatewayIPNS_No_Redirect_WhenNoDnsLink);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
                            DetectPageLoadingError_ShowInfobar);
-  FRIEND_TEST_ALL_PREFIXES(
-      IpfsTabHelperUnitTest,
-      DetectPageLoadingError_RedirectToLocalGateway_ShowInfobar);
-  FRIEND_TEST_ALL_PREFIXES(
-      IpfsTabHelperUnitTest,
-      DetectPageLoadingError_RedirectToIpfsSchema_ShowInfobar);
-  FRIEND_TEST_ALL_PREFIXES(
-      IpfsTabHelperUnitTest,
-      DetectPageLoadingError_RedirectToRemoteGateway_ShowInfobar);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           DetectPageLoadingError_HeadersOk_ShowInfobar);
+  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
+                           DetectPageLoadingError_IPFSCompanion_Enabled);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
                            DetectPageLoadingError_NoRedirectAsNonIPFSLink);
   friend class content::WebContentsUserData<IPFSTabHelper>;
@@ -147,7 +141,6 @@ class IPFSTabHelper : public content::WebContentsObserver,
   // content::WebContentsObserver
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DidStartNavigation(content::NavigationHandle* handle) override;
 
   void UpdateLocationBar();
 
@@ -175,6 +168,8 @@ class IPFSTabHelper : public content::WebContentsObserver,
   base::RepeatingCallback<void(const GURL&)>
       show_fallback_infobar_callback_for_testing_;
   std::unique_ptr<IPFSHostResolver> resolver_;
+  absl::optional<GURL> initial_navigation_url_;
+  bool auto_redirect_blocked_{false};
   base::WeakPtrFactory<IPFSTabHelper> weak_ptr_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

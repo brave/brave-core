@@ -15,6 +15,7 @@
 #include "brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -25,6 +26,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_delegate.h"
@@ -48,8 +50,6 @@ const char kDnsDomainPrefix[] = "_dnslink.";
 // The value of the header is the IPFS path of the returned payload.
 const char kIfpsPathHeader[] = "x-ipfs-path";
 
-constexpr char kIpfsInitialNavigationDataKey[] = "initial_navigation_data_key";
-
 // Sets current executable as default protocol handler in a system.
 void SetupIPFSProtocolHandler(const std::string& protocol) {
   auto isDefaultCallback = [](const std::string& protocol,
@@ -69,21 +69,6 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
   base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(protocol)
       ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
 }
-
-class IpfsInitialNavigationDat : public base::SupportsUserData::Data {
- public:
-  IpfsInitialNavigationDat(const IpfsInitialNavigationDat&) = default;
-  IpfsInitialNavigationDat(IpfsInitialNavigationDat&&) = delete;
-  IpfsInitialNavigationDat& operator=(const IpfsInitialNavigationDat&) =
-      default;
-  IpfsInitialNavigationDat& operator=(IpfsInitialNavigationDat&&) = delete;
-  explicit IpfsInitialNavigationDat(const GURL& url)
-      : initial_navigation_url(url) {}
-
-  ~IpfsInitialNavigationDat() override = default;
-
-  GURL initial_navigation_url;
-};
 
 }  // namespace
 
@@ -176,7 +161,8 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs, bool is_gateway_url) {
   ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
   bool should_redirect =
       pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
-  if (ipfs.is_valid() && should_redirect) {
+
+  if (ipfs.is_valid() && should_redirect && !auto_redirect_blocked_) {
     LoadUrl(GetIPFSResolvedURL());
     return;
   }
@@ -209,7 +195,6 @@ void IPFSTabHelper::LoadUrl(const GURL& gurl) {
     redirect_callback_for_testing_.Run(gurl);
     return;
   }
-
   content::OpenURLParams params(gurl, content::Referrer(),
                                 WindowOpenDisposition::CURRENT_TAB,
                                 ui::PAGE_TRANSITION_LINK, false);
@@ -361,7 +346,7 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
 
   auto possible_redirect = ResolveIPFSUrlFromGatewayLikeUrl(current_url);
   if (possible_redirect && IsIPFSScheme(possible_redirect.value())) {
-    if (IsAutoRedirectIPFSResourcesEnabled()) {
+    if (IsAutoRedirectIPFSResourcesEnabled() && !auto_redirect_blocked_) {
       LoadUrl(possible_redirect.value());
     } else {
       IPFSResourceLinkResolved(possible_redirect.value());
@@ -406,47 +391,38 @@ void IPFSTabHelper::MaybeSetupIpfsProtocolHandlers(const GURL& url) {
   }
 }
 
-void IPFSTabHelper::DidStartNavigation(content::NavigationHandle* handle) {
-  DCHECK(handle);
-  if (!handle->IsInMainFrame() || handle->IsSameDocument()) {
-    return;
-  }
-
-  const auto visible_url(web_contents()->GetVisibleURL());
-  if (!visible_url.SchemeIsHTTPOrHTTPS() && !IsIPFSScheme(visible_url)) {
-    return;
-  }
-
-  SetInitialNavigationData(visible_url);
-}
-
 void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
   DCHECK(handle);
   if (!handle->IsInMainFrame() || !handle->HasCommitted() ||
       handle->IsSameDocument()) {
     return;
   }
-  if (handle->GetResponseHeaders() &&
-      handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
-    MaybeSetupIpfsProtocolHandlers(handle->GetURL());
-  }
-  MaybeCheckDNSLinkRecord(handle->GetResponseHeaders());
 
   const auto current_url = GetCurrentPageURL();
   if (IsIPFSScheme(current_url) || IsLocalGatewayURL(current_url) ||
       ExtractSourceFromGateway(current_url).has_value()) {
     auto const* headers = handle->GetResponseHeaders();
-    const auto* init_navigation_data = static_cast<IpfsInitialNavigationDat*>(
-        web_contents()->GetUserData(kIpfsInitialNavigationDataKey));
-    if ((init_navigation_data &&
-         init_navigation_data->initial_navigation_url != GetCurrentPageURL()) &&
+    auto is_ipfs_companion_enabled(
+        pref_service_->GetBoolean(kIPFSCompanionEnabled));
+    if (!is_ipfs_companion_enabled &&
         ((handle->IsErrorPage() && handle->GetNetErrorCode() != net::OK) ||
          (headers && headers->response_code() != net::HTTP_OK))) {
-      ShowBraveIPFSFallbackInfoBar(
-          init_navigation_data->initial_navigation_url);
-      web_contents()->RemoveUserData(kIpfsInitialNavigationDataKey);
+      if (!initial_navigation_url_.has_value()) {
+        initial_navigation_url_ = GetCurrentPageURL();
+      } else if (initial_navigation_url_.value() != GetCurrentPageURL()) {
+        ShowBraveIPFSFallbackInfoBar(initial_navigation_url_.value());
+        initial_navigation_url_.reset();
+        return;
+      }
     }
   }
+
+  if (handle->GetResponseHeaders() &&
+      handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
+    MaybeSetupIpfsProtocolHandlers(handle->GetURL());
+  }
+  MaybeCheckDNSLinkRecord(handle->GetResponseHeaders());
+  auto_redirect_blocked_ = false;
 }
 
 void IPFSTabHelper::ShowBraveIPFSFallbackInfoBar(
@@ -475,22 +451,15 @@ void IPFSTabHelper::SetFallbackAddress(const GURL& original_url) {
     return;
   }
 
-  entry->SetVirtualURL(original_url);
+  auto url_to_catch = ExtractSourceFromGateway(original_url);
+  if (url_to_catch.has_value()) {
+    auto_redirect_blocked_ = true;
+  }
 
-  if (ExtractSourceFromGateway(original_url).has_value()) {
+  LoadUrl(original_url);
+  if (url_to_catch.has_value()) {
     ipfs_resolved_url_ = web_contents()->GetVisibleURL();
   }
-
-  if (web_contents()->GetDelegate()) {
-    web_contents()->GetDelegate()->NavigationStateChanged(
-        web_contents(), content::INVALIDATE_TYPE_URL);
-  }
-}
-
-void IPFSTabHelper::SetInitialNavigationData(const GURL& url) {
-  auto nav_data = std::make_unique<IpfsInitialNavigationDat>(url);
-  web_contents()->SetUserData(kIpfsInitialNavigationDataKey,
-                              std::move(nav_data));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSTabHelper);
