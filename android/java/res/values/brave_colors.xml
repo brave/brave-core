@@ -220,10 +220,10 @@
     <color name="wallet_secondary_layout_text_color">#495057</color>
     <color name="recovery_phrase_text_color">#F8F9FA</color>
     <color name="rounded_filled_background">#F8F9FA</color>
-    <color name="wallet_toolbar_bg_color">#F8F9FA</color>
+    <color name="wallet_toolbar_bg_color">#F6F7F8</color>
     <color name="chip_outline_selected_color">#F8F9FA</color>
     <color name="tab_color">#FF4081</color>
-    <color name="wallet_bg">#F8F9FA</color>
+    <color name="wallet_bg">#FFFFFF</color>
     <color name="wallet_edittext_outline_color">#AEB1C2</color>
     <color name="wallet_warning_box_bg_color">#FFFFFF</color>
     <color name="recovery_phrase_warning_text_color">#868E96</color>
