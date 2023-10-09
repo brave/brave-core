@@ -80,10 +80,9 @@ std::string RedeemPaymentTokensUrlRequestBuilder::BuildBody(
 }
 
 std::string RedeemPaymentTokensUrlRequestBuilder::BuildPayload() const {
-  const auto dict = base::Value::Dict().Set("paymentId", wallet_.payment_id);
-
   std::string json;
-  CHECK(base::JSONWriter::Write(dict, &json));
+  CHECK(base::JSONWriter::Write(
+      base::Value::Dict().Set("paymentId", wallet_.payment_id), &json));
   return json;
 }
 

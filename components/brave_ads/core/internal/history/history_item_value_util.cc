@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
 
-#include <utility>
-
 #include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
@@ -37,17 +35,11 @@ base::Value::Dict HistoryItemToValue(const HistoryItemInfo& history_item) {
 
 base::Value::List HistoryItemToDetailRowsValue(
     const HistoryItemInfo& history_item) {
-  base::Value::List list;
-
-  auto dict =
+  return base::Value::List().Append(
       base::Value::Dict()
           .Set(kUIAdContentKey, AdContentToValue(history_item.ad_content))
           .Set(kUICategoryContentKey,
-               CategoryContentToValue(history_item.category_content));
-
-  list.Append(std::move(dict));
-
-  return list;
+               CategoryContentToValue(history_item.category_content)));
 }
 
 HistoryItemInfo HistoryItemFromValue(const base::Value::Dict& dict) {
@@ -94,14 +86,12 @@ base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items) {
   int uuid = 0;
 
   for (const auto& history_item : history_items) {
-    auto dict =
+    list.Append(
         base::Value::Dict()
             .Set(kUIUuidKey, base::NumberToString(uuid++))
             .Set(kUIJavaScriptTimestampKey,
                  history_item.created_at.ToJsTimeIgnoringNull())
-            .Set(kUIDetailRowsKey, HistoryItemToDetailRowsValue(history_item));
-
-    list.Append(std::move(dict));
+            .Set(kUIDetailRowsKey, HistoryItemToDetailRowsValue(history_item)));
   }
 
   return list;

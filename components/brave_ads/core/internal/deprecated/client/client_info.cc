@@ -79,17 +79,14 @@ base::Value::Dict ClientInfo::ToValue() const {
     for (const auto& [segmemt, page_score] : item) {
       CHECK(!segmemt.empty());
 
-      base::Value::Dict probability_dict;
-      probability_dict.Set("segment", segmemt);
-      probability_dict.Set("pageScore", base::NumberToString(page_score));
-
-      probabilities_list.Append(std::move(probability_dict));
+      probabilities_list.Append(
+          base::Value::Dict()
+              .Set("segment", segmemt)
+              .Set("pageScore", base::NumberToString(page_score)));
     }
 
-    base::Value::Dict probability_dict;
-    probability_dict.Set("textClassificationProbabilities",
-                         std::move(probabilities_list));
-    probabilities_history_list.Append(std::move(probability_dict));
+    probabilities_history_list.Append(base::Value::Dict().Set(
+        "textClassificationProbabilities", std::move(probabilities_list)));
   }
 
   dict.Set("textClassificationProbabilitiesHistory",
