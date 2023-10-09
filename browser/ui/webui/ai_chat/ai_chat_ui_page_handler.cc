@@ -28,6 +28,7 @@
 #include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "content/public/common/url_constants.h"
 
 namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 32;
@@ -177,6 +178,11 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
+  if (!url.SchemeIs(content::kChromeUIScheme) ||
+      !url.SchemeIs(url::kHttpsScheme)) {
+    return;
+  }
+
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
