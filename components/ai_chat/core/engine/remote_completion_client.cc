@@ -96,12 +96,11 @@ std::string CreateJSONRequestBody(base::ValueView node) {
 }
 
 const GURL GetEndpointBaseUrl(bool premium) {
-  auto* endpoint_suffix = premium ? "-premium.bsg" : ".bsg";
-  auto endpoint = brave_domains::GetServicesDomain(
-      base::StrCat({kAIChatHostnamePart, endpoint_suffix}));
+  auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
+  auto hostname = brave_domains::GetServicesDomain(prefix);
 
   static base::NoDestructor<GURL> url{base::StrCat(
-      {url::kHttpsScheme, url::kStandardSchemeSeparator, endpoint})};
+      {url::kHttpsScheme, url::kStandardSchemeSeparator, hostname})};
 
   return *url;
 }
