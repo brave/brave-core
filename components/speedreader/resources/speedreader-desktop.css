@@ -135,24 +135,30 @@ li {
   padding-inline-end: 0.375rem;
 }
 
+.readtime::after {
+  content: '\b7';
+  display: inherit;
+  padding-inline-start: 0.5rem;
+  padding-inline-end: 0.5rem;
+}
+
 .show_original {
   color: var(--link-color);
   cursor: pointer;
-  display: flex;
-  float: right;
+  display: inline-block;
 }
 
 .show_original::before {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='14' fill='none'%3E%3Cpath fill='%234C54D2' fill-rule='evenodd' d='m4.728 13.28 4.53-6.638.002-.001c.117-.17.334-.481.14-.827-.071-.127-.254-.34-.674-.34H6.4l1.237-4.4a.518.518 0 0 0 .01-.204.537.537 0 0 0-.217-.42.602.602 0 0 0-.817.097L.94 7.476l-.001.001c-.084.12-.337.477-.131.847.073.132.259.353.681.353h2.68l-.55 4.262a.325.325 0 0 0-.005.04L3.612 13l-.005.044a.19.19 0 0 0 .003.054.303.303 0 0 1 .005.054.559.559 0 0 0 .57.513c.252 0 .466-.16.543-.386Zm.738-7.006c.177.2.418.31.68.31h1.76l-2.833 4.18.288-2.239a.78.78 0 0 0-.176-.668c-.171-.192-.424-.29-.75-.29H2.338L5.884 3.24l-.663 2.167c-.055.303.04.635.245.867Zm4.43-4.982a.708.708 0 1 0 0 1.416h6.667a.708.708 0 0 0 0-1.416H9.896Zm.958 4.041c0-.391.318-.708.709-.708h5a.708.708 0 0 1 0 1.417h-5a.708.708 0 0 1-.709-.709ZM7.521 12c0-.391.317-.708.708-.708h8.334a.708.708 0 1 1 0 1.416H8.229A.708.708 0 0 1 7.521 12Zm2.083-3.333c0-.392.317-.709.709-.709h6.25a.708.708 0 0 1 0 1.417h-6.25a.708.708 0 0 1-.709-.708Z' clip-rule='evenodd'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath fill='%23687485' fill-rule='evenodd' d='M3.832 4.932A2.932 2.932 0 0 1 6.764 2h10.472a2.932 2.932 0 0 1 2.931 2.932v14.136A2.932 2.932 0 0 1 17.236 22H6.764a2.932 2.932 0 0 1-2.932-2.932V4.932Zm2.932-1.257c-.694 0-1.256.563-1.256 1.257v14.136c0 .694.562 1.257 1.256 1.257h10.472c.694 0 1.256-.563 1.256-1.257V4.932c0-.694-.562-1.257-1.256-1.257H6.764ZM7.896 6.9c0-.5.405-.905.905-.905h6.566a.905.905 0 1 1 0 1.81H8.801a.905.905 0 0 1-.905-.905Zm.905 2.495a.905.905 0 1 0 0 1.811h6.566a.905.905 0 1 0 0-1.81H8.801Zm-.905 4.306c0-.5.405-.905.905-.905h6.566a.905.905 0 1 1 0 1.81H8.801a.905.905 0 0 1-.905-.905Zm.905 2.494a.905.905 0 0 0 0 1.811h4.47a.905.905 0 1 0 0-1.81H8.8Z' clip-rule='evenodd'/%3E%3C/svg%3E");
   -webkit-mask-position: left;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: 1.15rem;
 
   background-color: var(--link-color);
   content: '';
-  display: inherit;
+  display: inline-block;
+  vertical-align: -0.20rem;
   height: 1rem;
-  padding-top: 0.625rem;
   width: 1.85rem;
 }
 
