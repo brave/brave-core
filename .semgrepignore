@@ -1,3 +1,29 @@
+# Common large paths
+node_modules/
+build/
+dist/
+vendor/
+.env/
+.venv/
+.tox/
+*.min.js
+.npm/
+.yarn/
+
+# Common test paths
+test/
+tests/
+*_test.go
+
+# Semgrep rules folder
+.semgrep
+
+# Semgrep-action log folder
+.semgrep_logs/
+
+# Chromium Tests
+*test.cc
+
 # Ignore third_party rust libraries
 third_party/rust/
 tools/crates/cargo_audit/
