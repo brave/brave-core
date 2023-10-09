@@ -323,7 +323,7 @@ void BitcoinRpc::OnGetUtxoList(GetUtxoListCallback callback,
     return ReplyWithInvalidJsonError(std::move(callback));
   }
 
-  std::vector<UnspentOutput> result;
+  UnspentOutputs result;
 
   for (const auto& item : *items) {
     auto utxo = UnspentOutput::FromValue(item);
@@ -429,6 +429,12 @@ void BitcoinRpc::MaybeStartQueuedRequest() {
                      std::move(request.callback)),
       {}, {.auto_retry_on_network_change = true},
       std::move(request.conversion_callback));
+}
+
+void BitcoinRpc::SetUrlLoaderFactoryForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  api_request_helper_->SetUrlLoaderFactoryForTesting(  // IN-TEST
+      std::move(url_loader_factory));
 }
 
 }  // namespace brave_wallet::bitcoin_rpc

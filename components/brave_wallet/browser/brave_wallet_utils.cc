@@ -43,6 +43,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
@@ -531,7 +532,7 @@ const mojom::NetworkInfo* GetBitcoinMainnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Bitcoin Mainnet",
-       {""},  // TODO(apaymyshev): explorer url
+       {"https://blockstream.info"},
        {},
        0,
        {BitcoinMainnetRpcUrl()},
@@ -551,7 +552,7 @@ const mojom::NetworkInfo* GetBitcoinTestnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Bitcoin Testnet",
-       {""},  // TODO(apaymyshev): explorer url
+       {"https://blockstream.info/testnet"},
        {},
        0,
        {BitcoinTestnetRpcUrl()},
@@ -1765,6 +1766,10 @@ std::string GenerateRandomHexString() {
 std::string GetWeb3ClientVersion() {
   return base::StringPrintf(
       "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
+}
+
+std::string WalletInternalErrorMessage() {
+  return l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
 }
 
 }  // namespace brave_wallet

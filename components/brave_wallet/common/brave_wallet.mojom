@@ -1358,7 +1358,6 @@ interface JsonRpcService {
 };
 
 struct BitcoinKeyId {
-  uint32 account;
   uint32 change;
   uint32 index;
 };
@@ -1375,17 +1374,9 @@ struct BitcoinUnspentOutput {
   uint64 value;
 };
 
-struct BitcoinAddressInfo {
-  BitcoinKeyId key_id;
+struct BitcoinAddress {
   string address_string;
-  uint64 balance;
-  array<BitcoinUnspentOutput>? utxo_list;
-};
-
-struct BitcoinAccountInfo {
-  string name;
-  array<BitcoinAddressInfo> address_infos;
-  uint64 balance;
+  BitcoinKeyId key_id;
 };
 
 struct BitcoinBalance {
@@ -1393,12 +1384,19 @@ struct BitcoinBalance {
   map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
 };
 
+struct BitcoinAccountInfo {
+  BitcoinAddress next_receive_address;
+  BitcoinAddress next_change_address;
+};
+
 interface BitcoinWalletService {
   // Fetches BitcoinBalance struct for all addresses associated with account_id.
   // Now includes both confirmed and mempool utxos.
-  GetBalance(string network_id, AccountId account_id) => (BitcoinBalance? balance, string? error_message);
-  GetBitcoinAccountInfo(string network_id, AccountId account_id) => (BitcoinAccountInfo? account_info);
-  SendTo(string network_id, AccountId account_id, string address_to, uint64 amount, uint64 fee) => (string txid, string error);
+  GetBalance(AccountId account_id) => (BitcoinBalance? balance, string? error_message);
+
+  // These are parts of wallet internals api(brave://wallet/dev-bitcoin)
+  RunDiscovery(AccountId account_id, bool change) => (BitcoinAddress? address, string? error_message);
+  GetBitcoinAccountInfo(AccountId account_id) => (BitcoinAccountInfo? account_info);
 };
 
 enum TransactionStatus {
@@ -1966,6 +1964,12 @@ interface BraveWalletService {
 
   // Converts a set of ETH addresses to FIL delegated addresses
   ConvertFEVMToFVMAddress(bool is_mainnet, array<string> fevm_addresses) => (map<string, string> result);
+
+  // Returns receiving address for an account. For ETC/SOL/FIL it's account
+  // address. For BTC it checks if 'next receive address' is still not
+  // transacted and tries next one if it is(prefs are changed).
+  GenerateReceiveAddress(AccountId account_id)
+    => (string? address, string? error_message);
 };
 
 // For reporting wallet related P3A metrics.
@@ -1982,7 +1986,7 @@ interface BraveWalletP3A {
   // Called to report an active wallet count for P3A
   RecordActiveWalletCount(int32 count, CoinType coin_type);
 
-  // Called to report displayed NFT count upon viewing the NFT gallery 
+  // Called to report displayed NFT count upon viewing the NFT gallery
   RecordNFTGalleryView(int32 nft_count);
 };
 

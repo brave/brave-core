@@ -44,6 +44,7 @@ import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 import { useAccountOrb } from '../../../../common/hooks/use-orb'
+import { useGenerateReceiveAddressMutation } from '../../../../common/slices/api.slice'
 
 // style
 import {
@@ -66,6 +67,49 @@ import {
 } from './account-settings-modal.style'
 import { VerticalSpacer } from '../../../shared/style'
 
+interface DepositModalProps {
+  selectedAccount: BraveWallet.AccountInfo
+}
+
+const DepositModal = ({ selectedAccount }: DepositModalProps) => {
+  const isMounted = useIsMounted()
+  const orb = useAccountOrb(selectedAccount)
+  const [qrCode, setQRCode] = React.useState<string>('')
+  const [receiveAddress, setReceiveAddress] = React.useState<string>('')
+  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
+
+  // effects
+  React.useEffect(() => {
+    ;(async () => {
+      const address = await generateReceiveAddress(
+        selectedAccount.accountId
+      ).unwrap()
+      setReceiveAddress(address)
+      const qrCode = await generateQRCode(address)
+      if (isMounted) {
+        setQRCode(qrCode)
+      }
+    })()
+  }, [isMounted])
+
+  return (
+    <>
+      <NameAndIcon>
+        <AccountCircle orb={orb} />
+        <AccountName>{selectedAccount.name}</AccountName>
+      </NameAndIcon>
+      <QRCodeWrapper src={qrCode} />
+      <CopyTooltip text={receiveAddress}>
+        <AddressButton>
+          {receiveAddress}
+          <CopyIcon />
+        </AddressButton>
+      </CopyTooltip>
+      <VerticalSpacer space={20} />
+    </>
+  )
+}
+
 export const AccountSettingsModal = () => {
   // custom hooks
   const isMounted = useIsMounted()
@@ -83,7 +127,6 @@ export const AccountSettingsModal = () => {
   const [password, setPassword] = React.useState<string>('')
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [isCorrectPassword, setIsCorrectPassword] = React.useState<boolean>(true)
-  const [qrCode, setQRCode] = React.useState<string>('')
 
   // custom hooks
   const { attemptPasswordEntry } = usePasswordAttempts()
@@ -128,16 +171,6 @@ export const AccountSettingsModal = () => {
     )
     return result ? onClose() : setUpdateError(true)
   }, [selectedAccount, accountName, dispatch, onClose])
-
-  const generateQRData = React.useCallback(() => {
-    if (selectedAccount) {
-      generateQRCode(selectedAccount.address).then(qr => {
-        if (isMounted) {
-          setQRCode(qr)
-        }
-      })
-    }
-  }, [selectedAccount, isMounted])
 
   const onShowPrivateKey = async () => {
     if (!password || !selectedAccount) { // require password to view key
@@ -199,30 +232,13 @@ export const AccountSettingsModal = () => {
     return ''
   }, [accountModalType])
 
-  const orb = useAccountOrb(selectedAccount)
-
-  // effects
-  React.useEffect(() => {
-    generateQRData()
-  }, [])
-
   // render
   return (
     <PopupModal title={getLocale(modalTitle)} onClose={onClickClose}>
       <Line />
       <StyledWrapper>
-        {accountModalType === 'deposit' &&
-          <>
-            <NameAndIcon>
-              <AccountCircle orb={orb} />
-              <AccountName>{selectedAccount?.name ?? ''}</AccountName>
-            </NameAndIcon>
-            <QRCodeWrapper src={qrCode} />
-            <CopyTooltip text={selectedAccount?.address ?? ''}>
-              <AddressButton>{selectedAccount?.address ?? ''}<CopyIcon /></AddressButton>
-            </CopyTooltip>
-            <VerticalSpacer space={20} />
-          </>
+        {selectedAccount && accountModalType === 'deposit' &&
+          <DepositModal selectedAccount={selectedAccount} />
         }
         {accountModalType === 'edit' &&
           <>

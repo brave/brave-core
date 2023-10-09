@@ -22,19 +22,23 @@ class BitcoinKeyring : public HDKeyring {
   BitcoinKeyring(const BitcoinKeyring&) = delete;
   BitcoinKeyring& operator=(const BitcoinKeyring&) = delete;
 
-  absl::optional<std::string> GetAddress(const mojom::BitcoinKeyId& key_id);
+  absl::optional<std::string> GetAddress(uint32_t account,
+                                         const mojom::BitcoinKeyId& key_id);
 
   absl::optional<std::vector<uint8_t>> GetPubkey(
+      uint32_t account,
       const mojom::BitcoinKeyId& key_id);
 
   absl::optional<std::vector<uint8_t>> SignMessage(
+      uint32_t account,
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message);
 
  private:
   std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
   std::unique_ptr<HDKeyBase> DeriveAccount(uint32_t index) const override;
-  std::unique_ptr<HDKeyBase> DeriveKey(const mojom::BitcoinKeyId& key_id);
+  std::unique_ptr<HDKeyBase> DeriveKey(uint32_t account,
+                                       const mojom::BitcoinKeyId& key_id);
 
   bool testnet_ = false;
 };

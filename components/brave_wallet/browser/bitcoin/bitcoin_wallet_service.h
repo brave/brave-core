@@ -23,12 +23,10 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
-class GetBalanceContext;
-class GetUtxosContext;
 class CreateTransactionTask;
+class DiscoverNextUnusedAddressTask;
 
 class BitcoinWalletService : public KeyedService,
                              public mojom::BitcoinWalletService,
@@ -43,43 +41,33 @@ class BitcoinWalletService : public KeyedService,
   mojo::PendingRemote<mojom::BitcoinWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BitcoinWalletService> receiver);
 
-  void GetBalance(const std::string& chain_id,
-                  mojom::AccountIdPtr account_id,
+  // mojom::BitcoinWalletService:
+  void GetBalance(mojom::AccountIdPtr account_id,
                   GetBalanceCallback callback) override;
-  void GetBitcoinAccountInfo(const std::string& chain_id,
-                             mojom::AccountIdPtr account_id,
+  void GetBitcoinAccountInfo(mojom::AccountIdPtr account_id,
                              GetBitcoinAccountInfoCallback callback) override;
   mojom::BitcoinAccountInfoPtr GetBitcoinAccountInfoSync(
-      const std::string& chain_id,
-      mojom::AccountIdPtr account_id);
+      const mojom::AccountIdPtr& account_id);
+  void RunDiscovery(mojom::AccountIdPtr account_id,
+                    bool change,
+                    RunDiscoveryCallback callback) override;
 
-  void SendTo(const std::string& chain_id,
-              mojom::AccountIdPtr account_id,
-              const std::string& address_to,
-              uint64_t amount,
-              uint64_t fee,
-              SendToCallback callback) override;
-
-  using UtxoMap =
-      std::map<std::string, std::vector<bitcoin_rpc::UnspentOutput>>;
+  // address -> related utxo list
+  using UtxoMap = std::map<std::string, bitcoin_rpc::UnspentOutputs>;
   using GetUtxosCallback =
       base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
-  void GetUtxos(const std::string& chain_id,
-                mojom::AccountIdPtr account_id,
-                GetUtxosCallback callback);
+  void GetUtxos(mojom::AccountIdPtr account_id, GetUtxosCallback callback);
 
   using CreateTransactionCallback =
       base::OnceCallback<void(base::expected<BitcoinTransaction, std::string>)>;
-  void CreateTransaction(const std::string& chain_id,
-                         mojom::AccountIdPtr account_id,
+  void CreateTransaction(mojom::AccountIdPtr account_id,
                          const std::string& address_to,
                          uint64_t amount,
                          CreateTransactionCallback callback);
 
   using SignAndPostTransactionCallback =
       base::OnceCallback<void(std::string, BitcoinTransaction, std::string)>;
-  void SignAndPostTransaction(const std::string& chain_id,
-                              const mojom::AccountIdPtr& account_id,
+  void SignAndPostTransaction(const mojom::AccountIdPtr& account_id,
                               BitcoinTransaction bitcoin_transaction,
                               SignAndPostTransactionCallback callback);
 
@@ -89,25 +77,28 @@ class BitcoinWalletService : public KeyedService,
                             const std::string& txid,
                             GetTransactionStatusCallback callback);
 
+  using DiscoverNextUnusedAddressCallback = base::OnceCallback<void(
+      base::expected<mojom::BitcoinAddressPtr, std::string>)>;
+  void DiscoverNextUnusedAddress(const mojom::AccountIdPtr& account_id,
+                                 bool change,
+                                 DiscoverNextUnusedAddressCallback callback);
+
   bitcoin_rpc::BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
 
-  absl::optional<std::string> GetUnusedChangeAddress(
-      const mojom::AccountId& account_id);
+  void SetUrlLoaderFactoryForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
   friend CreateTransactionTask;
+  friend DiscoverNextUnusedAddressTask;
 
-  void OnGetAddressStatsForBalance(
-      scoped_refptr<GetBalanceContext> context,
-      std::string address,
-      base::expected<bitcoin_rpc::AddressStats, std::string> stats);
-  void WorkOnGetBalance(scoped_refptr<GetBalanceContext> context);
-
-  void OnGetUtxos(scoped_refptr<GetUtxosContext> context,
-                  std::string address,
-                  base::expected<std::vector<bitcoin_rpc::UnspentOutput>,
-                                 std::string> utxos);
-  void WorkOnGetUtxos(scoped_refptr<GetUtxosContext> context);
+  void OnRunDiscoveryDone(
+      mojom::AccountIdPtr account_id,
+      RunDiscoveryCallback callback,
+      base::expected<mojom::BitcoinAddressPtr, std::string>);
+  void UpdateNextUnusedAddressForAccount(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::BitcoinAddressPtr& address);
 
   void OnPostTransaction(BitcoinTransaction bitcoin_transaction,
                          SignAndPostTransactionCallback callback,

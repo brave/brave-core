@@ -7,12 +7,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/solana_utils.h"
-#include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -636,10 +635,7 @@ TEST(HDKeyUnitTest, SignDer) {
 
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 TEST(HDKeyUnitTest, Bip84TestVectors) {
-  auto seed = MnemonicToSeed(
-      "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
-      "abandon abandon about",
-      "");
+  auto seed = MnemonicToSeed(kMnemonicAbandonAbandon, "");
 
   ASSERT_TRUE(seed);
 
@@ -690,10 +686,7 @@ TEST(HDKeyUnitTest, Bip84TestVectors) {
 }
 
 TEST(HDKeyUnitTest, GetZCashTransparentAddress) {
-  auto seed = MnemonicToSeed(
-      "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
-      "abandon abandon about",
-      "");
+  auto seed = MnemonicToSeed(kMnemonicAbandonAbandon, "");
 
   ASSERT_TRUE(seed);
 
