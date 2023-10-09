@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 #include "base/memory/ptr_util.h"
+#include "brave/browser/ui/autofill/confirm_autocomplete_bubble_controller_impl.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/payments/webauthn_dialog_controller_impl.h"
@@ -30,6 +31,16 @@ bool IsPrivateProfile(content::WebContents* web_contents) {
 
 }  // namespace
 
+#define ConfirmSaveIbanLocally                                                     \
+  ConfirmAutocomplete(                                                             \
+      base::OnceCallback<void(absl::optional<bool>)> callback) const {             \
+    ConfirmAutocompleteBubbleControllerImpl::CreateForWebContents(web_contents()); \
+    ConfirmAutocompleteBubbleControllerImpl::FromWebContents(web_contents())       \
+        ->ShowBubble(std::move(callback));                                         \
+  }                                                                                \
+                                                                                   \
+  void ChromeAutofillClient::ConfirmSaveIbanLocally
+
 class BraveChromeAutofillClient : public ChromeAutofillClient {
  public:
   using ChromeAutofillClient::ChromeAutofillClient;
@@ -50,3 +61,4 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
   if (0) std::unique_ptr<autofill::ChromeAutofillClient> dummy(
 #include "src/chrome/browser/ui/autofill/chrome_autofill_client.cc"
 #undef WrapUnique
+#undef ConfirmSaveIbanLocally

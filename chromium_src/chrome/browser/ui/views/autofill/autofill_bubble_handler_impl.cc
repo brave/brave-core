@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- #include "brave/browser/ui/views/autofill/confirm_autocomplete_bubble_view.h"
- #include "chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.h"
+#include "brave/browser/ui/views/autofill/confirm_autocomplete_bubble_view.h"
+#include "chrome/browser/ui/views/autofill/autofill_bubble_handler_impl.h"
 
 #define ShowMandatoryReauthBubble                                                 \
   ShowConfirmAutocompleteBubble(                                                  \
