@@ -4,10 +4,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_model_type_controller.h"
+#include "brave/components/history/core/browser/sync/brave_history_model_type_controller.h"
 
 #define HistoryDeleteDirectivesModelTypeController \
   BraveHistoryDeleteDirectivesModelTypeController
 
+#define HistoryModelTypeController BraveHistoryModelTypeController
+
 #include "src/components/browser_sync/sync_api_component_factory_impl.cc"
 
+#undef HistoryModelTypeController
 #undef HistoryDeleteDirectivesModelTypeController
