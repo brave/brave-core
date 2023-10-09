@@ -389,6 +389,23 @@ SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
     views::View* child_view = children()[i];
     gfx::Rect child_view_rect = child_view->GetLocalBounds();
     views::View::ConvertRectToScreen(child_view, &child_view_rect);
+    // We use |SidebarButtonView::kMargin|px for spacing between items.
+    // This spacing should be considered as each item's area to know
+    // which item contains |screen_position|. Added half of margin
+    // to items' top & bottom. For first and last items, includes whole
+    // margin to its top & bottom.
+    const bool is_first_item = (i == 0);
+    const bool is_last_item = (i == (child_count - 1));
+
+    // Re-visit when |kMargin| is odd number.
+    CHECK_EQ(0, SidebarButtonView::kMargin % 2);
+    child_view_rect.Outset(
+        gfx::Outsets::TLBR(is_first_item ? SidebarButtonView::kMargin
+                                         : SidebarButtonView::kMargin / 2,
+                           0,
+                           is_last_item ? SidebarButtonView::kMargin
+                                        : SidebarButtonView::kMargin / 2,
+                           0));
 
     if (child_view_rect.Contains(screen_position)) {
       const gfx::Point center_point = child_view_rect.CenterPoint();
