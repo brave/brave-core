@@ -41,7 +41,7 @@ import {
 // Components
 import {
   PortfolioTransactionItem //
-} from '../../../../portfolio-transaction-item/index'
+} from '../../../../portfolio_transaction_item/portfolio_transaction_item'
 import {
   PortfolioAccountItem
 } from '../../../../portfolio-account-item/index'
@@ -339,7 +339,6 @@ export const AccountsAndTransactionsList = ({
                     <PortfolioTransactionItem
                       key={transaction.id}
                       transaction={transaction}
-                      displayAccountName={true}
                     />
                   )}
                 </>

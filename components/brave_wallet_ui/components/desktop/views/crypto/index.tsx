@@ -286,17 +286,7 @@ export const CryptoView = (props: Props) => {
 
         {/* Transactions */}
         <Route path={WalletRoutes.Activity} exact={true}>
-          <WalletPageWrapper
-            wrapContentInBox={true}
-            cardHeader={
-              <PageTitleHeader title={getLocale('braveWalletActivity')} />
-            }
-          >
-            <StyledWrapper>
-              {banners}
-              <TransactionsScreen />
-            </StyledWrapper>
-          </WalletPageWrapper>
+          <TransactionsScreen />
         </Route>
 
         {/* NFT Pinning onboarding page */}
