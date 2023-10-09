@@ -12,9 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_preimage.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/credential_builder.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -26,35 +24,6 @@ namespace {
 
 std::vector<std::string> BuildHeaders() {
   return {"accept: application/json"};
-}
-
-base::Value::Dict BuildCredential(const PaymentTokenInfo& payment_token,
-                                  const std::string& payload) {
-  CHECK(!payload.empty());
-
-  absl::optional<cbr::VerificationKey> verification_key =
-      payment_token.unblinded_token.DeriveVerificationKey();
-  CHECK(verification_key);
-
-  const absl::optional<cbr::VerificationSignature> verification_signature =
-      verification_key->Sign(payload);
-  CHECK(verification_signature);
-
-  const absl::optional<std::string> verification_signature_base64 =
-      verification_signature->EncodeBase64();
-  CHECK(verification_signature_base64);
-
-  const absl::optional<cbr::TokenPreimage> token_preimage =
-      payment_token.unblinded_token.GetTokenPreimage();
-  CHECK(token_preimage);
-
-  const absl::optional<std::string> token_preimage_base64 =
-      token_preimage->EncodeBase64();
-  CHECK(token_preimage_base64);
-
-  return base::Value::Dict()
-      .Set("signature", *verification_signature_base64)
-      .Set("t", *token_preimage_base64);
 }
 
 }  // namespace
@@ -125,21 +94,23 @@ base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
   base::Value::List list;
 
   for (const auto& payment_token : payment_tokens_) {
-    auto dict = base::Value::Dict()
-                    .Set("credential",
-                         base::Value(BuildCredential(payment_token, payload)))
-                    .Set("confirmationType",
-                         payment_token.confirmation_type.ToString());
+    const absl::optional<base::Value::Dict> credential =
+        cbr::BuildCredential(payment_token.unblinded_token, payload);
+    if (!credential) {
+      continue;
+    }
 
     const absl::optional<std::string> public_key_base64 =
         payment_token.public_key.EncodeBase64();
     if (!public_key_base64) {
       NOTREACHED_NORETURN();
-    } else {
-      dict.Set("publicKey", *public_key_base64);
     }
 
-    list.Append(std::move(dict));
+    list.Append(
+        base::Value::Dict()
+            .Set("confirmationType", payment_token.confirmation_type.ToString())
+            .Set("credential", credential->Clone())
+            .Set("publicKey", *public_key_base64));
   }
 
   return list;

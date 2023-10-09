@@ -327,6 +327,8 @@ static_library("internal") {
     "common/challenge_bypass_ristretto/blinded_token_util.cc",
     "common/challenge_bypass_ristretto/blinded_token_util.h",
     "common/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h",
+    "common/challenge_bypass_ristretto/credential_builder.cc",
+    "common/challenge_bypass_ristretto/credential_builder.h",
     "common/challenge_bypass_ristretto/dleq_proof.cc",
     "common/challenge_bypass_ristretto/dleq_proof.h",
     "common/challenge_bypass_ristretto/public_key.cc",
