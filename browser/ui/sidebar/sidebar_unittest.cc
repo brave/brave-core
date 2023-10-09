@@ -136,7 +136,7 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
   EXPECT_EQ(items_size, service()->items().size());
 
-  model()->SetActiveIndex(1, false);
+  model()->SetActiveIndex(1);
   EXPECT_THAT(model()->active_index(), Optional(1u));
 
   // Move item at 1 to 2. This causes active index change because item at 1 was
@@ -175,6 +175,27 @@ TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {
   // instead of adding |talk| url.
   service()->RemoveItemAt(0);
   EXPECT_TRUE(HiddenDefaultSidebarItemsContains(service(), talk));
+}
+
+TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
+  model()->SetActiveIndex(1);
+  EXPECT_THAT(model()->active_index(), Optional(1u));
+
+  SidebarItem item_1 = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+
+  // Check active index is still 1 when new item is added at 2.
+  model()->AddItem(item_1, 2, true);
+  EXPECT_THAT(model()->active_index(), Optional(1u));
+
+  SidebarItem item_2 = SidebarItem::Create(
+      GURL("https://www.braves.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+
+  // Check active index is changed to 2 when new item is added at 1.
+  model()->AddItem(item_2, 1, true);
+  EXPECT_THAT(model()->active_index(), Optional(2u));
 }
 
 TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {
