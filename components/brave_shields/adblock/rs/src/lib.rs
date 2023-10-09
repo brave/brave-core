@@ -8,33 +8,19 @@
 
 mod convert;
 mod engine;
-mod filter_set;
 mod result;
 
 use engine::*;
-use filter_set::*;
 
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = adblock)]
 mod ffi {
-    extern "Rust" {
-        type FilterSet;
-        fn new_filter_set() -> Box<FilterSet>;
-        fn add_filter_list(&mut self, rules: &CxxVector<u8>) -> FilterListMetadataResult;
-        fn add_filter_list_with_permissions(
-            &mut self,
-            rules: &CxxVector<u8>,
-            permission_mask: u8,
-        ) -> FilterListMetadataResult;
-    }
     extern "Rust" {
         type Engine;
         /// Creates a new engine with no rules.
         fn new_engine() -> Box<Engine>;
         /// Creates a new engine with rules from a given filter list.
         fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult;
-        /// Creates a new engine with rules from a given filter set.
-        fn engine_from_filter_set(filter_set: Box<FilterSet>) -> BoxEngineResult;
 
         /// Configures the adblock domain resolver to the call
         /// `resolve_domain_position` implemented in adblock_domain_resolver.cc.
@@ -197,12 +183,6 @@ mod ffi {
 
     struct BoxEngineResult {
         value: Box<Engine>,
-        result_kind: ResultKind,
-        error_message: String,
-    }
-
-    struct FilterListMetadataResult {
-        value: FilterListMetadata,
         result_kind: ResultKind,
         error_message: String,
     }

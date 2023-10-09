@@ -40,8 +40,7 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
 
   HostContentSettingsMap* content_settings();
   void UpdateAdBlockInstanceWithRules(const std::string& rules,
-                                      const std::string& resources = "[]",
-                                      uint8_t permission_mask = 0);
+                                      const std::string& resources = "[]");
   void UpdateAdBlockInstanceWithDAT(const base::FilePath& dat_location,
                                     const std::string& resources = "[]");
   void UpdateCustomAdBlockInstanceWithRules(
@@ -52,9 +51,9 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void GetTestDataDir(base::FilePath* test_data_dir);
   void SetDefaultComponentIdAndBase64PublicKeyForTest();
   void SetRegionalComponentIdAndBase64PublicKeyForTest();
-  bool InstallDefaultAdBlockComponent(
+  bool InstallDefaultAdBlockExtension(
       const std::string& extension_dir = "adblock-default");
-  bool InstallRegionalAdBlockComponent(const std::string& uuid,
+  bool InstallRegionalAdBlockExtension(const std::string& uuid,
                                        bool enable_list = true);
   void SetSubscriptionIntervals();
   void WaitForAdBlockServiceThreads();

@@ -42,6 +42,12 @@ void AdBlockFiltersProvider::NotifyObservers() {
   }
 }
 
+void AdBlockFiltersProvider::LoadDAT(
+    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
+        cb) {
+  LoadDATBuffer(std::move(cb));
+}
+
 base::WeakPtr<AdBlockFiltersProvider> AdBlockFiltersProvider::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }

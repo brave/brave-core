@@ -25,7 +25,6 @@ if (!is_android) {
       "//brave/browser/brave_wallet",
       "//brave/components/brave_component_updater/browser:browser",
       "//brave/components/brave_shields/browser:browser",
-      "//brave/components/brave_shields/browser:test_support",
       "//brave/components/brave_shields/common",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:permission_utils",
