@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 
-#include <utility>
-
 #include "base/no_destructor.h"
 
 namespace brave_ads {
@@ -17,10 +15,8 @@ base::Value::List ToValueList(const SupportedSubdivisions& subdivisions) {
   base::Value::List list;
 
   for (const auto& [subdivision, name] : subdivisions) {
-    auto dict =
-        base::Value::Dict().Set("subdivision", subdivision).Set("name", name);
-
-    list.Append(std::move(dict));
+    list.Append(
+        base::Value::Dict().Set("subdivision", subdivision).Set("name", name));
   }
 
   return list;

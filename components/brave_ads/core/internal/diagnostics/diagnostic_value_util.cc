@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_value_util.h"
 
-#include <utility>
-
 #include "base/check.h"
 
 namespace brave_ads {
@@ -24,11 +22,9 @@ base::Value::List DiagnosticsToValue(const DiagnosticMap& diagnostics) {
   for (const auto& [entry_type, entry] : diagnostics) {
     CHECK(entry);
 
-    auto dict = base::Value::Dict()
+    list.Append(base::Value::Dict()
                     .Set(kNameKey, entry->GetName())
-                    .Set(kValueKey, entry->GetValue());
-
-    list.Append(std::move(dict));
+                    .Set(kValueKey, entry->GetValue()));
   }
 
   return list;

@@ -31,11 +31,9 @@ base::Value::Dict BuildStudiesUserData() {
 
   for (const auto& active_field_trial_group :
        GetActiveFieldTrialStudyGroups()) {
-    auto dict = base::Value::Dict()
+    list.Append(base::Value::Dict()
                     .Set(kTrialNameKey, active_field_trial_group.trial_name)
-                    .Set(kGroupNameKey, active_field_trial_group.group_name);
-
-    list.Append(std::move(dict));
+                    .Set(kGroupNameKey, active_field_trial_group.group_name));
   }
 
   user_data.Set(kStudiesKey, std::move(list));
