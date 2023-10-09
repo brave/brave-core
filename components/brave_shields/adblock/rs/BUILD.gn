@@ -13,7 +13,6 @@ rust_static_library("rust_lib") {
   sources = [
     "src/convert.rs",
     "src/engine.rs",
-    "src/filter_set.rs",
     "src/lib.rs",
     "src/result.rs",
   ]

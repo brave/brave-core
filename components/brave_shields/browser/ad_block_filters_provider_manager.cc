@@ -18,6 +18,22 @@
 
 namespace brave_shields {
 
+namespace {
+
+static void OnDATLoaded(
+    base::OnceCallback<void(DATFileDataBuffer)> collect_and_merge,
+    bool deserialize,
+    const DATFileDataBuffer& dat_buf) {
+  // This manager should never be used for a provider that returns a serialized
+  // DAT. The ability should be removed from the FiltersProvider API when
+  // possible.
+  CHECK(!deserialize);
+
+  std::move(collect_and_merge).Run(dat_buf);
+}
+
+}  // namespace
+
 // static
 AdBlockFiltersProviderManager* AdBlockFiltersProviderManager::GetInstance() {
   static base::NoDestructor<AdBlockFiltersProviderManager> instance;
@@ -51,7 +67,7 @@ void AdBlockFiltersProviderManager::RemoveProvider(
 }
 
 std::string AdBlockFiltersProviderManager::GetNameForDebugging() {
-  return "AdBlockFiltersProviderManager";
+  return "AdBlockCustomFiltersProvider";
 }
 
 void AdBlockFiltersProviderManager::OnChanged() {
@@ -59,48 +75,47 @@ void AdBlockFiltersProviderManager::OnChanged() {
 }
 
 // Use LoadDATBufferForEngine instead, for Filter Provider Manager.
-void AdBlockFiltersProviderManager::LoadFilterSet(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) {
+void AdBlockFiltersProviderManager::LoadDATBuffer(
+    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
+        cb) {
   NOTREACHED();
 }
 
-void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
+void AdBlockFiltersProviderManager::LoadDATBufferForEngine(
     bool is_for_default_engine,
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
+        cb) {
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
-  const auto collect_and_merge = base::BarrierCallback<
-      base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>(
+  const auto collect_and_merge = base::BarrierCallback<DATFileDataBuffer>(
       filters_providers.size(),
       base::BindOnce(&AdBlockFiltersProviderManager::FinishCombinating,
                      weak_factory_.GetWeakPtr(), std::move(cb)));
   for (auto* const provider : filters_providers) {
     task_tracker_.PostTask(
         base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
-        base::BindOnce(&AdBlockFiltersProvider::LoadFilterSet,
-                       provider->AsWeakPtr(), std::move(collect_and_merge)));
-  }
-}
-
-// static
-void RunAllResults(
-    std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
-        results,
-    rust::Box<adblock::FilterSet>* filter_set) {
-  for (auto& cb : results) {
-    std::move(cb).Run(filter_set);
+        base::BindOnce(
+            &AdBlockFiltersProvider::LoadDAT, provider->AsWeakPtr(),
+            base::BindOnce(OnDATLoaded, std::move(collect_and_merge))));
   }
 }
 
 void AdBlockFiltersProviderManager::FinishCombinating(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
-    std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
-        results) {
-  std::move(cb).Run(base::BindOnce(&RunAllResults, std::move(results)));
+    base::OnceCallback<void(bool, const DATFileDataBuffer&)> cb,
+    const std::vector<DATFileDataBuffer>& results) {
+  DATFileDataBuffer combined_list;
+  for (const auto& dat_buf : results) {
+    combined_list.push_back('\n');
+    combined_list.insert(combined_list.end(), dat_buf.begin(), dat_buf.end());
+  }
+  if (combined_list.size() == 0) {
+    // Small workaround for code in
+    // AdBlockService::SourceProviderObserver::OnResourcesLoaded that encodes a
+    // state using an entirely empty DAT.
+    combined_list.push_back('\n');
+  }
+  std::move(cb).Run(false, combined_list);
 }
 
 }  // namespace brave_shields
