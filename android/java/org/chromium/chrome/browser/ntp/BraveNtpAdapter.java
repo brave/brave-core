@@ -72,7 +72,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Wallpaper mWallpaper;
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
     private OnBraveNtpListener mOnBraveNtpListener;
-    private boolean mIsDisplayNews;
+    private boolean mIsDisplayNewsFeed;
     private boolean mIsDisplayNewsOptin;
     private boolean mIsNewsLoading;
     private boolean mIsNewContent;
@@ -105,7 +105,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             SponsoredTab sponsoredTab, Wallpaper wallpaper, Bitmap sponsoredLogo,
             NTPBackgroundImagesBridge nTPBackgroundImagesBridge, boolean isNewsLoading,
             int recyclerViewHeight, boolean isTopSitesEnabled, boolean isBraveStatsEnabled,
-            boolean isDisplayNews, boolean isDisplayNewsOptin) {
+            boolean isDisplayNewsFeed, boolean isDisplayNewsOptin) {
         mActivity = activity;
         mOnBraveNtpListener = onBraveNtpListener;
         mGlide = glide;
@@ -121,7 +121,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mRecyclerViewHeight = recyclerViewHeight;
         mIsTopSitesEnabled = isTopSitesEnabled;
         mIsBraveStatsEnabled = isBraveStatsEnabled;
-        mIsDisplayNews = isDisplayNews;
+        mIsDisplayNewsFeed = isDisplayNewsFeed;
         mIsDisplayNewsOptin = isDisplayNewsOptin;
     }
 
@@ -257,7 +257,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
                 int extraMarginForNews =
-                        (mIsDisplayNewsOptin || shouldDisplayNewsLoading() || mIsDisplayNews)
+                        (mIsDisplayNewsOptin || shouldDisplayNewsLoading() || mIsDisplayNewsFeed)
                         ? dpToPx(mActivity, 30)
                         : 0;
 
@@ -349,7 +349,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int newsLoadingCount = shouldDisplayNewsLoading() ? 1 : 0;
         if (mIsDisplayNewsOptin) {
             return statsCount + topSitesCount + TWO_ITEMS_SPACE + newsLoadingCount;
-        } else if (mIsDisplayNews) {
+        } else if (mIsDisplayNewsFeed) {
             int newsCount = 0;
             if (mNewsItems.size() > 0) {
                 newsCount = mNewsItems.size();
@@ -471,11 +471,11 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public void setDisplayNews(boolean isDisplayNews) {
-        if (mIsDisplayNews != isDisplayNews) {
-            mIsDisplayNews = isDisplayNews;
+    public void setDisplayNewsFeed(boolean isDisplayNewsFeed) {
+        if (mIsDisplayNewsFeed != isDisplayNewsFeed) {
+            mIsDisplayNewsFeed = isDisplayNewsFeed;
 
-            if (mIsDisplayNews) {
+            if (mIsDisplayNewsFeed) {
                 notifyItemRangeChanged(getStatsCount() + getTopSitesCount(), TWO_ITEMS_SPACE);
             } else {
                 notifyItemRangeRemoved(
@@ -490,7 +490,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public boolean shouldDisplayNewsLoading() {
-        return mIsNewsLoading && mIsDisplayNews;
+        return mIsNewsLoading && mIsDisplayNewsFeed;
     }
 
     public int getTopMarginImageCredit() {
