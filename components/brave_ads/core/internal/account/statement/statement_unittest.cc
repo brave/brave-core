@@ -46,7 +46,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
   expected_statement->next_payment_date =
       TimeFromString("7 December 2020 23:59:59.999", /*is_local=*/false);
   expected_statement->ads_received_this_month = 2;
-  expected_statement->ad_types_received_this_month = {{"ad_notification", 2}};
+  expected_statement->ads_summary_this_month = {{"ad_notification", 2}};
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
@@ -117,7 +117,7 @@ TEST_F(BraveAdsStatementTest,
   expected_statement->next_payment_date =
       TimeFromString("7 January 2021 23:59:59.999", /*is_local=*/false);
   expected_statement->ads_received_this_month = 3;
-  expected_statement->ad_types_received_this_month = {{"ad_notification", 3}};
+  expected_statement->ads_summary_this_month = {{"ad_notification", 3}};
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
@@ -175,7 +175,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   expected_statement->next_payment_date =
       TimeFromString("7 January 2021 23:59:59.999", /*is_local=*/false);
   expected_statement->ads_received_this_month = 3;
-  expected_statement->ad_types_received_this_month = {{"ad_notification", 3}};
+  expected_statement->ads_summary_this_month = {{"ad_notification", 3}};
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
@@ -195,7 +195,7 @@ TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
   expected_statement->next_payment_date =
       TimeFromString("7 January 2021 23:59:59.999", /*is_local=*/false);
   expected_statement->ads_received_this_month = 0;
-  expected_statement->ad_types_received_this_month = {};
+  expected_statement->ads_summary_this_month = {};
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
@@ -244,8 +244,8 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
   expected_statement->next_payment_date =
       TimeFromString("7 December 2020 23:59:59.999", /*is_local=*/false);
   expected_statement->ads_received_this_month = 2;
-  expected_statement->ad_types_received_this_month = {{"ad_notification", 1},
-                                                      {"new_tab_page_ad", 1}};
+  expected_statement->ads_summary_this_month = {{"ad_notification", 1},
+                                                {"new_tab_page_ad", 1}};
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));

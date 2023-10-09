@@ -101,6 +101,8 @@ static_library("internal") {
     "account/issuers/public_key_util.h",
     "account/statement/ads_received_util.cc",
     "account/statement/ads_received_util.h",
+    "account/statement/ads_summary_util.cc",
+    "account/statement/ads_summary_util.h",
     "account/statement/earnings_util.cc",
     "account/statement/earnings_util.h",
     "account/statement/next_payment_date_util.cc",

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
 
-#include <numeric>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -34,22 +33,24 @@ void BuildStatement(BuildStatementCallback callback) {
             }
 
             mojom::StatementInfoPtr statement = mojom::StatementInfo::New();
+
             const auto [min_last_month, max_last_month] =
                 GetEstimatedEarningsForLastMonth(transactions);
             statement->min_earnings_last_month = min_last_month;
             statement->max_earnings_last_month = max_last_month;
+
             const auto [min_this_month, max_this_month] =
                 GetEstimatedEarningsForThisMonth(transactions);
             statement->min_earnings_this_month = min_this_month;
             statement->max_earnings_this_month = max_this_month;
+
             statement->next_payment_date = GetNextPaymentDate(transactions);
-            statement->ad_types_received_this_month =
-                GetAdTypesReceivedThisMonth(transactions);
-            statement->ads_received_this_month = std::reduce(
-                statement->ad_types_received_this_month.begin(),
-                statement->ad_types_received_this_month.end(),
-                static_cast<int32_t>(0),
-                [](int32_t sum, auto& entry) { return sum + entry.second; });
+
+            statement->ads_received_this_month =
+                GetAdsReceivedThisMonth(transactions);
+
+            statement->ads_summary_this_month =
+                GetAdsSummaryThisMonth(transactions);
 
             std::move(callback).Run(std::move(statement));
           },
