@@ -116,24 +116,7 @@ RemoteCompletionClient::RemoteCompletionClient(
     : model_name_(model_name),
       stop_sequences_(stop_sequences),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      credential_manager_(credential_manager) {
-  // Validate configuration
-  GURL api_base_url = GetEndpointBaseUrl(false);
-  if (!api_base_url.is_empty()) {
-    // Crash quickly if we have an invalid non-empty Url configured
-    // as a build flag
-    CHECK(api_base_url.is_valid()) << "Default API Url generated was invalid."
-                                      "Please check configuration parameter.";
-  }
-
-  api_base_url = GetEndpointBaseUrl(true);
-  if (!api_base_url.is_empty()) {
-    // Crash quickly if we have an invalid non-empty Url configured
-    // as a build flag
-    CHECK(api_base_url.is_valid()) << "Premium API Url generated was invalid."
-                                      "Please check configuration parameter.";
-  }
-}
+      credential_manager_(credential_manager) {}
 
 RemoteCompletionClient::~RemoteCompletionClient() = default;
 
