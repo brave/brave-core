@@ -21,19 +21,19 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
 
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
-  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.03, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
@@ -42,18 +42,18 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
 
   AdvanceClockTo(TimeFromString("1 January 2021", /*is_local=*/true));
 
-  const TransactionInfo transaction_4 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
       /*value=*/0.02, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
-  TransactionInfo transaction_5 = BuildUnreconciledTransactionForTesting(
+  TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
       /*value=*/0.02, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transaction_5.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_5);
 
-  TransactionInfo transaction_6 = BuildUnreconciledTransactionForTesting(
+  TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
       /*value=*/0.02, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transaction_6.ad_type = AdType::kInlineContentAd;
@@ -70,12 +70,12 @@ TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsSummaryForDateRange) {
 
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);

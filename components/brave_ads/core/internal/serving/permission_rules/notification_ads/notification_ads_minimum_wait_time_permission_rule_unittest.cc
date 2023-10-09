@@ -28,9 +28,9 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  SetMaximumNotificationAdsPerHourForTesting(5);
+  test::SetMaximumNotificationAdsPerHour(5);
 
-  RecordAdEventForTesting(AdType::kNotificationAd, ConfirmationType::kServed);
+  test::RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
   AdvanceClockBy(base::Minutes(12));
 
@@ -41,9 +41,9 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
 TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
        ShouldNotAllowIfExceedsCap) {
   // Arrange
-  SetMaximumNotificationAdsPerHourForTesting(5);
+  test::SetMaximumNotificationAdsPerHour(5);
 
-  RecordAdEventForTesting(AdType::kNotificationAd, ConfirmationType::kServed);
+  test::RecordAdEvent(AdType::kNotificationAd, ConfirmationType::kServed);
 
   AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));
 

@@ -23,7 +23,7 @@ class BraveAdsHistoryItemUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act & Assert

@@ -32,7 +32,7 @@ namespace {
 
 PromotedContentAdInfo BuildAndSaveAd() {
   CreativePromotedContentAdInfo creative_ad =
-      BuildCreativePromotedContentAdForTesting(
+      test::BuildCreativePromotedContentAd(
           /*should_use_random_uuids=*/false);
   database::SaveCreativePromotedContentAds({creative_ad});
   return BuildPromotedContentAd(creative_ad);
@@ -47,7 +47,7 @@ class BraveAdsPromotedContentAdEventHandlerTest : public UnitTestBase {
 
     event_handler_.SetDelegate(&delegate_mock_);
 
-    ForcePermissionRulesForTesting();
+    test::ForcePermissionRules();
   }
 
   void FireEvent(const std::string& placement_id,
@@ -239,8 +239,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
-  RecordAdEventsForTesting(ad_event,
-                           kMaximumPromotedContentAdsPerHour.Get() - 1);
+  test::RecordAdEvents(ad_event, kMaximumPromotedContentAdsPerHour.Get() - 1);
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
@@ -259,7 +258,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
-  RecordAdEventsForTesting(ad_event, kMaximumPromotedContentAdsPerHour.Get());
+  test::RecordAdEvents(ad_event, kMaximumPromotedContentAdsPerHour.Get());
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
@@ -280,8 +279,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
-  RecordAdEventsForTesting(ad_event,
-                           kMaximumPromotedContentAdsPerDay.Get() - 1);
+  test::RecordAdEvents(ad_event, kMaximumPromotedContentAdsPerDay.Get() - 1);
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
@@ -300,7 +298,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
-  RecordAdEventsForTesting(ad_event, kMaximumPromotedContentAdsPerDay.Get());
+  test::RecordAdEvents(ad_event, kMaximumPromotedContentAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 

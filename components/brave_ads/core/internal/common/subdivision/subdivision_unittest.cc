@@ -40,7 +40,7 @@ class BraveAdsSubdivisionTest : public UnitTestBase {
                              const std::string& subdivision_code) {
     const URLResponseMap url_responses = {
         {BuildSubdivisionUrlPath(),
-         {{net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
+         {{net::HTTP_OK, test::BuildSubdivisionUrlResponseBody(
                              country_code, subdivision_code)}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
@@ -66,8 +66,8 @@ TEST_F(BraveAdsSubdivisionTest, OnDidInitializeAds) {
 
 TEST_F(BraveAdsSubdivisionTest, PrefsNotEnabledOnDidInitializeAds) {
   // Arrange
-  DisableBraveRewardsForTesting();
-  OptOutOfBraveNewsAdsForTesting();
+  test::DisableBraveRewards();
+  test::OptOutOfBraveNewsAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -82,8 +82,8 @@ TEST_F(BraveAdsSubdivisionTest, PrefsNotEnabledOnDidInitializeAds) {
 
 TEST_F(BraveAdsSubdivisionTest, OnDidJoinBraveRewards) {
   // Arrange
-  DisableBraveRewardsForTesting();
-  OptOutOfBraveNewsAdsForTesting();
+  test::DisableBraveRewards();
+  test::OptOutOfBraveNewsAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -99,8 +99,8 @@ TEST_F(BraveAdsSubdivisionTest, OnDidJoinBraveRewards) {
 TEST_F(BraveAdsSubdivisionTest,
        FetchWhenOptingInToBraveNewsIfBraveRewardsIsDisabled) {
   // Arrange
-  DisableBraveRewardsForTesting();
-  OptOutOfBraveNewsAdsForTesting();
+  test::DisableBraveRewards();
+  test::OptOutOfBraveNewsAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -116,7 +116,7 @@ TEST_F(BraveAdsSubdivisionTest,
 
 TEST_F(BraveAdsSubdivisionTest, OnDidResetBraveRewards) {
   // Arrange
-  OptOutOfBraveNewsAdsForTesting();
+  test::OptOutOfBraveNewsAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -133,7 +133,7 @@ TEST_F(BraveAdsSubdivisionTest, OnDidResetBraveRewards) {
 
 TEST_F(BraveAdsSubdivisionTest, OnDidOptoutBraveNews) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -158,7 +158,7 @@ TEST_F(BraveAdsSubdivisionTest, RetryAfterInvalidUrlResponseStatusCode) {
          /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
         {net::HTTP_OK,
-         BuildSubdivisionUrlResponseBodyForTesting(
+         test::BuildSubdivisionUrlResponseBody(
              /*country_code=*/"US", /*subdivision_code=*/"CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

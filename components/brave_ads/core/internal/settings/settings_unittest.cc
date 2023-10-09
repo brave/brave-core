@@ -25,7 +25,7 @@ TEST_F(BraveAdsSettingsTest, UserHasJoinedBraveRewards) {
 
 TEST_F(BraveAdsSettingsTest, UserHasNotJoinedBraveRewards) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   EXPECT_FALSE(UserHasJoinedBraveRewards());
@@ -38,7 +38,7 @@ TEST_F(BraveAdsSettingsTest, UserHasOptedInToBraveNewsAds) {
 
 TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToBraveNews) {
   // Arrange
-  OptOutOfBraveNewsAdsForTesting();
+  test::OptOutOfBraveNewsAds();
 
   // Act & Assert
   EXPECT_FALSE(UserHasOptedInToBraveNewsAds());
@@ -51,7 +51,7 @@ TEST_F(BraveAdsSettingsTest, UserHasOptedInToNewTabPageAds) {
 
 TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNewTabPageAds) {
   // Arrange
-  OptOutOfNewTabPageAdsForTesting();
+  test::OptOutOfNewTabPageAds();
 
   // Act & Assert
   EXPECT_FALSE(UserHasOptedInToNewTabPageAds());
@@ -64,7 +64,7 @@ TEST_F(BraveAdsSettingsTest, UserHasOptedInToNotificationAds) {
 
 TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToNotificationAds) {
   // Arrange
-  OptOutOfNotificationAdsForTesting();
+  test::OptOutOfNotificationAds();
 
   // Act & Assert
   EXPECT_FALSE(UserHasOptedInToNotificationAds());

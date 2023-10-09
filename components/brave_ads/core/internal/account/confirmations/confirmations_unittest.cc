@@ -36,11 +36,11 @@ class BraveAdsConfirmationsTest : public UnitTestBase {
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count=*/1);
+  test::SetConfirmationTokens(/*count=*/1);
 
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
 
@@ -53,9 +53,9 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
 

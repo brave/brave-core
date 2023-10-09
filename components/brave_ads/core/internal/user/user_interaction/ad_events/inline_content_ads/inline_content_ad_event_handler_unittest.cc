@@ -26,7 +26,7 @@ namespace {
 
 InlineContentAdInfo BuildAndSaveAd() {
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/false);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/false);
   database::SaveCreativeInlineContentAds({creative_ad});
   return BuildInlineContentAd(creative_ad);
 }

@@ -87,7 +87,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 TEST_F(BraveAdsTextClassificationResourceTest,
        DoNotLoadResourceWhenLocaleDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
-  OptOutOfNotificationAdsForTesting();
+  test::OptOutOfNotificationAds();
 
   ASSERT_FALSE(LoadResource(kLanguageComponentId));
 
@@ -128,7 +128,7 @@ TEST_F(
   // Arrange
   ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
-  OptOutOfNotificationAdsForTesting();
+  test::OptOutOfNotificationAds();
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
@@ -166,7 +166,7 @@ TEST_F(
     BraveAdsTextClassificationResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfOptedOutOfNotificationAds) {
   // Arrange
-  OptOutOfNotificationAdsForTesting();
+  test::OptOutOfNotificationAds();
 
   // Act & Assert
   EXPECT_FALSE(LoadResource(kLanguageComponentId));

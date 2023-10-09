@@ -19,10 +19,9 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
        DoesCreativeSetConversionUrlPatternMatchRedirectChain) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
-      BuildCreativeSetConversionForTesting(
-          kCreativeSetId,
-          /*url_pattern=*/"https://foo.com/*",
-          /*observation_window=*/base::Days(3));
+      test::BuildCreativeSetConversion(kCreativeSetId,
+                                       /*url_pattern=*/"https://foo.com/*",
+                                       /*observation_window=*/base::Days(3));
 
   // Act & Assert
   EXPECT_TRUE(DoesCreativeSetConversionUrlPatternMatchRedirectChain(
@@ -34,10 +33,9 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
        DoesCreativeSetConversionUrlPatternNotMatchRedirectChain) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
-      BuildCreativeSetConversionForTesting(
-          kCreativeSetId,
-          /*url_pattern=*/"https://foo.com/*",
-          /*observation_window=*/base::Days(3));
+      test::BuildCreativeSetConversion(kCreativeSetId,
+                                       /*url_pattern=*/"https://foo.com/*",
+                                       /*observation_window=*/base::Days(3));
 
   // Act & Assert
   EXPECT_FALSE(DoesCreativeSetConversionUrlPatternMatchRedirectChain(

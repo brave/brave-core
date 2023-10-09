@@ -13,9 +13,9 @@
 #include "brave/components/brave_ads/core/internal/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-absl::optional<std::string> OpenVerifiableConversionEnvelopeForTesting(
+absl::optional<std::string> OpenVerifiableConversionEnvelope(
     const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope,
     const std::string& advertiser_secret_key_base64) {
   CHECK(!advertiser_secret_key_base64.empty());
@@ -57,4 +57,4 @@ absl::optional<std::string> OpenVerifiableConversionEnvelopeForTesting(
   return std::string(reinterpret_cast<const char*>(plaintext.data()));
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

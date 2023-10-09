@@ -13,14 +13,17 @@ namespace brave_ads {
 class AdType;
 class PaymentTokens;
 
-PaymentTokens& GetPaymentTokensForTesting();
-PaymentTokenList SetPaymentTokensForTesting(int count);
+namespace test {
 
-PaymentTokenInfo BuildPaymentTokenForTesting(
-    const ConfirmationType& confirmation_type,
-    const AdType& ad_type);
-PaymentTokenInfo BuildPaymentTokenForTesting();
-PaymentTokenList BuildPaymentTokensForTesting(int count);
+PaymentTokens& GetPaymentTokens();
+PaymentTokenList SetPaymentTokens(int count);
+
+PaymentTokenInfo BuildPaymentToken(const ConfirmationType& confirmation_type,
+                                   const AdType& ad_type);
+PaymentTokenInfo BuildPaymentToken();
+PaymentTokenList BuildPaymentTokens(int count);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

@@ -12,10 +12,14 @@ namespace brave_ads::cbr {
 
 class SignedToken;
 
-SignedToken GetSignedTokenForTesting();
-SignedToken GetInvalidSignedTokenForTesting();
-std::vector<SignedToken> GetSignedTokensForTesting();
-std::vector<SignedToken> GetInvalidSignedTokensForTesting();
+namespace test {
+
+SignedToken GetSignedToken();
+SignedToken GetInvalidSignedToken();
+std::vector<SignedToken> GetSignedTokens();
+std::vector<SignedToken> GetInvalidSignedTokens();
+
+}  // namespace test
 
 }  // namespace brave_ads::cbr
 

@@ -22,7 +22,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   // Arrange
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local=*/false));
 
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
 
@@ -36,7 +36,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest, BuildRotatingHash) {
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local=*/false));
 
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
 
@@ -50,7 +50,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   // Arrange
   MockDeviceId();
 
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
 
@@ -71,7 +71,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   // Arrange
   MockDeviceId();
 
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
 
@@ -92,7 +92,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   // Arrange
   MockDeviceId();
 
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
 

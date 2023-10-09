@@ -22,22 +22,22 @@ TEST(BraveAdsCreativeAdEmbeddingBasedPredictorVotingUtilTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_1.embedding = {-0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_2.embedding = {0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_3.embedding = {0.0253, -0.1189, 0.3621};
   creative_ads.push_back(creative_ad_3);
 
   const TextEmbeddingHtmlEventInfo text_embedding_html_event =
-      BuildTextEmbeddingHtmlEvent(ml::pipeline::BuildTextEmbeddingForTesting());
+      BuildTextEmbeddingHtmlEvent(ml::pipeline::test::BuildTextEmbedding());
 
   const std::vector<double> creative_ad_similarity_scores =
       ComputeCreativeAdSimilarityScores(creative_ads,

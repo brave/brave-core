@@ -22,9 +22,7 @@ namespace brave_ads {
 
 class BraveAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
  protected:
-  void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
-  }
+  void SetUp() override { UnitTestBase::SetUp(/*is_integration_test=*/true); }
 
   void SetUpMocks() override {
     MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
@@ -45,7 +43,7 @@ class BraveAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
        ServeWhenUserBecomesActive) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents(BuildP2AAdOpportunityEvents(
@@ -84,7 +82,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, AddFederatedLearningPredictorTrainingSample)
       .Times(0);
@@ -110,7 +108,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
@@ -138,7 +136,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
@@ -164,7 +162,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {

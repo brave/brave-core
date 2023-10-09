@@ -25,9 +25,7 @@ namespace brave_ads {
 
 class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
  protected:
-  void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
-  }
+  void SetUp() override { UnitTestBase::SetUp(/*is_integration_test=*/true); }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
@@ -64,7 +62,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents(BuildP2AAdOpportunityEvents(
@@ -93,7 +91,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
@@ -116,7 +114,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
@@ -128,7 +126,7 @@ TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
     DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsAndRewardsAreDisabled) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
@@ -141,7 +139,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
@@ -168,7 +166,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kViewed,
@@ -184,7 +182,7 @@ TEST_F(
     BraveAdsNewTabPageAdIntegrationTest,
     DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsAndBraveRewardsAreDisabled) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                            mojom::NewTabPageAdEventType::kServed,

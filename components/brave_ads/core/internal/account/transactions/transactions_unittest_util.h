@@ -16,17 +16,20 @@ namespace brave_ads {
 
 class ConfirmationType;
 
-void SaveTransactionsForTesting(const TransactionList& transactions);
+namespace test {
 
-TransactionInfo BuildTransactionForTesting(
+void SaveTransactions(const TransactionList& transactions);
+
+TransactionInfo BuildTransaction(double value,
+                                 const ConfirmationType& confirmation_type,
+                                 base::Time reconciled_at,
+                                 bool should_use_random_uuids);
+TransactionInfo BuildUnreconciledTransaction(
     double value,
     const ConfirmationType& confirmation_type,
-    base::Time reconciled_at,
     bool should_use_random_uuids);
-TransactionInfo BuildUnreconciledTransactionForTesting(
-    double value,
-    const ConfirmationType& confirmation_type,
-    bool should_use_random_uuids);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

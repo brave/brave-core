@@ -45,12 +45,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
@@ -70,7 +70,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeNewTabPageAds({creative_ad});
 
@@ -88,7 +88,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForParentSegment) {
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act & Assert
@@ -106,17 +106,17 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
@@ -138,7 +138,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act & Assert
@@ -150,7 +150,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetAdsForNoSegments) {
 TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeNewTabPageAds({creative_ad});
 
@@ -181,12 +181,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
@@ -211,13 +211,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
@@ -242,19 +242,19 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ad_2.priority = 1;
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);

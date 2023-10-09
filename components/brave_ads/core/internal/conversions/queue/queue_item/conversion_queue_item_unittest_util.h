@@ -15,19 +15,21 @@ class AdType;
 class ConfirmationType;
 struct ConversionInfo;
 
-ConversionQueueItemList BuildConversionQueueItemsForTesting(
+namespace test {
+
+ConversionQueueItemList BuildConversionQueueItems(
     const ConversionInfo& conversion,
     size_t count);
 
-void SaveConversionQueueForTesting(
-    const ConversionQueueItemList& conversion_queue_items);
+void SaveConversionQueue(const ConversionQueueItemList& conversion_queue_items);
 
-void BuildAndSaveConversionQueueForTesting(
-    const AdType& ad_type,
-    const ConfirmationType& confirmation_type,
-    bool is_verifiable,
-    bool should_use_random_uuids,
-    int count);
+void BuildAndSaveConversionQueue(const AdType& ad_type,
+                                 const ConfirmationType& confirmation_type,
+                                 bool is_verifiable,
+                                 bool should_use_random_uuids,
+                                 int count);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

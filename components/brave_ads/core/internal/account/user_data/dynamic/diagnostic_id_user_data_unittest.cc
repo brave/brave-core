@@ -35,7 +35,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
        BuildDiagnosticIdUserDataForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   SetProfileStringPrefValue(prefs::kDiagnosticId,
                             "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");

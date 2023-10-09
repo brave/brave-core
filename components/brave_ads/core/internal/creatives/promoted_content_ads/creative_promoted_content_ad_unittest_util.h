@@ -8,13 +8,12 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-CreativePromotedContentAdList BuildCreativePromotedContentAdsForTesting(
-    int count);
-CreativePromotedContentAdInfo BuildCreativePromotedContentAdForTesting(
+CreativePromotedContentAdList BuildCreativePromotedContentAds(int count);
+CreativePromotedContentAdInfo BuildCreativePromotedContentAd(
     bool should_use_random_uuids);
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_PROMOTED_CONTENT_ADS_CREATIVE_PROMOTED_CONTENT_AD_UNITTEST_UTIL_H_

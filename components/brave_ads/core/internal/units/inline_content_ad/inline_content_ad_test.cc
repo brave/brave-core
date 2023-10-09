@@ -67,7 +67,7 @@ class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_,
@@ -90,7 +90,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, DoNotServe) {
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
@@ -111,7 +111,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)

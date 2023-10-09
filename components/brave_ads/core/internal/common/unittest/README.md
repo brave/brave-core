@@ -19,7 +19,7 @@ You should set up mocks in `SetUpMocks`, `TEST_F`, or `TEST_P`. You should **NOT
 
 ## Integration Testing
 
-Override `SetUp` and call `SetUpForTesting` with `is_integration_test` set to `true` to test functionality and performance under product-like circumstances with data to replicate live settings to simulate a real user scenario from start to finish.
+Override `SetUp` and call `SetUp` with `is_integration_test` set to `true` to test functionality and performance under product-like circumstances with data to replicate live settings to simulate a real user scenario from start to finish.
 
 Use the `GetAds` convenience function to access `AdsImpl`. i.e.
 

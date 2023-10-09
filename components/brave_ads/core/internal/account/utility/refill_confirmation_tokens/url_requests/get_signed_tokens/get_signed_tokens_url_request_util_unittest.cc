@@ -64,13 +64,13 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest, DoNotParseMissingCaptchaId) {
 
 TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest, ParseAndUnblindSignedTokens) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   const base::Value::Dict dict = BuildUrlResponseBody();
 
   // Act
   const auto result = ParseAndUnblindSignedTokens(
-      dict, cbr::GetTokensForTesting(), cbr::GetBlindedTokensForTesting());
+      dict, cbr::test::GetTokens(), cbr::test::GetBlindedTokens());
 
   // Assert
   EXPECT_TRUE(result.has_value());
@@ -84,7 +84,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
 
   // Act
   const auto result = ParseAndUnblindSignedTokens(
-      dict, cbr::GetTokensForTesting(), cbr::GetBlindedTokensForTesting());
+      dict, cbr::test::GetTokens(), cbr::test::GetBlindedTokens());
 
   // Assert
   EXPECT_FALSE(result.has_value());
@@ -98,7 +98,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
 
   // Act
   const auto result = ParseAndUnblindSignedTokens(
-      dict, cbr::GetTokensForTesting(), cbr::GetBlindedTokensForTesting());
+      dict, cbr::test::GetTokens(), cbr::test::GetBlindedTokens());
 
   // Assert
   EXPECT_FALSE(result.has_value());
@@ -112,7 +112,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
 
   // Act
   const auto result = ParseAndUnblindSignedTokens(
-      dict, cbr::GetTokensForTesting(), cbr::GetBlindedTokensForTesting());
+      dict, cbr::test::GetTokens(), cbr::test::GetBlindedTokens());
 
   // Assert
   EXPECT_FALSE(result.has_value());
@@ -126,7 +126,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
 
   // Act
   const auto result = ParseAndUnblindSignedTokens(
-      dict, cbr::GetTokensForTesting(), cbr::GetBlindedTokensForTesting());
+      dict, cbr::test::GetTokens(), cbr::test::GetBlindedTokens());
 
   // Assert
   EXPECT_FALSE(result.has_value());
@@ -140,7 +140,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
 
   // Act
   const auto result = ParseAndUnblindSignedTokens(
-      dict, cbr::GetTokensForTesting(), cbr::GetBlindedTokensForTesting());
+      dict, cbr::test::GetTokens(), cbr::test::GetBlindedTokens());
 
   // Assert
   EXPECT_FALSE(result.has_value());
@@ -149,12 +149,11 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
 TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
        BuildAndAddConfirmationTokens) {
   // Act
-  BuildAndAddConfirmationTokens(cbr::GetUnblindedTokensForTesting(),
-                                cbr::GetPublicKeyForTesting(),
-                                GetWalletForTesting());
+  BuildAndAddConfirmationTokens(cbr::test::GetUnblindedTokens(),
+                                cbr::test::GetPublicKey(), test::GetWallet());
 
   // Act & Assert
-  EXPECT_FALSE(GetConfirmationTokensForTesting().IsEmpty());
+  EXPECT_FALSE(test::GetConfirmationTokens().IsEmpty());
 }
 
 }  // namespace brave_ads

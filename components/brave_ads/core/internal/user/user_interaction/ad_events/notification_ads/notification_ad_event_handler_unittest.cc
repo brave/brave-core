@@ -24,7 +24,7 @@ namespace {
 
 NotificationAdInfo BuildAndSaveAd() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
   NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   NotificationAdManager::GetInstance().Add(ad);
   return ad;

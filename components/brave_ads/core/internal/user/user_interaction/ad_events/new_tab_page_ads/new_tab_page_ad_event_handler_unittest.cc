@@ -26,7 +26,7 @@ namespace {
 
 NewTabPageAdInfo BuildAndSaveAd() {
   const CreativeNewTabPageAdInfo creative_ad =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/false);
   database::SaveCreativeNewTabPageAds({creative_ad});
   return BuildNewTabPageAd(creative_ad);
 }

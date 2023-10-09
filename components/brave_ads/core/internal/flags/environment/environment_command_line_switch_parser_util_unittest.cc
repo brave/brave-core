@@ -52,7 +52,7 @@ TEST_P(BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
 std::string TestParamToString(
     const ::testing::TestParamInfo<ParamInfo>& test_param) {
   const std::string expected_environment_type =
-      EnvironmentTypeEnumToStringForTesting(
+      test::EnvironmentTypeEnumToString(
           test_param.param.expected_environment_type);
 
   const std::string sanitized_command_line_switch =

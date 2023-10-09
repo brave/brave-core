@@ -23,8 +23,8 @@ class BraveAdsConversionQueueItemDelayTest : public UnitTestBase {};
 TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateDelayBeforeProcessingConversionQueueItem) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                    /*created_at=*/Now()),
@@ -41,8 +41,8 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
 TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateDelayBeforeProcessingPastDueConversionQueueItem) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                    /*created_at=*/DistantPast()),
@@ -59,8 +59,8 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
 TEST_F(BraveAdsConversionQueueItemDelayTest,
        CalculateMinimumDelayBeforeProcessingConversionQueueItem) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
                                    /*created_at=*/Now()),

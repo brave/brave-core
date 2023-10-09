@@ -23,12 +23,12 @@ class BraveAdsLatentInterestSegmentsTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    targeting_ = std::make_unique<TargetingHelperForTesting>();
+    targeting_ = std::make_unique<test::TargetingHelper>();
 
     NotifyDidInitializeAds();
   }
 
-  std::unique_ptr<TargetingHelperForTesting> targeting_;
+  std::unique_ptr<test::TargetingHelper> targeting_;
 };
 
 TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
@@ -41,7 +41,7 @@ TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
 
   // Act & Assert
   const SegmentList expected_latent_interest_segments =
-      TargetingHelperForTesting::LatentInterestExpectation().segments;
+      test::TargetingHelper::LatentInterestExpectation().segments;
   EXPECT_EQ(expected_latent_interest_segments, BuildLatentInterestSegments());
 }
 

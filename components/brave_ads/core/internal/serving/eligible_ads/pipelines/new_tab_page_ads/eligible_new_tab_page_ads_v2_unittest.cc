@@ -41,12 +41,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
@@ -68,12 +68,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoSegments) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "foo";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      BuildCreativeNewTabPageAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 

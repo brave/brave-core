@@ -47,11 +47,11 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   void TearDown() override;
 
  protected:
-  // Override |SetUp| and call |SetUpForTesting| with |is_integration_test| set
+  // Override |SetUp| and call |SetUp| with |is_integration_test| set
   // to |true| to test functionality and performance under product-like
   // circumstances with data to replicate live settings to simulate what a real
   // user scenario looks like from start to finish.
-  void SetUpForTesting(bool is_integration_test);
+  void SetUp(bool is_integration_test);
 
   // Override |SetUpMocks| to mock command line switches, file system, prefs,
   // and the |AdsClient| before initialization.

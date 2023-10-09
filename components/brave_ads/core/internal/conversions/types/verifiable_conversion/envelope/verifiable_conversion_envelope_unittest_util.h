@@ -14,9 +14,13 @@ namespace brave_ads {
 
 struct VerifiableConversionEnvelopeInfo;
 
-absl::optional<std::string> OpenVerifiableConversionEnvelopeForTesting(
+namespace test {
+
+absl::optional<std::string> OpenVerifiableConversionEnvelope(
     const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope,
     const std::string& advertiser_secret_key_base64);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

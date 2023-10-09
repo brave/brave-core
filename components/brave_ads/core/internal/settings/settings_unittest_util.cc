@@ -11,18 +11,18 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-void DisableBraveRewardsForTesting() {
+void DisableBraveRewards() {
   SetProfileBooleanPrefValue(brave_rewards::prefs::kEnabled, false);
 }
 
-void OptOutOfBraveNewsAdsForTesting() {
+void OptOutOfBraveNewsAds() {
   SetProfileBooleanPrefValue(brave_news::prefs::kBraveNewsOptedIn, false);
   SetProfileBooleanPrefValue(brave_news::prefs::kNewTabPageShowToday, false);
 }
 
-void OptOutOfNewTabPageAdsForTesting() {
+void OptOutOfNewTabPageAds() {
   SetProfileBooleanPrefValue(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
   SetProfileBooleanPrefValue(ntp_background_images::prefs::
@@ -30,13 +30,13 @@ void OptOutOfNewTabPageAdsForTesting() {
                              false);
 }
 
-void OptOutOfNotificationAdsForTesting() {
+void OptOutOfNotificationAds() {
   SetProfileBooleanPrefValue(prefs::kOptedInToNotificationAds, false);
 }
 
-void SetMaximumNotificationAdsPerHourForTesting(const int max_ads_per_hour) {
+void SetMaximumNotificationAdsPerHour(const int max_ads_per_hour) {
   SetProfileInt64PrefValue(prefs::kMaximumNotificationAdsPerHour,
                            max_ads_per_hour);
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

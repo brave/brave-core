@@ -8,10 +8,10 @@
 
 #include <string>
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-std::string BuildCreateNonRewardConfirmationUrlResponseBodyForTesting();
+std::string BuildCreateNonRewardConfirmationUrlResponseBody();
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_NON_REWARD_REDEEM_NON_REWARD_CONFIRMATION_UNITTEST_UTIL_H_
