@@ -21,8 +21,8 @@ class BraveAdsAdEventBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/false);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/false);
 
   // Act & Assert
   AdEventInfo expected_ad_event;
@@ -41,8 +41,8 @@ TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
 
 TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/false);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/false);
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kViewed, /*created_at=*/Now());

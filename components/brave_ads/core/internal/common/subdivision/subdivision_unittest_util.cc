@@ -7,12 +7,12 @@
 
 #include "base/strings/string_util.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-std::string BuildSubdivisionForTesting(const std::string& country_code,
-                                       const std::string& subdivision_code) {
+std::string BuildSubdivision(const std::string& country_code,
+                             const std::string& subdivision_code) {
   return base::ReplaceStringPlaceholders(
       "$1-$2", {country_code, subdivision_code}, nullptr);
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

@@ -37,13 +37,13 @@ TEST_F(BraveAdsConfirmationsUtilTest, IsInvalidToken) {
 
 TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
   // Arrange
-  MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  SetConfirmationTokensForTesting(/*count=*/2);
+  test::SetConfirmationTokens(/*count=*/2);
 
-  SetPaymentTokensForTesting(/*count=*/1);
+  test::SetPaymentTokens(/*count=*/1);
 
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   const absl::optional<ConfirmationInfo> confirmation =

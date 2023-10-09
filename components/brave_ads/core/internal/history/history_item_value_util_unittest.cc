@@ -77,7 +77,7 @@ constexpr char kJson[] =
 
 HistoryItemList BuildHistoryItems() {
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
 
   const HistoryItemInfo history_item =

@@ -22,30 +22,29 @@ class BraveAdsVerificationKeyTest : public UnitTestBase {};
 
 TEST_F(BraveAdsVerificationKeyTest, Sign) {
   // Arrange
-  VerificationKey verification_key = GetVerificationKeyForTesting();
+  VerificationKey verification_key = test::GetVerificationKey();
 
   // Act & Assert
-  EXPECT_EQ(GetVerificationSignatureForTesting(),
-            verification_key.Sign(kMessage));
+  EXPECT_EQ(test::GetVerificationSignature(), verification_key.Sign(kMessage));
 }
 
 TEST_F(BraveAdsVerificationKeyTest, Verify) {
   // Arrange
-  VerificationKey verification_key = GetVerificationKeyForTesting();
+  VerificationKey verification_key = test::GetVerificationKey();
 
   // Act & Assert
   EXPECT_TRUE(
-      verification_key.Verify(GetVerificationSignatureForTesting(), kMessage));
+      verification_key.Verify(test::GetVerificationSignature(), kMessage));
 }
 
 TEST_F(BraveAdsVerificationKeyTest,
        FailToVerifyWithInvalidVerificationSignature) {
   // Arrange
-  VerificationKey verification_key = GetVerificationKeyForTesting();
+  VerificationKey verification_key = test::GetVerificationKey();
 
   // Act & Assert
-  EXPECT_FALSE(verification_key.Verify(
-      GetInvalidVerificationSignatureForTesting(), kMessage));
+  EXPECT_FALSE(verification_key.Verify(test::GetInvalidVerificationSignature(),
+                                       kMessage));
 }
 
 }  // namespace brave_ads::cbr

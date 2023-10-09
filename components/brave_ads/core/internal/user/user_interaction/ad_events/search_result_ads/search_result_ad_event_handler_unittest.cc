@@ -60,7 +60,7 @@ class BraveAdsSearchResultAdEventHandlerTest : public UnitTestBase {
 
     event_handler_.SetDelegate(&delegate_mock_);
 
-    ForcePermissionRulesForTesting();
+    test::ForcePermissionRules();
   }
 
   void FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
@@ -88,7 +88,7 @@ class BraveAdsSearchResultAdEventHandlerTest : public UnitTestBase {
 TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireServedEvent) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   // Act & Assert
@@ -101,7 +101,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireServedEvent) {
 TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad));
@@ -122,7 +122,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
 TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdWithConversionForTesting(
+      test::BuildSearchResultAdWithConversion(
           /*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
@@ -145,7 +145,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad));
@@ -171,7 +171,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasNotServed) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   // Act & Assert
@@ -185,7 +185,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad));
@@ -209,7 +209,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad));
@@ -237,7 +237,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfMissingAdPlacement) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   ad_mojom->placement_id = kMissingPlacementId;
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
@@ -255,7 +255,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   ad_mojom->placement_id = kInvalidPlacementId;
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
@@ -273,7 +273,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   ad_mojom->creative_instance_id = kInvalidCreativeInstanceId;
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
@@ -291,12 +291,12 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
-  RecordAdEventsForTesting(ad_event, kMaximumSearchResultAdsPerHour.Get() - 1);
+  test::RecordAdEvents(ad_event, kMaximumSearchResultAdsPerHour.Get() - 1);
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
@@ -311,12 +311,12 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
-  RecordAdEventsForTesting(ad_event, kMaximumSearchResultAdsPerHour.Get());
+  test::RecordAdEvents(ad_event, kMaximumSearchResultAdsPerHour.Get());
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
@@ -332,12 +332,12 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   const mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
-  RecordAdEventsForTesting(ad_event, kMaximumSearchResultAdsPerDay.Get() - 1);
+  test::RecordAdEvents(ad_event, kMaximumSearchResultAdsPerDay.Get() - 1);
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
@@ -352,12 +352,12 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   mojom::SearchResultAdInfoPtr ad_mojom =
-      BuildSearchResultAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildSearchResultAd(/*should_use_random_uuids=*/true);
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
 
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServed, /*created_at=*/Now());
-  RecordAdEventsForTesting(ad_event, kMaximumSearchResultAdsPerDay.Get());
+  test::RecordAdEvents(ad_event, kMaximumSearchResultAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 

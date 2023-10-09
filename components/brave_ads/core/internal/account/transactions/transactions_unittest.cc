@@ -43,7 +43,7 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
 
   AdvanceClockTo(TimeFromString("31 August 2019", /*is_local=*/true));  //
 
-  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
@@ -51,17 +51,17 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   AdvanceClockTo(TimeFromString("11 September 2019",
                                 /*is_local=*/false));  // A legendary moment.
 
-  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kDismissed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
-  SaveTransactionsForTesting(transactions);
+  test::SaveTransactions(transactions);
 
   // Act & Assert
   base::MockCallback<GetTransactionsCallback> callback;
@@ -74,17 +74,17 @@ TEST_F(BraveAdsTransactionsTest, RemoveAll) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kDismissed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  SaveTransactionsForTesting(transactions);
+  test::SaveTransactions(transactions);
 
   // Act & Assert
   base::MockCallback<RemoveAllTransactionsCallback> callback;

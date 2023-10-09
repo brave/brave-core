@@ -20,8 +20,8 @@ class BraveAdsConversionQueueItemBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsConversionQueueItemBuilderTest, BuildConversionQueueItem) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
 
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
@@ -40,8 +40,8 @@ TEST_F(BraveAdsConversionQueueItemBuilderTest, BuildConversionQueueItem) {
 TEST_F(BraveAdsConversionQueueItemBuilderTest,
        BuildVerifiableConversionQueueItem) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
 
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewed,

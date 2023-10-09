@@ -35,8 +35,8 @@ namespace brave_ads {
 
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-      scoped_default_locale_(brave_l10n::test::ScopedDefaultLocale(  // IN-TEST
-          kDefaultLocale)) {
+      scoped_default_locale_(
+          brave_l10n::test::ScopedDefaultLocale(kDefaultLocale)) {
   CHECK(temp_dir_.CreateUniqueTempDir());
 }
 
@@ -49,7 +49,7 @@ UnitTestBase::~UnitTestBase() {
 }
 
 void UnitTestBase::SetUp() {
-  SetUpForTesting(/*is_integration_test=*/false);  // IN-TEST
+  SetUp(/*is_integration_test=*/false);
 }
 
 void UnitTestBase::TearDown() {
@@ -58,7 +58,7 @@ void UnitTestBase::TearDown() {
   ShutdownCommandLineSwitches();
 }
 
-void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
+void UnitTestBase::SetUp(const bool is_integration_test) {
   setup_called_ = true;
 
   is_integration_test_ = is_integration_test;
@@ -76,7 +76,7 @@ void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
 
 AdsImpl& UnitTestBase::GetAds() const {
   CHECK(is_integration_test_)
-      << "|GetAds| should only be called if |SetUpForTesting| is initialized "
+      << "|GetAds| should only be called if |SetUp| is initialized "
          "for integration testing";
 
   CHECK(ads_);
@@ -89,7 +89,7 @@ bool UnitTestBase::CopyFileFromTestPathToTempPath(
     const std::string& to_path) const {
   CHECK(setup_called_)
       << "|CopyFileFromTestPathToTempPath| should be called after "
-         "|SetUpForTesting|";
+         "|SetUp|";
 
   const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
@@ -107,7 +107,7 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
     const std::string& to_path) const {
   CHECK(setup_called_)
       << "|CopyDirectoryFromTestPathToTempPath| should be called after "
-         "|SetUpForTesting|";
+         "|SetUp|";
 
   const base::FilePath from_test_path = GetTestPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
@@ -256,14 +256,14 @@ void UnitTestBase::SetUpTest() {
 
 void UnitTestBase::SetUpIntegrationTest() {
   CHECK(is_integration_test_)
-      << "|SetUpIntegrationTest| should only be called if |SetUpForTesting| is "
+      << "|SetUpIntegrationTest| should only be called if |SetUp| is "
          "initialized for integration testing";
 
   ads_ = std::make_unique<AdsImpl>(&ads_client_mock_);
 
   SetUpTest();
 
-  ads_->Initialize(GetWalletPtrForTesting(),  // IN-TEST
+  ads_->Initialize(test::GetWalletPtr(),
                    base::BindOnce(&UnitTestBase::SetUpIntegrationTestCallback,
                                   weak_factory_.GetWeakPtr()));
 }
@@ -278,7 +278,7 @@ void UnitTestBase::SetUpIntegrationTestCallback(const bool success) {
 
 void UnitTestBase::SetUpUnitTest() {
   CHECK(!is_integration_test_)
-      << "|SetUpUnitTest| should only be called if |SetUpForTesting| is not "
+      << "|SetUpUnitTest| should only be called if |SetUp| is not "
          "initialized for integration testing";
 
   global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
@@ -296,8 +296,7 @@ void UnitTestBase::SetUpUnitTest() {
       }));
 
   global_state_->GetConfirmationStateManager().LoadState(
-      GetWalletForTesting(),  // IN-TEST
-      base::BindOnce([](const bool success) {
+      test::GetWallet(), base::BindOnce([](const bool success) {
         ASSERT_TRUE(success) << "Failed to load confirmation state";
       }));
 

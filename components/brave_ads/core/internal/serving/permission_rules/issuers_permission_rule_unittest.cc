@@ -20,7 +20,7 @@ class BraveAdsIssuersPermissionRuleTest : public UnitTestBase {
 
 TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAllowForRewardsUser) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());
@@ -28,7 +28,7 @@ TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAllowForRewardsUser) {
 
 TEST_F(BraveAdsIssuersPermissionRuleTest, ShouldAlwaysAllowForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   EXPECT_TRUE(permission_rule_.ShouldAllow().has_value());

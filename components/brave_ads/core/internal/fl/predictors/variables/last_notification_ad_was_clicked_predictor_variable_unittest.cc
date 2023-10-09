@@ -46,7 +46,7 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
       std::make_unique<LastNotificationAdWasClickedPredictorVariable>();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -65,7 +65,7 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
       std::make_unique<LastNotificationAdWasClickedPredictorVariable>();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
@@ -82,7 +82,7 @@ TEST_F(BraveAdsLastNotificationAdWasClickedPredictorVariableTest,
       std::make_unique<LastNotificationAdWasClickedPredictorVariable>();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);

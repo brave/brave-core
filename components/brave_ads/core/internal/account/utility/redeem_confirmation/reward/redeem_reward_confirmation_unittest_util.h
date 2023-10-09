@@ -8,11 +8,11 @@
 
 #include <string>
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-std::string BuildCreateRewardConfirmationUrlResponseBodyForTesting();
-std::string BuildFetchPaymentTokenUrlResponseBodyForTesting();
+std::string BuildCreateRewardConfirmationUrlResponseBody();
+std::string BuildFetchPaymentTokenUrlResponseBody();
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REWARD_REDEEM_REWARD_CONFIRMATION_UNITTEST_UTIL_H_

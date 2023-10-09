@@ -83,7 +83,7 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
   }
 
   static std::string BuildSubdivisionForTestParam() {
-    return BuildSubdivisionForTesting(GetParam().country, GetParam().region);
+    return test::BuildSubdivision(GetParam().country, GetParam().region);
   }
 
   static std::string BuildOtherSubdivisionForTestParam() {
@@ -104,13 +104,13 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
       }
     }
 
-    return BuildSubdivisionForTesting(GetParam().country, region);
+    return test::BuildSubdivision(GetParam().country, region);
   }
 
   void MockUrlResponseForTestParam() {
     const URLResponseMap url_responses = {
         {BuildSubdivisionUrlPath(),
-         {{net::HTTP_OK, BuildSubdivisionUrlResponseBodyForTesting(
+         {{net::HTTP_OK, test::BuildSubdivisionUrlResponseBody(
                              GetParam().country, GetParam().region)}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
@@ -276,7 +276,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {BuildSubdivisionForTesting(
+  creative_ad.geo_targets = {test::BuildSubdivision(
       /*country_code=*/"US", /*subdivision_code=*/"XX")};
 
   // Assert
@@ -295,7 +295,7 @@ TEST_P(
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {BuildSubdivisionForTesting(
+  creative_ad.geo_targets = {test::BuildSubdivision(
       /*country_code=*/"GB", /*subdivision_code=*/"DEV")};
 
   // Act & Assert
@@ -311,7 +311,7 @@ TEST_P(
   const URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
        {{net::HTTP_OK,
-         BuildSubdivisionUrlResponseBodyForTesting(
+         test::BuildSubdivisionUrlResponseBody(
              /*country_code=*/"XX", /*subdivision_code=*/"NO REGION")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

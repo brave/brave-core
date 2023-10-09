@@ -11,9 +11,9 @@
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "url/gurl.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-CreativeAdInfo BuildCreativeAdForTesting(const bool should_use_random_uuids) {
+CreativeAdInfo BuildCreativeAd(const bool should_use_random_uuids) {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id =
@@ -67,4 +67,4 @@ CreativeAdInfo BuildCreativeAdForTesting(const bool should_use_random_uuids) {
   return creative_ad;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

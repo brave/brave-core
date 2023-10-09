@@ -10,8 +10,12 @@ namespace brave_ads::cbr {
 
 class TokenPreimage;
 
-TokenPreimage GetTokenPreimageForTesting();
-TokenPreimage GetInvalidTokenPreimageForTesting();
+namespace test {
+
+TokenPreimage GetTokenPreimage();
+TokenPreimage GetInvalidTokenPreimage();
+
+}  // namespace test
 
 }  // namespace brave_ads::cbr
 

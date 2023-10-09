@@ -35,7 +35,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, SaveEmpty) {
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, Save) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count=*/2);
+      test::BuildCreativeNotificationAds(/*count=*/2);
 
   // Act
   database::SaveCreativeNotificationAds(creative_ads);
@@ -54,7 +54,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, SaveInBatches) {
   database_table_.SetBatchSize(2);
 
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count=*/3);
+      test::BuildCreativeNotificationAds(/*count=*/3);
 
   // Act
   database::SaveCreativeNotificationAds(creative_ads);
@@ -72,7 +72,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, SaveInBatches) {
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, DoNotSaveDuplicates) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count=*/1);
+      test::BuildCreativeNotificationAds(/*count=*/1);
   database::SaveCreativeNotificationAds(creative_ads);
 
   // Act
@@ -91,12 +91,12 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetForSegments) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
   creative_ads.push_back(creative_ad_2);
 
@@ -113,7 +113,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetForSegments) {
 TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetForEmptySegments) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count=*/1);
+      test::BuildCreativeNotificationAds(/*count=*/1);
   database::SaveCreativeNotificationAds(creative_ads);
 
   // Act & Assert
@@ -129,7 +129,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
        GetForNonExistentSegment) {
   // Arrange
   const CreativeNotificationAdList creative_ads =
-      BuildCreativeNotificationAdsForTesting(/*count=*/1);
+      test::BuildCreativeNotificationAds(/*count=*/1);
   database::SaveCreativeNotificationAds(creative_ads);
 
   // Act & Assert
@@ -147,17 +147,17 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "automotive";
   creative_ads.push_back(creative_ad_3);
 
@@ -181,13 +181,13 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetNonExpired) {
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_1.start_at = DistantPast();
   creative_ad_1.end_at = Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_2.start_at = DistantPast();
   creative_ad_2.end_at = DistantFuture();
   creative_ads.push_back(creative_ad_2);

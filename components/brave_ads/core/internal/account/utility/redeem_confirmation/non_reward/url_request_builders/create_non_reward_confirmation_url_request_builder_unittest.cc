@@ -30,13 +30,13 @@ class BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    DisableBraveRewardsForTesting();
+    test::DisableBraveRewards();
   }
 };
 
 TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  const TransactionInfo transaction = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/false);
   const absl::optional<ConfirmationInfo> confirmation =

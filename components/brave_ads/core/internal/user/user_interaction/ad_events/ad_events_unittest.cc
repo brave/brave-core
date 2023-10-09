@@ -22,8 +22,8 @@ class BraveAdsAdEventsTest : public UnitTestBase {};
 
 TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
   const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kServed,
                                             /*created_at=*/Now());
 
@@ -53,15 +53,15 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
   base::MockCallback<AdEventCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(3);
 
-  const AdInfo ad_1 = BuildAdForTesting(AdType::kNotificationAd,
-                                        /*should_use_random_uuids=*/true);
+  const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
+                                    /*should_use_random_uuids=*/true);
   AdEventInfo ad_event_for_ad_1 =
       BuildAdEvent(ad_1, ConfirmationType::kServed, /*created_at=*/Now());
   ad_event_for_ad_1.placement_id = "WALDO.1";
   RecordAdEvent(ad_event_for_ad_1, record_ad_event_callback.Get());
 
-  const AdInfo ad_2 = BuildAdForTesting(AdType::kNotificationAd,
-                                        /*should_use_random_uuids=*/true);
+  const AdInfo ad_2 = test::BuildAd(AdType::kNotificationAd,
+                                    /*should_use_random_uuids=*/true);
   AdEventInfo ad_event_for_ad_2 =
       BuildAdEvent(ad_2, ConfirmationType::kServed, /*created_at=*/Now());
   ad_event_for_ad_2.placement_id = "WALDO.2";
@@ -69,8 +69,8 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
 
   AdvanceClockBy(three_months);
 
-  const AdInfo ad_3 = BuildAdForTesting(AdType::kNotificationAd,
-                                        /*should_use_random_uuids=*/true);
+  const AdInfo ad_3 = test::BuildAd(AdType::kNotificationAd,
+                                    /*should_use_random_uuids=*/true);
   AdEventInfo ad_event_for_ad_3 =
       BuildAdEvent(ad_3, ConfirmationType::kServed, /*created_at=*/Now());
   ad_event_for_ad_3.placement_id = "WALDO.3";
@@ -95,15 +95,15 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
   base::MockCallback<AdEventCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(4);
 
-  const AdInfo ad_1 = BuildAdForTesting(AdType::kNotificationAd,
-                                        /*should_use_random_uuids=*/true);
+  const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
+                                    /*should_use_random_uuids=*/true);
   const AdEventInfo orphaned_ad_event_for_ad_1 =
       BuildAdEvent(ad_1, ConfirmationType::kServed,
                    /*created_at=*/Now());
   RecordAdEvent(orphaned_ad_event_for_ad_1, record_ad_event_callback.Get());
 
-  const AdInfo ad_2 = BuildAdForTesting(AdType::kNotificationAd,
-                                        /*should_use_random_uuids=*/true);
+  const AdInfo ad_2 = test::BuildAd(AdType::kNotificationAd,
+                                    /*should_use_random_uuids=*/true);
   const AdEventInfo ad_event_for_ad_2a =
       BuildAdEvent(ad_2, ConfirmationType::kServed, /*created_at=*/Now());
   RecordAdEvent(ad_event_for_ad_2a, record_ad_event_callback.Get());
@@ -111,8 +111,8 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
       BuildAdEvent(ad_2, ConfirmationType::kViewed, /*created_at=*/Now());
   RecordAdEvent(ad_event_for_ad_2b, record_ad_event_callback.Get());
 
-  const AdInfo ad_3 = BuildAdForTesting(AdType::kSearchResultAd,
-                                        /*should_use_random_uuids=*/true);
+  const AdInfo ad_3 = test::BuildAd(AdType::kSearchResultAd,
+                                    /*should_use_random_uuids=*/true);
   const AdEventInfo ad_event_for_ad_3 =
       BuildAdEvent(ad_3, ConfirmationType::kServed, /*created_at=*/Now());
   RecordAdEvent(ad_event_for_ad_3, record_ad_event_callback.Get());

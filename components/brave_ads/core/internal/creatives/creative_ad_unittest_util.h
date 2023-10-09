@@ -10,7 +10,11 @@ namespace brave_ads {
 
 struct CreativeAdInfo;
 
-CreativeAdInfo BuildCreativeAdForTesting(bool should_use_random_uuids);
+namespace test {
+
+CreativeAdInfo BuildCreativeAd(bool should_use_random_uuids);
+
+}  // namespace test
 
 }  // namespace brave_ads
 

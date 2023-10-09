@@ -8,18 +8,18 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 
-namespace brave_ads::cbr {
+namespace brave_ads::cbr::test {
 
-PublicKey GetPublicKeyForTesting() {
+PublicKey GetPublicKey() {
   return PublicKey(kPublicKeyBase64);
 }
 
-PublicKey GetMismatchingPublicKeyForTesting() {
+PublicKey GetMismatchingPublicKey() {
   return {};
 }
 
-PublicKey GetInvalidPublicKeyForTesting() {
+PublicKey GetInvalidPublicKey() {
   return PublicKey(kInvalidBase64);
 }
 
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads::cbr::test

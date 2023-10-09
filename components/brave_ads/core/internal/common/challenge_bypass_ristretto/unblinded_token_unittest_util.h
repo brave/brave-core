@@ -12,8 +12,12 @@ namespace brave_ads::cbr {
 
 class UnblindedToken;
 
-UnblindedToken GetUnblindedTokenForTesting();
-std::vector<UnblindedToken> GetUnblindedTokensForTesting();
+namespace test {
+
+UnblindedToken GetUnblindedToken();
+std::vector<UnblindedToken> GetUnblindedTokens();
+
+}  // namespace test
 
 }  // namespace brave_ads::cbr
 

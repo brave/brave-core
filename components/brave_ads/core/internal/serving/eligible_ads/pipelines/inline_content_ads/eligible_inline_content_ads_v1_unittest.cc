@@ -51,12 +51,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
@@ -76,7 +76,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeInlineContentAds({creative_ad});
 
@@ -94,7 +94,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act & Assert
@@ -112,17 +112,17 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
@@ -144,7 +144,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
 TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});
 
   // Act & Assert
@@ -158,7 +158,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
        DoNotGetAdsForUnmatchedSegments) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeInlineContentAds({creative_ad});
 
@@ -176,7 +176,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test,
        DoNotGetAdsForNonExistentDimensions) {
   // Arrange
   CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad.segment = "technology & computing";
   database::SaveCreativeInlineContentAds({creative_ad});
 
@@ -195,12 +195,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
@@ -225,13 +225,13 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
@@ -256,19 +256,19 @@ TEST_F(BraveAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_2.segment = "finance-banking";
   creative_ad_2.priority = 1;
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      BuildCreativeInlineContentAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);

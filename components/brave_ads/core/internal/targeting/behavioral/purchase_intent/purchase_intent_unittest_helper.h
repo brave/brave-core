@@ -10,23 +10,19 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-class PurchaseIntentHelperForTesting final {
+class PurchaseIntentHelper final {
  public:
-  PurchaseIntentHelperForTesting();
+  PurchaseIntentHelper();
 
-  PurchaseIntentHelperForTesting(const PurchaseIntentHelperForTesting&) =
-      delete;
-  PurchaseIntentHelperForTesting& operator=(
-      const PurchaseIntentHelperForTesting&) = delete;
+  PurchaseIntentHelper(const PurchaseIntentHelper&) = delete;
+  PurchaseIntentHelper& operator=(const PurchaseIntentHelper&) = delete;
 
-  PurchaseIntentHelperForTesting(PurchaseIntentHelperForTesting&&) noexcept =
-      delete;
-  PurchaseIntentHelperForTesting& operator=(
-      PurchaseIntentHelperForTesting&&) noexcept = delete;
+  PurchaseIntentHelper(PurchaseIntentHelper&&) noexcept = delete;
+  PurchaseIntentHelper& operator=(PurchaseIntentHelper&&) noexcept = delete;
 
-  ~PurchaseIntentHelperForTesting();
+  ~PurchaseIntentHelper();
 
   void Mock();
 
@@ -37,6 +33,6 @@ class PurchaseIntentHelperForTesting final {
   PurchaseIntentProcessor processor_;
 };
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_UNITTEST_HELPER_H_

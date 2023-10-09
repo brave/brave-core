@@ -19,9 +19,9 @@ namespace brave_ads {
 class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
+    UnitTestBase::SetUp(/*is_integration_test=*/true);
 
-    ForcePermissionRulesForTesting();
+    test::ForcePermissionRules();
   }
 
   void SetUpMocks() override {

@@ -7,9 +7,9 @@
 
 #include "base/time/time.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-int GetMinutesForTesting(const int hours, const int minutes) {
+int GetMinutes(const int hours, const int minutes) {
   CHECK(hours >= 0 && hours <= 23);
   CHECK(minutes >= 0 && minutes <= 59);
 
@@ -18,4 +18,4 @@ int GetMinutesForTesting(const int hours, const int minutes) {
   return time_delta.InMinutes();
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

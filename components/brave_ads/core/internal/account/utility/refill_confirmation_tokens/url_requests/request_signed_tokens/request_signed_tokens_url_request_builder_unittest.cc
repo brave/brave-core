@@ -20,12 +20,12 @@ class BraveAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  const std::vector<cbr::Token> tokens = BuildTokensForTesting(/*count=*/3);
+  const std::vector<cbr::Token> tokens = test::BuildTokens(/*count=*/3);
   const std::vector<cbr::BlindedToken> blinded_tokens =
       cbr::BlindTokens(tokens);
 
-  RequestSignedTokensUrlRequestBuilder url_request_builder(
-      GetWalletForTesting(), blinded_tokens);
+  RequestSignedTokensUrlRequestBuilder url_request_builder(test::GetWallet(),
+                                                           blinded_tokens);
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();

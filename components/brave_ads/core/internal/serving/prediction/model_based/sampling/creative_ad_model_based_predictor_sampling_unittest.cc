@@ -21,7 +21,7 @@ TEST_F(BraveAdsCreativeAdPredictorSamplingTest, SampleCreativeAd) {
 
   CreativeAdPredictorInfo<CreativeNotificationAdInfo> creative_ad_predictor;
   creative_ad_predictor.creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_predictor.score = 1.0;
   creative_ad_predictors.push_back(creative_ad_predictor);
 
@@ -37,19 +37,19 @@ TEST_F(BraveAdsCreativeAdPredictorSamplingTest,
 
   CreativeAdPredictorInfo<CreativeNotificationAdInfo> creative_ad_predictor_1;
   creative_ad_predictor_1.creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_predictor_1.score = 0.0;
   creative_ad_predictors.push_back(creative_ad_predictor_1);
 
   CreativeAdPredictorInfo<CreativeNotificationAdInfo> creative_ad_predictor_2;
   creative_ad_predictor_2.creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_predictor_2.score = 1.0;
   creative_ad_predictors.push_back(creative_ad_predictor_2);
 
   CreativeAdPredictorInfo<CreativeNotificationAdInfo> creative_ad_predictor_3;
   creative_ad_predictor_3.creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_predictor_3.score = 0.0;
   creative_ad_predictors.push_back(creative_ad_predictor_3);
 
@@ -67,13 +67,13 @@ TEST_F(BraveAdsCreativeAdPredictorSamplingTest,
 
   CreativeAdPredictorInfo<CreativeNotificationAdInfo> creative_ad_predictor_1;
   creative_ad_predictor_1.creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_predictor_1.score = 3.0;
   creative_ad_predictors.push_back(creative_ad_predictor_1);
 
   CreativeAdPredictorInfo<CreativeNotificationAdInfo> creative_ad_predictor_2;
   creative_ad_predictor_2.creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_predictor_2.score = 3.0;
   creative_ad_predictors.push_back(creative_ad_predictor_2);
 
@@ -107,7 +107,7 @@ TEST_F(BraveAdsCreativeAdPredictorSamplingTest, DoNotSampleCreativeAd) {
 
   CreativeAdPredictorInfo<CreativeNotificationAdInfo> creative_ad_predictor;
   creative_ad_predictor.creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_predictor.score = 0.0;
   creative_ad_predictors.push_back(creative_ad_predictor);
 

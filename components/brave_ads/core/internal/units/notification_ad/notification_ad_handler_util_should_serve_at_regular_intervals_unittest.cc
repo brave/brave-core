@@ -64,7 +64,7 @@ class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
     MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
-    SetMaximumNotificationAdsPerHourForTesting(1);
+    test::SetMaximumNotificationAdsPerHour(1);
   }
 };
 

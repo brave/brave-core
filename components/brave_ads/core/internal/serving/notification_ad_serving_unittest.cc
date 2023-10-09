@@ -47,10 +47,10 @@ TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kNotificationAdServingFeature, {{"version", "0"}});
 
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -60,10 +60,10 @@ TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
 
 TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -74,7 +74,7 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
 
 TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeNotificationAd);
@@ -86,7 +86,7 @@ TEST_F(BraveAdsNotificationAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
