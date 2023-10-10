@@ -291,7 +291,7 @@ import Preferences
     }
     
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { networks in
+    mockAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { networks, _ in
       [
         NetworkAssets(network: .mockMainnet, tokens: mockEthUserAssets.filter(\.visible), sortOrder: 0),
         NetworkAssets(network: .mockSolana, tokens: mockSolUserAssets.filter(\.visible), sortOrder: 1),
@@ -1027,10 +1027,11 @@ import Preferences
 }
 
 extension BraveWallet.BlockchainToken {
-  /// Returns a copy of the `BlockchainToken` with the given `visible` flag.
-  func copy(asVisibleAsset isVisible: Bool) -> Self {
+  /// Returns a copy of the `BlockchainToken` with the given `visible` flag and `isSpam` flag.
+  func copy(asVisibleAsset isVisible: Bool, isSpam: Bool = false) -> Self {
     (self.copy() as! Self).then {
       $0.visible = isVisible
+      $0.isSpam = isSpam
     }
   }
 }

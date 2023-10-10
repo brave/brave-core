@@ -451,7 +451,7 @@ struct WalletPanelView: View {
             }
           }
           VStack(spacing: 4) {
-            let nativeAsset = accountActivityStore.userVisibleAssets.first(where: {
+            let nativeAsset = accountActivityStore.userAssets.first(where: {
               $0.token.symbol == networkStore.selectedChainForOrigin.symbol
               && $0.token.chainId == networkStore.selectedChainIdForOrigin
             })

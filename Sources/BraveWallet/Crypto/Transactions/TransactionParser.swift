@@ -87,20 +87,20 @@ enum TransactionParser {
   static func token(
     for contractAddress: String,
     network: BraveWallet.NetworkInfo,
-    visibleTokens: [BraveWallet.BlockchainToken],
+    userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken]
   ) -> BraveWallet.BlockchainToken? {
     let findToken: (BraveWallet.BlockchainToken) -> Bool = {
       $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame
     }
-    return visibleTokens.first(where: findToken) ?? allTokens.first(where: findToken)
+    return userAssets.first(where: findToken) ?? allTokens.first(where: findToken)
   }
   
   static func parseTransaction(
     transaction: BraveWallet.TransactionInfo,
     network: BraveWallet.NetworkInfo,
     accountInfos: [BraveWallet.AccountInfo],
-    visibleTokens: [BraveWallet.BlockchainToken],
+    userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
     solEstimatedTxFee: UInt64?,
@@ -201,7 +201,7 @@ enum TransactionParser {
             let tokenContractAddress = transaction.erc20TransferTokenContractAddress else {
         return nil
       }
-      let fromToken = token(for: tokenContractAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens)
+      let fromToken = token(for: tokenContractAddress, network: network, userAssets: userAssets, allTokens: allTokens)
       var fromAmount = ""
       var fromFiat = "$0.00"
       if let token = fromToken {
@@ -246,9 +246,9 @@ enum TransactionParser {
       }
       let (fromTokenAddress, toTokenAddress) = transaction.ethSwapTokenContractAddresses ?? ("", "")
       
-      let fromToken = token(for: fromTokenAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens)
+      let fromToken = token(for: fromTokenAddress, network: network, userAssets: userAssets, allTokens: allTokens)
       let fromTokenDecimals = Int(fromToken?.decimals ?? network.decimals)
-      let toToken = token(for: toTokenAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens)
+      let toToken = token(for: toTokenAddress, network: network, userAssets: userAssets, allTokens: allTokens)
       let toTokenDecimals = Int(toToken?.decimals ?? network.decimals)
       
       let formattedSellAmount = formatter.decimalString(for: sellAmountValue.removingHexPrefix, radix: .hex, decimals: fromTokenDecimals)?.trimmingTrailingZeros ?? ""
@@ -304,7 +304,7 @@ enum TransactionParser {
             let value = transaction.txArgs[safe: 1] else {
         return nil
       }
-      let token = token(for: contractAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens)
+      let token = token(for: contractAddress, network: network, userAssets: userAssets, allTokens: allTokens)
       let isUnlimited = value.caseInsensitiveCompare(WalletConstants.MAX_UINT256) == .orderedSame
       let approvalAmount: String
       if isUnlimited {
@@ -354,7 +354,7 @@ enum TransactionParser {
             let tokenContractAddress = transaction.erc721ContractAddress else {
         return nil
       }
-      let token = token(for: tokenContractAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens)
+      let token = token(for: tokenContractAddress, network: network, userAssets: userAssets, allTokens: allTokens)
       
       return .init(
         transaction: transaction,
@@ -426,7 +426,7 @@ enum TransactionParser {
             let splTokenMintAddress = transaction.txDataUnion.solanaTxData?.splTokenMintAddress else {
         return nil
       }
-      let fromToken = token(for: splTokenMintAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens)
+      let fromToken = token(for: splTokenMintAddress, network: network, userAssets: userAssets, allTokens: allTokens)
       let fromValue = "\(amount)"
       var fromValueFormatted = ""
       var fromFiat = "$0.00"
@@ -854,7 +854,7 @@ extension BraveWallet.TransactionInfo {
   func parsedTransaction(
     network: BraveWallet.NetworkInfo,
     accountInfos: [BraveWallet.AccountInfo],
-    visibleTokens: [BraveWallet.BlockchainToken],
+    userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
     solEstimatedTxFee: UInt64? = nil,
@@ -865,7 +865,7 @@ extension BraveWallet.TransactionInfo {
       transaction: self,
       network: network,
       accountInfos: accountInfos,
-      visibleTokens: visibleTokens,
+      userAssets: userAssets,
       allTokens: allTokens,
       assetRatios: assetRatios,
       solEstimatedTxFee: solEstimatedTxFee,
@@ -943,6 +943,8 @@ extension BraveWallet.TransactionInfo {
         .solanaDappSignTransaction,
         .solanaDappSignAndSendTransaction,
         .solanaSwap:
+      break
+    case .ethFilForwarderTransfer:
       break
     @unknown default:
       break

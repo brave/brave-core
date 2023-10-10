@@ -253,7 +253,7 @@ class SwapStoreTests: XCTestCase {
     txService._addUnapprovedTransaction = { $4(true, "tx-meta-id", "") }
     let walletService = BraveWallet.TestBraveWalletService()
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       network.coin == .eth ? [NetworkAssets(network: .mockMainnet, tokens: [.previewToken, .previewDaiToken], sortOrder: 0)] : [NetworkAssets(network: .mockSolana, tokens: [.mockSolToken, .mockSpdToken], sortOrder: 0)]
     }
     let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()

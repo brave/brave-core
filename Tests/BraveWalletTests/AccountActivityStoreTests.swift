@@ -160,7 +160,7 @@ class AccountActivityStoreTests: XCTestCase {
     )
     
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { _ in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [NetworkAssets(
         network: .mockMainnet,
         tokens: [
@@ -190,49 +190,49 @@ class AccountActivityStoreTests: XCTestCase {
       userAssetManager: mockAssetManager
     )
     
-    let userVisibleAssetsException = expectation(description: "accountActivityStore-assetStores")
-    accountActivityStore.$userVisibleAssets
+    let userAssetsException = expectation(description: "accountActivityStore-assetStores")
+    accountActivityStore.$userAssets
       .dropFirst()
       .collect(2)
-      .sink { userVisibleAssets in
-        defer { userVisibleAssetsException.fulfill() }
-        XCTAssertEqual(userVisibleAssets.count, 2) // empty assets, populated assets
-        guard let lastUpdatedVisibleAssets = userVisibleAssets.last else {
+      .sink { userAssets in
+        defer { userAssetsException.fulfill() }
+        XCTAssertEqual(userAssets.count, 2) // empty assets, populated assets
+        guard let lastUpdatedAssets = userAssets.last else {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedVisibleAssets.count, 3)
+        XCTAssertEqual(lastUpdatedAssets.count, 3)
         
-        XCTAssertEqual(lastUpdatedVisibleAssets[0].token.symbol, BraveWallet.NetworkInfo.mockMainnet.nativeToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleAssets[0].network, BraveWallet.NetworkInfo.mockMainnet)
-        XCTAssertEqual(lastUpdatedVisibleAssets[0].totalBalance, mockEthDecimalBalance)
-        XCTAssertEqual(lastUpdatedVisibleAssets[0].price, self.mockAssetPrices[safe: 0]?.price ?? "")
+        XCTAssertEqual(lastUpdatedAssets[0].token.symbol, BraveWallet.NetworkInfo.mockMainnet.nativeToken.symbol)
+        XCTAssertEqual(lastUpdatedAssets[0].network, BraveWallet.NetworkInfo.mockMainnet)
+        XCTAssertEqual(lastUpdatedAssets[0].totalBalance, mockEthDecimalBalance)
+        XCTAssertEqual(lastUpdatedAssets[0].price, self.mockAssetPrices[safe: 0]?.price ?? "")
 
-        XCTAssertEqual(lastUpdatedVisibleAssets[1].token.symbol, BraveWallet.BlockchainToken.mockUSDCToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleAssets[1].network, BraveWallet.NetworkInfo.mockMainnet)
-        XCTAssertEqual(lastUpdatedVisibleAssets[1].totalBalance, mockERC20DecimalBalance)
-        XCTAssertEqual(lastUpdatedVisibleAssets[1].price, self.mockAssetPrices[safe: 1]?.price ?? "")
+        XCTAssertEqual(lastUpdatedAssets[1].token.symbol, BraveWallet.BlockchainToken.mockUSDCToken.symbol)
+        XCTAssertEqual(lastUpdatedAssets[1].network, BraveWallet.NetworkInfo.mockMainnet)
+        XCTAssertEqual(lastUpdatedAssets[1].totalBalance, mockERC20DecimalBalance)
+        XCTAssertEqual(lastUpdatedAssets[1].price, self.mockAssetPrices[safe: 1]?.price ?? "")
       }
       .store(in: &cancellables)
     
-    let userVisibleNFTsException = expectation(description: "accountActivityStore-userVisibleNFTs")
-    XCTAssertTrue(accountActivityStore.userVisibleNFTs.isEmpty)  // Initial state
-    accountActivityStore.$userVisibleNFTs
+    let userNFTsException = expectation(description: "accountActivityStore-userVisibleNFTs")
+    XCTAssertTrue(accountActivityStore.userNFTs.isEmpty)  // Initial state
+    accountActivityStore.$userNFTs
       .dropFirst()
       .collect(2)
-      .sink { userVisibleNFTs in
-        defer { userVisibleNFTsException.fulfill() }
-        XCTAssertEqual(userVisibleNFTs.count, 2) // empty nfts, populated nfts
-        guard let lastUpdatedVisibleNFTs = userVisibleNFTs.last else {
+      .sink { userNFTs in
+        defer { userNFTsException.fulfill() }
+        XCTAssertEqual(userNFTs.count, 2) // empty nfts, populated nfts
+        guard let lastUpdatedNFTs = userNFTs.last else {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedVisibleNFTs.count, 1)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockERC721NFTToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.balanceForAccounts[account.address], Int(mockNFTBalance))
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.imageURLString, mockERC721Metadata.imageURLString)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.name, mockERC721Metadata.name)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockERC721Metadata.description)
+        XCTAssertEqual(lastUpdatedNFTs.count, 1)
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockERC721NFTToken.symbol)
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.address], Int(mockNFTBalance))
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.imageURLString, mockERC721Metadata.imageURLString)
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.name, mockERC721Metadata.name)
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.description, mockERC721Metadata.description)
       }.store(in: &cancellables)
     
     let transactionSummariesExpectation = expectation(description: "accountActivityStore-transactions")
@@ -287,22 +287,22 @@ class AccountActivityStoreTests: XCTestCase {
     )
     
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { _ in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [
         NetworkAssets(
-        network: .mockSolana,
-        tokens: [
-          BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
-          .mockSolanaNFTToken.copy(asVisibleAsset: true),
-          .mockSpdToken.copy(asVisibleAsset: true)
-        ],
-        sortOrder: 0),
-       NetworkAssets(
-        network: .mockSolanaTestnet,
-        tokens: [
-          BraveWallet.NetworkInfo.mockSolanaTestnet.nativeToken.copy(asVisibleAsset: true)
-        ],
-        sortOrder: 1)
+          network: .mockSolana,
+          tokens: [
+            BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
+            .mockSolanaNFTToken.copy(asVisibleAsset: true),
+            .mockSpdToken.copy(asVisibleAsset: true)
+          ],
+          sortOrder: 0),
+        NetworkAssets(
+          network: .mockSolanaTestnet,
+          tokens: [
+            BraveWallet.NetworkInfo.mockSolanaTestnet.nativeToken.copy(asVisibleAsset: true)
+          ],
+          sortOrder: 1)
       ]
     }
     
@@ -320,49 +320,49 @@ class AccountActivityStoreTests: XCTestCase {
       userAssetManager: mockAssetManager
     )
     
-    let userVisibleAssetsExpectation = expectation(description: "accountActivityStore-assetStores")
-    accountActivityStore.$userVisibleAssets
+    let userAssetsExpectation = expectation(description: "accountActivityStore-assetStores")
+    accountActivityStore.$userAssets
       .dropFirst()
       .collect(2)
-      .sink { userVisibleAssets in
-        defer { userVisibleAssetsExpectation.fulfill() }
-        XCTAssertEqual(userVisibleAssets.count, 2) // empty assets, populated assets
-        guard let lastUpdatedVisibleAssets = userVisibleAssets.last else {
+      .sink { userAssets in
+        defer { userAssetsExpectation.fulfill() }
+        XCTAssertEqual(userAssets.count, 2) // empty assets, populated assets
+        guard let lastUpdatedAssets = userAssets.last else {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedVisibleAssets.count, 3)
+        XCTAssertEqual(lastUpdatedAssets.count, 3)
         
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol, BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.network, BraveWallet.NetworkInfo.mockSolana)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.totalBalance, mockSolDecimalBalance)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.price, self.mockAssetPrices[safe: 2]?.price ?? "")
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.token.symbol, BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol)
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.network, BraveWallet.NetworkInfo.mockSolana)
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockSolDecimalBalance)
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.price, self.mockAssetPrices[safe: 2]?.price ?? "")
 
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.token.symbol, BraveWallet.BlockchainToken.mockSpdToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.network, BraveWallet.NetworkInfo.mockSolana)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.totalBalance, mockSpdTokenBalance)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.price, self.mockAssetPrices[safe: 3]?.price ?? "")
+        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.token.symbol, BraveWallet.BlockchainToken.mockSpdToken.symbol)
+        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.network, BraveWallet.NetworkInfo.mockSolana)
+        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.totalBalance, mockSpdTokenBalance)
+        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.price, self.mockAssetPrices[safe: 3]?.price ?? "")
       }
       .store(in: &cancellables)
     
-    let userVisibleNFTsExpectation = expectation(description: "accountActivityStore-userVisibleNFTs")
-    XCTAssertTrue(accountActivityStore.userVisibleNFTs.isEmpty)  // Initial state
-    accountActivityStore.$userVisibleNFTs
+    let userNFTsExpectation = expectation(description: "accountActivityStore-userVisibleNFTs")
+    XCTAssertTrue(accountActivityStore.userNFTs.isEmpty)  // Initial state
+    accountActivityStore.$userNFTs
       .dropFirst()
       .collect(2)
-      .sink { userVisibleNFTs in
-        defer { userVisibleNFTsExpectation.fulfill() }
-        XCTAssertEqual(userVisibleNFTs.count, 2) // empty nfts, populated nfts
-        guard let lastUpdatedVisibleNFTs = userVisibleNFTs.last else {
+      .sink { userNFTs in
+        defer { userNFTsExpectation.fulfill() }
+        XCTAssertEqual(userNFTs.count, 2) // empty nfts, populated nfts
+        guard let lastUpdatedNFTs = userNFTs.last else {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedVisibleNFTs.count, 1)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockSolanaNFTToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.balanceForAccounts[account.address], Int(mockSolanaNFTTokenBalance))
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.imageURLString, mockSolMetadata.imageURLString)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.name, mockSolMetadata.name)
-        XCTAssertEqual(lastUpdatedVisibleNFTs[safe: 0]?.nftMetadata?.description, mockSolMetadata.description)
+        XCTAssertEqual(lastUpdatedNFTs.count, 1)
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.token.symbol, BraveWallet.BlockchainToken.mockSolanaNFTToken.symbol)
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.address], Int(mockSolanaNFTTokenBalance))
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.imageURLString, mockSolMetadata.imageURLString)
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.name, mockSolMetadata.name)
+        XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.description, mockSolMetadata.description)
       }.store(in: &cancellables)
     
     let transactionSummariesExpectation = expectation(description: "accountActivityStore-transactions")
@@ -442,7 +442,7 @@ class AccountActivityStoreTests: XCTestCase {
     )
     
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { _ in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [
         NetworkAssets(
           network: .mockFilecoinMainnet,
@@ -473,28 +473,28 @@ class AccountActivityStoreTests: XCTestCase {
       userAssetManager: mockAssetManager
     )
     
-    let userVisibleAssetsExpectation = expectation(description: "accountActivityStore-assetStores")
-    accountActivityStore.$userVisibleAssets
+    let userAssetsExpectation = expectation(description: "accountActivityStore-assetStores")
+    accountActivityStore.$userAssets
       .dropFirst()
       .collect(2)
-      .sink { userVisibleAssets in
-        defer { userVisibleAssetsExpectation.fulfill() }
-        XCTAssertEqual(userVisibleAssets.count, 2) // empty assets, populated assets
-        guard let lastUpdatedVisibleAssets = userVisibleAssets.last else {
+      .sink { userAssets in
+        defer { userAssetsExpectation.fulfill() }
+        XCTAssertEqual(userAssets.count, 2) // empty assets, populated assets
+        guard let lastUpdatedAssets = userAssets.last else {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedVisibleAssets.count, 2)
+        XCTAssertEqual(lastUpdatedAssets.count, 2)
         
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.token.symbol, BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.network, BraveWallet.NetworkInfo.mockFilecoinMainnet)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.totalBalance, mockFilDecimalBalance)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 0]?.price, self.mockAssetPrices[safe: 4]?.price ?? "")
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.token.symbol, BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.symbol)
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.network, BraveWallet.NetworkInfo.mockFilecoinMainnet)
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockFilDecimalBalance)
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.price, self.mockAssetPrices[safe: 4]?.price ?? "")
         
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.token.symbol, BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken.symbol)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.network, BraveWallet.NetworkInfo.mockFilecoinTestnet)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.totalBalance, mockFileTestnetDecimalBalance)
-        XCTAssertEqual(lastUpdatedVisibleAssets[safe: 1]?.price, self.mockAssetPrices[safe: 4]?.price ?? "")
+        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.token.symbol, BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken.symbol)
+        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.network, BraveWallet.NetworkInfo.mockFilecoinTestnet)
+        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.totalBalance, mockFileTestnetDecimalBalance)
+        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.price, self.mockAssetPrices[safe: 4]?.price ?? "")
       }
       .store(in: &cancellables)
     

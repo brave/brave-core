@@ -17,7 +17,7 @@ struct SendTokenSearchView: View {
   var network: BraveWallet.NetworkInfo
   
   var body: some View {
-    TokenList(tokens: sendTokenStore.userAssets) { token in
+    TokenList(tokens: sendTokenStore.userVisibleAssets) { token in
       Button(action: {
         sendTokenStore.selectedSendNFTMetadata = allNFTMetadata[token.id]
         sendTokenStore.selectedSendToken = token
@@ -44,7 +44,7 @@ struct SendTokenSearchView: View {
     }
     .onAppear {
       Task { @MainActor in
-        self.allNFTMetadata = await sendTokenStore.fetchNFTMetadata(tokens: sendTokenStore.userAssets.filter { $0.isErc721 || $0.isNft })
+        self.allNFTMetadata = await sendTokenStore.fetchNFTMetadata(tokens: sendTokenStore.userVisibleAssets.filter { $0.isErc721 || $0.isNft })
       }
     }
     .navigationTitle(Strings.Wallet.searchTitle)

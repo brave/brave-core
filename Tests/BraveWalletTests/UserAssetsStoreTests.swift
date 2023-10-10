@@ -53,7 +53,7 @@ class UserAssetsStoreTests: XCTestCase {
   func testUpdate() {
     let (keyringService, rpcService, blockchainRegistry, assetRatioService, walletService) = setupServices()
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssets = { networks in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { networks, _ in
       var result: [NetworkAssets] = []
       for network in networks {
         if network.chainId == BraveWallet.MainnetChainId {
@@ -150,7 +150,7 @@ class UserAssetsStoreTests: XCTestCase {
     let (keyringService, rpcService, blockchainRegistry, assetRatioService, walletService) = setupServices()
     
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssets = { networks in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { networks, _ in
       var result: [NetworkAssets] = []
       for network in networks {
         if network.chainId == BraveWallet.MainnetChainId {

@@ -29,4 +29,25 @@ extension BraveWalletBraveWalletService {
         .sorted(by: { $0.sortOrder < $1.sortOrder })
     })
   }
+  
+  @MainActor func simpleHashSpamNFTs(for selectedAccounts: [BraveWallet.AccountInfo], on selectedNetworks: [BraveWallet.NetworkInfo]) async -> [NetworkAssets] {
+    await withTaskGroup(of: [BraveWallet.BlockchainToken].self, body: { @MainActor group in
+      for account in selectedAccounts {
+        let networks = selectedNetworks
+          .filter { $0.coin == account.coin }
+          .map(\.chainId)
+        group.addTask { @MainActor in
+          let (spamNFTs, _) = await self.simpleHashSpamNfTs(account.address, chainIds: networks, coin: account.coin, cursor: nil)
+          return spamNFTs
+        }
+      }
+      var networkSpamNFTs: [NetworkAssets] = []
+      let allSpamNFTs = await group.reduce([BraveWallet.BlockchainToken](), { $0 + $1 })
+      for (index, network) in selectedNetworks.enumerated() {
+        let spamNFTsOnNetwork = allSpamNFTs.filter { $0.chainId == network.chainId }
+        networkSpamNFTs.append(NetworkAssets(network: network, tokens: spamNFTsOnNetwork, sortOrder: index))
+      }
+      return networkSpamNFTs
+    })
+  }
 }

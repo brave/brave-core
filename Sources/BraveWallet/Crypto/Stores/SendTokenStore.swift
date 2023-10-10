@@ -11,8 +11,8 @@ import Combine
 
 /// A store contains data for sending tokens
 public class SendTokenStore: ObservableObject, WalletObserverStore {
-  /// User's asset with selected account and chain
-  @Published var userAssets: [BraveWallet.BlockchainToken] = []
+  /// User's visible asset with selected account and chain
+  @Published var userVisibleAssets: [BraveWallet.BlockchainToken] = []
   /// The current selected token to send. Default with nil value.
   @Published var selectedSendToken: BraveWallet.BlockchainToken? {
     didSet {
@@ -295,16 +295,16 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       }
       var network = await rpcService.network(selectedAccount.coin, origin: nil)
       await validatePrefilledToken(on: &network) // network may change
-      // fetch user assets
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
+      // fetch user visible assets
+      let userVisibleAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: [network], visible: true).flatMap { $0.tokens }
       let allTokens = await self.blockchainRegistry.allTokens(network.chainId, coin: network.coin)
       guard !Task.isCancelled else { return }
       if selectedSendToken == nil {
-        self.selectedSendToken = userAssets.first(where: { network.isNativeAsset($0) })
-        ?? userAssets.first(where: { $0.symbol.caseInsensitiveCompare("bat") == .orderedSame })
-        ?? userAssets.sorted(by: { $0.name < $1.name }).first
+        self.selectedSendToken = userVisibleAssets.first(where: { network.isNativeAsset($0) })
+        ?? userVisibleAssets.first(where: { $0.symbol.caseInsensitiveCompare("bat") == .orderedSame })
+        ?? userVisibleAssets.sorted(by: { $0.name < $1.name }).first
       }
-      self.userAssets = userAssets
+      self.userVisibleAssets = userVisibleAssets
       self.allTokens = allTokens
       self.validateSendAddress() // `sendAddress` may match a token contract address
       // fetch balance for `selectedSendToken`
@@ -408,7 +408,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       } else if normalizedFromAddress == normalizedToAddress {
         // 2. check if send address is the same as the from address
         addressError = .sameAsFromAddress
-      } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedToAddress }) != nil)
+      } else if (userVisibleAssets.first(where: { $0.contractAddress.lowercased() == normalizedToAddress }) != nil)
                   || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedToAddress }) != nil) {
         // 3. check if send address is a contract address
         addressError = .contractAddress

@@ -61,10 +61,10 @@ struct AccountActivityView: View {
         header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
       ) {
         Group {
-          if activityStore.userVisibleAssets.isEmpty {
+          if activityStore.userAssets.isEmpty {
             emptyTextView(Strings.Wallet.noAssets)
           } else {
-            ForEach(activityStore.userVisibleAssets) { asset in
+            ForEach(activityStore.userAssets) { asset in
               PortfolioAssetView(
                 image: AssetIconView(
                   token: asset.token,
@@ -82,10 +82,10 @@ struct AccountActivityView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      if !activityStore.userVisibleNFTs.isEmpty {
+      if !activityStore.userNFTs.isEmpty {
         Section(content: {
           Group {
-            ForEach(activityStore.userVisibleNFTs) { nftAsset in
+            ForEach(activityStore.userNFTs) { nftAsset in
               NFTAssetView(
                 image: NFTIconView(
                   token: nftAsset.token,

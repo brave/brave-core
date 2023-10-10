@@ -95,7 +95,7 @@ import Preferences
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     walletService._addObserver = { _ in }
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       []
     }
     let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()

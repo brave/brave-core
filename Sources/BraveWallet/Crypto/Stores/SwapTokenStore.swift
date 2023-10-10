@@ -856,9 +856,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
           // Native token on the current selected network
           let nativeAsset = network.nativeToken
-          // Custom tokens added by users
-          let userAssets = self.assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
-          let customTokens = userAssets.filter { asset in
+          // visible custom tokens added by users
+          let userVisibleAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: [network], visible: true).flatMap { $0.tokens }
+          let customTokens = userVisibleAssets.filter { asset in
             !tokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
           }
           let sortedCustomTokens = customTokens.sorted {
