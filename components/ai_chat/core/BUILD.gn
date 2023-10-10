@@ -49,3 +49,26 @@ static_library("core") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "ai_chat_credential_manager_unittest.cc",
+    "ai_chat_metrics_unittest.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/ai_chat/common",
+    "//brave/components/ai_chat/common/mojom",
+    "//brave/components/ai_chat/core",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp:cpp",
+    "//testing/gtest:gtest",
+  ]
+}
