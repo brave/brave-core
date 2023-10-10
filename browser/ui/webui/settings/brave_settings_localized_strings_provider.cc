@@ -388,6 +388,13 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_LABEL},
     {"leoClearHistoryDataSubLabel",
      IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_SUBLABEL},
+    {"braveLeoAssistantModelSelectionLabel",
+     IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL},
+    {"braveLeoModelSubtitle-chat-default", IDS_CHAT_UI_CHAT_DEFAULT_SUBTITLE},
+    {"braveLeoModelSubtitle-chat-leo-expanded",
+     IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE},
+    {"braveLeoModelSubtitle-chat-claude-instant",
+     IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE},
 
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},

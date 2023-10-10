@@ -3,10 +3,37 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,
 You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
+<link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
 <style include="settings-shared md-select iron-flex">
   .reset-leo {
       cursor: pointer;
       color: red;
+  }
+
+  .menu-item-with-icon {
+    --leo-icon-size: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .model-subtitle {
+    font: var(--leo-font-primary-small-regular);
+    color: var(--leo-color-text-tertiary);
+    padding: 0;
+    margin: 0;
+  }
+
+  .menu-subtitle {
+    padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-primary-small-semibold);
+  }
+
+  leo-dropdown {
+    min-width: 240px;
   }
 </style>
 <settings-toggle-button class="cr-row hr"
@@ -18,6 +45,33 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   pref="{{prefs.brave.ai_chat.auto_generate_questions}}"
   label="$i18n{braveLeoAssistantShowSuggestedPromptsLabel}">
 </settings-toggle-button>
+<div class="settings-box">
+  <div class="flex cr-padded-text">
+    <div>$i18n{braveLeoAssistantModelSelectionLabel}</div>
+  </div>
+  <leo-dropdown
+    class="cr-padded-text"
+    value="[[toModelName_(defaultModelKeyPrefValue_)]]"
+    on-change="onModelSelectionChange_"
+  >
+    <div class="menu-subtitle">
+      Chat
+    </div>
+    <template is="dom-repeat" items="[[models_]]">
+        <leo-option value$="[[item.key]]">
+          <div class="menu-item-with-icon">
+            <div>
+              <div>[[item.display_name]]</div>
+              <p class="model-subtitle">[[getModelSubtitle_(item.key)]]</p>
+            </div>
+            <template is="dom-if" if="[[item.is_premium]]">
+              <leo-icon name="lock-plain"></leo-icon>
+            </template>
+          </div>
+        </leo-option>
+      </template>
+  </leo-dropdown>
+</div>
 <div class="settings-box " on-click="onResetAssistantData_">
     <div class="flex cr-padded-text reset-leo">
       <div>$i18n{braveLeoAssistantResetAndClearDataLabel}</div>

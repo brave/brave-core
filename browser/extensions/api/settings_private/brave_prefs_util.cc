@@ -291,6 +291,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveChatAutocompleteProviderEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[ai_chat::prefs::kDefaultModelKey] =
+      settings_api::PrefType::PREF_TYPE_STRING;
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)

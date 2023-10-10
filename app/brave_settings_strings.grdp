@@ -1439,6 +1439,9 @@ Leo. This action cannot be undone.
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_SUBLABEL" desc="The text for settings option">
     Data and chat history
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL" desc="Label for selecting default model">
+    Default model for new conversations
+  </message>
 
 <!-- Avatars. Generated via zsh and node:
         declare -i a=56

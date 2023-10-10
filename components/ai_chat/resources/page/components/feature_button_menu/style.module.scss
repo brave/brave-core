@@ -24,6 +24,7 @@
 }
 
 .menuItemWithIcon {
+  --leo-icon-size: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -34,4 +35,15 @@
 
 .menuIconSpace {
   width: calc(var(--leo-icon-size) + 8px);
+}
+
+.modelSubtitle {
+  font: var(--leo-font-primary-small-regular);
+  color: var(--leo-color-text-tertiary);
+  padding: 0;
+  margin: 0;
+}
+
+.lockOpen {
+  --leo-icon-color: var(--leo-color-icon-disabled);
 }

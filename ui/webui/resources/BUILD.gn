@@ -224,6 +224,7 @@ leo_icons = [
   "location-on.svg",
   "lock.svg",
   "lock-plain.svg",
+  "lock-open.svg",
   "media-visualizer-off.svg",
   "media-visualizer.svg",
   "microphone-off.svg",
