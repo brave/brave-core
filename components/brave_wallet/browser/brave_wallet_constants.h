@@ -45,6 +45,15 @@ constexpr char kSimpleHashBraveProxyUrl[] =
     "https://simplehash.wallet.brave.com";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletSpenderAddress", IDS_BRAVE_WALLET_SPENDER_ADDRESS},
+    {"braveWalletTokenIsVerifiedByLists",
+     IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED_BY_LISTS},
+    {"braveWalletTokenIsVerified", IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED},
+    {"braveWalletTokenIsUnverified", IDS_BRAVE_WALLET_TOKEN_IS_UNVERIFIED},
+    {"braveWalletUnlimitedAssetAmount",
+     IDS_BRAVE_WALLET_UNLIMITED_ASSET_AMOUNT},
+    {"braveWalletFrom", IDS_BRAVE_WALLET_FROM},
+    {"braveWalletReceive", IDS_BRAVE_WALLET_RECEIVE},
     {"braveWalletNetworkFees", IDS_BRAVE_WALLET_NETWORK_FEES},
     {"braveWalletSolanaSysvarRentProgram",
      IDS_BRAVE_WALLET_SOLANA_SYSVAR_RENT_PROGRAM},

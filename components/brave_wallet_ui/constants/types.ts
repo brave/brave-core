@@ -1303,7 +1303,7 @@ export type SafeEVMStateChange<
   rawInfo: SafeRawInfo<
     KIND,
     Pick<BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion, UNION_KEY>
-  > & { data: Partial<BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion> }
+  > & { data: Partial<BraveWallet.BlowfishEVMStateChangeRawInfoDataUnion> }
 }
 
 export type SafeSolanaStateChange<

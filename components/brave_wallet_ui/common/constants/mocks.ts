@@ -10,6 +10,13 @@ import {
   SafeBlowfishEvmResponse,
   SafeBlowfishSolanaResponse,
   SafeBlowfishWarning,
+  SafeERC1155TransferEvent,
+  SafeERC20ApprovalEvent,
+  SafeERC20TransferEvent,
+  SafeERC721ApprovalEvent,
+  SafeERC721ApprovalForAllEvent,
+  SafeERC721TransferEvent,
+  SafeNativeTransferEvent,
   SerializableTransactionInfo,
   SpotPriceRegistry,
 } from '../../constants/types'
@@ -746,6 +753,181 @@ const mockedSimulationWarnings: SafeBlowfishWarning[] = [
   }
 ]
 
+// EVM Events
+export const mockedReceiveDaiEvent: SafeERC20TransferEvent = {
+  humanReadableDiff: 'Receive 1530.81307 DAI',
+  rawInfo: {
+    data: {
+      erc20TransferData: {
+        amount: {
+          after: '557039306766411381864245',
+          before: '555508493698012633714742'
+        },
+        contract: {
+          address: BlowfishEVMAssets.mainnetDai.address,
+          kind: 'ACCOUNT'
+        },
+        asset: BlowfishEVMAssets.mainnetDai
+      }
+    },
+    kind: 'ERC20_TRANSFER'
+  }
+}
+
+export const mockSendEthEvent: SafeNativeTransferEvent = {
+  humanReadableDiff: 'Send 1 ETH',
+  rawInfo: {
+    kind: 'NATIVE_ASSET_TRANSFER',
+    data: {
+      nativeAssetTransferData: {
+        amount: {
+          after: '1182957389356504134754',
+          before: '1183957389356504134754'
+        },
+        contract: {
+          address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          kind: 'ACCOUNT'
+        },
+        asset: BlowfishEVMAssets.mainnetETH
+      }
+    },
+  }
+}
+
+export const mockApproveUsdtEvent: SafeERC20ApprovalEvent = {
+  humanReadableDiff: 'Approve to transfer up to 1000 USDT',
+  rawInfo: {
+    kind: 'ERC20_APPROVAL',
+    data: {
+      erc20ApprovalData: {
+        amount: {
+          after: '1000000000',
+          before: '0'
+        },
+        asset: BlowfishEVMAssets.mainnetTetherUSD,
+        contract: {
+          address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+          kind: 'ACCOUNT'
+        },
+        owner: {
+          address: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+          kind: 'ACCOUNT'
+        },
+        spender: {
+          address: '0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45',
+          kind: 'ACCOUNT'
+        }
+      },
+    },
+  }
+}
+
+export const mockReceiveNftEvent: SafeERC721TransferEvent = {
+  humanReadableDiff: 'Receive PudgyPenguins #7238',
+  rawInfo: {
+    data: {
+      erc721TransferData: {
+        amount: {
+          after: '1',
+          before: '0'
+        },
+        contract: {
+          address: '0xbd3531da5cf5857e7cfaa92426877b022e612cf8',
+          kind: 'ACCOUNT'
+        },
+        metadata: {
+          rawImageUrl:
+            'https://cdn.simplehash.com/assets/' +
+            '97e1c9e3e9eb21a1114351f9c5c14fe611c94916f360c4eb3aa9263afd8b837b.png'
+        },
+        name: 'PudgyPenguins',
+        symbol: 'PPG',
+        tokenId: '7238',
+        assetPrice: {
+          source: 'Simplehash',
+          lastUpdatedAt: '1679331222',
+          dollarValuePerToken: '594.99'
+        }
+      }
+    },
+    kind: 'ERC721_TRANSFER'
+  }
+}
+
+export const mockApproveBoredApeNftTransferEvent: SafeERC721ApprovalEvent = {
+  humanReadableDiff: 'Approve to transfer BoredApeYachtClub',
+  rawInfo: {
+    data: {
+      erc721ApprovalData: {
+        amount: {
+          after: '1',
+          before: '0'
+        },
+        contract: {
+          address: '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d',
+          kind: 'ACCOUNT'
+        },
+        metadata: {
+          rawImageUrl:
+            'https://cdn.simplehash.com/assets/beca5f0f88c267276318' +
+            'edd8a6019b6b47327f42efd0ba22a3835e77f27732e5.png'
+        },
+        name: 'BoredApeYachtClub',
+        owner: {
+          address: '0xed2ab4948ba6a909a7751dec4f34f303eb8c7236',
+          kind: 'ACCOUNT'
+        },
+        spender: {
+          address: '0x1e0049783f008a0085193e00003d00cd54003c71',
+          kind: 'ACCOUNT'
+        },
+        symbol: 'BAYC',
+        tokenId: '6603',
+        assetPrice: {
+          source: 'Simplehash',
+          lastUpdatedAt: '1679331222',
+          dollarValuePerToken: '7865.43'
+        }
+      }
+    },
+    kind: 'ERC721_APPROVAL'
+  }
+}
+
+export const mockApproveAllBoredApeNFTsEvent: SafeERC721ApprovalForAllEvent = {
+  humanReadableDiff: 'Approve to transfer all your BoredApeYachtClub',
+  rawInfo: {
+    kind: 'ERC721_APPROVAL_FOR_ALL',
+    data: {
+      erc721ApprovalForAllData: {
+        amount: {
+          after: '1157920892373161954235709850086879078532699846656405640394',
+          before: '0'
+        },
+        contract: {
+          address: '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d',
+          kind: 'ACCOUNT'
+        },
+        name: 'BoredApeYachtClub',
+        owner: {
+          address: '0x38191ca1307ebf67ca1a7caf5346dbd91d882ca6',
+          kind: 'ACCOUNT'
+        },
+        spender: {
+          address: '0x1e0049783f008a0085193e00003d00cd54003c71',
+          kind: 'ACCOUNT'
+        },
+        symbol: 'BAYC',
+        assetPrice: {
+          source: 'Simplehash',
+          lastUpdatedAt: '1679331222',
+          dollarValuePerToken: '7865.43'
+        }
+      }
+    }
+  }
+}
+
 /**
  * - Send 14.4539 LINK
  * - Receive 14.4539 LINK
@@ -922,46 +1104,7 @@ export const mockSimulatedSwapETHForDAI: SafeBlowfishEvmResponse = {
   warnings: [],
   simulationResults: {
     error: undefined,
-    expectedStateChanges: [
-      {
-        humanReadableDiff: 'Receive 1530.81307 DAI',
-        rawInfo: {
-          data: {
-            erc20TransferData: {
-              amount: {
-                after: '557039306766411381864245',
-                before: '555508493698012633714742'
-              },
-              contract: {
-                address: BlowfishEVMAssets.mainnetDai.address,
-                kind: 'ACCOUNT'
-              },
-              asset: BlowfishEVMAssets.mainnetDai
-            }
-          },
-          kind: 'ERC20_TRANSFER'
-        }
-      },
-      {
-        humanReadableDiff: 'Send 1 ETH',
-        rawInfo: {
-          kind: 'NATIVE_ASSET_TRANSFER',
-          data: {
-            nativeAssetTransferData: {
-              amount: {
-                after: '1182957389356504134754',
-                before: '1183957389356504134754'
-              },
-              contract: {
-                address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-                kind: 'ACCOUNT'
-              },
-              asset: BlowfishEVMAssets.mainnetETH
-            }
-          },
-        }
-      }
-    ]
+    expectedStateChanges: [mockedReceiveDaiEvent, mockSendEthEvent]
   }
 }
 
@@ -974,35 +1117,7 @@ export const mockEvmSimulatedERC20Approval: SafeBlowfishEvmResponse = {
   warnings: [],
   simulationResults: {
     error: undefined,
-    expectedStateChanges: [
-      {
-        humanReadableDiff: 'Approve to transfer up to 1000 USDT',
-        rawInfo: {
-          kind: 'ERC20_APPROVAL',
-          data: {
-            erc20ApprovalData: {
-              amount: {
-                after: '1000000000',
-                before: '0'
-              },
-              asset: BlowfishEVMAssets.mainnetTetherUSD,
-              contract: {
-                address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-                kind: 'ACCOUNT'
-              },
-              owner: {
-                address: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
-                kind: 'ACCOUNT'
-              },
-              spender: {
-                address: '0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45',
-                kind: 'ACCOUNT'
-              }
-            },
-          },
-        }
-      }
-    ]
+    expectedStateChanges: [mockApproveUsdtEvent]
   }
 }
 
@@ -1017,36 +1132,7 @@ export const mockSimulatedBuyNFTWithETH: SafeBlowfishEvmResponse = {
   simulationResults: {
     error: undefined,
     expectedStateChanges: [
-      {
-        humanReadableDiff: 'Receive PudgyPenguins #7238',
-        rawInfo: {
-          data: {
-            erc721TransferData: {
-              amount: {
-                after: '1',
-                before: '0'
-              },
-              contract: {
-                address: '0xbd3531da5cf5857e7cfaa92426877b022e612cf8',
-                kind: 'ACCOUNT'
-              },
-              metadata: {
-                rawImageUrl:
-                  'https://cdn.simplehash.com/assets/97e1c9e3e9eb21a1114351f9c5c14fe611c94916f360c4eb3aa9263afd8b837b.png'
-              },
-              name: 'PudgyPenguins',
-              symbol: 'PPG',
-              tokenId: '7238',
-              assetPrice: {
-                source: 'Simplehash',
-                lastUpdatedAt: '1679331222',
-                dollarValuePerToken: '594.99'
-              }
-            }
-          },
-          kind: 'ERC721_TRANSFER'
-        }
-      },
+      mockReceiveNftEvent,
       {
         humanReadableDiff: 'Send 3.181 ETH',
         rawInfo: {
@@ -1071,6 +1157,19 @@ export const mockSimulatedBuyNFTWithETH: SafeBlowfishEvmResponse = {
 }
 
 /**
+ * ERC721 Approve (Simulated)
+ * Approve to transfer BoredApeYachtClub
+ */
+export const mockSimulatedERC721Approve: SafeBlowfishEvmResponse = {
+  action: 'NONE',
+  warnings: [],
+  simulationResults: {
+    error: undefined,
+    expectedStateChanges: [mockApproveBoredApeNftTransferEvent]
+  }
+}
+
+/**
  * Simulated ERC721 Approve For All
  * - Approve to transfer all your BoredApeYachtClub
  */
@@ -1087,94 +1186,38 @@ export const mockERC721ApproveForAllSim: SafeBlowfishEvmResponse = {
   ],
   simulationResults: {
     error: undefined,
-    expectedStateChanges: [
-      {
-        humanReadableDiff: 'Approve to transfer all your BoredApeYachtClub',
-        rawInfo: {
-          kind: 'ERC721_APPROVAL_FOR_ALL',
-          data: {
-            erc721ApprovalForAllData: {
-              amount: {
-                after:
-                  '1157920892373161954235709850086879078532699846656405640394',
-                before: '0'
-              },
-              contract: {
-                address: '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d',
-                kind: 'ACCOUNT'
-              },
-              name: 'BoredApeYachtClub',
-              owner: {
-                address: '0x38191ca1307ebf67ca1a7caf5346dbd91d882ca6',
-                kind: 'ACCOUNT'
-              },
-              spender: {
-                address: '0x1e0049783f008a0085193e00003d00cd54003c71',
-                kind: 'ACCOUNT'
-              },
-              symbol: 'BAYC',
-              assetPrice: {
-                source: 'Simplehash',
-                lastUpdatedAt: '1679331222',
-                dollarValuePerToken: '7865.43'
-              }
-            }
-          }
-        }
-      }
-    ]
+    expectedStateChanges: [mockApproveAllBoredApeNFTsEvent]
   }
 }
 
-/**
- * ERC721 Approve (Simulated)
- * Approve to transfer BoredApeYachtClub
- */
-export const mockSimulatedERC721Approve: SafeBlowfishEvmResponse = {
-  action: 'NONE',
-  warnings: [],
-  simulationResults: {
-    error: undefined,
-    expectedStateChanges: [
-      {
-        humanReadableDiff: 'Approve to transfer BoredApeYachtClub',
-        rawInfo: {
-          data: {
-            erc721ApprovalData: {
-              amount: {
-                after: '1',
-                before: '0'
-              },
-              contract: {
-                address: '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d',
-                kind: 'ACCOUNT'
-              },
-              metadata: {
-                rawImageUrl:
-                  'https://cdn.simplehash.com/assets/beca5f0f88c267276318edd8a6019b6b47327f42efd0ba22a3835e77f27732e5.png'
-              },
-              name: 'BoredApeYachtClub',
-              owner: {
-                address: '0xed2ab4948ba6a909a7751dec4f34f303eb8c7236',
-                kind: 'ACCOUNT'
-              },
-              spender: {
-                address: '0x1e0049783f008a0085193e00003d00cd54003c71',
-                kind: 'ACCOUNT'
-              },
-              symbol: 'BAYC',
-              tokenId: '6603',
-              assetPrice: {
-                source: 'Simplehash',
-                lastUpdatedAt: '1679331222',
-                dollarValuePerToken: '7865.43'
-              }
-            }
-          },
-          kind: 'ERC721_APPROVAL'
-        }
+export const mockReceiveMultiStandardTokenEvent: SafeERC1155TransferEvent = {
+  humanReadableDiff: 'Receive Corgi',
+  rawInfo: {
+    data: {
+      erc1155TransferData: {
+        amount: {
+          'after': '1',
+          'before': '0'
+        },
+        contract: {
+          address: '0x51e613727fdd2e0b91b51c3e5427e9440a7957e4',
+          kind: 'ACCOUNT'
+        },
+        metadata: {
+          rawImageUrl:
+            'https://cdn.simplehash.com/' +
+            'assets/4bedd702e7ea8c4a9d04d83302138fa5b63d0cca0f06df9b87bdb09cff253b88.png'
+        },
+        tokenId: '13014975',
+        assetPrice: {
+          source: 'Simplehash',
+          lastUpdatedAt: '1679331222',
+          dollarValuePerToken: '232.43'
+        },
+        name: 'Corgi #1234'
       }
-    ]
+    },
+    kind: 'ERC1155_TRANSFER'
   }
 }
 
@@ -1208,35 +1251,7 @@ export const mockSimulatedBuyERC1155Token: SafeBlowfishEvmResponse = {
           kind: 'NATIVE_ASSET_TRANSFER'
         }
       },
-      {
-        humanReadableDiff: 'Receive Corgi',
-        rawInfo: {
-          data: {
-            erc1155TransferData: {
-              amount: {
-                'after': '1',
-                'before': '0'
-              },
-              contract: {
-                address: '0x51e613727fdd2e0b91b51c3e5427e9440a7957e4',
-                kind: 'ACCOUNT'
-              },
-              metadata: {
-                rawImageUrl:
-                  'https://cdn.simplehash.com/assets/4bedd702e7ea8c4a9d04d83302138fa5b63d0cca0f06df9b87bdb09cff253b88.png'
-              },
-              tokenId: '13014975',
-              assetPrice: {
-                source: 'Simplehash',
-                lastUpdatedAt: '1679331222',
-                dollarValuePerToken: '232.43'
-              },
-              name: 'Corgi #1234'
-            }
-          },
-          kind: 'ERC1155_TRANSFER'
-        }
-      }
+      mockReceiveMultiStandardTokenEvent
     ]
   }
 }

@@ -1002,4 +1002,11 @@
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_REFRESH" desc="NFTs tab empty state refreshing text">Refreshing</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FEES" desc="Label for blockchain network fees">Network fees</message>
   <message name="IDS_WALLET_EIP6963_PROVIDER_NAME" desc="Provider name which will be return when announce ethereum provider">Brave Wallet</message>
+  <message name="IDS_BRAVE_WALLET_RECEIVE" desc="Receive asset event title">Receive</message>
+  <message name="IDS_BRAVE_WALLET_FROM" desc="From address label">From</message>
+  <message name="IDS_BRAVE_WALLET_UNLIMITED_ASSET_AMOUNT" desc="Spend approval for an unlimited amount of a token">Unlimited <ph name="ASSET_SYMBOL">$1<ex>USDC</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_IS_UNVERIFIED" desc="Indicates that an asset has not been verified by any token list providers">This token is unverified</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED" desc="Indicates that an asset has been verified">This token is verified</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED_BY_LISTS" desc="Indicates that an asset has been verified by multiple token list providers">This token is verified on <ph name="NUMBER_OF_LISTS">$1<ex>2</ex></ph> lists</message>
+  <message name="IDS_BRAVE_WALLET_SPENDER_ADDRESS" desc="Indicates which address is spending funds">Spender: <ph name="ADDRESS">$1<ex>0x1234...abcd</ex></ph></message>
 </grit-part>

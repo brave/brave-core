@@ -5,13 +5,15 @@
 
 import styled from 'styled-components'
 
-export const Text = styled.span<{
-  textSize?: '22px' | '20px' | '18px' | '16px' | '14px' | '12px'
+export interface TextProps {
+  textSize?: '22px' | '20px' | '18px' | '16px' | '14px' | '12px' | '11px'
   isBold?: boolean
   textColor?: 'text01' | 'text02' | 'text03' | 'success' | 'error'
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'
-}>`
+}
+
+export const Text = styled.span<TextProps>`
   --text01: ${(p) => p.theme.color.text01};
   --text02: ${(p) => p.theme.color.text02};
   --text03: ${(p) => p.theme.color.text03};
