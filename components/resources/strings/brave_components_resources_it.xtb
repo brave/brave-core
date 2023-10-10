@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">Colori a tinta unita</translation>
 <translation id="7610541582755894669">Gradienti</translation>
 <translation id="1606851618930975029">Aggiorna su ogni nuova scheda</translation>
+<translation id="7040134046053881468">Apri il pannello delle ricompense</translation>
 <translation id="9024104284526126630">Puoi avviare una chiamata privata in Brave.</translation>
 <translation id="370665806235115550">Caricamento in corso...</translation>
 <translation id="4634933166298842522">Gestisci abbonamenti</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">Annulla l’iscrizione</translation>
 <translation id="1209739344687072997">Segnala un sito non funzionante</translation>
 <translation id="8510478288840333677">Segnala agli sviluppatori di Brave che questo sito non funziona bene con gli Scudi:</translation>
-<translation id="4105411033440701818">Nota: facendo clic su “Invia”, condividi l’indirizzo del sito, il numero della versione di Brave e il tuo indirizzo IP con gli sviluppatori di Brave (l'indirizzo IP non sarà archiviato).</translation>
+<translation id="8265244536487014968">N.B.: il report inviato ai server di Brave includerà l’indirizzo del sito, il numero di versione di Brave, le impostazioni delle protezioni, lo stato della VPN e le impostazioni linguistiche. L’indirizzo IP verrà trasmesso ma non sarà memorizzato.</translation>
 <translation id="6476216365964140603">Dettagli aggiuntivi (facoltativo)</translation>
 <translation id="6145852496180774737">Contattami via: (facoltativo)</translation>
 <translation id="7616645803364270729">E-mail, Twitter ecc.</translation>
@@ -597,7 +598,6 @@
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Accedi ad <ph name="PROVIDER"/><ph name="END_BOLD"/> per vedere il tuo saldo</translation>
 <translation id="2659764755126740206">Vai al mio account <ph name="PROVIDER"/></translation>
 <translation id="2394961582378297792">Disconnessione effettuata</translation>
-<translation id="7091980679045978090">Guadagni stimati</translation>
 <translation id="7934950257968365573">Accedi al tuo account <ph name="PROVIDER"/></translation>
 <translation id="8631427463833030968">Gestisci gli annunci</translation>
 <translation id="590733288489975971">Premi di Brave Ads</translation>
@@ -689,6 +689,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Non preoccuparti.</translation>
 <translation id="5027616819996705541">Puoi ancora navigare in modalità privata!</translation>
+<translation id="1886682615222609631">Guadagni attuali</translation>
 <translation id="86107454835395919">Imposta un contributo mensile</translation>
 <translation id="6621880242105464352">Sulla cifra inviata Brave trattiene, a titolo di commissione, la seguente percentuale: <ph name="FEE_PCT"/>.</translation>
 <translation id="1420756770787071946">Supporta questo creatore</translation>
@@ -1040,6 +1041,10 @@
 <translation id="4305817255990598646">Cambia</translation>
 <translation id="3423275441470187644">Mi fido</translation>
 <translation id="2391762656119864333">Revoca</translation>
+<translation id="9218424917282368512">Cambia rete</translation>
+<translation id="7526139040829362392">Cambia account</translation>
+<translation id="4217695020908122747">Account connessi</translation>
+<translation id="8497650996740651467">Account disponibili</translation>
 <translation id="5677928146339483299">Bloccato</translation>
 <translation id="3890989020011724401">Nuovo account</translation>
 <translation id="7257603403519636638">Visualizza gli asset del conto</translation>
@@ -1220,6 +1225,7 @@
 <translation id="3648994606506382289">Il modo più semplice, veloce ed economico per acquistare criptovaluta tramite carta e bonifico bancario.</translation>
 <translation id="3101839349578102016">Acquisto immediato con il tuo conto bancario. Commissioni ridotte.</translation>
 <translation id="8280898387224328221">Paga con carta di credito, debito, conto corrente</translation>
+<translation id="2218174283683424104">Compra con il nome più affidabile che ci sia nel mondo delle criptovalute.</translation>
 <translation id="8528916244724490964">Tutte le reti</translation>
 <translation id="7721139939763655123">Basso-alto</translation>
 <translation id="5458608274117818139">Alto-basso</translation>
@@ -1484,6 +1490,7 @@
 <translation id="8007404171238546456">Minimo ricevuto dopo lo slippage</translation>
 <translation id="767199001998615704">Commissione di rete</translation>
 <translation id="7057870207229052478">Commissione Brave</translation>
+<translation id="81116374028657878">Commissione del protocollo</translation>
 <translation id="3624518972158401291">Gratis</translation>
 <translation id="5038255447967558645">Fornitore di liquidità</translation>
 <translation id="8450638959928932199">Scambia e invia</translation>
@@ -1511,7 +1518,6 @@
 <translation id="3143110700666266545">Questa app utilizza le seguenti API di terze parti:</translation>
 <translation id="163536108506359457">La funzione Scambio di Brave usa <ph name="AGGREGATOR"/> come aggregatore DEX per le reti <ph name="NETWORKS"/> supportate. <ph name="AGGREGATOR"/> eseguirà il trattamento dell’indirizzo del portafoglio e l’indirizzo IP di <ph name="NETWORK"/> per completare le transazioni (e anche per ottenere le quotazioni). <ph name="AGGREGATOR"/> userà questi dati SOLO per eseguire il trattamento delle transazioni.</translation>
 <translation id="1847885264294023691">Clicca qui per consultare l’infomativa sulla privacy di <ph name="AGGREGATOR"/>.</translation>
-<translation id="9218424917282368512">Cambia rete</translation>
 <translation id="644984757357042735">La rete è obbligatoria</translation>
 <translation id="132243864024778443">Il nome del token è obbligatorio</translation>
 <translation id="3617263699756744037">Indirizzo di contratto del token non valido o assente</translation>
@@ -1547,8 +1553,15 @@
 <translation id="9085765419770918643">Non ci sono ancora NFT.</translation>
 <translation id="8445532667841598737">Vuoi aggiungerne? Clicca il pulsante qui sotto per importarli.</translation>
 <translation id="9136462955850040542">Compatibile con NFT su Solana (SPL) ed Ethereum (ERC-721).</translation>
-<translation id="8849001918648564819">Nascosta</translation>
+<translation id="137671950541962857">Raccolti</translation>
+<translation id="8849001918648564819">Nascosti</translation>
 <translation id="4905092798795191201">Mostra</translation>
+<translation id="6167809958646114660">Non mostrare nel portafoglio</translation>
+<translation id="6948667383954749033">Segna come non spazzatura</translation>
+<translation id="5810047320613496595">Spazzatura</translation>
+<translation id="7257605968082307175">Segna come spazzatura</translation>
+<translation id="7600335727434653744">Lo vuoi rimuovere dal Portafoglio di Brave?</translation>
+<translation id="6657860743511185539">NFT sarà rimosso dal Portafoglio di Brave ma resterà presente nella blockchain. Se lo cancelli ma poi cambi idea, dovrai reimportarlo manualmente.</translation>
 <translation id="849880459530751909">Modifica l’NFT</translation>
 <translation id="5925465310724910998">Vuoi che i tuoi NFT compaiano automaticamente?</translation>
 <translation id="5400791731776892411">Per mostrare automaticamente i tuoi NFT, Portafoglio Brave può avvalersi di un servizio esterno. Per questo servizio, Brave condividerà gli indirizzi del tuo portafoglio con <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/>. <ph name="BEFORE_URL"/>Scopri di più.<ph name="AFTER_URL"/></translation>
@@ -1747,9 +1760,6 @@
 <translation id="6938154350999993769">Debug: attiva/disattiva la modalità tablet</translation>
 <translation id="5854741377790551127">Debug: stampa l'albero di anteprima</translation>
 <translation id="8199130368328220410">Attiva/disattiva sottotitoli in tempo reale</translation>
-<translation id="4233010476457917696">Mostra la barra laterale</translation>
-<translation id="2207125676134752863">Mostra la barra laterale al passaggio del mouse</translation>
-<translation id="2613033293035359003">Nascondi barra laterale</translation>
 <translation id="9055778350624039365">Mostra il pannello Brave Wallet</translation>
 <translation id="2548853975094084059">Chiudi il pannello Brave Wallet</translation>
 <translation id="3765209580429944524">Mostra il pannello Brave VPN</translation>
@@ -1812,7 +1822,7 @@
 <translation id="1199355487114804640">Riproduci/Pausa</translation>
 <translation id="1689210457482459023">Riduci la velocità di riproduzione</translation>
 <translation id="5872363163901278000">Aumenta la velocità di riproduzione</translation>
-<translation id="8178821080790541548">IA di Brave</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">Protezioni</translation>
 <translation id="8458987127502506209">Abilita Protezioni Brave</translation>
 <translation id="7509914170164691086">Le Protezioni sono <ph name="LINK_BEFORE"/>ATTIVE<ph name="LINK_AFTER"/> per</translation>
@@ -1884,16 +1894,18 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="8637805148029768813">La funzione di riepilogo è attualmente disponibile solo per articoli selezionati e altre pagine web di lunga durata.</translation>
 <translation id="2346991295632453064">Accetta e inizia</translation>
 <translation id="1223498995510244364">Riepilogo</translation>
-<translation id="8758939268013768602">Informazioni su Brave AI</translation>
-<translation id="1704821516241545704">La funzione chat di Brave AI riassume il contenuto della pagina web su cui stai navigando e include un'interfaccia di chat che ti consente di effettuare richieste di follow-up del contenuto riepilogato per quella pagina.</translation>
-<translation id="58643773598235831">La pagina di riepilogo e tutte le domande che poni sulla funzione chat vengono inviate ai server di un partner API esterno (nessun identificatore viene inviato con la query).</translation>
-<translation id="917619443165595947">Assicurati che il contenuto della pagina e qualsiasi richiesta di follow-up non contengano informazioni personali o sensibili. L'accuratezza dei riepiloghi e delle risposte alle domande non è garantita e quindi non devi fare affidamento su alcun testo relativo alla salute, alla sicurezza personale o alle questioni finanziarie.</translation>
-<translation id="1829889011559313790">Chiedi a Brave AI</translation>
-<translation id="7226268079740406209">Si è verificato un errore durante l'elaborazione del messaggio, riprova.</translation>
+<translation id="6966669506908435195">Informazioni su Brave Leo</translation>
+<translation id="1667863995484767951">La chat basata sull’intelligenza artificiale offre delle sintesi della pagina web che stai visitando ed è dotata di un’interfaccia che ti permette di fare domande e ricevere risposte sui contenuti della pagina stessa. La precisione delle sintesi non è garantita: potrebbero essere presenti informazioni imprecise, fuorvianti e false. Non comunicare dati sensibili o privati e sii prudente in caso di testi in materia di salute, finanza, sicurezza personale o argomenti simili.</translation>
+<translation id="7636915524386889836">La chat di Brave basata sull’IA usa un <ph name="LINK_BEFORE"/>modello linguistico self-hosted di grandi dimensioni<ph name="LINK_AFTER"/>. Non raccoglie dati che permettono di identificarti, come l’indirizzo IP, né li sottopone ad alcun tipo di trattamento. Nessun dato personale viene conservato dal modello IA.</translation>
+<translation id="7839853125981164613">Inserisci qui un comando</translation>
 <translation id="1171287413830401223">Abilitare le domande suggerite?</translation>
 <translation id="8723991872343294222">L’IA di Brave può suggerire automaticamente domande basate sul contenuto del sito. Puoi disattivarla in seguito nelle Impostazioni.</translation>
 <translation id="3435896845095436175">Abilita</translation>
 <translation id="7473891865547856676">No grazie</translation>
+<translation id="7932221068776853847">Disconnettiti per non inviare più i contenuti di questa pagina a Leo, e per avviare una nuova conversazione</translation>
+<translation id="1167803637855350748">Si è verificato un errore di rete durante la connessione a Leo. Controlla la connessione e riprova.</translation>
+<translation id="5095201428204952524">Leo è occupato al momento. Riprova fra qualche minuto.</translation>
+<translation id="7144878232160441200">Riprova</translation>
 <translation id="7821773512278295352">Firewall + VPN di Brave: connessione effettuata</translation>
 <translation id="6019088868713395120">Firewall + VPN di Brave: nessuna connessione</translation>
 <translation id="3541307549916475335">Interfaccia utente del pannello VPN di Brave</translation>
@@ -1953,10 +1965,10 @@ Brave offre un servizio che ti protegge da tale rischio filtrando le query DNS s
 Abbiamo però notato che questo servizio non sta funzionando, e non vogliamo lasciarti senza protezione. Abbiamo modificato le impostazioni del DNS nel browser per proteggerti da tale rischio. Durante la navigazione le impostazioni resteranno in vigore e bloccate.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">Sembra ci siano problemi con la connessione WireGuard. Vuoi attivare la riserva IKEv2 per un VPN affidabile? Basta riavviare il tuo browser.
+<translation id="5004375364898143117">Sembra ci siano problemi con la connessione WireGuard. Vuoi attivare la riserva IKEv2 per un VPN affidabile? Basta riavviare il tuo browser.
 
 Hai bisogno di aiuto per la compatibilità o la configurazione? Contatta il nostro team di supporto, siamo sempre pronti ad aiutarti.
-Se vuoi, puoi sempre tornare a WireGuard su brave://flags/#brave-vpn-wireguard.
+Se vuoi, puoi sempre tornare a WireGuard su brave://settings/system.
 
 Ti aiutiamo a connetterti!
 
@@ -1968,10 +1980,14 @@ Ti aiutiamo a connetterti!
 <translation id="8295393906499561642">Sessione scaduta</translation>
 <translation id="3312623558576021182">Accedi al tuo <ph name="BRAVE_ACCOUNT_BEGIN"/>Account Brave<ph name="BRAVE_ACCOUNT_END"/> per aggiornare la sessione VPN.</translation>
 <translation id="6021669293402055982">VPN di Brave: nessuna connessione</translation>
+<translation id="7861195049821776142">VPN di Brave: disconnessione</translation>
 <translation id="958268166261124668">VPN di Brave: connessione effettuata</translation>
+<translation id="2061807837510296780">VPN di Brave: connessione</translation>
 <translation id="1313124107969703758">VPN di Brave: errore</translation>
 <translation id="8273420301954598554">Stato: connessione effettuata</translation>
 <translation id="7155657348064536843">Stato: nessuna connessione</translation>
+<translation id="2413929902277520460">VPN di Brave: connessa</translation>
+<translation id="8048263175525832621">VPN di Brave: connessa</translation>
 <translation id="1498770726476841108">Gestisci account</translation>
 <translation id="6825718953004242472">Rimuovi icona</translation>
 </translationbundle>

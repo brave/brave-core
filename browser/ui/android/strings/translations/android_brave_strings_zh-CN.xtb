@@ -4,6 +4,7 @@
 <translation id="8631427463833030968">管理广告</translation>
 <translation id="7630214457764713113">复制干净的链接</translation>
 <translation id="885805571521218129">这反映了你对本月Brave 广告的预期收益范围。</translation>
+<translation id="818003031290137834">现在您已连接到 ZebPay，之前的余额将存入您的 ZebPay 账户，作为下一次收入支付的一部分。到账后，您就可以在奖励余额中看到您的 BAT。</translation>
 <translation id="3478449063771497234">通知被禁用</translation>
 <translation id="2862978891748913252">选择国家/地点</translation>
 <translation id="3970520675790340955">请选择您所在的国家/地区，以便我们为您提供适合您所在地区的正确选项和广告。</translation>
@@ -112,6 +113,22 @@
 <translation id="8047754398610073499">阻止 cookie 同意通知</translation>
 <translation id="2621893359845808115">阻止要求您接受或拒绝其网站上 cookie 的网页弹出窗口</translation>
 <translation id="7534079972563542000">不可阻挡的域名</translation>
+<translation id="6486983549008741930">内容过滤</translation>
+<translation id="2398817776566547893">啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容</translation>
+<translation id="8578397014396032341">内容过滤</translation>
+<translation id="4516904298421534459">过滤列表</translation>
+<translation id="4435215931544457255">其他热门社群清单。请注意，启用太多过滤器可能会导致浏览速度变慢。</translation>
+<translation id="2033882091175404255">自定义筛选器列表</translation>
+<translation id="3657456536609186343">自定义筛选器列表</translation>
+<translation id="5086877031935002480">添加自定义筛选器列表</translation>
+<translation id="4180818901996404761">自訂篩選清單網址</translation>
+<translation id="7558501402160423480">在这里输入自定义筛选器列表 URL</translation>
+<translation id="8775144690796719618">网址无效</translation>
+<translation id="1841059687646820793">编辑自定义筛选器列表</translation>
+<translation id="5075097652958438037">添加由您受信任的社区创建和维护的其他列表。\n\n仅订阅您信任的实体的列表。您的浏览器会在定期检查您输入的 URL 中的列表更新情况，与此同时会将您的 IP 地址显示给其服务器。</translation>
+<translation id="3365863382631355729">上次更新：<ph name="TIME"/></translation>
+<translation id="802154636333426148">下载失败</translation>
+<translation id="7824440849056209910"><ph name="TIME"/> 更新失败</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> 价格 (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">以太坊名称服务</translation>
 <translation id="531747189990625622">Solana 域名服务</translation>
@@ -425,6 +442,10 @@
 <translation id="6632345639591919543">您在为观看这张图片赚取代币。\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">您在为观看这张图片赚取代币。</translation>
 <translation id="7877201489035217175">了解有关赞助图片的更多信息</translation>
+<translation id="8164992819127316581"><ph name="CURRENT_MONTH"/> 奖励的支付将在 <ph name="PAYOUT_DATE"/> 开始处理。</translation>
+<translation id="33967210973550414"><ph name="CURRENT_MONTH"/> 奖励的支付正在处理中。<ph name="CHECK_STATUS"/></translation>
+<translation id="1622952853310946314"><ph name="CURRENT_MONTH"/> 奖励的支付已完成。<ph name="SUPPORT"/></translation>
+<translation id="7717357606512850995">检查状态</translation>
 <translation id="828092975561478703">对于您查看的每一个赞助图片，您将获得 70% 的代币收入。有了 Brave Ads，您总能掌控您看到的广告。</translation>
 <translation id="3624048886326677117">拦截跟踪器和广告 （激进）</translation>
 <translation id="7151914815476509258">拦截跟踪器和广告 （标准）</translation>
@@ -519,6 +540,7 @@
 <translation id="2731539192954672606">通过查看尊重隐私的广告来赚取代币和自动支持您最喜欢的网站和内容创作者。</translation>
 <translation id="631124996535890460">继续进行即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">隐私政策</translation>
+<translation id="8363792084628930008">启用奖励，即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>。</translation>
 <translation id="185034574799484512">让我们一起来快速浏览一下</translation>
 <translation id="7930505144430343145">欢迎使用 Brave Rewards！</translation>
 <translation id="3477340970981564961">与传统广告不同的是，Brave Private Ads 会奖励您代币以支持内容创作者，同时还会将您的个人信息保密。</translation>
@@ -577,6 +599,7 @@
 <translation id="2708402071160162126">警告：切勿分享您的恢复密语。任何人一旦持有该密语，即可永久取走您的资产。</translation>
 <translation id="111912712268284159">我把我的短语放在了一个安全的地方。</translation>
 <translation id="6896758677409633944">复制</translation>
+<translation id="1544192797660353713">钱包</translation>
 <translation id="375882617301124395">备份加密钱包</translation>
 <translation id="8289942708804097960">用信用卡或借记卡购买加密货币。</translation>
 <translation id="841880029259839903">发送加密货币，或将加密货币从一个账户转入另一个账户。</translation>
@@ -603,7 +626,6 @@
 <translation id="5493402808936397665">启用生物识别，无需输入密码即可快速解锁您的钱包。</translation>
 <translation id="8030647312184163932">指纹解锁</translation>
 <translation id="4090490645603511157">使用生物识别技术快速解锁您的钱包，而无需输入您的密码</translation>
-<translation id="1544192797660353713">钱包</translation>
 <translation id="6901810042765869341">输入您的恢复密语，以恢复您的 Brave Wallet 加密货币账户。</translation>
 <translation id="9120654436199628567">恢复加密货币账户</translation>
 <translation id="4811736040444856406">显示恢复密语</translation>
@@ -649,9 +671,9 @@
 <translation id="8475984867371585028">编辑可见 NFT</translation>
 <translation id="5050890334032852465">保存账户监视清单</translation>
 <translation id="7755766175599167100">搜索代币</translation>
-<translation id="3956169227169516344">选择购买方式</translation>
 <translation id="8488282162676695335">Brave 钱包</translation>
 <translation id="3784455785234192852">锁定</translation>
+<translation id="4412698727486357573">帮助中心</translation>
 <translation id="8796429300536029044">NFT 详细信息</translation>
 <translation id="3866249974567520381">说明</translation>
 <translation id="4378475168089649292">区块链</translation>
@@ -663,10 +685,6 @@
 <translation id="414639769490080648">自动锁定 Brave 钱包前等待的分钟数</translation>
 <translation id="2326850911705720398">重置和清除钱包数据</translation>
 <translation id="6567712397896147805">您确定要重置您的 Brave 钱包吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括任何相关资金）。输入“<ph name="CONFIRMATION_PHRASE"/>”确认。</translation>
-<translation id="6915083716464390008">选择以下选项之一</translation>
-<translation id="7667423728712601865">用 Visa 或 Mastercard 购买加密货币。</translation>
-<translation id="3101839349578102016">通过您的银行账户进行即时购买。费用较低。</translation>
-<translation id="7269640984027668973">通过<ph name="RAMP_PROVIDER"/>购买</translation>
 <translation id="4862812525895306758">清除交易和 Nonce 信息</translation>
 <translation id="5693968582510626466">清除交易可能对开发人员有用，或者在清除本地服务器的状态时有用</translation>
 <translation id="5421107279168565467">确定要重设交易和 Nonce 信息吗？这个选项主要供运行本机测试服务器的开发人员使用。输入“<ph name="CONFIRMATION_PHRASE"/>”即可确认。</translation>
@@ -689,7 +707,7 @@
 <translation id="3510283489391432976">选择地理/国家位置</translation>
 <translation id="4390800080658195654">保持在网上匿名</translation>
 <translation id="639981156979733813">支持最快 100 Mbps 的速度</translation>
-<translation id="1190117345570417902">使用 Wireguard 安全加密的 VPN 隧道</translation>
+<translation id="765343799669302337">使用 Wireguard 安全加密的 VPN 隧道</translation>
 <translation id="1571230671455380494">我们从不分享或出售您的信息</translation>
 <translation id="276866628038850725">所有计划都包括 7 天免费试用期！</translation>
 <translation id="1532536259167115948">按月订阅 <ph name="TRIAL_TEXT"/></translation>
@@ -699,7 +717,6 @@
 <translation id="1163809943099641131">一年</translation>
 <translation id="6277055349883621705">每年续订节省 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
-<translation id="4487678670820292781">$119.88</translation>
 <translation id="2655185358771731232">免费试用 7 天。7 天后，您将被收取套餐价格。所有订阅都会自动续订，但在续订之前可以取消。</translation>
 <translation id="6053992191006521518">免费试用</translation>
 <translation id="721747358270435486">安装 VPN</translation>
@@ -764,7 +781,7 @@
 <translation id="5317780077021120954">保存</translation>
 <translation id="4979796155378508955">如果自定义 nonce 值不连续或有其他错误，则交易可能不会传播到网络。</translation>
 <translation id="6122742277607781713">投资组合</translation>
-<translation id="3567988240819868195">市场</translation>
+<translation id="1736419249208073774">探索</translation>
 <translation id="4576965889365503638">信息</translation>
 <translation id="152455748535966757">排名</translation>
 <translation id="4958716607782044952">24 小时容量</translation>
@@ -840,7 +857,7 @@
 <translation id="3506416339268164412">接收地址是代币的合约地址。</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
 <translation id="590733288489975971">广告奖励</translation>
-<translation id="7091980679045978090">预估收益</translation>
+<translation id="1886682615222609631">截止目前的收益</translation>
 <translation id="1767561995429774671">贡献</translation>
 <translation id="7335371657242627509">包含在自动贡献中</translation>
 <translation id="6727102863431372879">设定</translation>
@@ -928,7 +945,7 @@
 <translation id="6044189892950611565">Brave 浏览器的通知通道</translation>
 <translation id="1173919438868967364">选择帐户</translation>
 <translation id="8922793255489232731">找不到相匹配的时区：<ph name="VALUE"/></translation>
-<translation id="7084757528071133475">下载钱包数据文件 \u2022<ph name="percentage"/>\u0025</translation>
+<translation id="8901748741234750758">下载钱包数据文件 \u2022<ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">已连接到 <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">试用</translation>
 <translation id="7733890291091968191">显示 Web3 通知</translation>
@@ -962,9 +979,6 @@
 <translation id="8423380132356660250">开启 <ph name="APP_NAME"/> 应用程序</translation>
 <translation id="168154537623654021">正在更新 VPN 配置文件...</translation>
 <translation id="7457027586454688423">输入您的 Brave Wallet 密码</translation>
-<translation id="6588595775439619209">阻止 cookie 通知</translation>
-<translation id="264682546981571963">厌倦了 cookie 同意通知？</translation>
-<translation id="4986297793092101884">Brave 已经阻止了第三方 cookie。我们也可以阻止 cookie 同意通知。</translation>
 <translation id="4784306439879850873">请注意，Brave 无法验证您签名后会发生什么。签名可以授权他人进行账户的几乎任何操作，包括（但不限于）将您的账户和加密资产的完全控制权交给提出此请求的网站。因此只有在您确定要执行此操作并信任提出请求的网站时才能签名。</translation>
 <translation id="3474375934783434676">签名风险自担</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> 个交易（共  <ph name="SIZE"/> 个交易)</translation>
@@ -1068,6 +1082,7 @@
 <translation id="2781668117338732220">次要网络</translation>
 <translation id="282560918037172384">测试网络</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="8849001918648564819">隐藏</translation>
 <translation id="707569835145765061">待办事项：连接托管帐户，否则您的 vBAT 将丢失</translation>
 <translation id="1776742005329298234">从 <ph name="DUE_DATE"/> 起，我们将停止对现有虚拟 BAT 余额的支持。在此日期之前连接一个托管账户，以便我们将您的收入余额转到您的托管账户，否则您的余额将丢失。</translation>
 <translation id="5089752671190341407">您仍然有时间把您的 vBAT 贡献给您最喜欢的创作者</translation>
@@ -1161,4 +1176,7 @@
 <translation id="346505172740911461">市场价</translation>
 <translation id="4709355193533327244">尚无可查看的交易。</translation>
 <translation id="4931644613135313937">交易完成后即可在此查看交易。</translation>
+<translation id="5494920125229734069">全选</translation>
+<translation id="5972844218283131174">取消选择所有</translation>
+<translation id="6322030314101903925">没有可用资产</translation>
 </translationbundle>

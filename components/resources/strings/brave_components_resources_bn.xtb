@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">ঘন রং</translation>
 <translation id="7610541582755894669">গ্রেডিয়েন্ট</translation>
 <translation id="1606851618930975029">প্রতিটি নতুন ট্যাব রিফ্রেশ করুন</translation>
+<translation id="7040134046053881468">রিওয়ার্ডস প্যানেল খুলুন</translation>
 <translation id="9024104284526126630">আপনি Brave এ প্রাইভেট কল শুরু করতে পারেন।</translation>
 <translation id="370665806235115550">লোড হচ্ছে...</translation>
 <translation id="4634933166298842522">সাবস্ক্রিপশন পরিচালনা করুন</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">আনসাবস্ক্রাইব করুন</translation>
 <translation id="1209739344687072997">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="8510478288840333677">এই সাইটটি শিল্ডগুলির সাথে সঠিকভাবে কাজ করছে না তা Brave-এর ডেভলপারকে জানান:</translation>
-<translation id="4105411033440701818">মনে রাখবেন: আপনি যখন "জমা দিন"-এ ক্লিক করেন, তখন আপনি Brave ডেভেলপারদের সঙ্গে আপনার সাইট অ্যাড্রেস, আপনার Brave ভার্সন নম্বর, এবং IP অ্যাড্রেস প্রদান করেন। (IP অ্যাড্রেসটি সংরক্ষণ করা হবে না।)</translation>
+<translation id="8265244536487014968">মনে রাখবেন: Brave সার্ভারগুলিতে পাঠানো রিপোর্টে সাইটের অ্যাড্রেস, Brave সংস্করণ নম্বর, শিল্ডের সেটিংস, VPN স্ট্যাটাস এবং ভাষার সেটিংস অন্তর্ভুক্ত থাকবে৷ IP অ্যাড্রেসটি ট্রান্সমিট পাঠানো হবে তবে স্টোর করা হবে না৷</translation>
 <translation id="6476216365964140603">অতিরিক্ত বিশদ (বৈকল্পিক)</translation>
 <translation id="6145852496180774737">আমার সঙ্গে যোগাযোগ করুন: (বৈকল্পিক)</translation>
 <translation id="7616645803364270729">ইমেল, Twitter, ইত্যাদির মাধ্যমে।</translation>
@@ -597,7 +598,6 @@
 <translation id="3825131544027418568">আপনার ব্যালেন্স দেখতে <ph name="BEGIN_BOLD"/><ph name="PROVIDER"/><ph name="END_BOLD"/>-এ লগ ইন করুন</translation>
 <translation id="2659764755126740206">আমার <ph name="PROVIDER"/> অ্যাকাউন্টে যান</translation>
 <translation id="2394961582378297792">লগ আউট করেছেন</translation>
-<translation id="7091980679045978090">আনুমানিক উপার্জন</translation>
 <translation id="7934950257968365573">আপনার <ph name="PROVIDER"/> অ্যাকাউন্টে লগইন করুন</translation>
 <translation id="8631427463833030968">বিজ্ঞাপন পরিচালনা করুন</translation>
 <translation id="590733288489975971">বিজ্ঞাপন থেকে পুরস্কার</translation>
@@ -689,6 +689,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">চিন্তা করবেন না।</translation>
 <translation id="5027616819996705541">আপনি এখনও ব্যক্তিগতভাবে ব্রাউজ করতে পারবেন!</translation>
+<translation id="1886682615222609631">এখনও অবধি উপার্জন</translation>
 <translation id="86107454835395919">মাসিক অবদান হিসাবে সেট করুন</translation>
 <translation id="6621880242105464352">Brave প্রসেসিং ফি হিসাবে পাঠানো পরিমাণের থেকে <ph name="FEE_PCT"/> সংগ্রহ করে।</translation>
 <translation id="1420756770787071946">এই স্রষ্টাকে সহায়তা করুন</translation>
@@ -1040,6 +1041,10 @@
 <translation id="4305817255990598646">পাল্টান</translation>
 <translation id="3423275441470187644">ভরসা</translation>
 <translation id="2391762656119864333">প্রত্যাহার করুন</translation>
+<translation id="9218424917282368512">নেটওয়ার্ক পরিবর্তন করুন</translation>
+<translation id="7526139040829362392">অ্যাকাউন্ট পরিবর্তন করুন</translation>
+<translation id="4217695020908122747">সংযুক্ত অ্যাকাউন্টগুলি</translation>
+<translation id="8497650996740651467">উপলব্ধ অ্যাকাউন্টগুলি</translation>
 <translation id="5677928146339483299">অবরুদ্ধ</translation>
 <translation id="3890989020011724401">নতুন আ্যাকাউন্ট</translation>
 <translation id="7257603403519636638">অ্যাকাউন্ট সম্পদগুলো দেখুন</translation>
@@ -1220,6 +1225,7 @@
 <translation id="3648994606506382289">কার্ড এবং ব্যাঙ্ক ট্রান্সফারগুলির মাধ্যমে ক্রিপ্টো কেনার সহজতম, দ্রুততম এবং সবচেয়ে সস্তা উপায়।</translation>
 <translation id="3101839349578102016">আপনার ব্যাঙ্ক একাউন্ট দিয়ে তাৎক্ষণিক কিনুন। কম ফি।</translation>
 <translation id="8280898387224328221">ক্রেডিট, ডেবিট, ব্যাঙ্ক অ্যাকাউন্ট দিয়ে পেমেন্ট করুন</translation>
+<translation id="2218174283683424104">ক্রিপ্টোতে সর্বাধিক বিশ্বস্ত নামের সাহায্যে কিনুন৷</translation>
 <translation id="8528916244724490964">সকল নেটওয়ার্ক</translation>
 <translation id="7721139939763655123">নিম্ন থেকে উচ্চ</translation>
 <translation id="5458608274117818139">উচ্চ থেকে নিম্ন</translation>
@@ -1484,6 +1490,7 @@
 <translation id="8007404171238546456">স্লিপেজের পরে ন্যূনতম পাওয়া</translation>
 <translation id="767199001998615704">নেটওয়ার্কের ফি</translation>
 <translation id="7057870207229052478">Brave ফি</translation>
+<translation id="81116374028657878">প্রোটোকল বাবদ ফি</translation>
 <translation id="3624518972158401291">ফ্রী</translation>
 <translation id="5038255447967558645">লিকুইডিটি প্রোভাইডার</translation>
 <translation id="8450638959928932199">সোয়াপ করে পাঠান</translation>
@@ -1511,7 +1518,6 @@
 <translation id="3143110700666266545">এই অ্যাপ নিম্নোক্ত তৃতীয় পক্ষের APIs ব্যবহার করে:</translation>
 <translation id="163536108506359457">Brave সোয়াপ, সমর্থিত <ph name="NETWORKS"/> নেটওয়ার্কগুলোর জন্য DEX এগ্রিগেটর হিসাবে <ph name="AGGREGATOR"/> ব্যবহার করে। <ph name="AGGREGATOR"/> একটি লেনদেন (কোটেশন পাওয়া সহ) পূরণ করতে <ph name="NETWORK"/> ওয়ালেট অ্যাড্রেস এবং IP অ্যাড্রেস প্রক্রিয়াকরণ করবে। <ph name="AGGREGATOR"/> শুধুমাত্র লেনদেন প্রক্রিয়াকরণের উদ্দেশ্যে এই ডেটা ব্যবহারকরণ করবে।</translation>
 <translation id="1847885264294023691"><ph name="AGGREGATOR"/> গোপনীয়তা নীতির জন্য এখানে ক্লিক করুন।</translation>
-<translation id="9218424917282368512">নেটওয়ার্ক পরিবর্তন করুন</translation>
 <translation id="644984757357042735">নেটওয়ার্ক প্রয়োজন</translation>
 <translation id="132243864024778443">টোকেন নাম প্রয়োজন</translation>
 <translation id="3617263699756744037">অবৈধ বা খালি টোকেন কন্ট্রাক্ট অ্যাড্রেস</translation>
@@ -1547,8 +1553,15 @@
 <translation id="9085765419770918643">এখানে এখনও কোনও NFT নেই।</translation>
 <translation id="8445532667841598737">কয়েকটি যোগ করার জন্য প্রস্তুত? আমদানি করতে শুধু নিচের বোতামটি ক্লিক করুন।</translation>
 <translation id="9136462955850040542">সোলানা (SPL) এবং ইথেরিয়াম (ERC-721)-এ NFT গুলির সাথে সুসংগত।</translation>
+<translation id="137671950541962857">সংগৃহীত</translation>
 <translation id="8849001918648564819">লুকানো</translation>
 <translation id="4905092798795191201">দেখান</translation>
+<translation id="6167809958646114660">ওয়ালেটে দেখাবেন না</translation>
+<translation id="6948667383954749033">জাঙ্ক নয় হিসাবে চিহ্নিত করুন</translation>
+<translation id="5810047320613496595">জাঙ্ক</translation>
+<translation id="7257605968082307175">জাঙ্ক হিসাবে চিহ্নিত করুন</translation>
+<translation id="7600335727434653744">Brave ওয়ালেট থেকে সরাবেন?</translation>
+<translation id="6657860743511185539">Brave ওয়ালেট থেকে NFT সরে যাবে তবে ব্লকচেইনে থেকে যাবে৷ এটি সরানোর পরে আপনার সিদ্ধান্ত বদল করলে, আপনাকে এটি আবার ম্যানুয়ালি ইমপোর্ট করতে হবে৷</translation>
 <translation id="849880459530751909">NFT সম্পাদনা করুন</translation>
 <translation id="5925465310724910998">আপনার NFT স্বয়ংক্রিয়ভাবে দেখাতে চান?</translation>
 <translation id="5400791731776892411">আপনার NFT স্বয়ংক্রিয়ভাবে দেখানোর জন্য Brave ওয়ালেট কোনো তৃতীয় পক্ষের পরিষেবা ব্যবহার করতে পারে। Brave এই পরিষেবাটি প্রদান করতে আপনার ওয়ালেট ঠিকানাগুলি <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/>-এর সাথে শেয়ার করবে। <ph name="BEFORE_URL"/>আরও জানুন।<ph name="AFTER_URL"/></translation>
@@ -1747,9 +1760,6 @@
 <translation id="6938154350999993769">ডিবাগ কর হচ্ছে: টগল ট্যাবলেট মোড</translation>
 <translation id="5854741377790551127">ডিবাগ প্রিন্ট ভিউ ট্রি</translation>
 <translation id="8199130368328220410">লাইভ ক্যাপশন টগল করুন</translation>
-<translation id="4233010476457917696">সাইডবার দেখান</translation>
-<translation id="2207125676134752863">মাউসওভারে সাইডবার দেখান</translation>
-<translation id="2613033293035359003">সাইডবার লুকান</translation>
 <translation id="9055778350624039365">Brave ওয়ালেট প্যানেল দেখান</translation>
 <translation id="2548853975094084059">Brave ওয়ালেট প্যানেল বন্ধ করুন</translation>
 <translation id="3765209580429944524">Brave VPN প্যানেল দেখান</translation>
@@ -1801,7 +1811,7 @@
 <translation id="5595850093882577201">সেপিয়া থিম</translation>
 <translation id="1407069428457324124">ডার্ক থিম</translation>
 <translation id="9050211734566144118">সিস্টেম থিম</translation>
-<translation id="812549962360031312">ব্যাতীত</translation>
+<translation id="812549962360031312">সানস্</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">মোনোস্পেস</translation>
 <translation id="8960352557529001690">ডিসলেক্সিক</translation>
@@ -1812,7 +1822,7 @@
 <translation id="1199355487114804640">প্লে/পজ</translation>
 <translation id="1689210457482459023">প্লেব্যাকের গতি কমান</translation>
 <translation id="5872363163901278000">প্লেব্যাকের গতি বাড়ান</translation>
-<translation id="8178821080790541548">Brave AI</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">শিল্ড</translation>
 <translation id="8458987127502506209">Brave শিল্ড চালু করুন</translation>
 <translation id="7509914170164691086"><ph name="LINK_AFTER"/>-এর জন্য <ph name="LINK_BEFORE"/>-এ শিল্ড চালু করা হয়েছে</translation>
@@ -1884,16 +1894,18 @@
 <translation id="8637805148029768813">সংক্ষিপ্তসার বৈশিষ্ট্যটি বর্তমানে শুধুমাত্র নির্বাচিত নিবন্ধ এবং অন্যান্য লং-ফর্মের ওয়েব পেজগুলির জন্য উপলব্ধ।</translation>
 <translation id="2346991295632453064">গ্রহণ করুন এবং শুরু করুন</translation>
 <translation id="1223498995510244364">সারসংক্ষেপ</translation>
-<translation id="8758939268013768602">Brave AI সম্পর্কে</translation>
-<translation id="1704821516241545704">Brave AI চ্যাট বৈশিষ্ট্যটি আপনার ব্রাউজ করা একটি ওয়েবপেজ কন্টেন্টের সারসংক্ষেপ করে এবং একটি চ্যাট ইন্টারফেস অন্তর্ভুক্ত করে যা আপনাকে সেই পেজের জন্য সারসংক্ষেপ কন্টেন্টের ফলো-আপ অনুসন্ধান করতে দেয়।</translation>
-<translation id="58643773598235831">সারসংক্ষেপ করা পেজ এবং চ্যাট বৈশিষ্ট্য সম্পর্কে আপনার জিজ্ঞাসা করা যে কোনও প্রশ্ন একটি এক্সটারনাল API পার্টনারের সার্ভারে পাঠানো হয় (কোনও শনাক্তকারীকে সেই প্রশ্ন পাঠায়নি)।</translation>
-<translation id="917619443165595947">অনুগ্রহ করে নিশ্চিত করুন যে পেজের কন্টেন্ট এবং যে কোনও ফলো-আপ অনুসন্ধানের মধ্যে ব্যক্তিগত বা সংবেদনশীল তথ্য নেই। সারসংক্ষেপ এবং অনুসন্ধানের প্রতিক্রিয়াগুলির যথার্থতার কোনও নিশ্চিত নয় এবং তাই আপনার স্বাস্থ্য, ব্যক্তিগত নিরাপত্তা বা আর্থিক বিষয়গুলির সাথে সম্পর্কিত কোনও টেক্সটের উপর নির্ভর করা উচিত নয়।</translation>
-<translation id="1829889011559313790">Brave AI-কে জিজ্ঞাসা করুন</translation>
-<translation id="7226268079740406209">আপনার মেসেজ প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="6966669506908435195">Brave Leo সম্পর্কে</translation>
+<translation id="1667863995484767951">AI চ্যাটের সুবিধাটি আপনি যে ওয়েব পেজ ব্রাউজ করছেন তার সারাংশ দেয় এবং সেই পেজের বিষয়বস্তু সম্পর্কে আপনাকে প্রশ্ন জমা দিতে এবং উত্তর পাওয়ার সুযোগ দেয়৷  সারাংশগুলির নির্ভুলতার কোনও গ্যারান্টি নেই এবং এতে ত্রুটিপূর্ণ, বিভ্রান্তিকর এবং মিথ্যা তথ্য থাকতে পারে৷ আপনার সংবেদনশীল ও ব্যক্তিগত তথ্য জমা দেওয়া উচিত নয় এবং স্বাস্থ্য, আর্থিক বা ব্যক্তিগত সুরক্ষা ও সমতুল কোনও বিষয়ের সাথে সম্পর্কিত কোনও টেক্সট সম্পর্কে সাবধানতা অবলম্বন করা উচিত৷</translation>
+<translation id="7636915524386889836">Brave-এর AI চ্যাট একটি সেল্ফ-হোস্টেড <ph name="LINK_BEFORE"/>লার্জ ল্যাঙ্গোয়েজ মডেল ব্যবহার করে<ph name="LINK_AFTER"/>  AI চ্যাটের সুবিধাগুলি IP অ্যাড্রেসের মতো আপনার সাথে লিঙ্ক স্থাপন করা যেতে পারে এমন শনাক্তকারী তথ্য সংগ্রহ করে না বা প্রক্রিয়াকরণ করে না৷ AI মডেল কোনও ব্যক্তিগত ডেটা রক্ষণ করে না৷</translation>
+<translation id="7839853125981164613">এখানে একটি প্রম্পট লিখুন</translation>
 <translation id="1171287413830401223">প্রস্তাবিত প্রশ্ন চালু করতে চান?</translation>
 <translation id="8723991872343294222">Brave AI স্বয়ংক্রিয়ভাবে সাইটের বিষয়ের উপর ভিত্তি করে প্রশ্ন পরামর্শ দিতে পারে। আপনি সেটিংসে পরে এটি নিস্ক্রিয় করতে পারেন।</translation>
 <translation id="3435896845095436175">সক্ষম করুন</translation>
 <translation id="7473891865547856676">না থাক</translation>
+<translation id="7932221068776853847">Leoতে এই পৃষ্ঠার বিষয়বস্তু পাঠানো বন্ধ করতে সংযোগ বিচ্ছিন্ন করুন এবং একটি নতুন কথোপকথন শুরু করুন</translation>
+<translation id="1167803637855350748">Leoতে সংযোগ করতে নেটওয়ার্ক সমস্যা ছিল, আপনার সংযোগ পরীক্ষা করে আবার চেষ্টা করুন৷</translation>
+<translation id="5095201428204952524">এই মুহূর্তে Leo অত্যন্ত ব্যস্ত৷ অনুগ্রহ করে কয়েক মিনিটের মধ্যে আবার চেষ্টা করুন৷</translation>
+<translation id="7144878232160441200">আবার চেষ্টা করুন</translation>
 <translation id="7821773512278295352">Brave ফায়ারওয়াল + VPN: সংযুক্ত</translation>
 <translation id="6019088868713395120">Brave ফায়ারওয়াল + VPN: সংযোগ বিচ্ছিন্ন</translation>
 <translation id="3541307549916475335">Brave VPN প্যানেল UI</translation>
@@ -1953,10 +1965,10 @@ Brave এর একটি সহায়ক পরিষেবা রয়েছে 
 যদিও, আমরা লক্ষ্য করেছি যে এই সহায়ক পরিষেবাটি চলছে না - এবং আমরা আপনাকে অরক্ষিত রাখতে চাই না। এই এক্সপোজার থেকে আপনাকে রক্ষা করতে, ব্রাউজারে আমরা DNS সেটিংস পরিবর্তন করেছি। VPN কানেক্টেড থাকাকালীন সেটিংস কাজ করবে এবং লক করা থাকবে।
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">WireGuard সংযোগে কিছু সমস্যা আছে বলে মনে হচ্ছে। একটি নির্ভরযোগ্য VPN এর জন্য IKEv2 ফলব্যাক সক্রিয় করতে চান? শুধুমাত্র আপনার ব্রাউজার আবার চালু করুন।
+<translation id="5004375364898143117">WireGuard সংযোগে কিছু সমস্যা আছে বলে মনে হচ্ছে। একটি নির্ভরযোগ্য VPN এর জন্য IKEv2 ফলব্যাক সক্রিয় করতে চান? শুধুমাত্র আপনার ব্রাউজার আবার চালু করুন।
 
 সামঞ্জস্য বা কনফিগারেশনের জন্য সাহায্যের প্রয়োজন? আমাদের ফ্রেন্ডলি সাপোর্ট টিমের সাথে যোগাযোগ করুন।
-আপনি সবসময় brave://flags/#brave-vpn-wireguard এর WireGuard এ ফিরে যেতে পারেন।
+আপনি সবসময় brave://settings/system এর WireGuard এ ফিরে যেতে পারেন।
 
 আসুন আপনাকে যুক্ত করি!
 
@@ -1968,10 +1980,14 @@ Brave এর একটি সহায়ক পরিষেবা রয়েছে 
 <translation id="8295393906499561642">সেশনের মেয়াদ শেষ হয়ে গেছে</translation>
 <translation id="3312623558576021182">আপনার VPN সেশন রিফ্রেশ করতে অনুগ্রহ করে আপনার <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave অ্যাকাউন্ট<ph name="BRAVE_ACCOUNT_END"/> দিয়ে লগ ইন করুন।</translation>
 <translation id="6021669293402055982">Brave VPN: বিছিন্ন করা হয়েছে</translation>
+<translation id="7861195049821776142">Brave VPN: বিছিন্ন করা হচ্ছে</translation>
 <translation id="958268166261124668">Brave VPN: সংযুক্ত</translation>
+<translation id="2061807837510296780">Brave VPN: সংযোগ করা হচ্ছে</translation>
 <translation id="1313124107969703758">Brave VPN: ত্রুটি</translation>
 <translation id="8273420301954598554">স্ট্যটাস: সংযুক্ত</translation>
 <translation id="7155657348064536843">স্ট্যটাস: বিছিন্ন করা হয়েছে</translation>
+<translation id="2413929902277520460">Brave VPN - সংযুক্ত</translation>
+<translation id="8048263175525832621">Brave VPN - বিছিন্ন করা হয়েছে</translation>
 <translation id="1498770726476841108">অ্যাকাউন্ট নিয়ন্ত্রন করুন</translation>
 <translation id="6825718953004242472">আইকন অপসারণ করুন</translation>
 </translationbundle>

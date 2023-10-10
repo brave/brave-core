@@ -4,6 +4,7 @@
 <translation id="8631427463833030968">Xestionar anuncios</translation>
 <translation id="7630214457764713113">Copiar ligazón limpa</translation>
 <translation id="885805571521218129">Esta é unha estimación dos ingresos que obtiveches con Anuncios de Brave este mes.</translation>
+<translation id="818003031290137834">Agora que está conectado a ZebPay, os saldos anteriores que tiña depositaranse na súa conta de ZebPay como parte do pago das súas próximas ganancias. En canto chegue, verá o BAT reflectido no seu saldo de Recompensas.</translation>
 <translation id="3478449063771497234">As notificacións están desactivadas</translation>
 <translation id="2862978891748913252">Selecciona o teu país</translation>
 <translation id="3970520675790340955">Selecciona o teu país para que poidamos mostrarche as opcións e anuncios adecuados para a túa rexión.</translation>
@@ -112,6 +113,22 @@
 <translation id="8047754398610073499">Bloquear avisos de aceptación de cookies</translation>
 <translation id="2621893359845808115">Bloquea as ventás emerxentes dos sitios web que che solicitan aceptar/rexeitar cookies no seu sitio</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="6486983549008741930">Filtrado de contido</translation>
+<translation id="2398817776566547893">Activar filtros personalizados que bloqueen rastrexadores rexionais e específicos do idioma, así como outro tipo de molestias</translation>
+<translation id="8578397014396032341">Filtros de contido</translation>
+<translation id="4516904298421534459">Filtrar as listas</translation>
+<translation id="4435215931544457255">Listas populares adicionais da comunidade. Ten en conta que, se activas demasiados filtros, reducirase a velocidade de navegación.</translation>
+<translation id="2033882091175404255">Listas de filtros personalizados</translation>
+<translation id="3657456536609186343">Lista de filtros personalizados</translation>
+<translation id="5086877031935002480">Engadir lista de filtros personalizados</translation>
+<translation id="4180818901996404761">URL da lista de filtros personalizados</translation>
+<translation id="7558501402160423480">Introduce o URL da lista de filtros aquí</translation>
+<translation id="8775144690796719618">URL non válido</translation>
+<translation id="1841059687646820793">Editar lista de filtros personalizados</translation>
+<translation id="5075097652958438037">Engade listas adicionais creadas e mantidas pola túa comunidade de confianza.\n\nSubscríbete tan só a listas de entidades nas que confíes. O teu navegador comprobará periodicamente as actualizacións das listas desde o URL que introduzas, revelando o teu enderezo IP ao seu servidor.</translation>
+<translation id="3365863382631355729">Última actualización: <ph name="TIME"/></translation>
+<translation id="802154636333426148">Produciuse un erro na descarga</translation>
+<translation id="7824440849056209910"><ph name="TIME"/> Actualización incorrecta</translation>
 <translation id="3872060236937011862">Prezo en <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Servizo de nomes de Solana</translation>
@@ -425,6 +442,10 @@ Seguro que queres facelo?</translation>
 <translation id="6632345639591919543">Estás ganando tokens para ver esta imaxe.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Estás ganando tokens para ver esta imaxe.</translation>
 <translation id="7877201489035217175">Saber mási sobre as imaxes patrocinadas</translation>
+<translation id="8164992819127316581">O pagamento das recompensas de <ph name="CURRENT_MONTH"/> empezará a procesarse a partir do <ph name="PAYOUT_DATE"/>.</translation>
+<translation id="33967210973550414">O pagamento das recompensas de <ph name="CURRENT_MONTH"/> está en curso. <ph name="CHECK_STATUS"/></translation>
+<translation id="1622952853310946314">O pagamento das recompensas de <ph name="CURRENT_MONTH"/> completouse. <ph name="SUPPORT"/></translation>
+<translation id="7717357606512850995">Comprobar estado</translation>
 <translation id="828092975561478703">En cada imaxe patrocinada que vexa, recibirá o 70% dos ingresos en tokens. Con Brave Ads, sempre controlas os anuncios que ves.</translation>
 <translation id="3624048886326677117">Bloquear rastreadores e anuncios (opción agresiva)</translation>
 <translation id="7151914815476509258">Bloquear os rastreadores e os anuncios (opción estándar)</translation>
@@ -519,6 +540,7 @@ Seguro que queres facelo?</translation>
 <translation id="2731539192954672606">Gana tokens ao ver anuncios respectuosos coa privacidade e apoia automaticamente os teus sitios e creadores de contido favoritos.</translation>
 <translation id="631124996535890460">Ao continuar, aceptas as <ph name="TERMS_OF_SERVICE"/> e a <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Política de privacidade</translation>
+<translation id="8363792084628930008">Ao activar Recompensas, aceptas as <ph name="TERMS_OF_SERVICE"/> e a <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Fagamos un percorrido rápido</translation>
 <translation id="7930505144430343145">Dámosche a benvida a Brave Rewards!</translation>
 <translation id="3477340970981564961">Brave Private Ads recompénsate con tokens para apoiar aos creadores de contido a diferenza dos anuncios tradicionais, mantendo a información persoal en privado.</translation>
@@ -577,6 +599,7 @@ Seguro que queres facelo?</translation>
 <translation id="2708402071160162126">ADVERTENCIA: Non compartas nunca a túa frase de recuperación. Se algunha persoa dispón da frase, poderá facerse cos teus activos para sempre.</translation>
 <translation id="111912712268284159">Fixen unha copia de seguranza da miña frase nun lugar seguro.</translation>
 <translation id="6896758677409633944">Copiar</translation>
+<translation id="1544192797660353713">Carteira</translation>
 <translation id="375882617301124395">Fai unha copia de seguranza da túa carteira de criptomoedas</translation>
 <translation id="8289942708804097960">Compra criptomoedas con tarxeta de crédito ou de débito.</translation>
 <translation id="841880029259839903">Envia criptomoedas ou transfire dunha conta a outra.</translation>
@@ -603,7 +626,6 @@ Seguro que queres facelo?</translation>
 <translation id="5493402808936397665">Activa a biometría para desbloquear rapidamente a túa carteira sen ter que introducir o teu contrasinal.</translation>
 <translation id="8030647312184163932">Desbloqueo por pegada dixital</translation>
 <translation id="4090490645603511157">Usa a biometría para desbloquear rapidamente a túa carteira sen ter que introducir o teu contrasinal.</translation>
-<translation id="1544192797660353713">Carteira</translation>
 <translation id="6901810042765869341">Introduce a túa frase de recuperación para restaurar a túa conta de criptomoedas da carteira Brave.</translation>
 <translation id="9120654436199628567">Restauración da conta de criptomoedas</translation>
 <translation id="4811736040444856406">Mostrar frase de recuperación</translation>
@@ -649,9 +671,9 @@ Seguro que queres facelo?</translation>
 <translation id="8475984867371585028">Editar NFT visibles</translation>
 <translation id="5050890334032852465">Gardar a lista de seguimento da conta</translation>
 <translation id="7755766175599167100">Buscar tokens</translation>
-<translation id="3956169227169516344">Seleccionar método de compra</translation>
 <translation id="8488282162676695335">Carteira Brave</translation>
 <translation id="3784455785234192852">Bloquear</translation>
+<translation id="4412698727486357573">Centro de axuda</translation>
 <translation id="8796429300536029044">Detalles do NFT</translation>
 <translation id="3866249974567520381">Descrición</translation>
 <translation id="4378475168089649292">Blockchain</translation>
@@ -663,10 +685,6 @@ Seguro que queres facelo?</translation>
 <translation id="414639769490080648">Número de minutos que é preciso agardar para que Brave Wallet se bloquee automaticamente</translation>
 <translation id="2326850911705720398">Restablecer e borrar os datos da carteira</translation>
 <translation id="6567712397896147805">Seguro que desexa restablecer a carteira de Brave? Se non se fai unha copia de seguridade desta, o restablecemento provocará a perda de todos os datos da conta (incluídos os fondos relacionados). Escriba "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
-<translation id="6915083716464390008">Selecciona unha das seguintes opcións</translation>
-<translation id="7667423728712601865">Compra criptomoedas con Visa ou Mastercard.</translation>
-<translation id="3101839349578102016">Compra de xeito instantáneo coa túa conta bancaria e goza de taxas máis baixas.</translation>
-<translation id="7269640984027668973">Compra con <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Información clara de transacción e nonce</translation>
 <translation id="5693968582510626466">Borrar transaccións pode ser útil para os programadores ou cando se borra o estado nun servidor local</translation>
 <translation id="5421107279168565467">Está seguro de que desexa restablecer a información da transacción e de nonce? Esta opción utilízana principalmente os desenvolvedores que usan un servidor de proba local. Escriba "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
@@ -689,7 +707,7 @@ Seguro que queres facelo?</translation>
 <translation id="3510283489391432976">Escolle a túa localización xeográfica ou país</translation>
 <translation id="4390800080658195654">Garda o teu anonimato na rede</translation>
 <translation id="639981156979733813">Admite velocidades de ata 100 Mbps</translation>
-<translation id="1190117345570417902">Utiliza o túnel da VPN con cifrado seguro Wireguard</translation>
+<translation id="765343799669302337">Utiliza o túnel VPN con cifrado seguro WireGuard</translation>
 <translation id="1571230671455380494">Nunca compartimos nin vendemos a túa información</translation>
 <translation id="276866628038850725">Todos os plans inclúen unha proba de 7 días.</translation>
 <translation id="1532536259167115948">Subscrición mensual - <ph name="TRIAL_TEXT"/></translation>
@@ -699,7 +717,6 @@ Seguro que queres facelo?</translation>
 <translation id="1163809943099641131">Un ano</translation>
 <translation id="6277055349883621705">Renova anualmente e aforra un 16 %</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> ao ano.</translation>
-<translation id="4487678670820292781">119,88 USD</translation>
 <translation id="2655185358771731232">Próbao gratis durante 7 días. Despois deses 7 días, cobraráseche o prezo do plan. Todas as subscricións renóvanse automaticamente, pero poden cancelarse antes da renovación.</translation>
 <translation id="6053992191006521518">Próbao GRATIS</translation>
 <translation id="721747358270435486">Instalar VPN</translation>
@@ -764,7 +781,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="5317780077021120954">Gardar</translation>
 <translation id="4979796155378508955">É posible que a transacción non se propague á rede se o valor de nonce personalizado non é secuencial ou contén outros erros.</translation>
 <translation id="6122742277607781713">Cartafol</translation>
-<translation id="3567988240819868195">Mercado</translation>
+<translation id="1736419249208073774">Explorar</translation>
 <translation id="4576965889365503638">INFORMACIÓN</translation>
 <translation id="152455748535966757">Clasificación</translation>
 <translation id="4958716607782044952">Volume en 24 h</translation>
@@ -840,7 +857,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="3506416339268164412">O enderezo de recepción é o enderezo do contrato dun token</translation>
 <translation id="3494964159182650590">Resumo de recompensas</translation>
 <translation id="590733288489975971">Recompensas de Brave Ads</translation>
-<translation id="7091980679045978090">Ingresos estimados</translation>
+<translation id="1886682615222609631">Ingresos ata o momento</translation>
 <translation id="1767561995429774671">Contribuír</translation>
 <translation id="7335371657242627509">Incluído na Conctribución automática</translation>
 <translation id="6727102863431372879">Configurar</translation>
@@ -928,7 +945,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6044189892950611565">Canle de notificación para o navegador Brave</translation>
 <translation id="1173919438868967364">Seleccionar conta</translation>
 <translation id="8922793255489232731">No se atopou o fuso horario correspondente a: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">Descargando o ficheiro de datos da carteira \u2022 <ph name="percentage"/>\u0025</translation>
+<translation id="8901748741234750758">Descargando o ficheiro de datos da carteira \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Conexión establecida con <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Proba</translation>
 <translation id="7733890291091968191">Mostrar notificacións de Web3</translation>
@@ -962,9 +979,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="8423380132356660250">Abrir a aplicación <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Actualizando o perfil da VPN…</translation>
 <translation id="7457027586454688423">Introduce o teu contrasinal de Carteira de Brave</translation>
-<translation id="6588595775439619209">Bloquear avisos de cookies</translation>
-<translation id="264682546981571963">Cánsanche os avisos de consentimento das cookies?</translation>
-<translation id="4986297793092101884">Brave xa bloquea as cookies de terceiros, ademais dos avisos de consentimento das cookies.</translation>
 <translation id="4784306439879850873">Ten en conta que Brave non pode verificar que ocorrerá se asinas. Unha sinatura pode autorizar case calquera operación na túa conta ou no teu nome, incluído, pero sen limitarse a, outorgar control total da túa conta e dos activos en criptomoedas ao sitio que está a realizar a solicitude. Asina unicamente se estás seguro de levar a cabo esta acción e confías no sitio que cha solicita.</translation>
 <translation id="3474375934783434676">Asina baixo a túa responsabilidade</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> de <ph name="SIZE"/></translation>
@@ -1068,6 +1082,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="2781668117338732220">Redes secundarias</translation>
 <translation id="282560918037172384">Redes de proba</translation>
 <translation id="3586775666459823714">NFT</translation>
+<translation id="8849001918648564819">Oculto</translation>
 <translation id="707569835145765061">Acción necesaria: conecta una conta de custodia se non queres perder os teus vBAT</translation>
 <translation id="1776742005329298234">O <ph name="DUE_DATE"/>, suspenderemos o soporte para os saldos BAT virtuais existentes. Conecta unha conta de custodia antes desta data para que poidamos transferir o saldo gañado á túa conta de custodia; se non o fas, perderás o saldo.</translation>
 <translation id="5089752671190341407">Aínda estás a tempo de apoiar os teus creadores favoritos con vBAT</translation>
@@ -1161,4 +1176,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="346505172740911461">Prezo do mercado</translation>
 <translation id="4709355193533327244">Aínda non se pode ver ningunha transacción.</translation>
 <translation id="4931644613135313937">Tras facer unha transacción, poderás vela aquí.</translation>
+<translation id="5494920125229734069">Seleccionar todo</translation>
+<translation id="5972844218283131174">Anular toda a selección</translation>
+<translation id="6322030314101903925">Ningún activo dispoñible</translation>
 </translationbundle>

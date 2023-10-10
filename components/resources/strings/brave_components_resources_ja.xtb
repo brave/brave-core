@@ -84,6 +84,7 @@
 <translation id="4225429340218993596">無地</translation>
 <translation id="7610541582755894669">グラデーション</translation>
 <translation id="1606851618930975029">新しいタブで毎回更新</translation>
+<translation id="7040134046053881468">リワードパネルを開く</translation>
 <translation id="9024104284526126630">Braveでプライベート通話を開始できます。</translation>
 <translation id="370665806235115550">Loading...</translation>
 <translation id="4634933166298842522">サブスクリプションの管理</translation>
@@ -167,7 +168,7 @@
 <translation id="4720556299488643018">登録を解除</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
-<translation id="4105411033440701818">注意:「送信」をクリックすると、サイトのアドレス、Braveのバージョン番号、お使いのIPアドレスがBraveの開発者と共有されます (IPアドレスは保存されません)。</translation>
+<translation id="8265244536487014968">注: Braveサーバーに送信されるレポートには、サイトのアドレス、Braveのバージョン番号、シールド設定、VPNステータス、言語設定が含まれます。IPアドレスは送信されますが、保存されません。</translation>
 <translation id="6476216365964140603">追加情報 (オプション)</translation>
 <translation id="6145852496180774737">連絡先: (オプション)</translation>
 <translation id="7616645803364270729">メールアドレス、Twitterなど</translation>
@@ -600,7 +601,6 @@
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/><ph name="PROVIDER"/>にログイン<ph name="END_BOLD"/>して残高を確認</translation>
 <translation id="2659764755126740206">私の<ph name="PROVIDER"/>アカウントに移動する</translation>
 <translation id="2394961582378297792">ログアウト済み</translation>
-<translation id="7091980679045978090">推定報酬</translation>
 <translation id="7934950257968365573"><ph name="PROVIDER"/>アカウントにログイン</translation>
 <translation id="8631427463833030968">広告を管理</translation>
 <translation id="590733288489975971">AdsによるRewards</translation>
@@ -692,6 +692,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>詳細はこちら<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">心配はいりません。</translation>
 <translation id="5027616819996705541">引き続きプライベートな閲覧を行うことができます。</translation>
+<translation id="1886682615222609631">これまでの収益</translation>
 <translation id="86107454835395919">毎月の支援を設定する</translation>
 <translation id="6621880242105464352">Braveは送信された金額の<ph name="FEE_PCT"/>を処理手数料として徴収します。</translation>
 <translation id="1420756770787071946">このクリエイターをサポート</translation>
@@ -1043,6 +1044,10 @@
 <translation id="4305817255990598646">切り替える</translation>
 <translation id="3423275441470187644">信頼</translation>
 <translation id="2391762656119864333">取り消し</translation>
+<translation id="9218424917282368512">ネットワークの変更</translation>
+<translation id="7526139040829362392">アカウントを変更</translation>
+<translation id="4217695020908122747">接続済みアカウント</translation>
+<translation id="8497650996740651467">利用可能なアカウント</translation>
 <translation id="5677928146339483299">ブロック中</translation>
 <translation id="3890989020011724401">新規アカウント</translation>
 <translation id="7257603403519636638">アカウントのアセットを確認</translation>
@@ -1223,6 +1228,7 @@
 <translation id="3648994606506382289">カードや銀行振込で暗号通貨を購入する最も簡単、最速、最安の方法です。</translation>
 <translation id="3101839349578102016">銀行口座で即座に購入。手数料が安くなる</translation>
 <translation id="8280898387224328221">クレジットカード、デビットカード、銀行口座で支払い</translation>
+<translation id="2218174283683424104">最も信頼されている企業で暗号資産を購入しましょう。</translation>
 <translation id="8528916244724490964">すべてのネットワーク</translation>
 <translation id="7721139939763655123">価格が低い順</translation>
 <translation id="5458608274117818139">価格が高い順</translation>
@@ -1487,6 +1493,7 @@
 <translation id="8007404171238546456">価格変動後に受け取る最低金額</translation>
 <translation id="767199001998615704">ネットワーク手数料</translation>
 <translation id="7057870207229052478">Brave手数料</translation>
+<translation id="81116374028657878">プロトコル手数料</translation>
 <translation id="3624518972158401291">無料</translation>
 <translation id="5038255447967558645">流動性プロバイダー</translation>
 <translation id="8450638959928932199">スワップして送信</translation>
@@ -1514,7 +1521,6 @@
 <translation id="3143110700666266545">このアプリでは次のサードパーティAPIを使用します:</translation>
 <translation id="163536108506359457">Braveスワップは<ph name="AGGREGATOR"/>を、サポート対象の<ph name="NETWORKS"/>ネットワークのDEXアグリゲーターとして使用します。<ph name="AGGREGATOR"/>は<ph name="NETWORK"/>ウォレットのアドレスとIPアドレスを処理してトランザクションを実行します (相場価格の取得を含む)。<ph name="AGGREGATOR"/>はこのデータをトランザクションの処理目的にのみ使用します。</translation>
 <translation id="1847885264294023691"><ph name="AGGREGATOR"/>のプライバシーポリシーを使用します。</translation>
-<translation id="9218424917282368512">ネットワークの変更</translation>
 <translation id="644984757357042735">ネットワークは必須です</translation>
 <translation id="132243864024778443">トークン名は必須です</translation>
 <translation id="3617263699756744037">トークンのコントラクトアドレスが無効または空になっています</translation>
@@ -1550,8 +1556,15 @@
 <translation id="9085765419770918643">ここにはまだNFTはありません。</translation>
 <translation id="8445532667841598737">追加する準備はできていますか？下のボタンをクリックしてインポートしてください。</translation>
 <translation id="9136462955850040542">Solana（SPL）、Ethereum（ERC-721）上のNFTに対応しています。</translation>
+<translation id="137671950541962857">収集済み</translation>
 <translation id="8849001918648564819">非表示</translation>
 <translation id="4905092798795191201">表示</translation>
+<translation id="6167809958646114660">ウォレットに表示しない</translation>
+<translation id="6948667383954749033">迷惑メールではない</translation>
+<translation id="5810047320613496595">ジャンク</translation>
+<translation id="7257605968082307175">迷惑メール</translation>
+<translation id="7600335727434653744">Braveウォレットから削除しますか？</translation>
+<translation id="6657860743511185539">NFTはBraveウォレットから削除されますが、ブロックチェーン上には残ります。削除してからもう一度戻したい場合は、再度手動でインポートする必要があります。</translation>
 <translation id="849880459530751909">NFTを編集する</translation>
 <translation id="5925465310724910998">NFTを自動で表示しますか？</translation>
 <translation id="5400791731776892411">Braveウォレットは、サードパーティのサービスを利用してNFTを自動で表示することができます。Braveはこのサービスを提供するために、お客様のウォレットアドレスを<ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/>と共有します。<ph name="BEFORE_URL"/>詳細はこちらをご覧ください。<ph name="AFTER_URL"/></translation>
@@ -1750,9 +1763,6 @@
 <translation id="6938154350999993769">デバッグ: タブレットモードをオン/オフ</translation>
 <translation id="5854741377790551127">デバッグ: ビューツリーを印刷</translation>
 <translation id="8199130368328220410">ライブキャプションをオン/オフ</translation>
-<translation id="4233010476457917696">サイドバーを表示</translation>
-<translation id="2207125676134752863">マウスオーバーでサイドバーを表示</translation>
-<translation id="2613033293035359003">サイドバーを非表示にします</translation>
 <translation id="9055778350624039365">Braveウォレットのパネルを表示</translation>
 <translation id="2548853975094084059">Braveウォレットのパネルを閉じる</translation>
 <translation id="3765209580429944524">Brave VPNパネルを表示</translation>
@@ -1815,7 +1825,7 @@
 <translation id="1199355487114804640">再生 / 一時停止</translation>
 <translation id="1689210457482459023">再生速度を落とす</translation>
 <translation id="5872363163901278000">再生速度を上げる</translation>
-<translation id="8178821080790541548">Brave AI</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">シールド</translation>
 <translation id="8458987127502506209">Brave Shieldsを有効にする</translation>
 <translation id="7509914170164691086">次のサイトでシールド<ph name="LINK_BEFORE"/>オン<ph name="LINK_AFTER"/>:</translation>
@@ -1887,16 +1897,18 @@
 <translation id="8637805148029768813">コンテンツ要約機能は、現在一部の記事とその他の縦長のWebページのみで利用可能です。</translation>
 <translation id="2346991295632453064">同意してはじめる</translation>
 <translation id="1223498995510244364">要約</translation>
-<translation id="8758939268013768602">Brave AIについて</translation>
-<translation id="1704821516241545704">BraveのAIチャット機能を利用すれば、閲覧したWebページの内容を要約することができます。また、要約された内容についてフォローアップが欲しい場合はチャットで問い合わせが可能です。</translation>
-<translation id="58643773598235831">要約されたページとチャット機能に対する質問は、外部のAPIパートナーのサーバーに送信されます (このクエリでは識別子は送信されません)。</translation>
-<translation id="917619443165595947">ページの内容およびその後のお問い合わせには、個人情報や機密情報を含めないようにしてください。コンテンツの要約や問い合わせの回答の正確性は保証されませんので、健康、身の安全、金銭に関する文章はあくまで参考としてご覧ください。</translation>
-<translation id="1829889011559313790">Brave AIに質問</translation>
-<translation id="7226268079740406209">メッセージの処理にエラーが発生しました。もう一度お試しください。</translation>
+<translation id="6966669506908435195">Brave Leoについて</translation>
+<translation id="1667863995484767951">AIチャット機能は、閲覧中のウェブページの要約を提供し、そのページの内容に関する質問を送信して回答を受け取ることができるチャットインターフェースを含んでいます。 要約の正確性は保証されておらず、不正確な情報、誤解を招く情報、虚偽の情報が含まれている可能性があります。機密情報や個人情報は送信しないでください。また、健康、金融、個人的な安全、および類似のケースに関連するテキストには十分注意してください。</translation>
+<translation id="7636915524386889836">BraveのAIチャットは、セルフホスティング型の<ph name="LINK_BEFORE"/>大規模な言語モデル<ph name="LINK_AFTER"/>を使用しています。AIチャット機能は、IPアドレスのようなお客様個人につながる識別子を収集・処理することはありません。また、AIモデルにより個人データが保持されることもありません。</translation>
+<translation id="7839853125981164613">ここにプロンプトを入力</translation>
 <translation id="1171287413830401223">おすすめの質問を有効化しますか？</translation>
 <translation id="8723991872343294222">Brave AIは、サイトの内容に基づいて自動的に質問を提案することができます。設定で後から無効にできます。</translation>
 <translation id="3435896845095436175">有効にする</translation>
 <translation id="7473891865547856676">スキップ</translation>
+<translation id="7932221068776853847">接続を解除して、Leoへのページコンテンツの送信を停止し、新しい会話をはじめます</translation>
+<translation id="1167803637855350748">Leoに接続する際にネットワーク上の問題が発生しました。接続を解除してもう一度お試しください。</translation>
+<translation id="5095201428204952524">Leoは現在ビジー状態です。しばらくしてからもう一度お試しください。</translation>
+<translation id="7144878232160441200">再試行</translation>
 <translation id="7821773512278295352">Braveファイアウォール + VPN: 接続済み</translation>
 <translation id="6019088868713395120">Braveファイアウォール + VPN: 切断</translation>
 <translation id="3541307549916475335">Brave VPNパネルUI</translation>
@@ -1956,10 +1968,10 @@ Braveには、VPN接続で行われるDNSクエリの方法をフィルタリン
 しかし、このヘルパーサービスが実行されていないことに気づき、無防備な状態で放置しておくわけにはいきません。そこで、ブラウザのDNS設定を変更し、この問題から保護することにしました。この設定は、VPN接続中も有効であり、ロックされたままです。
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">WireGuard接続に問題があるようです。IKEv2フォールバックを有効にして信頼性の高いVPNを使用しますか？ブラウザを再起動するだけで完了です。
+<translation id="5004375364898143117">WireGuard接続に問題があるようです。IKEv2フォールバックを有効にして信頼性の高いVPNを使用しますか？ブラウザを再起動するだけで完了です。
 
 互換性や設定に関するヘルプが必要ですか? Braveのサポートチームにお問い合わせください。
-brave://flags/#brave-vpn-wireguardにアクセスして、いつでもWireGuard に戻すことができます。
+brave://settings/systemにアクセスして、いつでもWireGuard に戻すことができます。
 
 さっそく接続して使ってみましょう！
 
@@ -1971,10 +1983,14 @@ brave://flags/#brave-vpn-wireguardにアクセスして、いつでもWireGuard 
 <translation id="8295393906499561642">セッションの期限が切れました</translation>
 <translation id="3312623558576021182"><ph name="BRAVE_ACCOUNT_BEGIN"/>Braveアカウント<ph name="BRAVE_ACCOUNT_END"/>にログインし、VPNセッションを更新してください。</translation>
 <translation id="6021669293402055982">Brave VPN: 切断</translation>
+<translation id="7861195049821776142">Brave VPN: 切断中</translation>
 <translation id="958268166261124668">Brave VPN: 接続済み</translation>
+<translation id="2061807837510296780">Brave VPN: 接続中</translation>
 <translation id="1313124107969703758">Brave VPN: エラー</translation>
 <translation id="8273420301954598554">ステータス: 接続済み</translation>
 <translation id="7155657348064536843">ステータス: 切断</translation>
+<translation id="2413929902277520460">Brave VPN - 接続済み</translation>
+<translation id="8048263175525832621">Brave VPN - 切断済み</translation>
 <translation id="1498770726476841108">アカウントを管理</translation>
 <translation id="6825718953004242472">アイコンを削除</translation>
 </translationbundle>

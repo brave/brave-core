@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">Pevné farby</translation>
 <translation id="7610541582755894669">Prechody</translation>
 <translation id="1606851618930975029">Obnoviť na každej novej karte</translation>
+<translation id="7040134046053881468">Otvoriť panel Odmeny</translation>
 <translation id="9024104284526126630">V službe Brave môžete začať súkromný hovor.</translation>
 <translation id="370665806235115550">Načítava sa...</translation>
 <translation id="4634933166298842522">Spravovať odbery</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">Zrušiť odber</translation>
 <translation id="1209739344687072997">Nahlásiť nefunkčnú stránku</translation>
 <translation id="8510478288840333677">Oznámte vývojárom Brave, ak táto stránka nefunguje správne so Štítmi:</translation>
-<translation id="4105411033440701818">Poznámka: Kliknutím na možnosť „Odoslať“ budete s vývojármi prehliadača Brave zdieľať adresu webovej stránky, číslo vašej verzie prehliadača Brave a vašu IP adresu. (IP adresa sa neuloží.)</translation>
+<translation id="8265244536487014968">Poznámka: Správa odoslaná serverom Brave bude obsahovať adresu lokality, číslo verzie Brave, nastavenia ochrany, stav VPN a jazykové nastavenia. IP adresa bude odoslaná, ale nebude uložená.</translation>
 <translation id="6476216365964140603">Ďalšie podrobnosti (voliteľné)</translation>
 <translation id="6145852496180774737">Kontaktujte ma na: (voliteľné)</translation>
 <translation id="7616645803364270729">E-mail, Twitter atď.</translation>
@@ -597,7 +598,6 @@
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Prihláste sa do služby <ph name="PROVIDER"/><ph name="END_BOLD"/>, aby ste videli svoj zostatok.</translation>
 <translation id="2659764755126740206">Prejsť na môj účet <ph name="PROVIDER"/></translation>
 <translation id="2394961582378297792">Odhlásené</translation>
-<translation id="7091980679045978090">Odhadované výnosy</translation>
 <translation id="7934950257968365573">Prihláste sa do svojho účtu <ph name="PROVIDER"/></translation>
 <translation id="8631427463833030968">Spravovať reklamy</translation>
 <translation id="590733288489975971">Odmeny za reklamy</translation>
@@ -689,6 +689,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Nemusíte sa obávať.</translation>
 <translation id="5027616819996705541">Stále však môžete prezerať webové stránky súkromne!</translation>
+<translation id="1886682615222609631">Doterajšie zisky</translation>
 <translation id="86107454835395919">Nastaviť ako mesačný príspevok</translation>
 <translation id="6621880242105464352">Spoločnosť Brave si účtuje <ph name="FEE_PCT"/> z odoslanej sumy ako poplatok za spracovanie.</translation>
 <translation id="1420756770787071946">Podporovať tohto tvorcu</translation>
@@ -1040,6 +1041,10 @@
 <translation id="4305817255990598646">Prepnúť</translation>
 <translation id="3423275441470187644">Dôverovať</translation>
 <translation id="2391762656119864333">Odvolať</translation>
+<translation id="9218424917282368512">Zmeniť sieť</translation>
+<translation id="7526139040829362392">Zmeniť účet</translation>
+<translation id="4217695020908122747">Pripojené účty</translation>
+<translation id="8497650996740651467">Dostupné účty</translation>
 <translation id="5677928146339483299">Zablokované</translation>
 <translation id="3890989020011724401">Nový účet</translation>
 <translation id="7257603403519636638">Zobraziť aktíva účtu</translation>
@@ -1220,6 +1225,7 @@
 <translation id="3648994606506382289">Najjednoduchší, najrýchlejší a najlacnejší spôsob nákupu kryptomeny platobnou kartou alebo bankovým prevodom.</translation>
 <translation id="3101839349578102016">Okamžitý nákup pomocou bankového účtu. Nižšie poplatky.</translation>
 <translation id="8280898387224328221">Platba pomocou kreditnej karty, debetnej karty, bankového účtu</translation>
+<translation id="2218174283683424104">Nakupujte s najdôveryhodnejším menom v oblasti kryptomien.</translation>
 <translation id="8528916244724490964">Všetky siete</translation>
 <translation id="7721139939763655123">Nízka až vysoká</translation>
 <translation id="5458608274117818139">Vysoká až nízka</translation>
@@ -1484,6 +1490,7 @@
 <translation id="8007404171238546456">Minimálny príjem po sklze</translation>
 <translation id="767199001998615704">Sieťový poplatok</translation>
 <translation id="7057870207229052478">Poplatok Brave</translation>
+<translation id="81116374028657878">Poplatok za protokol</translation>
 <translation id="3624518972158401291">Zdarma</translation>
 <translation id="5038255447967558645">Poskytovateľ likvidity</translation>
 <translation id="8450638959928932199">Vymeniť a odoslať</translation>
@@ -1511,7 +1518,6 @@
 <translation id="3143110700666266545">Táto aplikácia používa nasledujúce API tretích strán:</translation>
 <translation id="163536108506359457">Brave Swap používa <ph name="AGGREGATOR"/> ako agregátor DEX pre podporované siete <ph name="NETWORKS"/>. <ph name="AGGREGATOR"/> spracuje adresu peňaženky <ph name="NETWORK"/> a IP adresu na vykonanie transakcie (vrátane získania ponúk). <ph name="AGGREGATOR"/> bude tieto údaje používať LEN na účely spracovania transakcií.</translation>
 <translation id="1847885264294023691">Kliknite sem pre zásady ochrany osobných údajov <ph name="AGGREGATOR"/>.</translation>
-<translation id="9218424917282368512">Zmeniť sieť</translation>
 <translation id="644984757357042735">Vyžaduje sa sieť</translation>
 <translation id="132243864024778443">Vyžaduje sa názov tokenu</translation>
 <translation id="3617263699756744037">Neplatná alebo prázdna adresa zmluvy o tokene</translation>
@@ -1547,8 +1553,15 @@
 <translation id="9085765419770918643">Zatiaľ tu nie sú žiadne NFT.</translation>
 <translation id="8445532667841598737">Ste pripravený nejaké pridať? Na ich importovanie jednoducho kliknite na tlačidlo nižšie.</translation>
 <translation id="9136462955850040542">Kompatibilné s NFT na Solana (SPL) a Ethereum (ERC-721).</translation>
+<translation id="137671950541962857">Zozbierané</translation>
 <translation id="8849001918648564819">Skryté</translation>
 <translation id="4905092798795191201">Zrušiť skrytie</translation>
+<translation id="6167809958646114660">Nezobrazovať v peňaženke</translation>
+<translation id="6948667383954749033">Zrušiť označenie nevyžiadaná pošta</translation>
+<translation id="5810047320613496595">Nevyžiadaná pošta</translation>
+<translation id="7257605968082307175">Označiť ako nevyžiadaná pošta</translation>
+<translation id="7600335727434653744">Odstrániť z peňaženky Brave?</translation>
+<translation id="6657860743511185539">NFT bude odstránené z peňaženky Brave, ale zostane na blockchaine. Ak ho odstránite a potom si to rozmyslíte, budete ho musieť znova manuálne importovať.</translation>
 <translation id="849880459530751909">Upraviť NFT</translation>
 <translation id="5925465310724910998">Chcete, aby sa vaše NFT zobrazovali automaticky?</translation>
 <translation id="5400791731776892411">Peňaženka Brave môže na automatické zobrazovanie vašich NFT používať službu tretej strany. Prehliadač Brave bude zdieľať adresy vašej peňaženky so službou <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/>, aby mohol poskytovať túto službu. <ph name="BEFORE_URL"/>Ďalšie informácie.<ph name="AFTER_URL"/></translation>
@@ -1748,9 +1761,6 @@
 <translation id="6938154350999993769">Odstraňovanie chýb: zapnutie/vypnutie režimu tabletu</translation>
 <translation id="5854741377790551127">Odstraňovanie chýb: výstup stromového zobrazenia</translation>
 <translation id="8199130368328220410">Zapnúť/vypnúť titulky naživo</translation>
-<translation id="4233010476457917696">Zobraziť bočný panel</translation>
-<translation id="2207125676134752863">Zobraziť bočný panel pri prejdení myšou</translation>
-<translation id="2613033293035359003">Skryť bočný panel</translation>
 <translation id="9055778350624039365">Zobraziť panel peňaženky Brave</translation>
 <translation id="2548853975094084059">Zatvoriť panel peňaženky Brave</translation>
 <translation id="3765209580429944524">Zobraziť panel Brave VPN</translation>
@@ -1813,7 +1823,7 @@
 <translation id="1199355487114804640">Prehrať/pozastaviť</translation>
 <translation id="1689210457482459023">Znížiť rýchlosť prehrávania</translation>
 <translation id="5872363163901278000">Zvýšiť rýchlosť prehrávania</translation>
-<translation id="8178821080790541548">Umelá inteligencia Brave</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="8458987127502506209">Zapnúť štíty Brave</translation>
 <translation id="7509914170164691086">Štíty sú aktívne <ph name="LINK_BEFORE"/>pre<ph name="LINK_AFTER"/></translation>
@@ -1885,16 +1895,18 @@
 <translation id="8637805148029768813">Funkcia nástroja na vytváranie súhrnu je v súčasnosti k dispozícii len pre vybrané články a ďalšie dlhé webové stránky.</translation>
 <translation id="2346991295632453064">Prijať a začať</translation>
 <translation id="1223498995510244364">Vytvoriť súhrn</translation>
-<translation id="8758939268013768602">Informácie o umelej inteligencii Brave</translation>
-<translation id="1704821516241545704">Funkcia chatu s umelou inteligenciou Brave zhrnie obsah webovej stránky, ktorú si prezeráte, a obsahuje rozhranie chatu, ktoré vám umožní zadávať ďalšie otázky týkajúce sa zhrnutého obsahu danej stránky.</translation>
-<translation id="58643773598235831">Zhrnutie stránky a všetky otázky, ktoré položíte funkcii chatu, sa odošlú na servery partnera s externým rozhraním API (pri tomto dopyte sa neodošlú žiadne identifikačné údaje).</translation>
-<translation id="917619443165595947">Dbajte na to, aby obsah stránky a prípadné ďalšie otázky neobsahovali osobné alebo citlivé údaje. Presnosť súhrnov a odpovedí na otázky nie je zaručená, a preto by ste sa nemali spoliehať na žiadny text týkajúci sa zdravia, osobnej bezpečnosti alebo finančných záležitostí.</translation>
-<translation id="1829889011559313790">Opýtať sa umelej inteligencie Brave</translation>
-<translation id="7226268079740406209">Pri spracovaní vašej správy došlo k chybe, skúste to znova.</translation>
+<translation id="6966669506908435195">Informácie o Brave Leo</translation>
+<translation id="1667863995484767951">Funkcia Chat s umelou inteligenciou poskytuje súhrny prezeranej webovej stránky a obsahuje rozhranie chatu, ktoré umožňuje zadávať otázky a prijímať odpovede o obsahu danej stránky. Presnosť súhrnov nie je zaručená a môže obsahovať nepresné, zavádzajúce a nepravdivé informácie. Nemali by ste odosielať citlivé alebo súkromné informácie a mali by ste byť opatrní s akýmkoľvek textom týkajúcim sa zdravia, financií alebo osobnej bezpečnosti a podobných záležitostí.</translation>
+<translation id="7636915524386889836">Chat s umelou inteligenciou od spoločnosti Brave využíva samostatný <ph name="LINK_BEFORE"/>veľký jazykový model<ph name="LINK_AFTER"/> Funkcia Chat s umelou inteligenciou nezhromažďuje ani inak nespracúva identifikátory, ako je napríklad IP adresa, ktoré by sa dali spojiť s vami. Model umelej inteligencie neuchováva žiadne osobné údaje.</translation>
+<translation id="7839853125981164613">Tu zadajte pokyn</translation>
 <translation id="1171287413830401223">Zapnúť navrhované otázky?</translation>
 <translation id="8723991872343294222">Umelá inteligencia Brave dokáže automaticky navrhovať otázky na základe obsahu stránky. Neskôr ju môžete vypnúť v Nastaveniach.</translation>
 <translation id="3435896845095436175">Aktivovať</translation>
 <translation id="7473891865547856676">Nie, ďakujem</translation>
+<translation id="7932221068776853847">Odpojením zastavíte odosielanie obsahu tejto stránky Leovi a začnete novú konverzáciu.</translation>
+<translation id="1167803637855350748">Pri pripájaní k Leovi došlo k sieťovému problému, skontrolujte pripojenie a skúste to znova.</translation>
+<translation id="5095201428204952524">Leo je teraz príliš zaneprázdnený. Skúste to znova o niekoľko minút.</translation>
+<translation id="7144878232160441200">Skúsiť znova</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: pripojené</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: odpojené</translation>
 <translation id="3541307549916475335">Používateľské rozhranie panela Brave VPN</translation>
@@ -1954,10 +1966,10 @@ Brave má pomocnú službu, ktorá vás pred týmto odhalením chráni tak, že 
 Všimli sme si však, že táto služba nie je spustená a nechceme vás nechať bez ochrany. Na ochranu pred týmto odhalením sme zmenili v prehliadači nastavenie DNS. Toto nastavenie ostane zapnuté a bude uzamknuté, kým bude VPN pripojená.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">Zdá sa, že došlo k určitým problémom s pripojením WireGuard. Chcete zapnúť záložný protokol IKEv2 pre spoľahlivé pripojenie VPN? Jednoducho reštartujte prehliadač.
+<translation id="5004375364898143117">Zdá sa, že došlo k určitým problémom s pripojením WireGuard. Chcete zapnúť záložný protokol IKEv2 pre spoľahlivé pripojenie VPN? Jednoducho reštartujte prehliadač.
 
 Potrebujete pomoc s kompatibilitou alebo konfiguráciou? Obráťte sa na náš ústretový tím podpory.
-Vždy sa môžete vrátiť späť k WireGuard na adrese brave://flags/#brave-vpn-wireguard.
+Vždy sa môžete vrátiť späť k WireGuard na adrese brave://settings/system.
 
 Zaistíme vaše pripojenie!
 
@@ -1969,10 +1981,14 @@ Zaistíme vaše pripojenie!
 <translation id="8295393906499561642">Relácia vypršala</translation>
 <translation id="3312623558576021182">Prosím, prihláste sa do svojho <ph name="BRAVE_ACCOUNT_BEGIN"/> Brave Účtu <ph name="BRAVE_ACCOUNT_END"/>, aby ste obnovili svoju VPN reláciu.</translation>
 <translation id="6021669293402055982">Brave VPN: odpojené</translation>
+<translation id="7861195049821776142">Brave VPN: Odpojenie</translation>
 <translation id="958268166261124668">Brave VPN: pripojené</translation>
+<translation id="2061807837510296780">Brave VPN: Pripojenie</translation>
 <translation id="1313124107969703758">Brave VPN: chyba</translation>
 <translation id="8273420301954598554">Stav: pripojené</translation>
 <translation id="7155657348064536843">Stav: odpojené</translation>
+<translation id="2413929902277520460">Brave VPN –⁠ pripojené</translation>
+<translation id="8048263175525832621">Brave VPN –⁠ odpojené</translation>
 <translation id="1498770726476841108">Spravovať účet</translation>
 <translation id="6825718953004242472">Odstrániť ikonu</translation>
 </translationbundle>

@@ -10,6 +10,8 @@
 <translation id="1468415711258933398">માનક ટૅબ</translation>
 <translation id="3377025655491224618">ખાનગી મોડ</translation>
 <translation id="9148058034647219655">બહાર નીકળો</translation>
+<translation id="8775144690796719618">અમાન્ય URL</translation>
+<translation id="802154636333426148">ડાઉનલોડ નિષ્ફળ થયું</translation>
 <translation id="2356070529366658676">કહો</translation>
 <translation id="4176463684765177261">અક્ષમ કરેલું</translation>
 <translation id="59174027418879706">સક્ષમ</translation>
@@ -136,6 +138,7 @@
 <translation id="6979737339423435258">હંમેશાં</translation>
 <translation id="3819257035322786455">બેકઅપ</translation>
 <translation id="4522570452068850558">વિગતો</translation>
+<translation id="4412698727486357573">સહાયતા કેન્દ્ર</translation>
 <translation id="3866249974567520381">વર્ણન</translation>
 <translation id="3435896845095436175">સક્ષમ કરો</translation>
 <translation id="7805768142964895445">સ્થિતિ</translation>
@@ -146,6 +149,7 @@
 <translation id="6452181791372256707">નકારો</translation>
 <translation id="8030852056903932865">મંજૂર કરો</translation>
 <translation id="5317780077021120954">સાચવો</translation>
+<translation id="1736419249208073774">શોધખોળ કરો</translation>
 <translation id="9065203028668620118">ફેરફાર કરો</translation>
 <translation id="473775607612524610">અપડેટ કરો</translation>
 <translation id="5045550434625856497">ખોટો પાસવર્ડ</translation>
@@ -178,4 +182,5 @@
 <translation id="4195643157523330669">નવા ટૅબમાં ખોલો</translation>
 <translation id="4243710787042215766">ખાનગી ટૅબમાં ખોલો</translation>
 <translation id="8261506727792406068">ડિલીટ કરો</translation>
+<translation id="5494920125229734069">બધા પસંદ કરો</translation>
 </translationbundle>

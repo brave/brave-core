@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">繼續安裝</translation>
 <translation id="7099479769133613710">重新啟動以更新 &amp;Brave 作業系統</translation>
 <translation id="2479110114759182442">Brave 建議你審核此擴充程式</translation>
+<translation id="3814674848168165531">當網站要求以私密方式預先載入網頁上的連結時，Brave 會使用 Brave 伺服器。這麼做可在預先載入網站中隱藏你的身分，不過 Brave 會知道這類網站預先載入的內容。</translation>
 <translation id="1065672644894730302">系統無法讀取您的偏好設定。
 
 部分功能可能無法使用，而系統也不會儲存任何偏好設定的變更。</translation>
@@ -130,6 +131,8 @@
 <translation id="3829358914761176693">{COUNT,plural, =0{管理員要求您重新啟動 Brave，以套用此更新}=1{管理員要求您重新啟動 Brave，以套用此更新。您的無痕式視窗不會重新開啟。}other{管理員要求您重新啟動 Brave，以套用此更新。您的 # 個無痕式視窗不會重新開啟。}}</translation>
 <translation id="1807774211756215222">在 Brave 的新分頁中開啟連結(&amp;T)</translation>
 <translation id="2106568569080763501">Brave 可讓您按一下網頁上的電話號碼，隨即透過 Skype 撥打電話！</translation>
+<translation id="308146532933302843">瞭解 Brave 封鎖部分下載內容的原因</translation>
+<translation id="6324134303015966238">Brave 會預先載入你可能瀏覽的頁面，以便在你瀏覽時更快載入</translation>
 <translation id="2401189691232800402">Brave 作業系統</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">取得 Brave 作業系統相關說明</translation>
@@ -155,6 +158,7 @@
 <translation id="5757460455745382269">使用此語言顯示 Brave 使用者介面</translation>
 <translation id="4222932583846282852">正在取消…</translation>
 <translation id="1853997773668795891">要將您的 Brave 數據連結至這個帳戶嗎？</translation>
+<translation id="4732930052828648898">此防護機制分析的網站資料比標準保護多，因此即使是 Brave 不知道的網站，此防護機制亦能提供危險網站警告。你可選擇略過 Brave 警告。</translation>
 <translation id="3262506503470845422">取得 Brave 相關說明</translation>
 <translation id="4281844954008187215">服務條款</translation>
 <translation id="7691786510374174420">不明錯誤導致安裝失敗。如果目前 Brave 正在執行，請關閉 Brave，然後再試一次。</translation>
@@ -226,7 +230,6 @@
 <translation id="5225261774087485064">您瀏覽的網站經常會記住您感興趣的項目，以便為您提供個人化體驗。網站亦可將您的興趣相關資訊儲存在 Brave 中。</translation>
 <translation id="6003112304606738118">正在下載… 剩餘 <ph name="HOURS"/> 小時</translation>
 <translation id="6040143037577758943">關閉</translation>
-<translation id="1268000445919601231">Brave 會封鎖部分下載內容</translation>
 <translation id="505042220086416644">新版 Brave 現已推出，速度更勝從前。</translation>
 <translation id="9071554113102421877">在 Brave 中開啟</translation>
 <translation id="7861579472672677409">已將 <ph name="EXTENSION_NAME"/> 加到 Brave</translation>
@@ -240,6 +243,7 @@
 <translation id="991182453936521413">Brave 即將關閉並刪除資料</translation>
 <translation id="7006260220514217183">「安全瀏覽」功能已停用。Brave 建議啟用此功能。</translation>
 <translation id="4060970194201477024">您可在此處切換不同的 Brave 設定檔</translation>
+<translation id="7815000350132166985">如果你允許 Cookie，Brave 可能會在預先載入時使用 Cookie</translation>
 <translation id="3156047523158042818">視乎你的設定，Brave 亦可能會傳送 Cookie 和你目前的網址</translation>
 <translation id="4368341489795135329">請確認您已在 <ph name="TARGET_DEVICE_NAME"/> 上登入 Brave，然後再傳送一次。</translation>
 <translation id="8320964054148936490">這部電腦已安裝較新的 Brave 版本。如果軟件無法工作，請解除安裝 Brave，然後再試一次。</translation>
@@ -264,12 +268,14 @@
 <translation id="3256100650978957522">電腦畫面中的 Brave 圖示。</translation>
 <translation id="6373767849825830651">Brave 網絡瀏覽器可快速開啟網頁和執行應用程式。除了迅速、穩定和易於使用外，Brave 的內置惡意軟件與網絡釣魚防護功能，可讓您安心瀏覽網絡。</translation>
 <translation id="2139300032719313227">重新啟動 Brave 作業系統</translation>
+<translation id="638302211119176182">Brave 會預先載入更多你可能瀏覽的網頁，以便在你瀏覽時更快載入。</translation>
 <translation id="1684121725014454063">歡迎使用 Brave 設定檔</translation>
 <translation id="2675662665675552980">這個擴充功能也會管制您啟動 Brave 時所顯示的網頁。</translation>
 <translation id="648319183876919572">「強化安全瀏覽」可進一步保護您免受危險網站和下載檔案威脅</translation>
 <translation id="5590013613412457132">解除安裝 Brave</translation>
 <translation id="3617744907966785605">您的機構會在 Brave 閒置 <ph name="TIMEOUT_DURATION"/>後將其關閉。瀏覽資料已刪除，當中可能包括記錄、自動填入資料和下載檔案。</translation>
 <translation id="8646609321956191980">每個設定檔都會保存本身專屬的 Brave 資料，例如書籤、記錄、密碼等</translation>
+<translation id="6756656512757374876">進一步瞭解 <ph name="BEGIN_LINK"/>Brave 如何確保你的資料保密<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">您可切換查看其他 Brave 個人檔案的密碼</translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將您在文字欄中輸入的文字傳送給 Brave</translation>
 <translation id="3507835409099344374">前往 Brave 通知設定</translation>

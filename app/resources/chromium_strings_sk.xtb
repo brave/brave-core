@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">Pokračovať v inštalácii</translation>
 <translation id="7099479769133613710">Znova spustiť a aktualizovať &amp;Brave OS</translation>
 <translation id="2479110114759182442">Brave odporúča, aby ste toto rozšírenie skontrolovali</translation>
+<translation id="3814674848168165531">Keď nejaký web požiada o súkromné prednačítanie odkazov na svojej stránke, Brave použije servery Googlu. Týmto sa pred predinštalovaným webom skryje vaša identita, ale Brave sa naučí, ktoré weby sa prednačítavajú.</translation>
 <translation id="1065672644894730302">Vaše predvoľby sa nedajú načítať.
 
 Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách sa neuložia.</translation>
@@ -119,6 +120,8 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="2100587595569959771">Ďalšie informácie o prispôsobení reklám v prehliadači Brave</translation>
 <translation id="1807774211756215222">Otvoriť odkaz na novej &amp;karte prehliadača Brave</translation>
 <translation id="2106568569080763501">Prehliadač Brave vám umožňuje vybrať telefónne číslo na webe a zavolať naň pomocou aplikácie Skype.</translation>
+<translation id="308146532933302843">Prečo Brave blokuje niektoré stiahnuté súbory</translation>
+<translation id="6324134303015966238">Brave prednačítava stránky, ktoré pravdepodobne navštívite, aby sa načítali rýchlejšie, keď na ne prejdete</translation>
 <translation id="2401189691232800402">Systém Brave OS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="3744202345691150878">Získať pomoc so systémom Brave OS</translation>
@@ -143,6 +146,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="5757460455745382269">V tomto jazyku sa zobrazuje používateľské rozhranie prehliadača Brave.</translation>
 <translation id="4222932583846282852">Ruší sa...</translation>
 <translation id="1853997773668795891">Chcete prepojiť údaje prehliadača Brave s týmto účtom?</translation>
+<translation id="4732930052828648898">Analyzuje viac údajov z webov než štandardná ochrana a upozorňuje vás na nebezpečné weby, dokonca aj také, o ktorých Brave predtým nevedel. Upozornenia z prehliadača Brave môžete preskočiť.</translation>
 <translation id="3262506503470845422">Pomoc s prehliadačom Brave</translation>
 <translation id="4281844954008187215">Zmluvné podmienky</translation>
 <translation id="7691786510374174420">Inštalácia zlyhala kvôli neurčenej chybe. Ak je prehliadač Brave momentálne spustený, zatvorte ho a skúste znova.</translation>
@@ -213,7 +217,6 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="5225261774087485064">Je bežné, že navštívené weby si pamätajú veci, ktoré vás zaujímajú, aby vám mohli prispôsobiť prostredie. Weby môžu v prehliadači Brave ukladať aj údaje o vašich záujmoch.</translation>
 <translation id="6003112304606738118">Sťahuje sa… Zostávajúci čas: <ph name="HOURS"/> h</translation>
 <translation id="6040143037577758943">Zavrieť</translation>
-<translation id="1268000445919601231">Brave blokuje stiahnutie niektorých súborov</translation>
 <translation id="505042220086416644">K dispozícii je nová verzia prehliadača Brave, ktorá je rýchlejšia ako kedykoľvek predtým.</translation>
 <translation id="9071554113102421877">&amp;Otvoriť v prehliadači Brave</translation>
 <translation id="7861579472672677409">Rozšírenie <ph name="EXTENSION_NAME"/> bolo pridané do prehliadača Brave</translation>
@@ -227,6 +230,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="991182453936521413">Brave sa čoskoro zavrie a odstráni dáta</translation>
 <translation id="7006260220514217183">Bezpečné prehliadanie je vypnuté. Brave ho odporúča zapnúť.</translation>
 <translation id="4060970194201477024">Tu môžete prepínať profily prehliadača Brave</translation>
+<translation id="7815000350132166985">Keď povolíte súbory cookie, Brave ich môže použiť pri prednačítavaní</translation>
 <translation id="3156047523158042818">V závislosti od vašich nastavení môže Brave odosielať aj súbory cookie a vašu aktuálnu webovú adresu</translation>
 <translation id="4368341489795135329">Skontrolujte, či ste sa v zariadení <ph name="TARGET_DEVICE_NAME"/> prihlásili do prehliadača Brave, a potom to skúste odoslať znova.</translation>
 <translation id="8320964054148936490">Tento počítač už obsahuje novšiu verziu prehliadača Brave. Ak softvér nefunguje, odinštalujte prehliadač Brave a skúste to znova.</translation>
@@ -251,12 +255,14 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="3256100650978957522">Logo prehliadača Brave na obrazovke počítača.</translation>
 <translation id="6373767849825830651">Brave je webový prehliadač, ktorý spúšťa webové stránky a aplikácie rýchlosťou svetla. Je rýchly, stabilný a ľahko sa používa. S ochranou proti škodlivému softvéru a phishingu, ktorá je zabudovaná do prehliadača Brave, môžete prehliadať web bezpečnejšie.</translation>
 <translation id="2139300032719313227">Reštartovanie systému Brave OS</translation>
+<translation id="638302211119176182">Brave prednačítava dokonca viac stránok, ako pravdepodobne navštívite, aby sa v prípade návštevy načítali rýchlejšie</translation>
 <translation id="1684121725014454063">Vitajte v profiloch prehliadača Brave</translation>
 <translation id="2675662665675552980">Tiež určuje, ktorá stránka sa zobrazí pri spustení prehliadača Brave.</translation>
 <translation id="648319183876919572">Zlepšené bezpečné prehliadanie vás chráni viac pred nebezpečnými webmi a stiahnutými súbormi</translation>
 <translation id="5590013613412457132">Odinštalovať Brave</translation>
 <translation id="3617744907966785605">Ak sa prehliadač Brave nebude používať <ph name="TIMEOUT_DURATION"/>, vaša organizácia ho zavrie. Dáta prehliadania boli odstránené. Môže to zahŕňať históriu, automatické dopĺňanie a stiahnuté súbory.</translation>
 <translation id="8646609321956191980">V každom profile sú uchované vlastné údaje prehliadača Brave, ako sú záložky, história, heslá a ďalšie položky</translation>
+<translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Ako Brave uchováva vaše údaje v súkromí<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">Môžete si zobraziť heslá z iného profilu prehliadača Brave</translation>
 <translation id="2312399718665761438">Brave odošle text zadaný v textových poliach Googlu s cieľom opraviť pravopisné chyby</translation>
 <translation id="3507835409099344374">Prejsť do nastavení upozornení prehliadača Brave</translation>
