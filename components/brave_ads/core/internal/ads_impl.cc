@@ -311,10 +311,9 @@ void AdsImpl::PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  PurgeOrphanedAdEvents(mojom::AdType::kNewTabPageAd,
-                        base::BindOnce(&AdsImpl::PurgeOrphanedAdEventsCallback,
-                                       weak_factory_.GetWeakPtr(),
-                                       std::move(wallet), std::move(callback)));
+  PurgeAllOrphanedAdEvents(base::BindOnce(
+      &AdsImpl::PurgeOrphanedAdEventsCallback, weak_factory_.GetWeakPtr(),
+      std::move(wallet), std::move(callback)));
 }
 
 void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,

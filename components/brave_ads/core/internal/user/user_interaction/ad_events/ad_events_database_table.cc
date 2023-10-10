@@ -309,6 +309,20 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
   RunTransaction(std::move(transaction), std::move(callback));
 }
 
+void AdEvents::PurgeAllOrphaned(ResultCallback callback) const {
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE placement_id IN (SELECT placement_id from $2 "
+      "GROUP BY placement_id having count(*) = 1) AND confirmation_type IN "
+      "(SELECT confirmation_type from $3 WHERE confirmation_type = 'served');",
+      {GetTableName(), GetTableName(), GetTableName()}, nullptr);
+  transaction->commands.push_back(std::move(command));
+
+  RunTransaction(std::move(transaction), std::move(callback));
+}
+
 std::string AdEvents::GetTableName() const {
   return kTableName;
 }

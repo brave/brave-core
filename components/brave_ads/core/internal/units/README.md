@@ -12,6 +12,6 @@ An advertisement, or ad unit, is a form of marketing communication to promote a 
 
 Users are rewarded for ad impressions if they join Brave Rewards.
 
-1. `kServed` events should not be manually triggered as they are handled when calling `MaybeServe`. `PurgeOrphanedAdEventsForType` should be called periodically to remove orphaned served events, i.e., ads that were served but never viewed.
+1. `kServed` events should not be manually triggered as they are handled when calling `MaybeServe`. `PurgeOrphanedAdEventsForType` should be called periodically to remove orphaned served events, i.e., ads that were served but never viewed. Orphaned ad served events are removed during initializing.
 2. `kServed` events should not be manually triggered as they are handled when calling `TriggerEvent` with `kViewed` unless already triggerd by ¹.
 3. Only responsible for triggering ad events and not serving the ad.

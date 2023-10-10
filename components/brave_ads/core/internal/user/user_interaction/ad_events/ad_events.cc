@@ -60,4 +60,13 @@ void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                    std::move(callback)));
 }
 
+void PurgeAllOrphanedAdEvents(AdEventCallback callback) {
+  const database::table::AdEvents database_table;
+  database_table.PurgeAllOrphaned(base::BindOnce(
+      [](AdEventCallback callback, const bool success) {
+        std::move(callback).Run(success);
+      },
+      std::move(callback)));
+}
+
 }  // namespace brave_ads
