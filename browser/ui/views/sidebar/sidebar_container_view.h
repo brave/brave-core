@@ -69,6 +69,8 @@ class SidebarContainerView
   SidebarContainerView& operator=(const SidebarContainerView&) = delete;
 
   void Init();
+
+  bool sidebar_on_left() const { return sidebar_on_left_; }
   void SetSidebarOnLeft(bool sidebar_on_left);
 
   bool IsSidebarVisible() const;

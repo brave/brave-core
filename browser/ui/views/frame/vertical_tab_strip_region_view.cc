@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -794,6 +795,7 @@ void VerticalTabStripRegionView::SetState(State state) {
   }
 
   PreferredSizeChanged();
+  UpdateBorder();
 }
 
 void VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished(
@@ -967,12 +969,9 @@ void VerticalTabStripRegionView::OnThemeChanged() {
 
   const auto background_color = cp->GetColor(kColorToolbar);
   SetBackground(views::CreateSolidBackground(background_color));
+  UpdateBorder();
 
   new_tab_button_->FrameColorsChanged();
-
-  SetBorder(views::CreateSolidSidedBorder(
-      gfx::Insets().set_right(1),
-      cp->GetColor(kColorBraveVerticalTabSeparator)));
 }
 
 void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
@@ -1147,6 +1146,34 @@ void VerticalTabStripRegionView::UpdateOriginalTabSearchButtonVisibility() {
       browser_->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
   if (auto* tab_search_button = original_region_view_->tab_search_button()) {
     tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
+  }
+}
+
+void VerticalTabStripRegionView::UpdateBorder() {
+  auto show_visible_border = [&]() {
+    // The color provider might not be available during initialization.
+    if (!GetColorProvider()) {
+      return false;
+    }
+
+    if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+      return true;
+    }
+
+    // Only show the border if the vertical tabs are enabled and in floating
+    // mode, and the tabstrip is hovered.
+    return tabs::utils::ShouldShowVerticalTabs(browser_) &&
+           state_ == State::kFloating;
+  };
+
+  gfx::Insets border_insets = gfx::Insets::TLBR(0, 0, 0, 1);
+
+  if (show_visible_border()) {
+    SetBorder(views::CreateSolidSidedBorder(
+        border_insets,
+        GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
+  } else {
+    SetBorder(views::CreateEmptyBorder(border_insets));
   }
 }
 

@@ -19,15 +19,12 @@
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
-#define GetContentsLayoutManager     \
-  GetContentsLayoutManager_Unused(); \
-  virtual ContentsLayoutManager* GetContentsLayoutManager
 
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
 
+#define UpdateDevToolsForContents virtual UpdateDevToolsForContents
 #define GetTabStripVisible virtual GetTabStripVisible
-#define BrowserViewLayout BraveBrowserViewLayout
 
 #define GetTabSearchBubbleHost     \
   GetTabSearchBubbleHost_Unused(); \
@@ -52,12 +49,11 @@
 
 #undef GetTabSearchBubbleHost
 #undef BrowserViewLayout
+#undef UpdateDevToolsForContents
 #undef GetTabStripVisible
 #undef BrowserViewLayoutDelegateImpl
 #undef BrowserWindow
 #undef MaybeShowReadingListInSidePanelIPH
-#undef BrowserViewLayout
 #undef SidePanel
-#undef GetContentsLayoutManager
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_

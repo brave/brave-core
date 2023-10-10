@@ -51,6 +51,7 @@ class BraveBrowser;
 class ContentsLayoutManager;
 class SidebarContainerView;
 class WalletButton;
+class ViewShadow;
 class VerticalTabStripWidgetDelegateView;
 
 class BraveBrowserView : public BrowserView,
@@ -131,6 +132,8 @@ class BraveBrowserView : public BrowserView,
       Browser::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
+  void UpdateDevToolsForContents(content::WebContents* web_contents,
+                                 bool update_devtools_web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
 
   void StopTabCycling();
@@ -138,6 +141,7 @@ class BraveBrowserView : public BrowserView,
   void OnPreferenceChanged(const std::string& pref_name);
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
+  void UpdateWebViewRoundedCorners();
 
   sidebar::Sidebar* InitSidebar() override;
   void ToggleSidebar() override;
@@ -152,6 +156,8 @@ class BraveBrowserView : public BrowserView,
 
   bool closing_confirm_dialog_activated_ = false;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
+  raw_ptr<views::View> sidebar_separator_view_ = nullptr;
+  raw_ptr<views::View> contents_background_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<VerticalTabStripWidgetDelegateView>
       vertical_tab_strip_widget_delegate_view_ = nullptr;
@@ -169,6 +175,7 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
+  std::unique_ptr<ViewShadow> contents_shadow_;
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<commands::AcceleratorService,
                           commands::AcceleratorService::Observer>
