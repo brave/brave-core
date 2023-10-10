@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">Düz renkler</translation>
 <translation id="7610541582755894669">Gradyanlar</translation>
 <translation id="1606851618930975029">Her yeni sekmede yenile</translation>
+<translation id="7040134046053881468">Ödül panelini aç</translation>
 <translation id="9024104284526126630">Brave'de özel bir arama başlatabilirsiniz.</translation>
 <translation id="370665806235115550">Yükleniyor...</translation>
 <translation id="4634933166298842522">Abonelikleri Yönetin</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">Abonelikten çık</translation>
 <translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
 <translation id="8510478288840333677">Bu sitenin Kalkanlar'la düzgün çalışmadığını Brave geliştiricilerine bildirin:</translation>
-<translation id="4105411033440701818">Not: "Gönder" seçeneğine tıkladığınızda site adresini, Brave sürüm numaranızı ve IP adresinizi Brave geliştiricileriyle paylaşmış olursunuz. (IP adresi depolanmayacaktır.)</translation>
+<translation id="8265244536487014968">Not: Brave sunucularına gönderilen rapor site adresini, Brave sürüm numarasını, Kalkanlar ayarlarını, VPN durumunu ve dil ayarlarını içerecektir. IP adresi aktarılacaktır fakat saklanmayacaktır.</translation>
 <translation id="6476216365964140603">Ek ayrıntılar (isteğe bağlı)</translation>
 <translation id="6145852496180774737">Benimle şuradan iletişime geçin (isteğe bağlı):</translation>
 <translation id="7616645803364270729">E-posta, Twitter, vb.</translation>
@@ -597,7 +598,6 @@
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Bakiyenizi görmek için <ph name="PROVIDER"/><ph name="END_BOLD"/> giriş yapın.</translation>
 <translation id="2659764755126740206"><ph name="PROVIDER"/> hesabıma git</translation>
 <translation id="2394961582378297792">Oturum kapatıldı</translation>
-<translation id="7091980679045978090">Tahmini kazanç</translation>
 <translation id="7934950257968365573"><ph name="PROVIDER"/> hesabınızda oturum açın</translation>
 <translation id="8631427463833030968">Reklamları yönet</translation>
 <translation id="590733288489975971">Ads Ödülleri</translation>
@@ -689,6 +689,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Daha fazla bilgi edinin<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Endişelenmeyin.</translation>
 <translation id="5027616819996705541">Hala gizli şekilde gezinebilirsiniz!</translation>
+<translation id="1886682615222609631">Şimdiye kadarki kazançlar</translation>
 <translation id="86107454835395919">Aylık katkı belirle</translation>
 <translation id="6621880242105464352">Brave, gönderilen miktardan <ph name="FEE_PCT"/> oranında işlem ücreti alır.</translation>
 <translation id="1420756770787071946">Bu yaratıcıyı destekle</translation>
@@ -1040,6 +1041,10 @@
 <translation id="4305817255990598646">Değiştir</translation>
 <translation id="3423275441470187644">Güven</translation>
 <translation id="2391762656119864333">İptal et</translation>
+<translation id="9218424917282368512">Ağ değiştir</translation>
+<translation id="7526139040829362392">Hesabı değiştir</translation>
+<translation id="4217695020908122747">Bağlı hesaplar</translation>
+<translation id="8497650996740651467">Kullanılabilir hesaplar</translation>
 <translation id="5677928146339483299">Engellendi</translation>
 <translation id="3890989020011724401">Yeni hesap</translation>
 <translation id="7257603403519636638">Hesap varlıklarını görüntüle</translation>
@@ -1220,6 +1225,7 @@
 <translation id="3648994606506382289">Kart ve banka transferleriyle kripto satın almanın en kolay, en hızlı ve en ucuz yolu.</translation>
 <translation id="3101839349578102016">Banka hesabınızla anında satın alın. Daha düşük ücretler.</translation>
 <translation id="8280898387224328221">Kredi kartı, banka kartı veya banka hesabıyla ödeyin</translation>
+<translation id="2218174283683424104">Kriptodaki en güvenilir isimle satın alın.</translation>
 <translation id="8528916244724490964">Tüm Ağlar</translation>
 <translation id="7721139939763655123">Düşükten Yükseğe</translation>
 <translation id="5458608274117818139">Yüksekten Düşüğe</translation>
@@ -1484,6 +1490,7 @@
 <translation id="8007404171238546456">Slipajdan sonra alınan minimum</translation>
 <translation id="767199001998615704">Ağ ücreti</translation>
 <translation id="7057870207229052478">Brave ücreti</translation>
+<translation id="81116374028657878">Protokol ücreti</translation>
 <translation id="3624518972158401291">Ücretsiz</translation>
 <translation id="5038255447967558645">Likidite sağlayıcı</translation>
 <translation id="8450638959928932199">Takas et ve gönder</translation>
@@ -1511,7 +1518,6 @@
 <translation id="3143110700666266545">Bu uygulama, aşağıdaki üçüncü taraf API'lerini kullanır:</translation>
 <translation id="163536108506359457">Brave Swap, desteklenen <ph name="NETWORKS"/> ağları için DEX toplayıcısı olarak <ph name="AGGREGATOR"/> öğesini kullanır. <ph name="AGGREGATOR"/>, bir işlemi gerçekleştirmek için (teklif almak dahil) <ph name="NETWORK"/> cüzdan adresini ve IP adresini işleyecektir. <ph name="AGGREGATOR"/> bu verileri YALNIZCA işlemlerin işlenmesi amacıyla kullanacaktır.</translation>
 <translation id="1847885264294023691"><ph name="AGGREGATOR"/> Gizlilik Politikası için buraya tıklayın.</translation>
-<translation id="9218424917282368512">Ağ değiştir</translation>
 <translation id="644984757357042735">Ağ gereklidir</translation>
 <translation id="132243864024778443">Token adı gereklidir</translation>
 <translation id="3617263699756744037">Geçersiz veya boş token sözleşme adresi</translation>
@@ -1547,8 +1553,15 @@
 <translation id="9085765419770918643">Burada henüz NFT yok.</translation>
 <translation id="8445532667841598737">Eklemeye hazır mısınız? İçe aktarmak için sadece aşağıdaki düğmeye tıklayın.</translation>
 <translation id="9136462955850040542">Solana (SPL) ve Ethereum (ERC-721) üzerinden NFT'lerle uyumludur</translation>
+<translation id="137671950541962857">Toplanan</translation>
 <translation id="8849001918648564819">Gizli</translation>
 <translation id="4905092798795191201">Göster</translation>
+<translation id="6167809958646114660">Cüzdanda gösterme</translation>
+<translation id="6948667383954749033">Gereksiz değil olarak işaretle</translation>
+<translation id="5810047320613496595">Gereksiz</translation>
+<translation id="7257605968082307175">Gereksiz olarak işaretle</translation>
+<translation id="7600335727434653744">Brave Cüzdanı'ndan kaldırılsın mı?</translation>
+<translation id="6657860743511185539">NFT, Brave Cüzdanı'ndan kaldırılacak ama blok zincirinde kalacaktır. Eğer kaldırırsanız ve sonradan fikrinizi değiştirirseniz NFT'yi manuel olarak tekrar içe aktarmanız gerekecektir.</translation>
 <translation id="849880459530751909">NFT'yi düzenle</translation>
 <translation id="5925465310724910998">NFT'leriniz otomatik olarak görüntülensin mi?</translation>
 <translation id="5400791731776892411">Brave Cüzdan, otomatik olarak NFT'lerinizi göstermek için bir üçüncü taraf hizmeti kullanabilir. Brave, bu hizmeti sunmak için cüzdan adresinizi <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> ile paylaşır. <ph name="BEFORE_URL"/>Daha fazla bilgi alın.<ph name="AFTER_URL"/></translation>
@@ -1747,9 +1760,6 @@
 <translation id="6938154350999993769">Hata ayıklama: tablet modunu aç/kapat</translation>
 <translation id="5854741377790551127">Hata ayıklama görüntüleme ağacını yazdır</translation>
 <translation id="8199130368328220410">Canlı alt yazıyı aç/kapat</translation>
-<translation id="4233010476457917696">Kenar çubuğunu göster</translation>
-<translation id="2207125676134752863">Fare imleci üzerindeyken kenar çubuğunu göster</translation>
-<translation id="2613033293035359003">Kenar çubuğunu gizle</translation>
 <translation id="9055778350624039365">Brave Cüzdanı panelini göster</translation>
 <translation id="2548853975094084059">Brave Cüzdanı panelini kapat</translation>
 <translation id="3765209580429944524">Brave VPN panelini göster</translation>
@@ -1812,7 +1822,7 @@
 <translation id="1199355487114804640">Oynat/Duraklat</translation>
 <translation id="1689210457482459023">Oynatma hızını azalt</translation>
 <translation id="5872363163901278000">Oynatma hızını artır</translation>
-<translation id="8178821080790541548">Brave YZ</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">Kalkanlar</translation>
 <translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
 <translation id="7509914170164691086">Şunun için Kalkanlar <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/>:</translation>
@@ -1884,16 +1894,18 @@
 <translation id="8637805148029768813">Özetleyici özelliği şu an yalnızca seçili makalelerde ve diğer uzun web sayfalarında kullanılır.</translation>
 <translation id="2346991295632453064">Kabul et ve başla</translation>
 <translation id="1223498995510244364">Özetle</translation>
-<translation id="8758939268013768602">Brave YZ hakkında</translation>
-<translation id="1704821516241545704">Brave YZ Sohbet özelliği, gezindiğiniz bir web sayfasının içeriğini özetler ve o sayfada özetlenen içerik hakkında ilave sorular sorabileceğiniz bir sohbet arayüzü içerir.</translation>
-<translation id="58643773598235831">Sohbet özelliğinde özetlenen sayfa ve soracağınız sorular harici bir API ortağının sunucularına gönderilir (bu sorguyla birlikte tanımlayıcı gönderilmez).</translation>
-<translation id="917619443165595947">Lütfen sayfa içeriğinin ve soracağınız soruların kişisel veya hassas bilgi içermediğinden emin olun. Özetlerin ve sorulan soruların cevaplarının doğruluğu garanti edilmez, bu sebepten dolayı sağlıkla, kişisel güvenlikle ve finansal konularla ilgili hiçbir metne güvenmemelisiniz.</translation>
-<translation id="1829889011559313790">Brave YZ'ye sor</translation>
-<translation id="7226268079740406209">Mesajınız işlenirken bir hata oluştu, lütfen tekrar deneyin.</translation>
+<translation id="6966669506908435195">Brave Leo Hakkında</translation>
+<translation id="1667863995484767951">YZ Sohbet özelliği, gezinmekte olduğunuz web sayfası hakkında özetler sunar ve o sayfanın içeriğiyle ilgili olarak sorular göndermenize ve yanıtlar almanıza olanak tanıyan bir sohbet arayüzü içerir. Özetlerin doğruluğu garanti edilmez ve doğru olmayan, yanlış yönlendiren ve hatalı bilgiler içerebilir. Bu özelliğe hassas veya gizli bilgiler göndermemeli, özelliği kullanırken sağlık, finans veya kişisel güvenlik ve buna benzer durumlarla ilgili tüm metinlerde dikkatli olmalısınız.</translation>
+<translation id="7636915524386889836">Brave'in YZ Sohbet özelliği, Brave'in ev sahipliği yaptığı <ph name="LINK_BEFORE"/>büyük bir dil modeli kullanır<ph name="LINK_AFTER"/> YZ Sohbet özelliği, IP Adresi gibi, sizinle ilişkilendirilebilecek hiçbir tanımlayıcı bilgiyi toplamaz veya işlemez. YZ modeli hiçbir kişisel veriyi saklamaz.</translation>
+<translation id="7839853125981164613">Buraya bir istem girin</translation>
 <translation id="1171287413830401223">Önerilen sorular etkinleştirilsin mi?</translation>
 <translation id="8723991872343294222">Brave YZ, sitenin içeriğine bağlı olarak otomatik olarak sorular önerebilir. Bunu daha sonra Ayarlar menüsünden devre dışı bırakabilirsiniz.</translation>
 <translation id="3435896845095436175">Etkinleştir</translation>
 <translation id="7473891865547856676">Hayır, Teşekkürler</translation>
+<translation id="7932221068776853847">Bu sayfanın içeriğini Leo'ya göndermeyi durdurmak için bağlantıyı kesin ve yeni bir konuşma başlatın</translation>
+<translation id="1167803637855350748">Leo'ya bağlanırken bir ağ sorunu yaşandı, bağlantınızı kontrol edip tekrar deneyin.</translation>
+<translation id="5095201428204952524">Leo şu anda çok meşgul. Lütfen birkaç dakika içinde tekrar deneyin.</translation>
+<translation id="7144878232160441200">Tekrar Dene</translation>
 <translation id="7821773512278295352">Brave Güvenlik Duvarı + VPN: Bağlı</translation>
 <translation id="6019088868713395120">Brave Güvenlik Duvarı + VPN: Bağlı değil</translation>
 <translation id="3541307549916475335">Brave VPN Paneli Arayüzü</translation>
@@ -1953,10 +1965,10 @@ Brave, VPN bağlantınızda DNS sorgularının yapılma yolunu filtreleyerek siz
 Ancak bu yardımcı hizmetin çalışmadığını fark ettik ve sizi korunmasız bırakmak istemiyoruz. Sizi buna maruz bırakmamak için tarayıcıdaki DNS ayarlarını değiştirdik. Bu ayarlar geçerliliğini koruyacak ve VPN bağlı olduğunda kilitli kalacak.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">Görünüşe göre WireGuard bağlantısıyla ilgili bazı sorunlar var. Güvenilir bir VPN için IKEv2 geri çekilmesini etkinleştirmek ister misiniz? Sadece tarayıcınızı yeniden başlatın.
+<translation id="5004375364898143117">Görünüşe göre WireGuard bağlantısıyla ilgili bazı sorunlar var. Güvenilir bir VPN için IKEv2 geri çekilmesini etkinleştirmek ister misiniz? Sadece tarayıcınızı yeniden başlatın.
 
 Uyumluluk veya yapılandırmayla ilgili yardıma mı ihtiyacınız var? Arkadaş canlısı destek ekibimize ulaşın.
-brave://flags/#brave-vpn-wireguard bağlantısı üzerinden istediğiniz zaman WireGuard'a geri dönebilirsiniz.
+brave://settings/system bağlantısı üzerinden istediğiniz zaman WireGuard'a geri dönebilirsiniz.
 
 Hadi sizi bağlayalım!
 
@@ -1968,10 +1980,14 @@ Hadi sizi bağlayalım!
 <translation id="8295393906499561642">Oturumun süresi doldu</translation>
 <translation id="3312623558576021182">Lütfen <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave Hesabınıza<ph name="BRAVE_ACCOUNT_END"/> bağlanarak VPN oturumunuzu yenileyin.</translation>
 <translation id="6021669293402055982">Brave VPN: Bağlı değil</translation>
+<translation id="7861195049821776142">Brave VPN: Bağlantı kesiliyor</translation>
 <translation id="958268166261124668">Brave VPN: Bağlı</translation>
+<translation id="2061807837510296780">Brave VPN: Bağlanıyor</translation>
 <translation id="1313124107969703758">Brave VPN: Hata</translation>
 <translation id="8273420301954598554">Durum: Bağlı</translation>
 <translation id="7155657348064536843">Durum: Bağlı değil</translation>
+<translation id="2413929902277520460">Brave VPN - Bağlı</translation>
+<translation id="8048263175525832621">Brave VPN - Bağlı Değil</translation>
 <translation id="1498770726476841108">Hesabı yönet</translation>
 <translation id="6825718953004242472">Simgeyi kaldır</translation>
 </translationbundle>

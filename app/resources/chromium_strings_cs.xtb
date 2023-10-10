@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">Pokračovat v instalaci</translation>
 <translation id="7099479769133613710">Znovu spustit a aktualizovat &amp;ChromeOS</translation>
 <translation id="2479110114759182442">Brave doporučuje toto rozšíření zkontrolovat</translation>
+<translation id="3814674848168165531">Když web požádá o soukromé předběžné načtení odkazů na stránce, použije Brave servery Brave. To před předběžně načítaným webem skryje vaši identitu, ale Brave se dozví, které weby se předběžně načítají.</translation>
 <translation id="1065672644894730302">Nelze číst vaše nastavení.
 
 Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</translation>
@@ -119,6 +120,8 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="2100587595569959771">Další informace o personalizaci reklam v prohlížeči Brave</translation>
 <translation id="1807774211756215222">Otevřít odkaz na nové kar&amp;tě prohlížeče Brave</translation>
 <translation id="2106568569080763501">Brave umožňuje kliknout na telefonní číslo na webu a volat na něj prostřednictvím aplikace Skype.</translation>
+<translation id="308146532933302843">Přečtěte si, proč Brave blokuje některá stahování</translation>
+<translation id="6324134303015966238">Brave předběžně načítá stránky, které byste pravděpodobně mohli navštívit. Když je navštívíte, načtou se tak rychleji</translation>
 <translation id="2401189691232800402">Systém ChromeOS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="3744202345691150878">Pomoc se systémem ChromeOS</translation>
@@ -143,6 +146,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="5757460455745382269">V tomto jazyce se zobrazuje uživatelské rozhraní prohlížeče Brave</translation>
 <translation id="4222932583846282852">Rušení...</translation>
 <translation id="1853997773668795891">Opravdu chcete propojit údaje prohlížeče Brave s tímto účtem?</translation>
+<translation id="4732930052828648898">Varuje vás před nebezpečnými weby (včetně těch, o kterých Brave dříve nevěděl) tím, že analyzuje více dat z webů než standardní ochrana. Upozornění prohlížeče Brave můžete přeskočit.</translation>
 <translation id="3262506503470845422">Pomoc s prohlížečem Brave</translation>
 <translation id="4281844954008187215">Smluvní podmínky</translation>
 <translation id="7691786510374174420">Došlo k nespecifikované chybě, instalace se nezdařila. Pokud je prohlížeč Brave právě spuštěný, zavřete jej prosím a zkuste to znovu.</translation>
@@ -213,7 +217,6 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="5225261774087485064">Je běžné, že si navštívené weby pamatují, co vás zajímá, aby pro vás personalizovaly svůj obsah. Weby mohou v prohlížeči Brave ukládat také informace o vašich zájmech.</translation>
 <translation id="6003112304606738118">Stahování… Zbývající čas: <ph name="HOURS"/> h.</translation>
 <translation id="6040143037577758943">Zavřít</translation>
-<translation id="1268000445919601231">Brave blokuje některá stahování</translation>
 <translation id="505042220086416644">K dispozici je nová verze prohlížeče Brave, ještě rychlejší než ty předchozí.</translation>
 <translation id="9071554113102421877">&amp;Otevřít v prohlížeči Brave</translation>
 <translation id="7861579472672677409">Do prohlížeče Brave bylo přidáno rozšíření <ph name="EXTENSION_NAME"/></translation>
@@ -227,6 +230,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="991182453936521413">Brave se brzy zavře a smaže data</translation>
 <translation id="7006260220514217183">Bezpečné prohlížení je vypnuté. Brave ho doporučuje zapnout.</translation>
 <translation id="4060970194201477024">Zde můžete přepínat mezi profily Brave</translation>
+<translation id="7815000350132166985">Pokud máte povolené soubory cookie, může je Brave při předběžném načítání použít</translation>
 <translation id="3156047523158042818">V závislosti na vašem nastavení může Brave odesílat také soubory cookie a vaši aktuální adresu URL</translation>
 <translation id="4368341489795135329">Zkontrolujte, zda jste v zařízení <ph name="TARGET_DEVICE_NAME"/> přihlášeni do prohlížeče Brave, a potom zkuste číslo odeslat znovu.</translation>
 <translation id="8320964054148936490">V tomto počítači je již nainstalována novější verze prohlížeče Brave. Jestliže tento software nefunguje, odinstalujte Brave a zkuste to znovu.</translation>
@@ -251,12 +255,14 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="3256100650978957522">Logo Brave na obrazovce počítače.</translation>
 <translation id="6373767849825830651">Brave je webový prohlížeč, který spouští webové stránky a aplikace rychlostí blesku. Je rychlý a snadno se používá. Prohlížejte web bezpečněji díky ochraně proti malwaru a phishingu integrované v prohlížeči Brave.</translation>
 <translation id="2139300032719313227">Restartujte ChromeOS</translation>
+<translation id="638302211119176182">Brave předběžně načítá ještě více stránek, které byste pravděpodobně mohli navštívit. Když je navštívíte, načtou se tak rychleji</translation>
 <translation id="1684121725014454063">Vítejte v profilech Brave</translation>
 <translation id="2675662665675552980">Také řídí, která stránka se zobrazí při spuštění prohlížeče Brave.</translation>
 <translation id="648319183876919572">Vylepšené Bezpečné prohlížení vás chrání před nebezpečnými weby a soubory ke stažení</translation>
 <translation id="5590013613412457132">Odinstalovat Brave</translation>
 <translation id="3617744907966785605">Když prohlížeč Brave <ph name="TIMEOUT_DURATION"/> není používán, vaše organizace ho zavře. Údaje o prohlížení byly smazány. To může zahrnovat historii, automatické vyplňování a stažené soubory.</translation>
 <translation id="8646609321956191980">V každém profilu jsou uloženy soukromé údaje z Chromia, například záložky, historie, hesla a další</translation>
+<translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Další informace o tom, jak prohlížeč Brave uchovává vaše data v soukromí<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">Přepnutím můžete zobrazit hesla z jiného profilu Brave</translation>
 <translation id="2312399718665761438">Text zadaný do textových polí odesílá Brave kvůli opravě pravopisných chyb do Googlu</translation>
 <translation id="3507835409099344374">Přejít na nastavení oznámení prohlížeče Brave</translation>

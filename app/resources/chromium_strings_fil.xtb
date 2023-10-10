@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">Ituloy ang Pag-install</translation>
 <translation id="7099479769133613710">Ilunsad ulit para ma-update ang &amp;ChromeOS</translation>
 <translation id="2479110114759182442">Inirerekomenda ng Brave na suriin mo ang extension na ito</translation>
+<translation id="3814674848168165531">Kapag humiling ang isang site na pribadong mag-preload ng mga link sa page nito, gumagamit ang Brave ng mga server ng Brave. Maitatago nito ang iyong pagkakakilanlan sa na-preload na site, pero malalaman ng Brave kung anong mga site ang na-preload.</translation>
 <translation id="1065672644894730302">Hindi mabasa ang iyong mga kagustuhan.
 
 Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago sa mga kagustuhan.</translation>
@@ -119,6 +120,8 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="2100587595569959771">Matuto pa tungkol sa pag-personalize ng ad sa Brave</translation>
 <translation id="1807774211756215222">Buksan ang link sa bagong &amp;tab ng Brave</translation>
 <translation id="2106568569080763501">Pinapayagan ka ng Brave na mag-click sa isang numero ng telepono sa web at tawagan ito gamit ang Skype!</translation>
+<translation id="308146532933302843">Alamin kung bakit bina-block ng Brave ang ilang pag-download</translation>
+<translation id="6324134303015966238">Nagpi-preload ang Brave ng mga page na malamang na bisitahin mo, para mas mabilis na mag-load ang mga ito kapag binisita mo</translation>
 <translation id="2401189691232800402">ChromeOS system</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">Humingi ng tulong sa ChromeOS</translation>
@@ -143,6 +146,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="5757460455745382269">Ginagamit ang wikang ito para ipakita ang Brave UI</translation>
 <translation id="4222932583846282852">Kinakansela...</translation>
 <translation id="1853997773668795891">I-link ang iyong data sa Brave sa account na ito?</translation>
+<translation id="4732930052828648898">Babalaan ka tungkol sa mga mapanganib na site, kahit iyong mga hindi alam ng Brave noon, sa pamamagitan ng pagsusuri sa higit pang data mula sa mga site kaysa sa karaniwang proteksyon. Puwede mong piliing laktawan ang mga babala ng Brave.</translation>
 <translation id="3262506503470845422">Humingi ng tulong sa Brave</translation>
 <translation id="4281844954008187215">Mga Tuntunin ng Serbisyo</translation>
 <translation id="7691786510374174420">Nabigo ang pag-install dahil sa hindi natukoy na error. Kung kasalukuyang tumatakbo ang Brave, pakisara ito at subukan ulit.</translation>
@@ -213,7 +217,6 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="5225261774087485064">Karaniwan para sa mga binibisita mong site na tandaan ang mga bagay na interesado ka, para ma-personalize ang iyong karanasan. Puwede ring mag-store ang mga site sa Brave tungkol sa iyong mga interes.</translation>
 <translation id="6003112304606738118">Nagda-download... <ph name="HOURS"/> (na) oras na lang ang natitira</translation>
 <translation id="6040143037577758943">Isara</translation>
-<translation id="1268000445919601231">Bina-block ng Brave ang ilang pag-download</translation>
 <translation id="505042220086416644">May available na bagong bersyon ng Brave, at mas mabilis ito kaysa sa dati.</translation>
 <translation id="9071554113102421877">&amp;Buksan sa Brave</translation>
 <translation id="7861579472672677409">Naidagdag na ang <ph name="EXTENSION_NAME"/> sa Brave</translation>
@@ -227,6 +230,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="991182453936521413">Magsasara at magde-delete na ng data ang Brave sa ilang saglit</translation>
 <translation id="7006260220514217183">Naka-off ang Ligtas na Pag-browse. Inirerekomenda ng Brave na i-on ito.</translation>
 <translation id="4060970194201477024">Puwede kang magpalipat-lipat sa mga profile sa Brave dito</translation>
+<translation id="7815000350132166985">Kung papayagan mo ang cookies, posibleng gamitin ng Brave ang mga ito kapag nagpi-preload.</translation>
 <translation id="3156047523158042818">Depende sa iyong mga setting, posible ring magpadala ang Brave ng cookies at kasalukuyang URL mo</translation>
 <translation id="4368341489795135329">Tiyaking naka-sign in ka sa Brave sa iyong <ph name="TARGET_DEVICE_NAME"/> at pagkatapos ay subukang ipadala ulit.</translation>
 <translation id="8320964054148936490">May mas bagong bersyon ng Brave na ang computer na ito. Kung hindi gumagana ang software, mangyaring i-uninstall ang Brave at subukan ulit.</translation>
@@ -251,12 +255,14 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="3256100650978957522">Logo ng Brave sa loob ng screen ng computer.</translation>
 <translation id="6373767849825830651">Ang Brave ay isang web browser na nagpapatakbo ng mga webpage at application sa bilis ng kidlat. Ito ay mabilis, maaasahan, at madaling gamitin. Mas maingat na mag-browse sa web gamit ang proteksyon ng Brave laban sa malware at phishing.</translation>
 <translation id="2139300032719313227">I-restart ang ChromeOS</translation>
+<translation id="638302211119176182">Nagpi-preload ang Brave ng mas marami pang page na malamang na bibisitahin mo, para mas mabilis na mag-load ang mga ito kapag binisita mo.</translation>
 <translation id="1684121725014454063">Welcome sa mga profile sa Brave</translation>
 <translation id="2675662665675552980">Kinokontrol din nito kung anong pahina ang ipinapakita kapag sinimulan mo ang Brave.</translation>
 <translation id="648319183876919572">Mas maraming magagawa ang Pinahusay na Ligtas na Pag-browse para protektahan ka laban sa mga mapanganib na website at download</translation>
 <translation id="5590013613412457132">I-uninstall ang Brave</translation>
 <translation id="3617744907966785605">Isinasara ng iyong organisasyon ang Brave kapag hindi ito ginagamit sa loob ng <ph name="TIMEOUT_DURATION"/>. Na-delete ang data mula sa pag-browse. Posibleng kasama rito ang history, autofill, at mga download.</translation>
 <translation id="8646609321956191980">Ang bawat profile ay may sariling impormasyon sa Brave tulad ng mga bookmark, history, mga password, at iba pa</translation>
+<translation id="6756656512757374876">Matuto pa tungkol sa kung <ph name="BEGIN_LINK"/>paano pinapanatiling pribado ng Brave ang iyong data<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">Puwede kang lumipat para makita ang mga password mula sa ibang profile sa Brave</translation>
 <translation id="2312399718665761438">Para maayos ang mga error sa pagbabaybay, ipinapadala ng Brave sa Brave ang text na na-type mo sa mga text field</translation>
 <translation id="3507835409099344374">Pumunta sa mga setting ng notification ng Brave</translation>

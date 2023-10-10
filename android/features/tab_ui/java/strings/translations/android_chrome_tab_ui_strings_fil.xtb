@@ -95,7 +95,7 @@
 <translation id="959682366969460160">Maging organisado</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
         =1 {Makikita mo ang iyong mga isinarang tab sa Mga Kamakailang tab sa ilalim ng pangunahing menu ng Brave. Hindi magiging available ang Pribadong tab mo.}
-        other {Makikita mo ang iyong mga isinarang tab sa ilaim ng pangunahing menu ng Brave. Hindi magiging available ang mga # Pribadong tab mo.}}</translation>
+        other {Makikita mo ang iyong mga isinarang tab sa ilaim ng pangunahing menu ng Brave. Hindi magiging available ang # Pribadong tab mo.}}</translation>
 <translation id="3228718275011575753">Isara ang lahat ng Pribadong tab?</translation>
 <translation id="6687920250729800417">Aalisin sa device na ito ang iyong aktibidad sa mga Pribadong tab na ito</translation>
 </translationbundle>

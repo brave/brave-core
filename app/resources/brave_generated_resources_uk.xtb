@@ -28,6 +28,7 @@
 <translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продовжити блокувати автоматичне програвання</translation>
 <translation id="3477357195688115718">Brave не перевіряє розширення на предмет безпеки й захищеності. Установлюйте це розширення, лише якщо довіряєте його розробнику.</translation>
+<translation id="2928844661231356557">Надання доступу Bluetooth-пристрою дозволить вебсайту зчитати ідентифікаційну й потенційно конфіденційну інформацію про вас. Надавайте доступ до Bluetooth-пристроїв лише надійним вебсайтам. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Вікна Tor</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
 <translation id="6924909138923993900">Нове проксі-з'єднання Tor для цього сайту</translation>
@@ -206,11 +207,14 @@
 <translation id="5268098808165185458">Копіювання тексту із зображення...</translation>
 <translation id="4046485130884276245">Текст скопійовано із зображення</translation>
 <translation id="3639779775496569782">Помилка копіювання тексту</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2506438154311626334">Використання протоколу WireGuard у Brave VPN</translation>
+<translation id="8519170191215826548">Цей параметр неможливо змінити, доки під’єднано Brave VPN.</translation>
+<translation id="5620961847363372221">Потрібно перезапустити браузер.</translation>
 <translation id="4235920711083356755">Показувати кнопку VPN</translation>
 <translation id="4070612712151038707">Показує кнопку VPN на панелі інструментів</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">Увімкнути чи вимкнути VPN</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Про Brave VPN</translation>
 <translation id="4378551569595875038">Підключення…</translation>
 <translation id="3368922792935385530">Підключено</translation>
@@ -219,13 +223,11 @@
 <translation id="1863950594388384201">Показувати кнопку VPN на панелі інструментів</translation>
 <translation id="5187139277471084437">Приховати кнопку VPN на панелі інструментів</translation>
 <translation id="1177917174080821247">Показувати значок VPN на панелі завдань</translation>
-<translation id="7645031001744446123">Приховувати значок VPN на панелі завдань</translation>
 <translation id="8041089156583427627">Надіслати відгук</translation>
 <translation id="4049186905514157504">Керування планом</translation>
 <translation id="7570585565843385325">Показувати кнопку VPN на панелі інструментів</translation>
 <translation id="5310426188697803101">Приховати кнопку VPN на панелі інструментів</translation>
 <translation id="639450633459241724">Показувати значок VPN на панелі завдань</translation>
-<translation id="7430264749441182065">Приховувати значок VPN на панелі завдань</translation>
 <translation id="945522503751344254">Надіслати відгук</translation>
 <translation id="3015685033234401792">Керування планом</translation>
 <translation id="4989337484121655457">Потрібен Повний Доступ до Диску</translation>
@@ -274,6 +276,14 @@
 <translation id="8152485753254079984">Новий список відтворення</translation>
 <translation id="5397019762993984652">Додати з папки «‎Відтворити пізніше»</translation>
 <translation id="7525067979554623046">Створити</translation>
+<translation id="9065203028668620118">Редагувати</translation>
+<translation id="6527303717912515753">Надіслати</translation>
+<translation id="760410268786807021">Зберегти для оплати офлайн</translation>
+<translation id="705344722465356351">Видалити вміст, що відтворювався</translation>
+<translation id="1173894706177603556">Перейменувати</translation>
+<translation id="7765158879357617694">Перемістити</translation>
+<translation id="6648536728577053364">Видалити офлайн-дані</translation>
+<translation id="5181358966317519720">Видалити зі списку відтворення</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
@@ -313,6 +323,8 @@
 <translation id="2025435450953474282">Статті автоматично завантажуються в режимі читання, заощаджуючи ваш час</translation>
 <translation id="2422927186524098759">Бічна панель</translation>
 <translation id="832432428796481785">Показати кнопку бічної панелі</translation>
+<translation id="5581036754486769849">Дозволити автоматичне заповнення у приватному вікні</translation>
+<translation id="2262012219398520969">Інформація зі звичайних вікон може зчитуватися / автоматично заповнюватися у приватних вікнах</translation>
 <translation id="7781069478569868053">Сторінка нової вкладки</translation>
 <translation id="1988804048511540801">Покази сторінки нової вкладки</translation>
 <translation id="2970343821770026391">Панель управління</translation>
@@ -683,7 +695,7 @@
 <translation id="3095201688102519917">Попереджувати перед закриттям вікна з декількома вкладками</translation>
 <translation id="7120553802660696133">Закривати вікно після закриття останньої вкладки</translation>
 <translation id="7984721311211272523">Видалити функцію вимкнення звуку в значках динаміків на вкладках</translation>
-<translation id="6129027151000961048">Лео</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Показувати значок Leo на бічній панелі</translation>
 <translation id="8172263161008556851">Показувати запропоновані підказки під час розмови</translation>
 <translation id="1014480593522400586">Очистити дані Leo</translation>

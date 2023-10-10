@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">צבעים אחידים</translation>
 <translation id="7610541582755894669">מעברי צבע</translation>
 <translation id="1606851618930975029">רעננו בכל כרטיסייה חדשה</translation>
+<translation id="7040134046053881468">פתחו את חלונית הפרסים</translation>
 <translation id="9024104284526126630">באפשרותכם להתחיל שיחה פרטית ב- Brave.</translation>
 <translation id="370665806235115550">טוען...</translation>
 <translation id="4634933166298842522">ניהול מנויים</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">בטל הרשמה כמנוי</translation>
 <translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
 <translation id="8510478288840333677">הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם Shields:</translation>
-<translation id="4105411033440701818">הערה: כאשר תלחץ על "שלח", תשתף גם את ה-URL, מספר גרסת ה-Brave שלך וכתובת ה-IP שלך עם מפתחי Brave. (כתובת ה-IP לא תישמר.)</translation>
+<translation id="8265244536487014968">הערה: הדו"ח שנשלח לשרתי Brave יכלול את כתובת האתר, מספר גרסת Brave, הגדרות Shields, סטטוס VPN והגדרות שפה. כתובת ה-IP תשודר אך לא תישמר</translation>
 <translation id="6476216365964140603">פרטים נוספים (אופציונלי)</translation>
 <translation id="6145852496180774737">צור איתי קשר בכתובת: (לא חובה)</translation>
 <translation id="7616645803364270729">דואר אלקטרוני, טוויטר וכו'.</translation>
@@ -622,7 +623,6 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Syndica �
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/> עליך להתחבר אל <ph name="PROVIDER"/><ph name="END_BOLD"/> כדי לראות את היתרה שלך</translation>
 <translation id="2659764755126740206">עבור אל חשבון ה-<ph name="PROVIDER"/> שלי</translation>
 <translation id="2394961582378297792">התנתק</translation>
-<translation id="7091980679045978090">רווחים משוערים</translation>
 <translation id="7934950257968365573">היכנס לחשבון שלך <ph name="PROVIDER"/> אימייל</translation>
 <translation id="8631427463833030968">נהל מודעות</translation>
 <translation id="590733288489975971">תגמולים מפרסומות</translation>
@@ -714,6 +714,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Syndica �
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>לפרטים נוספים<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">אל דאגה.</translation>
 <translation id="5027616819996705541">אתם עדיין יכולים לגלוש בפרטיות!</translation>
+<translation id="1886682615222609631">רווחים עד כה</translation>
 <translation id="86107454835395919">הגדר כטיפ חודשי</translation>
 <translation id="6621880242105464352">Brave גובה <ph name="FEE_PCT"/> מהסכום שנשלח כעמלת עיבוד.</translation>
 <translation id="1420756770787071946">תמכו ביוצר זה</translation>
@@ -1065,6 +1066,10 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Syndica �
 <translation id="4305817255990598646">החלף</translation>
 <translation id="3423275441470187644">אמון</translation>
 <translation id="2391762656119864333">בטל</translation>
+<translation id="9218424917282368512">שינוי רשת</translation>
+<translation id="7526139040829362392">שנה חשבון</translation>
+<translation id="4217695020908122747">חשבונות מקושרים</translation>
+<translation id="8497650996740651467">חשבונות זמינים</translation>
 <translation id="5677928146339483299">חסום</translation>
 <translation id="3890989020011724401">חשבון חדש</translation>
 <translation id="7257603403519636638">הצג נכסים בחשבון</translation>
@@ -1245,6 +1250,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Syndica �
 <translation id="3648994606506382289">הדרך הקלה, המהירה והזולה ביותר לקנות קריפטו באמצעות כרטיס והעברות בנקאיות.</translation>
 <translation id="3101839349578102016">קנייה מיידית עם חשבון הבנק שלך. עמלות נמוכות יותר.</translation>
 <translation id="8280898387224328221">שלם באמצעות אשראי, חיוב, חשבון בנק</translation>
+<translation id="2218174283683424104">קנייה עם השמות האמינים ביותר בקריפטו.</translation>
 <translation id="8528916244724490964">כל הרשתות</translation>
 <translation id="7721139939763655123">נמוך עד גבוה</translation>
 <translation id="5458608274117818139">גבוה לנמוך</translation>
@@ -1513,6 +1519,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Syndica �
 <translation id="8007404171238546456">מינימום התקבל לאחר החלקה</translation>
 <translation id="767199001998615704">עמלת רשת</translation>
 <translation id="7057870207229052478">שכר Brave</translation>
+<translation id="81116374028657878">עמלת פרוטוקול</translation>
 <translation id="3624518972158401291">חופשי</translation>
 <translation id="5038255447967558645">ספק נזילות</translation>
 <translation id="8450638959928932199">החלפה &amp; שלח</translation>
@@ -1544,7 +1551,6 @@ CoinGecko</translation>
 <translation id="3143110700666266545">אפליקציה זו משתמשת בממשקי ה-API של צד שלישי הבאים:</translation>
 <translation id="163536108506359457">Brave Swap משתמש ב-<ph name="AGGREGATOR"/> כצובר DEX עבור רשתות <ph name="NETWORKS"/> נתמכות. <ph name="AGGREGATOR"/> יעבד את כתובת הארנק וכתובת ה-IP של <ph name="NETWORK"/> כדי למלא עסקה (כולל קבלת הצעות). <ph name="AGGREGATOR"/> ישתמש בנתונים אלה למטרת עיבוד עסקאות בלבד.</translation>
 <translation id="1847885264294023691">לחץ כאן למדיניות הפרטיות של <ph name="AGGREGATOR"/>.</translation>
-<translation id="9218424917282368512">שינוי רשת</translation>
 <translation id="644984757357042735">נדרשת רשת</translation>
 <translation id="132243864024778443">שם אסימון נדרש</translation>
 <translation id="3617263699756744037">כתובת חוזה אסימון ריקה או לא חוקית</translation>
@@ -1580,8 +1586,15 @@ CoinGecko</translation>
 <translation id="9085765419770918643">אין כאן עדיין NFTs.</translation>
 <translation id="8445532667841598737">מוכן להוסיף כמה? פשוט לחץ על הלחצן למטה כדי לייבא.</translation>
 <translation id="9136462955850040542">תואם עם NFTs על Solana (SPL) ו-Ethereum (ERC-721).</translation>
+<translation id="137671950541962857">נאסף</translation>
 <translation id="8849001918648564819">מוסתר</translation>
 <translation id="4905092798795191201">גלה</translation>
+<translation id="6167809958646114660">לא להציג בארנק</translation>
+<translation id="6948667383954749033">לא לסמן כזבל</translation>
+<translation id="5810047320613496595">זבל</translation>
+<translation id="7257605968082307175">סמן כזבל</translation>
+<translation id="7600335727434653744">הסר מ-Brave Wallet</translation>
+<translation id="6657860743511185539">NFT יוסר מ-Brave Wallet אך יישאר בblockchain. אם תסירו אותו, ואז תשנו את דעתכם, יהיה צורך לייבאו שוב באופן ידני.</translation>
 <translation id="849880459530751909">ערוך NFT</translation>
 <translation id="5925465310724910998">רוצה שה-NFT שלך יוצגו באופן אוטומטי?</translation>
 <translation id="5400791731776892411">Brave Wallet יכול להשתמש בשירות של צד שלישי כדי להציג אוטומטית את ה-NFTs שלך. Brave ישתף את כתובות הארנק שלך עם <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> כדי לספק שירות זה. <ph name="BEFORE_URL"/>למידע נוסף.<ph name="AFTER_URL"/></translation>
@@ -1777,9 +1790,6 @@ CoinGecko</translation>
 <translation id="6938154350999993769">איתור באגים למצב טאבלט</translation>
 <translation id="5854741377790551127">ניפוי באגים בעץ תצוגת הדפסה</translation>
 <translation id="8199130368328220410">החלף את הכתוביות בשידור חי</translation>
-<translation id="4233010476457917696">הצג סרגל צידי</translation>
-<translation id="2207125676134752863">הצג סרגל צד בריחוף העכבר</translation>
-<translation id="2613033293035359003">הסתר סרגל צידי</translation>
 <translation id="9055778350624039365">הצג את לוח ארנק Brave</translation>
 <translation id="2548853975094084059">סגור את לוח ארנק Brave</translation>
 <translation id="3765209580429944524">הצג את לוח VPN של Brave</translation>
@@ -1842,7 +1852,7 @@ CoinGecko</translation>
 <translation id="1199355487114804640">נגן/השהה</translation>
 <translation id="1689210457482459023">הפחת את מהירות ההשמעה</translation>
 <translation id="5872363163901278000">הגבר את מהירות ההשמעה</translation>
-<translation id="8178821080790541548">בינה מלאכותית של Brave</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">מגנים</translation>
 <translation id="8458987127502506209">אפשר Brave מגנים</translation>
 <translation id="7509914170164691086">הגנות מופעלות <ph name="LINK_BEFORE"/> עבור <ph name="LINK_AFTER"/></translation>
@@ -1915,16 +1925,18 @@ CoinGecko</translation>
 <translation id="8637805148029768813">תכונת הסיכום זמינה כרגע רק עבור מאמרים נבחרים ודפי אינטרנט ארוכים אחרים.</translation>
 <translation id="2346991295632453064">קבל והתחל</translation>
 <translation id="1223498995510244364">סכם</translation>
-<translation id="8758939268013768602">אודות Brave AI</translation>
-<translation id="1704821516241545704">תכונת Brave AI Chat מסכמת את התוכן של דף אינטרנט בו אתה גולש וכוללת ממשק צ'אט המאפשר לך לבצע בירורי מעקב אחר התוכן המסכם עבור אותו עמוד.</translation>
-<translation id="58643773598235831">הדף המסכם וכל שאלה שתשאל לגבי תכונת הצ'אט נשלחים לשרתים של שותף API חיצוני (לא נשלחים מזהים עם שאילתה זו).</translation>
-<translation id="917619443165595947">אנא ודא שתוכן העמוד וכל פניות המשך אינם מכילים מידע אישי או רגיש. הדיוק של סיכומים ותשובות לבירורים אינו מובטח ולכן אין להסתמך על כל טקסט הקשור לבריאות, בטיחות אישית או עניינים פיננסיים.</translation>
-<translation id="1829889011559313790">שאל את Brave AI</translation>
-<translation id="7226268079740406209">אירעה שגיאה בעיבוד ההודעה שלך, אנא נסה שוב.</translation>
+<translation id="6966669506908435195">אודות Brave Leo</translation>
+<translation id="1667863995484767951">תכונת צ'אט של בינה מלאכותית מספקת סיכומים של דף האינטרנט בו אתם גולשים וכוללת ממשק של צ'אט המאפשר לשלוח שאלות ולקבל תשובות לגבי התוכן של אותו עמוד. דיוק הסיכומים אינו מובטח ועלול לכלול מידע לא מדויק, מטעה ושקרי. אין לשלוח מידע רגיש או פרטי ועליכם לנקוט משנה זהירות בכל טקסט הקשור לבריאות, כספים או בטיחות אישית ומקרים דומים.</translation>
+<translation id="7636915524386889836">צ'אט בינה מלאכותית של Brave משתמש <ph name="LINK_BEFORE"/> במודל שפה עצמי<ph name="LINK_AFTER"/> תכונת צ'אט בינה מלאכותית אינה אוספת ואינה מעבדת נתונים מזהים כגון כתובת IP שניתן לקשר אליכם. שום מידע אישי לא נשמר על ידי מודל הבינה המלאכותית.</translation>
+<translation id="7839853125981164613">הזינו כאן הנחייה</translation>
 <translation id="1171287413830401223">לאפשר שאלות מוצעות?</translation>
 <translation id="8723991872343294222">הבינה המלאכותית של Brave יכולה להציע באופן אוטומטי שאלות על סמך תוכן האתר. אתה יכול להשבית אותה מאוחר יותר בהגדרות.</translation>
 <translation id="3435896845095436175">הפעל</translation>
 <translation id="7473891865547856676">לא, תודה</translation>
+<translation id="7932221068776853847">התנתק כדי להפסיק לשלוח את תוכן הדף הזה ל-Leo, ולהתחיל שיחה חדשה</translation>
+<translation id="1167803637855350748">הייתה בעיית רשת בחיבור ל-Leo, נא לבדוק את החיבור ולנסות שוב.</translation>
+<translation id="5095201428204952524">Leo עסוק מדי עכשיו. אנא נסו שוב בעוד מספר דקות.</translation>
+<translation id="7144878232160441200">נסה שוב</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: מחובר</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: לא מחובר</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
@@ -1984,10 +1996,10 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 עם זאת, שמנו לב ששירות עוזר זה אינו פועל - ואנחנו לא רוצים להשאיר אותך ללא הגנה. שינינו את הגדרות ה-DNS בדפדפן כדי להגן מפני חשיפה זו. ההגדרות יישארו בתוקף ונעולות בזמן שה-VPN מחובר.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">נראה שיש כמה בעיות בחיבור ה-WireGuard. רוצה להפעיל IKEv2 fallback עבור VPN אמין? פשוט הפעל מחדש את הדפדפן שלך.
+<translation id="5004375364898143117">נראה שיש כמה בעיות בחיבור ה-WireGuard. רוצה להפעיל IKEv2 fallback עבור VPN אמין? פשוט הפעל מחדש את הדפדפן שלך.
 
 זקוק לעזרה עם תאימות או תצורה? פנה לצוות התמיכה הידידותי שלנו.
-אתה תמיד יכול לחזור ל-WireGuard ב-brave://flags/#brave-vpn-wireguard.
+אתה תמיד יכול לחזור ל-WireGuard ב-brave://settings/system.
 
 בוא נחבר אותך!
 <ph name="LEARN_MORE"/></translation>
@@ -1998,10 +2010,14 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 <translation id="8295393906499561642">פג תוקף ההפעלה</translation>
 <translation id="3312623558576021182">התחבר לחשבון <ph name="BRAVE_ACCOUNT_BEGIN"/>האמיץ<ph name="BRAVE_ACCOUNT_END"/> שלך כדי לרענן את הפעלת ה-VPN שלך.</translation>
 <translation id="6021669293402055982">Brave VPN: מנותק</translation>
+<translation id="7861195049821776142">Brave VPN: מתנתק</translation>
 <translation id="958268166261124668">Brave VPN: מחובר</translation>
+<translation id="2061807837510296780">Brave VPN: מתחבר</translation>
 <translation id="1313124107969703758">Brave VPN: שגיאה</translation>
 <translation id="8273420301954598554">סטטוס: מחובר</translation>
 <translation id="7155657348064536843">סטטוס: מנותק</translation>
+<translation id="2413929902277520460">Brave VPN: מחובר</translation>
+<translation id="8048263175525832621">Brave VPN: מנותק</translation>
 <translation id="1498770726476841108">נהל חשבון</translation>
 <translation id="6825718953004242472">הסר סמל</translation>
 </translationbundle>
