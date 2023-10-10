@@ -53,6 +53,10 @@ class StatusTrayRunnerTest : public testing::Test {
         IDC_BRAVE_VPN_TRAY_DISCONNECT_VPN_ITEM));
   }
 
+  void UpdateConnectionState() {
+    StatusTrayRunner::GetInstance()->UpdateConnectionState();
+  }
+
   void WaitIconStateChangedTo(int expected_icon_id, int expected_tooltip_id) {
     StatusTrayRunner::GetInstance()->SetIconStateCallbackForTesting(
         base::BindLambdaForTesting([&](int icon_id, int tooltip_id) {
@@ -61,7 +65,7 @@ class StatusTrayRunnerTest : public testing::Test {
           icon_state_updated_ = true;
         }));
     EXPECT_FALSE(IsIconStateUpdated());
-    StatusTrayRunner::GetInstance()->UpdateConnectionState();
+    UpdateConnectionState();
     EXPECT_TRUE(IsIconStateUpdated());
     ResetIconState();
     EXPECT_FALSE(IsIconStateUpdated());
@@ -165,4 +169,57 @@ TEST_F(StatusTrayRunnerTest, UpdateConnectionState) {
             static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTED));
 }
 
+TEST_F(StatusTrayRunnerTest, SkipAttemptsToConnectInFailedState) {
+  registry_util::RegistryOverrideManager registry_overrides;
+  registry_overrides.OverrideRegistry(HKEY_CURRENT_USER);
+
+  ui::NativeTheme::GetInstanceForNativeUi()->set_use_dark_colors(true);
+  EXPECT_TRUE(ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
+  // Tunnel service stopped, state disconnected, no info in registry.
+  StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(false);
+  WaitIconStateChangedTo(
+      IDR_BRAVE_VPN_TRAY_LIGHT,
+      IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED);
+  EXPECT_FALSE(brave_vpn::GetConnectionState().has_value());
+
+  // Tunnel service stopped, registry state as "connecting"
+  WriteConnectionState(
+      static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTING));
+  WaitIconStateChangedTo(IDR_BRAVE_VPN_TRAY_LIGHT_CONNECTING,
+                         IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTING);
+  EXPECT_EQ(brave_vpn::GetConnectionState().value(),
+            static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTING));
+
+  // Tunnel service stopped, registry state as "CONNECT_FAILED"
+  WriteConnectionState(
+      static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECT_FAILED));
+  WaitIconStateChangedTo(IDR_BRAVE_VPN_TRAY_LIGHT_ERROR,
+                         IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR);
+  EXPECT_EQ(
+      brave_vpn::GetConnectionState().value(),
+      static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECT_FAILED));
+
+  // Tunnel service stopped, registry state as "connecting"
+  WriteConnectionState(
+      static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTING));
+  EXPECT_FALSE(IsIconStateUpdated());
+  UpdateConnectionState();
+  // Icon state should not be updated.
+  EXPECT_FALSE(IsIconStateUpdated());
+
+  // Tunnel service stopped, registry state as "disconnecting"
+  WriteConnectionState(
+      static_cast<int>(brave_vpn::mojom::ConnectionState::DISCONNECTING));
+  EXPECT_FALSE(IsIconStateUpdated());
+  UpdateConnectionState();
+  // Icon state should not be updated.
+  EXPECT_FALSE(IsIconStateUpdated());
+
+  // Service is working, state connected.
+  StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(true);
+  WaitIconStateChangedTo(IDR_BRAVE_VPN_TRAY_LIGHT_CONNECTED,
+                         IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_CONNECTED);
+  EXPECT_EQ(brave_vpn::GetConnectionState().value(),
+            static_cast<int>(brave_vpn::mojom::ConnectionState::CONNECTED));
+}
 }  // namespace brave_vpn

@@ -8,9 +8,13 @@
 #include <utility>
 
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#endif
 namespace tor {
 class BraveTorClientUpdater;
 }
@@ -177,7 +181,11 @@ TestingBraveBrowserProcess::brave_farbling_service() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNOSConnectionAPI*
 TestingBraveBrowserProcess::brave_vpn_os_connection_api() {
-  return nullptr;
+  return brave_vpn_os_connection_api_.get();
+}
+void TestingBraveBrowserProcess::SetBraveVPNOSConnectionAPIForTesting(
+    std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI> api) {
+  brave_vpn_os_connection_api_ = std::move(api);
 }
 #endif
 
@@ -191,7 +199,6 @@ void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {
   ad_block_service_ = std::move(service);
 }
-
 ///////////////////////////////////////////////////////////////////////////////
 
 TestingBraveBrowserProcessInitializer::TestingBraveBrowserProcessInitializer() {

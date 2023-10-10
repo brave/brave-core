@@ -1077,6 +1077,27 @@ source_set("ui") {
   }
 }
 
+source_set("unit_tests") {
+  if (!is_android) {
+    testonly = true
+    sources = []
+    deps = []
+
+    if (enable_brave_vpn) {
+      sources += [ "views/toolbar/brave_vpn_button_unittest.cc" ]
+      deps += [
+        "//base",
+        "//brave/components/brave_vpn/browser/connection:api",
+        "//brave/components/brave_vpn/browser/connection/ikev2:sim",
+        "//chrome/test:test_support",
+        "//skia",
+        "//testing/gtest",
+        "//third_party/abseil-cpp:absl",
+      ]
+    }
+  }
+}
+
 source_set("browser_tests") {
   if (!is_android) {
     testonly = true

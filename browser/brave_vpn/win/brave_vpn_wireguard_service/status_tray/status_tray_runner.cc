@@ -237,6 +237,16 @@ void StatusTrayRunner::UpdateConnectionState() {
   if (current_state_ == state) {
     return;
   }
+  // Skip attempts to connect/disconnet if we had an error before and keep
+  // the icon in the error state until we get it clearly fixed.
+  bool should_skip_connection_attempt =
+      (current_state_ == brave_vpn::mojom::ConnectionState::CONNECT_FAILED &&
+       (state == brave_vpn::mojom::ConnectionState::CONNECTING ||
+        state == brave_vpn::mojom::ConnectionState::DISCONNECTING));
+  if (should_skip_connection_attempt) {
+    VLOG(1) << __func__ << " skip state: " << state;
+    return;
+  }
   VLOG(1) << __func__ << ":" << state;
   current_state_ = state;
   SetIconState(GetStatusTrayIcon(state), GetStatusIconTooltip(state));
