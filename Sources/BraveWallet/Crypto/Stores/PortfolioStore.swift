@@ -186,10 +186,18 @@ struct BalanceTimePrice: DataPoint, Equatable {
   }
 }
 
+struct BalanceDifference: Equatable {
+  let priceDifference: String
+  let percentageChange: String
+  let isBalanceUp: Bool
+}
+
 /// A store containing data around the users assets
 public class PortfolioStore: ObservableObject, WalletObserverStore {
   /// The dollar amount of your portfolio
   @Published private(set) var balance: String = "$0.00"
+  /// Balance difference used to display difference between first point on the graph and current balance.
+  @Published private(set) var balanceDifference: BalanceDifference?
   /// The users visible fungible token groups.
   @Published private(set) var assetGroups: [AssetGroupViewModel] = []
   /// The timeframe of the portfolio
@@ -502,6 +510,26 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           formattedPrice: currencyFormatter.string(from: NSNumber(value: value)) ?? "0.00"
         )
       }
+      
+      if let oldestHistoricalValue = historicalBalances.first {
+        let priceDifference = currentBalance - oldestHistoricalValue.price
+        let percentageChange = priceDifference / oldestHistoricalValue.price * 100
+        let isBalanceUp = priceDifference > 0
+        balanceDifference = .init(
+          priceDifference: String(
+            format: "%@%@",
+            isBalanceUp ? "+" : "", // include plus if balance increased
+            currencyFormatter.string(from: NSNumber(value: priceDifference)) ?? "\(priceDifference)"),
+          percentageChange: String(
+            format: "%@%.2f%%",
+            isBalanceUp ? "+" : "", // include plus if balance increased
+            percentageChange),
+          isBalanceUp: isBalanceUp
+        )
+      } else { // don't display difference / percentage change
+        balanceDifference = nil
+      }
+      
       isLoadingBalances = false
     }
   }

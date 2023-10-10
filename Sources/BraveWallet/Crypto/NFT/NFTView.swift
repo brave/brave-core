@@ -104,14 +104,9 @@ struct NFTView: View {
   }
   
   private var filtersButton: some View {
-    Button(action: {
-      self.isPresentingFiltersDisplaySettings = true
-    }) {
-      Image(braveSystemName: "leo.tune")
-        .font(.footnote.weight(.medium))
-        .foregroundColor(Color(.braveBlurpleTint))
-        .clipShape(Rectangle())
-    }
+    AssetButton(braveSystemName: "leo.filter.settings", action: {
+      isPresentingFiltersDisplaySettings = true
+    })
     .sheet(isPresented: $isPresentingFiltersDisplaySettings) {
       FiltersDisplaySettingsView(
         filters: nftStore.filters,
@@ -138,9 +133,8 @@ struct NFTView: View {
   private var nftHeaderView: some View {
     HStack {
       Text(Strings.Wallet.assetsTitle)
-        .font(.footnote)
-        .foregroundColor(Color(.secondaryBraveLabel))
-        .padding(.leading, 16)
+        .font(.title3.weight(.semibold))
+        .foregroundColor(Color(braveSystemName: .textPrimary))
       if nftStore.isLoadingDiscoverAssets && isNFTDiscoveryEnabled {
         ProgressView()
           .padding(.leading, 5)
@@ -161,16 +155,13 @@ struct NFTView: View {
         .padding(.trailing, 10)
       addCustomAssetButton
     }
-    .textCase(nil)
-    .padding(.horizontal, 10)
+    .padding(.horizontal)
     .frame(maxWidth: .infinity, alignment: .leading)
   }
   
   private var addCustomAssetButton: some View {
-    Button(action: {
+    AssetButton(braveSystemName: "leo.plus.add") {
       isShowingAddCustomNFT = true
-    }) {
-      Image(systemName: "plus")
     }
   }
   
@@ -229,6 +220,7 @@ struct NFTView: View {
           }
         }
       }
+      .padding(.horizontal)
       VStack(spacing: 16) {
         Divider()
         editUserAssetsButton
@@ -238,16 +230,11 @@ struct NFTView: View {
   }
   
   var body: some View {
-    ScrollView {
-      VStack {
-        nftHeaderView
-          .padding(.horizontal, 8)
-        nftGridsView
-          .padding(.horizontal, 24)
-      }
-      .padding(.vertical, 24)
+    VStack(spacing: 16) {
+      nftHeaderView
+      
+      nftGridsView
     }
-    .background(Color(UIColor.braveGroupedBackground))
     .background(
       NavigationLink(
         isActive: Binding(

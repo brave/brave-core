@@ -10,22 +10,56 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
   @ViewBuilder var content: () -> Content
   @ViewBuilder var label: () -> Label
   
-  var body: some View {
+  private var header: some View {
     HStack {
       label()
       Spacer()
       Image(braveSystemName: "leo.carat.down")
         .rotationEffect(.degrees(isExpanded ? 180 : 0))
         .foregroundColor(Color(.braveBlurpleTint))
+        .animation(.default, value: isExpanded)
+    }
+    .padding(.horizontal)
+    // when expanded, padding is applied to entire `LazyVStack`
+    .padding(.vertical, isExpanded ? 0 : 6)
+    .osAvailabilityModifiers {
+      if !isExpanded {
+        $0.overlay {
+          RoundedRectangle(cornerRadius: 16)
+            .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
+        }
+      } else {
+        $0
+      }
     }
     .contentShape(Rectangle())
     .onTapGesture {
-      withAnimation {
-        isExpanded.toggle()
+      isExpanded.toggle()
+    }
+  }
+  
+  var body: some View {
+    LazyVStack {
+      header
+      if isExpanded {
+        Divider()
+          .padding(.top, 6)
+          .padding(.horizontal, 8)
+        content()
+          .padding(.horizontal)
       }
     }
-    if isExpanded {
-      content()
+    // when collapsed, padding is applied to `header`
+    .padding(.vertical, isExpanded ? 6 : 0)
+    .osAvailabilityModifiers {
+      if isExpanded {
+        $0.overlay {
+          RoundedRectangle(cornerRadius: 16)
+            .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
+        }
+      } else {
+        $0
+      }
     }
   }
 }

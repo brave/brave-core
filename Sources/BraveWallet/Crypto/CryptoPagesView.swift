@@ -132,7 +132,6 @@ struct CryptoPagesView: View {
       CryptoPagesViewController(
         keyringStore: keyringStore,
         cryptoStore: cryptoStore,
-        buySendSwapDestination: context.environment.buySendSwapDestination,
         isShowingPendingRequest: isShowingPendingRequest
       )
     }
@@ -145,21 +144,17 @@ struct CryptoPagesView: View {
 private class CryptoPagesViewController: TabbedPageViewController {
   private let keyringStore: KeyringStore
   private let cryptoStore: CryptoStore
-  private let swapButton = SwapButton()
   let pendingRequestsButton = ConfirmationsButton()
 
-  @Binding private var buySendSwapDestination: BuySendSwapDestination?
   @Binding private var isShowingPendingRequest: Bool
 
   init(
     keyringStore: KeyringStore,
     cryptoStore: CryptoStore,
-    buySendSwapDestination: Binding<BuySendSwapDestination?>,
     isShowingPendingRequest: Binding<Bool>
   ) {
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
-    self._buySendSwapDestination = buySendSwapDestination
     self._isShowingPendingRequest = isShowingPendingRequest
     super.init(nibName: nil, bundle: nil)
   }
@@ -188,16 +183,6 @@ private class CryptoPagesViewController: TabbedPageViewController {
         $0.title = Strings.Wallet.portfolioPageTitle
       },
       UIHostingController(
-        rootView: NFTView(
-          cryptoStore: cryptoStore,
-          keyringStore: keyringStore,
-          networkStore: cryptoStore.networkStore,
-          nftStore: cryptoStore.nftStore
-        )
-      ).then {
-        $0.title = Strings.Wallet.nftPageTitle
-      },
-      UIHostingController(
         rootView: TransactionsActivityView(
           store: cryptoStore.transactionsActivityStore,
           networkStore: cryptoStore.networkStore
@@ -223,23 +208,10 @@ private class CryptoPagesViewController: TabbedPageViewController {
       },
     ]
 
-    view.addSubview(swapButton)
-    swapButton.snp.makeConstraints {
-      $0.centerX.equalToSuperview()
-      $0.bottom.equalTo(view.safeAreaLayoutGuide).priority(.high)
-      $0.bottom.lessThanOrEqualTo(view).inset(8)
-    }
-
-    pages.forEach {
-      $0.additionalSafeAreaInsets = .init(top: 0, left: 0, bottom: swapButton.intrinsicContentSize.height + 8, right: 0)
-    }
-
-    swapButton.addTarget(self, action: #selector(tappedSwapButton), for: .touchUpInside)
-
     view.addSubview(pendingRequestsButton)
     pendingRequestsButton.snp.makeConstraints {
       $0.trailing.equalToSuperview().inset(16)
-      $0.centerY.equalTo(swapButton)
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).priority(.high)
       $0.bottom.lessThanOrEqualTo(view).inset(8)
     }
     pendingRequestsButton.addTarget(self, action: #selector(tappedPendingRequestsButton), for: .touchUpInside)
@@ -247,25 +219,6 @@ private class CryptoPagesViewController: TabbedPageViewController {
 
   @objc private func tappedPendingRequestsButton() {
     isShowingPendingRequest = true
-  }
-
-  @objc private func tappedSwapButton() {
-    let controller = FixedHeightHostingPanModalController(
-      rootView: BuySendSwapView(
-        networkStore: cryptoStore.networkStore,
-        action: { [weak self] destination in
-          self?.dismiss(
-            animated: true,
-            completion: {
-              self?.buySendSwapDestination = destination
-            })
-        })
-    )
-    presentPanModal(
-      controller,
-      sourceView: swapButton,
-      sourceRect: swapButton.bounds
-    )
   }
 }
 
