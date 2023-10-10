@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "brave/browser/brave_browser_features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "content/public/browser/browser_context.h"
@@ -20,7 +21,7 @@ struct ContextMenuParams;
 
 namespace {
 
-constexpr const gfx::Size kToolbarSize{870, 40};
+constexpr gfx::Size kToolbarSize{870, 40};
 
 class Toolbar : public views::WebView {
  public:
@@ -44,8 +45,11 @@ class Toolbar : public views::WebView {
 ReaderModeToolbarView::ReaderModeToolbarView(
     content::BrowserContext* browser_context) {
   SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
-  SetBorder(views::CreateThemedSolidSidedBorder(
-      gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
+
+  if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    SetBorder(views::CreateThemedSolidSidedBorder(
+        gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
+  }
 
   toolbar_ = std::make_unique<Toolbar>(browser_context);
   AddChildView(toolbar_.get());

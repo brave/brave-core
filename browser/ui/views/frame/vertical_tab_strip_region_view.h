@@ -142,6 +142,8 @@ class VerticalTabStripRegionView : public views::View,
 
   void UpdateOriginalTabSearchButtonVisibility();
 
+  void UpdateBorder();
+
   void OnCollapsedPrefChanged();
   void OnFloatingModePrefChanged();
 

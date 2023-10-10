@@ -15,12 +15,14 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -28,7 +30,7 @@
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
-#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -58,6 +60,8 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/accelerators/accelerator_manager.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
@@ -78,13 +82,39 @@
 #endif
 
 namespace {
+
 absl::optional<bool> g_download_confirm_return_allow_for_testing;
 
-bool IsUnsupported(int command_id, Browser* browser) {
+bool IsUnsupportedCommand(int command_id, Browser* browser) {
   return chrome::IsRunningInForcedAppMode() &&
          !chrome::IsCommandAllowedInAppMode(command_id,
                                             browser->is_type_popup());
 }
+
+// A control separator that is displayed when the sidebar is displayed adjacent
+// to the tabstrip in vertical tabs mode.
+class SidebarSeparator : public views::View {
+ public:
+  METADATA_HEADER(SidebarSeparator);
+  SidebarSeparator() {
+    SetBackground(
+        views::CreateThemedSolidBackground(kColorBraveVerticalTabSeparator));
+  }
+};
+BEGIN_METADATA(SidebarSeparator, views::View)
+END_METADATA
+
+// A view that paints a background under the content area of the browser view so
+// that the web content area can be displayed with rounded corners and a shadow.
+class ContentsBackground : public views::View {
+ public:
+  METADATA_HEADER(ContentsBackground);
+  ContentsBackground() {
+    SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
+  }
+};
+BEGIN_METADATA(ContentsBackground, views::View)
+END_METADATA
 
 }  // namespace
 
@@ -163,6 +193,15 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
 
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
+  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    // Collapse the separator line between the toolbar or bookmark bar and the
+    // views below.
+    contents_separator_->SetPreferredSize(gfx::Size());
+    contents_shadow_ = BraveContentsViewUtil::CreateShadow(contents_container_);
+    contents_background_view_ =
+        AddChildView(std::make_unique<ContentsBackground>());
+  }
+
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
   if (!WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
           browser_.get())) {
@@ -194,27 +233,22 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                           base::Unretained(this)));
 #endif
 
-  const bool supports_vertical_tabs =
-      tabs::utils::SupportsVerticalTabs(browser_.get());
-  if (supports_vertical_tabs) {
-    vertical_tab_strip_host_view_ =
-        AddChildView(std::make_unique<views::View>());
-  }
-
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
   if (can_have_sidebar) {
     // Wrap chromium side panel with our sidebar container
     auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
-    sidebar_container_view_ = contents_container_->AddChildView(
-        std::make_unique<SidebarContainerView>(
+    sidebar_container_view_ =
+        AddChildView(std::make_unique<SidebarContainerView>(
             GetBraveBrowser(),
             SidePanelUtil::GetSidePanelCoordinatorForBrowser(browser_.get()),
             std::move(original_side_panel)));
     unified_side_panel_ = sidebar_container_view_->side_panel();
-    contents_container_->SetLayoutManager(
-        std::make_unique<BraveContentsLayoutManager>(
-            devtools_web_view_, contents_web_view_, sidebar_container_view_));
+
+    if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+      sidebar_separator_view_ =
+          AddChildView(std::make_unique<SidebarSeparator>());
+    }
 
 #if defined(USE_AURA)
     sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
@@ -224,6 +258,13 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         prefs::kSidePanelHorizontalAlignment,
         base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                             base::Unretained(this)));
+  }
+
+  const bool supports_vertical_tabs =
+      tabs::utils::SupportsVerticalTabs(browser_.get());
+  if (supports_vertical_tabs) {
+    vertical_tab_strip_host_view_ =
+        AddChildView(std::make_unique<views::View>());
   }
 
   if (!supports_vertical_tabs && !can_have_sidebar) {
@@ -262,10 +303,8 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
       prefs::kSidePanelHorizontalAlignment);
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
-  static_cast<BraveContentsLayoutManager*>(GetContentsLayoutManager())
-      ->set_sidebar_on_left(on_left);
 
-  contents_container_->Layout();
+  Layout();
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
@@ -392,10 +431,9 @@ void BraveBrowserView::ShowReaderModeToolbar() {
   if (!reader_mode_toolbar_view_) {
     reader_mode_toolbar_view_ =
         std::make_unique<ReaderModeToolbarView>(GetProfile());
-    contents_web_view()->parent()->AddChildView(
+    AddChildView(reader_mode_toolbar_view_.get());
+    GetBrowserViewLayout()->set_reader_mode_toolbar(
         reader_mode_toolbar_view_.get());
-    static_cast<BraveContentsLayoutManager*>(GetContentsLayoutManager())
-        ->set_reader_mode_toolbar(reader_mode_toolbar_view_.get());
   } else {
     reader_mode_toolbar_view_->SetVisible(true);
   }
@@ -466,7 +504,7 @@ void BraveBrowserView::OnAcceleratorsChanged(
   DCHECK(focus_manager);
 
   for (const auto& [command_id, accelerators] : changed) {
-    if (IsUnsupported(command_id, browser())) {
+    if (IsUnsupportedCommand(command_id, browser())) {
       continue;
     }
 
@@ -518,6 +556,12 @@ void BraveBrowserView::CloseWalletBubble() {
 
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
+
+  GetBrowserViewLayout()->set_contents_background(contents_background_view_);
+  GetBrowserViewLayout()->set_sidebar_container(sidebar_container_view_);
+  GetBrowserViewLayout()->set_sidebar_separator(sidebar_separator_view_);
+
+  UpdateWebViewRoundedCorners();
 
   if (vertical_tab_strip_host_view_) {
     vertical_tab_strip_widget_delegate_view_ =
@@ -615,6 +659,14 @@ void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
 }
 
+void BraveBrowserView::UpdateDevToolsForContents(
+    content::WebContents* web_contents,
+    bool update_devtools_web_contents) {
+  BrowserView::UpdateDevToolsForContents(web_contents,
+                                         update_devtools_web_contents);
+  UpdateWebViewRoundedCorners();
+}
+
 void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
                                                  bool active) {
   BrowserView::OnWidgetActivationChanged(widget, active);
@@ -669,6 +721,48 @@ bool BraveBrowserView::IsSidebarVisible() const {
 
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
   return static_cast<BraveBrowser*>(browser_.get());
+}
+
+void BraveBrowserView::UpdateWebViewRoundedCorners() {
+  if (!base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    return;
+  }
+
+  // In addition to giving the contents container rounded corners, we also need
+  // to round the corners of the native view holder that displays the web
+  // contents.
+
+  // Devtools lies underneath the contents webview. Round all four corners.
+  gfx::RoundedCornersF corners(BraveContentsViewUtil::kBorderRadius);
+  if (devtools_web_view_->holder()) {
+    devtools_web_view_->holder()->SetCornerRadii(corners);
+  }
+
+  // In order to make the contents web view and devtools apear to be contained
+  // within a single rounded-corner view, square the contents webview corners
+  // that are adjacent to devtools.
+  switch (devtools_docked_placement()) {
+    case DevToolsDockedPlacement::kLeft:
+      corners.set_upper_left(0);
+      corners.set_lower_left(0);
+      break;
+    case DevToolsDockedPlacement::kRight:
+      corners.set_upper_right(0);
+      corners.set_lower_right(0);
+      break;
+    case DevToolsDockedPlacement::kBottom:
+      corners.set_lower_left(0);
+      corners.set_lower_right(0);
+      break;
+    case DevToolsDockedPlacement::kNone:
+      break;
+    case DevToolsDockedPlacement::kUnknown:
+      break;
+  }
+
+  if (contents_web_view_->holder()) {
+    contents_web_view_->holder()->SetCornerRadii(corners);
+  }
 }
 
 void BraveBrowserView::StartTabCycling() {

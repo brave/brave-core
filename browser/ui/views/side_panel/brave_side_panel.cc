@@ -7,7 +7,10 @@
 
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
+#include "brave/browser/brave_browser_features.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_widget.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/pref_names.h"
@@ -16,6 +19,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
+#include "ui/views/background.h"
 #include "ui/views/border.h"
 
 BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
@@ -29,6 +33,12 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
 
   OnSidePanelWidthChanged();
   AddObserver(this);
+
+  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    shadow_ = BraveContentsViewUtil::CreateShadow(this);
+    SetBackground(
+        views::CreateThemedSolidBackground(kColorSidebarPanelHeaderBackground));
+  }
 }
 
 BraveSidePanel::~BraveSidePanel() {
@@ -49,6 +59,13 @@ bool BraveSidePanel::IsRightAligned() {
 }
 
 void BraveSidePanel::UpdateBorder() {
+  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    // Use a negative top border to hide the separator inserted by the upstream
+    // side panel implementation.
+    SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(-1, 0, 0, 0)));
+    return;
+  }
+
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
     // Negative top border so panel is flush with main tab content

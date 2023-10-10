@@ -19,6 +19,7 @@
 
 class BrowserView;
 class SidePanelResizeWidget;
+class ViewShadow;
 
 namespace sidebar {
 class SidebarBrowserTest;
@@ -84,6 +85,7 @@ class BraveSidePanel : public views::View,
   raw_ptr<BrowserView> browser_view_ = nullptr;
   IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
+  std::unique_ptr<ViewShadow> shadow_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
