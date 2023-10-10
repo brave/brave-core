@@ -131,8 +131,6 @@ interface Props {
   isAndroid?: boolean
 }
 
-const EMPTY_PRICE_IDS: string[] = []
-
 const ErrorFailedChecksumMessage: AddressMessageInfo = {
   ...FailedChecksumMessage,
   type: 'error'
@@ -234,18 +232,13 @@ export const SendScreen = React.memo((props: Props) => {
         : skipToken
     )
 
-  const tokenPriceIds = React.useMemo(
-    () =>
-      selectedSendAsset
-        ? [getPriceIdForToken(selectedSendAsset)]
-        : EMPTY_PRICE_IDS,
-    [selectedSendAsset]
-  )
-
   const { data: spotPriceRegistry, isFetching: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      !isLoadingBalances && tokenPriceIds.length && defaultFiatCurrency
-        ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      !isLoadingBalances && selectedSendAsset && defaultFiatCurrency
+        ? {
+            ids: [getPriceIdForToken(selectedSendAsset)],
+            toCurrency: defaultFiatCurrency
+          }
         : skipToken,
       querySubscriptionOptions60s
     )
