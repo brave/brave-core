@@ -12,7 +12,6 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/engine_test_observer.h"
 #include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
@@ -49,11 +48,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
         g_brave_browser_process->ad_block_service();
     ad_block_service->UseSourceProvidersForTest(source_provider_.get(),
                                                 source_provider_.get());
-
-    auto* engine =
-        g_brave_browser_process->ad_block_service()->default_engine_.get();
-    EngineTestObserver engine_observer(engine);
-    engine_observer.Wait();
+    WaitForAdBlockServiceThreads();
   }
 
   void WaitForAdBlockServiceThreads() {

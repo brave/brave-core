@@ -11,7 +11,7 @@
 #include "base/metrics/histogram_functions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
-#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -61,10 +61,10 @@ bool ShouldEventuallyShowBubble() {
 
   base::UmaHistogramExactLinear(kCookieListPromptHistogram, 0, 4);
 
-  auto* component_service_manager =
-      g_brave_browser_process->ad_block_service()->component_service_manager();
-  DCHECK(component_service_manager);
-  if (component_service_manager->IsFilterListEnabled(kCookieListUuid)) {
+  auto* regional_service_manager =
+      g_brave_browser_process->ad_block_service()->regional_service_manager();
+  DCHECK(regional_service_manager);
+  if (regional_service_manager->IsFilterListEnabled(kCookieListUuid)) {
     return false;
   }
 
@@ -146,11 +146,11 @@ void CookieListOptInBubbleHost::ShowBubble() {
   }
 
   // Do not show the bubble if the filter list is not yet available, likely
-  // because the filter list component has not yet been donwloaded.
-  auto* component_service_manager =
-      g_brave_browser_process->ad_block_service()->component_service_manager();
-  DCHECK(component_service_manager);
-  if (!component_service_manager->IsFilterListAvailable(kCookieListUuid)) {
+  // because the regional filter list has not yet been donwloaded.
+  auto* regional_service_manager =
+      g_brave_browser_process->ad_block_service()->regional_service_manager();
+  DCHECK(regional_service_manager);
+  if (!regional_service_manager->IsFilterListAvailable(kCookieListUuid)) {
     return;
   }
 

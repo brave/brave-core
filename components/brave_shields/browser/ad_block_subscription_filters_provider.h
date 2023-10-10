@@ -36,17 +36,16 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       const AdBlockSubscriptionFiltersProvider&) = delete;
   ~AdBlockSubscriptionFiltersProvider() override;
 
-  void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+  void LoadDATBuffer(
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)>) override;
+
+  void OnDATFileDataReady(
+      base::OnceCallback<void(bool deserialize,
+                              const DATFileDataBuffer& dat_buf)> cb,
+      const DATFileDataBuffer& dat_buf);
 
   void OnListAvailable();
-
- private:
-  void OnDATFileDataReady(
-      base::OnceCallback<
-          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
-      const DATFileDataBuffer& dat_buf);
 
   std::string GetNameForDebugging() override;
 

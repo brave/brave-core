@@ -28,7 +28,6 @@
 #include "url/gurl.h"
 
 class AdBlockServiceTest;
-class EphemeralStorage1pDomainBlockBrowserTest;
 class DebounceBrowserTest;
 class PrefService;
 
@@ -45,7 +44,7 @@ namespace brave_shields {
 class AdBlockEngine;
 class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
-class AdBlockComponentServiceManager;
+class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersProvider;
 class AdBlockLocalhostFiltersProvider;
 class AdBlockFilterListCatalogProvider;
@@ -68,9 +67,7 @@ class AdBlockService {
     ~SourceProviderObserver() override;
 
    private:
-    void OnFilterSetCallbackLoaded(
-        base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
-    void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
+    void OnDATLoaded(bool deserialize, const DATFileDataBuffer& dat_buf);
 
     // AdBlockFiltersProvider::Observer
     void OnChanged() override;
@@ -78,7 +75,8 @@ class AdBlockService {
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(const std::string& resources_json) override;
 
-    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
+    bool deserialize_;
+    DATFileDataBuffer dat_buf_;
     raw_ptr<AdBlockEngine> adblock_engine_;
     raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
@@ -118,7 +116,7 @@ class AdBlockService {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  AdBlockComponentServiceManager* component_service_manager();
+  AdBlockRegionalServiceManager* regional_service_manager();
   AdBlockSubscriptionServiceManager* subscription_service_manager();
   AdBlockCustomFiltersProvider* custom_filters_provider();
 
@@ -142,7 +140,6 @@ class AdBlockService {
 
  private:
   friend class ::AdBlockServiceTest;
-  friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::DebounceBrowserTest;
 
   static std::string g_ad_block_dat_file_version_;
@@ -185,7 +182,7 @@ class AdBlockService {
       filter_list_catalog_provider_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockSubscriptionServiceManager>
       subscription_service_manager_ GUARDED_BY_CONTEXT(sequence_checker_);
-  std::unique_ptr<AdBlockComponentServiceManager> component_service_manager_
+  std::unique_ptr<AdBlockRegionalServiceManager> regional_service_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> default_engine_;
@@ -204,6 +201,11 @@ class AdBlockService {
 
 // Registers the local_state preferences used by Adblock
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);
+
+// static
+void SetDefaultAdBlockComponentIdAndBase64PublicKeyForTest(
+    const std::string& component_id,
+    const std::string& component_base64_public_key);
 
 }  // namespace brave_shields
 
