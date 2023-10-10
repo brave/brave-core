@@ -74,19 +74,17 @@ class PlaylistThumbnailDownloader {
  private:
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
 
-  using URLLoaders = std::list<std::unique_ptr<network::SimpleURLLoader>>;
-  using URLLoaderIter = URLLoaders::iterator;
-  using IDToURLLoaderIterMap = base::flat_map<std::string, URLLoaderIter>;
+  using URLLoaderMap =
+      base::flat_map<std::string, std::unique_ptr<network::SimpleURLLoader>>;
 
-  URLLoaderIter CreateURLLoaderHandler(const GURL& url);
-  void Cancel(const URLLoaderIter& ticket);
+  network::SimpleURLLoader* CreateURLLoader(const std::string& id,
+                                            const GURL& url);
+  void Cancel(const std::string& id);
 
-  void SaveResponseToFile(URLLoaderIter iter,
-                          const std::string& id,
+  void SaveResponseToFile(const std::string& id,
                           base::FilePath path,
                           std::unique_ptr<std::string> response_body);
-  void ConvertResponseToImage(URLLoaderIter iter,
-                              const std::string& id,
+  void ConvertResponseToImage(const std::string& id,
                               base::OnceCallback<void(gfx::Image)> callback,
                               std::unique_ptr<std::string> response_body);
 
@@ -97,8 +95,7 @@ class PlaylistThumbnailDownloader {
   scoped_refptr<base::SequencedTaskRunner> GetOrCreateTaskRunner();
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  URLLoaders url_loaders_;
-  IDToURLLoaderIterMap url_loader_map_;
+  URLLoaderMap url_loader_map_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
