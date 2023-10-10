@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">המשך בהתקנה</translation>
 <translation id="7099479769133613710">‏הפעלה מחדש לצורך עדכון ‎&amp;ChromeOS</translation>
 <translation id="2479110114759182442">‏לפי המלצת Brave, כדאי לבדוק את התוסף הזה</translation>
+<translation id="3814674848168165531">‏כשאתר מבקש לטעון מראש קישורים בדף שלו באופן פרטי, מערכת Brave משתמשת בשרתי Brave. כך מוסתרת הזהות שלך מהאתר שנטען מראש, אבל Brave יכולה לדעת אילו אתרים נטענים מראש.</translation>
 <translation id="1065672644894730302">לא הייתה אפשרות לקרוא את ההעדפות שלך. ייתכן שחלק מהתכונות לא יהיו זמינות ושינויים בהעדפות לא יישמרו.</translation>
 <translation id="7577672138294294152">‏ההורה שלך השבית ב-Brave את ההגדרה 'הרשאות לאתרים, לאפליקציות ולתוספים'</translation>
 <translation id="2796517443093885402">‏Brave עוזר להגן עליך מפני פרצות באבטחת המידע, תוספים לא תקינים ועוד</translation>
@@ -115,6 +116,8 @@
 <translation id="2100587595569959771">‏מידע נוסף על ההתאמה האישית של המודעות ב-Brave</translation>
 <translation id="1807774211756215222">‏פתיחת הקישור ב&amp;כרטיסיית Brave חדשה</translation>
 <translation id="2106568569080763501">‏Brave מאפשר לך ללחוץ על מספר טלפון באינטרנט ולהתקשר אליו באמצעות Skype!</translation>
+<translation id="308146532933302843">‏למה הורדות מסוימות נחסמות ב-Brave</translation>
+<translation id="6324134303015966238">‏כדי שהדפים שבהם מבקרים ייטענו מהר יותר, מערכת Brave טוענת מראש דפים שיש סיכוי גבוה שייפתחו.</translation>
 <translation id="2401189691232800402">‏מערכת ChromeOS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">‏קבלת עזרה בנושא ChromeOS</translation>
@@ -139,6 +142,7 @@
 <translation id="5757460455745382269">‏זו השפה שבה מוצג ממשק המשתמש של Brave</translation>
 <translation id="4222932583846282852">מבטל…</translation>
 <translation id="1853997773668795891">‏האם לקשר את הנתונים שלך ב-Brave לחשבון זה?</translation>
+<translation id="4732930052828648898">‏מקבלים אזהרות לגבי אתרים מסוכנים, גם כאלה שלא היו ידועים ל-Brave לפני כן, בעזרת ניתוח של יותר נתונים מאתרים בהשוואה להגנה הרגילה. אפשר לדלג על האזהרות מ-Brave.</translation>
 <translation id="3262506503470845422">‏עזרה בנושא Brave</translation>
 <translation id="4281844954008187215">תנאי שירות</translation>
 <translation id="7691786510374174420">‏ההתקנה נכשלה בשל שגיאה לא צפויה. אם Brave פועל כעת, יש לסגור אותו ולנסות שוב.</translation>
@@ -192,11 +196,13 @@
 <translation id="232381795826373334">‏פתיחה של קובצי PDF ב-Brave</translation>
 <translation id="5381032481466106256">‏כשההגדרה מופעלת, תתבצע יציאה גם מ-Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{‏יש עדכון ל-Brave}=1{‏יש עדכון ל-Brave}one{‏עדכון של Brave זמין כבר # ימים}two{‏עדכון של Brave זמין כבר # ימים}other{‏עדכון של Brave זמין כבר # ימים}}</translation>
+<translation id="1023472437588692618">‏מחיקת נתונים מאתרים מהמכשיר בכל פעם שסוגרים את Brave</translation>
 <translation id="5646769069113654257">‏יש להפעיל מחדש את Brave</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">‏הצגת Brave בשפה זו</translation>
 <translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
 <translation id="8054200348483755053">‏מערכת Brave גילתה שהפריטים האלה מכילים תוכנה זדונית:</translation>
+<translation id="3955583201925082436">‏Brave בודק בקביעות כדי לוודא שלדפדפן יש את ההגדרות הבטוחות ביותר. נודיע לך אם צריך לבדוק משהו.</translation>
 <translation id="5895138241574237353">הפעלה מחדש</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – כניסה לרשת</translation>
 <translation id="5924017743176219022">מתבצעת התחברות לאינטרנט…</translation>
@@ -220,6 +226,8 @@
 <translation id="991182453936521413">‏Brave ייסגר בקרוב והנתונים שבו יימחקו</translation>
 <translation id="7006260220514217183">‏הגלישה הבטוחה כבויה. ההמלצה של Brave היא להפעיל אותה.</translation>
 <translation id="4060970194201477024">‏כאן ניתן לעבור בין פרופילים של Brave</translation>
+<translation id="7815000350132166985">‏אם מאפשרים שימוש בקובצי cookie, יכול להיות שמערכת Brave תשתמש בהם במהלך טעינה מראש.</translation>
+<translation id="3156047523158042818">‏בהתאם להגדרות שלך, Brave יכול גם לשלוח קובצי cookie ואת כתובת ה-URL הנוכחית שלך</translation>
 <translation id="4368341489795135329">‏יש לוודא שנכנסת ל-Brave ב-<ph name="TARGET_DEVICE_NAME"/> שלך ולשלוח שוב.</translation>
 <translation id="8320964054148936490">‏במחשב זה קיימת כבר גרסה מתקדמת יותר של Brave. אם התוכנה אינה פועלת, יש להסיר את ההתקנה של Brave ולנסות שוב.</translation>
 <translation id="3574823187131579180">{0,plural, =0{‏Brave יופעל מחדש עכשיו}=1{‏Brave יופעל מחדש בעוד שנייה אחת}one{‏Brave יופעל מחדש בעוד # שניות}two{‏Brave יופעל מחדש בעוד # שניות}other{‏Brave יופעל מחדש בעוד # שניות}}</translation>
@@ -240,14 +248,17 @@
 <translation id="335632367599648646">‏ברצונך באמת להסיר את התקנת Brave?</translation>
 <translation id="6375219077595103062">ניתן להוסיף קיצור דרך למנהל הסיסמאות</translation>
 <translation id="4867486350347355096">‏<ph name="BEGIN_BOLD"/>איך אנחנו משתמשים בנתונים האלה:<ph name="END_BOLD"/> Brave יכול להעריך מהם תחומי העניין שלך. לאחר מכן, אתר שבו ביקרת יכול לשלוח בקשה ל-Brave כדי לגלות מהם תחומי העניין שלך ולהתאים אישית את המודעות שמוצגות לך.</translation>
+<translation id="3256100650978957522">‏הלוגו של Brave בתוך מסך מחשב.</translation>
 <translation id="6373767849825830651">‏Brave הוא דפדפן אינטרנט המפעיל דפי אינטרנט ואפליקציות במהירות הבזק. זהו דפדפן מהיר, יציב וקל לשימוש שמאפשר לך לגלוש באינטרנט בצורה מאובטחת יותר הודות להגנה מפני תוכנות זדוניות ופישינג המובנית ב-Brave.</translation>
 <translation id="2139300032719313227">‏הפעלה מחדש של ChromeOS</translation>
+<translation id="638302211119176182">‏כדי שהדפים שבהם מבקרים ייטענו מהר יותר, מערכת Brave טוענת מראש עוד יותר דפים שיש סיכוי גבוה שייפתחו.</translation>
 <translation id="1684121725014454063">‏ברוך בואך לפרופילים של Brave</translation>
 <translation id="2675662665675552980">‏הגדרה זו גם קובעת איזה דף מוצג כשמפעילים את Brave.</translation>
 <translation id="648319183876919572">הגרסה המשופרת של הגלישה הבטוחה מגנה עליך טוב יותר מפני הורדות ואתרים מסוכנים</translation>
 <translation id="5590013613412457132">‏הסרה של התקנת Brave</translation>
 <translation id="3617744907966785605">‏לפי הגדרת הארגון, Brave נסגר אוטומטית כשלא משתמשים בו במשך <ph name="TIMEOUT_DURATION"/>. נתוני הגלישה נמחקו. בין הנתונים שנמחקו: היסטוריה, מילוי אוטומטי והורדות.</translation>
 <translation id="8646609321956191980">‏בכל פרופיל מאוחסנים נתוני Brave משלו כמו סימניות, היסטוריה, סיסמאות ועוד</translation>
+<translation id="6756656512757374876">‏<ph name="BEGIN_LINK"/>מידע נוסף לגבי השמירה על פרטיות הנתונים ב-Brave<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">‏אפשר לעבור לפרופיל Brave אחר כדי לראות סיסמאות</translation>
 <translation id="2312399718665761438">‏Brave שולח את הטקסט שמוקלד בשדות טקסט ל-Brave כדי לתקן שגיאות כתיב</translation>
 <translation id="3507835409099344374">‏מעבר אל הגדרות ההודעות של Brave</translation>
@@ -288,6 +299,7 @@
 <translation id="1008530050039597147">‏נדרשת הרשאת גישה למצלמה ב-Brave עבור האתר הזה</translation>
 <translation id="1197672524850678392">‏לא ניתן היה להפעיל את Brave. יש לנסות שוב.</translation>
 <translation id="3405035915691517126">‏Brave לא יכול לבדוק את הסיסמאות שלך. יש לנסות שוב בעוד 24 שעות.</translation>
+<translation id="5755581833598928580">‏שימוש ב-Brave בכל פעם שלוחצים על קישורים בהודעות, במסמכים ובאפליקציות אחרות.</translation>
 <translation id="5516268345616100622">‏מנהל המשימות - Brave</translation>
 <translation id="713191641919118540">‏תחומי העניין שלך בהתאם להערכה של Brave</translation>
 <translation id="9068395155143628872">‏מדידת המודעות מאפשרת לאתרים שביקרת בהם לבקש מ-Brave מידע שיעזור לבעלי האתרים למדוד את הביצועים של המודעות שלהם. מדידת המודעות מגבילה את המעקב באתרים שונים על ידי העברת כמות קטנה ככל האפשר של מידע בין אתרים.</translation>
