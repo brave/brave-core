@@ -22,10 +22,12 @@ struct PortfolioAssetView: View {
       accessoryContent: {
         VStack(alignment: .trailing) {
           Text(amount.isEmpty ? "0.0" : amount)
+            .fontWeight(.semibold)
           Text(verbatim: "\(quantity) \(symbol)")
         }
         .font(.footnote)
         .foregroundColor(Color(.braveLabel))
+        .multilineTextAlignment(.trailing)
       }
     )
     .accessibilityLabel("\(title), \(quantity) \(symbol), \(amount)")
@@ -109,6 +111,7 @@ struct AssetView<ImageView: View, AccessoryContent: View>: View {
           .font(.caption)
           .foregroundColor(Color(.braveLabel))
       }
+      .multilineTextAlignment(.leading)
       Spacer()
       accessoryContent()
     }

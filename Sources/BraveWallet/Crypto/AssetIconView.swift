@@ -86,7 +86,7 @@ struct AssetIconView: View {
         .overlay(
           Circle()
             .stroke(lineWidth: 2)
-            .foregroundColor(.white)
+            .foregroundColor(Color(braveSystemName: .containerBackground))
         )
         .frame(width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength), height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength))
     }
@@ -150,7 +150,7 @@ struct NFTIconView: View {
         .overlay(
           Circle()
             .stroke(lineWidth: 2)
-            .foregroundColor(.white)
+            .foregroundColor(Color(braveSystemName: .containerBackground))
         )
         .frame(
           width: min(tokenLogoLength, maxTokenLogoLength ?? tokenLogoLength),
