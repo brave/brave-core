@@ -30,16 +30,17 @@ class WalletUserAssetTests: CoreDataTestCase {
     XCTAssertEqual(userAsset.contractAddress, asset.contractAddress)
   }
   
-  // MARK: - Update Visibility
+  // MARK: - Update Visibility and spam status
   
-  func testUpdateVisibility() {
+  func testUpdateAsset() {
     
     let userAsset = createAndWait(asset: asset)
     
     XCTAssertTrue(userAsset.visible)
+    XCTAssertFalse(userAsset.isSpam)
     
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(for: asset, visible: false)
+      WalletUserAsset.updateUserAsset(for: asset, visible: false, isSpam: true)
     }
     
     DataController.viewContext.refreshAllObjects()
@@ -47,6 +48,7 @@ class WalletUserAssetTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
     
     XCTAssertFalse(userAsset.visible)
+    XCTAssertTrue(userAsset.isSpam)
   }
   
   func testGetAllVisibleAssets() {
@@ -55,7 +57,7 @@ class WalletUserAssetTests: CoreDataTestCase {
     createAndWait(asset: asset3)
     
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(for: asset2, visible: false)
+      WalletUserAsset.updateUserAsset(for: asset2, visible: false, isSpam: false)
     }
     
     DataController.viewContext.refreshAllObjects()

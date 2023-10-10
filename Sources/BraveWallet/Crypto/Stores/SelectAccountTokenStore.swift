@@ -182,7 +182,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         .init(isSelected: true, model: $0)
       }
     }
-    let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: allNetworks).flatMap { $0.tokens }
+    let allVisibleUserAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: allNetworks, visible: true).flatMap { $0.tokens }
     guard !Task.isCancelled else { return }
     self.accountSections = allKeyrings.flatMap { keyring in
       let tokensForCoin = allVisibleUserAssets.filter { $0.coin == keyring.coin }

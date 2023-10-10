@@ -431,7 +431,7 @@ extension TransactionSummary {
       from: txInfo,
       network: .mockMainnet,
       accountInfos: [.previewAccount],
-      visibleTokens: [.previewToken, .previewDaiToken],
+      userAssets: [.previewToken, .previewDaiToken],
       allTokens: [],
       assetRatios: [BraveWallet.BlockchainToken.previewToken.assetRatioId.lowercased(): 1],
       solEstimatedTxFee: nil,

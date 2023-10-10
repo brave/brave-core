@@ -6,6 +6,7 @@
 import SwiftUI
 import DesignSystem
 import Preferences
+import BraveCore
 
 struct NFTView: View {
   var cryptoStore: CryptoStore
@@ -26,16 +27,19 @@ struct NFTView: View {
   
   private var emptyView: some View {
     VStack(alignment: .center, spacing: 10) {
-      Text(Strings.Wallet.nftPageEmptyTitle)
+      Text(nftStore.displayType.emptyTitle)
         .font(.headline.weight(.semibold))
         .foregroundColor(Color(.braveLabel))
-      Text(Strings.Wallet.nftPageEmptyDescription)
-        .font(.subheadline.weight(.semibold))
-        .foregroundColor(Color(.secondaryLabel))
+      if let description = nftStore.displayType.emptyDescription {
+        Text(description)
+          .font(.subheadline.weight(.semibold))
+          .foregroundColor(Color(.secondaryLabel))
+      }
       Button(Strings.Wallet.nftEmptyImportNFT) {
         isShowingAddCustomNFT = true
       }
       .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .hidden(isHidden: nftStore.displayType != .visible)
       .padding(.top, 8)
     }
     .multilineTextAlignment(.center)
@@ -142,6 +146,17 @@ struct NFTView: View {
           .padding(.leading, 5)
       }
       Spacer()
+      Picker(selection: $nftStore.displayType) {
+        ForEach(NFTStore.NFTDisplayType.allCases) { type in
+          Text(type.dropdownTitle)
+            .foregroundColor(Color(.secondaryBraveLabel))
+            .tag(type)
+        }
+      } label: {
+        Text(nftStore.displayType.dropdownTitle)
+          .font(.footnote)
+          .foregroundColor(Color(.braveLabel))
+      }
       filtersButton
         .padding(.trailing, 10)
       addCustomAssetButton
@@ -176,12 +191,12 @@ struct NFTView: View {
   }
   
   @ViewBuilder var nftGridsView: some View {
-    if nftStore.userVisibleNFTs.isEmpty {
+    if nftStore.displayNFTs.isEmpty {
       emptyView
         .listRowBackground(Color(.clear))
     } else {
       LazyVGrid(columns: nftGrids) {
-        ForEach(nftStore.userVisibleNFTs) { nft in
+        ForEach(nftStore.displayNFTs) { nft in
           Button(action: {
             selectedNFTViewModel = nft
           }) {
@@ -202,9 +217,14 @@ struct NFTView: View {
           }
           .contextMenu {
             Button(action: {
-              nftStore.updateVisibility(nft.token, visible: false)
+              nftStore.updateNFTStatus(nft.token, visible: isHiddenNFT(nft.token), isSpam: false)
             }) {
-              Label(Strings.recentSearchHide, braveSystemImage: "leo.eye.off")
+              Label(isHiddenNFT(nft.token) ? Strings.Wallet.nftUnhide : Strings.recentSearchHide, braveSystemImage: isHiddenNFT(nft.token) ? "leo.eye.on" : "leo.eye.off")
+            }
+            Button(action: {
+              nftStore.updateNFTStatus(nft.token, visible: isSpamNFT(nft.token), isSpam: !isSpamNFT(nft.token))
+            }) {
+              Label(isSpamNFT(nft.token) ? Strings.Wallet.nftUnspam : Strings.Wallet.nftMoveToSpam, braveSystemImage: "leo.disable.outline")
             }
           }
         }
@@ -312,6 +332,22 @@ struct NFTView: View {
           self.isShowingNFTDiscoveryAlert = true
         }
       }
+    }
+  }
+  
+  private func isSpamNFT(_ nft: BraveWallet.BlockchainToken) -> Bool {
+    if nftStore.displayType == .spam {
+      return true
+    } else {
+      return nft.isSpam
+    }
+  }
+  
+  private func isHiddenNFT(_ nft: BraveWallet.BlockchainToken) -> Bool {
+    if nftStore.displayType == .spam {
+      return false
+    } else {
+      return !nft.visible
     }
   }
 }

@@ -317,7 +317,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   ) async -> [TransactionSummary] {
     guard case let .blockchainToken(token) = assetDetailType
     else { return [] }
-    let userVisibleAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
+    let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingSpam: true).flatMap { $0.tokens }
     let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
     let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { @MainActor group -> [BraveWallet.TransactionInfo] in
       for account in keyring.accountInfos {
@@ -371,7 +371,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           from: transaction,
           network: network,
           accountInfos: keyring.accountInfos,
-          visibleTokens: userVisibleAssets,
+          userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetRatios,
           solEstimatedTxFee: solEstimatedTxFees[transaction.id],

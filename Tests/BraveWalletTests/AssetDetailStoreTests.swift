@@ -54,7 +54,7 @@ class AssetDetailStoreTests: XCTestCase {
     walletService._addObserver = { _ in }
     
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [NetworkAssets(network: .mockMainnet, tokens: [.previewToken], sortOrder: 0)]
     }
     
@@ -267,7 +267,7 @@ class AssetDetailStoreTests: XCTestCase {
     walletService._addObserver = { _ in }
     
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [NetworkAssets(network: .mockMainnet, tokens: [.previewToken], sortOrder: 0)]
     }
     

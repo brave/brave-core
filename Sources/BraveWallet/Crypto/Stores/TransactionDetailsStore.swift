@@ -80,10 +80,10 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       let keringId = BraveWallet.KeyringId.keyringId(for: coin, on: transaction.chainId)
       let keyring = await keyringService.keyringInfo(keringId)
       var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin) + tokenInfoCache.map(\.value)
-      let userVisibleTokens: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(networks: [network]).flatMap { $0.tokens }
+      let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingSpam: true).flatMap { $0.tokens }
       let unknownTokenContractAddresses = transaction.tokenContractAddresses
         .filter { contractAddress in
-          !userVisibleTokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
+          !userAssets.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
           && !allTokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })
           && !tokenInfoCache.keys.contains(where: { $0.caseInsensitiveCompare(contractAddress) == .orderedSame })
         }
@@ -96,7 +96,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
       
       let priceResult = await assetRatioService.priceWithIndividualRetry(
-        userVisibleTokens.map { $0.assetRatioId.lowercased() },
+        userAssets.map { $0.assetRatioId.lowercased() },
         toAssets: [currencyFormatter.currencyCode],
         timeframe: .oneDay
       )
@@ -110,7 +110,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       guard let parsedTransaction = transaction.parsedTransaction(
         network: network,
         accountInfos: keyring.accountInfos,
-        visibleTokens: userVisibleTokens,
+        userAssets: userAssets,
         allTokens: allTokens,
         assetRatios: assetRatios,
         solEstimatedTxFee: solEstimatedTxFee,

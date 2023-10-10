@@ -24,8 +24,17 @@ struct NFTAssetViewModel: Identifiable, Equatable {
 }
 
 public class NFTStore: ObservableObject, WalletObserverStore {
-  /// The users visible NFTs
-  @Published private(set) var userVisibleNFTs: [NFTAssetViewModel] = []
+  /// The NFTs grouped by enum `NFTDisplayType` displayed in `NFTView`
+  var displayNFTs: [NFTAssetViewModel] {
+    switch displayType {
+    case .visible:
+      return userNFTs.filter(\.token.visible)
+    case .hidden:
+      return userNFTs.filter { !$0.token.visible && !$0.token.isSpam }
+    case .spam:
+      return userNFTs.filter(\.token.isSpam)
+    }
+  }
   /// All User Accounts
   var allAccounts: [BraveWallet.AccountInfo] = []
   /// All available networks
@@ -63,6 +72,52 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     userAssetManager: self.assetManager
   )
   
+  enum NFTDisplayType: Int, CaseIterable, Identifiable {
+    case visible
+    case hidden
+    case spam
+    
+    var id: Int {
+      rawValue
+    }
+    
+    var dropdownTitle: String {
+      switch self {
+      case .visible:
+        return Strings.Wallet.nftsTitle
+      case .hidden:
+        return Strings.Wallet.nftHidden
+      case .spam:
+        return Strings.Wallet.nftSpam
+      }
+    }
+    
+    var emptyTitle: String {
+      switch self {
+      case .visible:
+        return Strings.Wallet.nftPageEmptyTitle
+      case .hidden:
+        return Strings.Wallet.nftInvisiblePageEmptyTitle
+      case .spam:
+        return Strings.Wallet.nftSpamPageEmptyTitle
+      }
+    }
+    
+    var emptyDescription: String? {
+      switch self {
+      case .visible:
+        return Strings.Wallet.nftPageEmptyDescription
+      case .hidden, .spam:
+        return nil
+      }
+    }
+  }
+
+  /// Current group to display
+  @Published var displayType: NFTDisplayType = .visible
+  /// View model for all NFT include visible, hidden and spams
+  @Published private(set) var userNFTs: [NFTAssetViewModel] = []
+  
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
@@ -78,6 +133,8 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   private var updateTask: Task<(), Never>?
   /// Cache of metadata for NFTs. The key is the token's `id`.
   private var metadataCache: [String: NFTMetadata] = [:]
+  /// Spam from SimpleHash in form of `NetworkAssets`
+  private var simpleHashSpamNFTs: [NetworkAssets] = []
   
   var isObserving: Bool {
     rpcServiceObserver != nil && keyringServiceObserver != nil && walletServiveObserber != nil
@@ -172,14 +229,30 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       let filters = self.filters
       let selectedAccounts = filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = filters.networks.filter(\.isSelected).map(\.model)
-      let allVisibleUserAssets = assetManager.getAllVisibleAssetsInNetworkAssets(networks: selectedNetworks)
-      self.userVisibleNFTs = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
+      
+      // user visible assets
+      let userVisibleAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: true)
+      // user hidden assets
+      let userHiddenAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: false)
+      // all spam NFTs marked by SimpleHash
+      simpleHashSpamNFTs = await walletService.simpleHashSpamNFTs(for: selectedAccounts, on: selectedNetworks)
+      let unionedSpamNFTs = computeSpamNFTs(
+        selectedNetworks: selectedNetworks,
+        selectedAccounts: selectedAccounts,
+        simpleHashSpamNFTs: simpleHashSpamNFTs
+      )
+      
+      let allNetworkAssets = userVisibleAssets + userHiddenAssets + unionedSpamNFTs
+      userNFTs = buildAssetViewModels(allUserAssets: allNetworkAssets)
         .optionallyFilterUnownedNFTs(
           isHidingUnownedNFTs: filters.isHidingUnownedNFTs,
           selectedAccounts: selectedAccounts
         )
       
-      let allTokens = allVisibleUserAssets.flatMap(\.tokens)
+      var allTokens: [BraveWallet.BlockchainToken] = []
+      for networkAssets in [userVisibleAssets, userHiddenAssets, unionedSpamNFTs] {
+        allTokens.append(contentsOf: networkAssets.flatMap(\.tokens))
+      }
       let allNFTs = allTokens.filter { $0.isNft || $0.isErc721 }
       // if we're not hiding unowned or grouping by account, balance isn't needed
       if filters.isHidingUnownedNFTs {
@@ -221,7 +294,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
           })
       }
       guard !Task.isCancelled else { return }
-      self.userVisibleNFTs = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
+      userNFTs = buildAssetViewModels(allUserAssets: allNetworkAssets)
         .optionallyFilterUnownedNFTs(
           isHidingUnownedNFTs: filters.isHidingUnownedNFTs,
           selectedAccounts: selectedAccounts
@@ -232,9 +305,8 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       for (key, value) in allMetadata { // update cached values
         metadataCache[key] = value
       }
-      
       guard !Task.isCancelled else { return }
-      self.userVisibleNFTs = buildAssetViewModels(allVisibleUserAssets: allVisibleUserAssets)
+      userNFTs = buildAssetViewModels(allUserAssets: allNetworkAssets)
         .optionallyFilterUnownedNFTs(
           isHidingUnownedNFTs: filters.isHidingUnownedNFTs,
           selectedAccounts: selectedAccounts
@@ -244,17 +316,17 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   
   func updateNFTMetadataCache(for token: BraveWallet.BlockchainToken, metadata: NFTMetadata) {
     metadataCache[token.id] = metadata
-    if let index = userVisibleNFTs.firstIndex(where: { $0.token.id == token.id }),
-       var updatedViewModel = userVisibleNFTs[safe: index] {
+    if let index = userNFTs.firstIndex(where: { $0.token.id == token.id }),
+       var updatedViewModel = userNFTs[safe: index] {
       updatedViewModel.nftMetadata = metadata
-      userVisibleNFTs[index] = updatedViewModel
+      userNFTs[index] = updatedViewModel
     }
   }
   
   private func buildAssetViewModels(
-    allVisibleUserAssets: [NetworkAssets]
+    allUserAssets: [NetworkAssets]
   ) -> [NFTAssetViewModel] {
-    allVisibleUserAssets.flatMap { networkAssets in
+    allUserAssets.flatMap { networkAssets in
       networkAssets.tokens.compactMap { token in
         guard token.isErc721 || token.isNft else { return nil }
         return NFTAssetViewModel(
@@ -267,6 +339,46 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     }
   }
   
+  private func computeSpamNFTs(
+    selectedNetworks: [BraveWallet.NetworkInfo],
+    selectedAccounts: [BraveWallet.AccountInfo],
+    simpleHashSpamNFTs: [NetworkAssets]
+  ) -> [NetworkAssets] {
+    // all spam NFTs marked by user
+    let allUserMarkedSpamNFTs = assetManager.getAllUserNFTs(networks: selectedNetworks, isSpam: true)
+    // filter out any spam NFTs from `simpleHashSpamNFTs` that are marked
+    // not-spam by user
+    var updatedSimpleHashSpamNFTs: [NetworkAssets] = []
+    for simpleHashSpamNFTsOnNetwork in simpleHashSpamNFTs {
+      let userMarkedNotSpamTokensOnNetwork = assetManager.getAllUserNFTs(networks: [simpleHashSpamNFTsOnNetwork.network], isSpam: false).flatMap(\.tokens)
+      let filteredSimpleHashSpamTokens = simpleHashSpamNFTsOnNetwork.tokens.filter { simpleHashSpamToken in
+        !userMarkedNotSpamTokensOnNetwork.contains { token in
+          token.id == simpleHashSpamToken.id
+        }
+      }
+      updatedSimpleHashSpamNFTs.append(NetworkAssets(network: simpleHashSpamNFTsOnNetwork.network, tokens: filteredSimpleHashSpamTokens, sortOrder: simpleHashSpamNFTsOnNetwork.sortOrder))
+    }
+    // union user marked spam NFTs with spam NFTs from SimpleHash
+    var computedSpamNFTs: [NetworkAssets] = []
+    for (index, network) in selectedNetworks.enumerated() {
+      let userMarkedSpamNFTsOnNetwork: [BraveWallet.BlockchainToken] = allUserMarkedSpamNFTs.first { $0.network.chainId == network.chainId }?.tokens ?? []
+      let simpleHashSpamNFTsOnNetwork = updatedSimpleHashSpamNFTs.first { $0.network.chainId == network.chainId }?.tokens ?? []
+      var spamNFTUnion: [BraveWallet.BlockchainToken] = userMarkedSpamNFTsOnNetwork // we take all spam marked by user
+      // then iterate through spams from SimpleHash
+      for simpleHashSpam in simpleHashSpamNFTsOnNetwork where !userMarkedSpamNFTsOnNetwork.contains(where: { userSpam in
+        userSpam.id == simpleHashSpam.id
+      }) {
+        // make sure flags are correct (`isSpam` and `visible` might not be the true value for spams from
+        // from SimpleHash)
+        simpleHashSpam.isSpam = true
+        simpleHashSpam.visible = false
+        spamNFTUnion.append(simpleHashSpam)
+      }
+      computedSpamNFTs.append(NetworkAssets(network: network, tokens: spamNFTUnion, sortOrder: index))
+    }
+    return computedSpamNFTs
+  }
+  
   @MainActor func isNFTDiscoveryEnabled() async -> Bool {
     await walletService.nftDiscoveryEnabled()
   }
@@ -275,9 +387,24 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     walletService.setNftDiscoveryEnabled(true)
   }
   
-  func updateVisibility(_ token: BraveWallet.BlockchainToken, visible: Bool) {
-    assetManager.updateUserAsset(for: token, visible: visible) { [weak self] in
-      self?.update()
+  func updateNFTStatus(_ token: BraveWallet.BlockchainToken, visible: Bool, isSpam: Bool) {
+    assetManager.updateUserAsset(for: token, visible: visible, isSpam: isSpam) { [weak self] in
+      guard let self else { return }
+      let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
+      let selectedNetworks = self.filters.networks.filter(\.isSelected).map(\.model)
+      let userVisibleAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: true)
+      let userHiddenAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: false)
+      let spamNFTs = computeSpamNFTs(
+        selectedNetworks: selectedNetworks,
+        selectedAccounts: selectedAccounts,
+        simpleHashSpamNFTs: simpleHashSpamNFTs
+      )
+      let allNetworkAssets = userVisibleAssets + userHiddenAssets + spamNFTs
+      userNFTs = buildAssetViewModels(allUserAssets: allNetworkAssets)
+        .optionallyFilterUnownedNFTs(
+          isHidingUnownedNFTs: filters.isHidingUnownedNFTs,
+          selectedAccounts: selectedAccounts
+        )
     }
   }
 }

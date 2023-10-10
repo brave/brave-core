@@ -209,10 +209,10 @@ import Preferences
     walletService._addObserver = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssets = { _ in
+    mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       self.allUserAssetsInNetworkAssets
     }
-    mockAssetManager._getAllVisibleAssetsInNetworkAssets = { networks in
+    mockAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { networks, _ in
       var result: [NetworkAssets] = []
       for network in networks {
         let visibleTokens = self.allUserAssets.filter {

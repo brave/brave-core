@@ -124,7 +124,7 @@ class TransactionsActivityStoreTests: XCTestCase {
     solTxManagerProxy._estimatedTxFee = { $2(UInt64(1), .success, "") }
     
     let mockUserManager = TestableWalletUserAssetManager()
-    mockUserManager._getAllVisibleAssetsInNetworkAssets = { [weak self] networks in
+    mockUserManager._getAllUserAssetsInNetworkAssetsByVisibility = { [weak self] networks, _ in
       var networkAssets: [NetworkAssets] = []
       for network in networks {
         networkAssets.append(NetworkAssets(network: network, tokens: self?.visibleAssetsForCoins[network.coin] ?? [], sortOrder: 0))

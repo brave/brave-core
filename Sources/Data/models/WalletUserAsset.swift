@@ -108,15 +108,22 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
     }
   }
   
-  public static func updateUserAsset(for asset: BraveWallet.BlockchainToken, visible: Bool, completion: (() -> Void)? = nil) {
+  public static func updateUserAsset(
+    for asset: BraveWallet.BlockchainToken,
+    visible: Bool,
+    isSpam: Bool,
+    completion: (() -> Void)? = nil
+  ) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
       if let asset = WalletUserAsset.first(where: NSPredicate(format: "contractAddress == %@ AND chainId == %@ AND symbol == %@ AND tokenId == %@", asset.contractAddress, asset.chainId, asset.symbol, asset.tokenId), context: context) {
         asset.visible = visible
+        asset.isSpam = isSpam
       } else {
         let groupId = asset.walletUserAssetGroupId
         let group = WalletUserAssetGroup.getGroup(groupId: groupId, context: context) ?? WalletUserAssetGroup(context: context, groupId: groupId)
         let visibleAsset = WalletUserAsset(context: context, asset: asset)
         visibleAsset.visible = visible
+        visibleAsset.isSpam = isSpam
         visibleAsset.walletUserAssetGroup = group
       }
       
