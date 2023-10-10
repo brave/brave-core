@@ -38,7 +38,7 @@ function handlePlayerEvents (payload: PlayerEventsPayload) {
       window.open(
         payload.data.pageSource.url,
         '_blank',
-        'noopener,noreferrer'
+        'noopener noreferrer'
       )
     }
   }

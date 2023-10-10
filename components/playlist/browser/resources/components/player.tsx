@@ -55,45 +55,10 @@ const StyledSeeker = styled(PlayerSeeker)`
   ${hiddenOnMiniPlayer}
 `
 
-const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
-  ${playerVariables}
-  --mini-player-video-width: 120px;
-
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-  user-select: none; // In order to drag-and-drop on the seeker works well.
-
-  // Put blurred thumbnail underneath other UI controls
-  &::before {
-    content: '';
-    background: url(${p => p.backgroundUrl});
-    filter: blur(8px);
-    background-position: center;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    opacity: 0.2;
-    z-index: -1;
-  }
-
-  @media ${playerTypes.miniPlayer} {
-    display: flex;
-    flex-direction: row;
-    gap: ${spacing.xl};
-  }
-`
-
-const ControlsContainer = styled.div<{ mouseHovered: boolean }>`
+const ControlsContainer = styled.div`
   display: flex;
   position: relative;
   @media ${playerTypes.normalPlayer} {
-    ${p =>
-      !p.mouseHovered &&
-      css`
-        visibility: hidden;
-      `};
     position: absolute;
     bottom: 0;
     z-index: 1;
@@ -126,6 +91,48 @@ const ControlsContainer = styled.div<{ mouseHovered: boolean }>`
     flex-direction: row;
     gap: ${spacing.xl};
     padding-right: ${spacing.xl};
+  }
+`
+
+const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
+  ${playerVariables}
+  --mini-player-video-width: 120px;
+
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  user-select: none; // In order to drag-and-drop on the seeker works well.
+
+  // Put blurred thumbnail underneath other UI controls
+  &::before {
+    content: '';
+    background: url(${p => p.backgroundUrl});
+    filter: blur(8px);
+    background-position: center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0.2;
+    z-index: -1;
+  }
+
+  @media ${playerTypes.normalPlayer} {
+    ${ControlsContainer} {
+      visibility: hidden;
+    }
+
+    &:hover {
+      ${ControlsContainer} {
+        visibility: visible;
+      }
+    }
+  }
+
+  @media ${playerTypes.miniPlayer} {
+    display: flex;
+    flex-direction: row;
+    gap: ${spacing.xl};
   }
 `
 
@@ -207,8 +214,6 @@ export default function Player () {
   const [videoElement, setVideoElement] =
     React.useState<HTMLVideoElement | null>(null)
 
-  const [mouseHovered, setMouseHovered] = React.useState(false)
-
   const [currentPosition, setCurrentPosition] = React.useState(0)
 
   React.useEffect(() => {
@@ -235,11 +240,7 @@ export default function Player () {
   }, [currentItem, videoElement])
 
   return (
-    <PlayerContainer
-      backgroundUrl={currentItem?.thumbnailPath.url}
-      onMouseEnter={() => setMouseHovered(true)}
-      onMouseLeave={() => setMouseHovered(false)}
-    >
+    <PlayerContainer backgroundUrl={currentItem?.thumbnailPath.url}>
       <VideoContainer>
         <StyledVideo
           ref={setVideoElement}
@@ -285,7 +286,7 @@ export default function Player () {
           />
         )}
       </VideoContainer>
-      <ControlsContainer mouseHovered={mouseHovered}>
+      <ControlsContainer>
         <FaviconAndTitle>
           <StyledFavicon
             src={
