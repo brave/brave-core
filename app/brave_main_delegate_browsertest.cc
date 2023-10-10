@@ -271,7 +271,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &ntp_features::kNtpHistoryClustersModule,
     &ntp_features::kNtpHistoryClustersModuleDiscounts,
     &ntp_features::kNtpHistoryClustersModuleLoad,
-    &omnibox::kInspireMe,
     &omnibox::kDocumentProviderNoSetting,
     &omnibox::kDocumentProviderNoSyncRequirement,
     &omnibox::kExpandedStateHeight,
