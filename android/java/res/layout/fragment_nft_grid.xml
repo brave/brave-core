@@ -33,12 +33,12 @@
                 android:textAlignment="center"
                 app:tabSelectedTextColor="@color/wallet_text_color"
                 app:tabTextAppearance="@style/BraveTabTextAppearance"
-                app:tabIndicatorColor="@color/wallet_bottom_navigation_color"
+                app:tabIndicatorColor="@color/wallet_selector_text"
                 app:tabIndicatorGravity="bottom"
                 app:tabIndicatorHeight="4dp"
                 app:tabGravity="fill"
                 app:tabMode="auto"
-                app:tabIndicator="@color/wallet_bottom_navigation_color"
+                app:tabIndicator="@color/wallet_selector_text"
                 />
             <ProgressBar
                 android:layout_gravity="start|center_vertical"
