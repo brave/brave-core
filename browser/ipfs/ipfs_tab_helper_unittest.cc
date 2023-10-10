@@ -229,6 +229,12 @@ class NavigationHandleMock : public content::NavigationHandle {
               GetMutableRuntimeFeatureStateContext,
               (),
               (override));
+#if BUILDFLAG(IS_ANDROID)
+  MOCK_METHOD(const base::android::JavaRef<jobject>&,
+              GetJavaNavigationHandle,
+              (),
+              (override));
+#endif
 
   void SetUp(const net::Error get_net_error,
              const bool is_error_page,
