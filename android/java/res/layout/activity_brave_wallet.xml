@@ -72,7 +72,7 @@
                 android:id="@+id/wallet_bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+                app:itemTextAppearanceActive="@style/BottomNavigationView"
                 app:itemTextAppearanceInactive="@style/BottomNavigationView"
                 app:itemBackground="@color/wallet_bg"
                 app:itemTextColor="@color/wallet_selector_text"

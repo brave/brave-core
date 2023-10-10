@@ -52,12 +52,6 @@
         <item name="android:letterSpacing">0.02</item>
     </style>
 
-    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
-        <item name="android:textSize">12sp</item>
-        <item name="android:lineSpacingExtra">2sp</item>
-        <item name="android:letterSpacing">0.02</item>
-    </style>
-
     <style name="BraveTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
