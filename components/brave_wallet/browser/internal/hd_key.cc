@@ -20,12 +20,15 @@
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
-#include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
 #include "crypto/random.h"
 #include "crypto/symmetric_key.h"
 #include "third_party/boringssl/src/include/openssl/hmac.h"
+
+#define SECP256K1_BUILD  // This effectively turns off export attributes.
+#include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1.h"
+#include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
 
 using crypto::Encryptor;
 using crypto::SymmetricKey;

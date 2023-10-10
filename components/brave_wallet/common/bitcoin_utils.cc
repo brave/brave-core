@@ -41,33 +41,33 @@ absl::optional<DecodedBitcoinAddress> DecodeBitcoinAddress(
   auto bech_result = bech32::Decode(address);
 
   // https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#segwit-address-format
-  if (bech_result.second.empty()) {
+  if (bech_result.encoding != bech32::Encoding::BECH32) {
     return absl::nullopt;
   }
 
   DecodedBitcoinAddress result;
-  if (bech_result.first == "tb") {
+  if (bech_result.hrp == "tb") {
     result.testnet = true;
-  } else if (bech_result.first == "bc") {
+  } else if (bech_result.hrp == "bc") {
     result.testnet = false;
   } else {
     return absl::nullopt;
   }
 
-  if (bech_result.second[0] > 16) {
+  if (bech_result.data.empty() || bech_result.data[0] > 16) {
     return absl::nullopt;
   }
 
   std::vector<uint8_t> data;
-  data.reserve(((bech_result.second.size() - 1) * 5) / 8);
+  data.reserve(((bech_result.data.size() - 1) * 5) / 8);
   if (!ConvertBits<5, 8, false>([&](unsigned char c) { data.push_back(c); },
-                                bech_result.second.begin() + 1,
-                                bech_result.second.end())) {
+                                bech_result.data.begin() + 1,
+                                bech_result.data.end())) {
     return absl::nullopt;
   }
 
   result.address_type = BitcoinAddressType::kWitnessUnknown;
-  result.witness_version = bech_result.second[0];
+  result.witness_version = bech_result.data[0];
   result.pubkey_hash = std::move(data);
 
   // https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#witness-program
@@ -100,7 +100,7 @@ std::string PubkeyToSegwitAddress(const std::vector<uint8_t>& pubkey,
   ConvertBits<8, 5, true>([&](unsigned char c) { input.push_back(c); },
                           hash160.begin(), hash160.end());
 
-  return bech32::Encode(testnet ? "tb" : "bc", input);
+  return bech32::Encode(bech32::Encoding::BECH32, testnet ? "tb" : "bc", input);
 }
 
 }  // namespace brave_wallet
