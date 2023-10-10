@@ -11,6 +11,7 @@ import { getLocale } from '$web-common/locale'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
 import styles from './style.module.scss'
+import classnames from '$web-common/classnames'
 
 export default function FeatureMenu() {
   const context = React.useContext(DataContext)
@@ -51,8 +52,14 @@ export default function FeatureMenu() {
           onClick={() => context.setCurrentModel(model)}
         >
           <div className={styles.menuItemWithIcon}>
-            {model.name}
-            {model.isPremium && <Icon name='lock-plain' />}
+            <div>
+              <div>{model.name}</div>
+              <p className={styles.modelSubtitle}>{getLocale(`braveLeoModelSubtitle-${model.key}`)}</p>
+            </div>
+            {model.isPremium && (<Icon
+              className={classnames({[styles.lockOpen]: context.isPremiumUser})}
+              name={context.isPremiumUser ? 'lock-open' : 'lock-plain'} />
+            )}
           </div>
         </leo-menu-item>
       ))}
