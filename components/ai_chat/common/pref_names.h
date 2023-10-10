@@ -20,6 +20,8 @@ constexpr char kBraveChatP3AChatCountWeeklyStorage[] =
     "brave.ai_chat.p3a_chat_count";
 constexpr char kBraveChatP3APromptCountWeeklyStorage[] =
     "brave.ai_chat.p3a_prompt_count";
+// Stores Leo Premium credentials that have already been fetched from the
+// SKU SDK but were not used because the chat server was unavailable.
 constexpr char kBraveChatPremiumCredentialCache[] =
     "brave.ai_chat.premium_credential_cache";
 constexpr char kUserDismissedPremiumPrompt[] =
