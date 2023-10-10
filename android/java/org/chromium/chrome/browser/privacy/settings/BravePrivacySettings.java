@@ -530,7 +530,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     mBlockCrosssiteCookies.setSummary(getActivity().getResources().getString(
                             R.string.block_cookies_option_2));
                     mBlockCrosssiteCookies.setCheckedIndex(1);
-                // fall through
+                    break;
                 case ALLOW:
                 default:
                     BraveShieldsContentSettings.setCookiesPref(
