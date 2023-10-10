@@ -7,6 +7,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "//brave/components/sync/base/brave_model_type_unittest.cc",
     "//brave/components/sync/engine/brave_model_type_worker_unittest.cc",
     "//brave/components/sync/engine/brave_syncer_device_poll_unittest.cc",
   ]
@@ -16,6 +17,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//components/sync:sync",
     "//components/sync:test_support",
+    "//components/sync/base",
     "//testing/gmock",
     "//testing/gtest",
     "//third_party/protobuf:protobuf_lite",
