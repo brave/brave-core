@@ -10,7 +10,6 @@
 namespace omnibox {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kInspireMe, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDocumentProviderNoSetting, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDocumentProviderNoSyncRequirement, base::FEATURE_DISABLED_BY_DEFAULT},
     {kExpandedStateHeight, base::FEATURE_DISABLED_BY_DEFAULT},
