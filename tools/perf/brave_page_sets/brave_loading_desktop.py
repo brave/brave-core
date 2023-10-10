@@ -29,7 +29,8 @@ class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
   def _StartBrowser(self, page):
     super(shared_page_state.SharedDesktopPageState, self)._StartBrowser(page)
     # Wait a fixed time to finish all startup work.
-    time.sleep(10)
+    rebasing_profile = '--update-source-profile' in self._browser.startup_args
+    time.sleep(60 if rebasing_profile else 10)
 
   def _StopBrowser(self):
     if self._browser:

@@ -1,0 +1,38 @@
+{
+  // A configuration with enabled internet access
+  // (=using the real compoments and sites).
+  "configurations": [{
+    "dashboard-bot-name": "mac-mini-x64-online",
+    "browser-type": "brave",
+    "profile": "brave-typical-mac-v1.60.41",
+
+    // Disable fetching Finch
+    "extra-browser-args": ["--variations-server-url=https://127.0.0.1/invalid", "--variations-insecure-server-url=http://127.0.0.1/invalid" ],
+
+    // Enable the internet access
+    "extra-benchmark-args": ["--use-live-sites"],
+  }],
+  "benchmarks": [
+    {
+      "name": "loading.desktop.brave",
+      "pageset-repeat": 20,
+      "stories": [
+        "example.com_cold",
+      ]
+    },
+    {
+      "name": "system_health.memory_desktop",
+      "pageset-repeat": 20,
+      "stories": [
+        "load:chrome:blank",
+      ]
+    },
+    {
+      "name": "system_health.common_desktop",
+      "pageset-repeat": 20,
+      "stories": [
+        "load:chrome:blank",
+      ]
+    }
+  ]
+}
