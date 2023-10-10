@@ -225,7 +225,7 @@ public class AssetDetailActivity
                                     this, WalletConstants.URL_RAINBOW_BRIDGE_OVERVIEW));
             rainBowLearnMore.setSpan(
                     new BulletSpan(
-                            15, getResources().getColor(R.color.brave_wallet_day_night_text_color)),
+                            15, getResources().getColor(R.color.wallet_text_color)),
                     0, rainBowLearnMore.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             SpannableString rainBowRisksLearnMore = Utils.createSpanForSurroundedPhrase(
                     this, R.string.brave_wallet_rainbow_bridge_risks_learn_more, (v) -> {
@@ -233,7 +233,7 @@ public class AssetDetailActivity
                     });
             rainBowRisksLearnMore.setSpan(
                     new BulletSpan(
-                            15, getResources().getColor(R.color.brave_wallet_day_night_text_color)),
+                            15, getResources().getColor(R.color.wallet_text_color)),
                     0, rainBowRisksLearnMore.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             SpannableStringBuilder spannableStringBuilder =
                     new SpannableStringBuilder(rainBowLearnMore);

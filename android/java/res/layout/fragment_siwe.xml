@@ -9,7 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/wallet_dn_bg_primary"
+    android:background="@color/wallet_bg"
     android:orientation="vertical"
     tools:context=".browser.crypto_wallet.fragments.dapps.SignMessageFragment">
 

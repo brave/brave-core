@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/wallet_dn_bg_primary"
+    android:background="@color/wallet_bg"
     android:fillViewport="true">
 
     <LinearLayout
@@ -29,16 +29,16 @@
                 android:id="@+id/nft_tab_layout"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:background="@color/wallet_dn_bg_primary"
+                android:background="@color/wallet_bg"
                 android:textAlignment="center"
-                app:tabSelectedTextColor="@color/brave_wallet_day_night_text_color"
+                app:tabSelectedTextColor="@color/wallet_text_color"
                 app:tabTextAppearance="@style/BraveTabTextAppearance"
-                app:tabIndicatorColor="@color/wallet_bottom_navigation_color"
+                app:tabIndicatorColor="@color/wallet_selector_text"
                 app:tabIndicatorGravity="bottom"
                 app:tabIndicatorHeight="4dp"
                 app:tabGravity="fill"
                 app:tabMode="auto"
-                app:tabIndicator="@color/wallet_bottom_navigation_color"
+                app:tabIndicator="@color/wallet_selector_text"
                 />
             <ProgressBar
                 android:layout_gravity="start|center_vertical"
@@ -78,19 +78,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/wallet_dn_bg_primary"
+            android:background="@color/wallet_bg"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_nft"
-                android:background="@color/wallet_dn_bg_primary"
+                android:background="@color/wallet_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_hidden_nft"
-                android:background="@color/wallet_dn_bg_primary"
+                android:background="@color/wallet_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="78dp"
                 android:padding="16dp"
-                android:background="@color/wallet_dn_bg_primary"
+                android:background="@color/wallet_bg"
                 android:orientation="vertical"
                 android:visibility="gone" >
 
