@@ -6,6 +6,7 @@
 import SwiftUI
 import DesignSystem
 import BraveCore
+import Preferences
 
 struct PortfolioAssetsView: View {
 
@@ -18,6 +19,7 @@ struct PortfolioAssetsView: View {
   @State private var isPresentingFiltersDisplaySettings: Bool = false
   @State private var selectedToken: BraveWallet.BlockchainToken?
   @State private var groupToggleState: [AssetGroupViewModel.ID: Bool] = [:]
+  @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
 
   var body: some View {
     LazyVStack(spacing: 16) {
@@ -153,7 +155,8 @@ struct PortfolioAssetsView: View {
           symbol: asset.token.symbol,
           networkName: asset.network.chainName,
           amount: asset.fiatAmount(currencyFormatter: portfolioStore.currencyFormatter),
-          quantity: asset.quantity
+          quantity: asset.quantity,
+          shouldHideBalance: true
         )
       }
     }
@@ -184,7 +187,8 @@ struct PortfolioAssetsView: View {
               symbol: asset.token.symbol,
               networkName: asset.network.chainName,
               amount: asset.fiatAmount(currencyFormatter: portfolioStore.currencyFormatter),
-              quantity: asset.quantity
+              quantity: asset.quantity,
+              shouldHideBalance: true
             )
           }
         }
@@ -224,7 +228,7 @@ struct PortfolioAssetsView: View {
         }
         .multilineTextAlignment(.leading)
         Spacer()
-        Text(portfolioStore.currencyFormatter.string(from: NSNumber(value: group.totalFiatValue)) ?? "")
+        Text(isShowingBalances.value ? portfolioStore.currencyFormatter.string(from: NSNumber(value: group.totalFiatValue)) ?? "" : "****")
           .font(.callout.weight(.semibold))
           .foregroundColor(Color(WalletV2Design.textPrimary))
           .multilineTextAlignment(.trailing)

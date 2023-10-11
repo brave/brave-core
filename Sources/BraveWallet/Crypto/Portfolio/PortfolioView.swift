@@ -25,6 +25,7 @@ struct PortfolioView: View {
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
   
   @State private var selectedContent: PortfolioSegmentedControl.SelectedContent = .assets
+  @ObservedObject private var isShowingNFTsTab = Preferences.Wallet.isShowingNFTsTab
   
   var body: some View {
     ScrollView {
@@ -51,11 +52,13 @@ struct PortfolioView: View {
   
   private var contentDrawer: some View {
     LazyVStack {
-      PortfolioSegmentedControl(selected: $selectedContent)
-        .padding(.horizontal)
-        .padding(.bottom, 6)
+      if isShowingNFTsTab.value {
+        PortfolioSegmentedControl(selected: $selectedContent)
+          .padding(.horizontal)
+          .padding(.bottom, 6)
+      }
       Group {
-        if selectedContent == .assets {
+        if selectedContent == .assets || !isShowingNFTsTab.value {
           PortfolioAssetsView(
             cryptoStore: cryptoStore,
             keyringStore: keyringStore,

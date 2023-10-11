@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import SwiftUI
+import Preferences
 
 struct PortfolioAssetView: View {
   var image: AssetIconView
@@ -12,6 +13,27 @@ struct PortfolioAssetView: View {
   let networkName: String
   var amount: String
   var quantity: String
+  let shouldHideBalance: Bool
+  
+  @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
+  
+  init(
+    image: AssetIconView,
+    title: String, 
+    symbol: String,
+    networkName: String,
+    amount: String,
+    quantity: String,
+    shouldHideBalance: Bool = false
+  ) {
+    self.image = image
+    self.title = title
+    self.symbol = symbol
+    self.networkName = networkName
+    self.amount = amount
+    self.quantity = quantity
+    self.shouldHideBalance = shouldHideBalance
+  }
 
   var body: some View {
     AssetView(
@@ -20,14 +42,20 @@ struct PortfolioAssetView: View {
       symbol: symbol,
       networkName: networkName,
       accessoryContent: {
-        VStack(alignment: .trailing) {
-          Text(amount.isEmpty ? "0.0" : amount)
-            .fontWeight(.semibold)
-          Text(verbatim: "\(quantity) \(symbol)")
+        Group {
+          if shouldHideBalance && !isShowingBalances.value {
+            Text("****")
+          } else {
+            VStack(alignment: .trailing) {
+              Text(amount.isEmpty ? "0.0" : amount)
+                .fontWeight(.semibold)
+              Text(verbatim: "\(quantity) \(symbol)")
+            }
+            .multilineTextAlignment(.trailing)
+          }
         }
         .font(.footnote)
         .foregroundColor(Color(.braveLabel))
-        .multilineTextAlignment(.trailing)
       }
     )
     .accessibilityLabel("\(title), \(quantity) \(symbol), \(amount)")
@@ -97,7 +125,7 @@ struct AssetView<ImageView: View, AccessoryContent: View>: View {
   let title: String
   let symbol: String
   let networkName: String
-  let accessoryContent: () -> AccessoryContent
+  @ViewBuilder var accessoryContent: () -> AccessoryContent
 
   var body: some View {
     HStack {

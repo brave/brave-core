@@ -15,11 +15,11 @@ struct CryptoPagesView: View {
   @ObservedObject var cryptoStore: CryptoStore
   @ObservedObject var keyringStore: KeyringStore
 
+  @State private var isShowingMainMenu: Bool = false
   @State private var isShowingSettings: Bool = false
   @State private var isShowingSearch: Bool = false
   @State private var fetchedPendingRequestsThisSession: Bool = false
-
-  @Environment(\.openURL) private var openWalletURL
+  @State private var selectedPageIndex: Int = 0
   
   private var isConfirmationButtonVisible: Bool {
     if case .transactions(let txs) = cryptoStore.pendingRequest {
@@ -33,7 +33,10 @@ struct CryptoPagesView: View {
       keyringStore: keyringStore,
       cryptoStore: cryptoStore,
       isShowingPendingRequest: $cryptoStore.isPresentingPendingRequest,
-      isConfirmationsButtonVisible: isConfirmationButtonVisible
+      isConfirmationsButtonVisible: isConfirmationButtonVisible,
+      selectedIndexChanged: { selectedIndex in
+        selectedPageIndex = selectedIndex
+      }
     )
     .onAppear {
       // If a user chooses not to confirm/reject their requests we shouldn't
@@ -97,28 +100,20 @@ struct CryptoPagesView: View {
             .labelStyle(.iconOnly)
             .foregroundColor(Color(.braveBlurpleTint))
         }
-        Menu {
-          Button(action: {
-            keyringStore.lock()
-          }) {
-            Label(Strings.Wallet.lock, braveSystemImage: "leo.lock")
-              .imageScale(.medium)  // Menu inside nav bar implicitly gets large
-          }
-          Button(action: { isShowingSettings = true }) {
-            Label(Strings.Wallet.settings, braveSystemImage: "leo.settings")
-              .imageScale(.medium)  // Menu inside nav bar implicitly gets large
-          }
-          Divider()
-          Button(action: { openWalletURL(WalletConstants.braveWalletSupportURL) }) {
-            Label(Strings.Wallet.helpCenter, braveSystemImage: "leo.info.outline")
-          }
-        } label: {
-          Label(Strings.Wallet.otherWalletActionsAccessibilityTitle, systemImage: "ellipsis.circle")
+        Button(action: { self.isShowingMainMenu = true }) {
+          Label(Strings.Wallet.otherWalletActionsAccessibilityTitle, braveSystemImage: "leo.more.horizontal")
             .labelStyle(.iconOnly)
             .foregroundColor(Color(.braveBlurpleTint))
         }
         .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
       }
+    }
+    .sheet(isPresented: $isShowingMainMenu) {
+      MainMenuView(
+        isFromPortfolio: selectedPageIndex == 0,
+        isShowingSettings: $isShowingSettings,
+        keyringStore: keyringStore
+      )
     }
   }
 
@@ -127,12 +122,14 @@ struct CryptoPagesView: View {
     var cryptoStore: CryptoStore
     var isShowingPendingRequest: Binding<Bool>
     var isConfirmationsButtonVisible: Bool
+    var selectedIndexChanged: (Int) -> Void
 
     func makeUIViewController(context: Context) -> CryptoPagesViewController {
       CryptoPagesViewController(
         keyringStore: keyringStore,
         cryptoStore: cryptoStore,
-        isShowingPendingRequest: isShowingPendingRequest
+        isShowingPendingRequest: isShowingPendingRequest,
+        selectedIndexChanged: selectedIndexChanged
       )
     }
     func updateUIViewController(_ uiViewController: CryptoPagesViewController, context: Context) {
@@ -145,18 +142,21 @@ private class CryptoPagesViewController: TabbedPageViewController {
   private let keyringStore: KeyringStore
   private let cryptoStore: CryptoStore
   let pendingRequestsButton = ConfirmationsButton()
+  let selectedIndexChanged: (Int) -> Void
 
   @Binding private var isShowingPendingRequest: Bool
 
   init(
     keyringStore: KeyringStore,
     cryptoStore: CryptoStore,
-    isShowingPendingRequest: Binding<Bool>
+    isShowingPendingRequest: Binding<Bool>,
+    selectedIndexChanged: @escaping (Int) -> Void
   ) {
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
     self._isShowingPendingRequest = isShowingPendingRequest
-    super.init(nibName: nil, bundle: nil)
+    self.selectedIndexChanged = selectedIndexChanged
+    super.init(selectedIndexChanged: selectedIndexChanged)
   }
 
   @available(*, unavailable)
