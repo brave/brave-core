@@ -495,9 +495,6 @@ public class BytecodeTest {
                 methodExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
                         "get", false, null));
         Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView",
-                "inflateIfVisible", true, void.class));
-        Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                 "updateTilePlaceholderVisibility", true, void.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
