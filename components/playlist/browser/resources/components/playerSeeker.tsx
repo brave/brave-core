@@ -12,6 +12,7 @@ import { formatTimeInSeconds } from '../utils/timeFormatter'
 
 interface Props {
   videoElement: HTMLVideoElement | null
+  className?: string
 }
 
 const SeekerContainer = styled.div`
@@ -37,7 +38,8 @@ const StyledProgress = styled.progress.attrs(
     }
   })
 )`
-  --progress-background: #423eee; /* TODO(sko) Neither color.button.background or color.semantic.button.background exist for now */
+  --progress-background: var(--seeker-progress-background, rgba(0, 0, 0, 0.1));
+  --progress-stroke-background: ${color.button.background};
   --progress-bar-height: 12px;
   --progress-stroke-thickness: 2px;
 
@@ -47,14 +49,14 @@ const StyledProgress = styled.progress.attrs(
   position: relative;
 
   &::-webkit-progress-bar {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--progress-background);
     height: var(--progress-stroke-thickness);
     border-radius: calc(var(--progress-stroke-thickness) * 0.5);
     transform: translate(0, calc((var(--progress-bar-height) - 100%) / 2));
   }
   &::-webkit-progress-value {
     border-radius: calc(var(--progress-stroke-thickness) * 0.5);
-    background: var(--progress-background);
+    background: var(--progress-stroke-background);
   }
   &::after {
     content: '';
@@ -63,7 +65,7 @@ const StyledProgress = styled.progress.attrs(
     left: var(--progress-thumb-left);
     width: var(--progress-bar-height);
     height: var(--progress-bar-height);
-    background: var(--progress-background);
+    background: var(--progress-stroke-background);
     border-radius: calc(var(--progress-bar-height) * 2);
   }
 `
@@ -185,7 +187,7 @@ class DragController {
   }
 }
 
-export default function PlayerSeeker ({ videoElement }: Props) {
+export default function PlayerSeeker ({ videoElement, className }: Props) {
   const [duration, setDuration] = React.useState(0)
   const [currentTime, setCurrentTime] = React.useState(0)
 
@@ -236,7 +238,7 @@ export default function PlayerSeeker ({ videoElement }: Props) {
   }, [progressElementRef.current])
 
   return (
-    <SeekerContainer>
+    <SeekerContainer className={className}>
       <StyledProgress
         max={duration}
         value={currentTime}

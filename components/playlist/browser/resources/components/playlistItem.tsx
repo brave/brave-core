@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
 
 import { color, font, spacing } from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import ProgressBar from '@brave/leo/react/progressBar'
 
 import DefaultThumbnailIcon from '../assets/playlist-thumbnail-icon.svg'
 import ContextualMenuAnchorButton from './contextualMenu'
@@ -27,6 +26,7 @@ import { ApplicationState, CachingProgress } from '../reducers/states'
 import { getPlaylistAPI } from '../api/api'
 import { BouncingBars } from './bouncingBars'
 import { useVerticallySortable } from '../utils/dragDropUtils'
+import { ProgressBar } from './progressBar'
 
 interface Props {
   playlist: Playlist
@@ -52,13 +52,6 @@ const StyledThumbnail = styled.div<{ src: string }>`
   background-image: url(${p => p.src});
   background-size: cover;
   background-position: center;
-`
-
-const StyledProgressBar = styled(ProgressBar)`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  --leo-progressbar-radius: 0;
 `
 
 const BouncingBarsContainer = styled.div`
@@ -204,9 +197,7 @@ function Thumbnail ({
         <BouncingBars />
       </BouncingBarsContainer>
       {!!+duration && (
-        <StyledProgressBar
-          progress={lastPlayedPosition / (+duration / 1e6)}
-        ></StyledProgressBar>
+        <ProgressBar progress={lastPlayedPosition / (+duration / 1e6)} />
       )}
     </>
   ) : null
