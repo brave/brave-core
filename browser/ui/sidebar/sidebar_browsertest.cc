@@ -546,24 +546,27 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PrefsMigrationTest) {
                   ->IsDefaultValue());
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
   auto* prefs = browser()->profile()->GetPrefs();
   EXPECT_EQ(kDefaultSidePanelWidth,
             prefs->GetInteger(sidebar::kSidePanelWidth));
 
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
 
+  int expected_panel_width = kDefaultSidePanelWidth;
+
   // Wait till sidebar animation ends.
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+      [&]() { return GetSidePanel()->width() == expected_panel_width; }));
 
   // Test smaller panel width than default(minimum) and check smaller than
   // default is not applied. Positive offset value is for reducing width in
   // right-sided sidebar.
   GetSidePanel()->OnResize(30, true);
   // Check panel width is not changed.
-  EXPECT_EQ(kDefaultSidePanelWidth,
-            prefs->GetInteger(sidebar::kSidePanelWidth));
+  EXPECT_EQ(expected_panel_width, prefs->GetInteger(sidebar::kSidePanelWidth));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
 
   // On right-side sidebar position, side panel's x and resize widget's x is
   // same.
@@ -574,8 +577,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
   // Negative offset value is for increasing width in right-sided
   // sidebar.
   GetSidePanel()->OnResize(-20, true);
-  EXPECT_EQ(kDefaultSidePanelWidth + 20,
-            prefs->GetInteger(sidebar::kSidePanelWidth));
+  expected_panel_width += 20;
+  EXPECT_EQ(expected_panel_width, prefs->GetInteger(sidebar::kSidePanelWidth));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == expected_panel_width; }));
   EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().x(),
             GetSidePanelResizeWidget()->GetWindowBoundsInScreen().x());
 
@@ -584,27 +589,25 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
   EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().right(),
             GetSidePanelResizeWidget()->GetWindowBoundsInScreen().right());
 
-  // Increse panel width and check width and resize handle position .
+  // Increase panel width and check width and resize handle position.
   // Positive offset value is for increasing width in left-sided sidebar.
   GetSidePanel()->OnResize(20, true);
-  EXPECT_EQ(kDefaultSidePanelWidth + 40,
-            prefs->GetInteger(sidebar::kSidePanelWidth));
+  expected_panel_width += 20;
+  EXPECT_EQ(expected_panel_width, prefs->GetInteger(sidebar::kSidePanelWidth));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == expected_panel_width; }));
   EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().right(),
             GetSidePanelResizeWidget()->GetWindowBoundsInScreen().right());
-}
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
-  auto* prefs = browser()->profile()->GetPrefs();
-  // Check that 40px increased width is persisted properly.
-  constexpr int kExpectedPanelWidth = kDefaultSidePanelWidth + 40;
-  EXPECT_EQ(kExpectedPanelWidth, prefs->GetInteger(sidebar::kSidePanelWidth));
-
+  // Close side panel.
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
-
-  // Wait till sidebar animation ends.
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return GetSidePanel()->width() == kExpectedPanelWidth; }));
-  EXPECT_EQ(kExpectedPanelWidth, GetSidePanel()->width());
+      [&]() { return !GetSidePanel()->GetVisible(); }));
+
+  // Re-open side panel and check it's opened as wide as lastly used width.
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == expected_panel_width; }));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
