@@ -217,6 +217,14 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return scroll_view->NeedScrollForItemAt(index);
   }
 
+  void VerifyTargetDragIndicatorIndexCalc(const gfx::Point& screen_position) {
+    auto sidebar_items_contents_view = GetSidebarItemsContentsView(
+        static_cast<BraveBrowser*>(browser())->sidebar_controller());
+    EXPECT_NE(absl::nullopt,
+              sidebar_items_contents_view->CalculateTargetDragIndicatorIndex(
+                  screen_position));
+  }
+
   base::RunLoop* run_loop() const { return run_loop_.get(); }
 
   raw_ptr<views::View> item_added_bubble_anchor_ = nullptr;
@@ -403,6 +411,23 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, InitialHorizontalOptionTest) {
   // Check horizontal option is right-sided.
   EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
   EXPECT_TRUE(IsSidebarUIOnLeft());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemDragIndicatorCalcTest) {
+  auto sidebar_items_contents_view = GetSidebarItemsContentsView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+  gfx::Rect contents_view_rect = sidebar_items_contents_view->GetLocalBounds();
+  views::View::ConvertRectToScreen(sidebar_items_contents_view,
+                                   &contents_view_rect);
+  gfx::Point screen_position = contents_view_rect.origin();
+  screen_position.Offset(5, 0);
+
+  // Any point from items contents view should have proper drag indicator index.
+  for (int i = 0; i < contents_view_rect.height(); ++i) {
+    gfx::Point simulated_mouse_drag_point = screen_position;
+    simulated_mouse_drag_point.Offset(0, i);
+    VerifyTargetDragIndicatorIndexCalc(simulated_mouse_drag_point);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
