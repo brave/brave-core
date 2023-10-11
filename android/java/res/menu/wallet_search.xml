@@ -26,6 +26,6 @@
   <item android:id="@+id/open_web_wallet"
       android:icon="@drawable/ic_crypto_wallets"
       android:title="@string/open_web_wallet"
-      app:iconTint="@color/brave_wallet_day_night_text_color"
+      app:iconTint="@color/wallet_text_color"
       app:showAsAction="never" />
 </menu>
