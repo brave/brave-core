@@ -15,6 +15,5 @@ TEST(BraveModelTypeTest, LowPriorityUserTypes) {
   EXPECT_TRUE(LowPriorityUserTypes().Has(USER_EVENTS));
 }
 
-
 }  // namespace
 }  // namespace syncer
