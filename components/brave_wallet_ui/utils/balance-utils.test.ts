@@ -6,8 +6,8 @@
 import { getBalance, getPercentAmount } from './balance-utils'
 
 // mocks
-import { mockAccount, mockERC20Token } from '../common/constants/mocks'
-import { mockBasicAttentionToken, mockBinanceCoinErc20Token } from '../stories/mock-data/mock-asset-options'
+import { mockAccount } from '../common/constants/mocks'
+import { mockBasicAttentionToken, mockBinanceCoinErc20Token, mockERC20Token } from '../stories/mock-data/mock-asset-options'
 
 
 describe('getBalance', () => {

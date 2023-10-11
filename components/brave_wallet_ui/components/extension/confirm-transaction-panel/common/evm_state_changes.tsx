@@ -81,7 +81,9 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
   const normalizedAmount = new Amount(transfer.amount.after)
     .minus(transfer.amount.before)
     .divideByDecimals(transfer.asset.decimals)
+
   const isReceive = normalizedAmount.isPositive()
+
   const isNativeAsset =
     asset.contractAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS ||
     asset.contractAddress === ''

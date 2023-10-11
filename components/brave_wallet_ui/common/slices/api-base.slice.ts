@@ -55,7 +55,9 @@ export function createWalletApiBase () {
       'SimpleHashSpamNFTs',
       'LocalIPFSNodeStatus',
       'EthTokenDecimals',
-      'EthTokenSymbol'
+      'EthTokenSymbol',
+      'EnsOffchainLookupEnabled',
+      'NameServiceAddress',
     ],
     endpoints: ({ mutation, query }) => ({})
   })

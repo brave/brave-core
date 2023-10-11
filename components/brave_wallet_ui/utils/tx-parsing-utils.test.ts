@@ -16,7 +16,6 @@ import Amount from './amount'
 // mocks
 import {
   getMockedTransactionInfo,
-  mockERC20Token,
   mockEthAccountInfo,
 } from '../common/constants/mocks'
 import { mockWalletState } from '../stories/mock-data/mock-wallet-state'
@@ -28,6 +27,7 @@ import {
   transactionHasSameAddressError,
   isSendingToKnownTokenContractAddress
 } from './tx-utils'
+import { mockERC20Token } from '../stories/mock-data/mock-asset-options'
 
 const tokenList = [
   ...mockWalletState.fullTokenList,

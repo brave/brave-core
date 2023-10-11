@@ -26,7 +26,7 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 import { store } from '../../../store'
 import BraveCoreThemeProvider
   from '../../../../../common/BraveCoreThemeProvider'
-import { SendScreen } from '../send-page/send-screen'
+import { SendScreen } from '../send_screen/send_screen'
 import { LibContext } from '../../../../common/context/lib.context'
 
 export function AndroidSendApp() {

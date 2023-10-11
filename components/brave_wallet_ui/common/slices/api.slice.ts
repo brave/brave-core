@@ -110,6 +110,7 @@ import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 import {
   tokenSuggestionsEndpoints //
 } from './endpoints/token_suggestions.endpoints'
+import { addressEndpoints } from './endpoints/address.endpoints'
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -260,17 +261,25 @@ export function createWalletApi () {
         BraveWallet.AccountId,
         BraveWallet.AccountId
       >({
-        queryFn: async (accountId, api, extraOptions, baseQuery) => {
-          const {
-            cache,
-            data: { keyringService }
-          } = baseQuery(undefined)
+        queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
+          try {
+            const {
+              cache,
+              data: { keyringService }
+            } = baseQuery(undefined)
 
-          await keyringService.setSelectedAccount(accountId)
-          cache.clearSelectedAccount()
+            await keyringService.setSelectedAccount(accountId)
+            cache.clearSelectedAccount()
 
-          return {
-            data: accountId
+            return {
+              data: accountId
+            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              `Failed to select account (${accountId})`,
+              error
+            )
           }
         },
         invalidatesTags: [
@@ -3094,6 +3103,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: tokenSuggestionsEndpoints })
     // QR Code generator endpoints
     .injectEndpoints({ endpoints: qrCodeEndpoints })
+    // ENS, SNS, UD Address endpoints
+    .injectEndpoints({ endpoints: addressEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -3111,17 +3122,21 @@ export const {
   useApproveTransactionMutation,
   useCancelTransactionMutation,
   useClosePanelUIMutation,
+  useEnableEnsOffchainLookupMutation,
+  useGenerateReceiveAddressMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetAddressByteCodeQuery,
+  useGetAddressFromNameServiceUrlQuery,
   useGetAutopinEnabledQuery,
   useGetBuyUrlQuery,
   useGetCoingeckoIdQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultFiatCurrencyQuery,
+  useGetERC721MetadataQuery,
+  useGetEthAddressChecksumQuery,
   useGetEthTokenDecimalsQuery,
   useGetEthTokenSymbolQuery,
-  useGetERC721MetadataQuery,
   useGetEVMTransactionSimulationQuery,
   useGetExternalRewardsWalletQuery,
   useGetFVMAddressQuery,
@@ -3129,6 +3144,7 @@ export const {
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIPFSUrlFromGatewayLikeUrlQuery,
+  useGetIsBase58EncodedSolPubkeyQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetLocalIpfsNodeStatusQuery,
   useGetNetworksRegistryQuery,
@@ -3197,8 +3213,10 @@ export const {
   useRemoveUserTokenMutation,
   useReportActiveWalletsToP3AMutation,
   useRetryTransactionMutation,
+  useSendBtcTransactionMutation,
   useSendERC20TransferMutation,
   useSendERC721TransferFromMutation,
+  useSendETHFilForwarderTransferMutation,
   useSendEthTransactionMutation,
   useSendFilTransactionMutation,
   useSendSolTransactionMutation,
@@ -3220,7 +3238,6 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
-  useGenerateReceiveAddressMutation,
 } = walletApi
 
 // Derived Data Queries

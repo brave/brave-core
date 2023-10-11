@@ -35,9 +35,21 @@ import { getPriceIdForToken } from '../../utils/api-utils'
 
 // mocks
 import {
+  mockAlgorandErc20TokenId,
   mockBasicAttentionToken,
+  mockBasicAttentionTokenId,
+  mockBinanceCoinErc20TokenId,
+  mockBitcoinErc20TokenId,
+  mockDaiTokenId,
+  mockErc721Token,
   mockEthToken,
-  mockMoonCatNFT
+  mockMoonCatNFT,
+  mockSplBasicAttentionTokenId,
+  mockSplNft,
+  mockSplNftId,
+  mockSplUSDCoinId,
+  mockUSDCoinId,
+  mockZrxErc20TokenId
 } from '../../stories/mock-data/mock-asset-options'
 import { mockNFTMetadata } from '../../stories/mock-data/mock-nft-metadata'
 import { mockEthMainnet } from '../../stories/mock-data/mock-networks'
@@ -165,61 +177,6 @@ export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   coin: BraveWallet.CoinType.SOL,
   supportedKeyrings: [BraveWallet.KeyringId.kSolana],
   isEip1559: false
-}
-
-export const mockERC20Token: BraveWallet.BlockchainToken = {
-  contractAddress: 'mockContractAddress',
-  name: 'Dog Coin',
-  symbol: 'DOG',
-  logo: '',
-  isErc20: true,
-  isErc721: false,
-  isErc1155: false,
-  isNft: false,
-  isSpam: false,
-  decimals: 18,
-  visible: true,
-  tokenId: '',
-  coingeckoId: '',
-  coin: BraveWallet.CoinType.ETH,
-  chainId: BraveWallet.MAINNET_CHAIN_ID
-}
-
-export const mockErc721Token: BraveWallet.BlockchainToken = {
-  contractAddress: '0x59468516a8259058bad1ca5f8f4bff190d30e066',
-  name: 'Invisible Friends',
-  symbol: 'INVSBLE',
-  logo: 'https://ipfs.io/ipfs/QmX4nfgA35MiW5APoc4P815hMcH8hAt7edi5H3wXkFm485/2D/2585.gif',
-  isErc20: false,
-  isErc721: true,
-  isErc1155: false,
-  isNft: true,
-  isSpam: false,
-  decimals: 18,
-  visible: true,
-  tokenId: '0x0a19',
-  coingeckoId: '',
-  coin: BraveWallet.CoinType.ETH,
-  chainId: BraveWallet.MAINNET_CHAIN_ID
-}
-
-export const mockSplNft: BraveWallet.BlockchainToken = {
-  contractAddress: 'wt1PhURTzRSgmWKHBEJgSX8hN9TdkdNoKhPAnwCmnZE',
-  name: 'The Degen #2314',
-  symbol: 'BNFT',
-  logo: 'https://shdw-drive.genesysgo.net/FR3sEzyAmQMooUYhcPPnN4TmVLSZWi3cEwAWpB4nJvYJ/image-2.png',
-  isErc20: false,
-  isErc721: false,
-  isErc1155: false,
-  isNft: true,
-  isSpam: false,
-  decimals: 1,
-  visible: true,
-  tokenId: 'wt1PhURTzRSgmWKHBEJgSX8hN9TdkdNoKhPAnwCmnZE',
-  coingeckoId: '',
-  coin: BraveWallet.CoinType.SOL,
-  chainId: BraveWallet.SOLANA_MAINNET,
-
 }
 
 export const mockNftPinningStatus = {
@@ -1406,3 +1363,158 @@ export const mockOnRampCurrencies: BraveWallet.OnRampCurrency[] = [
     providers: []
   }
 ]
+
+export type NativeAssetBalanceRegistry = Record<
+  string, // account address
+  | Record<
+      string, // chainId
+      string // balance
+    >
+  | undefined
+>
+
+export type TokenBalanceRegistry = Record<
+  string, // account address
+  Record<
+    string, // asset identifier
+    string // balance
+  >
+>
+
+export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
+  [mockAccount.address]: {
+    [BraveWallet.BITCOIN_MAINNET]: '0',
+    [BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID]: '836',
+    [BraveWallet.FILECOIN_MAINNET]: '0',
+    [BraveWallet.MAINNET_CHAIN_ID]: '12312',
+    [BraveWallet.SOLANA_MAINNET]: '0',
+    // Secondary Networks
+    [BraveWallet.ARBITRUM_MAINNET_CHAIN_ID]: '2322',
+    [BraveWallet.ARBITRUM_NOVA_CHAIN_ID]: '45100002',
+    [BraveWallet.AURORA_MAINNET_CHAIN_ID]: '4326',
+    [BraveWallet.AVALANCHE_MAINNET_CHAIN_ID]: '345',
+    [BraveWallet.BASE_MAINNET_CHAIN_ID]: '56453455',
+    [BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID]: '444',
+    [BraveWallet.CELO_MAINNET_CHAIN_ID]: '55851',
+    [BraveWallet.FANTOM_MAINNET_CHAIN_ID]: '1',
+    [BraveWallet.GNOSIS_CHAIN_ID]: '440502',
+    [BraveWallet.NEON_EVM_MAINNET_CHAIN_ID]: '222',
+    [BraveWallet.OPTIMISM_MAINNET_CHAIN_ID]: '567',
+    [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '111',
+    [BraveWallet.POLYGON_ZKEVM_CHAIN_ID]: '98094343',
+    [BraveWallet.ZK_SYNC_ERA_CHAIN_ID]: '2621',
+    // Test Networks
+    [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '0',
+    [BraveWallet.GOERLI_CHAIN_ID]: '67',
+    [BraveWallet.LOCALHOST_CHAIN_ID]: '133',
+    [BraveWallet.SEPOLIA_CHAIN_ID]: '7798',
+    // Other
+    [BraveWallet.GODWOKEN_CHAIN_ID]: '777',
+    [BraveWallet.PALM_CHAIN_ID]: '2',
+  },
+  [mockEthAccountInfo.address]: {
+    [BraveWallet.BITCOIN_MAINNET]: '0',
+    [BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID]: '22',
+    [BraveWallet.FILECOIN_MAINNET]: '3111',
+    [BraveWallet.MAINNET_CHAIN_ID]: '33214',
+    [BraveWallet.SOLANA_MAINNET]: '0',
+    // Secondary Networks
+    [BraveWallet.ARBITRUM_MAINNET_CHAIN_ID]: '1221',
+    [BraveWallet.ARBITRUM_NOVA_CHAIN_ID]: '251002',
+    [BraveWallet.AURORA_MAINNET_CHAIN_ID]: '1111',
+    [BraveWallet.AVALANCHE_MAINNET_CHAIN_ID]: '565',
+    [BraveWallet.BASE_MAINNET_CHAIN_ID]: '4444',
+    [BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID]: '2122',
+    [BraveWallet.CELO_MAINNET_CHAIN_ID]: '1',
+    [BraveWallet.FANTOM_MAINNET_CHAIN_ID]: '0',
+    [BraveWallet.GNOSIS_CHAIN_ID]: '2',
+    [BraveWallet.NEON_EVM_MAINNET_CHAIN_ID]: '0',
+    [BraveWallet.OPTIMISM_MAINNET_CHAIN_ID]: '2',
+    [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '55',
+    [BraveWallet.POLYGON_ZKEVM_CHAIN_ID]: '666',
+    [BraveWallet.ZK_SYNC_ERA_CHAIN_ID]: '5377',
+    // Test Networks
+    [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '1',
+    [BraveWallet.GOERLI_CHAIN_ID]: '7',
+    [BraveWallet.LOCALHOST_CHAIN_ID]: '3',
+    [BraveWallet.SEPOLIA_CHAIN_ID]: '9',
+    // Other
+    [BraveWallet.GODWOKEN_CHAIN_ID]: '727',
+    [BraveWallet.PALM_CHAIN_ID]: '1',
+  },
+  [mockSolanaAccount.address]: {
+    [BraveWallet.SOLANA_MAINNET]: '7432',
+  },
+  [mockSolanaAccountInfo.address]: {
+    [BraveWallet.SOLANA_MAINNET]: '45434545435',
+  },
+  [mockFilecoinAccount.address]: {
+    [BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID]: '34598722',
+    [BraveWallet.FILECOIN_MAINNET]: '345545',
+    [BraveWallet.MAINNET_CHAIN_ID]: '1000',
+    // Secondary Networks
+    [BraveWallet.ARBITRUM_MAINNET_CHAIN_ID]: '1000',
+    [BraveWallet.ARBITRUM_NOVA_CHAIN_ID]: '3000',
+    [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '330',
+    // Test Networks
+    [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '220',
+    [BraveWallet.GOERLI_CHAIN_ID]: '30',
+    [BraveWallet.LOCALHOST_CHAIN_ID]: '11110',
+    [BraveWallet.SEPOLIA_CHAIN_ID]: '5550',
+    // Other
+    [BraveWallet.GODWOKEN_CHAIN_ID]: '40',
+    [BraveWallet.PALM_CHAIN_ID]: '70',
+  },
+  [mockFilecoinAccountInfo.address]: {
+    [BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID]: '2334',
+    [BraveWallet.FILECOIN_MAINNET]: '35',
+    [BraveWallet.MAINNET_CHAIN_ID]: '220',
+    // Secondary Networks
+    [BraveWallet.ARBITRUM_MAINNET_CHAIN_ID]: '600',
+    [BraveWallet.ARBITRUM_NOVA_CHAIN_ID]: '400',
+    [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '30',
+    // Test Networks
+    [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '20',
+    [BraveWallet.GOERLI_CHAIN_ID]: '3',
+    [BraveWallet.LOCALHOST_CHAIN_ID]: '110',
+    [BraveWallet.SEPOLIA_CHAIN_ID]: '50',
+    // Other
+    [BraveWallet.GODWOKEN_CHAIN_ID]: '4',
+    [BraveWallet.PALM_CHAIN_ID]: '7',
+  },
+}
+
+export const mockTokenBalanceRegistry: TokenBalanceRegistry = {
+  [mockAccount.address]: {
+    [mockBasicAttentionTokenId]: '111',
+    [mockBinanceCoinErc20TokenId]: '222',
+    [mockBitcoinErc20TokenId]: '333',
+    [mockAlgorandErc20TokenId]: '444',
+    [mockZrxErc20TokenId]: '555',
+    [mockDaiTokenId]: '666',
+    [mockUSDCoinId]: '777',
+  },
+  [mockEthAccountInfo.address]: {
+    [mockBasicAttentionTokenId]: '11',
+    [mockBinanceCoinErc20TokenId]: '22',
+    [mockBitcoinErc20TokenId]: '33',
+    [mockAlgorandErc20TokenId]: '44',
+    [mockZrxErc20TokenId]: '55',
+    [mockDaiTokenId]: '66',
+    [mockUSDCoinId]: '77',
+  },
+  [mockSolanaAccount.address]: {
+    [mockSplNftId]: '1',
+    [mockSplUSDCoinId]: '14444',
+    [mockSplBasicAttentionTokenId]: '99999',
+  },
+  [mockSolanaAccountInfo.address]: {
+    [mockSplNftId]: '0',
+    [mockSplUSDCoinId]: '3333',
+    [mockSplBasicAttentionTokenId]: '3421',
+  },
+  [mockFilecoinAccount.address]: {},
+  [mockFilecoinAccountInfo.address]: {},
+}
+
+

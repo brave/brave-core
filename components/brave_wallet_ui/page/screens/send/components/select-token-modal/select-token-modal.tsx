@@ -7,8 +7,12 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
-import { WalletSelectors } from '../../../../../common/selectors'
-import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
+import {
+  selectAllVisibleUserAssetsFromQueryResult //
+} from '../../../../../common/slices/entities/blockchain-token.entity'
+import {
+  selectAllAccountInfosFromQuery //
+} from '../../../../../common/slices/entities/account-info.entity'
 
 // Types
 import {
@@ -29,6 +33,7 @@ import Amount from '../../../../../utils/amount'
 import {
   getBalance
 } from '../../../../../utils/balance-utils'
+import { getAssetIdKey } from '../../../../../utils/asset-utils'
 
 // Queries
 import {
@@ -37,6 +42,8 @@ import {
   useSetNetworkMutation,
   useGetTokenSpotPricesQuery,
   useSetSelectedAccountMutation,
+  useGetUserTokensRegistryQuery,
+  useGetAccountInfosRegistryQuery,
 } from '../../../../../common/slices/api.slice'
 import {
   querySubscriptionOptions60s
@@ -77,10 +84,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
     const { onClose, selectedSendOption, selectSendAsset } = props
 
-    // Wallet Selectors
-    const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-    const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
-
     // State
     const [searchValue, setSearchValue] = React.useState<string>('')
     const [showNetworkDropDown, setShowNetworkDropDown] = React.useState<boolean>(false)
@@ -91,6 +94,17 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const [setNetwork] = useSetNetworkMutation()
     const [setSelectedAccount] = useSetSelectedAccountMutation()
     const { data: networks } = useGetVisibleNetworksQuery()
+    const { accounts } = useGetAccountInfosRegistryQuery(undefined, {
+      selectFromResult: (res) => ({
+        accounts: selectAllAccountInfosFromQuery(res)
+      })
+    })
+
+    const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
+      selectFromResult: result => ({
+        userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
+      })
+    })
 
     // Methods
     const getTokenListByAccount = React.useCallback(
@@ -278,13 +292,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         ).flat(1).length === 0
     }, [accounts, getTokensBySearchValue, isLoadingBalances])
 
-    const modalTitle = React.useMemo(() => {
-      if (selectedSendOption === SendPageTabHashes.nft) {
-        return getLocale('braveWalletSendTabSelectNFTTitle')
-      }
-      return getLocale('braveWalletSendTabSelectTokenTitle')
-    }, [selectedSendOption])
-
     const tokensByAccount = React.useMemo(() => {
       if (isLoadingBalances) {
         return (
@@ -311,49 +318,49 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           {getLocale('braveWalletNoAvailableTokens')}
         </Text>
       }
+
       return accounts.map((account) =>
-        getTokensBySearchValue(account).length > 0 &&
-        <Column columnWidth='full' key={account.name}>
-          <AccountSection
-            rowWidth='full'
-            verticalPadding={6}
-            horizontalPadding={16}
-          >
-            <Text
-              textColor='text02'
-              textSize='14px'
-              isBold={true}
+        getTokensBySearchValue(account).length > 0 ? (
+          <Column columnWidth='full' key={account.name}>
+            <AccountSection
+              rowWidth='full'
+              verticalPadding={6}
+              horizontalPadding={16}
             >
-              {account.name}
-            </Text>
-            {selectedSendOption === SendPageTabHashes.token &&
-              <Text
-                textColor='text03'
-                textSize='14px'
-                isBold={false}
-              >
-                {getAccountFiatValue(account)}
+              <Text textColor='text02' textSize='14px' isBold={true}>
+                {account.name}
               </Text>
-            }
-          </AccountSection>
-          <Column columnWidth='full' horizontalPadding={8}>
-            <VerticalSpacer size={8} />
-            {getTokensBySearchValue(account).map((token) =>
-              <TokenListItem
-                token={token}
-                onClick={() => onSelectSendAsset(token, account)}
-                key={`${token.contractAddress}-${token.chainId}-${token.tokenId}`}
-                balance={getBalance(account.accountId, token, tokenBalancesRegistry)}
-                spotPrice={
-                  spotPriceRegistry
-                    ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)
-                        .format()
-                    : ''
-                }
-              />
-            )}
+              {selectedSendOption === SendPageTabHashes.token && (
+                <Text textColor='text03' textSize='14px' isBold={false}>
+                  {getAccountFiatValue(account)}
+                </Text>
+              )}
+            </AccountSection>
+            <Column columnWidth='full' horizontalPadding={8}>
+              <VerticalSpacer size={8} />
+              {getTokensBySearchValue(account).map((token) => (
+                <TokenListItem
+                  token={token}
+                  onClick={() => onSelectSendAsset(token, account)}
+                  key={getAssetIdKey(token)}
+                  balance={getBalance(
+                    account.accountId,
+                    token,
+                    tokenBalancesRegistry
+                  )}
+                  spotPrice={
+                    spotPriceRegistry
+                      ? getTokenPriceAmountFromRegistry(
+                          spotPriceRegistry,
+                          token
+                        ).format()
+                      : ''
+                  }
+                />
+              ))}
+            </Column>
           </Column>
-        </Column>
+        ) : null
       )
     }, [
       accounts,
@@ -365,6 +372,13 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       tokenBalancesRegistry,
       isLoadingBalances
     ])
+
+    // computed
+    const modalTitle = getLocale(
+      selectedSendOption === SendPageTabHashes.nft
+        ? 'braveWalletSendTabSelectNFTTitle'
+        : 'braveWalletSendTabSelectTokenTitle'
+    )
 
     // render
     return (
