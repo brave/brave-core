@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/side_panel/side_panel_entry_id.h b/chrome/browser/ui/side_panel/side_panel_entry_id.h
+index ab41305e86ec79edb527c76042f3b1cd96805922..38069712ec7310e6ef7f1d06adfd4cc5aa41b423 100644
+--- a/chrome/browser/ui/side_panel/side_panel_entry_id.h
++++ b/chrome/browser/ui/side_panel/side_panel_entry_id.h
+@@ -26,7 +26,7 @@
+   /* Contextual Entries */                                   \
+   V(kSideSearch)                                             \
+   V(kLens)                                                   \
+-  V(kAssistant)                                              \
++  V(kAssistant) V(kPlaylist) V(kChatUI)                      \
+   V(kAboutThisSite)                                          \
+   V(kCustomizeChrome)                                        \
+   V(kSearchCompanion)                                        \
