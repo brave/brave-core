@@ -12,7 +12,7 @@ import android.content.Intent;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 
 /**
@@ -27,7 +27,8 @@ public final class BravePackageReplacedBroadcastReceiver extends BroadcastReceiv
         if (!Intent.ACTION_MY_PACKAGE_REPLACED.equals(intent.getAction())) return;
         BraveUpgradeJobIntentServiceImpl.maybePerformUpgradeTasks(context);
         try {
-            SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, 0);
+            ChromeSharedPreferences.getInstance()
+                    .writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, 0);
             // Set dormant users notifications
             if (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
                     || context.getPackageName().equals(
