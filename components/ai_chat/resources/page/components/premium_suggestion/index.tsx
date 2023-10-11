@@ -8,6 +8,7 @@ import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import formatMessage from '$web-common/formatMessage'
+import getPageHandlerInstance from '../../api/page_handler'
 
 import styles from './style.module.scss'
 
@@ -25,7 +26,10 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
     }
   })
 
-  const handlePremiumButtonClick = () => {}
+  const handlePremiumButtonClick = () => {
+    // TODO(petemill): Build the url in the browser
+    getPageHandlerInstance().pageHandler.openURL({url: 'https://account.brave.com/account/?intent=checkout&product=vpn' })
+  }
 
   return (
     <div className={styles.boxPremium}>
