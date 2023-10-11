@@ -1489,7 +1489,7 @@ Are you sure you want to do this?
         Uphold
       </message>
       <message name="IDS_BITFLYER">
-        Bitflyer
+        bitFlyer
       </message>
       <message name="IDS_GEMINI">
         Gemini
