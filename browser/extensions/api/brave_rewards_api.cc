@@ -73,7 +73,7 @@ content::WebContents* WebContentsFromBrowserContext(
 RewardsPanelCoordinator* GetPanelCoordinator(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
-  auto* browser = chrome::FindBrowserWithWebContents(web_contents);
+  auto* browser = chrome::FindBrowserWithTab(web_contents);
   return browser ? RewardsPanelCoordinator::FromBrowser(browser) : nullptr;
 }
 
@@ -94,7 +94,7 @@ TipPanelCoordinator* GetTipPanelCoordinator(
     return nullptr;
   }
 
-  auto* browser = chrome::FindBrowserWithWebContents(contents);
+  auto* browser = chrome::FindBrowserWithTab(contents);
   if (!browser) {
     return nullptr;
   }

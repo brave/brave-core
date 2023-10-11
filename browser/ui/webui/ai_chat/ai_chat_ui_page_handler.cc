@@ -193,8 +193,7 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
                                    : web_contents();
 #if !BUILDFLAG(IS_ANDROID)
   const GURL url("brave://settings/leo-assistant");
-  if (auto* browser =
-          chrome::FindBrowserWithWebContents(contents_to_navigate)) {
+  if (auto* browser = chrome::FindBrowserWithTab(contents_to_navigate)) {
     ShowSingletonTab(browser, url);
   } else {
     contents_to_navigate->OpenURL({url, content::Referrer(),

@@ -284,8 +284,7 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
                              WindowOpenDisposition::NEW_FOREGROUND_TAB,
                              ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false));
 #else
-  auto* browser =
-      chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
+  auto* browser = chrome::FindBrowserWithTab(web_ui()->GetWebContents());
   ShowSingletonTabOverwritingNTP(browser, file_url);
 #endif
 }
