@@ -188,7 +188,7 @@ public actor FilterListResourceDownloader {
     do {
       let engine = try await CachedAdBlockEngine.compile(
         filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-        isAlwaysAggressive: false
+        isAlwaysAggressive: isAlwaysAggressive
       )
       ContentBlockerManager.log.debug("Compiled engine for `\(componentId)` v\(version)")
       await AdBlockStats.shared.add(engine: engine)
