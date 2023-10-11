@@ -109,13 +109,9 @@ public actor LaunchHelper {
   /// Get all possible types of blocklist types available in this app, this includes actual and potential types
   /// This is used to delete old filter lists so that we clean up old stuff
   @MainActor private func getAllValidBlocklistTypes() -> Set<ContentBlockerManager.BlocklistType> {
-    return FilterListStorage.shared.filterLists
+    return FilterListStorage.shared
       // All filter lists blocklist types
-      .reduce(Set<ContentBlockerManager.BlocklistType>()) { partialResult, filterList in
-        return partialResult.union([
-          .filterList(componentId: filterList.entry.componentId, isAlwaysAggressive: filterList.isAlwaysAggressive)
-        ])
-      }
+      .validBlocklistTypes
       // All generic types
       .union(
         ContentBlockerManager.GenericBlocklistType.allCases.map { .generic($0) }
@@ -127,6 +123,29 @@ public actor LaunchHelper {
   }
 }
 
+private extension FilterListStorage {
+  /// Return all the blocklist types that are valid for filter lists.
+  var validBlocklistTypes: Set<ContentBlockerManager.BlocklistType> {
+    if filterLists.isEmpty {
+      // If we don't have filter lists yet loaded, use the settings
+      return Set(allFilterListSettings.compactMap { setting in
+        guard let componentId = setting.componentId else { return nil }
+        return .filterList(
+          componentId: componentId,
+          isAlwaysAggressive: setting.isAlwaysAggressive
+        )
+      })
+    } else {
+      // If we do have filter lists yet loaded, use them as they are always the most up to date and accurate
+      return Set(filterLists.map { filterList in
+        return .filterList(
+          componentId: filterList.entry.componentId, 
+          isAlwaysAggressive: filterList.isAlwaysAggressive
+        )
+      })
+    }
+  }
+}
 private extension ShieldLevel {
   /// Return a list of first launch content blocker modes that MUST be precompiled during launch
   var firstLaunchBlockingModes: Set<ContentBlockerManager.BlockingMode> {
