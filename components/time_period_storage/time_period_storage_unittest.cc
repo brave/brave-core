@@ -19,15 +19,22 @@ constexpr char kPrefName[] = "brave.weekly_test";
 
 class TimePeriodStorageTest : public ::testing::Test {
  public:
-  TimePeriodStorageTest() : clock_(new base::SimpleTestClock) {
+  TimePeriodStorageTest() {
     pref_service_.registry()->RegisterListPref(kPrefName);
-
-    clock_->SetNow(base::Time::Now());
   }
 
   void InitStorage(size_t days) {
-    state_ = std::make_unique<TimePeriodStorage>(
-        &pref_service_, kPrefName, days, std::unique_ptr<base::Clock>(clock_));
+    std::unique_ptr<base::SimpleTestClock> clock =
+        std::make_unique<base::SimpleTestClock>();
+
+    base::Time future_mock_time;
+    // Set to fixed date to avoid DST related issues
+    CHECK(base::Time::FromString("2050-01-04", &future_mock_time));
+    clock->SetNow(future_mock_time.LocalMidnight() - base::Hours(4));
+    clock_ = clock.get();
+
+    state_ = std::make_unique<TimePeriodStorage>(&pref_service_, kPrefName,
+                                                 days, std::move(clock));
   }
 
  protected:
@@ -84,8 +91,6 @@ TEST_F(TimePeriodStorageTest, GetSumInCustomPeriod) {
   base::TimeDelta start_time_delta = base::Days(9) + base::Hours(1);
   base::TimeDelta end_time_delta = base::Days(4) - base::Hours(1);
   uint64_t saving = 10000;
-  // Move clock right before midnight daily cutoff
-  clock_->SetNow(base::Time::Now().LocalMidnight() - base::Hours(4));
 
   InitStorage(14);
   state_->AddDelta(saving);
