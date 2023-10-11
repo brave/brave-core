@@ -8,15 +8,19 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
+#include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
 
@@ -57,9 +61,12 @@ InlineContentAdHandler::InlineContentAdHandler(
       serving_(subdivision_targeting, anti_targeting_resource) {
   event_handler_.SetDelegate(this);
   serving_.SetDelegate(this);
+  TabManager::GetInstance().AddObserver(this);
 }
 
-InlineContentAdHandler::~InlineContentAdHandler() = default;
+InlineContentAdHandler::~InlineContentAdHandler() {
+  TabManager::GetInstance().RemoveObserver(this);
+}
 
 void InlineContentAdHandler::MaybeServe(
     const std::string& dimensions,
@@ -109,6 +116,28 @@ void InlineContentAdHandler::MaybeServeCallback(
                                           *ad, std::move(callback)));
 }
 
+void InlineContentAdHandler::CacheAdPlacement(const int32_t tab_id,
+                                              const InlineContentAdInfo& ad) {
+  BLOG(1, "Cached inline content ad with placement id "
+              << ad.placement_id << " and tab id " << tab_id);
+
+  placement_ids_[tab_id].push_back(ad.placement_id);
+}
+
+void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(
+    const int32_t tab_id) {
+  if (placement_ids_[tab_id].empty()) {
+    return;
+  }
+
+  BLOG(1, "Purged orphaned inline content ad placements for tab id " << tab_id);
+
+  PurgeOrphanedAdEvents(placement_ids_[tab_id],
+                        /*intentional*/ base::DoNothing());
+
+  placement_ids_.erase(tab_id);
+}
+
 void InlineContentAdHandler::OnOpportunityAroseToServeInlineContentAd() {
   BLOG(1, "Opportunity arose to serve an inline content ad");
 
@@ -116,7 +145,10 @@ void InlineContentAdHandler::OnOpportunityAroseToServeInlineContentAd() {
 }
 
 void InlineContentAdHandler::OnDidServeInlineContentAd(
+    const int32_t tab_id,
     const InlineContentAdInfo& ad) {
+  CacheAdPlacement(tab_id, ad);
+
   BLOG(1, "Served inline content ad:\n"
               << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
@@ -165,6 +197,14 @@ void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kClicked);
+}
+
+void InlineContentAdHandler::OnTabDidChange(const TabInfo& tab) {
+  PurgeOrphanedCachedAdPlacements(tab.id);
+}
+
+void InlineContentAdHandler::OnDidCloseTab(const int32_t tab_id) {
+  PurgeOrphanedCachedAdPlacements(tab_id);
 }
 
 }  // namespace brave_ads

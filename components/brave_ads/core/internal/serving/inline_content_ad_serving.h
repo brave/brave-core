@@ -51,25 +51,31 @@ class InlineContentAdServing final {
 
   bool IsSupported() const { return !!eligible_ads_; }
 
-  void GetEligibleAds(const std::string& dimensions,
+  void GetEligibleAds(int32_t tab_id,
+                      const std::string& dimensions,
                       MaybeServeInlineContentAdCallback callback) const;
-  void BuildUserModelCallback(const std::string& dimensions,
+  void BuildUserModelCallback(int32_t tab_id,
+                              const std::string& dimensions,
                               MaybeServeInlineContentAdCallback callback,
                               const UserModelInfo& user_model) const;
   void GetEligibleAdsForUserModelCallback(
+      int32_t tab_id,
       const std::string& dimensions,
       MaybeServeInlineContentAdCallback callback,
       const CreativeInlineContentAdList& creative_ads) const;
 
-  void ServeAd(const InlineContentAdInfo& ad,
+  void ServeAd(int32_t tab_id,
+               const InlineContentAdInfo& ad,
                MaybeServeInlineContentAdCallback callback) const;
-  void SuccessfullyServedAd(const InlineContentAdInfo& ad,
+  void SuccessfullyServedAd(int32_t tab_id,
+                            const InlineContentAdInfo& ad,
                             MaybeServeInlineContentAdCallback callback) const;
   void FailedToServeAd(const std::string& dimensions,
                        MaybeServeInlineContentAdCallback callback) const;
 
   void NotifyOpportunityAroseToServeInlineContentAd() const;
-  void NotifyDidServeInlineContentAd(const InlineContentAdInfo& ad) const;
+  void NotifyDidServeInlineContentAd(int32_t tab_id,
+                                     const InlineContentAdInfo& ad) const;
   void NotifyFailedToServeInlineContentAd() const;
 
   raw_ptr<InlineContentAdServingDelegate> delegate_ = nullptr;
