@@ -13,13 +13,14 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.night_mode.ThemeType;
 import org.chromium.chrome.browser.night_mode.WebContentsDarkModeController;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
@@ -46,7 +47,7 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
             }
         }
 
-        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance();
+        SharedPreferencesManager sharedPreferencesManager = ChromeSharedPreferences.getInstance();
         BraveRadioButtonGroupThemePreference radioButtonGroupThemePreference =
             (BraveRadioButtonGroupThemePreference) findPreference(PREF_UI_THEME_PREF);
 

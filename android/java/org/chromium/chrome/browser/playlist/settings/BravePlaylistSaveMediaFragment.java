@@ -12,7 +12,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -56,15 +56,17 @@ public class BravePlaylistSaveMediaFragment
                         BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
 
         radioButtonGroupPlaylistAutoSavePreference.initialize(
-                SharedPreferencesManager.getInstance().readInt(
-                        BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0));
+                ChromeSharedPreferences.getInstance()
+                        .readInt(BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0));
 
         radioButtonGroupPlaylistAutoSavePreference.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     int method = (int) newValue;
                     if (mPlaylistService != null) {
-                        SharedPreferencesManager.getInstance().writeInt(
-                                BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, method);
+                        ChromeSharedPreferences.getInstance()
+                                .writeInt(
+                                        BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE,
+                                        method);
                     }
                     return true;
                 });

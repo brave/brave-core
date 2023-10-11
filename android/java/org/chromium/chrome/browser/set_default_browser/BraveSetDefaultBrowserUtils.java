@@ -27,7 +27,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.widget.Toast;
@@ -66,16 +66,19 @@ public class BraveSetDefaultBrowserUtils {
 
     public static void checkSetDefaultBrowserModal(AppCompatActivity activity) {
         if (!isBraveSetAsDefaultBrowser(activity) && !isBraveDefaultDontAsk()) {
-            if (SharedPreferencesManager.getInstance().readInt(
-                        BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+            if (ChromeSharedPreferences.getInstance()
+                            .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                     == 5) {
                 showBraveSetDefaultBrowserDialog(activity, false);
 
             } else if (shouldShowBraveWasDefaultDialog()) {
-                int braveWasDefaultCount = SharedPreferencesManager.getInstance().readInt(
-                        BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
-                SharedPreferencesManager.getInstance().writeInt(
-                        BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT, braveWasDefaultCount + 1);
+                int braveWasDefaultCount =
+                        ChromeSharedPreferences.getInstance()
+                                .readInt(BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
+                ChromeSharedPreferences.getInstance()
+                        .writeInt(
+                                BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT,
+                                braveWasDefaultCount + 1);
                 showBraveSetDefaultBrowserDialog(activity, false);
             }
 
@@ -112,18 +115,21 @@ public class BraveSetDefaultBrowserUtils {
             }
 
             if (!isFromMenu) {
-                int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
-                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
-                SharedPreferencesManager.getInstance().writeInt(
-                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
-                        braveDefaultModalCount + 1);
+                int braveDefaultModalCount =
+                        ChromeSharedPreferences.getInstance()
+                                .readInt(BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
+                ChromeSharedPreferences.getInstance()
+                        .writeInt(
+                                BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
+                                braveDefaultModalCount + 1);
             }
         }
     }
 
     public static void setDefaultBrowser(Activity activity) {
-        int roleManagerOpenCount = SharedPreferencesManager.getInstance().readInt(
-                BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT);
+        int roleManagerOpenCount =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT);
 
         if (supportsDefaultRoleManager() && roleManagerOpenCount < 2) {
             RoleManager roleManager = activity.getSystemService(RoleManager.class);
@@ -132,9 +138,10 @@ public class BraveSetDefaultBrowserUtils {
                 if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
                     // save role manager open count as the second times onwards the dialog is shown,
                     // the system allows the user to click on "don't show again".
-                    SharedPreferencesManager.getInstance().writeInt(
-                            BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT,
-                            roleManagerOpenCount + 1);
+                    ChromeSharedPreferences.getInstance()
+                            .writeInt(
+                                    BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT,
+                                    roleManagerOpenCount + 1);
 
                     activity.startActivityForResult(
                             roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
@@ -205,28 +212,29 @@ public class BraveSetDefaultBrowserUtils {
     }
 
     private static boolean wasBraveDefaultBefore() {
-        return SharedPreferencesManager.getInstance().readBoolean(
-                BravePreferenceKeys.BRAVE_IS_DEFAULT, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_IS_DEFAULT, false);
     }
 
     private static boolean shouldShowBraveWasDefaultDialog() {
-        int braveWasDefaultCount = SharedPreferencesManager.getInstance().readInt(
-                BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
+        int braveWasDefaultCount =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
         return braveWasDefaultCount < 2 && wasBraveDefaultBefore();
     }
 
     public static void setBraveDefaultSuccess() {
-        SharedPreferencesManager.getInstance().writeBoolean(
-                BravePreferenceKeys.BRAVE_IS_DEFAULT, true);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_IS_DEFAULT, true);
     }
 
     public static void setBraveDefaultDontAsk() {
-        SharedPreferencesManager.getInstance().writeBoolean(
-                BravePreferenceKeys.BRAVE_DEFAULT_DONT_ASK, true);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_DEFAULT_DONT_ASK, true);
     }
 
     public static boolean isBraveDefaultDontAsk() {
-        return SharedPreferencesManager.getInstance().readBoolean(
-                BravePreferenceKeys.BRAVE_DEFAULT_DONT_ASK, false);
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_DEFAULT_DONT_ASK, false);
     }
 }

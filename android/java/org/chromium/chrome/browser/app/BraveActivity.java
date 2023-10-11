@@ -133,9 +133,9 @@ import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.Playli
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.PrefChangeRegistrar;
 import org.chromium.chrome.browser.preferences.PrefChangeRegistrar.PrefObserver;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
 import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
@@ -961,10 +961,10 @@ public abstract class BraveActivity extends ChromeActivity
             maybeSolveAdaptiveCaptcha();
         }
 
-        if (SharedPreferencesManager.getInstance().readBoolean(
-                    BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false);
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false);
             BraveRelaunchUtils.restart();
             return;
         }
@@ -979,8 +979,11 @@ public abstract class BraveActivity extends ChromeActivity
             BraveRewardsHelper.setRewardsEnvChange(false);
         }
 
-        int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
-        SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
+        int appOpenCount =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
+        ChromeSharedPreferences.getInstance()
+                .writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
 
         if (PackageUtils.isFirstInstall(this) && appOpenCount == 0) {
             checkForYandexSE();
@@ -1018,7 +1021,8 @@ public abstract class BraveActivity extends ChromeActivity
 
         // if (PackageUtils.isFirstInstall(this)
         //         &&
-        //         SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+        //
+        // SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
         //         == 1) {
         //     Calendar calender = Calendar.getInstance();
         //     calender.setTime(new Date());
@@ -1040,7 +1044,8 @@ public abstract class BraveActivity extends ChromeActivity
         //     OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
         // }
 
-        if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
+        if (ChromeSharedPreferences.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                == 1) {
             Calendar calender = Calendar.getInstance();
             calender.setTime(new Date());
             calender.add(Calendar.DATE, DAYS_12);
@@ -1069,8 +1074,8 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         if (PackageUtils.isFirstInstall(this)
-                && SharedPreferencesManager.getInstance().readInt(
-                           BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                && ChromeSharedPreferences.getInstance()
+                                .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                         == 1) {
             Calendar calender = Calendar.getInstance();
             calender.setTime(new Date());
@@ -1105,28 +1110,29 @@ public abstract class BraveActivity extends ChromeActivity
 
         String countryCode = Locale.getDefault().getCountry();
         if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
-                && SharedPreferencesManager.getInstance().readBoolean(
-                        BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, true)
-                && getActivityTab() != null && getActivityTab().getUrl().getSpec() != null
+                && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, true)
+                && getActivityTab() != null
+                && getActivityTab().getUrl().getSpec() != null
                 && UrlUtilities.isNTPUrl(getActivityTab().getUrl().getSpec())
-                && (SharedPreferencesManager.getInstance().readBoolean(
-                            BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, false)
-                        || SharedPreferencesManager.getInstance().readInt(
-                                   BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                && (ChromeSharedPreferences.getInstance()
+                                .readBoolean(BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, false)
+                        || ChromeSharedPreferences.getInstance()
+                                        .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                                 >= 7)) {
             showAdFreeCalloutDialog();
         }
 
         initBraveNewsController();
-        if (SharedPreferencesManager.getInstance().readBoolean(
-                    BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, false)) {
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, false);
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, false)) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_PLAYLIST, false);
             openPlaylist(false);
-        } else if (SharedPreferencesManager.getInstance().readBoolean(
-                           BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, false)) {
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, false);
+        } else if (ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, false)) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, false);
             handleDeepLinkVpn();
         } else if (!mIsDeepLink
                 && OnboardingPrefManager.getInstance().isOnboardingSearchBoxTooltip()
@@ -1137,14 +1143,14 @@ public abstract class BraveActivity extends ChromeActivity
 
         // Added to reset app links settings for upgrade case
         if (!PackageUtils.isFirstInstall(this)
-                && !SharedPreferencesManager.getInstance().readBoolean(
-                        BravePrivacySettings.PREF_APP_LINKS, true)
-                && SharedPreferencesManager.getInstance().readBoolean(
-                        BravePrivacySettings.PREF_APP_LINKS_RESET, true)) {
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePrivacySettings.PREF_APP_LINKS, true);
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePrivacySettings.PREF_APP_LINKS_RESET, false);
+                && !ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePrivacySettings.PREF_APP_LINKS, true)
+                && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePrivacySettings.PREF_APP_LINKS_RESET, true)) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePrivacySettings.PREF_APP_LINKS, true);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePrivacySettings.PREF_APP_LINKS_RESET, false);
         }
 
         mUsageMonitor = new UsageMonitor(mMiscAndroidMetrics);
@@ -1161,13 +1167,16 @@ public abstract class BraveActivity extends ChromeActivity
 
         if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
                 && BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
-            if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
-                            && (SharedPreferencesManager.getInstance().readInt(
-                                        BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+            if (BraveVpnPrefUtils.shouldShowCallout()
+                            && !BraveVpnPrefUtils.isSubscriptionPurchase()
+                            && (ChromeSharedPreferences.getInstance()
+                                                    .readInt(
+                                                            BravePreferenceKeys
+                                                                    .BRAVE_APP_OPEN_COUNT)
                                             == 1
                                     && !PackageUtils.isFirstInstall(this))
-                    || (SharedPreferencesManager.getInstance().readInt(
-                                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                    || (ChromeSharedPreferences.getInstance()
+                                            .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                                     == 7
                             && PackageUtils.isFirstInstall(this))) {
                 showVpnCalloutDialog();
@@ -1202,9 +1211,10 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void migrateBgPlaybackToFeature() {
-        if (SharedPreferencesManager.getInstance().readBoolean(
-                    BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE,
-                    false)) {
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(
+                        BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE,
+                        false)) {
             if (BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled()
                     && ChromeFeatureList.isEnabled(
                             BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)) {
@@ -1216,8 +1226,10 @@ public abstract class BraveActivity extends ChromeActivity
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL, true, true);
         }
-        SharedPreferencesManager.getInstance().writeBoolean(
-                BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE, true);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(
+                        BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE,
+                        true);
     }
 
     private void showSearchBoxTooltip() {
@@ -1271,11 +1283,11 @@ public abstract class BraveActivity extends ChromeActivity
     private void openPlaylist(boolean shouldHandlePlaylistActivity) {
         if (!shouldHandlePlaylistActivity) mIsDeepLink = true;
 
-        if (SharedPreferencesManager.getInstance().readBoolean(
-                    PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
             PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
         } else if (shouldHandlePlaylistActivity) {
             openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
         }
@@ -1320,8 +1332,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void showAdFreeCalloutDialog() {
-        SharedPreferencesManager.getInstance().writeBoolean(
-                BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, false);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, false);
 
         BraveAdFreeCalloutDialogFragment braveAdFreeCalloutDialogFragment =
                 new BraveAdFreeCalloutDialogFragment();
@@ -1341,11 +1353,12 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void checkFingerPrintingOnUpgrade() {
         if (!PackageUtils.isFirstInstall(this)
-                && SharedPreferencesManager.getInstance().readInt(
-                           BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+                && ChromeSharedPreferences.getInstance()
+                                .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                         == 0) {
-            boolean value = SharedPreferencesManager.getInstance().readBoolean(
-                    BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION, true);
+            boolean value =
+                    ChromeSharedPreferences.getInstance()
+                            .readBoolean(BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION, true);
             if (value) {
                 BraveShieldsContentSettings.setShieldsValue(Profile.getLastUsedRegularProfile(), "",
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
@@ -1539,12 +1552,12 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private boolean isNoRestoreState() {
-        return SharedPreferencesManager.getInstance()
+        return ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.BRAVE_CLOSE_TABS_ON_EXIT, false);
     }
 
     private boolean isClearBrowsingDataOnExit() {
-        return SharedPreferencesManager.getInstance()
+        return ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false);
     }
 

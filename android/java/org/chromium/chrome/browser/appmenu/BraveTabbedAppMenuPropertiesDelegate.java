@@ -33,7 +33,7 @@ import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
@@ -169,8 +169,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         MenuItem bravePlaylist = menu.findItem(R.id.brave_playlist_id);
         if (bravePlaylist != null) {
             if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                    && SharedPreferencesManager.getInstance().readBoolean(
-                            BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+                    && ChromeSharedPreferences.getInstance()
+                            .readBoolean(BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
                 bravePlaylist.setVisible(true);
                 if (shouldShowIconBeforeItem()) {
                     bravePlaylist.setIcon(

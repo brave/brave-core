@@ -24,8 +24,8 @@ import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.Pref;
-import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.safe_browsing.settings.NoGooglePlayServicesDialog;
@@ -391,7 +391,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mAppLinks.setOnPreferenceChangeListener(this);
 
         boolean isAppLinksAllowed =
-                SharedPreferencesManager.getInstance().readBoolean(PREF_APP_LINKS, true);
+                ChromeSharedPreferences.getInstance().readBoolean(PREF_APP_LINKS, true);
         mAppLinks.setChecked(isAppLinksAllowed);
 
         mWebrtcPolicy = (ChromeBasePreference) findPreference(PREF_WEBRTC_POLICY);
@@ -610,7 +610,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, (boolean) newValue);
         } else if (PREF_APP_LINKS.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_APP_LINKS, (boolean) newValue);
-            SharedPreferencesManager.getInstance().writeBoolean(
+            ChromeSharedPreferences.getInstance().writeBoolean(
                     BravePrivacySettings.PREF_APP_LINKS_RESET, false);
         } else if (PREF_BLOCK_TRACKERS_ADS.equals(key)) {
             if (newValue instanceof String) {
