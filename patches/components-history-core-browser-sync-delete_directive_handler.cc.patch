@@ -1,0 +1,12 @@
+diff --git a/components/history/core/browser/sync/delete_directive_handler.cc b/components/history/core/browser/sync/delete_directive_handler.cc
+index aed3aec1f04f15f9f806887110d87abac9ef06ba..13053b7fe8a0281e3f9d9f69b58bf35e5d199e2e 100644
+--- a/components/history/core/browser/sync/delete_directive_handler.cc
++++ b/components/history/core/browser/sync/delete_directive_handler.cc
+@@ -387,7 +387,6 @@ bool DeleteDirectiveHandler::CreateUrlDeleteDirective(const GURL& url) {
+ 
+   sync_pb::UrlDirective* url_directive =
+       delete_directive.mutable_url_directive();
+-  url_directive->set_url(url.spec());
+   url_directive->set_end_time_usec(TimeToUnixUsec(base::Time::Now()));
+ 
+   absl::optional<syncer::ModelError> error =
