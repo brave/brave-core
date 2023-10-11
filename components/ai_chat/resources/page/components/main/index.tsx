@@ -40,6 +40,8 @@ function Main() {
 
   const shouldShowPremiumSuggestionStandalone = !context.hasUserDissmisedPremiumPrompt && !siteInfo && !context.isPremiumUser
 
+  const shouldDisplayEraseAction = context.conversationHistory.length >= 1
+
   let conversationListElement = <PrivacyMessage />
   let siteTitleElement = null
   let promptAutoSuggestionElement = null
@@ -86,6 +88,7 @@ function Main() {
         <div className={styles.actions}>
           {hasSeenAgreement && (
             <>
+            {shouldDisplayEraseAction && (
               <Button
                 kind='plain-faint'
                 aria-label='Erase conversation history'
@@ -94,6 +97,7 @@ function Main() {
               >
                 <Icon name='erase' />
               </Button>
+            )}
               <FeatureButtonMenu />
             </>
           )}
