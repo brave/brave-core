@@ -9,6 +9,8 @@
 #include "base/logging.h"
 #include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
+#include "brave/components/history/core/browser/sync/brave_history_delete_directives_model_type_controller.h"
+#include "brave/components/history/core/browser/sync/brave_history_model_type_controller.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "brave/components/sync/test/brave_mock_sync_engine.h"
@@ -24,6 +26,7 @@
 #include "components/sync/test/fake_sync_engine.h"
 #include "components/sync/test/fake_sync_manager.h"
 #include "components/sync/test/sync_service_impl_bundle.h"
+#include "components/sync/test/test_model_type_store_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -130,6 +133,10 @@ class BraveSyncServiceImplTest : public testing::Test {
 
   FakeSyncEngine* engine() {
     return component_factory()->last_created_engine();
+  }
+
+  signin::IdentityManager* identity_manager() {
+    return sync_service_impl_bundle_.identity_manager();
   }
 
  protected:
@@ -485,6 +492,64 @@ TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
       SyncServiceImpl::ResetEngineReason::kDisabledAccount);
 
   EXPECT_TRUE(join_chain_callback_invoked);
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
+  // This test ensures that BraveHistoryModelTypeController and
+  // BraveHistoryDeleteDirectivesModelTypeController allow to run if
+  // IsEncryptEverythingEnabled is set to true; upstream doesn't allow
+  // History sync when encrypt everything is set to true.
+  // The test is placed here alongside BraveSyncServiceImplTest because
+  // here is the infrastructure which allows implement it.
+  // Otherwise TestSyncUserSettings would not allow to override
+  // IsEncryptEverythingEnabled.
+
+  OSCryptMocker::SetUp();
+  CreateSyncService();
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.RunUntilIdle();
+
+  brave_sync_service_impl()
+      ->GetUserSettings()
+      ->SetInitialSyncFeatureSetupComplete(
+          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  EXPECT_TRUE(engine());
+
+  // Code below turns on encrypt everything
+  brave_sync_service_impl()->GetCryptoForTests()->OnEncryptedTypesChanged(
+      AlwaysEncryptedUserTypes(), true);
+
+  // Ensure encrypt everything was actually enabled
+  EXPECT_TRUE(brave_sync_service_impl()
+                  ->GetUserSettings()
+                  ->IsEncryptEverythingEnabled());
+
+  auto history_model_type_controller =
+      std::make_unique<history::BraveHistoryModelTypeController>(
+          HISTORY, brave_sync_service_impl(), identity_manager(), nullptr,
+          pref_service());
+
+  auto history_precondition_state =
+      history_model_type_controller->GetPreconditionState();
+  EXPECT_EQ(history_precondition_state,
+            DataTypeController::PreconditionState::kPreconditionsMet);
+
+  auto test_model_type_store_service =
+      std::make_unique<TestModelTypeStoreService>();
+  auto history_delete_directives_model_type_controller = std::make_unique<
+      history::BraveHistoryDeleteDirectivesModelTypeController>(
+      base::DoNothing(), brave_sync_service_impl(),
+      test_model_type_store_service.get(), nullptr, pref_service());
+
+  auto history_delete_directives_precondition_state =
+      history_delete_directives_model_type_controller->GetPreconditionState();
+  EXPECT_EQ(history_delete_directives_precondition_state,
+            DataTypeController::PreconditionState::kPreconditionsMet);
 
   OSCryptMocker::TearDown();
 }
