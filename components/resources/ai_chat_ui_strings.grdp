@@ -100,6 +100,9 @@
   <message name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
     Dismiss
   </message>
+  <message name="IDS_CHAT_UI_SWITCH_TO_DEFAULT_MODEL_BUTTON_LABEL" desc="A button label to switch to the free model">
+    Switch to the default model
+  </message>
   <message name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
     Unlock the full potential of Leo
   </message>

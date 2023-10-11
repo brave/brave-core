@@ -113,6 +113,16 @@ function DataContextProvider (props: DataContextProviderProps) {
     setHasUserDissmisedPremiumPrompt(true)
   }
 
+  const switchToDefaultModel = () => {
+    // Select the first non-premium model
+    const nonPremium = allModels.find(m => !m.isPremium)
+    if (!nonPremium) {
+      console.error('Could not find a non-premium model!')
+      return
+    }
+    setCurrentModel(nonPremium)
+  }
+
   const updateCurrentPremiumStatus = async () => {
     console.debug('Getting premium status...')
     const premiumStatus = await getPageHandlerInstance().pageHandler.getPremiumStatus()
@@ -195,6 +205,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
     hasUserDissmisedPremiumPrompt,
     setCurrentModel,
+    switchToDefaultModel,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,
