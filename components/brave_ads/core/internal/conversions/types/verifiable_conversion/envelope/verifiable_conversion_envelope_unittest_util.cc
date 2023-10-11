@@ -30,7 +30,7 @@ absl::optional<std::string> OpenVerifiableConversionEnvelopeForTesting(
     return absl::nullopt;
   }
 
-  // API requires 16 leading zero-padding bytes
+  // API requires |crypto_box_BOXZEROBYTES| leading zero-padding bytes.
   ciphertext->insert(ciphertext->cbegin(), crypto_box_BOXZEROBYTES, 0);
 
   const absl::optional<std::vector<uint8_t>> nonce =
