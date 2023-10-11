@@ -22,6 +22,8 @@ extern const char kMiscMetricsPinnedTabsStorage[];
 
 extern const char kMiscMetricsSearchSwitchedAwayFromBrave[];
 extern const char kMiscMetricsSearchBraveQueryCount[];
+extern const char kMiscMetricsTotalDnsRequestStorage[];
+extern const char kMiscMetricsUpgradedDnsRequestStorage[];
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

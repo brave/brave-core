@@ -29,3 +29,22 @@ static_library("misc_metrics") {
 
   public_deps = [ "//brave/components/misc_metrics/common:mojom" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "general_browser_usage_unittest.cc",
+    "menu_metrics_unittest.cc",
+    "privacy_hub_metrics_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/misc_metrics",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}
