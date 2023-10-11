@@ -196,7 +196,7 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
   }
 
   const DownloadBubbleDisplayInfo& GetDisplayInfo(
-      const web_app::AppId* web_app_id) override {
+      const webapps::AppId* web_app_id) override {
     info_ = DownloadBubbleDisplayInfo{};
     int download_item_index = 0, offline_item_index = 0;
     // Compose a list of models from the items stored in the test fixture.
@@ -223,7 +223,7 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
 
   bool GetAllModelsToDisplay(
       std::vector<DownloadUIModelPtr>& models,
-      const web_app::AppId* web_app_id,
+      const webapps::AppId* web_app_id,
       bool force_backfill_download_items = true) override {
     models.clear();
     int download_item_index = 0, offline_item_index = 0;
@@ -263,7 +263,7 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
 
   MOCK_METHOD(DownloadDisplay::ProgressInfo,
               GetProgressInfo,
-              (const web_app::AppId*),
+              (const webapps::AppId*),
               (const override));
 
  private:
