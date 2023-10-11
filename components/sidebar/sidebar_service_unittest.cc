@@ -219,6 +219,23 @@ class SidebarServiceTest : public testing::Test {
 
   PrefService* GetPrefs() { return &prefs_; }
 
+  size_t GetDefaultItemCount() const {
+    auto item_count = std::size(SidebarService::kDefaultBuiltInItemTypes) -
+                      1 /* for history*/;
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+      item_count -= 1;
+    }
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    if (!ai_chat::features::IsAIChatEnabled()) {
+      item_count -= 1;
+    }
+#endif
+    return item_count;
+  }
+
   TestingPrefServiceSimple prefs_;
   NiceMock<MockSidebarServiceObserver> observer_;
   std::unique_ptr<SidebarService> service_;
@@ -230,7 +247,8 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   InitService();
 
   // Check the default items count.
-  EXPECT_EQ(4UL, service_->items().size());
+  const auto default_item_count = GetDefaultItemCount();
+  EXPECT_EQ(default_item_count, service_->items().size());
   EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
 
   // Cache 1st item to compare after removing.
@@ -241,7 +259,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   EXPECT_CALL(observer_, OnItemRemoved(item, 0)).Times(1);
   service_->RemoveItemAt(0);
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_EQ(3UL, service_->items().size());
+  EXPECT_EQ(default_item_count - 1, service_->items().size());
   EXPECT_EQ(1UL, service_->GetHiddenDefaultSidebarItems().size());
 
   // Add again.
@@ -250,19 +268,20 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   EXPECT_CALL(observer_, OnItemAdded(item, 0)).Times(1);
   service_->AddItem(item);
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_EQ(4UL, service_->items().size());
+  EXPECT_EQ(default_item_count, service_->items().size());
   EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
 
   const SidebarItem item2 = SidebarItem::Create(
       GURL("https://www.brave.com/"), u"brave software",
       SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   EXPECT_TRUE(IsWebType(item2));
-  EXPECT_CALL(observer_, OnItemAdded(item2, 4)).Times(1);
+  EXPECT_CALL(observer_, OnItemAdded(item2, default_item_count)).Times(1);
   service_->AddItem(item2);
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_EQ(5UL, service_->items().size());
+  EXPECT_EQ(default_item_count + 1, service_->items().size());
   // Default item count is not changed.
-  EXPECT_EQ(4UL, service_->GetCurrentlyPresentBuiltInTypes().size());
+  EXPECT_EQ(default_item_count,
+            service_->GetCurrentlyPresentBuiltInTypes().size());
 }
 
 TEST_F(SidebarServiceTest, MoveItem) {
@@ -274,7 +293,7 @@ TEST_F(SidebarServiceTest, MoveItem) {
       GURL("https://www.brave.com/"), u"brave software",
       SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   service_->AddItem(new_item);
-  EXPECT_EQ(5UL, service_->items().size());
+  EXPECT_EQ(GetDefaultItemCount() + 1, service_->items().size());
 
   // Move item at 0 to index 2.
   SidebarItem item = service_->items()[0];
@@ -385,12 +404,13 @@ TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   InitService();
 
-  // Add one more item to test with 4 items.
+  // Add one more item to test.
+  const auto expected_item_count = GetDefaultItemCount() + 1;
   SidebarItem new_item = SidebarItem::Create(
       GURL("https://www.brave.com/"), u"brave software",
       SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
   service_->AddItem(new_item);
-  EXPECT_EQ(5UL, service_->items().size());
+  EXPECT_EQ(expected_item_count, service_->items().size());
 
   // Move item at 0 to index 2.
   SidebarItem item = service_->items()[0];
@@ -401,7 +421,7 @@ TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {
 
   ResetService();
   InitService();
-  EXPECT_EQ(5UL, service_->items().size());
+  EXPECT_EQ(expected_item_count, service_->items().size());
   EXPECT_EQ(url, service_->items()[2].url);
 }
 
@@ -441,7 +461,7 @@ TEST_F(SidebarServiceTest, HideBuiltInItem) {
 
 TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
-  const std::vector<SidebarItem::BuiltInItemType> hidden_builtin_types{
+  std::vector<SidebarItem::BuiltInItemType> hidden_builtin_types{
       SidebarItem::BuiltInItemType::kBookmarks};
   // Have prefs which contain a custom item and hides 1 built-in item
   {
@@ -473,32 +493,63 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
                               &SidebarItem::built_in_item_type));
   // All other default items should be present even though not present
   // in kSidebarItems pref.
-  std::vector<SidebarItem::BuiltInItemType> remaining_default_items{
-      SidebarItem::BuiltInItemType::kBraveTalk,
-      SidebarItem::BuiltInItemType::kWallet,
-      SidebarItem::BuiltInItemType::kReadingList,
-  };
-  // Get expected indexes (excluding the hidden items).
-  std::vector<SidebarItem::BuiltInItemType> all_default_item_types;
-  base::ranges::for_each(SidebarService::kDefaultBuiltInItemTypes,
-                         [&](const auto& btint) {
-                           if (!base::Contains(hidden_builtin_types, btint)) {
-                             all_default_item_types.push_back(btint);
-                           }
-                         });
+  std::vector<SidebarItem::BuiltInItemType> default_items;
+  base::ranges::copy_if(
+      SidebarService::kDefaultBuiltInItemTypes,
+      std::back_inserter(default_items),
+      [&hidden_builtin_types](const auto& built_in_type) {
+        if (base::Contains(hidden_builtin_types, built_in_type)) {
+          // Hidden by preference
+          return false;
+        }
+
+        if (built_in_type == SidebarItem::BuiltInItemType::kHistory) {
+          // Currently, we don't show kHistory item regardless of the
+          // preference.
+          return false;
+        }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+        if (!ai_chat::features::IsAIChatEnabled() &&
+            built_in_type == SidebarItem::BuiltInItemType::kChatUI) {
+          return false;
+        }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+        if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+            built_in_type == SidebarItem::BuiltInItemType::kPlaylist) {
+          return false;
+        }
+#endif
+        return true;
+      });
+
   // There should also be the custom item we added
-  EXPECT_EQ(remaining_default_items.size() + 1, service_->items().size());
-  for (auto built_in_type : remaining_default_items) {
+  EXPECT_EQ(default_items.size() + 1, service_->items().size());
+
+  // Get expected indexes (excluding the hidden items).
+  const auto custom_item_index = std::distance(
+      items.begin(),
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kNone,
+                         &SidebarItem::built_in_item_type));
+
+  for (auto built_in_type : default_items) {
+    auto expected_index =
+        std::distance(std::begin(default_items),
+                      base::ranges::find(default_items, built_in_type));
+    if (expected_index >= custom_item_index) {
+      expected_index++;
+    }
+
     auto iter = base::ranges::find(items, built_in_type,
                                    &SidebarItem::built_in_item_type);
     EXPECT_NE(iter, items.end());
-    auto expected_index =
-        base::ranges::find(all_default_item_types, built_in_type) -
-        std::begin(all_default_item_types);
-    auto index = iter - items.begin();
-    EXPECT_EQ(expected_index, index)
+    auto actual_index = std::distance(items.begin(), iter);
+
+    EXPECT_EQ(expected_index, actual_index)
         << "New item with ID " << static_cast<int>(built_in_type)
-        << " was inserted at expected index";
+        << " was inserted at unexpected index";
   }
 }
 
@@ -534,7 +585,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   EXPECT_EQ(2UL, hidden_preference->GetValue()->GetList().size())
       << "Migration resulted in hiding the expected number of items";
   // Verify expected items
-  EXPECT_EQ(2UL, service_->items().size());
+  EXPECT_EQ(GetDefaultItemCount() - 2UL, service_->items().size());
   auto items = service_->items();
   auto talk_iter =
       base::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
@@ -603,7 +654,8 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   // kSidebarItems should still have custom item
   EXPECT_FALSE(preference->IsDefaultValue());
   // Verify expected items = items in pref plus new item (reading list)
-  EXPECT_EQ(5UL, service_->items().size());
+  const auto default_item_count = GetDefaultItemCount();
+  EXPECT_EQ(default_item_count + 1, service_->items().size());
   // Simulate re-launch and check service has still updated items.
   // This tests re-migration doesn't occur and hide all the hideable built-in
   // items.
@@ -614,7 +666,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   EXPECT_EQ(0UL, hidden_preference->GetValue()->GetList().size());
   EXPECT_FALSE(hidden_preference->IsDefaultValue());
   EXPECT_FALSE(preference->IsDefaultValue());
-  EXPECT_EQ(5UL, service_->items().size());
+  EXPECT_EQ(default_item_count + 1, service_->items().size());
 
   // Check again after service updates prefs. Force serialization by performing
   // a move operation (and move it back).
@@ -624,11 +676,11 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   InitService();
   // Pref now includes new default items added after migration (ReadingList),
   // so size has increased by 1.
-  EXPECT_EQ(5UL, preference->GetValue()->GetList().size());
+  EXPECT_EQ(default_item_count + 1, preference->GetValue()->GetList().size());
   EXPECT_EQ(0UL, hidden_preference->GetValue()->GetList().size());
   EXPECT_FALSE(hidden_preference->IsDefaultValue());
   EXPECT_FALSE(preference->IsDefaultValue());
-  EXPECT_EQ(5UL, service_->items().size());
+  EXPECT_EQ(default_item_count + 1, service_->items().size());
   // Verify that new a new item not contained in prefs was added at correct
   // index.
   auto items = service_->items();
@@ -693,9 +745,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   // included in the pref, above), minus the obsolete items (history), plus any
   // new default items, plus the custom item.
   EXPECT_EQ(service_->items().size(),
-            std::size(SidebarService::kDefaultBuiltInItemTypes) -
-                3 /* for History, Playlist, ChatUI: invisible built-in itmes */
-                + 1 /*for custom item added above*/);
+            GetDefaultItemCount() + 1 /*for custom item added above*/);
 }
 
 TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
@@ -769,8 +819,22 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
 
   InitService();
 
+  // Brave Talk and Reading list.
+  auto expected_count = 2UL;
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    expected_count += 1;
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatEnabled()) {
+    expected_count += 1;
+  }
+#endif
+
   // Check service has updated built-in item. Previously url was deprecated.xxx.
-  EXPECT_EQ(2UL, service_->items().size());
+  EXPECT_EQ(expected_count, service_->items().size());
   EXPECT_EQ(GURL(kBraveTalkURL), service_->items()[0].url);
 
   // Simulate re-launch and check service has still updated items.
@@ -779,7 +843,7 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
   InitService();
 
   // Check service has updated built-in item. Previously url was deprecated.xxx.
-  EXPECT_EQ(2UL, service_->items().size());
+  EXPECT_EQ(expected_count, service_->items().size());
   EXPECT_EQ(GURL(kBraveTalkURL), service_->items()[0].url);
 }
 
@@ -971,13 +1035,7 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
 
 TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
   InitService();
-  EXPECT_EQ(
-#if BUILDFLAG(ENABLE_AI_CHAT)
-      5UL,
-#else
-      4UL,
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
-      service_->items().size());
+  EXPECT_EQ(GetDefaultItemCount(), service_->items().size());
   EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
 
   EXPECT_TRUE(
@@ -996,20 +1054,25 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
   const auto* sidebar_items = sidebar.FindList("sidebar_items");
   CHECK(sidebar_items);
 
-  LoadFromPrefsTest(std::move(sidebar),
-                    {
-                        SidebarItem::BuiltInItemType::kChatUI,
-                        SidebarItem::BuiltInItemType::kWallet,
-                        SidebarItem::BuiltInItemType::kReadingList,
-                        SidebarItem::BuiltInItemType::kBookmarks,
-                        SidebarItem::BuiltInItemType::kBraveTalk,
-                    },
+  std::vector items = {
+      SidebarItem::BuiltInItemType::kChatUI,
+      SidebarItem::BuiltInItemType::kWallet,
+      SidebarItem::BuiltInItemType::kReadingList,
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kBraveTalk,
+  };
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
-                    sidebar_items->size()
+  auto expected_count = sidebar_items->size();
 #else
-                    sidebar_items->size() - 1
+  auto expected_count = sidebar_items->size() - 1;
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-  );
+
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    expected_count++;
+    items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
+  }
+  LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
@@ -1018,19 +1081,29 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
   const auto* sidebar_items = sidebar.FindList("sidebar_items");
   CHECK(sidebar_items);
 
-  LoadFromPrefsTest(std::move(sidebar),
-                    {
-                        SidebarItem::BuiltInItemType::kBraveTalk,
-                        SidebarItem::BuiltInItemType::kBookmarks,
-                        SidebarItem::BuiltInItemType::kReadingList,
-                        SidebarItem::BuiltInItemType::kChatUI,
-                    },
+  std::vector items = {
+      SidebarItem::BuiltInItemType::kBraveTalk,
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kReadingList,
+      SidebarItem::BuiltInItemType::kChatUI,
+      SidebarItem::BuiltInItemType::kPlaylist,
+  };
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
-                    sidebar_items->size()
+  auto expected_count = sidebar_items->size();
 #else
-                    sidebar_items->size() - 1
+  auto expected_count =
+      sidebar_items->size() - 1
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-  );
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    expected_count++;
+    items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
+  }
+#endif
+
+  LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
@@ -1040,20 +1113,28 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
   const auto* sidebar_items = sidebar.FindList("sidebar_items");
   CHECK(sidebar_items);
 
-  LoadFromPrefsTest(std::move(sidebar),
-                    {
-                        SidebarItem::BuiltInItemType::kBraveTalk,
-                        SidebarItem::BuiltInItemType::kBookmarks,
-                        SidebarItem::BuiltInItemType::kChatUI,
-                        SidebarItem::BuiltInItemType::kReadingList,
-                        SidebarItem::BuiltInItemType::kWallet,
-                    },
+  std::vector items = {
+      SidebarItem::BuiltInItemType::kBraveTalk,
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kChatUI,
+      SidebarItem::BuiltInItemType::kReadingList,
+      SidebarItem::BuiltInItemType::kWallet,
+  };
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
-                    sidebar_items->size() + 1
+  auto expected_count = sidebar_items->size() + 1;
 #else
-                    sidebar_items->size()
+  auto expected_count = sidebar_items->size();
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-  );
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    expected_count++;
+    items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
+  }
+#endif
+
+  LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
 }  // namespace sidebar
