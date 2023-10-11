@@ -19,8 +19,7 @@ constexpr char kWalletPublicKey[] =
     "BiG/i3tfNLSeOA9ZF5rkPCGyhkc7KCRbQS3bVGMvFQ0=";
 
 constexpr char kWalletSecretKey[] =
-    "kwUjEEdzI6rkI6hLoyxosa47ZrcZUvbYppAm4zvYF5gGIb+"
-    "Le180tJ44D1kXmuQ8IbKGRzsoJFtBLdtUYy8VDQ==";
+    R"(kwUjEEdzI6rkI6hLoyxosa47ZrcZUvbYppAm4zvYF5gGIb+Le180tJ44D1kXmuQ8IbKGRzsoJFtBLdtUYy8VDQ==)";
 
 }  // namespace brave_ads
 

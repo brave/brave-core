@@ -51,7 +51,7 @@ SealVerifiableConversionEnvelope(
     return absl::nullopt;
   }
 
-  // Protocol requires at least 2 trailing zero-padding bytes
+  // Protocol requires at least 2 trailing zero-padding bytes.
   std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
   plaintext.insert(plaintext.cend(), kCipherTextLength - plaintext.size(), 0);
   CHECK_EQ(kCipherTextLength, plaintext.size());
@@ -75,8 +75,7 @@ SealVerifiableConversionEnvelope(
   const std::vector<uint8_t> padded_ciphertext = crypto::Encrypt(
       plaintext, nonce, *public_key, ephemeral_key_pair.secret_key);
 
-  // The first 16 bytes of the resulting ciphertext is left as padding by the
-  // C API and should be removed before sending out extraneously.
+  // API requires |crypto_box_BOXZEROBYTES| leading zero-padding bytes.
   const std::vector<uint8_t> ciphertext(
       padded_ciphertext.cbegin() + crypto_box_BOXZEROBYTES,
       padded_ciphertext.cend());
