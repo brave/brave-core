@@ -39,6 +39,8 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Core.TorEverUsed",
     "Brave.Core.WeeklyUsage",
     "Brave.Core.WindowCount.2",
+    "Brave.DNS.AutoSecureRequests",
+    "Brave.DNS.SecureSetting",
     "Brave.Importer.ImporterSource.2",
     "Brave.NTP.CustomizeUsageStatus",
     "Brave.NTP.NewTabsCreated.2",

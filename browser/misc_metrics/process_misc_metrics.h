@@ -28,6 +28,7 @@ class VerticalTabMetrics;
 #else
 class PrivacyHubMetrics;
 #endif
+class DohMetrics;
 
 class ProcessMiscMetrics {
  public:
@@ -59,6 +60,7 @@ class ProcessMiscMetrics {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_;
 #endif
+  std::unique_ptr<DohMetrics> doh_metrics_;
 };
 
 }  // namespace misc_metrics
