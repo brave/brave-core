@@ -1850,12 +1850,47 @@ extension Strings {
       value: "Lock",
       comment: "The title of the lock option inside the menu when user clicks the three dots button beside assets search button."
     )
+    public static let lockWallet = NSLocalizedString(
+      "wallet.lockWallet",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Lock Wallet",
+      comment: "The title of the lock option inside the menu when user clicks the three dots button beside assets search button."
+    )
     public static let settings = NSLocalizedString(
       "wallet.settings",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Settings",
       comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button."
+    )
+    public static let walletSettings = NSLocalizedString(
+      "wallet.walletSettings",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Wallet Settings",
+      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button."
+    )
+    public static let balances = NSLocalizedString(
+      "wallet.balances",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Balances",
+      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open."
+    )
+    public static let graph = NSLocalizedString(
+      "wallet.graph",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Graph",
+      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open."
+    )
+    public static let nftsTab = NSLocalizedString(
+      "wallet.nftsTab",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "NFTs Tab",
+      comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open."
     )
     public static let helpCenter = NSLocalizedString(
       "wallet.helpCenter",

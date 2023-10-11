@@ -68,7 +68,21 @@ class TabbedPageViewController: UIViewController {
   )
 
   private var contentOffsetObservation: NSKeyValueObservation?
-
+  
+  private let selectedIndexChanged: ((Int) -> Void)?
+  
+  public init(
+    selectedIndexChanged: ((Int) -> Void)?
+  ) {
+    self.selectedIndexChanged = selectedIndexChanged
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -219,6 +233,7 @@ class TabbedPageViewController: UIViewController {
       self.updateTabsBarSelectionIndicator(pageIndex: indexPath.item)
     }.startAnimation()
     pageViewController.setViewControllers([vc], direction: direction, animated: true)
+    selectedIndexChanged?(indexPath.item)
   }
 }
 
@@ -282,6 +297,7 @@ extension TabbedPageViewController: UIPageViewControllerDelegate {
     }
     self.pageTransitionContext = nil
     if let currentIndex = currentIndex {
+      selectedIndexChanged?(currentIndex)
       // Update the selected tab for accessibility purposes and also in case UIPageViewController
       // ever changes how its `UIScrollView` is managed this will continue to show the user what the
       // selected tab is even if it doesn't interpolate while scrolling

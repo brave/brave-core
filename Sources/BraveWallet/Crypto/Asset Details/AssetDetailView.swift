@@ -35,6 +35,7 @@ struct AssetDetailView: View {
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
 
   @Environment(\.openURL) private var openWalletURL
+  @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
 
   @ViewBuilder private var accountsBalanceView: some View {
     Section(
@@ -69,13 +70,19 @@ struct AssetDetailView: View {
                   .font(.footnote)
                   .foregroundColor(Color(.secondaryBraveLabel))
               } else {
-                VStack(alignment: .trailing) {
-                  Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
-                    .redacted(reason: showFiatPlaceholder ? .placeholder : [])
-                    .shimmer(assetDetailStore.isLoadingPrice)
-                  Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.assetDetailToken.symbol)" : "\(viewModel.balance) \(assetDetailStore.assetDetailToken.symbol)")
-                    .redacted(reason: showBalancePlaceholder ? .placeholder : [])
-                    .shimmer(assetDetailStore.isLoadingAccountBalances)
+                Group {
+                  if isShowingBalances.value {
+                    VStack(alignment: .trailing) {
+                      Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
+                        .redacted(reason: showFiatPlaceholder ? .placeholder : [])
+                        .shimmer(assetDetailStore.isLoadingPrice)
+                      Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.assetDetailToken.symbol)" : "\(viewModel.balance) \(assetDetailStore.assetDetailToken.symbol)")
+                        .redacted(reason: showBalancePlaceholder ? .placeholder : [])
+                        .shimmer(assetDetailStore.isLoadingAccountBalances)
+                    }
+                  } else {
+                    Text("****")
+                  }
                 }
                 .font(.footnote)
                 .foregroundColor(Color(.secondaryBraveLabel))

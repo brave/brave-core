@@ -88,14 +88,18 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
         if !isLocked {
           onUnlock?()
         }
-        // SwiftUI has a bug where nested sheets do not dismiss correctly if the root View holding onto
-        // the sheet is removed from the view hierarchy. The root's sheet stays visible even though the
-        // root doesn't exist anymore.
+        // Prior to iOS 16.4, SwiftUI has a bug where nested sheets do not dismiss correctly if the
+        // root View holding onto the sheet is removed from the view hierarchy. The root's sheet
+        // stays visible even though the root doesn't exist anymore.
         //
         // As a workaround to this issue, we can just watch keyring's `isLocked` value from here
         // and dismiss the first sheet ourselves to ensure we dont get stuck with a child view visible
         // while the wallet is locked.
-        if let self = self, isLocked, self.presentedViewController != nil {
+        if #unavailable(iOS 16.4),
+           let self = self,
+           isLocked,
+           let presentedViewController = self.presentedViewController,
+           !presentedViewController.isBeingDismissed {
           self.dismiss(animated: true)
         }
       }

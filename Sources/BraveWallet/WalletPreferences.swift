@@ -47,6 +47,11 @@ extension Preferences {
     /// The option for users to turn off aurora popup
     public static let showAuroraPopup = Option<Bool>(key: "wallet.show-aurora-popup", default: true)
     
+    // MARK: Portfolio settings
+    public static let isShowingGraph = Option<Bool>(key: "wallet.isShowingGraph", default: true)
+    public static let isShowingBalances = Option<Bool>(key: "wallet.isShowingBalances", default: true)
+    public static let isShowingNFTsTab = Option<Bool>(key: "wallet.isShowingNFTsTab", default: true)
+    
     // MARK: Portfolio & NFT filters
     public static let groupByFilter = Option<Int>(key: "wallet.groupByFilter", default: GroupBy.none.rawValue)
     public static let sortOrderFilter = Option<Int>(key: "wallet.sortOrderFilter", default: SortOrder.valueDesc.rawValue)

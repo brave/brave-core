@@ -6,6 +6,7 @@
 import SwiftUI
 import DesignSystem
 import BraveCore
+import Preferences
 
 struct PortfolioHeaderView: View {
   
@@ -20,6 +21,8 @@ struct PortfolioHeaderView: View {
   @State private var isPresentingBackup = false
   @State private var dismissedBackupBannerThisSession = false
   @State private var selectedBalance: BalanceTimePrice?
+  @ObservedObject private var isShowingGraph = Preferences.Wallet.isShowingGraph
+  @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
 
   private var isShowingBackupBanner: Bool {
     !keyringStore.defaultKeyring.isBackedUp && !dismissedBackupBannerThisSession
@@ -46,7 +49,9 @@ struct PortfolioHeaderView: View {
       
       Spacer().frame(height: 24)
       
-      lineChart
+      if isShowingGraph.value {
+        lineChart
+      }
     }
     .padding()
     .frame(maxWidth: .infinity)
@@ -79,13 +84,13 @@ struct PortfolioHeaderView: View {
   
   private var balanceAndPriceChanges: some View {
     VStack(spacing: 12) {
-      Text(balance)
+      Text(isShowingBalances.value ? balance : "****")
         .frame(maxWidth: .infinity)
         .opacity(selectedBalance == nil ? 1 : 0)
         .overlay(
           Group {
             if let dataPoint = selectedBalance {
-              Text(dataPoint.formattedPrice)
+              Text(isShowingBalances.value ?  dataPoint.formattedPrice : "****")
             }
           }
         )
@@ -94,10 +99,10 @@ struct PortfolioHeaderView: View {
       
       if let balanceDifference {
         HStack {
-          Text(balanceDifference.priceDifference)
+          Text(isShowingBalances.value ? balanceDifference.priceDifference : "****")
             .font(.footnote)
             .foregroundColor(Color(braveSystemName: balanceDifference.isBalanceUp ? .systemfeedbackSuccessText : .systemfeedbackErrorText))
-          Text(balanceDifference.percentageChange)
+          Text(isShowingBalances.value ? balanceDifference.percentageChange : "****")
             .font(.footnote)
             .padding(4)
             .foregroundColor(Color(braveSystemName: balanceDifference.isBalanceUp ? .green50 : .red50))
