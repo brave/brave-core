@@ -8,10 +8,6 @@
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/tabs/synced_window_delegate_browser_agent.h"
 
-#if !defined(__has_feature) || !__has_feature(objc_arc)
-#error "This file requires ARC support."
-#endif
-
 void AttachBrowserAgents(Browser* browser) {
   SyncedWindowDelegateBrowserAgent::CreateForBrowser(browser);
 

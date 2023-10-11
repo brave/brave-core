@@ -11,10 +11,6 @@
 #include "ios/chrome/browser/tabs/tab_helper_util.h"
 #include "ios/chrome/browser/web/session_state/web_session_state_tab_helper.h"
 
-#if !defined(__has_feature) || !__has_feature(objc_arc)
-#error "This file requires ARC support."
-#endif
-
 void AttachTabHelpers(web::WebState* web_state, bool for_prerender) {
   IOSChromeSessionTabHelper::CreateForWebState(web_state);
   IOSChromeSyncedTabDelegate::CreateForWebState(web_state);
