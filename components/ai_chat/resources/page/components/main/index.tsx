@@ -120,7 +120,7 @@ function Main() {
           )
         }
         {
-          shouldShowPremiumSuggestionStandalone && (
+          shouldShowPremiumSuggestionStandalone && !shouldShowPremiumSuggestionForModel && (
             <div className={styles.promptContainer}>
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
