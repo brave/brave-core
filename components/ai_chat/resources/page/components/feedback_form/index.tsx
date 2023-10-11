@@ -12,6 +12,7 @@ import { Url } from 'gen/url/mojom/url.mojom.m'
 
 import styles from './style.module.scss'
 import getPageHandlerInstance from '../../api/page_handler'
+import DataContext from '../../state/context'
 
 const CATEGORY_OPTIONS = new Map([
   ['not-helpful', getLocale('optionNotHelpful')],
@@ -32,6 +33,7 @@ function FeedbackForm(props: FeedbackFormProps) {
   const ref = React.useRef<HTMLDivElement>(null)
   const [category, setCategory] = React.useState('')
   const [feedbackText, setFeedbackText] = React.useState('')
+  const context = React.useContext(DataContext)
 
   const canSubmit = !!category && !props.isDisabled
 
@@ -107,7 +109,9 @@ function FeedbackForm(props: FeedbackFormProps) {
             <textarea onChange={handleInputChange} />
           </label>
         </fieldset>
-        <div className={styles.note}>{premiumNote}</div>
+        {!context.isPremiumUser && (
+          <div className={styles.note}>{premiumNote}</div>
+        )}
         <fieldset className={styles.actions}>
           <Button onClick={handleCancelClick} kind='plain-faint'>
             {getLocale('cancelButtonLabel')}
