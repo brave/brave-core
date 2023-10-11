@@ -10,7 +10,11 @@
 
 namespace playlist::features {
 
+#if BUILDFLAG(IS_ANDROID)
 BASE_FEATURE(kPlaylist, "Playlist", base::FEATURE_DISABLED_BY_DEFAULT);
+#else
+BASE_FEATURE(kPlaylist, "Playlist", base::FEATURE_ENABLED_BY_DEFAULT);
+#endif
 
 BASE_FEATURE(kPlaylistFakeUA,
              "PlaylistFakeUA",
