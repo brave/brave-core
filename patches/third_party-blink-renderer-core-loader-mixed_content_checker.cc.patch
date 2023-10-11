@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/mixed_content_checker.cc b/third_party/blink/renderer/core/loader/mixed_content_checker.cc
-index 9740fcb48303171f40192cab4e9087c28f6edb58..10761b01ecb4b7c24145002ba7d1726ca37b3335 100644
+index 61f92a3d374319bbc7f9eda3d10cfde5056937a2..8b19db10aedc7752715afd39052a89825794cd29 100644
 --- a/third_party/blink/renderer/core/loader/mixed_content_checker.cc
 +++ b/third_party/blink/renderer/core/loader/mixed_content_checker.cc
 @@ -270,6 +270,7 @@ bool RequestIsSubframeSubresource(Frame* frame) {

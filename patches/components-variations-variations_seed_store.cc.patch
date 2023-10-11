@@ -1,8 +1,8 @@
 diff --git a/components/variations/variations_seed_store.cc b/components/variations/variations_seed_store.cc
-index b12dd017dc36bd1fc8d646a40436dcab3c17e3d7..6b8eda118284cb89bee5e5caaeeb6ec97bdb79c8 100644
+index 6e6a1b12a39b468b0dfe66acc3fbf84638b4d7bf..fe8ace94b1e214426ecdd7fa386040c59376f795 100644
 --- a/components/variations/variations_seed_store.cc
 +++ b/components/variations/variations_seed_store.cc
-@@ -51,6 +51,7 @@ const base::FeatureParam<bool> kVariationsAsyncProcessing{
+@@ -58,6 +58,7 @@ const base::FeatureParam<bool> kVariationsAsyncProcessing{
  // The ECDSA public key of the variations server for verifying variations seed
  // signatures.
  const uint8_t kPublicKey[] = {

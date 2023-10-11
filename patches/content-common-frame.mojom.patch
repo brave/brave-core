@@ -1,8 +1,8 @@
 diff --git a/content/common/frame.mojom b/content/common/frame.mojom
-index 3ddc93e18d353d5af31e28f8f8e682ea813db21c..2f968ed079f6cb04b6a90f0f4bc4dfa360f5bdf3 100644
+index e1d6dffca2e718f9e9b67525a1fe09abedfe077c..ec4605f6795d63a130adb418941dc9aa00e96de2 100644
 --- a/content/common/frame.mojom
 +++ b/content/common/frame.mojom
-@@ -574,6 +574,7 @@ struct CreateNewWindowParams {
+@@ -552,6 +552,7 @@ struct CreateNewWindowParams {
    // Whether the opener will be suppressed in the new window, in which case
    // scripting the new window is not allowed.
    bool opener_suppressed;

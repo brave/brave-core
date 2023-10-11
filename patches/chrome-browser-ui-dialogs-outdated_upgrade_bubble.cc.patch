@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
-index 448eb26ee4fffcbba6b2cc6ebe91c4d4e1cc5707..87f5ec73c863f53c787388767178f49d554ebeb6 100644
+index 00fde67c1f83e10cca9dabec89871d50122b5a91..2eca2fd7c8807916664fdfc303371552b578eea6 100644
 --- a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
 +++ b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
 @@ -35,6 +35,8 @@ namespace {
