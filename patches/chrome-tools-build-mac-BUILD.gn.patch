@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/mac/BUILD.gn b/chrome/tools/build/mac/BUILD.gn
-index 5f663d27fc5bdc2d54d9b5ec79fec0810ef5349f..172b719e5f34fad84b5c76e629e1dea0b6b66c84 100644
+index 94007792858a92b49b6ef76e21f2f48b72636033..278bb8cbae362bc0970843bb6cd906374b829043 100644
 --- a/chrome/tools/build/mac/BUILD.gn
 +++ b/chrome/tools/build/mac/BUILD.gn
 @@ -17,6 +17,7 @@ if (current_toolchain != default_toolchain) {

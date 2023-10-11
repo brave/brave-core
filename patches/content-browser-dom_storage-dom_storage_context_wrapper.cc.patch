@@ -1,8 +1,8 @@
 diff --git a/content/browser/dom_storage/dom_storage_context_wrapper.cc b/content/browser/dom_storage/dom_storage_context_wrapper.cc
-index 1a75aeec24e730fe1797a176be06da7868915b64..b6df80e5a8ab9bc5f92ae2f97261e09cc06e5f17 100644
+index 21f00384d1a55298f4e7fb6e92fd1cad8b36c63d..536ad1d80626781e341e6f1d9f34482277c056d4 100644
 --- a/content/browser/dom_storage/dom_storage_context_wrapper.cc
 +++ b/content/browser/dom_storage/dom_storage_context_wrapper.cc
-@@ -309,6 +309,7 @@ bool DOMStorageContextWrapper::IsRequestValid(
+@@ -310,6 +310,7 @@ bool DOMStorageContextWrapper::IsRequestValid(
          break;
        }
      }
