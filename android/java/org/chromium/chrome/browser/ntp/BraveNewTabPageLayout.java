@@ -108,7 +108,6 @@ import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
-import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -295,27 +294,6 @@ public class BraveNewTabPageLayout
         if (mBadgeAnimationView != null
                 && !OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
-        }
-        initBraveNewsController();
-        if (BravePrefServiceBridge.getInstance().getNewsOptIn()) {
-            new Handler(Looper.getMainLooper()).post(() -> {
-                try {
-                    Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-                    if (tab != null && tab.getUrl().getSpec() != null
-                            && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
-                        // purges display ads on tab change
-                        if (BraveActivity.getBraveActivity().getLastTabId() != tab.getId()) {
-                            if (mBraveNewsController != null) {
-                                mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
-                            }
-                        }
-
-                        BraveActivity.getBraveActivity().setLastTabId(tab.getId());
-                    }
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "onAttachedToWindow " + e);
-                }
-            });
         }
 
         mIsDisplayNewsOptin = BraveNewsUtils.shouldDisplayNewsOptin();
