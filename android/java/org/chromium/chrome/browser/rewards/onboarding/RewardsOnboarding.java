@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.rewards.onboarding;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
@@ -37,7 +38,6 @@ import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.ui.permissions.PermissionConstants;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 import java.text.Collator;
@@ -217,23 +217,26 @@ public class RewardsOnboarding implements BraveRewardsObserver {
             public void onNothingSelected(AdapterView<?> arg0) {}
         });
 
-        mContinueButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!BravePermissionUtils.hasPermission(
-                            mAnchorView.getContext(), PermissionConstants.NOTIFICATION_PERMISSION)
-                        || BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(
-                                mAnchorView.getContext())) {
-                    requestNotificationPermission();
-                }
-                if (mCountrySpinner != null) {
-                    mBraveRewardsNativeWorker.CreateRewardsWallet(
-                            sortedCountryMap.get(mCountrySpinner.getSelectedItem().toString()));
-                    shouldShowContinueProgress(true);
-                    mContinueButton.setText("");
-                }
-            }
-        }));
+        mContinueButton.setOnClickListener(
+                (new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!BravePermissionUtils.hasPermission(
+                                        mAnchorView.getContext(),
+                                        Manifest.permission.POST_NOTIFICATIONS)
+                                || BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(
+                                        mAnchorView.getContext())) {
+                            requestNotificationPermission();
+                        }
+                        if (mCountrySpinner != null) {
+                            mBraveRewardsNativeWorker.CreateRewardsWallet(
+                                    sortedCountryMap.get(
+                                            mCountrySpinner.getSelectedItem().toString()));
+                            shouldShowContinueProgress(true);
+                            mContinueButton.setText("");
+                        }
+                    }
+                }));
     }
 
     private void shouldShowContinueProgress(boolean shouldShow) {
@@ -297,7 +300,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     private void requestNotificationPermission() {
         if (BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(mAnchorView.getContext())
                 || mActivity.shouldShowRequestPermissionRationale(
-                        PermissionConstants.NOTIFICATION_PERMISSION)
+                        Manifest.permission.POST_NOTIFICATIONS)
                 || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
             // other than android 13 redirect to
             // setting page and for android 13 Last time don't allow selected in permission
@@ -306,7 +309,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         } else {
             // 1st time request permission
             ActivityCompat.requestPermissions(
-                    mActivity, new String[] {PermissionConstants.NOTIFICATION_PERMISSION}, 1);
+                    mActivity, new String[] {Manifest.permission.POST_NOTIFICATIONS}, 1);
         }
     }
 
