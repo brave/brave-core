@@ -6,7 +6,7 @@ process:
 
 1. Create a new profile in Chrome.
 2. Simulate browsing activity (visit sites, save bookmarks, passwords, etc.).
-3. Copy relevant files from the the new profile's user data directory to the
+3. Copy relevant files from the new profile's user data directory to the
    test user data directory.
 
 If special care was taken to generate a certain type of test data, the process
