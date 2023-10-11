@@ -246,7 +246,7 @@
   <message name="IDS_DEFAULT_AVATAR_LABEL_7" desc="The label for the default yellow avatar.">
     Default yellow avatar
   </message>
-  <message name="IDS_DEFAULT_AVATAR_LABEL_8" desc="The label for the female spy avatar.">
+  <message name="IDS_DEFAULT_AVATAR_LABEL_8" desc="The label for the the female spy avatar.">
     Spy
   </message>
   <message name="IDS_DEFAULT_AVATAR_LABEL_9" desc="The label for the male hero avatar.">
