@@ -79,7 +79,7 @@ PrefService* GetLocalState() {
 brave_rewards::RewardsPanelCoordinator* GetPanelCoordinator(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
-  if (auto* browser = chrome::FindBrowserWithWebContents(web_contents)) {
+  if (auto* browser = chrome::FindBrowserWithTab(web_contents)) {
     return brave_rewards::RewardsPanelCoordinator::FromBrowser(browser);
   }
   return nullptr;

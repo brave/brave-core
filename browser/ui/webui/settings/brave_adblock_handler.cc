@@ -226,8 +226,7 @@ void BraveAdBlockHandler::ViewSubscriptionSource(
                             ->subscription_service_manager()
                             ->GetListTextFileUrl(subscription_url);
 
-  auto* browser =
-      chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
+  auto* browser = chrome::FindBrowserWithTab(web_ui()->GetWebContents());
   ShowSingletonTabOverwritingNTP(browser, file_url);
 }
 
