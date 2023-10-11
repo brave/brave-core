@@ -49,8 +49,9 @@ std::string GetUpdateURLHost() {
 }  // namespace
 
 BraveMainDelegate::BraveMainDelegate() {
-  base::apple::SetOverrideFrameworkBundle(
-      [NSBundle bundleForClass:[BundleLookupClass class]]);
+  NSBundle* bundle = [NSBundle bundleForClass:[BundleLookupClass class]];
+  base::apple::SetOverrideOuterBundle(bundle);
+  base::apple::SetOverrideFrameworkBundle(bundle);
 }
 
 BraveMainDelegate::~BraveMainDelegate() {}
