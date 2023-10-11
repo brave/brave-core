@@ -174,12 +174,10 @@ function DataContextProvider (props: DataContextProviderProps) {
     // we should check often. And since purchase or login is performed in
     // a separate WebContents, we can check when focus is returned here.
     window.addEventListener('focus', () => {
-      console.log('focus')
       updateCurrentPremiumStatus()
     })
 
     document.addEventListener('visibilitychange', (e) => {
-      console.log('leo visibility: ', document.visibilityState)
       if (document.visibilityState === 'visible') {
         updateCurrentPremiumStatus()
       }
