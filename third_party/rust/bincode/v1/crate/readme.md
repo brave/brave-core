@@ -81,7 +81,7 @@ some frequently asked questions regarding use of the crate:
 The encoding format is stable across minor revisions, provided the same
 configuration is used. This should ensure that later versions can still read
 data produced by a previous versions of the library if no major version change
-has occurred.
+has occured.
 
 Bincode is invariant over byte-order in the default configuration
 (`bincode::options::DefaultOptions`), making an exchange between different
