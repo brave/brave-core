@@ -277,7 +277,7 @@ export function createWalletApi () {
           } catch (error) {
             return handleEndpointError(
               endpoint,
-              'Failed to set Selected Network',
+              `Failed to select account (${accountId})`,
               error
             )
           }

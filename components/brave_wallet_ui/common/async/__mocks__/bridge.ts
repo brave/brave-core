@@ -577,7 +577,7 @@ export class MockedWalletApiProxy {
       return {
         balance,
         error: 0,
-        errorMessage: '',
+        errorMessage: ''
       }
     },
     // Token balances
