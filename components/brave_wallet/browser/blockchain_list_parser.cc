@@ -736,7 +736,13 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
 
 absl::optional<std::vector<std::string>> ParseOfacAddressesList(
     const std::string& json) {
-  // TODO(nvonpentz) add json example
+  // {
+  //   "addresses": [
+  //     "t1MMXtBrSp1XG38Lx9cePcNUCJj5vdWfUWL",
+  //     "t1WSKwCDL1QYRRUrCCknEs5tDLhtGVYu9KM",
+  //     ...
+  //   ]
+  // }
   absl::optional<base::Value> records_v =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSONParserOptions::JSON_PARSE_RFC);
