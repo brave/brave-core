@@ -302,6 +302,7 @@ leo_icons = [
   "sort-asc.svg",
   "sort-desc.svg",
   "sparkles.svg",
+  "sparkles-off.svg",
   "stack.svg",
   "swap-horizontal.svg",
   "sync.svg",
