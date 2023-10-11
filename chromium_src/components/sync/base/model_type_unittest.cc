@@ -10,6 +10,7 @@ namespace {
 
 TEST_F(ModelTypeTest, EncryptableUserTypes) {
   EXPECT_TRUE(EncryptableUserTypes().Has(DEVICE_INFO));
+  EXPECT_TRUE(EncryptableUserTypes().Has(HISTORY));
 }
 
 TEST_F(ModelTypeTest, LowPriorityUserTypes) {
