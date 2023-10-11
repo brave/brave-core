@@ -706,8 +706,8 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     public void onPublisherBanner(String jsonBannerInfo) {
         try {
             BraveRewardsBannerInfo bannerInfo = new BraveRewardsBannerInfo(jsonBannerInfo);
-            mWeb3Url = bannerInfo.getWeb3Url();
-            if (!TextUtils.isEmpty(mWeb3Url)) {
+            if (bannerInfo != null && !TextUtils.isEmpty(bannerInfo.getWeb3Url())) {
+                mWeb3Url = bannerInfo.getWeb3Url();
                 mWeb3WalletButton.setVisibility(View.VISIBLE);
             }
             mBraveRewardsNativeWorker.GetExternalWallet();
