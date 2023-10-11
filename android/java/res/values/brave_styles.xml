@@ -297,4 +297,12 @@
         parent="@android:style/TextAppearance.StatusBar.EventContent.Title">
         <item name="android:layout_marginStart">8dp</item>
     </style>
+
+    <!-- Brave Leo preferences -->
+    <style name="BraveLeoResetTextColor" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/leo_reset_text_color</item>
+    </style>
+    <style name="BraveLeoDescriptionText" parent="Widget.AppCompat.TextView">
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

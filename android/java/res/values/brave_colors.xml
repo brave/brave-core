@@ -367,4 +367,5 @@
     <color name="rewards_estimated_earning_close_color">#697284</color>
     <color name="rewards_tipping_progress_bar">@android:color/black</color>
 
+    <color name="leo_reset_text_color">#FF4B6A</color>
 </resources>
