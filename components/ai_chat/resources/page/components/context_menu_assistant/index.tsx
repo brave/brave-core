@@ -155,7 +155,7 @@ function ContextMenuAssistant_(
           })}
           onClick={handleDislikeAnswer}
         >
-          <Icon name='thumb-up' />
+          <Icon name='thumb-down' />
           <span>{getLocale('dislikeAnswerButtonLabel')}</span>
         </leo-menu-item>
       </ButtonMenu>

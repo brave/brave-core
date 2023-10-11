@@ -125,7 +125,7 @@
     Copy
   </message>
   <message name="IDS_CHAT_UI_LIKE_ANSWER_BUTTON_LABEL" desc="Button label to like an answer">
-    Like
+    Like answer
   </message>
   <message name="IDS_CHAT_UI_DISLIKE_ANSWER_BUTTON_LABEL" desc="Button label to dislike an answer">
     Dislike answer
