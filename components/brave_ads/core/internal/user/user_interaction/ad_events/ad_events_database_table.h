@@ -28,7 +28,9 @@ class AdEvents final : public TableInterface {
   void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
+
   void PurgeOrphaned(mojom::AdType ad_type, ResultCallback callback) const;
+  void PurgeAllOrphaned(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
