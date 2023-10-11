@@ -10,6 +10,7 @@ namespace {
 
 TEST_F(ModelTypeTest, EncryptableUserTypes) {
   EXPECT_TRUE(EncryptableUserTypes().Has(DEVICE_INFO));
+  EXPECT_TRUE(EncryptableUserTypes().Has(HISTORY));
 }
 
 // This test is supposed to fail when sync types are increased/decreased
