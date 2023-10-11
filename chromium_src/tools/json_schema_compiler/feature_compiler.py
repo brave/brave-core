@@ -89,6 +89,14 @@ class BraveFeatureDefinitionExtender:
             ],
         },
         "extensions/common/api/_api_features.json": {
+            "runtime.sendMessage": [
+                {
+                    "contexts": ["webui"],
+                    "matches": [
+                        "chrome://newtab/*",
+                    ]
+                },
+            ],
             "sockets.tcp": [
                 {
                     "dependencies": ["manifest:sockets"],
