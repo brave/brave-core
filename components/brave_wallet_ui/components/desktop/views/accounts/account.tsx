@@ -67,7 +67,7 @@ import {
 // Components
 import {
   PortfolioTransactionItem
-} from '../../portfolio-transaction-item/index'
+} from '../../portfolio_transaction_item/portfolio_transaction_item'
 import {
   PortfolioAssetItemLoadingSkeleton
 } from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
@@ -432,7 +432,6 @@ export const Account = () => {
                 <PortfolioTransactionItem
                   key={transaction?.id}
                   transaction={transaction}
-                  displayAccountName={false}
                   ref={(ref) => handleScrollIntoView(transaction.id, ref)}
                   isFocused={checkIsTransactionFocused(transaction.id)}
                 />

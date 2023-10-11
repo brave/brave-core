@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 export interface TextProps {
-  textSize?: '22px' | '20px' | '18px' | '16px' | '14px' | '12px' | '11px'
+  textSize?: '22px' | '20px' | '18px' | '16px' | '14px' | '12px' | '11px' | '10px'
   isBold?: boolean
   textColor?: 'text01' | 'text02' | 'text03' | 'success' | 'error'
   maintainHeight?: boolean
