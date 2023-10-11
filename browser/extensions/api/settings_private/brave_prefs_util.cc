@@ -162,6 +162,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[kTabMuteIndicatorNotClickable] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#if BUILDFLAG(IS_MAC)
+  (*s_brave_allowlist)[prefs::kShowFullscreenToolbar] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   (*s_brave_allowlist)[brave_vpn::prefs::kBraveVPNShowButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

@@ -7,8 +7,6 @@
 
 import '../brave_appearance_page/super_referral.js'
 import '../brave_appearance_page/brave_theme.js'
-import '../brave_appearance_page/toolbar.js'
-import '../brave_appearance_page/bookmark_bar.js'
 
 import {html, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
@@ -83,62 +81,65 @@ RegisterPolymerTemplateModifications({
       }
     }
 
-    // Toolbar prefs
+    // Remove home button toggle & options template as it's moved into
+    // address bar sub section
+    const homeButtonToggle = templateContent.querySelector(
+      '[pref="{{prefs.browser.show_home_button}}"]')
+    if (!homeButtonToggle) {
+      console.error(
+        `[Brave Settings Overrides] Couldn't find home button toggle`)
+    } else {
+      homeButtonToggle.remove()
+    }
+    const homeButtonOptionsTemplate = templateContent.querySelector(
+        'template[is=dom-if][if="[[prefs.browser.show_home_button.value]]"]')
+    if (!homeButtonOptionsTemplate) {
+      console.error(
+        `[Brave Settings Overrides] Couldn't find home button options template`)
+    } else {
+      homeButtonOptionsTemplate.remove()
+    }
+
     const bookmarkBarToggle = templateContent.querySelector(
       '[pref="{{prefs.bookmark_bar.show_on_all_tabs}}"]')
     if (!bookmarkBarToggle) {
       console.error(
         `[Brave Settings Overrides] Couldn't find bookmark bar toggle`)
     } else {
-      bookmarkBarToggle.insertAdjacentHTML(
-        'beforebegin',
-        getTrustedHTML`
-          <settings-brave-appearance-bookmark-bar prefs="{{prefs}}">
-          </settings-brave-appearance-bookmark-bar>
-        `)
-
-      bookmarkBarToggle.insertAdjacentHTML(
-        'afterend',
-        getTrustedHTML`
-          <settings-brave-appearance-toolbar prefs="{{prefs}}">
-          </settings-brave-appearance-toolbar>
-        `)
       // Remove Chromium bookmark toggle becasue it is replaced by
       // settings-brave-appearance-bookmark-bar
       bookmarkBarToggle.remove()
     }
 
-    // Speedreader and MRU
-    const fontsRow =
-      templateContent.getElementById('customize-fonts-subpage-trigger')
-    if (!fontsRow || !fontsRow.parentNode) {
-      console.error(`[Brave Settings Overrides] Couldn't find fonts row by id`)
+    // Hide or remove upstream's font options.
+    const defaultFontSize = templateContent.querySelector(
+      '.cr-row:has(#defaultFontSize)')
+    if (!defaultFontSize) {
+      console.error(`[Brave Settings Overrides] Couldn't find default font size option`)
     } else {
-      const isSpeedreaderEnabled =
-        loadTimeData.getBoolean('isSpeedreaderFeatureEnabled')
-      if (isSpeedreaderEnabled) {
-        fontsRow.parentNode.appendChild(
-          html`
-            <settings-toggle-button
-              class="hr"
-              id="speedreader"
-              pref="{{prefs.brave.speedreader.enabled}}"
-              label="${loadTimeData.getString('speedreaderSettingLabel')}"
-              sub-label=
-                "${loadTimeData.getString('speedreaderSettingSubLabel')}"
-              learn-more-url=
-                "${loadTimeData.getString('speedreaderLearnMoreURL')}"
-            </settings-toggle-button>
-          `)
-        fontsRow.parentNode.appendChild(
-        html`
-          <settings-toggle-button
-            class="hr"
-            id="mru-cycling"
-            pref="{{prefs.brave.mru_cycling_enabled}}"
-            label="${loadTimeData.getString('mruCyclingSettingLabel')}"
-          </settings-toggle-button>
-        `)
+      // Just hide instead of removing as upstream js refers this.
+      defaultFontSize.setAttribute("hidden", "true")
+    }
+    const customizeFontsSubpageTrigger = templateContent.getElementById('customize-fonts-subpage-trigger')
+    if (!customizeFontsSubpageTrigger) {
+      console.error(`[Brave Settings Overrides] Couldn't find customize fonts subpage trigger`)
+    } else {
+      customizeFontsSubpageTrigger.remove()
+    }
+    const pageZoom = templateContent.querySelector('.cr-row:has(#pageZoom)')
+    if (!pageZoom) {
+      console.error(`[Brave Settings Overrides] Couldn't find page zoom`)
+    } else {
+      pageZoom.remove()
+    }
+
+    const hrsToHide = templateContent.querySelectorAll('div.hr:not(#themeRow):not([hidden="[[!pageVisibility.bookmarksBar]]"])');
+    // We only want to hide two hrs now from upstream appearance_page.html.
+    if (hrsToHide.length !== 2) {
+      console.error(`[Brave Settings Overrides] detected more than two hrs to hide`)
+    } else {
+      for (const hr of hrsToHide) {
+        hr.setAttribute("hidden", "true")
       }
     }
 
@@ -149,6 +150,14 @@ RegisterPolymerTemplateModifications({
       console.error(`[Brave Settings Overrides] Couldn't find confirm to quit`)
     } else {
       confirmToQuit.remove()
+    }
+
+    const tabsToLinks = templateContent.querySelector(
+      '[pref="{{prefs.webkit.webprefs.tabs_to_links}}"]')
+    if (!tabsToLinks) {
+      console.error(`[Brave Settings Overrides] Couldn't find tabs to links`)
+    } else {
+      tabsToLinks.remove()
     }
     // </if>
   },

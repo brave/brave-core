@@ -156,6 +156,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"appearanceBraveDefaultImagesOptionLabel",
      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL},
 #if defined(TOOLKIT_VIEWS)
+    {"appearanceSettingsToolbarSection",
+     IDS_SETTINGS_APPEARANCE_SETTINGS_TOOLBAR_SECTION},
+    {"appearanceSettingsContentSection",
+     IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
     {"appearanceSettingsTabsSection",
      IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SECTION},
     {"appearanceSettingsTabsUseVerticalTabs",
@@ -194,6 +198,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"sublabelVpnConnected", IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED},
     {"sublabelVpnDisconnected",
      IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED},
+#endif
+#if BUILDFLAG(IS_MAC)
+    {"showToolbarInFullScreen", IDS_SHOW_TOOLBAR_IN_FULL_SCREEN},
 #endif
   // Search settings
 #if BUILDFLAG(ENABLE_EXTENSIONS)
