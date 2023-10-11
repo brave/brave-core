@@ -11,7 +11,7 @@ import { color } from '@brave/leo/tokens/css'
 // magics
 import {
   BLOWFISH_UNLIMITED_VALUE,
-  NATIVE_ASSET_CONTRACT_ADDRESS_0X
+  NATIVE_EVM_ASSET_CONTRACT_ADDRESS
 } from '../../../../common/constants/magics'
 
 // types
@@ -83,8 +83,8 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
     .divideByDecimals(transfer.asset.decimals)
   const isReceive = normalizedAmount.isPositive()
   const isNativeAsset =
-    transfer.asset.address === NATIVE_ASSET_CONTRACT_ADDRESS_0X ||
-    transfer.asset.address === ''
+    asset.contractAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS ||
+    asset.contractAddress === ''
 
   const getTokenVerificationString =
     getTransferTokenVerificationStatus(transfer)
