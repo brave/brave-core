@@ -11,7 +11,7 @@ export const BLOWFISH_UNLIMITED_VALUE = '0xfffffffffffffffffffffffffffffffffffff
 
 // Placeholder contract address used for native asset (ETH, BNB, XDAI) by 0x,
 // CoW protocol, etc.
-export const NATIVE_EVM_ASSET_CONTRACT_ADDRESS =
+export const NATIVE_EVM_ASSET_CONTRACT_ADDRESS_0X =
   '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
 export const WRAPPED_SOL_CONTRACT_ADDRESS = 'So11111111111111111111111111111111111111112'
