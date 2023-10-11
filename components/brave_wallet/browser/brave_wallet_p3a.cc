@@ -10,6 +10,7 @@
 
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -63,9 +64,9 @@ constexpr base::TimeDelta kOnboardingRecordDelay = base::Seconds(120);
 
 // Has the Wallet keyring been created?
 // 0) No, 1) Yes
-void RecordKeyringCreated(mojom::KeyringInfoPtr keyring_info) {
+void RecordKeyringCreated(bool created) {
   UMA_HISTOGRAM_BOOLEAN(kKeyringCreatedHistogramName,
-                        static_cast<int>(keyring_info->is_keyring_created));
+                        static_cast<int>(created));
 }
 
 }  // namespace
@@ -178,7 +179,10 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
   }
 
   JSProviderAnswer answer = JSProviderAnswer::kNoWallet;
-  bool is_wallet_setup = keyring_service_->IsKeyringCreated(*keyring_id);
+  bool is_wallet_setup = base::ranges::any_of(
+      keyring_service_->GetAllAccountInfos(), [coin_type](auto& account) {
+        return account->account_id->coin == coin_type;
+      });
 
   switch (provider_type) {
     case mojom::JSProviderType::None:
@@ -421,14 +425,12 @@ void BraveWalletP3A::WriteUsageStatsToHistogram() {
 }
 
 void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
-  keyring_service_->GetKeyringInfo(mojom::kDefaultKeyringId,
-                                   base::BindOnce(&RecordKeyringCreated));
+  RecordKeyringCreated(keyring_service_->IsWalletSetup());
 }
 
 // KeyringServiceObserver
-void BraveWalletP3A::KeyringCreated(mojom::KeyringId keyring_id) {
-  keyring_service_->GetKeyringInfo(keyring_id,
-                                   base::BindOnce(&RecordKeyringCreated));
+void BraveWalletP3A::WalletCreated() {
+  RecordKeyringCreated(keyring_service_->IsWalletSetup());
 }
 
 }  // namespace brave_wallet

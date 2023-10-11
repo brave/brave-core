@@ -34,33 +34,37 @@ AccountDiscoveryManager::AccountDiscoveryManager(
     : json_rpc_service_(rpc_service), keyring_service_(keyring_service) {}
 
 void AccountDiscoveryManager::StartDiscovery() {
-  if (keyring_service_->IsKeyringCreated(mojom::kDefaultKeyringId)) {
+  auto derived_count = GetDerivedAccountsCount();
+
+  AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
+      mojom::CoinType::ETH, mojom::KeyringId::kDefault, mojom::kMainnetChainId,
+      derived_count[mojom::KeyringId::kDefault], kDiscoveryAttempts));
+  if (IsFilecoinEnabled()) {
     AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
-        mojom::CoinType::ETH, mojom::kDefaultKeyringId, mojom::kMainnetChainId,
-        keyring_service_->GetAccountsNumber(mojom::kDefaultKeyringId)
-            .value_or(0),
+        mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
+        mojom::kFilecoinMainnet, derived_count[mojom::KeyringId::kFilecoin],
         kDiscoveryAttempts));
   }
-  if (IsFilecoinEnabled() &&
-      keyring_service_->IsKeyringCreated(mojom::kFilecoinKeyringId)) {
+  if (IsSolanaEnabled()) {
     AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
-        mojom::CoinType::FIL, mojom::kFilecoinKeyringId,
-        mojom::kFilecoinMainnet,
-        keyring_service_->GetAccountsNumber(mojom::kFilecoinKeyringId)
-            .value_or(0),
-        kDiscoveryAttempts));
-  }
-  if (IsSolanaEnabled() &&
-      keyring_service_->IsKeyringCreated(mojom::kSolanaKeyringId)) {
-    AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
-        mojom::CoinType::SOL, mojom::kSolanaKeyringId, mojom::kSolanaMainnet,
-        keyring_service_->GetAccountsNumber(mojom::kSolanaKeyringId)
-            .value_or(0),
-        kDiscoveryAttempts));
+        mojom::CoinType::SOL, mojom::KeyringId::kSolana, mojom::kSolanaMainnet,
+        derived_count[mojom::KeyringId::kSolana], kDiscoveryAttempts));
   }
 }
 
-AccountDiscoveryManager::~AccountDiscoveryManager() {}
+AccountDiscoveryManager::~AccountDiscoveryManager() = default;
+
+std::map<mojom::KeyringId, uint32_t>
+AccountDiscoveryManager::GetDerivedAccountsCount() {
+  std::map<mojom::KeyringId, uint32_t> derived_count;
+  for (auto& acc : keyring_service_->GetAllAccountInfos()) {
+    if (acc->account_id->kind == mojom::AccountKind::kDerived) {
+      derived_count[acc->account_id->keyring_id]++;
+    }
+  }
+
+  return derived_count;
+}
 
 void AccountDiscoveryManager::AddDiscoveryAccount(
     std::unique_ptr<DiscoveryContext> context) {
@@ -140,16 +144,13 @@ void AccountDiscoveryManager::ProcessDiscoveryResult(
     std::unique_ptr<DiscoveryContext> context,
     bool result) {
   if (result) {
-    auto last_account_index =
-        keyring_service_->GetAccountsNumber(context->keyring_id);
-    if (!last_account_index) {
-      NOTREACHED();
-      return;
-    }
-    if (context->discovery_account_index + 1 > last_account_index.value()) {
+    auto derived_count = GetDerivedAccountsCount();
+
+    auto last_account_index = derived_count[context->keyring_id];
+    if (context->discovery_account_index + 1 > last_account_index) {
       keyring_service_->AddAccountsWithDefaultName(
           context->coin_type, context->keyring_id,
-          context->discovery_account_index - last_account_index.value() + 1);
+          context->discovery_account_index - last_account_index + 1);
     }
 
     context->discovery_account_index++;

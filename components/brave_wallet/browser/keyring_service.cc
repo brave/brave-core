@@ -906,9 +906,6 @@ HDKeyring* KeyringService::CreateKeyring(mojom::KeyringId keyring_id,
     return nullptr;
   }
 
-  for (const auto& observer : observers_) {
-    observer->KeyringCreated(keyring_id);
-  }
   ResetAutoLockTimer();
 
   return keyring;
@@ -926,9 +923,14 @@ HDKeyring* KeyringService::ResumeKeyring(mojom::KeyringId keyring_id,
     return nullptr;
   }
 
-  const std::string mnemonic = GetMnemonicForKeyringImpl(keyring_id);
+  std::string mnemonic = GetMnemonicForKeyringImpl(keyring_id);
   if (mnemonic.empty()) {
-    return nullptr;
+    // This happens when existing wallet is resumed with a previously unknown
+    // keyring which is now enabled. Fallback to mnemonic from ETH keyring.
+    mnemonic = GetMnemonicForKeyringImpl(mojom::KeyringId::kDefault);
+    if (mnemonic.empty()) {
+      return nullptr;
+    }
   }
 
   bool is_legacy_brave_wallet = false;
@@ -1015,27 +1017,10 @@ HDKeyring* KeyringService::RestoreKeyring(mojom::KeyringId keyring_id,
   return keyring;
 }
 
-mojom::KeyringInfoPtr KeyringService::GetKeyringInfoSync(
-    mojom::KeyringId keyring_id) {
-  DCHECK(profile_prefs_);
-  mojom::KeyringInfoPtr keyring_info = mojom::KeyringInfo::New();
-  keyring_info->id = keyring_id;
-  keyring_info->is_keyring_created = IsKeyringCreated(keyring_id);
-  keyring_info->is_locked =
-      !keyring_info->is_keyring_created || IsLocked(keyring_id);
-  bool backup_complete = false;
-  const base::Value* value =
-      GetPrefForKeyring(*profile_prefs_, kBackupComplete, keyring_id);
-  if (value) {
-    backup_complete = value->GetBool();
-  }
-  keyring_info->is_backed_up = backup_complete;
-  return keyring_info;
-}
-
-void KeyringService::GetKeyringInfo(mojom::KeyringId keyring_id,
-                                    GetKeyringInfoCallback callback) {
-  std::move(callback).Run(GetKeyringInfoSync(keyring_id));
+bool KeyringService::IsWalletSetup() {
+  // Wallet is set up if there is at least one account as we don't allow
+  // removing derived accounts.
+  return GetAllAccountInfos().size() > 0;
 }
 
 void KeyringService::GetMnemonicForDefaultKeyring(
@@ -1051,9 +1036,6 @@ void KeyringService::GetMnemonicForDefaultKeyring(
 
 void KeyringService::MaybeCreateDefaultSolanaAccount() {
   if (!ShouldCreateDefaultSolanaAccount()) {
-    return;
-  }
-  if (!LazilyCreateKeyring(mojom::kSolanaKeyringId)) {
     return;
   }
 
@@ -1086,21 +1068,13 @@ void KeyringService::CreateWallet(const std::string& mnemonic,
     }
   }
 
-  // keep encryptor pre-created
-  // to be able to lazily create keyring later
   if (IsFilecoinEnabled()) {
-    if (!CreateEncryptorForKeyring(password, mojom::kFilecoinKeyringId)) {
-      VLOG(1) << "Unable to create filecoin encryptor";
-    }
-    if (!CreateEncryptorForKeyring(password,
-                                   mojom::kFilecoinTestnetKeyringId)) {
-      VLOG(1) << "Unable to create filecoin testnet encryptor";
-    }
+    CreateKeyring(mojom::kFilecoinKeyringId, mnemonic, password);
+    CreateKeyring(mojom::kFilecoinTestnetKeyringId, mnemonic, password);
   }
+
   if (IsSolanaEnabled()) {
-    if (!CreateEncryptorForKeyring(password, mojom::kSolanaKeyringId)) {
-      VLOG(1) << "Unable to create solana encryptor";
-    }
+    CreateKeyring(mojom::kSolanaKeyringId, mnemonic, password);
     MaybeCreateDefaultSolanaAccount();
   }
 
@@ -1112,6 +1086,10 @@ void KeyringService::CreateWallet(const std::string& mnemonic,
   if (IsZCashEnabled()) {
     CreateKeyring(mojom::KeyringId::kZCashMainnet, mnemonic, password);
     CreateKeyring(mojom::KeyringId::kZCashTestnet, mnemonic, password);
+  }
+
+  for (const auto& observer : observers_) {
+    observer->WalletCreated();
   }
 
   ResetAllAccountInfosCache();
@@ -1180,8 +1158,8 @@ bool KeyringService::RestoreWalletSync(const std::string& mnemonic,
 
 std::string KeyringService::GetMnemonicForKeyringImpl(
     mojom::KeyringId keyring_id) {
-  if (IsLocked(keyring_id) || !IsKeyringCreated(keyring_id)) {
-    VLOG(1) << __func__ << ": Must Unlock service or create keyring first";
+  if (IsLocked(keyring_id)) {
+    VLOG(1) << __func__ << ": Must Unlock service first";
     return std::string();
   }
   DCHECK(encryptors_[keyring_id]);
@@ -1211,30 +1189,16 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
     mojom::CoinType coin,
     mojom::KeyringId keyring_id,
     const std::string& account_name) {
-  if (IsFilecoinKeyringId(keyring_id)) {
-    if (!IsFilecoinEnabled()) {
-      return nullptr;
-    }
-    if (!LazilyCreateKeyring(keyring_id)) {
-      VLOG(1) << "Unable to create Filecoin keyring";
-      return nullptr;
-    }
+  if (IsFilecoinKeyringId(keyring_id) && !IsFilecoinEnabled()) {
+    return nullptr;
   }
 
-  if (keyring_id == mojom::kSolanaKeyringId) {
-    if (!IsSolanaEnabled()) {
-      return nullptr;
-    }
-    if (!LazilyCreateKeyring(mojom::kSolanaKeyringId)) {
-      VLOG(1) << "Unable to create Solana keyring";
-      return nullptr;
-    }
+  if (keyring_id == mojom::kSolanaKeyringId && !IsSolanaEnabled()) {
+    return nullptr;
   }
 
-  if (IsBitcoinKeyring(keyring_id)) {
-    if (!IsBitcoinEnabled()) {
-      return nullptr;
-    }
+  if (IsBitcoinKeyring(keyring_id) && !IsBitcoinEnabled()) {
+    return nullptr;
   }
 
   if (IsZCashKeyring(keyring_id)) {
@@ -1279,22 +1243,12 @@ void KeyringService::EncodePrivateKeyForExport(
       keyring->EncodePrivateKeyForExport(account_id->address));
 }
 
-bool KeyringService::IsKeyringExist(mojom::KeyringId keyring_id) const {
-  return keyrings_.contains(keyring_id) || IsKeyringCreated(keyring_id);
-}
-
 void KeyringService::ImportFilecoinAccount(
     const std::string& account_name,
     const std::string& private_key_hex,
     const std::string& network,
     ImportFilecoinAccountCallback callback) {
   const mojom::KeyringId filecoin_keyring_id = GetFilecoinKeyringId(network);
-  if (!LazilyCreateKeyring(filecoin_keyring_id)) {
-    std::move(callback).Run({});
-    VLOG(1) << "Unable to create Filecoin keyring";
-    return;
-  }
-
   if (account_name.empty() || private_key_hex.empty() ||
       !encryptors_[filecoin_keyring_id]) {
     std::move(callback).Run({});
@@ -1377,11 +1331,6 @@ void KeyringService::ImportAccount(const std::string& account_name,
       }
     }
   } else if (*keyring_id == mojom::kSolanaKeyringId) {
-    if (!LazilyCreateKeyring(*keyring_id)) {
-      VLOG(1) << "Unable to create Solana keyring";
-      std::move(callback).Run({});
-      return;
-    }
     std::vector<uint8_t> keypair(kSolanaKeypairSize);
     if (!Base58Decode(private_key_trimmed, &keypair, keypair.size())) {
       if (!Uint8ArrayDecode(private_key_trimmed, &keypair,
@@ -1899,7 +1848,7 @@ void KeyringService::AddAccountsWithDefaultName(
 
 bool KeyringService::IsLocked(mojom::KeyringId keyring_id) const {
   // It doesn't require password when the keyring is not yet created.
-  if (!IsKeyringCreated(keyring_id)) {
+  if (!HasPrefForKeyring(*profile_prefs_, kEncryptedMnemonic, keyring_id)) {
     return false;
   }
 
@@ -1946,28 +1895,22 @@ void KeyringService::Unlock(const std::string& password,
 
   if (IsFilecoinEnabled()) {
     if (!ResumeKeyring(mojom::kFilecoinKeyringId, password)) {
-      // If Filecoin keyring doesnt exist we keep encryptor pre-created
-      // to be able to lazily create keyring later
-      if (IsKeyringExist(mojom::kFilecoinKeyringId)) {
-        VLOG(1) << __func__ << " Unable to unlock filecoin keyring";
-        encryptors_.erase(mojom::kFilecoinKeyringId);
-        std::move(callback).Run(false);
-        return;
-      }
+      VLOG(1) << __func__ << " Unable to unlock filecoin keyring";
+      encryptors_.erase(mojom::kFilecoinKeyringId);
+      std::move(callback).Run(false);
+      return;
     }
 
     if (!ResumeKeyring(mojom::kFilecoinTestnetKeyringId, password)) {
-      if (IsKeyringExist(mojom::kFilecoinTestnetKeyringId)) {
-        VLOG(1) << __func__ << " Unable to unlock filecoin testnet keyring";
-        encryptors_.erase(mojom::kFilecoinTestnetKeyringId);
-        std::move(callback).Run(false);
-        return;
-      }
+      VLOG(1) << __func__ << " Unable to unlock filecoin testnet keyring";
+      encryptors_.erase(mojom::kFilecoinTestnetKeyringId);
+      std::move(callback).Run(false);
+      return;
     }
   }
 
-  if (IsSolanaEnabled() && !ResumeKeyring(mojom::kSolanaKeyringId, password)) {
-    if (IsKeyringExist(mojom::kSolanaKeyringId)) {
+  if (IsSolanaEnabled()) {
+    if (!ResumeKeyring(mojom::kSolanaKeyringId, password)) {
       VLOG(1) << __func__ << " Unable to unlock Solana keyring";
       encryptors_.erase(mojom::kSolanaKeyringId);
       std::move(callback).Run(false);
@@ -1976,8 +1919,19 @@ void KeyringService::Unlock(const std::string& password,
   }
 
   if (IsBitcoinEnabled()) {
-    ResumeKeyring(mojom::kBitcoinKeyring84Id, password);
-    ResumeKeyring(mojom::kBitcoinKeyring84TestId, password);
+    if (!ResumeKeyring(mojom::kBitcoinKeyring84Id, password)) {
+      VLOG(1) << __func__ << " Unable to unlock Bitcoin keyring";
+      encryptors_.erase(mojom::kBitcoinKeyring84Id);
+      std::move(callback).Run(false);
+      return;
+    }
+
+    if (!ResumeKeyring(mojom::kBitcoinKeyring84TestId, password)) {
+      VLOG(1) << __func__ << " Unable to unlock Bitcoin testnet keyring";
+      encryptors_.erase(mojom::kBitcoinKeyring84TestId);
+      std::move(callback).Run(false);
+      return;
+    }
   }
 
   if (IsZCashEnabled()) {
@@ -2004,13 +1958,14 @@ void KeyringService::IsLocked(IsLockedCallback callback) {
 }
 
 void KeyringService::Reset(bool notify_observer) {
+  ResetAllAccountInfosCache();
   StopAutoLockTimer();
   encryptors_.clear();
   keyrings_.clear();
   ClearKeyringServiceProfilePrefs(profile_prefs_);
   if (notify_observer) {
     for (const auto& observer : observers_) {
-      observer->KeyringReset();
+      observer->WalletReset();
     }
   }
 }
@@ -2259,10 +2214,6 @@ HDKeyring* KeyringService::CreateKeyringInternal(mojom::KeyringId keyring_id,
   return keyring;
 }
 
-bool KeyringService::IsKeyringCreated(mojom::KeyringId keyring_id) const {
-  return HasPrefForKeyring(*profile_prefs_, kEncryptedMnemonic, keyring_id);
-}
-
 void KeyringService::AddObserver(
     ::mojo::PendingRemote<mojom::KeyringServiceObserver> observer) {
   observers_.Add(std::move(observer));
@@ -2272,26 +2223,6 @@ void KeyringService::NotifyUserInteraction() {
   if (auto_lock_timer_->IsRunning()) {
     auto_lock_timer_->Reset();
   }
-}
-
-bool KeyringService::LazilyCreateKeyring(mojom::KeyringId keyring_id) {
-  if (keyring_id == mojom::kDefaultKeyringId) {
-    return false;
-  }
-  if (IsKeyringExist(keyring_id)) {
-    return true;
-  }
-  // we use same mnemonic from default keyring for non default keyrings
-  auto mnemonic = GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId);
-  if (!CreateKeyringInternal(keyring_id, mnemonic, false)) {
-    return false;
-  }
-
-  for (const auto& observer : observers_) {
-    observer->KeyringCreated(keyring_id);
-  }
-
-  return true;
 }
 
 void KeyringService::GetAllAccounts(GetAllAccountsCallback callback) {
@@ -2905,15 +2836,6 @@ void KeyringService::MaybeFixAccountSelection() {
     // selection.
     SetSelectedDappAccountInternal(mojom::CoinType::SOL, {});
   }
-}
-
-absl::optional<size_t> KeyringService::GetAccountsNumber(
-    mojom::KeyringId keyring_id) {
-  auto* keyring = GetHDKeyringById(keyring_id);
-  if (!keyring) {
-    return absl::nullopt;
-  }
-  return keyring->GetAccounts().size();
 }
 
 void KeyringService::MaybeUnlockWithCommandLine() {

@@ -14,7 +14,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave {
@@ -39,10 +38,8 @@ class WalletButtonNotificationSource
 
  private:
   void EnsureTxServiceConnected();
-  void OnTxServiceConnectionError();
 
   void EnsureKeyringServiceConnected();
-  void OnKeyringServiceConnectionError();
 
   // brave_wallet::mojom::TxServiceObserver
   void OnNewUnapprovedTx(
@@ -54,20 +51,18 @@ class WalletButtonNotificationSource
   void OnTxServiceReset() override;
 
   // brave_wallet::KeyringServiceObserverBase
-  void KeyringCreated(brave_wallet::mojom::KeyringId keyring_id) override;
+  void WalletCreated() override;
   void WalletRestored() override;
 
   void OnWalletReady();
   void CheckTxStatus();
-  void OnTxStatusResolved(uint32_t count);
-  void OnKeyringInfoResolved(brave_wallet::mojom::KeyringInfoPtr keyring_info);
 
   void NotifyObservers();
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
-  mojo::Remote<brave_wallet::mojom::TxService> tx_service_;
-  mojo::Remote<brave_wallet::mojom::KeyringService> keyring_service_;
+  raw_ptr<brave_wallet::TxService> tx_service_ = nullptr;
+  raw_ptr<brave_wallet::KeyringService> keyring_service_ = nullptr;
 
   mojo::Receiver<brave_wallet::mojom::TxServiceObserver> tx_observer_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>

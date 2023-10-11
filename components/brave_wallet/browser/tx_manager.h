@@ -103,7 +103,7 @@ class TxManager : public TxStateManager::Observer,
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
 
   // mojom::KeyringServiceObserverBase:
-  void KeyringReset() override;
+  void WalletReset() override;
   void Locked() override;
   void Unlocked() override;
 

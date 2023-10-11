@@ -34,7 +34,7 @@ class HDKeyring {
 
   std::vector<AddedAcountInfo> AddAccounts(size_t number);
   // This will return vector of address of all accounts
-  std::vector<std::string> GetAccounts() const;
+  std::vector<std::string> GetAccountsForTesting() const;
   // Only support removing accounts from the back to prevents gaps
   void RemoveAccount();
 

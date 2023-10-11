@@ -54,14 +54,14 @@ export function makeJsonRpcServiceObserver (store: Store) {
 
   export function  makeKeyringServiceObserver (store: Store) {
     const keyringServiceObserverReceiver = new BraveWallet.KeyringServiceObserverReceiver({
-      keyringCreated: function () {
-        store.dispatch(WalletActions.keyringCreated())
+      walletCreated: function () {
+        store.dispatch(WalletActions.walletCreated())
       },
       walletRestored: function () {
         store.dispatch(WalletActions.walletRestored())
       },
-      keyringReset: function () {
-        store.dispatch(WalletActions.keyringReset())
+      walletReset: function () {
+        store.dispatch(WalletActions.walletReset())
       },
       locked: function () {
         store.dispatch(WalletActions.locked())

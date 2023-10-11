@@ -13,10 +13,6 @@
 
 namespace brave {
 
-namespace {
-constexpr base::TimeDelta kReconnectTime = base::Seconds(5);
-}  // namespace
-
 WalletButtonNotificationSource::WalletButtonNotificationSource(
     Profile* profile,
     WalletButtonNotificationSourceCallback callback)
@@ -30,53 +26,29 @@ void WalletButtonNotificationSource::Init() {
 }
 
 void WalletButtonNotificationSource::EnsureTxServiceConnected() {
-  if (tx_service_) {
+  tx_service_ = brave_wallet::TxServiceFactory::GetServiceForContext(profile_);
+  if (!tx_service_) {
     return;
   }
-  auto pending = brave_wallet::TxServiceFactory::GetForContext(profile_);
-  tx_service_.Bind(std::move(pending));
-  tx_service_.set_disconnect_handler(base::BindOnce(
-      &WalletButtonNotificationSource::OnTxServiceConnectionError,
-      weak_ptr_factory_.GetWeakPtr()));
   tx_service_->AddObserver(tx_observer_.BindNewPipeAndPassRemote());
   CheckTxStatus();
 }
 
 void WalletButtonNotificationSource::EnsureKeyringServiceConnected() {
+  keyring_service_ =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(profile_);
   if (!keyring_service_) {
-    auto pending = brave_wallet::KeyringServiceFactory::GetForContext(profile_);
-    keyring_service_.Bind(std::move(pending));
-    keyring_service_.set_disconnect_handler(base::BindOnce(
-        &WalletButtonNotificationSource::OnTxServiceConnectionError,
-        weak_ptr_factory_.GetWeakPtr()));
-    keyring_service_->AddObserver(
-        keyring_service_observer_.BindNewPipeAndPassRemote());
-    keyring_service_->GetKeyringInfo(
-        brave_wallet::mojom::kDefaultKeyringId,
-        base::BindOnce(&WalletButtonNotificationSource::OnKeyringInfoResolved,
-                       weak_ptr_factory_.GetWeakPtr()));
+    return;
   }
-}
 
-void WalletButtonNotificationSource::OnTxServiceConnectionError() {
-  tx_service_.reset();
-  tx_observer_.reset();
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(&WalletButtonNotificationSource::EnsureTxServiceConnected,
-                     weak_ptr_factory_.GetWeakPtr()),
-      kReconnectTime);
-}
+  keyring_service_->AddObserver(
+      keyring_service_observer_.BindNewPipeAndPassRemote());
 
-void WalletButtonNotificationSource::OnKeyringServiceConnectionError() {
-  keyring_service_.reset();
-  keyring_service_observer_.reset();
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(
-          &WalletButtonNotificationSource::EnsureKeyringServiceConnected,
-          weak_ptr_factory_.GetWeakPtr()),
-      kReconnectTime);
+  wallet_created_ = keyring_service_->IsWalletSetup();
+  if (wallet_created_.value()) {
+    prefs_->SetBoolean(kShouldShowWalletSuggestionBadge, false);
+  }
+  NotifyObservers();
 }
 
 WalletButtonNotificationSource::~WalletButtonNotificationSource() = default;
@@ -90,9 +62,8 @@ void WalletButtonNotificationSource::CheckTxStatus() {
   if (!tx_service_) {
     return;
   }
-  tx_service_->GetPendingTransactionsCount(
-      base::BindOnce(&WalletButtonNotificationSource::OnTxStatusResolved,
-                     weak_ptr_factory_.GetWeakPtr()));
+  pending_tx_count_ = tx_service_->GetPendingTransactionsCountSync();
+  NotifyObservers();
 }
 
 void WalletButtonNotificationSource::OnTransactionStatusChanged(
@@ -106,11 +77,7 @@ void WalletButtonNotificationSource::OnNewUnapprovedTx(
 }
 
 void WalletButtonNotificationSource::OnTxServiceReset() {
-  OnTxStatusResolved(0u);
-}
-
-void WalletButtonNotificationSource::OnTxStatusResolved(uint32_t count) {
-  pending_tx_count_ = count;
+  pending_tx_count_ = 0;
   NotifyObservers();
 }
 
@@ -119,11 +86,8 @@ void WalletButtonNotificationSource::OnWalletReady() {
   NotifyObservers();
 }
 
-void WalletButtonNotificationSource::KeyringCreated(
-    brave_wallet::mojom::KeyringId keyring_id) {
-  if (keyring_id == brave_wallet::mojom::kDefaultKeyringId) {
-    OnWalletReady();
-  }
+void WalletButtonNotificationSource::WalletCreated() {
+  OnWalletReady();
 }
 
 void WalletButtonNotificationSource::WalletRestored() {
@@ -135,15 +99,6 @@ void WalletButtonNotificationSource::NotifyObservers() {
       (wallet_created_.has_value() && !wallet_created_.value() &&
        prefs_->GetBoolean(kShouldShowWalletSuggestionBadge));
   callback_.Run(show_suggestion_badge, pending_tx_count_);
-}
-
-void WalletButtonNotificationSource::OnKeyringInfoResolved(
-    brave_wallet::mojom::KeyringInfoPtr keyring_info) {
-  wallet_created_ = keyring_info && keyring_info->is_keyring_created;
-  if (wallet_created_.value()) {
-    prefs_->SetBoolean(kShouldShowWalletSuggestionBadge, false);
-  }
-  NotifyObservers();
 }
 
 }  // namespace brave
