@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <sstream>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -17,11 +18,17 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/files/file.h"
+#include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
+#include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -67,12 +74,22 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
 }
 
 double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
-                        const Signal& signal) {
+                        const Signal& signal,
+                        std::stringstream& debug_stream) {
   const double source_visits_min = features::kBraveNewsSourceVisitsMin.Get();
+  // [0, 1] ==> min, 1
   double source_visits_projected =
       source_visits_min + signal->visit_weight * (1 - source_visits_min);
-  return source_visits_projected * signal->subscribed_weight *
-         GetPopRecency(article);
+  /* min - 1 */ /* 1e5 - 1.2           */
+  double pop_score = GetPopRecency(article);
+  auto result = source_visits_projected * signal->subscribed_weight *
+                /* 0 - 10000?       */
+                pop_score;
+
+  debug_stream << '"' << article->title << "\", " << source_visits_projected
+               << ", " << signal->subscribed_weight << ", " << pop_score
+               << "\n";
+  return result;
 }
 
 std::string PickRandom(const std::vector<std::string>& items) {
@@ -83,6 +100,10 @@ std::string PickRandom(const std::vector<std::string>& items) {
 
 ArticleInfos GetArticleInfos(const FeedItems& feed_items,
                              const Signals& signals) {
+  std::stringstream debug_stream_for_lorenzo;
+  debug_stream_for_lorenzo
+      << "title, source_visits_projects, subscribed_weight, pop_score\n";
+
   ArticleInfos articles;
   base::flat_set<GURL> seen_articles;
   for (const auto& item : feed_items) {
@@ -106,12 +127,25 @@ ArticleInfos GetArticleInfos(const FeedItems& feed_items,
         continue;
       }
 
-      std::tuple<mojom::FeedItemMetadataPtr, Signal, double> pair =
-          std::tuple(article->data->Clone(), std::move(signal),
-                     GetArticleWeight(article->data, signal));
+      std::tuple<mojom::FeedItemMetadataPtr, Signal, double> pair = std::tuple(
+          article->data->Clone(), std::move(signal),
+          GetArticleWeight(article->data, signal, debug_stream_for_lorenzo));
       articles.push_back(std::move(pair));
     }
   }
+
+  std::string result = debug_stream_for_lorenzo.str();
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
+      base::BindOnce(
+          [](std::string text) {
+            base::File output(base::FilePath("article_weights.csv"),
+                              base::File::FLAG_CREATE_ALWAYS | base::File::FLAG_WRITE);
+            output.Write(0, text.c_str(), text.size());
+            output.Close();
+          },
+          std::move(result)));
+
   return articles;
 }
 
