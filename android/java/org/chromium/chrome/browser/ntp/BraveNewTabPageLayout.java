@@ -545,7 +545,7 @@ public class BraveNewTabPageLayout
                         }
                     }
 
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                         mStartCardViewTime = System.currentTimeMillis();
                         int lastVisibleItemPosition =
                                 linearLayoutManager.findLastVisibleItemPosition();
