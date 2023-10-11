@@ -19,7 +19,7 @@ namespace features {
 // Enables the option of resetting progress marker.
 BASE_FEATURE(kBraveSyncResetProgressMarker,
              "ResetProgressMarkerOnCommitFailures",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace features
 
