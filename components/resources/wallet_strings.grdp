@@ -615,9 +615,9 @@
   <message name="IDS_BRAVE_WALLET_PRIMARY_NETWORKS" desc="Portfolio settings primary networks title">Primary networks</message>
   <message name="IDS_BRAVE_WALLET_ETH_ACCOUNT_DESCRIPTION" desc="Ethereum account description">Ethereum + EVM Chains</message>
   <message name="IDS_BRAVE_WALLET_SOL_ACCOUNT_DESCRIPTION" desc="Solana account description">Solana + SVM Chains</message>
-  <message name="IDS_BRAVE_WALLET_FIL_ACCOUNT_DESCRIPTION" desc="Filecoin account description">Filecoin</message>
-  <message name="IDS_BRAVE_WALLET_BTC_ACCOUNT_DESCRIPTION" desc="Bitcoin account description">Bitcoin</message>
-  <message name="IDS_BRAVE_WALLET_ZEC_ACCOUNT_DESCRIPTION" desc="ZCash account description">ZCash</message>
+  <message name="IDS_BRAVE_WALLET_FIL_ACCOUNT_DESCRIPTION" desc="Filecoin account description" translateable="false">Filecoin</message>
+  <message name="IDS_BRAVE_WALLET_BTC_ACCOUNT_DESCRIPTION" desc="Bitcoin account description" translateable="false">Bitcoin</message>
+  <message name="IDS_BRAVE_WALLET_ZEC_ACCOUNT_DESCRIPTION" desc="ZCash account description" translateable="false">ZCash</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE" desc="Show network logo filter title">Network Logo</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_DESCRIPTION" desc="Show network logo filter description">Show network logo on NFTs</message>
   <message name="IDS_BRAVE_WALLET_SHOW_SPAM_NFTS_TITLE" desc="Show spam NFTs filter title">Spam NFTs</message>

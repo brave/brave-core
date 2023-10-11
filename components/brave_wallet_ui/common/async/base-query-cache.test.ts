@@ -114,8 +114,8 @@ describe('BaseQueryCache', () => {
     // access the uncached registry
     const registry = await cache.getNetworksRegistry()
     expect(registry.entities).toBeDefined()
-    // once per coin type (ETH, FIL, SOL, BTC)
-    const numberOfCoins = 4
+    // once per coin type (ETH, FIL, SOL, BTC, ZEC)
+    const numberOfCoins = 5
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
     expect(getAllNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
     expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)

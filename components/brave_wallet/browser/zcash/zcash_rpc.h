@@ -35,7 +35,7 @@ class ZCashRpc {
   ~ZCashRpc();
 
   void GetUtxoList(const std::string& chain_id,
-                   const std::vector<std::string>& addresses,
+                   const std::string& address,
                    GetUtxoListCallback callback);
 
  private:
