@@ -13,6 +13,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -152,6 +153,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::TxServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
 
+  if (brave_wallet::IsBitcoinEnabled()) {
+    brave_wallet::BitcoinWalletServiceFactory::GetInstance();
+  }
   if (brave_wallet::IsZCashEnabled()) {
     brave_wallet::ZCashWalletServiceFactory::GetInstance();
   }

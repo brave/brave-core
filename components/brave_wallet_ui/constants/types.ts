@@ -793,6 +793,7 @@ export interface TransactionProviderErrorRegistry {
 
 export const SupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.ETH,
   BraveWallet.CoinType.FIL,
   BraveWallet.CoinType.BTC,
   BraveWallet.CoinType.ZEC
@@ -833,6 +834,7 @@ export const SupportedTestNetworks = [
   BraveWallet.FILECOIN_TESTNET,
   BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
   BraveWallet.BITCOIN_TESTNET,
+  BraveWallet.Z_CASH_TESTNET
 ]
 
 /**

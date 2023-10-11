@@ -229,7 +229,7 @@ export const CreateAccountModal = () => {
           }
           {selectedAccountType?.coin === BraveWallet.CoinType.ZEC &&
             <SelectWrapper>
-              <Select value={bitcoinNetwork} onChange={onChangeZCashNetwork}>
+              <Select value={zcashNetwork} onChange={onChangeZCashNetwork}>
                 {ZCashNetworkTypes.map((network) => {
                   return (
                     <div data-value={network} key={network}>

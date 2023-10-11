@@ -78,12 +78,9 @@ std::string GetPrefixedProtobuf(const std::string& serialized_proto) {
   return result;
 }
 
-std::string MakeGetAddressUtxosURLParams(
-    const std::vector<std::string>& addresses) {
+std::string MakeGetAddressUtxosURLParams(const std::string& address) {
   zcash::GetAddressUtxosRequest request;
-  for (const auto& address : addresses) {
-    request.add_addresses(address);
-  }
+  request.add_addresses(address);
   request.set_maxentries(1);
   request.set_startheight(0);
   return GetPrefixedProtobuf(request.SerializeAsString());
@@ -115,24 +112,19 @@ absl::optional<std::string> ResolveSerializedMessage(
   if (grpc_response_body.size() < 5) {
     return absl::nullopt;
   }
-  if (grpc_response_body.c_str()[0] != 0) {
+  if (grpc_response_body[0] != 0) {
     // Compression is not supported yet
     return absl::nullopt;
   }
   uint32_t size = 0;
-
-  uint8_t as_bytes[4];
-  const char* size_start = &(grpc_response_body.c_str()[1]);
-  for (int i = 0; i < 4; i++) {
-    as_bytes[i] = static_cast<uint8_t>(size_start[i]);
-  }
-  base::ReadBigEndian<uint32_t>(as_bytes, &size);
+  base::ReadBigEndian(
+      reinterpret_cast<const uint8_t*>(&(grpc_response_body[1])), &size);
 
   if (grpc_response_body.size() != size + 5) {
     return absl::nullopt;
   }
 
-  return grpc_response_body.substr(5, grpc_response_body.size() - 5);
+  return grpc_response_body.substr(5);
 }
 
 }  // namespace
@@ -145,7 +137,7 @@ ZCashRpc::ZCashRpc(
 ZCashRpc::~ZCashRpc() = default;
 
 void ZCashRpc::GetUtxoList(const std::string& chain_id,
-                           const std::vector<std::string>& addresses,
+                           const std::string& address,
                            ZCashRpc::GetUtxoListCallback callback) {
   GURL request_url = MakeGetAddressUtxosURL(
       GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
@@ -156,7 +148,7 @@ void ZCashRpc::GetUtxoList(const std::string& chain_id,
   }
 
   auto url_loader =
-      MakeGRPCLoader(request_url, MakeGetAddressUtxosURLParams(addresses));
+      MakeGRPCLoader(request_url, MakeGetAddressUtxosURLParams(address));
 
   UrlLoadersList::iterator it = url_loaders_list_.insert(
       url_loaders_list_.begin(), std::move(url_loader));
@@ -174,7 +166,6 @@ void ZCashRpc::OnGetUtxosResponse(
     const std::unique_ptr<std::string> response_body) {
   auto current_loader = std::move(*it);
   url_loaders_list_.erase(it);
-  zcash::GetAddressUtxosResponse response;
   if (current_loader->NetError()) {
     std::move(callback).Run(base::unexpected("Network error"));
     return;
@@ -191,6 +182,7 @@ void ZCashRpc::OnGetUtxosResponse(
     return;
   }
 
+  zcash::GetAddressUtxosResponse response;
   if (!response.ParseFromString(message.value())) {
     std::move(callback).Run(base::unexpected("Can't parse response"));
     return;
