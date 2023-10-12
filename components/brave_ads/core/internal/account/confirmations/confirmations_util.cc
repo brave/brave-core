@@ -44,13 +44,13 @@ bool Verify(const ConfirmationInfo& confirmation) {
     return false;
   }
 
-  const absl::optional<base::Value> root = base::JSONReader::Read(credential);
-  if (!root || !root->is_dict()) {
+  const absl::optional<base::Value::Dict> dict =
+      base::JSONReader::ReadDict(credential);
+  if (!dict) {
     return false;
   }
-  const base::Value::Dict& dict = root->GetDict();
 
-  if (const auto* const value = dict.FindString(kVerificationSignatureKey)) {
+  if (const auto* const value = dict->FindString(kVerificationSignatureKey)) {
     const cbr::VerificationSignature verification_signature =
         cbr::VerificationSignature(*value);
     if (!verification_signature.has_value()) {

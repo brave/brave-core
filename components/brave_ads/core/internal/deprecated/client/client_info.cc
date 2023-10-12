@@ -209,14 +209,14 @@ std::string ClientInfo::ToJson() const {
 }
 
 bool ClientInfo::FromJson(const std::string& json) {
-  const absl::optional<base::Value> root =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!root || !root->is_dict()) {
+  const absl::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!dict) {
     return false;
   }
 
-  return FromValue(root->GetDict());
+  return FromValue(*dict);
 }
 
 }  // namespace brave_ads
