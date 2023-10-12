@@ -19,18 +19,18 @@ constexpr char kRegionKey[] = "region";
 }  // namespace
 
 absl::optional<std::string> ParseSubdivision(const std::string& json) {
-  const absl::optional<base::Value> root = base::JSONReader::Read(json);
-  if (!root || !root->is_dict()) {
+  const absl::optional<base::Value::Dict> dict =
+      base::JSONReader::ReadDict(json);
+  if (!dict) {
     return absl::nullopt;
   }
-  const base::Value::Dict& dict = root->GetDict();
 
-  const std::string* const country = dict.FindString(kCountryKey);
+  const std::string* const country = dict->FindString(kCountryKey);
   if (!country || country->empty()) {
     return absl::nullopt;
   }
 
-  const std::string* const region = dict.FindString(kRegionKey);
+  const std::string* const region = dict->FindString(kRegionKey);
   if (!region || region->empty()) {
     return absl::nullopt;
   }

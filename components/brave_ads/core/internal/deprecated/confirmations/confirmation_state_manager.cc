@@ -401,21 +401,21 @@ std::string ConfirmationStateManager::ToJson() {
 }
 
 bool ConfirmationStateManager::FromJson(const std::string& json) {
-  const absl::optional<base::Value> root = base::JSONReader::Read(json);
-  if (!root || !root->is_dict()) {
+  const absl::optional<base::Value::Dict> dict =
+      base::JSONReader::ReadDict(json);
+  if (!dict) {
     return false;
   }
-  const base::Value::Dict& dict = root->GetDict();
 
-  if (!ParseConfirmationsFromDictionary(dict)) {
+  if (!ParseConfirmationsFromDictionary(*dict)) {
     BLOG(1, "Failed to parse confirmations");
   }
 
-  if (!ParseConfirmationTokensFromDictionary(dict)) {
+  if (!ParseConfirmationTokensFromDictionary(*dict)) {
     BLOG(1, "Failed to parse confirmation tokens");
   }
 
-  if (!ParsePaymentTokensFromDictionary(dict)) {
+  if (!ParsePaymentTokensFromDictionary(*dict)) {
     BLOG(1, "Failed to parse payment tokens");
   }
 
