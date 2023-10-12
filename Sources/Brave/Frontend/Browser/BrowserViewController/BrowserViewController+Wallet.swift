@@ -582,7 +582,7 @@ extension Tab: BraveWalletKeyringServiceObserver {
   func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
   }
   
-  func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
+  func walletRestored() {
   }
   
   func keyringReset() {

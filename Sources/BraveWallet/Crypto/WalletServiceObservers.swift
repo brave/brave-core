@@ -9,7 +9,7 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
   
   var _keyringReset: (() -> Void)?
   var _keyringCreated: ((_ keyringId: BraveWallet.KeyringId) -> Void)?
-  var _keyringRestored: ((_ keyringId: BraveWallet.KeyringId) -> Void)?
+  var _walletRestored: (() -> Void)?
   var _locked: (() -> Void)?
   var _unlocked: (() -> Void)?
   var _backedUp: (() -> Void)?
@@ -23,7 +23,7 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
     keyringService: BraveWalletKeyringService,
     _keyringReset: (() -> Void)? = nil,
     _keyringCreated: ((BraveWallet.KeyringId) -> Void)? = nil,
-    _keyringRestored: ((BraveWallet.KeyringId) -> Void)? = nil,
+    _walletRestored: (() -> Void)? = nil,
     _locked: (() -> Void)? = nil,
     _unlocked: (() -> Void)? = nil,
     _backedUp: (() -> Void)? = nil,
@@ -35,7 +35,7 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
   ) {
     self._keyringReset = _keyringReset
     self._keyringCreated = _keyringCreated
-    self._keyringRestored = _keyringRestored
+    self._walletRestored = _walletRestored
     self._locked = _locked
     self._unlocked = _unlocked
     self._backedUp = _backedUp
@@ -53,8 +53,8 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
   public func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
     _keyringCreated?(keyringId)
   }
-  public func keyringRestored(_ keyringId: BraveWallet.KeyringId) {
-    _keyringRestored?(keyringId)
+  public func walletRestored() {
+    _walletRestored?()
   }
   public func locked() {
     _locked?()

@@ -25,13 +25,11 @@ import Preferences
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
-      let isEthereumKeyringId = keyringId == BraveWallet.KeyringId.default
       let keyring: BraveWallet.KeyringInfo = .init(
         id: BraveWallet.KeyringId.default,
         isKeyringCreated: true,
         isLocked: false,
-        isBackedUp: true,
-        accountInfos: isEthereumKeyringId ? [.previewAccount] : []
+        isBackedUp: true
       )
       completion(keyring)
     }
@@ -217,23 +215,11 @@ import Preferences
     ]
     
     keyringService._keyringInfo = { keyringId, completion in
-      let accountInfos: [BraveWallet.AccountInfo]
-      switch keyringId {
-      case BraveWallet.KeyringId.default:
-        accountInfos = accountInfosDict[.eth, default: []]
-      case BraveWallet.KeyringId.solana:
-        accountInfos = accountInfosDict[.sol, default: []]
-      case BraveWallet.KeyringId.filecoin:
-        accountInfos = accountInfosDict[.fil, default: []]
-      default:
-        accountInfos = []
-      }
       let keyring: BraveWallet.KeyringInfo = .init(
         id: keyringId,
         isKeyringCreated: true,
         isLocked: false,
-        isBackedUp: false,
-        accountInfos: accountInfos
+        isBackedUp: false
       )
       completion(keyring)
     }
