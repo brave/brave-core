@@ -56,8 +56,7 @@ const ColoredIcon = styled(Icon)<{ color: string }>`
 
 const ProductNameContainer = styled.div`
   flex-grow: 1;
-  display: flex;
-  gap: 4px;
+  padding: 4px;
   font: ${font.primary.heading.h4};
 `
 
@@ -286,7 +285,6 @@ function PlaylistsCatalogHeader () {
     <>
       <GradientIcon name='product-playlist-bold-add-color' />
       <ProductNameContainer>
-        <ColoredSpan color={color.text.secondary}>Brave</ColoredSpan>
         <ColoredSpan color={color.text.primary}>Playlist</ColoredSpan>
       </ProductNameContainer>
       <NewPlaylistButton />
