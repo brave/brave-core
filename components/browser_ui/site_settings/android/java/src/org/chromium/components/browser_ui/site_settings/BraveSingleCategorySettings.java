@@ -12,8 +12,8 @@ import org.chromium.build.annotations.UsedByReflection;
 import org.chromium.content_public.browser.BrowserContextHandle;
 
 @UsedByReflection("brave_site_settings_preferences.xml")
-public class BraveSingleCategorySettings
-        extends BaseSiteSettingsFragment implements AddExceptionPreference.SiteAddedCallback {
+public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
+        implements AddExceptionPreference.SiteAddedCallback {
     private static final String ADD_EXCEPTION_KEY = "add_exception";
 
     @Override

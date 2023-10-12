@@ -49,21 +49,48 @@ public class BraveNewTabPage extends NewTabPage {
     private TabModelSelector mTabModelSelector;
     private BottomSheetController mBottomSheetController;
 
-    public BraveNewTabPage(Activity activity,
+    public BraveNewTabPage(
+            Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
-            Supplier<Tab> activityTabProvider, SnackbarManager snackbarManager,
-            ActivityLifecycleDispatcher lifecycleDispatcher, TabModelSelector tabModelSelector,
-            boolean isTablet, NewTabPageUma uma, boolean isInNightMode,
-            NativePageHost nativePageHost, Tab tab, String url,
+            Supplier<Tab> activityTabProvider,
+            SnackbarManager snackbarManager,
+            ActivityLifecycleDispatcher lifecycleDispatcher,
+            TabModelSelector tabModelSelector,
+            boolean isTablet,
+            NewTabPageUma uma,
+            boolean isInNightMode,
+            NativePageHost nativePageHost,
+            Tab tab,
+            String url,
             BottomSheetController bottomSheetController,
-            Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid,
-            JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier,
-            SettingsLauncher settingsLauncher, HomeSurfaceTracker homeSurfaceTracker,
+            Supplier<ShareDelegate> shareDelegateSupplier,
+            WindowAndroid windowAndroid,
+            JankTracker jankTracker,
+            Supplier<Toolbar> toolbarSupplier,
+            SettingsLauncher settingsLauncher,
+            HomeSurfaceTracker homeSurfaceTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier) {
-        super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
-                lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
-                tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker,
-                toolbarSupplier, settingsLauncher, homeSurfaceTracker, tabContentManagerSupplier);
+        super(
+                activity,
+                browserControlsStateProvider,
+                activityTabProvider,
+                snackbarManager,
+                lifecycleDispatcher,
+                tabModelSelector,
+                isTablet,
+                uma,
+                isInNightMode,
+                nativePageHost,
+                tab,
+                url,
+                bottomSheetController,
+                shareDelegateSupplier,
+                windowAndroid,
+                jankTracker,
+                toolbarSupplier,
+                settingsLauncher,
+                homeSurfaceTracker,
+                tabContentManagerSupplier);
 
         mJankTracker = jankTracker;
 
@@ -101,19 +128,33 @@ public class BraveNewTabPage extends NewTabPage {
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
         assert !FeedFeatures.isFeedEnabled();
-        FeedSurfaceCoordinator feedSurfaceCoordinator = new BraveFeedSurfaceCoordinator(activity,
-                snackbarManager, windowAndroid, mJankTracker,
-                new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout), mNewTabPageLayout,
-                mBrowserControlsStateProvider.getTopControlsHeight(), isInNightMode, this, profile,
-                /* isPlaceholderShownInitially= */ false, mBottomSheetController,
-                shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
-                NewTabPageUtils.decodeOriginFromNtpUrl(url),
-                PrivacyPreferencesManagerImpl.getInstance(), mToolbarSupplier,
-                SurfaceType.NEW_TAB_PAGE, mConstructedTimeNs,
-                FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
-                /* overScrollDisabled= */ false, /* viewportView= */ null,
-                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getForProfile(profile),
-                mTabModelSelector);
+        FeedSurfaceCoordinator feedSurfaceCoordinator =
+                new BraveFeedSurfaceCoordinator(
+                        activity,
+                        snackbarManager,
+                        windowAndroid,
+                        mJankTracker,
+                        new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout),
+                        mNewTabPageLayout,
+                        mBrowserControlsStateProvider.getTopControlsHeight(),
+                        isInNightMode,
+                        this,
+                        profile,
+                        /* isPlaceholderShownInitially= */ false,
+                        mBottomSheetController,
+                        shareDelegateSupplier,
+                        /* externalScrollableContainerDelegate= */ null,
+                        NewTabPageUtils.decodeOriginFromNtpUrl(url),
+                        PrivacyPreferencesManagerImpl.getInstance(),
+                        mToolbarSupplier,
+                        SurfaceType.NEW_TAB_PAGE,
+                        mConstructedTimeNs,
+                        FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
+                        /* overScrollDisabled= */ false,
+                        /* viewportView= */ null,
+                        /* actionDelegate= */ null,
+                        HelpAndFeedbackLauncherImpl.getForProfile(profile),
+                        mTabModelSelector);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }

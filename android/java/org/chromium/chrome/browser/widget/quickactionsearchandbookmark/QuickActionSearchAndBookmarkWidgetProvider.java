@@ -469,15 +469,20 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                     widgetTilesJsonArray.put(widgetTile.toJSONObject());
                 }
             }
-            SharedPreferencesManager.getInstance().writeString(
-                    BravePreferenceKeys.BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
-                    widgetTilesJsonArray.toString());
+            SharedPreferencesManager.getInstance()
+                    .writeString(
+                            BravePreferenceKeys.BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
+                            widgetTilesJsonArray.toString());
             updateAppWidgets();
         }
 
         public static List<WidgetTile> readWidgetTiles() {
-            String widgetTilesJson = SharedPreferencesManager.getInstance().readString(
-                    BravePreferenceKeys.BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES, null);
+            String widgetTilesJson =
+                    SharedPreferencesManager.getInstance()
+                            .readString(
+                                    BravePreferenceKeys
+                                            .BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
+                                    null);
             List<WidgetTile> widgetTileList = new ArrayList();
             widgetTilesJson = "{\"widgetTiles\":" + widgetTilesJson + "}";
             try {

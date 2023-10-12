@@ -6,6 +6,7 @@
 package org.chromium.components.browser_ui.site_settings;
 
 import android.os.Bundle;
+
 import androidx.preference.Preference;
 
 import org.chromium.base.ContextUtils;
@@ -14,7 +15,8 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 import java.util.HashMap;
 
 public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
-    private static final String PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY = "play_yt_video_in_browser_category";
+    private static final String PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY =
+            "play_yt_video_in_browser_category";
     private static final String ADS_KEY = "ads";
     private static final String BACKGROUND_SYNC_KEY = "background_sync";
     private static final String PLAY_YT_VIDEO_IN_BROWSER_KEY = "play_yt_video_in_browser";
