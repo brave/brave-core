@@ -89,12 +89,20 @@ std::unique_ptr<KeyedService> BuildVpnService(
 
 // static
 BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
+  if (!IsBraveVPNFeatureEnabled()) {
+    return nullptr;
+  }
+
   static base::NoDestructor<BraveVpnServiceFactory> instance;
   return instance.get();
 }
 
 // static
 BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
+  if (!GetInstance()) {
+    return nullptr;
+  }
+
   return static_cast<BraveVpnService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }

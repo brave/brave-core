@@ -90,7 +90,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
         browser_(browser),
         service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
             browser_->profile())) {
-    DCHECK(service_);
+    CHECK(service_);
     Observe(service_);
     Build(service_->is_purchased_user());
   }
@@ -145,7 +145,7 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
       browser_(browser),
       service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->profile())) {
-  DCHECK(service_);
+  CHECK(service_);
   Observe(service_);
 
   // Replace ToolbarButton's highlight path generator.
