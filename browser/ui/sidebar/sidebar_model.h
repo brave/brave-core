@@ -80,8 +80,7 @@ class SidebarModel : public SidebarService::Observer,
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // |false| is used in unit test.
-  void SetActiveIndex(absl::optional<size_t> index, bool load = true);
+  void SetActiveIndex(absl::optional<size_t> index);
   // Returns true if webcontents of item at |index| already loaded url.
   bool IsSidebarHasAllBuiltInItems() const;
   absl::optional<size_t> GetIndexOf(const SidebarItem& item) const;
@@ -108,6 +107,7 @@ class SidebarModel : public SidebarService::Observer,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SidebarModelTest, ItemsChangedTest);
+  FRIEND_TEST_ALL_PREFIXES(SidebarModelTest, ActiveIndexChangedAfterItemAdded);
 
   // Add item at last.
   void AddItem(const SidebarItem& item, size_t index, bool user_gesture);
