@@ -14,26 +14,14 @@ extension AdblockEngine {
   }
   
   convenience init(textFileURL fileURL: URL, resourcesFileURL: URL) throws {
-    guard let data = FileManager.default.contents(atPath: fileURL.path) else {
-      throw CompileError.fileNotFound
-    }
-    
-    guard let rules = String(data: data, encoding: .utf8) else {
-      throw CompileError.fileNotFound
-    }
-    
-    try self.init(rules: rules)
+    try self.init(rules: String(contentsOf: fileURL))
     try useResources(fromFileURL: resourcesFileURL)
   }
   
   convenience init(datFileURL fileURL: URL, resourcesFileURL: URL) throws {
-    guard let data = FileManager.default.contents(atPath: fileURL.path) else {
-      throw CompileError.fileNotFound
-    }
-    
     self.init()
     
-    if !deserialize(data: data) {
+    if try !deserialize(data: Data(contentsOf: fileURL)) {
       throw CompileError.couldNotDeserializeDATFile
     }
     
@@ -62,8 +50,7 @@ extension AdblockEngine {
   
   private func useResources(fromFileURL fileURL: URL) throws {
     // Add scriplets if available
-    if let data = FileManager.default.contents(atPath: fileURL.path),
-       let json = try Self.validateJSON(data) {
+    if let json = try Self.validateJSON(Data(contentsOf: fileURL)) {
       useResources(json)
     }
   }

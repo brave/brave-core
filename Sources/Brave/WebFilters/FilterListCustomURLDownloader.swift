@@ -58,22 +58,29 @@ actor FilterListCustomURLDownloader: ObservableObject {
     self.startedService = true
     await CustomFilterListStorage.shared.loadCachedFilterLists()
     
-    await CustomFilterListStorage.shared.filterListsURLs.asyncConcurrentForEach { customURL in
-      let resource = await customURL.setting.resource
-      
-      do {
-        if let cachedResult = try resource.cachedResult() {
-          await self.handle(downloadResult: cachedResult, for: customURL)
+    do {
+      try await CustomFilterListStorage.shared.filterListsURLs.asyncConcurrentForEach { customURL in
+        let resource = await customURL.setting.resource
+        
+        do {
+          if let cachedResult = try resource.cachedResult() {
+            await self.handle(downloadResult: cachedResult, for: customURL)
+          }
+        } catch {
+          let uuid = await customURL.setting.uuid
+          ContentBlockerManager.log.error(
+            "Failed to cached data for custom filter list `\(uuid)`: \(error)"
+          )
         }
-      } catch {
-        let uuid = await customURL.setting.uuid
-        ContentBlockerManager.log.error(
-          "Failed to cached data for custom filter list `\(uuid)`: \(error)"
-        )
+        
+        // Always fetch this resource so it's ready if the user enables it.
+        await self.startFetching(filterListCustomURL: customURL)
+        
+        // Sleep for 1ms. This drastically reduces memory usage without much impact to usability
+        try await Task.sleep(nanoseconds: 1000000)
       }
-      
-      // Always fetch this resource so it's ready if the user enables it.
-      await self.startFetching(filterListCustomURL: customURL)
+    } catch {
+      // Ignore cancellation errors
     }
   }
   
@@ -105,32 +112,33 @@ actor FilterListCustomURLDownloader: ObservableObject {
     }
       
     // Add/remove the resource depending on if it is enabled/disabled
-    if await filterListCustomURL.setting.isEnabled {
-      guard let resourcesInfo = await FilterListResourceDownloader.shared.resourcesInfo else {
-        assertionFailure("This should not have been called if the resources are not ready")
-        return
-      }
-      
-      let version = fileVersionDateFormatter.string(from: downloadResult.date)
-      let filterListInfo = CachedAdBlockEngine.FilterListInfo(
-        source: .filterListURL(uuid: uuid),
-        localFileURL: downloadResult.fileURL,
-        version: version, fileType: .text
+    let source = CachedAdBlockEngine.Source.filterListURL(uuid: uuid)
+    guard let resourcesInfo = await FilterListResourceDownloader.shared.resourcesInfo else {
+      assertionFailure("This should not have been called if the resources are not ready")
+      return
+    }
+    
+    let version = fileVersionDateFormatter.string(from: downloadResult.date)
+    let filterListInfo = CachedAdBlockEngine.FilterListInfo(
+      source: .filterListURL(uuid: uuid),
+      localFileURL: downloadResult.fileURL,
+      version: version, fileType: .text
+    )
+    
+    guard await AdBlockStats.shared.isEagerlyLoaded(source: source) else {
+      // Don't compile unless eager
+      await AdBlockStats.shared.updateIfNeeded(resourcesInfo: resourcesInfo)
+      await AdBlockStats.shared.updateIfNeeded(filterListInfo: filterListInfo, isAlwaysAggressive: true)
+      return
+    }
+    
+    do {
+      try await AdBlockStats.shared.compileDelayed(
+        filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
+        isAlwaysAggressive: true, delayed: true
       )
-      
-      do {
-        let engine = try await CachedAdBlockEngine.compile(
-          filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-          isAlwaysAggressive: true
-        )
-        
-        await AdBlockStats.shared.add(engine: engine)
-        ContentBlockerManager.log.debug("Compiled engine for custom filter list `\(uuid)` v\(version)")
-      } catch {
-        ContentBlockerManager.log.error("Failed to compile engine for custom filter list `\(uuid)` v\(version): \(String(describing: error))")
-      }
-    } else {
-      await AdBlockStats.shared.removeEngine(for: .filterListURL(uuid: uuid))
+    } catch {
+      // Don't handle cancellation errors
     }
   }
   

@@ -11,21 +11,40 @@ import Preferences
 /// An object that wraps around an `AdblockEngine` and caches some results
 /// and ensures information is always returned on the correct thread on the engine.
 public class CachedAdBlockEngine {
-  public enum Source: Hashable {
+  public enum Source: Hashable, CustomDebugStringConvertible {
     case adBlock
     case filterList(componentId: String)
     case filterListURL(uuid: String)
+    
+    public var debugDescription: String {
+      switch self {
+      case .adBlock: return "adBlock"
+      case .filterList(let componentId): return "filterList(\(componentId))"
+      case .filterListURL(let uuid): return "filterListURL(\(uuid))"
+      }
+    }
   }
   
-  public enum FileType: Hashable {
+  public enum FileType: Hashable, CustomDebugStringConvertible {
     case dat, text
+    
+    public var debugDescription: String {
+      switch self {
+      case .dat: return "dat"
+      case .text: return "txt"
+      }
+    }
   }
   
-  public struct FilterListInfo: Hashable, Equatable {
+  public struct FilterListInfo: Hashable, Equatable, CustomDebugStringConvertible {
     let source: Source
     let localFileURL: URL
     let version: String
     let fileType: FileType
+    
+    public var debugDescription: String {
+      return "`\(source.debugDescription)` v\(version) (\(fileType.debugDescription))"
+    }
   }
   
   public struct ResourcesInfo: Hashable, Equatable {
@@ -180,32 +199,22 @@ public class CachedAdBlockEngine {
   /// Create an engine from the given resources
   public static func compile(
     filterListInfo: FilterListInfo, resourcesInfo: ResourcesInfo, isAlwaysAggressive: Bool
-  ) async throws -> CachedAdBlockEngine {
-    return try await withCheckedThrowingContinuation { continuation in
+  ) throws -> CachedAdBlockEngine {
+    switch filterListInfo.fileType {
+    case .dat:
+      let engine = try AdblockEngine(datFileURL: filterListInfo.localFileURL, resourcesFileURL: resourcesInfo.localFileURL)
       let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
-      
-      serialQueue.async {
-        do {
-          switch filterListInfo.fileType {
-          case .dat:
-            let engine = try AdblockEngine(datFileURL: filterListInfo.localFileURL, resourcesFileURL: resourcesInfo.localFileURL)
-            let cachedEngine = CachedAdBlockEngine(
-              engine: engine, filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-              serialQueue: serialQueue, isAlwaysAggressive: isAlwaysAggressive
-            )
-            continuation.resume(returning: cachedEngine)
-          case .text:
-            let engine = try AdblockEngine(textFileURL: filterListInfo.localFileURL, resourcesFileURL: resourcesInfo.localFileURL)
-            let cachedEngine = CachedAdBlockEngine(
-              engine: engine, filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-              serialQueue: serialQueue, isAlwaysAggressive: isAlwaysAggressive
-            )
-            continuation.resume(returning: cachedEngine)
-          }
-        } catch {
-          continuation.resume(throwing: error)
-        }
-      }
+      return CachedAdBlockEngine(
+        engine: engine, filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
+        serialQueue: serialQueue, isAlwaysAggressive: isAlwaysAggressive
+      )
+    case .text:
+      let engine = try AdblockEngine(textFileURL: filterListInfo.localFileURL, resourcesFileURL: resourcesInfo.localFileURL)
+      let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
+      return CachedAdBlockEngine(
+        engine: engine, filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
+        serialQueue: serialQueue, isAlwaysAggressive: isAlwaysAggressive
+      )
     }
   }
 }
