@@ -218,10 +218,6 @@ void TabManager::OnNotifyTabDidChange(const int32_t id,
   }
 
   if (visible_tab_id_ == id) {
-    if (!redirect_chain_did_change) {
-      return;
-    }
-
     BLOG(2, "Tab id " << id << " did change");
     return NotifyTabDidChange(tab);
   }
