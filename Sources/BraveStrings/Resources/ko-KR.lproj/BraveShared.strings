@@ -145,9 +145,6 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "북마크 정보";
 
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
-"BookmarkMultipleCount" = "북마크 %d개";
-
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "북마크";
 
@@ -159,9 +156,6 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "북마크 가져오기";
-
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
-"BookmarkSingleCount" = "북마크 %d개";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "북마크";
@@ -514,6 +508,9 @@
 /* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "앱 크기 정보를 클립보드에 복사합니다.";
 
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "클린 링크 복사";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "이미지 복사";
 
@@ -626,10 +623,10 @@
 "defaultBrowserCallout.introTertiaryText" = "설정을 열고 기본 브라우저 앱을 탭한 다음 Brave를 선택하세요.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "iOS %@에 최적. Brave를 기본 브라우저로 설정하세요.";
+"defaultBrowserCallout.notificationBody" = "Brave을 기본 브라우저로 설정";
 
 /* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Brave 웹브라우저";
+"defaultBrowserCallout.notificationTitle" = "Brave의 든든한 보호를 모든 링크에서";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "기본 브라우저 설정 안내 닫기";
@@ -807,9 +804,6 @@
 
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "보안(https) URL만 맞춤 필터 목록에 추가할 수 있음";
-
-/* A title on the content filtering screen that allows you to enable/disable filter lists */
-"FilterLists" = "필터 목록";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
 "FilterListsAdd" = "추가";
@@ -993,9 +987,6 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "필터";
-
-/* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "기기를 동기화 체인에 추가하거나 비밀번호 동기화를 토글하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "최종 수정 %@";
@@ -1459,6 +1450,9 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "기타 설정";
 
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "계속";
+
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "익명 P3A 정보는 Brave가 총체적인 사용 패턴을 평가하여 인기 기능을 개선하는 데 도움이 됩니다.";
 
@@ -1474,9 +1468,6 @@
 /* Title for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesTitle" = "추가된 웹사이트 없음";
 
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "페이지 확대";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "다른 모든 웹사이트";
 
@@ -1490,7 +1481,7 @@
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "페이지별 설정";
 
 /* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "페이지 확대 설정";
+"pagezoom.settings.title" = "페이지 확대";
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "페이지 확대";
@@ -1833,9 +1824,6 @@
 
 /* The title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionTitle" = "이 재생목록에 동영상 추가";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "나중에 재생";
 
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "%lld개 항목을 이동할 재생목록 선택";
@@ -2224,8 +2212,8 @@
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "다음 사이트가 Shields에서 제대로 작동하는지 Brava 개발자가 파악할 수 있게 합니다.";
 
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "참고: Brave 버전 번호와 IP 주소와 함께 사이트 주소가 제출됩니다. (저장되지는 않음)";
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "참고: Brave 서버로 전송된 보고서에는 사이트 주소, Brave 버전 번호, Shields 설정, VPN 상태, 언어 설정이 포함됩니다.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "제출";
@@ -2246,7 +2234,7 @@
 "RestoreTabOnCrashAlertMessage" = "Brave가 다운되어 제대로 닫히지 않았습니다.\n탭을 복원하시겠습니까?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave가 예기치 않게 닫힘";
+"RestoreTabOnCrashAlertTitle" = "Brave가 예기치 않게 닫혔습니다.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Brave Rewards를 이용하면 Brave Ads 네트워크에서 프라이버시 보장 광고를 볼 수 있습니다. 트래커가 없어 느려지지 않습니다. 그리고 데이터가 완벽히 안전하게 보호됩니다.";
@@ -2542,9 +2530,6 @@
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "%@ 검색";
 
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "기본 검색 엔진";
-
 /* Search engines section of settings */
 "SearchEngines" = "검색 엔진";
 
@@ -2650,8 +2635,20 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "미디어";
 
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "화면 시간 활성화";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "어떤 웹사이트에서 시간을 가장 많이 보냈는지 확인하고, 브라우징 한도를 설정할 수 있습니다. [자세히 알아보기](%@)";
+
 /* Title for the quality settings view */
 "settings.qualitySettings" = "품질 설정";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "이 익명 비공개 Ping으로 Brave가 활성 사용자 수를 추산합니다.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "일일 사용 Ping을 Brave에 자동으로 보내기";
 
 /* Header for the Youtube settings section */
 "settings.youtube" = "YouTube";
@@ -2950,6 +2947,27 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.";
 
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "동기화 체인 내 기기를 불러오는 중에 문제가 발생했습니다.";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "동기화 체인 내 기기";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "참고: 위 목록에 있는 기기가 모두 아는 기기인지 확인하세요. 동기화 체인 내의 기기는 비밀번호와 브라우징 기록 등 개인 데이터를 수신할 수 있습니다.";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "기기 확인";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "동기화 체인 내 기기 개수 한도(10개)에 도달했습니다. 계속하려면 기존 기기를 제거하세요.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "기기 한도";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "기기를 동기화 체인에 추가하거나 비밀번호 동기화를 토글하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
+
 /* The title displayed in alert when a user needs to set passcode */
 "sync.syncSetPasscodeAlertTitle" = "패스코드 설정";
 
@@ -3036,15 +3054,6 @@
 
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "동기화 통신 오류";
-
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "이러한 QR 코드를 생성하는 디바이스에 비밀번호 등, 귀하의 Brave 데이터가 공유됩니다. 본인이 소유한 디바이스에서 생성된 QR 코드인지 주의하여 확인하시기 바랍니다. 계속하시겠습니까?";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "이러한 코드 단어를 생성하는 디바이스에 비밀번호 등, 귀하의 Brave 데이터가 공유됩니다. 본인이 소유한 디바이스에서 생성된 코드 단어인지 주의하여 확인하시기 바랍니다. 계속하시겠습니까?";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "경고";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "인터넷 연결을 확인한 후 다시 시도하십시오.";
@@ -3703,6 +3712,12 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "오류";
 
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN 구성이 성공적으로 재설정되었습니다.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "성공";
+
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "복구";
 
@@ -3793,6 +3808,9 @@
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPN은 Brave 브라우저 외부에서도 보호해드린다는 것을 알고 계셨나요?";
 
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "업데이트";
+
 /* Pop up description for billing issue of subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverDescription" = "괜찮습니다. 결제 정보를 업데이트하실 때까지 며칠간 VPN을 활성 상태로 유지해드리겠습니다.";
 
@@ -3807,6 +3825,9 @@
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "결제 업데이트";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "결제 수단 업데이트";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Brave는 백그라운드에서도 계속 사용자를 보호해줍니다.";
@@ -3855,6 +3876,9 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "연간 구독";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "결제 수단을 업데이트하세요.";
 
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "연간 갱신 시 %@ 할인";

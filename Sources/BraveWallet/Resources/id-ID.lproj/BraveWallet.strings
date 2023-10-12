@@ -226,6 +226,9 @@
 /* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
 "wallet.chartAxisPriceLabel" = "Harga";
 
+/* The description of one of the 'Coinbase Pay' provider. */
+"wallet.coinbaseNetworkProviderDescription" = "Membeli dari nama paling tepercaya dalam dunia kripto.";
+
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "Data harga disediakan oleh CoinGecko";
 
@@ -814,6 +817,9 @@
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "Likuiditas tidak cukup";
 
+/* The title of a button that Deselects all visible options. */
+"wallet.internalErrorMessage" = "Telah terjadi kesalahan internal";
+
 /* A title will displayed in the IPFS error page when IPFS is disabled. */
 "wallet.ipfsErrorTitle" = "Situs ini dapat dijangkau";
 
@@ -1249,6 +1255,9 @@
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "Domain tidak memiliki alamat %@ yang ditautkan";
 
+/* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
+"wallet.sendErrorInvalidRecipientAddress" = "Alamat penerima tidak valid";
+
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "Masukkan alamat";
 
@@ -1557,6 +1566,12 @@
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Urutkan Aset";
+
+/* The description of one of the 'Stripe' provider. */
+"wallet.stripeNetworkProviderDescription" = "Bayar dengan kredit, debit, rekening bank.";
+
+/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
+"wallet.stripeNetworkProviderName" = "%1$@ dari %2$@";
 
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
 "wallet.submittedTransactionDescription" = "Transaksi telah berhasil dikirimkan ke jaringan dan sedang menunggu konfirmasi.";

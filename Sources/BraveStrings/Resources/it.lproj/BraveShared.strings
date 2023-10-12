@@ -145,9 +145,6 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Informazioni sui segnalibri";
 
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
-"BookmarkMultipleCount" = "%d segnalibri";
-
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Segnalibri";
 
@@ -159,9 +156,6 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "Importa segnalibri";
-
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
-"BookmarkSingleCount" = "%d segnalibro";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Segnalibri";
@@ -514,6 +508,9 @@
 /* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Copia negli appunti le informazioni sulle dimensioni dell’app.";
 
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "Copia il link pulito";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Copia immagine";
 
@@ -626,10 +623,10 @@
 "defaultBrowserCallout.introTertiaryText" = "Apri Impostazioni, seleziona App per il browser di default, poi scegli Brave.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Ottimizzato per iOS %@. Imposta subito Brave come browser predefinito.";
+"defaultBrowserCallout.notificationBody" = "Imposta Brave come browser predefinito";
 
 /* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Browser web Brave";
+"defaultBrowserCallout.notificationTitle" = "Fatti proteggere da Brave, in ogni link";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Chiudi la finestra del browser predefinito";
@@ -807,9 +804,6 @@
 
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "Per le liste di filtri personalizzati sono consentiti soltanto gli URL sicuri (https)";
-
-/* A title on the content filtering screen that allows you to enable/disable filter lists */
-"FilterLists" = "Liste dei filtri";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
 "FilterListsAdd" = "Aggiungi";
@@ -993,9 +987,6 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filtra";
-
-/* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Per aggiungere un dispositivo alla catena di sincronizzazione o attivare la sincronizzazione delle password, devi prima impostare un passcode sul tuo dispositivo.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Ultima modifica: %@";
@@ -1459,6 +1450,9 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "Altre impostazioni";
 
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "Continua";
+
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "I dati anonimi raccolti grazie alle P3A ci aiutano a calcolare l’utilizzo complessivo. In questo modo siamo certi di perfezionare delle funzioni di Brave che riscuotono successo.";
 
@@ -1474,9 +1468,6 @@
 /* Title for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesTitle" = "Nessun sito web aggiunto";
 
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "Zoom della pagina";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Tutti gli altri siti web";
 
@@ -1490,7 +1481,7 @@
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Impostazioni delle pagine";
 
 /* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "Impostazioni dello zoom della pagina";
+"pagezoom.settings.title" = "Zoom della pagina";
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Zoom della pagina";
@@ -1833,9 +1824,6 @@
 
 /* The title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionTitle" = "Aggiungi dei video a questa playlist";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "Riproduci più tardi";
 
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "Seleziona una playlist per spostare %lld articoli in";
@@ -2224,8 +2212,8 @@
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Comunica agli sviluppatori di Brave che questo sito non funziona correttamente con Shields:";
 
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "Nota: questo indirizzo del sito verrà inviato con il tuo numero di versione Brave e il tuo indirizzo IP (che non verranno memorizzati).";
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "N.B.: il report inviato ai server di Brave includerà l’indirizzo del sito, il numero di versione di Brave, le impostazioni delle Protezioni, lo stato della VPN e le impostazioni della lingua.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Invia";
@@ -2246,7 +2234,7 @@
 "RestoreTabOnCrashAlertMessage" = "Purtroppo Brave si è arrestato in modo anomalo o non si è chiuso correttamente.\nVuoi ripristinare le tue schede?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave si è chiuso inaspettatamente.";
+"RestoreTabOnCrashAlertTitle" = "Brave si è chiuso in modo inatteso.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Con Brave Rewards puoi visualizzare gli annunci rispettosi della privacy dalla rete Brave Ads. Nessun tracker. Nessun rallentamento. E i tuoi dati rimangono totalmente al sicuro.";
@@ -2542,9 +2530,6 @@
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "Ricerca %@";
 
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "Motore di ricerca predefinito";
-
 /* Search engines section of settings */
 "SearchEngines" = "Motori di ricerca";
 
@@ -2650,8 +2635,20 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Multimediali";
 
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "Attiva il tempo di utilizzo";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "Guarda su quali siti web passi più tempo e imposta dei limiti di navigazione. [Scopri di più](%@)";
+
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Impostazioni della qualità";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Questo ping privato anonimo permette a Brave di calcolare gli utenti attivi.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "Invia automaticamente un ping di utilizzo giornaliero a Brave";
 
 /* Header for the Youtube settings section */
 "settings.youtube" = "YouTube";
@@ -2950,6 +2947,27 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "L’eliminazione è definitiva e non c’è modo di recuperare i dati. Chi vuole ricominciare a usare la sincronizzazione dovrà creare un nuovo account e riaggiungere uno alla volta ciascun dispositivo.";
 
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "Si è verificato un errore durante la ricerca dei dispositivi nella catena di sincronizzazione.";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "Dispositivi nella catena di sincronizzazione";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "N.B.: dovresti verificare se riconosci tutti i dispositivi sopra elencati. I dispositivi presenti in ​​una catena di sincronizzazione possono ricevere dati personali come password e cronologia di navigazione.";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "Conferma del dispositivo";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "Hai raggiunto il numero massimo di dispositivi (10) che si possono avere in una catena di sincronizzazione. Per continuare rimuovi un dispositivo.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "Limite di dispositivi";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "Per aggiungere un dispositivo alla catena di sincronizzazione o attivare la sincronizzazione delle password, devi prima impostare un passcode sul tuo dispositivo.";
+
 /* The title displayed in alert when a user needs to set passcode */
 "sync.syncSetPasscodeAlertTitle" = "Imposta un codice";
 
@@ -3036,15 +3054,6 @@
 
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Errore di comunicazione nella sincronizzazione";
-
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "I tuoi dati Brave, incluse potenzialmente le tue password, verranno condivisi con il dispositivo che ha generato questo codice QR. Verifica che questo codice QR sia stato generato da un dispositivo di tua proprietà. Confermi questa operazione?";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "I tuoi dati Brave, incluse potenzialmente le tue password, verranno condivisi con il dispositivo che ha generato queste parole in codice. Verifica che queste parole in codice siano state generate da un dispositivo di tua proprietà. Confermi questa operazione?";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "Avviso";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Controlla la tua connessione Internet e riprova.";
@@ -3703,6 +3712,12 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Errore";
 
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "La configurazione della VPN è stata reimpostata.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Operazione riuscita";
+
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Ripristina";
 
@@ -3793,6 +3808,9 @@
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Lo sapevi che la VPN di Brave ti protegge anche al di fuori del browser di Brave?";
 
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Aggiorna";
+
 /* Pop up description for billing issue of subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverDescription" = "Non preoccuparti. Manterremo attiva la VPN ancora per qualche giorno quando aggiorneremo le informazioni di pagamento.";
 
@@ -3807,6 +3825,9 @@
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Aggiorna il pagamento";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Aggiorna il metodo di pagamento";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Anche quando sarà in background, Brave continuerà a proteggerti.";
@@ -3855,6 +3876,9 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Abbonamento annuale";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Aggiorna il tuo metodo di pagamento";
 
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Rinnovo annuale con risparmio di %@";

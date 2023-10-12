@@ -145,9 +145,6 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "书签信息";
 
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
-"BookmarkMultipleCount" = "%d 个书签";
-
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "书签";
 
@@ -159,9 +156,6 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "导入书签";
-
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
-"BookmarkSingleCount" = "%d 书签";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "书签";
@@ -514,6 +508,9 @@
 /* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "将应用信息复制到剪切板中。";
 
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "拷贝清除链接";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "复制图片";
 
@@ -626,10 +623,10 @@
 "defaultBrowserCallout.introTertiaryText" = "打开设置、点击默认浏览器应用，然后选择 Brave。";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "针对 iOS %@ 进行了优化。立即将 Brave 设为您的默认浏览器。";
+"defaultBrowserCallout.notificationBody" = "将 Brave 设为默认浏览器";
 
 /* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Brave 网页浏览器";
+"defaultBrowserCallout.notificationTitle" = "每次点击链接都能获得 Brave 的保护";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "关闭默认浏览器标注";
@@ -807,9 +804,6 @@
 
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "自定义筛选器列表只允许使用安全（https）网址";
-
-/* A title on the content filtering screen that allows you to enable/disable filter lists */
-"FilterLists" = "过滤列表";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
 "FilterListsAdd" = "添加";
@@ -993,9 +987,6 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "筛选";
-
-/* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "要将设备添加到同步链或切换密码同步，必须先在设备上设置密码。";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "上次修改 %@";
@@ -1459,6 +1450,9 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "其他设置";
 
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "继续";
+
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "匿名的 P3A 信息可协助 Brave 预估整体使用量，并确保我们可以改进受欢迎的功能。";
 
@@ -1474,9 +1468,6 @@
 /* Title for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesTitle" = "未添加网站";
 
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "页面缩放";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "所有其他网站";
 
@@ -1490,7 +1481,7 @@
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "特定页面设置";
 
 /* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "页面缩放设置";
+"pagezoom.settings.title" = "页面缩放";
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "页面缩放";
@@ -1694,7 +1685,7 @@
 "playlist.playlistStartPlaybackSettingsFooterText" = "对于单个文件，请从上次暂停的位置重新开始播放。";
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "记住文件重新播放的位置";
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "记住文件播放位置";
 
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "禁用 WebKit MediaSource API";
@@ -1833,9 +1824,6 @@
 
 /* The title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionTitle" = "添加视频到此播放列表";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "稍后播放";
 
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "选择要将 %lld 项目移至其中的播放列表";
@@ -2224,8 +2212,8 @@
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：";
 
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "注意：该站点地址将与您使用的 Brave 的版本号和 IP 地址（不会存储）一起被提交。";
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "注意：传送至 Brave 服务器的报告会包括网址、Brave 版本号码、Shields 设定、VPN 状态和语言设定。";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "提交";
@@ -2246,7 +2234,7 @@
 "RestoreTabOnCrashAlertMessage" = "抱歉，Brave 崩溃了或无法正常关闭。\n恢复标签页？";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave 意外退出了";
+"RestoreTabOnCrashAlertTitle" = "Brave 意外闪退。";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "借助 Brave Rewards，您可以查看来自 Brave Ads 网络的隐私保护广告。无需跟踪器，无需减速，而您的数据绝对安全。";
@@ -2542,9 +2530,6 @@
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "%@ 搜索";
 
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "默认搜索引擎";
-
 /* Search engines section of settings */
 "SearchEngines" = "搜索引擎";
 
@@ -2650,8 +2635,20 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "媒体";
 
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "啟用螢幕使用時間";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "查看您在哪些網站上花最多時間，並設定瀏覽限制。[深入瞭解](%@)";
+
 /* Title for the quality settings view */
 "settings.qualitySettings" = "质量设置";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "這種匿名且私人的 ping 讓 Brave 可以估計活躍使用者。";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";
 
 /* Header for the Youtube settings section */
 "settings.youtube" = "YouTube";
@@ -2950,6 +2947,27 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "一旦删除即永久删除，资料将无法复原。如果您决定再次使用 Sync，您将需要建立新帐户，并逐一重新新增每台设备。";
 
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "摘取同步链中的装置时发生错误。";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "同步链中的装置";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "注意：您应确认您认得上方清单中的每个装置。同步链中的装置可能会收到个人资料，如密码和浏览记录。";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "确认裝置";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "您已达到同步链中允许的装置上限（10 个）。请移除装置以继续操作。";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "裝置上限";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "要将设备添加到同步链或切换密码同步，必须先在设备上设置密码。";
+
 /* The title displayed in alert when a user needs to set passcode */
 "sync.syncSetPasscodeAlertTitle" = "设置密码";
 
@@ -3036,15 +3054,6 @@
 
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "同步通信错误";
-
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "这样会与生成此二维码的设备分享您的 Brave 数据，可能包括您的密码。请再次确认此二维码是由您所拥有的设备生成的。确定要这么做吗？";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "这样会与生成这些代码的设备分享您的 Brave 数据，可能包括您的密码。请再次确认这些代码是由您所拥有的设备生成的。确定要这么做吗？";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "警告";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "检查您的网络连接并重试。";
@@ -3703,6 +3712,12 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "错误";
 
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "已成功重设 VPN 设定。";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "成功";
+
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "还原";
 
@@ -3793,6 +3808,9 @@
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
 "vpn.subscribeVPNProtectionPopOverTitle" = "你是否知道 Brave VPN 可在 Brave 浏览器之外为你提供保护？";
 
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "更新";
+
 /* Pop up description for billing issue of subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverDescription" = "别担心。在你更新付款信息时，我们会将 VPN 保持激活状态几天。";
 
@@ -3807,6 +3825,9 @@
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "更新付款方式";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "更新付款方式";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "即使在后台， Brave 也会继续保护您。";
@@ -3855,6 +3876,9 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "每年订阅";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "请更新您的付款方式";
 
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "每年续约，可节省 %@";

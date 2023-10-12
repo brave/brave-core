@@ -10,14 +10,11 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "CloseTabTitle" = "Закрыть вкладку";
 
-/* The title for the button that lets you copy the url from the location bar. */
-"CopyAddressTitle" = "Копировать адрес";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "Вперед";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Новая Приватная вкладка";
+"NewPrivateTabTitle" = "Новая приватная вкладка";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Новая вкладка";

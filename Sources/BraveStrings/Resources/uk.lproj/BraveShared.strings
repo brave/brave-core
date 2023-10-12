@@ -145,9 +145,6 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Дані закладки";
 
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
-"BookmarkMultipleCount" = "Закладок: %d";
-
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Закладки";
 
@@ -159,9 +156,6 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "Імпортувати закладки";
-
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
-"BookmarkSingleCount" = "%d закладка";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Закладки";
@@ -514,6 +508,9 @@
 /* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Скопіювати дані про розмір програми до буферу обміну.";
 
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "Скопіювати очищене посилання";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Скопіювати зображення";
 
@@ -626,10 +623,10 @@
 "defaultBrowserCallout.introTertiaryText" = "Відкрийте меню «Параметри», торкніться пункту «Програма браузера за замовчуванням» і виберіть Brave.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Оптимізовано для iOS %@. Зробіть Brave браузером за замовчуванням уже сьогодні.";
+"defaultBrowserCallout.notificationBody" = "Зробити Brave веб-переглядачем за умовчанням";
 
 /* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Браузер Brave";
+"defaultBrowserCallout.notificationTitle" = "Отримайте захист Brave у кожному посиланні";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Закрити запит на встановлення браузера за замовчуванням";
@@ -807,9 +804,6 @@
 
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "Для списків користувацьких фільтрів можна використовувати лише захищені (https) URL-адреси";
-
-/* A title on the content filtering screen that allows you to enable/disable filter lists */
-"FilterLists" = "Фільтрувати списки";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
 "FilterListsAdd" = "Додати";
@@ -993,9 +987,6 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Фільтрувати";
-
-/* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Щоб додати пристрій у ланцюжок синхронізації або ввімкнути чи вимкнути синхронізацію паролів, спершу слід установити код доступу на пристрої.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Останні зміни: %@";
@@ -1459,6 +1450,9 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "Інші налаштування";
 
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "Продовжити";
+
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Анонімізована інформація P3A допомагає Brave оцінити загальний досвід використання й забезпечити покращення популярних функцій.";
 
@@ -1474,9 +1468,6 @@
 /* Title for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesTitle" = "Немає доданих вебсайтів";
 
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "Масштабування сторінки";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Усі інші вебсайти";
 
@@ -1490,7 +1481,7 @@
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Налаштування певної сторінки";
 
 /* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "Налаштування масштабування сторінки";
+"pagezoom.settings.title" = "Масштабування сторінки";
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Масштабування сторінки";
@@ -1833,9 +1824,6 @@
 
 /* The title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionTitle" = "Додати відео до цього списку відторення";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "Відтворити пізніше";
 
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "Виберіть список відтворення, щоб перемістити ці об’єкти (%lld)";
@@ -2224,8 +2212,8 @@
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Повідомте розробників Brave, що за ввімкненої функції Shields вебсайт працює неправильно:";
 
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "Примітка. Адресу цього вебсайту буде надіслано з номером версії Brave і вашою IP-адресою (яка не зберігатиметься).";
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Примітка. У повідомленні, надісланому на сервери Brave, міститиметься адреса вебсайта, номер версії Brave, параметри Shields, статус VPN і налаштування мови.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Надіслати";
@@ -2246,7 +2234,7 @@
 "RestoreTabOnCrashAlertMessage" = "Роботу додатка Brave було аварійно завершено або його було неналежно закрито.\nВідновити вкладки?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Неочікуваний вихід із Brave.";
+"RestoreTabOnCrashAlertTitle" = "Неочікуване закриття Brave.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Завдяки Brave Rewards ви можете переглядати рекламу, що не порушує вашої конфіденційності, з мережі Brave Ads. Жодних трекерів. Жодних затримок. Ваші дані в безпеці.";
@@ -2542,9 +2530,6 @@
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "Пошукова система %@ ";
 
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "Пошукова система за замовчуванням";
-
 /* Search engines section of settings */
 "SearchEngines" = "Пошукові системи";
 
@@ -2650,8 +2635,20 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Медіа-дані";
 
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "Відстежувати час активної роботи";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "Дивіться, на яких вебсайтах ви витрачаєте найбільше часу й установіть обмеження. [Детальніше](%@)";
+
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Налаштування якості";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Цей анонімний, приватний пінг дає можливість Brave оцінити активних користувачів.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "Автоматично надсилайте щоденний пінг використання в Brave";
 
 /* Header for the Youtube settings section */
 "settings.youtube" = "Youtube";
@@ -2950,6 +2947,27 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Дані буде видалено остаточно. Їх неможливо буде відновити. Якщо ви вирішите знову користуватися синхронізацією, вам потрібно буде створити новий обліковий запис і ще раз додати свої пристрої.";
 
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "Під час отримання пристроїв у ланцюжку синхронізації сталася помилка.";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "Пристрої в ланцюжку синхронізації";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "Примітка. Ви повинні підтвердити кожен пристрій у списку зверху. Пристрої в ланцюжку синхронізації можуть отримувати персональні дані, як-от паролі й історія перегляду.";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "Підтвердження пристрою";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "Ви досягли максимальної кількості пристроїв (10), дозволених у ланцюжку синхронізації. Видаліть пристрій, щоб продовжити.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "Обмеження пристроїв";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "Щоб додати пристрій у ланцюжок синхронізації або ввімкнути чи вимкнути синхронізацію паролів, спершу слід установити код доступу на пристрої.";
+
 /* The title displayed in alert when a user needs to set passcode */
 "sync.syncSetPasscodeAlertTitle" = "Установити код доступу";
 
@@ -3036,15 +3054,6 @@
 
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Помилка зв’язку під час синхронізації";
-
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "Унаслідок цієї дії ваші дані Brave, зокрема паролі, стануть доступними для пристрою, на якому згенеровано QR-код. Переконайтеся, що QR-код було згенеровано саме на вашому пристрої. Дійсно виконати цю дію?";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "Унаслідок цієї дії ваші дані Brave, зокрема паролі, стануть доступними для пристрою, на якому згенеровано кодові слова. Переконайтеся, що кодові слова було згенеровано саме на вашому пристрої. Дійсно виконати цю дію?";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "Попередження";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Перевірте з'єднання з інтернетом і спробуйте знову.";
@@ -3703,6 +3712,12 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Помилка";
 
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Параметри VPN скинуто.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Успішно";
+
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Відновити";
 
@@ -3793,6 +3808,9 @@
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Ви знали, що Brave VPN захищає вас не лише в браузері Brave?";
 
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Змінити";
+
 /* Pop up description for billing issue of subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverDescription" = "Не хвилюйтеся. Функція VPN буде доступна ще кілька днів, щоб ви могли оновити платіжну інформацію.";
 
@@ -3807,6 +3825,9 @@
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Оновити платіжну інформацію";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Оновлення способу оплати";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Brave захищатиме вас навіть у фоновому режимі.";
@@ -3855,6 +3876,9 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Щорічна підписка";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Оновіть свій спосіб оплати";
 
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Поновлюйте раз на рік та заощаджуйте %@";
