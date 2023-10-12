@@ -72,20 +72,28 @@ public actor FilterListResourceDownloader {
     await FilterListStorage.shared.loadFilterListSettings()
     let filterListSettings = await FilterListStorage.shared.allFilterListSettings
       
-    await filterListSettings.asyncConcurrentForEach { setting in
-      guard await setting.isEnabled == true else { return }
-      guard let componentId = await setting.componentId else { return }
-      
-      // Try to load the filter list folder. We always have to compile this at start
-      guard let folderURL = await setting.folderURL, FileManager.default.fileExists(atPath: folderURL.path) else {
-        return
+    do {
+      try await filterListSettings.asyncConcurrentForEach { setting in
+        guard await setting.isEnabled == true else { return }
+        guard let componentId = await setting.componentId else { return }
+        guard FilterList.disabledComponentIDs.contains(componentId) else { return }
+        
+        // Try to load the filter list folder. We always have to compile this at start
+        guard let folderURL = await setting.folderURL, FileManager.default.fileExists(atPath: folderURL.path) else {
+          return
+        }
+        
+        await self.compileFilterListEngineIfNeeded(
+          fromComponentId: componentId, folderURL: folderURL,
+          isAlwaysAggressive: setting.isAlwaysAggressive,
+          resourcesInfo: resourcesInfo
+        )
+        
+        // Sleep for 1ms. This drastically reduces memory usage without much impact to usability
+        try await Task.sleep(nanoseconds: 1000000)
       }
-      
-      await self.compileFilterListEngineIfNeeded(
-        fromComponentId: componentId, folderURL: folderURL,
-        isAlwaysAggressive: setting.isAlwaysAggressive,
-        resourcesInfo: resourcesInfo
-      )
+    } catch {
+      // Ignore the cancellation.
     }
   }
   
@@ -154,17 +162,10 @@ public actor FilterListResourceDownloader {
       return
     }
     
-    do {
-      let engine = try await CachedAdBlockEngine.compile(
-        filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-        isAlwaysAggressive: false
-      )
-      
-      ContentBlockerManager.log.debug("Compiled default engine v\(version)")
-      await AdBlockStats.shared.add(engine: engine)
-    } catch {
-      ContentBlockerManager.log.debug("Failed to compile default engine v\(version): \(String(describing: error))")
-    }
+    await AdBlockStats.shared.compile(
+      filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
+      isAlwaysAggressive: false
+    )
   }
   
   /// Load general filter lists (shields) from the given `AdblockService` `shieldsInstallPath` `URL`.
@@ -174,26 +175,34 @@ public actor FilterListResourceDownloader {
     resourcesInfo: CachedAdBlockEngine.ResourcesInfo
   ) async {
     let version = folderURL.lastPathComponent
+    let source = CachedAdBlockEngine.Source.filterList(componentId: componentId)
     let filterListInfo = CachedAdBlockEngine.FilterListInfo(
-      source: .filterList(componentId: componentId),
+      source: source,
       localFileURL: folderURL.appendingPathComponent("list.txt", conformingTo: .text),
       version: version, fileType: .text
     )
+    
+    guard await AdBlockStats.shared.isEagerlyLoaded(source: source) else {
+      // Don't compile unless eager
+      await AdBlockStats.shared.updateIfNeeded(resourcesInfo: resourcesInfo)
+      await AdBlockStats.shared.updateIfNeeded(filterListInfo: filterListInfo, isAlwaysAggressive: isAlwaysAggressive)
+      return
+    }
     
     guard await AdBlockStats.shared.needsCompilation(for: filterListInfo, resourcesInfo: resourcesInfo) else {
       // Don't compile unless needed
       return
     }
     
+    let isImportant = await AdBlockStats.shared.criticalSources.contains(source)
+     
     do {
-      let engine = try await CachedAdBlockEngine.compile(
+      try await AdBlockStats.shared.compileDelayed(
         filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-        isAlwaysAggressive: isAlwaysAggressive
+        isAlwaysAggressive: isAlwaysAggressive, delayed: !isImportant
       )
-      ContentBlockerManager.log.debug("Compiled engine for `\(componentId)` v\(version)")
-      await AdBlockStats.shared.add(engine: engine)
     } catch {
-      ContentBlockerManager.log.error("Failed to compile engine for `\(componentId)` v\(version): \(String(describing: error))")
+      // Don't handle cancellation errors
     }
   }
   

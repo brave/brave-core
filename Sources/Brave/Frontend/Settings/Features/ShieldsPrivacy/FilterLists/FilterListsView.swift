@@ -16,53 +16,17 @@ struct FilterListsView: View {
   @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
   @Environment(\.editMode) private var editMode
   @State private var showingAddSheet = false
+  @State private var expectedEnabledSources: Set<CachedAdBlockEngine.Source> = Set(AdBlockStats.shared.enabledSources)
   private let dateFormatter = RelativeDateTimeFormatter()
+  
+  private var reachedMaxLimit: Bool {
+    expectedEnabledSources.count >= AdBlockStats.maxNumberOfAllowedFilterLists
+  }
   
   var body: some View {
     List {
       Section {
-        ForEach($customFilterListStorage.filterListsURLs) { $filterListURL in
-          VStack(alignment: .leading, spacing: 4) {
-            Toggle(isOn: $filterListURL.setting.isEnabled) {
-              VStack(alignment: .leading, spacing: 4) {
-                Text(filterListURL.title)
-                  .foregroundColor(Color(.bravePrimary))
-                  .truncationMode(.middle)
-                  .lineLimit(1)
-                
-                switch filterListURL.downloadStatus {
-                case .downloaded(let downloadDate):
-                  Text(String.localizedStringWithFormat(
-                    Strings.filterListsLastUpdated,
-                    dateFormatter.localizedString(for: downloadDate, relativeTo: Date())))
-                    .font(.caption)
-                    .foregroundColor(Color(.braveLabel))
-                case .failure:
-                  Text(Strings.filterListsDownloadFailed)
-                    .font(.caption)
-                    .foregroundColor(.red)
-                case .pending:
-                  Text(Strings.filterListsDownloadPending)
-                    .font(.caption)
-                    .foregroundColor(Color(.braveLabel))
-                }
-              }
-            }
-            .disabled(editMode?.wrappedValue.isEditing == true)
-            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-            .onChange(of: filterListURL.setting.isEnabled) { value in
-              Task {
-                CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
-              }
-            }
-            
-          Text(filterListURL.setting.externalURL.absoluteDisplayString)
-            .font(.caption)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .allowsTightening(true)
-          }.listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }
-        .onDelete(perform: onDeleteHandling)
+        customFilterListView
         
         Button {
           showingAddSheet = true
@@ -71,27 +35,16 @@ struct FilterListsView: View {
             .foregroundColor(Color(.braveBlurpleTint))
         }
           .disabled(editMode?.wrappedValue.isEditing == true)
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .popover(isPresented: $showingAddSheet, content: {
             FilterListAddURLView()
           })
       } header: {
         Text(Strings.customFilterLists)
       }
+      .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       
       Section {
-        ForEach($filterListStorage.filterLists) { $filterList in
-          Toggle(isOn: $filterList.isEnabled) {
-            VStack(alignment: .leading) {
-              Text(filterList.entry.title)
-                .foregroundColor(Color(.bravePrimary))
-              Text(filterList.entry.desc)
-                .font(.caption)
-                .foregroundColor(Color(.secondaryBraveLabel))
-            }
-          }.toggleStyle(SwitchToggleStyle(tint: .accentColor))
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }
+        filterListView
       } header: {
         VStack(alignment: .leading, spacing: 4) {
           Text(Strings.defaultFilterLists)
@@ -101,6 +54,8 @@ struct FilterListsView: View {
         }
       }
     }
+    .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+    .listRowBackground(Color(.secondaryBraveGroupedBackground))
     .animation(.default, value: customFilterListStorage.filterListsURLs)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
@@ -111,6 +66,84 @@ struct FilterListsView: View {
         editMode?.wrappedValue.isEditing == false
       )
     }
+    .onDisappear {
+      Task.detached {
+        await AdBlockStats.shared.removeDisabledEngines()
+        await AdBlockStats.shared.ensureEnabledEngines()
+      }
+    }
+  }
+  
+  @ViewBuilder private var filterListView: some View {
+    ForEach($filterListStorage.filterLists) { $filterList in
+      Toggle(isOn: $filterList.isEnabled) {
+        VStack(alignment: .leading) {
+          Text(filterList.entry.title)
+            .foregroundColor(Color(.bravePrimary))
+          Text(filterList.entry.desc)
+            .font(.caption)
+            .foregroundColor(Color(.secondaryBraveLabel))
+        }
+      }
+      .disabled(!filterList.isEnabled && reachedMaxLimit)
+      .onChange(of: filterList.isEnabled) { isEnabled in
+        if isEnabled {
+          expectedEnabledSources.insert(filterList.engineSource)
+        } else {
+          expectedEnabledSources.remove(filterList.engineSource)
+        }
+      }
+    }
+  }
+  
+  @ViewBuilder private var customFilterListView: some View {
+    ForEach($customFilterListStorage.filterListsURLs) { $filterListURL in
+      VStack(alignment: .leading, spacing: 4) {
+        Toggle(isOn: $filterListURL.setting.isEnabled) {
+          VStack(alignment: .leading, spacing: 4) {
+            Text(filterListURL.title)
+              .foregroundColor(Color(.bravePrimary))
+              .truncationMode(.middle)
+              .lineLimit(1)
+            
+            switch filterListURL.downloadStatus {
+            case .downloaded(let downloadDate):
+              Text(String.localizedStringWithFormat(
+                Strings.filterListsLastUpdated,
+                dateFormatter.localizedString(for: downloadDate, relativeTo: Date())))
+                .font(.caption)
+                .foregroundColor(Color(.braveLabel))
+            case .failure:
+              Text(Strings.filterListsDownloadFailed)
+                .font(.caption)
+                .foregroundColor(.red)
+            case .pending:
+              Text(Strings.filterListsDownloadPending)
+                .font(.caption)
+                .foregroundColor(Color(.braveLabel))
+            }
+          }
+        }
+        .disabled(reachedMaxLimit && !filterListURL.setting.isEnabled)
+        .onChange(of: filterListURL.setting.isEnabled) { isEnabled in
+          if isEnabled {
+            expectedEnabledSources.insert(filterListURL.setting.engineSource)
+          } else {
+            expectedEnabledSources.remove(filterListURL.setting.engineSource)
+          }
+          
+          Task {
+            CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
+          }
+        }
+        
+      Text(filterListURL.setting.externalURL.absoluteDisplayString)
+        .font(.caption)
+        .foregroundColor(Color(.secondaryBraveLabel))
+        .allowsTightening(true)
+      }
+    }
+    .onDelete(perform: onDeleteHandling)
   }
   
   private func onDeleteHandling(offsets: IndexSet) {
