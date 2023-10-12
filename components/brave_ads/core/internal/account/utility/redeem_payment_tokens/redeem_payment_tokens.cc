@@ -93,11 +93,28 @@ void RedeemPaymentTokens::RedeemCallback(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code != net::HTTP_OK) {
-    return FailedToRedeem(/*should_retry=*/true);
+  const auto result = HandleUrlResponse(url_response);
+  if (!result.has_value()) {
+    const auto& [failure, should_retry] = result.error();
+
+    BLOG(0, failure);
+
+    return FailedToRedeem(should_retry);
   }
 
   SuccessfullyRedeemed(payment_tokens);
+}
+
+// static
+base::expected<void, std::tuple<std::string, bool>>
+RedeemPaymentTokens::HandleUrlResponse(
+    const mojom::UrlResponseInfo& url_response) {
+  if (url_response.status_code != net::HTTP_OK) {
+    return base::unexpected(std::make_tuple("Failed to redeem payment tokens",
+                                            /*should_retry=*/true));
+  }
+
+  return base::ok();
 }
 
 void RedeemPaymentTokens::SuccessfullyRedeemed(
@@ -116,8 +133,6 @@ void RedeemPaymentTokens::SuccessfullyRedeemed(
 }
 
 void RedeemPaymentTokens::FailedToRedeem(const bool should_retry) {
-  BLOG(1, "Failed to redeem payment tokens");
-
   NotifyFailedToRedeemPaymentTokens();
 
   if (should_retry) {
