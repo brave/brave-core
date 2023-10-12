@@ -65,7 +65,7 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
          // Added 2023. Jan.
          !dict.contains(kPlaylistItemParentKey) ||
          // Added 2023. Aug.
-         !dict.contains(kPlaylistItemMediaFileBytesKey);
+         !dict.contains(kPlaylistItemMediaFileBytesKey) ||
 
          // NEED TO CHECK BELOW FOR MIGRATION
          !dict.contains(kPlaylistItemHlsMediaFilePathKey);

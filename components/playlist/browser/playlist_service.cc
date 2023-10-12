@@ -587,11 +587,12 @@ void PlaylistService::MoveItem(const std::string& from_playlist_id,
 }
 
 void PlaylistService::UpdateItem(mojom::PlaylistItemPtr item) {
-  LOG(ERROR) << "onDownloadCompleted : "
-             << "item->id : " << item->id;
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemUpdated, item->id);
+  for (auto& observer : observers_) {
+    observer->OnItemUpdated(item.Clone());
+  }
 }
 
 void PlaylistService::UpdateItemLastPlayedPosition(
@@ -608,18 +609,15 @@ void PlaylistService::UpdateItemLastPlayedPosition(
 
 void PlaylistService::UpdateItemHlsMediaFilePath(
     const std::string& id,
-    const std::string& hls_media_file_path) {
+    const std::string& hls_media_file_path,
+    int64_t updated_file_size) {
   if (!HasPlaylistItem(id)) {
     return;
   }
 
-  LOG(ERROR) << "UpdateItemMediaFilePath : "
-             << "item->id : " << id;
-  LOG(ERROR) << "UpdateItemMediaFilePath : "
-             << "hls_media_file_path : " << hls_media_file_path;
-
   auto item = GetPlaylistItem(id);
   item->hls_media_path = GURL("file://" + hls_media_file_path);
+  item->media_file_bytes = updated_file_size;
   UpdateItem(std::move(item));
 }
 
@@ -860,7 +858,7 @@ void PlaylistService::ResetAll() {
   prefs_->ClearPref(kPlaylistItemsPref);
   for (const auto& item : items) {
     for (auto& observer : observers_) {
-      observer->OnItemDeleted(item->id);
+      observer->OnItemLocalDataDeleted(item->id);
     }
   }
 
@@ -991,7 +989,7 @@ void PlaylistService::DeletePlaylistItemData(const std::string& id) {
   RemovePlaylistItemValue(id);
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemDeleted, id);
   for (auto& observer : observers_) {
-    observer->OnItemDeleted(id);
+    observer->OnItemLocalDataDeleted(id);
   }
 
   // TODO(simonhong): Delete after getting cancel complete message from all
@@ -1137,6 +1135,11 @@ void PlaylistService::OnMediaFileDownloadFinished(
   NotifyPlaylistChanged(item->cached ? mojom::PlaylistEvent::kItemCached
                                      : mojom::PlaylistEvent::kItemAborted,
                         item->id);
+  if (item->cached) {
+    for (auto& observer : observers_) {
+      observer->OnItemCached(item.Clone());
+    }
+  }
 
   if (callback) {
     std::move(callback).Run(item.Clone());
