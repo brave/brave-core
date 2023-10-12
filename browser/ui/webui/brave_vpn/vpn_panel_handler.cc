@@ -71,7 +71,7 @@ void VPNPanelHandler::ShowUI() {
   auto embedder = panel_controller_->embedder();
   brave_vpn::BraveVpnService* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
-  DCHECK(vpn_service);
+  CHECK(vpn_service);
   if (embedder) {
     embedder->ShowUI();
     vpn_service->ReloadPurchasedState();
@@ -100,7 +100,7 @@ void VPNPanelHandler::OpenVpnUIUrl(
 void VPNPanelHandler::OpenVpnUI(const std::string& type) {
   brave_vpn::BraveVpnService* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
-  DCHECK(vpn_service);
+  CHECK(vpn_service);
   vpn_service->GetProductUrls(base::BindOnce(&VPNPanelHandler::OpenVpnUIUrl,
                                              base::Unretained(this), type));
 }

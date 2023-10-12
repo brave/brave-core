@@ -162,6 +162,7 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVpnService* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->profile());
+  CHECK(vpn_service);
   std::string target_url;
   switch (command_id) {
     case IDC_SEND_BRAVE_VPN_FEEDBACK:
