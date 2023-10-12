@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/page_action/brave_page_action_icon_container_view.h"
 
+#include "base/check_is_test.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -15,9 +16,18 @@
 namespace {
 
 PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
+  if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    return params;
+  }
+
+  if (!params.browser) {
+    // Browser could be null if the location bar was created for
+    // PresentationReceiverWindowView.
+    return params;
+  }
+
   // Add actions for Brave
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-      params.browser->is_type_normal() &&
+  if (params.browser->is_type_normal() &&
       !params.browser->profile()->IsOffTheRecord()) {
     // Insert Playlist action before sharing hub or at the end of the vector.
     params.types_enabled.insert(
