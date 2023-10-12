@@ -915,7 +915,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       rounded = false
     }
     sellAmount = ((selectedFromTokenBalance ?? 0) * amount.rawValue)
-      .decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded)
+      .decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded).trimmingTrailingZeros
   }
 
   #if DEBUG
