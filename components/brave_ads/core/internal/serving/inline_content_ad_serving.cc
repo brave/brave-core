@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving.h"
 
+#include <cstdint>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -18,9 +19,12 @@
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/inline_content_ads/inline_content_ad_permission_rules.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/units/inline_content_ad/inline_content_ad_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -47,7 +51,10 @@ void InlineContentAdServing::MaybeServeAd(
 
   NotifyOpportunityAroseToServeInlineContentAd();
 
-  GetEligibleAds(dimensions, std::move(callback));
+  const absl::optional<TabInfo> tab = TabManager::GetInstance().GetVisible();
+  CHECK(tab);
+
+  GetEligibleAds(tab->id, dimensions, std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -72,14 +79,16 @@ base::expected<void, std::string> InlineContentAdServing::CanServeAd() const {
 }
 
 void InlineContentAdServing::GetEligibleAds(
+    const int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) const {
   BuildUserModel(base::BindOnce(&InlineContentAdServing::BuildUserModelCallback,
-                                weak_factory_.GetWeakPtr(), dimensions,
+                                weak_factory_.GetWeakPtr(), tab_id, dimensions,
                                 std::move(callback)));
 }
 
 void InlineContentAdServing::BuildUserModelCallback(
+    const int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     const UserModelInfo& user_model) const {
@@ -88,10 +97,11 @@ void InlineContentAdServing::BuildUserModelCallback(
       user_model, dimensions,
       base::BindOnce(
           &InlineContentAdServing::GetEligibleAdsForUserModelCallback,
-          weak_factory_.GetWeakPtr(), dimensions, std::move(callback)));
+          weak_factory_.GetWeakPtr(), tab_id, dimensions, std::move(callback)));
 }
 
 void InlineContentAdServing::GetEligibleAdsForUserModelCallback(
+    const int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     const CreativeInlineContentAdList& creative_ads) const {
@@ -102,11 +112,12 @@ void InlineContentAdServing::GetEligibleAdsForUserModelCallback(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  ServeAd(BuildInlineContentAd(ChooseCreativeAd(creative_ads)),
+  ServeAd(tab_id, BuildInlineContentAd(ChooseCreativeAd(creative_ads)),
           std::move(callback));
 }
 
 void InlineContentAdServing::ServeAd(
+    const int32_t tab_id,
     const InlineContentAdInfo& ad,
     MaybeServeInlineContentAdCallback callback) const {
   if (!ad.IsValid()) {
@@ -117,13 +128,14 @@ void InlineContentAdServing::ServeAd(
   CHECK(eligible_ads_);
   eligible_ads_->SetLastServedAd(ad);
 
-  SuccessfullyServedAd(ad, std::move(callback));
+  SuccessfullyServedAd(tab_id, ad, std::move(callback));
 }
 
 void InlineContentAdServing::SuccessfullyServedAd(
+    const int32_t tab_id,
     const InlineContentAdInfo& ad,
     MaybeServeInlineContentAdCallback callback) const {
-  NotifyDidServeInlineContentAd(ad);
+  NotifyDidServeInlineContentAd(tab_id, ad);
 
   std::move(callback).Run(ad.dimensions, ad);
 }
@@ -144,9 +156,10 @@ void InlineContentAdServing::NotifyOpportunityAroseToServeInlineContentAd()
 }
 
 void InlineContentAdServing::NotifyDidServeInlineContentAd(
+    const int32_t tab_id,
     const InlineContentAdInfo& ad) const {
   if (delegate_) {
-    delegate_->OnDidServeInlineContentAd(ad);
+    delegate_->OnDidServeInlineContentAd(tab_id, ad);
   }
 }
 

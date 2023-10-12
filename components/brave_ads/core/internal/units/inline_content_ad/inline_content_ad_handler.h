@@ -6,12 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_UNITS_INLINE_CONTENT_AD_INLINE_CONTENT_AD_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_UNITS_INLINE_CONTENT_AD_INLINE_CONTENT_AD_HANDLER_H_
 
+#include <cstdint>
+#include <map>
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
@@ -25,9 +29,11 @@ class AntiTargetingResource;
 class SubdivisionTargeting;
 class Transfer;
 struct InlineContentAdInfo;
+struct TabInfo;
 
 class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
-                                     public InlineContentAdServingDelegate {
+                                     public InlineContentAdServingDelegate,
+                                     public TabManagerObserver {
  public:
   InlineContentAdHandler(Account& account,
                          Transfer& transfer,
@@ -55,9 +61,13 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
                           const std::string& dimensions,
                           const absl::optional<InlineContentAdInfo>& ad);
 
+  void CacheAdPlacement(int32_t tab_id, const InlineContentAdInfo& ad);
+  void PurgeOrphanedCachedAdPlacements(int32_t tab_id);
+
   // InlineContentAdServingDelegate:
   void OnOpportunityAroseToServeInlineContentAd() override;
-  void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) override;
+  void OnDidServeInlineContentAd(int32_t tab_id,
+                                 const InlineContentAdInfo& ad) override;
 
   // InlineContentAdEventHandlerDelegate:
   void OnDidFireInlineContentAdServedEvent(
@@ -67,12 +77,18 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
   void OnDidFireInlineContentAdClickedEvent(
       const InlineContentAdInfo& ad) override;
 
+  // TabManagerObserver:
+  void OnTabDidChange(const TabInfo& tab) override;
+  void OnDidCloseTab(int32_t tab_id) override;
+
   InlineContentAdEventHandler event_handler_;
 
   const raw_ref<Account> account_;
   const raw_ref<Transfer> transfer_;
 
   InlineContentAdServing serving_;
+
+  std::map</*tab_id*/ int32_t, std::vector<std::string>> placement_ids_;
 
   base::WeakPtrFactory<InlineContentAdHandler> weak_factory_{this};
 };
