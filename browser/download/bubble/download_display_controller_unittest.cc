@@ -459,8 +459,8 @@ class DownloadDisplayControllerTest : public testing::Test {
     if (state == DownloadState::COMPLETE) {
       EXPECT_CALL(item(item_index), IsDone()).WillRepeatedly(Return(true));
       in_progress_count_--;
-      DownloadPrefs::FromBrowserContext(profile())->SetLastCompleteTime(
-          base::Time::Now());
+      EXPECT_CALL(item(item_index), GetEndTime())
+          .WillRepeatedly(Return(base::Time::Now()));
     } else {
       EXPECT_CALL(item(item_index), IsDone()).WillRepeatedly(Return(false));
     }
