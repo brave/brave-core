@@ -62,8 +62,10 @@ TEST_P(RewardsProtocolNavigationThrottleTest, Paths) {
       {"bitflyer", {GURL("https://bitflyer.com")}},
       {"uphold", {GURL("https://uphold.com")}}};
 
-  EXPECT_EQ(IsValidWalletProviderRedirect(
-                GURL(referrer_url), GURL(redirect_url), allowed_referrer_urls),
+  const auto transformed_url = TransformUrl(GURL(redirect_url));
+
+  EXPECT_EQ(IsValidWalletProviderRedirect(GURL(referrer_url), transformed_url,
+                                          allowed_referrer_urls),
             result);
 }
 
@@ -88,6 +90,12 @@ INSTANTIATE_TEST_SUITE_P(
       "no_redirect_to_each_others_redirect_url",
       "https://bitflyer.com",
       "rewards://uphold/authorization",
+      false
+    },
+    RewardsProtocolNavigationThrottleTestParamType{
+      "no_redirect_to_settings",
+      "https://uphold.com",
+      "rewards://uphold/../settings/",
       false
     },
     RewardsProtocolNavigationThrottleTestParamType{

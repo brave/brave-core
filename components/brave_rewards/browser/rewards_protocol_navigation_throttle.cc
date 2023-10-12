@@ -84,8 +84,9 @@ bool IsValidWalletProviderRedirect(
           },
           &GURL::host_piece)) {
     LOG(ERROR) << referrer_url.host_piece() << " was trying to redirect to "
-               << redirect_url.scheme_piece() << ":"
-               << redirect_url.path_piece() << ", but it's not allowed.";
+               << redirect_url.scheme_piece() << "://"
+               << redirect_url.host_piece() << redirect_url.path_piece()
+               << ", but it's not allowed.";
     return false;
   }
 
@@ -132,20 +133,21 @@ void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
     return allowed_urls;
   }()};
 
-  if (IsValidWalletProviderRedirect(web_contents->GetURL(), redirect_url,
+  if (const auto transformed_url = TransformUrl(redirect_url);
+      IsValidWalletProviderRedirect(web_contents->GetURL(), transformed_url,
                                     kAllowedReferrerUrls)) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(
                        [](base::WeakPtr<WebContents> web_contents,
-                          const GURL& redirect_url) {
+                          const GURL& transformed_url) {
                          if (!web_contents) {
                            return;
                          }
                          web_contents->GetController().LoadURL(
-                             TransformUrl(redirect_url), content::Referrer(),
+                             transformed_url, content::Referrer(),
                              ui::PAGE_TRANSITION_AUTO_TOPLEVEL, "");
                        },
-                       web_contents->GetWeakPtr(), redirect_url));
+                       web_contents->GetWeakPtr(), transformed_url));
   }
 }
 
