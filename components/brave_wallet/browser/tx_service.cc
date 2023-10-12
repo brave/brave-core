@@ -210,7 +210,7 @@ void TxService::AddUnapprovedTransactionWithOrigin(
   if (BlockchainRegistry::GetInstance()->IsOfacAddress(
           GetToAddressFromTxDataUnion(*tx_data_union))) {
     std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
     return;
   }
 

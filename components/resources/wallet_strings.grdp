@@ -9,6 +9,7 @@
   <message name="IDS_BRAVE_WALLET_NETWORK" desc="General token">network</message>
   <message name="IDS_WALLET_USER_REJECTED_REQUEST" desc="The text of the response for brave provider call if the user rejected the request">The user rejected the request.</message>
   <message name="IDS_WALLET_INVALID_PARAMETERS" desc="The call was made with invalid parameters">Invalid parameters.</message>
+  <message name="IDS_WALLET_OFAC_RESTRICTION" desc="Attempted to transfer to an OFAC restricted address">Destination address is on the OFAC SDN list.</message>
   <message name="IDS_WALLET_UNKNOWN_CHAIN" desc="The text of the response for wallet_switchEthereumChain call with unknown">Chain <ph name="VALUE">$1<ex>1</ex></ph> hasn't been added</message>
   <message name="IDS_WALLET_CHAIN_EXISTS" desc="The text of the response for wallet_addEthereumChain call with existing chain id">This Chain ID is currently used</message>
   <message name="IDS_WALLET_INTERNAL_ERROR" desc="The text of the response for wallet_addEthereumChain call with internal error">An internal error has occurred</message>
