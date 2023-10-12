@@ -88,10 +88,6 @@ class ScriptFactory {
       }
       
       return script
-    
-    case .youtubeAdblock:
-      let source = try makeScriptSource(of: .youtubeAdblock)
-      return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
     }
   }
   
