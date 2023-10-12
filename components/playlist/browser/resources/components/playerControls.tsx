@@ -163,18 +163,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           visibility='normal'
           onClick={() => getPlayerActions().toggleShuffle()}
         ></Control>
-        <Control
-          iconName='picture-in-picture'
-          size='large'
-          visibility='normal'
-          onClick={() => videoElement?.requestPictureInPicture()}
-        ></Control>
-        <Control
-          iconName='fullscreen-on'
-          size='large'
-          visibility='normal'
-          onClick={() => videoElement?.requestFullscreen()}
-        ></Control>
+        {/* TODO(sko) We disabled PIP and fullscreen button at the moment */}
       </div>
     </Container>
   )
