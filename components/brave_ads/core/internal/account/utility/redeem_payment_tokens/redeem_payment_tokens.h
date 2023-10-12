@@ -6,9 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_PAYMENT_TOKENS_REDEEM_PAYMENT_TOKENS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_PAYMENT_TOKENS_REDEEM_PAYMENT_TOKENS_H_
 
+#include <string>
+#include <tuple>
+
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
@@ -43,6 +47,9 @@ class RedeemPaymentTokens final {
   void BuildRedeemPaymentTokensUserDataCallback(base::Value::Dict user_data);
   void RedeemCallback(const PaymentTokenList& payment_tokens,
                       const mojom::UrlResponseInfo& url_response);
+
+  static base::expected<void, std::tuple<std::string, bool>> HandleUrlResponse(
+      const mojom::UrlResponseInfo& url_response);
 
   void SuccessfullyRedeemed(const PaymentTokenList& payment_tokens);
   void FailedToRedeem(bool should_retry);

@@ -51,3 +51,5 @@ npm run test -- brave_browser_tests --filter=BraveAds*
 ```
 npm run test -- brave_unit_tests --filter=BraveAds*
 ```
+
+Please add to it!
