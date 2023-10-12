@@ -145,9 +145,6 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Maklumat Penanda Buku";
 
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
-"BookmarkMultipleCount" = "%d penanda halaman";
-
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Penanda Halaman";
 
@@ -159,9 +156,6 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "Import Penanda Buku";
-
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
-"BookmarkSingleCount" = "%d penanda halaman";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Penanda Halaman";
@@ -514,6 +508,9 @@
 /* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Salin maklumat saiz apl ke papan klip.";
 
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "Salin Pautan Bersih";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Salin Imej";
 
@@ -626,10 +623,10 @@
 "defaultBrowserCallout.introTertiaryText" = "Buka Tetapan, ketik Aplikasi Penyemak Imbas Lalai, dan pilih Brave.  ";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Dioptimumkan untuk iOS %@. Jadikan Brave sebagai penyemak imbas lalai anda hari ini.";
+"defaultBrowserCallout.notificationBody" = "Tetapkan Brave sebagai penyemak imbas lalai anda";
 
 /* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Penyemk Imbas Web Brave";
+"defaultBrowserCallout.notificationTitle" = "Dapatkan perlindungan Brave, pada setiap pautan";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Tutup timbul penyemak imbas lalai";
@@ -807,9 +804,6 @@
 
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "Hanya URL selamat (https) dibenarkan untuk senarai penapis tersuai";
-
-/* A title on the content filtering screen that allows you to enable/disable filter lists */
-"FilterLists" = "Senarai Penapis";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
 "FilterListsAdd" = "Tambah";
@@ -993,9 +987,6 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Penapis";
-
-/* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Untuk menambahkan peranti pada rantaian segerak atau menogol penyegerakan kata laluan, anda mesti menetapkan kod laluan terlebih dahulu pada peranti anda.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Terakhir diubah suai %@";
@@ -1459,6 +1450,9 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "Tetapan Lain";
 
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "Teruskan";
+
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Maklumat P3A tanpa nama membantu Brave menganggarkan penggunaan keseluruhan, dan memastikan kami meningkatkan ciri popular.";
 
@@ -1474,9 +1468,6 @@
 /* Title for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesTitle" = "Tiada Laman Web Ditambah";
 
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "Zum Halaman";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Semua Laman Web Lain";
 
@@ -1490,7 +1481,7 @@
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Tetapan Halaman Khusus";
 
 /* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "Tetapan Zum Halaman";
+"pagezoom.settings.title" = "Zum Halaman";
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Zum Halaman";
@@ -1694,7 +1685,7 @@
 "playlist.playlistStartPlaybackSettingsFooterText" = "Untuk fail individu, sambung main daripada titik jeda terakhir.";
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "Ingat kedudukan main semula fail";
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Ingat Kedudukan Main Semula Fail";
 
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Menyahdayakan API WebKit MediaSource";
@@ -1833,9 +1824,6 @@
 
 /* The title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionTitle" = "Tambah video kepada senarai main ini";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "Main Kemudian";
 
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "Pilih senarai main untuk mengalihkan %lld item kepada";
@@ -2224,8 +2212,8 @@
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Beritahu pembangun Brave bahawa tapak ini tidak berfungsi dengan betul dengan Shields:";
 
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "Nota: Alamat tapak ini akan diserahkan bersama nombor versi Brave anda dan alamat IP anda (yang tidak akan disimpan).";
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Perhatian: Laporan yang dihantar kepada pelayan Brave akan menyertakan alamat laman, nombor versi Brave, tetapan Shields, status VPN dan tetapan bahasa.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Serah";
@@ -2246,7 +2234,7 @@
 "RestoreTabOnCrashAlertMessage" = "Akan tetapi, Brave telah ranap atau tidak ditutup dengan betul.\nPulihkan tab anda?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave berhenti berfungsi dengan tidak dijangka.";
+"RestoreTabOnCrashAlertTitle" = "Brave Tertutup Secara Tidak Dijangka.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Dengan Brave Rewards, anda boleh melihat iklan yang menjaga privasi daripada rangkaian Brave Ads. Tiada penjejak. Tiada kelewatan. Data anda selamat sepenuhnya.";
@@ -2542,9 +2530,6 @@
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "carian %@";
 
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "Enjin Carian Lalai";
-
 /* Search engines section of settings */
 "SearchEngines" = "Enjin Carian";
 
@@ -2650,8 +2635,20 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Media";
 
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "Dayakan Masa Skrin";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "Lihat laman web yang paling banyak anda luangkan masa dan tetapkan had penyemakan imbas. [Ketahui Lebih Lanjut](%@)";
+
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Tetapan Kualiti";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Ping peribadi awanama ini membolehkan Brave menganggarkan pengguna aktif.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "Hantar ping penggunaan harian secara automatik ke Brave";
 
 /* Header for the Youtube settings section */
 "settings.youtube" = "YouTube";
@@ -2950,6 +2947,27 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Pemadaman ini kekal dan tiada cara lain untuk memulihkan data. Jika anda memutuskan untuk mula menggunakan Segerak sekali lagi, anda akan perlu mencipta akaun baharu dan menambahkan semula setiap peranti satu persatu.";
 
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "Kesilapan telah berlaku semasa mendapatkan peranti dalam rantaian penyegerakan.";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "Peranti dalam Rantaian Penyegerakan";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "Perhatian: Anda harus menentusahkan bahawa anda mengenali setiap peranti dalam senarai di atas. Peranti dalam rantaian penyegerakan mungkin menerima data peribadi seperti kata laluan dan sejarah penyemakan imbas.";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "Pengesahan Peranti";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "Anda telah mencapai bilangan maksimum peranti (10) yang dibenarkan dalam rantaian penyegerakan. Alih keluar peranti untuk meneruskan.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "Had peranti";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "Untuk menambahkan peranti pada rantaian segerak atau menogol penyegerakan kata laluan, anda mesti menetapkan kod laluan terlebih dahulu pada peranti anda.";
+
 /* The title displayed in alert when a user needs to set passcode */
 "sync.syncSetPasscodeAlertTitle" = "Tetapkan Kod Laluan";
 
@@ -3036,15 +3054,6 @@
 
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Ralat Komunikasi Segerak";
-
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "Langkah ini akan mengongsikan data Brave anda, termasuk kemungkinan kata laluan anda, dengan peranti yang menjana kod QR ini. Sila semak sekali lagi sama ada kod QR ini dijana oleh peranti milik anda. Betulkah anda mahu mengambil langkah ini?";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "Langkah ini akan mengongsikan data Brave anda, termasuk kemungkinan kata laluan anda, dengan peranti yang menjana kata kod ini. Sila semak sekali lagi sama ada kata kod ini dijana oleh peranti milik anda. Betulkah anda mahu mengambil langkah ini?";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "Amaran";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Semak sambungan internet anda dan cuba lagi.";
@@ -3703,6 +3712,12 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Ralat";
 
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Konfigurasi VPN berjaya ditetapkan semula.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Berjaya";
+
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Pulihkan";
 
@@ -3793,6 +3808,9 @@
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Adakah anda tahu bahawa VPN Brave melindungi anda di luar Penyemak Imbas Brave?";
 
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Kemas kini";
+
 /* Pop up description for billing issue of subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverDescription" = "Usah bimbang. Kami akan pastikan VPN terus aktif selama beberapa hari sementara anda mengemaskinikan maklumat pembayaran anda.";
 
@@ -3807,6 +3825,9 @@
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Kemas Kinikan Pembayaran";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Kemas Kinikan Kaedah Pembayaran";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Walaupun di latar belakang, Brave akan terus melindungi anda.";
@@ -3855,6 +3876,9 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Langganan setiap tahun";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Sila kemas kinikan kaedah pembayaran anda";
 
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Memperbaharui setiap tahun jimat %@";

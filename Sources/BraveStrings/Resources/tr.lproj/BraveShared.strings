@@ -145,9 +145,6 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Yer İşareti Bilgisi";
 
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
-"BookmarkMultipleCount" = "%d yer işareti";
-
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Yer İşaretleri";
 
@@ -159,9 +156,6 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "Yer İşaretlerini İçe Aktar";
-
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
-"BookmarkSingleCount" = "%d yer işareti";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Yer İşaretleri";
@@ -514,6 +508,9 @@
 /* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Uygulama boyutu bilgilerini panoya kopyala.";
 
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "Temiz Bağlantıyı Kopyala";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Resmi Kopyala";
 
@@ -626,10 +623,10 @@
 "defaultBrowserCallout.introTertiaryText" = "Ayarlar'ı açın, Varsayılan Tarayıcı Uygulaması'nı dokunun ve Brave'i seçin.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "iOS %@ için optimize edilmiştir. Brave'i bugün varsayılan tarayıcınız yapın.";
+"defaultBrowserCallout.notificationBody" = "Brave'u varsayılan tarayıcınız olarak ayarlama";
 
 /* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Brave Web Tarayıcısı";
+"defaultBrowserCallout.notificationTitle" = "Her bağlantıda Brave koruması elde edin";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Varsayılan tarayıcı belirtecini kapat";
@@ -807,9 +804,6 @@
 
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "Özel filtre listeleri için yalnızca güvenli (https) URL'lere izin verilir";
-
-/* A title on the content filtering screen that allows you to enable/disable filter lists */
-"FilterLists" = "FilterLists";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
 "FilterListsAdd" = "Ekle";
@@ -993,9 +987,6 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filtrele";
-
-/* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Senkronizasyon zincirine bir cihaz eklemek veya şifre senkronizasyonunu açmak veya kapatmak için, önce cihazınıza bir pin kodu belirlemeniz gerekmektedir.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Son değiştirilen %@";
@@ -1459,6 +1450,9 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "Diğer Ayarlar";
 
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "Devam et";
+
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Anonimleştirilmiş P3A bilgisi, Brave'in genel kullanımı tahmin etmesine yardımcı olur ve popüler özellikleri geliştirmeye devam etmemizi garanti eder.";
 
@@ -1474,9 +1468,6 @@
 /* Title for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesTitle" = "Eklenen Web Sitesi Yok";
 
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "Sayfa Yakınlaştırma";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Diğer Tüm Web Siteleri";
 
@@ -1490,7 +1481,7 @@
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Özel Sayfa Ayarları";
 
 /* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "Sayfa Yakınlaştırma Ayarları";
+"pagezoom.settings.title" = "Sayfa Yakınlaştırma";
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Sayfa Yakınlaştırma";
@@ -1694,7 +1685,7 @@
 "playlist.playlistStartPlaybackSettingsFooterText" = "Ayrı dosyalarda en son durdurulan noktadan çalmayı sürdürün.";
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "Dosyanın oynatma konumunu hatırla";
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Dosya Oynatma Konumunu Hatırla";
 
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "WebKit MediaSource API'sini devre dışı bırakır";
@@ -1833,9 +1824,6 @@
 
 /* The title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionTitle" = "Bu oynatma listesine videolar ekleyin";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "Daha Sonra Oynat";
 
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "%lld öğeyi taşımak için bir oynatma listesi seçin";
@@ -2224,8 +2212,8 @@
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Brave'in geliştiricilerine bu sitenin Kalkanlar ile düzgün çalışmadığını bildirin:";
 
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "Not: Bu site adresi Brave sürüm numaranız ve IP adresinizle birlikte gönderilecektir (bu veri depolanmayacaktır).";
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Not: Brave sunucularına gönderilen rapor site adresini, Brave sürüm numarasını, Kalkanlar ayarlarını, VPN durumunu ve dil ayarlarını içerecektir.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Gönder";
@@ -2246,7 +2234,7 @@
 "RestoreTabOnCrashAlertMessage" = "Ne yazık ki Brave çöktü veya düzgün şekilde kapatılmadı.\nSekmeleriniz geri yüklensin mi?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave, beklenmedik bir şekilde kapandı.";
+"RestoreTabOnCrashAlertTitle" = "Brave, Beklenmedik Bir Şekilde Kapandı.";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Brave Rewards ile Brave Ads ağından gizlilik korumalı reklamları görüntüleyebilirsiniz. İzleyici yok. Yavaşlama yok. Üstelik verileriniz tamamen güvende kalır.";
@@ -2542,9 +2530,6 @@
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "%@ arama";
 
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "Varsayılan Arama Motoru";
-
 /* Search engines section of settings */
 "SearchEngines" = "Arama Motorları";
 
@@ -2650,8 +2635,20 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Medya";
 
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "Ekran Süresini Etkinleştir";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "En çok hangi sitelerde zaman geçirdiğinizi görün ve gezinme kısıtlamaları getirin. [Daha Fazla Bilgi](%@)";
+
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Kalite Ayarları";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Bu anonim gizli ping, Brave'in aktif kullanıcıları tahmin etmesine olanak tanır.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "Günlük kullanım ping'ini Brave'e otomatik olarak gönder";
 
 /* Header for the Youtube settings section */
 "settings.youtube" = "Youtube";
@@ -2950,6 +2947,27 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Silme işlemi kalıcıdır ve verileri kurtarmanın hiçbir yolu yoktur. Senkronizasyonu tekrar kullanmaya karar verirseniz, yeni bir hesap oluşturmanız ve tüm cihazları tek tek yeniden eklemeniz gerekecektir.";
 
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "Senkronizasyon zincirindeki cihazlar alınırken bir şeyler ters gitti.";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "Senkronizasyon Zincirindeki Cihazlar";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "Not: Yukarıdaki listede bulunan her bir cihazı tanıdığınızı doğrulamanız gereklidir. Bir senkronizasyon zincirindeki cihazlar; parolalar ve göz atma geçmişi gibi kişisel verileri alabilirler.";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "Cihaz Doğrulaması";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "Bir senkronizasyon zincirinde izin verilen maksimum cihaz sayısına (10) ulaştınız. Devam etmek için bir cihazı kaldırın.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "Cihaz sınırı";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "Senkronizasyon zincirine bir cihaz eklemek veya şifre senkronizasyonunu açmak veya kapatmak için, önce cihazınıza bir pin kodu belirlemeniz gerekmektedir.";
+
 /* The title displayed in alert when a user needs to set passcode */
 "sync.syncSetPasscodeAlertTitle" = "Bir Parola Belirleyin";
 
@@ -3036,15 +3054,6 @@
 
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Eşitleme iletişim hatası";
-
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "Bu işlem, potansiyel olarak şifrelerinizi de içeren Brave verilerinizi bu QR kodunu oluşturmuş olan cihazla paylaşacaktır. Lütfen bu QR kodunun size ait bir cihaz tarafından oluşturulduğundan emin olun. Bunu yapmak istediğinizden emin misiniz?";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "Bu işlem, potansiyel olarak şifrelerinizi de içeren Brave verilerinizi bu kod kelimelerini oluşturmuş olan cihazla paylaşacaktır. Lütfen bu kod kelimelerinin size ait bir cihaz tarafından oluşturulduğundan emin olun. Bunu yapmak istediğinizden emin misiniz?";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "Uyarı";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "İnternet bağlantınızı kontrol edin ve yeniden deneyin.";
@@ -3703,6 +3712,12 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Hata";
 
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN Yapılandırması başarıyla sıfırlandı.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Başarılı";
+
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Geri yükle";
 
@@ -3793,6 +3808,9 @@
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPN'in sizi Brave Tarayıcı dışında da koruduğunu biliyor muydunuz?";
 
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Güncelleştir";
+
 /* Pop up description for billing issue of subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverDescription" = "Merak etmeyin. Siz ödeme bilgilerinizi güncellerken biz VPN'i birkaç gün daha etkin tutacağız.";
 
@@ -3807,6 +3825,9 @@
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Ödemeyi Güncelle";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ödeme Yöntemini Güncelle";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Arka planda bile Brave seni korumaya devam edecek.";
@@ -3855,6 +3876,9 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Yıllık abonelik";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Lütfen ödeme yönteminizi güncelleyin";
 
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Yıllık yenileme tasarrufu % @";

@@ -145,9 +145,6 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Сведения";
 
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
-"BookmarkMultipleCount" = "Закладок: %d";
-
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "Закладки";
 
@@ -159,9 +156,6 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "Импортировать закладки";
-
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
-"BookmarkSingleCount" = "Закладок: %d";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "Закладки";
@@ -514,6 +508,9 @@
 /* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "Скопировать сведения о размере приложения";
 
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "Копировать человекопонятную ссылку";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Скопировать изображение";
 
@@ -551,7 +548,7 @@
 "customSearchEngine.autoAddTitle" = "Добавить автоматически";
 
 /* A title explaining that an error shown while adding custom search engine */
-"customSearchEngine.customSearchEngineAddErrorTitle" = "Ошибка при добавлении системы пользовательского поиска";
+"customSearchEngine.customSearchEngineAddErrorTitle" = "Ошибка при добавлении пользовательской поисковой системы";
 
 /* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
 "customSearchEngine.deleteEngineAlertDescription" = "Если используемая по умолчанию пользовательская поисковая система будет удалена, настройки поисковой системы по умолчанию изменятся автоматически.";
@@ -584,7 +581,7 @@
 "customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Добавить поисковую систему?";
 
 /* A descriotion explaining that there is error while adding a search engine */
-"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Не удалось добавить систему пользовательского поиска. Повторите попытку позже.";
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Не удалось добавить пользовательскую поисковую систему. Повторите попытку позже.";
 
 /* A title explaining that there is error while adding a search engine */
 "customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Произошла ошибка";
@@ -626,10 +623,10 @@
 "defaultBrowserCallout.introTertiaryText" = "Откройте настройки, нажмите «Браузерное приложение по умолчанию» и выберите Brave.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Оптимизировано под iOS %@. Сделайте Brave вашим браузером по умолчанию.";
+"defaultBrowserCallout.notificationBody" = "Сделать Brave браузером по умолчанию";
 
 /* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Браузер Brave";
+"defaultBrowserCallout.notificationTitle" = "Brave защитит вас в интернете";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Закрыть сообщение о браузере по умолчанию";
@@ -808,9 +805,6 @@
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "Для списков пользовательских фильтров разрешается использовать только безопасные (https) URL-адреса";
 
-/* A title on the content filtering screen that allows you to enable/disable filter lists */
-"FilterLists" = "Списки фильтров";
-
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
 "FilterListsAdd" = "Добавить";
 
@@ -917,7 +911,7 @@
 "history.historyEmptyStateTitle" = "Здесь появится история";
 
 /* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
-"history.historyPrivateModeOnlyStateTitle" = "В режиме инкогнито история недоступна";
+"history.historyPrivateModeOnlyStateTitle" = "В приватном режиме история недоступна";
 
 /* Title displayed for placeholder inside Search Bar in History */
 "history.historySearchBarTitle" = "История поиска";
@@ -993,9 +987,6 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Укажите запрос";
-
-/* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "Чтобы добавить устройство в цепь синхронизации или включить/отключить синхронизацию паролей, установите код доступа на устройстве.";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Последнее изменение: %@";
@@ -1073,7 +1064,7 @@
 "NewFolderTitle" = "Новая папка";
 
 /* Context menu item for opening a new private browsing window */
-"NewPrivateWindowTitle" = "Новое окно в режиме инкогнито";
+"NewPrivateWindowTitle" = "Новое окно в приватном режиме";
 
 /* New sync code button title */
 "NewSyncCode" = "Запустить новую цепочку синхронизации";
@@ -1322,7 +1313,7 @@
 "OpenImageInNewTab" = "Открыть изображение в новой вкладке";
 
 /* Context menu item for opening a link in a new private browsing window */
-"OpenInNewPrivateWindowTitle" = "Открыть в новом окне инкогнито";
+"OpenInNewPrivateWindowTitle" = "Открыть в новом приватном окне";
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "Открыть в новом окне";
@@ -1424,7 +1415,7 @@
 "OpenWebsite" = "Открыть сайт";
 
 /* The subtitle description of menu item Brave News */
-"optionsMenu.braveNewsItemDescription" = "Главные новости дня в приватной ленте.";
+"optionsMenu.braveNewsItemDescription" = "Главные новости дня в личной ленте новостей";
 
 /* Brave News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Brave Новости";
@@ -1436,7 +1427,7 @@
 "optionsMenu.bravePlaylistItemTitle" = "Плейлист";
 
 /* The subtitle description of menu item Brave Talk */
-"optionsMenu.braveTalkItemDescription" = "Защищенные видеовстречи прямо в браузере.";
+"optionsMenu.braveTalkItemDescription" = "Защищенные видеовстречи прямо в браузере";
 
 /* Brave Talk Item Menu title */
 "optionsMenu.braveTalkItemTitle" = "Brave Разговоры";
@@ -1459,6 +1450,9 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "Другие настройки";
 
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "Продолжить";
+
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "Анонимные данные аналитики продукта без нарушения конфиденциальности (P3A) помогают нам оценивать полную информацию об использовании Brave и улучшать популярные функции.";
 
@@ -1466,16 +1460,13 @@
 "p3a.settingTitle" = "Разрешить выполнение аналитики продукта без нарушения конфиденциальности (P3A)";
 
 /* Title for the section for the global/default zoom level */
-"pagezoom.settings.defaultZoomLevelSectionTitle" = "Масштаб по умолчанию для веб-страниц";
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "Масштаб страницы по умолчанию";
 
 /* Description for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesDescription" = "Если масштаб для сайта изменится, сайт появится в этом списке. Сейчас все сайты просматриваются в масштабе по умолчанию.";
 
 /* Title for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesTitle" = "Нет добавленных сайтов";
-
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "Масштаб страницы";
 
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Все остальные сайты";
@@ -1490,7 +1481,7 @@
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Настройки для отдельной страницы";
 
 /* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "Настройки масштаба для страницы";
+"pagezoom.settings.title" = "Масштаб страницы";
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Масштаб страницы";
@@ -1502,13 +1493,13 @@
 "PasswordsMenuItem" = "Пароли";
 
 /* Setting to allow the app to restore private browsing tabs */
-"PersistentPrivateBrowsing" = "Возобновляемый режим инкогнито";
+"PersistentPrivateBrowsing" = "Постоянный приватный режим";
 
 /* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Если вы закроете приложение и откроете его снова, Brave восстановит вкладки, открытые в режиме инкогнито.";
+"PersistentPrivateBrowsingAlertMessage" = "Если вы закроете приложение и откроете его снова, Brave восстановит вкладки, открытые в приватном режиме";
 
 /* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Восстановление вкладок инкогнито";
+"PersistentPrivateBrowsingAlertTitle" = "Восстановить приватные вкладки";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Автор фото: %@";
@@ -1694,7 +1685,7 @@
 "playlist.playlistStartPlaybackSettingsFooterText" = "Возобновлять воспроизведение с места последней паузы для отдельных файлов.";
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
-"playlist.playlistStartPlaybackSettingsOptionTitle" = "Запомнить положение при воспроизведении файла";
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Запоминание позиции в плейлисте";
 
 /* Description for Playlist setting */
 "playlist.playlistWebCompatibilityDescription" = "Отключить WebKit MediaSource API";
@@ -1745,7 +1736,7 @@
 "playlist.sharePlaylistActionTitle" = "Меню плейлиста Brave";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Открыть во вкладке инкогнито";
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Открыть в приватной вкладке";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewTabTitle" = "Открыть в новой вкладке";
@@ -1834,9 +1825,6 @@
 /* The title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionTitle" = "Добавление видео в плейлист";
 
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "Воспроизвести позже";
-
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "Выберите новый плейлист для %lld объектов";
 
@@ -1901,7 +1889,7 @@
 "Privacy" = "Конфиденциальность";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"privacy.tab.tray.passcode.alert" = "Чтобы включить или отключить режим инкогнито, установите код доступа на устройстве.";
+"privacy.tab.tray.passcode.alert" = "Чтобы включить или отключить приватный режим, установите код доступа на устройстве.";
 
 /* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
 "privacyHub.allTimeListsButtonText" = "За все время";
@@ -1997,7 +1985,7 @@
 "privacyHub.riskiestWebsiteTitle" = "Сайт с наибольшим количеством трекеров";
 
 /* This text explains a setting that lets Brave monitor blocked network requests */
-"privacyHub.settingsEnableShieldsFooter" = "В центре конфиденциальности отображаются количественные данные по блокировке, выполненной Щитом. Настройка не влияет на счетчик Щита на новой вкладке. Данные Щита не учитываются при работе в окнах инкогнито.";
+"privacyHub.settingsEnableShieldsFooter" = "В центре конфиденциальности отображаются количественные данные по блокировке, выполненной Щитом. Настройка не влияет на счетчик Щита на новой вкладке. Данные Щита не учитываются при работе в приватных окнах.";
 
 /* Title of a setting that lets Brave monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "Отображение данных Щита";
@@ -2060,13 +2048,13 @@
 "PrivateBrowsingOnlyWarning" = "В режиме «Приватный просмотр» будут закрыты все открытые вкладки и будет выполнен выход со всех сайтов.";
 
 /* Private tab details */
-"PrivateTabBody" = "Вкладки инкогнито в браузере Brave не сохраняются, но это не дает вам полной анонимности в интернете. Посещаемые здесь сайты не отобразятся в истории браузера, а файлы cookie удалятся сразу после закрытия вкладки. Однако скачанные файлы останутся на устройстве.\nВаш мобильный оператор (или владелец сети Wi-Fi/провайдер VPN) сможет увидеть, какие сайты вы посещали, а у сайтов будет доступ к вашему внешнему IP-адресу, даже если вы открывали их во вкладках инкогнито.";
+"PrivateTabBody" = "Приватные вкладки не сохраняются в браузере Brave, но это не дает вам полной анонимности в интернете. Посещаемые здесь сайты не отобразятся в истории браузера, а файлы cookie удалятся сразу после закрытия вкладки. Однако скачанные файлы останутся на устройстве.\nВаш мобильный оператор (или владелец сети Wi-Fi/провайдер VPN) сможет увидеть, какие сайты вы посещали, а у сайтов будет доступ к вашему внешнему IP-адресу, даже если вы открывали их в приватных вкладках.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Использование вкладки инкогнито влияет только на то, какую информацию браузер Brave сохраняет на вашем устройстве.\n\nСайты получают ваш IP-адрес автоматически, как только вы заходите на них. Исходя из этого, они часто могут определить ваше примерное местоположение — как правило, на уровне города. Иногда эти данные могут быть более точными. Кроме того, сайты сохраняют всю вводимую вами информацию, например поисковые запросы. При авторизации на сайте им станет известно, что вы являетесь владельцем этой учетной записи. При закрытии вкладок инкогнито вы автоматически выйдете из аккаунта, так как Brave удалит файлы cookie, необходимые для того, чтобы оставаться в системе.\n\nВаши действия в сети может отслеживать интернет-провайдер. Как правило, это оператор мобильной связи либо владелец сети Wi-Fi или VPN, в зависимости от того, кто предоставляет вам доступ к интернету. Интернет-провайдер сможет увидеть, какие сайты вы посещаете. Если сайты защищены соединением HTTPS, в таком случае можно лишь догадываться о ваших действиях на этих сайтах. Однако если поддерживается только протокол HTTP, интернет-провайдер сможет узнать всё: какие поисковые запросы вы вводили, какие страницы посещали, по каким ссылкам переходили\n\nЕсли работодатель управляет вашим устройством, он также может следить за тем, какие сайты вы посещаете. Даже использование вкладок инкогнито не поможет скрыть информацию. Те, у кого-то есть доступ к вашему устройству, могут установить программу, отслеживающую ваши действия — вкладки инкогнито не помогут и в этом случае.";
+"PrivateTabDetails" = "Использование приватных вкладок влияет только на то, какую информацию браузер Brave сохраняет на вашем устройстве.\n\nСайты получают ваш IP-адрес автоматически, как только вы заходите на них. Исходя из этого, они часто могут определить ваше примерное местоположение — как правило, на уровне города. Иногда эти данные могут быть более точными. Кроме того, сайты сохраняют всю вводимую вами информацию, например поисковые запросы. При авторизации на сайте им станет известно, что вы являетесь владельцем этой учетной записи. При закрытии приватных вкладок вы автоматически выйдете из аккаунта, так как Brave удалит файлы cookie, необходимые для того, чтобы оставаться в системе.\n\nВаши действия в сети может отслеживать интернет-провайдер. Как правило, это оператор мобильной связи либо владелец сети Wi-Fi или VPN, в зависимости от того, кто предоставляет вам доступ к интернету. Интернет-провайдер сможет увидеть, какие сайты вы посещаете. Если сайты защищены соединением HTTPS, в таком случае можно лишь догадываться о ваших действиях на этих сайтах. Однако если поддерживается только протокол HTTP, интернет-провайдер сможет узнать всё: какие поисковые запросы вы вводили, какие страницы посещали, по каким ссылкам переходили\n\nЕсли работодатель управляет вашим устройством, он также может следить за тем, какие сайты вы посещаете. Даже использование приватных вкладок не поможет скрыть информацию. Те, у кого есть доступ к вашему устройству, могут установить программу, отслеживающую ваши действия — приватные вкладки не помогут и в этом случае.";
 
 /* Private tab information link */
-"PrivateTabLink" = "Подробнее о вкладках инкогнито…";
+"PrivateTabLink" = "Подробнее о приватных вкладках…";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Приватная вкладка";
@@ -2224,8 +2212,8 @@
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Сообщите разработчикам Brave, что этот сайт некорректно работает с системой Brave Shields:";
 
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "Примечание. Разработчикам будет отправлен адрес этого сайта, а также номер вашей версии Brave и ваш IP-адрес (эти данные не будут храниться).";
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Примечание. В отчете, который вы отправите на серверы Brave, будет указан адрес сайта, версия Brave, настройки Щита, статус VPN и языковые параметры.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Отправить";
@@ -2542,9 +2530,6 @@
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "Поиск: %@";
 
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "Поисковая система по умолчанию";
-
 /* Search engines section of settings */
 "SearchEngines" = "Поисковые системы";
 
@@ -2567,7 +2552,7 @@
 "SearchInputViewTitle" = "Поиск";
 
 /* Add Custom Search Engine Table Cell Row Title */
-"searchSettingAddCustomEngineCellTitle" = "Добавление системы пользовательского поиска";
+"searchSettingAddCustomEngineCellTitle" = "Добавить свою поисковую систему";
 
 /* Navigation title for search settings. */
 "SearchSettingNavTitle" = "Поиск";
@@ -2648,10 +2633,22 @@
 "settings.media.general" = "Основные";
 
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
-"settings.media.rootSetting" = "Камера и микрофон";
+"settings.media.rootSetting" = "Медиа";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "Функция «Экранное время»";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "Узнайте, на каких сайтах вы проводите больше всего времени, и установите ограничения. [Подробнее…](%@)";
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Настройки качества";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Brave будет использовать вашу анонимизированную конфиденциальную статистику, чтобы оценивать количество активных пользователей.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "Автоматически отправлять ежедневные данные PING в Brave";
 
 /* Header for the Youtube settings section */
 "settings.youtube" = "YouTube";
@@ -2744,7 +2741,7 @@
 "ShieldsOverviewFooter" = "Примечание. Поскольку некоторым сайтам для работы необходимы скрипты, эта функция по умолчанию отключена.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleNewPrivateTab" = "Новая Приватная вкладка";
+"ShortcutItemTitleNewPrivateTab" = "Новая приватная вкладка";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewTab" = "Новая вкладка";
@@ -2774,10 +2771,10 @@
 "shortcuts.activityTypeEnableVPNTitle" = "Откройте браузер Brave и включите VPN";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Открыть новую вкладку инкогнито";
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Открыть новую приватную вкладку";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeNewPrivateTabTitle" = "Открыть новую вкладку инкогнито";
+"shortcuts.activityTypeNewPrivateTabTitle" = "Открыть новую приватную вкладку";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewTabSuggestedPhrase" = "Откройте новую вкладку";
@@ -2837,10 +2834,10 @@
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Открыть Brave News";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Используйте быстрые команды, чтобы открывать новые вкладки инкогнито с помощью Siri.";
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Используйте быстрые команды, чтобы открывать новые приватные вкладки с помощью Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Открыть новую вкладку инкогнито";
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Открыть новую приватную вкладку";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewTabDescription" = "Используйте быстрые команды, чтобы открывать новые вкладки с помощью Siri.";
@@ -2950,6 +2947,27 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "Удаление необратимо — вы не сможете восстановить данные. Если вы захотите опять использовать Brave Синхронизацию, создайте новый аккаунт и повторно добавьте устройства.";
 
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "Не удалось получить информацию об устройствах в цепи синхронизации.";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "Устройства в цепи синхронизации";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "Примечание. Проверьте и подтвердите устройства в списке. Они могут получать конфиденциальные данные, например историю браузера и пароли.";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "Подтвердите устройства";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "Вы подключили к цепи синхронизации максимальное количество устройств (10). Чтобы продолжить, удалите одно из них.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "Лимит устройств";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "Чтобы добавить устройство в цепь синхронизации или включить/отключить синхронизацию паролей, установите код доступа на устройстве.";
+
 /* The title displayed in alert when a user needs to set passcode */
 "sync.syncSetPasscodeAlertTitle" = "Установите код доступа";
 
@@ -3037,15 +3055,6 @@
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Ошибка связи";
 
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "Устройство, на котором был сгенерирован этот QR-код, получит доступ к данным браузера Brave, включая ваши пароли. Убедитесь, что оно принадлежит вам. Продолжить?";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "Устройство, на котором были сгенерированы эти кодовые слова, получит доступ к данным браузера Brave, включая ваши пароли. Убедитесь, что оно принадлежит вам. Продолжить?";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "Внимание!";
-
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Проверьте подключение к интернету и повторите попытку.";
 
@@ -3131,10 +3140,10 @@
 "TabPrivateModeToggleAccessibilityValueOn" = "Включить";
 
 /* No comment provided by engineer. */
-"tabs.settings.persistentPrivateBrowsingDescription" = "Вкладки инкогнито будут оставаться открытыми при закрытии приложения, сохраняя возможность продолжить сеанс.";
+"tabs.settings.persistentPrivateBrowsingDescription" = "Приватные вкладки будут оставаться открытыми при закрытии приложения, сохраняя возможность продолжить сеанс.";
 
 /* No comment provided by engineer. */
-"tabs.settings.persistentPrivateBrowsingTitle" = "Не закрывать вкладки инкогнито";
+"tabs.settings.persistentPrivateBrowsingTitle" = "Не закрывать приватные вкладки";
 
 /* No comment provided by engineer. */
 "tabs.settings.privateBrowsingLockTitleFaceID" = "Запрашивать Face ID";
@@ -3146,7 +3155,7 @@
 "tabs.settings.privateBrowsingLockTitleTouchID" = "Запрашивать Touch ID";
 
 /* No comment provided by engineer. */
-"tabs.settings.privateTabsSettingsTitle" = "Личные вкладки";
+"tabs.settings.privateTabsSettingsTitle" = "Приватные вкладки";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Панель навигации";
@@ -3245,7 +3254,7 @@
 "ThemesDisplayBrightness" = "Вид";
 
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Эти настройки не применяются в приватном режиме.";
+"ThemesDisplayBrightnessFooter" = "Эти настройки не применяются в приватном режиме";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Светлая тема";
@@ -3703,6 +3712,12 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Ошибка";
 
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Настройки VPN сброшены.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Готово";
+
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Восстановить";
 
@@ -3793,6 +3808,9 @@
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPN работает не только в браузере Brave!";
 
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Обновить";
+
 /* Pop up description for billing issue of subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverDescription" = "Сервис будет активен еще в течение нескольких дней, чтобы вы успели внести необходимые изменения.";
 
@@ -3807,6 +3825,9 @@
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Обновить метод оплаты";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Изменить способ оплаты";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "Браузер Brave будет защищать вас даже в фоновом режиме.";
@@ -3855,6 +3876,9 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "Ежегодная подписка";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Измените способ оплаты";
 
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Продлевайте ежегодно и экономьте %@";

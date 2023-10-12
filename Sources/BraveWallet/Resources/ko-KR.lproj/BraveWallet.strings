@@ -226,6 +226,9 @@
 /* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
 "wallet.chartAxisPriceLabel" = "가격";
 
+/* The description of one of the 'Coinbase Pay' provider. */
+"wallet.coinbaseNetworkProviderDescription" = "가장 신뢰받는 거래소에서 암호화폐를 구입하세요.";
+
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "코인게코에서 가격 데이터 제공";
 
@@ -814,6 +817,9 @@
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "유동성 부족";
 
+/* The title of a button that Deselects all visible options. */
+"wallet.internalErrorMessage" = "내부 오류 발생";
+
 /* A title will displayed in the IPFS error page when IPFS is disabled. */
 "wallet.ipfsErrorTitle" = "사이트에 도달할 수 없음";
 
@@ -1249,6 +1255,9 @@
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "도메인에 연결된 %@ 주소가 없습니다";
 
+/* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
+"wallet.sendErrorInvalidRecipientAddress" = "유효하지 않은 수신자 주소";
+
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "주소 입력";
 
@@ -1557,6 +1566,12 @@
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "자산 정렬";
+
+/* The description of one of the 'Stripe' provider. */
+"wallet.stripeNetworkProviderDescription" = "신용카드, 직불카드, 은행계좌로 결제 가능합니다.";
+
+/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
+"wallet.stripeNetworkProviderName" = "%1$@ - %2$@";
 
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
 "wallet.submittedTransactionDescription" = "트랜잭션이 네트워크로 전송되어 확인을 기다리고 있습니다.";

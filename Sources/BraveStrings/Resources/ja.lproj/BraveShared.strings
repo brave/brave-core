@@ -145,9 +145,6 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "ブックマーク情報";
 
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
-"BookmarkMultipleCount" = "ブックマーク%d件";
-
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "ブックマーク";
 
@@ -159,9 +156,6 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "ブックマークをインポート";
-
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
-"BookmarkSingleCount" = "ブックマーク%d件";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "ブックマーク";
@@ -514,6 +508,9 @@
 /* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "アプリのサイズ情報をクリップボードにコピーします。";
 
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "クリーンリンクをコピー";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "画像をコピー";
 
@@ -626,10 +623,10 @@
 "defaultBrowserCallout.introTertiaryText" = "アプリ設定画面で、「デフォルトのブラウザApp」をタップし、Braveを選択してください。";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "iOS %@ に最適化されています。Braveを今すぐデフォルトブラウザにしましょう。";
+"defaultBrowserCallout.notificationBody" = "Brave をデフォルト ブラウザに設定する";
 
 /* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Braveブラウザ";
+"defaultBrowserCallout.notificationTitle" = "Braveですべてのリンクを保護しましょう";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "デフォルトブラウザの設定メッセージを閉じる";
@@ -807,9 +804,6 @@
 
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "カスタムフィルターリストでは安全な (https) URLのみが許可されます";
-
-/* A title on the content filtering screen that allows you to enable/disable filter lists */
-"FilterLists" = "フィルターリスト";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
 "FilterListsAdd" = "追加する";
@@ -993,9 +987,6 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "フィルター";
-
-/* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "デバイスをシンクチェーンに追加したり、パスワードシンクを切り替えたりするには、まず端末にパスコードを設定する必要があります。";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
@@ -1459,6 +1450,9 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "その他の設定";
 
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "続ける";
+
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "匿名化されたP3A情報は、Braveが全体的な使用状況を推定し、よく使われている機能を改善するために役立ちます。";
 
@@ -1474,9 +1468,6 @@
 /* Title for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesTitle" = "ウェブサイトが追加されていません";
 
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "ページのズーム";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "その他すべてのウェブサイト";
 
@@ -1490,7 +1481,7 @@
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "特定ページの設定";
 
 /* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "ページのズーム設定";
+"pagezoom.settings.title" = "ページのズーム";
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "ページのズーム";
@@ -1833,9 +1824,6 @@
 
 /* The title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionTitle" = "このプレイリストに動画を追加";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "後で再生する";
 
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "%lld件のアイテムを移動するプレイリストを選択";
@@ -2224,8 +2212,8 @@
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Braveの開発者に、こちらのサイトが正常に動作しないことをご共有いただけませんか:";
 
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "注意:このアドレスは、Braveのバージョンとお客様のIPアドレス（保存されません）とともに送信されます。";
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "注: Braveサーバーに送信されるレポートには、サイトのアドレス、Braveのバージョン番号、シールド設定、VPNステータス、言語設定が含まれます。";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "送信";
@@ -2542,9 +2530,6 @@
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "%@ 検索";
 
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "既定の検索エンジン";
-
 /* Search engines section of settings */
 "SearchEngines" = "検索エンジン";
 
@@ -2650,8 +2635,20 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "メディア";
 
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "スクリーンタイムを有効化";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "どのウェブサイトで最も時間を消費したかを確認し、閲覧制限を設定しましょう。[詳細はこちら](%@)";
+
 /* Title for the quality settings view */
 "settings.qualitySettings" = "品質設定";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "この匿名かつプライベートなPingにより、Braveはアクティブユーザーを推定することができます。";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "毎日の使用状況のpingをBraveに自動送信する";
 
 /* Header for the Youtube settings section */
 "settings.youtube" = "YouTube";
@@ -2950,6 +2947,27 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。";
 
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "同期チェーンでのデバイス取得中に問題が発生しました。";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "同期チェーン内のデバイス";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "注意: 上記のリストにある各デバイスを確認してください。同期チェーン内のデバイスは、パスワードや閲覧履歴などの個人データを受け取る可能性があります。";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "デバイスの確認";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "同期チェーンで許可されるデバイスの最大数に達しました。デバイスを削除して続行してください。";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "デバイス制限";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "デバイスをシンクチェーンに追加したり、パスワードシンクを切り替えたりするには、まず端末にパスコードを設定する必要があります。";
+
 /* The title displayed in alert when a user needs to set passcode */
 "sync.syncSetPasscodeAlertTitle" = "パスコードを設定する";
 
@@ -3036,15 +3054,6 @@
 
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "Syncの接続エラー";
-
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "この操作を行うと、パスワードを含むBraveのデータが、このQRコードを生成したデバイスと共有されます。このQRコードがあなたの所有するデバイスによって生成されたものであることを再確認してください。続行してよろしいですか？";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "この操作を行うと、パスワードを含むBraveのデータが、これらのコード単語を生成したデバイスと共有されます。これらのコード単語があなたの所有するデバイスによって生成されたものであることを再確認してください。続行してよろしいですか？";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "警告";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";
@@ -3703,6 +3712,12 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "エラー";
 
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN設定をリセットしました。";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "完了";
+
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "復元";
 
@@ -3793,6 +3808,9 @@
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPNはBraveブラウザ以外でも有効です";
 
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "更新";
+
 /* Pop up description for billing issue of subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverDescription" = "心配はいりません。お支払い情報を更新いただくまでの間、数日間にわたりVPNを引き続きご利用いただけます。";
 
@@ -3807,6 +3825,9 @@
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "お支払い情報を更新";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "お支払い方法を更新";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "バックグラウンドでもBraveはあなたを保護します";
@@ -3855,6 +3876,9 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "定期購読(年払い)";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "お支払い方法を更新してください";
 
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "年払いを選択すると%@お得です";

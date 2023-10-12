@@ -10,9 +10,6 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "CloseTabTitle" = "關閉分頁";
 
-/* The title for the button that lets you copy the url from the location bar. */
-"CopyAddressTitle" = "複製網址";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "前進";
 

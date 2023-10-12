@@ -145,9 +145,6 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "書籤資訊";
 
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 10 bookmarks */
-"BookmarkMultipleCount" = "%d 書籤";
-
 /* Title for root level bookmarks cell */
 "BookmarkRootLevelCellTitle" = "書籤";
 
@@ -159,9 +156,6 @@
 
 /* Action to import bookmarks from a file. */
 "bookmarksImportAction" = "匯入書籤";
-
-/* Title for a single bookmark (Do not localize %d, it is a placeholder for a number. IE: 1 bookmark) */
-"BookmarkSingleCount" = "%d 書籤";
 
 /* Title for bookmarks menu item */
 "BookmarksMenuItem" = "書籤";
@@ -514,6 +508,9 @@
 /* Copy app info to clipboard action sheet action. */
 "copyAppSizeInfoToClipboard" = "將應用程式大小資訊複製到剪貼簿。";
 
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "複製清除連結";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "複製圖片";
 
@@ -626,10 +623,10 @@
 "defaultBrowserCallout.introTertiaryText" = "開啟「設定」，點選「預設瀏覽器應用程序」，然後選取「Brave」。";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "已針對 iOS %@ 最佳化。立即將 Brave 設為預設瀏覽器。";
+"defaultBrowserCallout.notificationBody" = "將 Brave 設為預設瀏覽器";
 
 /* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Brave 網頁瀏覽器";
+"defaultBrowserCallout.notificationTitle" = "每次點選連結都能獲得 Brave 保護";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "關閉預設瀏覽器標註";
@@ -807,9 +804,6 @@
 
 /* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
 "FilterListAddOnlyHTTPSAllowedError" = "自訂篩選清單只允許使用安全的 (https) 網址";
-
-/* A title on the content filtering screen that allows you to enable/disable filter lists */
-"FilterLists" = "篩選清單";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
 "FilterListsAdd" = "新增";
@@ -993,9 +987,6 @@
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "篩選";
-
-/* The message displayed in alert when a user needs to set a passcode */
-"login.syncSetPasscodeAlertDescription" = "若要將裝置新增至同步鏈或開啟密碼同步功能，您必須先在裝置上設定密碼。";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "上次修改的時間：%@";
@@ -1459,6 +1450,9 @@
 /* Section name for other settings. */
 "OtherSettingsSection" = "其他設定";
 
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "繼續";
+
 /* A subtitle shown on the setting that toggles analytics on Brave. */
 "p3a.settingSubtitle" = "匿名的 P3A 資訊可協助 Brave 預估整體使用量，並確保我們改進受歡迎的功能。";
 
@@ -1474,9 +1468,6 @@
 /* Title for the empty Web-Page zoom view */
 "pagezoom.settings.emptyWebsitesTitle" = "未新增任何網站";
 
-/* Title of the Web-Page Zoom settings menu */
-"pagezoom.settings.menu-title" = "頁面縮放";
-
 /* Title for the section for the Web-Page zoom level of other websites */
 "pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "其他所有網站";
 
@@ -1490,7 +1481,7 @@
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "特定頁面設定";
 
 /* Title of the Web-Page Zoom screen */
-"pagezoom.settings.title" = "頁面縮放設定";
+"pagezoom.settings.title" = "頁面縮放";
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "頁面縮放";
@@ -1833,9 +1824,6 @@
 
 /* The title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionTitle" = "將影片新增至此播放清單";
-
-/* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "稍後播放";
 
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "選取要將 %lld 個項目移至其中的播放清單";
@@ -2224,8 +2212,8 @@
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "讓 Brave 的開發人員知悉此網站無法在 Shields 中正常運作：";
 
-/* No comment provided by engineer. */
-"ReportBrokenSiteBody2" = "注意：此網址將與您的 Brave 版本號碼和 IP 位址一併提交 (不會留存記錄)。";
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "注意：傳送至 Brave 伺服器的報告會包括網址、Brave 版本號碼、Shields 設定、VPN 狀態和語言設定。";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "提交";
@@ -2246,7 +2234,7 @@
 "RestoreTabOnCrashAlertMessage" = "很抱歉，Brave 當機或未正確關閉。\n要還原分頁嗎？";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave 意外結束。";
+"RestoreTabOnCrashAlertTitle" = "Brave 意外關閉。";
 
 /* Body for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "有了 Brave Rewards，您可以查看來自 Brave Ads 網路的隱私保護廣告。無須追蹤器，無須減速，且您的資料也能絕對安全。";
@@ -2542,9 +2530,6 @@
 /* Label for search engine buttons. The argument corresponds to the name of the search engine. */
 "SearchEngineFormatText" = "%@ 搜尋";
 
-/* Title for default search engine picker. */
-"SearchEnginePickerNavTitle" = "預設搜尋引擎";
-
 /* Search engines section of settings */
 "SearchEngines" = "搜尋引擎";
 
@@ -2650,8 +2635,20 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "媒體";
 
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "啟用螢幕使用時間";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "查看您在哪些網站上花最多時間，並設定瀏覽限制。[深入瞭解](%@)";
+
 /* Title for the quality settings view */
 "settings.qualitySettings" = "品質設定";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "這種匿名且私人的 ping 讓 Brave 可以估計活躍使用者。";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";
 
 /* Header for the Youtube settings section */
 "settings.youtube" = "YouTube";
@@ -2950,6 +2947,27 @@
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "一旦刪除即永久刪除，資料將無法復原。如果您決定再次使用 Sync，您將需要建立新帳戶，並逐一重新新增每部裝置。";
 
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.syncDeviceFetchErrorAlertDescription" = "擷取同步鏈中的裝置時發生錯誤。";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.syncDevicesInSyncChainTitle" = "同步鏈中的裝置";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.syncJoinChainCodewordsWarning" = "注意：您應確認您認得上方清單中的每個裝置。同步鏈中的裝置可能會收到個人資料，如密碼和瀏覽記錄。";
+
+/* Title for alert error for device confirmation */
+"sync.syncJoinChainWarningTitle" = "裝置確認";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorDescription" = "您已達同步鏈中允許的裝置數量上限 (10 個)。請移除裝置以繼續操作。";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.syncMaximumDeviceReachedErrorTitle" = "裝置上限";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.syncSetPasscodeAlertDescription" = "若要將裝置新增至同步鏈或開啟密碼同步功能，您必須先在裝置上設定密碼。";
+
 /* The title displayed in alert when a user needs to set passcode */
 "sync.syncSetPasscodeAlertTitle" = "設定密碼";
 
@@ -3036,15 +3054,6 @@
 
 /* Title for sync initialization error alert */
 "SyncInitErrorTitle" = "同步通訊錯誤";
-
-/* Default name for a device */
-"syncJoinChainCameraWarning" = "這樣會與產生此 QR 碼的裝置分享您的 Brave 資料，可能包括您的密碼。請再次確認此 QR 碼是由您所擁有的裝置產生。您確定要這麼做嗎？";
-
-/* Default name for a device */
-"syncJoinChainCodewordsWarning" = "這樣會與產生這些代碼詞的裝置分享您的 Brave 資料，可能包括您的密碼。請再次確認這些代碼詞是由您所擁有的裝置產生。您確定要這麼做嗎？";
-
-/* Title for pairing sync device */
-"syncJoinChainWarningTitle" = "警告";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "請檢查您的網絡連接並重試。";
@@ -3703,6 +3712,12 @@
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "錯誤";
 
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "已成功重設 VPN 設定。";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "成功";
+
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "還原";
 
@@ -3793,6 +3808,9 @@
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
 "vpn.subscribeVPNProtectionPopOverTitle" = "您知道 Brave VPN 在 Brave 瀏覽器外也可以保護您嗎？";
 
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "更新";
+
 /* Pop up description for billing issue of subcription VPN already expired */
 "vpn.updateBillingExpiredPopOverDescription" = "別擔心。我們會在您更新付款資訊時的幾天，讓 VPN 保持啟用。";
 
@@ -3807,6 +3825,9 @@
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "更新付款資訊";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "更新付款方式";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationBody" = "即使在背景運作，Brave 也會繼續為您提供防護。";
@@ -3855,6 +3876,9 @@
 
 /* Name of annual subscription in VPN Settings */
 "vpn.vpnSettingsYearlySubName" = "按年訂閱";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "請更新您的付款方式";
 
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "每年自動續約，立即省下 %@";

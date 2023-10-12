@@ -226,6 +226,9 @@
 /* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
 "wallet.chartAxisPriceLabel" = "Preis";
 
+/* The description of one of the 'Coinbase Pay' provider. */
+"wallet.coinbaseNetworkProviderDescription" = "Kaufen Sie mit dem vertrauenswürdigsten Namen in der Kryptowährungswelt ein.";
+
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "Preisdaten bereitgestellt von CoinGecko";
 
@@ -814,6 +817,9 @@
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "Unzureichende Liquidität";
 
+/* The title of a button that Deselects all visible options. */
+"wallet.internalErrorMessage" = "Es ist ein interner Fehler aufgetreten";
+
 /* A title will displayed in the IPFS error page when IPFS is disabled. */
 "wallet.ipfsErrorTitle" = "Website nicht erreichbar";
 
@@ -1249,6 +1255,9 @@
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "Die Domain hat keine verknüpfte %@-Adresse";
 
+/* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
+"wallet.sendErrorInvalidRecipientAddress" = "Ungültige Empfängeradresse";
+
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "Adresse eingeben";
 
@@ -1557,6 +1566,12 @@
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Sortieren Sie Vermögenswerte";
+
+/* The description of one of the 'Stripe' provider. */
+"wallet.stripeNetworkProviderDescription" = "Bezahlen Sie per Kreditkarte, Lastschrift oder Bankkonto.";
+
+/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
+"wallet.stripeNetworkProviderName" = "%1$@ von %2$@";
 
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
 "wallet.submittedTransactionDescription" = "Die Transaktion wurde erfolgreich an das Netzwerk gesendet und muss nun bestätigt werden.";
