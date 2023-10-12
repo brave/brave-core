@@ -2319,11 +2319,11 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
   // Address on the OFAC SDN list should fail.
   auto* registry = BlockchainRegistry::GetInstance();
   registry->UpdateOfacAddressesList(
-      {"0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a"});
+      {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
   run_loop = std::make_unique<base::RunLoop>();
   eth_tx_manager()->MakeERC721TransferFromData(
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "0xf",
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf",
       contract_safe_transfer_from,
       base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), false,
                      mojom::TransactionType::Other));
