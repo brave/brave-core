@@ -53,8 +53,6 @@ base::Value::Dict GetConfirmationsAsDictionary(
 
     dict.Set("created_at", base::TimeToValue(confirmation.created_at));
 
-    dict.Set("created", confirmation.was_created);
-
     if (confirmation.reward) {
       // Token
       const absl::optional<std::string> token_base64 =
@@ -328,9 +326,6 @@ bool ConfirmationStateManager::GetConfirmationsFromDictionary(
       BLOG(0, "Missing confirmation created at");
       continue;
     }
-
-    // Was created
-    confirmation.was_created = item_dict->FindBool("created").value_or(true);
 
     // User data
     if (const auto* const value = item_dict->FindDict("user_data")) {

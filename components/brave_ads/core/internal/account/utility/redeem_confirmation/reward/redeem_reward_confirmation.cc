@@ -77,11 +77,7 @@ void RedeemRewardConfirmation::Redeem(
         confirmation, /*should_retry=*/true);
   }
 
-  if (!confirmation.was_created) {
-    return CreateConfirmation(std::move(redeem_confirmation), confirmation);
-  }
-
-  FetchPaymentToken(std::move(redeem_confirmation), confirmation);
+  CreateConfirmation(std::move(redeem_confirmation), confirmation);
 }
 
 // static
@@ -110,10 +106,7 @@ void RedeemRewardConfirmation::CreateConfirmationCallback(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  ConfirmationInfo mutable_confirmation(confirmation);
-  mutable_confirmation.was_created = true;
-
-  FetchPaymentToken(std::move(redeem_confirmation), mutable_confirmation);
+  FetchPaymentToken(std::move(redeem_confirmation), confirmation);
 }
 
 // static
@@ -144,11 +137,8 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   if (url_response.status_code == net::HTTP_NOT_FOUND) {
     BLOG(1, "Confirmation not found");
 
-    ConfirmationInfo mutable_confirmation(confirmation);
-    mutable_confirmation.was_created = false;
-
     return redeem_confirmation.FailedToRedeemConfirmation(
-        mutable_confirmation, /*should_retry=*/true);
+        confirmation, /*should_retry=*/true);
   }
 
   if (url_response.status_code == net::HTTP_BAD_REQUEST) {
