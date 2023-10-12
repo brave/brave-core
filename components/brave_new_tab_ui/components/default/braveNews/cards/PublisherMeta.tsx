@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '../../../../../common/locale'
-import { Publisher } from '../../../../api/brave_news'
+import { Publisher } from '../../../../../brave_news/browser/resources/shared/api'
 import { OnSetPublisherPref } from '../'
 
 type Props = {

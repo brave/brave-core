@@ -5,7 +5,7 @@
 import { HeroArticle as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
-import { useLazyUnpaddedImageUrl } from '../../../../brave_new_tab_ui/components/default/braveNews/useUnpaddedImageUrl';
+import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { openArticle } from './Article';
 import ArticleMetaRow from './ArticleMetaRow';
 import Card, { Title } from './Card';
@@ -33,6 +33,8 @@ export default function HeroArticle({ info }: Props) {
   return <Card onClick={() => openArticle(info.data)} ref={setElementRef}>
     <HeroImage src={url} />
     <ArticleMetaRow article={info.data} />
-    <Title>{info.data.title}</Title>
+    <Title>
+      <a href={info.data.url.url}>{info.data.title}</a>
+    </Title>
   </Card>
 }

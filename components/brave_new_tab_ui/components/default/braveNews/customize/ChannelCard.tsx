@@ -5,10 +5,10 @@
 
 import styled from 'styled-components'
 import * as React from 'react'
-import Flex from '../../../Flex'
+import Flex from '$web-common/Flex'
 import FollowButton from './FollowButton'
 import { useChannelSubscribed } from './Context'
-import { channelIcons } from './Icons'
+import { channelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
 import { getLocale } from '$web-common/locale'
 
 export const getTranslatedChannelName = (channelName: string) => {

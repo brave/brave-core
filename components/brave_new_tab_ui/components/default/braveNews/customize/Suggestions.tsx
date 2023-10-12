@@ -5,7 +5,7 @@
 
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
-import Flex from '../../../Flex'
+import Flex from '$web-common/Flex'
 import Carousel from './Carousel'
 import { useBraveNews } from './Context'
 import CustomizeLink from './CustomizeLink'

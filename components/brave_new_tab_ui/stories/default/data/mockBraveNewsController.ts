@@ -2,8 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import * as BraveNews from '../../../api/brave_news'
-import { BraveNewsControllerRemote } from '../../../api/brave_news'
+import * as BraveNews from '../../../../brave_news/browser/resources/shared/api'
+import { BraveNewsControllerRemote } from '../../../../brave_news/browser/resources/shared/api'
 
 // Generate feed page from real data in devtools:
 // let pids = [

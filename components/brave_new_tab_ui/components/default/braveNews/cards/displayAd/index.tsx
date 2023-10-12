@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { DisplayAd } from '../../../../../api/brave_news'
+import { DisplayAd } from '../../../../../../brave_news/browser/resources/shared/api'
 import VisibilityTimer from '../../../../../helpers/visibilityTimer'
 import { getLocale } from '../../../../../../common/locale'
 import * as Card from '../../cardSizes'

@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { FeedItem, FeedItemMetadata } from '../../../../api/brave_news'
+import { FeedItem, FeedItemMetadata } from '../../../../../brave_news/browser/resources/shared/api'
 import * as Card from '../cardSizes'
 import { CardImageFromFeedItem } from './CardImage'
 import useScrollIntoView from '../useScrollIntoView'

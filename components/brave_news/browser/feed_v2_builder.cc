@@ -381,7 +381,8 @@ FeedV2Builder::FeedV2Builder(
 
 FeedV2Builder::~FeedV2Builder() = default;
 
-void FeedV2Builder::Build(BuildFeedCallback callback) {
+void FeedV2Builder::Build(bool recalculate_signals,
+                          BuildFeedCallback callback) {
   pending_callbacks_.push_back(std::move(callback));
 
   if (is_building_) {
@@ -391,7 +392,12 @@ void FeedV2Builder::Build(BuildFeedCallback callback) {
   is_building_ = true;
 
   if (raw_feed_items_.size()) {
-    BuildFeedFromArticles();
+    if (recalculate_signals) {
+      signals_.clear();
+      CalculateSignals();
+    } else {
+      BuildFeedFromArticles();
+    }
     return;
   }
 
@@ -410,10 +416,10 @@ void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
       },
       this, std::move(callback));
   if (signals_.empty()) {
-    Build(std::move(cb));
-    return;
+    Build(/*recalculate_signals=*/true, std::move(cb));
+  } else {
+    std::move(cb).Run(/*feed=*/nullptr);
   }
-  std::move(cb).Run(/* feed */ nullptr);
 }
 
 void FeedV2Builder::FetchFeed() {

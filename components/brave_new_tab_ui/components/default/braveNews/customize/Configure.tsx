@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Flex from '../../../Flex'
+import Flex from '$web-common/Flex'
 import Discover from './Discover'
-import { BackArrow } from './Icons'
+import { BackArrow } from '../../../../../brave_news/browser/resources/shared/Icons'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Toggle from '@brave/leo/react/toggle'

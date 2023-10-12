@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import getBraveNewsController from '../../../api/brave_news'
+import getBraveNewsController from '../../../../brave_news/browser/resources/shared/api'
 import { useVisible, VisibleOptions } from '$web-common/useVisible'
 
 interface Options {

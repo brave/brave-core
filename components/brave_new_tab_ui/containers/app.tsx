@@ -14,7 +14,7 @@ import NewTabPage from './newTab'
 
 // Utils
 import * as PreferencesAPI from '../api/preferences'
-import getBraveNewsController from '../api/brave_news'
+import getBraveNewsController from '../../brave_news/browser/resources/shared/api'
 import getNTPBrowserAPI from '../api/background'
 import { getActionsForDispatch } from '../api/getActions'
 

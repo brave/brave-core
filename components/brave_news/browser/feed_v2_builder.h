@@ -40,7 +40,7 @@ class FeedV2Builder {
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
   ~FeedV2Builder();
 
-  void Build(BuildFeedCallback callback);
+  void Build(bool recalculate_signals, BuildFeedCallback callback);
   void GetSignals(GetSignalsCallback callback);
 
  private:

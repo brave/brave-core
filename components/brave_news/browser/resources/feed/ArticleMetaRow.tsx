@@ -4,22 +4,25 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { color, font, spacing } from "@brave/leo/tokens/css"
-import { FeedItemMetadata, UserEnabled } from "../../../../brave_new_tab_ui/api/brave_news"
-import { channelIcons } from "../../../../brave_new_tab_ui/components/default/braveNews/customize/Icons"
+import { FeedItemMetadata, UserEnabled } from "../shared/api"
+import { channelIcons } from "../shared/Icons"
 import styled from "styled-components";
 import * as React from "react";
-import Flex from "../../../../brave_new_tab_ui/components/Flex";
+import Flex from '$web-common/Flex'
 import ButtonMenu from "@brave/leo/react/buttonMenu";
 import Button from "@brave/leo/react/button";
 import Icon from "@brave/leo/react/icon";
 import { api } from "../context";
 
 const MenuButton = styled(Button)`
-  flex-grow: 0;
   --leo-button-padding: ${spacing.s};
+
+  flex-grow: 0;
 `
 
 export const MetaInfoContainer = styled.h4`
+  --leo-icon-size: 12px;
+
   margin: 0;
 
   font: ${font.primary.xSmall.regular};
@@ -30,8 +33,6 @@ export const MetaInfoContainer = styled.h4`
   display: flex;
   align-items: center;
   gap: ${spacing.s};
-
-  --leo-icon-size: 12px;
 `
 
 export const getOrigin = (article: FeedItemMetadata) => {
@@ -40,7 +41,6 @@ export const getOrigin = (article: FeedItemMetadata) => {
 }
 
 export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boolean }) {
-
   const maybeChannel = !props.hideChannel && <>
     • {channelIcons[props.article.categoryName] ?? channelIcons.default} {props.article.categoryName}
   </>
@@ -54,17 +54,12 @@ export default function ArticleMetaRow(props: { article: FeedItemMetadata, hideC
     <MetaInfo {...props} />
 
     <ButtonMenu>
-      <MenuButton slot='anchor-content' kind='plain-faint' onClick={e => {
-        e.preventDefault()
-        e.stopPropagation()
-      }}>
+      <MenuButton slot='anchor-content' kind='plain-faint'>
         <Icon name='more-horizontal' />
       </MenuButton>
       <leo-menu-item onClick={e => {
-        e.preventDefault()
-        e.stopPropagation()
-
         api.setPublisherPref(props.article.publisherId, UserEnabled.DISABLED)
+        e.stopPropagation()
       }}>Hide content from {getOrigin(props.article)}</leo-menu-item>
     </ButtonMenu>
   </Flex>

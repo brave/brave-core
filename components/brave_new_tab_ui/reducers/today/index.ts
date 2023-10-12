@@ -5,7 +5,7 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../../actions/today_actions'
-import * as BraveNews from '../../api/brave_news'
+import * as BraveNews from '../../../brave_news/browser/resources/shared/api'
 
 export type BraveNewsState = {
   // Are we in the middle of checking for new data
