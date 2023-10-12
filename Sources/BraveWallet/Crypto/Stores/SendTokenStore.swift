@@ -232,7 +232,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       decimalPoint = Int(selectedSendToken?.decimals ?? 18)
       rounded = false
     }
-    sendAmount = ((selectedSendTokenBalance ?? 0) * amount.rawValue).decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded)
+    sendAmount = ((selectedSendTokenBalance ?? 0) * amount.rawValue).decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded).trimmingTrailingZeros
   }
   
   func didSelect(account: BraveWallet.AccountInfo, token: BraveWallet.BlockchainToken) {
