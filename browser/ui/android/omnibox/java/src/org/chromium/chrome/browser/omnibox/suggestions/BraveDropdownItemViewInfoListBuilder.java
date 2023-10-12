@@ -62,8 +62,12 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         mUrlBarEditingTextProvider = textProvider;
         super.initDefaultProcessors(context, host, textProvider);
         if (host instanceof BraveSuggestionHost) {
-            mBraveSearchBannerProcessor = new BraveSearchBannerProcessor(
-                    context, (BraveSuggestionHost) host, textProvider, mAutocompleteDelegate);
+            mBraveSearchBannerProcessor =
+                    new BraveSearchBannerProcessor(
+                            context,
+                            (BraveSuggestionHost) host,
+                            textProvider,
+                            mAutocompleteDelegate);
         }
     }
 

@@ -222,7 +222,8 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BRAVE_REWARDS_SETTINGS_MONTHLY_URL = "brave://rewards/#monthly";
     public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
     public static final String BRAVE_AI_CHAT_URL = "chrome-untrusted://chat";
-    public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
+    public static final String REWARDS_LEARN_MORE_URL =
+            "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";
     public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/browser/#rewards";
@@ -1512,13 +1513,13 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private boolean isNoRestoreState() {
-        return SharedPreferencesManager.getInstance().readBoolean(
-                BravePreferenceKeys.BRAVE_CLOSE_TABS_ON_EXIT, false);
+        return SharedPreferencesManager.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_CLOSE_TABS_ON_EXIT, false);
     }
 
     private boolean isClearBrowsingDataOnExit() {
-        return SharedPreferencesManager.getInstance().readBoolean(
-                BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false);
+        return SharedPreferencesManager.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false);
     }
 
     public void onRewardsPanelDismiss() {
@@ -1720,7 +1721,8 @@ public abstract class BraveActivity extends ChromeActivity
     private void showCrossPromotionalDialog() {
         CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment =
                 new CrossPromotionalModalDialogFragment();
-        mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
+        mCrossPromotionalModalDialogFragment.show(
+                getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
     }
 
     public void showDormantUsersEngagementDialog(String notificationType) {
@@ -2120,7 +2122,12 @@ public abstract class BraveActivity extends ChromeActivity
             }
         }
         // Call ChromeTabbedActivity's version.
-        return (boolean) BraveReflectionUtil.InvokeMethod(
-                ChromeTabbedActivity.class, this, "maybeHandleUrlIntent", Intent.class, intent);
+        return (boolean)
+                BraveReflectionUtil.InvokeMethod(
+                        ChromeTabbedActivity.class,
+                        this,
+                        "maybeHandleUrlIntent",
+                        Intent.class,
+                        intent);
     }
 }

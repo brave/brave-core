@@ -18,8 +18,11 @@ public class BraveStrictPreferenceKeyChecker extends StrictPreferenceKeyChecker 
     @Override
     public void checkIsKeyInUse(String key) {
         if (!isKeyInUse(key) && !BravePreferenceKeys.isBraveKeyInUse(key)) {
-            Log.e(TAG,
-                    "Key " + key + " is not registered for Brave's use. Either add it to"
+            Log.e(
+                    TAG,
+                    "Key "
+                            + key
+                            + " is not registered for Brave's use. Either add it to"
                             + " BravePreferenceKeys or remove it if it's not used.");
         }
     }

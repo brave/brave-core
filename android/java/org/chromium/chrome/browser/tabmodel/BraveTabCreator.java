@@ -29,14 +29,25 @@ import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveTabCreator extends ChromeTabCreator {
-    public BraveTabCreator(Activity activity, WindowAndroid nativeWindow,
-            Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito,
-            OverviewNTPCreator overviewNTPCreator, AsyncTabParamsManager asyncTabParamsManager,
+    public BraveTabCreator(
+            Activity activity,
+            WindowAndroid nativeWindow,
+            Supplier<TabDelegateFactory> tabDelegateFactory,
+            boolean incognito,
+            OverviewNTPCreator overviewNTPCreator,
+            AsyncTabParamsManager asyncTabParamsManager,
             Supplier<TabModelSelector> tabModelSelectorSupplier,
             Supplier<CompositorViewHolder> compositorViewHolderSupplier,
             @Nullable DseNewTabUrlManager dseNewTabUrlManager) {
-        super(activity, nativeWindow, tabDelegateFactory, incognito, overviewNTPCreator,
-                asyncTabParamsManager, tabModelSelectorSupplier, compositorViewHolderSupplier,
+        super(
+                activity,
+                nativeWindow,
+                tabDelegateFactory,
+                incognito,
+                overviewNTPCreator,
+                asyncTabParamsManager,
+                tabModelSelectorSupplier,
+                compositorViewHolderSupplier,
                 dseNewTabUrlManager);
     }
 
