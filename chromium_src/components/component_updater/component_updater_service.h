@@ -24,5 +24,7 @@ class BraveComponentUpdaterAndroid;
                                                             \
  public:
 #include "src/components/component_updater/component_updater_service.h"  // IWYU pragma: export
+#undef BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER
+#undef BRAVE_COMPONENT_UPDATER_SERVICE_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_

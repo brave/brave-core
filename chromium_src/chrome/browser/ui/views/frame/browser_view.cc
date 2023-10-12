@@ -31,14 +31,14 @@
 
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"
 
-#undef SidePanelCoordintor
-#undef ToolbarView
-#undef BrowserTabStripController
-#undef TabStrip
-#undef BrowserViewLayout
-#undef SidePanel
+#undef SidePanelCoordinator
 #undef kAlignLeft
 #undef kAlignRight
+#undef SidePanel
+#undef TabStrip
+#undef BrowserTabStripController
+#undef ToolbarView
+#undef BrowserViewLayout
 #undef InfoBarContainerView
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {

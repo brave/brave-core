@@ -77,7 +77,7 @@ class SequentialUpdateChecker : public UpdateChecker {
                         const std::string& key);
 #endif
 
-  base::ThreadChecker thread_checker_;
+  THREAD_CHECKER(thread_checker_);
 
   const scoped_refptr<Configurator> config_;
   const raw_ptr<PersistedData> metadata_ = nullptr;

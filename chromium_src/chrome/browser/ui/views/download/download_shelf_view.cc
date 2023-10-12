@@ -7,4 +7,4 @@
 
 #define DownloadItemView BraveDownloadItemView
 #include "src/chrome/browser/ui/views/download/download_shelf_view.cc"
-#undef DownloadItemViewView
+#undef DownloadItemView

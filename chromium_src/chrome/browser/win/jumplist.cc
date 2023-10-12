@@ -12,3 +12,4 @@
 #include "src/chrome/browser/win/jumplist.cc"
 #undef IDS_NEW_INCOGNITO_WINDOW
 #define IDS_NEW_INCOGNITO_WINDOW IDS_NEW_INCOGNITO_WINDOW_OLD
+#undef IDS_NEW_INCOGNITO_WINDOW_OLD

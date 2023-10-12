@@ -1,0 +1,128 @@
+{
+    // Files matching these regular expressions will be excluded.
+    // Please, keep in alphabetical order.
+    "re_excludes": [
+        ".*\\.cfg",
+        ".*\\.clangd",
+        ".*\\.gn",
+        ".*\\.gni",
+        ".*\\.idl",
+        ".*\\.in",
+        ".*\\.info",
+        ".*\\.json5",
+        ".*\\.mojom",
+        ".*\\.pdl",
+        ".*\\.py",
+        ".*\\.xml",
+        "(.*/)?DEPS",
+        "python_modules/.*",
+    ],
+
+    // Files matching these exact paths will be excluded.
+    // Please, keep in alphabetical order.
+    "path_excludes": [
+        "base/feature_override.h",
+        "chrome/browser/devtools/url_constants_unittest.cc",
+        "chrome/browser/history/history_utils_unittest.cc",
+        "chrome/browser/notifications/notification_handler_impl.h",
+        "chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc",
+        "chrome/browser/shell_integration_unittest_mac.cc",
+        "chrome/browser/signin/account_consistency_disabled_unittest.cc",
+        "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc",
+        "chrome/common/chrome_constants_unittest_mac.cc",
+        "chrome/installer/mini_installer/brave_mini_installer_unittest.cc",
+        "chrome/installer/setup/brave_behaviors.cc",
+        "chrome/install_static/brave_install_details_unittest.cc",
+        "chrome/install_static/brave_install_modes_unittest.cc",
+        "chrome/install_static/brave_install_util_unittest.cc",
+        "chrome/install_static/brave_product_install_details_unittest.cc",
+        "chrome/install_static/brave_restore_google_update_integration.h",
+        "chrome/install_static/brave_stash_google_update_integration.h",
+        "chrome/install_static/brave_user_data_dir_win_unittest.cc",
+        "components/history/core/browser/sync/brave_typed_url_sync_bridge_unittest.cc",
+        "components/history/core/browser/sync/chromium_typed_url_sync_bridge_unittest.cc",
+        "components/privacy_sandbox/privacy_sandbox_settings_unittest.cc",
+        "components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
+        "components/search_engines/brave_template_url_service_util_unittest.cc",
+        "components/variations/service/field_trial_unittest.cc",
+        "net/base/brave_proxy_string_util_unittest.cc",
+        "net/cookies/brave_canonical_cookie_unittest.cc",
+        "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h",
+        "v8/include/DO NOT PUT FILES HERE",
+    ],
+
+    // These symbols found in associated paths will be ignored.
+    // Please, keep paths and symbols in alphabetical order.
+    "symbol_excludes": {
+        "base/trace_event/builtin_categories.h": [
+            "BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES",
+        ],
+        "build/buildflag.h": [
+            "IF_BUILDFLAG",
+            "IF_BUILDFLAG_IMPL",
+            "IF_BUILDFLAG_IMPL_0",
+            "IF_BUILDFLAG_IMPL_1",
+            "IF_BUILDFLAG_IMPL_CAT",
+        ],
+        "chrome/browser/active_use_util.cc": [
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+        ],
+        "chrome/browser/bookmarks/android/bookmark_bridge.cc": [
+            "BraveBookmarkBridge",
+        ],
+        "chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc": [
+            "CHROME_BROWSER_WEB_APPLICATIONS_COMMANDS_CLEAR_BROWSING_DATA_COMMAND_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_UTILS_H_",
+        ],
+        "chrome/browser/chrome_content_browser_client.cc": [
+            "CHROME_BROWSER_WEB_APPLICATIONS_POLICY_WEB_APP_POLICY_MANAGER_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_REGISTRAR_H_",
+        ],
+        "chrome/browser/metrics/google_update_metrics_provider_win.cc": [
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+        ],
+        "chrome/browser/prefs/browser_prefs.cc": [
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
+        ],
+        "chrome/browser/sync/chrome_sync_client.cc": [
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_SYNC_BRIDGE_H_",
+        ],
+        "chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc": [
+            "CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_",
+            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
+        ],
+        "chrome/browser/ui/webui/favicon_source.cc": [
+            "BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_",
+            "CHROME_BROWSER_SEARCH_INSTANT_SERVICE_H_",
+            "EXTENSIONS_BROWSER_EXTENSION_REGISTRY_H_",
+            "EXTENSIONS_COMMON_CONSTANTS_H_",
+            "EXTENSIONS_COMMON_MANIFEST_H_",
+        ],
+        "chrome/install_static/install_constants.h": [
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+        ],
+        "chrome/install_static/install_util.cc": [
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+        ],
+        "chrome/installer/setup/install_worker.cc": [
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+        ],
+        "chrome/installer/setup/user_experiment.cc": [
+            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+        ],
+        "components/permissions/permission_request_data.h": [
+            "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE",
+        ],
+        "sandbox/win/src/interceptors_64.h": [
+            "TargetGetModuleFileNameExA64",
+            "TargetGetModuleFileNameExW64",
+        ],
+        "v8/src/builtins/builtins-utils.h": [
+            "BUILTIN",
+        ],
+    }
+}

@@ -90,9 +90,9 @@ const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
   // The ID suffixes should be the only thing that needs to change in this file
   // if the chromium list grows in size.
   // Generated via zsh:
-  // NOLINT > declare -i a=56
-  // NOLINT > for file in $(cat < avatarlist); do echo "{IDR_PROFILE_AVATAR_$a, \"$file\",
-  //    IDS_BRAVE_AVATAR_LABEL_$a},"; a=a+1 done | pbcopy
+  //   > declare -i a=56
+  //   > for file in $(cat < avatarlist); do echo "{IDR_PROFILE_AVATAR_$a,
+  //       \"$file\", IDS_BRAVE_AVATAR_LABEL_$a},"; a=a+1 done | pbcopy
   static constexpr IconResourceInfo
       resource_info[kBraveDefaultAvatarIconsCount] = {
         {IDR_PROFILE_AVATAR_56, "avatar_edgy_brave.png",

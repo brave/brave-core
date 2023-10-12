@@ -65,3 +65,6 @@
   IdentityTokenCacheValue::CacheValueStatus
 #include "src/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc"
 #undef CacheValueStatus
+#undef BRAVE_START_MINT_TOKEN_FLOW_ELSE
+#undef BRAVE_START_MINT_TOKEN_FLOW_IF
+#undef BRAVE_RUN

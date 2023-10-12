@@ -15,7 +15,7 @@
   VISIT_SOURCE_CHROME_IMPORTED = 4,
 
 #include "src/chrome/common/importer/importer_data_types.h"  // IWYU pragma: export
-
 #undef BRAVE_VISIT_SOURCE
+#undef BRAVE_IMPORT_ITEM
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_COMMON_IMPORTER_IMPORTER_DATA_TYPES_H_

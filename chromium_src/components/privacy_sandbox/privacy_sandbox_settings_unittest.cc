@@ -555,8 +555,7 @@ class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOn
     : public PrivacySandboxSettingsTest {
  public:
   void InitializePrefsBeforeStart() override {
-    host_content_settings_map()->SetDefaultContentSetting(
-        ContentSettingsType::COOKIES,
+    cookie_settings()->SetDefaultCookieSetting(
         ContentSetting::CONTENT_SETTING_SESSION_ONLY);
 
     prefs()->SetUserPref(prefs::kPrivacySandboxTopicsDataAccessibleSince,
