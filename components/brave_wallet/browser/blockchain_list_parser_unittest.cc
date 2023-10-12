@@ -816,7 +816,7 @@ TEST(BlockchainListParseUnitTest, ParseOfacAddressesList) {
   const std::string json = R"({
     "addresses": [
       "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78",
-      "0xe41d2489571d322189246dafa5ebde1f4699f498",
+      "0xE41D2489571D322189246DAFA5EBDE1F4699F498",
       "0x5a3e6a77ba2f983ec0d371ea3b475f8bc0811ad5",
       "0xfcdb9e987f9159dab2f507007d5e3d10c510aa70"
     ]
@@ -829,6 +829,8 @@ TEST(BlockchainListParseUnitTest, ParseOfacAddressesList) {
   EXPECT_EQ((*ofac_addresses_list).size(), 4U);
   EXPECT_EQ((*ofac_addresses_list)[0],
             "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78");
+  EXPECT_EQ((*ofac_addresses_list)[1],
+            "0xe41d2489571d322189246dafa5ebde1f4699f498");
 }
 
 }  // namespace brave_wallet

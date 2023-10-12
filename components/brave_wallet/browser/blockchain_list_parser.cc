@@ -759,7 +759,7 @@ absl::optional<std::vector<std::string>> ParseOfacAddressesList(
 
   std::vector<std::string> ofac_list;
   for (const auto& address : (*ofac_list_from_component).addresses) {
-    ofac_list.push_back(address);
+    ofac_list.push_back(base::ToLowerASCII(address));
   }
 
   return ofac_list;

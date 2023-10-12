@@ -860,6 +860,8 @@ TEST(BlockchainRegistryUnitTest, IsOfacAddress) {
   registry->UpdateOfacAddressesList(input_list);
   EXPECT_TRUE(
       registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+  EXPECT_TRUE(
+      registry->IsOfacAddress("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
   EXPECT_FALSE(registry->IsOfacAddress(""));
 }
 

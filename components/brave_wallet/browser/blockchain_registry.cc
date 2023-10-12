@@ -305,7 +305,7 @@ void BlockchainRegistry::GetCoingeckoId(const std::string& chain_id,
 }
 
 bool BlockchainRegistry::IsOfacAddress(const std::string& address) {
-  return base::Contains(ofac_addresses_, address);
+  return base::Contains(ofac_addresses_, base::ToLowerASCII(address));
 }
 
 }  // namespace brave_wallet
