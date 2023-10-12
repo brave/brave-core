@@ -103,46 +103,17 @@ class TabsBarViewController: UIViewController {
       make.right.equalTo(view).inset(UX.TabsBar.buttonWidth)
     }
 
-    var newTabMenu: [UIAction] = []
-    let isPrivateBrowsing = tabManager?.privateBrowsingManager.isPrivateBrowsing == true
-
-    if !isPrivateBrowsing {
-      let openNewPrivateTab = UIAction(
-        title: Strings.Hotkey.newPrivateTabTitle,
-        image: UIImage(systemName: "plus.square.fill.on.square.fill"),
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
-          self.delegate?.tabsBarDidSelectAddNewTab(true)
-        })
-
-      newTabMenu.append(openNewPrivateTab)
-    }
-
-    let openNewTab = UIAction(
-      title: isPrivateBrowsing ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
-      image: isPrivateBrowsing ? UIImage(systemName: "plus.square.fill.on.square.fill") : UIImage(systemName: "plus.square.on.square"),
-      handler: UIAction.deferredActionHandler { [unowned self] _ in
-        self.delegate?.tabsBarDidSelectAddNewTab(isPrivateBrowsing)
-      })
-
-    newTabMenu.append(openNewTab)
-    
-    newTabMenu.append(UIAction(title: Strings.newWindowTitle, image: UIImage(braveSystemNamed: "leo.window"), handler: UIAction.deferredActionHandler { [unowned self] _ in
-      self.delegate?.tabsBarDidSelectAddNewWindow(false)
-    }))
-        
-    newTabMenu.append(UIAction(title: Strings.newPrivateWindowTitle, image: UIImage(braveSystemNamed: "leo.window.tab-private"), handler: UIAction.deferredActionHandler { [unowned self] _ in
-      self.delegate?.tabsBarDidSelectAddNewWindow(true)
-    }))
-
+    updatePlusButtonMenu()
     updateColors()
     
-    plusButton.menu = UIMenu(title: "", identifier: nil, children: newTabMenu)
     privateModeCancellable = tabManager?.privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
       .receive(on: RunLoop.main)
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
-        self?.updateColors()
+        guard let self = self else { return }
+        self.updatePlusButtonMenu()
+        self.updateColors()
       })
   }
   
@@ -210,6 +181,41 @@ class TabsBarViewController: UIViewController {
     if longPress.state == .began {
       delegate?.tabsBarDidLongPressAddTab(self, button: plusButton)
     }
+  }
+  
+  func updatePlusButtonMenu() {
+    var newTabMenu: [UIAction] = []
+    let isPrivateBrowsing = tabManager?.privateBrowsingManager.isPrivateBrowsing == true
+    
+    let openNewTab = UIAction(
+      title: isPrivateBrowsing ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
+      image: isPrivateBrowsing ? UIImage(systemName: "plus.square.fill.on.square.fill") : UIImage(systemName: "plus.square.on.square"),
+      handler: UIAction.deferredActionHandler { [unowned self] _ in
+        self.delegate?.tabsBarDidSelectAddNewTab(isPrivateBrowsing)
+      })
+    
+    newTabMenu.append(openNewTab)
+    
+    if !isPrivateBrowsing {
+      let openNewPrivateTab = UIAction(
+        title: Strings.Hotkey.newPrivateTabTitle,
+        image: UIImage(systemName: "plus.square.fill.on.square.fill"),
+        handler: UIAction.deferredActionHandler { [unowned self] _ in
+          self.delegate?.tabsBarDidSelectAddNewTab(true)
+        })
+      
+      newTabMenu.append(openNewPrivateTab)
+    }
+    
+    newTabMenu.append(UIAction(title: Strings.newWindowTitle, image: UIImage(braveSystemNamed: "leo.window"), handler: UIAction.deferredActionHandler { [unowned self] _ in
+      self.delegate?.tabsBarDidSelectAddNewWindow(false)
+    }))
+        
+    newTabMenu.append(UIAction(title: Strings.newPrivateWindowTitle, image: UIImage(braveSystemNamed: "leo.window.tab-private"), handler: UIAction.deferredActionHandler { [unowned self] _ in
+      self.delegate?.tabsBarDidSelectAddNewWindow(true)
+    }))
+    
+    plusButton.menu = UIMenu(title: "", identifier: nil, children: newTabMenu)
   }
 
   func updateData(reloadingCollectionView: Bool = true) {
