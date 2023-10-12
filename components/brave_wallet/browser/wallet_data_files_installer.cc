@@ -188,121 +188,83 @@ void OnSanitizedOfacAddressesList(data_decoder::JsonSanitizer::Result result) {
   BlockchainRegistry::GetInstance()->UpdateOfacAddressesList(std::move(*list));
 }
 
-void HandleParseCoingeckoIdsMap(base::FilePath absolute_install_dir,
-                                const std::string& filename) {
-  const base::FilePath coingecko_ids_map_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string coingecko_ids_map_json;
-  if (!base::ReadFileToString(coingecko_ids_map_json_path,
-                              &coingecko_ids_map_json)) {
-    VLOG(1) << "Can't read coingecko ids map file: " << filename;
+void HandleJsonFileParsing(
+    base::FilePath absolute_install_dir,
+    const std::string& filename,
+    base::OnceCallback<void(base::expected<std::string, std::string>)>
+        callback) {
+  const base::FilePath json_path = absolute_install_dir.AppendASCII(filename);
+  std::string json_content;
+  if (!base::ReadFileToString(json_path, &json_content)) {
+    LOG(ERROR) << "Can't read file: " << filename;
     return;
   }
 
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(coingecko_ids_map_json),
-      base::BindOnce(&OnSanitizedCoingeckoIdsMap));
+  data_decoder::JsonSanitizer::Sanitize(std::move(json_content),
+                                        std::move(callback));
+}
+
+void HandleParseCoingeckoIdsMap(base::FilePath absolute_install_dir,
+                                const std::string& filename) {
+  HandleJsonFileParsing(absolute_install_dir, filename,
+                        base::BindOnce(&OnSanitizedCoingeckoIdsMap));
 }
 
 void HandleParseTokenList(base::FilePath absolute_install_dir,
                           const std::string& filename,
                           mojom::CoinType coin_type) {
-  const base::FilePath token_list_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string token_list_json;
-  if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
-    VLOG(1) << "Can't read token list file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(token_list_json),
-      base::BindOnce(&OnSanitizedTokenList, coin_type));
+  HandleJsonFileParsing(absolute_install_dir, filename,
+                        base::BindOnce(&OnSanitizedTokenList, coin_type));
 }
 
 void HandleParseChainList(base::FilePath absolute_install_dir,
                           const std::string& filename) {
-  const base::FilePath chain_list_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string chain_list_json;
-  if (!base::ReadFileToString(chain_list_json_path, &chain_list_json)) {
-    LOG(ERROR) << "Can't read chain list file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(std::move(chain_list_json),
-                                        base::BindOnce(&OnSanitizedChainList));
+  HandleJsonFileParsing(absolute_install_dir, filename,
+                        base::BindOnce(&OnSanitizedChainList));
 }
 
 void HandleParseDappList(base::FilePath absolute_install_dir,
                          const std::string& filename) {
-  const base::FilePath dapp_lists_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string dapp_lists_json;
-  if (!base::ReadFileToString(dapp_lists_json_path, &dapp_lists_json)) {
-    LOG(ERROR) << "Can't read dapp lists file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(std::move(dapp_lists_json),
-                                        base::BindOnce(&OnSanitizedDappLists));
+  HandleJsonFileParsing(absolute_install_dir, filename,
+                        base::BindOnce(&OnSanitizedDappLists));
 }
 
 void HandleParseRampTokenLists(base::FilePath absolute_install_dir,
                                const std::string& filename) {
-  const base::FilePath ramp_lists_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string ramp_supported_token_lists;
-  if (!base::ReadFileToString(ramp_lists_json_path,
-                              &ramp_supported_token_lists)) {
-    LOG(ERROR) << "Can't read ramp lists file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(ramp_supported_token_lists),
-      base::BindOnce(&OnSanitizedRampTokenLists));
+  HandleJsonFileParsing(absolute_install_dir, filename,
+                        base::BindOnce(&OnSanitizedRampTokenLists));
 }
 
 void HandleParseOnRampCurrenciesLists(base::FilePath absolute_install_dir,
                                       const std::string& filename) {
-  const base::FilePath on_ramp_lists_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string on_ramp_supported_currencies_lists;
-  if (!base::ReadFileToString(on_ramp_lists_json_path,
-                              &on_ramp_supported_currencies_lists)) {
-    LOG(ERROR) << "Can't read on ramp lists file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(on_ramp_supported_currencies_lists),
-      base::BindOnce(&OnSanitizedOnRampCurrenciesLists));
+  HandleJsonFileParsing(absolute_install_dir, filename,
+                        base::BindOnce(&OnSanitizedOnRampCurrenciesLists));
 }
 
 void HandleParseOfacAddressesList(base::FilePath absolute_install_dir,
                                   const std::string& filename) {
-  const base::FilePath ofac_list_json_path =
-      absolute_install_dir.AppendASCII(filename);
-  std::string ofac_list;
-  if (!base::ReadFileToString(ofac_list_json_path, &ofac_list)) {
-    LOG(ERROR) << "Can't read OFAC lists file: " << filename;
-    return;
-  }
-
-  data_decoder::JsonSanitizer::Sanitize(
-      std::move(ofac_list), base::BindOnce(&OnSanitizedOfacAddressesList));
+  HandleJsonFileParsing(absolute_install_dir, filename,
+                        base::BindOnce(&OnSanitizedOfacAddressesList));
 }
 
-void ParseCoingeckoIdsMapAndUpdateRegistry(const base::FilePath& install_dir) {
+bool ResolveAbsolutePath(const base::FilePath& input_path,
+                         base::FilePath& output_path) {
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
   // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
   // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
+  output_path = base::MakeAbsoluteFilePath(input_path);
 
-  if (absolute_install_dir.empty()) {
+  if (output_path.empty()) {
     LOG(ERROR) << "Failed to get absolute install path.";
+    return false;
+  }
+
+  return true;
+}
+
+void ParseCoingeckoIdsMapAndUpdateRegistry(const base::FilePath& install_dir) {
+  base::FilePath absolute_install_dir;
+  if (!ResolveAbsolutePath(install_dir, absolute_install_dir)) {
     return;
   }
 
@@ -310,14 +272,8 @@ void ParseCoingeckoIdsMapAndUpdateRegistry(const base::FilePath& install_dir) {
 }
 
 void ParseTokenListAndUpdateRegistry(const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
+  base::FilePath absolute_install_dir;
+  if (!ResolveAbsolutePath(install_dir, absolute_install_dir)) {
     return;
   }
 
@@ -330,14 +286,8 @@ void ParseTokenListAndUpdateRegistry(const base::FilePath& install_dir) {
 }
 
 void ParseChainListAndUpdateRegistry(const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
+  base::FilePath absolute_install_dir;
+  if (!ResolveAbsolutePath(install_dir, absolute_install_dir)) {
     return;
   }
 
@@ -345,14 +295,8 @@ void ParseChainListAndUpdateRegistry(const base::FilePath& install_dir) {
 }
 
 void ParseDappListsAndUpdateRegistry(const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
+  base::FilePath absolute_install_dir;
+  if (!ResolveAbsolutePath(install_dir, absolute_install_dir)) {
     return;
   }
 
@@ -360,14 +304,8 @@ void ParseDappListsAndUpdateRegistry(const base::FilePath& install_dir) {
 }
 
 void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
+  base::FilePath absolute_install_dir;
+  if (!ResolveAbsolutePath(install_dir, absolute_install_dir)) {
     return;
   }
 
@@ -378,14 +316,8 @@ void ParseOnRampListsAndUpdateRegistry(const base::FilePath& install_dir) {
 
 void ParseOfacAddressesListsAndUpdateRegistry(
     const base::FilePath& install_dir) {
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
+  base::FilePath absolute_install_dir;
+  if (!ResolveAbsolutePath(install_dir, absolute_install_dir)) {
     return;
   }
 
