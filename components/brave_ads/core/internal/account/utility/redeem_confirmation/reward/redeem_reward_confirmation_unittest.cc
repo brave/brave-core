@@ -61,10 +61,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
-  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation(expected_confirmation));
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation(*confirmation));
 
   EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation).Times(0);
 
@@ -118,10 +115,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
-  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation(expected_confirmation));
+  EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation(*confirmation));
 
   EXPECT_CALL(delegate_mock_, OnFailedToRedeemConfirmation).Times(0);
 
@@ -192,13 +186,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -232,13 +223,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/true));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -272,13 +260,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/true));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -360,13 +345,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -413,13 +395,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -459,13 +438,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -511,13 +487,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -564,13 +537,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -616,13 +586,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/true));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -668,13 +635,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -721,13 +685,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -771,13 +732,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -821,13 +779,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
@@ -874,13 +829,10 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
-  ConfirmationInfo expected_confirmation = *confirmation;
-  expected_confirmation.was_created = true;
-
   EXPECT_CALL(delegate_mock_, OnDidRedeemConfirmation).Times(0);
 
   EXPECT_CALL(delegate_mock_,
-              OnFailedToRedeemConfirmation(expected_confirmation,
+              OnFailedToRedeemConfirmation(*confirmation,
                                            /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(

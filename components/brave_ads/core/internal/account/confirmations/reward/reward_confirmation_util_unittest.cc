@@ -86,7 +86,6 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
     expected_confirmation.type = ConfirmationType::kViewed;
     expected_confirmation.ad_type = AdType::kNotificationAd;
     expected_confirmation.created_at = Now();
-    expected_confirmation.was_created = false;
 
     expected_confirmation.reward = BuildRewardForTesting(*confirmation);
 
