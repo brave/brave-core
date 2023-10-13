@@ -8,6 +8,7 @@ import Shared
 import BraveShared
 import BraveUI
 import Data
+import Preferences
 
 extension PrivacyReportsView {
   struct PrivacyHubLastWeekSection: View {
@@ -21,10 +22,14 @@ extension PrivacyReportsView {
       return mostFrequentTracker == nil && riskiestWebsite == nil
     }
     
-    private var noDataCalloutView: some View {
+    private var trackingDisabled: Bool {
+      !Preferences.PrivacyReports.captureShieldsData.value
+    }
+    
+    private func emptyCalloutView(text: String) -> some View {
       HStack {
         Image(systemName: "info.circle.fill")
-        Text(Strings.PrivacyHub.noDataCalloutBody)
+        Text(text)
       }
       .foregroundColor(Color.white)
       .frame(maxWidth: .infinity)
@@ -36,7 +41,13 @@ extension PrivacyReportsView {
     var body: some View {
       VStack(alignment: .leading, spacing: 8) {
         if noData {
-          noDataCalloutView
+          if trackingDisabled {
+            emptyCalloutView(text:
+                              String.localizedStringWithFormat(Strings.PrivacyHub.trackingDisabledCalloutBody,
+                                                               Strings.PrivacyHub.settingsEnableShieldsTitle))
+          } else {
+            emptyCalloutView(text: Strings.PrivacyHub.noDataCalloutBody)
+          } 
         }
         
         Text(Strings.PrivacyHub.lastWeekHeader.uppercased())

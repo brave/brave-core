@@ -67,18 +67,6 @@ struct PrivacyReportsView: View {
       .foregroundColor(Color(.braveBlurpleTint))
   }
   
-  private var noDataCalloutView: some View {
-    HStack {
-      Image(systemName: "info.circle.fill")
-      Text(Strings.PrivacyHub.noDataCalloutBody)
-    }
-    .foregroundColor(Color.white)
-    .frame(maxWidth: .infinity)
-    .padding()
-    .background(Color(.braveInfoLabel))
-    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-  }
-  
   var body: some View {
     NavigationView {
       ScrollView(.vertical) {
