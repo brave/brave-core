@@ -115,6 +115,8 @@ struct FiltersDisplaySettingsView: View {
   let networkStore: NetworkStore
   let save: (Filters) -> Void
   
+  private let originalFilters: Filters
+  
   /// Returns true if all accounts are selected
   var allAccountsSelected: Bool {
     accounts.allSatisfy(\.isSelected)
@@ -157,6 +159,7 @@ struct FiltersDisplaySettingsView: View {
     self.isNFTFilters = isNFTFilters
     self.networkStore = networkStore
     self.save = save
+    self.originalFilters = filters
   }
   
   var body: some View {
@@ -341,6 +344,16 @@ struct FiltersDisplaySettingsView: View {
     .buttonStyle(FadeButtonStyle())
   }
   
+  private var isSaveChangesDisabled: Bool {
+    originalFilters.groupBy == groupBy &&
+    originalFilters.sortOrder == sortOrder &&
+    originalFilters.isHidingSmallBalances == isHidingSmallBalances &&
+    originalFilters.isHidingUnownedNFTs == isHidingUnownedNFTs &&
+    originalFilters.isShowingNFTNetworkLogo == isShowingNFTNetworkLogo &&
+    originalFilters.accounts == accounts &&
+    originalFilters.networks == networks
+  }
+  
   private var saveChangesContainer: some View {
     VStack {
       Button(action: {
@@ -362,6 +375,7 @@ struct FiltersDisplaySettingsView: View {
           .padding(.vertical, 4)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .large))
+      .disabled(isSaveChangesDisabled)
       
       Button(action: { dismiss() }) {
         Text(Strings.CancelString)
