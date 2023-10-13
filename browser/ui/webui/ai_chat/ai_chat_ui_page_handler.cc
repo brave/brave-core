@@ -30,6 +30,10 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
+#endif
+
 namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 32;
 }  // namespace
@@ -171,10 +175,14 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
+#if !BUILDFLAG(IS_ANDROID)
   contents_to_navigate->OpenURL({GURL("brave://settings/leo-assistant"),
                                  content::Referrer(),
                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                  ui::PAGE_TRANSITION_LINK, false});
+#else
+  ai_chat::ShowBraveLeoSettings(contents_to_navigate);
+#endif
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {

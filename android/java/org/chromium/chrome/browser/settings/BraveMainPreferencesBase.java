@@ -18,6 +18,7 @@ import androidx.preference.Preference;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
@@ -83,6 +84,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_WALLET = "brave_wallet";
     private static final String PREF_BRAVE_VPN = "brave_vpn";
+    private static final String PREF_BRAVE_LEO = "brave_leo";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
     private static final String PREF_BRAVE_LANGUAGES = "brave_languages";
@@ -269,6 +271,13 @@ public class BraveMainPreferencesBase
             findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_VPN);
+        }
+
+        if (BraveConfig.AI_CHAT_ENABLED
+                && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+            findPreference(PREF_BRAVE_LEO).setOrder(++firstSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_LEO);
         }
 
         int generalOrder = firstSectionOrder;
