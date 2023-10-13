@@ -4365,6 +4365,11 @@ extension Strings {
       comment: "Text of a callout that tell user they need to browser some websites first in order to see privacy stats data"
     )
     
+    public static let trackingDisabledCalloutBody = NSLocalizedString("privacyHub.trackingDisabledCalloutBody", tableName: "BraveShared", bundle: .module,
+      value: "Enable '%@' to see data here",
+      comment: "Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled"
+    )
+    
     public static let lastWeekHeader = NSLocalizedString("privacyHub.lastWeekHeader", tableName: "BraveShared", bundle: .module,
       value: "Last week",
       comment: "Header text, under it we display blocked items from last week"
