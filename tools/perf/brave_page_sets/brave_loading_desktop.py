@@ -53,7 +53,7 @@ class BraveLoadingDesktopStorySet(story.StorySet):
   See loading_desktop.py for details.
   """
 
-  def __init__(self, cache_temperatures=None):
+  def __init__(self, cache_temperatures=None, with_delay=True):
     super(BraveLoadingDesktopStorySet,
           self).__init__(archive_data_file='data/brave_loading_desktop.json',
                          cloud_storage_bucket=story.PARTNER_BUCKET)
@@ -68,9 +68,10 @@ class BraveLoadingDesktopStorySet(story.StorySet):
                      ('https://search.brave.com/', 'BraveSearch'),
                      ('https://en.wikipedia.org/wiki/HCard', 'wikipedia.com'),
                      ('https://www.economist.com/', 'Economist'),
-                     ('https://www.ign.com/', 'IGN')], cache_temperatures)
+                     ('https://www.ign.com/', 'IGN')], cache_temperatures,
+                     with_delay)
 
-  def AddStories(self, tags, urls, cache_temperatures):
+  def AddStories(self, tags, urls, cache_temperatures, with_delay):
     for url, name in urls:
       for temp in cache_temperatures:
         if temp == cache_temperature_module.COLD:
@@ -83,12 +84,13 @@ class BraveLoadingDesktopStorySet(story.StorySet):
           raise NotImplementedError
 
         page_tags = tags[:]
+        shared_page_state_class=DelayedSharedDesktopPageState if with_delay else shared_page_state.SharedDesktopPageState
 
         self.AddStory(
             page_cycler_story.PageCyclerStory(
                 url,
                 self,
-                shared_page_state_class=DelayedSharedDesktopPageState,
+                shared_page_state_class,
                 cache_temperature=temp,
                 tags=page_tags,
                 name=page_name,

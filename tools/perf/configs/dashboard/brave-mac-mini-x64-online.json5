@@ -14,7 +14,7 @@
   }],
   "benchmarks": [
     {
-      "name": "loading.desktop.brave",
+      "name": "loading.desktop.brave.startup",
       "pageset-repeat": 20,
       "stories": [
         "example.com_cold",
