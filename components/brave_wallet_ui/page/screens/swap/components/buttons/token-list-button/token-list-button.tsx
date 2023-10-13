@@ -24,7 +24,7 @@ import { Text, Row, AssetIcon } from '../../shared-swap.styles'
 interface Props {
   onClick: (token: BraveWallet.BlockchainToken) => void
   token: BraveWallet.BlockchainToken
-  network?: BraveWallet.NetworkInfo
+  network?: BraveWallet.NetworkInfo | null
   balance: Amount
   disabled: boolean
 }

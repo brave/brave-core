@@ -68,16 +68,17 @@ export const AssetsPanel = (props: Props) => {
     return makeSelectAllUserAssetsForChainFromQueryResult()
   }, [])
 
-  const { data: userTokens } = useGetUserTokensRegistryQuery(undefined, {
-    selectFromResult: (res) => ({
-      ...res,
-      data:
-        selectedNetwork !== undefined
+  const { data: userTokens } = useGetUserTokensRegistryQuery(
+    selectedNetwork ? undefined : skipToken,
+    {
+      selectFromResult: (res) => ({
+        ...res,
+        data: selectedNetwork
           ? userTokensByChainIdSelector(res, selectedNetwork.chainId)
           : undefined
-    }),
-    skip: selectedNetwork === undefined
-  })
+      })
+    }
+  )
 
   const {
     data: tokenBalancesRegistry,

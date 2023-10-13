@@ -46,7 +46,7 @@ interface Props extends SelectTokenButtonStyleProps {
   networkFeeFiatValue?: string
   isHeader?: boolean
   asset?: BraveWallet.BlockchainToken
-  network?: BraveWallet.NetworkInfo
+  network?: BraveWallet.NetworkInfo | null
   iconType: 'network' | 'asset'
 }
 
