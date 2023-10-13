@@ -305,6 +305,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   const sendToken =
     transaction.txType === BraveWallet.TransactionType.ETHSend ||
       transaction.fromAccountId.coin === BraveWallet.CoinType.FIL ||
+      transaction.fromAccountId.coin === BraveWallet.CoinType.BTC ||
       transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer
       ? networkAsset
       : txToken

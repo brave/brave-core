@@ -102,6 +102,7 @@ source_set("brave_wallet_unit_tests") {
   }
 
   deps = [
+    ":test_data",
     ":test_support",
     "//base/test:test_support",
     "//brave/components/brave_wallet/browser",
@@ -158,4 +159,13 @@ source_set("test_support") {
     "//services/network/public/cpp",
     "//testing/gtest",
   ]
+
+  data = [ "$root_gen_dir/brave/wallet-test-data/" ]
 }  # source_set("test_support")
+
+copy("test_data") {
+  testonly = true
+  sources =
+      [ "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json" ]
+  outputs = [ "$root_gen_dir/brave/wallet-test-data/{{source_file_part}}" ]
+}

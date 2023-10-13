@@ -238,8 +238,13 @@ export function isZCashTransaction(
   return tx.txDataUnion.zecTxData !== undefined
 }
 
-export function isEthereumTransaction (tx?: TransactionInfo) {
-  return tx?.txDataUnion.ethTxData !== undefined || tx?.txDataUnion.ethTxData1559 !== undefined
+export function isEthereumTransaction(
+  tx?: Pick<TransactionInfo, 'txDataUnion'>
+) {
+  if (!tx) {
+    return false
+  }
+  return tx.txDataUnion.ethTxData !== undefined || tx.txDataUnion.ethTxData1559 !== undefined
 }
 
 export function shouldReportTransactionP3A({
@@ -353,7 +358,11 @@ export const getTransactionToAddress = (
     return tx.txDataUnion.zecTxData?.to ?? ''
   }
 
-  return ''
+  if (isBitcoinTransaction(tx)) {
+    return tx.txDataUnion.btcTxData?.to ?? ''
+  }
+
+  assertNotReached('Unknown transaction type')
 }
 
 export function getTransactionInteractionAddress(
@@ -371,11 +380,19 @@ export function getTransactionInteractionAddress(
     return tx.txDataUnion.zecTxData?.to ?? ''
   }
 
-  return (
-    tx.txDataUnion.ethTxData1559?.baseData.to || // EVM (1559)
-    tx.txDataUnion.ethTxData?.to || // EVM
-    '' // Other
-  )
+  if (isBitcoinTransaction(tx)) {
+    return tx.txDataUnion.btcTxData?.to ?? ''
+  }
+
+  if (isEthereumTransaction(tx)) {
+    return (
+      tx.txDataUnion.ethTxData1559?.baseData.to || // EVM (1559)
+      tx.txDataUnion.ethTxData?.to || // EVM
+      '' // Other
+    )
+  }
+
+  assertNotReached('Unknown transaction type')
 }
 
 export function isSolanaSplTransaction (tx: TransactionInfo): tx is SolanaTransactionInfo {
