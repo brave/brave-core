@@ -333,13 +333,6 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
   }
 
   void OnPaintFill(gfx::Canvas* canvas) const override {
-    if (tab_strip()
-            ->GetCustomBackgroundId(BrowserFrameActiveState::kUseCurrent)
-            .has_value()) {
-      BraveNewTabButton::OnPaintFill(canvas);
-      return;
-    }
-
     auto* cp = GetColorProvider();
     CHECK(cp);
 
