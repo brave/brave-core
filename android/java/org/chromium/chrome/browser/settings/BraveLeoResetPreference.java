@@ -73,10 +73,6 @@ public class BraveLeoResetPreference
                     return;
                 }
                 UserPrefs.get(profile)
-                        .setBoolean(BravePref.DELETE_BRAVE_LEO_HISTORY, true);
-                UserPrefs.get(profile)
-                        .setBoolean(BravePref.DELETE_BRAVE_LEO_HISTORY_ON_EXIT, true);
-                UserPrefs.get(profile)
                         .setBoolean(BravePref.BRAVE_CHAT_HAS_SEEN_DISCLAIMER, false);
                 UserPrefs.get(profile)
                         .setBoolean(BravePref.BRAVE_CHAT_AUTO_GENERATE_QUESTIONS, false);

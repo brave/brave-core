@@ -4066,7 +4066,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Request ID
     </message>
     <message name="IDS_LEO_SUMMARY" desc="Title for Brave Leo options.">
-      Leo is an AI-powered intelligent assistant, built right into the browser
+      Leo is an AI-powered smart assistant, built right into the browser
     </message>
     <message name="IDS_LEO_RESET_DATA" desc="Title for Brave Leo Reset and clear data option.">
       Reset and clear Leo data
