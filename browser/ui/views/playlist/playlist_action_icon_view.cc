@@ -58,20 +58,7 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
     return;
   }
 
-  if (!saved_item_count) {
-    if (found_item_count == 1u) {
-      // In this case, skip the selection bubble and add the item to the
-      // playlist first. When the addition is successfully finished, we'll show
-      // up a bubble for the result.
-      std::vector<playlist::mojom::PlaylistItemPtr> items_to_add;
-      items_to_add.push_back(
-          playlist_tab_helper->found_items().front()->Clone());
-      playlist_tab_helper->AddItems(std::move(items_to_add));
-      return;
-    }
-  }
-
-  DCHECK(saved_item_count || found_item_count > 1u);
+  DCHECK(saved_item_count || found_item_count);
   PlaylistActionBubbleView::ShowBubble(browser_, this, playlist_tab_helper);
 }
 
