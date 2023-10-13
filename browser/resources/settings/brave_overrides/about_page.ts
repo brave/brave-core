@@ -9,6 +9,8 @@ import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 
 
 import {getSectionElement} from './basic_page.js'
 
+import {sanitizeInnerHtml} from 'chrome://resources/js/parse_html_subset.js'
+
 RegisterStyleOverride(
   'settings-about-page',
   html`
@@ -21,6 +23,33 @@ RegisterStyleOverride(
   `
 )
 
+const extractVersions = (versionElement: HTMLElement) => {
+  const [ _, braveVersion, chromiumVersion, build ] = versionElement
+    .innerHTML
+    .match(/^Version\s([\d+\.?]+)\sChromium:\s([\d+\.?]+)\s(.*)$/)
+
+  return { braveVersion, build, chromiumVersion }
+}
+
+const buildBraveVersionLink = (braveVersion: string, build: string) => {
+  const wrapper = document.createElement('a')
+  wrapper.setAttribute('id', 'release-notes')
+  wrapper.setAttribute('target', '_blank')
+  wrapper.setAttribute('rel', 'noopener noreferrer')
+  wrapper.setAttribute('href', 'https://brave.com/latest/')
+  wrapper.innerHTML = sanitizeInnerHtml(`Brave ${braveVersion} ${build}`)
+
+  return wrapper
+}
+
+const buildChromiumVersionElement = (chromiumVersion:string, braveVersionLink: HTMLElement) => {
+  const chromiumElement = document.createElement('div')
+  chromiumElement.classList.add("secondary")
+  chromiumElement.innerHTML = sanitizeInnerHtml(`Chromium: ${chromiumVersion}`)
+
+  braveVersionLink.after(chromiumElement)
+}
+
 RegisterPolymerTemplateModifications({
   'settings-about-page': (templateContent) => {
     const section = getSectionElement(templateContent, 'about')
@@ -29,14 +58,11 @@ RegisterPolymerTemplateModifications({
       if (!version) {
         console.error('[Brave Settings Overrides] Could not find version div')
       }
-      const parent = version.parentNode
-      const wrapper = document.createElement('a')
-      wrapper.setAttribute('id', 'release-notes')
-      wrapper.setAttribute('target', '_blank')
-      wrapper.setAttribute('rel', 'noopener noreferrer')
-      wrapper.setAttribute('href', 'https://brave.com/latest/')
-      parent.replaceChild(wrapper, version)
-      wrapper.appendChild(version)
+
+      const { braveVersion, build, chromiumVersion } = extractVersions(version)
+      const braveVersionLink = buildBraveVersionLink(braveVersion, build)
+      version.parentNode.replaceChild(braveVersionLink, version)
+      buildChromiumVersionElement(chromiumVersion, braveVersionLink)
     }
 
     // Help link shown if update fails
