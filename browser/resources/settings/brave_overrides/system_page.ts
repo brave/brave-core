@@ -83,12 +83,19 @@ RegisterPolymerTemplateModifications({
       `
     )
     // <if expr="enable_brave_vpn_wireguard">
-    templateContent.appendChild(
-      html`
-        <settings-brave-vpn-page prefs="{{prefs}}">
-        </settings-brave-vpn-page>
-      `
-    )
+    let showVpnPage = loadTimeData.getBoolean('isBraveVPNEnabled')
+    // <if expr="is_macosx">
+    showVpnPage = showVpnPage &&
+                  loadTimeData.getBoolean('isBraveVPNWireguardEnabledOnMac')
+    // </if>
+    if (showVpnPage) {
+      templateContent.appendChild(
+        html`
+          <settings-brave-vpn-page prefs="{{prefs}}">
+          </settings-brave-vpn-page>
+        `
+      )
+    }
     // </if>
 
     templateContent.appendChild(
