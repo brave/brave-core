@@ -6,6 +6,9 @@ import { mapLimit } from 'async'
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
 import WalletApiProxy from '../common/wallet_api_proxy'
 import { BraveWallet, SupportedCoinTypes, SupportedTestNetworks } from '../constants/types'
+import {
+  externalWalletProviders
+} from '../common/async/brave_rewards_api_proxy'
 
 export const getPriceIdForToken = (
   token: Pick<
@@ -33,7 +36,13 @@ export const getPriceIdForToken = (
   }
 
   const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
-  if (isEthereumNetwork && token.contractAddress) {
+  if (
+    (isEthereumNetwork ||
+      externalWalletProviders
+        .includes(token.chainId)
+    ) &&
+    token.contractAddress
+  ) {
     return token.contractAddress.toLowerCase()
   }
 

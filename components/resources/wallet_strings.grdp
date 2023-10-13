@@ -1011,4 +1011,16 @@
   <message name="IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED" desc="Indicates that an asset has been verified">This token is verified</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED_BY_LISTS" desc="Indicates that an asset has been verified by multiple token list providers">This token is verified on <ph name="NUMBER_OF_LISTS">$1<ex>2</ex></ph> lists</message>
   <message name="IDS_BRAVE_WALLET_SPENDER_ADDRESS" desc="Indicates which address is spending funds">Spender: <ph name="ADDRESS">$1<ex>0x1234...abcd</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_UPHOLD" desc="Brave Rewards Uphold provider">Uphold</message>
+  <message name="IDS_BRAVE_WALLET_GEMINI" desc="Brave Rewards Gemini provider">Gemini</message>
+  <message name="IDS_BRAVE_WALLET_ZEBPAY" desc="Brave Rewards Zebpay provider">Zebpay</message>
+  <message name="IDS_BRAVE_WALLET_BITFLYER" desc="Brave Rewards bitFlyer provider">bitFlyer</message>
+  <message name="IDS_BRAVE_WALLET_REWARDS_ACCOUNT" desc="Brave Rewards provider account"><ph name="PROVIDER">$1<ex>Uphold</ex></ph> account</message>
+  <message name="IDS_BRAVE_WALLET_BRAVE_REWARDS_TITLE" desc="Brave Rewards">Brave Rewards</message>
+  <message name="IDS_BRAVE_WALLET_BRAVE_REWARDS_DESCRIPTION" desc="Brave Rewards token description">Brave Rewards BAT on <ph name="PROVIDER">$1<ex>Uphold</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_BRAVE_REWARDS_LOGGED_OUT_DESCRIPTION" desc="Brave Rewards account is logged out description">You’re currently logged out of <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Please log in to view your balance.</message>
+  <message name="IDS_BRAVE_WALLET_LOG_IN" desc="Brave Rewards Log in button">Log in</message>
+  <message name="IDS_BRAVE_WALLET_VIEW_ON" desc="Brave Rewards account on provider website.">View on <ph name="PROVIDER">$1<ex>Uphold</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_REWARDS_SETTINGS" desc="Brave Rewards settings button.">Rewards settings</message>
+  <message name="IDS_BRAVE_WALLET_PLATFORMS" desc="Brave Rewards Platforms label">Platforms</message>
 </grit-part>

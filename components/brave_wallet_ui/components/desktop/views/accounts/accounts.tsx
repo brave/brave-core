@@ -29,6 +29,9 @@ import { makeAccountRoute } from '../../../../utils/routes-utils'
 import {
   getPriceIdForToken
 } from '../../../../utils/api-utils'
+import {
+  getNormalizedExternalRewardsWallet
+} from '../../../../utils/rewards_utils'
 
 // Styled Components
 import {
@@ -56,7 +59,9 @@ import {
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
+  useGetRewardsEnabledQuery,
+  useGetExternalRewardsWalletQuery
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
@@ -71,6 +76,8 @@ export const Accounts = () => {
 
   // queries
   const { accounts } = useAccountsQuery()
+  const { data: isRewardsEnabled } = useGetRewardsEnabledQuery()
+  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
 
   // methods
   const onSelectAccount = React.useCallback(
@@ -82,7 +89,14 @@ export const Accounts = () => {
     [history]
   )
 
-  // memos
+  // memos && computed
+  const externalRewardsAccount =
+    isRewardsEnabled
+      ? getNormalizedExternalRewardsWallet(
+        externalRewardsInfo?.provider ?? undefined
+      )
+      : undefined
+
   const derivedAccounts = React.useMemo(() => {
     return accounts.filter(
       (account) =>
@@ -268,6 +282,32 @@ export const Accounts = () => {
           >
             {trezorList}
             {ledgerList}
+          </Column>
+        </>
+      }
+
+      {externalRewardsAccount &&
+        <>
+          <Row
+            padding='8px'
+            justifyContent='flex-start'
+          >
+            <SectionTitle>
+              {getLocale('braveWalletConnectedAccounts')}
+            </SectionTitle>
+          </Row>
+          <Column
+            fullWidth={true}
+            alignItems='flex-start'
+            margin='0px 0px 24px 0px'
+          >
+            <AccountListItem
+              key={externalRewardsAccount.accountId.uniqueKey}
+              onClick={onSelectAccount}
+              account={externalRewardsAccount}
+              tokenBalancesRegistry={tokenBalancesRegistry}
+              spotPriceRegistry={spotPriceRegistry}
+            />
           </Column>
         </>
       }

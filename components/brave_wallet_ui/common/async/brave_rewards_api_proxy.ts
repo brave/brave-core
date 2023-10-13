@@ -18,6 +18,14 @@ export const WalletStatus = {
   kConnected: 2,
   kLoggedOut: 4
 } as const
+
+export const externalWalletProviders = [
+  'uphold',
+  'bitflyer',
+  'gemini',
+  'zebpay'
+]
+
 export type WalletStatus = (typeof WalletStatus)[keyof typeof WalletStatus]
 
 export type RewardsExternalWallet = Pick<

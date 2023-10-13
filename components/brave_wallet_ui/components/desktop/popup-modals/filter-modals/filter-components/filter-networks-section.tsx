@@ -6,6 +6,8 @@
 import * as React from 'react'
 
 import {
+  useGetExternalRewardsWalletQuery,
+  useGetRewardsEnabledQuery,
   useGetVisibleNetworksQuery
 } from '../../../../../common/slices/api.slice'
 
@@ -13,6 +15,9 @@ import {
 import {
   SupportedTestNetworks
 } from '../../../../../constants/types'
+import {
+  WalletStatus
+} from '../../../../../common/async/brave_rewards_api_proxy'
 
 // Options
 import {
@@ -23,6 +28,9 @@ import {
 import {
   networkEntityAdapter
 } from '../../../../../common/slices/entities/network.entity'
+import {
+  getNormalizedExternalRewardsNetwork
+} from '../../../../../utils/rewards_utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
@@ -50,7 +58,10 @@ export const FilterNetworksSection = (props: Props) => {
     setFilteredOutNetworkKeys
   } = props
 
+  // Queries
   const { data: networks } = useGetVisibleNetworksQuery()
+  const { data: isRewardsEnabled } = useGetRewardsEnabledQuery()
+  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
 
   // Memos
   const primaryNetworks = React.useMemo(() => {
@@ -75,6 +86,15 @@ export const FilterNetworksSection = (props: Props) => {
           SupportedTestNetworks.includes(network.chainId)
       )
   }, [networks])
+
+  // Computed
+  const providerNetwork =
+    isRewardsEnabled &&
+      externalRewardsInfo?.status === WalletStatus.kConnected
+      ? getNormalizedExternalRewardsNetwork(
+        externalRewardsInfo?.provider ?? undefined
+      )
+      : undefined
 
   const isSelectAll = React.useMemo(() => {
     return filteredOutNetworkKeys.length > 0 && networks
@@ -181,6 +201,17 @@ export const FilterNetworksSection = (props: Props) => {
           onCheckNetwork={onCheckNetwork}
           networks={testNetworks}
           title={getLocale('braveWalletNetworkFilterTestNetworks')}
+          marginBottom={8}
+        />
+      }
+
+      {/* Provider Networks */}
+      {providerNetwork &&
+        <NetworkCheckboxes
+          isNetworkFilteredOut={isNetworkFilteredOut}
+          onCheckNetwork={onCheckNetwork}
+          networks={[providerNetwork]}
+          title={getLocale('braveWalletPlatforms')}
           marginBottom={0}
         />
       }

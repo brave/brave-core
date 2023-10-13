@@ -1030,5 +1030,20 @@ provideStrings({
   braveWalletAutoDiscoveryEmptyStateSubHeading: 'Once an NFT is detected, it\’ll be displayed here.',
   braveWalletAutoDiscoveryEmptyStateFooter: 'Can\’t see your NFTs?',
   braveWalletAutoDiscoveryEmptyStateActions: '$1Refresh$2 or $3Import Manually$4',
-  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing'
+  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing',
+
+  // Brave Wallet Rewards
+  braveWalletUphold: 'Uphold',
+  braveWalletGemini: 'Gemini',
+  braveWalletZebpay: 'Zebpay',
+  braveWalletBitflyer: 'bitFlyer',
+  braveWalletRewardsAccount: '$1 account',
+  braveWalletBraveRewardsTitle: 'Brave Rewards',
+  braveWalletBraveRewardsDescription: 'Brave Rewards BAT on $1',
+  braveWalletBraveRewardsLoggedOutDescription:
+    'You\’re currently logged out of $1. Please log in to view your balance.',
+  braveWalletLogIn: 'Log in',
+  braveWalletViewOn: 'View on $1',
+  braveWalletRewardsSettings: 'Rewards settings',
+  braveWalletPlatforms: 'Platforms'
 })

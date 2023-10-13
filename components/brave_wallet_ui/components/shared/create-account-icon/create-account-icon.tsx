@@ -4,18 +4,29 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
+// Utils
+import {
+  getRewardsProviderIcon
+} from '../../../utils/rewards_utils'
+
 // Types
 import { BraveWallet } from '../../../constants/types'
+import {
+  ExternalWalletProvider
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // styles
 import {
   AccountBox,
-  AccountIcon
+  AccountIcon,
+  ExternalAccountBox,
+  ExternalAccountIcon
 } from './create-account-icon.style'
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 interface Props {
-  account: BraveWallet.AccountInfo
+  account?: BraveWallet.AccountInfo
+  externalProvider?: ExternalWalletProvider | null
   size?: 'big' | 'medium' | 'small' | 'tiny'
   marginRight?: number
   round?: boolean
@@ -26,11 +37,28 @@ export const CreateAccountIcon = (props: Props) => {
     account,
     size,
     marginRight,
-    round
+    round,
+    externalProvider
   } = props
 
   // Memos
   const orb = useAccountOrb(account)
+
+  if (externalProvider) {
+    return (
+      <ExternalAccountBox
+        size={size}
+        marginRight={marginRight}
+        round={round}
+        provider={externalProvider}
+      >
+        <ExternalAccountIcon
+          src={getRewardsProviderIcon(externalProvider)}
+          size={size}
+        />
+      </ExternalAccountBox>
+    )
+  }
 
   return (
     <AccountBox
@@ -39,7 +67,7 @@ export const CreateAccountIcon = (props: Props) => {
       marginRight={marginRight}
       round={round}
     >
-      {account.accountId.kind === BraveWallet.AccountKind.kHardware &&
+      {account?.accountId.kind === BraveWallet.AccountKind.kHardware &&
         <AccountIcon
           name='flashdrive'
           size={size}

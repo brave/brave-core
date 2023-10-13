@@ -31,14 +31,17 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
+import { getLocale } from '../../../../common/locale'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
+import {
+  ExternalWalletProvider
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Components
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
-
 import {
   CreateAccountIcon
 } from '../../shared/create-account-icon/create-account-icon'
@@ -48,17 +51,21 @@ import {
   StyledWrapper,
   CollapseButton,
   CollapseIcon,
-  AccountDescriptionWrapper
+  AccountDescriptionWrapper,
+  RewardsProviderContainer,
+  RewardsText
 } from './asset-group-container.style'
 import {
   Row,
   Column,
   Text,
   VerticalDivider,
-  HorizontalSpace
+  HorizontalSpace,
+  BraveRewardsIndicator
 } from '../../shared/style'
 
 interface Props {
+  externalProvider?: ExternalWalletProvider | null
   network?: BraveWallet.NetworkInfo | undefined
   account?: BraveWallet.AccountInfo | undefined
   isSkeleton?: boolean
@@ -78,7 +85,8 @@ export const AssetGroupContainer = (props: Props) => {
     isDisabled,
     network,
     children,
-    hasBorder = true
+    hasBorder = true,
+    externalProvider
   } = props
 
   // Redux
@@ -91,6 +99,14 @@ export const AssetGroupContainer = (props: Props) => {
     useUnsafeUISelector(UISelectors.collapsedPortfolioAccountAddresses)
   const collapsedNetworks =
     useUnsafeUISelector(UISelectors.collapsedPortfolioNetworkKeys)
+
+  // Memos & Computed
+  const externalRewardsDescription =
+    network
+      ? network.chainName
+      : account
+        ? account.name
+        : ''
 
   const isCollapsed = React.useMemo(() => {
     if (network) {
@@ -185,7 +201,41 @@ export const AssetGroupContainer = (props: Props) => {
             <LoadingSkeleton width={60} height={14} />
           </Row>
         }
-        {network && !isSkeleton &&
+        {externalProvider && !isSkeleton &&
+          <Row
+            width='unset'
+          >
+            {network &&
+              <CreateNetworkIcon
+                network={network}
+                marginRight={16}
+                size='big'
+              />
+            }
+            {account &&
+              <CreateAccountIcon
+                size='small'
+                externalProvider={externalProvider}
+                marginRight={16}
+              />
+            }
+            <RewardsProviderContainer>
+              <RewardsText
+                textSize='14px'
+                isBold={true}
+                textColor='text01'
+                textAlign='left'
+              >
+                {externalRewardsDescription}
+              </RewardsText>
+              <BraveRewardsIndicator>
+                {getLocale('braveWalletBraveRewardsTitle')}
+              </BraveRewardsIndicator>
+            </RewardsProviderContainer>
+          </Row>
+        }
+
+        {network && !externalProvider && !isSkeleton &&
           <Row
             width='unset'
           >
@@ -205,7 +255,7 @@ export const AssetGroupContainer = (props: Props) => {
           </Row>
         }
 
-        {account && !isSkeleton &&
+        {account && !externalProvider && !isSkeleton &&
           <Row
             width='unset'
           >

@@ -9,7 +9,8 @@ import Icon from '@brave/leo/react/icon'
 import {
   Column,
   Row,
-  WalletButton
+  WalletButton,
+  Text
 } from '../../shared/style'
 import {
   layoutPanelWidth
@@ -59,6 +60,21 @@ export const CollapseIcon = styled(Icon) <
 export const AccountDescriptionWrapper = styled(Row)`
   align-items: center;
   justify-content: flex-start;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center
+  }
+`
+
+export const RewardsText = styled(Text)`
+  margin: 0px 8px 0px 0px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    margin: 0px 0px 2px 0px;
+  }
+`
+
+export const RewardsProviderContainer = styled(Row)`
   @media screen and (max-width: ${layoutPanelWidth}px) {
     flex-direction: column;
     align-items: flex-start;
