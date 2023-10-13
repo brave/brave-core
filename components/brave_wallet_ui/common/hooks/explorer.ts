@@ -11,8 +11,11 @@ import { BraveWallet, BlockExplorerUrlTypes } from '../../constants/types'
 // utils
 import { openBlockExplorerURL } from '../../utils/block-explorer-utils'
 
-export function useExplorer (
-  network?: Pick<BraveWallet.NetworkInfo, 'chainId' | 'blockExplorerUrls'>
+export function useExplorer(
+  network?: Pick<
+    BraveWallet.NetworkInfo,
+    'chainId' | 'blockExplorerUrls'
+  > | null
 ) {
   return React.useCallback(
     (type: BlockExplorerUrlTypes, value?: string, id?: string) =>

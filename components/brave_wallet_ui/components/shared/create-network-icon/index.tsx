@@ -31,7 +31,7 @@ type SimpleNetwork = Pick<
 >
 
 interface Props {
-  network?: SimpleNetwork
+  network?: SimpleNetwork | null
   marginRight?: number
   size?: 'huge' | 'big' | 'small' | 'tiny' | 'extra-small'
 }
@@ -106,7 +106,7 @@ function NetworkPlaceholderIcon({
   network
 }: {
   marginRight: number | undefined
-  network?: SimpleNetwork
+  network?: SimpleNetwork | null
 }) {
   // custom hooks
   const orb = useNetworkOrb(network)

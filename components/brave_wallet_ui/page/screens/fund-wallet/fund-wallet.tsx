@@ -25,8 +25,7 @@ import {
   BraveWallet,
   BuyOption,
   NetworkFilterType,
-  WalletRoutes,
-  WalletState
+  WalletRoutes
 } from '../../../constants/types'
 
 // options
@@ -41,6 +40,7 @@ import {
   useGetOnRampNetworksQuery,
   useLazyGetBuyUrlQuery
 } from '../../../common/slices/api.slice'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 
 // style
@@ -458,14 +458,12 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
     buyAmount: string
   }>()
   // redux
-  const accounts = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.accounts
-  )
   const selectedOnRampAssetId = useSelector(
     WalletSelectors.selectedOnRampAssetId
   )
 
   // queries
+  const { accounts } = useAccountsQuery()
   const { data: fiatCurrencies = [] } = useGetOnRampFiatCurrenciesQuery()
   const selectedCurrency = fiatCurrencies.find(
     (c) => c.currencyCode === params.currencyCode
@@ -657,6 +655,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
           <CreateAccountTab
             network={assetNetwork}
             onCancel={() => history.back()}
+            onCreated={setSelectedAccount}
           />
         ) : showAccountSearch ? (
           <SearchWrapper>

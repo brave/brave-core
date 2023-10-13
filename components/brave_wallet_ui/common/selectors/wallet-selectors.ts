@@ -51,7 +51,6 @@ export const selectedOnRampAssetId = ({ wallet }: State) =>
   wallet.selectedDepositAssetId
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
-export const accounts = ({ wallet }: State) => wallet.accounts
 export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
 export const coinMarketData = ({ wallet }: State) => wallet.coinMarketData
 export const connectedAccounts = ({ wallet }: State) => wallet.connectedAccounts

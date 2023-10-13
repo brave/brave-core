@@ -4,15 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
-import {
-  WalletState,
-  BraveWallet,
-  AccountPageTabs
-} from '../../../../constants/types'
+import { BraveWallet, AccountPageTabs } from '../../../../constants/types'
 import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
@@ -63,16 +58,19 @@ import {
   useGetVisibleNetworksQuery,
   useGetTokenSpotPricesQuery
 } from '../../../../common/slices/api.slice'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
 export const Accounts = () => {
   // routing
   const history = useHistory()
 
   // wallet state
-  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
+
+  // queries
+  const { accounts } = useAccountsQuery()
 
   // methods
   const onSelectAccount = React.useCallback(

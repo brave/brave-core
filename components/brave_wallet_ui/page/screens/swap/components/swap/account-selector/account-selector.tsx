@@ -5,26 +5,19 @@
 
 import * as React from 'react'
 
-// Selectors
-import {
-  WalletSelectors
-} from '../../../../../../common/selectors'
-
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 
 // Hooks
 import {
   useOnClickOutside
 } from '../../../../../../common/hooks/useOnClickOutside'
 import {
-  useUnsafeWalletSelector
-} from '../../../../../../common/hooks/use-safe-selector'
-import {
   useGetSelectedChainQuery
 } from '../../../../../../common/slices/api.slice'
+import {
+  useAccountsQuery //
+} from '../../../../../../common/slices/api.slice.extra'
 
 // Types
 import {
@@ -64,10 +57,7 @@ export const AccountSelector = (props: Props) => {
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
-
-  // Selectors
-  const accounts: BraveWallet.AccountInfo[] =
-    useUnsafeWalletSelector(WalletSelectors.accounts)
+  const { accounts } = useAccountsQuery()
 
   // Refs
   const accountSelectorRef = React.useRef<HTMLDivElement>(null)

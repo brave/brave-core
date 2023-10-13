@@ -51,6 +51,6 @@ export const suggestNewAccountName = (
     accounts.filter((account) => account.accountId.coin === network.coin)
       .length + 1
   return `${network.symbolName} ${getLocale(
-    'braveWalletAccount'
+    'braveWalletSubviewAccount'
   )} ${accountTypeLength}`
 }

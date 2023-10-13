@@ -111,6 +111,7 @@ import {
   tokenSuggestionsEndpoints //
 } from './endpoints/token_suggestions.endpoints'
 import { addressEndpoints } from './endpoints/address.endpoints'
+import { accountEndpoints } from './endpoints/account.endpoints';
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -287,15 +288,12 @@ export function createWalletApi () {
           { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
         ]
       }),
-      getSelectedAccountId: query<BraveWallet.AccountId | undefined, void>({
+      getSelectedAccountId: query<BraveWallet.AccountId | null, void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-          const { cache } = baseQuery(undefined)
-
-          const selectedAccountId = (await cache.getAllAccounts())
-            .selectedAccount?.accountId
-
           return {
-            data: selectedAccountId
+            data:
+              (await baseQuery(undefined).cache.getAllAccounts())
+                .selectedAccount?.accountId || null
           }
         },
         providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
@@ -411,7 +409,7 @@ export function createWalletApi () {
         },
         invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
       }),
-      getSelectedChain: query<BraveWallet.NetworkInfo | undefined, void>({
+      getSelectedChain: query<BraveWallet.NetworkInfo | null, void>({
         queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
           try {
             return {
@@ -3105,6 +3103,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: qrCodeEndpoints })
     // ENS, SNS, UD Address endpoints
     .injectEndpoints({ endpoints: addressEndpoints })
+    // Account management endpoints
+    .injectEndpoints({ endpoints: accountEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -3115,6 +3115,7 @@ export const {
   reducer: walletApiReducer,
   reducerPath: walletApiReducerPath,
   // hooks
+  useAddAccountMutation,
   useAddUserTokenMutation,
   useApproveERC20AllowanceMutation,
   useApproveHardwareTransactionMutation,
@@ -3383,11 +3384,11 @@ export type WalletApiSliceState = ReturnType<typeof walletApi['reducer']>
 export type WalletApiSliceStateFromRoot = { walletApi: WalletApiSliceState }
 
 async function getSelectedNetwork(
-  api: WalletApiProxy
-): Promise<BraveWallet.NetworkInfo | undefined> {
-  const { braveWalletService } = api
-  return (await braveWalletService.getNetworkForSelectedAccountOnActiveOrigin())
-    .network ?? undefined
+  api: Pick<WalletApiProxy, 'braveWalletService'>
+): Promise<BraveWallet.NetworkInfo | null> {
+  return (
+    await api.braveWalletService.getNetworkForSelectedAccountOnActiveOrigin()
+  ).network
 }
 
 // panel internals

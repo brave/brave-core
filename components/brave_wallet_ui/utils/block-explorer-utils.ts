@@ -74,7 +74,10 @@ export const openBlockExplorerURL = ({
   value
 }: {
   id?: string | undefined
-  network?: Pick<BraveWallet.NetworkInfo, 'chainId' | 'blockExplorerUrls'>
+  network?: Pick<
+    BraveWallet.NetworkInfo,
+    'chainId' | 'blockExplorerUrls'
+  > | null
   type: BlockExplorerUrlTypes
   value?: string | undefined
 }): (() => void) => {

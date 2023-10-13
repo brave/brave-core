@@ -99,6 +99,8 @@ import {
   Row,
   HorizontalSpace
 } from '../../../shared/style'
+
+// Queries
 import {
   useGetVisibleNetworksQuery,
   useGetPricesHistoryQuery,
@@ -106,6 +108,7 @@ import {
   useReportActiveWalletsToP3AMutation,
   useGetDefaultFiatCurrencyQuery
 } from '../../../../common/slices/api.slice'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s
 } from '../../../../common/slices/constants'
@@ -121,8 +124,6 @@ export const PortfolioOverview = () => {
     useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
   const selectedPortfolioTimeline =
     useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
-  const accounts =
-    useUnsafeWalletSelector(WalletSelectors.accounts)
   const selectedTimeline =
     useSafePageSelector(PageSelectors.selectedTimeline)
   const nftMetadata =
@@ -145,6 +146,7 @@ export const PortfolioOverview = () => {
     useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
 
   // queries
+  const { accounts } = useAccountsQuery()
   const { data: networks } = useGetVisibleNetworksQuery()
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
 

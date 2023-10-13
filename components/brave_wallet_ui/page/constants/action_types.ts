@@ -12,12 +12,6 @@ export type CreateWalletPayloadType = {
   password: string
 }
 
-export type AddAccountPayloadType = {
-  accountName: string
-  keyringId: BraveWallet.KeyringId
-  coin: BraveWallet.CoinType
-}
-
 export type ImportAccountPayloadType = {
   accountName: string
   privateKey: string

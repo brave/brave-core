@@ -33,7 +33,7 @@ import {
 } from './style'
 
 export interface Props {
-  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  selectedNetwork: BraveWallet.NetworkInfo | undefined | null
   selectedAccount: BraveWallet.AccountId | undefined
 }
 

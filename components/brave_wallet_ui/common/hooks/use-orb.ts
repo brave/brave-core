@@ -65,7 +65,7 @@ export const useAddressOrb = (
 }
 
 export const useNetworkOrb = (
-  networkInfo: Pick<BraveWallet.NetworkInfo, 'chainName'> | undefined,
+  networkInfo: Pick<BraveWallet.NetworkInfo, 'chainName'> | undefined | null,
   options?: Partial<OrbOptions>
 ) => {
   return React.useMemo(() => {

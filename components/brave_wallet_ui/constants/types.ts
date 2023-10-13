@@ -226,7 +226,6 @@ export interface WalletState {
   favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
-  accounts: BraveWallet.AccountInfo[]
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe

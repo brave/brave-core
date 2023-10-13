@@ -67,6 +67,7 @@ import {
   useGetDefaultFiatCurrencyQuery
 } from '../../../../common/slices/api.slice'
 import {
+  useAccountsQuery,
   useGetCombinedTokensListQuery
 } from '../../../../common/slices/api.slice.extra'
 import {
@@ -125,7 +126,6 @@ export const PortfolioAsset = (props: Props) => {
 
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const coinMarketData = useUnsafeWalletSelector(WalletSelectors.coinMarketData)
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
 
@@ -174,6 +174,8 @@ export const PortfolioAsset = (props: Props) => {
   ])
 
   // queries
+  const { accounts } = useAccountsQuery()
+
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
   const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
