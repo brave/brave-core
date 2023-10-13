@@ -24,6 +24,33 @@ RegisterStyleOverride(
   `
 )
 
+const extractVersions = (versionElement: Element) => {
+  const [ _, braveVersion, chromiumVersion, build ] = versionElement
+    .innerHTML
+    .match(/^Version\s([\d+\.?]+)\sChromium:\s([\d+\.?]+)\s(.*)$/) ?? []
+
+  return { braveVersion, build, chromiumVersion }
+}
+
+const buildBraveVersionLink = (braveVersion: string, build: string) => {
+  const wrapper = document.createElement('a')
+  wrapper.setAttribute('id', 'release-notes')
+  wrapper.setAttribute('target', '_blank')
+  wrapper.setAttribute('rel', 'noopener noreferrer')
+  wrapper.setAttribute('href', 'https://brave.com/latest/')
+  wrapper.textContent = `Brave ${braveVersion} ${build}`
+
+  return wrapper
+}
+
+const buildChromiumVersionElement = (chromiumVersion:string) => {
+  const chromiumElement = document.createElement('div')
+  chromiumElement.classList.add("secondary")
+  chromiumElement.textContent = `Chromium: ${chromiumVersion}`
+
+  return chromiumElement
+}
+
 RegisterPolymerTemplateModifications({
   'settings-about-page': (templateContent) => {
     const section = getSectionElement(templateContent, 'about')
@@ -50,6 +77,13 @@ RegisterPolymerTemplateModifications({
       const parent = version.parentNode
       parent?.replaceChild(wrapper, version)
       wrapper.appendChild(version)
+
+      const { braveVersion, build, chromiumVersion } = extractVersions(version)
+      const braveVersionLink = buildBraveVersionLink(braveVersion, build)
+      version.parentNode?.replaceChild(braveVersionLink, version)
+
+      const chromiumVersionElement = buildChromiumVersionElement(chromiumVersion)
+      braveVersionLink.after(chromiumVersionElement)
     }
 
     // Help link shown if update fails
