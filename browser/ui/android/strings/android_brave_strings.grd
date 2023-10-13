@@ -1365,6 +1365,12 @@ Are you sure you want to do this?
       <message name="IDS_ENABLING_PASSWORD_SYNC_AUTH_MESSAGE" desc="Description shown when we ask for auth while enabling passwords sync">
         Unlock to enable passwords sync
       </message>
+      <message name="IDS_SYNC_PASSWORD_REQUIRE_AUTH_SUMMARY" desc="Summary displayed on Sync passwords data preference turned off switch to inform user that authentication will be required">
+        Before you can sync passwords, you'll need to authenticate with your device biometrics/passcode. This extra security measure helps keep your passwords safe.
+      </message>
+      <message name="IDS_DEVICE_REQUIRE_AUTH_TO_SYNC_PASSWORDS_SUMMARY" desc="Summary displayed on Sync passwords data preference turned off switch to inform user that in order to turn on Passwords sync, device should have enabled lockscreen biometrics/passcode authentication">
+        To sync passwords, please enable biometrics/passcode authentication on your Android device. This extra security measure helps keep your passwords safe.
+      </message>
       <message name="IDS_BRAVE_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
         https://brave.com/privacy_android
       </message>
