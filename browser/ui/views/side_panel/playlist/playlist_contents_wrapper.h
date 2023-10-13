@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_CONTENTS_WRAPPER_H_
 
 #include <memory>
+#include <string>
 
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
@@ -56,6 +57,9 @@ class PlaylistContentsWrapper
                       const blink::mojom::WindowFeatures& window_features,
                       bool user_gesture,
                       bool* was_blocked) override;
+
+  std::string GetTitleForMediaControls(
+      content::WebContents* web_contents) override;
 
   // FullscreenObserver:
   void OnFullscreenStateChanged() override;
