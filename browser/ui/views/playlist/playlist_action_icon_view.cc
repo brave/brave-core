@@ -47,7 +47,7 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
     return;
   }
 
-  auto* playlist_tab_helper = this->playlist_tab_helper();
+  auto* playlist_tab_helper = GetPlaylistTabHelper();
   if (!playlist_tab_helper || playlist_tab_helper->is_adding_items()) {
     return;
   }
@@ -81,7 +81,7 @@ void PlaylistActionIconView::UpdateImpl() {
   }
   playlist_tab_helper_observation_.Reset();
 
-  auto* playlist_tab_helper = this->playlist_tab_helper();
+  auto* playlist_tab_helper = GetPlaylistTabHelper();
   if (!playlist_tab_helper) {
     UpdateState(/* has_saved= */ false, /* found_items= */ false);
     return;
@@ -99,18 +99,30 @@ void PlaylistActionIconView::PlaylistTabHelperWillBeDestroyed() {
 
 void PlaylistActionIconView::OnSavedItemsChanged(
     const std::vector<playlist::mojom::PlaylistItemPtr>& saved_items) {
-  auto* playlist_tab_helper = this->playlist_tab_helper();
-  CHECK(playlist_tab_helper);
+  auto* playlist_tab_helper = GetPlaylistTabHelper();
+  if (!playlist_tab_helper) {
+    return;
+  }
 
   UpdateState(saved_items.size(), playlist_tab_helper->found_items().size());
 }
 
 void PlaylistActionIconView::OnFoundItemsChanged(
     const std::vector<playlist::mojom::PlaylistItemPtr>& found_items) {
-  auto* playlist_tab_helper = this->playlist_tab_helper();
-  CHECK(playlist_tab_helper);
+  auto* playlist_tab_helper = GetPlaylistTabHelper();
+  if (!playlist_tab_helper) {
+    return;
+  }
 
   UpdateState(playlist_tab_helper->saved_items().size(), found_items.size());
+}
+
+playlist::PlaylistTabHelper* PlaylistActionIconView::GetPlaylistTabHelper() {
+  if (auto* contents = GetWebContents()) {
+    return playlist::PlaylistTabHelper::FromWebContents(contents);
+  }
+
+  return nullptr;
 }
 
 void PlaylistActionIconView::UpdateState(bool has_saved, bool found_items) {
