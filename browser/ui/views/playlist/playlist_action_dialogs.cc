@@ -165,10 +165,8 @@ class BoundedTextfield : public views::Textfield {
   }
 
   void UpdateLengthLabel() {
-    length_label_->SetText(
-        base::UTF8ToUTF16(
-        base::StringPrintf("%zu/%zu", GetText().length(),
-                           max_length_)));
+    length_label_->SetText(base::UTF8ToUTF16(
+        base::StringPrintf("%zu/%zu", GetText().length(), max_length_)));
   }
 
   const size_t max_length_;
