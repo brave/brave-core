@@ -6,16 +6,22 @@
 import * as React from 'react'
 
 import { getLocale, splitStringForTag } from '$web-common/locale'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 import styles from './style.module.scss'
 import privacyGraphicUrl from '../../assets/privacy_graphic.svg'
 import getPageHandlerInstance from '../../api/page_handler'
 
+const WIKI_URL = "https://github.com/brave/brave-browser/wiki/Brave-Leo"
+
 function PrivacyMessage () {
   const aboutDescription2 = splitStringForTag(getLocale('aboutDescription_2'))
 
   const handleAnchorClick = () => {
-    getPageHandlerInstance().pageHandler.openBraveLeoWiki()
+    const mojomUrl = new Url()
+    mojomUrl.url = WIKI_URL
+
+    getPageHandlerInstance().pageHandler.openURL(mojomUrl)
   }
 
   return (
@@ -29,7 +35,7 @@ function PrivacyMessage () {
         <p>{getLocale('aboutDescription')}</p>
         <p>
           {aboutDescription2.beforeTag}
-          <a onClick={handleAnchorClick} href="https://github.com/brave/brave-browser/wiki/Brave-Leo" target="_blank">
+          <a onClick={handleAnchorClick} href={WIKI_URL} target="_blank">
             {aboutDescription2.duringTag}
           </a>
           {aboutDescription2.afterTag}

@@ -1,0 +1,32 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.moreButton {
+  --leo-icon-size: 18px;
+
+  background-color: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-full);
+  border: 1px solid var(--leo-color-divider-interactive);
+
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+
+  leo-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.liked {
+  color: var(--leo-color-systemfeedback-success-text);
+}
+
+.disliked {
+  color: var(--leo-color-systemfeedback-error-text);
+}

@@ -47,7 +47,27 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"dismissButtonLabel", IDS_CHAT_UI_DISMISS_BUTTON_LABEL},
       {"unlockPremiumTitle", IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE},
       {"premiumFeature_1_desc", IDS_CHAT_UI_PREMIUM_FEATURE_1_DESC},
-      {"premiumFeature_2_desc", IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC}};
+      {"premiumFeature_2_desc", IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC},
+      {"feedbackSent", IDS_CHAT_UI_FEEDBACK_SENT},
+      {"answerDisliked", IDS_CHAT_UI_ANSWER_DISLIKED},
+      {"answerLiked", IDS_CHAT_UI_ANSWER_LIKED},
+      {"addFeedbackButtonLabel", IDS_CHAT_UI_ADD_FEEDBACK_BUTTON_LABEL},
+      {"copyButtonLabel", IDS_CHAT_UI_COPY_BUTTON_LABEL},
+      {"likeAnswerButtonLabel", IDS_CHAT_UI_LIKE_ANSWER_BUTTON_LABEL},
+      {"dislikeAnswerButtonLabel", IDS_CHAT_UI_DISLIKE_ANSWER_BUTTON_LABEL},
+      {"provideFeedbackTitle", IDS_CHAT_UI_PROVIDE_FEEDBACK_TITLE},
+      {"selectFeedbackTopic", IDS_CHAT_UI_SELECT_FEEDBACK_TOPIC},
+      {"feedbackCategoryLabel", IDS_CHAT_UI_FEEDBACK_CATEGORY_LABEL},
+      {"feedbackDescriptionLabel", IDS_CHAT_UI_FEEDBACK_DESCRIPTION_LABEL},
+      {"feedbackPremiumNote", IDS_CHAT_UI_FEEDBACK_PREMIUM_NOTE},
+      {"submitButtonLabel", IDS_CHAT_UI_SUBMIT_BUTTON_LABEL},
+      {"cancelButtonLabel", IDS_CHAT_UI_CANCEL_BUTTON_LABEL},
+      {"optionNotHelpful", IDS_CHAT_UI_OPTION_NOT_HELPFUL},
+      {"optionIncorrect", IDS_CHAT_UI_OPTION_INCORRECT},
+      {"optionUnsafeHarmful", IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL},
+      {"optionOther", IDS_CHAT_UI_OPTION_OTHER},
+      {"feedbackError", IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR},
+      {"ratingError", IDS_CHAT_UI_RATING_ERROR}};
 
   return kLocalizedStrings;
 }
