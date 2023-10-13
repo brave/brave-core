@@ -25,7 +25,8 @@ import {
 // entities
 import {
   accountInfoEntityAdaptor,
-  accountInfoEntityAdaptorInitialState
+  accountInfoEntityAdaptorInitialState,
+  selectAllAccountInfosFromQuery
 } from './entities/account-info.entity'
 
 // utils
@@ -40,6 +41,15 @@ import {
 } from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { selectPendingTransactions } from './entities/transaction.entity'
+
+export const useAccountsQuery = () => {
+  return useGetAccountInfosRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      accounts: selectAllAccountInfosFromQuery(res)
+    })
+  })
+}
 
 export const useAccountQuery = (
   accountId: BraveWallet.AccountId | undefined | typeof skipToken,

@@ -21,7 +21,6 @@ import {
   UpdateAccountNamePayloadType
 } from '../../constants/types'
 import {
-  AddAccountPayloadType,
   ImportAccountFromJsonPayloadType,
   ImportAccountPayloadType,
   RemoveAccountPayloadType
@@ -84,17 +83,6 @@ async function refreshWalletInfo (store: Store, payload: RefreshOpts = {}) {
   await store.dispatch(refreshSitePermissions())
 }
 
-async function updateAccountInfo (store: Store) {
-  const state = getWalletState(store)
-  const proxy = getAPIProxy()
-  const { allAccounts } = (await proxy.keyringService.getAllAccounts())
-  if (state.accounts.length === allAccounts.accounts.length) {
-    await store.dispatch(WalletActions.refreshAccountInfo(allAccounts))
-  } else {
-    await refreshWalletInfo(store)
-  }
-}
-
 handler.on(
   WalletActions.refreshNetworksAndTokens.type,
   async (store: Store, payload: RefreshOpts
@@ -145,10 +133,6 @@ handler.on(WalletActions.unlocked.type, async (store) => {
 
 handler.on(WalletActions.backedUp.type, async (store) => {
   await refreshWalletInfo(store)
-})
-
-handler.on(WalletActions.accountsChanged.type, async (store) => {
-  await updateAccountInfo(store)
 })
 
 handler.on(WalletActions.defaultEthereumWalletChanged.type, async (store) => {
@@ -329,12 +313,6 @@ handler.on(WalletActions.getCoinMarkets.type, async (store: Store, payload: GetC
   const assetRatioService = getAPIProxy().assetRatioService
   const result = await assetRatioService.getCoinMarkets(payload.vsAsset, payload.limit)
   store.dispatch(WalletActions.setCoinMarkets(result))
-})
-
-handler.on(WalletActions.addAccount.type, async (_store: Store, payload: AddAccountPayloadType) => {
-  const { keyringService } = getAPIProxy()
-  const result = await keyringService.addAccount(payload.coin, payload.keyringId, payload.accountName)
-  return !!result.accountInfo
 })
 
 handler.on(

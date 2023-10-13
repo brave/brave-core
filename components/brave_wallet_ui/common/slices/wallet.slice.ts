@@ -28,7 +28,6 @@ import {
   UpdateUsetAssetType
 } from '../constants/action_types'
 import {
-  AddAccountPayloadType,
   ImportAccountFromJsonPayloadType,
   ImportAccountPayloadType,
   RemoveAccountPayloadType
@@ -40,7 +39,6 @@ import {
   parseJSONFromLocalStorage,
   makeInitialFilteredOutNetworkKeys
 } from '../../utils/local-storage-utils'
-import { findAccountByUniqueKey } from '../../utils/account-utils'
 
 // Options
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
@@ -61,7 +59,6 @@ const defaultState: WalletState = {
   favoriteApps: [],
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
-  accounts: [],
   userVisibleTokensInfo: [],
   fullTokenList: [],
   selectedPortfolioTimeline:
@@ -178,7 +175,6 @@ export const WalletAsyncActions = {
   locked: createAction('locked'),
   unlocked: createAction('unlocked'),
   backedUp: createAction('backedUp'),
-  accountsChanged: createAction('accountsChanged'),
   getAllTokensList: createAction('getAllTokensList'),
   selectPortfolioTimeline: createAction<BraveWallet.AssetPriceTimeframe>(
     'selectPortfolioTimeline'
@@ -212,7 +208,6 @@ export const WalletAsyncActions = {
   setSelectedAccountFilterItem: createAction<string>(
     'setSelectedAccountFilterItem'
   ),
-  addAccount: createAction<AddAccountPayloadType>('addAccount'), // alias for keyringService.addAccount
   autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
   updateAccountName: createAction<UpdateAccountNamePayloadType>(
     'updateAccountName'
@@ -281,7 +276,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<WalletInitializedPayload>
       ) {
         state.hasInitialized = true
-        state.accounts = payload.allAccounts.accounts
         state.isWalletCreated = payload.walletInfo.isWalletCreated
         state.isFilecoinEnabled = payload.walletInfo.isFilecoinEnabled
         state.isSolanaEnabled = payload.walletInfo.isSolanaEnabled
@@ -488,17 +482,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.userVisibleTokensInfo = payload
       },
 
-      refreshAccountInfo: (
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.AllAccountsInfo>
-      ) => {
-        state.accounts.forEach((account) => {
-          const info = findAccountByUniqueKey(payload.accounts, account.accountId.uniqueKey)
-          if (info) {
-            account.name = info.name
-          }
-        })
-      },
       setIsRefreshingNetworksAndTokens: (
         state: WalletState,
         { payload }: PayloadAction<boolean>

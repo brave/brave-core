@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // utils
 import { getLocale } from '../../../../../../common/locale'
@@ -43,13 +43,13 @@ import { WalletPageActions } from '../../../../../page/actions'
 import {
   BraveWallet,
   CreateAccountOptionsType,
-  FilecoinNetwork,
-  WalletState
+  FilecoinNetwork
 } from '../../../../../constants/types'
 import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-messages'
 
 // hooks
 import { useLib } from '../../../../../common/hooks/useLib'
+import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType
@@ -87,7 +87,9 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
 
   // redux
   const dispatch = useDispatch()
-  const savedAccounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+
+  // queries
+  const { accounts: savedAccounts } = useAccountsQuery()
 
   // state
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)

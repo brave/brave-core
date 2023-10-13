@@ -111,6 +111,7 @@ import {
   tokenSuggestionsEndpoints //
 } from './endpoints/token_suggestions.endpoints'
 import { addressEndpoints } from './endpoints/address.endpoints'
+import { accountEndpoints } from './endpoints/account.endpoints';
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -3102,6 +3103,8 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: qrCodeEndpoints })
     // ENS, SNS, UD Address endpoints
     .injectEndpoints({ endpoints: addressEndpoints })
+    // Account management endpoints
+    .injectEndpoints({ endpoints: accountEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -3112,6 +3115,7 @@ export const {
   reducer: walletApiReducer,
   reducerPath: walletApiReducerPath,
   // hooks
+  useAddAccountMutation,
   useAddUserTokenMutation,
   useApproveERC20AllowanceMutation,
   useApproveHardwareTransactionMutation,

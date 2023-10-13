@@ -50,9 +50,10 @@ import { WalletSelectors } from '../../../../common/selectors'
 
 // hooks
 import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
+  useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
+import { useAddAccountMutation } from '../../../../common/slices/api.slice'
 
 interface Params {
   accountTypeName: string
@@ -69,7 +70,12 @@ export const CreateAccountModal = () => {
   const isFilecoinEnabled = useSafeWalletSelector(WalletSelectors.isFilecoinEnabled)
   const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
   const isBitcoinEnabled = useSafeWalletSelector(WalletSelectors.isBitcoinEnabled)
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+
+  // queries
+  const { accounts } = useAccountsQuery()
+
+  // mutations
+  const [addAccount] = useAddAccountMutation()
 
   // state
   const [accountName, setAccountName] = React.useState<string>('')
@@ -135,7 +141,7 @@ export const CreateAccountModal = () => {
     setBitcoinNetwork(network)
   }, [])
 
-  const onClickCreateAccount = React.useCallback(() => {
+  const onClickCreateAccount = React.useCallback(async () => {
     if (!selectedAccountType) {
       return
     }
@@ -143,13 +149,12 @@ export const CreateAccountModal = () => {
       return
     }
 
-    dispatch(
-      WalletActions.addAccount({
-        coin: selectedAccountType.coin,
-        keyringId: targetKeyringId,
-        accountName
-      })
-    )
+    await addAccount({
+      coin: selectedAccountType.coin,
+      keyringId: targetKeyringId,
+      accountName
+    })
+
     if (walletLocation.includes(WalletRoutes.Accounts)) {
       history.push(WalletRoutes.Accounts)
     }

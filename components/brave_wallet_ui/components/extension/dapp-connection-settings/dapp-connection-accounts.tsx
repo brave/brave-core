@@ -19,6 +19,7 @@ import {
 
 // Queries
 import {
+  useAccountsQuery,
   useSelectedAccountQuery
 } from '../../../common/slices/api.slice.extra'
 
@@ -61,14 +62,13 @@ export const DAppConnectionAccounts = (props: Props) => {
   } = props
 
   // Queries
+  const { accounts } = useAccountsQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
 
   // Constants
   const selectedCoin = selectedAccount?.accountId.coin
 
   // Selectors
-  const accounts: BraveWallet.AccountInfo[] =
-    useUnsafeWalletSelector(WalletSelectors.accounts)
   const connectedAccountsIds =
     useUnsafeWalletSelector(WalletSelectors.connectedAccounts)
 

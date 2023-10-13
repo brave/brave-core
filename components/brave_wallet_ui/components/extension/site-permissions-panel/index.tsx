@@ -10,7 +10,10 @@ import { useDispatch } from 'react-redux'
 import { PanelActions } from '../../../panel/actions'
 
 // Queries
-import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useAccountsQuery,
+  useSelectedAccountQuery
+} from '../../../common/slices/api.slice.extra'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -42,13 +45,13 @@ import {
 
 export const SitePermissions = () => {
   const dispatch = useDispatch()
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
   const connectedAccounts = useUnsafeWalletSelector(
     WalletSelectors.connectedAccounts
   )
 
-  // api
+  // queries
+  const { accounts } = useAccountsQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
   const selectedCoin = selectedAccount?.accountId.coin
 

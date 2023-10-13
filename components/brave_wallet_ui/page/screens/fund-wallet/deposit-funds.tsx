@@ -34,12 +34,10 @@ import {
   useGetQrCodeImageQuery
 } from '../../../common/slices/api.slice'
 import {
-  useGetCombinedTokensListQuery //
+  useAccountsQuery,
+  useGetCombinedTokensListQuery
 } from '../../../common/slices/api.slice.extra'
-import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
 import { useDebouncedCallback } from '../swap/hooks/useDebouncedCallback'
 
@@ -414,12 +412,12 @@ function DepositAccount() {
 
   // redux
   const dispatch = useDispatch()
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const selectedDepositAssetId = useSafeWalletSelector(
     WalletSelectors.selectedOnRampAssetId
   )
 
   // queries
+  const { accounts } = useAccountsQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const selectedAsset = combinedTokensList.find(
     (token) => getAssetIdKey(token) === selectedDepositAssetId
@@ -542,6 +540,7 @@ function DepositAccount() {
     return (
       <CreateAccountTab
         network={selectedAssetNetwork}
+        onCreated={setSelectedAccount}
         onCancel={() => {
           resetCopyState()
           dispatch(WalletActions.selectOnRampAssetId(undefined))

@@ -236,7 +236,9 @@ export function refreshSitePermissions () {
     const apiProxy = getAPIProxy()
     const { braveWalletService } = apiProxy
 
-    const { wallet: { accounts } } = getState()
+    const {
+      allAccounts: { accounts }
+    } = await apiProxy.keyringService.getAllAccounts()
 
     // Get a list of accounts with permissions of the active origin
     const { accountsWithPermission } =
@@ -393,8 +395,11 @@ export async function isTokenPinningSupported (token: BraveWallet.BlockchainToke
 
 export function refreshPortfolioFilterOptions () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const { accounts, selectedAccountFilter, selectedNetworkFilter } =
-      getState().wallet
+    const { selectedAccountFilter, selectedNetworkFilter } = getState().wallet
+
+    const {
+      allAccounts: { accounts }
+    } = await getAPIProxy().keyringService.getAllAccounts()
 
     const networkList = await getVisibleNetworksList(getAPIProxy())
 

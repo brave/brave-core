@@ -91,7 +91,10 @@ import {
   useSetNetworkMutation,
   useSetSelectedAccountMutation
 } from '../common/slices/api.slice'
-import { useSelectedAccountQuery } from '../common/slices/api.slice.extra'
+import {
+  useAccountsQuery,
+  useSelectedAccountQuery
+} from '../common/slices/api.slice.extra'
 import { usePendingTransactions } from '../common/hooks/use-pending-transaction'
 import PageContainer from '../page/container'
 import {
@@ -115,7 +118,6 @@ function Container () {
     useSafeWalletSelector(WalletSelectors.isPanelV2FeatureEnabled)
 
   // wallet selectors (unsafe)
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const favoriteApps = useUnsafeWalletSelector(WalletSelectors.favoriteApps)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
 
@@ -139,6 +141,7 @@ function Container () {
     useUnsafePanelSelector(PanelSelectors.signMessageErrorData)
 
   // queries & mutations
+  const { accounts } = useAccountsQuery()
   const [setSelectedAccount] = useSetSelectedAccountMutation()
   const [setNetwork] = useSetNetworkMutation()
   const { data: selectedAccount } = useSelectedAccountQuery()
@@ -337,7 +340,7 @@ function Container () {
     }
   }, [needsAccount, selectedPanel])
 
-  if (!hasInitialized || !accounts) {
+  if (!hasInitialized) {
     return null
   }
 

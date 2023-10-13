@@ -6,9 +6,7 @@
 import * as React from 'react'
 
 // Redux
-import {
-  useSelector,
-} from 'react-redux'
+import { useSelector } from 'react-redux'
 
 // Types
 import { BraveWallet, WalletState } from '../../../constants/types'
@@ -36,6 +34,7 @@ import {
 
 // Hooks
 import { useAccountOrb } from '../../../common/hooks/use-orb'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 interface Props {
   onSelectAccount: (
@@ -59,9 +58,11 @@ export const AccountFilterSelector = ({
   selectedNetwork: networkProp
 }: Props) => {
   // Wallet State
-  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+
+  // Queries
+  const { accounts } = useAccountsQuery()
 
   // State
   const [isOpen, setIsOpen] = React.useState(false)
