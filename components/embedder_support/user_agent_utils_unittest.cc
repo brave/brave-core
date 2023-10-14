@@ -56,4 +56,13 @@ TEST(UserAgentUtilsTest, UserAgentFromCommandLine) {
   EXPECT_EQ(brave_metadata, empty_metadata);
 }
 
+#if BUILDFLAG(IS_LINUX)
+TEST(UserAgentUtilsTest, UserAgentLinuxKernelVersion) {
+  auto metadata = GetUserAgentMetadata();
+
+  EXPECT_EQ(metadata.platform, "Linux");
+  EXPECT_EQ(metadata.platform_version, "");
+}
+#endif
+
 }  // namespace embedder_support
