@@ -27,6 +27,7 @@ source_set("browser_tests") {
       "//brave/browser",
       "//brave/components/brave_component_updater/browser",
       "//brave/components/brave_shields/browser",
+      "//brave/components/brave_shields/browser:test_support",
       "//brave/components/brave_shields/common",
       "//brave/components/ephemeral_storage",
       "//chrome/browser",
