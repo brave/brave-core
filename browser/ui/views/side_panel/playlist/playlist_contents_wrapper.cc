@@ -144,6 +144,12 @@ void PlaylistContentsWrapper::AddNewContents(
                        window_features, user_gesture, was_blocked);
 }
 
+std::string PlaylistContentsWrapper::GetTitleForMediaControls(
+    content::WebContents* web_contents) {
+  // This string is DNT.
+  return "Playlist";
+}
+
 bool PlaylistContentsWrapper::IsFullscreenForPlaylist() const {
   if (auto* fullscreen_tab_helper = FullscreenWithinTabHelper::FromWebContents(
           const_cast<PlaylistContentsWrapper*>(this)->web_contents())) {
