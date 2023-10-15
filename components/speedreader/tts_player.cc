@@ -221,8 +221,7 @@ const std::string& TtsPlayer::Controller::GetParagraphToRead() {
 
 void TtsPlayer::Controller::DidStartNavigation(
     content::NavigationHandle* handle) {
-  if (!handle->IsInPrimaryMainFrame() ||
-      handle->GetReloadType() == content::ReloadType::NONE) {
+  if (!handle->IsInPrimaryMainFrame() || handle->IsSameDocument()) {
     return;
   }
   Stop();
