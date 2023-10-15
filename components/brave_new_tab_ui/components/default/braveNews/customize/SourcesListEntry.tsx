@@ -6,11 +6,11 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
-import Flex from '../../../Flex'
-import { useLazyFavicon } from '../useUnpaddedImageUrl'
+import Flex from '$web-common/Flex'
+import { useLazyFavicon } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
 import { getTranslatedChannelName } from './ChannelCard'
-import { channelIcons as ChannelIcons } from './Icons'
+import { channelIcons as ChannelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
 
 interface Props {
   publisherId: string

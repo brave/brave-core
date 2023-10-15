@@ -10,3 +10,4 @@
       std::move(filter->ephemeral_storage_domain);
 
 #include "src/services/network/cookie_manager.cc"
+#undef BRAVE_DELETIONFILTERTOINFO

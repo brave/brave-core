@@ -13,9 +13,9 @@ std::string BuildModelInfo() {
 
 #define BRAVE_GET_ANDROID_OS_INFO \
   include_android_model = IncludeAndroidModel::Exclude;
+
 #define BuildModelInfo BuildModelInfo_ChromiumImpl
 
 #include "src/content/common/user_agent.cc"
-
-#undef BuildModelInfo_ChromiumImpl
+#undef BuildModelInfo
 #undef BRAVE_GET_ANDROID_OS_INFO

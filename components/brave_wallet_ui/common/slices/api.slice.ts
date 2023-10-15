@@ -110,6 +110,8 @@ import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 import {
   tokenSuggestionsEndpoints //
 } from './endpoints/token_suggestions.endpoints'
+import { addressEndpoints } from './endpoints/address.endpoints'
+import { accountEndpoints } from './endpoints/account.endpoints';
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
@@ -260,17 +262,25 @@ export function createWalletApi () {
         BraveWallet.AccountId,
         BraveWallet.AccountId
       >({
-        queryFn: async (accountId, api, extraOptions, baseQuery) => {
-          const {
-            cache,
-            data: { keyringService }
-          } = baseQuery(undefined)
+        queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
+          try {
+            const {
+              cache,
+              data: { keyringService }
+            } = baseQuery(undefined)
 
-          await keyringService.setSelectedAccount(accountId)
-          cache.clearSelectedAccount()
+            await keyringService.setSelectedAccount(accountId)
+            cache.clearSelectedAccount()
 
-          return {
-            data: accountId
+            return {
+              data: accountId
+            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              `Failed to select account (${accountId})`,
+              error
+            )
           }
         },
         invalidatesTags: [
@@ -278,15 +288,12 @@ export function createWalletApi () {
           { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
         ]
       }),
-      getSelectedAccountId: query<BraveWallet.AccountId | undefined, void>({
+      getSelectedAccountId: query<BraveWallet.AccountId | null, void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-          const { cache } = baseQuery(undefined)
-
-          const selectedAccountId = (await cache.getAllAccounts())
-            .selectedAccount?.accountId
-
           return {
-            data: selectedAccountId
+            data:
+              (await baseQuery(undefined).cache.getAllAccounts())
+                .selectedAccount?.accountId || null
           }
         },
         providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
@@ -402,7 +409,7 @@ export function createWalletApi () {
         },
         invalidatesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
       }),
-      getSelectedChain: query<BraveWallet.NetworkInfo | undefined, void>({
+      getSelectedChain: query<BraveWallet.NetworkInfo | null, void>({
         queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
           try {
             return {
@@ -911,7 +918,6 @@ export function createWalletApi () {
               case BraveWallet.CoinType.BTC: {
                 const { balance, errorMessage } =
                   await bitcoinWalletService.getBalance(
-                    token.chainId,
                     accountId
                   )
 
@@ -3030,7 +3036,30 @@ export function createWalletApi () {
                   id: [arg.chainId, arg.contractAddress].join('-')
                 }
               ]
-      })
+      }),
+      generateReceiveAddress: mutation<string, BraveWallet.AccountId>({
+        queryFn: async (accountId, { endpoint }, extraOptions, baseQuery) => {
+          try {
+            const { braveWalletService } = baseQuery(undefined).data
+            const { address, errorMessage } =
+              await braveWalletService.generateReceiveAddress(accountId)
+
+            if (!address || errorMessage) {
+              throw new Error(errorMessage ?? 'Unknown error')
+            }
+
+            return {
+              data: address
+            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              `Unable generate receive address for account: ${accountId.uniqueKey}`,
+              error
+            )
+          }
+        },
+      }),
     }}
   })
     // panel endpoints
@@ -3072,6 +3101,10 @@ export function createWalletApi () {
     .injectEndpoints({ endpoints: tokenSuggestionsEndpoints })
     // QR Code generator endpoints
     .injectEndpoints({ endpoints: qrCodeEndpoints })
+    // ENS, SNS, UD Address endpoints
+    .injectEndpoints({ endpoints: addressEndpoints })
+    // Account management endpoints
+    .injectEndpoints({ endpoints: accountEndpoints })
 }
 
 export type WalletApi = ReturnType<typeof createWalletApi>
@@ -3082,6 +3115,7 @@ export const {
   reducer: walletApiReducer,
   reducerPath: walletApiReducerPath,
   // hooks
+  useAddAccountMutation,
   useAddUserTokenMutation,
   useApproveERC20AllowanceMutation,
   useApproveHardwareTransactionMutation,
@@ -3089,17 +3123,21 @@ export const {
   useApproveTransactionMutation,
   useCancelTransactionMutation,
   useClosePanelUIMutation,
+  useEnableEnsOffchainLookupMutation,
+  useGenerateReceiveAddressMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetAddressByteCodeQuery,
+  useGetAddressFromNameServiceUrlQuery,
   useGetAutopinEnabledQuery,
   useGetBuyUrlQuery,
   useGetCoingeckoIdQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultFiatCurrencyQuery,
+  useGetERC721MetadataQuery,
+  useGetEthAddressChecksumQuery,
   useGetEthTokenDecimalsQuery,
   useGetEthTokenSymbolQuery,
-  useGetERC721MetadataQuery,
   useGetEVMTransactionSimulationQuery,
   useGetExternalRewardsWalletQuery,
   useGetFVMAddressQuery,
@@ -3107,6 +3145,7 @@ export const {
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,
   useGetIPFSUrlFromGatewayLikeUrlQuery,
+  useGetIsBase58EncodedSolPubkeyQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetLocalIpfsNodeStatusQuery,
   useGetNetworksRegistryQuery,
@@ -3175,8 +3214,10 @@ export const {
   useRemoveUserTokenMutation,
   useReportActiveWalletsToP3AMutation,
   useRetryTransactionMutation,
+  useSendBtcTransactionMutation,
   useSendERC20TransferMutation,
   useSendERC721TransferFromMutation,
+  useSendETHFilForwarderTransferMutation,
   useSendEthTransactionMutation,
   useSendFilTransactionMutation,
   useSendSolTransactionMutation,
@@ -3197,7 +3238,7 @@ export const {
   useUpdateUnapprovedTransactionNonceMutation,
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
-  useUpdateUserTokenMutation
+  useUpdateUserTokenMutation,
 } = walletApi
 
 // Derived Data Queries
@@ -3343,11 +3384,11 @@ export type WalletApiSliceState = ReturnType<typeof walletApi['reducer']>
 export type WalletApiSliceStateFromRoot = { walletApi: WalletApiSliceState }
 
 async function getSelectedNetwork(
-  api: WalletApiProxy
-): Promise<BraveWallet.NetworkInfo | undefined> {
-  const { braveWalletService } = api
-  return (await braveWalletService.getNetworkForSelectedAccountOnActiveOrigin())
-    .network ?? undefined
+  api: Pick<WalletApiProxy, 'braveWalletService'>
+): Promise<BraveWallet.NetworkInfo | null> {
+  return (
+    await api.braveWalletService.getNetworkForSelectedAccountOnActiveOrigin()
+  ).network
 }
 
 // panel internals

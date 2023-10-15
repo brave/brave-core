@@ -41,20 +41,24 @@ interface Config {
   marginRight?: number
 }
 
+export type IconAsset = Pick<
+  BraveWallet.BlockchainToken,
+  | 'chainId'
+  | 'contractAddress'
+  | 'isErc721'
+  | 'isNft'
+  | 'logo'
+  | 'name'
+  | 'symbol'
+>
+
 interface Props {
-  asset:
-    | Pick<
-        BraveWallet.BlockchainToken,
-        | 'symbol'
-        | 'logo'
-        | 'isNft'
-        | 'isErc721'
-        | 'contractAddress'
-        | 'name'
-        | 'chainId'
-      >
+  asset: IconAsset | undefined
+  /** @deprecated Not used */
+  network:
+    | Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'>
     | undefined
-  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'symbol'> | undefined
+    | null
 }
 
 const isStorybook = isComponentInStorybook()

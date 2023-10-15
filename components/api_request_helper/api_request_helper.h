@@ -201,6 +201,9 @@ class APIRequestHelper {
   void Cancel(const Ticket& ticket);
   void CancelAll();
 
+  void SetUrlLoaderFactoryForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;
   APIRequestHelper& operator=(const APIRequestHelper&) = delete;

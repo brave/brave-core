@@ -33,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_keyring.h"
+#include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -145,6 +146,8 @@ const char kCoinType[] = "coin_type";
 const char kLegacyBraveWallet[] = "legacy_brave_wallet";
 const char kHardwareAccounts[] = "hardware";
 const char kHardwareDerivationPath[] = "derivation_path";
+const char kBitcoinNextReceiveIndex[] = "bitcoin.next_receive";
+const char kBitcoinNextChangeIndex[] = "bitcoin.next_change";
 
 std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
   switch (keyring_id) {
@@ -465,6 +468,16 @@ struct DerivedAccountInfo {
     derived_account.Set(kAccountIndex, base::NumberToString(account_index));
     derived_account.Set(kAccountName, account_name);
     derived_account.Set(kAccountAddress, account_address);
+    if (bitcoin_next_receive_address_index) {
+      derived_account.SetByDottedPath(
+          kBitcoinNextReceiveIndex,
+          base::NumberToString(*bitcoin_next_receive_address_index));
+    }
+    if (bitcoin_next_change_address_index) {
+      derived_account.SetByDottedPath(
+          kBitcoinNextChangeIndex,
+          base::NumberToString(*bitcoin_next_change_address_index));
+    }
     return base::Value(std::move(derived_account));
   }
 
@@ -488,12 +501,34 @@ struct DerivedAccountInfo {
       return absl::nullopt;
     }
 
-    return DerivedAccountInfo(account_index, *account_name, *account_address);
+    DerivedAccountInfo account_info(account_index, *account_name,
+                                    *account_address);
+    if (auto* bitcoin_receive_string =
+            value_dict->FindStringByDottedPath(kBitcoinNextReceiveIndex)) {
+      uint32_t bitcoin_receive_value = 0;
+      if (!base::StringToUint(*bitcoin_receive_string,
+                              &bitcoin_receive_value)) {
+        return absl::nullopt;
+      }
+      account_info.bitcoin_next_receive_address_index = bitcoin_receive_value;
+    }
+    if (auto* bitcoin_change_string =
+            value_dict->FindStringByDottedPath(kBitcoinNextChangeIndex)) {
+      uint32_t bitcoin_change_value = 0;
+      if (!base::StringToUint(*bitcoin_change_string, &bitcoin_change_value)) {
+        return absl::nullopt;
+      }
+      account_info.bitcoin_next_change_address_index = bitcoin_change_value;
+    }
+
+    return account_info;
   }
 
   uint32_t account_index;
   std::string account_name;
   std::string account_address;
+  absl::optional<uint32_t> bitcoin_next_receive_address_index;
+  absl::optional<uint32_t> bitcoin_next_change_address_index;
 };
 
 // Gets all hd account from prefs.
@@ -2520,84 +2555,176 @@ void KeyringService::HasPendingUnlockRequest(
   std::move(callback).Run(HasPendingUnlockRequest());
 }
 
-absl::optional<std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>>>
-KeyringService::GetBitcoinAddresses(const mojom::AccountId& account_id) {
-  CHECK(IsBitcoinAccount(account_id));
+void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::BitcoinKeyIdPtr& key_id) {
+  CHECK(account_id);
+  CHECK(key_id);
+  CHECK(IsBitcoinAccount(*account_id));
 
-  auto* bitcoin_keyring = GetBitcoinKeyringById(account_id.keyring_id);
+  ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
+  base::Value::List& account_metas = GetListPrefForKeyringUpdate(
+      keyrings_update, kAccountMetas, account_id->keyring_id);
+  for (auto& item : account_metas) {
+    if (auto derived_account = DerivedAccountInfo::FromValue(item)) {
+      if (*account_id == *MakeAccountIdForDerivedAccount(
+                             *derived_account, account_id->keyring_id)) {
+        if (key_id->change == kBitcoinReceiveIndex) {
+          derived_account->bitcoin_next_receive_address_index = key_id->index;
+        } else if (key_id->change == kBitcoinChangeIndex) {
+          derived_account->bitcoin_next_change_address_index = key_id->index;
+        } else {
+          NOTREACHED();
+          return;
+        }
+        item = derived_account->ToValue();
+        NotifyAccountsChanged();
+        return;
+      }
+    }
+  }
+}
+
+mojom::BitcoinAccountInfoPtr KeyringService::GetBitcoinAccountInfo(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(account_id);
+  CHECK(IsBitcoinAccount(*account_id));
+
+  auto keyring_id = account_id->keyring_id;
+  auto* bitcoin_keyring = GetBitcoinKeyringById(keyring_id);
+  if (!bitcoin_keyring) {
+    return {};
+  }
+
+  for (const auto& derived_account_info :
+       GetDerivedAccountsForKeyring(profile_prefs_, keyring_id)) {
+    if (account_id->bitcoin_account_index !=
+        derived_account_info.account_index) {
+      continue;
+    }
+    auto result = mojom::BitcoinAccountInfo::New();
+
+    auto receive_key_id = mojom::BitcoinKeyId::New(
+        kBitcoinReceiveIndex,
+        derived_account_info.bitcoin_next_receive_address_index.value_or(0));
+    auto receive_address = bitcoin_keyring->GetAddress(
+        derived_account_info.account_index, *receive_key_id);
+    if (!receive_address) {
+      return {};
+    }
+    result->next_receive_address = mojom::BitcoinAddress::New(
+        std::move(*receive_address), std::move(receive_key_id));
+
+    auto change_key_id = mojom::BitcoinKeyId::New(
+        kBitcoinChangeIndex,
+        derived_account_info.bitcoin_next_change_address_index.value_or(0));
+    auto change_address = bitcoin_keyring->GetAddress(
+        derived_account_info.account_index, *change_key_id);
+    if (!change_address) {
+      return {};
+    }
+    result->next_change_address = mojom::BitcoinAddress::New(
+        std::move(*change_address), std::move(change_key_id));
+    return result;
+  }
+
+  return {};
+}
+
+absl::optional<std::vector<mojom::BitcoinAddressPtr>>
+KeyringService::GetBitcoinAddresses(const mojom::AccountIdPtr& account_id) {
+  CHECK(account_id);
+  CHECK(IsBitcoinAccount(*account_id));
+
+  auto* bitcoin_keyring = GetBitcoinKeyringById(account_id->keyring_id);
   if (!bitcoin_keyring) {
     return absl::nullopt;
   }
 
-  // TODO(apaymyshev): store used addresses indexes in prefs.
-
-  // TODO(apaymyshev): temporarily just return first 5 recieve and 5 change
-  // addresses.
-  std::vector<std::pair<std::string, mojom::BitcoinKeyIdPtr>> addresses;
-  for (auto i = 0; i < 5; ++i) {
-    auto key_id =
-        mojom::BitcoinKeyId::New(account_id.bitcoin_account_index, 0, i);
-    auto address = bitcoin_keyring->GetAddress(*key_id);
-    if (!address) {
-      return absl::nullopt;
-    }
-    addresses.emplace_back(*address, std::move(key_id));
+  auto bitcoin_account_info = GetBitcoinAccountInfo(account_id);
+  if (!bitcoin_account_info) {
+    return absl::nullopt;
   }
-  for (auto i = 0; i < 5; ++i) {
-    auto key_id =
-        mojom::BitcoinKeyId::New(account_id.bitcoin_account_index, 1, i);
-    auto address = bitcoin_keyring->GetAddress(*key_id);
+
+  std::vector<mojom::BitcoinAddressPtr> addresses;
+  for (auto i = 0u;
+       i < bitcoin_account_info->next_receive_address->key_id->index; ++i) {
+    auto key_id = mojom::BitcoinKeyId::New(kBitcoinReceiveIndex, i);
+    auto address =
+        bitcoin_keyring->GetAddress(account_id->bitcoin_account_index, *key_id);
     if (!address) {
       return absl::nullopt;
     }
-    addresses.emplace_back(*address, std::move(key_id));
+    addresses.emplace_back(
+        mojom::BitcoinAddress::New(*address, std::move(key_id)));
+  }
+  for (auto i = 0u;
+       i < bitcoin_account_info->next_change_address->key_id->index; ++i) {
+    auto key_id = mojom::BitcoinKeyId::New(kBitcoinChangeIndex, i);
+    auto address =
+        bitcoin_keyring->GetAddress(account_id->bitcoin_account_index, *key_id);
+    if (!address) {
+      return absl::nullopt;
+    }
+    addresses.emplace_back(
+        mojom::BitcoinAddress::New(*address, std::move(key_id)));
   }
 
   return addresses;
 }
 
-absl::optional<std::string> KeyringService::GetBitcoinAddress(
-    const mojom::AccountId& account_id,
-    const mojom::BitcoinKeyId& key_id) {
-  CHECK(IsBitcoinAccount(account_id));
-  CHECK_EQ(account_id.bitcoin_account_index, key_id.account);
+mojom::BitcoinAddressPtr KeyringService::GetBitcoinAddress(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::BitcoinKeyIdPtr& key_id) {
+  CHECK(account_id);
+  CHECK(key_id);
+  CHECK(IsBitcoinAccount(*account_id));
 
-  auto* bitcoin_keyring = GetBitcoinKeyringById(account_id.keyring_id);
+  auto* bitcoin_keyring = GetBitcoinKeyringById(account_id->keyring_id);
   if (!bitcoin_keyring) {
-    return absl::nullopt;
+    return {};
   }
 
-  return bitcoin_keyring->GetAddress(key_id);
+  auto address_string =
+      bitcoin_keyring->GetAddress(account_id->bitcoin_account_index, *key_id);
+  if (!address_string) {
+    return {};
+  }
+
+  return mojom::BitcoinAddress::New(*address_string, key_id.Clone());
 }
 
 absl::optional<std::vector<uint8_t>> KeyringService::GetBitcoinPubkey(
-    const mojom::AccountId& account_id,
-    const mojom::BitcoinKeyId& key_id) {
-  CHECK(IsBitcoinAccount(account_id));
-  CHECK_EQ(account_id.bitcoin_account_index, key_id.account);
+    const mojom::AccountIdPtr& account_id,
+    const mojom::BitcoinKeyIdPtr& key_id) {
+  CHECK(account_id);
+  CHECK(key_id);
+  CHECK(IsBitcoinAccount(*account_id));
 
-  auto* bitcoin_keyring = GetBitcoinKeyringById(account_id.keyring_id);
+  auto* bitcoin_keyring = GetBitcoinKeyringById(account_id->keyring_id);
   if (!bitcoin_keyring) {
     return absl::nullopt;
   }
 
-  return bitcoin_keyring->GetPubkey(key_id);
+  return bitcoin_keyring->GetPubkey(account_id->bitcoin_account_index, *key_id);
 }
 
 absl::optional<std::vector<uint8_t>>
 KeyringService::SignMessageByBitcoinKeyring(
-    const mojom::AccountId& account_id,
-    const mojom::BitcoinKeyId& key_id,
+    const mojom::AccountIdPtr& account_id,
+    const mojom::BitcoinKeyIdPtr& key_id,
     base::span<const uint8_t, 32> message) {
-  CHECK(IsBitcoinAccount(account_id));
-  CHECK_EQ(account_id.bitcoin_account_index, key_id.account);
+  CHECK(account_id);
+  CHECK(key_id);
+  CHECK(IsBitcoinAccount(*account_id));
 
-  auto* bitcoin_keyring = GetBitcoinKeyringById(account_id.keyring_id);
+  auto* bitcoin_keyring = GetBitcoinKeyringById(account_id->keyring_id);
   if (!bitcoin_keyring) {
     return absl::nullopt;
   }
 
-  return bitcoin_keyring->SignMessage(key_id, message);
+  return bitcoin_keyring->SignMessage(account_id->bitcoin_account_index,
+                                      *key_id, message);
 }
 
 void KeyringService::ResetAllAccountInfosCache() {

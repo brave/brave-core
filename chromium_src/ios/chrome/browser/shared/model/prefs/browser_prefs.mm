@@ -49,7 +49,13 @@ void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
 
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS \
   BraveRegisterBrowserStatePrefs(registry);
+
 #define BRAVE_REGISTER_LOCAL_STATE_PREFS BraveRegisterLocalStatePrefs(registry);
+
 #define BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS \
   BraveMigrateObsoleteBrowserStatePrefs(prefs);
+
 #include "src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm"
+#undef BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
+#undef BRAVE_REGISTER_LOCAL_STATE_PREFS
+#undef BRAVE_REGISTER_BROWSER_STATE_PREFS

@@ -25,6 +25,6 @@ using string = ::std::string;
 #include "src/brave/third_party/bitcoin-core/src/src/serialize.h"  // IWYU pragma: export
 #undef throw
 #undef ios_base
-#undef string
+#undef failure
 
 #endif  // BRAVE_CHROMIUM_SRC_BRAVE_THIRD_PARTY_BITCOIN_CORE_SRC_SRC_SERIALIZE_H_

@@ -7,9 +7,7 @@ import { WalletActions } from '../slices/wallet.slice'
 
 // We must re-export actions here until we remove all imports of this file
 export const {
-  accountsChanged,
   activeOriginChanged,
-  addAccount,
   addFavoriteApp,
   addUserAsset,
   addUserAssetError,
@@ -36,7 +34,6 @@ export const {
   lockWallet,
   portfolioTimelineUpdated,
   refreshAll,
-  refreshAccountInfo,
   refreshBalancesAndPriceHistory,
   refreshNetworksAndTokens,
   removeFavoriteApp,

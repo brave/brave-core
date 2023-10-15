@@ -28,6 +28,10 @@ class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
+
+    NotifyTabDidChange(
+        /*tab_id=*/1, /*redirect_chain=*/{GURL("brave://newtab")},
+        /*is_visible=*/true);
   }
 
   void SetUpMocks() override {

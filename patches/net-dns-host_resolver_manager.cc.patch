@@ -1,0 +1,12 @@
+diff --git a/net/dns/host_resolver_manager.cc b/net/dns/host_resolver_manager.cc
+index 5318e289e60e57d6d4f2666551d81dc2ca142687..8a53bca20f98e371621a073ca159f5b1381cfe6d 100644
+--- a/net/dns/host_resolver_manager.cc
++++ b/net/dns/host_resolver_manager.cc
+@@ -2788,6 +2788,7 @@ class HostResolverManager::Job : public PrioritizedDispatcher::Job,
+       MaybeCacheResult(results, ttl, secure);
+ 
+     RecordJobHistograms(results, task_type);
++    BRAVE_RECORD_DNS_COUNTS
+ 
+     // Complete all of the requests that were attached to the job and
+     // detach them.

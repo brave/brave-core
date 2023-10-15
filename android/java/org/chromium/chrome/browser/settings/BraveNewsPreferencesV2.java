@@ -142,7 +142,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             mIsSuggestionAvailable = true;
         }
 
-        boolean isNewsEnable = BraveNewsUtils.shouldDisplayNews();
+        boolean isNewsEnable = BraveNewsUtils.shouldDisplayNewsFeed();
         mSwitchShowNews.setChecked(isNewsEnable);
         onShowNewsToggle(isNewsEnable);
     }

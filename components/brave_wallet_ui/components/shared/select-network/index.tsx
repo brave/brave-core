@@ -16,7 +16,7 @@ import { SelectNetworkItem } from '../select-network-item/index'
 
 interface Props {
   onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
-  selectedNetwork: BraveWallet.NetworkInfo | undefined
+  selectedNetwork: BraveWallet.NetworkInfo | undefined | null
   customNetwork?: BraveWallet.NetworkInfo
 }
 

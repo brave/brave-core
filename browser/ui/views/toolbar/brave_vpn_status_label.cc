@@ -56,7 +56,7 @@ BraveVPNStatusLabel::BraveVPNStatusLabel(Browser* browser)
     : browser_(browser),
       service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->profile())) {
-  DCHECK(service_);
+  CHECK(service_);
 
   Observe(service_);
   SetAutoColorReadabilityEnabled(false);

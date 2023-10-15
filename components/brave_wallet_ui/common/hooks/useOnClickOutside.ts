@@ -7,6 +7,34 @@ import * as React from 'react'
 
 type Event = MouseEvent | TouchEvent
 
+export const useModal = () => {
+  const modalRef = React.useRef<HTMLDivElement>(null)
+
+  const [isModalShown, setShowModal] =
+    React.useState<boolean>(false)
+
+  const openModal = React.useCallback(() => {
+    setShowModal(true)
+  }, [])
+
+  const closeModal = React.useCallback(() => {
+    setShowModal(false)
+  }, [])
+
+  useOnClickOutside(
+    modalRef,
+    closeModal,
+    isModalShown
+  )
+
+  return {
+    openModal,
+    closeModal,
+    ref: modalRef,
+    isModalShown
+  }
+}
+
 export const useOnClickOutside = <T extends HTMLElement = HTMLElement> (
   ref: React.RefObject<T>,
   handler: (event: Event) => void,

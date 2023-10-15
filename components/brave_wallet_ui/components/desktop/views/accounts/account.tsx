@@ -14,7 +14,9 @@ import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
-import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useSafeWalletSelector //
+} from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
 
 // Types
@@ -67,7 +69,7 @@ import {
 // Components
 import {
   PortfolioTransactionItem
-} from '../../portfolio-transaction-item/index'
+} from '../../portfolio_transaction_item/portfolio_transaction_item'
 import {
   PortfolioAssetItemLoadingSkeleton
 } from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
@@ -116,6 +118,7 @@ import {
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
 export const Account = () => {
   // routing
@@ -127,8 +130,8 @@ export const Account = () => {
   // redux
   const dispatch = useDispatch()
 
-  // unsafe selectors
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  // queries
+  const { accounts } = useAccountsQuery()
   const selectedAccount = React.useMemo(() => {
     return accounts.find((account) =>
       account.accountId.uniqueKey === addressOrUniqueKey ||
@@ -136,7 +139,6 @@ export const Account = () => {
     )
   }, [accounts, addressOrUniqueKey])
 
-  // queries
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: networkList = [] } = useGetVisibleNetworksQuery()
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
@@ -432,7 +434,6 @@ export const Account = () => {
                 <PortfolioTransactionItem
                   key={transaction?.id}
                   transaction={transaction}
-                  displayAccountName={false}
                   ref={(ref) => handleScrollIntoView(transaction.id, ref)}
                   isFocused={checkIsTransactionFocused(transaction.id)}
                 />

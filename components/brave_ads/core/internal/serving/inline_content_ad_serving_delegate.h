@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_INLINE_CONTENT_AD_SERVING_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_INLINE_CONTENT_AD_SERVING_DELEGATE_H_
 
+#include <cstdint>
+
 namespace brave_ads {
 
 struct InlineContentAdInfo;
@@ -16,7 +18,8 @@ class InlineContentAdServingDelegate {
   virtual void OnOpportunityAroseToServeInlineContentAd() {}
 
   // Invoked when an inline content ad is served.
-  virtual void OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {}
+  virtual void OnDidServeInlineContentAd(int32_t tab_id,
+                                         const InlineContentAdInfo& ad) {}
 
   // Invoked when an inline content ad fails to serve.
   virtual void OnFailedToServeInlineContentAd() {}

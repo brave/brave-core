@@ -444,6 +444,7 @@ provideStrings({
   braveWalletSwapReviewSpend: 'You spend',
   braveWalletSwapReviewReceive: "You'll receive",
   braveWalletSwapReviewHeader: 'Confirm order',
+  braveWalletSolanaSwap: 'Solana Swap',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
@@ -644,12 +645,21 @@ provideStrings({
   braveWalletTransactionExplorerMissing: 'Block explorer URL is not available.',
   braveWalletTransactionExplorer: 'View on block explorer',
   braveWalletTransactionCopyHash: 'Copy transaction hash',
-  braveWalletTransactionSpeedup: 'Speedup transaction',
+  braveWalletTransactionSpeedup: 'Speedup',
   braveWalletTransactionCancel: 'Cancel transaction',
   braveWalletTransactionRetry: 'Retry transaction',
   braveWalletTransactionPlaceholder: 'Transactions will appear here',
   braveWalletTransactionApproveUnlimited: 'Unlimited',
   braveWalletApprovalTransactionIntent: 'approve',
+
+  // Transaction Simulation Events
+  braveWalletReceive: 'Receive',
+  braveWalletFrom: 'From',
+  braveWalletUnlimitedAssetAmount: 'Unlimited $1',
+  braveWalletTokenIsUnverified: 'This token is unverified',
+  braveWalletTokenIsVerified: 'This token is verified',
+  braveWalletTokenIsVerifiedByLists: 'This token is verified on $1 lists',
+  braveWalletSpenderAddress: 'Spender: $1',
 
   // Asset Detail Accounts (Empty)
   braveWalletNoAccountsWithABalance: 'No available accounts',
@@ -745,6 +755,9 @@ provideStrings({
   braveWalletTransactionStatusError: 'Error',
   braveWalletTransactionStatusDropped: 'Dropped',
   braveWalletTransactionStatusSigned: 'Signed',
+
+  // Transaction Details
+  braveWalletOn: 'On',
 
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',
@@ -1017,5 +1030,5 @@ provideStrings({
   braveWalletAutoDiscoveryEmptyStateSubHeading: 'Once an NFT is detected, it\’ll be displayed here.',
   braveWalletAutoDiscoveryEmptyStateFooter: 'Can\’t see your NFTs?',
   braveWalletAutoDiscoveryEmptyStateActions: '$1Refresh$2 or $3Import Manually$4',
-  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing' 
+  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing'
 })

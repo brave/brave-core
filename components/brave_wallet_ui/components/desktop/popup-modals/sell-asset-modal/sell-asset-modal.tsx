@@ -47,7 +47,7 @@ import {
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
-  selectedAssetsNetwork: BraveWallet.NetworkInfo | undefined
+  selectedAssetsNetwork: BraveWallet.NetworkInfo | undefined | null
   sellAmount: string
   showSellModal: boolean
   sellAssetBalance: string

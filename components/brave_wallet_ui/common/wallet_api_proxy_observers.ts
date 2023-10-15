@@ -74,10 +74,11 @@ export function makeJsonRpcServiceObserver (store: Store) {
       },
       accountsChanged: function () {
         store.dispatch(walletApi.endpoints.invalidateAccountInfos.initiate())
-        store.dispatch(WalletActions.accountsChanged())
+        store.dispatch(walletApi.endpoints.invalidateSelectedAccount.initiate())
       },
       accountsAdded: function () {
-        // TODO: Handle this event.
+        store.dispatch(walletApi.endpoints.invalidateAccountInfos.initiate())
+        store.dispatch(walletApi.endpoints.invalidateSelectedAccount.initiate())
       },
       autoLockMinutesChanged: function () {
         store.dispatch(WalletActions.autoLockMinutesChanged())

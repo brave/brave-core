@@ -62,14 +62,13 @@ void PlaylistThumbnailDownloader::DownloadThumbnail(
     return;
   }
 
-  auto iter = CreateURLLoaderHandler(thumbnail_url);
-  iter->get()->DownloadToString(
-      url_loader_factory_.get(),
-      base::BindOnce(&PlaylistThumbnailDownloader::SaveResponseToFile,
-                     weak_ptr_factory_.GetWeakPtr(), iter, id,
-                     target_thumbnail_path),
-      network::SimpleURLLoader::kMaxBoundedStringDownloadSize);
-  url_loader_map_[id] = iter;
+  CreateURLLoader(id, thumbnail_url)
+      ->DownloadToString(
+          url_loader_factory_.get(),
+          base::BindOnce(&PlaylistThumbnailDownloader::SaveResponseToFile,
+                         weak_ptr_factory_.GetWeakPtr(), id,
+                         target_thumbnail_path),
+          network::SimpleURLLoader::kMaxBoundedStringDownloadSize);
 }
 
 void PlaylistThumbnailDownloader::DownloadThumbnail(
@@ -84,13 +83,12 @@ void PlaylistThumbnailDownloader::DownloadThumbnail(
     return;
   }
 
-  auto iter = CreateURLLoaderHandler(thumbnail_url);
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
-      base::BindOnce(&PlaylistThumbnailDownloader::ConvertResponseToImage,
-                     weak_ptr_factory_.GetWeakPtr(), iter, id,
-                     std::move(callback)));
-  url_loader_map_[id] = iter;
+  CreateURLLoader(id, thumbnail_url)
+      ->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+          url_loader_factory_.get(),
+          base::BindOnce(&PlaylistThumbnailDownloader::ConvertResponseToImage,
+                         weak_ptr_factory_.GetWeakPtr(), id,
+                         std::move(callback)));
 }
 
 void PlaylistThumbnailDownloader::CancelDownloadRequest(const std::string& id) {
@@ -99,18 +97,15 @@ void PlaylistThumbnailDownloader::CancelDownloadRequest(const std::string& id) {
     return;
   }
 
-  url_loaders_.erase(url_loader_map_[id]);
   url_loader_map_.erase(id);
 }
 
 void PlaylistThumbnailDownloader::CancelAllDownloadRequests() {
   VLOG(2) << __func__;
   url_loader_map_.clear();
-  url_loaders_.clear();
 }
 
 void PlaylistThumbnailDownloader::SaveResponseToFile(
-    URLLoaderIter iter,
     const std::string& id,
     base::FilePath path,
     std::unique_ptr<std::string> response_body) {
@@ -122,15 +117,14 @@ void PlaylistThumbnailDownloader::SaveResponseToFile(
   }
 
   if (!response_body) {
-    url_loaders_.erase(iter);
     url_loader_map_.erase(id);
     delegate_->OnThumbnailDownloaded(id, {});
     return;
   }
 
   auto on_save = base::BindOnce(
-      [](base::WeakPtr<PlaylistThumbnailDownloader> self, URLLoaderIter iter,
-         std::string id, base::FilePath path) {
+      [](base::WeakPtr<PlaylistThumbnailDownloader> self, std::string id,
+         base::FilePath path) {
         if (!self) {
           return;
         }
@@ -140,11 +134,10 @@ void PlaylistThumbnailDownloader::SaveResponseToFile(
           return;
         }
 
-        self->url_loaders_.erase(iter);
         self->url_loader_map_.erase(id);
         self->delegate_->OnThumbnailDownloaded(id, path);
       },
-      weak_ptr_factory_.GetWeakPtr(), iter, id);
+      weak_ptr_factory_.GetWeakPtr(), id);
 
   auto write_to_file =
       base::BindOnce(&PlaylistThumbnailDownloader::WriteToFile,
@@ -153,7 +146,6 @@ void PlaylistThumbnailDownloader::SaveResponseToFile(
 }
 
 void PlaylistThumbnailDownloader::ConvertResponseToImage(
-    URLLoaderIter iter,
     const std::string& id,
     base::OnceCallback<void(gfx::Image)> callback,
     std::unique_ptr<std::string> response_body) {
@@ -166,15 +158,14 @@ void PlaylistThumbnailDownloader::ConvertResponseToImage(
 
   const bool has_response = !!response_body;
   if (!has_response) {
-    url_loaders_.erase(iter);
     url_loader_map_.erase(id);
     std::move(callback).Run({});
     return;
   }
 
   auto on_sanitize = base::BindOnce(
-      [](base::WeakPtr<PlaylistThumbnailDownloader> self, URLLoaderIter iter,
-         std::string id, base::OnceCallback<void(gfx::Image)> callback,
+      [](base::WeakPtr<PlaylistThumbnailDownloader> self, std::string id,
+         base::OnceCallback<void(gfx::Image)> callback,
          scoped_refptr<base::RefCountedBytes> image) {
         if (!self) {
           return;
@@ -185,12 +176,11 @@ void PlaylistThumbnailDownloader::ConvertResponseToImage(
           return;
         }
 
-        self->url_loaders_.erase(iter);
         self->url_loader_map_.erase(id);
         CHECK(callback);
         std::move(callback).Run(gfx::Image::CreateFrom1xPNGBytes(image));
       },
-      weak_ptr_factory_.GetWeakPtr(), iter, id, std::move(callback));
+      weak_ptr_factory_.GetWeakPtr(), id, std::move(callback));
 
   delegate_->SanitizeImage(std::move(response_body), std::move(on_sanitize));
 }
@@ -235,8 +225,9 @@ PlaylistThumbnailDownloader::GetOrCreateTaskRunner() {
   return task_runner_;
 }
 
-PlaylistThumbnailDownloader::URLLoaderIter
-PlaylistThumbnailDownloader::CreateURLLoaderHandler(const GURL& url) {
+network::SimpleURLLoader* PlaylistThumbnailDownloader::CreateURLLoader(
+    const std::string& id,
+    const GURL& url) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES | net::LOAD_BYPASS_CACHE |
@@ -250,8 +241,9 @@ PlaylistThumbnailDownloader::CreateURLLoaderHandler(const GURL& url) {
       kRetriesCountOnNetworkChange,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   url_loader->SetAllowHttpErrorResults(false);
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  return iter;
+
+  url_loader_map_.insert({id, std::move(url_loader)});
+  return url_loader_map_.at(id).get();
 }
 
 }  // namespace playlist

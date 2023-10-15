@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_USER_INTERACTION_AD_EVENTS_AD_EVENTS_DATABASE_TABLE_H_
 
 #include <string>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
@@ -28,7 +29,11 @@ class AdEvents final : public TableInterface {
   void GetForType(mojom::AdType ad_type, GetAdEventsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
+
   void PurgeOrphaned(mojom::AdType ad_type, ResultCallback callback) const;
+  void PurgeOrphaned(const std::vector<std::string>& placement_ids,
+                     ResultCallback callback) const;
+  void PurgeAllOrphaned(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 

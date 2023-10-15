@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import * as Card from '../cardSizes'
-import * as BraveNews from '../../../../api/brave_news'
-import { useUnpaddedImageUrl } from '../useUnpaddedImageUrl'
+import * as BraveNews from '../../../../../brave_news/browser/resources/shared/api'
+import { useUnpaddedImageUrl } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
 
 type Props = {
   imageUrl?: string
@@ -15,7 +15,7 @@ type Props = {
   onLoaded?: () => any
 }
 
-export default function CardImage (props: Props) {
+export default function CardImage(props: Props) {
   const unpaddedUrl = useUnpaddedImageUrl(props.imageUrl, props.onLoaded)
   const [isImageLoaded, setIsImageLoaded] = React.useState(false)
   React.useEffect(() => {
@@ -45,7 +45,7 @@ type FromFeedItemProps = Omit<Props, 'imageUrl' | 'isUnpadded'> & {
   data: BraveNews.FeedItemMetadata
 }
 
-export function CardImageFromFeedItem (props: FromFeedItemProps) {
+export function CardImageFromFeedItem(props: FromFeedItemProps) {
   React.useEffect(() => {
     if (!props.data.image.imageUrl && !props.data.image.paddedImageUrl) {
       // Shouldn't happen since backend filters out items

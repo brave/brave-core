@@ -58,7 +58,7 @@ import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboa
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
-import { SendScreen } from './screens/send/send-page/send-screen'
+import { SendScreen } from './screens/send/send_screen/send_screen'
 import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import {
   WalletPageWrapper

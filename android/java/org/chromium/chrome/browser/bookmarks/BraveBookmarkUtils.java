@@ -68,11 +68,12 @@ public class BraveBookmarkUtils extends BookmarkUtils {
         }
     }
 
-    public static void showBookmarkImportExportDialog(
-            AppCompatActivity appCompatActivity, boolean isImport, boolean isSuccess) {
+    public static void showBookmarkImportExportDialog(AppCompatActivity appCompatActivity,
+            boolean isImport, boolean isSuccess, String exportFilePath) {
         try {
             BraveBookmarkImportExportDialogFragment dialogFragment =
-                    BraveBookmarkImportExportDialogFragment.newInstance(isImport, isSuccess);
+                    BraveBookmarkImportExportDialogFragment.newInstance(
+                            isImport, isSuccess, exportFilePath);
             dialogFragment.show(appCompatActivity.getSupportFragmentManager(),
                     "BraveBookmarkImportExportDialogFragment");
         } catch (IllegalStateException e) {

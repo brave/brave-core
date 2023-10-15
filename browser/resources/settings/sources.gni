@@ -16,6 +16,7 @@ brave_settings_preprocess_deps =
 brave_settings_web_component_files = [
   "brave_appearance_page/bookmark_bar.ts",
   "brave_appearance_page/brave_theme.ts",
+  "brave_appearance_page/content.ts",
   "brave_appearance_page/sidebar.ts",
   "brave_appearance_page/super_referral.ts",
   "brave_appearance_page/tabs.ts",

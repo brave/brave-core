@@ -5,12 +5,30 @@
 
 import * as React from 'react'
 
-import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper'
-import { SendScreen } from './send-page/send-screen'
+import {
+  WalletPageStory //
+} from '../../../stories/wrappers/wallet-page-story-wrapper'
+import { SendScreen } from './send_screen/send_screen'
+
+//  mocks
+import {
+  mockAccount,
+  mockNativeBalanceRegistry,
+  mockTokenBalanceRegistry
+} from '../../../common/constants/mocks'
 
 export const _SendScreen = () => {
   return (
-    <WalletPageStory>
+    <WalletPageStory
+      walletStateOverride={{
+        isWalletCreated: true
+      }}
+      apiOverrides={{
+        selectedAccountId: mockAccount.accountId,
+        nativeBalanceRegistry: mockNativeBalanceRegistry,
+        tokenBalanceRegistry: mockTokenBalanceRegistry
+      }}
+    >
       <SendScreen />
     </WalletPageStory>
   )

@@ -75,10 +75,12 @@ export const makeNativeAssetLogo = (symbol: string, chainId: string) => {
 }
 
 type UndefinedIf<R, T> = T extends undefined ? undefined : R
-export const makeNetworkAsset = <T extends BraveWallet.NetworkInfo | undefined>(
+export const makeNetworkAsset = <
+  T extends BraveWallet.NetworkInfo | undefined | null
+>(
   network: T
 ): UndefinedIf<BraveWallet.BlockchainToken, T> => {
-  if (network === undefined) {
+  if (!network) {
     return undefined as UndefinedIf<BraveWallet.BlockchainToken, T>
   }
 
@@ -98,12 +100,12 @@ export const makeNetworkAsset = <T extends BraveWallet.NetworkInfo | undefined>(
     coingeckoId:
       // skip getting prices of known testnet tokens
       // except Goerli ETH, which has real-world value
-      SupportedTestNetworks.includes(network.chainId) ?
-      network.chainId === BraveWallet.GOERLI_CHAIN_ID &&
-      network.symbol.toLowerCase() === 'eth'
-        ? 'goerli-eth'
-        : SKIP_PRICE_LOOKUP_COINGECKO_ID
-      : '',
+      SupportedTestNetworks.includes(network.chainId)
+        ? network.chainId === BraveWallet.GOERLI_CHAIN_ID &&
+          network.symbol.toLowerCase() === 'eth'
+          ? 'goerli-eth'
+          : SKIP_PRICE_LOOKUP_COINGECKO_ID
+        : '',
     chainId: network.chainId,
     coin: network.coin
   } as UndefinedIf<BraveWallet.BlockchainToken, T>

@@ -96,15 +96,6 @@ export class SettingsBraveVpnPageElement
       this.initialProtocolValue_)
   }
 
-  private showVpnPage_(): boolean {
-    let showVpnPage = loadTimeData.getBoolean('isBraveVPNEnabled')
-    // <if expr="is_macosx">
-    showVpnPage = showVpnPage &&
-                  loadTimeData.getBoolean('isBraveVPNWireguardEnabledOnMac')
-    // </if>
-    return showVpnPage
-  }
-
   private isWireguardServiceRegistered(success: boolean) {
     if (success)
       return;

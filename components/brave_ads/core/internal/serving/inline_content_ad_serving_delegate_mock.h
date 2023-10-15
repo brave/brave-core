@@ -30,7 +30,9 @@ class InlineContentAdServingDelegateMock
 
   MOCK_METHOD(void, OnOpportunityAroseToServeInlineContentAd, ());
 
-  MOCK_METHOD(void, OnDidServeInlineContentAd, (const InlineContentAdInfo& ad));
+  MOCK_METHOD(void,
+              OnDidServeInlineContentAd,
+              (const int32_t tab_id, const InlineContentAdInfo& ad));
 
   MOCK_METHOD(void, OnFailedToServeInlineContentAd, ());
 };

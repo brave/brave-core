@@ -60,6 +60,7 @@ module.exports = {
   testPathIgnorePatterns: [
     "lib/test.js"
   ],
+  testTimeout: 30000,
   transformIgnorePatterns: [
     "<rootDir>/node_modules/(?!(@brave/brave-ui|@brave/leo)/)"
   ],

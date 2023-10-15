@@ -8,14 +8,13 @@ import * as React from 'react'
 // Constants
 import { BraveWallet } from '../../constants/types'
 
-// Utils
-import { WalletSelectors } from '../selectors'
+// Hooks
 import { useGetSelectedChainQuery } from '../slices/api.slice'
-import { useUnsafeWalletSelector } from './use-safe-selector'
+import { useAccountsQuery } from '../slices/api.slice.extra'
 
 export function useHasAccount () {
   // redux
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const { accounts } = useAccountsQuery()
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()

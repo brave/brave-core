@@ -8,7 +8,7 @@ import Card from './Card';
 import Article from './Article';
 import styled from 'styled-components';
 import { spacing } from '@brave/leo/tokens/css';
-import { channelIcons } from '../../../../brave_new_tab_ui/components/default/braveNews/customize/Icons';
+import { channelIcons } from '../shared/Icons';
 import { MetaInfoContainer } from './ArticleMetaRow';
 
 interface Props {

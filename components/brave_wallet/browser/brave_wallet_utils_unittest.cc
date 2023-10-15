@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -75,10 +76,7 @@ TEST(BraveWalletUtilsUnitTest, Mnemonic) {
     const char* mnemonic;
     const char* seed;
   } cases[] = {
-      {"00000000000000000000000000000000",
-       "abandon abandon abandon abandon abandon abandon abandon abandon "
-       "abandon "
-       "abandon abandon about",
+      {"00000000000000000000000000000000", kMnemonicAbandonAbandon,
        "c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a69"
        "87"
        "599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04"},
@@ -939,8 +937,8 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
 
   // Bitcoin
   mojom::NetworkInfo btc_mainnet(mojom::kBitcoinMainnet, "Bitcoin Mainnet",
-                                 {""}, {}, 0, {GURL()}, "BTC", "Bitcoin", 8,
-                                 mojom::CoinType::BTC,
+                                 {"https://blockstream.info"}, {}, 0, {GURL()},
+                                 "BTC", "Bitcoin", 8, mojom::CoinType::BTC,
                                  {mojom::KeyringId::kBitcoin84}, false);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::BTC));
   EXPECT_EQ(GetChain(&prefs, "bitcoin_mainnet", mojom::CoinType::BTC),

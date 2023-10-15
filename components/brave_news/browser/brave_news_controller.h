@@ -134,7 +134,6 @@ class BraveNewsController : public KeyedService,
                         const std::string& creative_instance_id) override;
   void OnDisplayAdView(const std::string& item_id,
                        const std::string& creative_instance_id) override;
-  void OnDisplayAdPurgeOrphanedEvents() override;
 
   // PublishersController::Observer:
   void OnPublishersUpdated(brave_news::PublishersController*) override;

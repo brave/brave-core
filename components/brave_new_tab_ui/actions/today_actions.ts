@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { createAction } from 'redux-act'
-import * as BraveNews from '../api/brave_news'
+import * as BraveNews from '../../brave_news/browser/resources/shared/api'
 
 export const interactionBegin = createAction('interactionStart')
 

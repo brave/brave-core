@@ -27,6 +27,7 @@ class BraveRenderViewContextMenu;
 #include "src/chrome/browser/renderer_context_menu/render_view_context_menu.h"  // IWYU pragma: export
 #undef RegisterMenuShownCallbackForTesting
 #undef RenderViewContextMenu
+#undef BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
 
 // Declare our own subclass with overridden methods.
 class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {

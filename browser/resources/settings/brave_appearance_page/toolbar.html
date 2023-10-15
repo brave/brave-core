@@ -1,25 +1,83 @@
-<style include="settings-shared iron-flex">
+<style include="cr-shared-style settings-shared md-select iron-flex">
+  /* Lines up with cr-input. */
+  #custom-input {
+    /* (cr-input line-height + cr-input top/bottom padding) / 2 -
+       cr-radio disc-wrapper height / 2 */
+    --cr-radio-button-disc-margin-block-start: calc(
+        (1.54em + 12px) / 2 - 8px);
+    align-items: start;
+  }
 </style>
+<settings-toggle-button elide-label
+  hidden="[[!pageVisibility.homeButton]]"
+  pref="{{prefs.browser.show_home_button}}"
+  label="$i18n{showHomeButton}"
+  sub-label="[[getShowHomeSubLabel_(
+                prefs.browser.show_home_button.value,
+                prefs.homepage_is_newtabpage.value,
+                prefs.homepage.value)]]">
+</settings-toggle-button>
+<template is="dom-if" if="[[prefs.browser.show_home_button.value]]">
+  <div id="home-button-options" class="list-frame"
+    hidden="[[!pageVisibility.homeButton]]">
+    <settings-radio-group pref="{{prefs.homepage_is_newtabpage}}">
+      <controlled-radio-button class="list-item" name="true"
+        pref="[[prefs.homepage_is_newtabpage]]"
+        label="$i18n{homePageNtp}" no-extension-indicator>
+      </controlled-radio-button>
+      <controlled-radio-button id="custom-input" class="list-item"
+        name="false" pref="[[prefs.homepage_is_newtabpage]]"
+        no-extension-indicator>
+        <home-url-input id="customHomePage" pref="{{prefs.homepage}}"
+          can-tab="[[!prefs.homepage_is_newtabpage.value]]">
+        </home-url-input>
+      </controlled-radio-button>
+      <template is="dom-if" if="[[prefs.homepage.extensionId]]">
+        <extension-controlled-indicator
+          extension-id="[[prefs.homepage.extensionId]]"
+          extension-can-be-disabled="[[
+                        prefs.homepage.extensionCanBeDisabled]]"
+          extension-name="[[prefs.homepage.controlledByName]]"
+          on-disable-extension="onDisableExtension_">
+        </extension-controlled-indicator>
+      </template>
+    </settings-radio-group>
+  </div>
+</template>
 <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.show_bookmarks_button}}"
   label="$i18n{appearanceSettingsShowBookmarksButton}">
 </settings-toggle-button>
+<settings-brave-appearance-bookmark-bar prefs="{{prefs}}">
+</settings-brave-appearance-bookmark-bar>
 <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.today.should_show_toolbar_button}}"
   label="$i18n{appearanceSettingsShowBraveNewsButtonLabel}">
 </settings-toggle-button>
+<template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
+  <settings-toggle-button id="showBraveWalletIconOnToolbar"
+    class="cr-row"
+    pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
+    label="$i18n{showBravewalletIconOnToolbar}">
+  </settings-toggle-button>
+</template>
 <settings-toggle-button
   class="cr-row"
-  pref="{{prefs.brave.location_bar_is_wide}}"
-  label="$i18n{appearanceSettingsLocationBarIsWide}">
+  pref="{{prefs.brave.show_side_panel_button}}"
+  label="$i18n{appearanceSettingsShowSidebarButton}">
 </settings-toggle-button>
-<settings-toggle-button
-  pref="{{prefs.omnibox.prevent_url_elisions}}"
-  class="cr-row"
-  label="$i18n{showFullUrls}">
-</settings-toggle-button>
+<if expr="enable_brave_vpn_wireguard">
+  <template is="dom-if" if="[[showBraveVPNOption_()]]">
+    <settings-toggle-button
+      pref="{{prefs.brave.brave_vpn.show_button}}"
+      class="cr-row"
+      label="$i18n{showBraveVPNButton}"
+      sub-label="$i18n{showBraveVPNButtonSubLabel}">
+    </settings-toggle-button>
+  </template>
+</if>
 <settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.autocomplete_enabled}}"
@@ -52,17 +110,21 @@
     </template>
   </div>
 </template>
-<if expr="toolkit_views">
-  <settings-brave-appearance-tabs prefs="{{prefs}}""></settings-brave-appearance-tabs>
-  <settings-brave-appearance-sidebar prefs="{{prefs}}"></settings-brave-appearance-sidebar>
-</if>
-<if expr="enable_brave_vpn_wireguard">
-  <template is="dom-if" if="[[showBraveVPNOption_()]]">
-    <settings-toggle-button
-      pref="{{prefs.brave.brave_vpn.show_button}}"
-      class="cr-row"
-      label="$i18n{showBraveVPNButton}"
-      sub-label="$i18n{showBraveVPNButtonSubLabel}">
-    </settings-toggle-button>
-  </template>
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.location_bar_is_wide}}"
+  label="$i18n{appearanceSettingsLocationBarIsWide}">
+</settings-toggle-button>
+<settings-toggle-button
+  pref="{{prefs.omnibox.prevent_url_elisions}}"
+  class="cr-row"
+  label="$i18n{showFullUrls}">
+</settings-toggle-button>
+
+<if expr="is_macosx">
+  <settings-toggle-button
+    pref="{{prefs.browser.show_fullscreen_toolbar}}"
+    class="cr-row"
+    label="$i18n{showToolbarInFullScreen}">
+  </settings-toggle-button>
 </if>

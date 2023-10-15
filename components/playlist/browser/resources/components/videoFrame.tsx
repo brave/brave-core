@@ -6,13 +6,9 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 
-import { color, effect, spacing } from '@brave/leo/tokens/css'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import { color, effect } from '@brave/leo/tokens/css'
 
-import { playlistControlsAreaHeight } from '../constants/style'
-import postMessageToPlayer from '../api/playerApi'
-import { types } from '../constants/player_types'
+import { playerVariables } from '../constants/style'
 
 interface Props {
   visible: boolean
@@ -23,18 +19,18 @@ const VideoFrameContainer = styled.div<Props>`
   position: relative;
   width: 100vw;
 
-  ${playlistControlsAreaHeight}
+  ${playerVariables}
   ${p =>
     p.isMiniPlayer
       ? css`
           position: fixed;
           bottom: 0;
-          height: var(--player-controls-area-height);
+          height: var(--mini-player-height);
           z-index: 1;
         `
       : css`
           // 16:9 aspect ratio for video and fixed height for the controls area
-          height: calc(56vw + var(--player-controls-area-height));
+          height: calc(56vw);
           margin-bottom: 8px;
           box-shadow: ${effect.elevation['02']};
         `}
@@ -45,26 +41,6 @@ const VideoFrameContainer = styled.div<Props>`
       display: none;
     `}
 `
-
-const StyledCloseButton = styled(Button)`
-  position: absolute;
-  margin: ${spacing.s};
-  right: 0;
-`
-
-function CloseButton () {
-  return (
-    <StyledCloseButton
-      kind='plain-faint'
-      size='tiny'
-      onClick={() => {
-        postMessageToPlayer({ actionType: types.UNLOAD_PLAYLIST })
-      }}
-    >
-      <Icon name='close'></Icon>
-    </StyledCloseButton>
-  )
-}
 
 const StyledVideoFrame = styled.iframe<Pick<Props, 'isMiniPlayer'>>`
   position: absolute;
@@ -93,7 +69,6 @@ export default function VideoFrame (props: Props) {
         sandbox='allow-scripts allow-same-origin'
         isMiniPlayer={props.isMiniPlayer}
       />
-      {props.isMiniPlayer && <CloseButton />}
     </VideoFrameContainer>
   )
 }

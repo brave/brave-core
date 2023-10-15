@@ -45,6 +45,15 @@ constexpr char kSimpleHashBraveProxyUrl[] =
     "https://simplehash.wallet.brave.com";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletSpenderAddress", IDS_BRAVE_WALLET_SPENDER_ADDRESS},
+    {"braveWalletTokenIsVerifiedByLists",
+     IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED_BY_LISTS},
+    {"braveWalletTokenIsVerified", IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED},
+    {"braveWalletTokenIsUnverified", IDS_BRAVE_WALLET_TOKEN_IS_UNVERIFIED},
+    {"braveWalletUnlimitedAssetAmount",
+     IDS_BRAVE_WALLET_UNLIMITED_ASSET_AMOUNT},
+    {"braveWalletFrom", IDS_BRAVE_WALLET_FROM},
+    {"braveWalletReceive", IDS_BRAVE_WALLET_RECEIVE},
     {"braveWalletNetworkFees", IDS_BRAVE_WALLET_NETWORK_FEES},
     {"braveWalletSolanaSysvarRentProgram",
      IDS_BRAVE_WALLET_SOLANA_SYSVAR_RENT_PROGRAM},
@@ -660,6 +669,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_TRANSACTION_STATUS_DROPPED},
     {"braveWalletTransactionStatusSigned",
      IDS_BRAVE_WALLET_TRANSACTION_STATUS_SIGNED},
+    {"braveWalletOn", IDS_BRAVE_WALLET_ON},
     {"braveWalletRecentTransactions", IDS_BRAVE_WALLET_RECENT_TRANSACTIONS},
     {"braveWalletTransactionDetails", IDS_BRAVE_WALLET_TRANSACTION_DETAILS},
     {"braveWalletTransactionDetailDate",
@@ -762,6 +772,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSwapReviewSpend", IDS_BRAVE_WALLET_SWAP_REVIEW_SPEND},
     {"braveWalletSwapReviewReceive", IDS_BRAVE_WALLET_SWAP_REVIEW_RECEIVE},
     {"braveWalletSwapReviewHeader", IDS_BRAVE_WALLET_SWAP_REVIEW_HEADER},
+    {"braveWalletSolanaSwap", IDS_BRAVE_WALLET_SOLANA_SWAP},
     {"braveWalletUnlockError", IDS_BRAVE_WALLET_UNLOCK_ERROR},
     {"braveWalletDeviceUnknownScheme", IDS_BRAVE_WALLET_UNKNOWN_SCHEME_ERROR},
     {"braveWalletApprovalTransactionIntent",

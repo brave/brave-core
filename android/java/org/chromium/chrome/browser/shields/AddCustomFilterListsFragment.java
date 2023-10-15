@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.shields;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,10 +50,22 @@ public class AddCustomFilterListsFragment
 
     private void setData() {
         initFilterListAndroidHandler();
+        Button addBtn = getView().findViewById(R.id.btn_add);
         TextInputEditText urlEditText = getView().findViewById(R.id.enter_url_edittext);
         urlEditText.requestFocus();
+        urlEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {}
 
-        Button addBtn = getView().findViewById(R.id.btn_add);
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                addBtn.setEnabled(s.toString().trim().length() > 0 ? true : false);
+            }
+        });
+
         addBtn.setOnClickListener(view -> {
             if (urlEditText.getText().toString().length() > 0) {
                 String url = urlEditText.getText().toString().trim();

@@ -40,6 +40,7 @@ import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import { WalletPageWrapper } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import NftAssetHeader from '../../card-headers/nft-asset-header'
 import { StyledWrapper } from './style'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
 export const PortfolioNftAsset = () => {
   // routing
@@ -81,7 +82,7 @@ export const PortfolioNftAsset = () => {
     simpleHashNfts
   ])
 
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const { accounts } = useAccountsQuery()
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
     selectedAssetFromParams ?? skipToken
   )

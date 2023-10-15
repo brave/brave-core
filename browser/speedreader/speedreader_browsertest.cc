@@ -70,16 +70,28 @@ const char kTestPageReadableOnUnreadablePath[] =
     "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
 const char kTestXml[] = "/article/rss.xml";
+const char kTestTtsSimple[] = "/speedreader/article/simple.html";
+const char kTestTtsTags[] = "/speedreader/article/tags.html";
+const char kTestTtsStructure[] = "/speedreader/article/structure.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
   SpeedReaderBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    feature_list_.InitWithFeatures(
-        {speedreader::kSpeedreaderFeature, ai_chat::features::kAIChat}, {});
+    feature_list_.InitWithFeaturesAndParameters(
+        {{speedreader::kSpeedreaderFeature,
+          {
+            { speedreader::kSpeedreaderTTS.name,
+              "true" }
+          }},
+         { ai_chat::features::kAIChat,
+           { {} } }},
+        {});
 #else
-    feature_list_.InitAndEnableFeature(speedreader::kSpeedreaderFeature);
+    feature_list_.InitAndEnableFeatureWithParameters(
+        speedreader::kSpeedreaderFeature,
+        {{speedreader::kSpeedreaderTTS.name, "true"}});
 #endif
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
@@ -747,6 +759,24 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
   EXPECT_EQ(nullptr, content::EvalJs(ActiveWebContents(), kNoStyleInjected,
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                      ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TTS) {
+  ToggleSpeedreader();
+
+  const std::string kCheckTtsParagraphs = R"js(
+    document.querySelectorAll('[tts-paragraph-index]').length
+  )js";
+
+  const char* pages[] = {kTestTtsSimple, kTestTtsTags, kTestTtsStructure};
+  for (const auto* page : pages) {
+    NavigateToPageSynchronously(page);
+    SCOPED_TRACE(page);
+    EXPECT_EQ(7, content::EvalJs(ActiveWebContents(), kCheckTtsParagraphs,
+                                 content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                 ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                     .ExtractInt());
+  }
 }
 
 class SpeedReaderWithDistillationServiceBrowserTest

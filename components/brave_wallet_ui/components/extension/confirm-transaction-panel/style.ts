@@ -5,6 +5,9 @@
 
 import styled from 'styled-components'
 import { ArrowRightIcon, LoaderIcon } from 'brave-ui/components/icons'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
+
 import LinkIcon from '../../../assets/svg-icons/link-icon.svg'
 import { WarningBoxIcon } from '../shared-panel-styles'
 
@@ -239,6 +242,18 @@ export const ContractButton = styled(WalletButton)`
   padding: 0px;
 `
 
+export const InlineAddressButton = styled(ContractButton)`
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 4px;
+  gap: 4px;
+  text-align: left;
+  vertical-align: center;
+  color: ${leo.color.text.secondary};
+  font-size: 11px;
+`
+
 export const ExplorerIcon = styled.div`
  -webkit-mask-image: url(${LinkIcon});
  mask-image: url(${LinkIcon});
@@ -247,4 +262,10 @@ export const ExplorerIcon = styled.div`
  margin-left: 8px;
  mask-size: contain;
  background-color: ${(p) => p.theme.color.interactive05};
+`
+
+export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
+  --leo-icon-size: 14px;
+  --leo-icon-color: ${leo.color.icon.interactive};
+  margin-bottom: 1px;
 `

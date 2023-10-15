@@ -217,7 +217,32 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return scroll_view->NeedScrollForItemAt(index);
   }
 
+  void VerifyTargetDragIndicatorIndexCalc(const gfx::Point& screen_position) {
+    auto sidebar_items_contents_view = GetSidebarItemsContentsView(
+        static_cast<BraveBrowser*>(browser())->sidebar_controller());
+    EXPECT_NE(absl::nullopt,
+              sidebar_items_contents_view->CalculateTargetDragIndicatorIndex(
+                  screen_position));
+  }
+
   base::RunLoop* run_loop() const { return run_loop_.get(); }
+
+  size_t GetDefaultItemCount() const {
+    auto item_count = std::size(SidebarService::kDefaultBuiltInItemTypes) -
+                      1 /* for history*/;
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+      item_count -= 1;
+    }
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    if (!ai_chat::features::IsAIChatEnabled()) {
+      item_count -= 1;
+    }
+#endif
+    return item_count;
+  }
 
   raw_ptr<views::View> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
@@ -243,8 +268,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // Check active index is null.
   EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
 
-  // Currently we have 4 default items.
-  EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
+  auto expected_count = GetDefaultItemCount();
+  EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
   // Activate item that opens in panel.
   controller()->ActivateItemAt(2);
   EXPECT_THAT(model()->active_index(), Optional(2u));
@@ -266,7 +291,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
 
   // Remove Item at index 0 change active index from 3 to 2.
   SidebarServiceFactory::GetForProfile(browser()->profile())->RemoveItemAt(0);
-  EXPECT_EQ(3UL, model()->GetAllSidebarItems().size());
+  EXPECT_EQ(--expected_count, model()->GetAllSidebarItems().size());
   EXPECT_THAT(model()->active_index(), Optional(1u));
 
   // If current active tab is not NTP, we can add current url to sidebar.
@@ -286,8 +311,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
-  // By default, sidebar has 4 items.
-  EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
+  auto expected_count = GetDefaultItemCount();
+  EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
 
   // Add an item
   ASSERT_TRUE(
@@ -297,7 +322,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
   controller()->AddItemWithCurrentTab();
   // Verify new size
-  EXPECT_EQ(5UL, model()->GetAllSidebarItems().size());
+  EXPECT_EQ(++expected_count, model()->GetAllSidebarItems().size());
 
   // Load NTP in a new tab and activate it. (tab index 1)
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
@@ -309,16 +334,21 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
 
   // Activate sidebar item(brave://settings) and check existing first tab is
   // activated.
-  auto item = model()->GetAllSidebarItems()[4];
-  controller()->ActivateItemAt(4);
+  auto items = model()->GetAllSidebarItems();
+  auto iter =
+      base::ranges::find(items, GURL("chrome://settings/"), &SidebarItem::url);
+  EXPECT_NE(items.end(), iter);
+  controller()->ActivateItemAt(std::distance(items.begin(), iter));
   EXPECT_EQ(0, tab_model()->active_index());
-  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), item.url);
+  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
 
   // Activate second sidebar item(wallet) and check it's loaded at current tab.
-  item = model()->GetAllSidebarItems()[1];
-  controller()->ActivateItemAt(1);
+  iter = base::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                            &SidebarItem::built_in_item_type);
+  EXPECT_NE(items.end(), iter);
+  controller()->ActivateItemAt(std::distance(items.begin(), iter));
   EXPECT_EQ(0, tab_model()->active_index());
-  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), item.url);
+  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
   // New tab is not created.
   EXPECT_EQ(2, tab_model()->count());
 }
@@ -403,6 +433,23 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, InitialHorizontalOptionTest) {
   // Check horizontal option is right-sided.
   EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
   EXPECT_TRUE(IsSidebarUIOnLeft());
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemDragIndicatorCalcTest) {
+  auto sidebar_items_contents_view = GetSidebarItemsContentsView(
+      static_cast<BraveBrowser*>(browser())->sidebar_controller());
+  gfx::Rect contents_view_rect = sidebar_items_contents_view->GetLocalBounds();
+  views::View::ConvertRectToScreen(sidebar_items_contents_view,
+                                   &contents_view_rect);
+  gfx::Point screen_position = contents_view_rect.origin();
+  screen_position.Offset(5, 0);
+
+  // Any point from items contents view should have proper drag indicator index.
+  for (int i = 0; i < contents_view_rect.height(); ++i) {
+    gfx::Point simulated_mouse_drag_point = screen_position;
+    simulated_mouse_drag_point.Offset(0, i);
+    VerifyTargetDragIndicatorIndexCalc(simulated_mouse_drag_point);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
@@ -521,24 +568,27 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PrefsMigrationTest) {
                   ->IsDefaultValue());
 }
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
   auto* prefs = browser()->profile()->GetPrefs();
   EXPECT_EQ(kDefaultSidePanelWidth,
             prefs->GetInteger(sidebar::kSidePanelWidth));
 
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
 
+  int expected_panel_width = kDefaultSidePanelWidth;
+
   // Wait till sidebar animation ends.
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
+      [&]() { return GetSidePanel()->width() == expected_panel_width; }));
 
   // Test smaller panel width than default(minimum) and check smaller than
   // default is not applied. Positive offset value is for reducing width in
   // right-sided sidebar.
   GetSidePanel()->OnResize(30, true);
   // Check panel width is not changed.
-  EXPECT_EQ(kDefaultSidePanelWidth,
-            prefs->GetInteger(sidebar::kSidePanelWidth));
+  EXPECT_EQ(expected_panel_width, prefs->GetInteger(sidebar::kSidePanelWidth));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == kDefaultSidePanelWidth; }));
 
   // On right-side sidebar position, side panel's x and resize widget's x is
   // same.
@@ -549,8 +599,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
   // Negative offset value is for increasing width in right-sided
   // sidebar.
   GetSidePanel()->OnResize(-20, true);
-  EXPECT_EQ(kDefaultSidePanelWidth + 20,
-            prefs->GetInteger(sidebar::kSidePanelWidth));
+  expected_panel_width += 20;
+  EXPECT_EQ(expected_panel_width, prefs->GetInteger(sidebar::kSidePanelWidth));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == expected_panel_width; }));
   EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().x(),
             GetSidePanelResizeWidget()->GetWindowBoundsInScreen().x());
 
@@ -559,27 +611,25 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_SidePanelResizeTest) {
   EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().right(),
             GetSidePanelResizeWidget()->GetWindowBoundsInScreen().right());
 
-  // Increse panel width and check width and resize handle position .
+  // Increase panel width and check width and resize handle position.
   // Positive offset value is for increasing width in left-sided sidebar.
   GetSidePanel()->OnResize(20, true);
-  EXPECT_EQ(kDefaultSidePanelWidth + 40,
-            prefs->GetInteger(sidebar::kSidePanelWidth));
+  expected_panel_width += 20;
+  EXPECT_EQ(expected_panel_width, prefs->GetInteger(sidebar::kSidePanelWidth));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == expected_panel_width; }));
   EXPECT_EQ(GetSidePanel()->GetBoundsInScreen().right(),
             GetSidePanelResizeWidget()->GetWindowBoundsInScreen().right());
-}
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
-  auto* prefs = browser()->profile()->GetPrefs();
-  // Check that 40px increased width is persisted properly.
-  constexpr int kExpectedPanelWidth = kDefaultSidePanelWidth + 40;
-  EXPECT_EQ(kExpectedPanelWidth, prefs->GetInteger(sidebar::kSidePanelWidth));
-
+  // Close side panel.
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
-
-  // Wait till sidebar animation ends.
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return GetSidePanel()->width() == kExpectedPanelWidth; }));
-  EXPECT_EQ(kExpectedPanelWidth, GetSidePanel()->width());
+      [&]() { return !GetSidePanel()->GetVisible(); }));
+
+  // Re-open side panel and check it's opened as wide as lastly used width.
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->width() == expected_panel_width; }));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {

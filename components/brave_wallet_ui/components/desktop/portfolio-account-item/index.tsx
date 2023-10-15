@@ -69,7 +69,7 @@ interface Props {
   defaultCurrencies: DefaultCurrencies
   asset: BraveWallet.BlockchainToken
   assetBalance: string
-  selectedNetwork?: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo | null
   hideBalances?: boolean
   isSellSupported: boolean
   showSellModal: () => void

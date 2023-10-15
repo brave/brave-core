@@ -20,7 +20,7 @@ import {
 
 export interface Props {
   onClick?: () => void
-  selectedNetwork?: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo | null
   isPanel?: boolean
 }
 

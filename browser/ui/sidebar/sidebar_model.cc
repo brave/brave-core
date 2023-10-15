@@ -91,8 +91,9 @@ void SidebarModel::AddItem(const SidebarItem& item,
   }
 
   // Check this addition affects active index.
-  if (active_index_ >= index)
-    UpdateActiveIndexAndNotify(index);
+  if (active_index_ >= index) {
+    UpdateActiveIndexAndNotify(*active_index_ + 1);
+  }
 
   // Web type uses site favicon as button's image.
   if (sidebar::IsWebType(item))
@@ -181,7 +182,7 @@ void SidebarModel::RemoveItemAt(size_t index) {
   }
 }
 
-void SidebarModel::SetActiveIndex(absl::optional<size_t> index, bool load) {
+void SidebarModel::SetActiveIndex(absl::optional<size_t> index) {
   if (index == active_index_)
     return;
 

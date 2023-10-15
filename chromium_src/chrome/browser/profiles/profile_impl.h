@@ -12,7 +12,7 @@
   ShouldRestoreOldSessionCookies_ChromiumImpl(__VA_ARGS__); \
   bool ShouldRestoreOldSessionCookies(__VA_ARGS__)
 
-#include "src/chrome/browser/profiles/profile_impl.h"
+#include "src/chrome/browser/profiles/profile_impl.h"  // IWYU pragma: export
 
 #undef ShouldRestoreOldSessionCookies
 

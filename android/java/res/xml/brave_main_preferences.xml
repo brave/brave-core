@@ -35,6 +35,12 @@
         android:order="4"
         android:title="@string/brave_firewall_vpn"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.BraveLeoPreferences"
+        android:key="brave_leo"
+        android:icon="@drawable/ic_brave_ai"
+        android:order="4"
+        android:title="@string/menu_brave_leo"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences"
         android:key="brave_playlist"
         android:icon="@drawable/ic_open_playlist"

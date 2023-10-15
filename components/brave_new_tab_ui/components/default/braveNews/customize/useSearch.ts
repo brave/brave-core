@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import getBraveNewsController, { FeedSearchResultItem } from '../../../../api/brave_news'
+import getBraveNewsController, { FeedSearchResultItem } from '../../../../../brave_news/browser/resources/shared/api'
 import { useBraveNews, useChannels } from './Context'
 
 export const QUERY_MIN_LENGTH_FILTER_SOURCES = 2

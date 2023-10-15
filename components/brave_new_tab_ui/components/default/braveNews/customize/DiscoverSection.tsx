@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Flex from '../../../Flex'
+import Flex from '$web-common/Flex'
 
 interface Props {
   name?: string

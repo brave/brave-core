@@ -4,10 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
-// Selectors
-import { WalletSelectors } from '../../../../../common/selectors'
-import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Assets
 import PersonIcon from '../../assets/person.svg'
@@ -20,6 +17,7 @@ import {
   useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery //
 } from '../../../../../common/slices/api.slice'
+import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 
 // Components
 import { AccountListItem } from '../account-list-item/account-list-item'
@@ -28,7 +26,6 @@ import { AccountListItem } from '../account-list-item/account-list-item'
 import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
 import { BraveWallet } from '../../../../../constants/types'
 
-import { skipToken } from '@reduxjs/toolkit/query/react'
 
 interface Props {
   asset: BraveWallet.BlockchainToken | undefined
@@ -41,10 +38,8 @@ const ACCOUNT_SELECTOR_BUTTON_ID = 'account-selector-button-id'
 export const AccountSelector = (props: Props) => {
   const { asset, onSelectAddress, disabled } = props
 
-  // Selectors
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-
   // Queries
+  const { accounts } = useAccountsQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccountId } = useGetSelectedAccountIdQuery()
 

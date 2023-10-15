@@ -134,7 +134,7 @@ export const mockBitcoinMainnet: BraveWallet.NetworkInfo = {
   activeRpcEndpointIndex: 0,
   blockExplorerUrls: ['https://bitcoin.explorer'],
   chainId: 'bitcoin_mainnet',
-  chainName: 'Bitcoin Mainnnet',
+  chainName: 'Bitcoin Mainnet',
   coin: BraveWallet.CoinType.BTC,
   supportedKeyrings: [BraveWallet.KeyringId.kBitcoin84],
   decimals: 8,

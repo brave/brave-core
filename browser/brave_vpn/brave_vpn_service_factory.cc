@@ -33,15 +33,76 @@
 #endif
 
 namespace brave_vpn {
+namespace {
+
+std::unique_ptr<KeyedService> BuildVpnService(
+    content::BrowserContext* context) {
+  if (!brave_vpn::IsAllowedForContext(context)) {
+    return nullptr;
+  }
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (!g_brave_browser_process->brave_vpn_os_connection_api()) {
+    return nullptr;
+  }
+#endif
+
+  auto* default_storage_partition = context->GetDefaultStoragePartition();
+  auto shared_url_loader_factory =
+      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
+  auto* local_state = g_browser_process->local_state();
+  brave_vpn::MigrateVPNSettings(user_prefs::UserPrefs::Get(context),
+                                local_state);
+  auto callback = base::BindRepeating(
+      [](content::BrowserContext* context) {
+        return skus::SkusServiceFactory::GetForContext(context);
+      },
+      context);
+
+  std::unique_ptr<BraveVpnService> vpn_service =
+      std::make_unique<BraveVpnService>(
+          g_brave_browser_process->brave_vpn_os_connection_api(),
+          shared_url_loader_factory, local_state,
+          user_prefs::UserPrefs::Get(context), callback);
+#if BUILDFLAG(IS_WIN)
+  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
+    auto* observer_service =
+        brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
+            ->GetServiceForContext(context);
+    if (observer_service) {
+      observer_service->Observe(vpn_service.get());
+    }
+  } else {
+    auto* observer_service =
+        brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
+            ->GetServiceForContext(context);
+    if (observer_service) {
+      observer_service->Observe(vpn_service.get());
+    }
+  }
+#endif
+
+  return vpn_service;
+}
+
+}  // namespace
 
 // static
 BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
+  if (!IsBraveVPNFeatureEnabled()) {
+    return nullptr;
+  }
+
   static base::NoDestructor<BraveVpnServiceFactory> instance;
   return instance.get();
 }
 
 // static
 BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
+  if (!GetInstance()) {
+    return nullptr;
+  }
+
   return static_cast<BraveVpnService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
@@ -73,52 +134,16 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
 
 BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
-KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveVpnServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!brave_vpn::IsAllowedForContext(context)) {
-    return nullptr;
-  }
+  return BuildVpnService(context);
+}
 
-#if !BUILDFLAG(IS_ANDROID)
-  if (!g_brave_browser_process->brave_vpn_os_connection_api()) {
-    return nullptr;
-  }
-#endif
-
-  auto* default_storage_partition = context->GetDefaultStoragePartition();
-  auto shared_url_loader_factory =
-      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
-  auto* local_state = g_browser_process->local_state();
-  brave_vpn::MigrateVPNSettings(user_prefs::UserPrefs::Get(context),
-                                local_state);
-  auto callback = base::BindRepeating(
-      [](content::BrowserContext* context) {
-        return skus::SkusServiceFactory::GetForContext(context);
-      },
-      context);
-
-  auto* vpn_service = new BraveVpnService(
-      g_brave_browser_process->brave_vpn_os_connection_api(),
-      shared_url_loader_factory, local_state,
-      user_prefs::UserPrefs::Get(context), callback);
-#if BUILDFLAG(IS_WIN)
-  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
-    auto* observer_service =
-        brave_vpn::BraveVpnWireguardObserverFactory::GetInstance()
-            ->GetServiceForContext(context);
-    if (observer_service) {
-      observer_service->Observe(vpn_service);
-    }
-  } else {
-    auto* observer_service =
-        brave_vpn::BraveVpnDnsObserverFactory::GetInstance()
-            ->GetServiceForContext(context);
-    if (observer_service) {
-      observer_service->Observe(vpn_service);
-    }
-  }
-#endif
-  return vpn_service;
+// static
+BrowserContextKeyedServiceFactory::TestingFactory
+BraveVpnServiceFactory::GetDefaultFactory() {
+  return base::BindRepeating(&BuildVpnService);
 }
 
 void BraveVpnServiceFactory::RegisterProfilePrefs(

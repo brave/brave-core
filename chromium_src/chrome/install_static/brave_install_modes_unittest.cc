@@ -8,8 +8,8 @@
 #include <windows.h>  // NOLINT
 
 #include <cguid.h>  // NOLINT
-#include <ctype.h>  // NOLINT
 
+#include "base/strings/string_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -31,10 +31,11 @@ namespace {
 // alpha-numeric nor a period.
 MATCHER(ContainsIllegalProgIdChar, "") {
   const wchar_t* scan = arg;
-  wint_t c;
+  wchar_t c;
   while ((c = *scan++) != 0) {
-    if (!iswalnum(c) && c != L'.')
+    if (!base::IsAsciiAlphaNumeric(c) && c != L'.') {
       return true;
+    }
   }
   return false;
 }

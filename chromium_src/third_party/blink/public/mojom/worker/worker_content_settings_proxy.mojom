@@ -7,7 +7,8 @@ module blink.mojom;
 
 [BraveExtend]
 interface WorkerContentSettingsProxy {
-  // Returns whether the worker is allowed access to privileged functions that could be used for fingerprinting.
+  // Returns whether the worker is allowed access to privileged functions that
+  // could be used for fingerprinting.
   [Sync]
   GetBraveFarblingLevel() => (uint8 result);
 };

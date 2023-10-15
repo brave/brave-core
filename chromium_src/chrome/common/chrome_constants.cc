@@ -176,4 +176,7 @@ const char kApplicationClientIDStringForAVScanning[] =
 
 }  // namespace chrome
 
+#if BUILDFLAG(IS_MAC)
+#undef PRODUCT_STRING
+#endif  // BUILDFLAG(IS_MAC)
 #undef FPL

@@ -34,7 +34,6 @@ struct ConfirmationInfo final {
   ConfirmationType type = ConfirmationType::kUndefined;
   AdType ad_type = AdType::kUndefined;
   base::Time created_at;
-  bool was_created = false;
   absl::optional<RewardInfo> reward;
   UserDataInfo user_data;
 };

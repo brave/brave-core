@@ -413,7 +413,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_EXPLORER_MISSING" desc="Alert for when no block explorer is available">Block explorer URL is not available.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_EXPLORER" desc="View on block explorer button">View on block explorer</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_COPY_HASH" desc="Copy transaction hash button">Copy transaction hash</message>
-  <message name="IDS_BRAVE_WALLET_TRANSACTION_SPEEDUP" desc="Speedup transaction button">Speedup transaction</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SPEEDUP" desc="Speed up transaction button">Speed up</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_CANCEL" desc="Cancel transaction button">Cancel transaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_RETRY" desc="Retry transaction button">Retry transaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PLACEHOLDER" desc="Transactions placeholder">Transactions will appear here</message>
@@ -427,6 +427,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_ERROR" desc="Status label for error transaction">Error</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_DROPPED" desc="Status label for dropped transaction">Dropped</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_SIGNED" desc="Status label for signed transaction">Signed</message>
+  <message name="IDS_BRAVE_WALLET_ON" desc="Transaction details transacted on Exchange or Account label">On</message>
   <message name="IDS_BRAVE_WALLET_RECENT_TRANSACTIONS" desc="Transactions panel title">Recent transactions</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAILS" desc="Transaction details panel title">Transaction details</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_DATE" desc="Transaction Detail Panel Date of transactions">Date</message>
@@ -497,6 +498,7 @@
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_SPEND" desc="Swap review text for spending asset">You spend</message>
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_RECEIVE" desc="Swap review text for receiving asset">You'll receive</message>
   <message name="IDS_BRAVE_WALLET_SWAP_REVIEW_HEADER" desc="Swap review header title">Confirm order</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_SWAP" desc="Generic Solana Swap message">Solana Swap</message>
   <message name="IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME" desc="The name with account number.">Account <ph name="ACCOUNT_NUMBER">$1<ex>1</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST" desc="Sign message error">Wallet needs to be unlocked first</message>
   <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS" desc="Sign message error"><ph name="ADDRESS">$1<ex>1</ex></ph> is not a valid address</message>
@@ -1002,4 +1004,11 @@
   <message name="IDS_BRAVE_WALLET_AUTO_DISCOVERY_EMPTY_STATE_REFRESH" desc="NFTs tab empty state refreshing text">Refreshing</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FEES" desc="Label for blockchain network fees">Network fees</message>
   <message name="IDS_WALLET_EIP6963_PROVIDER_NAME" desc="Provider name which will be return when announce ethereum provider">Brave Wallet</message>
+  <message name="IDS_BRAVE_WALLET_RECEIVE" desc="Receive asset event title">Receive</message>
+  <message name="IDS_BRAVE_WALLET_FROM" desc="From address label">From</message>
+  <message name="IDS_BRAVE_WALLET_UNLIMITED_ASSET_AMOUNT" desc="Spend approval for an unlimited amount of a token">Unlimited <ph name="ASSET_SYMBOL">$1<ex>USDC</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_IS_UNVERIFIED" desc="Indicates that an asset has not been verified by any token list providers">This token is unverified</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED" desc="Indicates that an asset has been verified">This token is verified</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED_BY_LISTS" desc="Indicates that an asset has been verified by multiple token list providers">This token is verified on <ph name="NUMBER_OF_LISTS">$1<ex>2</ex></ph> lists</message>
+  <message name="IDS_BRAVE_WALLET_SPENDER_ADDRESS" desc="Indicates which address is spending funds">Spender: <ph name="ADDRESS">$1<ex>0x1234...abcd</ex></ph></message>
 </grit-part>

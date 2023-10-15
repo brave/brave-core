@@ -25,7 +25,8 @@ import {
 // entities
 import {
   accountInfoEntityAdaptor,
-  accountInfoEntityAdaptorInitialState
+  accountInfoEntityAdaptorInitialState,
+  selectAllAccountInfosFromQuery
 } from './entities/account-info.entity'
 
 // utils
@@ -35,10 +36,20 @@ import {
   selectCombinedTokensList
 } from '../slices/entities/blockchain-token.entity'
 import {
-  findAccountByAccountId
+  findAccountByAccountId,
+  findAccountByAddress
 } from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { selectPendingTransactions } from './entities/transaction.entity'
+
+export const useAccountsQuery = () => {
+  return useGetAccountInfosRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      accounts: selectAllAccountInfosFromQuery(res)
+    })
+  })
+}
 
 export const useAccountQuery = (
   accountId: BraveWallet.AccountId | undefined | typeof skipToken,
@@ -58,13 +69,28 @@ export const useAccountQuery = (
   })
 }
 
+export const useAccountFromAddressQuery = (
+  address: string | undefined | typeof skipToken
+) => {
+  const skip = address === undefined || address === skipToken
+  return useGetAccountInfosRegistryQuery(skip ? skipToken : undefined, {
+    skip: skip,
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      error: res.error,
+      account:
+        res.data && !skip ? findAccountByAddress(address, res.data) : undefined
+    })
+  })
+}
+
 export const useSelectedAccountQuery = () => {
   const {
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
-    isLoading: isLoadingAccounts
+    isFetching: isLoadingAccounts
   } = useGetAccountInfosRegistryQuery(undefined)
 
-  const { data: selectedAccountId, isLoading: isLoadingSelectedAccountId } =
+  const { data: selectedAccountId, isFetching: isLoadingSelectedAccountId } =
   useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
 
   const selectedAccount = selectedAccountId

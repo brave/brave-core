@@ -337,6 +337,7 @@ source_set("utils") {
     "//net",
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
+    "//ui/base",
     "//url",
   ]
 
@@ -437,6 +438,7 @@ generated_types("generated_bitcoin_rpc_responses") {
   visibility = [
     ":browser",
     "test:brave_wallet_unit_tests",
+    "//brave/components/brave_wallet/browser/test:test_support",
   ]
 }
 

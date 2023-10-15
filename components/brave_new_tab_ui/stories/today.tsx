@@ -11,7 +11,7 @@ import BraveNewsErrorCard from '../components/default/braveNews/cards/cardError'
 import BraveNewsOptInCard from '../components/default/braveNews/cards/cardOptIn'
 import PublisherMeta from '../components/default/braveNews/cards/PublisherMeta'
 import DisplayAdCard from '../components/default/braveNews/cards/displayAd'
-import * as BraveNews from '../api/brave_news'
+import * as BraveNews from '../../brave_news/browser/resources/shared/api'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 import './todayStrings'
 

@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import * as TodayActions from '../../../actions/today_actions'
-import { Feed } from '../../../api/brave_news'
+import { Feed } from '../../../../brave_news/browser/resources/shared/api'
 import CardLoading from './cards/cardLoading'
 import CardError from './cards/cardError'
 import CardNoContent from './cards/cardNoContent'

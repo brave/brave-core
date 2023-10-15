@@ -12,3 +12,5 @@
     return DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS;
 
 #include "src/components/download/internal/background_service/proto_conversions.cc"
+#undef BRAVE_DOWNLOAD_CLIENT_FROM_PROTO
+#undef BRAVE_DOWNLOAD_CLIENT_TO_PROTO

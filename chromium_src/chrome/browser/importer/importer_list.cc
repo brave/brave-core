@@ -136,3 +136,4 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
 #include "src/chrome/browser/importer/importer_list.cc"
 #undef IDS_IMPORT_FROM_EDGE
 #define IDS_IMPORT_FROM_EDGE IDS_IMPORT_FROM_EDGE_OLD
+#undef IDS_IMPORT_FROM_EDGE_OLD

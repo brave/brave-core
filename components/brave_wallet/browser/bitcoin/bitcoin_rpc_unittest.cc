@@ -359,7 +359,7 @@ TEST_F(BitcoinRpcUnitTest, GetUtxoList) {
     }
   ])";
 
-  std::vector<bitcoin_rpc::UnspentOutput> utxos;
+  bitcoin_rpc::UnspentOutputs utxos;
   utxos.emplace_back();
   utxos.back().txid =
       "1fca84164f59606710ff4cf0fd660753bd299e30bb2c8194117fdb965ace67b9";

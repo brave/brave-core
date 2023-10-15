@@ -9,10 +9,13 @@ import {
   BNBIconUrl,
   BTCIconUrl,
   ETHIconUrl,
+  FILECOINIconUrl,
+  SOLIconUrl,
   USDCIconUrl,
   ZRXIconUrl
 } from './asset-icons'
 import MoonCatIcon from '../../assets/png-icons/mooncat.png'
+import { getAssetIdKey } from '../../utils/asset-utils'
 
 export const mockEthToken = {
   contractAddress: '',
@@ -26,9 +29,43 @@ export const mockEthToken = {
   decimals: 18,
   visible: true,
   tokenId: '',
-  coingeckoId: '',
+  coingeckoId: 'ethereum',
   chainId: '0x1',
   coin: BraveWallet.CoinType.ETH
+} as BraveWallet.BlockchainToken
+
+export const mockSolToken = {
+  contractAddress: '',
+  name: 'Solana',
+  symbol: 'SOL',
+  logo: SOLIconUrl,
+  isErc20: false,
+  isErc721: false,
+  isNft: false,
+  isSpam: false,
+  decimals: 9,
+  visible: true,
+  tokenId: '',
+  coingeckoId: 'solana',
+  chainId: BraveWallet.SOLANA_MAINNET,
+  coin: BraveWallet.CoinType.SOL
+} as BraveWallet.BlockchainToken
+
+export const mockFilToken = {
+  contractAddress: '',
+  name: 'Filecoin',
+  symbol: 'FIL',
+  logo: FILECOINIconUrl,
+  isErc20: false,
+  isErc721: false,
+  isNft: false,
+  isSpam: false,
+  decimals: 9,
+  visible: true,
+  tokenId: '',
+  coingeckoId: 'filecoin',
+  chainId: BraveWallet.FILECOIN_MAINNET,
+  coin: BraveWallet.CoinType.FIL
 } as BraveWallet.BlockchainToken
 
 export const mockBasicAttentionToken = {
@@ -175,13 +212,86 @@ export const mockMoonCatNFT = {
   chainId: '0x1'
 }
 
+export const mockERC20Token: BraveWallet.BlockchainToken = {
+  contractAddress: 'mockContractAddress',
+  name: 'Dog Coin',
+  symbol: 'DOG',
+  logo: '',
+  isErc20: true,
+  isErc721: false,
+  isErc1155: false,
+  isNft: false,
+  isSpam: false,
+  decimals: 18,
+  visible: true,
+  tokenId: '',
+  coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID
+}
+
+export const mockErc721Token: BraveWallet.BlockchainToken = {
+  contractAddress: '0x59468516a8259058bad1ca5f8f4bff190d30e066',
+  name: 'Invisible Friends',
+  symbol: 'INVSBLE',
+  logo: 'https://ipfs.io/ipfs/QmX4nfgA35MiW5APoc4P815hMcH8hAt7edi5H3wXkFm485/2D/2585.gif',
+  isErc20: false,
+  isErc721: true,
+  isErc1155: false,
+  isNft: true,
+  isSpam: false,
+  decimals: 18,
+  visible: true,
+  tokenId: '0x0a19',
+  coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID
+}
+
+export const mockSplNft: BraveWallet.BlockchainToken = {
+  contractAddress: 'wt1PhURTzRSgmWKHBEJgSX8hN9TdkdNoKhPAnwCmnZE',
+  name: 'The Degen #2314',
+  symbol: 'BNFT',
+  logo: 'https://shdw-drive.genesysgo.net/FR3sEzyAmQMooUYhcPPnN4TmVLSZWi3cEwAWpB4nJvYJ/image-2.png',
+  isErc20: false,
+  isErc721: false,
+  isErc1155: false,
+  isNft: true,
+  isSpam: false,
+  decimals: 1,
+  visible: true,
+  tokenId: 'wt1PhURTzRSgmWKHBEJgSX8hN9TdkdNoKhPAnwCmnZE',
+  coingeckoId: '',
+  coin: BraveWallet.CoinType.SOL,
+  chainId: BraveWallet.SOLANA_MAINNET,
+}
+
+const mockSplBat = {
+  ...mockBasicAttentionToken,
+  contractAddress: 'splBat498tu349u498j',
+  chainId: BraveWallet.SOLANA_MAINNET,
+}
+
+const mockSplUSDC = {
+  ...mockUSDCoin,
+  contractAddress: 'splusd09856080378450y75',
+  chainId: BraveWallet.SOLANA_MAINNET,
+}
+
 export const mockAccountAssetOptions: BraveWallet.BlockchainToken[] = [
   mockEthToken,
+  mockSolToken,
+  mockFilToken,
   mockBasicAttentionToken,
   mockBinanceCoinErc20Token,
   mockBitcoinErc20Token,
   mockAlgorandErc20Token,
-  mockZrxErc20Token
+  mockZrxErc20Token,
+  mockDaiToken,
+  mockUSDCoin,
+  mockSplBat,
+  mockSplNft,
+  mockSplUSDC,
 ]
 
 export const mockErc20TokensList = [
@@ -285,3 +395,18 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
   { ...mockMoonCatNFT, tokenId: '0x52a5' },
   { ...mockMoonCatNFT, tokenId: '0x62a5' }
 ]
+
+export const mockBinanceCoinErc20TokenId = getAssetIdKey(
+  mockBinanceCoinErc20Token
+)
+export const mockBitcoinErc20TokenId = getAssetIdKey(mockBitcoinErc20Token)
+export const mockAlgorandErc20TokenId = getAssetIdKey(mockAlgorandErc20Token)
+export const mockZrxErc20TokenId = getAssetIdKey(mockZrxErc20Token)
+export const mockDaiTokenId = getAssetIdKey(mockDaiToken)
+export const mockSplNftId = getAssetIdKey(mockSplNft)
+
+export const mockBasicAttentionTokenId = getAssetIdKey(mockBasicAttentionToken)
+export const mockUSDCoinId = getAssetIdKey(mockUSDCoin)
+
+export const mockSplBasicAttentionTokenId = getAssetIdKey(mockSplBat)
+export const mockSplUSDCoinId = getAssetIdKey(mockSplUSDC)

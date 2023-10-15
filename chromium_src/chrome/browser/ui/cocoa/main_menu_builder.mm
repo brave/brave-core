@@ -33,7 +33,8 @@ IDS_MUTE_TAB_MAC).command_id(IDC_TOGGLE_TAB_MUTE), \
 
 #include "src/chrome/browser/ui/cocoa/main_menu_builder.mm"
 #undef IDS_MUTE_SITE_MAC
-#undef BRAVE_WEBCOMPAT_REPORTER_MENU_ENTRY
+#define IDS_MUTE_SITE_MAC kMuteSiteResourceId
 #undef IDS_PASTE_MAC
 #define IDS_PASTE_MAC kPasteMacResourceId
-#define IDS_MUTE_SITE_MAC kMuteSiteResourceId
+#undef BRAVE_BUILD_HELP_MENU
+#undef BRAVE_BUILD_FILE_MENU

@@ -5,6 +5,27 @@
 
 import { css } from 'styled-components'
 
-export const playlistControlsAreaHeight = css`
-  --player-controls-area-height: 168px;
+const miniPlayerHeight = 80
+const playlistControlsAreaHeights = 168
+
+export const playerTypes = {
+  miniPlayer: `(max-height: ${miniPlayerHeight + 'px'})`,
+  normalPlayer: `(min-height: ${(miniPlayerHeight + 1) + 'px'})`,
+}
+
+export const hiddenOnMiniPlayer = css`
+  @media ${playerTypes.miniPlayer} {
+    display: none;
+  }
+`
+
+export const hiddenOnNormalPlayer = css`
+  @media ${playerTypes.normalPlayer} {
+    display: none;
+  }
+`
+
+export const playerVariables = css`
+  --player-controls-area-height: ${playlistControlsAreaHeights + 'px'};
+  --mini-player-height: ${ miniPlayerHeight + 'px' };
 `

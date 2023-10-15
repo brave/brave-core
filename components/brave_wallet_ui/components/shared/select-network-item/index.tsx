@@ -20,7 +20,7 @@ import {
 } from './style'
 
 export interface Props {
-  selectedNetwork?: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo | null
   network: BraveWallet.NetworkInfo
   onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
 }

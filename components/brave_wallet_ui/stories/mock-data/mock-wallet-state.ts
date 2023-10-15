@@ -17,48 +17,6 @@ import { AccountsGroupByOption } from '../../options/group-assets-by-options'
 import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
 
-const mockAccount: BraveWallet.AccountInfo = {
-  address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
-  accountId: {
-    coin: 60,
-    keyringId: BraveWallet.KeyringId.kDefault,
-    kind: BraveWallet.AccountKind.kDerived,
-    address: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1',
-    bitcoinAccountIndex: 0,
-    uniqueKey: '0x15B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef1'
-  },
-  name: 'Account 1',
-  hardware: undefined
-}
-
-const mockAccount2: BraveWallet.AccountInfo = {
-  address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
-  accountId: {
-    coin: 60,
-    keyringId: BraveWallet.KeyringId.kDefault,
-    kind: BraveWallet.AccountKind.kDerived,
-    address: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2',
-    bitcoinAccountIndex: 0,
-    uniqueKey: '0x25B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef2'
-  },
-  name: 'Account 2',
-  hardware: undefined
-}
-
-const mockAccount3: BraveWallet.AccountInfo = {
-  address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
-  accountId: {
-    coin: 60,
-    keyringId: BraveWallet.KeyringId.kDefault,
-    kind: BraveWallet.AccountKind.kDerived,
-    address: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3',
-    bitcoinAccountIndex: 0,
-    uniqueKey: '0x35B83cC0e0fA0bFd21181fd2e07Ad900EA8D6ef3'
-  },
-  name: 'Account 3',
-  hardware: undefined
-}
-
 const mockCoinMarketData: BraveWallet.CoinMarket[] = [
   {
     id: 'bitcoin',
@@ -111,11 +69,6 @@ const mockCoinMarketData: BraveWallet.CoinMarket[] = [
 ]
 
 export const mockWalletState: WalletState = {
-  accounts: [
-    mockAccount,
-    mockAccount2,
-    mockAccount3
-  ],
   activeOrigin: {
     originSpec: 'https://app.uniswap.org',
     eTldPlusOne: 'uniswap.org'

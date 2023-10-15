@@ -11,7 +11,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/perf/brave_perf_switches.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
-#include "brave/components/brave_shields/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -38,13 +38,13 @@ namespace brave_shields {
 
 namespace {
 
-auto* GetComponentServiceManager() {
+auto* GetRegionalServiceManager() {
   return g_brave_browser_process->ad_block_service()
-      ->component_service_manager();
+      ->regional_service_manager();
 }
 
 bool IsCookieListFilterEnabled() {
-  return GetComponentServiceManager()->IsFilterListEnabled(kCookieListUuid);
+  return GetRegionalServiceManager()->IsFilterListEnabled(kCookieListUuid);
 }
 
 class CookieListFilterEnabledObserver {
@@ -127,10 +127,10 @@ class CookieListOptInBrowserTest : public InProcessBrowserTest {
         kCookieListUuid,
         "https://secure.fanboy.co.nz/fanboy-cookiemonster_ubo.txt",
         "Easylist-Cookie List - Filter Obtrusive Cookie Notices", {},
-        "https://forums.lanik.us/", "Removes obtrusive cookie law notices",
-        false, false, false, 0, kRegionalAdBlockComponentTestId,
-        kRegionalAdBlockComponentTest64PublicKey, "", "")};
-    GetComponentServiceManager()->SetFilterListCatalog(filter_list_catalog);
+        "https://forums.lanik.us/", kRegionalAdBlockComponentTestId,
+        kRegionalAdBlockComponentTest64PublicKey,
+        "Removes obtrusive cookie law notices")};
+    GetRegionalServiceManager()->SetFilterListCatalog(filter_list_catalog);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -248,7 +248,7 @@ class CookieListOptInPreEnabledBrowserTest : public CookieListOptInBrowserTest {
   void SetUpLocalState() override {
     CookieListOptInBrowserTest::SetUpLocalState();
 
-    GetComponentServiceManager()->EnableFilterList(kCookieListUuid, true);
+    GetRegionalServiceManager()->EnableFilterList(kCookieListUuid, true);
 
     // Since `AdBlockRegionalServiceManager::EnableFilterList` modifies local
     // state asynchronously in a posted task, waiting for the update to complete

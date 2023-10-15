@@ -25,7 +25,7 @@ SequentialUpdateChecker::SequentialUpdateChecker(
 
 SequentialUpdateChecker::~SequentialUpdateChecker() {
   VLOG(3) << "> ~SequentialUpdateChecker";
-  DCHECK(thread_checker_.CalledOnValidThread());
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   VLOG(3) << "< ~SequentialUpdateChecker";
 }
 
@@ -33,7 +33,7 @@ void SequentialUpdateChecker::CheckForUpdates(
     scoped_refptr<UpdateContext> update_context,
     const base::flat_map<std::string, std::string>& additional_attributes,
     UpdateCheckCallback update_check_callback) {
-  DCHECK(thread_checker_.CalledOnValidThread());
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   DCHECK(!update_context->components_to_check_for_updates.empty());
   VLOG(3) << "> CheckForUpdates";
 
@@ -114,7 +114,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
     ErrorCategory error_category,
     int error,
     int retry_after_sec) {
-  DCHECK(thread_checker_.CalledOnValidThread());
+  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   VLOG(3) << "< UpdateResultAvailable(" << error << ")";
 
   if (!error) {

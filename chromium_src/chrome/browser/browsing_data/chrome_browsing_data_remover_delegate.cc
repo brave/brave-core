@@ -21,3 +21,8 @@
 
 #include "src/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc"
 #undef kCompromisedCredentials
+#if BUILDFLAG(IS_ANDROID)
+#undef CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_UTILS_H_
+#undef CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_
+#undef CHROME_BROWSER_WEB_APPLICATIONS_COMMANDS_CLEAR_BROWSING_DATA_COMMAND_H_
+#endif  // BUILDFLAG(IS_ANDROID)

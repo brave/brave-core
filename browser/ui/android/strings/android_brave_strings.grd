@@ -1278,17 +1278,32 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_IMPORT_BOOKMARKS_SELECT_FILE" desc="Import Bookmarks file chooser text">
         Select a File to Import bookmarks
       </message>
-      <message name="IDS_IMPORT_BOOKMARKS_SUCCESS" desc="Import Bookmarks success text message.">
+      <message name="IDS_EXPORT_BOOKMARKS_SUCCESS_TITLE" desc="Export Bookmarks success title text.">
+        Export successful
+      </message>
+      <message name="IDS_EXPORT_BOOKMARKS_SUCCESS_BODY" desc="Export Bookmarks success text message.">
+        Bookmarks exported to <ph name="EXPORT_FILE_PATH">%1$s<ex>/Download/bookmarks.html</ex></ph>
+      </message>
+      <message name="IDS_EXPORT_BOOKMARKS_FAIL_TITLE" desc="Export Bookmarks fail title text.">
+        Export failed
+      </message>
+      <message name="IDS_EXPORT_BOOKMARKS_FAIL_BODY" desc="Export Bookmarks fail text message.">
+        Bookmarks export failed. Please try again.
+      </message>
+      <message name="IDS_IMPORT_BOOKMARKS_SUCCESS_TITLE" desc="Import Bookmarks success title text.">
+        Import successful
+      </message>
+      <message name="IDS_IMPORT_BOOKMARKS_SUCCESS_BODY" desc="Import Bookmarks success text message.">
         Bookmarks imported successfully.
       </message>
-      <message name="IDS_IMPORT_BOOKMARKS_FAILED" desc="Import Bookmarks failed text message.">
-        Bookmark import failed.
+      <message name="IDS_IMPORT_BOOKMARKS_FAIL_TITLE" desc="Import Bookmarks fail title text.">
+        Import failed
       </message>
-      <message name="IDS_EXPORT_BOOKMARKS_FAILED" desc="Export Bookmarks failed text message.">
-        Bookmark export failed.
+      <message name="IDS_IMPORT_BOOKMARKS_FAIL_BODY" desc="Import Bookmarks fail text message.">
+        Bookmark import failed. Please try again.
       </message>
-      <message name="IDS_EXPORT_BOOKMARKS_SUCCESS" desc="Export Bookmarks success text message.">
-        Bookmarks exported successfully.
+      <message name="IDS_OPEN_FOLDER" desc="Open folder button text for export bookmarks success.">
+        Open folder
       </message>
       <!-- Sync Infobar -->
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
@@ -1474,7 +1489,7 @@ Are you sure you want to do this?
         Uphold
       </message>
       <message name="IDS_BITFLYER">
-        Bitflyer
+        bitFlyer
       </message>
       <message name="IDS_GEMINI">
         Gemini
@@ -4049,6 +4064,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_REQUEST_ID" desc="Sign in with Brave Wallet Request ID label">
       Request ID
+    </message>
+    <message name="IDS_LEO_SUMMARY" desc="Title for Brave Leo options.">
+      Leo is an AI-powered smart assistant, built right into the browser
+    </message>
+    <message name="IDS_LEO_RESET_DATA" desc="Title for Brave Leo Reset and clear data option.">
+      Reset and clear Leo data
+    </message>
+    <message name="IDS_BRAVE_LEO_RESET_CONFIRMATION" desc="Title for preference to reset Brave Leo.">
+      Resetting the Leo assistant will require you to opt-in to use Brave Leo in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Brave Leo. This action cannot be undone.
+    </message>
+    <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Brave Leo confirm button text.">
+      Confirm
     </message>
   </messages>
   </release>

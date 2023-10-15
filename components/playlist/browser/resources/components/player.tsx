@@ -22,25 +22,85 @@ import {
 import { getPlayerActions } from '../api/getPlayerActions'
 import PlayerControls from './playerControls'
 import PlayerSeeker from './playerSeeker'
-import { playlistControlsAreaHeight } from '../constants/style'
+import {
+  playerTypes,
+  playerVariables,
+  hiddenOnMiniPlayer
+} from '../constants/style'
 import {
   notifyEventsToTopFrame,
   PlaylistTypes
 } from '../api/playerEventsNotifier'
+import { ProgressBar } from './progressBar'
+
+const VideoContainer = styled.div`
+  position: relative;
+`
 
 const StyledVideo = styled.video`
-  width: 100vw;
-  aspect-ratio: 16 / 9;
-  margin-bottom: var(--spacing-between-video-and-controls);
+  @media ${playerTypes.normalPlayer} {
+    aspect-ratio: 16 / 9;
+    width: 100vw;
+  }
+  @media ${playerTypes.miniPlayer} {
+    height: 100%;
+    width: var(--mini-player-video-width);
+    max-width: var(--mini-player-video-width);
+    object-fit: cover;
+    object-position: center;
+  }
+`
+
+const StyledSeeker = styled(PlayerSeeker)`
+  ${hiddenOnMiniPlayer}
+`
+
+const ControlsContainer = styled.div`
+  display: flex;
+  position: relative;
+  @media ${playerTypes.normalPlayer} {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    width: 100%;
+
+    flex-direction: column;
+    padding: ${spacing['2XL']} ${spacing.xl};
+    gap: 8px;
+    flex-shrink: 0;
+    justify-content: center;
+    box-sizing: border-box;
+    height: var(--player-controls-area-height);
+    --leo-icon-color: ${color.white};
+    --seeker-progress-background: color-mix(
+      in srgb,
+      ${color.white} 20%,
+      transparent
+    );
+
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+  }
+
+  @media ${playerTypes.miniPlayer} {
+    max-width: calc(100vw - var(--mini-player-video-width));
+    flex: 1 1 auto;
+    flex-direction: row;
+    gap: ${spacing.xl};
+    padding-right: ${spacing.xl};
+  }
 `
 
 const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
-  --spacing-between-video-and-controls: 8px;
+  ${playerVariables}
+  --mini-player-video-width: 120px;
+
   width: 100vw;
   height: 100vh;
-  display: flex;
   position: relative;
-  flex-direction: column-reverse;
   overflow: hidden;
   user-select: none; // In order to drag-and-drop on the seeker works well.
 
@@ -56,42 +116,36 @@ const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
     opacity: 0.2;
     z-index: -1;
   }
-`
 
-const ControlsContainer = styled.div`
-  position: relative;
-  ${playlistControlsAreaHeight}
-  height: var(--player-controls-area-height);
+  @media ${playerTypes.normalPlayer} {
+    ${ControlsContainer} {
+      visibility: hidden;
+    }
 
-  display: flex;
-  flex-direction: column;
-  padding: ${spacing['2XL']} ${spacing.xl};
-  gap: 8px;
-  flex-shrink: 0;
-  justify-content: center;
+    &:hover {
+      ${ControlsContainer} {
+        visibility: visible;
+      }
+    }
+  }
 
-  box-sizing: border-box;
-
-  &::before {
-    content: '';
-    background-color: ${color.dialogs.frostedGlassBackground};
-    background-position: center;
-    position: absolute;
-    width: 100%;
-    height: calc(100% + var(--spacing-between-video-and-controls));
-    z-index: -1;
-    left: 0;
-    bottom: 0;
+  @media ${playerTypes.miniPlayer} {
+    display: flex;
+    flex-direction: row;
+    gap: ${spacing.xl};
   }
 `
 
 const FaviconAndTitle = styled.div`
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   gap: ${spacing.m};
+  overflow: hidden;
 `
 
 const StyledFavicon = styled.img<{ clickable: boolean }>`
+  ${hiddenOnMiniPlayer}
   padding: 3px;
   width: 14px;
   height: 14px;
@@ -106,7 +160,13 @@ const StyledFavicon = styled.img<{ clickable: boolean }>`
 `
 
 const StyledTitle = styled.div<{ clickable: boolean }>`
-  color: ${color.text.primary};
+  @media ${playerTypes.normalPlayer} {
+    color: ${color.white};
+  }
+  @media ${playerTypes.miniPlayer} {
+    color: ${color.text.primary};
+  }
+
   font: ${font.primary.large.semibold};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -119,7 +179,9 @@ const StyledTitle = styled.div<{ clickable: boolean }>`
 `
 
 const StyledPlayerControls = styled(PlayerControls)`
-  padding-top: 8px;
+  @media ${playerTypes.normalPlayer} {
+    padding-top: 8px;
+  }
 `
 
 // Route changes of PlayerState to parent frame.
@@ -152,6 +214,8 @@ export default function Player () {
   const [videoElement, setVideoElement] =
     React.useState<HTMLVideoElement | null>(null)
 
+  const [currentPosition, setCurrentPosition] = React.useState(0)
+
   React.useEffect(() => {
     if (videoElement && !videoElement.paused && !currentItem) {
       // This could happen when the current item was deleted. In this case,
@@ -177,6 +241,51 @@ export default function Player () {
 
   return (
     <PlayerContainer backgroundUrl={currentItem?.thumbnailPath.url}>
+      <VideoContainer>
+        <StyledVideo
+          ref={setVideoElement}
+          autoPlay
+          onPlay={() =>
+            getPlayerActions().playerStartedPlayingItem(currentItem)
+          }
+          onPause={() =>
+            getPlayerActions().playerStoppedPlayingItem(currentItem)
+          }
+          onEnded={() => {
+            if (currentItem) {
+              setCurrentPosition(videoElement!.duration)
+
+              notifyEventsToTopFrame({
+                type: PlaylistTypes.PLAYLIST_LAST_PLAYED_POSITION_OF_CURRENT_ITEM_CHANGED,
+                data: {
+                  ...currentItem,
+                  lastPlayedPosition: videoElement!.duration
+                }
+              })
+            }
+
+            getPlayerActions().playerStoppedPlayingItem(currentItem)
+            if (autoPlayEnabled) getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
+          }}
+          onTimeUpdate={() => {
+            if (!currentItem) return
+
+            setCurrentPosition(videoElement!.currentTime)
+            notifyEventsToTopFrame({
+              type: PlaylistTypes.PLAYLIST_LAST_PLAYED_POSITION_OF_CURRENT_ITEM_CHANGED,
+              data: {
+                ...currentItem,
+                lastPlayedPosition: videoElement!.currentTime
+              }
+            })
+          }}
+        />
+        {!!currentItem?.duration && (
+          <ProgressBar
+            progress={currentPosition / (+currentItem.duration / 1e6)}
+          />
+        )}
+      </VideoContainer>
       <ControlsContainer>
         <FaviconAndTitle>
           <StyledFavicon
@@ -208,40 +317,9 @@ export default function Player () {
             {currentItem?.name}
           </StyledTitle>
         </FaviconAndTitle>
-        <PlayerSeeker videoElement={videoElement} />
+        <StyledSeeker videoElement={videoElement} />
         <StyledPlayerControls videoElement={videoElement} />
       </ControlsContainer>
-      <StyledVideo
-        ref={setVideoElement}
-        autoPlay
-        onPlay={() => getPlayerActions().playerStartedPlayingItem(currentItem)}
-        onPause={() => getPlayerActions().playerStoppedPlayingItem(currentItem)}
-        onEnded={() => {
-          if (currentItem) {
-            notifyEventsToTopFrame({
-              type: PlaylistTypes.PLAYLIST_LAST_PLAYED_POSITION_OF_CURRENT_ITEM_CHANGED,
-              data: {
-                ...currentItem,
-                lastPlayedPosition: videoElement!.duration
-              }
-            })
-          }
-
-          getPlayerActions().playerStoppedPlayingItem(currentItem)
-          if (autoPlayEnabled) getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
-        }}
-        onTimeUpdate={() => {
-          if (!currentItem) return
-
-          notifyEventsToTopFrame({
-            type: PlaylistTypes.PLAYLIST_LAST_PLAYED_POSITION_OF_CURRENT_ITEM_CHANGED,
-            data: {
-              ...currentItem,
-              lastPlayedPosition: videoElement!.currentTime
-            }
-          })
-        }}
-      />
     </PlayerContainer>
   )
 }

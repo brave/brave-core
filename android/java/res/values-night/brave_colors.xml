@@ -39,16 +39,14 @@
     
     <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_day_night_toolbar_icon_color">@android:color/white</color>
-    <color name="brave_wallet_day_night_text_color">@android:color/white</color>
     <color name="brave_wallet_day_night_icon_color">#F0F2FF</color>
     <color name="brave_wallet_day_night_negative_ripple_color">#272733</color>
     <color name="brave_wallet_dn_error_text_bg_color">#453e2d</color>
     <color name="brave_wallet_dn_highlight_bg_color">#1F1F27</color>
-    <color name="wallet_dn_bg_primary">#17171F</color>
-    <color name="brave_wallet_day_night_chip_selected">#2F2F2E</color>
-    <color name="brave_wallet_dn_button_color">#3F39E8</color>
+    <color name="brave_wallet_day_night_chip_background_color">#21242A</color>
+
     <!-- Brave wallet 2.0 colors -->
-    <color name="brave_wallet_dn_panel_bg">@color/wallet_dn_bg_primary</color>
+    <color name="brave_wallet_dn_panel_bg">@color/wallet_bg</color>
 
     <!-- Text colors -->
     <color name="brave_theme_subtitle_text">#C2C4CF</color>
@@ -123,19 +121,21 @@
 
 
 
-    <color name="wallet_text_color">#F0F2FF</color>
+    <color name="wallet_text_color">#F6F7F8</color>
     <color name="wallet_secondary_text_color">#84889C</color>
     <color name="wallet_secondary_layout_text_color">#C2C4CF</color>
     <color name="recovery_phrase_text_color">#1E2029</color>
-    <color name="wallet_toolbar_bg_color">#1E2029</color>
-    <color name="chip_outline_selected_color">#17171F</color>
-    <color name="wallet_bg">#17171F</color>
+    <color name="rounded_filled_background">#1E2029</color>
+    <color name="wallet_toolbar_bg_color">#000000</color>
+    <color name="chip_outline_selected_color">#0D0F14</color>
+    <color name="wallet_bg">#0D0F14</color>
     <color name="wallet_edittext_outline_color">#3B3E4F</color>
     <color name="wallet_warning_box_bg_color">#3B3E4F</color>
     <color name="recovery_phrase_warning_text_color">#C2C4CF</color>
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
     <color name="wallet_sign_msg_err_bg_color">#FF460A10</color>
+    <color name="wallet_divider_line">#66687485</color>
 
     <color name="rewards_panel_bg_color">#17171F</color>
     <color name="rewards_panel_text_color">#FFFFFF</color>
@@ -242,4 +242,5 @@
     <color name="rewards_estimated_earning_close_color">#EDEEF1</color>
     <color name="rewards_tipping_progress_bar">@android:color/white</color>
 
+    <color name="leo_reset_text_color">#FF4B6A</color>
 </resources>

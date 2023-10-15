@@ -16,3 +16,4 @@
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #include "src/components/metrics/metrics_service_accessor.cc"
+#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING

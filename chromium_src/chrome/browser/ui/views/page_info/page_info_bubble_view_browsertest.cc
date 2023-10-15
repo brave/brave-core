@@ -12,5 +12,4 @@
   InitWithFeaturesAndDisable(net::features::kBraveHttpsByDefault, __VA_ARGS__)
 
 #include "src/chrome/browser/ui/views/page_info/page_info_bubble_view_browsertest.cc"
-
-#undef InitAndEnableFeature
+#undef InitWithFeatures

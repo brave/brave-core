@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/user/user_interaction/ad_events/ad_events_database_table.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
@@ -304,6 +303,48 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
       {GetTableName(), GetTableName(), GetTableName(),
        AdType(ad_type).ToString()},
       nullptr);
+  transaction->commands.push_back(std::move(command));
+
+  RunTransaction(std::move(transaction), std::move(callback));
+}
+
+void AdEvents::PurgeOrphaned(const std::vector<std::string>& placement_ids,
+                             ResultCallback callback) const {
+  if (placement_ids.empty()) {
+    return std::move(callback).Run(/*success=*/true);
+  }
+
+  std::vector<std::string> quoted_placement_ids;
+  quoted_placement_ids.reserve(placement_ids.size());
+  for (const auto& placement_id : placement_ids) {
+    quoted_placement_ids.push_back(
+        base::ReplaceStringPlaceholders("'$1'", {placement_id}, nullptr));
+  }
+
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE placement_id IN (SELECT placement_id from $2 "
+      "GROUP BY placement_id having count(*) = 1) AND confirmation_type = "
+      "'served' AND placement_id IN ($3);",
+      {GetTableName(), GetTableName(),
+       base::JoinString(quoted_placement_ids, ",")},
+      nullptr);
+  transaction->commands.push_back(std::move(command));
+
+  RunTransaction(std::move(transaction), std::move(callback));
+}
+
+void AdEvents::PurgeAllOrphaned(ResultCallback callback) const {
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql = base::ReplaceStringPlaceholders(
+      "DELETE FROM $1 WHERE placement_id IN (SELECT placement_id from $2 "
+      "GROUP BY placement_id having count(*) = 1) AND confirmation_type IN "
+      "(SELECT confirmation_type from $3 WHERE confirmation_type = 'served');",
+      {GetTableName(), GetTableName(), GetTableName()}, nullptr);
   transaction->commands.push_back(std::move(command));
 
   RunTransaction(std::move(transaction), std::move(callback));

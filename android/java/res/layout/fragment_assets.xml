@@ -42,8 +42,8 @@
 
             <ImageButton
                 android:id="@+id/fragment_portfolio_btn_change_networks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="@drawable/ic_wallet_filters"
                 android:contentDescription="@null"
                 app:autoSizeTextType="uniform" />
@@ -242,11 +242,10 @@
 
             <TextView
                 style="@style/BraveWalletTextView"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="6dp"
+                android:layout_marginHorizontal="16dp"
                 android:text="@string/assets"
-                android:textColor="@color/brave_theme_hint_text" />
+                android:textSize="16sp"
+                android:lineSpacingExtra="5dp" />
 
             <ProgressBar
                 android:id="@+id/frag_port_pb_asset_discovery"

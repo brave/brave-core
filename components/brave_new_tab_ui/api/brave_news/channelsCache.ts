@@ -9,7 +9,7 @@ import {
   ChannelsListenerInterface,
   ChannelsListenerReceiver
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
-import getBraveNewsController from '.'
+import getBraveNewsController from '../../../brave_news/browser/resources/shared/api'
 import { CachingWrapper } from '$web-common/mojomCache'
 
 export class ChannelsCachingWrapper

@@ -13,7 +13,6 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_value_converter.h"
 #include "base/logging.h"
-#include "base/numerics/safe_conversions.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -71,20 +70,6 @@ bool GetStringVector(const base::Value* value,
   }
 }
 
-bool GetUint8(const base::Value* value, uint8_t* field) {
-  DCHECK(field);
-  if (value == nullptr || !value->is_int()) {
-    return false;
-  } else {
-    int i = value->GetInt();
-    if (!base::IsValueInRangeForNumericType<uint8_t>(i)) {
-      return false;
-    }
-    *field = base::checked_cast<uint8_t>(i);
-    return true;
-  }
-}
-
 }  // namespace
 
 namespace brave_shields {
@@ -97,29 +82,17 @@ FilterListCatalogEntry::FilterListCatalogEntry(
     const std::string& title,
     const std::vector<std::string>& langs,
     const std::string& support_url,
-    const std::string& desc,
-    bool hidden,
-    bool default_enabled,
-    bool first_party_protections,
-    uint8_t permission_mask,
     const std::string& component_id,
     const std::string& base64_public_key,
-    const std::string& ios_component_id,
-    const std::string& ios_base64_public_key)
+    const std::string& desc)
     : uuid(uuid),
       url(url),
       title(title),
       langs(langs),
       support_url(support_url),
-      desc(desc),
-      hidden(hidden),
-      default_enabled(default_enabled),
-      first_party_protections(first_party_protections),
-      permission_mask(permission_mask),
       component_id(component_id),
       base64_public_key(base64_public_key),
-      ios_component_id(ios_component_id),
-      ios_base64_public_key(ios_base64_public_key) {}
+      desc(desc) {}
 
 FilterListCatalogEntry::FilterListCatalogEntry(
     const FilterListCatalogEntry& other) = default;
@@ -135,31 +108,21 @@ void FilterListCatalogEntry::RegisterJSONConverter(
       "langs", &FilterListCatalogEntry::langs, &GetStringVector);
   converter->RegisterStringField("support_url",
                                  &FilterListCatalogEntry::support_url);
-  converter->RegisterStringField("desc", &FilterListCatalogEntry::desc);
-  converter->RegisterBoolField("hidden", &FilterListCatalogEntry::hidden);
-  converter->RegisterBoolField("default_enabled",
-                               &FilterListCatalogEntry::default_enabled);
-  converter->RegisterBoolField(
-      "first_party_protections",
-      &FilterListCatalogEntry::first_party_protections);
-  converter->RegisterCustomValueField(
-      "permission_mask", &FilterListCatalogEntry::permission_mask, &GetUint8);
   converter->RegisterCustomValueField("list_text_component",
                                       &FilterListCatalogEntry::component_id,
                                       &GetComponentId);
   converter->RegisterCustomValueField(
       "list_text_component", &FilterListCatalogEntry::base64_public_key,
       &GetBase64PublicKey);
-  converter->RegisterStringField("component_id",
-                                 &FilterListCatalogEntry::ios_component_id);
-  converter->RegisterStringField(
-      "base64_public_key", &FilterListCatalogEntry::ios_base64_public_key);
+  converter->RegisterStringField("desc", &FilterListCatalogEntry::desc);
 }
 
 std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
     const std::vector<FilterListCatalogEntry>& region_lists,
     const std::string& uuid) {
-  return base::ranges::find(region_lists, uuid, &FilterListCatalogEntry::uuid);
+  std::string uuid_uppercase = base::ToUpperASCII(uuid);
+  return base::ranges::find(region_lists, uuid_uppercase,
+                            &FilterListCatalogEntry::uuid);
 }
 
 // Given a locale like `en-US`, find regional lists corresponding to the

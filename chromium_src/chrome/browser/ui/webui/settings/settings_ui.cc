@@ -16,13 +16,17 @@
 #include "brave/browser/ui/webui/settings/brave_settings_secure_dns_handler.h"
 
 #define SecureDnsHandler BraveSecureDnsHandler
-#endif
+#endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
+
 #define SiteSettingsHandler BraveSiteSettingsHandler
 #define ImportDataHandler BraveImportDataHandler
 #define SearchEnginesHandler BraveSearchEnginesHandler
 #define HatsHandler HatsHandler>());AddSettingsPageUIHandler(std::make_unique<CookiesViewHandler
 #include "src/chrome/browser/ui/webui/settings/settings_ui.cc"
 #undef HatsHandler
-#undef ImportDataHandler
 #undef SearchEnginesHandler
+#undef ImportDataHandler
 #undef SiteSettingsHandler
+#if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
+#undef SecureDnsHandler
+#endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)

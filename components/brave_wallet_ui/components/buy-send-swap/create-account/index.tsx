@@ -8,12 +8,12 @@ import * as React from 'react'
 // Redux
 import { useDispatch } from 'react-redux'
 import { WalletActions } from '../../../common/actions'
-import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
-import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import {
+  useAddAccountMutation,
+  useGetNetworkQuery
+} from '../../../common/slices/api.slice'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -33,10 +33,11 @@ import {
   Description,
   ButtonRow
 } from './style'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 export interface Props {
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-  onCreated?: () => void
+  onCreated?: (account: BraveWallet.AccountInfo) => void
   onCancel: () => void
 }
 
@@ -47,14 +48,17 @@ export const CreateAccountTab = ({
 }: Props) => {
   // redux
   const dispatch = useDispatch()
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
 
   // queries
+  const { accounts } = useAccountsQuery()
   const { data: network } = useGetNetworkQuery({
     chainId: accountNetwork.chainId,
     coin: accountNetwork.coin
   })
+
+  // mutations
+  const [addAccount] = useAddAccountMutation()
 
   // state
   const [showUnlock, setShowUnlock] = React.useState<boolean>(false)
@@ -63,24 +67,27 @@ export const CreateAccountTab = ({
     ? suggestNewAccountName(accounts, network)
     : ''
 
-  const onCreateAccount = React.useCallback(() => {
+  const onCreateAccount = React.useCallback(async () => {
     // unlock needed to create accounts
     if (isWalletLocked && !showUnlock) {
       return setShowUnlock(true)
     }
 
-    dispatch(
-      WalletActions.addAccount({
+    try {
+      const account = await addAccount({
         coin: accountNetwork.coin,
         keyringId: keyringIdForNewAccount(
           accountNetwork.coin,
           accountNetwork.chainId
         ),
         accountName: suggestedAccountName
-      })
-    )
-    if (onCreated) {
-      onCreated()
+      }).unwrap()
+
+      if (account && onCreated) {
+        onCreated(account)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }, [
     isWalletLocked,
@@ -92,8 +99,7 @@ export const CreateAccountTab = ({
 
   const handleUnlockAttempt = React.useCallback((password: string): void => {
     dispatch(WalletActions.unlockWallet({ password }))
-    onCreateAccount()
-  }, [onCreateAccount])
+  }, [])
 
   // effects
   React.useEffect(() => {

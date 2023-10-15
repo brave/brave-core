@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import * as BraveNews from '../../../api/brave_news'
+import * as BraveNews from '../../../../brave_news/browser/resources/shared/api'
 import CardLarge from './cards/_articles/cardArticleLarge'
 import CardSmall from './cards/_articles/cardArticleMedium'
 import CategoryGroup from './cards/categoryGroup'
