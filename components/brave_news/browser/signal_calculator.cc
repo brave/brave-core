@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_news/browser/signal_calculator.h"
 
-#include <cstdint>
 #include <iterator>
 #include <string>
 #include <unordered_set>
@@ -14,7 +13,6 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 
