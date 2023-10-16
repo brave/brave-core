@@ -7,6 +7,7 @@
 #include "ui/color/color_provider.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/native_theme/native_theme.h"
+#include "ui/views/widget/widget.h"
 
 // Override the Focus Ring's color.
 // In Chromium, this is specified via platform-specfic native theme,
@@ -22,7 +23,7 @@ ui::ColorId ColorIdForValidity(bool valid) {
 
 class FocusRingTheme {
  public:
-  SkColor GetSystemColor(::ui::ColorId color_id) {
+  SkColor GetSystemColor(::ui::ColorId color_id, bool is_dark) {
     // At the time of implementation, only two Color IDs were possible.
     // If this changes, consider overriding NativeTheme, or moving to
     // ThemeProperties.
@@ -32,7 +33,8 @@ class FocusRingTheme {
     // a very simplistic implementation.
     switch (color_id) {
       case ui::kColorFocusableBorderFocused:
-        return SkColorSetARGB(0x66, 0xfb, 0x54, 0x2b);
+        return is_dark ? SkColorSetARGB(0x66, 0x3F, 0x39, 0xE8)
+                       : SkColorSetARGB(0x99, 0x3F, 0x39, 0xE8);
       case ui::kColorAlertHighSeverity:
         return SkColorSetRGB(0xf4, 0x34, 0x05);
     }
@@ -59,7 +61,13 @@ SkColor FocusRing::GetPaintColor(FocusRing* focus_ring, bool valid) {
   if (auto color_id = focus_ring->GetColorId(); color_id.has_value()) {
     return focus_ring->GetColorProvider()->GetColor(color_id.value());
   }
-  return GetFocusRingTheme().GetSystemColor(ColorIdForValidity(valid));
+
+  bool is_dark = false;
+  auto* widget = focus_ring->GetWidget();
+  if (widget) {
+    is_dark = widget->GetColorMode() == ui::ColorProviderKey::ColorMode::kDark;
+  }
+  return GetFocusRingTheme().GetSystemColor(ColorIdForValidity(valid), is_dark);
 }
 
 }  // namespace views

@@ -110,6 +110,30 @@ gfx::Size SidebarItemsContentsView::CalculatePreferredSize() const {
   return views::View::CalculatePreferredSize();
 }
 
+void SidebarItemsContentsView::OnThemeChanged() {
+  View::OnThemeChanged();
+
+  // Skip when each item view is not attached.
+  if (children().empty()) {
+    return;
+  }
+
+  // Refresh favicons for web type items when theme changes.
+  const auto& items = sidebar_model_->GetAllSidebarItems();
+  const size_t items_num = items.size();
+  CHECK_EQ(items_num, children().size()) << "Can contain only item view";
+
+  for (size_t item_index = 0; item_index < items_num; ++item_index) {
+    const auto item = items[item_index];
+    if (!sidebar::IsWebType(item)) {
+      continue;
+    }
+
+    SetDefaultImageFor(item);
+    sidebar_model_->FetchFavicon(item);
+  }
+}
+
 void SidebarItemsContentsView::Update() {
   UpdateAllBuiltInItemsViewState();
 }
@@ -270,21 +294,19 @@ void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                          sidebar_model_->GetAllSidebarItems()[index].title),
                      index);
   item_view->set_context_menu_controller(this);
-  item_view->set_paint_background_on_hovered(true);
   item_view->SetCallback(
       base::BindRepeating(&SidebarItemsContentsView::OnItemPressed,
                           base::Unretained(this), item_view));
   item_view->set_drag_controller(drag_controller_);
 
   if (sidebar::IsWebType(item)) {
-    SetDefaultImageAt(index, item);
+    SetDefaultImageFor(item);
   }
 
   UpdateItemViewStateAt(index, false);
 }
 
-void SidebarItemsContentsView::SetDefaultImageAt(
-    int index,
+void SidebarItemsContentsView::SetDefaultImageFor(
     const sidebar::SidebarItem& item) {
   SkColor text_color = SK_ColorWHITE;
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
@@ -311,7 +333,7 @@ void SidebarItemsContentsView::UpdateItem(
     const sidebar::SidebarItemUpdate& update) {
   //  Set default for new url. Then waiting favicon update event.
   if (update.url_updated) {
-    SetDefaultImageAt(update.index, item);
+    SetDefaultImageFor(item);
   }
 
   // Each item button uses accessible name as a title.
@@ -370,6 +392,7 @@ void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
   if (!index) {
     return;
   }
+  CHECK_LT(*index, children().size());
 
   SidebarItemView* item_view = GetItemViewAt(*index);
   item_view->SetImage(
@@ -468,8 +491,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
   SidebarItemView* item_view = GetItemViewAt(index);
 
   if (item.open_in_panel) {
-    item_view->set_draw_highlight(active);
-    item_view->set_draw_highlight_on_left(sidebar_on_left_);
+    item_view->SetActiveState(active);
   }
 
   if (sidebar::IsBuiltInType(item)) {
@@ -596,11 +618,6 @@ bool SidebarItemsContentsView::IsBubbleVisible() const {
   }
 
   return false;
-}
-
-void SidebarItemsContentsView::SetSidebarOnLeft(bool sidebar_on_left) {
-  sidebar_on_left_ = sidebar_on_left;
-  UpdateAllBuiltInItemsViewState();
 }
 
 BEGIN_METADATA(SidebarItemsContentsView, views::View)

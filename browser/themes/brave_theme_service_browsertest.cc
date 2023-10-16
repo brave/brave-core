@@ -212,14 +212,13 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, OmniboxColorTest) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  const int hovered = false;
 
   // Change to light.
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
   bool dark = false;
   auto* color_provider = browser_view->GetColorProvider();
-  EXPECT_EQ(GetLocationBarBackground(dark, false /* incognito */, hovered),
+  EXPECT_EQ(GetLocationBarBackground(dark, false /* incognito */),
             color_provider->GetColor(kColorToolbarBackgroundSubtleEmphasis));
   EXPECT_EQ(GetOmniboxResultBackground(kColorOmniboxResultsBackground, dark,
                                        false /* incognito */),
@@ -230,10 +229,10 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, OmniboxColorTest) {
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
   dark = true;
   color_provider = browser_view->GetColorProvider();
-  EXPECT_EQ(GetLocationBarBackground(dark, false /* incognito */, hovered),
+  EXPECT_EQ(GetLocationBarBackground(dark, false /* incognito */),
             color_provider->GetColor(kColorToolbarBackgroundSubtleEmphasis));
   // Check color is different on dark mode and incognito mode.
-  EXPECT_NE(GetLocationBarBackground(dark, true /* incognito */, hovered),
+  EXPECT_NE(GetLocationBarBackground(dark, true /* incognito */),
             color_provider->GetColor(kColorToolbarBackgroundSubtleEmphasis));
 
   EXPECT_EQ(GetOmniboxResultBackground(kColorOmniboxResultsBackground, dark,

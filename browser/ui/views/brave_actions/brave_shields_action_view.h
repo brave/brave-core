@@ -34,10 +34,13 @@ class BraveShieldsActionView
 
   void Init();
   void Update();
+
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
       const override;
   std::u16string GetTooltipText(const gfx::Point& p) const override;
+  void OnThemeChanged() override;
+
   SkPath GetHighlightPath() const;
   views::Widget* GetBubbleWidget() {
     return webui_bubble_manager_->GetBubbleWidget();

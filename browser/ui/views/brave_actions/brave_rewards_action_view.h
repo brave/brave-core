@@ -56,6 +56,7 @@ class BraveRewardsActionView
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
       const override;
+  void OnThemeChanged() override;
 
   // views::WidgetObserver:
   void OnWidgetDestroying(views::Widget* widget) override;

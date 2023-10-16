@@ -34,6 +34,8 @@ absl::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case TAB_SEPARATOR_HEIGHT: {
       return 24;
     }
+    case LOCATION_BAR_HEIGHT:
+      return touch ? 36 : 34;
     default:
       break;
   }

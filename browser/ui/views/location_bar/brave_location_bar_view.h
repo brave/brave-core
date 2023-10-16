@@ -6,10 +6,12 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_LOCATION_BAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_LOCATION_BAR_VIEW_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
+#include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -38,7 +40,12 @@ FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 class BraveLocationBarView : public LocationBarView {
  public:
   METADATA_HEADER(BraveLocationBarView);
-  using LocationBarView::LocationBarView;
+  BraveLocationBarView(Browser* browser,
+                       Profile* profile,
+                       CommandUpdater* command_updater,
+                       Delegate* delegate,
+                       bool is_popup_mode);
+  ~BraveLocationBarView() override;
 
   BraveLocationBarView(const BraveLocationBarView&) = delete;
   BraveLocationBarView& operator=(const BraveLocationBarView&) = delete;
@@ -56,7 +63,7 @@ class BraveLocationBarView : public LocationBarView {
 #endif
   // LocationBarView:
   std::vector<views::View*> GetTrailingViews() override;
-
+  void RefreshBackground() override;
   ui::ImageModel GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
                                      on_icon_fetched) const override;
   void OnOmniboxBlurred() override;
@@ -85,6 +92,7 @@ class BraveLocationBarView : public LocationBarView {
 
   PlaylistActionIconView* GetPlaylistActionIconView();
 
+  std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
   raw_ptr<BraveNewsLocationView> brave_news_location_view_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)
