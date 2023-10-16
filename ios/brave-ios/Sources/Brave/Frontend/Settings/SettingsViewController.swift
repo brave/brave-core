@@ -810,6 +810,14 @@ class SettingsViewController: TableViewController {
             self.navigationController?.pushViewController(vc, animated: true)
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
+          text: "Debug Filter lists",
+          selection: { [unowned self] in
+            if #available(iOS 16.0, *) {
+              let vc = UIHostingController(rootView: FilterListToolsView())
+              self.navigationController?.present(vc, animated: true)
+            }
+          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+        Row(
           text: "View URP Logs",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(UrpLogsViewController(), animated: true)

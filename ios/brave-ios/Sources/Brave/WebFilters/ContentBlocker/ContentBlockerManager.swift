@@ -26,7 +26,7 @@ actor ContentBlockerManager {
   }
   
   /// These are the adblocking level that a particular BlocklistType can support
-  enum BlockingMode: CaseIterable {
+  enum BlockingMode: Hashable, CaseIterable {
     /// This is a general version that is supported on both standard and aggressive mode
     case general
     /// This indicates a less aggressive (or general) blocking version of the content blocker.
@@ -85,6 +85,22 @@ actor ContentBlockerManager {
     case generic(GenericBlocklistType)
     case filterList(componentId: String, isAlwaysAggressive: Bool)
     case customFilterList(uuid: String)
+    
+    var engineSource: CachedAdBlockEngine.Source? {
+      switch self {
+      case .generic(let genericBlocklistType):
+        switch genericBlocklistType {
+        case .blockAds:
+          return .adBlock
+        case .blockCookies, .blockTrackers, .upgradeMixedContent:
+          return nil
+        }
+      case .filterList(let componentId, _):
+        return .filterList(componentId: componentId)
+      case .customFilterList(let uuid):
+        return .filterListURL(uuid: uuid)
+      }
+    }
     
     private var identifier: String {
       switch self {
@@ -179,7 +195,7 @@ actor ContentBlockerManager {
     let state = Self.signpost.beginInterval("convertRules", id: signpostID, "\(type.debugDescription)")
     
     do {
-      let filterSet = try String(contentsOf: localFileURL)
+      let filterSet = try loadEncodedeRuleList(savedTo: localFileURL, for: type)
       result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
       Self.signpost.endInterval("convertRules", state)
     } catch {
@@ -214,6 +230,17 @@ actor ContentBlockerManager {
     
     if let error = foundError {
       throw error
+    }
+  }
+
+  /// Load the rule list from file and attach any additional debug rules
+  private func loadEncodedeRuleList(savedTo fileURL: URL, for type: BlocklistType) throws -> String {
+    if let source = type.engineSource, let additionalRules = try source.loadAdditionalRules() {
+      Self.log.debug("Loaded additional rules for `\(type.debugDescription)`")
+      let file = try String(contentsOf: fileURL, encoding: .utf8)
+      return [file, additionalRules].joined(separator: "\n")
+    } else {
+      return try String(contentsOf: fileURL, encoding: .utf8)
     }
   }
   

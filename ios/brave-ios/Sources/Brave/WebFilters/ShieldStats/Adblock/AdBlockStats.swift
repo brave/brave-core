@@ -65,13 +65,13 @@ public actor AdBlockStats {
   /// - Note: This method will ensure syncronous compilation
   public func compile(
     lazyInfo: LazyFilterListInfo, resourcesInfo: CachedAdBlockEngine.ResourcesInfo,
-    compileContentBlockers: Bool
+    compileContentBlockers: Bool, force: Bool = false
   ) async {
     await currentCompileTask?.value
     
     currentCompileTask = Task {
       // Compile engine
-      if needsCompilation(for: lazyInfo.filterListInfo, resourcesInfo: resourcesInfo) {
+      if force || needsCompilation(for: lazyInfo.filterListInfo, resourcesInfo: resourcesInfo) {
         do {
           let engine = try CachedAdBlockEngine.compile(
             filterListInfo: lazyInfo.filterListInfo, resourcesInfo: resourcesInfo, isAlwaysAggressive: lazyInfo.isAlwaysAggressive

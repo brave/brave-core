@@ -13,6 +13,18 @@ extension AdblockEngine {
     case couldNotDeserializeDATFile
   }
   
+  convenience init(textFileURL fileURL: URL, resourcesFileURL: URL, additionalRules: String?) throws {
+    if let additionalRules = additionalRules, !additionalRules.isEmpty {
+      var rules = try String(contentsOf: fileURL)
+      rules = [rules, additionalRules].joined(separator: "\n")
+      try self.init(rules: rules)
+    } else {
+      try self.init(rules: String(contentsOf: fileURL))
+    }
+    
+    try useResources(fromFileURL: resourcesFileURL)
+  }
+  
   convenience init(textFileURL fileURL: URL, resourcesFileURL: URL) throws {
     try self.init(rules: String(contentsOf: fileURL))
     try useResources(fromFileURL: resourcesFileURL)

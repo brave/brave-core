@@ -201,7 +201,10 @@ public class CachedAdBlockEngine {
   ) throws -> CachedAdBlockEngine {
     switch filterListInfo.fileType {
     case .text:
-      let engine = try AdblockEngine(textFileURL: filterListInfo.localFileURL, resourcesFileURL: resourcesInfo.localFileURL)
+      let engine = try AdblockEngine(
+        textFileURL: filterListInfo.localFileURL, resourcesFileURL: resourcesInfo.localFileURL,
+        additionalRules: filterListInfo.source.loadAdditionalRules()
+      )
       let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
       return CachedAdBlockEngine(
         engine: engine, filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
