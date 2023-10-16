@@ -66,6 +66,7 @@ class BraveVPNButton : public ToolbarButton,
   void UpdateButtonState();
 
   bool is_error_state_ = false;
+  bool is_connected_ = false;
   absl::optional<brave_vpn::mojom::ConnectionState>
       connection_state_for_testing_;
   raw_ptr<Browser> browser_ = nullptr;
