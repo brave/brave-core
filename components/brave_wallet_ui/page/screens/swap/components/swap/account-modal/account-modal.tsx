@@ -10,9 +10,6 @@ import {
   getLocale
 } from '../../../../../../../common/locale'
 
-// Hiding Portfolio Section until we support it.
-// import PortfolioIcon from '../../../assets/portfolio-icon.svg'
-
 import {
   useGetAccountInfosRegistryQuery,
   useGetSelectedChainQuery,
@@ -35,7 +32,6 @@ import { ModalBox, Title } from './account-modal.style'
 import {
   Row,
   Column,
-  VerticalDivider,
   IconButton,
   Icon,
   ShownResponsiveRow
@@ -131,21 +127,6 @@ export const AccountModal = (props: Props) => {
             onClick={() => onSelectAccount(account)}
           />
         ))}
-      </Column>
-      <VerticalDivider />
-      <Column
-        columnWidth='full'
-        verticalPadding={4}
-        horizontalPadding={16}
-        horizontalAlign='flex-start'
-        verticalAlign='flex-start'
-      >
-        {/* Hiding Porfolio Section until we support it */}
-        {/* <AccountModalButton
-          text={getLocale('braveSwapMyPortfolio')}
-          icon={PortfolioIcon}
-          onClick={onClickViewPortfolio}
-        /> */}
       </Column>
     </ModalBox>
   )
