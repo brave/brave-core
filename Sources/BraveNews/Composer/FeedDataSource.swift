@@ -106,7 +106,7 @@ public class FeedDataSource: ObservableObject {
   }
 
   /// An ads object to handle inserting Inline Content Ads within the Brave News sequence
-  public var ads: BraveAds?
+  public var getAdsAPI: (() -> BraveAds)?
   public var historyAPI: BraveHistoryAPI?
 
   private let todayQueue = DispatchQueue(label: "com.brave.today")
@@ -939,7 +939,7 @@ public class FeedDataSource: ObservableObject {
         followedSources: followedSources,
         hiddenSources: hiddenSources,
         followedChannels: followedChannels.mapValues(Set.init),
-        ads: ads
+        ads: getAdsAPI?()
       )
       // Move to OSSignposter when we're 15+
       let log = OSLog(subsystem: Bundle.main.bundleIdentifier ?? "com.brave.ios", category: "Brave News")

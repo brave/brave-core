@@ -346,7 +346,11 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    self.feedDataSource.ads = rewards.ads
+    self.feedDataSource.getAdsAPI = {
+      // The ads object gets re-recreated when shutdown, so we need to make sure News fetches it out of
+      // the BraveRewards container
+      return rewards.ads
+    }
     
     // Observer watching tab information is sent by another device
     openTabsModelStateListener = braveCore.sendTabAPI.add(
