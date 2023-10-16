@@ -1096,8 +1096,10 @@ source_set("unit_tests") {
       sources += [ "views/toolbar/brave_vpn_button_unittest.cc" ]
       deps += [
         "//base",
+        "//brave/components/brave_vpn/browser",
         "//brave/components/brave_vpn/browser/connection:api",
         "//brave/components/brave_vpn/browser/connection/ikev2:sim",
+        "//brave/components/skus/browser",
         "//chrome/test:test_support",
         "//skia",
         "//testing/gtest",
