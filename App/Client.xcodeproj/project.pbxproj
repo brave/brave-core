@@ -1508,7 +1508,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = BrowserIntents/Entitlements/BrowserIntentsDebug.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "BrowserIntents/Entitlements/BrowserIntentsRelease (AppStore).entitlements";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
