@@ -322,7 +322,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
 // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4vwmn4vmf2tq
 std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
     const Publishers& publishers,
-    base::span<Topic>& topics) {
+    base::span<const Topic>& topics) {
   if (topics.empty()) {
     return {};
   }
@@ -330,8 +330,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
   auto result = mojom::Cluster::New();
   result->type = mojom::ClusterType::TOPIC;
 
-  auto [topic, articles] = std::move(topics[0]);
-  topics = base::make_span(std::next(topics.begin()), topics.end());
+  auto& [topic, articles] = topics.front();
   result->id = topic.title;
 
   uint64_t max_articles = features::kBraveNewsMaxBlockCards.Get();
@@ -362,6 +361,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
     }
   }
 
+  // Make sure we don't reuse the topic by excluding it from our span.
+  topics = base::make_span(std::next(topics.begin()), topics.end());
+
   std::vector<mojom::FeedItemV2Ptr> items;
   items.push_back(mojom::FeedItemV2::NewCluster(std::move(result)));
   return items;
@@ -376,7 +378,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
     const std::string& locale,
     const Publishers& publishers,
     const std::vector<std::string>& channels,
-    base::span<Topic>& topics,
+    base::span<const Topic>& topics,
     ArticleInfos& articles) {
   // If we have no channels, and no topics there's nothing we can do here.
   if (channels.empty() && topics.empty()) {
@@ -593,7 +595,7 @@ void FeedV2Builder::BuildFeedFromArticles() {
   auto suggested_publisher_ids = suggested_publisher_ids_;
   auto articles = GetArticleInfos(raw_feed_items_, signals_);
   auto feed = mojom::FeedV2::New();
-  auto topics = base::make_span(topics_);
+  base::span<const Topic> topics = base::make_span(topics_);
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
     base::ranges::move(items, std::back_inserter(feed->items));
