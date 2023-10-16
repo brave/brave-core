@@ -61,6 +61,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
     private static final String PREF_FINGERPRINT_LANGUAGE = "fingerprint_language";
+    private static final String PREF_PRIVACY_SECTION = "privacy_section";
+    private static final String PREF_THIRD_PARTY_COOKIES = "third_party_cookies";
+    private static final String PREF_SECURITY_SECTION = "security_section";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -400,6 +403,10 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
         removePreferenceIfPresent(PREF_NETWORK_PREDICTIONS);
         removePreferenceIfPresent(PREF_PRIVACY_SANDBOX);
+        removePreferenceIfPresent(PREF_PRIVACY_SECTION);
+        removePreferenceIfPresent(PREF_THIRD_PARTY_COOKIES);
+        removePreferenceIfPresent(PREF_SECURITY_SECTION);
+
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING)) {
             removePreferenceIfPresent(PREF_SAFE_BROWSING);
         } else {
@@ -610,8 +617,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, (boolean) newValue);
         } else if (PREF_APP_LINKS.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_APP_LINKS, (boolean) newValue);
-            ChromeSharedPreferences.getInstance().writeBoolean(
-                    BravePrivacySettings.PREF_APP_LINKS_RESET, false);
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePrivacySettings.PREF_APP_LINKS_RESET, false);
         } else if (PREF_BLOCK_TRACKERS_ADS.equals(key)) {
             if (newValue instanceof String) {
                 final String newStringValue = String.valueOf(newValue);
