@@ -36,14 +36,9 @@
 
 .actions {
   --leo-icon-size: 20px;
-
-  leo-button {
-    margin-right: 18px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 .logo {
