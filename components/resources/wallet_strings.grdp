@@ -647,7 +647,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SEND" desc="Transaction intent for transfers">Send <ph name="VALUE">$1<ex>1000 USDC</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_INTENT_SWAP" desc="Transaction intent for swaps">Swap <ph name="MAKER">$1<ex>1000 USDC</ex></ph> to <ph name="TAKER">$2<ex>990 USDT</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET" desc="Sign in with Brave Wallet Title">Sign in with Brave Wallet</message>
-  <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET_MESSAGE" desc="Sign in with Brave Wallet Message">You are signing into <ph name="ORIGIN">$1<ex>login.xyz</ex></ph>. Brave wallet will share your wallet address with <ph name="ORIGIN">$1<ex>login.xyz</ex></ph>.</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET_MESSAGE" desc="Sign in with Brave Wallet Message">You are signing into <ph name="ORIGIN">$1<ex>login.xyz</ex></ph>. Brave Wallet will share your wallet address with <ph name="ORIGIN">$1<ex>login.xyz</ex></ph>.</message>
   <message name="IDS_BRAVE_WALLET_SEE_DETAILS" desc="Sign in with Brave Wallet See details button">See details</message>
   <message name="IDS_BRAVE_WALLET_SIGN_IN" desc="Sign in with Brave Wallet Sign in Button">Sign in</message>
   <message name="IDS_BRAVE_WALLET_ORIGIN" desc="Sign in with Brave Wallet Origin Label">Origin</message>
