@@ -467,8 +467,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   // Renderer initiated navigations.
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
-  content::ExecJs(browser()->tab_strip_model()->GetActiveWebContents(),
-                  kScript);
+  EXPECT_TRUE(content::ExecJs(
+      browser()->tab_strip_model()->GetActiveWebContents(), kScript));
   browser_creation_observer.Wait();
 
   BrowserList* browser_list = BrowserList::GetInstance();
