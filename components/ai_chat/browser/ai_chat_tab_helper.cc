@@ -47,8 +47,12 @@ static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
 
 namespace ai_chat {
 
-AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
-                                 AIChatMetrics* ai_chat_metrics)
+AIChatTabHelper::AIChatTabHelper(
+    content::WebContents* web_contents,
+    AIChatMetrics* ai_chat_metrics,
+    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+        skus_service_getter,
+    PrefService* local_state_prefs)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AIChatTabHelper>(*web_contents),
       pref_service_(
@@ -65,6 +69,9 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
       base::BindRepeating(
           &AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions,
           weak_ptr_factory_.GetWeakPtr()));
+  credential_manager_ = std::make_unique<ai_chat::AIChatCredentialManager>(
+      skus_service_getter, local_state_prefs);
+
   // Engines and model names are be selectable
   // per conversation, not static.
   // Start with default.
@@ -121,22 +128,27 @@ void AIChatTabHelper::InitEngine() {
       model_match = kAllModels.begin();
     }
   }
+
   auto model = model_match->second;
   // TODO(petemill): Engine enum on model to decide which one
   if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
     VLOG(1) << "Started tab helper for AI engine: llama";
     engine_ = std::make_unique<EngineConsumerLlamaRemote>(
-        model, web_contents()
-                   ->GetBrowserContext()
-                   ->GetDefaultStoragePartition()
-                   ->GetURLLoaderFactoryForBrowserProcess());
+        model,
+        web_contents()
+            ->GetBrowserContext()
+            ->GetDefaultStoragePartition()
+            ->GetURLLoaderFactoryForBrowserProcess(),
+        credential_manager_.get());
   } else {
     VLOG(1) << "Started tab helper for AI engine: claude";
     engine_ = std::make_unique<EngineConsumerClaudeRemote>(
-        model, web_contents()
-                   ->GetBrowserContext()
-                   ->GetDefaultStoragePartition()
-                   ->GetURLLoaderFactoryForBrowserProcess());
+        model,
+        web_contents()
+            ->GetBrowserContext()
+            ->GetDefaultStoragePartition()
+            ->GetURLLoaderFactoryForBrowserProcess(),
+        credential_manager_.get());
   }
 }
 
@@ -639,6 +651,11 @@ void AIChatTabHelper::WebContentsDestroyed() {
   CleanUp();
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
       ->RemoveObserver(this);
+}
+
+void AIChatTabHelper::GetPremiumStatus(
+    ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback) {
+  credential_manager_->GetPremiumStatus(std::move(callback));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

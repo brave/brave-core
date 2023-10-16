@@ -33,7 +33,8 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
-  const [isPremiumUser] = React.useState(true)
+  const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
+
   const [hasUserDissmisedPremiumPrompt, setHasUserDissmisedPremiumPrompt] = React.useState(loadTimeData.getBoolean("hasUserDismissedPremiumPrompt"))
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
@@ -112,11 +113,29 @@ function DataContextProvider (props: DataContextProviderProps) {
     setHasUserDissmisedPremiumPrompt(true)
   }
 
-  const initialiseForTargetTab = () => {
+  const switchToDefaultModel = () => {
+    // Select the first non-premium model
+    const nonPremium = allModels.find(m => !m.isPremium)
+    if (!nonPremium) {
+      console.error('Could not find a non-premium model!')
+      return
+    }
+    setCurrentModel(nonPremium)
+  }
+
+  const updateCurrentPremiumStatus = async () => {
+    console.debug('Getting premium status...')
+    const premiumStatus = await getPageHandlerInstance().pageHandler.getPremiumStatus()
+    console.debug('got premium status: ', premiumStatus.result)
+    setPremiumStatus(premiumStatus.result)
+  }
+
+  const initialiseForTargetTab = async () => {
     // Replace state from backend
     // TODO(petemill): Perhaps we need a simple GetState mojom function
     // and OnStateChanged event so we
     // don't need to call multiple functions or handle multiple events.
+    updateCurrentPremiumStatus()
     getConversationHistory()
     getSuggestedQuestions()
     getSiteInfo()
@@ -134,6 +153,7 @@ function DataContextProvider (props: DataContextProviderProps) {
       setCurrentModelRaw(data.currentModel);
     })
 
+    // Setup data event handlers
     getPageHandlerInstance().callbackRouter.onConversationHistoryUpdate.addListener(() => {
       getConversationHistory()
       setCanGenerateQuestions(false)
@@ -146,10 +166,22 @@ function DataContextProvider (props: DataContextProviderProps) {
         setUserAutoGeneratePref(autoGenerate)
       }
     )
-
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
     getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: mojom.SiteInfo) => setSiteInfo(siteInfo))
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
+
+    // Since there is no server-side event for premium status changing,
+    // we should check often. And since purchase or login is performed in
+    // a separate WebContents, we can check when focus is returned here.
+    window.addEventListener('focus', () => {
+      updateCurrentPremiumStatus()
+    })
+
+    document.addEventListener('visibilitychange', (e) => {
+      if (document.visibilityState === 'visible') {
+        updateCurrentPremiumStatus()
+      }
+    })
   }, [])
 
   const store = {
@@ -167,9 +199,11 @@ function DataContextProvider (props: DataContextProviderProps) {
     hasSeenAgreement,
     apiHasError,
     shouldDisableUserInput,
-    isPremiumUser,
+    isPremiumUser: premiumStatus !== mojom.PremiumStatus.Inactive,
+    isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
     hasUserDissmisedPremiumPrompt,
     setCurrentModel,
+    switchToDefaultModel,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,

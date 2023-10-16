@@ -40,6 +40,12 @@ enum ModelCategory {
   CHAT,
 };
 
+enum PremiumStatus {
+  Inactive,
+  Active,
+  ActiveDisconnected,
+};
+
 struct SiteInfo {
   string title;
 };
@@ -110,6 +116,7 @@ interface PageHandler {
   // current conversation.
   RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
   SendFeedback(string category, string feedback, string rating_id) => (bool is_success);
+  GetPremiumStatus() => (PremiumStatus result);
 };
 
 interface ChatUIPage {

@@ -178,7 +178,7 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
-  if (!url.SchemeIs(content::kChromeUIScheme) ||
+  if (!url.SchemeIs(content::kChromeUIScheme) &&
       !url.SchemeIs(url::kHttpsScheme)) {
     return;
   }
@@ -393,6 +393,10 @@ void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
   }
   bool is_visible = (visibility == content::Visibility::VISIBLE) ? true : false;
   active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
+}
+
+void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
+  active_chat_tab_helper_->GetPremiumStatus(std::move(callback));
 }
 
 }  // namespace ai_chat
