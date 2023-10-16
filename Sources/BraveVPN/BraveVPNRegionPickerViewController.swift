@@ -20,6 +20,7 @@ public class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
 
   /// This group monitors vpn connection status.
   private var dispatchGroup: DispatchGroup?
+  private var timeoutTimer: Timer?
   private var vpnRegionChangeSuccess = false
 
   public override init() {
@@ -45,10 +46,15 @@ public class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
     guard let connection = notification.object as? NEVPNConnection else { return }
 
     if connection.status == .connected {
+      vpnRegionChangeSuccess = true
+      timeoutTimer?.invalidate()
       dispatchGroup?.leave()
-      self.vpnRegionChangeSuccess = true
       dispatchGroup = nil
     }
+  }
+  
+  deinit {
+    timeoutTimer?.invalidate()
   }
 }
 
@@ -116,40 +122,43 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
     let newRegion = indexPath.section == Section.automatic.rawValue ? nil : region
 
     self.dispatchGroup = DispatchGroup()
-
+    // Changing vpn server settings takes lot of time,
+    // and nothing we can do about it as it relies on Apple apis.
+    // Here we observe vpn status and we show success alert if it connected,
+    // otherwise an error alert is show if it did not manage to connect in 60 seconds.
+    self.dispatchGroup?.enter()
+    
     BraveVPN.changeVPNRegion(to: newRegion) { [weak self] success in
       guard let self = self else { return }
 
       if !success {
+        self.markRegionChangeFailed()
+      } else {
+        // Start a timeout timer
+        self.timeoutTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: { [weak self] _ in
+          guard let self = self else { return }
+          self.markRegionChangeFailed()
+        })
+      }
+    }
+    
+    dispatchGroup?.notify(queue: .main) { [weak self] in
+      guard let self = self else { return }
+      if self.vpnRegionChangeSuccess {
+        self.dismiss(animated: true) {
+          self.showSuccessAlert(text: Strings.VPN.regionSwitchSuccessPopupText)
+          BraveVPN.fetchLastUsedRegionDetail()
+        }
+      } else {
         self.showErrorAlert(title: Strings.VPN.regionPickerErrorTitle,
                             message: Strings.VPN.regionPickerErrorMessage)
       }
-
-      // Changing vpn server settings takes lot of time,
-      // and nothing we can do about it as it relies on Apple apis.
-      // Here we observe vpn status and we show success alert if it connected,
-      // otherwise an error alert is show if it did not manage to connect in 60 seconds.
-      self.dispatchGroup?.enter()
-
-      DispatchQueue.main.asyncAfter(deadline: .now() + 60) {
-        self.vpnRegionChangeSuccess = false
-        self.dispatchGroup?.leave()
-        self.dispatchGroup = nil
-      }
-
-      self.dispatchGroup?.notify(queue: .main) { [weak self] in
-        guard let self = self else { return }
-        if self.vpnRegionChangeSuccess {
-
-          self.dismiss(animated: true) {
-            self.showSuccessAlert(text: Strings.VPN.regionSwitchSuccessPopupText)
-            BraveVPN.fetchLastUsedRegionDetail()
-          }
-        } else {
-          self.showErrorAlert(title: Strings.VPN.regionPickerErrorTitle,
-                              message: Strings.VPN.regionPickerErrorMessage)
-        }
-      }
     }
+  }
+  
+  private func markRegionChangeFailed() {
+    vpnRegionChangeSuccess = false
+    dispatchGroup?.leave()
+    dispatchGroup = nil
   }
 }
