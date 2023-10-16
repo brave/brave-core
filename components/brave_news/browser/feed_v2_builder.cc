@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <numeric>
+#include <sstream>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -44,13 +46,33 @@ namespace {
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, Signal, double>;
 using ArticleInfos = std::vector<ArticleInfo>;
 
-Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
-                 const Signals& signals) {
+std::vector<mojom::Signal*> GetSignals(
+    const std::string& locale,
+    const mojom::FeedItemMetadataPtr& article,
+    const Publishers& publishers,
+    const Signals& signals) {
+  std::vector<mojom::Signal*> result;
   auto it = signals.find(article->publisher_id);
-  if (it == signals.end()) {
-    return nullptr;
+  if (it != signals.end()) {
+    result.push_back(it->second.get());
   }
-  return it->second->Clone();
+
+  auto publisher_it = publishers.find(article->publisher_id);
+  if (publisher_it != publishers.end()) {
+    for (const auto& locale_info : publisher_it->second->locales) {
+      if (locale_info->locale != locale) {
+        continue;
+      }
+      for (const auto& channel : locale_info->channels) {
+        auto signal_it = signals.find(channel);
+        if (signal_it == signals.end()) {
+          continue;
+        }
+        result.push_back(signal_it->second.get());
+      }
+    }
+  }
+  return result;
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
@@ -69,13 +91,27 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
          pow(0.5, dt.InHours() / pop_recency_half_life_in_hours);
 }
 
+double GetSubscribedWeight(const mojom::FeedItemMetadataPtr& article,
+                           const std::vector<mojom::Signal*>& signals) {
+  double result = 0;
+  for (const auto* signal : signals) {
+    // If any signal is explicitly disabled, we should never show this source.
+    if (signal->disabled) {
+      return 0;
+    }
+
+    result += signal->subscribed_weight / signal->article_count;
+  }
+  return result;
+}
+
 double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
-                        const Signal& signal) {
+                        const std::vector<mojom::Signal*>& signals) {
+  const auto subscribed_weight = GetSubscribedWeight(article, signals);
   const double source_visits_min = features::kBraveNewsSourceVisitsMin.Get();
   double source_visits_projected =
-      source_visits_min + signal->visit_weight * (1 - source_visits_min);
-  return source_visits_projected * signal->subscribed_weight *
-         GetPopRecency(article);
+      source_visits_min + signals.at(0)->visit_weight * (1 - source_visits_min);
+  return source_visits_projected * subscribed_weight * GetPopRecency(article);
 }
 
 std::string PickRandom(const std::vector<std::string>& items) {
@@ -84,7 +120,9 @@ std::string PickRandom(const std::vector<std::string>& items) {
   return items[base::RandInt(0, items.size() - 1)];
 }
 
-ArticleInfos GetArticleInfos(const FeedItems& feed_items,
+ArticleInfos GetArticleInfos(const std::string& locale,
+                             const FeedItems& feed_items,
+                             const Publishers& publishers,
                              const Signals& signals) {
   ArticleInfos articles;
   base::flat_set<GURL> seen_articles;
@@ -102,16 +140,26 @@ ArticleInfos GetArticleInfos(const FeedItems& feed_items,
 
       seen_articles.insert(article->data->url);
 
-      auto signal = GetSignal(article->data, signals);
+      auto article_signals =
+          GetSignals(locale, article->data, publishers, signals);
 
       // If we don't have a signal for this article, filter it out.
-      if (!signal) {
+      if (article_signals.empty()) {
         continue;
       }
 
+      // TODO: Verify these assumptions. This signal seems to only be used to
+      // determine if a source has ever been visited before.
+      auto signal = mojom::Signal::New(
+          base::ranges::any_of(
+              article_signals,
+              [](const auto& signal) { return signal->disabled; }),
+          article_signals.at(0)->subscribed_weight,
+          article_signals.at(0)->visit_weight, 1);
+
       std::tuple<mojom::FeedItemMetadataPtr, Signal, double> pair =
           std::tuple(article->data->Clone(), std::move(signal),
-                     GetArticleWeight(article->data, signal));
+                     GetArticleWeight(article->data, article_signals));
       articles.push_back(std::move(pair));
     }
   }
@@ -674,7 +722,8 @@ void FeedV2Builder::BuildFeedFromArticles() {
 
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
   auto suggested_publisher_ids = suggested_publisher_ids_;
-  auto articles = GetArticleInfos(raw_feed_items_, signals_);
+  auto articles =
+      GetArticleInfos(locale, raw_feed_items_, publishers, signals_);
   auto feed = mojom::FeedV2::New();
   base::span<const TopicAndArticles> topics = base::make_span(topics_);
 

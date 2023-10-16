@@ -5,13 +5,16 @@
 
 #include "brave/components/brave_news/browser/signal_calculator.h"
 
+#include <cstdint>
 #include <iterator>
 #include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
+#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 
@@ -65,6 +68,29 @@ void SignalCalculator::OnGotHistory(
   const auto& publishers = publishers_controller_->GetLastPublishers();
   const auto& channels = channels_controller_->GetChannelsFromPublishers(
       publishers, &prefs_.get());
+
+  // Work out how many articles we have in each publisher/channel. We'll use
+  // these values to normalize the boost we apply to articles within those
+  // publishers/channels so we don't overwhelm the user with articles from
+  // certain areas.
+  base::flat_map<std::string, uint32_t> article_counts;
+  for (const auto& article : articles) {
+    auto it = publishers.find(article->publisher_id);
+    if (it == publishers.end()) {
+      continue;
+    }
+
+    article_counts[article->publisher_id]++;
+    for (const auto& locale_info : it->second->locales) {
+      if (locale_info->locale != locale) {
+        continue;
+      }
+      for (const auto& channel : locale_info->channels) {
+        article_counts[channel]++;
+      }
+    }
+  }
+
   base::flat_map<std::string, std::vector<std::string>> origin_visits;
   for (const auto& item : results) {
     auto host = item.url().host();
@@ -116,9 +142,12 @@ void SignalCalculator::OnGotHistory(
   // Add publisher signals
   for (const auto& [id, publisher] : publishers) {
     const auto& visits = publisher_visits.at(publisher->publisher_id);
+    auto disabled =
+        publisher->user_enabled_status == mojom::UserEnabled::DISABLED;
     signals[id] = mojom::Signal::New(
-        GetSubscribedWeight(publisher),
-        visits.size() / static_cast<double>(total_publisher_visits));
+        disabled, GetSubscribedWeight(publisher),
+        visits.size() / static_cast<double>(total_publisher_visits),
+        article_counts[id]);
   }
 
   // Add channel signals
@@ -126,8 +155,12 @@ void SignalCalculator::OnGotHistory(
     auto it = channel_visits.find(channel.first);
     auto visit_count = it == channel_visits.end() ? 0 : it->second.size();
     signals[channel.first] = mojom::Signal::New(
-        channels_controller_->GetChannelSubscribed(locale, channel.first),
-        visit_count / static_cast<double>(total_channel_visits));
+        /*disabled=*/false,
+        channels_controller_->GetChannelSubscribed(locale, channel.first)
+            ? features::kBraveNewsChannelSubscribedBoost.Get()
+            : 0,
+        visit_count / static_cast<double>(total_channel_visits),
+        article_counts[channel.first]);
   }
 
   std::move(callback).Run(std::move(signals));
@@ -150,18 +183,6 @@ double SignalCalculator::GetSubscribedWeight(
   if (publisher->type == mojom::PublisherType::DIRECT_SOURCE ||
       enabled == mojom::UserEnabled::ENABLED) {
     result += features::kBraveNewsSourceSubscribedBoost.Get();
-  }
-
-  // If the source is part of any channel the user is subscribed to, apply the
-  // channel subscribed boost.
-  for (const auto& locale_info : publisher->locales) {
-    for (const auto& channel : locale_info->channels) {
-      if (channels_controller_->GetChannelSubscribed(locale_info->locale,
-                                                     channel)) {
-        result += features::kBraveNewsChannelSubscribedBoost.Get();
-        break;
-      }
-    }
   }
 
   return result;
