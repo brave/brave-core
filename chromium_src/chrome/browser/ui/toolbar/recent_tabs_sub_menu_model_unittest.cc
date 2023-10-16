@@ -5,6 +5,8 @@
 
 #include <string_view>
 
+#include "base/strings/string_util.h"
+
 // Disabling these tests because they refer g_brave_browser_process which is not
 // initialized in unit tests, is null and so they are crashing.
 // Not related to change in RecentTabsSubMenuModel for additional `More...`
@@ -35,6 +37,9 @@
 #undef RecentlyClosedTabsFromCurrentSession
 #undef RecentlyClosedGroupsFromCurrentSession
 
+// This function override is in place here to make sure we insert an extra entry
+// on the model data to be checked, representing Brave's entry "Clear Browsing
+// Data".
 void RecentTabsSubMenuModelTest::VerifyModel(
     const RecentTabsSubMenuModel& model,
     base::span<const ModelData> data) {
@@ -42,7 +47,7 @@ void RecentTabsSubMenuModelTest::VerifyModel(
   v_data.insert(v_data.begin() + 1, {ui::MenuModel::TYPE_COMMAND, true});
   const std::string_view test_name =
       testing::UnitTest::GetInstance()->current_test_info()->name();
-  if (test_name == "MaxTabsPerSessionAndRecency") {
+  if (base::StartsWith(test_name, "MaxTabsPerSessionAndRecency/")) {
     v_data.push_back({ui::MenuModel::TYPE_COMMAND, true});
   }
   ::VerifyModel(model, base::make_span(v_data.begin(), v_data.size()));

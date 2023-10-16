@@ -15,8 +15,9 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 
 // Patched because this inserting should be done before BuildLocalEntries() in
 // ctor and only once.
-#define BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD \
-  InsertItemWithStringIdAt(1, IDC_CLEAR_BROWSING_DATA, IDS_CLEAR_BROWSING_DATA);
+#define BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD         \
+  InsertItemWithStringIdAt(history_separator_index_++, \
+                           IDC_CLEAR_BROWSING_DATA, IDS_CLEAR_BROWSING_DATA);
 
 #define BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES      \
   if (tabs_in_session.size() > kMaxTabsPerSessionToShow) {                  \
