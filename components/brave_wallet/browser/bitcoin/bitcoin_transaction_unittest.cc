@@ -132,7 +132,6 @@ TEST(BitcoinTransaction, Value) {
 
   tx.set_to(kAddress1);
   tx.set_amount(12345);
-  tx.set_fee(100);
   tx.set_locktime(777);
 
   auto parsed = tx.FromValue(tx.ToValue());
@@ -142,7 +141,6 @@ TEST(BitcoinTransaction, Value) {
   EXPECT_EQ(parsed->outputs(), tx.outputs());
   EXPECT_EQ(parsed->to(), tx.to());
   EXPECT_EQ(parsed->amount(), tx.amount());
-  EXPECT_EQ(parsed->fee(), tx.fee());
   EXPECT_EQ(parsed->locktime(), tx.locktime());
 }
 
@@ -176,6 +174,11 @@ TEST(BitcoinTransaction, IsSigned) {
   input2.witness = {};
   EXPECT_TRUE(input2.IsSigned());
   EXPECT_TRUE(tx.IsSigned());
+
+  tx.ClearSignatures();
+  EXPECT_FALSE(input1.IsSigned());
+  EXPECT_FALSE(input2.IsSigned());
+  EXPECT_FALSE(tx.IsSigned());
 }
 
 TEST(BitcoinTransaction, TotalInputsAmount) {
@@ -197,6 +200,52 @@ TEST(BitcoinTransaction, TotalInputsAmount) {
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
   input2.utxo_value = 555;
   EXPECT_EQ(tx.TotalInputsAmount(), 555666777u + 555u);
+}
+
+TEST(BitcoinTransaction, TotalOutputsAmount) {
+  BitcoinTransaction tx;
+  EXPECT_EQ(tx.TotalOutputsAmount(), 0u);
+
+  auto& output1 = tx.outputs().emplace_back();
+  output1.address = kAddress1;
+  output1.amount = 5;
+  EXPECT_EQ(tx.TotalOutputsAmount(), 5u);
+
+  auto& output2 = tx.outputs().emplace_back();
+  output2.address = kAddress2;
+  output2.amount = 50;
+  EXPECT_EQ(tx.TotalOutputsAmount(), 50u + 5u);
+}
+
+TEST(BitcoinTransaction, EffectiveFeeAmount) {
+  BitcoinTransaction tx;
+  EXPECT_EQ(tx.EffectiveFeeAmount(), 0u);
+
+  auto& input1 = tx.inputs().emplace_back();
+  input1.utxo_address = kAddress1;
+  input1.utxo_outpoint.index = 123;
+  base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
+  input1.utxo_value = 555666777;
+  input1.script_sig = {1, 2, 3};
+  input1.witness = {4, 5, 6};
+  EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u);
+
+  auto& input2 = tx.inputs().emplace_back();
+  input2.utxo_address = kAddress2;
+  input2.utxo_outpoint.index = 7;
+  base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
+  input2.utxo_value = 555;
+  EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u + 555u);
+
+  auto& output1 = tx.outputs().emplace_back();
+  output1.address = kAddress1;
+  output1.amount = 5;
+  EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u + 555u - 5u);
+
+  auto& output2 = tx.outputs().emplace_back();
+  output2.address = kAddress2;
+  output2.amount = 50;
+  EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u + 555u - 5u - 50u);
 }
 
 }  // namespace brave_wallet

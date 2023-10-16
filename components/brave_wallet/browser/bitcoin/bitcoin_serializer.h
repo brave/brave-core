@@ -19,7 +19,7 @@ namespace brave_wallet {
 
 class BitcoinSerializerStream {
  public:
-  explicit BitcoinSerializerStream(std::vector<uint8_t>& to) : to_(to) {}
+  explicit BitcoinSerializerStream(std::vector<uint8_t>* to) : to_(to) {}
 
   void Push8AsLE(uint8_t i);
   void Push16AsLE(uint16_t i);
@@ -30,9 +30,12 @@ class BitcoinSerializerStream {
   void PushBytes(base::span<const uint8_t> bytes);
   void PushBytesReversed(base::span<const uint8_t> bytes);
 
+  uint32_t serialized_bytes() const { return serialized_bytes_; }
+
  private:
-  std::vector<uint8_t>& to() { return to_.get(); }
-  raw_ref<std::vector<uint8_t>> to_;
+  uint32_t serialized_bytes_ = 0;
+  std::vector<uint8_t>* to() { return to_.get(); }
+  raw_ptr<std::vector<uint8_t>> to_;
 };
 
 // TODO(apaymyshev): test with reference test vectors.
@@ -48,6 +51,9 @@ class BitcoinSerializer {
 
   static std::vector<uint8_t> SerializeSignedTransaction(
       const BitcoinTransaction& tx);
+
+  static uint32_t CalcTransactionWeight(const BitcoinTransaction& tx);
+  static uint32_t CalcVSize(const BitcoinTransaction& tx);
 };
 
 }  // namespace brave_wallet

@@ -139,6 +139,7 @@ const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
     !p.isDefaultPlaylist &&
     !p.thumbnailUrl &&
     css`
+      --leo-icon-color: ${color.icon.default};
       background-color: ${color.container.background};
     `}
 
@@ -155,6 +156,7 @@ const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
 
   width: 80px;
   height: 80px;
+  flex: 0 0 auto;
 
   display: flex;
   justify-content: center;

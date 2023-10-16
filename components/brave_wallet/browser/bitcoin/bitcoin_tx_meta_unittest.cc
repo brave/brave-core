@@ -21,7 +21,6 @@ TEST(BitcoinTxMeta, ToTransactionInfo) {
   std::unique_ptr<BitcoinTransaction> tx =
       std::make_unique<BitcoinTransaction>();
   tx->set_amount(200000);
-  tx->set_fee(1000);
   tx->set_to("tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm");
   tx->inputs().emplace_back();
   tx->inputs().back().utxo_address =
@@ -76,7 +75,6 @@ TEST(BitcoinTxMeta, ToValue) {
   std::unique_ptr<BitcoinTransaction> tx =
       std::make_unique<BitcoinTransaction>();
   tx->set_amount(200000);
-  tx->set_fee(1000);
   tx->set_to("tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm");
   tx->inputs().emplace_back();
   tx->inputs().back().utxo_address =

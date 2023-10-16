@@ -236,6 +236,21 @@ export default function Player () {
           videoElement.currentTime = currentItem.lastPlayedPosition
         }
       }
+
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentItem.name
+        // TODO(sko) We might be able to show our thumbnail as artwork, but it seems
+        // to need some modification from MediaNotificationView to get image via
+        // chrome://playlist-data.
+        // Also we might want to add action handlers like "nextTrack"
+        // https://developer.mozilla.org/en-US/docs/Web/API/MediaSession
+      })
+    } else {
+      // In order to reset media control UI on the toolbar, we need to clear
+      // the src attribute. Otherwise, media control UI will remain visible
+      // even though we clear the metadata.
+      if (videoElement) videoElement.src = ''
+      navigator.mediaSession.metadata = null
     }
   }, [currentItem, videoElement])
 

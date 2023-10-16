@@ -167,6 +167,97 @@ TEST_F(BitcoinRpcUnitTest, GetChainHeight) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
+TEST_F(BitcoinRpcUnitTest, GetFeeEstimates) {
+  using GetFeeEstimatesResult =
+      base::expected<std::map<uint32_t, double>, std::string>;
+  base::MockCallback<bitcoin_rpc::BitcoinRpc::GetFeeEstimatesCallback> callback;
+
+  const std::string req_url = mainnet_rpc_url_ + "fee-estimates";
+
+  const std::string estimates_json = R"({
+    "1": 123.45,
+    "2": 5.5,
+    "123": 1
+  })";
+
+  std::map<uint32_t, double> estimates;
+  estimates[1] = 123.45;
+  estimates[2] = 5.5;
+  estimates[123] = 1;
+
+  // GetFeeEstimates works.
+  EXPECT_CALL(callback, Run(GetFeeEstimatesResult(base::ok(estimates))));
+  url_loader_factory_.AddResponse(req_url, estimates_json);
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinMainnet, callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Invalid value returned.
+  EXPECT_CALL(callback,
+              Run(GetFeeEstimatesResult(base::unexpected("Invalid json"))));
+  url_loader_factory_.AddResponse(req_url, "some string");
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinMainnet, callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Non-integer key fails.
+  EXPECT_CALL(callback,
+              Run(GetFeeEstimatesResult(base::unexpected("Invalid json"))));
+  url_loader_factory_.AddResponse(req_url, R"({"a": 1})");
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinMainnet, callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Non-dobule key fails.
+  EXPECT_CALL(callback,
+              Run(GetFeeEstimatesResult(base::unexpected("Invalid json"))));
+  url_loader_factory_.AddResponse(req_url, R"({"1": "a"})");
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinMainnet, callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Empty dict fails.
+  EXPECT_CALL(callback,
+              Run(GetFeeEstimatesResult(base::unexpected("Invalid json"))));
+  url_loader_factory_.AddResponse(req_url, R"({})");
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinMainnet, callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // List fails.
+  EXPECT_CALL(callback,
+              Run(GetFeeEstimatesResult(base::unexpected("Invalid json"))));
+  url_loader_factory_.AddResponse(req_url, R"([{"1": 1}])");
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinMainnet, callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // HTTP Error returned.
+  EXPECT_CALL(callback, Run(GetFeeEstimatesResult(base::unexpected(
+                            "Unexpected HTTP result code 500"))));
+  url_loader_factory_.AddResponse(req_url, "123",
+                                  net::HTTP_INTERNAL_SERVER_ERROR);
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinMainnet, callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Testent works.
+  EXPECT_CALL(callback, Run(GetFeeEstimatesResult(base::ok(estimates))));
+  url_loader_factory_.AddResponse(testnet_rpc_url_ + "fee-estimates",
+                                  estimates_json);
+  bitcoin_rpc_->GetFeeEstimates(mojom::kBitcoinTestnet, callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Invalid chain fails.
+  EXPECT_CALL(callback,
+              Run(GetFeeEstimatesResult(base::unexpected("Internal Error"))));
+  url_loader_factory_.ClearResponses();
+  bitcoin_rpc_->GetFeeEstimates("0x123", callback.Get());
+  base::RunLoop().RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
 TEST_F(BitcoinRpcUnitTest, GetTransaction) {
   base::MockCallback<bitcoin_rpc::BitcoinRpc::GetTransactionCallback> callback;
 

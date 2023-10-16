@@ -99,6 +99,9 @@ class BitcoinTransaction {
 
   bool IsSigned() const;
   uint64_t TotalInputsAmount() const;
+  uint64_t TotalOutputsAmount() const;
+  uint64_t EffectiveFeeAmount() const;
+  void ClearSignatures();
 
   uint8_t sighash_type() const;
 
@@ -107,9 +110,6 @@ class BitcoinTransaction {
 
   uint64_t amount() const { return amount_; }
   void set_amount(uint64_t amount) { amount_ = amount; }
-
-  uint64_t fee() const { return fee_; }
-  void set_fee(uint64_t fee) { fee_ = fee; }
 
   const std::vector<TxInput>& inputs() const { return inputs_; }
   std::vector<TxInput>& inputs() { return inputs_; }
@@ -125,7 +125,6 @@ class BitcoinTransaction {
   uint32_t locktime_ = 0;
   std::string to_;
   uint64_t amount_ = 0;
-  uint64_t fee_ = 0;
 };
 
 }  // namespace brave_wallet

@@ -59,6 +59,7 @@ class BitcoinTestRpcServer {
   std::string address_6_;
   std::map<std::string, bitcoin_rpc::AddressStats> address_stats_map_;
   std::map<std::string, bitcoin_rpc::UnspentOutputs> utxos_map_;
+  base::Value fee_estimates_;
   std::string captured_raw_tx_;
 
   mojom::AccountIdPtr account_id_;
