@@ -897,8 +897,11 @@ public class BraveNewTabPageLayout
             mNtpAdapter.setNewsLoading(true);
         }
         initBraveNewsController();
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK,
-                () -> { mBraveNewsController.getFeed(feed -> { runFeed(isNewContent, feed); }); });
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
+            if (mBraveNewsController != null) {
+                mBraveNewsController.getFeed(feed -> { runFeed(isNewContent, feed); });
+            }
+        });
     }
 
     private void runFeed(boolean isNewContent, Feed feed) {
