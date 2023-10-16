@@ -2091,9 +2091,9 @@ TEST_F(KeyringServiceUnitTest, RestoreLegacyBraveWallet) {
       "capable pulp laundry";
   const char* mnemonic12 = kMnemonicDripCaution;
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
-                                          &service, json_rpc_service(), nullptr,
-                                          nullptr, GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(
+      shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
+      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState());
   auto verify_restore_wallet = base::BindLambdaForTesting(
       [&service](const char* mnemonic, const char* address, bool is_legacy,
                  bool expect_result) {
@@ -3819,9 +3819,9 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
-                                          &service, json_rpc_service(), nullptr,
-                                          nullptr, GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(
+      shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
+      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3857,9 +3857,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
   PrepareAccounts(mojom::CoinType::SOL, mojom::kSolanaKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
-                                          &service, json_rpc_service(), nullptr,
-                                          nullptr, GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(
+      shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
+      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3897,9 +3897,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
   PrepareAccounts(mojom::CoinType::FIL, mojom::kFilecoinKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
-                                          &service, json_rpc_service(), nullptr,
-                                          nullptr, GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(
+      shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
+      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3936,9 +3936,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
-                                          &service, json_rpc_service(), nullptr,
-                                          nullptr, GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(
+      shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
+      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -3976,9 +3976,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
-                                          &service, json_rpc_service(), nullptr,
-                                          nullptr, GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(
+      shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
+      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   NiceMock<TestKeyringServiceObserver> observer(service);
 
@@ -4037,9 +4037,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-  BraveWalletService brave_wallet_service(shared_url_loader_factory(), nullptr,
-                                          &service, json_rpc_service(), nullptr,
-                                          nullptr, GetPrefs(), GetLocalState());
+  BraveWalletService brave_wallet_service(
+      shared_url_loader_factory(), nullptr, &service, json_rpc_service(),
+      nullptr, nullptr, nullptr, GetPrefs(), GetLocalState());
 
   std::vector<std::string> requested_addresses;
   bool first_restore = true;

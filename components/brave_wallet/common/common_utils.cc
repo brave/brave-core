@@ -268,4 +268,22 @@ std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id) {
   NOTREACHED_NORETURN();
 }
 
+mojom::AccountIdPtr MakeZCashAccountId(mojom::CoinType coin,
+                                       mojom::KeyringId keyring_id,
+                                       mojom::AccountKind kind,
+                                       uint32_t account_index) {
+  DCHECK_EQ(coin, mojom::CoinType::ZEC);
+  DCHECK(IsZCashKeyring(keyring_id));
+  DCHECK_EQ(kind, mojom::AccountKind::kDerived);
+
+  std::string unique_key =
+      base::JoinString({base::NumberToString(static_cast<int>(coin)),
+                        base::NumberToString(static_cast<int>(keyring_id)),
+                        base::NumberToString(static_cast<int>(kind)),
+                        base::NumberToString(account_index)},
+                       "_");
+  return mojom::AccountId::New(coin, keyring_id, kind, "", account_index,
+                               std::move(unique_key));
+}
+
 }  // namespace brave_wallet

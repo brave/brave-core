@@ -69,6 +69,11 @@ mojom::AccountIdPtr MakeBitcoinAccountId(mojom::CoinType coin,
                                          uint32_t account_index);
 std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id);
 
+mojom::AccountIdPtr MakeZCashAccountId(mojom::CoinType coin,
+                                       mojom::KeyringId keyring_id,
+                                       mojom::AccountKind kind,
+                                       uint32_t account_index);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_COMMON_UTILS_H_

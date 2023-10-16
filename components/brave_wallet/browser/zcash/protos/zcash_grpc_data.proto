@@ -22,3 +22,21 @@ message ZCashUtxo {
 message GetAddressUtxosResponse {
   repeated ZCashUtxo addressUtxos = 1;
 }
+
+message ChainSpec {}
+
+message BlockID {
+  uint64 height = 1;
+  bytes hash = 2;
+}
+
+message TxFilter {
+  BlockID block = 1;
+  uint64 index = 2;
+  bytes hash = 3;
+}
+
+message RawTransaction {
+  bytes data = 1;
+  uint64 height = 2;
+}

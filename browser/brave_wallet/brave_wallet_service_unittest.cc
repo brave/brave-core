@@ -332,7 +332,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service_, bitcoin_wallet_service_.get(),
+        json_rpc_service_, tx_service_, bitcoin_wallet_service_.get(), nullptr,
         GetPrefs(), local_state_->Get());
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());

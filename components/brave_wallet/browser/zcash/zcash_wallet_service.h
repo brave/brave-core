@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_WALLET_SERVICE_H_
 
+#include <list>
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -15,17 +17,29 @@
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/zcash/protos/zcash_grpc_data.pb.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 namespace brave_wallet {
 
-class GetTransparentBalanceContext;
+class CreateTransparentTransactionTask;
+class GetTransparentUtxosContext;
 
 class ZCashWalletService : public KeyedService,
                            public mojom::ZCashWalletService,
                            KeyringServiceObserverBase {
  public:
+  using UtxoMap = std::map<std::string, std::vector<zcash::ZCashUtxo>>;
+  using GetUtxosCallback =
+      base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
+  using CreateTransactionCallback =
+      base::OnceCallback<void(base::expected<ZCashTransaction, std::string>)>;
+  using GetTransactionStatusCallback =
+      base::OnceCallback<void(base::expected<bool, std::string>)>;
+  using SignAndPostTransactionCallback =
+      base::OnceCallback<void(std::string, ZCashTransaction, std::string)>;
+
   ZCashWalletService(
       KeyringService* keyring_service,
       PrefService* prefs,
@@ -39,15 +53,58 @@ class ZCashWalletService : public KeyedService,
                   mojom::AccountIdPtr account_id,
                   GetBalanceCallback) override;
 
+  /**
+   * Used for internal transfers between own accounts
+   */
+  void GetReceiverAddress(mojom::AccountIdPtr account_id,
+                          GetReceiverAddressCallback callback) override;
+
+  void GetUtxos(const std::string& chain_id,
+                mojom::AccountIdPtr account_id,
+                GetUtxosCallback);
+
+  void CreateTransaction(const std::string& chain_id,
+                         mojom::AccountIdPtr account_id,
+                         const std::string& address_to,
+                         uint64_t amount,
+                         CreateTransactionCallback callback);
+
+  void GetTransactionStatus(const std::string& chain_id,
+                            const std::string& tx_hash,
+                            GetTransactionStatusCallback callback);
+
+  void SignAndPostTransaction(const std::string& chain_id,
+                              const mojom::AccountIdPtr& account_id,
+                              ZCashTransaction zcash_transaction,
+                              SignAndPostTransactionCallback callback);
+
  private:
-  void OnGetUtxosForBalance(
-      scoped_refptr<GetTransparentBalanceContext> context,
+  friend class CreateTransparentTransactionTask;
+  friend class ZCashTxManager;
+
+  absl::optional<std::string> GetUnusedChangeAddress(
+      const mojom::AccountId& account_id);
+
+  void OnGetUtxos(
+      scoped_refptr<GetTransparentUtxosContext> context,
       const std::string& current_address,
       base::expected<std::vector<zcash::ZCashUtxo>, std::string> result);
-  void WorkOnGetBalance(scoped_refptr<GetTransparentBalanceContext> context);
+  void WorkOnGetUtxos(scoped_refptr<GetTransparentUtxosContext> context);
+
+  void OnUtxosResolvedForBalance(GetBalanceCallback initial_callback,
+                                 base::expected<UtxoMap, std::string> result);
+  void OnTransactionResolvedForStatus(
+      GetTransactionStatusCallback callback,
+      base::expected<zcash::RawTransaction, std::string> result);
+
+  void CreateTransactionTaskDone(CreateTransparentTransactionTask* task);
+
+  zcash_rpc::ZCashRpc* zcash_rpc();
 
   raw_ptr<KeyringService> keyring_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::list<std::unique_ptr<CreateTransparentTransactionTask>>
+      create_transaction_tasks_;
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;
   std::unique_ptr<zcash_rpc::ZCashRpc> zcash_rpc_;
   base::WeakPtrFactory<ZCashWalletService> weak_ptr_factory_{this};

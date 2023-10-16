@@ -561,12 +561,16 @@ size_t GetDerivedAccountsNumberForKeyring(PrefService* profile_prefs,
 mojom::AccountIdPtr MakeAccountIdForDerivedAccount(
     const DerivedAccountInfo& derived_account_info,
     mojom::KeyringId keyring_id) {
+  if (IsZCashKeyring(keyring_id)) {
+    return MakeZCashAccountId(GetCoinForKeyring(keyring_id), keyring_id,
+                              mojom::AccountKind::kDerived,
+                              derived_account_info.account_index);
+  }
   if (IsBitcoinKeyring(keyring_id)) {
     return MakeBitcoinAccountId(GetCoinForKeyring(keyring_id), keyring_id,
                                 mojom::AccountKind::kDerived,
                                 derived_account_info.account_index);
   }
-
   return MakeAccountId(GetCoinForKeyring(keyring_id), keyring_id,
                        mojom::AccountKind::kDerived,
                        derived_account_info.account_address);

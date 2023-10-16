@@ -432,6 +432,9 @@ export interface SendETHFilForwardTransactionParams extends BaseTransactionParam
 export interface SendBtcTransactionParams extends BaseTransactionParams {
 }
 
+export interface SendZecTransactionParams extends BaseTransactionParams {
+}
+
 /**
  * Used to properly store BraveWallet.TransactionInfo in redux store,
  * since bigints are not serializable by default
@@ -469,6 +472,7 @@ export type SerializableTxDataUnion = {
   ethTxData1559?: BraveWallet.TxData1559
   filTxData?: BraveWallet.FilTxData
   btcTxData?: BraveWallet.BtcTxData
+  zecTxData?: BraveWallet.ZecTxData
 }
 
 /**

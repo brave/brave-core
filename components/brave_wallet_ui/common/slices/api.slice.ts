@@ -23,6 +23,7 @@ import {
   SendEthTransactionParams,
   SendFilTransactionParams,
   SendSolTransactionParams,
+  SendZecTransactionParams,
   SerializableTransactionInfo,
   SPLTransferFromParams
 } from '../../constants/types'
@@ -174,6 +175,13 @@ interface GetFVMAddressArg {
   isMainNet: boolean
   addresses: string[]
 }
+
+type GetZCashReceiverAddressArg = {
+  accountId: BraveWallet.AccountId | undefined | null
+  chainId: string | undefined
+} | undefined
+
+type GetZCashReceiverAddressResult = string | undefined | null
 
 type GetFVMAddressResult = Map<string, {address: string, fvmAddress: string}>
 
@@ -1495,6 +1503,32 @@ export function createWalletApi () {
           }
         }
       }),
+      getZCashReceiverAddress: query<GetZCashReceiverAddressResult, GetZCashReceiverAddressArg>({
+        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+          if (!arg?.chainId || arg?.accountId?.coin !== BraveWallet.CoinType.ZEC) {
+            // invalid coin type
+            return {
+              data: undefined
+            }
+          }
+          try {
+            const { zcashWalletService } = baseQuery(undefined).data
+            const result =
+              (await zcashWalletService.getReceiverAddress(
+                arg.accountId
+              )).address?.addressString
+            return {
+              data: result
+            }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              'Unable to getZCashReceiverAddress',
+              error
+            )
+          }
+        }
+      }),
       invalidateTransactionsCache: mutation<boolean, void>({
         queryFn: () => {
           return { data: true }
@@ -1840,12 +1874,59 @@ export function createWalletApi () {
                 chainId: null
               })
       }),
+      sendZecTransaction: mutation<
+      { success: boolean },
+      SendZecTransactionParams
+    >({
+      queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        try {
+          const { txService } = baseQuery(undefined).data
+
+          const zecTxData: BraveWallet.ZecTxData = {
+            to: payload.to,
+            amount: BigInt(payload.value),
+            fee: BigInt(0),
+            inputs: [],
+            outputs: []
+          }
+
+          const { errorMessage, success } =
+            await txService.addUnapprovedTransaction(
+              toTxDataUnion({ zecTxData }),
+              payload.fromAccount.accountId
+            )
+
+          if (!success && errorMessage) {
+            return {
+              error: `Failed to send Zec transaction: ${
+                errorMessage || 'unknown error'
+              }`
+            }
+          }
+
+          return {
+            data: { success }
+          }
+        } catch (error) {
+          return { error: 'Failed to send Zec transaction' }
+        }
+      },
+      invalidatesTags: (res, err, arg) =>
+        err
+          ? []
+          : TX_CACHE_TAGS.LISTS({
+              coin: arg.fromAccount.accountId.coin,
+              fromAccountId: arg.fromAccount.accountId,
+              chainId: null
+            })
+    }),
       sendTransaction: mutation<
         { success: boolean },
         | SendEthTransactionParams
         | SendFilTransactionParams
         | SendSolTransactionParams
         | SendBtcTransactionParams
+        | SendZecTransactionParams
       >({
         queryFn: async (
           payload,
@@ -1890,6 +1971,16 @@ export function createWalletApi () {
                 const result: { success: boolean } = await dispatch(
                   walletApi.endpoints.sendBtcTransaction.initiate(
                     payload as SendBtcTransactionParams
+                  )
+                ).unwrap()
+                return {
+                  data: result
+                }
+              }
+              case BraveWallet.CoinType.ZEC: {
+                const result: { success: boolean } = await dispatch(
+                  walletApi.endpoints.sendZecTransaction.initiate(
+                    payload as SendZecTransactionParams
                   )
                 ).unwrap()
                 return {
@@ -3164,6 +3255,7 @@ export const {
   useGetEVMTransactionSimulationQuery,
   useGetExternalRewardsWalletQuery,
   useGetFVMAddressQuery,
+  useGetZCashReceiverAddressQuery,
   useGetGasEstimation1559Query,
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,

@@ -15,7 +15,8 @@ import { useOnClickOutside } from '../../../../../common/hooks/useOnClickOutside
 import {
   useGetFVMAddressQuery,
   useGetSelectedAccountIdQuery,
-  useGetSelectedChainQuery //
+  useGetSelectedChainQuery, //
+  useGetZCashReceiverAddressQuery
 } from '../../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 
@@ -54,10 +55,16 @@ export const AccountSelector = (props: Props) => {
     setShowAccountSelector(prev => !prev)
   }, [])
 
+  const zcashReceiverAddr = useGetZCashReceiverAddressQuery({chainId: selectedNetwork?.chainId, accountId: selectedAccountId});
+
   const handleOnSelectAccount = React.useCallback((account: BraveWallet.AccountInfo) => {
       setShowAccountSelector(false)
-      onSelectAddress(account.address)
-    }, [onSelectAddress])
+      if (account.accountId.coin === BraveWallet.CoinType.ZEC) {
+        onSelectAddress(zcashReceiverAddr.data || "")
+      } else {
+        onSelectAddress(account.address)
+      }
+    }, [onSelectAddress, zcashReceiverAddr])
 
   const isFVMAccount = React.useCallback(
     (account) =>
