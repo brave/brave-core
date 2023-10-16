@@ -829,30 +829,40 @@ export const SendScreen = React.memo((props: Props) => {
               </Column>
             )}
             {selectedSendOption === SendPageTabHashes.nft && (
-              <Row rowWidth='full' rowHeight='full'>
-                <Column columnHeight='full' verticalAlign='center'>
+              <Column
+                columnWidth='full'
+                columnHeight='full'
+              >
+                {accountNameAndBalance &&
+                  <Row
+                    horizontalAlign='flex-end'
+                    rowWidth='full'
+                    marginBottom={12}
+                  >
+                    <Text
+                      textSize='14px'
+                      textColor='text03'
+                      maintainHeight={true}
+                      isBold={true}
+                      textAlign='right'
+                    >
+                      {accountNameAndBalance}
+                    </Text>
+                  </Row>
+                }
+                <Row
+                  rowHeight='full'
+                  rowWidth='full'
+                  horizontalAlign='flex-start'
+                  verticalAlign='center'
+                  paddingLeft={8}
+                >
                   <SelectTokenButton
                     onClick={openSelectTokenModal}
                     token={selectedSendAsset}
-                    selectedSendOption={selectedSendOption}
-                  />
-                </Column>
-                <Column
-                  columnHeight='full'
-                  verticalAlign='flex-start'
-                  horizontalAlign='flex-end'
-                >
-                  <Text
-                    textSize='14px'
-                    textColor='text03'
-                    maintainHeight={true}
-                    isBold={true}
-                    textAlign='right'
-                  >
-                    {accountNameAndBalance}
-                  </Text>
-                </Column>
-              </Row>
+                    selectedSendOption={selectedSendOption} />
+                </Row>
+              </Column>
             )}
           </SectionBox>
           <SectionBox
