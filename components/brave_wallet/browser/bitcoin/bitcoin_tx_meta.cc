@@ -24,7 +24,7 @@ mojom::BtcTxDataPtr ToBtcTxData(BitcoinTransaction& tx) {
     mojom_outputs.push_back(
         mojom::BtcTxOutput::New(output.address, output.amount));
   }
-  return mojom::BtcTxData::New(tx.to(), tx.amount(), tx.fee(),
+  return mojom::BtcTxData::New(tx.to(), tx.amount(), tx.EffectiveFeeAmount(),
                                std::move(mojom_inputs),
                                std::move(mojom_outputs));
 }
