@@ -55,7 +55,7 @@
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
-#include "ios/chrome/browser/passwords/model/ios_chrome_password_store_factory.h"
+#include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list.h"
@@ -382,7 +382,7 @@ static bool CustomLogHandler(int severity,
 - (BravePasswordAPI*)passwordAPI {
   if (!_passwordAPI) {
     scoped_refptr<password_manager::PasswordStoreInterface> password_store_ =
-        IOSChromePasswordStoreFactory::GetForBrowserState(
+        IOSChromeProfilePasswordStoreFactory::GetForBrowserState(
             _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS)
             .get();
 
