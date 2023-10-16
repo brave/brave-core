@@ -69,7 +69,7 @@ import {
   StyledCreateAccountPanel
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
-import { PanelTitles } from '../options/panel-titles'
+import { PANEL_TITLES } from '../options/panel-titles'
 import { LibContext } from '../common/context/lib.context'
 import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
 
@@ -642,7 +642,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const getTitle = (path: PanelTypes) => {
-    const title = PanelTitles().find((title) => path === title.id)
+    const title = PANEL_TITLES.find((title) => path === title.id)
     setPanelTitle(title ? title.title : '')
   }
 

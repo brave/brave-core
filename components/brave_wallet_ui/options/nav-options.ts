@@ -7,8 +7,44 @@
 import {
   NavOption,
   WalletRoutes,
-  AccountPageTabs
+  AccountPageTabs,
+  PanelTypes
 } from '../constants/types'
+
+const PANEL_TYPES: PanelTypes[] = [
+  'accounts',
+  'addEthereumChain',
+  'allowReadingEncryptedMessage', // For grep: 'decryptRequest'
+  'approveTransaction',
+  'apps',
+  'assets',
+  'buy',
+  'connectHardwareWallet',
+  'connectWithSite',
+  'createAccount',
+  'expanded',
+  'main',
+  'networks',
+  'provideEncryptionKey', // For grep: 'getEncryptionPublicKey'
+  'send',
+  'settings',
+  'showUnlock',
+  'signData',
+  'signTransaction',
+  'signAllTransactions',
+  'sitePermissions',
+  'swap',
+  'switchEthereumChain',
+  'transactionDetails',
+  'activity', // Transactions
+  'transactionStatus',
+]
+
+export const isValidPanelNavigationOption = (
+  panelName: string
+): panelName is PanelTypes => {
+  return PANEL_TYPES.includes(panelName as PanelTypes)
+}
 
 export const BuySendSwapDepositOptions: NavOption[] = [
   {

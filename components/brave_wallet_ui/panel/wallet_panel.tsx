@@ -5,8 +5,11 @@
 
 import * as React from 'react'
 import { render } from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
+import { setIconBasePath } from '@brave/leo/react/icon'
+
 import { loadTimeData } from '../../common/loadTimeData'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
@@ -17,7 +20,6 @@ import Container from './container'
 import { LibContext } from '../common/context/lib.context'
 import * as Lib from '../common/async/lib'
 import { ApiProxyContext } from '../common/context/api-proxy.context'
-import { setIconBasePath } from '@brave/leo/react/icon'
 import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
 setIconBasePath('chrome://resources/brave-icons')
 
@@ -41,7 +43,9 @@ function App () {
         >
           <ApiProxyContext.Provider value={walletPanelApiProxy}>
             <LibContext.Provider value={Lib}>
-              <Container />
+              <BrowserRouter>
+                <Container />
+              </BrowserRouter>
             </LibContext.Provider>
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
