@@ -294,8 +294,8 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
-  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
-                                   true);
+  profile_->GetPrefs()->SetTime(ai_chat::prefs::kBravekLastSeenDisclaimer,
+                                base::Time::Now());
 }
 
 void AIChatUIPageHandler::OnHistoryUpdate() {

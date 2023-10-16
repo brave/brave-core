@@ -72,10 +72,12 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
         str.name, brave_l10n::GetLocalizedResourceUTF16String(str.id));
   }
 
-  untrusted_source->AddBoolean(
-      "hasSeenAgreement",
-      profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
-          ai_chat::prefs::kBraveChatHasSeenDisclaimer));
+  base::Time last_seen_disclaimer =
+      profile_->GetOriginalProfile()->GetPrefs()->GetTime(
+          ai_chat::prefs::kBravekLastSeenDisclaimer);
+
+  untrusted_source->AddBoolean("hasSeenAgreement",
+                               last_seen_disclaimer.is_null() ? false : true);
 
   untrusted_source->AddBoolean(
       "hasUserDismissedPremiumPrompt",
