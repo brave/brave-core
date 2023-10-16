@@ -47,7 +47,7 @@ class BraveTabStrip : public TabStrip {
   void OnPaintBackground(gfx::Canvas* canvas) override;
 
   // Exposed for testing.
-  static constexpr float kBraveMinimumContrastRatioForOutlines = 1.2797f;
+  static constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_

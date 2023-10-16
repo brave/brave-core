@@ -38,7 +38,7 @@ class WalletButton : public ToolbarButton {
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();
 
-  void UpdateImageAndText();
+  void UpdateImageAndText(bool activated = false);
   void UpdateVisibility();
 
   views::View* GetAsAnchorView();
@@ -49,6 +49,10 @@ class WalletButton : public ToolbarButton {
   void OnPreferenceChanged();
   void OnWalletPressed(const ui::Event& event);
   void OnNotificationUpdate(bool show_suggest_badge, size_t counter);
+
+  // ToolbarButton overrides:
+  void InkDropRippleAnimationEnded(views::InkDropState state) override;
+  void OnThemeChanged() override;
 
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;

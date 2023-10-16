@@ -92,11 +92,11 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
     return false;
   }
 
-  // Use a little bit lower minimum contrast ratio as our ratio is 1.27979
+  // Use a little bit lower minimum contrast ratio as our ratio is 1.08162
   // between default tab background and frame color of light theme.
   // With upstream's 1.3f minimum ratio, strokes are drawn and it causes weird
   // border lines in the tab group.
-  // Set 1.2797f as a minimum ratio to prevent drawing stroke.
+  // Set 1.0816f as a minimum ratio to prevent drawing stroke.
   // We don't need the stroke for our default light theme.
   // NOTE: We don't need to check features::kTabOutlinesInLowContrastThemes
   // enabled state. Although TabStrip::ShouldDrawStrokes() has related code,

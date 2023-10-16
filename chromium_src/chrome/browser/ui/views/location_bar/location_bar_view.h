@@ -15,7 +15,9 @@
 
 #define OnOmniboxBlurred virtual OnOmniboxBlurred
 #define GetBorderRadius virtual GetBorderRadius
+#define RefreshBackground virtual RefreshBackground
 #include "src/chrome/browser/ui/views/location_bar/location_bar_view.h"  // IWYU pragma: export
+#undef RefreshBackground
 #undef GetBorderRadius
 #undef OnOmniboxBlurred
 #undef BRAVE_LOCATION_BAR_VIEW_H_

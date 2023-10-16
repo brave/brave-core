@@ -19,7 +19,9 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // Border colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_FocusedBorderColor
-  mixer[kColorFocusableBorderFocused] = {gfx::kBraveColorBrand};
+  mixer[kColorFocusableBorderFocused] = {
+      dark_mode ? SkColorSetARGB(0x66, 0x3F, 0x39, 0xE8)
+                : SkColorSetARGB(0x99, 0x3F, 0x39, 0xE8)};
 
   // --------------------------------------------------------------------------
   // Button colors

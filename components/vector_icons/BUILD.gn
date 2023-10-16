@@ -58,6 +58,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_product_readermode.icon",
     "leo_product_speedreader.icon",
     "leo_product_sync.icon",
+    "leo_product_tor.icon",
     "leo_product_vpn.icon",
     "leo_pwa_install.icon",
     "leo_reading_list.icon",

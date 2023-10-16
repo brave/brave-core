@@ -268,7 +268,6 @@ bool SidebarControlView::IsBubbleWidgetVisible() const {
 
 void SidebarControlView::SetSidebarOnLeft(bool sidebar_on_left) {
   sidebar_on_left_ = sidebar_on_left;
-  sidebar_items_view_->SetSidebarOnLeft(sidebar_on_left);
   UpdateBackgroundAndBorder();
 }
 

@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -43,25 +44,6 @@ using ConnectionState = brave_vpn::mojom::ConnectionState;
 using PurchasedState = brave_vpn::mojom::PurchasedState;
 
 namespace {
-
-constexpr int kButtonRadius = 100;
-
-class BraveVPNButtonHighlightPathGenerator
-    : public views::HighlightPathGenerator {
- public:
-  explicit BraveVPNButtonHighlightPathGenerator(const gfx::Insets& insets)
-      : HighlightPathGenerator(insets) {}
-
-  BraveVPNButtonHighlightPathGenerator(
-      const BraveVPNButtonHighlightPathGenerator&) = delete;
-  BraveVPNButtonHighlightPathGenerator& operator=(
-      const BraveVPNButtonHighlightPathGenerator&) = delete;
-
-  // views::HighlightPathGenerator overrides:
-  absl::optional<gfx::RRectF> GetRoundRect(const gfx::RectF& rect) override {
-    return gfx::RRectF(rect, kButtonRadius);
-  }
-};
 
 // For error icon's inner color.
 class ConnectErrorIconBackground : public views::Background {
@@ -149,17 +131,6 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
   UpdateButtonState();
   Observe(service_);
 
-  // Replace ToolbarButton's highlight path generator.
-  views::HighlightPathGenerator::Install(
-      this, std::make_unique<BraveVPNButtonHighlightPathGenerator>(
-                GetToolbarInkDropInsets(this)));
-
-  // Set 0.0f to use same color for activated state.
-  views::InkDrop::Get(this)->SetVisibleOpacity(0.00f);
-
-  // Different base color is set per themes and it has alpha.
-  views::InkDrop::Get(this)->SetHighlightOpacity(1.0f);
-
   // The MenuButtonController makes sure the panel closes when clicked if the
   // panel is already open.
   auto menu_button_controller = std::make_unique<views::MenuButtonController>(
@@ -224,10 +195,12 @@ void BraveVPNButton::OnPurchasedStateChanged(
 
 std::unique_ptr<views::Border> BraveVPNButton::GetBorder(
     SkColor border_color) const {
-  constexpr auto kTargetInsets = gfx::Insets::VH(5, 11);
+  constexpr auto kTargetInsets = gfx::Insets::VH(6, 8);
   constexpr auto kBorderThickness = 1;
+  const int radius = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+      views::Emphasis::kMaximum, {});
   std::unique_ptr<views::Border> border = views::CreateRoundedRectBorder(
-      kBorderThickness, kButtonRadius, gfx::Insets(), border_color);
+      kBorderThickness, radius, gfx::Insets(), border_color);
   const gfx::Insets extra_insets = kTargetInsets - border->GetInsets();
   return views::CreatePaddedBorder(std::move(border), extra_insets);
 }
@@ -241,7 +214,9 @@ void BraveVPNButton::UpdateColorsAndInsets() {
   const auto bg_color =
       cp->GetColor(is_error_state_ ? kColorBraveVpnButtonErrorBackgroundNormal
                                    : kColorBraveVpnButtonBackgroundNormal);
-  SetBackground(views::CreateRoundedRectBackground(bg_color, kButtonRadius));
+  const int radius = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+      views::Emphasis::kMaximum, {});
+  SetBackground(views::CreateRoundedRectBackground(bg_color, radius));
 
   SetEnabledTextColors(cp->GetColor(is_error_state_
                                         ? kColorBraveVpnButtonTextError
@@ -282,7 +257,7 @@ void BraveVPNButton::UpdateColorsAndInsets() {
   // Use different ink drop hover color for each themes.
   auto target_base_color = color_utils::GetResultingPaintColor(
       cp->GetColor(is_error_state_ ? kColorBraveVpnButtonErrorBackgroundHover
-                                   : kColorBraveVpnButtonBorder),
+                                   : kColorBraveVpnButtonBackgroundHover),
       bg_color);
   bool need_ink_drop_color_update =
       target_base_color != ink_drop_host->GetBaseColor();
@@ -316,6 +291,21 @@ std::u16string BraveVPNButton::GetTooltipText(const gfx::Point& p) const {
   return l10n_util::GetStringUTF16(IsConnected()
                                        ? IDS_BRAVE_VPN_CONNECTED_TOOLTIP
                                        : IDS_BRAVE_VPN_DISCONNECTED_TOOLTIP);
+}
+
+void BraveVPNButton::OnThemeChanged() {
+  ToolbarButton::OnThemeChanged();
+
+  // Configure vpn button specific ink drop config as ink drop is reset
+  // whenever theme changes.
+
+  // Set 0.0f to use same color for activated state.
+  views::InkDrop::Get(this)->SetVisibleOpacity(0.00f);
+
+  // Different base color is set per themes and it has alpha.
+  views::InkDrop::Get(this)->SetHighlightOpacity(1.0f);
+
+  UpdateColorsAndInsets();
 }
 
 bool BraveVPNButton::IsConnected() const {
