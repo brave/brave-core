@@ -431,6 +431,17 @@ extension BraveWallet.KeyringId {
   }
 }
 
+extension BraveWallet.BraveSwapFeeParams {
+  convenience init(chainId: String, swapParams: BraveWallet.SwapParams) {
+    self.init(
+      chainId: chainId,
+      inputToken: swapParams.sellToken,
+      outputToken: swapParams.buyToken,
+      taker: swapParams.takerAddress
+    )
+  }
+}
+
 public extension String {
   /// Returns true if the string ends with a supported ENS extension.
   var endsWithSupportedENSExtension: Bool {

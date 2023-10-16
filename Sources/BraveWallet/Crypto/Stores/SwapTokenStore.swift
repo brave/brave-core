@@ -16,6 +16,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   /// The current selected token to swap from. Default with nil value.
   @Published var selectedFromToken: BraveWallet.BlockchainToken? {
     didSet {
+      if oldValue != selectedFromToken {
+        clearAllAmount()
+      }
       if let token = selectedFromToken {
         fetchTokenBalance(for: token) { [weak self] balance in
           self?.selectedFromTokenBalance = balance
@@ -26,6 +29,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   /// The current selected token to swap to. Default with nil value
   @Published var selectedToToken: BraveWallet.BlockchainToken? {
     didSet {
+      if oldValue != selectedToToken {
+        clearAllAmount()
+      }
       if let token = selectedToToken {
         fetchTokenBalance(for: token) { [weak self] balance in
           self?.selectedToTokenBalance = balance
@@ -50,12 +56,17 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   /// The sell amount in this swap
   @Published var sellAmount = "" {
     didSet {
-      jupiterQuote = nil // sell amount changed, new jupiterQuote is needed
+      if sellAmount != oldValue {
+        // sell amount changed, new quotes are needed
+        swapResponse = nil
+        jupiterQuote = nil
+        braveFee = nil
+      }
       guard !sellAmount.isEmpty, BDouble(sellAmount.normalizedDecimals) != nil else {
         state = .idle
         return
       }
-      if oldValue != sellAmount && !updatingPriceQuote && !isMakingTx {
+      if oldValue != sellAmount && !isUpdatingPriceQuote && !isMakingTx {
         timer?.invalidate()
         timer = Timer.scheduledTimer(
           withTimeInterval: 0.25, repeats: false,
@@ -72,7 +83,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         state = .idle
         return
       }
-      if oldValue != buyAmount && !updatingPriceQuote && !isMakingTx {
+      if oldValue != buyAmount && !isUpdatingPriceQuote && !isMakingTx {
         timer?.invalidate()
         timer = Timer.scheduledTimer(
           withTimeInterval: 0.25, repeats: false,
@@ -98,8 +109,51 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
     }
   }
-  /// A boolean indicates if this store is making an unapproved tx
+  /// A boolean indicating if this store is making an unapproved tx
   @Published var isMakingTx = false
+  /// A boolean indicating if this store is fetching updated price quote
+  @Published var isUpdatingPriceQuote = false
+  /// The brave fee for the current price quote
+  @Published var braveFee: BraveWallet.BraveSwapFeeResponse?
+  /// The SwapResponse / price quote currently being displayed for Ethereum swap.
+  /// The quote needs preserved to know when to show `protocolFeesForDisplay` fees.
+  @Published var swapResponse: BraveWallet.SwapResponse?
+  
+  /// If the Brave Fee is voided for this swap.
+  var isBraveFeeVoided: Bool {
+    guard let braveFee else { return false }
+    return braveFee.discountCode != .none && !braveFee.hasBraveFee
+  }
+  
+  /// The brave fee percentage for this swap.
+  /// When `isBraveFeeVoided`, will return the fee being voided (so Free can be displayed beside % value voided)
+  var braveFeeForDisplay: String? {
+    guard let braveFee else { return nil }
+    let fee: String
+    if braveFee.discountCode == .none {
+      fee = braveFee.effectiveFeePct
+    } else {
+      if braveFee.hasBraveFee {
+        fee = braveFee.effectiveFeePct
+      } else {
+        // Display as `Free ~braveFee.braveFeePct%~`
+        fee = braveFee.braveFeePct
+      }
+    }
+    return String(format: "%@%%", fee.trimmingTrailingZeros)
+  }
+  
+  /// The protocol fee percentage for this swap
+  var protocolFeeForDisplay: String? {
+    guard let braveFee,
+          let protocolFeePct = Double(braveFee.protocolFeePct),
+          !protocolFeePct.isZero else { return nil }
+    if let swapResponse, swapResponse.fees.zeroExFee == nil {
+      // `protocolFeePct` should only be surfaced to users if `zeroExFee` is non-null.
+      return nil
+    }
+    return String(format: "%@%%", braveFee.protocolFeePct.trimmingTrailingZeros)
+  }
 
   private let keyringService: BraveWalletKeyringService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
@@ -121,7 +175,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         })
     }
   }
-  private var updatingPriceQuote = false
   private var timer: Timer?
   private let batSymbol = "BAT"
   private let daiSymbol = "DAI"
@@ -364,13 +417,17 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   }
 
   private func clearAllAmount() {
-    sellAmount = "0"
-    buyAmount = "0"
+    sellAmount = ""
+    buyAmount = ""
     selectedFromTokenPrice = "0"
   }
 
   /// Update price market and sell/buy amount fields based on `SwapParamsBase`
-  @MainActor private func handlePriceQuoteResponse(_ response: BraveWallet.SwapResponse, base: SwapParamsBase) async {
+  @MainActor private func handleEthPriceQuoteResponse(
+    _ response: BraveWallet.SwapResponse,
+    base: SwapParamsBase,
+    swapParams: BraveWallet.SwapParams
+  ) async {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     switch base {
     case .perSellAsset:
@@ -403,6 +460,22 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           selectedFromTokenPrice = (1 / bv).decimalDescription
         }
       }
+    }
+    
+    self.swapResponse = response
+    let network = await rpcService.network(selectedFromToken?.coin ?? .eth, origin: nil)
+    let (braveSwapFeeResponse, _) = await swapService.braveFee(
+      .init(
+        chainId: network.chainId,
+        swapParams: swapParams
+      )
+    )
+    if let braveSwapFeeResponse {
+      self.braveFee = braveSwapFeeResponse
+    } else {
+      self.state = .error(Strings.Wallet.unknownError)
+      self.clearAllAmount()
+      return
     }
 
     await checkBalanceShowError(swapResponse: response)
@@ -571,13 +644,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   }
   
   @MainActor private func fetchSolPriceQuote(
-    base: SwapParamsBase,
     swapParams: BraveWallet.SwapParams,
     network: BraveWallet.NetworkInfo
   ) async {
-    guard base == .perSellAsset else {
-      return // entering buy amount is disabled for Solana swap
-    }
     // 0.5% is 50bps. We store 0.5% as 0.005, so multiply by 10_000
     let slippageBps = Int32(swapParams.slippagePercentage * 10_000)
     let jupiterQuoteParams: BraveWallet.JupiterQuoteParams = .init(
@@ -587,11 +656,11 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       slippageBps: slippageBps,
       userPublicKey: swapParams.takerAddress
     )
-    self.updatingPriceQuote = true
+    self.isUpdatingPriceQuote = true
     let (jupiterQuote, swapErrorResponse, _) = await swapService.jupiterQuote(jupiterQuoteParams)
-    defer { self.updatingPriceQuote = false }
+    defer { self.isUpdatingPriceQuote = false }
     if let jupiterQuote {
-      await self.handleSolPriceQuoteResponse(jupiterQuote, base: base)
+      await self.handleSolPriceQuoteResponse(jupiterQuote, swapParams: swapParams)
     } else if let swapErrorResponse {
       // check balance first because error can be caused by insufficient balance
       if let sellTokenBalance = self.selectedFromTokenBalance,
@@ -613,11 +682,13 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
   }
   
-  @MainActor private func handleSolPriceQuoteResponse(_ response: BraveWallet.JupiterQuote, base: SwapParamsBase) async {
-    guard let route = response.routes.first,
-          base == .perSellAsset // entering buy amount is disabled for Solana swap
-    else { return }
+  @MainActor private func handleSolPriceQuoteResponse(
+    _ response: BraveWallet.JupiterQuote,
+    swapParams: BraveWallet.SwapParams
+  ) async {
+    guard let route = response.routes.first else { return }
     self.jupiterQuote = response
+    
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
     if let selectedToToken {
       buyAmount = formatter.decimalString(for: "\(route.otherAmountThreshold)", radix: .decimal, decimals: Int(selectedToToken.decimals)) ?? ""
@@ -633,6 +704,21 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
        newFromAmountWrapped != 0 {
       let rate = newToAmountWrapped / newFromAmountWrapped
       selectedFromTokenPrice = rate.decimalDescription
+    }
+    
+    let network = await rpcService.network(selectedFromToken?.coin ?? .sol, origin: nil)
+    let (braveSwapFeeResponse, _) = await swapService.braveFee(
+      .init(
+        chainId: network.chainId,
+        swapParams: swapParams
+      )
+    )
+    if let braveSwapFeeResponse {
+      self.braveFee = braveSwapFeeResponse
+    } else {
+      self.state = .error(Strings.Wallet.unknownError)
+      self.clearAllAmount()
+      return
     }
     
     await checkBalanceShowError(jupiterQuote: response)
@@ -754,14 +840,22 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
 
   func fetchPriceQuote(base: SwapParamsBase) {
     Task { @MainActor in
-      // reset jupiter quote before fetching new quote
-      self.jupiterQuote = nil
+      // reset quotes before fetching new quote
+      swapResponse = nil
+      jupiterQuote = nil
+      braveFee = nil
       guard let accountInfo else {
         self.state = .idle
         return
       }
       let network = await rpcService.network(accountInfo.coin, origin: nil)
-      guard let swapParams = self.swapParameters(for: base, in: network) else {
+      // Entering a buy amount is disabled for Solana swaps, always use
+      // `SwapParamsBase.perSellAsset` to fetch quote based on the sell amount.
+      // `SwapParamsBase.perBuyAsset` is sent when `selectedToToken` is changed.
+      guard let swapParams = self.swapParameters(
+        for: accountInfo.coin == .sol ? .perSellAsset : base,
+        in: network
+      ) else {
         self.state = .idle
         return
       }
@@ -769,7 +863,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       case .eth:
         await fetchEthPriceQuote(base: base, swapParams: swapParams, network: network)
       case .sol:
-        await fetchSolPriceQuote(base: base, swapParams: swapParams, network: network)
+        await fetchSolPriceQuote(swapParams: swapParams, network: network)
       default:
         break
       }
@@ -781,11 +875,11 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     swapParams: BraveWallet.SwapParams,
     network: BraveWallet.NetworkInfo
   ) async {
-    self.updatingPriceQuote = true
-    defer { self.updatingPriceQuote = false }
+    self.isUpdatingPriceQuote = true
+    defer { self.isUpdatingPriceQuote = false }
     let (swapResponse, swapErrorResponse, _) = await swapService.priceQuote(swapParams)
     if let swapResponse = swapResponse {
-      await self.handlePriceQuoteResponse(swapResponse, base: base)
+      await self.handleEthPriceQuoteResponse(swapResponse, base: base, swapParams: swapParams)
     } else if let swapErrorResponse = swapErrorResponse {
       // check balance first because error can cause by insufficient balance
       if let sellTokenBalance = self.selectedFromTokenBalance,
@@ -799,6 +893,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         self.state = .error(Strings.Wallet.insufficientLiquidity)
         return
       }
+      self.state = .error(Strings.Wallet.unknownError)
+      self.clearAllAmount()
+    } else { // unknown error, ex failed parsing zerox quote.
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
     }
