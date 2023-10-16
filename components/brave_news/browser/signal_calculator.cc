@@ -174,18 +174,10 @@ double SignalCalculator::GetSubscribedWeight(
     return 0;
   }
 
-  // We have a minimum subscribed weight for feeds which aren't explicitly
-  // disabled. This means they have a (normally small) nonzero chance of showing
-  // up in the feed.
-  double result = features::kBraveNewsSourceVisitsMin.Get();
-
-  // Direct feeds or explicitly enabled sources get the same boost.
-  if (publisher->type == mojom::PublisherType::DIRECT_SOURCE ||
-      enabled == mojom::UserEnabled::ENABLED) {
-    result += features::kBraveNewsSourceSubscribedBoost.Get();
-  }
-
-  return result;
+  return publisher->type == mojom::PublisherType::DIRECT_SOURCE ||
+                 enabled == mojom::UserEnabled::ENABLED
+             ? features::kBraveNewsSourceSubscribedBoost.Get()
+             : 0;
 }
 
 }  // namespace brave_news
