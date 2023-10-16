@@ -186,17 +186,18 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
-  if (!url.SchemeIs(content::kChromeUIScheme) ||
+  if (!url.SchemeIs(content::kChromeUIScheme) &&
       !url.SchemeIs(url::kHttpsScheme)) {
     return;
   }
 
-  auto* contents_to_navigate = (active_chat_tab_helper_)
-                                   ? active_chat_tab_helper_->web_contents()
-                                   : web_contents();
-  contents_to_navigate->OpenURL({url, content::Referrer(),
+  if (active_chat_tab_helper_) {
+    auto* contents_to_navigate = active_chat_tab_helper_->web_contents();
+
+    contents_to_navigate->OpenURL({url, content::Referrer(),
                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                  ui::PAGE_TRANSITION_LINK, false});
+  }
 }
 
 void AIChatUIPageHandler::DisconnectPageContents() {
