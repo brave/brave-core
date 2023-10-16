@@ -687,7 +687,11 @@ public class BrowserViewController: UIViewController {
     displayedPopoverController?.dismiss(animated: true)
   }
 
-  @objc func appDidEnterBackgroundNotification() {
+  @objc func sceneDidEnterBackgroundNotification(_ notification: NSNotification) {
+    guard let scene = notification.object as? UIScene, scene == currentScene else {
+      return
+    }
+    
     displayedPopoverController?.dismiss(animated: false) {
       self.updateDisplayedPopoverProperties = nil
       self.displayedPopoverController = nil
@@ -711,7 +715,11 @@ public class BrowserViewController: UIViewController {
     toolbarVisibilityViewModel.toolbarState = .expanded
   }
 
-  @objc func appWillResignActiveNotification() {
+  @objc func sceneWillResignActiveNotification(_ notification: NSNotification) {
+    guard let scene = notification.object as? UIScene, scene == currentScene else {
+      return
+    }
+    
     tabManager.saveAllTabs()
     
     // Dismiss any popovers that might be visible
@@ -746,7 +754,11 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  @objc func appDidBecomeActiveNotification() {
+  @objc func sceneDidBecomeActiveNotification(_ notification: NSNotification) {
+    guard let scene = notification.object as? UIScene, scene == currentScene else {
+      return
+    }
+    
     guard let tab = tabManager.selectedTab, tab.isPrivate else {
       return
     }
@@ -832,14 +844,14 @@ public class BrowserViewController: UIViewController {
     
     NotificationCenter.default.do {
       $0.addObserver(
-        self, selector: #selector(appWillResignActiveNotification),
-        name: UIApplication.willResignActiveNotification, object: nil)
+        self, selector: #selector(sceneWillResignActiveNotification(_:)),
+        name: UIScene.willDeactivateNotification, object: nil)
       $0.addObserver(
-        self, selector: #selector(appDidBecomeActiveNotification),
-        name: UIApplication.didBecomeActiveNotification, object: nil)
+        self, selector: #selector(sceneDidBecomeActiveNotification(_:)),
+        name: UIScene.didActivateNotification, object: nil)
       $0.addObserver(
-        self, selector: #selector(appDidEnterBackgroundNotification),
-        name: UIApplication.didEnterBackgroundNotification, object: nil)
+        self, selector: #selector(sceneDidEnterBackgroundNotification),
+        name: UIScene.didEnterBackgroundNotification, object: nil)
       $0.addObserver(
         self, selector: #selector(appWillTerminateNotification),
         name: UIApplication.willTerminateNotification, object: nil)
