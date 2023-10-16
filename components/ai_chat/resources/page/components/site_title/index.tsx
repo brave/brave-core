@@ -37,7 +37,7 @@ function Tooltip(props: ToolTipProps) {
 function SiteTitle () {
   const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
   const timerId = React.useRef<Timer | undefined>();
-  const { siteInfo, favIconUrl } = React.useContext(DataContext)
+  const context = React.useContext(DataContext)
 
   const showTooltipWithDelay = () => {
     timerId.current = setTimeout(() => {
@@ -58,16 +58,18 @@ function SiteTitle () {
 
   const handlePageContentDisconnect = () => {
     getPageHandlerInstance().pageHandler.disconnectPageContents()
+     // Refetch the preference to ensure the user sees the prompt without waiting for a new runtime.
+    context.maybeShowPremiumPrompt()
   }
 
    return (
     <div className={styles.box}>
       <Tooltip isVisible={isTooltipVisible} />
       <div className={styles.favIconBox}>
-        { favIconUrl && <img src={favIconUrl} /> }
+        { context.favIconUrl && <img src={context.favIconUrl} /> }
       </div>
       <div className={styles.titleBox}>
-        <p className={styles.title}>{siteInfo?.title}</p>
+        <p className={styles.title}>{context.siteInfo?.title}</p>
       </div>
       <div
         aria-describedby='page-content-warning-tooltip'

@@ -206,7 +206,8 @@ function DataContextProvider (props: DataContextProviderProps) {
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,
-    dismissPremiumPrompt
+    dismissPremiumPrompt,
+    maybeShowPremiumPrompt
   }
 
   return (

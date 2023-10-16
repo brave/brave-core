@@ -30,6 +30,7 @@ export interface AIChatContext {
   setUserAllowsAutoGenerating: (value: boolean) => void
   handleAgreeClick: () => void
   dismissPremiumPrompt: () => void
+  maybeShowPremiumPrompt: () => void
 }
 
 export const defaultContext = {
@@ -54,7 +55,8 @@ export const defaultContext = {
   generateSuggestedQuestions: () => {},
   setUserAllowsAutoGenerating: () => {},
   handleAgreeClick: () => {},
-  dismissPremiumPrompt: () => {}
+  dismissPremiumPrompt: () => {},
+  maybeShowPremiumPrompt: () => {}
 }
 
 export default React.createContext<AIChatContext>(defaultContext)
