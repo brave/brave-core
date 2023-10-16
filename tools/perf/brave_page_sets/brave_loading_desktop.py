@@ -69,7 +69,7 @@ class BraveLoadingDesktopStorySet(story.StorySet):
                      ('https://en.wikipedia.org/wiki/HCard', 'wikipedia.com'),
                      ('https://www.economist.com/', 'Economist'),
                      ('https://www.ign.com/', 'IGN')], cache_temperatures,
-                     with_delay)
+                    with_delay)
 
   def AddStories(self, tags, urls, cache_temperatures, with_delay):
     for url, name in urls:
@@ -84,14 +84,13 @@ class BraveLoadingDesktopStorySet(story.StorySet):
           raise NotImplementedError
 
         page_tags = tags[:]
-        shared_page_state_class=DelayedSharedDesktopPageState if with_delay else shared_page_state.SharedDesktopPageState
+        shared_page_state_class = DelayedSharedDesktopPageState if with_delay else shared_page_state.SharedDesktopPageState
 
         self.AddStory(
-            page_cycler_story.PageCyclerStory(
-                url,
-                self,
-                shared_page_state_class,
-                cache_temperature=temp,
-                tags=page_tags,
-                name=page_name,
-                perform_final_navigation=True))
+            page_cycler_story.PageCyclerStory(url,
+                                              self,
+                                              shared_page_state_class,
+                                              cache_temperature=temp,
+                                              tags=page_tags,
+                                              name=page_name,
+                                              perform_final_navigation=True))
