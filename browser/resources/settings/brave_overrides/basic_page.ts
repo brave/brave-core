@@ -5,6 +5,10 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
+import '../brave_appearance_page/content.js'
+import '../brave_appearance_page/sidebar.js'
+import '../brave_appearance_page/tabs.js'
+import '../brave_appearance_page/toolbar.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.js'
 import '../brave_ipfs_page/brave_ipfs_page.js'
@@ -115,6 +119,60 @@ RegisterPolymerTemplateModifications({
         'getStarted',
         'braveGetStartedTitle',
         'brave-settings-getting-started',
+        {
+          prefs: '{{prefs}}',
+          'page-visibility': '[[pageVisibility]]'
+        }
+      ))
+      const sectionToolbar = document.createElement('template')
+      sectionToolbar.setAttribute('is', 'dom-if')
+      sectionToolbar.setAttribute('restamp', true)
+      sectionToolbar.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionToolbar.content.appendChild(createNestedSectionElement(
+        'toolbar',
+        'appearance',
+        'appearanceSettingsToolbarSection',
+        'settings-brave-appearance-toolbar',
+        {
+          prefs: '{{prefs}}',
+          'page-visibility': '[[pageVisibility]]'
+        }
+      ))
+      const sectionTabs = document.createElement('template')
+      sectionTabs.setAttribute('is', 'dom-if')
+      sectionTabs.setAttribute('restamp', true)
+      sectionTabs.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionTabs.content.appendChild(createNestedSectionElement(
+        'tabs',
+        'appearance',
+        'appearanceSettingsTabsSection',
+        'settings-brave-appearance-tabs',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
+      const sectionSidebar = document.createElement('template')
+      sectionSidebar.setAttribute('is', 'dom-if')
+      sectionSidebar.setAttribute('restamp', true)
+      sectionSidebar.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionSidebar.content.appendChild(createNestedSectionElement(
+        'sidebar',
+        'appearance',
+        'sideBar',
+        'settings-brave-appearance-sidebar',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
+      const sectionContent = document.createElement('template')
+      sectionContent.setAttribute('is', 'dom-if')
+      sectionContent.setAttribute('restamp', true)
+      sectionContent.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
+      sectionContent.content.appendChild(createNestedSectionElement(
+        'content',
+        'appearance',
+        'appearanceSettingsContentSection',
+        'settings-brave-appearance-content',
         {
           prefs: '{{prefs}}',
           'page-visibility': '[[pageVisibility]]'
@@ -302,6 +360,11 @@ RegisterPolymerTemplateModifications({
       const sectionAppearance = getSectionElement(actualTemplate.content,
         'appearance')
       last = last.insertAdjacentElement('afterend', sectionAppearance)
+      // Insert nested tabs under appearance
+      last = last.insertAdjacentElement('afterend', sectionToolbar)
+      last = last.insertAdjacentElement('afterend', sectionTabs)
+      last = last.insertAdjacentElement('afterend', sectionSidebar)
+      last = last.insertAdjacentElement('afterend', sectionContent)
       // Insert shields
       last = last.insertAdjacentElement('afterend', sectionShields)
       // Insert nested Social Blocking under shields

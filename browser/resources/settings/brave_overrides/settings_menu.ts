@@ -211,17 +211,6 @@ RegisterStyleOverride(
 
 RegisterPolymerTemplateModifications({
   'settings-menu': (templateContent) => {
-    // Add title
-    const titleEl = document.createElement('h1')
-    titleEl.id = 'settingsHeader'
-    titleEl.textContent = loadTimeData.getString('settings')
-    const menuEl = templateContent.querySelector('#menu')
-    if (!menuEl) {
-      console.error('[Brave Settings Overrides] Could not find menu element to add title after')
-    } else {
-      menuEl.insertAdjacentElement('afterbegin', titleEl)
-    }
-
     // Hide performance menu. We moved it under system menu instead.
     const performanceEl = getMenuElement(templateContent, '/performance')
     if (performanceEl) {
@@ -281,6 +270,15 @@ RegisterPolymerTemplateModifications({
       privacyEl.insertAdjacentElement('afterend', web3El)
     }
 
+    // Add leo item
+    const leoAssistantEl = createMenuElement(
+      loadTimeData.getString('leoAssistant'),
+      '/leo-assistant',
+      'product-brave-leo',
+      'leoAssistant',
+    )
+    web3El.insertAdjacentElement('afterend', leoAssistantEl)
+
     // Add Sync item
     const syncEl = createMenuElement(
       loadTimeData.getString('braveSync'),
@@ -288,7 +286,7 @@ RegisterPolymerTemplateModifications({
       'product-sync',
       'braveSync',
     )
-    web3El.insertAdjacentElement('afterend', syncEl)
+    leoAssistantEl.insertAdjacentElement('afterend', syncEl)
 
     // Add search item
     const searchEl = getMenuElement(templateContent, '/search')
@@ -302,15 +300,6 @@ RegisterPolymerTemplateModifications({
       'extensions',
     )
     searchEl.insertAdjacentElement('afterend', extensionEl)
-
-    // Add leo item
-    const leoAssistantEl = createMenuElement(
-      loadTimeData.getString('leoAssistant'),
-      '/leo-assistant',
-      'product-brave-leo',
-      'leoAssistant',
-    )
-    extensionEl.insertAdjacentElement('afterend', leoAssistantEl)
 
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')
@@ -350,8 +339,11 @@ RegisterPolymerTemplateModifications({
     const graphicsEl = document.createElement('div')
     graphicsEl.setAttribute('class', 'brave-about-graphic')
 
-    const icon = document.createElement('leo-icon')
-    icon.setAttribute('name', 'brave-icon-release-color')
+    // Use per-channel logo image.
+    const icon = document.createElement('img')
+    icon.setAttribute('srcset', 'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x')
+    icon.setAttribute('width', '24px')
+    icon.setAttribute('height', '24px')
 
     const metaEl = document.createElement('div')
     metaEl.setAttribute('class', 'brave-about-meta')

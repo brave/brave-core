@@ -61,11 +61,6 @@
     </settings-dropdown-menu>
   </div>
   <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="showBraveWalletIconOnToolbar"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
-        label="$i18n{showBravewalletIconOnToolbar}">
-    </settings-toggle-button>
     <settings-toggle-button id="enableNftDiscovery"
         class="cr-row"
         pref="{{prefs.brave.wallet.nft_discovery_enabled}}"
