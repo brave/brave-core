@@ -23,7 +23,7 @@ export interface AIChatContext {
   shouldDisableUserInput: boolean
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
-  hasUserDissmisedPremiumPrompt: boolean
+  shouldShowPremiumPrompt: boolean | undefined
   setCurrentModel: (model: mojom.Model) => void,
   switchToDefaultModel: () => void,
   generateSuggestedQuestions: () => void
@@ -48,7 +48,7 @@ export const defaultContext = {
   siteInfo: null,
   favIconUrl: undefined,
   currentError: mojom.APIError.None,
-  hasUserDissmisedPremiumPrompt: false,
+  shouldShowPremiumPrompt: undefined,
   setCurrentModel: () => {},
   switchToDefaultModel: () => {},
   generateSuggestedQuestions: () => {},
