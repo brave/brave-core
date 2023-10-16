@@ -12,6 +12,7 @@
 #include "base/base64.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
@@ -374,6 +375,13 @@ void SolanaTxManager::MakeSystemProgramTransferTxData(
     const std::string& to,
     uint64_t lamports,
     MakeSystemProgramTransferTxDataCallback callback) {
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(to)) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
   absl::optional<SolanaInstruction> instruction =
       solana::system_program::Transfer(from, to, lamports);
   if (!instruction) {
@@ -414,6 +422,13 @@ void SolanaTxManager::MakeTokenProgramTransferTxData(
     const std::string& to_wallet_address,
     uint64_t amount,
     MakeTokenProgramTransferTxDataCallback callback) {
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(to_wallet_address)) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
   absl::optional<std::string> from_associated_token_account =
       SolanaKeyring::GetAssociatedTokenAccount(spl_token_mint_address,
                                                from_wallet_address);

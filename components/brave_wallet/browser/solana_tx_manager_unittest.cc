@@ -16,6 +16,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -579,6 +580,18 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
             SolanaSignatureStatus(72u, 0u, "", "finalized"));
 }
 
+TEST_F(SolanaTxManagerUnitTest, OfacSanctionedToAddress) {
+  const auto& from = sol_account();
+  const std::string ofac_sanctioned_to =
+      "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(ofac_sanctioned_to)});
+  TestMakeSystemProgramTransferTxData(
+      from, ofac_sanctioned_to, 10000000, nullptr,
+      mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION), nullptr);
+}
+
 TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
   const auto& from = sol_account();
   const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
@@ -851,6 +864,17 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       mojom::kSolanaMainnet, from_wallet_address, to_wallet_address, "",
       10000000, nullptr, mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Test sending to OFAC Sanctioned address
+  const std::string ofac_sanctioned_to =
+      "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateOfacAddressesList({base::ToLowerASCII(ofac_sanctioned_to)});
+  TestMakeTokenProgramTransferTxData(
+      mojom::kSolanaMainnet, spl_token_mint_address, from_wallet_address,
+      ofac_sanctioned_to, 10000000, std::move(tx_data),
+      mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
 }
 
 TEST_F(SolanaTxManagerUnitTest, MakeTxDataFromBase64EncodedTransaction) {
