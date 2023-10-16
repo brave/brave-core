@@ -525,6 +525,26 @@ GURL BitcoinTestnetRpcUrl() {
   return GURL("https://blockstream.info/testnet/api/");
 }
 
+GURL ZCashMainnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kZCashMainnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GURL("https://mainnet.lightwalletd.com:9067/");
+}
+
+GURL ZCashTestnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kZCashTestnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GURL("https://testnet.lightwalletd.com:9067/");
+}
+
 const mojom::NetworkInfo* GetBitcoinMainnet() {
   const auto coin = mojom::CoinType::BTC;
   const auto* chain_id = mojom::kBitcoinMainnet;
@@ -563,6 +583,56 @@ const mojom::NetworkInfo* GetBitcoinTestnet() {
        GetSupportedKeyringsForNetwork(coin, chain_id),
        false});
   return network_info.get();
+}
+
+const mojom::NetworkInfo* GetZCashMainnet() {
+  const auto coin = mojom::CoinType::ZEC;
+  const auto* chain_id = mojom::kZCashMainnet;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "ZCash Mainnet",
+       {""},  // TODO(cypt4): explorer url
+       {},
+       0,
+       {ZCashMainnetRpcUrl()},
+       "ZEC",
+       "ZCash",
+       8,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
+       false});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetZCashTestnet() {
+  const auto coin = mojom::CoinType::ZEC;
+  const auto* chain_id = mojom::kZCashTestnet;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "ZCash Testnet",
+       {""},  // TODO(cypt4): explorer url
+       {},
+       0,
+       {ZCashTestnetRpcUrl()},
+       "ZEC",
+       "ZCash",
+       8,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id),
+       false});
+  return network_info.get();
+}
+
+const std::vector<const mojom::NetworkInfo*>& GetKnownZCashNetworks() {
+  static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
+      // clang-format off
+      GetZCashMainnet(),
+      GetZCashTestnet(),
+      // clang-format on
+  });
+  return *networks.get();
 }
 
 const std::vector<const mojom::NetworkInfo*>& GetKnownBitcoinNetworks() {
@@ -733,6 +803,14 @@ mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
     }
     return nullptr;
   }
+  if (coin == mojom::CoinType::ZEC) {
+    for (const auto* network : GetKnownZCashNetworks()) {
+      if (base::EqualsCaseInsensitiveASCII(network->chain_id, chain_id)) {
+        return network->Clone();
+      }
+    }
+    return nullptr;
+  }
   NOTREACHED();
   return nullptr;
 }
@@ -868,6 +946,12 @@ bool KnownChainExists(const std::string& chain_id, mojom::CoinType coin) {
     }
   } else if (coin == mojom::CoinType::BTC) {
     for (const auto* network : GetKnownBitcoinNetworks()) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
+        return true;
+      }
+    }
+  } else if (coin == mojom::CoinType::ZEC) {
+    for (const auto* network : GetKnownZCashNetworks()) {
       if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return true;
       }
@@ -1261,6 +1345,13 @@ std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
 
   if (coin == mojom::CoinType::BTC) {
     for (const auto* network : GetKnownBitcoinNetworks()) {
+      result.push_back(network->Clone());
+    }
+    return result;
+  }
+
+  if (coin == mojom::CoinType::ZEC) {
+    for (const auto* network : GetKnownZCashNetworks()) {
       result.push_back(network->Clone());
     }
     return result;
@@ -1721,6 +1812,8 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   switch (coin) {
     case mojom::CoinType::BTC:
       return kBitcoinPrefKey;
+    case mojom::CoinType::ZEC:
+      return kZCashPrefKey;
     case mojom::CoinType::ETH:
       return kEthereumPrefKey;
     case mojom::CoinType::FIL:
@@ -1741,6 +1834,8 @@ absl::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key) {
     return mojom::CoinType::SOL;
   } else if (key == kBitcoinPrefKey) {
     return mojom::CoinType::BTC;
+  } else if (key == kZCashPrefKey) {
+    return mojom::CoinType::ZEC;
   }
   NOTREACHED();
   return absl::nullopt;

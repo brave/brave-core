@@ -9,6 +9,7 @@ export class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
   jsonRpcService = new BraveWallet.JsonRpcServiceRemote()
   bitcoinWalletService = new BraveWallet.BitcoinWalletServiceRemote()
+  zcashWalletService = new BraveWallet.ZCashWalletServiceRemote()
   swapService = new BraveWallet.SwapServiceRemote()
   simulationService = new BraveWallet.SimulationServiceRemote()
   assetRatioService = new BraveWallet.AssetRatioServiceRemote()

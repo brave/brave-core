@@ -141,6 +141,7 @@ type GetTokenBalancesForAddressAndChainIdArg = {
         | typeof CoinTypes.ETH
     | typeof CoinTypes.FIL
     | typeof CoinTypes.BTC
+    | typeof CoinTypes.ZEC
 }
 type GetTokenBalancesForChainIdArg =
   | GetSPLTokenBalancesForAddressAndChainIdArg
@@ -154,6 +155,7 @@ type GetTokenBalancesRegistryArg = {
     | typeof CoinTypes.SOL
     | typeof CoinTypes.FIL
     | typeof CoinTypes.BTC
+    | typeof CoinTypes.ZEC
 }
 
 type GetHardwareAccountDiscoveryBalanceArg = {
@@ -843,7 +845,7 @@ export function createWalletApi () {
           extraOptions,
           baseQuery
         ) => {
-          const { jsonRpcService, bitcoinWalletService } =
+          const { jsonRpcService, bitcoinWalletService, zcashWalletService } =
             baseQuery(undefined).data // apiProxy
 
           // Native asset balances
@@ -932,6 +934,27 @@ export function createWalletApi () {
                   data: Amount.normalize(balance.totalBalance.toString())
                 }
               }
+
+              case BraveWallet.CoinType.ZEC: {
+                const { balance, errorMessage } =
+                  await zcashWalletService.getBalance(
+                    token.chainId,
+                    accountId
+                  )
+
+
+                if (errorMessage || balance === null) {
+                  console.log(`getBalance error: ${errorMessage}`)
+                  return {
+                    error: errorMessage || 'Unknown error'
+                  }
+                }
+
+                return {
+                  data: Amount.normalize(balance.totalBalance.toString())
+                }
+              }
+
               default: {
                 assertNotReached(`Unknown coin ${accountId.coin}`)
               }

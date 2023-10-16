@@ -331,6 +331,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_FILECOIN_DESCRIPTION},
     {"braveWalletCreateAccountBitcoinDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_BITCOIN_DESCRIPTION},
+    {"braveWalletCreateAccountZCashDescription",
+     IDS_BRAVE_WALLET_CREATE_ACCOUNT_ZCASH_DESCRIPTION},
     {"braveWalletFilecoinPrivateKeyProtocol",
      IDS_BRAVE_WALLET_FILECOIN_PRIVATE_KEY_PROTOCOL},
     {"braveWalletAddAccountImport", IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT},
@@ -905,6 +907,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_FIL_ACCOUNT_DESCRIPTION},
     {"braveWalletBTCAccountDescrption",
      IDS_BRAVE_WALLET_BTC_ACCOUNT_DESCRIPTION},
+    {"braveWalletZECAccountDescrption",
+     IDS_BRAVE_WALLET_ZEC_ACCOUNT_DESCRIPTION},
     {"braveWalletShowNetworkLogoOnNftsTitle",
      IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE},
     {"braveWalletShowNetworkLogoOnNftsDescription",
@@ -1409,6 +1413,7 @@ constexpr char kERC721InterfaceId[] = "0x80ac58cd";
 constexpr char kERC721MetadataInterfaceId[] = "0x5b5e139f";
 
 constexpr char kBitcoinPrefKey[] = "bitcoin";
+constexpr char kZCashPrefKey[] = "zcash";
 constexpr char kEthereumPrefKey[] = "ethereum";
 constexpr char kFilecoinPrefKey[] = "filecoin";
 constexpr char kSolanaPrefKey[] = "solana";

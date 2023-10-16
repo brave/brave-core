@@ -63,7 +63,8 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
     return CreateAccountOptions({
       isFilecoinEnabled,
       isSolanaEnabled,
-      isBitcoinEnabled: false // No bitcoin hardware accounts by now.
+      isBitcoinEnabled: false, // No bitcoin hardware accounts by now.
+      isZCashEnabled: false // No zcash hardware accounts by now.
     })
   }, [isFilecoinEnabled, isSolanaEnabled])
 

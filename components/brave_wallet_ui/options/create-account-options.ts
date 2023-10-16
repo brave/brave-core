@@ -10,6 +10,7 @@ export const CreateAccountOptions = (options: {
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
   isBitcoinEnabled: boolean
+  isZCashEnabled: boolean
 }): CreateAccountOptionsType[] => {
   let accounts = [
     {
@@ -41,6 +42,14 @@ export const CreateAccountOptions = (options: {
       name: 'Bitcoin',
       coin: BraveWallet.CoinType.BTC,
       icon: getNetworkLogo(BraveWallet.BITCOIN_MAINNET, 'BTC')
+    })
+  }
+  if (options.isZCashEnabled) {
+    accounts.push({
+      description: getLocale('braveWalletCreateAccountZCashDescription'),
+      name: 'ZCash',
+      coin: BraveWallet.CoinType.ZEC,
+      icon: getNetworkLogo(BraveWallet.Z_CASH_MAINNET, 'ZEC')
     })
   }
   return accounts

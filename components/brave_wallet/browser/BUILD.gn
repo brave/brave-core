@@ -6,6 +6,7 @@
 import("//brave/build/config.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
+import("//third_party/protobuf/proto_library.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
 declare_args() {
@@ -204,6 +205,10 @@ static_library("browser") {
     "unstoppable_domains_multichain_calls.h",
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
+    "zcash/zcash_rpc.cc",
+    "zcash/zcash_rpc.h",
+    "zcash/zcash_wallet_service.cc",
+    "zcash/zcash_wallet_service.h",
   ]
   if (enable_ipfs_local_node) {
     sources += [
@@ -224,6 +229,7 @@ static_library("browser") {
     ":pref_names",
     ":transaction",
     ":utils",
+    ":zcash_proto",
     "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
@@ -470,6 +476,10 @@ generated_types("generated_swap_responses") {
     ":browser",
     "test:brave_wallet_unit_tests",
   ]
+}
+
+proto_library("zcash_proto") {
+  sources = [ "zcash/protos/zcash_grpc_data.proto" ]
 }
 
 config("sardine_config") {

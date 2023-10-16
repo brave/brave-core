@@ -40,6 +40,8 @@ class AndroidWalletPageUI : public ui::MojoWebUIController,
           json_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
           bitcoin_rpc_service_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
+          zcash_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
       mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
           asset_ratio_service,
