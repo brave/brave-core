@@ -118,10 +118,66 @@ class TiledItemsView : public views::BoxLayoutView {
 BEGIN_METADATA(TiledItemsView, views::BoxLayoutView)
 END_METADATA
 
+// A textfield that limits the maximum length of the input text.
+class BoundedTextfield : public views::Textfield {
+ public:
+  explicit BoundedTextfield(size_t max_length) : max_length_(max_length) {
+    length_label_ = AddChildView(std::make_unique<views::Label>());
+    length_label_->SetHorizontalAlignment(
+        gfx::HorizontalAlignment::ALIGN_RIGHT);
+    UpdateLengthLabel();
+  }
+  ~BoundedTextfield() override = default;
+
+  // views::Textfield:
+  void OnTextChanged() override {
+    Textfield::OnTextChanged();
+    UpdateLengthLabel();
+
+    // Double check the result as users can change contents via paste or
+    // composition.
+    // Note that this will be done in the next tick so that composition can
+    // finish its job.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&BoundedTextfield::TruncateText,
+                                  weak_ptr_factory_.GetWeakPtr()));
+  }
+
+  void InsertChar(const ui::KeyEvent& event) override {
+    if (GetText().size() >= max_length_) {
+      return;
+    }
+
+    Textfield::InsertChar(event);
+  }
+
+  void Layout() override {
+    views::Textfield::Layout();
+
+    length_label_->SetBoundsRect(GetContentsBounds());
+  }
+
+ private:
+  void TruncateText() {
+    if (auto text = GetText(); text.length() > max_length_) {
+      SetText({text.begin(), text.begin() + max_length_});
+    }
+  }
+
+  void UpdateLengthLabel() {
+    length_label_->SetText(base::UTF8ToUTF16(
+        base::StringPrintf("%zu/%zu", GetText().length(), max_length_)));
+  }
+
+  const size_t max_length_;
+
+  raw_ptr<views::Label> length_label_;
+
+  base::WeakPtrFactory<BoundedTextfield> weak_ptr_factory_{this};
+};
 }  // namespace
 
 namespace playlist {
-
 void ShowCreatePlaylistDialog(content::WebContents* contents) {
   DVLOG(2) << __FUNCTION__;
   PlaylistActionDialog::Show<PlaylistNewPlaylistDialog>(
@@ -215,8 +271,8 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
       create_container(this, IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_NAME_TEXTFIELD,
                        kColorBravePlaylistNewPlaylistDialogNameLabel,
                        /* container_label_font_size=*/13));
-  name_textfield_ =
-      name_field_container->AddChildView(std::make_unique<views::Textfield>());
+  name_textfield_ = name_field_container->AddChildView(
+      std::make_unique<BoundedTextfield>(/* max_length= */ 30u));
   name_textfield_->SetPreferredSize(gfx::Size(464, 39));
   name_textfield_->set_controller(this);
 
