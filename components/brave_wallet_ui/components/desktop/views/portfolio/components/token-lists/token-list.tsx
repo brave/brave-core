@@ -49,6 +49,11 @@ import {
   networkSupportsAccount
 } from '../../../../../../utils/network-utils'
 import { getBalance } from '../../../../../../utils/balance-utils'
+import {
+  getIsRewardsAccount,
+  getIsRewardsNetwork,
+  getIsRewardsToken
+} from '../../../../../../utils/rewards_utils'
 
 // Components
 import SearchBar from '../../../../../shared/search-bar/index'
@@ -63,7 +68,8 @@ import {
 
 // Queries
 import {
-  useGetDefaultFiatCurrencyQuery
+  useGetDefaultFiatCurrencyQuery,
+  useGetExternalRewardsWalletQuery
 } from '../../../../../../common/slices/api.slice'
 import {
   TokenBalancesRegistry
@@ -129,6 +135,13 @@ export const TokenLists = ({
   const selectedGroupAssetsByItem =
     useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // queries
+  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
+
+  // computed
+  const externalRewardsProvider =
+    externalRewardsInfo?.provider ?? undefined
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -314,6 +327,12 @@ export const TokenLists = ({
   // Returns a list of assets based on provided coin type
   const getAssetsByCoin = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
+      const isRewardsAccount = getIsRewardsAccount(account.accountId)
+      if (isRewardsAccount) {
+        return filteredAssetList
+          .filter(
+            (asset) => getIsRewardsToken(asset.asset))
+      }
       return filteredAssetList.filter((asset) => {
         const networkInfo = networks?.find(
           (network) =>
@@ -333,15 +352,19 @@ export const TokenLists = ({
   // is enabled.
   const getFilteredOutAssetsByAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
+      const isRewardsAccount = getIsRewardsAccount(account.accountId)
       if (hideSmallBalances) {
         return getAssetsByCoin(account).filter((token) =>
           computeFiatAmount({
             spotPriceRegistry,
-            value: getBalance(
-              account.accountId,
-              token.asset,
-              tokenBalancesRegistry
-            ),
+            value:
+              isRewardsAccount
+                ? token.assetBalance
+                : getBalance(
+                  account.accountId,
+                  token.asset,
+                  tokenBalancesRegistry
+                ),
             token: token.asset
           }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
         )
@@ -359,13 +382,17 @@ export const TokenLists = ({
   // balance for each token.
   const getAccountsAssetBalances = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
+      const isRewardsAccount = getIsRewardsAccount(account.accountId)
       return getFilteredOutAssetsByAccount(account).map((asset) => ({
         ...asset,
-        assetBalance: getBalance(
-          account.accountId,
-          asset.asset,
-          tokenBalancesRegistry
-        )
+        assetBalance:
+          isRewardsAccount
+            ? asset.assetBalance
+            : getBalance(
+              account.accountId,
+              asset.asset,
+              tokenBalancesRegistry
+            )
       }))
     }, [getFilteredOutAssetsByAccount, tokenBalancesRegistry])
 
@@ -463,6 +490,7 @@ export const TokenLists = ({
     }
     return sortedNetworksWithBalances.map((network) => {
       const networksFiatValue = getNetworkFiatValue(network)
+      const isRewardsNetwork = getIsRewardsNetwork(network)
       const networksAssets = getAssetsByNetwork(network)
       return <AssetGroupContainer
         key={networkEntityAdapter
@@ -476,6 +504,11 @@ export const TokenLists = ({
         }
         network={network}
         isDisabled={networksAssets.length === 0}
+        externalProvider={
+          isRewardsNetwork
+            ? externalRewardsProvider
+            : undefined
+        }
       >
         {networksAssets
           .map(
@@ -485,7 +518,7 @@ export const TokenLists = ({
               )
           )
         }
-        {!assetAutoDiscoveryCompleted &&
+        {!assetAutoDiscoveryCompleted && !isRewardsNetwork &&
           <PortfolioAssetItemLoadingSkeleton />
         }
       </AssetGroupContainer>
@@ -497,7 +530,8 @@ export const TokenLists = ({
     showEmptyState,
     sortedNetworksWithBalances,
     defaultFiatCurrency,
-    assetAutoDiscoveryCompleted
+    assetAutoDiscoveryCompleted,
+    externalRewardsProvider
   ])
 
   const sortedAccountsWithBalances = React.useMemo(() => {
@@ -533,6 +567,7 @@ export const TokenLists = ({
     }
     return sortedAccountsWithBalances.map((account) => {
       const accountsFiatValue = getAccountFiatValue(account)
+      const isRewardsAccount = getIsRewardsAccount(account.accountId)
       const accountsAssets = getSortedAssetsByAccount(account)
       return <AssetGroupContainer
         key={account.accountId.uniqueKey}
@@ -545,6 +580,11 @@ export const TokenLists = ({
         }
         account={account}
         isDisabled={accountsAssets.length === 0}
+        externalProvider={
+          isRewardsAccount
+            ? externalRewardsProvider
+            : undefined
+        }
       >
         {accountsAssets
           .map(
@@ -554,7 +594,7 @@ export const TokenLists = ({
               )
           )
         }
-        {!assetAutoDiscoveryCompleted &&
+        {!assetAutoDiscoveryCompleted && !isRewardsAccount &&
           <PortfolioAssetItemLoadingSkeleton />
         }
       </AssetGroupContainer>
@@ -566,7 +606,8 @@ export const TokenLists = ({
     showEmptyState,
     defaultFiatCurrency,
     assetAutoDiscoveryCompleted,
-    sortedAccountsWithBalances
+    sortedAccountsWithBalances,
+    externalRewardsProvider
   ])
 
   const listUi = React.useMemo(() => {

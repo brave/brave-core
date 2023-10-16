@@ -42,8 +42,11 @@ export const AccountNameButton = styled(WalletButton)`
   line-height: 20px;
   font-weight: 600;
   color: ${leo.color.text.primary};
-  margin: 0px;
+  margin: 0px 8px 0px 0px;
   padding: 0px;
+  &:disabled {
+    cursor: default;
+  }
 `
 
 export const AccountAddressButton = styled(AccountNameButton)`

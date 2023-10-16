@@ -22,6 +22,12 @@ import Amount from '../../../utils/amount'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getTokenPriceFromRegistry } from '../../../utils/pricing-utils'
 import { BraveWallet } from '../../../constants/types'
+import {
+  getIsRewardsToken, getRewardsTokenDescription
+} from '../../../utils/rewards_utils'
+import {
+  externalWalletProviderFromString
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Queries
 import {
@@ -159,12 +165,18 @@ export const AssetDetailsHeader = (props: Props) => {
   )
 
   // computed
+  const isRewardsToken = getIsRewardsToken(selectedAsset)
+
   const networkDescription =
     isShowingMarketData
       ? selectedAsset?.symbol ?? ''
-      : getLocale('braveWalletPortfolioAssetNetworkDescription')
-        .replace('$1', selectedAsset?.symbol ?? '')
-        .replace('$2', selectedAssetsNetwork?.chainName ?? '')
+      : isRewardsToken
+        ? getRewardsTokenDescription(
+          externalWalletProviderFromString(selectedAsset?.chainId ?? '')
+        )
+        : getLocale('braveWalletPortfolioAssetNetworkDescription')
+          .replace('$1', selectedAsset?.symbol ?? '')
+          .replace('$2', selectedAssetsNetwork?.chainName ?? '')
 
   const selectedAssetFiatPrice = selectedAsset &&
     spotPriceRegistry &&
@@ -259,6 +271,7 @@ export const AssetDetailsHeader = (props: Props) => {
         {selectedAsset?.contractAddress &&
           !selectedAsset?.isErc721 &&
           !selectedAsset.isNft &&
+          !isRewardsToken &&
           <>
             <HorizontalSpace space='16px' />
             <HorizontalDivider />

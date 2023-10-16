@@ -15,6 +15,14 @@ import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 import { unbiasedRandom } from '../../../utils/random-utils'
 import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
+import {
+  getIsRewardsToken,
+  getNormalizedExternalRewardsNetwork,
+  getRewardsTokenDescription
+} from '../../../utils/rewards_utils'
+import {
+  externalWalletProviderFromString
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Hooks
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
@@ -35,6 +43,7 @@ import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import {
   AssetItemMenu
 } from '../wallet-menus/asset-item-menu'
+import { RewardsMenu } from '../wallet-menus/rewards_menu'
 
 // Styled Components
 import {
@@ -129,7 +138,17 @@ export const PortfolioAssetItem = ({
 
   const isLoading = formattedAssetBalance === '' && !isNonFungibleToken
 
+  const isRewardsToken = getIsRewardsToken(token)
+
+  const externalProvider =
+    isRewardsToken
+      ? externalWalletProviderFromString(token.chainId)
+      : null
+
   const NetworkDescription = React.useMemo(() => {
+    if (isRewardsToken) {
+      return getRewardsTokenDescription(externalProvider)
+    }
 
     if (tokensNetwork && !isPanel) {
       return token.symbol !== ''
@@ -139,7 +158,17 @@ export const PortfolioAssetItem = ({
       : tokensNetwork.chainName
     }
     return token.symbol
-  }, [tokensNetwork, token])
+  }, [
+    tokensNetwork,
+    token,
+    isRewardsToken,
+    externalProvider
+  ])
+
+  const network =
+    isRewardsToken
+      ? getNormalizedExternalRewardsNetwork(externalProvider)
+      : tokensNetwork
 
   // effects
   React.useEffect(() => {
@@ -177,19 +206,25 @@ export const PortfolioAssetItem = ({
                       isNonFungibleToken
                         ? <NftIconWithPlaceholder
                             asset={token}
-                            network={tokensNetwork}
+                            network={network}
                           />
                         : <AssetIconWithPlaceholder
                             asset={token}
-                            network={tokensNetwork}
+                            network={network}
                           />
                     }
                     {
                       !isPanel &&
-                      tokensNetwork &&
-                      checkIfTokenNeedsNetworkIcon(tokensNetwork, token.contractAddress) &&
+                      network &&
+                      checkIfTokenNeedsNetworkIcon(
+                        network,
+                        token.contractAddress
+                      ) &&
                       <NetworkIconWrapper>
-                        <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
+                        <CreateNetworkIcon
+                          network={network}
+                          marginRight={0}
+                        />
                       </NetworkIconWrapper>
                     }
                   </>
@@ -250,11 +285,17 @@ export const PortfolioAssetItem = ({
               <AssetMenuButtonIcon />
             </AssetMenuButton>
             {showAssetMenu &&
-              <AssetItemMenu
-                assetBalance={assetBalance}
-                asset={token}
-                account={account}
-              />
+              <>
+                {isRewardsToken ? (
+                  <RewardsMenu />
+                ) : (
+                  <AssetItemMenu
+                    assetBalance={assetBalance}
+                    asset={token}
+                    account={account}
+                  />
+                )}
+              </>
             }
           </AssetMenuWrapper>
         </StyledWrapper>

@@ -526,3 +526,17 @@ export const VerticalDivider = styled.div`
   width: 100%;
   background-color: ${leo.color.divider.subtle};
 `
+
+export const BraveRewardsIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Poppins;
+  font-size: 10px;
+  line-height: 15px;
+  font-weight: 500;
+  color: ${leo.color.text.primary};
+  padding: 2px 6px;
+  border: 1px solid ${leo.color.divider.subtle};
+  border-radius: 4px;
+`

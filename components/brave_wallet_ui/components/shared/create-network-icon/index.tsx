@@ -5,6 +5,11 @@
 
 import * as React from 'react'
 
+// Types
+import {
+  externalWalletProviderFromString
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+
 // Constants
 import { BraveWallet, SupportedTestNetworks } from '../../../constants/types'
 
@@ -15,6 +20,10 @@ import {
   isValidIconExtension,
   isComponentInStorybook
 } from '../../../utils/string-utils'
+import {
+  getRewardsProviderIcon,
+  getIsRewardsNetwork
+} from '../../../utils/rewards_utils'
 
 // Styled components
 import { IconWrapper, Placeholder, NetworkIcon } from './style'
@@ -46,8 +55,19 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
     )
   }
 
-  // computed
-  const networkLogo = getNetworkLogo(network.chainId, network.symbol)
+  // Computed
+  const isRewardsNetwork = getIsRewardsNetwork(network)
+
+  const externalProvider =
+    isRewardsNetwork
+      ? externalWalletProviderFromString(network.chainId)
+      : null
+
+  const networkLogo =
+    isRewardsNetwork
+      ? getRewardsProviderIcon(externalProvider)
+      : getNetworkLogo(network.chainId, network.symbol)
+
   const isTestnet = SupportedTestNetworks.includes(network.chainId)
 
   // simple render
@@ -57,8 +77,13 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
         marginRight={marginRight ?? 0}
         isTestnet={isTestnet}
         size={size}
+        externalProvider={externalProvider}
       >
-        <NetworkIcon size={size} icon={networkLogo} />
+        <NetworkIcon
+          size={size}
+          icon={networkLogo}
+          isExternalProvider={!!externalProvider}
+        />
       </IconWrapper>
     )
   }
