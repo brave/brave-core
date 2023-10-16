@@ -249,6 +249,9 @@ class SwapStoreTests: XCTestCase {
     let swapService = BraveWallet.TestSwapService()
     swapService._priceQuote = { $1(.init(), nil, "") }
     swapService._transactionPayload = { $1(.init(), nil, "") }
+    swapService._braveFee = { params, completion in
+      completion(nil, "")
+    }
     let txService = BraveWallet.TestTxService()
     txService._addUnapprovedTransaction = { $4(true, "tx-meta-id", "") }
     let walletService = BraveWallet.TestBraveWalletService()
@@ -269,7 +272,26 @@ class SwapStoreTests: XCTestCase {
     swapService._priceQuote = { _, completion in
       let swapResponse: BraveWallet.SwapResponse = .init()
       swapResponse.buyAmount = "2000000000000000000"
+      // protocol fee should only be shown when non-nil
+      swapResponse.fees.zeroExFee = .init(
+        feeType: "",
+        feeToken: "",
+        feeAmount: "",
+        billingType: ""
+      )
       completion(swapResponse, nil, "")
+    }
+    swapService._braveFee = { params, completion in
+      let feeResponse = BraveWallet.BraveSwapFeeResponse(
+        feeParam: "0.00875",
+        protocolFeePct: "0.15",
+        braveFeePct: "0.875",
+        discountOnBraveFeePct: "0",
+        effectiveFeePct: "0.875",
+        discountCode: .none,
+        hasBraveFee: true
+      )
+      completion(feeResponse, "")
     }
     let store = SwapTokenStore(
       keyringService: keyringService,
@@ -287,9 +309,13 @@ class SwapStoreTests: XCTestCase {
     let buyAmountExpectation = expectation(description: "buyAmountExpectation")
     store.$buyAmount
       .dropFirst()
-      .first()
-      .sink { buyAmount in
+      .collect(3)
+      .sink { buyAmounts in
         defer { buyAmountExpectation.fulfill() }
+        guard let buyAmount = buyAmounts.last else {
+          XCTFail("Expected multiple buyAmount assignments.")
+          return
+        }
         XCTAssertFalse(buyAmount.isEmpty)
         XCTAssertEqual(buyAmount, "2.0000")
       }
@@ -300,6 +326,9 @@ class SwapStoreTests: XCTestCase {
     store.setUpTest(sellAmount: "0.01")
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
+      // Verify fees
+      XCTAssertEqual(store.braveFeeForDisplay, "0.875%")
+      XCTAssertEqual(store.protocolFeeForDisplay, "0.15%")
     }
   }
   
@@ -309,7 +338,20 @@ class SwapStoreTests: XCTestCase {
     swapService._priceQuote = { _, completion in
       let swapResponse: BraveWallet.SwapResponse = .init()
       swapResponse.sellAmount = "3000000000000000000"
+      swapResponse.fees.zeroExFee = nil // protocol fee should only be shown when non-nil
       completion(swapResponse, nil, "")
+    }
+    swapService._braveFee = { params, completion in
+      let feeResponse = BraveWallet.BraveSwapFeeResponse(
+        feeParam: "0.00875",
+        protocolFeePct: "0.15",
+        braveFeePct: "0.875",
+        discountOnBraveFeePct: "0",
+        effectiveFeePct: "0.875",
+        discountCode: .none,
+        hasBraveFee: true
+      )
+      completion(feeResponse, "")
     }
     let store = SwapTokenStore(
       keyringService: keyringService,
@@ -327,11 +369,24 @@ class SwapStoreTests: XCTestCase {
     let sellAmountExpectation = expectation(description: "sellAmountExpectation")
     store.$sellAmount
       .dropFirst()
-      .first()
-      .sink { sellAmount in
+      .collect(3)
+      .sink { sellAmounts in
         defer { sellAmountExpectation.fulfill() }
+        guard let sellAmount = sellAmounts.last else {
+          XCTFail("Expected multiple sellAmount assignments.")
+          return
+        }
         XCTAssertFalse(sellAmount.isEmpty)
         XCTAssertEqual(sellAmount, "3.0000")
+      }
+      .store(in: &cancellables)
+    
+    let braveFeeExpectation = expectation(description: "braveFeeExpectation")
+    store.$braveFee
+      .dropFirst()
+      .collect(3)
+      .sink { _ in
+        braveFeeExpectation.fulfill()
       }
       .store(in: &cancellables)
 
@@ -340,6 +395,9 @@ class SwapStoreTests: XCTestCase {
     store.setUpTest(sellAmount: nil, buyAmount: "0.01")
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
+      // Verify fees
+      XCTAssertEqual(store.braveFeeForDisplay, "0.875%")
+      XCTAssertNil(store.protocolFeeForDisplay)
     }
   }
   
@@ -363,6 +421,18 @@ class SwapStoreTests: XCTestCase {
         marketInfos: [])
       completion(.init(routes: [route]), nil, "")
     }
+    swapService._braveFee = { params, completion in
+      let feeResponse = BraveWallet.BraveSwapFeeResponse(
+        feeParam: "85",
+        protocolFeePct: "0",
+        braveFeePct: "0.85",
+        discountOnBraveFeePct: "0",
+        effectiveFeePct: "0.85",
+        discountCode: .none,
+        hasBraveFee: true
+      )
+      completion(feeResponse, "")
+    }
     let store = SwapTokenStore(
       keyringService: keyringService,
       blockchainRegistry: blockchainRegistry,
@@ -375,14 +445,28 @@ class SwapStoreTests: XCTestCase {
       userAssetManager: mockAssetManager,
       prefilledToken: nil
     )
-
+    
     let buyAmountExpectation = expectation(description: "buyAmountExpectation")
     store.$buyAmount
       .dropFirst()
-      .sink { buyAmount in
+      .collect(3)
+      .sink { buyAmounts in
         defer { buyAmountExpectation.fulfill() }
+        guard let buyAmount = buyAmounts.last else {
+          XCTFail("Expected multiple buyAmount assignments.")
+          return
+        }
         XCTAssertFalse(buyAmount.isEmpty)
         XCTAssertEqual(buyAmount, "2.5000")
+      }
+      .store(in: &cancellables)
+    
+    let braveFeeExpectation = expectation(description: "braveFeeExpectation")
+    store.$braveFee
+      .dropFirst()
+      .collect(3)
+      .sink { _ in
+        braveFeeExpectation.fulfill()
       }
       .store(in: &cancellables)
 
@@ -396,6 +480,9 @@ class SwapStoreTests: XCTestCase {
     )
     waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
+      // Verify fees
+      XCTAssertEqual(store.braveFeeForDisplay, "0.85%")
+      XCTAssertNil(store.protocolFeeForDisplay)
     }
   }
   
@@ -430,8 +517,13 @@ class SwapStoreTests: XCTestCase {
     let stateExpectation = expectation(description: "stateExpectation")
     store.$state
       .dropFirst()
-      .sink { state in
+      .collect(5) // sellAmount, buyAmount didSet to `.idle`
+      .sink { states in
         defer { stateExpectation.fulfill() }
+        guard let state = states.last else {
+          XCTFail("Expected multiple state updates.")
+          return
+        }
         XCTAssertEqual(state, .error(Strings.Wallet.insufficientLiquidity))
       }
       .store(in: &cancellables)

@@ -1234,6 +1234,27 @@ extension Strings {
       value: "Swap selected tokens",
       comment: "An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens."
     )
+    public static let braveFeeLabel = NSLocalizedString(
+      "wallet.braveFeeLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Brave Fee: %@",
+      comment: "The title for Brave Fee label in Swap. The fee percentage is displayed beside the label."
+    )
+    public static let protocolFeeLabel = NSLocalizedString(
+      "wallet.protocolFeeLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Protocol Fee: %@",
+      comment: "The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label."
+    )
+    public static let braveSwapFree = NSLocalizedString(
+      "wallet.braveSwapFree",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Free",
+      comment: "The text beside the striked-through percentage Brave would normally charge for a swap."
+    )
     public static let transactionCount = NSLocalizedString(
       "wallet.transactionCount",
       tableName: "BraveWallet",

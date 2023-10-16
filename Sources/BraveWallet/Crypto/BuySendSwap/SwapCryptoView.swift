@@ -240,7 +240,7 @@ struct SwapCryptoView: View {
   }
 
   private var isSwapButtonDisabled: Bool {
-    guard !swapTokensStore.isMakingTx else {
+    guard !swapTokensStore.isMakingTx && !swapTokensStore.isUpdatingPriceQuote else {
       return true
     }
     switch swapTokensStore.state {
@@ -427,32 +427,10 @@ struct SwapCryptoView: View {
     Section(
       header:
         VStack(spacing: 16) {
-          Text(
-            String.localizedStringWithFormat(
-              Strings.Wallet.braveSwapFeeDisclaimer,
-              {
-                let formatter = NumberFormatter()
-                formatter.numberStyle = .percent
-                formatter.minimumFractionDigits = 3
-                let value: Double
-                switch dexAggregator {
-                case .zeroX: // 0.875
-                  value = WalletConstants.braveSwapFee
-                  formatter.maximumFractionDigits = 3
-                case .jupiter: // 0.85
-                  value = WalletConstants.braveSwapJupiterFee
-                  formatter.maximumFractionDigits = 2
-                }
-                return formatter.string(
-                  from: NSNumber(
-                    value: value
-                  )) ?? ""
-              }())
-          )
-          .foregroundColor(Color(.braveLabel))
-          .font(.footnote)
+          feesFooter
+          
           WalletLoadingButton(
-            isLoading: swapTokensStore.isMakingTx,
+            isLoading: swapTokensStore.isMakingTx || swapTokensStore.isUpdatingPriceQuote,
             action: {
               Task { @MainActor in
                 let success = await swapTokensStore.createSwapTransaction()
@@ -502,6 +480,25 @@ struct SwapCryptoView: View {
       .frame(maxWidth: .infinity)
       .font(.footnote)
       .listRowBackground(Color(.braveGroupedBackground))
+    }
+  }
+  
+  @ViewBuilder private var feesFooter: some View {
+    if swapTokensStore.braveFeeForDisplay != nil || swapTokensStore.protocolFeeForDisplay != nil {
+      VStack(spacing: 4) {
+        if let braveFeeForDisplay = swapTokensStore.braveFeeForDisplay {
+          if swapTokensStore.isBraveFeeVoided {
+            Text(String.localizedStringWithFormat(Strings.Wallet.braveFeeLabel, Strings.Wallet.braveSwapFree) + " ") + Text(braveFeeForDisplay).strikethrough()
+          } else {
+            Text(String.localizedStringWithFormat(Strings.Wallet.braveFeeLabel, braveFeeForDisplay))
+          }
+        }
+        if let protocolFee = swapTokensStore.protocolFeeForDisplay {
+          Text(String.localizedStringWithFormat(Strings.Wallet.protocolFeeLabel, protocolFee))
+        }
+      }
+      .font(.footnote)
+      .foregroundColor(Color(.braveLabel))
     }
   }
 
