@@ -21,7 +21,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "chrome/browser/password_manager/password_store_factory.h"
+#include "chrome/browser/password_manager/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -303,8 +303,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
 
   // Add a password to the password manager.
   password_manager::PasswordStoreInterface* password_store =
-      PasswordStoreFactory::GetForProfile(browser()->profile(),
-                                          ServiceAccessType::IMPLICIT_ACCESS)
+      ProfilePasswordStoreFactory::GetForProfile(
+          browser()->profile(), ServiceAccessType::IMPLICIT_ACCESS)
           .get();
   password_manager::PasswordForm signin_form;
   signin_form.signon_realm = "https://www.facebook.com/";
