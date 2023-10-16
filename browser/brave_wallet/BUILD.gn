@@ -32,6 +32,8 @@ source_set("brave_wallet") {
     "swap_service_factory.h",
     "tx_service_factory.cc",
     "tx_service_factory.h",
+    "zcash_wallet_service_factory.cc",
+    "zcash_wallet_service_factory.h",
   ]
   if (enable_ipfs_local_node) {
     sources += [

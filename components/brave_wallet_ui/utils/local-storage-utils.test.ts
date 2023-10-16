@@ -65,6 +65,12 @@ const mockInitialFilteredOutNetworkKeys = [
   ).toString(),
   networkEntityAdapter.selectId(
     {
+      chainId: BraveWallet.Z_CASH_TESTNET,
+      coin: BraveWallet.CoinType.ZEC
+    }
+  ).toString(),
+  networkEntityAdapter.selectId(
+    {
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       coin: BraveWallet.CoinType.SOL
     }
@@ -85,6 +91,12 @@ const mockInitialFilteredOutNetworkKeys = [
     {
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
       coin: BraveWallet.CoinType.BTC
+    }
+  ).toString(),
+  networkEntityAdapter.selectId(
+    {
+      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
+      coin: BraveWallet.CoinType.ZEC
     }
   ).toString()
 ]
