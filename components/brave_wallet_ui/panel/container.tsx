@@ -383,16 +383,18 @@ function Container () {
   if (selectedAccount && (selectedPendingTransaction || signMessageData.length) &&
     selectedPanel === 'connectHardwareWallet') {
     return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <ConnectHardwareWalletPanel
-            onCancel={onCancelConnectHardwareWallet}
-            account={selectedAccount}
-            hardwareWalletCode={hardwareWalletCode}
-            onClickInstructions={onClickInstructions}
-          />
-        </StyledExtensionWrapper>
-      </PanelWrapper>
+      <BrowserRouter>
+        <PanelWrapper isLonger={false}>
+          <StyledExtensionWrapper>
+            <ConnectHardwareWalletPanel
+              onCancel={onCancelConnectHardwareWallet}
+              account={selectedAccount}
+              hardwareWalletCode={hardwareWalletCode}
+              onClickInstructions={onClickInstructions}
+            />
+          </StyledExtensionWrapper>
+        </PanelWrapper>
+      </BrowserRouter>
     )
   }
 
