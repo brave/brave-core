@@ -77,14 +77,13 @@ public class BundledFaviconRenderer {
     } else if let name = url.baseDomain, let icon = Self.bundledIcons[name] {
       bundleIcon = icon
     }
-    guard let icon = bundleIcon, let image = UIImage(contentsOfFile: icon.url) else {
+    guard let icon = bundleIcon,
+          let image = UIImage(contentsOfFile: icon.url),
+          let scaledImage = image.createScaled(CGSize(width: 40.0, height: 40.0)) else {
       return nil
     }
 
-    return (
-      image.createScaled(CGSize(width: 40.0, height: 40.0)),
-      icon.color
-    )
+    return (scaledImage, icon.color)
   }
 
   private static let multiRegionDomains = ["craigslist", "google", "amazon"]
