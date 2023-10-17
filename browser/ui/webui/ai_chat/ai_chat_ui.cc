@@ -77,7 +77,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
           ai_chat::prefs::kBravekLastSeenDisclaimer);
 
   untrusted_source->AddBoolean("hasSeenAgreement",
-                               last_seen_disclaimer.is_null() ? false : true);
+                               !last_seen_disclaimer.is_null());
 
   untrusted_source->AddBoolean(
       "hasUserDismissedPremiumPrompt",

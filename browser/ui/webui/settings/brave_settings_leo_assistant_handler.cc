@@ -133,7 +133,7 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
   auto* service = sidebar::SidebarServiceFactory::GetForProfile(profile_);
 
   ShowLeoAssistantIconVisibleIfNot(service);
-  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBravekLastSeenDisclaimer,
+  profile_->GetPrefs()->SetTime(ai_chat::prefs::kBravekLastSeenDisclaimer,
                                    {});
   profile_->GetPrefs()->SetBoolean(
       ai_chat::prefs::kBraveChatAutoGenerateQuestions, false);
