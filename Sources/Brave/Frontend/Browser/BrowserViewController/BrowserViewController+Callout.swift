@@ -27,7 +27,6 @@ extension BrowserViewController {
    - VPN Promotion
    - Default Browser
    - Rewards
-   - Cookie Notification
    - VPN Link Receipt
   */
   func presentFullScreenCallouts() {
@@ -53,8 +52,6 @@ extension BrowserViewController {
       presentDefaultBrowserScreenCallout()
     case .rewards:
       presentBraveRewardsScreenCallout(skipSafeGuards: skipSafeGuards)
-    case .blockCookieConsentNotices:
-      presentCookieNotificationBlockingCallout(skipSafeGuards: skipSafeGuards)
     case .vpnPromotion:
       presentVPNPromotionCallout(skipSafeGuards: skipSafeGuards)
     case .vpnLinkReceipt:
@@ -181,25 +178,6 @@ extension BrowserViewController {
     
     isOnboardingOrFullScreenCalloutPresented = true
     present(controller, animated: true)
-  }
-  
-  private func presentCookieNotificationBlockingCallout(skipSafeGuards: Bool = false) {
-    if !skipSafeGuards {
-      // Show Cookie Block Callout if setting is enabled and on second launch
-      // After Basic onboarding is shown
-      guard FilterListStorage.shared.isEnabled(for: FilterList.cookieConsentNoticesComponentID),
-            Preferences.FullScreenCallout.omniboxCalloutCompleted.value else {
-        return
-      }
-    }
-    
-    let popover = PopoverController(
-      contentController: CookieNotificationBlockingConsentViewController(),
-      contentSizeBehavior: .preferredContentSize)
-    popover.addsConvenientDismissalMargins = false
-    
-    isOnboardingOrFullScreenCalloutPresented = true
-    popover.present(from: topToolbar.locationView.shieldsButton, on: self)
   }
   
   private func presentVPNPromotionCallout(skipSafeGuards: Bool = false) {
