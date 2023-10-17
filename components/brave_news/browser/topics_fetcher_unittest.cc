@@ -208,16 +208,16 @@ class TopicsFetcherTest : public testing::Test {
   TopicsFetcherTest()
       : fetcher_(test_url_loader_factory_.GetSafeWeakWrapper()) {}
 
-  std::vector<Topic> GetTopics() {
+  std::vector<TopicAndArticles> GetTopics() {
     base::RunLoop loop;
-    std::vector<Topic> topics;
+    std::vector<TopicAndArticles> topics;
 
     fetcher_.GetTopics(
-        "en_US",
-        base::BindLambdaForTesting([&loop, &topics](std::vector<Topic> result) {
-          topics = std::move(result);
-          loop.Quit();
-        }));
+        "en_US", base::BindLambdaForTesting(
+                     [&loop, &topics](std::vector<TopicAndArticles> result) {
+                       topics = std::move(result);
+                       loop.Quit();
+                     }));
     loop.Run();
 
     return topics;

@@ -322,7 +322,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
 // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4vwmn4vmf2tq
 std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
     const Publishers& publishers,
-    base::span<const Topic>& topics) {
+    base::span<const TopicAndArticles>& topics) {
   if (topics.empty()) {
     return {};
   }
@@ -348,9 +348,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
     item->title = article.title;
     item->url = GURL(article.url);
     item->publish_time = base::Time::Now();
-    if (article.img.has_value()) {
-      item->image = mojom::Image::NewImageUrl(GURL(article.img.value()));
-    }
+    item->image = mojom::Image::NewImageUrl(GURL(article.img.value_or("")));
     result->articles.push_back(mojom::ArticleElements::NewArticle(
         mojom::Article::New(std::move(item), false)));
 
@@ -378,7 +376,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
     const std::string& locale,
     const Publishers& publishers,
     const std::vector<std::string>& channels,
-    base::span<const Topic>& topics,
+    base::span<const TopicAndArticles>& topics,
     ArticleInfos& articles) {
   // If we have no channels, and no topics there's nothing we can do here.
   if (channels.empty() && topics.empty()) {
@@ -595,7 +593,7 @@ void FeedV2Builder::BuildFeedFromArticles() {
   auto suggested_publisher_ids = suggested_publisher_ids_;
   auto articles = GetArticleInfos(raw_feed_items_, signals_);
   auto feed = mojom::FeedV2::New();
-  base::span<const Topic> topics = base::make_span(topics_);
+  base::span<const TopicAndArticles> topics = base::make_span(topics_);
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
     base::ranges::move(items, std::back_inserter(feed->items));
