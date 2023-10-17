@@ -22,3 +22,21 @@ class LoadingDesktopBrave(_LoadingBase):
     @classmethod
     def Name(cls):
         return 'loading.desktop.brave'
+
+
+@benchmark.Info(emails=['matuchin@brave.com', 'iefremov@brave.com'],
+                component='Blink>Loader',
+                documentation_url='https://bit.ly/loading-benchmarks')
+class LoadingDesktopBraveStartup(_LoadingBase):
+    """ A benchmark measuring loading performance of desktop sites. """
+    SUPPORTED_PLATFORM_TAGS = [platforms.DESKTOP]
+    SUPPORTED_PLATFORMS = [story.expectations.ALL_DESKTOP]
+
+    def CreateStorySet(self, _options):
+        return page_sets.BraveLoadingDesktopStorySet(
+            cache_temperatures=[cache_temperature.COLD, cache_temperature.WARM],
+            with_delay=False)
+
+    @classmethod
+    def Name(cls):
+        return 'loading.desktop.brave.startup'
