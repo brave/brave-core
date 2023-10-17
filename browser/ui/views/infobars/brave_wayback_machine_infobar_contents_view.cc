@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/ranges/algorithm.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
@@ -123,13 +124,12 @@ void BraveWaybackMachineInfoBarContentsView::HideInfobar() {
   if (!infobar_manager)
     return;
 
-  for (size_t i = 0; i < infobar_manager->infobar_count(); ++i) {
-    infobars::InfoBar* infobar = infobar_manager->infobar_at(i);
-    if (infobar->delegate()->GetIdentifier() ==
-        BraveWaybackMachineInfoBarDelegate::WAYBACK_MACHINE_INFOBAR_DELEGATE) {
-      infobar_manager->RemoveInfoBar(infobar);
-      break;
-    }
+  const auto it = base::ranges::find(
+      infobar_manager->infobars(),
+      BraveWaybackMachineInfoBarDelegate::WAYBACK_MACHINE_INFOBAR_DELEGATE,
+      &infobars::InfoBar::GetIdentifier);
+  if (it != infobar_manager->infobars().cend()) {
+    infobar_manager->RemoveInfoBar(*it);
   }
 }
 
