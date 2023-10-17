@@ -46,17 +46,6 @@ import Combine
   /// Load the filter list settings
   func loadFilterListSettings() {
     allFilterListSettings = FilterListSetting.loadAllSettings(fromMemory: !persistChanges)
-    
-    // This is a fix for upgrading from the old cookie consent callout.
-    // Since we never stored non-default cookie settings,
-    // the only way to ensure someone's previous settings are kept is if we manually
-    // disabled it here if the callout was previously shown and the setting is not stored.
-    // In a future upgrade this can be removed as the setting is now always saved
-    // (not just for non-defaults or enabled).
-    if Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted.value &&
-       !allFilterListSettings.contains(where: { $0.componentId == FilterList.cookieConsentNoticesComponentID }) {
-      pendingDefaults[FilterList.cookieConsentNoticesComponentID] = false
-    }
   }
   
   /// Load filter lists from the ad block service and subscribe to any filter list changes
