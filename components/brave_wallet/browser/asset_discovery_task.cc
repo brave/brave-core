@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -94,15 +95,22 @@ void AssetDiscoveryTask::DiscoverAssets(
   // Registry and NFTs on both platforms, then merge the results
   const auto barrier_callback =
       base::BarrierCallback<std::vector<mojom::BlockchainTokenPtr>>(
-          4,
+          IsAnkrBalancesEnabled() ? 4 : 3,
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAssets,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   // Currently SPL tokens are only discovered on Solana Mainnet.
   DiscoverSPLTokensFromRegistry(sol_account_addresses, barrier_callback);
-  DiscoverAnkrTokens(ankr_evm_chain_ids, eth_account_addresses,
-                     barrier_callback);
-  DiscoverERC20sFromRegistry(non_ankr_evm_chain_ids, eth_account_addresses,
-                             barrier_callback);
+
+  if (IsAnkrBalancesEnabled()) {
+    DiscoverAnkrTokens(ankr_evm_chain_ids, eth_account_addresses,
+                       barrier_callback);
+    DiscoverERC20sFromRegistry(non_ankr_evm_chain_ids, eth_account_addresses,
+                               barrier_callback);
+  } else {
+    DiscoverERC20sFromRegistry(eth_chain_ids, eth_account_addresses,
+                               barrier_callback);
+  }
+
   DiscoverNFTs(non_fungible_chain_ids, account_addresses, barrier_callback);
 }
 

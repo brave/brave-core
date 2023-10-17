@@ -254,6 +254,7 @@ export interface WalletState {
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
   isPanelV2FeatureEnabled: boolean
+  isAnkrBalancesFeatureEnabled: boolean
   hidePortfolioGraph: boolean
   hidePortfolioBalances: boolean
   removedFungibleTokenIds: string[]

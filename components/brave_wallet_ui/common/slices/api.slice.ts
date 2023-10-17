@@ -147,15 +147,16 @@ type GetTokenBalancesForChainIdArg =
   | GetSPLTokenBalancesForAddressAndChainIdArg
   | GetTokenBalancesForAddressAndChainIdArg
 
+type NetworkInfo = Pick<
+  BraveWallet.NetworkInfo,
+  | 'chainId'
+  | 'coin'
+>
+
 type GetTokenBalancesRegistryArg = {
   accountIds: BraveWallet.AccountId[]
-  networks: Array<
-    Pick<
-      BraveWallet.NetworkInfo,
-      | 'chainId'
-      | 'coin'
-    >
-  >
+  networks: NetworkInfo[]
+  useAnkrBalancesFeature: boolean
 }
 
 type GetHardwareAccountDiscoveryBalanceArg = {
@@ -435,7 +436,7 @@ export function createWalletApi () {
           needsAccountForNetwork?: boolean
           selectedAccountId?: BraveWallet.AccountId
         },
-        Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+        NetworkInfo
       >({
         queryFn: async (
           { chainId, coin },
@@ -1268,8 +1269,12 @@ export function createWalletApi () {
             const { getUserTokensRegistry, getTokenBalancesForChainId } =
               walletApi.endpoints
 
-            const { chainIds: ankrSupportedChainIds } =
+            const { chainIds: ankrSupportedChainIdsResult } =
               await braveWalletService.getAnkrSupportedChainIds()
+            const ankrSupportedChainIds = args.useAnkrBalancesFeature
+              ? ankrSupportedChainIdsResult
+              : []
+
             const ankrSupportedNetworks = args.networks.filter(
               (network) => ankrSupportedChainIds.includes(network.chainId)
             )
@@ -1320,13 +1325,8 @@ export function createWalletApi () {
                 if (nonAnkrSupportedAccountNetworks.length) {
                   const nonAnkrBalancesRegistryArray = await mapLimit(
                     nonAnkrSupportedAccountNetworks,
-                    1,
-                    async (
-                      network: Pick<
-                        BraveWallet.NetworkInfo,
-                        'coin' | 'chainId'
-                      >
-                    ) => {
+                    3,
+                    async (network: NetworkInfo) => {
                       const partialRegistryQuery = dispatch(
                         getTokenBalancesForChainId.initiate(
                           network.coin === CoinTypes.SOL
