@@ -126,7 +126,15 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     ProtocolHandlerRegistryFactory::GetInstance()->SetTestingFactory(
         profile_.get(), base::BindRepeating(&BuildProtocolHandlerRegistry));
   }
-  void TearDown() override { registry_.reset(); }
+
+  void TearDown() override {
+    registry_.reset();
+    web_contents_.reset();
+    client_.reset();
+    browser_.reset();
+    profile_.reset();
+  }
+
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
 
  private:

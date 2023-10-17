@@ -6,12 +6,10 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/test/base/testing_profile.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -22,11 +20,6 @@ class AcceleratorServiceUnitTest : public testing::Test {
   }
 
   ~AcceleratorServiceUnitTest() override = default;
-
-  void SetUp() override {
-    commands::AcceleratorPrefManager::RegisterProfilePrefs(
-        profile().GetTestingPrefService()->registry());
-  }
 
   TestingProfile& profile() { return profile_; }
 

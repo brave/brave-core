@@ -7,6 +7,11 @@
 
 #include <utility>
 
+#include "base/files/file_path.h"
+#include "base/functional/callback_helpers.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -53,7 +58,17 @@ TestingBraveBrowserProcess::~TestingBraveBrowserProcess() = default;
 void TestingBraveBrowserProcess::StartBraveServices() {}
 
 brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
-  DCHECK(ad_block_service_);
+  if (!ad_block_service_) {
+    scoped_refptr<base::SequencedTaskRunner> task_runner(
+        base::ThreadPool::CreateSequencedTaskRunner(
+            {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
+             base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN}));
+    ad_block_service_ = std::make_unique<brave_shields::AdBlockService>(
+        /*local_state*/ nullptr, /*locale*/ "en", /*component_updater*/ nullptr,
+        task_runner,
+        /*subscription_download_manager_getter*/ base::DoNothing(),
+        /*profile_dir*/ base::FilePath(FILE_PATH_LITERAL("")));
+  }
   return ad_block_service_.get();
 }
 

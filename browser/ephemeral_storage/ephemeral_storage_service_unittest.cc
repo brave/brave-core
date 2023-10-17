@@ -67,8 +67,6 @@ class EphemeralStorageServiceTest : public testing::Test {
   ~EphemeralStorageServiceTest() override = default;
 
   void SetUp() override {
-    profile_.GetTestingPrefService()->registry()->RegisterListPref(
-        kFirstPartyStorageOriginsToCleanup);
     service_ = CreateEphemeralStorageService(&profile_, mock_delegate_,
                                              &mock_observer_);
   }

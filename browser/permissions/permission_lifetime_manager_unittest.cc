@@ -134,8 +134,6 @@ class PermissionLifetimeManagerTest : public testing::Test {
   void SetUp() override {
     host_content_settings_map_ =
         HostContentSettingsMapFactory::GetForProfile(&profile_);
-    PermissionLifetimeManager::RegisterProfilePrefs(
-        profile_.GetTestingPrefService()->registry());
   }
 
   void TearDown() override { manager_.reset(); }
