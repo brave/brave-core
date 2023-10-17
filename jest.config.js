@@ -39,6 +39,7 @@ module.exports = {
   clearMocks: true,
   resetMocks: true,
   resetModules: true,
+  coverageProvider: 'v8',
   collectCoverage: true,
   collectCoverageFrom: [
     "<rootDir>/build/commands/lib/*",
