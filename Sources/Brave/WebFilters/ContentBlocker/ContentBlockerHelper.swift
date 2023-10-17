@@ -67,29 +67,29 @@ class ContentBlockerHelper {
   
   @MainActor func set(ruleLists: Set<WKContentRuleList>) {
     guard ruleLists != setRuleLists else { return }
-    #if DEBUG
-    ContentBlockerManager.log.debug("Set rule lists:")
-    #endif
+    var addedIds: [String] = []
+    var removedIds: [String] = []
     
     // Remove unwanted rule lists
     for ruleList in setRuleLists.subtracting(ruleLists) {
       // It's added but we don't want it. So we remove it.
       tab?.webView?.configuration.userContentController.remove(ruleList)
       setRuleLists.remove(ruleList)
-      
-      #if DEBUG
-      ContentBlockerManager.log.debug(" - \(ruleList.identifier)")
-      #endif
+      removedIds.append(ruleList.identifier)
     }
     
     // Add missing rule lists
     for ruleList in ruleLists.subtracting(setRuleLists) {
       tab?.webView?.configuration.userContentController.add(ruleList)
       setRuleLists.insert(ruleList)
-      
-      #if DEBUG
-      ContentBlockerManager.log.debug(" + \(ruleList.identifier)")
-      #endif
+      addedIds.append(ruleList.identifier)
     }
+    
+    let parts = [
+      addedIds.sorted(by: { $0 < $1 }).map({ " + \($0)" }).joined(separator: "\n"),
+      removedIds.sorted(by: { $0 < $1 }).map({ " - \($0)" }).joined(separator: "\n")
+    ]
+    
+    ContentBlockerManager.log.debug("Set rule lists:\n\(parts.joined(separator: "\n"))")
   }
 }

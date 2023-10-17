@@ -74,7 +74,7 @@ actor ContentBlockerManager {
   }
   
   /// An object representing the type of block list
-  public enum BlocklistType: Hashable {
+  public enum BlocklistType: Hashable, CustomDebugStringConvertible {
     fileprivate static let genericPrifix = "stored-type"
     fileprivate static let filterListPrefix = "filter-list"
     fileprivate static let filterListURLPrefix = "filter-list-url"
@@ -126,6 +126,10 @@ actor ContentBlockerManager {
         return [self.identifier, "standard"].joined(separator: "-")
       }
     }
+    
+    public var debugDescription: String {
+      return identifier
+    }
   }
   
   public static var shared = ContentBlockerManager()
@@ -176,7 +180,7 @@ actor ContentBlockerManager {
     let cleanedRuleList: [[String: Any?]]
     
     do {
-      cleanedRuleList = try await process(encodedContentRuleList: encodedContentRuleList, with: options)
+      cleanedRuleList = try await process(encodedContentRuleList: encodedContentRuleList, for: type, with: options)
     } catch {
       for mode in modes {
         self.cachedRuleLists[type.makeIdentifier(for: mode)] = .failure(error)
@@ -193,10 +197,10 @@ actor ContentBlockerManager {
       do {
         let ruleList = try await compile(ruleList: moddedRuleList, for: type, mode: mode)
         self.cachedRuleLists[identifier] = .success(ruleList)
-        Self.log.debug("Compiled content blockers for `\(identifier)`")
+        Self.log.debug("Compiled rule list for `\(identifier)`")
       } catch {
         self.cachedRuleLists[identifier] = .failure(error)
-        Self.log.debug("Failed to compile content blockers for `\(identifier)`: \(String(describing: error))")
+        Self.log.debug("Failed to compile rule list for `\(identifier)`: \(String(describing: error))")
         foundError = error
       }
     }
@@ -378,7 +382,9 @@ actor ContentBlockerManager {
       do {
         return try await self.ruleList(for: blocklistType, mode: mode)
       } catch {
-        Self.log.error("Missing rule list for `\(blocklistType.makeIdentifier(for: mode))`")
+        // We can't log the error because some rules have empty rules. This is normal
+        // But on relaunches we try to reload the filter list and this will give us an error.
+        // Need to find a more graceful way of handling this so error here can be logged properly
         return nil
       }
     }))
@@ -406,13 +412,12 @@ actor ContentBlockerManager {
   }
   
   /// Perform operations of the rule list given by the provided options
-  func process(encodedContentRuleList: String, with options: CompileOptions) async throws -> [[String: Any?]] {
+  func process(encodedContentRuleList: String, for type: BlocklistType, with options: CompileOptions) async throws -> [[String: Any?]] {
     var ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
     if options.isEmpty { return ruleList }
     
     #if DEBUG
     let originalCount = ruleList.count
-    ContentBlockerManager.log.debug("Cleanining up \(originalCount) rules")
     #endif
     
     if options.contains(.stripContentBlockers) {
@@ -425,7 +430,9 @@ actor ContentBlockerManager {
     
     #if DEBUG
     let count = originalCount - ruleList.count
-    ContentBlockerManager.log.debug("Filtered out \(count) rules")
+    if count > 0 {
+      Self.log.debug("Filtered out \(count) rules for `\(type.debugDescription)`")
+    }
     #endif
     
     return ruleList

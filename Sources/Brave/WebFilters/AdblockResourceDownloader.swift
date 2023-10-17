@@ -47,7 +47,6 @@ public actor AdblockResourceDownloader: Sendable {
         // .blockAds is special because it can be replaced by a downloaded file.
         // Hence we need to first check if it already exists.
         if await ContentBlockerManager.shared.hasRuleList(for: blocklistType, mode: mode) {
-          ContentBlockerManager.log.debug("Rule list already compiled for `\(blocklistType.makeIdentifier(for: mode))`")
           return false
         } else {
           return true
@@ -154,7 +153,7 @@ public actor AdblockResourceDownloader: Sendable {
         )
       } catch {
         ContentBlockerManager.log.error(
-          "Failed to compile downloaded content blocker resource: \(error.localizedDescription)"
+          "Failed to compile rule lists for `\(blocklistType.debugDescription)`: \(error.localizedDescription)"
         )
       }
       
