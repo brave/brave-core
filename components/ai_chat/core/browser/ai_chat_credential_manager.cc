@@ -237,8 +237,7 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
   const std::string encoded_credential = credential_cookie.Value();
   url::RawCanonOutputT<char16_t> unescaped;
   url::DecodeURLEscapeSequences(
-      encoded_credential.data(), encoded_credential.size(),
-      url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
+      encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
   std::string credential;
   base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
   if (credential.empty()) {
