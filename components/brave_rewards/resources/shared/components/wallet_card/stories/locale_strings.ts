@@ -12,8 +12,6 @@ export const localeStrings = {
   rewardsPaymentSupport: 'Support',
   walletAccountLink: 'Go to your $1 account',
   walletAutoContribute: 'Auto-Contribute',
-  walletBalanceInfoText: 'Now that you\'re connected to ZebPay, any previous balance you had will be deposited into your ZebPay account as part of your next earnings payout. Once it arrives, you\'ll see your BAT reflected in your Rewards balance.',
-  walletBalanceTitle: 'Balance',
   walletDisconnected: 'Logged out',
   walletEstimatedEarnings: 'Earnings so far',
   walletEarningInfoText: 'This reflects your estimated earnings range for Brave Ads this month.',
@@ -26,5 +24,6 @@ export const localeStrings = {
   walletRewardsSummary: 'Rewards Summary',
   walletUnverified: 'Connect',
   walletViewStatement: 'View statement',
-  walletVerified: 'Connected'
+  walletVerified: 'Connected',
+  walletBalanceTitle: 'Balance',
 }

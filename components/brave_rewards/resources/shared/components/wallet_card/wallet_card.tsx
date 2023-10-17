@@ -98,20 +98,7 @@ export function WalletCard (props: Props) {
                   <LoadingIcon />
                   <style.loading>{getString('loading')}</style.loading>
                 </style.balanceSpinner>
-              : <>
-                  <TokenAmount amount={props.balance.value()} />
-                  {
-                    props.externalWallet?.provider === 'zebpay' &&
-                    <style.balanceInfo>
-                      <Icon name='help-outline' />
-                        <div className='tooltip'>
-                          <style.balanceTooltip>
-                            {getString('walletBalanceInfoText')}
-                          </style.balanceTooltip>
-                        </div>
-                    </style.balanceInfo>
-                  }
-              </>
+              : <TokenAmount amount={props.balance.value()} />
           }
         </style.batAmount>
         <style.exchangeAmount>

@@ -136,9 +136,6 @@
   <message name="IDS_REWARDS_WIDGET_START_USING_REWARDS" desc="">
     Start using Rewards
   </message>
-  <message name="IDS_REWARDS_WIDGET_BALANCE_INFO_TEXT" desc="">
-    Now that you're connected to ZebPay, any previous balance you had will be deposited into your ZebPay account as part of your next earnings payout. Once it arrives, you'll see your BAT reflected in your Rewards balance.
-  </message>
   <message name="IDS_REWARDS_WIDGET_BALANCE_TITLE" desc="">
     Balance
   </message>

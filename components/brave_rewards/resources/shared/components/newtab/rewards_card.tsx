@@ -29,7 +29,6 @@ import { UnsupportedRegionCard } from './unsupported_region_card'
 import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { Optional } from '../../../shared/lib/optional'
-import Icon from '@brave/leo/react/icon'
 
 import * as urls from '../../lib/rewards_urls'
 
@@ -169,17 +168,6 @@ export function RewardsCard (props: Props) {
             : <>
                 <style.balanceAmount>
                   <TokenAmount amount={props.rewardsBalance.value()} />
-                  {
-                    props.externalWallet?.provider === 'zebpay' &&
-                    <style.balanceInfo>
-                      <Icon name='help-outline' />
-                      <div className='tooltip'>
-                        <style.balanceTooltip>
-                          {getString('rewardsBalanceInfoText')}
-                        </style.balanceTooltip>
-                      </div>
-                    </style.balanceInfo>
-                  }
                 </style.balanceAmount>
                 <style.balanceExchange>
                   <style.balanceExchangeAmount>

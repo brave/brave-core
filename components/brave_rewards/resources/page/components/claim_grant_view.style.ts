@@ -17,7 +17,7 @@ export const root = styled.div`
   overflow: hidden;
 `
 
-export const amountInfo = styled.div`
+export const amount = styled.div`
   flex: 0 1 auto;
   margin: 10px 0;
   padding-left: 16px;
@@ -42,11 +42,6 @@ export const graphic = styled.div`
     width: auto;
     display: block;
   }
-`
-
-export const amount = styled.div`
-  display: flex;
-  gap: 2px;
 `
 
 export const text = styled.div`
