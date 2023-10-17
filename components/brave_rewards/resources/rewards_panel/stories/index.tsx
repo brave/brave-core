@@ -121,7 +121,6 @@ function createHost (): Host {
     availableCountries: ['US'],
     defaultCountry: 'US',
     declaredCountry: 'US',
-    isGrandfatheredUser: false,
     userType: 'unconnected',
     publishersVisitedCount: 4
   })

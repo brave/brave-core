@@ -39,7 +39,6 @@ const monthFormatter = new Intl.DateTimeFormat(undefined, {
 interface Props {
   userType: UserType
   balance: Optional<number>
-  isGrandfatheredUser: boolean
   externalWallet: ExternalWallet | null
   providerPayoutStatus: ProviderPayoutStatus
   minEarningsThisMonth: number
@@ -103,7 +102,6 @@ export function WalletCard (props: Props) {
                   <TokenAmount amount={props.balance.value()} />
                   {
                     props.externalWallet?.provider === 'zebpay' &&
-                    props.isGrandfatheredUser &&
                     <style.balanceInfo>
                       <Icon name='help-outline' />
                         <div className='tooltip'>

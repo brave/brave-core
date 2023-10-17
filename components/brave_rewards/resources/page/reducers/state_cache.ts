@@ -32,7 +32,6 @@ function readCachedState (state: Rewards.State) {
 
   return {
     ...state,
-    isGrandfatheredUser: Boolean(cached.isGrandfatheredUser),
     userType: userTypeFromString(String(cached.userType || '')),
     isAcSupported: Boolean(cached.isAcSupported),
     enabledContribute: Boolean(cached.enabledContribute),

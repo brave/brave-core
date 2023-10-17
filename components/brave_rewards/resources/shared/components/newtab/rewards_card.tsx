@@ -55,7 +55,6 @@ export function RewardsCardHeader () {
 
 interface Props {
   rewardsEnabled: boolean
-  isGrandfatheredUser: boolean
   userType: UserType
   vbatDeadline: number | undefined
   isUnsupportedRegion: boolean
@@ -172,7 +171,6 @@ export function RewardsCard (props: Props) {
                   <TokenAmount amount={props.rewardsBalance.value()} />
                   {
                     props.externalWallet?.provider === 'zebpay' &&
-                    props.isGrandfatheredUser &&
                     <style.balanceInfo>
                       <Icon name='help-outline' />
                       <div className='tooltip'>

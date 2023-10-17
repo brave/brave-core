@@ -60,7 +60,6 @@ export function Wallet () {
           <WalletCard
             userType={'connected'}
             balance={optional(0)}
-            isGrandfatheredUser={false}
             externalWallet={externalWallet && null}
             providerPayoutStatus={'complete'}
             minEarningsThisMonth={0.25}

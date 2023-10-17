@@ -19,15 +19,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.isInitialized')
       break
     }
-    case types.GET_IS_GRANDFATHERED_USER: {
-      chrome.send('brave_rewards.isGrandfatheredUser')
-      break
-    }
-    case types.ON_IS_GRANDFATHERED_USER: {
-      state = { ...state }
-      state.isGrandfatheredUser = action.payload.isGrandfatheredUser
-      break
-    }
     case types.GET_USER_TYPE: {
       chrome.send('brave_rewards.getUserType')
       break

@@ -51,7 +51,6 @@ export function getInitialState (): HostState {
     availableCountries: [],
     defaultCountry: '',
     declaredCountry: '',
-    isGrandfatheredUser: false,
     userType: 'unconnected',
     publishersVisitedCount: 0
   }

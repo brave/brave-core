@@ -109,7 +109,6 @@ class RewardsDOMHandler
  private:
   void RestartBrowser(const base::Value::List& args);
   void IsInitialized(const base::Value::List& args);
-  void IsGrandfatheredUser(const base::Value::List& args);
   void GetUserType(const base::Value::List& args);
   void OnGetUserType(brave_rewards::mojom::UserType user_type);
   void GetRewardsParameters(const base::Value::List& args);
@@ -330,10 +329,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.isInitialized",
       base::BindRepeating(&RewardsDOMHandler::IsInitialized,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.isGrandfatheredUser",
-      base::BindRepeating(&RewardsDOMHandler::IsGrandfatheredUser,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getUserType",
@@ -611,16 +606,6 @@ void RewardsDOMHandler::IsInitialized(const base::Value::List& args) {
   if (rewards_service_ && rewards_service_->IsInitialized()) {
     CallJavascriptFunction("brave_rewards.initialized");
   }
-}
-
-void RewardsDOMHandler::IsGrandfatheredUser(const base::Value::List&) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-  CallJavascriptFunction("brave_rewards.onIsGrandfatheredUser",
-                         base::Value(rewards_service_->IsGrandfatheredUser()));
 }
 
 void RewardsDOMHandler::GetUserType(const base::Value::List&) {
