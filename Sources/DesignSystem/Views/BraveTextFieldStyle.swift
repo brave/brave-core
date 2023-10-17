@@ -17,7 +17,7 @@ public struct BraveTextFieldStyle: TextFieldStyle {
 
   public func _body(configuration: TextField<_Label>) -> some View {
     configuration
-      .modifier(BaseBraveTextFieldStyleModifier())
+      .modifier(BraveTextInputStyleModifier())
   }
 }
 
@@ -56,7 +56,7 @@ public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>:
     VStack(alignment: .leading) {
       configuration
         .modifier(
-          BaseBraveTextFieldStyleModifier(
+          BraveTextInputStyleModifier(
             strokeColor: error != nil ? Color(.braveErrorBorder) : nil,
             lineWidthFactor: error != nil ? 2 : nil,
             backgroundColor: error != nil ? Color(.braveErrorBackground) : nil
@@ -80,33 +80,5 @@ public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>:
         .padding(.leading, 8)
       }
     }
-  }
-}
-
-private struct BaseBraveTextFieldStyleModifier: ViewModifier {
-  @Environment(\.pixelLength) private var pixelLength
-
-  var strokeColor: Color?
-  var lineWidthFactor: CGFloat?
-  var backgroundColor: Color?
-
-  private var borderShape: some InsettableShape {
-    RoundedRectangle(cornerRadius: 4, style: .continuous)
-  }
-
-  func body(content: Content) -> some View {
-    content
-      .font(.callout)
-      .padding(.vertical, 10)
-      .padding(.horizontal, 12)
-      .overlay(
-        borderShape
-          // * 2 + clipShape below = pixel perfect hairline border
-          .stroke(strokeColor ?? Color(.secondaryButtonTint), lineWidth: 2 * (lineWidthFactor ?? 1))
-      )
-      .background(
-        backgroundColor ?? Color(.braveBackground)
-      )
-      .clipShape(borderShape)
   }
 }

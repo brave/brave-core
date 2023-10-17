@@ -1,7 +1,7 @@
-// Copyright 2020 The Brave Authors. All rights reserved.
+// Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -13,8 +13,8 @@ public class WebcompatReporter {
   /// The raw values of the web-report.
   public struct Report {
     /// The URL of the broken site.
-    /// - Note: This is the full url and will be used to extract all relevant information
-    let fullUrl: URL
+    /// - Note: This needs to be the cleaned up version with query params and fragments removed (as seen in the UI)
+    let cleanedURL: URL
     /// Any user input details
     let additionalDetails: String?
     /// Any user input contact details that may be provided
@@ -31,22 +31,15 @@ public class WebcompatReporter {
     let isVPNEnabled: Bool
     
     var domain: String? {
-      return fullUrl.normalizedHost() != nil ? fullUrl.domainURL.absoluteString : fullUrl.baseDomain
-    }
-    
-    var cleanedURL: URL? {
-      var components = URLComponents(url: fullUrl, resolvingAgainstBaseURL: false)
-      components?.fragment = nil
-      components?.queryItems = nil
-      return components?.url
+      return cleanedURL.normalizedHost() != nil ? cleanedURL.domainURL.absoluteString : cleanedURL.baseDomain
     }
     
     public init(
-      fullUrl: URL, additionalDetails: String? = nil, contactInfo: String? = nil,
+      cleanedURL: URL, additionalDetails: String? = nil, contactInfo: String? = nil,
       areShieldsEnabled: Bool, adBlockLevel: ShieldLevel, fingerprintProtectionLevel: ShieldLevel,
       adBlockListTitles: [String], isVPNEnabled: Bool
     ) {
-      self.fullUrl = fullUrl
+      self.cleanedURL = cleanedURL
       self.additionalDetails = additionalDetails
       self.contactInfo = contactInfo
       self.areShieldsEnabled = areShieldsEnabled
@@ -94,15 +87,9 @@ public class WebcompatReporter {
         ))
       }
       
-      guard let cleanedURL = report.cleanedURL else {
-        throw EncodingError.invalidValue(CodingKeys.domain, EncodingError.Context(
-          codingPath: encoder.codingPath, debugDescription: "Cannot strip fragments or query params"
-        ))
-      }
-      
       var container: KeyedEncodingContainer<CodingKeys> = encoder.container(keyedBy: CodingKeys.self)
-      try container.encode(cleanedURL.absoluteString, forKey: .url)
       try container.encode(domain, forKey: .domain)
+      try container.encode(report.cleanedURL.absoluteString, forKey: .url)
       try container.encodeIfPresent(report.additionalDetails, forKey: .additionalDetails)
       try container.encodeIfPresent(report.contactInfo, forKey: .contactInfo)
       try container.encodeIfPresent(languageCode, forKey: .languages)

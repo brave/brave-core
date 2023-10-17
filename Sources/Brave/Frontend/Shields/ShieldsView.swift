@@ -6,6 +6,7 @@ import Foundation
 import Shared
 import BraveShared
 import UIKit
+import SwiftUI
 
 extension ShieldsViewController {
   class View: UIView {
@@ -37,9 +38,6 @@ extension ShieldsViewController {
     let advancedShieldView = AdvancedShieldsView().then {
       $0.isHidden = true
     }
-
-    let reportBrokenSiteView = ReportBrokenSiteView()
-    let siteReportedView = SiteReportedView()
 
     override init(frame: CGRect) {
       super.init(frame: frame)

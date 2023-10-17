@@ -1,6 +1,7 @@
+// Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Storage
 import SnapKit
@@ -12,7 +13,6 @@ import BraveUI
 import UIKit
 import Growth
 import BraveCore
-import BraveVPN
 
 /// Displays shield settings and shield stats for a given URL
 class ShieldsViewController: UIViewController, PopoverContentComponent {
@@ -30,6 +30,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   var shieldsSettingsChanged: ((ShieldsViewController, BraveShield) -> Void)?
   var showGlobalShieldsSettings: ((ShieldsViewController) -> Void)?
+  var showSubmitReportView: ((ShieldsViewController) -> Void)?
 
   private var statsUpdateObservable: AnyObject?
 
@@ -239,7 +240,6 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     let normalizedDisplayHost = URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: url?.absoluteString ?? "")
     
     shieldsView.simpleShieldView.hostLabel.text = normalizedDisplayHost
-    shieldsView.reportBrokenSiteView.urlLabel.text = url?.domainURL.absoluteString
     shieldsView.simpleShieldView.shieldsSwitch.addTarget(self, action: #selector(shieldsOverrideSwitchValueChanged), for: .valueChanged)
     shieldsView.advancedShieldView.siteTitle.titleLabel.text = normalizedDisplayHost.uppercased()
     shieldsView.advancedShieldView.globalControlsButton.addTarget(self, action: #selector(tappedGlobalShieldsButton), for: .touchUpInside)
@@ -250,8 +250,6 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     shieldsView.simpleShieldView.blockCountView.shareButton.addTarget(self, action: #selector(tappedShareShieldsButton), for: .touchUpInside)
 
     shieldsView.simpleShieldView.reportSiteButton.addTarget(self, action: #selector(tappedReportSiteButton), for: .touchUpInside)
-    shieldsView.reportBrokenSiteView.cancelButton.addTarget(self, action: #selector(tappedCancelReportingButton), for: .touchUpInside)
-    shieldsView.reportBrokenSiteView.submitButton.addTarget(self, action: #selector(tappedSubmitReportingButton), for: .touchUpInside)
 
     updateShieldBlockStats()
 
@@ -317,37 +315,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   }
 
   @objc private func tappedReportSiteButton() {
-    updateContentView(to: shieldsView.reportBrokenSiteView, animated: true)
-  }
-
-  @objc private func tappedCancelReportingButton() {
-    updateContentView(to: shieldsView.stackView, animated: true)
-  }
-
-  @objc private func tappedSubmitReportingButton() {
-    if let url = url {
-      Task { @MainActor in
-        let domain = Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate)
-        
-        let report = WebcompatReporter.Report(
-          fullUrl: url,
-          areShieldsEnabled: !domain.areAllShieldsOff,
-          adBlockLevel: domain.blockAdsAndTrackingLevel,
-          fingerprintProtectionLevel: domain.finterprintProtectionLevel,
-          adBlockListTitles: FilterListStorage.shared.filterLists.compactMap({ filterList -> String? in
-            guard filterList.isEnabled else { return nil }
-            return filterList.entry.title
-          }),
-          isVPNEnabled: BraveVPN.isConnected
-        )
-        
-        await WebcompatReporter.send(report: report)
-        try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
-        guard !self.isBeingDismissed else { return }
-        self.dismiss(animated: true)
-      }
-    }
-    updateContentView(to: shieldsView.siteReportedView, animated: true)
+    showSubmitReportView?(self)
   }
 
   @objc private func tappedGlobalShieldsButton() {

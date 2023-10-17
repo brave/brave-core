@@ -1412,10 +1412,30 @@ extension Strings {
     
     
     // MARK: Submit report
-    public static let reportABrokenSite = NSLocalizedString("ReportABrokenSite", tableName: "BraveShared", bundle: .module, value: "Report a broken site", comment: "")
+    public static let reportABrokenSite = NSLocalizedString("ReportABrokenSite", tableName: "BraveShared", bundle: .module, value: "Report a Broken Site", comment: "")
     public static let reportBrokenSiteBody1 = NSLocalizedString("ReportBrokenSiteBody1", tableName: "BraveShared", bundle: .module, value: "Let Brave's developers know that this site doesn't work properly with Shields:", comment: "First part of the report a broken site copy. After the colon is a new line and then a website address")
     public static let reportBrokenSiteBody2 = NSLocalizedString("ReportBrokenSiteBody2", tableName: "BraveShared", bundle: .module, value: "Note: The report sent to Brave servers will include the site address, Brave version number, Shields settings, VPN status, and language settings.", comment: "This is the info text that is presented when a user is submitting a web-compatibility report.")
     public static let reportBrokenSubmitButtonTitle = NSLocalizedString("ReportBrokenSubmitButtonTitle", tableName: "BraveShared", bundle: .module, value: "Submit", comment: "")
+    
+    /// A label for a text entry field where the user can provide additional details for a web-compatibility report
+    public static let reportBrokenAdditionalDetails = NSLocalizedString(
+      "ReportBrokenAdditionalDetails", tableName: "BraveShared", bundle: .module,
+      value: "Additional details (optional)",
+      comment: "A label for a text entry field where the user can provide additional details for a web-compatibility report"
+    )
+    
+    public static let reportBrokenContactMe = NSLocalizedString(
+      "ReportBrokenContactMe", tableName: "BraveShared", bundle: .module,
+      value: "Contact me at: (optional)",
+      comment: "A label for a text entry field where the user can provide contact details within a web-compatibilty report"
+    )
+    
+    
+    public static let reportBrokenContactMeSuggestions = NSLocalizedString(
+      "ReportBrokenContactMeSuggestions", tableName: "BraveShared", bundle: .module,
+      value: "Email, Twitter, etc.",
+      comment: "A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field)."
+    )
   }
 }
 
