@@ -44,7 +44,7 @@ void WalletButtonNotificationSource::EnsureKeyringServiceConnected() {
   keyring_service_->AddObserver(
       keyring_service_observer_.BindNewPipeAndPassRemote());
 
-  wallet_created_ = keyring_service_->IsWalletSetup();
+  wallet_created_ = keyring_service_->IsWalletCreatedSync();
   if (wallet_created_.value()) {
     prefs_->SetBoolean(kShouldShowWalletSuggestionBadge, false);
   }

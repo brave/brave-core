@@ -130,7 +130,7 @@ bool BraveRendererUpdater::CheckActiveWallet() {
   if (!keyring_service_) {
     return false;
   }
-  bool is_wallet_created = keyring_service_->IsWalletSetup();
+  bool is_wallet_created = keyring_service_->IsWalletCreatedSync();
   bool changed = is_wallet_created != is_wallet_created_;
   is_wallet_created_ = is_wallet_created;
   return changed;

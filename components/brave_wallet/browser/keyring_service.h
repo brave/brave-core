@@ -85,15 +85,14 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   mojo::PendingRemote<mojom::KeyringService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
 
-  // Returns true if wallet was created or restored by user.
-  bool IsWalletSetup();
-
   // mojom::KeyringService
   // Must unlock before using this API otherwise it will return empty string
   void GetMnemonicForDefaultKeyring(
       const std::string& password,
       GetMnemonicForDefaultKeyringCallback callback) override;
   void MaybeCreateDefaultSolanaAccount();
+  void IsWalletCreated(IsWalletCreatedCallback callback) override;
+  bool IsWalletCreatedSync();
   void CreateWallet(const std::string& mnemonic,
                     const std::string& password,
                     CreateWalletCallback callback);

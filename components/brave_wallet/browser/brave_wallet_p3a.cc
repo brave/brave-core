@@ -425,12 +425,12 @@ void BraveWalletP3A::WriteUsageStatsToHistogram() {
 }
 
 void BraveWalletP3A::RecordInitialBraveWalletP3AState() {
-  RecordKeyringCreated(keyring_service_->IsWalletSetup());
+  RecordKeyringCreated(keyring_service_->IsWalletCreatedSync());
 }
 
 // KeyringServiceObserver
 void BraveWalletP3A::WalletCreated() {
-  RecordKeyringCreated(keyring_service_->IsWalletSetup());
+  RecordKeyringCreated(keyring_service_->IsWalletCreatedSync());
 }
 
 }  // namespace brave_wallet

@@ -1017,12 +1017,6 @@ HDKeyring* KeyringService::RestoreKeyring(mojom::KeyringId keyring_id,
   return keyring;
 }
 
-bool KeyringService::IsWalletSetup() {
-  // Wallet is set up if there is at least one account as we don't allow
-  // removing derived accounts.
-  return GetAllAccountInfos().size() > 0;
-}
-
 void KeyringService::GetMnemonicForDefaultKeyring(
     const std::string& password,
     GetMnemonicForDefaultKeyringCallback callback) {
@@ -1045,6 +1039,16 @@ void KeyringService::MaybeCreateDefaultSolanaAccount() {
     SetSelectedAccountInternal(*account);
     NotifyAccountsAdded(*account);
   }
+}
+
+void KeyringService::IsWalletCreated(IsWalletCreatedCallback callback) {
+  std::move(callback).Run(IsWalletCreatedSync());
+}
+
+bool KeyringService::IsWalletCreatedSync() {
+  // Wallet is set up if there is at least one account as we don't allow
+  // removing derived accounts.
+  return GetAllAccountInfos().size() > 0;
 }
 
 void KeyringService::CreateWallet(const std::string& password,
