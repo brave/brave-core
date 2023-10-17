@@ -49,7 +49,7 @@ extension UIImage {
       return false
     }
 
-    guard let cgImage = createScaled(CGSize(width: 48.0, height: 48.0)).cgImage else {
+    guard let cgImage = createScaled(CGSize(width: 48.0, height: 48.0))?.cgImage else {
       return false
     }
 

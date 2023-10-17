@@ -14,6 +14,12 @@ extension UIView {
 
     let offset = offset ?? .zero
 
+    // Temporary check to handle _UIGraphicsBeginImageContextWithOptions zero size error
+    // Should be replaced with UIGraphicsImageRenderer
+    guard size.width > 0, size.height > 0 else {
+      return nil
+    }
+    
     UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale * quality)
     drawHierarchy(in: CGRect(origin: offset, size: frame.size), afterScreenUpdates: false)
     let image = UIGraphicsGetImageFromCurrentImageContext()

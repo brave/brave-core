@@ -395,9 +395,9 @@ extension OnboardingPlaylistView {
         .trimmingCharacters(in: .whitespaces)
       // The icon, which is a PDF since it is multicoloured and has special alpha, needs to scale with
       // the text, so we need to create a UIImage version of it, scale that, then adjust the baseline offset
+      let addIcon = UIImage(sharedNamed: "leo.playlist.bold.add")!
       let icon = Image(
-        uiImage: UIImage(sharedNamed: "leo.playlist.bold.add")!
-          .createScaled(CGSize(width: tryItOutIconSize, height: tryItOutIconSize))
+        uiImage: addIcon.createScaled(CGSize(width: tryItOutIconSize, height: tryItOutIconSize)) ?? addIcon
       )
       let iconText = Text(icon).baselineOffset(tryItOutIconBaselineOffset)
       
