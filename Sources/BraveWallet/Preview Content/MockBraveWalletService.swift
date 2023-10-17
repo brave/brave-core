@@ -11,6 +11,10 @@ import BraveCore
 ///
 /// - note: Do not use this directly, use ``NetworkStore.previewStore``
 class MockBraveWalletService: BraveWalletBraveWalletService {
+  func generateReceiveAddress(_ accountId: BraveWallet.AccountId, completion: @escaping (String?, String?) -> Void) {
+    completion(nil, "Error Message")
+  }
+  
   private var assets: [String: [BraveWallet.BlockchainToken]] = [
     BraveWallet.MainnetChainId: [.previewToken],
     BraveWallet.GoerliChainId: [.previewToken],
