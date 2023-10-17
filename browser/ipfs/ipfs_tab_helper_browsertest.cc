@@ -5,6 +5,7 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
+#include "base/ranges/algorithm.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/components/constants/pref_names.h"
@@ -713,14 +714,11 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSPromoInfobar) {
   auto find_infobar =
       [](infobars::ContentInfoBarManager* content_infobar_manager)
       -> infobars::InfoBar* {
-    for (size_t i = 0; i < content_infobar_manager->infobar_count(); i++) {
-      auto* infobar = content_infobar_manager->infobar_at(i);
-      if (infobar->delegate()->GetIdentifier() ==
-          BraveConfirmInfoBarDelegate::BRAVE_IPFS_INFOBAR_DELEGATE) {
-        return infobar;
-      }
-    }
-    return nullptr;
+    const auto it = base::ranges::find(
+        content_infobar_manager->infobars(),
+        BraveConfirmInfoBarDelegate::BRAVE_IPFS_INFOBAR_DELEGATE,
+        &infobars::InfoBar::GetIdentifier);
+    return it != content_infobar_manager->infobars().cend() ? *it : nullptr;
   };
 
   // Press cancel
@@ -839,14 +837,11 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSPromoInfobar_NowShown) {
   auto find_infobar =
       [](infobars::ContentInfoBarManager* content_infobar_manager)
       -> infobars::InfoBar* {
-    for (size_t i = 0; i < content_infobar_manager->infobar_count(); i++) {
-      auto* infobar = content_infobar_manager->infobar_at(i);
-      if (infobar->delegate()->GetIdentifier() ==
-          BraveConfirmInfoBarDelegate::BRAVE_IPFS_INFOBAR_DELEGATE) {
-        return infobar;
-      }
-    }
-    return nullptr;
+    const auto it = base::ranges::find(
+        content_infobar_manager->infobars(),
+        BraveConfirmInfoBarDelegate::BRAVE_IPFS_INFOBAR_DELEGATE,
+        &infobars::InfoBar::GetIdentifier);
+    return it != content_infobar_manager->infobars().cend() ? *it : nullptr;
   };
 
   // Infobar shouldn't be shown after that
@@ -907,8 +902,8 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSFallbackInfobar) {
   auto find_infobar =
       [](infobars::ContentInfoBarManager* content_infobar_manager)
       -> infobars::InfoBar* {
-    for (size_t i = 0; i < content_infobar_manager->infobar_count(); i++) {
-      auto* infobar = content_infobar_manager->infobar_at(i);
+    for (size_t i = 0; i < content_infobar_manager->infobars().size(); i++) {
+      auto* infobar = content_infobar_manager->infobars()[i];
       if (infobar->delegate()->GetIdentifier() ==
           BraveConfirmInfoBarDelegate::BRAVE_IPFS_FALLBACK_INFOBAR_DELEGATE) {
         return infobar;
