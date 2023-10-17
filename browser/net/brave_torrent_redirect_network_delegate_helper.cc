@@ -70,11 +70,17 @@ int OnHeadersReceived_TorrentRedirectWork(
 
   auto* contents =
       content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
+  if (!contents) {
+    return net::OK;
+  }
+
+  // We don't allow websites to directly link to the WebTorrent extension.
+  // However, this means that we can't simply redirect here (as that would be
+  // blocked), and instead, we need to create a new navigation.
   GURL url(base::StrCat(
       {extensions::kExtensionScheme, "://", brave_webtorrent_extension_id,
        "/extension/brave_webtorrent2.html?", ctx->request_url.spec()}));
   content::NavigationController::LoadURLParams params(url);
-  params.is_renderer_initiated = true;
   params.initiator_origin = url::Origin::Create(url);
   params.source_site_instance = content::SiteInstance::CreateForURL(
       contents->GetBrowserContext(), params.initiator_origin->GetURL());
