@@ -23,7 +23,7 @@ function InputBox () {
   const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
 
-  const isInputDisabled = context.shouldDisableUserInput || isCharLimitExceeded || (!context.isPremiumUser && context.currentModel?.isPremium)
+  const isInputDisabled = context.shouldDisableUserInput || (!context.isPremiumUser && context.currentModel?.isPremium)
 
   if (!context.hasSeenAgreement) {
     return (
@@ -38,14 +38,14 @@ function InputBox () {
   }
 
   const submitInputTextToAPI = () => {
+    if (!inputText) return
+    if (isCharLimitExceeded) return
+
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
     setInputText('')
   }
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (!inputText) return
-    if (isCharLimitExceeded) return
-
     e.preventDefault()
     submitInputTextToAPI()
   }
