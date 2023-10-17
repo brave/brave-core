@@ -60,6 +60,10 @@ const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 // run.
 const char kDefaultPromoCode[] = "BRV001";
 
+// The three-letter prefix for organic refcodes. If a refcode
+// includes this prefix, referral server requests will not be sent.
+const char kOrganicCodePrefix[] = "BRV";
+
 namespace brave {
 
 namespace {
@@ -391,14 +395,17 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   }
   pref_service_->SetString(kReferralDownloadID, *download_id);
 
+  OnReferralInitComplete();
   // We have initialized with the promo server. We can kill the retry timer now.
-  pref_service_->SetBoolean(kReferralInitialization, true);
   if (initialization_timer_)
     initialization_timer_.reset();
   if (g_testing_referral_initialized_callback) {
     g_testing_referral_initialized_callback->Run(*download_id);
   }
+}
 
+void BraveReferralsService::OnReferralInitComplete() {
+  pref_service_->SetBoolean(kReferralInitialization, true);
   task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&DeletePromoCodeFile, GetPromoCodeFileName()));
 }
@@ -605,6 +612,12 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
 }
 
 void BraveReferralsService::InitReferral() {
+  if (base::StartsWith(promo_code_, kOrganicCodePrefix)) {
+    // Do not send organic refcodes to the referral server.
+    // Just set the 'initialized' flag to true and move on.
+    OnReferralInitComplete();
+    return;
+  }
   net::NetworkTrafficAnnotationTag traffic_annotation =
       net::DefineNetworkTrafficAnnotation("brave_referral_initializer", R"(
         semantics {
@@ -663,6 +676,10 @@ void BraveReferralsService::GetSafetynetStatusResult(
 #endif
 
 void BraveReferralsService::CheckForReferralFinalization() {
+  std::string download_id = pref_service_->GetString(kReferralDownloadID);
+  if (download_id.empty()) {
+    return;
+  }
 #if BUILDFLAG(IS_ANDROID)
   if (pref_service_->GetString(kSafetynetStatus).empty()) {
     // Get safetynet status before finalization

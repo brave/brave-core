@@ -128,6 +128,10 @@ class BraveReferralsService {
   // completes.
   void OnReferralInitLoadComplete(std::unique_ptr<std::string> response_body);
 
+  // Invoked when the referral initialization process has been
+  // completed or skipped.
+  void OnReferralInitComplete();
+
   // Invoked from SimpleURLLoader after referral finalization check
   // load completes.
   void OnReferralFinalizationCheckLoadComplete(
