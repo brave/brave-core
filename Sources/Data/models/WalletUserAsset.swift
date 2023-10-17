@@ -25,6 +25,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   @NSManaged public var coingeckoId: String
   @NSManaged public var chainId: String
   @NSManaged public var coin: Int16
+  @NSManaged public var isDeletedByUser: Bool
   @NSManaged public var walletUserAssetGroup: WalletUserAssetGroup?
   
   public var blockchainToken: BraveWallet.BlockchainToken {
@@ -80,6 +81,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
     self.coingeckoId = asset.coingeckoId
     self.chainId = asset.chainId
     self.coin = Int16(asset.coin.rawValue)
+    // `isDeletedByUser` has a default value `NO`
   }
   
   public static func getUserAsset(asset: BraveWallet.BlockchainToken, context: NSManagedObjectContext? = nil) -> WalletUserAsset? {
@@ -87,7 +89,11 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   }
   
   public static func getAllVisibleUserAssets(context: NSManagedObjectContext? = nil) -> [WalletUserAsset]? {
-    WalletUserAsset.all(where: NSPredicate(format: "visible = true"), context: context ?? DataController.viewContext)
+    WalletUserAsset.all(where: NSPredicate(format: "visible = true AND isDeletedByUser == false"), context: context ?? DataController.viewContext)
+  }
+  
+  public static func getAllUserDeletedUserAssets(context: NSManagedObjectContext? = nil) -> [WalletUserAsset]? {
+    WalletUserAsset.all(where: NSPredicate(format: "isDeletedByUser == true"), context: context ?? DataController.viewContext)
   }
   
   public static func migrateVisibleAssets(_ assets: [String: [BraveWallet.BlockchainToken]], completion: (() -> Void)? = nil) {
@@ -112,18 +118,21 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
     for asset: BraveWallet.BlockchainToken,
     visible: Bool,
     isSpam: Bool,
+    isDeletedByUser: Bool,
     completion: (() -> Void)? = nil
   ) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
       if let asset = WalletUserAsset.first(where: NSPredicate(format: "contractAddress == %@ AND chainId == %@ AND symbol == %@ AND tokenId == %@", asset.contractAddress, asset.chainId, asset.symbol, asset.tokenId), context: context) {
         asset.visible = visible
         asset.isSpam = isSpam
+        asset.isDeletedByUser = isDeletedByUser
       } else {
         let groupId = asset.walletUserAssetGroupId
         let group = WalletUserAssetGroup.getGroup(groupId: groupId, context: context) ?? WalletUserAssetGroup(context: context, groupId: groupId)
         let visibleAsset = WalletUserAsset(context: context, asset: asset)
         visibleAsset.visible = visible
         visibleAsset.isSpam = isSpam
+        visibleAsset.isDeletedByUser = isDeletedByUser
         visibleAsset.walletUserAssetGroup = group
       }
       
@@ -140,7 +149,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
       let groupId = asset.walletUserAssetGroupId
       let group = WalletUserAssetGroup.getGroup(groupId: groupId, context: context) ?? WalletUserAssetGroup(context: context, groupId: groupId)
       let visibleAsset = WalletUserAsset(context: context, asset: asset)
-      visibleAsset.visible = true
+      visibleAsset.visible = true // (`isSpam` and `isDeletedByUser` have a default value `NO`)
       visibleAsset.walletUserAssetGroup = group
       
       WalletUserAsset.saveContext(context)

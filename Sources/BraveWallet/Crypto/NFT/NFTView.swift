@@ -20,6 +20,7 @@ struct NFTView: View {
   @State private var isShowingNFTDiscoveryAlert: Bool = false
   @State private var isShowingAddCustomNFT: Bool = false
   @State private var isNFTDiscoveryEnabled: Bool = false
+  @State private var nftToBeRemoved: NFTAssetViewModel?
   
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
@@ -205,17 +206,47 @@ struct NFTView: View {
                   .multilineTextAlignment(.leading)
               }
             }
+            .overlay(alignment: .topLeading) {
+              if nft.token.isSpam {
+                HStack(spacing: 4) {
+                  Text(Strings.Wallet.nftSpam)
+                    .padding(.vertical, 4)
+                    .padding(.leading, 6)
+                    .foregroundColor(Color(.braveErrorLabel))
+                  Image(braveSystemName: "leo.warning.triangle-outline")
+                    .padding(.vertical, 4)
+                    .padding(.trailing, 6)
+                    .foregroundColor(Color(.braveErrorBorder))
+                }
+                .font(.system(size: 13).weight(.semibold))
+                .background(
+                  Color(uiColor: WalletV2Design.spamNFTLabelBackground)
+                    .cornerRadius(4)
+                )
+                .padding(12)
+              }
+            }
           }
           .contextMenu {
             Button(action: {
-              nftStore.updateNFTStatus(nft.token, visible: isHiddenNFT(nft.token), isSpam: false)
+              if nft.token.visible { // a collected visible NFT, mark as hidden
+                nftStore.updateNFTStatus(nft.token, visible: false, isSpam: false, isDeletedByUser: false)
+              } else { // either a hidden NFT or a junk NFT, mark as visible
+                nftStore.updateNFTStatus(nft.token, visible: true, isSpam: false, isDeletedByUser: false)
+              }
             }) {
-              Label(isHiddenNFT(nft.token) ? Strings.Wallet.nftUnhide : Strings.recentSearchHide, braveSystemImage: isHiddenNFT(nft.token) ? "leo.eye.on" : "leo.eye.off")
+              if nft.token.visible { // a collected visible NFT
+                Label(Strings.recentSearchHide, braveSystemImage: "leo.eye.off")
+              } else if nft.token.isSpam { // a spam NFT
+                Label(Strings.Wallet.nftUnspam, braveSystemImage: "leo.disable.outline")
+              } else { // a hidden but not spam NFT
+                Label(Strings.Wallet.nftUnhide, braveSystemImage: "leo.eye.on")
+              }
             }
             Button(action: {
-              nftStore.updateNFTStatus(nft.token, visible: isSpamNFT(nft.token), isSpam: !isSpamNFT(nft.token))
+              nftToBeRemoved = nft
             }) {
-              Label(isSpamNFT(nft.token) ? Strings.Wallet.nftUnspam : Strings.Wallet.nftMoveToSpam, braveSystemImage: "leo.disable.outline")
+              Label(Strings.Wallet.nftRemoveFromWallet, braveSystemImage: "leo.trash")
             }
           }
         }
@@ -301,6 +332,38 @@ struct NFTView: View {
         }
       )
     )
+    .background(
+      WalletPromptView(
+        isPresented: Binding(
+          get: { nftToBeRemoved != nil },
+          set: { if !$0 { nftToBeRemoved = nil } }
+        ),
+        primaryButton: .init(
+          title: Strings.Wallet.manageSiteConnectionsConfirmAlertRemove,
+          action: { _ in
+            guard let nft = nftToBeRemoved else { return }
+            nftStore.updateNFTStatus(nft.token, visible: false, isSpam: nft.token.isSpam, isDeletedByUser: true)
+            nftToBeRemoved = nil
+          }
+        ),
+        secondaryButton: .init(
+          title: Strings.CancelString,
+          action: { _ in
+            nftToBeRemoved = nil
+          }
+        ),
+        showCloseButton: false,
+        content: {
+          VStack(spacing: 16) {
+            Text(Strings.Wallet.nftRemoveFromWalletAlertTitle)
+              .font(.headline)
+              .foregroundColor(Color(.bravePrimary))
+            Text(Strings.Wallet.nftRemoveFromWalletAlertDescription)
+              .font(.footnote)
+              .foregroundStyle(Color(.secondaryBraveLabel))
+          }
+        })
+    )
     .sheet(isPresented: $isShowingAddCustomNFT) {
       AddCustomAssetView(
         networkStore: networkStore,
@@ -319,22 +382,6 @@ struct NFTView: View {
           self.isShowingNFTDiscoveryAlert = true
         }
       }
-    }
-  }
-  
-  private func isSpamNFT(_ nft: BraveWallet.BlockchainToken) -> Bool {
-    if nftStore.displayType == .spam {
-      return true
-    } else {
-      return nft.isSpam
-    }
-  }
-  
-  private func isHiddenNFT(_ nft: BraveWallet.BlockchainToken) -> Bool {
-    if nftStore.displayType == .spam {
-      return false
-    } else {
-      return !nft.visible
     }
   }
 }

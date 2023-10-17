@@ -277,7 +277,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     let transactionNetworks: [BraveWallet.NetworkInfo] = Set(allTxs.map(\.chainId))
       .compactMap { chainId in allNetworks.first(where: { $0.chainId == chainId }) }
     for network in transactionNetworks {
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingSpam: true).flatMap { $0.tokens }
+      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
       await fetchAssetRatios(for: userAssets)
     }
     await fetchUnknownTokens(for: unapprovedTxs)
@@ -307,7 +307,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         return
       }
       let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin) + tokenInfoCache.map(\.value)
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingSpam: true).flatMap { $0.tokens }
+      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
       let solEstimatedTxFee: UInt64? = solEstimatedTxFeeCache[transaction.id]
       
       if transaction.isEIP1559Transaction {
@@ -431,7 +431,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     guard let network = allNetworks.first(where: { $0.chainId == BraveWallet.MainnetChainId }) else {
       return
     }
-    let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingSpam: true).flatMap { $0.tokens }
+    let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
     let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
     let unknownTokenContractAddresses = mainnetTransactions.flatMap(\.tokenContractAddresses)
       .filter { contractAddress in

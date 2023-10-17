@@ -30,9 +30,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     case .visible:
       return userNFTs.filter(\.token.visible)
     case .hidden:
-      return userNFTs.filter { !$0.token.visible && !$0.token.isSpam }
-    case .spam:
-      return userNFTs.filter(\.token.isSpam)
+      return userNFTs.filter { !$0.token.visible }
     }
   }
   /// All User Accounts
@@ -75,7 +73,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   enum NFTDisplayType: Int, CaseIterable, Identifiable {
     case visible
     case hidden
-    case spam
     
     var id: Int {
       rawValue
@@ -84,11 +81,9 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     var dropdownTitle: String {
       switch self {
       case .visible:
-        return Strings.Wallet.nftsTitle
+        return Strings.Wallet.nftCollected
       case .hidden:
         return Strings.Wallet.nftHidden
-      case .spam:
-        return Strings.Wallet.nftSpam
       }
     }
     
@@ -98,8 +93,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         return Strings.Wallet.nftPageEmptyTitle
       case .hidden:
         return Strings.Wallet.nftInvisiblePageEmptyTitle
-      case .spam:
-        return Strings.Wallet.nftSpamPageEmptyTitle
       }
     }
     
@@ -107,7 +100,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       switch self {
       case .visible:
         return Strings.Wallet.nftPageEmptyDescription
-      case .hidden, .spam:
+      case .hidden:
         return nil
       }
     }
@@ -344,17 +337,21 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     selectedAccounts: [BraveWallet.AccountInfo],
     simpleHashSpamNFTs: [NetworkAssets]
   ) -> [NetworkAssets] {
+    // all user marked deleted NFTs
+    let allUserMarkedDeletedNFTs = assetManager.getAllUserDeletedNFTs()
     // all spam NFTs marked by user
     let allUserMarkedSpamNFTs = assetManager.getAllUserNFTs(networks: selectedNetworks, isSpam: true)
     // filter out any spam NFTs from `simpleHashSpamNFTs` that are marked
-    // not-spam by user
+    // not-spam or deleted by user
     var updatedSimpleHashSpamNFTs: [NetworkAssets] = []
     for simpleHashSpamNFTsOnNetwork in simpleHashSpamNFTs {
       let userMarkedNotSpamTokensOnNetwork = assetManager.getAllUserNFTs(networks: [simpleHashSpamNFTsOnNetwork.network], isSpam: false).flatMap(\.tokens)
       let filteredSimpleHashSpamTokens = simpleHashSpamNFTsOnNetwork.tokens.filter { simpleHashSpamToken in
-        !userMarkedNotSpamTokensOnNetwork.contains { token in
+        return !userMarkedNotSpamTokensOnNetwork.contains { token in
           token.id == simpleHashSpamToken.id
-        }
+        } && !allUserMarkedDeletedNFTs.contains(where: { deletedNFT in
+          deletedNFT.contractAddress == simpleHashSpamToken.contractAddress && deletedNFT.chainId == simpleHashSpamToken.chainId && deletedNFT.tokenId == simpleHashSpamToken.tokenId
+        })
       }
       updatedSimpleHashSpamNFTs.append(NetworkAssets(network: simpleHashSpamNFTsOnNetwork.network, tokens: filteredSimpleHashSpamTokens, sortOrder: simpleHashSpamNFTsOnNetwork.sortOrder))
     }
@@ -387,8 +384,18 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     walletService.setNftDiscoveryEnabled(true)
   }
   
-  func updateNFTStatus(_ token: BraveWallet.BlockchainToken, visible: Bool, isSpam: Bool) {
-    assetManager.updateUserAsset(for: token, visible: visible, isSpam: isSpam) { [weak self] in
+  func updateNFTStatus(
+    _ token: BraveWallet.BlockchainToken,
+    visible: Bool,
+    isSpam: Bool,
+    isDeletedByUser: Bool
+  ) {
+    assetManager.updateUserAsset(
+      for: token,
+      visible: visible,
+      isSpam: isSpam,
+      isDeletedByUser: isDeletedByUser
+    ) { [weak self] in
       guard let self else { return }
       let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = self.filters.networks.filter(\.isSelected).map(\.model)
