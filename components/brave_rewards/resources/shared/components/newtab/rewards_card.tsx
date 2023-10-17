@@ -176,12 +176,9 @@ export function RewardsCard (props: Props) {
                     <style.balanceInfo>
                       <Icon name='help-outline' />
                       <div className='tooltip'>
-                        <div className='tooltip-arrow' />
-                        <div className='tooltip-bubble'>
-                          <style.balanceTooltip>
-                            {getString('rewardsBalanceInfoText')}
-                          </style.balanceTooltip>
-                        </div>
+                        <style.balanceTooltip>
+                          {getString('rewardsBalanceInfoText')}
+                        </style.balanceTooltip>
                       </div>
                     </style.balanceInfo>
                   }
