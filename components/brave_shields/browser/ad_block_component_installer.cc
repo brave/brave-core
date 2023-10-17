@@ -199,6 +199,11 @@ void RegisterAdBlockDefaultResourceComponent(
       cus, base::BindOnce(&OnRegistered, kAdBlockResourceComponentId));
 }
 
+void CheckAdBlockDefaultResourceComponentUpdate() {
+  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+      kAdBlockResourceComponentId);
+}
+
 void RegisterAdBlockFilterListCatalogComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback) {

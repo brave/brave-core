@@ -27,6 +27,7 @@ void RegisterAdBlockDefaultComponent(
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback);
+void CheckAdBlockDefaultResourceComponentUpdate();
 
 void RegisterAdBlockFilterListCatalogComponent(
     component_updater::ComponentUpdateService* cus,
