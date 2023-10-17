@@ -4234,13 +4234,6 @@ extension Strings {
       value: "No hidden NFTs here yet.",
       comment: "The title of the empty state inside NFT tab under Hidden group."
     )
-    public static let nftSpamPageEmptyTitle = NSLocalizedString(
-      "wallet.nftSpamPageEmptyTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "No NFTs have been marked as spam.",
-      comment: "The title of the empty state inside NFT tab under Spam group."
-    )
     public static let nftPageEmptyDescription = NSLocalizedString(
       "wallet.nftPageEmptyDescription",
       tableName: "BraveWallet",
@@ -4346,6 +4339,13 @@ extension Strings {
       value: "Import NFT",
       comment: "The title of the button that user clicks to add his/her first NFT"
     )
+    public static let nftCollected = NSLocalizedString(
+      "wallet.nftCollected",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Collected",
+      comment: "The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs."
+    )
     public static let nftHidden = NSLocalizedString(
       "wallet.nftHidden",
       tableName: "BraveWallet",
@@ -4357,8 +4357,8 @@ extension Strings {
       "wallet.nftSpam",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Spam",
-      comment: "The title of one of the dropdown options to group NFTs. This group will display all user's marked spam NFTs and SimpleHash marked spam NFTs."
+      value: "Junk",
+      comment: "The title of an overlay on top left of the junk NFT grid."
     )
     public static let nftUnhide = NSLocalizedString(
       "wallet.nftUnhide",
@@ -4367,19 +4367,33 @@ extension Strings {
       value: "Unhide",
       comment: "The title of context button for user to unhide visible NFT."
     )
-    public static let nftMoveToSpam = NSLocalizedString(
-      "wallet.nftMoveToSpam",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Move to Spam",
-      comment: "The title of context button for user to move a NFT to the `Spam` group."
-    )
     public static let nftUnspam = NSLocalizedString(
       "wallet.nftUnspam",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Unspam",
+      value: "Mark as Not Junk",
       comment: "The title of context button for user to unspam a NFT."
+    )
+    public static let nftRemoveFromWallet = NSLocalizedString(
+      "wallet.nftRemoveFromWallet",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Don't Show in Wallet",
+      comment: "The title of context button for user to do not show a NFT in wallet at all."
+    )
+    public static let nftRemoveFromWalletAlertTitle = NSLocalizedString(
+      "wallet.nftRemoveFromWalletAlertTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Remove from Brave Wallet?",
+      comment: "The title of the alert when user attempts to remove an NFT from wallet."
+    )
+    public static let nftRemoveFromWalletAlertDescription = NSLocalizedString(
+      "wallet.nftRemoveFromWalletAlertDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "NFT will be removed from Brave Wallet but will remain on the blockchain. If you remove it, then change your mind, you'll need to import it again manually.",
+      comment: "The description of the alert when user attempts to remove an NFT from wallet."
     )
     public static let selectTokenToSendTitle = NSLocalizedString(
       "wallet.selectTokenToSendTitle",

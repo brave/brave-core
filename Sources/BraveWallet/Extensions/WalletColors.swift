@@ -250,4 +250,11 @@ enum WalletV2Design {
   static let passwordMediumYellow = UIColor(rgb: 0xbd9600)
   
   static let passwordStrongGreen = UIColor(rgb: 0x31803e)
+  
+  static let spamNFTLabelBackground = UIColor(
+    red: 1,
+    green: 209 / 255,
+    blue: 207 / 255,
+    alpha: 1
+  )
 }

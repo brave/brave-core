@@ -138,7 +138,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       let allTransactions = await txService.allTransactions(
         networksForCoin: networksForCoin, for: allKeyrings
       ).filter { $0.txStatus != .rejected }
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: allNetworksAllCoins, includingSpam: true).flatMap(\.tokens)
+      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: allNetworksAllCoins, includingUserDeleted: true).flatMap(\.tokens)
       let allTokens = await blockchainRegistry.allTokens(
         in: allNetworksAllCoins
       ).flatMap(\.tokens)

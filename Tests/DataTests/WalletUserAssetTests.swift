@@ -38,9 +38,10 @@ class WalletUserAssetTests: CoreDataTestCase {
     
     XCTAssertTrue(userAsset.visible)
     XCTAssertFalse(userAsset.isSpam)
+    XCTAssertFalse(userAsset.isDeletedByUser)
     
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(for: asset, visible: false, isSpam: true)
+      WalletUserAsset.updateUserAsset(for: asset, visible: false, isSpam: true, isDeletedByUser: true)
     }
     
     DataController.viewContext.refreshAllObjects()
@@ -49,6 +50,7 @@ class WalletUserAssetTests: CoreDataTestCase {
     
     XCTAssertFalse(userAsset.visible)
     XCTAssertTrue(userAsset.isSpam)
+    XCTAssertTrue(userAsset.isDeletedByUser)
   }
   
   func testGetAllVisibleAssets() {
@@ -57,13 +59,27 @@ class WalletUserAssetTests: CoreDataTestCase {
     createAndWait(asset: asset3)
     
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(for: asset2, visible: false, isSpam: false)
+      WalletUserAsset.updateUserAsset(for: asset2, visible: false, isSpam: false, isDeletedByUser: false)
     }
     
     DataController.viewContext.refreshAllObjects()
     let allAssets = WalletUserAsset.getAllVisibleUserAssets()
     XCTAssertNotNil(allAssets)
     XCTAssertEqual(allAssets!.count, 2)
+  }
+  
+  func testGetAllVisibleAssetsAfterDeletion() {
+    createAndWait(asset: asset)
+    createAndWait(asset: asset2)
+    
+    backgroundSaveAndWaitForExpectation {
+      WalletUserAsset.updateUserAsset(for: asset2, visible: false, isSpam: false, isDeletedByUser: true)
+    }
+    
+    DataController.viewContext.refreshAllObjects()
+    let allDeletedAssets = WalletUserAsset.getAllUserDeletedUserAssets()
+    XCTAssertNotNil(allDeletedAssets)
+    XCTAssertEqual(allDeletedAssets!.count, 1)
   }
   
   // MARK: - Deleting

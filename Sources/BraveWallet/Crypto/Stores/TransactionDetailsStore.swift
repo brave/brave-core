@@ -80,7 +80,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       let keringId = BraveWallet.KeyringId.keyringId(for: coin, on: transaction.chainId)
       let keyring = await keyringService.keyringInfo(keringId)
       var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin) + tokenInfoCache.map(\.value)
-      let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingSpam: true).flatMap { $0.tokens }
+      let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
       let unknownTokenContractAddresses = transaction.tokenContractAddresses
         .filter { contractAddress in
           !userAssets.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(contractAddress) == .orderedSame })

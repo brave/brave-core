@@ -51,6 +51,26 @@ struct NFTDetailView: View {
               .frame(maxWidth: .infinity, minHeight: 300)
           } else {
             nftImage
+              .overlay(alignment: .topLeading) {
+                if nftDetailStore.nft.isSpam {
+                  HStack(spacing: 4) {
+                    Text(Strings.Wallet.nftSpam)
+                      .padding(.vertical, 4)
+                      .padding(.leading, 6)
+                      .foregroundColor(Color(.braveErrorLabel))
+                    Image(braveSystemName: "leo.warning.triangle-outline")
+                      .padding(.vertical, 4)
+                      .padding(.trailing, 6)
+                      .foregroundColor(Color(.braveErrorBorder))
+                  }
+                  .font(.system(size: 13).weight(.semibold))
+                  .background(
+                    Color(uiColor: WalletV2Design.spamNFTLabelBackground)
+                      .cornerRadius(4)
+                  )
+                  .padding(12)
+                }
+              }
           }
           VStack(alignment: .leading, spacing: 8) {
             Text(nftDetailStore.nft.nftTokenTitle)
