@@ -355,7 +355,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.4",
-    "@brave/leo": "github:brave/leo#64dce8efda6d27e7ea158c6e19bfc6e6ff99402f",
+    "@brave/leo": "github:brave/leo#783acfeea549fa424a2ae6dbb6c19fc97d568e67",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@brave/wallet-standard-brave": "~0.0.10",
     "@dnd-kit/core": "6.0.5",
