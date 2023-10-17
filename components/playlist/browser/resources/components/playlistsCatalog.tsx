@@ -215,7 +215,14 @@ function SortablePlaylistCard (props: PlaylistCardProps) {
   })
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      tabIndex={-1} // Disables tab traversal for sortable as we have StyledLink in PlaylistCard.
+      aria-hidden='true'
+    >
       <PlaylistCard {...props} />
     </div>
   )

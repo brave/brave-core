@@ -53,6 +53,18 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
       {"bravePlaylistContextMenuViewOriginalPage",
        IDS_PLAYLIST_CONTEXT_MENU_VIEW_ORIGINAL_PAGE},
       {"bravePlaylistEmptyFolderMessage", IDS_PLAYLIST_EMPTY_FOLDER_MESSAGE},
+      {"bravePlaylistA11YCreatePlaylistFolder",
+       IDS_PLAYLIST_A11Y_CREATE_PLAYLIST_FOLDER},
+      {"bravePlaylistA11YOpenPlaylistSettings",
+       IDS_PLAYLIST_A11Y_OPEN_PLAYLIST_SETTINGS},
+      {"bravePlaylistA11YPlay", IDS_PLAYLIST_A11Y_PLAY},
+      {"bravePlaylistA11YPause", IDS_PLAYLIST_A11Y_PAUSE},
+      {"bravePlaylistA11YNext", IDS_PLAYLIST_A11Y_NEXT},
+      {"bravePlaylistA11YPrevious", IDS_PLAYLIST_A11Y_PREVIOUS},
+      {"bravePlaylistA11YShuffle", IDS_PLAYLIST_A11Y_SHUFFLE},
+      {"bravePlaylistA11YRewind", IDS_PLAYLIST_A11Y_REWIND},
+      {"bravePlaylistA11YForward", IDS_PLAYLIST_A11Y_FORWARD},
+      {"bravePlaylistA11YClose", IDS_PLAYLIST_A11Y_CLOSE},
   };
 
   for (const auto& [name, id] : kLocalizedStrings) {
@@ -89,6 +101,8 @@ class UntrustedPlayerUI : public ui::UntrustedWebUIController {
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::FontSrc,
         std::string("font-src 'self' chrome-untrusted://resources;"));
+
+    AddLocalizedStrings(source);
   }
 
   UntrustedPlayerUI(const UntrustedPlayerUI&) = delete;

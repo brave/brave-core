@@ -1261,6 +1261,36 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_EMPTY_FOLDER_MESSAGE" desc="A message that shows up when a playlist folder is empty">
           The fun starts when you have something to play. Add your favorite media and playback anytime, anywhere. Even offline.
         </message>
+        <message name="IDS_PLAYLIST_A11Y_CREATE_PLAYLIST_FOLDER" desc="An a11y name for a button to create new playlist folder">
+          Create a new folder
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_OPEN_PLAYLIST_SETTINGS" desc="An a11y name for a button to open playlist settings">
+          Open Playlist settings
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_PLAY" desc="An a11y name for a 'play' button in media player">
+          Play
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_PAUSE" desc="An a11y name for a 'pause' button in media player">
+          Pause
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_NEXT" desc="An a11y name for a 'next' button in media player">
+          Next Track
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_PREVIOUS" desc="An a11y name for a 'prev' button in media player">
+          Previous Track
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_SHUFFLE" desc="An a11y name for a 'shuffle' button in media player">
+          Shuffle
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_REWIND" desc="An a11y name for a 'rewind' button in media player">
+          Rewind
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_FORWARD" desc="An a11y name for a 'forward' button in media player">
+          Forward
+        </message>
+        <message name="IDS_PLAYLIST_A11Y_CLOSE" desc="An a11y name for a 'close' button in media player when it's mini player mode">
+          Close
+        </message>
       </if> <!-- enable_playlist_webui -->
       <!--Add new items to the appropriate sections above -->
     </messages>
