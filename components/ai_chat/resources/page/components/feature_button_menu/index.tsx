@@ -62,7 +62,7 @@ export default function FeatureMenu() {
       <leo-menu-item onClick={handleNewConversationClick}>
         <div className={styles.menuItemWithIcon}>
           <span>{getLocale('menuNewChat')}</span>
-          <Icon name='plus-add' />
+          <Icon name='erase' />
         </div>
       </leo-menu-item>
 
