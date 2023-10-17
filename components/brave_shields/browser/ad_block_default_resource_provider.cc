@@ -19,7 +19,7 @@ constexpr char kAdBlockResourcesFilename[] = "resources.json";
 
 BASE_DECLARE_FEATURE(kAdBlockDefaultResourceUpdateInterval);
 constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{
-    &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 120};
+    &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 100};
 BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,
              "AdBlockDefaultResourceUpdateInterval",
              base::FEATURE_ENABLED_BY_DEFAULT);
