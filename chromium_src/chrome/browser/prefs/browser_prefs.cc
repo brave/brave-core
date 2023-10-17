@@ -7,6 +7,7 @@
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
+#include "brave/browser/misc_metrics/uptime_monitor.h"
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
@@ -30,7 +31,6 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/p3a/p3a_core_metrics.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #endif
 
@@ -263,9 +263,9 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   local_state->ClearPref(kDefaultBrowserPromptEnabled);
-  brave::BraveUptimeTracker::MigrateObsoletePrefs(local_state);
 #endif
 
+  misc_metrics::UptimeMonitor::MigrateObsoletePrefs(local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
   brave_stats::MigrateObsoleteLocalStatePrefs(local_state);
 

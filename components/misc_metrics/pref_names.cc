@@ -31,4 +31,10 @@ const char kMiscMetricsTotalDnsRequestStorage[] =
     "brave.misc_metrics.total_dns_requests";
 const char kMiscMetricsUpgradedDnsRequestStorage[] =
     "brave.misc_metrics.upgraded_dns_requests";
+
+const char kDailyUptimesListPrefName[] = "daily_uptimes";  // DEPRECATED
+const char kDailyUptimeSumPrefName[] = "brave.misc_metrics.uptime_sum";
+const char kDailyUptimeFrameStartTimePrefName[] =
+    "brave.misc_metrics.uptime_frame_start_time";
+
 }  // namespace misc_metrics

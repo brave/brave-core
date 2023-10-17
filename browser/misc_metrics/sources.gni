@@ -14,6 +14,8 @@ brave_browser_misc_metrics_sources = [
   "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
   "//brave/browser/misc_metrics/process_misc_metrics.cc",
   "//brave/browser/misc_metrics/process_misc_metrics.h",
+  "//brave/browser/misc_metrics/uptime_monitor.cc",
+  "//brave/browser/misc_metrics/uptime_monitor.h",
 ]
 
 if (!is_android) {

@@ -6,9 +6,9 @@
 #ifndef BRAVE_BROWSER_P3A_P3A_CORE_METRICS_H_
 #define BRAVE_BROWSER_P3A_P3A_CORE_METRICS_H_
 
-// The classes below can be used on desktop only
+// The class below can be used on desktop only
 // because BrowserListObserver is available on desktop only
-// Brave.Uptime.BrowserOpenMinutes, Brave.Core.LastTimeIncognitoUsed and
+// Brave.Core.LastTimeIncognitoUsed and
 // Brave.Core.TorEverUsed don't work on Android
 
 #include "build/build_config.h"
@@ -19,41 +19,12 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
-#include "chrome/browser/resource_coordinator/usage_clock.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 
 class PrefService;
 class PrefRegistrySimple;
 
 namespace brave {
-
-class BraveUptimeTracker {
- public:
-  explicit BraveUptimeTracker(PrefService* local_state);
-  BraveUptimeTracker(const BraveUptimeTracker&) = delete;
-  BraveUptimeTracker& operator=(const BraveUptimeTracker&) = delete;
-  ~BraveUptimeTracker();
-
-  static void CreateInstance(PrefService* local_state);
-
-  static void RegisterPrefs(PrefRegistrySimple* registry);
-  static void RegisterPrefsForMigration(PrefRegistrySimple* registry);
-  static void MigrateObsoletePrefs(PrefService* local_state);
-
- private:
-  void RecordUsage();
-  void RecordP3A();
-
-  void ResetReportFrame();
-
-  raw_ptr<PrefService> local_state_;
-  resource_coordinator::UsageClock usage_clock_;
-  base::RepeatingTimer timer_;
-  base::TimeDelta current_total_usage_;
-
-  base::Time report_frame_start_time_;
-  base::TimeDelta report_frame_time_sum_;
-};
 
 // BraveWindowTracker is under !OS_ANDROID guard because
 // BrowserListObserver should only be only on desktop

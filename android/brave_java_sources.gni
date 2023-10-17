@@ -461,6 +461,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TouchDelegateComposite.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/Triple.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/UsageMonitor.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/DisconnectVpnBroadcastReceiver.java",

@@ -170,6 +170,7 @@ import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -275,6 +276,7 @@ public abstract class BraveActivity extends ChromeActivity
     private boolean mNativeInitialized;
     private boolean mSafeBrowsingFlagEnabled;
     private NewTabPageManager mNewTabPageManager;
+    private UsageMonitor mUsageMonitor;
     private NotificationPermissionController mNotificationPermissionController;
     private BraveNewsController mBraveNewsController;
     private BraveNewsConnectionErrorHandler mBraveNewsConnectionErrorHandler;
@@ -329,6 +331,9 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onPauseWithNative() {
+        if (mUsageMonitor != null) {
+            mUsageMonitor.stop();
+        }
         if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             BraveVpnNativeWorker.getInstance().removeObserver(this);
         }
@@ -850,6 +855,9 @@ public abstract class BraveActivity extends ChromeActivity
                     BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO,
                     appOpenCountForWidgetPromo + 1);
         } */
+        if (mUsageMonitor != null) {
+            mUsageMonitor.start();
+        }
     }
 
     @Override
@@ -1122,6 +1130,9 @@ public abstract class BraveActivity extends ChromeActivity
             SharedPreferencesManager.getInstance().writeBoolean(
                     BravePrivacySettings.PREF_APP_LINKS_RESET, false);
         }
+
+        mUsageMonitor = new UsageMonitor(mMiscAndroidMetrics);
+        mUsageMonitor.start();
     }
 
     private void handleDeepLinkVpn() {

@@ -5,6 +5,8 @@
 
 module misc_metrics.mojom;
 
+import "mojo/public/mojom/base/time.mojom";
+
 // Handler for Android misc metric events from UI.
 interface MiscAndroidMetrics {
   // Records view of Privacy Hub report.
@@ -15,4 +17,7 @@ interface MiscAndroidMetrics {
 
   // Records a location bar search query event, for measuring "queries before churn".
   RecordLocationBarQuery();
+
+  // Records browser usage duration, for measuring usage time per day.
+  RecordBrowserUsageDuration(mojo_base.mojom.TimeDelta duration);
 };

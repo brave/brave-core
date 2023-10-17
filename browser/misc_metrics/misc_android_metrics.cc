@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/uptime_monitor.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 
@@ -35,6 +36,10 @@ void MiscAndroidMetrics::RecordPrivacyHubEnabledStatus(bool is_enabled) {
 
 void MiscAndroidMetrics::RecordLocationBarQuery() {
   search_engine_tracker_->RecordLocationBarQuery();
+}
+
+void MiscAndroidMetrics::RecordBrowserUsageDuration(base::TimeDelta duration) {
+  misc_metrics_->uptime_monitor()->ReportUsageDuration(duration);
 }
 
 }  // namespace misc_metrics
