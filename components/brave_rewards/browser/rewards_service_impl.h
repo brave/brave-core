@@ -118,8 +118,6 @@ class RewardsServiceImpl : public RewardsService,
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
 
-  bool IsGrandfatheredUser() const override;
-
   void GetUserType(base::OnceCallback<void(mojom::UserType)> callback) override;
 
   std::string GetCountryCode() const override;

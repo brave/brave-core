@@ -755,17 +755,6 @@ BraveRewardsGetDeclaredCountryFunction::Run() {
   return RespondNow(WithArguments(std::move(country)));
 }
 
-BraveRewardsIsGrandfatheredUserFunction::
-    ~BraveRewardsIsGrandfatheredUserFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsIsGrandfatheredUserFunction::Run() {
-  auto* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  return RespondNow(WithArguments(
-      rewards_service ? rewards_service->IsGrandfatheredUser() : false));
-}
-
 BraveRewardsGetUserTypeFunction::~BraveRewardsGetUserTypeFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetUserTypeFunction::Run() {

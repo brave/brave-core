@@ -562,15 +562,6 @@ void RewardsServiceImpl::CreateRewardsWallet(
   StartEngineProcessIfNecessary();
 }
 
-bool RewardsServiceImpl::IsGrandfatheredUser() const {
-  base::Version version(profile_->GetPrefs()->GetString(prefs::kUserVersion));
-  if (!version.IsValid()) {
-    version = base::Version({1});
-  }
-
-  return version.CompareTo(base::Version({2, 5})) < 0;
-}
-
 void RewardsServiceImpl::GetUserType(
     base::OnceCallback<void(mojom::UserType)> callback) {
   using mojom::UserType;
@@ -595,8 +586,13 @@ void RewardsServiceImpl::GetUserType(
     }
 
     auto* prefs = self->profile_->GetPrefs();
+    base::Version version(prefs->GetString(prefs::kUserVersion));
+    if (!version.IsValid()) {
+      version = base::Version({1});
+    }
+
     if (!prefs->GetBoolean(prefs::kParametersVBatExpired) &&
-        self->IsGrandfatheredUser()) {
+        version.CompareTo(base::Version({2, 5})) < 0) {
       std::move(callback).Run(UserType::kLegacyUnconnected);
       return;
     }
