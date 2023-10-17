@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -88,8 +89,13 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
   // We need to update sidebar UI only when current active tab state is changed.
   if (changed_flags & content::INVALIDATE_TYPE_URL) {
     if (source == tab_strip_model_->GetActiveWebContents()) {
+      // sidebar() can return a nullptr in unit tests.
       if (sidebar_controller_) {
-        sidebar_controller_->sidebar()->UpdateSidebarItemsState();
+        if (sidebar_controller_->sidebar()) {
+          sidebar_controller_->sidebar()->UpdateSidebarItemsState();
+        } else {
+          CHECK_IS_TEST();
+        }
       }
     }
   }
@@ -188,7 +194,8 @@ void BraveBrowser::OnTabStripModelChanged(
   Browser::OnTabStripModelChanged(tab_strip_model, change, selection);
 
 #if defined(TOOLKIT_VIEWS)
-  if (!sidebar_controller_) {
+  // sidebar() can return a nullptr in unit tests.
+  if (!sidebar_controller_ || !sidebar_controller_->sidebar()) {
     return;
   }
   // We need to update sidebar UI whenever active tab is changed or

@@ -10,6 +10,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
@@ -281,6 +282,10 @@ void SpeedreaderTabHelper::ProcessNavigation(
 
   auto* rewriter_service =
       g_brave_browser_process->speedreader_rewriter_service();
+  if (!rewriter_service) {
+    CHECK_IS_TEST();
+    return;
+  }
   auto* nav_entry = navigation_handle->GetNavigationEntry();
 
   const bool url_looks_readable =

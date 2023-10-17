@@ -9,6 +9,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/containers/circular_deque.h"
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
@@ -231,12 +232,14 @@ AdsServiceImpl::AdsServiceImpl(
       rewards_service_(rewards_service),
       bat_ads_client_associated_receiver_(this) {
   CHECK(profile_);
-  CHECK(local_state_);
   CHECK(adaptive_captcha_service_);
   CHECK(device_id_);
-  CHECK(history_service_);
   CHECK(rewards_service_);
   CHECK(profile->IsRegularProfile());
+
+  if (!history_service_ || !local_state_) {
+    CHECK_IS_TEST();
+  }
 
   if (CanStartBatAdsService()) {
     bat_ads_client_notifier_pending_receiver_ =
@@ -249,13 +252,19 @@ AdsServiceImpl::AdsServiceImpl(
 
   GetDeviceIdAndMaybeStartBatAdsService();
 
-  g_brave_browser_process->resource_component()->AddObserver(this);
+  if (g_brave_browser_process->resource_component()) {
+    g_brave_browser_process->resource_component()->AddObserver(this);
+  } else {
+    CHECK_IS_TEST();
+  }
 
   rewards_service_->AddObserver(this);
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
-  g_brave_browser_process->resource_component()->RemoveObserver(this);
+  if (g_brave_browser_process->resource_component()) {
+    g_brave_browser_process->resource_component()->RemoveObserver(this);
+  }
 
   bat_ads_observer_receiver_.reset();
 
@@ -606,6 +615,9 @@ void AdsServiceImpl::CloseAdaptiveCaptcha() {
 }
 
 void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
+  if (!local_state_) {
+    return;
+  }
   local_state_pref_change_registrar_.Init(local_state_);
 
   local_state_pref_change_registrar_.Add(

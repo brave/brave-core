@@ -148,7 +148,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
         context);
     ai_chat::AIChatTabHelper::CreateForWebContents(
         web_contents,
-        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics(),
+        g_brave_browser_process->process_misc_metrics()
+            ? g_brave_browser_process->process_misc_metrics()->ai_chat_metrics()
+            : nullptr,
         skus_service_getter, g_browser_process->local_state(),
         std::string(version_info::GetChannelString(chrome::GetChannel())));
   }

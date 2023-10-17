@@ -25,6 +25,8 @@ class BraveBookmarkBarView : public BookmarkBarView {
   // Note that so-called "Others button" is renamed to "All bookmarks button"
   void OnShowAllBookmarksButtonPrefChanged();
 
+  void MaybeUpdateOtherAndManagedButtonsVisibility();
+
   BooleanPrefMember show_all_bookmarks_button_pref_;
 };
 
