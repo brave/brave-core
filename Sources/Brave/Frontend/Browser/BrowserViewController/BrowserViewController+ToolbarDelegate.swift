@@ -1,7 +1,7 @@
-// Copyright 2021 The Brave Authors. All rights reserved.
+// Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import BraveUI
@@ -506,9 +506,44 @@ extension BrowserViewController: TopToolbarDelegate {
         self.present(container, animated: true)
       }
     }
+    
+    shields.showSubmitReportView = { [weak self] shieldsViewController in
+      shieldsViewController.dismiss(animated: true) {
+        guard let url = shieldsViewController.tab.url else { return }
+        self?.showSubmitReportView(for: url)
+      }
+    }
+    
     let container = PopoverNavigationController(rootViewController: shields)
     let popover = PopoverController(contentController: container, contentSizeBehavior: .preferredContentSize)
     popover.present(from: topToolbar.locationView.shieldsButton, on: self)
+  }
+  
+  func showSubmitReportView(for url: URL) {
+    // Strip fragments and query params from url
+    var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+    components?.fragment = nil
+    components?.queryItems = nil
+    guard let cleanedURL = components?.url else { return }
+    
+    let viewController = UIHostingController(rootView: SubmitReportView(
+      url: cleanedURL, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+    ))
+    
+    viewController.modalPresentationStyle = .popover
+
+    if let popover = viewController.popoverPresentationController {
+      popover.sourceView = topToolbar.locationView.shieldsButton
+      popover.sourceRect = topToolbar.locationView.shieldsButton.bounds
+      
+      let sheet = popover.adaptiveSheetPresentationController
+      sheet.largestUndimmedDetentIdentifier = .medium
+      sheet.prefersEdgeAttachedInCompactHeight = true
+      sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+      sheet.detents = [.medium(), .large()]
+      sheet.prefersGrabberVisible = true
+    }
+    navigationController?.present(viewController, animated: true)
   }
 
   // TODO: This logic should be fully abstracted away and share logic from current MenuViewController
