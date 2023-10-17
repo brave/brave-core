@@ -9,6 +9,47 @@ import Data
 @testable import Brave
 
 final class CachedAdBlockEngineTests: XCTestCase {
+  func test3rdPartyCheck() throws {
+    let engine = try AdblockEngine(rules: [
+      "||brave.com/path",
+      "||brave.com/other-path",
+      "@@||brave.com/path$~third-party"
+    ].joined(separator: "\n"))
+    
+    XCTAssertFalse(
+      engine.shouldBlock(
+        requestURL: URL(string: "https://subdomain.brave.com/path")!,
+        sourceURL: URL(string: "https://brave.com")!, resourceType: .xmlhttprequest,
+        isAggressive: false
+      ),
+      "We should not be blocking requests in the same domain on standard mode, regardless of the rules"
+    )
+    XCTAssertFalse(
+      engine.shouldBlock(
+        requestURL: URL(string: "https://subdomain.brave.com/path")!,
+        sourceURL: URL(string: "https://brave.com")!, resourceType: .xmlhttprequest,
+        isAggressive: true
+      ),
+      "We should not be blocking this request even on aggressive mode because of the exception rule"
+    )
+    XCTAssertFalse(
+      engine.shouldBlock(
+        requestURL: URL(string: "https://subdomain.brave.com/other-path")!,
+        sourceURL: URL(string: "https://brave.com")!, resourceType: .xmlhttprequest,
+        isAggressive: false
+      ),
+      "We should not be blocking requests in the same domain on standard mode, regardless of the rules"
+    )
+    XCTAssertTrue(
+      engine.shouldBlock(
+        requestURL: URL(string: "https://subdomain.brave.com/other-path")!,
+        sourceURL: URL(string: "https://brave.com")!, resourceType: .xmlhttprequest,
+        isAggressive: true
+      ),
+      "We should be blocking this request on aggressive mode because of the blocking rule without an exception"
+    )
+  }
+  
   func testEngineMemoryManagment() throws {
     AdblockEngine.setDomainResolver()
     var engine: AdblockEngine? = AdblockEngine()

@@ -25,15 +25,17 @@ extension AdblockEngine {
       return false
     }
     
+    guard let requestDomain = requestURL.baseDomain, let sourceDomain = sourceURL.baseDomain else {
+      return false
+    }
+    
     guard let requestHost = requestURL.host, let sourceHost = sourceURL.host else {
       return false
     }
     
-    // Normally we should check the etld+1.
-    // However for network filtering we use content blockers
-    // which unfortunately uses a host comparison.
-    // So this is what we simulate here
-    let isThirdParty = requestHost != sourceHost
+    // The content blocker rule for third party is the following:
+    // "third-party triggers if the resource isn’t from the same domain as the main page resource"
+    let isThirdParty = requestDomain != sourceDomain
     
     if !isAggressive {
       // If we have standard mode for this engine,
