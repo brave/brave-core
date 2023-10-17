@@ -122,7 +122,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &attribution_reporting::features::
         kAttributionReportingNullAggregatableReports,
     &attribution_reporting::features::kConversionMeasurement,
-    &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
     &autofill::features::test::kAutofillServerCommunication,
     &autofill::features::kAutofillUpstreamAllowAdditionalEmailDomains,
