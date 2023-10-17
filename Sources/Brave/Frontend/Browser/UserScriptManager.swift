@@ -280,16 +280,15 @@ class UserScriptManager {
       return
     }
     
-    #if DEBUG
-    ContentBlockerManager.log.debug("Loaded \(userScripts.count + customScripts.count) scripts:")
-    userScripts.sorted(by: { $0.rawValue < $1.rawValue}).forEach { scriptType in
-      ContentBlockerManager.log.debug(" \(scriptType.debugDescription)")
-    }
-    customScripts.sorted(by: { $0.order < $1.order}).forEach { scriptType in
-      ContentBlockerManager.log.debug(" #\(scriptType.order) \(scriptType.debugDescription)")
-    }
-    #endif
-    
+    let logComponents = [
+      userScripts.sorted(by: { $0.rawValue < $1.rawValue}).map { scriptType in
+        " \(scriptType.debugDescription)"
+      }.joined(separator: "\n"),
+      customScripts.sorted(by: { $0.order < $1.order}).map { scriptType in
+        " #\(scriptType.order) \(scriptType.debugDescription)"
+      }.joined(separator: "\n")
+    ]
+    ContentBlockerManager.log.debug("Loaded \(userScripts.count + customScripts.count) script(s): \n\(logComponents.joined(separator: "\n"))")    
     loadScripts(into: webView, scripts: userScripts)
     
     webView.configuration.userContentController.do { scriptController in

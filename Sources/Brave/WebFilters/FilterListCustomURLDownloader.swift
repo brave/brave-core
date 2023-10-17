@@ -87,26 +87,22 @@ actor FilterListCustomURLDownloader: ObservableObject {
   /// Handle the download results of a custom filter list. This will process the download by compiling iOS rule lists and adding the rule list to the `AdblockEngineManager`.
   private func handle(downloadResult: ResourceDownloader<DownloadResource>.DownloadResult, for filterListCustomURL: FilterListCustomURL) async {
     let uuid = await filterListCustomURL.setting.uuid
+    let blocklistType = ContentBlockerManager.BlocklistType.customFilterList(uuid: uuid)
     
     // Compile this rule list if we haven't already or if the file has been modified
     if downloadResult.isModified {
       do {
         let filterSet = try String(contentsOf: downloadResult.fileURL, encoding: .utf8)
         let result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
-        let type = ContentBlockerManager.BlocklistType.customFilterList(uuid: uuid)
         
         try await ContentBlockerManager.shared.compile(
           encodedContentRuleList: result.rulesJSON,
-          for: type,
+          for: blocklistType,
           options: .all
-        )
-        
-        ContentBlockerManager.log.debug(
-          "Loaded custom filter list content blockers: \(String(describing: type))"
         )
       } catch {
         ContentBlockerManager.log.error(
-          "Failed to convert custom filter list to content blockers: \(error.localizedDescription)"
+          "Failed to compile rule lists for `\(blocklistType.debugDescription)`: \(error.localizedDescription)"
         )
       }
     }

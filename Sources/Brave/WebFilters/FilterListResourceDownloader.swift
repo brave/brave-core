@@ -298,13 +298,8 @@ public actor FilterListResourceDownloader {
         }
       } catch {
         ContentBlockerManager.log.error(
-          "Failed to create content blockers for `\(componentId)` v\(version): \(error)"
+          "Failed to create content blockers for `\(blocklistType.debugDescription)` v\(version): \(error)"
         )
-        #if DEBUG
-        ContentBlockerManager.log.debug(
-          "`\(componentId)`: \(filterListURL.absoluteString)"
-        )
-        #endif
       }
     }
   }
