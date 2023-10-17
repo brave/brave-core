@@ -190,14 +190,19 @@ export const loading = styled.span`
 `
 
 export const balanceAmount = styled.div`
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+
   .amount {
     font-size: 36px;
     line-height: 54px;
   }
 
   .currency {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 21px;
+    margin-top: 20px;
   }
 `
 
@@ -299,7 +304,7 @@ export const earningsInfo = styled.span`
     bottom: 100%;
     left: -119px;
     width: 207px;
-    padding-bottom: 12px;
+    padding-bottom: 8px;
     visibility: hidden;
     transition: visibility 0s linear 300ms;
   }
@@ -325,7 +330,7 @@ export const earningsTooltip = styled.div.attrs({
   &:before {
     content: '';
     position: absolute;
-    bottom: -7px;
+    bottom: -3px;
     left: 123px;
     background: inherit;
     height: 15px;

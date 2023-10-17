@@ -31,18 +31,18 @@ export function ClaimGrantView (props: Props) {
 
   return (
     <style.root>
-      <style.amount>
+      <style.amountInfo>
         <style.graphic><MoneyBagIcon /></style.graphic>
         {
           grantInfo.amount > 0 &&
-            <div>
+            <style.amount>
               <TokenAmount
                 amount={grantInfo.amount}
                 minimumFractionDigits={2}
               />
-            </div>
+            </style.amount>
         }
-      </style.amount>
+      </style.amountInfo>
       <style.text>
         <style.title>
           {formatMessage(getString(title), [formatGrantMonth(grantInfo)])}

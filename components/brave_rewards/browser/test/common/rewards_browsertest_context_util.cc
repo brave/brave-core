@@ -92,7 +92,7 @@ void WaitForElementToEqual(
 
       try {
         let element = await waitForElementToAppear(selector);
-        currentValue = element.innerText.replace(/\xa0/g, ' ');
+        currentValue = element.innerText.replace(/\xa0|\n/g, ' ');
         if (currentValue === expectedValue) {
           resolve(true);
           return;
@@ -112,7 +112,7 @@ void WaitForElementToEqual(
             return;
           }
 
-          currentValue = element.innerText.replace(/\xa0/g, ' ');
+          currentValue = element.innerText.replace(/\xa0|\n/g, ' ');
           if (currentValue === expectedValue) {
             clearTimeout(timerID);
             observer.disconnect();
@@ -154,7 +154,7 @@ void WaitForElementToContain(
             try {
               let element = await waitForElementToAppear(selector);
 
-              currentText = element.innerText.replace(/\xa0/g, ' ');
+              currentText = element.innerText.replace(/\xa0|\n/g, ' ');
               if (currentText.indexOf(substring) !== -1) {
                 resolve(true);
                 return;
@@ -174,7 +174,7 @@ void WaitForElementToContain(
                   return;
                 }
 
-                currentText = element.innerText.replace(/\xa0/g, ' ');
+                currentText = element.innerText.replace(/\xa0|\n/g, ' ');
                 if (currentText.indexOf(substring) !== -1) {
                   clearTimeout(timerID);
                   observer.disconnect();

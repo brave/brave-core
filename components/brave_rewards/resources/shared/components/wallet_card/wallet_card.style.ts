@@ -176,14 +176,19 @@ export const balanceHeader = styled.div`
 `
 
 export const batAmount = styled.div`
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+
   font-weight: 500;
   font-size: 32px;
   line-height: 48px;
 
   .currency {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 24px;
+    margin-top: 14px;
   }
 `
 
