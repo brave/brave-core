@@ -38,11 +38,15 @@ function ContextMenuAssistant_(
 
   const formContainerElement = ref.current?.get(props.turnId)
 
+  const hasSentRating = currentRatingStatus !== RatingStatus.None
+
   const handleCopyText = () => {
     navigator.clipboard.writeText(props.turnText)
   }
 
   const handleLikeAnswer = () => {
+    if (hasSentRating) return
+
     getPageHandlerInstance()
       .pageHandler.rateMessage(true, props.turnId)
       .then((resp) => {
@@ -68,6 +72,8 @@ function ContextMenuAssistant_(
   }
 
   const handleDislikeAnswer = () => {
+    if (hasSentRating) return
+
     getPageHandlerInstance()
       .pageHandler.rateMessage(false, props.turnId)
       .then((resp) => {
