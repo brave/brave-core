@@ -10,6 +10,7 @@
 #include <optional>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
@@ -54,6 +55,8 @@ class BraveTabStrip : public TabStrip {
 
   // Exposed for testing.
   static constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;
+
+  base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_
