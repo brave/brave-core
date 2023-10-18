@@ -1,15 +1,17 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #import "brave/ios/browser/api/net/certificate_utility.h"
-
-#import <Security/Security.h>
-#import <XCTest/XCTest.h>
-
+#import "testing/gtest/include/gtest/gtest.h"
+#import "testing/platform_test.h"
 #include "net/http/transport_security_state.h"
 #include "net/net_buildflags.h"
+
+#import <Security/Security.h>
+
+using CertificateTest = PlatformTest;
 
 namespace net {
 namespace {
@@ -19,11 +21,7 @@ namespace {
 }  // namespace
 }  // namespace net
 
-@interface NetTest : XCTestCase
-
-@end
-
-@implementation NetTest
+namespace {
 
 // AmazonRootCA1
 // From:
@@ -49,7 +47,7 @@ static const char* brave_test_cert = R"(
     rqXRfboQnoZsG4q5WTP468SQvvG5
 )";
 
-+ (nullable SecCertificateRef)getCertificate {
+SecCertificateRef GetTestCertificate() {
   NSString* cert_string = [NSString stringWithFormat:@"%s", brave_test_cert];
   cert_string = [cert_string stringByReplacingOccurrencesOfString:@"\t"
                                                        withString:@""];
@@ -61,18 +59,19 @@ static const char* brave_test_cert = R"(
   NSData* data = [[NSData alloc]
       initWithBase64EncodedString:cert_string
                           options:NSDataBase64DecodingIgnoreUnknownCharacters];
-  if (data) {
-    return SecCertificateCreateWithData(kCFAllocatorDefault,
-                                        (__bridge CFDataRef)data);
+  if (!data) {
+    return nil;
   }
-  return nil;
+  return SecCertificateCreateWithData(kCFAllocatorDefault, (__bridge CFDataRef)data);
 }
 
-- (void)testLoadingCertificate {
-  XCTAssertTrue([NetTest getCertificate] != nil);
+}  // namespace
+
+TEST_F(CertificateTest, LoadingCertificate) {
+  EXPECT_NE(GetTestCertificate(), nil);
 }
 
-- (void)testAcceptableCertificates {
+TEST_F(CertificateTest, AcceptableCertificates) {
   std::size_t acceptable_certs_count =
       sizeof(net::kBraveAcceptableCerts) /
           sizeof(net::kBraveAcceptableCerts[0]) -
@@ -80,34 +79,33 @@ static const char* brave_test_cert = R"(
 
   NSArray<NSData*>* certs = [BraveCertificateUtility acceptableSPKIHashes];
 
-  XCTAssertTrue([certs count] > 3);
-  XCTAssertTrue([certs count] == acceptable_certs_count);
+  EXPECT_TRUE([certs count] > 3);
+  EXPECT_EQ([certs count], acceptable_certs_count);
 
   std::string test_cert = std::string(net::kBraveAcceptableCerts[0]);
   if (test_cert.size() > 0) {
     NSData* data = [NSData dataWithBytes:&test_cert[0] length:test_cert.size()];
-    XCTAssertNotNil(data);
+    EXPECT_NE(data, nil);
 
-    XCTAssertTrue([certs[0] isEqual:data]);
+    EXPECT_TRUE([certs[0] isEqual:data]);
   }
 }
 
-- (void)testHashCertificateSPKI {
+TEST_F(CertificateTest, HashCertificateSPKI) {
   std::string amazon_root_ca1_spki_hash =
       std::string(net::kSPKIHash_AmazonRootCA1);
-  XCTAssertTrue(amazon_root_ca1_spki_hash.size() > 0);
+  EXPECT_TRUE(amazon_root_ca1_spki_hash.size() > 0);
 
   NSData* amzn_spki_hash_data =
       [NSData dataWithBytes:&amazon_root_ca1_spki_hash[0]
                      length:amazon_root_ca1_spki_hash.size()];
-  XCTAssertNotNil(amzn_spki_hash_data);
-  XCTAssertTrue([amzn_spki_hash_data length] > 0);
+  EXPECT_NE(amzn_spki_hash_data, nil);
+  EXPECT_TRUE([amzn_spki_hash_data length] > 0);
 
   NSData* spki_hash =
-      [BraveCertificateUtility hashCertificateSPKI:[NetTest getCertificate]];
-  XCTAssertNotNil(spki_hash);
-  XCTAssertTrue([spki_hash length] > 0);
+      [BraveCertificateUtility hashCertificateSPKI:GetTestCertificate()];
+  EXPECT_NE(spki_hash, nil);
+  EXPECT_TRUE([spki_hash length] > 0);
 
-  XCTAssertTrue([spki_hash isEqual:amzn_spki_hash_data]);
+  EXPECT_TRUE([spki_hash isEqual:amzn_spki_hash_data]);
 }
-@end

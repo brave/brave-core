@@ -4,30 +4,43 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
 import("//testing/test.gni")
 
+<<<<<<< HEAD
 ios_xctest_test("brave_unit_tests") {
+=======
+source_set("basic_unit_tests") {
+  testonly = true
+>>>>>>> 340926b168d ([iOS] Replace Xcode unit tests with GTest unit tests)
   sources = [
-    "dictionary_transform_test.mm",
-    "main.mm",
-    "net_test.mm",
-    "startup_test.mm",
+    "certificate_unittest.mm",
+    "dictionary_transform_unittest.mm",
     "test_foo.h",
     "test_foo.mm",
-    "vector_transform_test.mm",
+    "vector_transform_unittest.mm",
   ]
-
   deps = [
     "//base",
-    "//brave/ios/app",
     "//brave/ios/browser/api/net",
-    "//ios/third_party/material_components_ios:material_components_ios+bundle",
-    "//ios/third_party/material_components_ios:material_components_ios+link",
     "//net",
+    "//testing/gtest",
   ]
-
   frameworks = [
     "Foundation.framework",
     "Security.framework",
   ]
+}
+
+test("brave_core_ios_tests") {
+  testonly = true
+
+  deps = [
+    ":basic_unit_tests",
+    "//base",
+    "//base/test:run_all_unittests",
+    "//base/test:test_support",
+  ]
+
+  assert_no_deps = ios_assert_no_deps
 }
