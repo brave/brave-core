@@ -87,8 +87,7 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
       creative_set.total_max = creative_set_node["totalMax"].GetInt();
 
       const std::string value = creative_set_node["value"].GetString();
-      const bool success = base::StringToDouble(value, &creative_set.value);
-      if (!success) {
+      if (!base::StringToDouble(value, &creative_set.value)) {
         BLOG(1, "Failed to parse creative set value " << value);
         continue;
       }
