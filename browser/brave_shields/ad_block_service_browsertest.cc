@@ -478,7 +478,7 @@ class AdBlockServiceEngineUpdateCountTest : public AdBlockServiceTest {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceEngineUpdateCountTest,
                        DefaultStartupWithCookieList) {
   // The empty ruleset building until the components are loaded.
-  // TODO: remove that excessive work.
+  // TODO(matuchin): remove that excessive work.
   histogram_tester_.ExpectTotalCount(
       "Brave.Adblock.MakeEngineWithRules.Default", 1);
   histogram_tester_.ExpectTotalCount(
@@ -495,7 +495,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceEngineUpdateCountTest,
 
   // Currently, the extra engine depends on the default, so we expect an extra
   // unnecessary update.
-  // TODO: remove that dependency and change 3 => 2.
+  // TODO(matuchin): remove that dependency and change 3 => 2.
   histogram_tester_.ExpectTotalCount(
       "Brave.Adblock.MakeEngineWithRules.Additional", 3);
 }
