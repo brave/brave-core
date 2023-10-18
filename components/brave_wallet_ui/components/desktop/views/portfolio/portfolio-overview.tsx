@@ -365,17 +365,44 @@ export const PortfolioOverview = () => {
     querySubscriptionOptions60s
   )
 
+  const tokenBalancesRegistryWithRewards = React.useMemo(() => {
+    if (
+      displayRewardsInPortolfio &&
+      rewardsToken &&
+      externalRewardsProvider &&
+      rewardsBalance
+    ) {
+      return {
+        [externalRewardsProvider]: {
+          [BraveWallet.MAINNET_CHAIN_ID]: {
+            [rewardsToken.contractAddress]: new Amount(rewardsBalance)
+              .multiplyByDecimals(rewardsToken.decimals)
+              .format()
+          }
+        },
+        ...tokenBalancesRegistry
+      }
+    }
+    return tokenBalancesRegistry
+  }, [
+    displayRewardsInPortolfio,
+    rewardsToken,
+    tokenBalancesRegistry,
+    rewardsBalance,
+    externalRewardsProvider
+  ])
+
   const {
     data: portfolioPriceHistory,
     isFetching: isFetchingPortfolioPriceHistory
   } = useGetPricesHistoryQuery(
     visibleTokensForFilteredChains.length &&
-      tokenBalancesRegistry && defaultFiat
+      tokenBalancesRegistryWithRewards && defaultFiat
         ? {
             tokens: visibleTokensForFilteredChains,
             timeframe: selectedPortfolioTimeline,
             vsAsset: defaultFiat,
-            tokenBalancesRegistry
+            tokenBalancesRegistry: tokenBalancesRegistryWithRewards
           }
         : skipToken
   )
