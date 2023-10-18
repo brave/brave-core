@@ -1,0 +1,16 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.third_party_service.mojom;
+
+import "brave/components/services/brave_wallet/public/mojom/filecoin_utility.mojom";
+import "sandbox/policy/mojom/sandbox.mojom";
+
+// The main interface to access third party libraries used by Brave wallet
+// which will be running on an on-demand utility process when possible.
+[ServiceSandbox=sandbox.mojom.Sandbox.kService]
+interface ThirdPartyService {
+  BindFilecoinUtility(pending_receiver<FilecoinUtility> receiver);
+};

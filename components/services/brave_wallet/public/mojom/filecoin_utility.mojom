@@ -1,0 +1,16 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.third_party_service.mojom;
+
+interface FilecoinUtility {
+  // Generates a BLS public key from the private key.
+  BLSPrivateKeyToPublicKey(array<uint8> private_key)
+      => (array<uint8>? public_key);
+
+  TransactionSign(bool is_mainnet, string transaction,
+                  array<uint8> private_key)
+      => (string? result);
+};
