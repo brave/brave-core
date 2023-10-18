@@ -282,7 +282,7 @@ class UserScriptManager {
     
     let logComponents = [
       userScripts.sorted(by: { $0.rawValue < $1.rawValue}).map { scriptType in
-        " \(scriptType.debugDescription)"
+        " \(scriptType.rawValue)"
       }.joined(separator: "\n"),
       customScripts.sorted(by: { $0.order < $1.order}).map { scriptType in
         " #\(scriptType.order) \(scriptType.debugDescription)"
@@ -345,30 +345,3 @@ class UserScriptManager {
     }
   }
 }
-
-#if DEBUG
-extension UserScriptType: CustomDebugStringConvertible {
-  var debugDescription: String {
-    switch self {
-    case .domainUserScript(let domainUserScript):
-      return "domainUserScript(\(domainUserScript.associatedDomains.joined(separator: ", ")))"
-    case .engineScript(let configuration):
-      return "engineScript(\(configuration.frameURL))"
-    case .farblingProtection(let etld):
-      return "farblingProtection(\(etld))"
-    case .nacl:
-      return "nacl"
-    case .siteStateListener:
-      return "siteStateListener"
-    case .selectorsPoller:
-      return "selectorsPoller"
-    }
-  }
-}
-
-extension UserScriptManager.ScriptType: CustomDebugStringConvertible {
-  var debugDescription: String {
-    return rawValue
-  }
-}
-#endif

@@ -76,3 +76,22 @@ enum UserScriptType: Hashable {
     }
   }
 }
+
+extension UserScriptType: CustomDebugStringConvertible {
+  var debugDescription: String {
+    switch self {
+    case .domainUserScript(let domainUserScript):
+      return "domainUserScript(\(domainUserScript.associatedDomains.joined(separator: ", ")))"
+    case .engineScript(let configuration):
+      return "engineScript(\(configuration.frameURL))"
+    case .farblingProtection(let etld):
+      return "farblingProtection(\(etld))"
+    case .nacl:
+      return "nacl"
+    case .siteStateListener:
+      return "siteStateListener"
+    case .selectorsPoller:
+      return "selectorsPoller"
+    }
+  }
+}
