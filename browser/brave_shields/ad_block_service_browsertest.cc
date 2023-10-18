@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
@@ -463,6 +464,40 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                          "setExpectations(1, 0, 0, 0);"
                          "addImage('logo.png')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+class AdBlockServiceEngineUpdateCountTest : public AdBlockServiceTest {
+ protected:
+  const base::HistogramTester histogram_tester_;
+};
+
+// The test verifies the number of expected engine updating during normal
+// startup.
+// Warning: each engine updating is a CPU-heavy thing and degrades startup
+// performance.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceEngineUpdateCountTest,
+                       DefaultStartupWithCookieList) {
+  // The empty ruleset building until the components are loaded.
+  // TODO: remove that excessive work.
+  histogram_tester_.ExpectTotalCount(
+      "Brave.Adblock.MakeEngineWithRules.Default", 1);
+  histogram_tester_.ExpectTotalCount(
+      "Brave.Adblock.MakeEngineWithRules.Additional", 1);
+
+  // Loads the default list first, then the additional cookie list.
+  ASSERT_TRUE(
+      InstallRegionalAdBlockExtension(brave_shields::kCookieListUuid, true));
+
+  // Only one new rebuild is expected. Loading the extra list must not
+  // trigger another rebuilding of the default engine.
+  histogram_tester_.ExpectTotalCount(
+      "Brave.Adblock.MakeEngineWithRules.Default", 2);
+
+  // Currently, the extra engine depends on the default, so we expect an extra
+  // unnecessary update.
+  // TODO: remove that dependency and change 3 => 2.
+  histogram_tester_.ExpectTotalCount(
+      "Brave.Adblock.MakeEngineWithRules.Additional", 3);
 }
 
 // Load a page with an ad image, and make sure it is blocked by the
