@@ -25,7 +25,6 @@ export function Panel () {
   const host = React.useContext(HostContext)
   const tabOpener = React.useContext(TabOpenerContext)
 
-  const [isGrandfatheredUser, setIsGrandfatheredUser] = React.useState(host.state.isGrandfatheredUser)
   const [userType, setUserType] = React.useState(host.state.userType)
   const [balance, setBalance] = React.useState(host.state.balance)
   const [settings, setSettings] = React.useState(host.state.settings)
@@ -58,7 +57,6 @@ export function Panel () {
     React.useState(host.state.declaredCountry)
 
   useHostListener(host, (state) => {
-    setIsGrandfatheredUser(state.isGrandfatheredUser)
     setUserType(state.userType)
     setBalance(state.balance)
     setSettings(state.settings)
@@ -118,7 +116,6 @@ export function Panel () {
         <WalletCard
           userType={userType}
           balance={balance}
-          isGrandfatheredUser={isGrandfatheredUser}
           externalWallet={externalWallet}
           providerPayoutStatus={providerPayoutStatus}
           minEarningsThisMonth={earningsInfo.minEarningsThisMonth}

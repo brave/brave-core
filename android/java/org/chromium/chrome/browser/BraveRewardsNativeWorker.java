@@ -211,13 +211,6 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public boolean isGrandfatheredUser() {
-        synchronized (lock) {
-            return BraveRewardsNativeWorkerJni.get().isGrandfatheredUser(
-                    mNativeBraveRewardsNativeWorker);
-        }
-    }
-
     public void fetchBalance() {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().fetchBalance(mNativeBraveRewardsNativeWorker);
@@ -850,7 +843,6 @@ public class BraveRewardsNativeWorker {
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);
         double getVbatDeadline(long nativeBraveRewardsNativeWorker);
         void getUserType(long nativeBraveRewardsNativeWorker);
-        boolean isGrandfatheredUser(long nativeBraveRewardsNativeWorker);
         void fetchBalance(long nativeBraveRewardsNativeWorker);
         void setAutoContributeEnabled(
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);

@@ -16,11 +16,6 @@ export const onSettingSave = (key: string, value: any, persist: boolean = true) 
   persist
 })
 
-export const getIsGrandfatheredUser = () => action(types.GET_IS_GRANDFATHERED_USER)
-
-export const onIsGrandfatheredUser = (isGrandfatheredUser: boolean) =>
-    action(types.ON_IS_GRANDFATHERED_USER, {isGrandfatheredUser})
-
 export const onUserType =
   (userType: number) => action(types.ON_USER_TYPE, { userType })
 

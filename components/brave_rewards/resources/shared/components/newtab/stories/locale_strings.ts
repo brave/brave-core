@@ -6,7 +6,6 @@
 export const localeStrings = {
   rewardsAdGrantAmount: '$1 Rewards: $2',
   rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
-  rewardsBalanceInfoText: 'Now that you\'re connected to ZebPay, any previous balance you had will be deposited into your ZebPay account as part of your next earnings payout. Once it arrives, you\'ll see your BAT reflected in your Rewards balance.',
   rewardsBalanceTitle: 'Balance',
   rewardsBraveRewards: 'Brave Rewards',
   rewardsClaimRewards: 'Claim Rewards',

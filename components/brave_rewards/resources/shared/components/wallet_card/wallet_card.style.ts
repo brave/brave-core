@@ -192,56 +192,6 @@ export const batAmount = styled.div`
   }
 `
 
-// TODO(sszaloki):
-// replace color: #FFBC18; with color: ${leo.color.yellow[30]};
-// once the palette adjustments have been merged
-export const balanceInfo = styled.div`
-  position: relative;
-
-  --icon-size: 18px;
-  color: #FFBC18;
-  margin-top: 14px;
-
-  .tooltip {
-    position: absolute;
-    right: -118px;
-    width: 260px;
-    padding-top: 8px;
-    visibility: hidden;
-    transition: visibility 0s linear 300ms;
-    z-index: 1;
-  }
-
-  &:hover .tooltip {
-    visibility: initial;
-  }
-`
-
-export const balanceTooltip = styled.div.attrs({
-  'data-theme': 'light'
-})`
-  position: relative;
-  padding: 16px;
-  background: ${leo.color.white};
-  box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
-  border-radius: 8px;
-  color: ${leo.color.text.primary};
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: 122px;
-    background: inherit;
-    height: 15px;
-    width: 15px;
-    transform: rotate(45deg);
-  }
-`
-
 export const balanceSpinner = styled.div`
   .icon {
     height: 24px;

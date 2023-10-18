@@ -82,7 +82,6 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         rewardsState: {
           ...state.rewardsState,
           rewardsEnabled: preInitialRewardsDataPayload.rewardsEnabled,
-          isGrandfatheredUser: preInitialRewardsDataPayload.isGrandfatheredUser,
           userType: preInitialRewardsDataPayload.userType,
           isUnsupportedRegion: preInitialRewardsDataPayload.isUnsupportedRegion,
           declaredCountry: preInitialRewardsDataPayload.declaredCountry,
