@@ -273,8 +273,7 @@ class EngineTestObserver : public brave_shields::AdBlockEngine::TestObserver {
 bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
     const std::string& uuid,
     bool enable_list) {
-  // The regional adblock engines depend on the default engine for resource
-  // loads.
+  // Install the default engine first.
   EXPECT_TRUE(InstallDefaultAdBlockExtension());
   auto* default_engine =
       g_brave_browser_process->ad_block_service()->default_engine_.get();
@@ -489,15 +488,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceEngineUpdateCountTest,
       InstallRegionalAdBlockExtension(brave_shields::kCookieListUuid, true));
 
   // Only one new rebuild is expected. Loading the extra list must not
-  // trigger another rebuilding of the default engine.
+  // trigger another rebuilding of the default engine and vice versa.
   histogram_tester_.ExpectTotalCount(
       "Brave.Adblock.MakeEngineWithRules.Default", 2);
-
-  // Currently, the extra engine depends on the default, so we expect an extra
-  // unnecessary update.
-  // TODO(matuchin): remove that dependency and change 3 => 2.
   histogram_tester_.ExpectTotalCount(
-      "Brave.Adblock.MakeEngineWithRules.Additional", 3);
+      "Brave.Adblock.MakeEngineWithRules.Additional", 2);
 }
 
 // Load a page with an ad image, and make sure it is blocked by the

@@ -97,8 +97,8 @@ AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
 }
 
 void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
-  if (adblock_engine_->IsDefaultEngine() && !is_default_engine) {
-    // Skip updates of the additional engine for the default.
+  if (adblock_engine_->IsDefaultEngine() != is_default_engine) {
+    // Skip updates of another engine.
     return;
   }
   if (is_filter_provider_manager_) {
