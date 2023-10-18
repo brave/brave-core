@@ -14,7 +14,7 @@ export interface AIChatContext {
   suggestedQuestions: string[]
   isGenerating: boolean
   canGenerateQuestions: boolean
-  hasSeenAgreement: boolean
+  hasAcceptedAgreement: boolean
   userAutoGeneratePref: mojom.AutoGenerateQuestionsPref | undefined
   siteInfo: mojom.SiteInfo | null
   favIconUrl: string | undefined
@@ -33,14 +33,14 @@ export interface AIChatContext {
   getCanShowPremiumPrompt: () => void
 }
 
-export const defaultContext = {
+export const defaultContext: AIChatContext = {
   allModels: [],
   hasChangedModel: false,
   conversationHistory: [],
   suggestedQuestions: [],
   isGenerating: false,
   canGenerateQuestions: false,
-  hasSeenAgreement: false,
+  hasAcceptedAgreement: false,
   apiHasError: false,
   shouldDisableUserInput: false,
   isPremiumUser: false,

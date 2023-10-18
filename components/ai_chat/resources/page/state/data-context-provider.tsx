@@ -7,7 +7,7 @@ import * as React from 'react'
 import { loadTimeData } from '$web-common/loadTimeData'
 
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
-import DataContext from './context'
+import DataContext, { AIChatContext } from './context'
 
 function toBlobURL(data: number[] | null) {
   if (!data) return undefined
@@ -32,7 +32,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null>(null)
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
-  const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
+  const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
 
@@ -98,7 +98,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const handleAgreeClick = () => {
-    setHasSeenAgreement(true)
+    setHasAcceptedAgreement(true)
     getPageHandlerInstance().pageHandler.markAgreementAccepted()
   }
 
@@ -183,7 +183,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     })
   }, [])
 
-  const store = {
+  const store: AIChatContext = {
     allModels,
     currentModel,
     hasChangedModel,
@@ -195,7 +195,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     siteInfo,
     favIconUrl,
     currentError,
-    hasSeenAgreement,
+    hasAcceptedAgreement,
     apiHasError,
     shouldDisableUserInput,
     isPremiumUser: premiumStatus !== mojom.PremiumStatus.Inactive,

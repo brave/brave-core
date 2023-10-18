@@ -27,7 +27,7 @@ function Main() {
   const {
     siteInfo,
     userAutoGeneratePref,
-    hasSeenAgreement,
+    hasAcceptedAgreement: hasSeenAgreement,
     currentError,
     apiHasError
   } = context
