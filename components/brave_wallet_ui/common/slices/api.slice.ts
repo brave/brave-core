@@ -1271,7 +1271,7 @@ export function createWalletApi () {
 
             const tokenBalancesRegistryArray = await mapLimit(
               args.accounts,
-              Math.min(args.accounts.length, 3),
+              3,
               async (accountId: BraveWallet.AccountId) => {
                 const networks = args.networks.filter(
                   (network) => network.coin === accountId.coin)
@@ -1282,7 +1282,7 @@ export function createWalletApi () {
 
                 const registryArray = await mapLimit(
                   networks,
-                  Math.min(networks.length, 3),
+                  3,
                   async (
                     network: Pick<
                       BraveWallet.NetworkInfo,
@@ -1299,7 +1299,7 @@ export function createWalletApi () {
                                 chainId: network.chainId
                               }
                             ]
-                          : [
+                          : coinTypesMapping[network.coin] ? [
                               {
                                 accountId,
                                 coin: coinTypesMapping[network.coin],
@@ -1315,9 +1315,7 @@ export function createWalletApi () {
                                     ]
                                   )
                               }
-                            ].filter(
-                              ({ coin }) => coin !== undefined
-                            ),
+                            ]: [],
                         {
                           forceRefetch: true
                         }
@@ -1369,16 +1367,15 @@ export function createWalletApi () {
         },
         providesTags: (result, err, args) => err
           ? ['TokenBalances', 'UNKNOWN_ERROR']
-          : args.accounts.map((accountId) => {
-              const networksKey = args.networks
+          : args.accounts.flatMap((accountId) => {
+              const networkKeys = args.networks
                 .filter((network) => accountId.coin === network.coin)
                 .map((network) => network.chainId)
-                .join('-')
-
-              return {
+              const accountKey = getAccountBalancesKey(accountId)
+              return networkKeys.map((networkKey) => ({
                 type: 'TokenBalances',
-                id: `${getAccountBalancesKey(accountId)}-${networksKey}`
-              }
+                id: `${accountKey}-${networkKey}`
+              }))
             })
       }),
       getHardwareAccountDiscoveryBalance: query<
