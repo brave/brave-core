@@ -15,8 +15,7 @@ namespace ai_chat::features {
 
 BASE_FEATURE(kAIChat,
              "AIChat",
-// Enable the feature flag on Android dev and nightly channels
-#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_AI_CHAT_FEATURE_FLAG)
+#if BUILDFLAG(ENABLE_AI_CHAT_FEATURE_FLAG)
              base::FEATURE_ENABLED_BY_DEFAULT
 #else
              base::FEATURE_DISABLED_BY_DEFAULT
