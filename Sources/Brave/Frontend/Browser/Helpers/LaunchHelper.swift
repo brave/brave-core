@@ -87,6 +87,26 @@ public actor LaunchHelper {
     let remainingModes = ContentBlockerManager.BlockingMode.allCases.filter({ !loadedBlockModes.contains($0) })
     
     Task.detached(priority: .low) {
+      // Let's disable filter lists if we have reached a maxumum amount
+      let enabledSources = await AdBlockStats.shared.enabledSources
+      if enabledSources.count > AdBlockStats.maxNumberOfAllowedFilterLists {
+        let toDisableSources = enabledSources[AdBlockStats.maxNumberOfAllowedFilterLists...]
+        
+        for source in toDisableSources {
+          switch source {
+          case .adBlock:
+            // This should never be in the list because the order of enabledSources places this as the first item
+            continue
+          case .filterList(let componentId):
+            ContentBlockerManager.log.debug("Disabling filter list \(source.debugDescription)")
+            await FilterListStorage.shared.ensureFilterList(for: componentId, isEnabled: false)
+          case .filterListURL(let uuid):
+            ContentBlockerManager.log.debug("Disabling custom filter list \(source.debugDescription)")
+            await CustomFilterListStorage.shared.ensureFilterList(for: uuid, isEnabled: false)
+          }
+        }
+      }
+      
       let signpostID = Self.signpost.makeSignpostID()
       let state = Self.signpost.beginInterval("nonBlockingLaunchTask", id: signpostID)
       await FilterListResourceDownloader.shared.start(with: adBlockService)

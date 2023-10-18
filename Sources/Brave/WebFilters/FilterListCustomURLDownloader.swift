@@ -128,14 +128,10 @@ actor FilterListCustomURLDownloader: ObservableObject {
       return
     }
     
-    do {
-      try await AdBlockStats.shared.compileDelayed(
-        filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-        isAlwaysAggressive: true, delayed: true
-      )
-    } catch {
-      // Don't handle cancellation errors
-    }
+    await AdBlockStats.shared.compile(
+      filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
+      isAlwaysAggressive: true
+    )
   }
   
   /// Start fetching the resource for the given filter list. Once a new version is downloaded, the file will be processed using the `handle` method

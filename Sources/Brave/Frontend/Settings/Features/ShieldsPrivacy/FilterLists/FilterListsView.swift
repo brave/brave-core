@@ -41,6 +41,7 @@ struct FilterListsView: View {
       } header: {
         Text(Strings.customFilterLists)
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       
       Section {
@@ -52,10 +53,9 @@ struct FilterListsView: View {
           Text(Strings.filterListsDescription)
             .textCase(.none)
         }
-      }
+      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
     .animation(.default, value: customFilterListStorage.filterListsURLs)
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
