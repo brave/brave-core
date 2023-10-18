@@ -86,7 +86,7 @@ const ControlsContainer = styled.div`
   }
 
   @media ${playerTypes.miniPlayer} {
-    max-width: calc(100vw - var(--mini-player-video-width));
+    max-width: calc(100% - var(--mini-player-video-width) - ${spacing.xl});
     flex: 1 1 auto;
     flex-direction: row;
     gap: ${spacing.xl};
@@ -122,7 +122,8 @@ const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
       visibility: hidden;
     }
 
-    &:hover {
+    &:hover,
+    &:focus-within {
       ${ControlsContainer} {
         visibility: visible;
       }
@@ -258,6 +259,8 @@ export default function Player () {
     <PlayerContainer backgroundUrl={currentItem?.thumbnailPath.url}>
       <VideoContainer>
         <StyledVideo
+          tabIndex={0}
+          onKeyDown={e => e.key === 'Enter' && e.currentTarget.click()}
           ref={setVideoElement}
           autoPlay
           onPlay={() =>
@@ -309,6 +312,8 @@ export default function Player () {
               `chrome-untrusted://playlist-data/${currentItem.id}/favicon`
             }
             clickable={!!currentItem}
+            tabIndex={0}
+            onKeyDown={e => e.key === 'Enter' && e.currentTarget.click()}
             onClick={() => {
               if (currentItem) {
                 notifyEventsToTopFrame({
@@ -328,6 +333,8 @@ export default function Player () {
                 })
               }
             }}
+            tabIndex={0}
+            onKeyDown={e => e.key === 'Enter' && e.currentTarget.click()}
           >
             {currentItem?.name}
           </StyledTitle>
