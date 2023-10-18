@@ -17,6 +17,8 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "brave/components/services/brave_wallet/content/out_of_process_third_party_service_launcher.h"
+#include "brave/components/services/brave_wallet/public/cpp/third_party_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -72,6 +74,9 @@ BraveWalletServiceFactory::BraveWalletServiceFactory()
   DependsOn(JsonRpcServiceFactory::GetInstance());
   DependsOn(TxServiceFactory::GetInstance());
   DependsOn(BitcoinWalletServiceFactory::GetInstance());
+
+  ThirdPartyService::Get().SetLauncher(
+      std::make_unique<OutOfProcessThirdPartyServiceLauncher>());
 }
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
