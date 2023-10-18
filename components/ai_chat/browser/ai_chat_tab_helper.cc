@@ -153,9 +153,9 @@ void AIChatTabHelper::InitEngine() {
 }
 
 bool AIChatTabHelper::HasUserOptedIn() {
-  base::Time last_seen_disclaimer =
+  base::Time last_accepted_disclaimer =
       pref_service_->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
-  return !last_seen_disclaimer.is_null();
+  return !last_accepted_disclaimer.is_null();
 }
 
 void AIChatTabHelper::OnUserOptedIn() {

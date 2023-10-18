@@ -228,20 +228,21 @@ void AIChatUIPageHandler::GetAPIResponseError(
 
 void AIChatUIPageHandler::GetCanShowPremiumPrompt(
     GetCanShowPremiumPromptCallback callback) {
-  bool has_user_dismissed = profile_->GetPrefs()->GetBoolean(
+  bool has_user_dismissed_prompt = profile_->GetPrefs()->GetBoolean(
       ai_chat::prefs::kUserDismissedPremiumPrompt);
 
-  if (has_user_dismissed) {
+  if (has_user_dismissed_prompt) {
     std::move(callback).Run(false);
     return;
   }
 
-  base::Time last_seen_disclaimer =
+  base::Time last_accepted_disclaimer =
       profile_->GetPrefs()->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
   base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
-  bool is_more_than_24h_since_last_seen = last_seen_disclaimer < time_1_day_ago;
+  bool is_more_than_24h_since_last_seen =
+      last_accepted_disclaimer < time_1_day_ago;
 
-  if (is_more_than_24h_since_last_seen && !has_user_dismissed) {
+  if (is_more_than_24h_since_last_seen && !has_user_dismissed_prompt) {
     std::move(callback).Run(true);
     return;
   }
