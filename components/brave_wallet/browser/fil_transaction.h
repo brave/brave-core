@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
@@ -55,9 +56,12 @@ class FilTransaction {
 
   base::Value::Dict ToValue() const;
   mojom::FilTxDataPtr ToFilTxData() const;
-  absl::optional<std::string> GetSignedTransaction(
-      const FilAddress& from,
-      const std::vector<uint8_t>& private_key) const;
+
+  using GetSignedTransactionCallback =
+      base::OnceCallback<void(absl::optional<std::string>)>;
+  void GetSignedTransaction(const FilAddress& from,
+                            const std::vector<uint8_t>& private_key,
+                            GetSignedTransactionCallback callback) const;
   static absl::optional<FilTransaction> FromValue(
       const base::Value::Dict& value);
 
@@ -66,7 +70,7 @@ class FilTransaction {
   static absl::optional<base::Value> DeserializeSignedTx(
       const std::string& signed_tx);
   // Finds signed tx JSON by path and converts some string fields to uint64 form
-  static absl::optional<std::string> ConvertMesssageStringFieldsToInt64(
+  static absl::optional<std::string> ConvertMessageStringFieldsToInt64(
       const std::string& path,
       const std::string& json);
   // Finds signed tx JSON by path and converts some string fields to uint64 form

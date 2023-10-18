@@ -92,6 +92,10 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                                  GetTransactionMessageToSignCallback callback,
                                  bool success,
                                  uint256_t nonce);
+  void OnTransactionSigned(const std::string& chain_id,
+                           const std::string& tx_meta_id,
+                           ApproveTransactionCallback callback,
+                           absl::optional<std::string> signed_tx);
   void OnSendFilecoinTransaction(const std::string& chain_id,
                                  const std::string& tx_meta_id,
                                  ApproveTransactionCallback callback,

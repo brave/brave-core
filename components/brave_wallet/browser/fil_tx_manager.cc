@@ -201,8 +201,17 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
     return;
   }
 
-  auto signed_tx = keyring_service_->SignTransactionByFilecoinKeyring(
-      *meta->from(), meta->tx());
+  keyring_service_->SignTransactionByFilecoinKeyring(
+      *meta->from(), meta->tx(),
+      base::BindOnce(&FilTxManager::OnTransactionSigned,
+                     weak_factory_.GetWeakPtr(), meta->chain_id(), meta->id(),
+                     std::move(callback)));
+}
+
+void FilTxManager::OnTransactionSigned(const std::string& chain_id,
+                                       const std::string& tx_meta_id,
+                                       ApproveTransactionCallback callback,
+                                       absl::optional<std::string> signed_tx) {
   if (!signed_tx) {
     std::move(callback).Run(
         false,
@@ -212,9 +221,9 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
     return;
   }
   json_rpc_service_->SendFilecoinTransaction(
-      meta->chain_id(), signed_tx.value(),
+      chain_id, signed_tx.value(),
       base::BindOnce(&FilTxManager::OnSendFilecoinTransaction,
-                     weak_factory_.GetWeakPtr(), meta->chain_id(), meta->id(),
+                     weak_factory_.GetWeakPtr(), chain_id, tx_meta_id,
                      std::move(callback)));
 }
 
