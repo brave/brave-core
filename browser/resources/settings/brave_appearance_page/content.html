@@ -1,0 +1,51 @@
+<style include="cr-shared-style settings-shared md-select iron-flex"></style>
+
+<template is="dom-if" if="[[showSpeedreaderOption_()]]">
+    <settings-toggle-button
+        class="cr-row first"
+        id="speedreader"
+        pref="{{prefs.brave.speedreader.enabled}}"
+        label="$i18n{speedreaderSettingLabel}"
+        sub-label="$i18n{speedreaderSettingSubLabel}"
+        learn-more-url="$i18n{speedreaderLearnMoreURL}">
+    </settings-toggle-button>
+</template>
+<div class="cr-row">
+    <div class="flex cr-padded-text" aria-hidden="true">
+        $i18n{fontSize}
+    </div>
+    <settings-dropdown-menu id="defaultFontSize" label="$i18n{fontSize}"
+        pref="{{prefs.webkit.webprefs.default_font_size}}"
+        menu-options="[[fontSizeOptions_]]">
+    </settings-dropdown-menu>
+</div>
+<cr-link-row class="hr" id="customize-fonts-subpage-trigger"
+    label="$i18n{customizeFonts}" on-click="onCustomizeFontsClick_"
+    role-description="$i18n{subpageArrowRoleDescription}">
+</cr-link-row>
+<div class="cr-row" hidden="[[!pageVisibility.pageZoom]]">
+    <div id="pageZoom" class="flex cr-padded-text" aria-hidden="true">
+        $i18n{pageZoom}
+    </div>
+    <select id="zoomLevel" class="md-select" aria-labelledby="pageZoom"
+        on-change="onZoomLevelChange_">
+        <template is="dom-repeat" items="[[pageZoomLevels_]]">
+            <option value="[[item]]"
+                selected="[[zoomValuesEqual_(item, defaultZoom_)]]">
+                [[formatZoom_(item)]]%
+            </option>
+        </template>
+    </select>
+</div>
+<settings-toggle-button
+    class="hr"
+    id="mru-cycling"
+    pref="{{prefs.brave.mru_cycling_enabled}}"
+    label="$i18n{mruCyclingSettingLabel}">
+</settings-toggle-button>
+<if expr="is_macosx">
+    <settings-toggle-button class="hr"
+        pref="{{prefs.webkit.webprefs.tabs_to_links}}"
+        label="$i18n{tabsToLinks}">
+    </settings-toggle-button>
+</if>

@@ -1,65 +1,50 @@
 <!-- This file will be converted into tabs.html.js using //tools/grit/preprocess_if_expr -->
-<style include="settings-shared iron-flex">
-  .border {
-    border-top: var(--cr-separator-line);
-    border-bottom: var(--cr-separator-line);
-  }
+<style include="settings-shared iron-flex"></style>
 
-  .settings-box {
-    padding: 0
-  }
-</style>
-
-<div class="cr-row">$i18n{appearanceSettingsTabsSection}</div>
-<div class="list-frame">
-  <!-- Vertical Tab strip -->
-  <settings-toggle-button
-    class="cr-row list-item"
-    pref="{{prefs.brave.tabs.vertical_tabs_enabled}}"
-    label="$i18n{appearanceSettingsTabsUseVerticalTabs}">
-  </settings-toggle-button>
-  <template
-    is="dom-if"
-    if="[[prefs.brave.tabs.vertical_tabs_enabled.value]]">
-      <div class="cr-row">
-        <settings-checkbox
-          class="cr-row list-item"
-          pref="{{prefs.brave.tabs.vertical_tabs_show_title_on_window}}"
-          label="$i18n{appearanceSettingsTabsShowWindowTitle}">
-        </settings-checkbox>
-      </div>
-      <div class="cr-row">
-        <settings-checkbox
-          class="cr-row list-item"
-          pref="{{prefs.brave.tabs.vertical_tabs_floating_enabled}}"
-          label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
-        </settings-checkbox>
-      </div>
-  </template>  <!-- vertical_tabs_enabled.value -->
-
-  <!-- Tab search button visibility -->
-  <settings-toggle-button
-    pref="{{prefs.brave.tabs_search_show}}"
-    class="cr-row list-item"
-    label="$i18n{showSearchTabsBtn}">
-  </settings-toggle-button>
-
-  <!-- Tab speaker icons function  -->
-  <settings-toggle-button
-    pref="{{prefs.brave.tabs.mute_indicator_not_clickable}}"
-    class="cr-row list-item"
-    label="$i18n{braveDisableClickableMuteIndicators}">
-  </settings-toggle-button>
-
-  <!-- Tab hover mode -->
-  <div class="cr-row list-item settings-box">
-    <div class="flex">
-      <div class="label">$i18n{appearanceSettingsTabHoverMode}</div>
-    </div>
-    <settings-dropdown-menu
-      pref="{{prefs.brave.tabs.hover_mode}}"
-      menu-options="[[tabTooltipModes_]]">
-    </settings-dropdown-menu>
+<!-- Vertical Tab strip -->
+<settings-toggle-button
+  class="cr-row first"
+  pref="{{prefs.brave.tabs.vertical_tabs_enabled}}"
+  label="$i18n{appearanceSettingsTabsUseVerticalTabs}">
+</settings-toggle-button>
+<template
+  is="dom-if"
+  if="[[prefs.brave.tabs.vertical_tabs_enabled.value]]">
+  <div class="cr-row continuation list-frame">
+    <settings-checkbox
+      class="list-item"
+      pref="{{prefs.brave.tabs.vertical_tabs_show_title_on_window}}"
+      label="$i18n{appearanceSettingsTabsShowWindowTitle}">
+    </settings-checkbox>
+    <settings-checkbox
+      class="list-item"
+      pref="{{prefs.brave.tabs.vertical_tabs_floating_enabled}}"
+      label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
+    </settings-checkbox>
   </div>
-</div> <!-- .list-frame -->
+</template> <!-- vertical_tabs_enabled.value -->
 
+<!-- Tab search button visibility -->
+<settings-toggle-button
+  pref="{{prefs.brave.tabs_search_show}}"
+  class="cr-row"
+  label="$i18n{showSearchTabsBtn}">
+</settings-toggle-button>
+
+<!-- Tab speaker icons function  -->
+<settings-toggle-button
+  pref="{{prefs.brave.tabs.mute_indicator_not_clickable}}"
+  class="cr-row"
+  label="$i18n{braveDisableClickableMuteIndicators}">
+</settings-toggle-button>
+
+<!-- Tab hover mode -->
+<div class="cr-row settings-box">
+  <div class="flex">
+    <div class="label">$i18n{appearanceSettingsTabHoverMode}</div>
+  </div>
+  <settings-dropdown-menu
+    pref="{{prefs.brave.tabs.hover_mode}}"
+    menu-options="[[tabTooltipModes_]]">
+  </settings-dropdown-menu>
+</div>
