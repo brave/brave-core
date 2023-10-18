@@ -17,6 +17,7 @@ import Growth
 import SafariServices
 import LocalAuthentication
 import BraveShared
+import UniformTypeIdentifiers
 
 extension WKNavigationAction {
   /// Allow local requests only if the request is privileged.
@@ -47,6 +48,11 @@ extension WKNavigationType: CustomDebugStringConvertible {
       return "Unknown(\(rawValue))"
     }
   }
+}
+
+extension UTType {
+  static let textCalendar = UTType(mimeType: "text/calendar")! // Not the same as `calendarEvent`
+  static let mobileConfiguration = UTType(mimeType: "application/x-apple-aspen-config")!
 }
 
 // MARK: WKNavigationDelegate
@@ -192,18 +198,6 @@ extension BrowserViewController: WKNavigationDelegate {
     if requestURL.scheme == "mailto" {
       // Do not allow opening external URLs from child tabs
       handleExternalURL(requestURL, tab: tab, navigationAction: navigationAction)
-      return (.cancel, preferences)
-    }
-    
-    // Handling calendar .ics files
-    if navigationAction.targetFrame?.isMainFrame == true, requestURL.pathExtension.lowercased() == "ics" {
-      // This is not ideal. It pushes a new view controller on top of the BVC
-      // and you have to dismiss it manually after you managed the calendar event.
-      // I do not see a workaround for it, Chrome iOS does the same thing.
-      let vc = SFSafariViewController(url: requestURL, configuration: .init())
-      vc.modalPresentationStyle = .formSheet
-      self.present(vc, animated: true)
-      
       return (.cancel, preferences)
     }
     
@@ -419,6 +413,24 @@ extension BrowserViewController: WKNavigationDelegate {
     
     return (.cancel, preferences)
   }
+  
+  /// Handles a link by opening it in an SFSafariViewController and presenting it on the BVC.
+  ///
+  /// This is unfortunately neccessary to handle certain downloads natively such as ics/calendar invites and
+  /// mobileconfiguration files.
+  ///
+  /// The user unfortunately has to  dismiss it manually after they have handled the file.
+  /// Chrome iOS does the same
+  private func handleLinkWithSafariViewController(_ url: URL, tab: Tab?) {
+    let vc = SFSafariViewController(url: url, configuration: .init())
+    vc.modalPresentationStyle = .formSheet
+    self.present(vc, animated: true)
+    
+    // If the website opened this URL in a separate tab, remove the empty tab
+    if let tab = tab, tab.url == nil || tab.url?.absoluteString == "about:blank" {
+      tabManager.removeTab(tab)
+    }
+  }
 
   @MainActor
   public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse) async -> WKNavigationResponsePolicy {
@@ -450,6 +462,19 @@ extension BrowserViewController: WKNavigationDelegate {
     // download via the context menu.
     let canShowInWebView = navigationResponse.canShowMIMEType && (webView != pendingDownloadWebView)
     let forceDownload = webView == pendingDownloadWebView
+    
+    let mimeTypesThatRequireSFSafariViewControllerHandling: [UTType] = [
+      .textCalendar,
+      .mobileConfiguration
+    ]
+    
+    // SFSafariViewController only supports http/https links
+    if navigationResponse.isForMainFrame, let url = responseURL, url.isWebPage(includeDataURIs: false),
+       let mimeType = response.mimeType.flatMap({ UTType(mimeType: $0) }),
+       mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType) {
+      handleLinkWithSafariViewController(url, tab: tab)
+      return .cancel
+    }
 
     // Check if this response should be handed off to Passbook.
     if let passbookHelper = OpenPassBookHelper(request: request, response: response, canShowInWebView: canShowInWebView, forceDownload: forceDownload, browserViewController: self) {
