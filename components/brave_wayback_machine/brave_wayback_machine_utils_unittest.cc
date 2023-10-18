@@ -11,7 +11,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-TEST(BraveWaybackMachineUtilsTest, LocalHostDisabledTest) {
+TEST(BraveWaybackMachineUtilsTest, DisabledURLTest) {
   EXPECT_TRUE(
       IsWaybackMachineDisabledFor(GURL("https://web.archive.org/foobar.html")));
   EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://localhost/index.html")));
@@ -21,6 +21,8 @@ TEST(BraveWaybackMachineUtilsTest, LocalHostDisabledTest) {
   EXPECT_TRUE(IsWaybackMachineDisabledFor(GURL("http://[::1]")));
   EXPECT_TRUE(IsWaybackMachineDisabledFor(
       GURL("http://127.0045.1.2:8080/index.html")));
+  EXPECT_TRUE(
+      IsWaybackMachineDisabledFor(GURL("view-source:https://www.brave.com")));
   EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.local-news.com")));
   EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.onion-news.com")));
   EXPECT_FALSE(IsWaybackMachineDisabledFor(GURL("http://www.brave.com")));
