@@ -17,6 +17,7 @@ static_library("common") {
 
   deps = [
     "//base",
+    "//brave/components/ai_chat/common/buildflags:buildflags",
     "//components/prefs",
   ]
 }
