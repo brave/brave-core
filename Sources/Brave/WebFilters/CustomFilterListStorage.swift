@@ -32,6 +32,17 @@ import Data
       }
     }
   }
+  
+  /// Ensures that the settings for a filter list are stored
+  /// - Parameters:
+  ///   - uuid: The uuid of the filter list to update
+  ///   - isEnabled: A boolean indicating if the filter list is enabled or not
+  public func ensureFilterList(for uuid: String, isEnabled: Bool) {
+    // Enable the setting
+    if let index = filterListsURLs.firstIndex(where: { $0.setting.uuid == uuid }) {
+      filterListsURLs[index].setting.isEnabled = isEnabled
+    }
+  }
 
   func update(filterListId id: ObjectIdentifier, with result: Result<Date, Error>) {
     guard let index = filterListsURLs.firstIndex(where: { $0.id == id }) else {

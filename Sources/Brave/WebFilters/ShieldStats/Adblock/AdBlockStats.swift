@@ -11,7 +11,13 @@ import os.log
 /// This object holds on to our adblock engines and returns information needed for stats tracking as well as some conveniences
 /// for injected scripts needed during web navigation and cosmetic filters models needed by the `SelectorsPollerScript.js` script.
 public actor AdBlockStats {
-  static let maxNumberOfAllowedFilterLists = 30
+  /// The max number of enabled filter lists depending on the amount memory available to the device
+  static var maxNumberOfAllowedFilterLists: Int = {
+    let memory = Int(ProcessInfo.processInfo.physicalMemory / 1073741824)
+    ContentBlockerManager.log.debug("Memory: \(memory)")
+    return min(5 * memory, 40)
+  }()
+  
   typealias CosmeticFilterModelTuple = (isAlwaysAggressive: Bool, model: CosmeticFilterModel)
   public static let shared = AdBlockStats()
   
@@ -63,33 +69,13 @@ public actor AdBlockStats {
     await removeDisabledEngines()
   }
   
-  public func compileDelayed(
-    filterListInfo: CachedAdBlockEngine.FilterListInfo, resourcesInfo: CachedAdBlockEngine.ResourcesInfo,
-    isAlwaysAggressive: Bool, delayed: Bool
-  ) async throws {
-    if delayed {
-      Task.detached(priority: .background) {
-        ContentBlockerManager.log.debug("Delaying \(filterListInfo.source.debugDescription)")
-        await self.compile(
-          filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-          isAlwaysAggressive: isAlwaysAggressive
-        )
-      }
-    } else {
-      await self.compile(
-        filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-        isAlwaysAggressive: isAlwaysAggressive
-      )
-    }
-  }
-  
   /// Create and add an engine from the given resources.
   /// If an engine already exists for the given source, it will be replaced.
   ///
   /// - Note: This method will ensure syncronous compilation
   public func compile(
     filterListInfo: CachedAdBlockEngine.FilterListInfo, resourcesInfo: CachedAdBlockEngine.ResourcesInfo, 
-    isAlwaysAggressive: Bool
+    isAlwaysAggressive: Bool, ignoreMaximum: Bool = false
   ) async {
     await currentCompileTask?.value
     
@@ -99,7 +85,7 @@ public actor AdBlockStats {
     }
     
     currentCompileTask = Task {
-      if reachedMaxLimit && cachedEngines[filterListInfo.source] == nil {
+      if !ignoreMaximum && reachedMaxLimit && cachedEngines[filterListInfo.source] == nil {
         ContentBlockerManager.log.error("Failed to compile engine for \(filterListInfo.source.debugDescription): Reached maximum!")
         return
       }
@@ -171,22 +157,18 @@ public actor AdBlockStats {
   /// Remove all engines that have disabled sources
   func ensureEnabledEngines() async {
     do {
-      var count = 0
-      
       for source in await enabledSources {
         guard cachedEngines[source] == nil else { continue }
         guard let availableFilterList = availableFilterLists[source] else { continue }
         guard let resourcesInfo = self.resourcesInfo else { continue }
         
-        try await compileDelayed(
+        await compile(
           filterListInfo: availableFilterList.filterListInfo,
           resourcesInfo: resourcesInfo,
-          isAlwaysAggressive: availableFilterList.isAlwaysAggressive,
-          delayed: count > 5
+          isAlwaysAggressive: availableFilterList.isAlwaysAggressive
         )
         
         // Sleep for 1ms. This drastically reduces memory usage without much impact to usability
-        count += 1
         try await Task.sleep(nanoseconds: 1000000)
       }
     } catch {

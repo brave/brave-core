@@ -194,16 +194,10 @@ public actor FilterListResourceDownloader {
       return
     }
     
-    let isImportant = await AdBlockStats.shared.criticalSources.contains(source)
-     
-    do {
-      try await AdBlockStats.shared.compileDelayed(
-        filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-        isAlwaysAggressive: isAlwaysAggressive, delayed: !isImportant
-      )
-    } catch {
-      // Don't handle cancellation errors
-    }
+    await AdBlockStats.shared.compile(
+      filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
+      isAlwaysAggressive: isAlwaysAggressive
+    )
   }
   
   /// Register all enabled filter lists with the `AdBlockService`
