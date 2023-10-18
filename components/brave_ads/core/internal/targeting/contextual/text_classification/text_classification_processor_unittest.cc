@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_model.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
