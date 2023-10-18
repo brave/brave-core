@@ -8,23 +8,46 @@
 #include <string>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 
-const char kAdBlockResourcesFilename[] = "resources.json";
+namespace {
+constexpr char kAdBlockResourcesFilename[] = "resources.json";
+
+BASE_DECLARE_FEATURE(kAdBlockDefaultResourceUpdateInterval);
+constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{
+    &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 100};
+BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,
+             "AdBlockDefaultResourceUpdateInterval",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+}  // namespace
 
 namespace brave_shields {
 
 AdBlockDefaultResourceProvider::AdBlockDefaultResourceProvider(
     component_updater::ComponentUpdateService* cus) {
   // Can be nullptr in unit tests
-  if (cus) {
-    RegisterAdBlockDefaultResourceComponent(
-        cus,
-        base::BindRepeating(&AdBlockDefaultResourceProvider::OnComponentReady,
-                            weak_factory_.GetWeakPtr()));
+  if (!cus) {
+    return;
   }
+
+  RegisterAdBlockDefaultResourceComponent(
+      cus,
+      base::BindRepeating(&AdBlockDefaultResourceProvider::OnComponentReady,
+                          weak_factory_.GetWeakPtr()));
+  update_check_timer_.Start(
+      FROM_HERE, base::Minutes(kComponentUpdateCheckIntervalMins.Get()),
+      base::BindRepeating([]() {
+        // Separated into two methods as exception component is not available in
+        // iOS. So can't check it from CheckAdBlockComponentsUpdate() together.
+        CheckAdBlockComponentsUpdate();
+        CheckAdBlockExceptionComponentsUpdate();
+      }));
 }
 
 AdBlockDefaultResourceProvider::~AdBlockDefaultResourceProvider() = default;
