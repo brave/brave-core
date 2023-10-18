@@ -297,6 +297,10 @@ export default function Player () {
               }
             })
           }}
+          onError={() => {
+            // TODO(sko) Show alert when z-index patch is ready.
+            if (autoPlayEnabled) getPlayerActions().playNextItem() // In case the current item is the last one, nothing will happen
+          }}
         />
         {!!currentItem?.duration && (
           <ProgressBar
