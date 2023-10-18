@@ -51,7 +51,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                               const DATFileDataBuffer& dat_buf)> cb);
 
   // AdBlockFiltersProvider::Observer
-  void OnChanged() override;
+  void OnChanged(bool is_default_engine) override;
 
   void AddProvider(AdBlockFiltersProvider* provider,
                    bool is_for_default_engine);

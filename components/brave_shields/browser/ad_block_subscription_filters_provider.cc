@@ -51,7 +51,7 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
 }
 
 void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
-  NotifyObservers();
+  NotifyObservers(engine_is_default_);
 }
 
 }  // namespace brave_shields

@@ -24,7 +24,7 @@ class AdBlockFiltersProvider {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnChanged() = 0;
+    virtual void OnChanged(bool is_for_default_engine) = 0;
   };
 
   explicit AdBlockFiltersProvider(bool engine_is_default);
@@ -50,7 +50,7 @@ class AdBlockFiltersProvider {
   virtual void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) = 0;
-  void NotifyObservers();
+  void NotifyObservers(bool is_for_default_engine);
 
  private:
   base::ObserverList<Observer> observers_;

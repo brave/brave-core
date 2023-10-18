@@ -54,7 +54,7 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
     return false;
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
 
-  NotifyObservers();
+  NotifyObservers(engine_is_default_);
 
   return true;
 }
@@ -78,7 +78,7 @@ void AdBlockCustomFiltersProvider::LoadDATBuffer(
 void AdBlockCustomFiltersProvider::AddObserver(
     AdBlockFiltersProvider::Observer* observer) {
   AdBlockFiltersProvider::AddObserver(observer);
-  NotifyObservers();
+  NotifyObservers(engine_is_default_);
 }
 
 }  // namespace brave_shields
