@@ -92,7 +92,13 @@ absl::optional<PublicKeyMap> ParsePublicKeys(const base::Value::Dict& dict) {
       return absl::nullopt;
     }
     double associated_value_as_double;
-    base::StringToDouble(*associated_value, &associated_value_as_double);
+    if (!base::StringToDouble(*associated_value, &associated_value_as_double)) {
+      // TODO(https://github.com/brave/brave-browser/issues/33546): Decouple
+      // payment and confirmation issuer structs/parsing so that we do not need
+      // to set the associated value to 0 when an "associatedValue" key has an
+      // empty value.
+      associated_value_as_double = 0.0;
+    }
 
     public_keys.insert({*public_key, associated_value_as_double});
   }
