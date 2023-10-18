@@ -27,6 +27,8 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/services/brave_wallet/in_process_third_party_service_launcher.h"
+#include "brave/components/services/brave_wallet/public/cpp/third_party_service.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -95,7 +97,11 @@ class FilTxManagerUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
     keyring_service_->AddAccountSync(
         mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId, "Account 1");
+    ThirdPartyService::Get().SetLauncher(
+        std::make_unique<InProcessThirdPartyServiceLauncher>());
   }
+
+  void TearDown() override { ThirdPartyService::Get().ResetForTesting(); }
 
   AccountUtils GetAccountUtils() {
     return AccountUtils(keyring_service_.get());

@@ -32,6 +32,8 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/switches.h"
+#include "brave/components/services/brave_wallet/in_process_third_party_service_launcher.h"
+#include "brave/components/services/brave_wallet/public/cpp/third_party_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -164,7 +166,12 @@ class KeyringServiceUnitTest : public testing::Test {
         JsonRpcServiceFactory::GetServiceForContext(browser_context());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
+
+    ThirdPartyService::Get().SetLauncher(
+        std::make_unique<InProcessThirdPartyServiceLauncher>());
   }
+
+  void TearDown() override { ThirdPartyService::Get().ResetForTesting(); }
 
   void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -423,6 +430,22 @@ class KeyringServiceUnitTest : public testing::Test {
 
       EXPECT_EQ(account, service->GetSelectedWalletAccount());
     }
+  }
+
+  static absl::optional<std::string> SignTransactionByFilecoinKeyring(
+      KeyringService* service,
+      const mojom::AccountId& account_id,
+      FilTransaction* tx) {
+    absl::optional<std::string> signature;
+    base::RunLoop run_loop;
+    service->SignTransactionByFilecoinKeyring(
+        account_id, tx,
+        base::BindLambdaForTesting([&](absl::optional<std::string> v) {
+          signature = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return signature;
   }
 
   static bool IsWalletBackedUp(KeyringService* service) {
@@ -3143,10 +3166,10 @@ TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
       MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoinTestnet,
                     mojom::AccountKind::kImported,
                     "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
-  ASSERT_FALSE(
-      service.SignTransactionByFilecoinKeyring(*yet_unknown_account, nullptr));
-  ASSERT_FALSE(service.SignTransactionByFilecoinKeyring(*yet_unknown_account,
-                                                        &transaction.value()));
+  ASSERT_FALSE(SignTransactionByFilecoinKeyring(&service, *yet_unknown_account,
+                                                nullptr));
+  ASSERT_FALSE(SignTransactionByFilecoinKeyring(&service, *yet_unknown_account,
+                                                &transaction.value()));
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
@@ -3161,8 +3184,8 @@ TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
   EXPECT_EQ(imported_account->address,
             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
 
-  auto result = service.SignTransactionByFilecoinKeyring(
-      *imported_account->account_id, &transaction.value());
+  auto result = SignTransactionByFilecoinKeyring(
+      &service, *imported_account->account_id, &transaction.value());
   ASSERT_TRUE(result);
   std::string expected_result =
       R"({

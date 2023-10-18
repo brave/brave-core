@@ -6,25 +6,65 @@
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 
 #include "base/base64.h"
+#include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/bind.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/filecoin/rs/src/lib.rs.h"
+#include "brave/components/services/brave_wallet/in_process_third_party_service_launcher.h"
+#include "brave/components/services/brave_wallet/public/cpp/third_party_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
-namespace {
-std::vector<uint8_t> GetPublicKey(const std::string& private_key_hex) {
-  std::vector<uint8_t> private_key;
-  base::HexStringToBytes(private_key_hex, &private_key);
-  auto result = filecoin::bls_private_key_to_public_key(
-      rust::Slice<const uint8_t>{private_key.data(), private_key.size()});
-  std::vector<uint8_t> public_key(result.begin(), result.end());
-  return public_key;
-}
-}  // namespace
+class FilecoinKeyringUnitTest : public testing::Test {
+ public:
+  FilecoinKeyringUnitTest() : keyring_(brave_wallet::mojom::kFilecoinTestnet) {}
+  ~FilecoinKeyringUnitTest() override = default;
 
-TEST(FilecoinKeyring, DecodeImportPayload) {
+  void SetUp() override {
+    ThirdPartyService::Get().SetLauncher(
+        std::make_unique<InProcessThirdPartyServiceLauncher>());
+  }
+
+  void TearDown() override { ThirdPartyService::Get().ResetForTesting(); }
+
+  absl::optional<std::string> ImportFilecoinAccount(
+      const std::vector<uint8_t>& private_key,
+      mojom::FilecoinAddressProtocol protocol) {
+    absl::optional<std::string> address_out;
+    base::RunLoop run_loop;
+    keyring_.ImportFilecoinAccount(
+        private_key, protocol,
+        base::BindLambdaForTesting(
+            [&run_loop, &address_out](absl::optional<std::string> address) {
+              address_out = address;
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    return address_out;
+  }
+
+  absl::optional<std::string> SignTransaction(const std::string& address,
+                                              const FilTransaction* tx) {
+    absl::optional<std::string> signature;
+    base::RunLoop run_loop;
+    keyring_.SignTransaction(
+        address, tx,
+        base::BindLambdaForTesting([&](absl::optional<std::string> v) {
+          signature = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return signature;
+  }
+
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  FilecoinKeyring keyring_;
+};
+
+TEST_F(FilecoinKeyringUnitTest, DecodeImportPayload) {
   std::string payload_hex;
   std::vector<uint8_t> private_key;
   mojom::FilecoinAddressProtocol protocol;
@@ -90,7 +130,7 @@ TEST(FilecoinKeyring, DecodeImportPayload) {
   EXPECT_EQ(protocol, mojom::FilecoinAddressProtocol::BLS);
 }
 
-TEST(FilecoinKeyring, ImportFilecoinSECP) {
+TEST_F(FilecoinKeyringUnitTest, ImportFilecoinSECP) {
   std::string private_key_base64 =
       "rQG5jnbc+y64fckG+T0EHVwpLBmW9IgAT7U990HXcGk=";
   std::string input_key;
@@ -98,14 +138,14 @@ TEST(FilecoinKeyring, ImportFilecoinSECP) {
   ASSERT_FALSE(input_key.empty());
   std::vector<uint8_t> private_key(input_key.begin(), input_key.end());
 
-  FilecoinKeyring keyring(brave_wallet::mojom::kFilecoinTestnet);
-  auto address = keyring.ImportFilecoinAccount(
+  auto address = ImportFilecoinAccount(
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
-  EXPECT_EQ(address, "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
-  EXPECT_EQ(keyring.GetImportedAccountsNumber(), size_t(1));
+  ASSERT_TRUE(address);
+  EXPECT_EQ(*address, "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
+  EXPECT_EQ(keyring_.GetImportedAccountsNumber(), size_t(1));
 }
 
-TEST(FilecoinKeyring, ImportFilecoinBLS) {
+TEST_F(FilecoinKeyringUnitTest, ImportFilecoinBLS) {
   std::string private_key_hex =
       "7b2254797065223a22626c73222c22507269766174654b6579223a2270536e7752332f38"
       "55616b53516f777858742b345a75393257586d424d526e74716d6448696136724853453d"
@@ -115,62 +155,50 @@ TEST(FilecoinKeyring, ImportFilecoinBLS) {
   ASSERT_TRUE(FilecoinKeyring::DecodeImportPayload(private_key_hex,
                                                    &private_key, &protocol));
   EXPECT_EQ(protocol, mojom::FilecoinAddressProtocol::BLS);
-  FilecoinKeyring keyring(brave_wallet::mojom::kFilecoinTestnet);
-  std::string address = keyring.ImportFilecoinAccount(private_key, protocol);
-  EXPECT_EQ(address,
+  auto address = ImportFilecoinAccount(private_key, protocol);
+  ASSERT_TRUE(address);
+  EXPECT_EQ(*address,
             "t3wwtato54ee5aod7j5uv2n75jpyn4hpwx3f2kx5cijtoxgytiul2dczrak3ghlbt5"
             "zjnj574y3snhcb5bthva");
-  EXPECT_EQ(keyring.GetImportedAccountsNumber(), size_t(1));
+  EXPECT_EQ(keyring_.GetImportedAccountsNumber(), size_t(1));
 
   // empty private key
-  ASSERT_TRUE(
-      keyring.ImportFilecoinAccount({}, mojom::FilecoinAddressProtocol::BLS)
-          .empty());
+  address = ImportFilecoinAccount({}, mojom::FilecoinAddressProtocol::BLS);
+  ASSERT_FALSE(address);
 
   // broken private key
   private_key_hex = "6a4b3d3f3ccb3676e34e16bc07a937";
   std::vector<uint8_t> broken_private_key;
   ASSERT_TRUE(base::HexStringToBytes(private_key_hex, &broken_private_key));
-  ASSERT_TRUE(keyring
-                  .ImportFilecoinAccount(broken_private_key,
-                                         mojom::FilecoinAddressProtocol::BLS)
-                  .empty());
+  address = ImportFilecoinAccount(broken_private_key,
+                                  mojom::FilecoinAddressProtocol::BLS);
+  ASSERT_FALSE(address);
 
   std::vector<uint8_t> zero_private_key(32, 0);
-  EXPECT_EQ(keyring.ImportFilecoinAccount(zero_private_key,
-                                          mojom::FilecoinAddressProtocol::BLS),
+  address = ImportFilecoinAccount(zero_private_key,
+                                  mojom::FilecoinAddressProtocol::BLS);
+  ASSERT_TRUE(address);
+  EXPECT_EQ(*address,
             "t3yaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             "aaaaaaaaaaaaby2smx7a");
-  std::vector<uint8_t> ff_private_key(32, 255);
-  ASSERT_TRUE(keyring
-                  .ImportFilecoinAccount(ff_private_key,
-                                         mojom::FilecoinAddressProtocol::BLS)
-                  .empty());
-}
-
-TEST(FilecoinKeyring, fil_private_key_public_key) {
-  std::string private_key_hex =
-      "6a4b3d3f3ccb3676e34e16bc07a9371dede3a037def6114e79e51705f823723f";
-  EXPECT_EQ(base::HexEncode(GetPublicKey(private_key_hex)),
-            "B5774F3D8546D3E797653A5423EFFA7AB06D4CD3587697D3647798D9FE739167EB"
-            "EAF1EF053F957A7678EE4DE0E32A83");
 
   std::vector<uint8_t> ff_private_key(32, 255);
-  auto zero_key = GetPublicKey(base::HexEncode(ff_private_key));
-  ASSERT_TRUE(std::all_of(zero_key.begin(), zero_key.end(),
-                          [](int i) { return i == 0; }));
+  address = ImportFilecoinAccount(ff_private_key,
+                                  mojom::FilecoinAddressProtocol::BLS);
+  ASSERT_FALSE(address);
 }
 
-TEST(FilecoinKeyring, SignTransaction) {
-  FilecoinKeyring keyring(brave_wallet::mojom::kFilecoinTestnet);
+TEST_F(FilecoinKeyringUnitTest, SignTransaction) {
   const std::string address = "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy";
-  EXPECT_FALSE(keyring.SignTransaction(address, nullptr));
+  auto signature = SignTransaction(address, nullptr);
+  EXPECT_FALSE(signature);
 
   auto transaction = FilTransaction::FromTxData(
       false,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
-  EXPECT_FALSE(keyring.SignTransaction(address, &transaction.value()));
+  signature = SignTransaction(address, &transaction.value());
+  EXPECT_FALSE(signature);
 
   std::string private_key_base64 =
       "rQG5jnbc+y64fckG+T0EHVwpLBmW9IgAT7U990HXcGk=";
@@ -179,10 +207,12 @@ TEST(FilecoinKeyring, SignTransaction) {
   ASSERT_FALSE(input_key.empty());
   std::vector<uint8_t> private_key(input_key.begin(), input_key.end());
 
-  auto imported_address = keyring.ImportFilecoinAccount(
+  auto imported_address = ImportFilecoinAccount(
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
-  EXPECT_EQ(address, imported_address);
-  EXPECT_TRUE(keyring.SignTransaction(address, &transaction.value()));
+  ASSERT_TRUE(imported_address);
+  EXPECT_EQ(address, *imported_address);
+  signature = SignTransaction(address, &transaction.value());
+  EXPECT_TRUE(signature);
 }
 
 }  // namespace brave_wallet
