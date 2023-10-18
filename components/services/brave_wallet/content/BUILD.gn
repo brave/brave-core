@@ -1,0 +1,22 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("content") {
+  sources = [
+    "out_of_process_third_party_service_launcher.cc",
+    "out_of_process_third_party_service_launcher.h",
+  ]
+
+  public_deps = [
+    "//brave/components/services/brave_wallet/public/cpp",
+    "//brave/components/services/brave_wallet/public/mojom",
+  ]
+
+  visibility = [ "//brave/browser/brave_wallet" ]
+
+  deps = [ "//content/public/browser" ]
+
+  defines = [ "IS_BRAVE_WALLET_SERVICE_CONTENT_IMPL" ]
+}
