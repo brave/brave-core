@@ -8,6 +8,7 @@
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/switches.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
@@ -36,7 +37,7 @@ namespace tabs::utils {
 
 bool SupportsVerticalTabs(const Browser* browser) {
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-          kDisableVerticalTabsSwitch)) {
+          switches::kDisableVerticalTabsSwitch)) {
     return false;
   }
 

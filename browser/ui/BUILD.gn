@@ -376,6 +376,7 @@ source_set("ui") {
       "views/tabs/brave_tab_strip.h",
       "views/tabs/brave_tab_strip_layout_helper.cc",
       "views/tabs/brave_tab_strip_layout_helper.h",
+      "views/tabs/switches.h",
       "views/tabs/tab_drag_controller.cc",
       "views/tabs/tab_drag_controller.h",
       "views/tabs/vertical_tab_utils.cc",

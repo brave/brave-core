@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
+#include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
@@ -883,7 +884,7 @@ class VerticalTabStripSwitchTest : public VerticalTabStripBrowserTest {
   // VerticalTabStripBrowserTest:
   void SetUp() override {
     base::CommandLine::ForCurrentProcess()->AppendSwitch(
-        tabs::utils::kDisableVerticalTabsSwitch);
+        tabs::switches::kDisableVerticalTabsSwitch);
     VerticalTabStripBrowserTest::SetUp();
   }
 };
