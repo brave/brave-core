@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">단색</translation>
 <translation id="7610541582755894669">그래디언트</translation>
 <translation id="1606851618930975029">새 탭마다 새로고침</translation>
+<translation id="7040134046053881468">Rewards 패널 열기</translation>
 <translation id="9024104284526126630">Brave에서 프라이빗 통화를 걸 수 있습니다.</translation>
 <translation id="370665806235115550">로딩중...</translation>
 <translation id="4634933166298842522">구독 관리</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">구독 취소</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
-<translation id="4105411033440701818">참고: "제출"을 클릭하면 사이트 주소, 사용 중인 Brave 버전 번호, 귀하의 IP 주소가 Brave 개발자에게 공유됩니다. (IP 주소가 저장되지는 않음.)</translation>
+<translation id="8265244536487014968">참고: Brave 서버로 전송된 보고서에는 사이트 주소, Brave 버전 번호, Shields 설정, VPN 상태, 언어 설정이 포함됩니다. IP 주소는 전송되지만 저장되지는 않습니다.</translation>
 <translation id="6476216365964140603">추가 세부정보(선택사항)</translation>
 <translation id="6145852496180774737">연락 방법:(선택사항)</translation>
 <translation id="7616645803364270729">이메일, Twitter 등</translation>
@@ -597,7 +598,6 @@
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/><ph name="PROVIDER"/>에 로그인<ph name="END_BOLD"/>하여 잔액 확인</translation>
 <translation id="2659764755126740206">내 <ph name="PROVIDER"/> 계정으로 가기</translation>
 <translation id="2394961582378297792">로그아웃됨</translation>
-<translation id="7091980679045978090">예상 수익</translation>
 <translation id="7934950257968365573"><ph name="PROVIDER"/> 계정에 로그인</translation>
 <translation id="8631427463833030968">광고 관리</translation>
 <translation id="590733288489975971">광고로 받은 리워드</translation>
@@ -689,6 +689,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">걱정하지 마세요.</translation>
 <translation id="5027616819996705541">프라이버시 보호 브라우징은 문제 없이 이용 가능합니다!</translation>
+<translation id="1886682615222609631">지금까지의 수익</translation>
 <translation id="86107454835395919">월 후원금으로 설정</translation>
 <translation id="6621880242105464352">보낸 금액의 <ph name="FEE_PCT"/>는 Brave의 진행 수수료로 책정됩니다.</translation>
 <translation id="1420756770787071946">이 작성자 지원</translation>
@@ -1040,6 +1041,10 @@
 <translation id="4305817255990598646">전환</translation>
 <translation id="3423275441470187644">신뢰함</translation>
 <translation id="2391762656119864333">취소</translation>
+<translation id="9218424917282368512">네트워크 변경</translation>
+<translation id="7526139040829362392">계정 변경</translation>
+<translation id="4217695020908122747">연결된 계정</translation>
+<translation id="8497650996740651467">사용 가능한 계정</translation>
 <translation id="5677928146339483299">차단됨</translation>
 <translation id="3890989020011724401">새 계정</translation>
 <translation id="7257603403519636638">계정 자산 보기</translation>
@@ -1220,6 +1225,7 @@
 <translation id="3648994606506382289">카드와 은행 이체로 가장 쉽고 빠르며 저렴하게 암호화폐를 구입할 수 있는 방법입니다.</translation>
 <translation id="3101839349578102016">은행 계좌로 즉시 매수. 수수료는 더 낮게.</translation>
 <translation id="8280898387224328221">신용카드, 직불카드, 은행계좌로 결제</translation>
+<translation id="2218174283683424104">가장 신뢰받는 거래소에서 암호화폐를 구입하세요.</translation>
 <translation id="8528916244724490964">모든 네트워크</translation>
 <translation id="7721139939763655123">낮은순</translation>
 <translation id="5458608274117818139">높은순</translation>
@@ -1484,6 +1490,7 @@
 <translation id="8007404171238546456">슬리피지 후 최소 수신액</translation>
 <translation id="767199001998615704">네트워크 수수료</translation>
 <translation id="7057870207229052478">Brave 수수료</translation>
+<translation id="81116374028657878">프로토콜 수수료</translation>
 <translation id="3624518972158401291">무료</translation>
 <translation id="5038255447967558645">유동성 제공자</translation>
 <translation id="8450638959928932199">스왑하고 보내기</translation>
@@ -1511,7 +1518,6 @@
 <translation id="3143110700666266545">이 앱은 다음 제3자 API를 사용합니다.</translation>
 <translation id="163536108506359457">Brave Swap은 DEX 애그리게이터로 <ph name="AGGREGATOR"/>를 사용하여 <ph name="NETWORKS"/> 네트워크를 지원합니다. <ph name="AGGREGATOR"/>는 <ph name="NETWORK"/> 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). <ph name="AGGREGATOR"/>는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
 <translation id="1847885264294023691"><ph name="AGGREGATOR"/> 개인정보 보호정책을 보려면 여기를 클릭하세요.</translation>
-<translation id="9218424917282368512">네트워크 변경</translation>
 <translation id="644984757357042735">네트워크는 필수</translation>
 <translation id="132243864024778443">토큰 이름은 필수</translation>
 <translation id="3617263699756744037">유효하지 않거나 빈 토큰 컨트랙트 주소</translation>
@@ -1547,8 +1553,15 @@
 <translation id="9085765419770918643">아직 여기 NFT가 없습니다.</translation>
 <translation id="8445532667841598737">추가할 준비가 되셨나요? 아래 버튼을 클릭하면 가져옵니다.</translation>
 <translation id="9136462955850040542">Solana(SPL) 및 이더리움(ERC-721)상의 NFT와 호환.</translation>
+<translation id="137671950541962857">수집됨</translation>
 <translation id="8849001918648564819">숨김</translation>
 <translation id="4905092798795191201">숨김 해제</translation>
+<translation id="6167809958646114660">월렛 내에 표시하지 않음</translation>
+<translation id="6948667383954749033">정크 아님으로 표시</translation>
+<translation id="5810047320613496595">정크</translation>
+<translation id="7257605968082307175">정크로 표시</translation>
+<translation id="7600335727434653744">Brave 월렛에서 제거하시겠습니까?</translation>
+<translation id="6657860743511185539">NFT가 Brave 월렛에서 제거되지만 블록체인상에는 남아 있습니다. 제거한 후에는 마음이 바뀌면 다시 수동으로 가져와야 합니다.</translation>
 <translation id="849880459530751909">NFT 편집</translation>
 <translation id="5925465310724910998">NFT를 자동으로 표시하고 싶으십니까?</translation>
 <translation id="5400791731776892411">Brave 월렛이 귀하의 NFT를 자동으로 표시하기 위해서는 제3자 서비스를 사용할 수 있습니다. Brave는 이 서비스를 제공하기 위해 <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/>에 귀하의 월렛 주소를 공유합니다. <ph name="BEFORE_URL"/>자세히 알아보세요.<ph name="AFTER_URL"/></translation>
@@ -1747,9 +1760,6 @@
 <translation id="6938154350999993769">태블릿 모드 토글 디버깅</translation>
 <translation id="5854741377790551127">디버그 보기 트리 인쇄</translation>
 <translation id="8199130368328220410">실시간 자막 토글</translation>
-<translation id="4233010476457917696">사이드바 표시</translation>
-<translation id="2207125676134752863">마우스오버 위로 사이드바 표시</translation>
-<translation id="2613033293035359003">사이드바 숨기기</translation>
 <translation id="9055778350624039365">Brave 월렛 패널 표시</translation>
 <translation id="2548853975094084059">Brave 월렛 패널 닫기</translation>
 <translation id="3765209580429944524">Brave VPN 패널 표시</translation>
@@ -1812,7 +1822,7 @@
 <translation id="1199355487114804640">재생/일시중지</translation>
 <translation id="1689210457482459023">재생 속도 늦추기</translation>
 <translation id="5872363163901278000">재생 속도 높이기</translation>
-<translation id="8178821080790541548">Brave AI</translation>
+<translation id="3507699941492423127">Brave 레오</translation>
 <translation id="6303294677342628402">보호</translation>
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7509914170164691086">다음에 대해 실드 <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
@@ -1884,16 +1894,18 @@
 <translation id="8637805148029768813">요약기 기능은 현재 일부 기사와 긴 형식의 웹페이지에만 사용할 수 있습니다.</translation>
 <translation id="2346991295632453064">동의하고 시작</translation>
 <translation id="1223498995510244364">요약하기</translation>
-<translation id="8758939268013768602">Brave AI 소개</translation>
-<translation id="1704821516241545704">Brave AI 채팅 기능은 탐색하고 있는 웹페이지 내용을 요약해주고, 페이지의 요약 내용에 대한 후속 질문을 할 수 있는 채팅 인터페이스가 제공됩니다.</translation>
-<translation id="58643773598235831">요약된 페이지와 채팅 기능에 한 질문 내용은 외부 API 파트너 서버로 전송됩니다(식별자는질문과 함께 전송되지 않음).</translation>
-<translation id="917619443165595947">페이지 내용 및 후속 질문에 개인적이거나 민감한 정보가 없도록 주의하세요. 요약 및 질문 답변의 정확성은 보증되지 않으므로 건강, 개인 안전, 재무와 관련된 텍스트를 맹목적으로 믿진 마시기 바랍니다.</translation>
-<translation id="1829889011559313790">Brave AI에 질문하기</translation>
-<translation id="7226268079740406209">메시지를 처리하는 중에 오류가 발생했습니다. 다시 시도하세요.</translation>
+<translation id="6966669506908435195">Brave 레오 소개</translation>
+<translation id="1667863995484767951">AI 채팅 기능은 탐색 중인 웹페이지를 요약해 제공하고, 채팅 인터페이스를 통해 질문을 입력해 페이지 내용에 대한 답을 받을 수 있습니다. 요약의 정확성은 보장되지 않으며, 부정확하거나 오인할 수 있거나 잘못된 정보가 포함될 수 있습니다. 민감하거나 사적인 정보를 입력하지 않아야 하며, 건강, 재무, 개인 안전 등과 관련된 텍스트에는 특별한 주의를 요합니다.</translation>
+<translation id="7636915524386889836">Brave AI 채팅은 자체 호스팅 <ph name="LINK_BEFORE"/>대규모 언어 모델<ph name="LINK_AFTER"/> 을 사용합니다. AI 채팅 기능은 귀하를 특정할 수 있는 IP 주소 등의 식별자를 수집하거나 처리하지 않습니다. AI 모델은 개인 데이터를 보관하지 않습니다.</translation>
+<translation id="7839853125981164613">여기 프롬프트 입력</translation>
 <translation id="1171287413830401223">추천 질문을 활성화하시겠습니까?</translation>
 <translation id="8723991872343294222">사이트 내용을 기반으로 Brave AI가 자동으로 질문을 추천합니다. 나중에 언제든 설정에서 비활성화할 수 있습니다.</translation>
 <translation id="3435896845095436175">사용</translation>
 <translation id="7473891865547856676">건너뛰기</translation>
+<translation id="7932221068776853847">연결을 끊어 이 페이지 콘텐츠를 레오에게 보내기를 중지하고 새 대화를 시작합니다.</translation>
+<translation id="1167803637855350748">레오에 연결 중 네트워크 문제가 있습니다. 연결 상태를 확인하고 다시 시도하세요.</translation>
+<translation id="5095201428204952524">레오가 지금 너무 바쁩니다. 몇 분 후 다시 시도하세요.</translation>
+<translation id="7144878232160441200">재시도</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: 연결됨</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: 연결 해제됨</translation>
 <translation id="3541307549916475335">Brave VPN 패널 UI</translation>
@@ -1953,10 +1965,10 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 하지만 이 헬퍼 서비스가 작동되고 있지 않은데, 보호받지 않는 상태로 두면 좋지 않습니다. 브라우저 내 DNS 설정을 변경하여 이 노출로부터 보호하도록 조치했습니다. VPN이 연결된 동안에는 이 설정이 적용되며 변경할 수 없습니다.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">WireGuard 연결에 문제가 있는 것 같습니다. 안정적인 VPN을 위해 IKEv2 폴백을 활성화하시겠습니까? 브라우저를 재시작하기만 하면 됩니다.
+<translation id="5004375364898143117">WireGuard 연결에 문제가 있는 것 같습니다. 안정적인 VPN을 위해 IKEv2 폴백을 활성화하시겠습니까? 브라우저를 재시작하기만 하면 됩니다.
 
 호환성 또는 구성에 도움이 필요하십니까? 지원팀에 문의하시면 친절히 안내해드리겠습니다.
-언제든 brave://flags/#brave-vpn-wireguard 페이지에서 WireGuard로 되돌리실 수 있습니다.
+언제든 brave://settings/system 페이지에서 WireGuard로 되돌리실 수 있습니다.
 
 즐겁게 연결하시기 바랍니다!
 
@@ -1968,10 +1980,14 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <translation id="8295393906499561642">세션 만료됨</translation>
 <translation id="3312623558576021182"><ph name="BRAVE_ACCOUNT_BEGIN"/>Brave 계정<ph name="BRAVE_ACCOUNT_END"/>에 로그인하고 VPN 연결을 새로 고치세요.</translation>
 <translation id="6021669293402055982">Brave VPN: 연결 해제됨</translation>
+<translation id="7861195049821776142">Brave VPN: 연결 해제 중</translation>
 <translation id="958268166261124668">Brave VPN: 연결됨</translation>
+<translation id="2061807837510296780">Brave VPN: 연결 중</translation>
 <translation id="1313124107969703758">Brave VPN: 오류</translation>
 <translation id="8273420301954598554">상태: 연결됨</translation>
 <translation id="7155657348064536843">상태: 연결 해제됨</translation>
+<translation id="2413929902277520460">Brave VPN - 연결됨</translation>
+<translation id="8048263175525832621">Brave VPN - 연결 해제됨</translation>
 <translation id="1498770726476841108">계정 관리</translation>
 <translation id="6825718953004242472">아이콘 제거</translation>
 </translationbundle>

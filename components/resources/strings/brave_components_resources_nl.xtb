@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">Effen kleuren</translation>
 <translation id="7610541582755894669">Kleurverloop</translation>
 <translation id="1606851618930975029">Vernieuwen bij elk nieuw tabblad</translation>
+<translation id="7040134046053881468">Beloningen-paneel weergeven</translation>
 <translation id="9024104284526126630">U kunt een privégesprek beginnen in Brave.</translation>
 <translation id="370665806235115550">Bezig met laden...</translation>
 <translation id="4634933166298842522">Abonnementen beheren</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">Afmelden</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
-<translation id="4105411033440701818">Let op: als u op 'Indienen' klikt, worden dit webadres, uw Brave-versienummer en uw IP-adres gedeeld met de ontwikkelaars van Brave. (Het IP-adres wordt niet opgeslagen.)</translation>
+<translation id="8265244536487014968">Opmerking: het rapport dat naar Brave-servers wordt verzonden, bevat het siteadres, het versienummer, Shields-instellingen, de VPN-status en taalinstellingen. Het IP-adres wordt doorgegeven maar niet opgeslagen.</translation>
 <translation id="6476216365964140603">Aanvullende gegevens (optioneel)</translation>
 <translation id="6145852496180774737">Neem contact met me op via: (optioneel)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
@@ -597,7 +598,6 @@
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Log in bij <ph name="PROVIDER"/><ph name="END_BOLD"/> om uw saldo te bekijken</translation>
 <translation id="2659764755126740206">Ga naar mijn <ph name="PROVIDER"/> account</translation>
 <translation id="2394961582378297792">Uitgelogd</translation>
-<translation id="7091980679045978090">Geschatte verdiensten</translation>
 <translation id="7934950257968365573">Meld u aan bij uw <ph name="PROVIDER"/>-account</translation>
 <translation id="8631427463833030968">Advertenties beheren</translation>
 <translation id="590733288489975971">Beloningen uit advertenties</translation>
@@ -689,6 +689,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Maakt u zich geen zorgen.</translation>
 <translation id="5027616819996705541">U kunt nog altijd privé browsen!</translation>
+<translation id="1886682615222609631">Verdiensten tot nu toe</translation>
 <translation id="86107454835395919">Instellen als maandelijkse bijdrage</translation>
 <translation id="6621880242105464352">Brave brengt <ph name="FEE_PCT"/> van het verzonden bedrag in rekening voor administratiekosten.</translation>
 <translation id="1420756770787071946">Steun deze maker</translation>
@@ -1040,6 +1041,10 @@
 <translation id="4305817255990598646">Schakel over</translation>
 <translation id="3423275441470187644">Vertrouwen</translation>
 <translation id="2391762656119864333">Intrekken</translation>
+<translation id="9218424917282368512">Netwerk wijzigen</translation>
+<translation id="7526139040829362392">Account wijzigen</translation>
+<translation id="4217695020908122747">Gekoppelde accounts</translation>
+<translation id="8497650996740651467">Beschikbare accounts</translation>
 <translation id="5677928146339483299">Geblokkeerd</translation>
 <translation id="3890989020011724401">Nieuw account</translation>
 <translation id="7257603403519636638">Accountassets bekijken</translation>
@@ -1220,6 +1225,7 @@
 <translation id="3648994606506382289">Makkelijkste, snelste en goedkoopste manier om crypto te kopen met betaalkaart en bankoverschrijving.</translation>
 <translation id="3101839349578102016">Direct kopen met uw bankrekening. Lagere kosten.</translation>
 <translation id="8280898387224328221">Betalen met creditcard, betaalkaart, bankrekening</translation>
+<translation id="2218174283683424104">Koop met de meest vertrouwde naam in crypto.</translation>
 <translation id="8528916244724490964">Alle netwerken</translation>
 <translation id="7721139939763655123">Laag naar hoog</translation>
 <translation id="5458608274117818139">Hoog naar laag</translation>
@@ -1484,6 +1490,7 @@
 <translation id="8007404171238546456">Minimaal te ontvangen na slippage</translation>
 <translation id="767199001998615704">Netwerkkosten</translation>
 <translation id="7057870207229052478">Brave-kosten</translation>
+<translation id="81116374028657878">Protocol-kosten</translation>
 <translation id="3624518972158401291">Gratis</translation>
 <translation id="5038255447967558645">Liquiditeitsverschaffer</translation>
 <translation id="8450638959928932199">Ruilen en verzenden</translation>
@@ -1511,7 +1518,6 @@
 <translation id="3143110700666266545">Deze app gebruikt de volgende API's van derde partijen:</translation>
 <translation id="163536108506359457">Brave Swap gebruikt <ph name="AGGREGATOR"/> als DEX-aggregator voor ondersteunde <ph name="NETWORKS"/>-netwerken. <ph name="AGGREGATOR"/> verwerkt het <ph name="NETWORK"/>-walletadres en IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). <ph name="AGGREGATOR"/> gebruikt deze gegevens UITSLUITEND voor transactieverwerkingsdoeleinden.</translation>
 <translation id="1847885264294023691">Klik hier voor het privacybeleid van <ph name="AGGREGATOR"/>.</translation>
-<translation id="9218424917282368512">Netwerk wijzigen</translation>
 <translation id="644984757357042735">Netwerk is vereist</translation>
 <translation id="132243864024778443">Tokennaam is vereist</translation>
 <translation id="3617263699756744037">Ongeldig of leeg tokencontractadres</translation>
@@ -1547,8 +1553,15 @@
 <translation id="9085765419770918643">Hier zijn nog geen NFT's.</translation>
 <translation id="8445532667841598737">Bent u er klaar voor om NFT's te gaan toevoegen? Klik dan op de onderstaande knop om ze te importeren.</translation>
 <translation id="9136462955850040542">Compatibel met NFT's op Solana (SPL) en Ethereum (ERC-721).</translation>
+<translation id="137671950541962857">Verzameld</translation>
 <translation id="8849001918648564819">Verborgen</translation>
 <translation id="4905092798795191201">Zichtbaar maken</translation>
+<translation id="6167809958646114660">Niet in wallet tonen</translation>
+<translation id="6948667383954749033">Markeren als ongewenst ongedaan maken</translation>
+<translation id="5810047320613496595">Ongewenst</translation>
+<translation id="7257605968082307175">Markeren als ongewenst</translation>
+<translation id="7600335727434653744">Verwijderen uit Brave Wallet?</translation>
+<translation id="6657860743511185539">De NFT wordt verwijderd uit de Brave Wallet, maar blijft op de blockchain. Als u hem verwijdert en later van gedachten verandert, moet u hem handmatig weer invoeren.</translation>
 <translation id="849880459530751909">NFT bewerken</translation>
 <translation id="5925465310724910998">Wilt u dat uw NFT's automatisch worden weergegeven?</translation>
 <translation id="5400791731776892411">Brave Wallet kan een service van derden gebruiken om uw NFT's automatisch weer te geven. Brave zal uw walletadressen met <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> delen om deze service te bieden. <ph name="BEFORE_URL"/>Meer informatie.<ph name="AFTER_URL"/></translation>
@@ -1747,9 +1760,6 @@
 <translation id="6938154350999993769">Foutopsporing: tabletmodus in-/uitschakelen</translation>
 <translation id="5854741377790551127">Foutopsporing: structuurweergave afdrukken</translation>
 <translation id="8199130368328220410">Live-ondertiteling in-/uitschakelen</translation>
-<translation id="4233010476457917696">Zijbalk weergeven</translation>
-<translation id="2207125676134752863">Zijbalk weergeven als muis eroverheen beweegt</translation>
-<translation id="2613033293035359003">Zijbalk verbergen</translation>
 <translation id="9055778350624039365">Brave Wallet-paneel weergeven</translation>
 <translation id="2548853975094084059">Brave Wallet-paneel sluiten</translation>
 <translation id="3765209580429944524">Brave VPN-paneel weergeven</translation>
@@ -1812,7 +1822,7 @@
 <translation id="1199355487114804640">Afspelen/pauzeren</translation>
 <translation id="1689210457482459023">Terugspoelsnelheid verlagen</translation>
 <translation id="5872363163901278000">Terugspoelsnelheid verhogen</translation>
-<translation id="8178821080790541548">Brave-AI</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">Schilden</translation>
 <translation id="8458987127502506209">Brave Schilden inschakelen</translation>
 <translation id="7509914170164691086">Shields zijn geactiveerd <ph name="LINK_BEFORE"/>voor<ph name="LINK_AFTER"/></translation>
@@ -1884,16 +1894,18 @@
 <translation id="8637805148029768813">De samensvattingfunctie is momenteel alleen beschikbaar voor bepaalde artikelen en andere webpagina's in lange vorm.</translation>
 <translation id="2346991295632453064">Accepteren en beginnen</translation>
 <translation id="1223498995510244364">Samenvatten</translation>
-<translation id="8758939268013768602">Over Brave AI</translation>
-<translation id="1704821516241545704">De Brave AI Chat-functie vat de inhoud samen van een webpagina die u bekijkt en bevat een chat-interface waarmee u vervolgvragen kunt stellen over de samengevatte inhoud van die pagina.</translation>
-<translation id="58643773598235831">De samengevatte pagina en alle vragen die u stelt aan de chatfunctie worden naar de servers van een externe API-partner gestuurd (er worden geen identificerende gegevens meegestuurd met die query).</translation>
-<translation id="917619443165595947">Zorg ervoor dat de inhoud van de pagina en eventuele vervolgvragen geen persoonlijke of gevoelige informatie bevatten. De nauwkeurigheid van samenvattingen en antwoorden op vragen wordt niet gegarandeerd, en daarom kunt u niet vertrouwen op teksten die betrekking hebben op gezondheid, persoonlijke veiligheid of financiële zaken.</translation>
-<translation id="1829889011559313790">Stel Brave AI een vraag</translation>
-<translation id="7226268079740406209">Er is een probleem opgetreden bij het verwerken van uw bericht. Probeer het opnieuw.</translation>
+<translation id="6966669506908435195">Over Brave Leo</translation>
+<translation id="1667863995484767951">De AI Chat-functie vat de inhoud samen van een webpagina die u bekijkt en bevat een chat-interface waarmee u vervolgvragen kunt stellen en antwoorden kunt ontvangen over de inhoud van de pagina. De nauwkeurigheid van samenvattingen wordt niet gegarandeerd en zij kunnen dan ook onnauwkeurige, misleidende of onjuiste informatie bevatten. U dient daarom geen gevoelige of privégegevens in te voeren en kunt het beste voorzichtig omgaan met informatie over gezondheid, financiën, persoonlijke veiligheid en vergelijkbare categorieën.</translation>
+<translation id="7636915524386889836">De AI Chat van Brave gebruikt een zelf-gehost <ph name="LINK_BEFORE"/>large language model<ph name="LINK_AFTER"/> De AI Chat-functie verzamelt en verwerkt geen identifiers, zoals een IP-adres, die aan u kunnen worden gekoppeld. Er worden geen persoonsgegevens door het AI-model bewaard.</translation>
+<translation id="7839853125981164613">Voer hier een opdracht in</translation>
 <translation id="1171287413830401223">Voorgestelde vragen inschakelen?</translation>
 <translation id="8723991872343294222">Brave-AI kan automatisch vragen voorstellen op basis van de content van een site. U kunt dit later uitschakelen in Instellingen.</translation>
 <translation id="3435896845095436175">Inschakelen</translation>
 <translation id="7473891865547856676">Nee, bedankt</translation>
+<translation id="7932221068776853847">Verbreek de verbinding om ervoor te zorgen dat deze pagina geen content meer naar Leo stuurt en start een nieuw gesprek</translation>
+<translation id="1167803637855350748">Er was een netwerkprobleem bij het verbinden met Leo. Controleer uw verbinding en probeer het opnieuw.</translation>
+<translation id="5095201428204952524">Leo is bezet. Probeer het over een paar minuten opnieuw.</translation>
+<translation id="7144878232160441200">Opnieuw proberen</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: verbonden</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: niet verbonden</translation>
 <translation id="3541307549916475335">Gebruikersinterface Brave VPN-venster</translation>
@@ -1953,10 +1965,10 @@ Brave heeft een hulpservice die u hiertegen beschermt door te filteren hoe DNS-q
 We hebben echter gemerkt dat deze hulpservice niet actief is en we willen u toch beschermen. Daarom hebben we de DNS-instelling in de browser veranderd, zodat u toch beschermd bent. De instellingen blijven van kracht en vergrendeld zolang VPN aanstaat.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">Zo te zien zijn er enkele problemen met de verbinding met WireGuard. Wilt u IKEv2-terugval inschakelen voor een betrouwbare VPN-verbinding? U hoeft alleen maar uw browser opnieuw te starten.
+<translation id="5004375364898143117">Zo te zien zijn er enkele problemen met de verbinding met WireGuard. Wilt u IKEv2-terugval inschakelen voor een betrouwbare VPN-verbinding? U hoeft alleen maar uw browser opnieuw te starten.
 
 Hulp nodig met comptabiliteit of configuratie? Neem contact op met ons vriendelijke ondersteuningsteam.
-U kunt de instellingen altijd weer terugzetten naar WireGuard op brave://flags/#brave-vpn-wireguard.
+U kunt de instellingen altijd weer terugzetten naar WireGuard op brave://settings/system.
 
 Laten we een verbinding instellen!
 
@@ -1968,10 +1980,14 @@ Laten we een verbinding instellen!
 <translation id="8295393906499561642">Sessie verlopen</translation>
 <translation id="3312623558576021182">Log in op uw <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave-account<ph name="BRAVE_ACCOUNT_END"/> om uw VPN-sessie te vernieuwen.</translation>
 <translation id="6021669293402055982">Brave VPN: geen verbinding</translation>
+<translation id="7861195049821776142">Brave VPN: verbinding verbreken</translation>
 <translation id="958268166261124668">Brave VPN: verbonden</translation>
+<translation id="2061807837510296780">Brave VPN: verbinding maken</translation>
 <translation id="1313124107969703758">Brave VPN: fout</translation>
 <translation id="8273420301954598554">Status: verbonden</translation>
 <translation id="7155657348064536843">Status: geen verbinding</translation>
+<translation id="2413929902277520460">Brave VPN - Verbonden</translation>
+<translation id="8048263175525832621">Brave VPN - Niet verbonden</translation>
 <translation id="1498770726476841108">Account beheren</translation>
 <translation id="6825718953004242472">Pictogram verwijderen</translation>
 </translationbundle>

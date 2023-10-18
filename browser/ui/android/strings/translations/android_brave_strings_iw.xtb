@@ -4,6 +4,7 @@
 <translation id="8631427463833030968">נהל הודעות</translation>
 <translation id="7630214457764713113">העתק קישור נקי</translation>
 <translation id="885805571521218129">זה משקף את טווח הרווחים המשוער שלך עבור מודעות Brave החודש.</translation>
+<translation id="818003031290137834">כעת כשאתה מחובר ל-ZebPay, כל יתרה קודמת שהייתה לך תופקד לחשבון ZebPay שלך כחלק מתשלום הרווחים הבא שלך. ברגע שהוא יגיע, תראה את ה-BAT שלך משתקף ביתרת התגמולים שלך.</translation>
 <translation id="3478449063771497234">ההתראות מושבתות</translation>
 <translation id="2862978891748913252">בחר את המדינה שלך</translation>
 <translation id="3970520675790340955">בחר את המדינה שלך כדי שנוכל להראות לך את האפשרויות והמודעות הנכונות עבור האזור שלך.</translation>
@@ -112,6 +113,22 @@
 <translation id="8047754398610073499">חסימת הודעות הסכמה לקובצי Cookie</translation>
 <translation id="2621893359845808115">חסום חלונות קופצים של אתרים שמבקשים ממך לקבל/לדחות קובצי Cookie באתר שלהם</translation>
 <translation id="7534079972563542000">דומיינים בלתי ניתנים לעצירה</translation>
+<translation id="6486983549008741930">סינון תוכן</translation>
+<translation id="2398817776566547893">מאפשר הפעלה של מסננים מותאמים אישית שחוסמים מטרדים ומעקבים מבוססי מיקום או שפה.</translation>
+<translation id="8578397014396032341">מסנני תוכן</translation>
+<translation id="4516904298421534459">רשימות מסננים</translation>
+<translation id="4435215931544457255">רשימות פופולריות נוספות מאת הקהילה. לתשומך לבך, הפעלת מסננים רבים מדי תפחית את מהירויות הגלישה.</translation>
+<translation id="2033882091175404255">התאמה אישית של רשימות מסננים</translation>
+<translation id="3657456536609186343">התאמה אישית של רשימת מסננים</translation>
+<translation id="5086877031935002480">הוספת רשימות סינון מותאמות אישית</translation>
+<translation id="4180818901996404761">כתובת האתר של רשימת סינון מותאמת אישית</translation>
+<translation id="7558501402160423480">יש להזין את כתובת האתר של רשימת הסינון</translation>
+<translation id="8775144690796719618">כתובת אתר לא חוקית</translation>
+<translation id="1841059687646820793">עריכה של רשימת סינון מותאם אישית</translation>
+<translation id="5075097652958438037">הירשם כמנוי רק לרשימות שמקורן בישויות שיש לכם אמון בהן. הדפדפן יבדוק מעת לעת אם קיימים עדכונים לרשימות בכתובת ה-URL שתזינו. פעולה זו תחשוף את כתובת ה-IP שלכם לשרת של ישות זו.</translation>
+<translation id="3365863382631355729">עודכן לאחרונה: <ph name="TIME"/></translation>
+<translation id="802154636333426148">ההורדה נכשלה</translation>
+<translation id="7824440849056209910">העידכון נכשל <ph name="TIME"/></translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> מחיר (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">שירות רישום שמות Ethereum</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -426,6 +443,10 @@
 <translation id="6632345639591919543">הנך מרוויח/ה טוקנים עבור צפייה בתמונה זו. \n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">הנך מרוויח/ה טוקנים עבור צפייה בתמונה זו.</translation>
 <translation id="7877201489035217175">למד/י עוד על תמונות ממומנות</translation>
+<translation id="8164992819127316581">התשלום עבור הפרסים של <ph name="CURRENT_MONTH"/>יתחיל להתבצע עד <ph name="PAYOUT_DATE"/></translation>
+<translation id="33967210973550414">התשלום עבור הפרסים של<ph name="CURRENT_MONTH"/>נמצא בעיצומו של תהליך <ph name="CHECK_STATUS"/></translation>
+<translation id="1622952853310946314">התשלום עבור הפרסים של <ph name="CURRENT_MONTH"/> הושלם. <ph name="SUPPORT"/></translation>
+<translation id="7717357606512850995">בדקו את המצב</translation>
 <translation id="828092975561478703">עבור כל תמונה ממומנת בה את/ה צופה, את/ה מקבל/י 70% מההכנסות בטוקנים. עם Brave Ads את/ה תמיד שולט/ת בפרסומות שאת/ה רואה.</translation>
 <translation id="3624048886326677117">חסום עוקבים ופרסומות (אגרסיבי)</translation>
 <translation id="7151914815476509258">חסום עוקבים ופרסומות (סטנדרטי)</translation>
@@ -520,6 +541,7 @@
 <translation id="2731539192954672606">הרוויחו טוקנים על ידי צפייה בפרסומות השומרות על הפרטיות ותמכו באתרים וביוצרי התוכן המועדפים עליכם באופן אוטומטי.</translation>
 <translation id="631124996535890460">על ידי המשך הנך מסכימ/ה ל<ph name="TERMS_OF_SERVICE"/> וכן <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">מדיניות הפרטיות</translation>
+<translation id="8363792084628930008">בזה שמאפשרים Rewards, אתם מסכימים ל-<ph name="TERMS_OF_SERVICE"/> וגם ל-<ph name="PRIVACY_POLICY"/></translation>
 <translation id="185034574799484512">בואו נערוך סיור מהיר</translation>
 <translation id="7930505144430343145">ברוכים הבאים ל-Brave Rewards!</translation>
 <translation id="3477340970981564961">פרסומות Brave Private מתגמלות אתכם בטוקנים לתמיכה ביוצרי תוכן בשונה מפרסומות מסורתיות, כל זאת תוך שמירה על פרטיות המידע האישי שלכם.</translation>
@@ -578,6 +600,7 @@
 <translation id="2708402071160162126">אזהרה: לעולם אל תחשוף את ביטוי השחזור שלך. כל מי שברשותו ביטוי זה יכול לקחת את הנכסים שלך לצמיתות.</translation>
 <translation id="111912712268284159">גיביתי את ביטוי השחזור שלי במקום בטוח</translation>
 <translation id="6896758677409633944">העתקה</translation>
+<translation id="1544192797660353713">ארנק</translation>
 <translation id="375882617301124395">גבה את ארנק הקריפטו שלך</translation>
 <translation id="8289942708804097960">קנה קריפטו עם כרטיס אשראי או חיוב.</translation>
 <translation id="841880029259839903">שלח מטבע קריפטו או העבר מחשבון אחד לשני.</translation>
@@ -604,7 +627,6 @@
 <translation id="5493402808936397665">הפעלת ביומטריה כדי לבטל נעילה במהירות של הארנק שלך מבלי להזין סיסמה.</translation>
 <translation id="8030647312184163932">ביטול נעילה באמצעות טביעת אצבע</translation>
 <translation id="4090490645603511157">השתמש בביומטריה כדי לבטל את נעילת הארנק שלך במהירות מבלי להזין סיסמה.</translation>
-<translation id="1544192797660353713">ארנק</translation>
 <translation id="6901810042765869341">הזן את ביטוי השחזור שלך כדי לשחזר את חשבון הקריפטו של ארנק Brave שלך.</translation>
 <translation id="9120654436199628567">שחזר חשבון קריפטו</translation>
 <translation id="4811736040444856406">הצג ביטוי שחזור</translation>
@@ -650,9 +672,9 @@
 <translation id="8475984867371585028">ערוך NFT גלויים</translation>
 <translation id="5050890334032852465">שמור רשימת צפייה של החשבון</translation>
 <translation id="7755766175599167100">חפש אסימונים</translation>
-<translation id="3956169227169516344">בחר שיטת רכישה</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="3784455785234192852">נעל</translation>
+<translation id="4412698727486357573">מרכז העזרה</translation>
 <translation id="8796429300536029044">פרטי NFT</translation>
 <translation id="3866249974567520381">תיאור</translation>
 <translation id="4378475168089649292">בלוקצ'יין</translation>
@@ -664,10 +686,6 @@
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
 <translation id="2326850911705720398">אפס ונקה את נתוני הארנק</translation>
 <translation id="6567712397896147805">האם אתה בטוח שברצונך לאפס את ארנק Brave שלך? אם הארנק שלך לא מגובה, איפוס יגרום לך לאבד את כל נתוני החשבון (כולל כל הכספים הקשורים אליו). הקלד <ph name="CONFIRMATION_PHRASE"/> כדי לאשר.</translation>
-<translation id="6915083716464390008">בחר אחת מהאפשרויות הבאות</translation>
-<translation id="7667423728712601865">רכשו קריפטו באמצעות ויזה או מאסטרקארד.</translation>
-<translation id="3101839349578102016">קנייה מיידית עם חשבון הבנק שלך. עמלות נמוכות יותר.</translation>
-<translation id="7269640984027668973">קנה עם <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">מחיקת עסקאות ופרטי מספרים ייחודיים</translation>
 <translation id="5693968582510626466">ניקוי עסקאות יכול להיות שימושי עבור מפתחים או בעת ניקוי מצב בשרת מקומי</translation>
 <translation id="5421107279168565467">האם את/ה בטוח/ה שברצונך לאפס את פרטי העסקאות והמספרים הייחודיים? אפשרות זו משמשת בעיקר מפתחים המפעילים שרת בדיקה מקומי. יש להקליד ״<ph name="CONFIRMATION_PHRASE"/> " כדי לאשר.</translation>
@@ -690,7 +708,7 @@
 <translation id="3510283489391432976">בחר את המיקום הגיאוגרפי/מדינה שלך</translation>
 <translation id="4390800080658195654">שומר על האנונימיות שלך ברשת</translation>
 <translation id="639981156979733813">תומך במהירויות של עד 100 Mbps</translation>
-<translation id="1190117345570417902">משתמש במנהרת VPN מוצפנת מאובטחת של Wireguard</translation>
+<translation id="765343799669302337">משתמש במנהרת VPN מוצפנת מאובטחת של Wireguard</translation>
 <translation id="1571230671455380494">לעולם לא נשתף או נמכור את המידע שלך</translation>
 <translation id="276866628038850725">כל התוכניות כוללות ניסיון חינם למשך 7 ימים!</translation>
 <translation id="1532536259167115948">מנוי חודשי <ph name="TRIAL_TEXT"/></translation>
@@ -700,7 +718,6 @@
 <translation id="1163809943099641131">שנה אחת</translation>
 <translation id="6277055349883621705">חידוש שנתי חוסך 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="4487678670820292781">$119.88</translation>
 <translation id="2655185358771731232">נסה בחינם במשך 7 ימים. לאחר 7 ימים, תחויב במחיר התוכנית. כל המנויים מתחדשים אוטומטית אך ניתן לבטל אותם לפני חידושם.</translation>
 <translation id="6053992191006521518">נסה בחינם</translation>
 <translation id="721747358270435486">התקן VPN</translation>
@@ -765,7 +782,7 @@
 <translation id="5317780077021120954">שמור</translation>
 <translation id="4979796155378508955">ייתכן ולא ניתן יהיה להוציא לפועל את העסקה אל הרשת אם ערך המספר הייחודי המותאם אישית אינו רציף או אם יש בו שגיאות אחרות.</translation>
 <translation id="6122742277607781713">תיק השקעות</translation>
-<translation id="3567988240819868195">שוק</translation>
+<translation id="1736419249208073774">מידע נוסף</translation>
 <translation id="4576965889365503638">מידע</translation>
 <translation id="152455748535966757">דַרגָה</translation>
 <translation id="4958716607782044952">נפח 24 שעות</translation>
@@ -842,7 +859,7 @@
 <translation id="3506416339268164412">כתובת הנמען היא כתובת חוזה של אסימון</translation>
 <translation id="3494964159182650590">סיכום תגמולים</translation>
 <translation id="590733288489975971">תגמולים מפרסומות</translation>
-<translation id="7091980679045978090">רווחים משוערים</translation>
+<translation id="1886682615222609631">רווחים עד כה</translation>
 <translation id="1767561995429774671">תרמו</translation>
 <translation id="7335371657242627509">כלול בתרומות העצמיות</translation>
 <translation id="6727102863431372879">הגדר</translation>
@@ -930,7 +947,7 @@
 <translation id="6044189892950611565">ערוץ התראות עבור Brave Browser</translation>
 <translation id="1173919438868967364">בחירת חשבון</translation>
 <translation id="8922793255489232731">לא ניתן היה להשיג אזור זמן תואם עבור: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">מוריד קובץ נתוני ארנק \u2022 <ph name="percentage"/>\u0025</translation>
+<translation id="8901748741234750758">מוריד קובץ נתוני ארנק \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">מחובר אל <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">ניסיון</translation>
 <translation id="7733890291091968191">הצגת התראות Web3</translation>
@@ -964,9 +981,6 @@
 <translation id="8423380132356660250">פתח את אפליקציית <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">מעדכן את פרופיל VPN...</translation>
 <translation id="7457027586454688423">הזן את סיסמת ה-Brave Wallet שלך</translation>
-<translation id="6588595775439619209">חסימת הודעות Cookies</translation>
-<translation id="264682546981571963">נמאס לך מהודעות הסכמה לעוגיות?</translation>
-<translation id="4986297793092101884">Brave כבר חוסם קובצי Cookie של צד שלישי. אנחנו יכולים לחסום גם הודעות הסכמה לקובצי Cookie.</translation>
 <translation id="4784306439879850873">שים לב ש-Brave לא יכול לאמת מה יקרה אם תחתום. חתימה יכולה לאשר כמעט כל פעולה בחשבונך או בשמך, לרבות (אך לא רק) הענקת שליטה מלאה על חשבונך ונכסי הקריפטו לאתר המגיש את הבקשה. חתום רק אם אתה בטוח שאתה רוצה לבצע פעולה זו ולסמך על האתר המבקש.</translation>
 <translation id="3474375934783434676">הירשם על אחריותך בלבד</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> של <ph name="SIZE"/></translation>
@@ -1070,6 +1084,7 @@
 <translation id="2781668117338732220">רשתות משניות</translation>
 <translation id="282560918037172384">בדיקת רשתות</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="8849001918648564819">מוסתר</translation>
 <translation id="707569835145765061">פעולה נדרשת: יש לשייך חשבון משמורת, אחרת ה-vBAT שלך יאבדו</translation>
 <translation id="1776742005329298234">בתאריך <ph name="DUE_DATE"/> אנו נפסיק את התמיכה ביתרות BAT וירטואליות הקיימות. יש לחבר חשבון משמורת לפני תאריך זה כדי לאפשר לנו להעביר את היתרה שהרווחת לחשבון משמורת שלך, אחרת היתרה שלך תבוטל.</translation>
 <translation id="5089752671190341407">נותר עדיין זמן כדי לתרום את ה-vBAT שלך ליוצרים האהובים עליך</translation>
@@ -1163,4 +1178,7 @@
 <translation id="346505172740911461">מחיר שוק</translation>
 <translation id="4709355193533327244">אין עדיין עסקאות לצפייה.</translation>
 <translation id="4931644613135313937">לאחר שתבצע עסקה, תוכל לצפות בה כאן.</translation>
+<translation id="5494920125229734069">בחר הכל</translation>
+<translation id="5972844218283131174">הסר סימון מהכל</translation>
+<translation id="6322030314101903925">אין נכסים זמינים</translation>
 </translationbundle>

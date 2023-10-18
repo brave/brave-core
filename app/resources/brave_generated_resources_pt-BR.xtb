@@ -28,6 +28,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4988333904713528597">Sempre permitir a reprodução automática em <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar bloqueando a reprodução automática</translation>
 <translation id="3477357195688115718">O Brave não avalia as extensões quanto a segurança e proteção. Somente instale esta extensão caso confie no desenvolvedor.</translation>
+<translation id="2928844661231356557">Conceder acesso a um dispositivo Bluetooth permitirá que o site leia informações de identificação e potencialmente confidenciais sobre você. Permitir que apenas sites em que você confia acessem dispositivos Bluetooth. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Janelas Tor</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
 <translation id="6924909138923993900">Nova conexão Tor para este site</translation>
@@ -192,8 +193,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
         Você pode ler <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruções sobre como baixar e criar para você mesmo<ph name="END_LINK_BUILD_INSTRUCTIONS"/> o <ph name="BEGIN_LINK_SOURCE_CODE"/>código fonte específico usado para criar esta cópia<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Adicionar todas as guias aos favoritos...</translation>
 <translation id="3987546108749866209">Usar guias verticais</translation>
-<translation id="1904394285866191268">{NUM_TABS,plural, =1{Desativar som da guia}one{Desativar som da guia}other{Desativar som das guias}}</translation>
-<translation id="5179127818058486126">{NUM_TABS,plural, =1{Ativar som da guia}one{Ativar som da guia}other{Ativar som das guias}}</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1 {Desativar som da guia} other {Desativar som das guias}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{Ativar som da guia} other{Ativar som das guias}}</translation>
 <translation id="2289567621059034186">Nova guia abaixo</translation>
 <translation id="3228962656492373217">Fechar guias abaixo</translation>
 <translation id="2336228925368920074">Adicionar todas as guias aos favoritos...</translation>
@@ -206,11 +207,14 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5268098808165185458">Copiando texto da imagem...</translation>
 <translation id="4046485130884276245">Texto copiado da imagem</translation>
 <translation id="3639779775496569782">Cópia do texto com falha</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2506438154311626334">Use o protocolo WireGuard no Brave VPN</translation>
+<translation id="8519170191215826548">Esta configuração não pode ser alterada enquanto o Brave VPN estiver conectado.</translation>
+<translation id="5620961847363372221">Requer reinicialização do navegador.</translation>
 <translation id="4235920711083356755">Mostrar o botão de VPN</translation>
 <translation id="4070612712151038707">Mostra o botão de VPN na barra de ferramentas</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">Ativar/desativar VPN</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Sobre o Brave VPN</translation>
 <translation id="4378551569595875038">Conectando...</translation>
 <translation id="3368922792935385530">Conectado</translation>
@@ -219,13 +223,11 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1863950594388384201">Mostrar o botão de VPN na barra de tarefas</translation>
 <translation id="5187139277471084437">Ocultar o botão de VPN na barra de ferramentas</translation>
 <translation id="1177917174080821247">Mostrar ícone de bandeja da VPN.</translation>
-<translation id="7645031001744446123">Ocultar ícone de bandeja da VPN.</translation>
 <translation id="8041089156583427627">Enviar comentários</translation>
 <translation id="4049186905514157504">Gerenciar meu plano</translation>
 <translation id="7570585565843385325">Mostrar o botão de VPN na barra de ferramentas</translation>
 <translation id="5310426188697803101">Ocultar o botão de VPN na barra de ferramentas</translation>
 <translation id="639450633459241724">Exibir ícone de bandeja da VPN</translation>
-<translation id="7430264749441182065">Ocultar ícone de bandeja da VPN</translation>
 <translation id="945522503751344254">Enviar comentários</translation>
 <translation id="3015685033234401792">Gerenciar meu plano</translation>
 <translation id="4989337484121655457">É necessário acesso total ao disco</translation>
@@ -274,6 +276,14 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8152485753254079984">Lista de reprodução nova</translation>
 <translation id="5397019762993984652">Adicionar da sua pasta Reproduzir mais tarde</translation>
 <translation id="7525067979554623046">Criar</translation>
+<translation id="9065203028668620118">Editar</translation>
+<translation id="6527303717912515753">Compartilhar</translation>
+<translation id="760410268786807021">Mantenha para jogar off-line</translation>
+<translation id="705344722465356351">Remover conteúdos reproduzidos</translation>
+<translation id="1173894706177603556">Renomear</translation>
+<translation id="7765158879357617694">Mover</translation>
+<translation id="6648536728577053364">Remover dados off-line</translation>
+<translation id="5181358966317519720">Remover da lista de reprodução</translation>
 <translation id="9156965752763025780">As alterações entrarão em vigor na próxima vez que você reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Reiniciar agora</translation>
 <translation id="4472575034687746823">Primeiros passos</translation>
@@ -313,6 +323,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2025435450953474282">Os artigos são carregados automaticamente no modo leitor, poupando seu tempo</translation>
 <translation id="2422927186524098759">Barra lateral</translation>
 <translation id="832432428796481785">Mostrar botão da barra lateral</translation>
+<translation id="5581036754486769849">Permitir preenchimento automático em janelas privadas</translation>
+<translation id="2262012219398520969">Informações de janelas normais podem ser lidas/preenchidas automaticamente em janelas privadas</translation>
 <translation id="7781069478569868053">Página Nova guia</translation>
 <translation id="1988804048511540801">Exibição da página de nova aba</translation>
 <translation id="2970343821770026391">Painel</translation>

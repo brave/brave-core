@@ -4,6 +4,7 @@
 <translation id="8631427463833030968">จัดการโฆษณา</translation>
 <translation id="7630214457764713113">คัดลอกลิงก์เท่านั้น</translation>
 <translation id="885805571521218129">สิ่งนี้แสดงถึงช่วงรายได้โดยประมาณของคุณสำหรับ Brave Ads ในเดือนนี้</translation>
+<translation id="818003031290137834">เมื่อคุณเชื่อมต่อกับ ZebPay แล้ว ยอดคงเหลือก่อนหน้านี้จะถูกฝากเข้าบัญชี ZebPay ของคุณโดยเป็นส่วนหนึ่งของการจ่ายรายได้ครั้งถัดไป เมื่อยอดเงินเข้าแล้ว คุณจะเห็น BAT แสดงในยอดคงเหลือ Rewards ของคุณ</translation>
 <translation id="3478449063771497234">ระบบจะปิดใช้การแจ้งเตือน</translation>
 <translation id="2862978891748913252">เลือกประเทศของคุณ</translation>
 <translation id="3970520675790340955">เลือกประเทศของคุณ เพื่อให้เราสามารถแสดงตัวเลือกและโฆษณาที่เหมาะสมสำหรับภูมิภาคของคุณ</translation>
@@ -112,6 +113,22 @@
 <translation id="8047754398610073499">บล็อกการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้</translation>
 <translation id="2621893359845808115">บล็อกป๊อปอัปของเว็บไซต์ที่ขอให้คุณยอมรับหรือปฏิเสธคุกกี้บนเว็บไซต์</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
+<translation id="6486983549008741930">การกรองเนื้อหา</translation>
+<translation id="2398817776566547893">เปิดใช้งานตัวกรองแบบกำหนดเองที่บล็อกตัวติดตามและสิ่งรบกวนที่เจาะจงภูมิภาคและภาษา</translation>
+<translation id="8578397014396032341">ตัวกรองเนื้อหา</translation>
+<translation id="4516904298421534459">รายการตัวกรอง</translation>
+<translation id="4435215931544457255">รายการชุมชนยอดนิยมเพิ่มเติม โปรดทราบว่าการเปิดใช้งานตัวกรองหลายตัวจนเกินไปจะทำให้การท่องเว็บช้าลง</translation>
+<translation id="2033882091175404255">รายการตัวกรองแบบกำหนดเอง</translation>
+<translation id="3657456536609186343">รายการตัวกรองแบบกำหนดเอง</translation>
+<translation id="5086877031935002480">เพิ่มรายการตัวกรองที่กำหนดเอง</translation>
+<translation id="4180818901996404761">URL รายการตัวกรองแบบกำหนดเอง</translation>
+<translation id="7558501402160423480">ป้อน URL รายการตัวกรองที่นี่</translation>
+<translation id="8775144690796719618">URL ไม่ถูกต้อง</translation>
+<translation id="1841059687646820793">แก้ไขรายการตัวกรองแบบกำหนดเอง</translation>
+<translation id="5075097652958438037">เพิ่มรายการเพิ่มเติมที่สร้างและดูแลโดยชุมชนที่เชื่อถือได้ของคุณ\n\nสมัครเฉพาะรายการจากหน่วยงานที่คุณเชื่อถือเท่านั้น เบราว์เซอร์ของคุณจะตรวจสอบรายการอัปเดตจาก URL ที่คุณป้อนเป็นระยะ โดยจะเปิดเผยที่อยู่ IP ของคุณไปยังเซิร์ฟเวอร์</translation>
+<translation id="3365863382631355729">อัปเดตล่าสุด <ph name="TIME"/></translation>
+<translation id="802154636333426148">การดาวน์โหลดล้มเหลว</translation>
+<translation id="7824440849056209910"><ph name="TIME"/> การอัปเดตล้มเหลว</translation>
 <translation id="3872060236937011862">ราคา <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -425,6 +442,10 @@
 <translation id="6632345639591919543">คุณกำลังได้รับโทเคนจากการชมภาพนี้\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">คุณกำลังได้รับโทเคนจากการชมภาพนี้</translation>
 <translation id="7877201489035217175">เรียนรู้เพิ่มเติมเกี่ยวกับภาพสปอนเซอร์</translation>
+<translation id="8164992819127316581">การจ่าย Rewards สำหรับ <ph name="CURRENT_MONTH"/> จะเริ่มดำเนินการภายใน <ph name="PAYOUT_DATE"/></translation>
+<translation id="33967210973550414">การจ่าย Rewards สำหรับ <ph name="CURRENT_MONTH"/> อยู่ระหว่างดำเนินการ <ph name="CHECK_STATUS"/></translation>
+<translation id="1622952853310946314">การจ่าย Rewards สำหรับ <ph name="CURRENT_MONTH"/> เสร็จสิ้นแล้ว <ph name="SUPPORT"/></translation>
+<translation id="7717357606512850995">ตรวจสอบสถานะ</translation>
 <translation id="828092975561478703">สำหรับทุกภาพสปอนเซอร์ที่คุณชม คุณจะได้รับ 70% ของรายได้ในรูปโทเคน ด้วย Brave Ads คุณสามารถควบคุมว่าโฆษณาใดที่คุณต้องการเห็นได้เสมอ</translation>
 <translation id="3624048886326677117">บล็อกตัวติดตาม &amp; Ads (ที่รุนแรง)</translation>
 <translation id="7151914815476509258">บล็อกตัวติดตาม &amp; Ads (ทั่วไป)</translation>
@@ -519,6 +540,7 @@
 <translation id="2731539192954672606">รับโทเค็นผ่านการดูโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัวเพื่อนำไปสนับสนุนเว็บไซต์และผู้สร้างเนื้อหาที่คุณชื่นชอบโดยอัตโนมัติ</translation>
 <translation id="631124996535890460">หากดำเนินการต่อ จะถือว่าคุณยอมรับ <ph name="TERMS_OF_SERVICE"/> และ <ph name="PRIVACY_POLICY"/></translation>
 <translation id="8804164990146287819">นโยบายสความเป็นส่วนตัว</translation>
+<translation id="8363792084628930008">การเปิดใช้งาน Rewards จะถือว่าคุณยอมรับ <ph name="TERMS_OF_SERVICE"/> และ <ph name="PRIVACY_POLICY"/></translation>
 <translation id="185034574799484512">มาดูรายละเอียดคร่าวๆ กัน</translation>
 <translation id="7930505144430343145">ยินดีต้อนรับสู่ Brave Reward</translation>
 <translation id="3477340970981564961">โฆษณาส่วนตัวของ Brave ให้ Reward เป็นโทเค็นสำหรับนำไปสนับสนุนผู้สร้างคอนเทนต์ ซึ่งจะต่างจากโฆษณาทั่วไป แต่ยังคงรักษาความเป็นส่วนตัวให้กับข้อมูลส่วนตัวของคุณไว้ในทุกๆ ส่วน</translation>
@@ -577,6 +599,7 @@
 <translation id="2708402071160162126">คำเตือน: อย่าให้ใครรู้กลุ่มคำสำหรับการกู้คืนของคุณ ใครก็ตามที่มีกลุ่มคำเหล่านี้จะสามารถนำสินทรัพย์ของคุณไปได้ตลอดกาล</translation>
 <translation id="111912712268284159">ฉันได้เก็บสำรองกลุ่มคำของฉันไว้ในที่ที่ปลอดภัยแล้ว</translation>
 <translation id="6896758677409633944">คัดลอก</translation>
+<translation id="1544192797660353713">วอลเล็ท</translation>
 <translation id="375882617301124395">เก็บสำรองคริปโตวอลเล็ตของคุณ</translation>
 <translation id="8289942708804097960">ซื้อคริปโตด้วยบัตรเครดิตหรือบัตรเดบิต</translation>
 <translation id="841880029259839903">ส่งคริปโตหรือโอนจากบัญชีหนึ่งไปยังอีกบัญชีหนึ่ง</translation>
@@ -603,7 +626,6 @@
 <translation id="5493402808936397665">เปิดใช้งานไบโอเมตริกซ์เพื่อปลดล็อกกระเป๋าเงินของคุณอย่างรวดเร็วโดยไม่ต้องป้อนรหัสผ่าน</translation>
 <translation id="8030647312184163932">ปลดล็อกด้วยลายนิ้วมือ</translation>
 <translation id="4090490645603511157">เปิดใช้งานไบโอเมตริกซ์เพื่อปลดล็อกกระเป๋าเงินของคุณอย่างรวดเร็วโดยไม่ต้องป้อนรหัสผ่าน</translation>
-<translation id="1544192797660353713">วอลเล็ท</translation>
 <translation id="6901810042765869341">ป้อนวลีกู้คืนของคุณเพื่อกู้คืนบัญชีคริปโตของ Brave Wallet</translation>
 <translation id="9120654436199628567">กู้คืนบัญชีคริปโต</translation>
 <translation id="4811736040444856406">แสดงวลีกูคืน</translation>
@@ -649,9 +671,9 @@
 <translation id="8475984867371585028">แก้ไข NFT ที่จับต้องได้</translation>
 <translation id="5050890334032852465">บันทึกรายการเฝ้าดูของบัญชี</translation>
 <translation id="7755766175599167100">ค้นหาโทเค็น</translation>
-<translation id="3956169227169516344">เลือกช่องทางการซื้อ</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">ล็อค</translation>
+<translation id="4412698727486357573">ศูนย์ช่วยเหลือ</translation>
 <translation id="8796429300536029044">รายละเอียด NFT</translation>
 <translation id="3866249974567520381">คำอธิบาย</translation>
 <translation id="4378475168089649292">บล็อกเชน</translation>
@@ -663,10 +685,6 @@
 <translation id="414639769490080648">จำนวนนาทีที่ต้องรอจนกว่า Brave วอลเล็ตจะล็อคโดยอัตโนมัติ</translation>
 <translation id="2326850911705720398">รีเซ็ตและล้างข้อมูลวอลเล็ต</translation>
 <translation id="6567712397896147805">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ต Brave Wallet ของคุณ หากไม่ได้สำรองกระเป๋าเงินของคุณไว้ จะทำให้คุณสูญเสียข้อมูลบัญชีทั้งหมด (รวมถึงเงินที่เกี่ยวข้อง) พิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
-<translation id="6915083716464390008">เลือกหนึ่งในตัวเลือกต่อไปนี้</translation>
-<translation id="7667423728712601865">ซื้อคริปโตด้วยบัตรวีซ่าหรือบัตรมาสเตอร์การ์ด</translation>
-<translation id="3101839349578102016">ซื้อทันทีผ่านบัญชีธนาคารของคุณด้วยค่าธรรมเนียมที่ต่ำกว่า</translation>
-<translation id="7269640984027668973">ซื้อด้วย <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">ล้างข้อมูลธุรกรรมและข้อมูล Nonce</translation>
 <translation id="5693968582510626466">การล้างข้อมูลธุรกรรมอาจเป็นประโยชน์ต่อนักพัฒนาหรือเป็นประโยชน์เมื่อล้างสถานะบนเซิร์ฟเวอร์ภายใน</translation>
 <translation id="5421107279168565467">คุณแน่ใจหรือว่าต้องการรีเซ็ตข้อมูลธุรกรรมและข้อมูล Nonce ซึ่งตัวเลือกนี้ส่วนใหญ่จะใช้โดยนักพัฒนาที่รันเซิร์ฟเวอร์ทดสอบในเครื่อง กรุณาพิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
@@ -689,7 +707,7 @@
 <translation id="3510283489391432976">เลือกตำแหน่งที่ตั้งตามภูมิภาค/ประเทศของคุณ</translation>
 <translation id="4390800080658195654">ช่วยให้ตัวตนของคุณไม่เป็นที่เปิดเผยทางออนไลน์</translation>
 <translation id="639981156979733813">รองรับความเร็วที่ 100 Mbps</translation>
-<translation id="1190117345570417902">ใช้อุโมงค์ VPN ที่เข้ารหัสอย่างปลอดภัยโดย Wireguard</translation>
+<translation id="765343799669302337">ใช้อุโมงค์ VPN ที่เข้ารหัสอย่างปลอดภัยของ WireGuard</translation>
 <translation id="1571230671455380494">เราไม่มีวันแบ่งปันหรือขายข้อมูลของคุณ</translation>
 <translation id="276866628038850725">ทุกแผนรวมช่วงเวลาทดลองใช้ฟรี 7 วัน!</translation>
 <translation id="1532536259167115948">สมัครสมาชิกรายเดือน <ph name="TRIAL_TEXT"/></translation>
@@ -699,7 +717,6 @@
 <translation id="1163809943099641131">1 ปี</translation>
 <translation id="6277055349883621705">ต่ออายุรายปี ประหยัด 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / ปี</translation>
-<translation id="4487678670820292781">$119.88</translation>
 <translation id="2655185358771731232">ทดลองใช้ฟรีเป็นเวลา 7 วัน โดยหลังจาก 7 วันแล้ว ระบบจะเรียกเก็บเงินในราคาตามแผน ทั้งนี้ การสมัครสมาชิกทั้งหมดจะต่ออายุโดยอัตโนมัติ แต่สามารถยกเลิกได้ก่อนจะมีการต่ออายุ</translation>
 <translation id="6053992191006521518">ทดลองใช้ฟรี</translation>
 <translation id="721747358270435486">ติดตั้ง VPN</translation>
@@ -764,7 +781,7 @@
 <translation id="5317780077021120954">บันทึก</translation>
 <translation id="4979796155378508955">ไม่สามารถเผยแพร่ธุรกรรมในเครือข่ายได้หากค่า Nonce ที่กำหนดเองไม่ต่อเนื่องหรือมีข้อผิดพลาดอื่นๆ</translation>
 <translation id="6122742277607781713">พอร์ตโฟลิโอ</translation>
-<translation id="3567988240819868195">ตลาด</translation>
+<translation id="1736419249208073774">สำรวจ</translation>
 <translation id="4576965889365503638">ข้อมูล</translation>
 <translation id="152455748535966757">อันดับ</translation>
 <translation id="4958716607782044952">ปริมาณการซื้อขาย 24 ชั่วโมง</translation>
@@ -840,7 +857,7 @@
 <translation id="3506416339268164412">ที่อยู่รับเหรียญคือที่อยู่สัญญาโทเค็น (Token Contract Address)</translation>
 <translation id="3494964159182650590">รางวัลทั้งหมด</translation>
 <translation id="590733288489975971">Rewards จาก Ads</translation>
-<translation id="7091980679045978090">รายได้โดยประมาณ</translation>
+<translation id="1886682615222609631">รายได้จนถึงปัจจุบัน</translation>
 <translation id="1767561995429774671">สนับสนุน</translation>
 <translation id="7335371657242627509">รวมไว้ในการบริจาคแบบอัตโนมัติ</translation>
 <translation id="6727102863431372879">ตั้งค่า</translation>
@@ -928,7 +945,7 @@
 <translation id="6044189892950611565">ช่องทางการแจ้งเตือนสำหรับเบราว์เซอร์ Brave</translation>
 <translation id="1173919438868967364">เลือกบัญชี</translation>
 <translation id="8922793255489232731">ไม่พบเขตเวลาที่ตรงกันสำหรับ: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">กำลังดาวน์โหลดไฟล์ข้อมูลวอลเล็ท \u2022 <ph name="percentage"/>\u0025</translation>
+<translation id="8901748741234750758">กำลังดาวน์โหลดไฟล์ข้อมูลวอลเล็ท \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">เชื่อมต่อกับ <ph name="VALUE"/> แล้ว</translation>
 <translation id="1968852757206592413">ทดลองใช้งาน</translation>
 <translation id="7733890291091968191">แสดงการแจ้งเตือนของ Web3</translation>
@@ -962,9 +979,6 @@
 <translation id="8423380132356660250">เปิดแอป <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">กำลังอัปเดตโปรไฟล์ VPN ...</translation>
 <translation id="7457027586454688423">ใส่รหัสผ่าน Brave Wallet ของคุณ</translation>
-<translation id="6588595775439619209">บล็อกการแจ้งเตือนคุกกี้</translation>
-<translation id="264682546981571963">เบื่อไหมกับการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้</translation>
-<translation id="4986297793092101884">Brave บล็อกคุกกี้ของบุคคลที่สามแล้ว เราสามารถบล็อกการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้ได้เช่นกัน</translation>
 <translation id="4784306439879850873">โปรดทราบว่า Brave ไม่สามารถตรวจสอบได้ว่าจะเกิดอะไรขึ้นหากคุณลงชื่อ ลายเซ็นสามารถอนุญาตการดำเนินการเกือบทั้งหมดในบัญชีของคุณหรือในนามของคุณ ซึ่งรวมถึง (แต่ไม่จำกัดเพียง) ให้การควบคุมบัญชีและทรัพย์สินเข้ารหัสของคุณทั้งหมดแก่ไซต์ที่ส่งคำขอ ลงชื่อเฉพาะเมื่อคุณแน่ใจว่าต้องการดำเนินการนี้ และเชื่อถือไซต์ที่ร้องขอ</translation>
 <translation id="3474375934783434676">ลงชื่อโดยยอมรับความเสี่ยงด้วยตัวคุณเอง</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> จาก <ph name="SIZE"/></translation>
@@ -1068,6 +1082,7 @@
 <translation id="2781668117338732220">เครือข่ายสำรอง</translation>
 <translation id="282560918037172384">เครือข่ายทดสอบ</translation>
 <translation id="3586775666459823714">NFT</translation>
+<translation id="8849001918648564819">ซ่อนไว้</translation>
 <translation id="707569835145765061">ต้องดำเนินการ: เชื่อมต่อบัญชีฝากสินทรัพย์ มิเช่นนั้น vBAT ของคุณจะหายไป</translation>
 <translation id="1776742005329298234">ในวันที่ <ph name="DUE_DATE"/> เราจะยุติการสนับสนุนสำหรับยอดคงเหลือ BAT เสมือนที่มีอยู่ ขอแนะนำให้เชื่อมต่อบัญชีฝากสินทรัพย์ก่อนวันที่ดังกล่าวเพื่อให้เราสามารถโอนยอดที่คุณได้รับไปยังบัญชีฝากสินทรัพย์ของคุณได้ มิฉะนั้นยอดคงเหลือของคุณจะหายไป</translation>
 <translation id="5089752671190341407">คุณยังคงมีเวลาบริจาค vBAT ของคุณให้กับผู้สร้างสรรค์คนโปรดของคุณ</translation>
@@ -1161,4 +1176,7 @@
 <translation id="346505172740911461">ราคาตลาด</translation>
 <translation id="4709355193533327244">ยังไม่มีธุรกรรมให้ดู</translation>
 <translation id="4931644613135313937">เมื่อคุณทำธุรกรรมแล้ว คุณจะสามารถดูได้ที่นี่</translation>
+<translation id="5494920125229734069">เลือกทั้งหมด</translation>
+<translation id="5972844218283131174">ยกเลิกการเลือกทั้งหมด</translation>
+<translation id="6322030314101903925">ไม่มีสินทรัพย์ที่พร้อมใช้งาน</translation>
 </translationbundle>

@@ -4,6 +4,7 @@
 <translation id="8631427463833030968">Dhibiti matangazo</translation>
 <translation id="7630214457764713113">Nakili kiungo safi</translation>
 <translation id="885805571521218129">Hii inaonyesha makadirio ya mapato yako kutokana na Matangazo kwenye Brave mwezi huu.</translation>
+<translation id="818003031290137834">Kwa kuwa sasa umeunganishwa kwenye ZebPay, salio lolote la awali ulilokuwa nalo litawekwa kwenye akaunti yako ya ZebPay kama sehemu ya malipo yako yajayo ya mapato. Likifika, utaona BAT yako ikionyeshwa kwenye salio lako la Zawadi.</translation>
 <translation id="3478449063771497234">Taarifa zimelemazwa</translation>
 <translation id="2862978891748913252">Chagua nchi yako</translation>
 <translation id="3970520675790340955">Chagua nchi yako ili tuweze kukuonyesha chaguo na matangazo yanayofaa kwa eneo lako.</translation>
@@ -112,6 +113,22 @@
 <translation id="8047754398610073499">Zuia taarifa za idhini ya vidakuzi</translation>
 <translation id="2621893359845808115">Huzuia madirisha ibukizi ya tovuti ambayo hukuomba kukubali/kukataa vidakuzi kwenye tovuti yao</translation>
 <translation id="7534079972563542000">Vikoa Visivyoweza Kusimamishwa</translation>
+<translation id="6486983549008741930">Kuchuja Maudhui</translation>
+<translation id="2398817776566547893">Wezesha vichujio maalum vinavyozuia vifuatiliaji na Annoyance za lugha mahususi</translation>
+<translation id="8578397014396032341">Vichujio vya Maudhui</translation>
+<translation id="4516904298421534459">Orodha za vichujio</translation>
+<translation id="4435215931544457255">Orodha maarufu za ziada za jumuiya. Kumbuka kwamba kuwezesha vichujio vingi kupindukia kutapunguza kasi za kuvinjari.</translation>
+<translation id="2033882091175404255">Orodha za vichujio maalum</translation>
+<translation id="3657456536609186343">Orodha ya vichujio maalum</translation>
+<translation id="5086877031935002480">Weka orodha ya vichujo maalum</translation>
+<translation id="4180818901996404761">URL ya Orodha ya Vichujio Maalum</translation>
+<translation id="7558501402160423480">Weka URL ya orodha ya vichujio hapa</translation>
+<translation id="8775144690796719618">URL si sahihi</translation>
+<translation id="1841059687646820793">Badilisha orodha ya vichujio Maalum</translation>
+<translation id="5075097652958438037">Weka orodha za ziada zilizoundwa na kuhifadhiwa na jamii yako ya kuaminika.\n\nJisajili tu kwenye orodha kutoka kwenye mashirika unayoamini. Kivinjari chako kitakagua mara kwa mara masasisho ya orodha kutoka URL unayoweka, kwa kufichua anwani yako ya IP kwenye seva yao.</translation>
+<translation id="3365863382631355729">Mara ya mwisho ilisasishwa <ph name="TIME"/></translation>
+<translation id="802154636333426148">Haikuweza kupakua</translation>
+<translation id="7824440849056209910"><ph name="TIME"/> Sasisho halijafaulu</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> Bei (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -425,6 +442,10 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="6632345639591919543">Pata tokeni kwa kutazama picha hii na uilipe kwa waundaji.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Unapata tokeni kwa kutazama picha hii.</translation>
 <translation id="7877201489035217175">Pata maelezo zaidi kuhusu picha zinazodhaminiwa</translation>
+<translation id="8164992819127316581">Malipo ya zawadi za  <ph name="CURRENT_MONTH"/> yataanza kuchakatwa kufikia <ph name="PAYOUT_DATE"/>.</translation>
+<translation id="33967210973550414">Malipo ya zawadi za  <ph name="CURRENT_MONTH"/> yanaendelea. <ph name="CHECK_STATUS"/>.</translation>
+<translation id="1622952853310946314">Malipo ya zawadi za  <ph name="CURRENT_MONTH"/> yamekamilika. <ph name="SUPPORT"/>.</translation>
+<translation id="7717357606512850995">Angalia hali</translation>
 <translation id="828092975561478703">Kwa kila picha inayodhaminiwa unayohakiki, unapokea asilimia 70 ya mapato kwa njia ya tokeni. Ukiwa na Brave Ads, unadhibiti matangazo unayotumia wakati wote.</translation>
 <translation id="3624048886326677117">Zuia vifuatiliaji na matangazo (Hima)</translation>
 <translation id="7151914815476509258">Zuia vifuatiliaji na matangazo (Wastani)</translation>
@@ -519,6 +540,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="2731539192954672606">Pata tokeni kwa kutazama matangazo yanayoheshimu faragha na ufadhili tovuti na waundaji wa maudhui unaopenda kiotomatiki.</translation>
 <translation id="631124996535890460">Kwa kuchakata, unakubali <ph name="TERMS_OF_SERVICE"/> na <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Sera ya Faragha</translation>
+<translation id="8363792084628930008">Kwa kuwezesha Zawadi, unakubali <ph name="TERMS_OF_SERVICE"/> na <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Hebu tuangalie onyesho la haraka</translation>
 <translation id="7930505144430343145">Karibu kwenye Zawadi za Brave!</translation>
 <translation id="3477340970981564961">Brave Private Ads hukuzawidi tokeni ili kusaidia waundaji maudhui kinyume na matangazo ya jadi, yote huku ukidumisha faragha ya taarifa zako binafsi.</translation>
@@ -577,6 +599,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="2708402071160162126">ONYO: Usiwahi kushiriki kauli yako ya urejeshaji. Yeyote aliye na kauli hii anaweza kuchukua rasilimali zako kabisa.</translation>
 <translation id="111912712268284159">Nimehifadhi nakala ya kauli yangu mahali salama.</translation>
 <translation id="6896758677409633944">Nakala</translation>
+<translation id="1544192797660353713">Pochi</translation>
 <translation id="375882617301124395">Cheleza pochi yako ya crypto</translation>
 <translation id="8289942708804097960">Nunua crypo kwa kadi ya mikopo au kadi ya malipo.</translation>
 <translation id="841880029259839903">Tuma crypto au hamisha kutoka kwenye akaunti moja hadi nyingine.</translation>
@@ -603,7 +626,6 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="5493402808936397665">Wezesha bayometriki kufungua haraka pochi yako bila kuweka nenosiri lako.</translation>
 <translation id="8030647312184163932">Kufungua kwa alama ya kidole</translation>
 <translation id="4090490645603511157">Tumia bayometriki ili kufungua pochi yako haraka bila kuingiza nenosiri lako.</translation>
-<translation id="1544192797660353713">Pochi</translation>
 <translation id="6901810042765869341">Weka kaulisiri yako ya urejeshaji ili kurejesha akaunti yako ya crypto ya Brave Wallet.</translation>
 <translation id="9120654436199628567">Rejesha akaunti ya crypto</translation>
 <translation id="4811736040444856406">Onyesha kaulisiri ya urejeshaji</translation>
@@ -649,9 +671,9 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="8475984867371585028">Hariri NFT zinazoonekana</translation>
 <translation id="5050890334032852465">Hifadhi orodha kaguzi ya akaunti</translation>
 <translation id="7755766175599167100">Tafuta tokeni</translation>
-<translation id="3956169227169516344">Teua Njia ya Ununuzi</translation>
 <translation id="8488282162676695335">Pochi ya Brave</translation>
 <translation id="3784455785234192852">Kufunga</translation>
+<translation id="4412698727486357573">Kituo cha usaidizi</translation>
 <translation id="8796429300536029044">Maelezo ya NFT</translation>
 <translation id="3866249974567520381">Maelezo</translation>
 <translation id="4378475168089649292">Mtungo wa rekodi</translation>
@@ -663,10 +685,6 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="414639769490080648">Idadi ya dakika za kusubiri hadi Brave Wallet ifungwe kiotomatiki</translation>
 <translation id="2326850911705720398">Badilisha na ufute data ya pochi</translation>
 <translation id="6567712397896147805">Una uhakika kwamba unataka kuweka Pochi yako ya Brave upya? Ikiwa nakala ya pochi yako haijahifadhiwa, kuweka upya kutafanya upoteze data yote ya akaunti (ikiwa ni pamoja na fedha zozote zinazohusika). Charaza "<ph name="CONFIRMATION_PHRASE"/>" ili kuthibitisha.</translation>
-<translation id="6915083716464390008">Chagua moja kati ya machaguo yanayofuata</translation>
-<translation id="7667423728712601865">Nunua crypto kwa Visa au Mastercard.</translation>
-<translation id="3101839349578102016">Ununuzi wa papo hapo kwa akaunti yako ya benki. Ada za chini.</translation>
-<translation id="7269640984027668973">Nunua kwa <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Futa maelezo ya muamala na nonsi</translation>
 <translation id="5693968582510626466">Kufuta miamala kunaweza kuwa muhimu kwa wasanidi au wakati wa kusafisha hali kwenye seva ya ndani</translation>
 <translation id="5421107279168565467">Una uhakika kwamba unataka kuweka upya maelezo ya muamala na nonsi? Chaguo hili mara nyingi hutumiwa na wasanidi wanaoendesha seva ya ndani ya jaribio. Charaza "<ph name="CONFIRMATION_PHRASE"/>" ili kuthibitisha.</translation>
@@ -689,7 +707,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="3510283489391432976">Chagua eneo lako la jiografia/nchi</translation>
 <translation id="4390800080658195654">Hukuzuia kutambulika mtandaoni</translation>
 <translation id="639981156979733813">Hutumia kasi za hadi Mbps 100</translation>
-<translation id="1190117345570417902">Hutumia njia salama ya VPN iliyosimbwa ya Wireguard</translation>
+<translation id="765343799669302337">Hutumia njia salama ya VPN iliyosimbwa ya WireGuard</translation>
 <translation id="1571230671455380494">Hatushiriki wala kuuza kamwe maelezo yako</translation>
 <translation id="276866628038850725">Mipango yote inajumuisha jaribio la siku 7 bila malipo!</translation>
 <translation id="1532536259167115948">Usajili wa kila mwezi <ph name="TRIAL_TEXT"/></translation>
@@ -699,7 +717,6 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="1163809943099641131">Mwaka mmoja</translation>
 <translation id="6277055349883621705">Andikisha upya kila mwaka na uokoe 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> kwa mwaka.</translation>
-<translation id="4487678670820292781">$119.88</translation>
 <translation id="2655185358771731232">Jaribu bila malipo kwa siku 7. Baada ya siku 7, utatozwa bei ya mpango. Usajili wote ni kiotomatiki lakini unaweza kughairiwa kabla ya uandikishaji upya.</translation>
 <translation id="6053992191006521518">Jaribu BILA MALIPO</translation>
 <translation id="721747358270435486">Sakinisha VPN</translation>
@@ -764,7 +781,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="5317780077021120954">Hifadhi</translation>
 <translation id="4979796155378508955">Muamala hauwezi kuenezwa hadi kwa mtandao ikiwa thamani maalum ya nonsi haifuatani au ina hitilafu zingine.</translation>
 <translation id="6122742277607781713">Potifolio</translation>
-<translation id="3567988240819868195">Soko</translation>
+<translation id="1736419249208073774">Gundua</translation>
 <translation id="4576965889365503638">TAARIFA</translation>
 <translation id="152455748535966757">Cheo</translation>
 <translation id="4958716607782044952">Kiwango cha 24</translation>
@@ -840,7 +857,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="3506416339268164412">Anwani ya kupokea ni anwani ya mkataba wa vocha ya zawadi.</translation>
 <translation id="3494964159182650590">Muhtasari wa Zawadi</translation>
 <translation id="590733288489975971">Zawadi kutoka kwenye Matangazo</translation>
-<translation id="7091980679045978090">Mapato yanayokadiriwa</translation>
+<translation id="1886682615222609631">Mapato kufikia sasa</translation>
 <translation id="1767561995429774671">Changia</translation>
 <translation id="7335371657242627509">Jumuisha kwenye Auto-Contribute</translation>
 <translation id="6727102863431372879">Weka</translation>
@@ -928,7 +945,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="6044189892950611565">Kituo cha taarifa cha Kivinjari cha Brave</translation>
 <translation id="1173919438868967364">Teua Akaunti</translation>
 <translation id="8922793255489232731">Haikuweza kupata saa za eneo zinazolingana kwa: <ph name="VALUE"/></translation>
-<translation id="7084757528071133475">Inapakua faili ya data ya pochi \u2022 <ph name="percentage"/>\u0025</translation>
+<translation id="8901748741234750758">Inapakua faili ya data ya pochi \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Imeunganishwa kwa <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Jaribio</translation>
 <translation id="7733890291091968191">Onyesha taarifa za Web3</translation>
@@ -962,9 +979,6 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="8423380132356660250">Fungua programu ya <ph name="APP_NAME"/></translation>
 <translation id="168154537623654021">Inasasisha Wasifu wa VPN...</translation>
 <translation id="7457027586454688423">Weka nenosiri lako la Pochi ya Brave</translation>
-<translation id="6588595775439619209">Zuia taarifa za vidakuzi</translation>
-<translation id="264682546981571963">Je, umechoshwa na taarifa za idhini ya vidakuzi?</translation>
-<translation id="4986297793092101884">Brave tayari huzuia vidakuzi vya wahusika wengine. Tunaweza kuzuia taarifa za idhini ya vidakuzi, pia.</translation>
 <translation id="4784306439879850873">Fahamu kuwa Brave haiwezi kuthibitisha kitakachotendeka ukitia sahihi. Sahihi inaweza kuidhinisha takribani shughuli yoyote katika akaunti yako au kwa niaba yako, ikiwemo (lakini si tu) kutoa udhibiti wa jumla wa akaunti yako na mali zako za crypto kwa tovuti inayotuma ombi. Tia sahihi ikiwa tu una uhakika unataka kuchukua hatua hii na unaamini tovuti inayoomba.</translation>
 <translation id="3474375934783434676">Tia sahihi kwa tahadhari yako pekee</translation>
 <translation id="7134370164002095282"><ph name="CURRENT"/> kati ya <ph name="SIZE"/></translation>
@@ -1068,6 +1082,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="2781668117338732220">Mitandao Mbadala</translation>
 <translation id="282560918037172384">Jaribu Mitandao</translation>
 <translation id="3586775666459823714">NFT</translation>
+<translation id="8849001918648564819">Imefichwa</translation>
 <translation id="707569835145765061">Hatua inayohitajika: Unganisha akaunti ya msimamizi, la sivyo vBAT yako itapotea</translation>
 <translation id="1776742005329298234">Mnamo <ph name="DUE_DATE"/>, tutasitisha msaada kwa masalio ya BAT ya mtandaoni yaliyopo. Unganisha akaunti ya msimamizi kabla ya tarehe hii ili tuweze kuhamisha salio lako hadi kwenye akaunti yako ya msimamizi, vinginevyo salio lako litapotea.</translation>
 <translation id="5089752671190341407">Bado una muda wa kuchangia vBAT yako kwa waundaji unaopenda.</translation>
@@ -1161,4 +1176,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="346505172740911461">Bei ya soko</translation>
 <translation id="4709355193533327244">Bado hakuna miamala ya kuangalia</translation>
 <translation id="4931644613135313937">Ukishakamilisha muamala, utaweza kuuona hapa</translation>
+<translation id="5494920125229734069">Chagua zote</translation>
+<translation id="5972844218283131174">Ondoa yote</translation>
+<translation id="6322030314101903925">Hakuna mali zinazopatikana</translation>
 </translationbundle>

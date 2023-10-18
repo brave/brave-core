@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">Genoptag installation</translation>
 <translation id="7099479769133613710">Genstart og opdater &amp;Chrome OS</translation>
 <translation id="2479110114759182442">Brave anbefaler, at du gennemgår denne udvidelse</translation>
+<translation id="3814674848168165531">Når et website anmoder om at forudindlæse links privat på websitets side, anvender Brave Braves servere. På denne måde skjules din identitet fra det forudindlæste website, men Brave registrerer, hvilke websites der forudindlæses.</translation>
 <translation id="1065672644894730302">Dine præferencer kan ikke læses. Visse funktioner er muligvis ikke tilgængelige, og ændringer af præferencer gemmes ikke.</translation>
 <translation id="7577672138294294152">Din forælder har deaktiveret "Tilladelser for websites, apps og udvidelser" for Brave</translation>
 <translation id="2796517443093885402">Brave kan hjælpe med at beskytte dig mod brud på datasikkerheden, farlige udvidelser og meget mere</translation>
@@ -117,6 +118,8 @@
 <translation id="2100587595569959771">Få flere oplysninger om personlig tilpasning af annoncer i Brave</translation>
 <translation id="1807774211756215222">Åbn linket på en ny Brave-&amp;fane</translation>
 <translation id="2106568569080763501">Med Brave kan du klikke på et telefonnummer på nettet og ringe op til det via Skype!</translation>
+<translation id="308146532933302843">Få flere oplysninger om, hvorfor Brave blokerer visse downloads</translation>
+<translation id="6324134303015966238">Brave forudindlæser sider, du sandsynligvis vil besøge, så disse sider indlæses hurtigere, når du besøger dem</translation>
 <translation id="2401189691232800402">Chrome OS-system</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="3744202345691150878">Få hjælp til Chrome OS</translation>
@@ -141,6 +144,7 @@
 <translation id="5757460455745382269">Dette sprog bruges til at vise Brave-brugerfladen</translation>
 <translation id="4222932583846282852">Annullerer…</translation>
 <translation id="1853997773668795891">Vil du linke dine Brave-data til denne konto?</translation>
+<translation id="4732930052828648898">Advarer dig om skadelige websites – også websites, som Brave ikke tidligere har kendt til – ved at analysere flere data fra websites end Standardbeskyttelse. Du kan vælge at springe Brave-advarsler over.</translation>
 <translation id="3262506503470845422">Få hjælp til Brave</translation>
 <translation id="4281844954008187215">Servicevilkår</translation>
 <translation id="7691786510374174420">Installationen mislykkedes på grund af en ikke-specificeret fejl. Hvis Brave kører, skal du lukke programmet og prøve igen.</translation>
@@ -211,7 +215,6 @@
 <translation id="5225261774087485064">Det er almindeligt, at de websites, du besøger, husker ting, du er interesseret i, så din oplevelse personligt tilpasses. Websites kan også gemme oplysninger med Brave om dine interesser.</translation>
 <translation id="6003112304606738118">Downloader… Der er <ph name="HOURS"/> timer tilbage</translation>
 <translation id="6040143037577758943">Luk</translation>
-<translation id="1268000445919601231">Brave blokerer visse downloads</translation>
 <translation id="505042220086416644">Der findes en ny version af Brave, som er hurtigere end nogensinde før.</translation>
 <translation id="9071554113102421877">Åbn i Chr&amp;omium</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> er føjet til Brave</translation>
@@ -225,6 +228,7 @@
 <translation id="991182453936521413">Brave lukkes snart, og dataene slettes</translation>
 <translation id="7006260220514217183">Beskyttet browsing er deaktiveret. Brave anbefaler, at du aktiverer funktionen.</translation>
 <translation id="4060970194201477024">Her kan du skifte mellem Brave-profiler</translation>
+<translation id="7815000350132166985">Hvis du tillader cookies, kan Brave bruge dem under forudindlæsning</translation>
 <translation id="3156047523158042818">Afhængigt af dine indstillinger sender Brave muligvis også cookies og din aktuelle webadresse</translation>
 <translation id="4368341489795135329">Sørg for, at du er logget ind på Brave på din <ph name="TARGET_DEVICE_NAME"/>, og prøv derefter at sende igen.</translation>
 <translation id="8320964054148936490">Computeren har allerede en nyere version af Brave. Hvis softwaren ikke virker, skal du afinstallere Brave og prøve igen.</translation>
@@ -249,12 +253,14 @@
 <translation id="3256100650978957522">Brave-logo på en computerskærm.</translation>
 <translation id="6373767849825830651">Brave er en webbrowser, der kører websider og apps med lynets hast. Den er hurtig, stabil og brugervenlig. Beskyttelse mod malware og phishing er indbygget i Brave, så du kan søge mere sikkert på internettet.</translation>
 <translation id="2139300032719313227">Genstart Chrome OS</translation>
+<translation id="638302211119176182">Brave forudindlæser endnu flere sider, som du sandsynligvis vil besøge, så de indlæses hurtigere, når du besøger dem</translation>
 <translation id="1684121725014454063">Velkommen til Brave-profiler</translation>
 <translation id="2675662665675552980">Den styrer også, hvilken side der vises, når du åbner Brave.</translation>
 <translation id="648319183876919572">Udvidet beskyttet browsing gør mere for at beskytte dig mod skadelige websites og downloads</translation>
 <translation id="5590013613412457132">Afinstaller Brave</translation>
 <translation id="3617744907966785605">Din organisation lukker Brave, når browseren ikke har været i brug i <ph name="TIMEOUT_DURATION"/>. Browserdataene blev slettet. Disse data kan omfatte historik, Autofyld og downloads.</translation>
 <translation id="8646609321956191980">Hver profil har sine egne Brave-oplysninger som f.eks. bogmærker, historik, adgangskoder m.m.</translation>
+<translation id="6756656512757374876">Se, <ph name="BEGIN_LINK"/>hvordan Brave beskytter dine data<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">Du kan skifte for at se adgangskoder fra en anden Brave-profil</translation>
 <translation id="2312399718665761438">Brave sender den tekst, du skriver i tekstfelter, til Brave for at rette stavefejl</translation>
 <translation id="3507835409099344374">Gå til indstillinger for Brave-notifikationer</translation>
