@@ -73,6 +73,9 @@ extension Preferences {
 
     /// Whether or not the app (in regular browsing mode) will follow universal links
     static let followUniversalLinks = Option<Bool>(key: "general.follow-universal-links", default: true)
+    
+    /// Whether or not the app will always load YouTube in Brave
+    public static let keepYouTubeInBrave = Option<Bool>(key: "general.follow-universal-links.youtube", default: false)
 
     /// Whether or not the pull-to-refresh control is added to web views
     static let enablePullToRefresh = Option<Bool>(key: "general.enable-pull-to-refresh", default: true)

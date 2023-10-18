@@ -10,6 +10,7 @@ import BraveUI
 
 struct MediaSettingsView: View {
   @ObservedObject var enableBackgroundAudio = Preferences.General.mediaAutoBackgrounding
+  @ObservedObject var keepYouTubeInBrave = Preferences.General.keepYouTubeInBrave
   
   var body: some View {
     Form {
@@ -22,6 +23,10 @@ struct MediaSettingsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       
       Section(header: Text(Strings.Settings.youtube)) {
+        Toggle(isOn: $keepYouTubeInBrave.value) {
+          Text(Strings.Settings.openYouTubeInBrave)
+        }
+        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
         NavigationLink(destination: QualitySettingsView()) {
           VStack(alignment: .leading) {
             Text(Strings.Settings.highestQualityPlayback)
