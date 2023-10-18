@@ -1317,9 +1317,20 @@ void KeyringService::ImportFilecoinAccount(
     return;
   }
 
-  const std::string address =
-      keyring->ImportFilecoinAccount(private_key, protocol);
-  if (address.empty()) {
+  keyring->ImportFilecoinAccount(
+      private_key, protocol,
+      base::BindOnce(&KeyringService::OnFilecoinAccountImported,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     private_key, filecoin_keyring_id, account_name));
+}
+
+void KeyringService::OnFilecoinAccountImported(
+    ImportFilecoinAccountCallback callback,
+    const std::vector<uint8_t>& private_key,
+    const mojom::KeyringId filecoin_keyring_id,
+    const std::string& account_name,
+    absl::optional<std::string> address) {
+  if (!address || address->empty()) {
     std::move(callback).Run({});
     return;
   }
@@ -1328,7 +1339,7 @@ void KeyringService::ImportFilecoinAccount(
       encryptors_[filecoin_keyring_id]->Encrypt(
           private_key, GetOrCreateNonceForKeyring(filecoin_keyring_id));
 
-  ImportedAccountInfo imported_account_info(account_name, address,
+  ImportedAccountInfo imported_account_info(account_name, *address,
                                             encrypted_key);
 
   AddImportedAccountForKeyring(profile_prefs_, imported_account_info,
@@ -1735,19 +1746,23 @@ bool KeyringService::RemoveHardwareAccountInternal(
   return false;
 }
 
-absl::optional<std::string> KeyringService::SignTransactionByFilecoinKeyring(
+void KeyringService::SignTransactionByFilecoinKeyring(
     const mojom::AccountId& account_id,
-    FilTransaction* tx) {
+    FilTransaction* tx,
+    SignFilTransactionCallback callback) {
   if (!tx) {
-    return absl::nullopt;
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
 
   auto* keyring = GetHDKeyringById(account_id.keyring_id);
   if (!keyring) {
-    return absl::nullopt;
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
-  return static_cast<FilecoinKeyring*>(keyring)->SignTransaction(
-      account_id.address, tx);
+
+  static_cast<FilecoinKeyring*>(keyring)->SignTransaction(
+      account_id.address, tx, std::move(callback));
 }
 
 absl::optional<std::string> KeyringService::GetDiscoveryAddress(

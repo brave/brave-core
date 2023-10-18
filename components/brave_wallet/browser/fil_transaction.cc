@@ -14,8 +14,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/components/services/brave_wallet/public/cpp/third_party_service.h"
+#include "brave/components/services/brave_wallet/public/cpp/third_party_service_launcher.h"
 
 namespace brave_wallet {
 
@@ -211,11 +212,11 @@ absl::optional<std::string> FilTransaction::GetMessageToSignJson(
     return absl::nullopt;
   }
 
-  return ConvertMesssageStringFieldsToInt64("", json);
+  return ConvertMessageStringFieldsToInt64("", json);
 }
 
 // static
-absl::optional<std::string> FilTransaction::ConvertMesssageStringFieldsToInt64(
+absl::optional<std::string> FilTransaction::ConvertMessageStringFieldsToInt64(
     const std::string& path,
     const std::string& json) {
   std::string converted_json =
@@ -237,7 +238,7 @@ absl::optional<std::string> FilTransaction::ConvertMesssageStringFieldsToInt64(
 absl::optional<std::string> FilTransaction::ConvertSignedTxStringFieldsToInt64(
     const std::string& path,
     const std::string& json) {
-  return ConvertMesssageStringFieldsToInt64(path + "/Message", json);
+  return ConvertMessageStringFieldsToInt64(path + "/Message", json);
 }
 
 // static
@@ -254,40 +255,55 @@ absl::optional<base::Value> FilTransaction::DeserializeSignedTx(
 }
 
 // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures
-absl::optional<std::string> FilTransaction::GetSignedTransaction(
+void FilTransaction::GetSignedTransaction(
     const FilAddress& from,
-    const std::vector<uint8_t>& private_key) const {
+    const std::vector<uint8_t>& private_key,
+    GetSignedTransactionCallback callback) const {
   DCHECK(!from.IsEmpty());
 
   auto message = GetMessageToSign(from);
   auto message_json = GetMessageToSignJson(from);
   if (!message_json) {
-    return absl::nullopt;
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
-  base::Value::Dict signature;
-  {
-    std::string data(filecoin::transaction_sign(
-        from.network() == mojom::kFilecoinMainnet, *message_json,
-        rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
-    if (data.empty()) {
-      return absl::nullopt;
-    }
-    signature.Set("Data", data);
-  }
-  // Set signature type based on protocol.
-  // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures.signature-types
-  auto sig_type = from.protocol() == mojom::FilecoinAddressProtocol::SECP256K1
-                      ? SigType::ECDSASigType
-                      : SigType::BLSSigType;
-  signature.Set("Type", sig_type);
+
   base::Value::Dict dict;
   dict.Set("Message", std::move(message));
-  dict.Set("Signature", std::move(signature));
-  std::string json;
-  if (!base::JSONWriter::Write(dict, &json)) {
-    return absl::nullopt;
-  }
-  return ConvertMesssageStringFieldsToInt64("/Message", json);
+
+  ThirdPartyService::Get().SignFilecoinTransaction(
+      from.network() == mojom::kFilecoinMainnet, *message_json, private_key,
+      base::BindOnce(
+          [](base::Value::Dict dict, const FilAddress& from,
+             GetSignedTransactionCallback callback,
+             const absl::optional<std::string>& signed_tx) {
+            if (!signed_tx || signed_tx->empty()) {
+              std::move(callback).Run(absl::nullopt);
+              return;
+            }
+
+            base::Value::Dict signature;
+
+            // Set signature type based on protocol.
+            // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures.signature-types
+            auto sig_type =
+                from.protocol() == mojom::FilecoinAddressProtocol::SECP256K1
+                    ? SigType::ECDSASigType
+                    : SigType::BLSSigType;
+            signature.Set("Type", sig_type);
+            signature.Set("Data", *signed_tx);
+
+            dict.Set("Signature", std::move(signature));
+            std::string json;
+            if (!base::JSONWriter::Write(dict, &json)) {
+              std::move(callback).Run(absl::nullopt);
+              return;
+            }
+
+            std::move(callback).Run(
+                ConvertMessageStringFieldsToInt64("/Message", json));
+          },
+          std::move(dict), from, std::move(callback)));
 }
 
 mojom::FilTxDataPtr FilTransaction::ToFilTxData() const {

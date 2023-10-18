@@ -11,9 +11,12 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -34,7 +37,6 @@ class OneShotTimer;
 namespace brave_wallet {
 
 class BitcoinKeyring;
-class AccountDiscoveryManager;
 class EthTransaction;
 class FilTransaction;
 class KeyringServiceUnitTest;
@@ -150,9 +152,12 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void SignTransactionByDefaultKeyring(const mojom::AccountId& account_id,
                                        EthTransaction* tx,
                                        uint256_t chain_id);
-  absl::optional<std::string> SignTransactionByFilecoinKeyring(
-      const mojom::AccountId& account_id,
-      FilTransaction* tx);
+
+  using SignFilTransactionCallback =
+      base::OnceCallback<void(absl::optional<std::string>)>;
+  void SignTransactionByFilecoinKeyring(const mojom::AccountId& account_id,
+                                        FilTransaction* tx,
+                                        SignFilTransactionCallback callback);
   absl::optional<std::string> GetDiscoveryAddress(mojom::KeyringId keyring_id,
                                                   int index);
 
@@ -386,6 +391,12 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool ValidatePasswordInternal(const std::string& password);
   void MaybeUnlockWithCommandLine();
 
+  void OnFilecoinAccountImported(ImportFilecoinAccountCallback callback,
+                                 const std::vector<uint8_t>& private_key,
+                                 const mojom::KeyringId filecoin_keyring_id,
+                                 const std::string& account_name,
+                                 absl::optional<std::string> address);
+
   std::unique_ptr<std::vector<mojom::AccountInfoPtr>> account_info_cache_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
@@ -401,8 +412,12 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
 
+  std::unique_ptr<AccountDiscoveryManager> account_discovery_manager_;
+
   KeyringService(const KeyringService&) = delete;
   KeyringService& operator=(const KeyringService&) = delete;
+
+  base::WeakPtrFactory<KeyringService> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

@@ -9,33 +9,19 @@
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
-#include "brave/components/filecoin/rs/src/lib.rs.h"
+#include "brave/components/services/brave_wallet/public/cpp/third_party_service.h"
+#include "brave/components/services/brave_wallet/public/cpp/third_party_service_launcher.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 namespace {
-bool GetBLSPublicKey(const std::vector<uint8_t>& private_key,
-                     std::vector<uint8_t>* public_key_out) {
-  if (private_key.size() != 32 || !public_key_out) {
-    return false;
-  }
-
-  auto result = filecoin::bls_private_key_to_public_key(
-      rust::Slice<const uint8_t>{private_key.data(), private_key.size()});
-  std::vector<uint8_t> public_key(result.begin(), result.end());
-  if (std::all_of(public_key.begin(), public_key.end(),
-                  [](int i) { return i == 0; })) {
-    return false;
-  }
-  *public_key_out = public_key;
-  return true;
-}
 
 absl::optional<mojom::FilecoinAddressProtocol> GetProtocolFromAddress(
     const std::string& address) {
@@ -137,36 +123,63 @@ std::string FilecoinKeyring::EncodePrivateKeyForExport(
                               address);
 }
 
-std::string FilecoinKeyring::ImportFilecoinAccount(
+void FilecoinKeyring::ImportFilecoinAccount(
     const std::vector<uint8_t>& private_key,
-    mojom::FilecoinAddressProtocol protocol) {
+    mojom::FilecoinAddressProtocol protocol,
+    ImportFilecoinAccountCallback callback) {
   if (private_key.empty()) {
-    return std::string();
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
 
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
   if (!hd_key) {
-    return std::string();
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
+
+  if (protocol == mojom::FilecoinAddressProtocol::BLS) {
+    ThirdPartyService::Get().BLSPrivateKeyToPublicKey(
+        private_key,
+        base::BindOnce(&FilecoinKeyring::OnGetPublicKey,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                       protocol, std::move(hd_key)));
+  } else if (protocol == mojom::FilecoinAddressProtocol::SECP256K1) {
+    auto public_key = hd_key->GetUncompressedPublicKey();
+    OnGetPublicKey(std::move(callback), protocol, std::move(hd_key),
+                   public_key);
+  } else {
+    std::move(callback).Run(absl::nullopt);
+  }
+}
+
+void FilecoinKeyring::OnGetPublicKey(
+    ImportFilecoinAccountCallback callback,
+    mojom::FilecoinAddressProtocol protocol,
+    std::unique_ptr<HDKey> hd_key,
+    const absl::optional<std::vector<uint8_t>>& public_key) {
+  if (!public_key || !hd_key) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
   FilAddress address;
   if (protocol == mojom::FilecoinAddressProtocol::BLS) {
-    std::vector<uint8_t> public_key;
-    if (!GetBLSPublicKey(private_key, &public_key)) {
-      return std::string();
-    }
-    address = FilAddress::FromPayload(public_key, protocol, network_);
+    address = FilAddress::FromPayload(*public_key, protocol, network_);
   } else if (protocol == mojom::FilecoinAddressProtocol::SECP256K1) {
-    auto uncompressed_public_key = hd_key->GetUncompressedPublicKey();
     address = FilAddress::FromUncompressedPublicKey(
-        uncompressed_public_key, mojom::FilecoinAddressProtocol::SECP256K1,
-        network_);
+        *public_key, mojom::FilecoinAddressProtocol::SECP256K1, network_);
+  } else {
+    NOTREACHED_NORETURN();
   }
 
   if (address.IsEmpty() ||
       !AddImportedAddress(address.EncodeAsString(), std::move(hd_key))) {
-    return std::string();
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
-  return address.EncodeAsString();
+
+  std::move(callback).Run(address.EncodeAsString());
 }
 
 // This method is used when filecoin account is imported because
@@ -194,22 +207,27 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
       .EncodeAsString();
 }
 
-absl::optional<std::string> FilecoinKeyring::SignTransaction(
-    const std::string& address,
-    const FilTransaction* tx) {
+void FilecoinKeyring::SignTransaction(const std::string& address,
+                                      const FilTransaction* tx,
+                                      SignTransactionCallback callback) {
   if (!tx) {
-    return absl::nullopt;
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
   auto fil_address = FilAddress::FromAddress(address);
   if (fil_address.IsEmpty()) {
-    return absl::nullopt;
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
 
   HDKeyBase* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key) {
-    return absl::nullopt;
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
-  return tx->GetSignedTransaction(fil_address, hd_key->GetPrivateKeyBytes());
+
+  tx->GetSignedTransaction(fil_address, hd_key->GetPrivateKeyBytes(),
+                           std::move(callback));
 }
 
 std::unique_ptr<HDKeyBase> FilecoinKeyring::DeriveAccount(

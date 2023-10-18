@@ -16,6 +16,12 @@ rust_static_library("rust_lib") {
   ]
   cxx_bindings = [ "src/lib.rs" ]
 
+  visibility = [
+    "//brave/components/filecoin:rust_lib",
+    "//brave/components/ipfs",
+    "//brave/components/services/brave_wallet",
+  ]
+
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
     "//brave/third_party/rust/bls_signatures/v0_12:lib",
