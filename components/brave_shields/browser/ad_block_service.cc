@@ -101,7 +101,11 @@ AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
   resource_provider_->RemoveObserver(this);
 }
 
-void AdBlockService::SourceProviderObserver::OnChanged() {
+void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
+  if (adblock_engine_->IsDefaultEngine() != is_default_engine) {
+    // Skip updates of another engine.
+    return;
+  }
   if (is_filter_provider_manager_) {
     static_cast<AdBlockFiltersProviderManager*>(filters_provider_.get())
         ->LoadDATBufferForEngine(
