@@ -27,6 +27,12 @@
   <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_TITLE" desc="Title to enable suggested questions">
     Enable suggested questions?
   </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_VIDEO" desc="Button to summarize the video on the current page">
+    Summarize this video
+  </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
+    Summarize this page
+  </message>
   <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_DESC" desc="Description about suggested questions">
     Brave AI can automatically suggest questions based on the content of the site. You can disable it later in Settings.
   </message>
