@@ -28,7 +28,7 @@
     "format": "node ./build/commands/scripts/commands.js format",
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
     "test": "node ./build/commands/scripts/commands.js test",
-    "test:scripts": "jest build/commands/lib build/commands/scripts",
+    "test:scripts": "cross-env NODE_OPTIONS=--no-experimental-fetch jest build/commands/lib build/commands/scripts",
     "test-security": "npm run check_security && npm run audit_deps && npm run network-audit",
     "tslint": "npm run eslint",
     "eslint": "eslint ./components",
@@ -39,8 +39,8 @@
     "web-ui": "webpack --config components/webpack/webpack.config.js --colors",
     "build-storybook": "build-storybook -c .storybook -o .storybook-out",
     "storybook": "start-storybook",
-    "test-unit": "jest -t",
-    "test-unit:wallet": "jest --coverage=false components/brave_wallet_ui",
+    "test-unit": "cross-env NODE_OPTIONS=--no-experimental-fetch jest -t",
+    "test-unit:wallet": "cross-env NODE_OPTIONS=--no-experimental-fetch jest --coverage=false components/brave_wallet_ui",
     "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test",
     "update_symlink": "node ./build/commands/scripts/commands.js update_symlink",
     "build_fuzzer": "node ./build/commands/scripts/commands.js build_fuzzer",
@@ -301,6 +301,7 @@
     "babel-loader": "8.2.3",
     "chalk": "4.1.2",
     "commander": "2.20.3",
+    "cross-env": "7.0.3",
     "css-loader": "3.6.0",
     "csstype": "2.6.21",
     "dotenv": "16.3.1",
@@ -393,6 +394,7 @@
   "overrides": {
     "loader-utils": "2.0.4",
     "json5": "2.2.3",
-    "protobufjs": "7.2.4"
+    "protobufjs": "7.2.4",
+    "@babel/traverse": "7.23.2"
   }
 }
