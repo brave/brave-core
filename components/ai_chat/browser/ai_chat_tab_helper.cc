@@ -306,9 +306,9 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
 
   // Now that we have content, we can provide a summary on-demand. Add that to
   // suggested questions.
-  // TODO(petemill): translation for this question
-  suggested_questions_.emplace_back(is_video_ ? "Summarize this video"
-                                              : "Summarize this page");
+  suggested_questions_.emplace_back(
+      is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
+                : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
   OnSuggestedQuestionsChanged();
   MaybeGenerateQuestions();
 }
@@ -446,7 +446,7 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
   std::string question_part;
-  if (turn.text == "Summarize this video") {
+  if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
     question_part =
         l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS);
   } else {
