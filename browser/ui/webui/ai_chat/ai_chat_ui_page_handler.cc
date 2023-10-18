@@ -226,8 +226,8 @@ void AIChatUIPageHandler::GetAPIResponseError(
   std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
 }
 
-void AIChatUIPageHandler::MaybeShowPremiumPrompt(
-    MaybeShowPremiumPromptCallback callback) {
+void AIChatUIPageHandler::GetCanShowPremiumPrompt(
+    GetCanShowPremiumPromptCallback callback) {
   bool has_user_dismissed = profile_->GetPrefs()->GetBoolean(
       ai_chat::prefs::kUserDismissedPremiumPrompt);
 
@@ -237,7 +237,7 @@ void AIChatUIPageHandler::MaybeShowPremiumPrompt(
   }
 
   base::Time last_seen_disclaimer =
-      profile_->GetPrefs()->GetTime(ai_chat::prefs::kBravekLastSeenDisclaimer);
+      profile_->GetPrefs()->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
   base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
   bool is_more_than_24h_since_last_seen = last_seen_disclaimer < time_1_day_ago;
 
@@ -311,7 +311,7 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
-  profile_->GetPrefs()->SetTime(ai_chat::prefs::kBravekLastSeenDisclaimer,
+  profile_->GetPrefs()->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
                                 base::Time::Now());
 }
 

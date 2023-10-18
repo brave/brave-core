@@ -44,7 +44,7 @@ function Main() {
     hasSeenAgreement &&
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
     shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
-    !context.shouldShowPremiumPrompt &&
+    !context.canShowPremiumPrompt &&
     !siteInfo &&
     !context.isPremiumUser
 

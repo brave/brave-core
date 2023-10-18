@@ -61,7 +61,7 @@ AIChatTabHelper::AIChatTabHelper(
   DCHECK(pref_service_);
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
-      prefs::kBravekLastSeenDisclaimer,
+      prefs::kLastAcceptedDisclaimer,
       base::BindRepeating(&AIChatTabHelper::OnUserOptedIn,
                           weak_ptr_factory_.GetWeakPtr()));
   pref_change_registrar_.Add(
@@ -154,7 +154,7 @@ void AIChatTabHelper::InitEngine() {
 
 bool AIChatTabHelper::HasUserOptedIn() {
   base::Time last_seen_disclaimer =
-      pref_service_->GetTime(ai_chat::prefs::kBravekLastSeenDisclaimer);
+      pref_service_->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
   return !last_seen_disclaimer.is_null();
 }
 

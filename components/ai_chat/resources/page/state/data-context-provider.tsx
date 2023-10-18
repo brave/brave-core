@@ -34,7 +34,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
-  const [shouldShowPremiumPrompt, setShouldShowPremiumPrompt] = React.useState<boolean | undefined>()
+  const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -102,14 +102,14 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.markAgreementAccepted()
   }
 
-  const maybeShowPremiumPrompt = () => {
-    getPageHandlerInstance().pageHandler.maybeShowPremiumPrompt()
-      .then(resp => setShouldShowPremiumPrompt(resp.shouldShow))
+  const getCanShowPremiumPrompt = () => {
+    getPageHandlerInstance().pageHandler.getCanShowPremiumPrompt()
+      .then(resp => setCanShowPremiumPrompt(resp.canShow))
   }
 
   const dismissPremiumPrompt = () => {
     getPageHandlerInstance().pageHandler.dismissPremiumPrompt()
-    setShouldShowPremiumPrompt(false)
+    setCanShowPremiumPrompt(false)
   }
 
   const switchToDefaultModel = () => {
@@ -140,7 +140,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     getSiteInfo()
     getFaviconData()
     getCurrentAPIError()
-    maybeShowPremiumPrompt()
+    getCanShowPremiumPrompt()
   }
 
   React.useEffect(() => {
@@ -200,14 +200,14 @@ function DataContextProvider (props: DataContextProviderProps) {
     shouldDisableUserInput,
     isPremiumUser: premiumStatus !== mojom.PremiumStatus.Inactive,
     isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
-    shouldShowPremiumPrompt,
+    canShowPremiumPrompt,
     setCurrentModel,
     switchToDefaultModel,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,
     dismissPremiumPrompt,
-    maybeShowPremiumPrompt
+    getCanShowPremiumPrompt
   }
 
   return (

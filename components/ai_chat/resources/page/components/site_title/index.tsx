@@ -58,8 +58,6 @@ function SiteTitle () {
 
   const handlePageContentDisconnect = () => {
     getPageHandlerInstance().pageHandler.disconnectPageContents()
-     // Refetch the preference to ensure the user sees the prompt without waiting for a new runtime.
-    context.maybeShowPremiumPrompt()
   }
 
    return (

@@ -74,7 +74,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
 
   base::Time last_seen_disclaimer =
       profile_->GetOriginalProfile()->GetPrefs()->GetTime(
-          ai_chat::prefs::kBravekLastSeenDisclaimer);
+          ai_chat::prefs::kLastAcceptedDisclaimer);
 
   untrusted_source->AddBoolean("hasSeenAgreement",
                                !last_seen_disclaimer.is_null());

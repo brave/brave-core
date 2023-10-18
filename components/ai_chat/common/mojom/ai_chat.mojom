@@ -108,7 +108,7 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
-  MaybeShowPremiumPrompt() => (bool should_show);
+  GetCanShowPremiumPrompt() => (bool can_show);
   DismissPremiumPrompt();
 
   // Send a user-rating for a chat
