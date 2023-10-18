@@ -12,6 +12,9 @@
 #include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/rand_util.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -199,9 +202,20 @@ void RegisterAdBlockDefaultResourceComponent(
       cus, base::BindOnce(&OnRegistered, kAdBlockResourceComponentId));
 }
 
-void CheckAdBlockDefaultResourceComponentUpdate() {
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
-      kAdBlockResourceComponentId);
+void CheckAdBlockComponentsUpdate() {
+  auto runner = base::SequencedTaskRunner::GetCurrentDefault();
+
+  runner->PostDelayedTask(FROM_HERE, base::BindOnce([]() {
+                            BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+                                kAdBlockResourceComponentId);
+                          }),
+                          base::Seconds(base::RandInt(0, 10)));
+
+  runner->PostDelayedTask(FROM_HERE, base::BindOnce([]() {
+                            BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+                                kAdBlockDefaultComponentId);
+                          }),
+                          base::Seconds(base::RandInt(0, 10)));
 }
 
 void RegisterAdBlockFilterListCatalogComponent(

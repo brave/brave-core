@@ -199,6 +199,8 @@ class AdBlockService {
   base::WeakPtrFactory<AdBlockService> weak_factory_{this};
 };
 
+void CheckAdBlockExceptionComponentsUpdate();
+
 // Registers the local_state preferences used by Adblock
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);
 
