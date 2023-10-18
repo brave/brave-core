@@ -18,6 +18,7 @@ rust_static_library("rust_lib") {
 
   visibility = [
     "//brave/components/filecoin:rust_lib",
+    "//brave/components/filecoin:unit_tests",
     "//brave/components/ipfs",
     "//brave/components/services/brave_wallet",
   ]
