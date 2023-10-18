@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
 #include "base/check_is_test.h"
+#include "base/command_line.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -34,6 +35,11 @@
 namespace tabs::utils {
 
 bool SupportsVerticalTabs(const Browser* browser) {
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          kDisableVerticalTabsSwitch)) {
+    return false;
+  }
+
   if (!browser) {
     // During unit tests, |browser| can be null.
     CHECK_IS_TEST();

@@ -13,6 +13,10 @@ class BrowserFrame;
 
 namespace tabs::utils {
 
+// This switch disables vertical tab strip regardless of the pref. This could be
+// useful when vertical tab strip causes browser to crash on start up.
+constexpr char kDisableVerticalTabsSwitch[] = "disable-vertical-tabs";
+
 // Returns true if the current |browser| might ever support vertical tabs.
 bool SupportsVerticalTabs(const Browser* browser);
 

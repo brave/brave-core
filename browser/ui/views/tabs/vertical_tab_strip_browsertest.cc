@@ -874,3 +874,25 @@ VERTICAL_TAB_STRIP_DPI_TEST(3.00f, Dpi300)
 VERTICAL_TAB_STRIP_DPI_TEST(3.50f, Dpi350)
 
 #undef VERTICAL_TAB_STRIP_DPI_TEST
+
+class VerticalTabStripSwitchTest : public VerticalTabStripBrowserTest {
+ public:
+  using VerticalTabStripBrowserTest::VerticalTabStripBrowserTest;
+  ~VerticalTabStripSwitchTest() override = default;
+
+  // VerticalTabStripBrowserTest:
+  void SetUp() override {
+    base::CommandLine::ForCurrentProcess()->AppendSwitch(
+        tabs::utils::kDisableVerticalTabsSwitch);
+    VerticalTabStripBrowserTest::SetUp();
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripSwitchTest, DisableSwitch) {
+  EXPECT_FALSE(tabs::utils::SupportsVerticalTabs(browser()));
+
+  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  // Even when we toggle on the tab strip, this state should persist.
+  ToggleVerticalTabStrip();
+  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+}
