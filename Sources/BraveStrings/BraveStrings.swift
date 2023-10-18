@@ -858,6 +858,15 @@ extension Strings {
       comment: "Header for the Youtube settings section"
     )
     
+    public static let openYouTubeInBrave =
+    NSLocalizedString(
+      "settings.openYouTubeInBrave",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Open YouTube links in Brave",
+      comment: "A toggle label which lets the user always open YouTube urls in Brave"
+    )
+    
     public static let highestQualityPlayback =
     NSLocalizedString(
       "settings.highestQualityPlayback",

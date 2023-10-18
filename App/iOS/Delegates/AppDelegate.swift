@@ -198,6 +198,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       // To avoid unexpected problems we clear all vpn keychain items.
       // New set of keychain items will be created on purchase or iap restoration.
       BraveVPN.clearCredentials()
+      
+      // Always load YouTube in Brave for new users
+      Preferences.General.keepYouTubeInBrave.value = true
     }
 
     if UserReferralProgram.shared != nil {
