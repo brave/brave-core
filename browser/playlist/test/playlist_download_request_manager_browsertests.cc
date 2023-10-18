@@ -276,6 +276,21 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+                       NonHTTPSMedia) {
+  // These should be ignored
+  LoadHTMLAndCheckResult(
+      R"html(
+        <html><body>
+          <video>
+            <source src="http://hello.com/video.mp4"/>
+            <source src="data:video/mp4;abc"/>
+          </video>
+        </body></html>
+      )html",
+      {});
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
                        YouTubeSpecificRetriever) {
   // Pre-conditions to decide site specific script
   ASSERT_EQ(net::SchemefulSite(GURL("https://m.youtube.com")),

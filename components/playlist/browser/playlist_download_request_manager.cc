@@ -308,16 +308,16 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     item->page_redirected = GURL(*page_source);
     item->name = *name;
     // URL data
-    if (GURL media_url(*src); !media_url.SchemeIsHTTPOrHTTPS()) {
-      LOG(ERROR) << __func__ << "media scheme";
+    if (GURL media_url(*src); !media_url.SchemeIs(url::kHttpsScheme)) {
+      LOG(ERROR) << __func__ << "media scheme is not https://";
       continue;
     }
 
     if (thumbnail) {
       if (GURL thumbnail_url(*thumbnail);
-          !thumbnail_url.SchemeIsHTTPOrHTTPS()) {
-        LOG(ERROR) << __func__ << "thumbnail scheme";
-        continue;
+          !thumbnail_url.SchemeIs(url::kHttpsScheme)) {
+        LOG(ERROR) << __func__ << "thumbnail scheme is not https://";
+        thumbnail = nullptr;
       }
     }
 
