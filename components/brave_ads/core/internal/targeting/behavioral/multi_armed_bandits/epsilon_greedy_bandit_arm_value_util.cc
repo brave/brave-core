@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_value_util.h"
 
 #include <string>
-#include <utility>
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
