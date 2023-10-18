@@ -13,6 +13,8 @@
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/point.h"
 
+class ViewShadow;
+
 class BraveTab : public Tab {
  public:
   explicit BraveTab(TabSlotController* controller);
@@ -35,31 +37,19 @@ class BraveTab : public Tab {
   void UpdateIconVisibility() override;
   bool ShouldRenderAsNormalTab() const override;
   void Layout() override;
-  void ReorderChildLayers(ui::Layer* parent_layer) override;
   void MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                    int visual_width) const override;
 
-  void ViewHierarchyChanged(
-      const views::ViewHierarchyChangedDetails& details) override;
-  void OnLayerBoundsChanged(const gfx::Rect& old_bounds,
-                            ui::PropertyChangeReason reason) override;
   gfx::Insets GetInsets() const override;
 
  private:
   friend class BraveTabTest;
 
   bool IsAtMinWidthForVerticalTabStrip() const;
-
   void UpdateShadowForActiveTab();
-  std::unique_ptr<ui::Layer> CreateShadowLayer();
-  void LayoutShadowLayer();
-
-  // TODO(sko) This method could be hopefully replaced with
-  // views::View::AddLayerRegion in the latest version. ReorederChildLayers()
-  // override could be removed together.
-  void AddLayerToBelowThis();
 
   std::unique_ptr<ui::Layer> shadow_layer_;
+  std::unique_ptr<ViewShadow> view_shadow_;
   gfx::FontList normal_font_;
   gfx::FontList active_tab_font_;
 

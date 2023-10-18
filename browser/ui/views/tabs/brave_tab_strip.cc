@@ -41,17 +41,8 @@
 #include "ui/gfx/canvas.h"
 #include "ui/views/layout/flex_layout.h"
 
-using tabs::features::HorizontalTabsUpdateEnabled;
-
 BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
-    : TabStrip(std::move(controller)) {
-  if (HorizontalTabsUpdateEnabled()) {
-    // In order for active tab shadow effects to be applied consistently across
-    // platforms, an ancestor of the active tab and shadow need to be painted to
-    // a layer.
-    SetPaintToLayer();
-  }
-}
+    : TabStrip(std::move(controller)) {}
 
 BraveTabStrip::~BraveTabStrip() = default;
 
@@ -91,7 +82,7 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
     return false;
   }
 
-  if (HorizontalTabsUpdateEnabled()) {
+  if (tabs::features::HorizontalTabsUpdateEnabled()) {
     // We never automatically draw strokes around tabs. For pinned tabs, we draw
     // the stroke when generating the tab drawing path.
     return false;
@@ -386,7 +377,7 @@ void BraveTabStrip::UpdateTabContainer() {
 }
 
 void BraveTabStrip::UpdateTabStripMargins() {
-  if (!HorizontalTabsUpdateEnabled()) {
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
     return;
   }
 
