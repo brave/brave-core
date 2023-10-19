@@ -14,7 +14,9 @@ import { gasFeeOptions } from '../../../../options/gas-fee-options'
 import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
 import { useDebouncedCallback } from './useDebouncedCallback'
-import { useScopedBalanceUpdater } from '../../../../common/hooks/use-scoped-balance-updater'
+import {
+  useBalancesFetcher
+} from '../../../../common/hooks/use-balances-fetcher'
 
 // Types and constants
 import {
@@ -95,37 +97,11 @@ export const useSwap = () => {
   const [slippageTolerance, setSlippageTolerance] = useState<string>('0.5')
   const [selectedGasFeeOption, setSelectedGasFeeOption] = useState<GasFeeOption>(gasFeeOptions[1])
 
-  const tokensForBalances = useMemo(() => {
-    if (!selectedNetwork || !selectedAccount || !assetsList) {
-      return []
-    }
-
-    if (selectedNetwork.coin !== selectedAccount.accountId.coin) {
-      return []
-    }
-
-    // undefined for SOL indicates that useScopedBalanceUpdater should
-    // scan balances for all possible tokens. Not to be confused with
-    // [] which indicates that the query should be skipped.
-    if (selectedNetwork.coin === BraveWallet.CoinType.SOL) {
-      return undefined
-    }
-
-    return assetsList.filter(
-      (token) =>
-        token.coin === selectedNetwork.coin &&
-        token.chainId === selectedNetwork.chainId
-    )
-  }, [selectedNetwork, assetsList, selectedAccount])
-
-  const { data: tokenBalancesRegistry } = useScopedBalanceUpdater(
-    selectedNetwork &&
-      selectedAccount &&
-      (tokensForBalances === undefined || tokensForBalances.length > 0)
+  const { data: tokenBalancesRegistry } = useBalancesFetcher(
+    selectedNetwork && selectedAccount
       ? {
-          network: selectedNetwork,
-          accounts: [selectedAccount],
-          tokens: tokensForBalances
+          networks: [selectedNetwork],
+          accounts: [selectedAccount]
         }
       : skipToken
   )
