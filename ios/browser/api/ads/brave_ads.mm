@@ -71,8 +71,6 @@
     brave_ads::__cpp_var = newValue;                                       \
   }
 
-static const NSInteger kDefaultNumberOfAdsPerHour = 2;
-
 static const int kCurrentAdsResourceManifestSchemaVersion = 1;
 
 static NSString* const kLegacyOptedInToNotificationAdsPrefKey =
