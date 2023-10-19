@@ -46,6 +46,7 @@ void RedeemPaymentTokens::MaybeRedeemAfterDelay(const WalletInfo& wallet) {
   const base::Time redeem_at = timer_.Start(
       FROM_HERE, CalculateDelayBeforeRedeemingTokens(),
       base::BindOnce(&RedeemPaymentTokens::Redeem, base::Unretained(this)));
+  SetNextTokenRedemptionAt(redeem_at);
 
   BLOG(1, "Redeem payment tokens " << FriendlyDateAndTime(redeem_at));
 }
