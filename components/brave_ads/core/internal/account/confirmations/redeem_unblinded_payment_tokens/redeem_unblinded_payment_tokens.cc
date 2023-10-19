@@ -49,6 +49,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
       timer_.Start(FROM_HERE, CalculateDelayBeforeRedeemingTokens(),
                    base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
                                   base::Unretained(this)));
+  SetNextTokenRedemptionAt(redeem_at);
 
   BLOG(1, "Redeem unblinded payment tokens " << FriendlyDateAndTime(redeem_at));
 }
