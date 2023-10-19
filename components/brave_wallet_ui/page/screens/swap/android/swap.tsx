@@ -23,7 +23,10 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
 import { store } from '../../../store'
-import BraveCoreThemeProvider from '../../../../../common/BraveCoreThemeProvider'
+import {
+  // eslint-disable-next-line import/no-named-default
+  default as BraveCoreThemeProvider
+} from '../../../../../common/BraveCoreThemeProvider'
 import { Swap } from '../swap'
 import { LibContext } from '../../../../common/context/lib.context'
 

@@ -6,7 +6,9 @@
 import * as React from 'react'
 
 // Selectors
-import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selector'
+import {
+  useSafeUISelector //
+} from '../../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../../common/selectors'
 
 // Queries
@@ -24,13 +26,19 @@ import { getLocale } from '../../../../../../../common/locale'
 import { reduceNetworkDisplayName } from '../../../../../../utils/network-utils'
 
 // Components
-import { ConnectWalletButton } from '../../buttons/connect-wallet-button/connect-wallet-button'
-import { SelectTokenOrNetworkButton } from '../../buttons/select-token-or-network/select-token-or-network'
+import {
+  ConnectWalletButton //
+} from '../../buttons/connect-wallet-button/connect-wallet-button'
+import {
+  SelectTokenOrNetworkButton //
+} from '../../buttons/select-token-or-network/select-token-or-network'
 import { NetworkSelector } from '../network-selector/network-selector'
 import { AccountModal } from '../account-modal/account-modal'
 
 // Hooks
-import { useOnClickOutside } from '../../../../../../common/hooks/useOnClickOutside'
+import {
+  useOnClickOutside //
+} from '../../../../../../common/hooks/useOnClickOutside'
 
 // Styled Components
 import { BraveLogo, SelectorWrapper, Wrapper } from './header.style'

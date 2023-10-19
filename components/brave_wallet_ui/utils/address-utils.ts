@@ -16,7 +16,8 @@ export function isValidFilAddress(value: string): boolean {
   ) {
     return false
   }
-  // secp256k have 41 address length and BLS keys have 86 and FEVM f410 keys have 44
+  // secp256k have 41 address length and BLS keys have 86 and FEVM f410 keys
+  // have 44
   return value.length === 41 || value.length === 86 || value.length === 44
 }
 

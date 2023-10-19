@@ -6,7 +6,9 @@
 import * as React from 'react'
 
 // Queries
-import { useGetSelectedChainQuery } from '../../../../../../common/slices/api.slice'
+import {
+  useGetSelectedChainQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
@@ -15,7 +17,9 @@ import { getLocale } from '../../../../../../../common/locale'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
-import { SelectTokenOrNetworkButton } from '../../buttons/select-token-or-network/select-token-or-network'
+import {
+  SelectTokenOrNetworkButton //
+} from '../../buttons/select-token-or-network/select-token-or-network'
 import { SwapInput } from '../../inputs/swap-input/swap-input'
 
 // Styled Components

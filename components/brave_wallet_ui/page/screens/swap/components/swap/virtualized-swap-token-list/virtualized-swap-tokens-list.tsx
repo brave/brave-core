@@ -7,13 +7,17 @@ import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from '@brave/react-virtualized-auto-sizer'
 
-import { useGetSelectedChainQuery } from '../../../../../../common/slices/api.slice'
+import {
+  useGetSelectedChainQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
-import { TokenListButton } from '../../buttons/token-list-button/token-list-button'
+import {
+  TokenListButton //
+} from '../../buttons/token-list-button/token-list-button'
 import Amount from '../../../../../../utils/amount'
 
 interface VirtualizedTokensListProps {

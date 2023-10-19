@@ -14,7 +14,9 @@ import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selec
 import { UISelectors } from '../../../../../../common/selectors'
 
 // Options
-import { BuySendSwapDepositOptions } from '../../../../../../options/nav-options'
+import {
+  BuySendSwapDepositOptions //
+} from '../../../../../../options/nav-options'
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'

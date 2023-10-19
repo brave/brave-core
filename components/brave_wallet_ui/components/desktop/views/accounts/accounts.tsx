@@ -8,10 +8,14 @@ import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 import { BraveWallet, AccountPageTabs } from '../../../../constants/types'
-import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
+import {
+  querySubscriptionOptions60s //
+} from '../../../../common/slices/constants'
 
 // Selectors
-import { useUnsafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector //
+} from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
 
 // utils
@@ -23,7 +27,9 @@ import {
 } from '../../../../utils/account-utils'
 import { makeAccountRoute } from '../../../../utils/routes-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
-import { getNormalizedExternalRewardsWallet } from '../../../../utils/rewards_utils'
+import {
+  getNormalizedExternalRewardsWallet //
+} from '../../../../utils/rewards_utils'
 
 // Styled Components
 import { SectionTitle } from './style'
@@ -32,11 +38,15 @@ import { Column, Row } from '../../../shared/style'
 
 // Components
 import AccountListItem from '../../account-list-item'
-import { WalletPageWrapper } from '../../wallet-page-wrapper/wallet-page-wrapper'
+import {
+  WalletPageWrapper //
+} from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { AccountsHeader } from '../../card-headers/accounts-header'
 
 // Hooks
-import { useBalancesFetcher } from '../../../../common/hooks/use-balances-fetcher'
+import {
+  useBalancesFetcher //
+} from '../../../../common/hooks/use-balances-fetcher'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,

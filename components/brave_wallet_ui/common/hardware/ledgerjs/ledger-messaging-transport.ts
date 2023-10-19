@@ -11,10 +11,10 @@ import {
 } from './ledger-messages'
 
 // LedgerMessagingTransport is a generic bi-directional messaging utility for
-// Window objects. It supports supports both (1) the sending of messages via postMessage
-// to a window object at a targetUrl and subscribing of responses, and (2)
-// the definition of handlers to be run when a different LedgerMessagingTransport
-// instance at a different Window sends messages to it.
+// Window objects. It supports supports both (1) the sending of messages via
+// postMessage to a window object at a targetUrl and subscribing of responses,
+// and (2) the definition of handlers to be run when a different
+// LedgerMessagingTransport instance at a different Window sends messages to it.
 export class LedgerMessagingTransport {
   protected targetWindow: Window
   protected targetUrl: string
@@ -74,8 +74,9 @@ export class LedgerMessagingTransport {
   }
 
   // onMessageReceived processes message events received by the Window.
-  // It fetches and runs the handler if one exists. If the received message event
-  // itself is a response to a sendCommand, the command handler is then removed.
+  // It fetches and runs the handler if one exists. If the received message
+  // event itself is a response to a sendCommand, the command handler is then
+  // removed.
   // Otherwise, the response is posted back to the Window that sent the message.
   protected onMessageReceived = async (
     event: MessageEvent<LedgerFrameCommand>

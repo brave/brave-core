@@ -32,10 +32,16 @@ import {
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
-import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useSelectedAccountQuery //
+} from '../../../common/slices/api.slice.extra'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
-import { useScopedBalanceUpdater } from '../../../common/hooks/use-scoped-balance-updater'
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import {
+  useScopedBalanceUpdater //
+} from '../../../common/hooks/use-scoped-balance-updater'
+import {
+  useUnsafeWalletSelector //
+} from '../../../common/hooks/use-safe-selector'
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 // types
@@ -195,7 +201,8 @@ export const ConnectedPanel = (props: Props) => {
       subscribed = false
     }
     // Keep dependency on originInfo. When braveWalletService.isPermissionDenied
-    // is moved to api slice it's cached value should be reset on activeOriginChanged event.
+    // is moved to api slice it's cached value should be reset on
+    // activeOriginChanged event.
   }, [braveWalletService, selectedCoin, originInfo])
 
   React.useEffect(() => {

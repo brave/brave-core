@@ -17,7 +17,9 @@ import {
 import { useGetOnRampAssetsQuery } from '../../../common/slices/api.slice'
 
 // Hooks
-import { useMultiChainSellAssets } from '../../../common/hooks/use-multi-chain-sell-assets'
+import {
+  useMultiChainSellAssets //
+} from '../../../common/hooks/use-multi-chain-sell-assets'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -25,7 +27,9 @@ import Amount from '../../../utils/amount'
 import { makeDepositFundsRoute } from '../../../utils/routes-utils'
 
 // Components
-import { SellAssetModal } from '../popup-modals/sell-asset-modal/sell-asset-modal'
+import {
+  SellAssetModal //
+} from '../popup-modals/sell-asset-modal/sell-asset-modal'
 
 // Styled Components
 import {

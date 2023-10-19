@@ -6,7 +6,9 @@ import * as React from 'react'
 import { TooltipProps } from 'recharts'
 
 // Utils
-import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useSafeWalletSelector //
+} from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
 import Amount from '../../../../utils/amount'
 import { formatTimelineDate } from '../../../../utils/datetime-utils'

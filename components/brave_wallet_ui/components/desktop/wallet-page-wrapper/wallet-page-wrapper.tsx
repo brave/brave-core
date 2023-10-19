@@ -16,8 +16,12 @@ import {
 
 // Components
 import { WalletNav } from '../wallet-nav/wallet-nav'
-import { FeatureRequestButton } from '../../shared/feature-request-button/feature-request-button'
-import { TabHeader } from '../../../page/screens/shared-screen-components/tab-header/tab-header'
+import {
+  FeatureRequestButton //
+} from '../../shared/feature-request-button/feature-request-button'
+import {
+  TabHeader //
+} from '../../../page/screens/shared-screen-components/tab-header/tab-header'
 
 // Styles
 import {

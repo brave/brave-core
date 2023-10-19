@@ -27,10 +27,14 @@ import {
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
-import { makeSelectAllUserAssetsForChainFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
+import {
+  makeSelectAllUserAssetsForChainFromQueryResult //
+} from '../../../common/slices/entities/blockchain-token.entity'
 
 // Hooks
-import { useScopedBalanceUpdater } from '../../../common/hooks/use-scoped-balance-updater'
+import {
+  useScopedBalanceUpdater //
+} from '../../../common/hooks/use-scoped-balance-updater'
 
 // Components
 import { PortfolioAssetItem } from '../../desktop/portfolio-asset-item/index'

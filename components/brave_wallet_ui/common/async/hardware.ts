@@ -328,7 +328,8 @@ export async function signMessageWithHardwareKeyring(
     }
     return deviceKeyring.signPersonalMessage(path, standardSignData.message)
   } else if (deviceKeyring instanceof SolanaLedgerBridgeKeyring) {
-    // Not supported yet, see https://github.com/solana-labs/solana/issues/21366.
+    // Not supported yet, see
+    // https://github.com/solana-labs/solana/issues/21366.
     return {
       success: false,
       error: getLocale('braveWalletHardwareOperationUnsupportedError')

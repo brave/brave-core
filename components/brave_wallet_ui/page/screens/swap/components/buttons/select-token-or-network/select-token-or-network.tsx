@@ -12,8 +12,12 @@ import { BraveWallet } from '../../../../../../constants/types'
 import { getLocale } from '../../../../../../../common/locale'
 
 // Components
-import withPlaceholderIcon from '../../../../../../components/shared/create-placeholder-icon'
-import { CreateNetworkIcon } from '../../../../../../components/shared/create-network-icon/index'
+import {
+  withPlaceholderIcon //
+} from '../../../../../../components/shared/create-placeholder-icon'
+import {
+  CreateNetworkIcon //
+} from '../../../../../../components/shared/create-network-icon/index'
 
 // Styled Components
 import {

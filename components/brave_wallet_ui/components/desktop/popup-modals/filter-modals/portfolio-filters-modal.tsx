@@ -13,7 +13,9 @@ import { WalletRoutes } from '../../../../constants/types'
 
 // Options
 import { AssetFilterOptions } from '../../../../options/asset-filter-options'
-import { GroupAssetsByOptions } from '../../../../options/group-assets-by-options'
+import {
+  GroupAssetsByOptions //
+} from '../../../../options/group-assets-by-options'
 
 // Selectors
 import {
@@ -26,8 +28,12 @@ import { WalletSelectors } from '../../../../common/selectors'
 import { WalletActions } from '../../../../common/actions'
 
 // Constants
-import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
-import { HIDE_SMALL_BALANCES_FIAT_THRESHOLD } from '../../../../common/constants/magics'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
+import {
+  HIDE_SMALL_BALANCES_FIAT_THRESHOLD //
+} from '../../../../common/constants/magics'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
@@ -35,10 +41,16 @@ import Amount from '../../../../utils/amount'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
-import { FilterNetworksSection } from './filter-components/filter-networks-section'
-import { FilterAccountsSection } from './filter-components/filter-accounts-section'
+import {
+  FilterNetworksSection //
+} from './filter-components/filter-networks-section'
+import {
+  FilterAccountsSection //
+} from './filter-components/filter-accounts-section'
 import { FilterToggleSection } from './filter-components/filter-toggle-section'
-import { FilterDropdownSection } from './filter-components/filter-dropdown-section'
+import {
+  FilterDropdownSection //
+} from './filter-components/filter-dropdown-section'
 
 // Styles
 import {
@@ -241,7 +253,7 @@ export const PortfolioFiltersModal = (props: Props) => {
                 setIsSelected={() => setShowNetworkLogo((prev) => !prev)}
               />
 
-              {/* This is commented out until Spam NFTs feature is implemented in core */}
+              {/* Disabled until Spam NFTs feature is implemented in core */}
               {/* <FilterToggleSection
                 title={getLocale('braveWalletShowSpamNftsTitle')}
                 description={getLocale('braveWalletShowSpamNftsDescription')}

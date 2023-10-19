@@ -7,7 +7,9 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 // Types
-import { RewardsExternalWallet } from '../../../common/async/brave_rewards_api_proxy'
+import {
+  RewardsExternalWallet //
+} from '../../../common/async/brave_rewards_api_proxy'
 
 // Utils
 import { getLocale } from '../../../../common/locale'

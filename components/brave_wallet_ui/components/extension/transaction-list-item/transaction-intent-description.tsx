@@ -20,7 +20,13 @@ export const TransactionIntentDescription = ({
   const fromText = <DetailTextLight>{from}</DetailTextLight>
   return (
     <>
-      {wrapFrom ? <DetailWrappedText>{fromText}</DetailWrappedText> : fromText}{' '}
+      {
+        wrapFrom ? (
+          <DetailWrappedText>{fromText}</DetailWrappedText> //
+        ) : (
+          fromText
+        ) //
+      }{' '}
       <ArrowIcon />
       <DetailTextLight>{to}</DetailTextLight>
     </>

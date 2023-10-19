@@ -11,10 +11,9 @@ import {
 } from './ledger-messages'
 
 // We must read and write to protected class attributes in the tests.
-// That yields a typescript error unless we use bracket notation, e.g. `transport['handlers']`
-// instead of `transport.handlers`. As a result we silence the dot-notation
-// tslint rule for the file.
-//
+// That yields a typescript error unless we use bracket notation, e.g.
+// `transport['handlers']` instead of `transport.handlers`. As a result we
+// silence the dot-notation tslint rule for the file.
 /* eslint-disable @typescript-eslint/dot-notation */
 
 const createTransport = (
@@ -72,7 +71,8 @@ test('sendCommand returns CommandInProgress if response handler already exists',
   }
 
   transport['targetWindow'].postMessage = (eventData) => {
-    // Sending a second message before the first is replied to should result in CommandInProgress
+    // Sending a second message before the first is replied to should result in
+    // CommandInProgress
     transport.sendCommand(sendEvent).then((inflightResponse) => {
       expect(inflightResponse).toEqual(LedgerBridgeErrorCodes.CommandInProgress)
     })
@@ -142,7 +142,8 @@ test('onMessageReceived invokes handler and replies with response', () => {
   }
   const event: MessageEvent = new MessageEvent('message', {
     data: eventData,
-    origin: eventData.origin, // event.origin === event.data.origin when a response is expected
+    // event.origin === event.data.origin when a response is expected
+    origin: eventData.origin,
     source: transport['targetWindow']
   })
 

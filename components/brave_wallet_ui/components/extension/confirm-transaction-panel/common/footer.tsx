@@ -54,8 +54,8 @@ export function Footer(props: Props) {
   }, [queueLength, transactionsQueueLength])
 
   const onClickConfirmTransaction = React.useCallback(async () => {
-    // Checks to see if there are multiple transactions in the queue,
-    // if there is we keep track of the length of the last confirmed transaction.
+    // Checks to see if there are multiple transactions in the queue, if there
+    // is we keep track of the length of the last confirmed transaction.
     if (transactionsQueueLength > 1) {
       setQueueLength(transactionsQueueLength)
     }

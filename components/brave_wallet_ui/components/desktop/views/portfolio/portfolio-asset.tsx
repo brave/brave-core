@@ -46,12 +46,16 @@ import { PageSelectors } from '../../../../page/selectors'
 
 // Components
 import { LineChart } from '../../line-chart/index'
-import { LineChartControls } from '../../line-chart/line-chart-controls/line-chart-controls'
+import {
+  LineChartControls //
+} from '../../line-chart/line-chart-controls/line-chart-controls'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
 import { BridgeToAuroraModal } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
 
 // Hooks
-import { useScopedBalanceUpdater } from '../../../../common/hooks/use-scoped-balance-updater'
+import {
+  useScopedBalanceUpdater //
+} from '../../../../common/hooks/use-scoped-balance-updater'
 import {
   useIsBuySupported //
 } from '../../../../common/hooks/use-multi-chain-buy-assets'
@@ -72,17 +76,25 @@ import {
   useAccountsQuery,
   useGetCombinedTokensListQuery
 } from '../../../../common/slices/api.slice.extra'
-import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
+import {
+  querySubscriptionOptions60s //
+} from '../../../../common/slices/constants'
 
 // Styled Components
 import { BridgeToAuroraButton, StyledWrapper, ButtonRow } from './style'
 import { Row, Column } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import { CoinStats } from './components/coin-stats/coin-stats'
-import { TokenDetailsModal } from './components/token-details-modal/token-details-modal'
-import { WalletActions } from '../../../../common/actions'
+import {
+  TokenDetailsModal //
+} from './components/token-details-modal/token-details-modal'
+import {
+  WalletActions //
+} from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
-import { WalletPageWrapper } from '../../wallet-page-wrapper/wallet-page-wrapper'
+import {
+  WalletPageWrapper //
+} from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { AssetDetailsHeader } from '../../card-headers/asset-details-header'
 
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -249,7 +261,10 @@ export const PortfolioAsset = (props: Props) => {
     useIsBuySupported(selectedAssetFromParams) && !isRewardsToken
 
   // memos
-  // This will scrape all the user's accounts and combine the asset balances for a single asset
+  /**
+   * This will scrape all the user's accounts and combine the asset balances for
+   * a single asset
+   */
   const fullAssetBalance = React.useMemo(() => {
     const amounts = candidateAccounts.map((account: BraveWallet.AccountInfo) =>
       getBalance(
@@ -454,7 +469,8 @@ export const PortfolioAsset = (props: Props) => {
     )
   }, [])
 
-  // token list needs to load before we can find an asset to select from the url params
+  // token list needs to load before we can find an asset to select from the url
+  // params
   if (userVisibleTokensInfo.length === 0) {
     return <Skeleton />
   }

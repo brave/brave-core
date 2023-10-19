@@ -6,7 +6,9 @@
 import * as React from 'react'
 
 // Types
-import { externalWalletProviderFromString } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import {
+  externalWalletProviderFromString //
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Constants
 import { BraveWallet, SupportedTestNetworks } from '../../../constants/types'

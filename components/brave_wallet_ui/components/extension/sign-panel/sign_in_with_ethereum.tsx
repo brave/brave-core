@@ -15,7 +15,9 @@ import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 
 // Components
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
-import { CreateAccountIcon } from '../../shared/create-account-icon/create-account-icon'
+import {
+  CreateAccountIcon //
+} from '../../shared/create-account-icon/create-account-icon'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'

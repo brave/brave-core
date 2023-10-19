@@ -9,13 +9,17 @@ import * as React from 'react'
 import { getLocale } from '../../../../../../../common/locale'
 
 // Hooks
-import { useGetSwapSupportedNetworksQuery } from '../../../../../../common/slices/api.slice'
+import {
+  useGetSwapSupportedNetworksQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
-import { NetworkListButton } from '../../buttons/network-list-button/network-list-button'
+import {
+  NetworkListButton //
+} from '../../buttons/network-list-button/network-list-button'
 
 // Styled Components
 import { HeaderRow, SelectorBox } from './network-selector.style'

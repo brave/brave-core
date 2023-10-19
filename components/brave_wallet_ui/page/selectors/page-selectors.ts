@@ -30,7 +30,8 @@ export const showRecoveryPhrase = ({ page }: State) => page.showRecoveryPhrase
 export const walletTermsAcknowledged = ({ page }: State) =>
   page.walletTermsAcknowledged
 
-// unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
+// unsafe selectors (will cause re-render if not strictly equal "===") (objects
+// and lists)
 export const importWalletError = ({ page }: State) => page.importWalletError
 export const nftMetadata = ({ page }: State) => page.nftMetadata
 export const nftMetadataError = ({ page }: State) => page.nftMetadataError

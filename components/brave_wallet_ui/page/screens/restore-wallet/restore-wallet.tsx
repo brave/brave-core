@@ -91,8 +91,8 @@ export const RestoreWallet = () => {
         history.push(WalletRoutes.Onboarding)
         return
       }
-      // If a user has created a wallet and clicks Restore from the panel
-      // while the wallet is locked, we need to route to unlock if they click back.
+      // If a user has created a wallet and clicks Restore from the panel while
+      // the wallet is locked, we need to route to unlock if they click back.
       if (isWalletCreated && isWalletLocked) {
         history.push(WalletRoutes.Unlock)
       }
@@ -133,8 +133,9 @@ export const RestoreWallet = () => {
         ''
       )
 
-      // Although the above removes double spaces, it is initialy recognized as a
-      // a double-space before it is removed and macOS automatically replaces double-spaces with a period.
+      // Although the above removes double spaces, it is initially recognized as
+      // a double-space before it is removed and macOS automatically replaces
+      // double-spaces with a period.
       const removePeriod = removedDoubleSpaces.replace(/['/.']/g, '')
 
       // This prevents an extra space at the end of a 24 word phrase.

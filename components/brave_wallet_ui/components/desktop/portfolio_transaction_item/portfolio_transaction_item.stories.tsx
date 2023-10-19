@@ -7,13 +7,17 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 // components
-import { WalletPageStory } from '../../../stories/wrappers/wallet-page-story-wrapper'
+import {
+  WalletPageStory //
+} from '../../../stories/wrappers/wallet-page-story-wrapper'
 import WalletPageLayout from '../wallet-page-layout'
 import WalletSubViewLayout from '../wallet-sub-view-layout'
 import { PortfolioTransactionItem } from './portfolio_transaction_item'
 
 // mocks
-import { mockTransactionInfo } from '../../../stories/mock-data/mock-transaction-info'
+import {
+  mockTransactionInfo //
+} from '../../../stories/mock-data/mock-transaction-info'
 
 export const CryptoViewWrapper = styled.div`
   display: flex;

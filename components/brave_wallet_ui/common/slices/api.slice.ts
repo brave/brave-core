@@ -484,7 +484,8 @@ export function createWalletApi() {
                     .setNetworkForSelectedAccountOnActiveOrigin(chainId)
                   if (!success) {
                     throw new Error(
-                      'braveWalletService.SetNetworkForSelectedAccountOnActiveOrigin failed'
+                      'braveWalletService.' +
+                        'SetNetworkForSelectedAccountOnActiveOrigin failed'
                     )
                   }
 

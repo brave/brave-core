@@ -17,7 +17,9 @@ import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 
 // Selectors
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector //
+} from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Types
@@ -31,8 +33,12 @@ import {
   useGetTokenSpotPricesQuery,
   useGetDefaultFiatCurrencyQuery
 } from '../../../common/slices/api.slice'
-import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
-import { selectAllAccountInfosFromQuery } from '../../../common/slices/entities/account-info.entity'
+import {
+  useSelectedAccountQuery //
+} from '../../../common/slices/api.slice.extra'
+import {
+  selectAllAccountInfosFromQuery //
+} from '../../../common/slices/entities/account-info.entity'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
 // Hooks

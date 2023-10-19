@@ -13,7 +13,9 @@ import { PanelActions } from '../../../panel/actions'
 import { WalletActions } from '../../../common/actions'
 
 // Selectors
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector //
+} from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Types
@@ -25,7 +27,9 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetSelectedChainQuery
 } from '../../../common/slices/api.slice'
-import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useSelectedAccountQuery //
+} from '../../../common/slices/api.slice.extra'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -33,7 +37,9 @@ import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 
 // Components
-import { CreateAccountIcon } from '../../shared/create-account-icon/create-account-icon'
+import {
+  CreateAccountIcon //
+} from '../../shared/create-account-icon/create-account-icon'
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'

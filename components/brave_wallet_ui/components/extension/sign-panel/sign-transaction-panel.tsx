@@ -307,9 +307,12 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
                     return (
                       <SolanaTransactionInstruction
                         key={index}
-                        typedInstructionWithParams={getSolanaTransactionInstructionParamsAndType(
-                          instruction
-                        )}
+                        typedInstructionWithParams={
+                          //
+                          getSolanaTransactionInstructionParamsAndType(
+                            instruction
+                          )
+                        }
                       />
                     )
                   })}

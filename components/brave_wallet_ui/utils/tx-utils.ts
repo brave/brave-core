@@ -1000,8 +1000,7 @@ export const isSendingToKnownTokenContractAddress = (
   ) {
     // The owner of the ERC721 must not be confused with the caller
     // (fromAddress).
-
-    // address owner, address to, uint256 tokenId]
+    // [address owner, address to, uint256 tokenId]
     const [, toAddress] = tx.txArgs
     const contractAddressError = isKnownTokenContractAddress(
       toAddress,
@@ -1056,7 +1055,6 @@ export const transactionHasSameAddressError = (
   ) {
     // The owner of the ERC721 must not be confused with the caller
     // (fromAddress).
-
     // (address owner, address to, uint256 tokenId)
     const [owner, toAddress] = txArgs
     return toAddress.toLowerCase() === owner.toLowerCase()

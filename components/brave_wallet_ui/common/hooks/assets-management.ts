@@ -163,12 +163,14 @@ export function useAssetManagement() {
 
   const onUpdateVisibleAssets = React.useCallback(
     (updatedTokensList: BraveWallet.BlockchainToken[]) => {
-      // Gets a list of all added tokens and adds them to the userVisibleTokensInfo list
+      // Gets a list of all added tokens and adds them to the
+      // userVisibleTokensInfo list
       onlyInLeft(updatedTokensList, userVisibleTokensInfo).forEach((token) =>
         onAddUserAsset(token)
       )
 
-      // Gets a list of all removed tokens and removes them from the userVisibleTokensInfo list
+      // Gets a list of all removed tokens and removes them from the
+      // userVisibleTokensInfo list
       onlyInLeft(userVisibleTokensInfo, updatedTokensList).forEach((token) => {
         dispatch(WalletActions.removeUserAsset(token))
         if (!tokenIsSetAsRemovedInLocalStorage(token)) {
@@ -176,8 +178,9 @@ export function useAssetManagement() {
         }
       })
 
-      // Gets a list of custom tokens and native assets returned from updatedTokensList payload
-      // then compares against userVisibleTokensInfo list and updates the tokens visibility if it has changed.
+      // Gets a list of custom tokens and native assets returned from
+      // updatedTokensList payload then compares against userVisibleTokensInfo
+      // list and updates the tokens visibility if it has changed.
       findTokensWithMismatchedVisibility(
         updatedTokensList,
         userVisibleTokensInfo

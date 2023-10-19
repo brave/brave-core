@@ -15,7 +15,9 @@ import {
 } from '../../../../shared/create-network-icon/index'
 
 // Utils
-import { networkEntityAdapter } from '../../../../../common/slices/entities/network.entity'
+import {
+  networkEntityAdapter //
+} from '../../../../../common/slices/entities/network.entity'
 
 // Styled Components
 import {

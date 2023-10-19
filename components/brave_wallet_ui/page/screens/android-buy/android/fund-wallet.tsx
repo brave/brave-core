@@ -24,7 +24,10 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
 import { store, walletPageApiProxy } from '../../../store'
-import BraveCoreThemeProvider from '../../../../../common/BraveCoreThemeProvider'
+import {
+  // eslint-disable-next-line import/no-named-default
+  default as BraveCoreThemeProvider
+} from '../../../../../common/BraveCoreThemeProvider'
 import { FundWalletScreen } from '../../fund-wallet/fund-wallet'
 
 // Hooks

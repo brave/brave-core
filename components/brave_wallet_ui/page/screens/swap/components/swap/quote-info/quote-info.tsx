@@ -18,7 +18,9 @@ import LPMetadata from '../../../constants/LpMetadata'
 // Utils
 import Amount from '../../../../../../utils/amount'
 import { getLocale } from '../../../../../../../common/locale'
-import { getTokenPriceAmountFromRegistry } from '../../../../../../utils/pricing-utils'
+import {
+  getTokenPriceAmountFromRegistry //
+} from '../../../../../../utils/pricing-utils'
 
 // Styled Components
 import {

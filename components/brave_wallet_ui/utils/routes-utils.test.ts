@@ -44,7 +44,8 @@ describe('makeAccountRoute', () => {
 describe('makeAccountTransactionRoute', () => {
   it('transaction for eth account', () => {
     expect(makeAccountTransactionRoute(mockEthAccount, '#transactionId')).toBe(
-      '/crypto/accounts/0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14/transactions#transactionId'
+      '/crypto/accounts/0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14/' +
+        'transactions#transactionId'
     )
   })
 

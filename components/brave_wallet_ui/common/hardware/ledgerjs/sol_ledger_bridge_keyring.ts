@@ -97,10 +97,11 @@ export default class SolanaLedgerBridgeKeyring
       return this.createErrorFromCode(data)
     }
     if (!data.payload.success) {
-      // TODO Either pass data.payload (LedgerError) or data.payload.message (LedgerError.message)
-      // consistently here and in getAccountsFromDevice.  Currently we pass the entire LedgerError up
-      // to UI only for getAccounts to make statusCode available, but don't do the same here
-      // for signTransaction.
+      // TODO Either pass data.payload (LedgerError) or data.payload.message
+      // (LedgerError.message) consistently here and in getAccountsFromDevice.
+      // Currently we pass the entire LedgerError up to UI only for getAccounts
+      // to make statusCode available, but don't do the same here for
+      // signTransaction.
       const ledgerError = data.payload as LedgerError
       return {
         success: false,

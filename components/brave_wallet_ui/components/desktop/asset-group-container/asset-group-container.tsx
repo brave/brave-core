@@ -14,11 +14,15 @@ import {
 import { UISelectors, WalletSelectors } from '../../../common/selectors'
 
 // Constants
-import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../common/constants/local-storage-keys'
 
 // Slices
 import { UIActions } from '../../../common/slices/ui.slice'
-import { networkEntityAdapter } from '../../../common/slices/entities/network.entity'
+import {
+  networkEntityAdapter //
+} from '../../../common/slices/entities/network.entity'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -26,12 +30,16 @@ import { getLocale } from '../../../../common/locale'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
-import { ExternalWalletProvider } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import {
+  ExternalWalletProvider //
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Components
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
-import { CreateAccountIcon } from '../../shared/create-account-icon/create-account-icon'
+import {
+  CreateAccountIcon //
+} from '../../shared/create-account-icon/create-account-icon'
 
 // Styled Components
 import {

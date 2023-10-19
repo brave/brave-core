@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+/* eslint-disable max-len */
+
 import { FC } from 'react'
 import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
@@ -469,12 +471,12 @@ export const CircleIconWrapper = styled.div<{
   flex-direction: row;
   position: relative;
   ${makePaddingMixin('12px')}
-  box-shadow: 0px 0px 1px rgba(66, 69, 82, 0.08), 0px 0.5px 1.5px rgba(66, 69, 82, 0.1);
-
   background-color: ${(p) => p.theme.color.background01};
   @media (prefers-color-scheme: dark) {
     background-color: ${(p) => p.theme.color.background02};
   }
+  box-shadow: 0px 0px 1px rgba(66, 69, 82, 0.08),
+    0px 0.5px 1.5px rgba(66, 69, 82, 0.1);
 `
 
 export const NetworkIconWrapper = styled.div`

@@ -18,7 +18,9 @@ import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
 import { SwapSectionBox } from '../../swap-section-box/swap-section-box'
-import { SelectTokenOrNetworkButton } from '../../buttons/select-token-or-network/select-token-or-network'
+import {
+  SelectTokenOrNetworkButton //
+} from '../../buttons/select-token-or-network/select-token-or-network'
 import { PresetButton } from '../../buttons/preset-button/preset-button'
 import { SwapInput } from '../../inputs/swap-input/swap-input'
 

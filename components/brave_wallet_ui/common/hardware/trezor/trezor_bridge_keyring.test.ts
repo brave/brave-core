@@ -376,13 +376,15 @@ test('Extract accounts from unlocked device returned success', () => {
   const accounts = [
     {
       publicKey:
-        '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
+        '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9' +
+        'e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
       serializedPath: "m/44'/60'/0'/0/0",
       fingerprint: 5454545
     },
     {
       publicKey:
-        '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f780787f377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
+        '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f780787f' +
+        '377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
       serializedPath: "m/44'/60'/0'/0/1",
       fingerprint: 5454545
     }
@@ -427,13 +429,15 @@ test('Extracting accounts from unlocked device returned success without zero ind
   const accounts = [
     {
       publicKey:
-        '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
+        '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae' +
+        '52ef9e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
       serializedPath: "m/44'/60'/0'/0/0",
       fingerprint: 5454545
     },
     {
       publicKey:
-        '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f780787f377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
+        '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f7' +
+        '80787f377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
       serializedPath: "m/44'/60'/0'/0/1",
       fingerprint: 5454545
     }

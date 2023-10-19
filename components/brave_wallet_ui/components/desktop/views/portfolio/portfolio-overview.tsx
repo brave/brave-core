@@ -20,7 +20,9 @@ import { WalletSelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
 // hooks
-import { useBalancesFetcher } from '../../../../common/hooks/use-balances-fetcher'
+import {
+  useBalancesFetcher //
+} from '../../../../common/hooks/use-balances-fetcher'
 
 // Constants
 import {
@@ -28,7 +30,9 @@ import {
   UserAssetInfoType,
   WalletRoutes
 } from '../../../../constants/types'
-import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
 import { WalletStatus } from '../../../../common/async/brave_rewards_api_proxy'
 
 // actions
@@ -44,7 +48,9 @@ import {
 import { getBalance } from '../../../../utils/balance-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
-import { networkEntityAdapter } from '../../../../common/slices/entities/network.entity'
+import {
+  networkEntityAdapter //
+} from '../../../../common/slices/entities/network.entity'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
   getIsRewardsToken,
@@ -55,11 +61,15 @@ import {
 
 // Options
 import { PortfolioNavOptions } from '../../../../options/nav-options'
-import { AccountsGroupByOption } from '../../../../options/group-assets-by-options'
+import {
+  AccountsGroupByOption //
+} from '../../../../options/group-assets-by-options'
 
 // Components
 import { LoadingSkeleton } from '../../../shared/loading-skeleton/index'
-import { SegmentedControl } from '../../../shared/segmented-control/segmented-control'
+import {
+  SegmentedControl //
+} from '../../../shared/segmented-control/segmented-control'
 import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
 import { TokenLists } from './components/token-lists/token-list'
 import {
@@ -67,9 +77,15 @@ import {
 } from './components/portfolio-overview-chart/portfolio-overview-chart'
 import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
 import { NftView } from '../nfts/nft-view'
-import { BuySendSwapDepositNav } from './components/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
-import { LineChartControls } from '../../line-chart/line-chart-controls/line-chart-controls'
-import { PortfolioFiltersModal } from '../../popup-modals/filter-modals/portfolio-filters-modal'
+import {
+  BuySendSwapDepositNav //
+} from './components/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+import {
+  LineChartControls //
+} from '../../line-chart/line-chart-controls/line-chart-controls'
+import {
+  PortfolioFiltersModal //
+} from '../../popup-modals/filter-modals/portfolio-filters-modal'
 
 // Styled Components
 import {
@@ -95,7 +111,9 @@ import {
   useGetExternalRewardsWalletQuery
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
-import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
+import {
+  querySubscriptionOptions60s //
+} from '../../../../common/slices/constants'
 
 export const PortfolioOverview = () => {
   // routing

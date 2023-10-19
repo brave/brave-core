@@ -13,7 +13,8 @@ export interface LoadingSkeletonStyleProps {
   direction?: 'ltr' | 'rtl'
   enableAnimation?: boolean
   circle?: boolean
-  useLightTheme?: boolean // This is used to override darktheme in the main panel.
+  /** This is used to override darktheme in the main panel. */
+  useLightTheme?: boolean
 }
 
 const loadingAnimation = keyframes`

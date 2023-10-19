@@ -9,8 +9,12 @@ import * as React from 'react'
 import { getLocale } from '../../../../../../../common/locale'
 
 // Hooks
-import { useOnClickOutside } from '../../../../../../common/hooks/useOnClickOutside'
-import { useGetSelectedChainQuery } from '../../../../../../common/slices/api.slice'
+import {
+  useOnClickOutside //
+} from '../../../../../../common/hooks/useOnClickOutside'
+import {
+  useGetSelectedChainQuery //
+} from '../../../../../../common/slices/api.slice'
 import {
   useAccountsQuery //
 } from '../../../../../../common/slices/api.slice.extra'
@@ -19,7 +23,9 @@ import {
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
-import { AccountListButton } from '../../buttons/account-list-button/account-list-button'
+import {
+  AccountListButton //
+} from '../../buttons/account-list-button/account-list-button'
 
 // Styled Components
 import {

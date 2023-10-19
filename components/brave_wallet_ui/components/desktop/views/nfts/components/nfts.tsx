@@ -27,7 +27,9 @@ import { WalletPageActions } from '../../../../../page/actions'
 // utils
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../../utils/amount'
-import { LOCAL_STORAGE_KEYS } from '../../../../../common/constants/local-storage-keys'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../../common/constants/local-storage-keys'
 import {
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
@@ -63,7 +65,9 @@ import {
 } from '../../portfolio/style'
 import { AssetGroupContainer } from '../../../asset-group-container/asset-group-container'
 import { networkEntityAdapter } from '../../../../../common/slices/entities/network.entity'
-import { TokenBalancesRegistry } from '../../../../../common/slices/entities/token-balance.entity'
+import {
+  TokenBalancesRegistry //
+} from '../../../../../common/slices/entities/token-balance.entity'
 import { NftGridViewItemSkeleton } from '../../portfolio/components/nft-grid-view/nft-grid-view-item-skeleton'
 import {
   NftDropdown,

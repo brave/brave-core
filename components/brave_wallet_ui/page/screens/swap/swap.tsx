@@ -20,16 +20,25 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 import { getLocale } from '$web-common/locale'
 
 // Components
-import { StandardButton } from './components/buttons/standard-button/standard-button'
-import { FlipTokensButton } from './components/buttons/flip-tokens-button/flip-tokens-button'
+import {
+  StandardButton //
+} from './components/buttons/standard-button/standard-button'
+import {
+  FlipTokensButton //
+} from './components/buttons/flip-tokens-button/flip-tokens-button'
 import { SwapContainer } from './components/swap/swap-container/swap-container'
 import { FromSection } from './components/swap/from-section/from-section'
-import { ToSection } from './components/swap/to-section/to-section'
-import { SelectTokenModal } from './components/swap/select-token-modal/select-token-modal'
+import {
+  ToSection //
+} from './components/swap/to-section/to-section'
+import {
+  SelectTokenModal //
+} from './components/swap/select-token-modal/select-token-modal'
 import { QuoteInfo } from './components/swap/quote-info/quote-info'
 import { QuoteOptions } from './components/swap/quote-options/quote-options'
-import { SwapSettingsModal } from './components/swap/settings/swap-settings-modal'
-// import { SwapSkeleton } from './components/swap/swap-skeleton/swap-skeleton'
+import {
+  SwapSettingsModal //
+} from './components/swap/settings/swap-settings-modal'
 import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
 
 import { SwapSectionBox } from './components/boxes/swap-section-box'

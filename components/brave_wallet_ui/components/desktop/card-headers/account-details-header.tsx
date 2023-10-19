@@ -16,7 +16,9 @@ import {
 } from '../../../constants/types'
 
 // Options
-import { AccountDetailsMenuOptions } from '../../../options/account-details-menu-options'
+import {
+  AccountDetailsMenuOptions //
+} from '../../../options/account-details-menu-options'
 
 // Selectors
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
@@ -37,15 +39,21 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
-import { selectAllVisibleUserAssetsFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
-import { TokenBalancesRegistry } from '../../../common/slices/entities/token-balance.entity'
+import {
+  selectAllVisibleUserAssetsFromQueryResult //
+} from '../../../common/slices/entities/blockchain-token.entity'
+import {
+  TokenBalancesRegistry //
+} from '../../../common/slices/entities/token-balance.entity'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
 // Hooks
 import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Components
-import { CreateAccountIcon } from '../../shared/create-account-icon/create-account-icon'
+import {
+  CreateAccountIcon //
+} from '../../shared/create-account-icon/create-account-icon'
 import CopyTooltip from '../../shared/copy-tooltip/copy-tooltip'
 import { AccountDetailsMenu } from '../wallet-menus/account-details-menu'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'

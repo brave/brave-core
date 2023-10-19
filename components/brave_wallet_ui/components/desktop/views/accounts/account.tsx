@@ -34,9 +34,13 @@ import {
 } from '../../../../utils/routes-utils'
 
 import Amount from '../../../../utils/amount'
-import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
+import {
+  getTokenPriceAmountFromRegistry //
+} from '../../../../utils/pricing-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
-import { selectAllVisibleUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  selectAllVisibleUserAssetsFromQueryResult //
+} from '../../../../common/slices/entities/blockchain-token.entity'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 
 // Styled Components
@@ -51,15 +55,31 @@ import { EmptyTransactionsIcon } from '../portfolio/style'
 import { NftGrid } from '../nfts/components/nfts.styles'
 
 // Components
-import { PortfolioTransactionItem } from '../../portfolio_transaction_item/portfolio_transaction_item'
-import { PortfolioAssetItemLoadingSkeleton } from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
+import {
+  PortfolioTransactionItem //
+} from '../../portfolio_transaction_item/portfolio_transaction_item'
+import {
+  PortfolioAssetItemLoadingSkeleton //
+} from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
-import { AccountDetailsHeader } from '../../card-headers/account-details-header'
-import { SegmentedControl } from '../../../shared/segmented-control/segmented-control'
-import { NFTGridViewItem } from '../portfolio/components/nft-grid-view/nft-grid-view-item'
-import { NftsEmptyState } from '../nfts/components/nfts-empty-state/nfts-empty-state'
-import { AddOrEditNftModal } from '../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
-import { WalletPageWrapper } from '../../wallet-page-wrapper/wallet-page-wrapper'
+import {
+  AccountDetailsHeader //
+} from '../../card-headers/account-details-header'
+import {
+  SegmentedControl //
+} from '../../../shared/segmented-control/segmented-control'
+import {
+  NFTGridViewItem //
+} from '../portfolio/components/nft-grid-view/nft-grid-view-item'
+import {
+  NftsEmptyState //
+} from '../nfts/components/nfts-empty-state/nfts-empty-state'
+import {
+  AddOrEditNftModal //
+} from '../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
+import {
+  WalletPageWrapper //
+} from '../../wallet-page-wrapper/wallet-page-wrapper'
 
 // options
 import { AccountDetailsOptions } from '../../../../options/nav-options'
@@ -73,8 +93,12 @@ import {
   useGetTransactionsQuery,
   useGetTokenSpotPricesQuery
 } from '../../../../common/slices/api.slice'
-import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
-import { useBalancesFetcher } from '../../../../common/hooks/use-balances-fetcher'
+import {
+  querySubscriptionOptions60s //
+} from '../../../../common/slices/constants'
+import {
+  useBalancesFetcher //
+} from '../../../../common/hooks/use-balances-fetcher'
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'

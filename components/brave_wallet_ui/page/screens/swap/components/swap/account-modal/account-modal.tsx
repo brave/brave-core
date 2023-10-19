@@ -18,7 +18,9 @@ import {
   accountInfoEntityAdaptorInitialState
 } from '../../../../../../common/slices/entities/account-info.entity'
 
-import { getEntitiesListFromEntityState } from '../../../../../../utils/entities.utils'
+import {
+  getEntitiesListFromEntityState //
+} from '../../../../../../utils/entities.utils'
 
 // Components
 import { AccountListItemButton } from './account-list-item-button'

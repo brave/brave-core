@@ -42,7 +42,9 @@ import {
 } from '../../../../../common/slices/api.slice'
 import { useAddressOrb } from '../../../../../common/hooks/use-orb'
 import { makeNetworkAsset } from '../../../../../options/asset-options'
-import { networkEntityAdapter } from '../../../../../common/slices/entities/network.entity'
+import {
+  networkEntityAdapter //
+} from '../../../../../common/slices/entities/network.entity'
 
 interface Props {
   hardwareWallet: string

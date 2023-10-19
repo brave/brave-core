@@ -88,7 +88,7 @@ export const Pointer = styled.div<PositionProps>`
       margin: 0 auto;
     `}
 
-  transform: 
+  transform:
     translateX(${(p) =>
     p.position === 'center' ? '0' : p.position === 'right' ? '-25px' : '25px'})
     translateY(${(p) => (p.verticalPosition === 'above' ? '-1px' : '1px')})

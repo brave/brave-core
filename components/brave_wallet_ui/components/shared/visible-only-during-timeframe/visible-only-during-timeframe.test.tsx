@@ -10,10 +10,12 @@ import { VisibleOnlyDuringTimeFrame } from './visible-only-during-timeframe'
 describe('<VisibleOnlyDuringTimeFrame />', () => {
   it('renders children when within start/end dates', () => {
     const START_DATE = new Date()
-    START_DATE.setTime(START_DATE.getTime() - 1000 * 60 * 60 * 24 * 25) // 25 Days ago
+    // 25 Days ago
+    START_DATE.setTime(START_DATE.getTime() - 1000 * 60 * 60 * 24 * 25)
 
     const END_DATE = new Date()
-    END_DATE.setTime(START_DATE.getTime() + 1000 * 60 * 60 * 24 * 35) // 35 Days from start
+    // 35 Days from start
+    END_DATE.setTime(START_DATE.getTime() + 1000 * 60 * 60 * 24 * 35)
 
     const wrapper = shallow(
       <VisibleOnlyDuringTimeFrame
@@ -28,10 +30,12 @@ describe('<VisibleOnlyDuringTimeFrame />', () => {
 
   it('does not render children when not within start/end dates', () => {
     const START_DATE = new Date()
-    START_DATE.setTime(START_DATE.getTime() - 1000 * 60 * 60 * 24 * 25) // 25 Days ago
+    // 25 Days ago
+    START_DATE.setTime(START_DATE.getTime() - 1000 * 60 * 60 * 24 * 25)
 
     const END_DATE = new Date()
-    END_DATE.setTime(START_DATE.getTime() + 1000 * 60 * 60 * 24 * 20) // 20 Days from start (5 days ago)
+    // 20 Days from start (5 days ago)
+    END_DATE.setTime(START_DATE.getTime() + 1000 * 60 * 60 * 24 * 20)
 
     const wrapper = shallow(
       <VisibleOnlyDuringTimeFrame

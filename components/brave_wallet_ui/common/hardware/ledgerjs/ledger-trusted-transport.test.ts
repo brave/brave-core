@@ -7,9 +7,9 @@ import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
 import { LedgerCommand, AuthorizationSuccessCommand } from './ledger-messages'
 
 // We must read and write to protected class attributes in the tests.
-// That yields a typescript error unless we use bracket notation, e.g. `transport['handlers']`
-// instead of `transport.handlers`. As a result we silence the dot-notation
-// tslint rule for the file.
+// That yields a typescript error unless we use bracket notation, e.g.
+// `transport['handlers']` instead of `transport.handlers`. As a result we
+// silence the dot-notation tslint rule for the file.
 //
 /* eslint-disable @typescript-eslint/dot-notation */
 

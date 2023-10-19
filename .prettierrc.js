@@ -27,7 +27,6 @@ module.exports = {
   'requirePragma': false,
   'useTabs': false,
   'vueIndentScriptAndStyle': false,
-  'jsxSingleQuote': true,
   'jsxBracketSameLine': false,
   'singleAttributePerLine': true,
   'overrides': undefined

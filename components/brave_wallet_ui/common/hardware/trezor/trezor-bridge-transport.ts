@@ -32,7 +32,10 @@ export class TrezorBridgeTransport extends MessagingTransport {
     element?.parentNode?.removeChild(element)
   }
 
-  // T is response type, e.g. UnlockResponse. Resolves as `false` if transport error
+  /**
+   * `T` is response type, e.g. UnlockResponse. Resolves as `false` if transport
+   * error
+   */
   sendCommandToTrezorFrame = <T>(
     command: TrezorFrameCommand
   ): Promise<T | TrezorErrorsCodes> => {

@@ -22,7 +22,9 @@ import { WalletSelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
 
 // Constants
-import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../common/constants/local-storage-keys'
 
 // Styled Components
 import {

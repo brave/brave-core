@@ -26,7 +26,9 @@ import {
   useGetNetworksRegistryQuery,
   useGetSelectedChainQuery
 } from '../../../common/slices/api.slice'
-import { useGetCombinedTokensListQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useGetCombinedTokensListQuery //
+} from '../../../common/slices/api.slice.extra'
 import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 

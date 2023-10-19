@@ -15,7 +15,10 @@ import {
   GasFeeOption
 } from '../../../../../../constants/types'
 
-import { useGetSelectedChainQuery } from '../../../../../../common/slices/api.slice'
+// Hooks
+import {
+  useGetSelectedChainQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // Options
 import { gasFeeOptions } from '../../../../../../options/gas-fee-options'

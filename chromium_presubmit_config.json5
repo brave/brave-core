@@ -62,6 +62,10 @@
     "third_party/rust/",
     "tools/crates/",
     "win_build_output/",
+    "components/brave_wallet_ui/components/shared/style.tsx",
+    "components/brave_wallet_ui/nft/components/nft-details/nft-screen.styles.ts",
+    "components/brave_wallet_ui/panel/container.tsx",
+    "components/brave_wallet_ui/stories/wallet-extension-panels.tsx"
   ],
 
   // Regex to match function names in the current presubmit stack trace. Matched

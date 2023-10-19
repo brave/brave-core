@@ -16,12 +16,14 @@ export function objectEquals(x: MaybeObj, y: MaybeObj): boolean {
     return false
   }
 
-  // if they are functions, they should exactly refer to same one (because of closures)
+  // if they are functions, they should exactly refer to same one (because of
+  // closures)
   if (x instanceof Function) {
     return x === y
   }
 
-  // if they are regexps, they should exactly refer to same one (it is hard to better equality check on current ES)
+  // if they are regexps, they should exactly refer to same one (it is hard to
+  // better equality check on current ES)
   if (x instanceof RegExp) {
     return x === y
   }

@@ -169,7 +169,8 @@ export const getNativeTokensFromList = (
 export const getBatTokensFromList = (
   tokenList: BraveWallet.BlockchainToken[]
 ) => {
-  // separate BAT from other tokens in the list so they can be placed higher in the list
+  // separate BAT from other tokens in the list so they can be placed higher in
+  // the list
   const { bat, nonBat } = tokenList.reduce(
     (acc, t) => {
       if (

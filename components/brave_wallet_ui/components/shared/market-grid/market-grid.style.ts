@@ -71,7 +71,11 @@ export const HeaderItem = styled.div<{
   ${({ hideOnSmall }) =>
     hideOnSmall &&
     css`
-      @media (min-width: ${breakpoints.panel}) and (max-width: ${breakpoints.small}) {
+      @media (min-width: ${
+          breakpoints.panel //
+        }) and (max-width: ${
+          breakpoints.small //
+        }) {
         display: none;
       }
     `}
@@ -115,7 +119,11 @@ export const Cell = styled.div<{
   ${({ hideOnSmall }) =>
     hideOnSmall &&
     css`
-      @media (min-width: ${breakpoints.panel}) and (max-width: ${breakpoints.small}) {
+      @media (min-width: ${
+          breakpoints.panel //
+        }) and (max-width: ${
+          breakpoints.small //
+        }) {
         display: none;
       }
     `}

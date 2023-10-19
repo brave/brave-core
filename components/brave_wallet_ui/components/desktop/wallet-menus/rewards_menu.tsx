@@ -6,7 +6,9 @@
 import * as React from 'react'
 
 // Queries
-import { useGetExternalRewardsWalletQuery } from '../../../common/slices/api.slice'
+import {
+  useGetExternalRewardsWalletQuery //
+} from '../../../common/slices/api.slice'
 
 // Utils
 import { getLocale } from '../../../../common/locale'

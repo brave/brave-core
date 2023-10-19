@@ -6,7 +6,9 @@
 import * as React from 'react'
 
 // Options
-import { SwapAndSendOptions } from '../../../../../../options/swap-and-send-options'
+import {
+  SwapAndSendOptions //
+} from '../../../../../../options/swap-and-send-options'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
@@ -15,9 +17,15 @@ import { BraveWallet } from '../../../../../../constants/types'
 import { getLocale } from '../../../../../../../common/locale'
 
 // Components
-import { StandardCheckbox } from '../../form-controls/standard-checkbox/standard-checkbox'
-import { StandardRadio } from '../../form-controls/standard-radio/standard-radio'
-import { StandardSwitch } from '../../form-controls/standard-switch/standard-switch'
+import {
+  StandardCheckbox //
+} from '../../form-controls/standard-checkbox/standard-checkbox'
+import {
+  StandardRadio //
+} from '../../form-controls/standard-radio/standard-radio'
+import {
+  StandardSwitch //
+} from '../../form-controls/standard-switch/standard-switch'
 import { StandardInput } from '../../inputs/standard-input/standard-input'
 import { AccountSelector } from '../account-selector/account-selector'
 

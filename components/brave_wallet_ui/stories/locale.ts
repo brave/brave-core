@@ -107,9 +107,14 @@ provideStrings({
   braveWalletSendNoURLPlaceholder: 'Wallet address',
   braveWalletSwapDisclaimer: 'Brave uses $1$3$2 as a DEX aggregator.',
   braveWalletSwapDisclaimerDescription:
-    '0x will process the Ethereum address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.',
+    '0x will process the Ethereum address and IP address ' +
+    'to fulfill a transaction (including getting quotes). ' +
+    '0x will ONLY use this data for the purposes of processing transactions.',
   braveWalletJupiterSwapDisclaimerDescription:
-    'Jupiter will process the Solana address and IP address to fulfill a transaction (including getting quotes). Jupiter will ONLY use this data for the purposes of processing transactions.',
+    'Jupiter will process the Solana address and IP address ' +
+    'to fulfill a transaction (including getting quotes). ' +
+    'Jupiter will ONLY use this data ' +
+    'for the purposes of processing transactions.',
   braveWalletSwapFeesNotice: 'Quote includes a $1 Brave fee.',
   braveWalletDecimalPlacesError: 'Too many decimal places',
   braveWalletBuyTapBuyNotSupportedMessage:
@@ -118,12 +123,16 @@ provideStrings({
   braveWalletEnsOffChainLookupTitle:
     'Brave supports using off-chain gateways to resolve .eth domains.',
   braveWalletEnsOffChainLookupDescription:
-    "It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.",
+    "It looks like you've entered an ENS address. " +
+    "We'll need to use a third-party resolver to resolve this request, " +
+    'which may be able to see your IP address and domain.',
   braveWalletEnsOffChainButton: 'Use ENS domain',
   braveWalletFEVMAddressTranslationTitle:
     'ETH address will be converted to the Filecoin address.',
   braveWalletFEVMAddressTranslationDescription:
-    "It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.",
+    "It looks like you've entered an ENS address. " +
+    "We'll need to use a third-party resolver to resolve this request, " +
+    'which may be able to see your IP address and domain.',
 
   // Send Tab
   braveWalletSendToken: 'Send token',
@@ -166,7 +175,8 @@ provideStrings({
 
   // Onboarding - Welcome
   braveWalletWelcomeTitle:
-    'Secure. Multi-chain. And oh-so-easy to use. Your Brave Wallet is just a few clicks away',
+    'Secure. Multi-chain. And oh-so-easy to use. ' +
+    'Your Brave Wallet is just a few clicks away',
   braveWalletWelcomeButton: 'Create new wallet',
   braveWalletLearnMoreAboutBraveWallet: 'Learn more about Brave Wallet',
   braveWalletImportExistingWallet: 'Import existing wallet',
@@ -178,7 +188,14 @@ provideStrings({
   braveWalletDisclosuresTitle: 'Legal stuff',
   braveWalletDisclosuresDescription: 'Please acknowledge the following:',
   braveWalletSelfCustodyDisclosureCheckboxText:
-    'I understand this is a self-custody wallet, and that I alone am responsible for any associated funds, assets, or accounts, and for taking appropriate action to secure, protect and backup my wallet. I understand that Brave can NOT access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.',
+    'I understand this is a self-custody wallet, ' +
+    'and that I alone am responsible for any associated funds, ' +
+    'assets, or accounts, and for taking appropriate action to secure, ' +
+    'protect and backup my wallet. ' +
+    'I understand that Brave can NOT access my wallet or reverse ' +
+    'transactions on my behalf, and that my recovery phrase ' +
+    'is the ONLY way to regain access in the event of a lost password, ' +
+    'stolen device, or similar circumstance.',
   braveWalletTermsOfServiceCheckboxText:
     'I have read and agree to the $1Terms of use$2',
 
@@ -186,7 +203,9 @@ provideStrings({
   braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
   braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',
   braveWalletImportOrRestoreDescription:
-    'To connect a wallet you already have, you may need to enter your recovery phrase. At this time we support restoring / importing from Ethereum and Solana wallets.',
+    'To connect a wallet you already have, ' +
+    'you may need to enter your recovery phrase. At this time we support ' +
+    'restoring / importing from Ethereum and Solana wallets.',
   braveWalletRestoreMyBraveWallet: 'Restore from seed phrase',
   braveWalletRestoreMyBraveWalletDescription: '12-24 words',
   braveWalletImportFromMetaMask: 'Import from MetaMask',
@@ -215,34 +234,47 @@ provideStrings({
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle:
     'Before you start backing up wallet',
   braveWalletOnboardingRecoveryPhraseBackupIntroDescription:
-    'The 12-24 word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.',
+    'The 12-24 word recovery phrase is a private key you can use to regain ' +
+    'access to your wallet in case you lose a connected device(s). ' +
+    'Store it someplace safe, and in the exact order it appears below.',
   braveWalletRecoveryPhraseBackupWarningImportant:
-    '$1Important:$2 Never share your recovery phrase. Anyone with this phrase can take your assets forever.',
+    '$1Important:$2 Never share your recovery phrase. ' +
+    'Anyone with this phrase can take your assets forever.',
 
   // Onboarding - Backup Wallet - Recovery Phrase Backup
   braveWalletRecoveryPhraseBackupTitle: 'Back up your wallet recovery phrase',
   braveWalletRecoveryPhraseBackupWarning:
-    'Brave cannot access your secret recovery phrase. Keep it safe, and never share it with anyone else.',
+    'Brave cannot access your secret recovery phrase. ' +
+    'Keep it safe, and never share it with anyone else.',
   braveWalletCopiedToClipboard: 'Copied to clipboard',
   braveWalletClickToSeeRecoveryPhrase: 'Click to see your phrase',
 
   // Onboarding - Backup Wallet - Verify Recovery Phrase
   braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
   braveWalletVerifyRecoveryPhraseInstructions:
-    'Click the $1$7 ($8)$2, $3$9 ($10)$4, and $5$11 ($12)$6 words of your recovery phrase.',
+    'Click the $1$7 ($8)$2, $3$9 ($10)$4, and $5$11 ($12)$6 words of ' +
+    'your recovery phrase.',
   braveWalletVerifyPhraseError: "Recovery phrase didn't match",
 
   // Recovery Phrase Backup - Intro
   braveWalletBackupIntroTitle: 'Back up your crypto wallet',
   braveWalletBackupIntroDescription:
-    'In the next step you’ll see a $1-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
+    'In the next step you’ll see a $1-word recovery phrase, ' +
+    'which you can use to recover your primary crypto accounts. ' +
+    'Save it someplace safe. Your recovery phrase is the only way to ' +
+    'regain account access in case of forgotten password, ' +
+    'lost or stolen device, or you want to switch wallets.',
   braveWalletBackupIntroTerms:
-    'I understand that if I lose my recovery words, I will not be able to access my crypto wallet.',
+    'I understand that if I lose my recovery words, ' +
+    'I will not be able to access my crypto wallet.',
 
   // Recovery Phrase Backup - Intro
   braveWalletRecoveryTitle: 'Your recovery phrase',
   braveWalletRecoveryDescription:
-    'Write down or copy these words in the exact order shown below, and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
+    'Write down or copy these words in the exact order shown below, ' +
+    'and save them somewhere safe. Your recovery phrase is the only ' +
+    'way to regain account access in case of forgotten password, ' +
+    'lost or stolen device, or you want to switch wallets.',
   braveWalletRecoveryWarning1: 'WARNING:',
   braveWalletRecoveryWarning2: 'Never share your recovery phrase.',
   braveWalletRecoveryWarning3:
@@ -276,7 +308,8 @@ provideStrings({
   braveWalletOnboardingSuccessTitle:
     'Congratulations! Your Brave Wallet is ready to go!',
   braveWalletOnboardingSuccessDescription:
-    'To access your wallet, just click the wallet icon at the top right of any Brave browser window.',
+    'To access your wallet, just click the wallet icon at the top right ' +
+    'of any Brave browser window.',
   braveWalletBuyCryptoButton: 'Buy crypto',
   braveWalletDepositCryptoButton: 'Deposit',
   braveWalletLearnAboutMyWallet: 'Learn more about my new wallet',
@@ -302,13 +335,15 @@ provideStrings({
 
   // Backup Warning
   braveWalletBackupWarningText:
-    'Back up your wallet now to protect your assets and ensure you never lose access.',
+    'Back up your wallet now ' +
+    'to protect your assets and ensure you never lose access.',
   braveWalletBackupButton: 'Back up now',
   braveWalletDismissButton: 'Dismiss',
 
   // Default Wallet Banner
   braveWalletDefaultWalletBanner:
-    'Brave Wallet is not set as your default wallet and will not respond to Web3 DApps. Visit settings to change your default wallet.',
+    'Brave Wallet is not set as your default wallet and will not ' +
+    'respond to Web3 DApps. Visit settings to change your default wallet.',
 
   // Restore Screen
   braveWalletRestoreTite: 'Restore primary crypto accounts',
@@ -345,7 +380,8 @@ provideStrings({
   braveWalletCreateAccountImportAccount: 'Import $1 account',
   braveWalletCreateAccountTitle: 'Select one of the following account types',
   braveWalletCreateAccountEthereumDescription:
-    'Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)',
+    'Supports EVM compatible assets on the Ethereum blockchain ' +
+    '(ERC-20, ERC-721, ERC-1551, ERC-1155)',
   braveWalletCreateAccountSolanaDescription:
     'Supports SPL compatible assets on the Solana blockchain',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
@@ -353,7 +389,9 @@ provideStrings({
 
   // Import Account
   braveWalletImportAccountDisclaimer:
-    'These accounts can be used with Web3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
+    'These accounts can be used with Web3 DApps, and can be shown in your ' +
+    'portfolio. However, note that secondary accounts cannot be restored ' +
+    'via recovery phrase from your primary account backup.',
   braveWalletImportAccountPlaceholder: 'Paste private key from clipboard',
   braveWalletImportAccountKey: 'Private key',
   braveWalletImportAccountFile: 'JSON file',
@@ -377,7 +415,8 @@ provideStrings({
   braveWalletLoadingMoreAccountsHardwareWallet: 'Loading more...',
   braveWalletSearchScannedAccounts: 'Search account',
   braveWalletSwitchHDPathTextHardwareWallet:
-    'Try switching HD path (above) if you cannot find the account you are looking for.',
+    'Try switching HD path (above) if you ' +
+    'cannot find the account you are looking for.',
   braveWalletLedgerLiveDerivationPath: 'Ledger Live',
   braveWalletLedgerLegacyDerivationPath: 'Legacy (MEW/MyCrypto)',
   braveWalletUnknownInternalError:
@@ -403,7 +442,8 @@ provideStrings({
   braveWalletCustomTokenExistsError:
     'This token has already been added to your portfolio.',
   braveWalletAccountSettingsDisclaimer:
-    'WARNING: Never share your recovery phrase. Anyone with this phrase can take your assets forever.',
+    'WARNING: Never share your recovery phrase. Anyone with this phrase can ' +
+    'take your assets forever.',
   braveWalletAccountSettingsShowKey: 'Show key',
   braveWalletAccountSettingsHideKey: 'Hide key',
   braveWalletAccountSettingsUpdateError:
@@ -421,7 +461,9 @@ provideStrings({
   // Empty Token List State
   braveWalletNoAvailableAssets: 'No available assets',
   braveWalletNoAvailableAssetsDescription:
-    "Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.",
+    "Deposit or purchase tokens to get started. If you don't see tokens " +
+    'from an imported account, check the filters and display settings. ' +
+    'Unknown tokens may need to be added as custom assets.',
 
   // AmountPresets
   braveWalletPreset25: '25%',
@@ -505,9 +547,11 @@ provideStrings({
   braveWalletBuyTransakName: 'Transak',
   braveWalletBuyStripeName: 'Link by Stripe',
   braveWalletBuyCoinbaseName: 'Coinbase Pay',
-  braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
+  braveWalletBuyRampDescription:
+    'Buy with CC/Debit or ACH. ' + 'Competitive Rates.',
   braveWalletBuySardineDescription:
-    'Easiest, fastest and cheapest way to buy crypto with card and bank transfers.',
+    'Easiest, fastest and cheapest way to ' +
+    'buy crypto with card and bank transfers.',
   braveWalletBuyTransakDescription:
     'Instant buy with your bank account. Lower fees.',
   braveWalletBuyStripeDescription: 'Pay with credit, debit, bank account',
@@ -520,7 +564,8 @@ provideStrings({
   braveWalletBuyWithCoinbase: 'Buy with Coinbase Pay',
   braveWalletSellWithProvider: 'Sell with $1',
   braveWalletBuyDisclaimer:
-    'Financial and transaction data is processed by our onramp partners. Brave does not collect or have access to such data.',
+    'Financial and transaction data is processed by our onramp partners. ' +
+    'Brave does not collect or have access to such data.',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle:
@@ -539,7 +584,12 @@ provideStrings({
   // Sign Transaction Panel
   braveWalletSignTransactionTitle: 'Your signature is being requested',
   braveWalletSignWarning:
-    'Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.',
+    'Note that Brave can’t verify what will happen if you sign. ' +
+    'A signature could authorize nearly any operation in your account or ' +
+    'on your behalf, including (but not limited to) giving total control ' +
+    'of your account and crypto assets to the site making the request. ' +
+    'Only sign if you’re sure you want to take this action, ' +
+    'and trust the requesting site.',
   braveWalletSignWarningTitle: 'Sign at your own risk',
   braveWalletSignTransactionMessageTitle: 'Message',
   braveWalletSignTransactionEIP712MessageTitle: 'Details',
@@ -551,7 +601,8 @@ provideStrings({
   // Sign in with Ethereum
   braveWalletSignInWithBraveWallet: 'Sign in with Brave Wallet',
   braveWalletSignInWithBraveWalletMessage:
-    'You are signing into $1. Brave Wallet will share your wallet address with $1.',
+    'You are signing into $1. ' +
+    'Brave Wallet will share your wallet address with $1.',
   braveWalletSeeDetails: 'See details',
   braveWalletSignIn: 'Sign in',
   braveWalletOrigin: 'Origin',
@@ -571,7 +622,9 @@ provideStrings({
   braveWalletProvideEncryptionKeyTitle:
     'A DApp is requesting your public encryption key',
   braveWalletProvideEncryptionKeyDescription:
-    '$1$url$2 is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.',
+    '$1$url$2 is requesting your wallets public encryption key. ' +
+    'If you consent to providing this key, the site will be able to ' +
+    'compose encrypted messages to you.',
   braveWalletProvideEncryptionKeyButton: 'Provide',
   braveWalletReadEncryptedMessageTitle:
     'This DApp would like to read this message to complete your request',
@@ -581,7 +634,8 @@ provideStrings({
   // Allow Spend ERC20 Panel
   braveWalletAllowSpendTitle: 'Allow this app to spend your $1?',
   braveWalletAllowSpendDescription:
-    'By granting this permission, you are allowing this app to withdraw your $1 and automate transactions for you.',
+    'By granting this permission, you are allowing this app to withdraw ' +
+    'your $1 and automate transactions for you.',
   braveWalletAllowSpendBoxTitle: 'Edit permissions',
   braveWalletAllowSpendTransactionFee: 'Transaction fee',
   braveWalletAllowSpendEditButton: 'Edit',
@@ -621,7 +675,8 @@ provideStrings({
   braveWalletConfirmTransactionFrist: 'first',
   braveWalletConfirmTransactions: 'transactions',
   braveWalletConfirmTransactionAccountCreationFee:
-    'The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.',
+    'The associated token account does not exist yet. ' +
+    'A small amount of SOL will be spent to create and fund it.',
   braveWalletAllowSpendCurrentAllowance: 'Current allowance',
   braveWalletAllowSpendProposedAllowance: 'Proposed allowance',
   braveWalletTransactionGasLimit: 'Gas Limit',
@@ -689,9 +744,14 @@ provideStrings({
   // Import from Legacy Wallet
   braveWalletCryptoWalletsDetected: 'Existing crypto wallets detected',
   braveWalletCryptoWalletsDescriptionTwo:
-    'If youd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser $1Settings$2 and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.',
+    'If youd rather skip the import and keep the old Crypto Wallets ' +
+    'experience, just navigate to the Brave Browser $1Settings$2 and ' +
+    'change the default back to Crypto Wallets. You can also import, ' +
+    'try the new Brave Wallet, and change back at any time.',
   braveWalletImportBraveLegacyDescription:
-    'Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.',
+    'Enter your existing crypto wallets password to import to ' +
+    'Brave Wallet. Enjoy a faster and more secure way to manage crypto ' +
+    'assets and interact with Web3 DApps.',
   braveWalletImportBraveLegacyInput: 'Type Crypto wallets password',
 
   // Connect Hardware Wallet Panel
@@ -712,7 +772,8 @@ provideStrings({
   // Transaction List Item
   braveWalletTransactionSent: 'sent',
   braveWalletTransactionReceived: 'received',
-  braveWalletTransactionExplorerMissing: 'Block explorer URL is not available.',
+  braveWalletTransactionExplorerMissing:
+    'Block explorer URL' + ' is not available.',
   braveWalletTransactionExplorer: 'View on block explorer',
   braveWalletTransactionCopyHash: 'Copy transaction hash',
   braveWalletTransactionSpeedup: 'Speedup',
@@ -740,7 +801,8 @@ provideStrings({
   braveWalletEditGasTitle1: 'Max priority fee',
   braveWalletEditGasTitle2: 'Edit gas',
   braveWalletEditGasDescription:
-    'While not a guarantee, miners will likely prioritize your transaction if you pay a higher fee.',
+    'While not a guarantee, miners will likely prioritize your ' +
+    'transaction if you pay a higher fee.',
   braveWalletEditGasLow: 'Low',
   braveWalletEditGasOptimal: 'Optimal',
   braveWalletEditGasHigh: 'High',
@@ -763,7 +825,8 @@ provideStrings({
 
   // Advanced transaction settings
   braveWalletAdvancedTransactionSettings: 'Advanced settings',
-  braveWalletAdvancedTransactionSettingsPlaceholder: 'Enter custom nonce value',
+  braveWalletAdvancedTransactionSettingsPlaceholder:
+    'Enter custom ' + 'nonce value',
   braveWalletEditNonce: 'Nonce',
   braveWalletEditNonceInfo:
     'The nonce value will be auto-determined if this field is not specified.',
@@ -771,7 +834,8 @@ provideStrings({
   // Edit permissions
   braveWalletEditPermissionsTitle: 'Edit permissions',
   braveWalletEditPermissionsDescription:
-    'Spend limit permission allows $1 to withdraw and spend up to the following amount:',
+    'Spend limit permission allows $1 to withdraw and spend up to the ' +
+    'following amount:',
   braveWalletEditPermissionsButton: 'Edit permissions',
   braveWalletEditPermissionsProposedAllowance: 'Proposed allowance',
   braveWalletEditPermissionsCustomAllowance: 'Custom allowance',
@@ -787,25 +851,31 @@ provideStrings({
     'The receiving address is a tokens contract address',
   braveWalletFailedChecksumTitle: 'Address doesn’t look correct',
   braveWalletFailedChecksumDescription:
-    'Check your address to make sure it’s the right address (e.g. letters with lower or upper case).',
+    'Check your address to make sure it’s the right address ' +
+    '(e.g. letters with lower or upper case).',
   braveWalletHowToSolve: 'How can I solve it?',
   braveWalletAddressMissingChecksumInfoWarning:
     'This address cannot be verified (missing checksum). Proceed?',
   braveWalletNotValidChecksumAddressError:
-    'Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.',
+    'Address did not pass verification (invalid checksum). ' +
+    'Please try again, replacing lowercase letters with uppercase.',
   braveWalletMissingGasLimitError: 'Missing gas limit',
   braveWalletZeroBalanceError: 'Amount must be greater than 0',
   braveWalletAddressRequiredError: 'To address is required',
   braveWalletInvalidRecipientAddress: 'Invalid recipient address',
   braveWalletChecksumModalTitle: 'How can I find the right address?',
   braveWalletChecksumModalDescription:
-    'Brave validates and prevents users from sending funds to the wrong address due to incorrect capitalization. This is a "checksum" process to verify that it is a valid Ethereum address.',
+    'Brave validates and prevents users from sending funds to the wrong ' +
+    'address due to incorrect capitalization. This is a "checksum" ' +
+    'process to verify that it is a valid Ethereum address.',
   braveWalletChecksumModalStepOneTitle: '1. Visit',
   braveWalletChecksumModalStepOneDescription:
-    'Visit etherscan and paste the wallet address you want to send tokens. Then enter.',
+    'Visit etherscan and paste the wallet address you want to send ' +
+    'tokens. Then enter.',
   braveWalletChecksumModalStepTwoTitle: '2. Copy and enter ETH address',
   braveWalletChecksumModalStepTwoDescription:
-    'Copy and enter the correct address. You can see that some characters have been converted correctly.',
+    'Copy and enter the correct address. ' +
+    'You can see that some characters have been converted correctly.',
   braveWalletChecksumModalNeedHelp: 'Need more help?',
 
   // Transaction Queue Strings
@@ -928,13 +998,15 @@ provideStrings({
   // Submitted
   braveWalletTransactionSubmittedTitle: 'Transaction submitted',
   braveWalletTransactionSubmittedDescription:
-    'Transaction has been successfully sent to the network and awaits confirmation.',
+    'Transaction has been successfully sent ' +
+    'to the network and awaits confirmation.',
 
   // Failed
   braveWalletTransactionFailedHeaderTitle: '$1 was returned to your wallet',
   braveWalletTransactionFailedTitle: 'Transaction failed',
   braveWalletTransactionFailedDescription:
-    'Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.',
+    'Transaction was failed due to a large price movement. ' +
+    'Increase slippage tolerance to succeed at a larger price movement.',
   braveWalletTransactionFailedSwapNextCTA: 'New trade',
   braveWalletTransactionFailedNextCTA: 'New transaction',
   braveWalletTransactionFailedViewErrorCTA: 'View error',
@@ -947,14 +1019,17 @@ provideStrings({
   braveWalletTransactionCompleteSwapHeaderTitle: 'Swapped $1 to $2',
   braveWalletTransactionCompleteTitle: 'Transaction complete!',
   braveWalletTransactionCompleteDescription:
-    'Transaction was successful. Please wait for confirmations, to avoid the risk of double-spend.',
+    'Transaction was successful. Please wait for confirmations, ' +
+    'to avoid the risk of double-spend.',
   braveWalletTransactionCompleteReceiptCTA: 'Receipt',
 
   // Confirming
   braveWalletTransactionConfirmingTitle: 'Transaction is processing',
   // [FIXME]: change the wording after ETH2.
   braveWalletTransactionConfirmingDescription:
-    'Transaction was successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.',
+    'Transaction was successfully included in a block. ' +
+    'To avoid the risk of double spending, ' +
+    'we recommend waiting for block confirmations.',
   braveWalletTransactionConfirmingText: 'Confirming',
 
   // Transaction intents for confirmation panels
@@ -995,7 +1070,9 @@ provideStrings({
   // Bridge to Aurora
   braveWalletAuroraModalTitle: 'Open the Rainbow Bridge app?',
   braveWalletAuroraModalDescription:
-    'Rainbow Bridge is an independent service that helps you bridge assets across networks, and use your crypto on other networks and DApp ecosystems. Bridging assets to other networks has some risks.',
+    'Rainbow Bridge is an independent service that helps you bridge ' +
+    'assets across networks, and use your crypto on other networks ' +
+    'and DApp ecosystems. Bridging assets to other networks has some risks.',
   braveWalletAuroraModalLearnMore: 'Learn more about using Rainbow Bridge',
   braveWalletAuroraModalLearnMoreAboutRisk:
     'Learn more about mitigating risk on Rainbow Bridge',
@@ -1019,7 +1096,8 @@ provideStrings({
 
   // Token detail modals
   braveWalletMakeTokenVisibleInstructions:
-    'You can make this asset visible again in the future by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab',
+    'You can make this asset visible again in the future by clicking ' +
+    'the "+ Visible assets" button at the bottom of the "Portfolio" tab',
   braveWalletConfirmHidingToken: 'Hide',
   braveWalletCancelHidingToken: 'Cancel',
 
@@ -1028,7 +1106,8 @@ provideStrings({
   braveWalletAvailableAssets: 'Available assets',
   braveWalletDidntFindAssetEndOfList: "Didn't find your asset on the list?",
   braveWalletDidntFindAssetInList:
-    "If you didn't find your asset in this list, you can add it manually by using the button below",
+    "If you didn't find your asset in this list, you can add it manually " +
+    'by using the button below',
   braveWalletAssetNotFound: 'Asset not found',
 
   // Request feature button
@@ -1079,9 +1158,12 @@ provideStrings({
   // NFT Pinning
   braveWalletNftPinningWhyNotAvailable: "Why aren't some NFTs eligible?",
   braveWalletNftPinningTooltip:
-    'Some NFT data is stored on centralized servers like AWS, Google Cloud, etc. In this case, it’s not possible to pin your NFT data to the IPFS network.',
+    'Some NFT data is stored on centralized servers like ' +
+    'AWS, Google Cloud, etc. In this case, ' +
+    'it’s not possible to pin your NFT data to the IPFS network.',
   braveWalletNftPinningBenefitsHeading:
-    "By enabling IPFS in Brave, your NFTs will be pinned automatically. It's the best way to securely back up your NFTs.",
+    'By enabling IPFS in Brave, your NFTs will be pinned automatically. ' +
+    "It's the best way to securely back up your NFTs.",
   braveWalletNftPinningPinNftsButton: 'Get started with IPFS',
   braveWalletNftPinningBackButton: 'Back',
   braveWalletNftPinningCloseButton: 'Close',
@@ -1089,10 +1171,18 @@ provideStrings({
   braveWalletNftPinningRunNodeHeading:
     'Enable IPFS in Brave to automatically back up your NFTs',
   braveWalletNftPinningRunNodeDescription:
-    "IPFS is a community-driven storage network, like a hard drive that everyone can use. But instead of being controlled by one authority, thousands of individuals work together to host content on IPFS. When you “pin” something to IPFS, you’re ensuring that at least one copy of that content is safely stored. And as long as one person has a copy, a file can never disappear.$1By enabling IPFS in Brave, your NFTs will be pinned automatically. It's the best way to securely back up your NFTs.",
+    'IPFS is a community-driven storage network, like a hard drive that ' +
+    'everyone can use. But instead of being controlled by one authority, ' +
+    'thousands of individuals work together to host content on IPFS. ' +
+    'When you “pin” something to IPFS, you’re ensuring that at least one ' +
+    'copy of that content is safely stored. And as long as one person ' +
+    'has a copy, a file can never disappear.$1By enabling IPFS in Brave, ' +
+    'your NFTs will be pinned automatically. ' +
+    "It's the best way to securely back up your NFTs.",
   braveWalletNftPinningCheckNftsButton: 'See which of my NFTs are eligible',
   braveWalletNftPinningBannerStart:
-    'Enable IPFS in Brave to automatically back up your NFTs for extra security.',
+    'Enable IPFS in Brave ' +
+    'to automatically back up your NFTs for extra security.',
   braveWalletNftPinningBannerUploading:
     'NFTs are being pinned to your local IPFS node.',
   braveWalletNftPinningBannerSuccess:
@@ -1123,7 +1213,9 @@ provideStrings({
   // Remove NFT modal
   braveWalletRemoveNftModalHeader: 'Remove from Brave Wallet?',
   braveWalletRemoveNftModalDescription:
-    "NFT will be removed from Brave Wallet but will remain on the blockchain. If you remove it, then change your mind, you'll need to import it again manually.",
+    'NFT will be removed from Brave Wallet but will remain on the ' +
+    'blockchain. If you remove it, then change your mind, ' +
+    "you'll need to import it again manually.",
   braveWalletRemoveNftModalCancel: 'Cancel',
   braveWalletRemoveNftModalConfirm: 'Remove',
 
@@ -1131,7 +1223,9 @@ provideStrings({
   braveWalletEnableNftAutoDiscoveryModalHeader:
     'Want your NFTs displayed automatically?',
   braveWalletEnableNftAutoDiscoveryModalDescription:
-    'Brave Wallet can use a third-party service to automatically display your NFTs. Brave will share your wallet addresses with $1SimpleHash$2 to provide this service. $3Learn more.$4',
+    'Brave Wallet can use a third-party service to automatically display ' +
+    'your NFTs. Brave will share your wallet addresses with ' +
+    '$1SimpleHash$2 to provide this service. $3Learn more.$4',
   braveWalletEnableNftAutoDiscoveryModalConfirm: 'Yes, proceed',
   braveWalletEnableNftAutoDiscoveryModalCancel:
     "No thanks, I'll do it manually",

@@ -23,8 +23,10 @@ import {
 } from './ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 
-// FilecoinLedgerUntrustedMessagingTransport makes calls to the Filecoin app on a Ledger device
-export class FilecoinLedgerUntrustedMessagingTransport extends LedgerUntrustedMessagingTransport {
+/** makes calls to the Filecoin app on a Ledger device */
+export class FilecoinLedgerUntrustedMessagingTransport //
+  extends LedgerUntrustedMessagingTransport
+{
   transportWrapper?: TransportWrapper
   provider?: LedgerProvider
   deviceId: string

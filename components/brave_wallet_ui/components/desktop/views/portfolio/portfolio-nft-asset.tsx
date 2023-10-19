@@ -21,12 +21,16 @@ import { WalletSelectors } from '../../../../common/selectors'
 import { NftScreen } from '../../../../nft/components/nft-details/nft-screen'
 
 // Hooks
-import { useUnsafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector //
+} from '../../../../common/hooks/use-safe-selector'
 import {
   useGetNetworkQuery,
   useGetSimpleHashSpamNftsQuery
 } from '../../../../common/slices/api.slice'
-import { useScopedBalanceUpdater } from '../../../../common/hooks/use-scoped-balance-updater'
+import {
+  useScopedBalanceUpdater //
+} from '../../../../common/hooks/use-scoped-balance-updater'
 
 // Styled Components
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
@@ -151,7 +155,8 @@ export const PortfolioNftAsset = () => {
     )
   }, [selectedAssetFromParams, ownerAccount, selectedAssetNetwork])
 
-  // token list and spam NFTs needs to load before we can find an asset to select from the url params
+  // token list and spam NFTs needs to load before we can find an asset to
+  // select from the url params
   if (userVisibleTokensInfo.length === 0 || isLoadingSpamNfts) {
     return <Skeleton />
   }

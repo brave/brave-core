@@ -22,8 +22,10 @@ import {
 } from './eth-ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 
-// EthereumLedgerUntrustedMessagingTransport makes calls to the Ethereum app on a Ledger device
-export class EthereumLedgerUntrustedMessagingTransport extends LedgerUntrustedMessagingTransport {
+/** makes calls to the Ethereum app on a Ledger device */
+export class EthereumLedgerUntrustedMessagingTransport //
+  extends LedgerUntrustedMessagingTransport
+{
   constructor(targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
     this.addCommandHandler<UnlockResponse>(
@@ -125,13 +127,13 @@ export class EthereumLedgerUntrustedMessagingTransport extends LedgerUntrustedMe
         command.path,
         command.messageHex
       )
-      const signPersonalMessageResponsePayload: EthSignPersonalMessageResponsePayload =
-        {
-          success: true,
-          v: result.v,
-          r: result.r,
-          s: result.s
-        }
+      const signPersonalMessageResponsePayload: //
+      EthSignPersonalMessageResponsePayload = {
+        success: true,
+        v: result.v,
+        r: result.r,
+        s: result.s
+      }
       const response: EthSignPersonalMessageResponse = {
         id: command.id,
         command: command.command,
@@ -163,13 +165,13 @@ export class EthereumLedgerUntrustedMessagingTransport extends LedgerUntrustedMe
         command.domainSeparatorHex,
         command.hashStructMessageHex
       )
-      const signEip712MessageResponsePayload: EthSignEip712MessageResponsePayload =
-        {
-          success: true,
-          v: result.v,
-          r: result.r,
-          s: result.s
-        }
+      const signEip712MessageResponsePayload: //
+      EthSignEip712MessageResponsePayload = {
+        success: true,
+        v: result.v,
+        r: result.r,
+        s: result.s
+      }
       const response: EthSignEip712MessageResponse = {
         id: command.id,
         command: command.command,

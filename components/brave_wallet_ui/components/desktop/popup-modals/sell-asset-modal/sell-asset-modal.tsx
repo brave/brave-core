@@ -19,7 +19,9 @@ import Amount from '../../../../utils/amount'
 
 // Hooks
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
-import { useScopedBalanceUpdater } from '../../../../common/hooks/use-scoped-balance-updater'
+import {
+  useScopedBalanceUpdater //
+} from '../../../../common/hooks/use-scoped-balance-updater'
 
 // Components
 import PopupModal from '../../../desktop/popup-modals'
@@ -241,8 +243,8 @@ export const SellAssetModal = (props: Props) => {
           buttonType='primary'
           minHeight='52px'
           text={
-            // Ramp is hardcoded for now, but we can update with selectedProvider.name
-            // once we add more offramp providers.
+            // Ramp is hardcoded for now, but we can update with
+            // selectedProvider.name once we add more offramp providers.
             getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')
           }
           onSubmit={openSellAssetLink}

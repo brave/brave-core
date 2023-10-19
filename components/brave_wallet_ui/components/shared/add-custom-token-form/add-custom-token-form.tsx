@@ -27,7 +27,9 @@ import {
   useGetCoingeckoIdQuery,
   useGetNetworksRegistryQuery
 } from '../../../common/slices/api.slice'
-import { useGetCombinedTokensListQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useGetCombinedTokensListQuery //
+} from '../../../common/slices/api.slice.extra'
 
 // components
 import { SelectNetworkDropdown } from '../../desktop/select-network-dropdown/index'

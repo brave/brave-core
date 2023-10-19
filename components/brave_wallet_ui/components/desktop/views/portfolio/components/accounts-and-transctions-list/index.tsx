@@ -9,7 +9,9 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useLocation } from 'react-router-dom'
 
 // Constants
-import { LOCAL_STORAGE_KEYS } from '../../../../../../common/constants/local-storage-keys'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../../../common/constants/local-storage-keys'
 
 // Actions
 import { WalletActions } from '../../../../../../common/actions'
@@ -32,7 +34,9 @@ import {
   getIsRewardsToken,
   getNormalizedExternalRewardsWallet
 } from '../../../../../../utils/rewards_utils'
-import { externalWalletProviderFromString } from '../../../../../../../brave_rewards/resources/shared/lib/external_wallet'
+import {
+  externalWalletProviderFromString //
+} from '../../../../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Options
 import { PortfolioAssetOptions } from '../../../../../../options/nav-options'
@@ -42,21 +46,29 @@ import {
   PortfolioTransactionItem //
 } from '../../../../portfolio_transaction_item/portfolio_transaction_item'
 import { PortfolioAccountItem } from '../../../../portfolio-account-item/index'
-import { SegmentedControl } from '../../../../../shared/segmented-control/segmented-control'
-import { SellAssetModal } from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
+import {
+  SegmentedControl //
+} from '../../../../../shared/segmented-control/segmented-control'
+import {
+  SellAssetModal //
+} from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
 
 // Hooks
 import {
   useUnsafeWalletSelector,
   useSafeWalletSelector
 } from '../../../../../../common/hooks/use-safe-selector'
-import { useMultiChainSellAssets } from '../../../../../../common/hooks/use-multi-chain-sell-assets'
+import {
+  useMultiChainSellAssets //
+} from '../../../../../../common/hooks/use-multi-chain-sell-assets'
 import {
   useGetNetworkQuery,
   useGetRewardsBalanceQuery,
   useGetSelectedChainQuery
 } from '../../../../../../common/slices/api.slice'
-import { TokenBalancesRegistry } from '../../../../../../common/slices/entities/token-balance.entity'
+import {
+  TokenBalancesRegistry //
+} from '../../../../../../common/slices/entities/token-balance.entity'
 
 // Styled Components
 import {

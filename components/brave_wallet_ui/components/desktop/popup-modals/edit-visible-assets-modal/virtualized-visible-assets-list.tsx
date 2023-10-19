@@ -53,7 +53,13 @@ const getListItemKey = (
   tokenList: BraveWallet.BlockchainToken[]
 ) => {
   const token = tokenList[index]
-  return `${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`
+  return `${
+    token.contractAddress //
+  }-${
+    token.symbol //
+  }-${
+    token.chainId //
+  }-${token.tokenId}`
 }
 
 const checkIsLastIndex = (
@@ -144,7 +150,8 @@ export const VirtualizedVisibleAssetsList = (
   )
 
   const setSize = React.useCallback((index: number, size: number) => {
-    // Performance: Only update the sizeMap and reset cache if an actual value changed
+    // Performance: Only update the sizeMap and reset cache if an actual value
+    // changed
     if (itemSizes.current[index] !== size && size > -1) {
       itemSizes.current[index] = size
       if (listRef.current) {

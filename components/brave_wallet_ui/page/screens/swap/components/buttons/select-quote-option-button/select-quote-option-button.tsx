@@ -7,11 +7,15 @@ import * as React from 'react'
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
-import { getTokenPriceAmountFromRegistry } from '../../../../../../utils/pricing-utils'
+import {
+  getTokenPriceAmountFromRegistry //
+} from '../../../../../../utils/pricing-utils'
 
 // Selectors
 import { WalletSelectors } from '../../../../../../common/selectors'
-import { useSafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import {
+  useSafeWalletSelector //
+} from '../../../../../../common/hooks/use-safe-selector'
 
 // Types
 import { QuoteOption } from '../../../constants/types'

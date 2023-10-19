@@ -14,14 +14,20 @@ import { WalletActions } from '../../../common/actions'
 import { BraveWallet } from '../../../constants/types'
 
 // Hooks
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector //
+} from '../../../common/hooks/use-safe-selector'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { useSetSelectedAccountMutation } from '../../../common/slices/api.slice'
-import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useSetSelectedAccountMutation //
+} from '../../../common/slices/api.slice'
+import {
+  useSelectedAccountQuery //
+} from '../../../common/slices/api.slice.extra'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Hooks

@@ -228,7 +228,8 @@ export function SwapInputComponent(props: Props) {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (onCustomSlippageToleranceChange) {
-      // This will only formate to only allow Numbers and remove multiple . decimals
+      // This will only formate to only allow Numbers
+      // and remove multiple . decimals
       const value = event.target.value
         .replace(/[^0-9.]/g, '')
         .replace(/(\..*?)\..*/g, '$1')
@@ -237,7 +238,8 @@ export function SwapInputComponent(props: Props) {
         onCustomSlippageToleranceChange('100')
         return
       }
-      // Prevents double 00 before decimal place and formats to 0. if value starts with .
+      // Prevents double 00 before decimal place
+      // and formats to 0. if value starts with .
       if (value === '00' || value === '.') {
         onCustomSlippageToleranceChange('0.')
         return
@@ -250,9 +252,12 @@ export function SwapInputComponent(props: Props) {
     setSpin(0)
   }
 
+  /**
+   * Ramp assets have the format: ChainNativeTokenSymbol_AssetSymbol e.g
+   * MATIC_BSC
+   * @returns just the AssetSymbol
+   */
   const getAssetSymbol = (symbol?: string) => {
-    // Ramp assets have the format: ChainNativeTokenSymbol_AssetSymbol e.g MATIC_BSC
-    // This returns just the AssetSymbol
     return symbol && symbol.includes('_') ? symbol.split('_')[1] : symbol
   }
 
@@ -314,8 +319,14 @@ export function SwapInputComponent(props: Props) {
 
               {/* Limit orders on Swap are currently disabled.
               componentType === 'exchange' &&
-                <MarketLimitButton onClick={onToggleOrderType}>{orderType === 'market' ? locale.swapLimit : locale.swapMarket}</MarketLimitButton>
-            */}
+                <MarketLimitButton
+                  onClick={onToggleOrderType}
+                >
+                  {orderType === 'market'
+                    ? locale.swapLimit
+                    : locale.swapMarket
+                  }
+                </MarketLimitButton> */}
 
               {componentType !== 'exchange' &&
                 componentType !== 'toAddress' &&

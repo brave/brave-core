@@ -1210,8 +1210,9 @@ export type SafeSplApprovalEvent = SafeSolanaStateChange<'splApprovalData'>
 export type SafeSolanaStakeChangeEvent =
   SafeSolanaStateChange<'solStakeAuthorityChangeData'>
 
+/** TODO: not implemented in core */
 export type SafeSolanaAccountOwnerChangeEvent =
-  SafeSolanaStateChange<'solStakeAuthorityChangeData'> // TODO: not implemented in core
+  SafeSolanaStateChange<'solStakeAuthorityChangeData'>
 
 export type SafeSolTransferEvent = SafeSolanaStateChange<'solTransferData'>
 

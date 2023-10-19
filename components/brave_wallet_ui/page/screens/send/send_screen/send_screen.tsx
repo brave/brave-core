@@ -56,7 +56,9 @@ import {
 } from '../../../../common/slices/entities/blockchain-token.entity'
 
 // Hooks
-import { useScopedBalanceUpdater } from '../../../../common/hooks/use-scoped-balance-updater'
+import {
+  useScopedBalanceUpdater //
+} from '../../../../common/hooks/use-scoped-balance-updater'
 import { useModal } from '../../../../common/hooks/useOnClickOutside'
 import {
   useGetDefaultFiatCurrencyQuery,

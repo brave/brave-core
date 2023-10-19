@@ -182,7 +182,8 @@ export const TransactionsListItem = ({
       return getLocale('braveWalletSwap')
     }
 
-    // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
+    // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom,
+    // ERC721SafeTransferFrom].includes(transaction.txType)
     let erc721ID =
       transaction.txType === ERC721TransferFrom ||
       transaction.txType === ERC721SafeTransferFrom
@@ -207,7 +208,8 @@ export const TransactionsListItem = ({
       return ''
     }
 
-    // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
+    // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom,
+    // ERC721SafeTransferFrom].includes(transaction.txType)
     // TODO(apaymyshev): need description for bitcoin transaction.
     let from = `${reduceAddress(transaction.fromAddress ?? '')} `
     let to = reduceAddress(transactionDetails.recipient)

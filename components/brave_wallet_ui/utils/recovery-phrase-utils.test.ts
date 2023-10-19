@@ -22,12 +22,9 @@ describe('cleanupRecoveryPhraseInput', () => {
   })
 
   it('prevents an extra space at the end of a 24 word phrase', () => {
-    expect(
-      cleanupRecoveryPhraseInput(
-        'word word word word word word word word word word word word word word word word word word word word word word word word '
-      )
-    ).toBe(
-      'word word word word word word word word word word word word word word word word word word word word word word word word'
+    const recoveryWordsWithSpace = Array(24).fill('word ').join('')
+    expect(cleanupRecoveryPhraseInput(recoveryWordsWithSpace)).toBe(
+      recoveryWordsWithSpace.trim()
     )
   })
 })

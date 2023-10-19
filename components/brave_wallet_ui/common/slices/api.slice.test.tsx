@@ -15,7 +15,9 @@ import {
   mockSolanaAccountInfo
 } from '../constants/mocks'
 import { createMockStore } from '../../utils/test-utils'
-import { createMockTransactionInfo } from '../../stories/mock-data/mock-transaction-info'
+import {
+  createMockTransactionInfo //
+} from '../../stories/mock-data/mock-transaction-info'
 import { BraveWallet } from '../../constants/types'
 import { mockAccounts } from '../../stories/mock-data/mock-wallet-accounts'
 import {

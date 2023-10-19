@@ -40,15 +40,15 @@ export type BlockchainTokenEntityAdaptorState = ReturnType<
   visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
 }
 
-export const blockchainTokenEntityAdaptorInitialState: BlockchainTokenEntityAdaptorState =
-  {
-    ...blockchainTokenEntityAdaptor.getInitialState(),
-    idsByChainId: {},
-    idsByCoinType: {},
-    visibleTokenIds: [],
-    visibleTokenIdsByChainId: {},
-    visibleTokenIdsByCoinType: {}
-  }
+export const blockchainTokenEntityAdaptorInitialState: //
+BlockchainTokenEntityAdaptorState = {
+  ...blockchainTokenEntityAdaptor.getInitialState(),
+  idsByChainId: {},
+  idsByCoinType: {},
+  visibleTokenIds: [],
+  visibleTokenIdsByChainId: {},
+  visibleTokenIdsByCoinType: {}
+}
 
 export const combineTokenRegistries = (
   tokensRegistry: BlockchainTokenEntityAdaptorState,

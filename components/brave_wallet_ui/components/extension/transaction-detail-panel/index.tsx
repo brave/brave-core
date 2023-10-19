@@ -364,7 +364,10 @@ export const TransactionDetailPanel = (props: Props) => {
             )}
         </StatusRow>
       </DetailRow>
-      {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
+      {/*
+        Will remove this conditional for solana
+        once https://github.com/brave/brave-browser/issues/22040 is implemented.
+      */}
       {!isSolanaTxn && (
         <DetailRow>
           <DetailTitle>

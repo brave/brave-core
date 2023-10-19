@@ -356,16 +356,15 @@ export const usePendingTransactions = () => {
     (allowance: string) => {
       if (transactionInfo?.id && transactionDetails) {
         dispatch(
-          walletApi.endpoints.updateUnapprovedTransactionSpendAllowance.initiate(
-            {
+          walletApi.endpoints.updateUnapprovedTransactionSpendAllowance //
+            .initiate({
               chainId: transactionInfo.chainId,
               txMetaId: transactionInfo.id,
               spenderAddress: transactionDetails.approvalTarget || '',
               allowance: new Amount(allowance)
                 .multiplyByDecimals(transactionDetails.decimals)
                 .toHex()
-            }
-          )
+            })
         )
       }
     },

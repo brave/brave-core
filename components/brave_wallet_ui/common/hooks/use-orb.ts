@@ -31,7 +31,8 @@ export const useAccountOrb = (
       return ''
     }
 
-    // Using hash of uniqueKey so similar unique keys don't produce similar colors.
+    // Using hash of uniqueKey so similar unique keys don't produce similar
+    // colors.
     const seed =
       accountInfo.address?.toLowerCase() ||
       crypto

@@ -20,7 +20,9 @@ import {
   getNormalizedExternalRewardsNetwork,
   getRewardsTokenDescription
 } from '../../../utils/rewards_utils'
-import { externalWalletProviderFromString } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import {
+  externalWalletProviderFromString //
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Hooks
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'

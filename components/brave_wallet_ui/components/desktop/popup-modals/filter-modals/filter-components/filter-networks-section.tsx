@@ -13,14 +13,22 @@ import {
 
 // Types
 import { SupportedTestNetworks } from '../../../../../constants/types'
-import { WalletStatus } from '../../../../../common/async/brave_rewards_api_proxy'
+import {
+  WalletStatus //
+} from '../../../../../common/async/brave_rewards_api_proxy'
 
 // Options
-import { SupportedTopLevelChainIds } from '../../../../../options/network-filter-options'
+import {
+  SupportedTopLevelChainIds //
+} from '../../../../../options/network-filter-options'
 
 // Utils
-import { networkEntityAdapter } from '../../../../../common/slices/entities/network.entity'
-import { getNormalizedExternalRewardsNetwork } from '../../../../../utils/rewards_utils'
+import {
+  networkEntityAdapter //
+} from '../../../../../common/slices/entities/network.entity'
+import {
+  getNormalizedExternalRewardsNetwork //
+} from '../../../../../utils/rewards_utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components

@@ -46,7 +46,8 @@ export const usePasswordAttempts = () => {
         if (newAttempts >= MAX_ATTEMPTS) {
           // lock wallet
           keyringService.lock()
-          dispatch(WalletActions.setPasswordAttempts(0)) // reset attempts now that the wallet is locked
+          // reset attempts now that the wallet is locked
+          dispatch(WalletActions.setPasswordAttempts(0))
           return false
         }
 

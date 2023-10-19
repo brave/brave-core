@@ -9,7 +9,9 @@ import * as React from 'react'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
-import { CreateNetworkIcon } from '../../../../../../components/shared/create-network-icon'
+import {
+  CreateNetworkIcon //
+} from '../../../../../../components/shared/create-network-icon'
 
 // Styled Components
 import { Button } from './network-list-button.style'

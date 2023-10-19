@@ -7,7 +7,9 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // Constants
-import { HIDE_SMALL_BALANCES_FIAT_THRESHOLD } from '../../../../../../common/constants/magics'
+import {
+  HIDE_SMALL_BALANCES_FIAT_THRESHOLD //
+} from '../../../../../../common/constants/magics'
 
 // Selectors
 import {
@@ -41,7 +43,9 @@ import {
 // Utils
 import Amount from '../../../../../../utils/amount'
 import { getLocale } from '../../../../../../../common/locale'
-import { networkEntityAdapter } from '../../../../../../common/slices/entities/network.entity'
+import {
+  networkEntityAdapter //
+} from '../../../../../../common/slices/entities/network.entity'
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
 import {
   emptyNetwork,
@@ -58,15 +62,21 @@ import {
 import SearchBar from '../../../../../shared/search-bar/index'
 import NetworkFilterSelector from '../../../../network-filter-selector/index'
 import { PortfolioAssetItemLoadingSkeleton } from '../../../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
-import { AssetGroupContainer } from '../../../../asset-group-container/asset-group-container'
-import { EmptyTokenListState } from '../empty-token-list-state/empty-token-list-state'
+import {
+  AssetGroupContainer //
+} from '../../../../asset-group-container/asset-group-container'
+import {
+  EmptyTokenListState //
+} from '../empty-token-list-state/empty-token-list-state'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetExternalRewardsWalletQuery
 } from '../../../../../../common/slices/api.slice'
-import { TokenBalancesRegistry } from '../../../../../../common/slices/entities/token-balance.entity'
+import {
+  TokenBalancesRegistry //
+} from '../../../../../../common/slices/entities/token-balance.entity'
 
 // Styled Components
 import {

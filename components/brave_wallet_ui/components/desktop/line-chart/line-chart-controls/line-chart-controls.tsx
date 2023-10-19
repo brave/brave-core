@@ -12,13 +12,17 @@ import { BraveWallet } from '../../../../constants/types'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 
 // Options
-import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
+import {
+  ChartTimelineOptions //
+} from '../../../../options/chart-timeline-options'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
 
 // Components
-import { LineChartControlsMenu } from '../../wallet-menus/line-chart-controls-menu'
+import {
+  LineChartControlsMenu //
+} from '../../wallet-menus/line-chart-controls-menu'
 
 // Styled Components
 import {

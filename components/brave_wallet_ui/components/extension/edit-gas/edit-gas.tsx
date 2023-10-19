@@ -156,7 +156,8 @@ export const EditGas = ({
     const value = event.target.value
     setMaxPriorityFeePerGas(value)
 
-    const maxPriorityFeePerGasWei = new Amount(value).multiplyByDecimals(9) // GWei-per-gas → Wei-per-gas conversion
+    // GWei-per-gas → Wei-per-gas conversion
+    const maxPriorityFeePerGasWei = new Amount(value).multiplyByDecimals(9)
 
     const computedMaxFeePerGasWei = new Amount(baseFeePerGas).plus(
       maxPriorityFeePerGasWei

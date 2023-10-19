@@ -20,7 +20,9 @@ import {
 } from '../../../constants/types'
 
 // Constants
-import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../common/constants/local-storage-keys'
 
 // actions
 import { WalletActions } from '../../../common/actions'

@@ -44,19 +44,29 @@ import { LockScreen } from '../components/desktop/lock-screen/index'
 import {
   WalletPageLayout //
 } from '../components/desktop/wallet-page-layout/index'
-import { WalletSubViewLayout } from '../components/desktop/wallet-sub-view-layout/index'
+import {
+  WalletSubViewLayout //
+} from '../components/desktop/wallet-sub-view-layout/index'
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
-import { BackupWalletRoutes } from './screens/backup-wallet/backup-wallet.routes'
+import {
+  BackupWalletRoutes //
+} from './screens/backup-wallet/backup-wallet.routes'
 import { FundWalletScreen } from './screens/fund-wallet/fund-wallet'
-import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboarding-success'
+import {
+  OnboardingSuccess //
+} from './screens/onboarding/onboarding-success/onboarding-success'
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send_screen/send_screen'
 import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
-import { WalletPageWrapper } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import { PageTitleHeader } from '../components/desktop/card-headers/page-title-header'
+import {
+  WalletPageWrapper //
+} from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import {
+  PageTitleHeader //
+} from '../components/desktop/card-headers/page-title-header'
 
 const initialSessionRoute = getInitialSessionRoute()
 

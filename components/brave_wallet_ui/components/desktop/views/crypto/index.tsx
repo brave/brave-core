@@ -48,8 +48,12 @@ import {
   useSafeUISelector
 } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors, UISelectors } from '../../../../common/selectors'
-import { WalletPageWrapper } from '../../wallet-page-wrapper/wallet-page-wrapper'
-import { PortfolioOverviewHeader } from '../../card-headers/portfolio-overview-header'
+import {
+  WalletPageWrapper //
+} from '../../wallet-page-wrapper/wallet-page-wrapper'
+import {
+  PortfolioOverviewHeader //
+} from '../../card-headers/portfolio-overview-header'
 import { PageTitleHeader } from '../../card-headers/page-title-header'
 
 export interface Props {

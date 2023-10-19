@@ -19,7 +19,9 @@ import { reduceNetworkDisplayName } from '../../../../../../utils/network-utils'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
-import { SelectTokenOrNetworkButton } from '../../buttons/select-token-or-network/select-token-or-network'
+import {
+  SelectTokenOrNetworkButton //
+} from '../../buttons/select-token-or-network/select-token-or-network'
 import { SearchInput } from '../../inputs/search-input/search-input'
 import { NetworkSelector } from '../network-selector/network-selector'
 

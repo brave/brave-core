@@ -202,7 +202,8 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
         mnemonic: phraseInput.trimEnd(),
         password,
         isLegacy: isImportingFromLegacySeed,
-        completeWalletSetup: false // postpone until wallet onboarding success screen
+        // postpone until wallet onboarding success screen
+        completeWalletSetup: false
       })
     )
   }, [

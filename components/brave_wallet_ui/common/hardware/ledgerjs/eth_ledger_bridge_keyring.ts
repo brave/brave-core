@@ -203,10 +203,12 @@ export default class EthereumLedgerBridgeKeyring
       | EthSignPersonalMessageResponsePayload
       | EthSignPersonalMessageResponsePayload
   ) => {
-    // Convert the recovery identifier to standard ECDSA if using bitcoin secp256k1 convention.
+    // Convert the recovery identifier to standard ECDSA if using bitcoin
+    // secp256k1 convention.
     let v = result.v < 27 ? result.v.toString(16) : (result.v - 27).toString(16)
 
-    // Pad v with a leading zero if value is under `16` (i.e., single character hex).
+    // Pad v with a leading zero if value is under `16` (i.e., single character
+    // hex).
     if (v.length < 2) {
       v = `0${v}`
     }

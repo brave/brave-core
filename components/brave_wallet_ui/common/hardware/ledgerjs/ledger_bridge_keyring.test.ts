@@ -29,7 +29,8 @@ export class MockLedgerTransport extends LedgerTrustedMessagingTransport {
   }
 
   addSendCommandResponse = (response: LedgerFrameResponse) => {
-    this.sendCommandResponses.unshift(response) // appends to the left of the list
+    // appends to the left of the list
+    this.sendCommandResponses.unshift(response)
   }
 
   sendCommand = <T>(
@@ -37,7 +38,8 @@ export class MockLedgerTransport extends LedgerTrustedMessagingTransport {
   ): Promise<T | LedgerBridgeErrorCodes> => {
     if (this.sendCommandResponses.length === 0) {
       throw new Error(
-        'No mock ledger transport responses remaining. More sendCommand calls were made than mocked responses added.'
+        'No mock ledger transport responses remaining.' +
+          'More sendCommand calls were made than mocked responses added.'
       )
     }
     const response = this.sendCommandResponses.pop()

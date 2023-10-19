@@ -12,7 +12,9 @@ import { BraveWallet } from '../../../../../../constants/types'
 import Amount from '../../../../../../utils/amount'
 
 // Components
-import withPlaceholderIcon from '../../../../../../components/shared/create-placeholder-icon'
+import {
+  withPlaceholderIcon //
+} from '../../../../../../components/shared/create-placeholder-icon'
 
 // Styled Components
 import { Button, NameAndSymbol } from './token-list-button.style'

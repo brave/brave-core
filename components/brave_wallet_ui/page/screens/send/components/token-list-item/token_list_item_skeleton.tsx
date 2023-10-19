@@ -12,7 +12,9 @@ import {
   VerticalSpace,
   HorizontalSpace
 } from '../../../../../components/shared/style'
-import { LoadingSkeleton } from '../../../../../components/shared/loading-skeleton/index'
+import {
+  LoadingSkeleton //
+} from '../../../../../components/shared/loading-skeleton/index'
 
 interface Props {
   isNFT: boolean

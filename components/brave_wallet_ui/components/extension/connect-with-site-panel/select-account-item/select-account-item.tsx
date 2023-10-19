@@ -7,11 +7,16 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import { BraveWallet, SupportedTestNetworks } from '../../../../constants/types'
+import {
+  BraveWallet,
+  SupportedTestNetworks //
+} from '../../../../constants/types'
 
 // Selectors
 import { WalletSelectors } from '../../../../common/selectors'
-import { useUnsafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector //
+} from '../../../../common/hooks/use-safe-selector'
 
 // Styled Components
 import {
@@ -28,7 +33,9 @@ import { LoadingSkeleton } from '../../../shared/loading-skeleton/index'
 import { Tooltip } from '../../../shared/tooltip/index'
 
 // Utils
-import { reduceAccountDisplayName } from '../../../../utils/reduce-account-name'
+import {
+  reduceAccountDisplayName //
+} from '../../../../utils/reduce-account-name'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -42,8 +49,12 @@ import {
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery
 } from '../../../../common/slices/api.slice'
-import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
-import { TokenBalancesRegistry } from '../../../../common/slices/entities/token-balance.entity'
+import {
+  querySubscriptionOptions60s //
+} from '../../../../common/slices/constants'
+import {
+  TokenBalancesRegistry //
+} from '../../../../common/slices/entities/token-balance.entity'
 
 // Hooks
 import { useAccountOrb } from '../../../../common/hooks/use-orb'

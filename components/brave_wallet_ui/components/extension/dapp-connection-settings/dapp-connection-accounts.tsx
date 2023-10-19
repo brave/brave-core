@@ -10,7 +10,9 @@ import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 
 // Selectors
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector //
+} from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Queries

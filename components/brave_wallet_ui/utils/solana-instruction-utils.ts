@@ -55,7 +55,8 @@ export const getSolanaTransactionInstructionParamsAndType = ({
       type: isSignersParam
         ? BraveWallet.SolanaInstructionParamType.kString
         : BraveWallet.SolanaInstructionParamType.kPublicKey,
-      // add a comma separated list of signers as a value if param name is "signers"
+      // add a comma separated list of signers as a value if param name is
+      // "signers"
       value: isSignersParam
         ? accountMetas.slice(i).join(',')
         : accountMetas[i]?.pubkey

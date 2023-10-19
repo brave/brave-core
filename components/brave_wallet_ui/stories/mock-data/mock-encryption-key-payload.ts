@@ -7,12 +7,12 @@ import { BraveWallet } from '../../constants/types'
 import { mockOriginInfo } from './mock-origin-info'
 import { mockEthAccount } from './mock-wallet-accounts'
 
-export const mockEncryptionKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest =
-  {
-    requestId: 'random_id',
-    accountId: mockEthAccount.accountId,
-    originInfo: mockOriginInfo
-  }
+export const mockEncryptionKeyRequest: //
+BraveWallet.GetEncryptionPublicKeyRequest = {
+  requestId: 'random_id',
+  accountId: mockEthAccount.accountId,
+  originInfo: mockOriginInfo
+}
 
 export const mockDecryptRequest: BraveWallet.DecryptRequest = {
   requestId: 'random_id',

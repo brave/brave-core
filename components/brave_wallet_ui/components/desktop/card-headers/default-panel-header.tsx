@@ -10,7 +10,9 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Components
 import { DefaultPanelMenu } from '../wallet-menus/default-panel-menu'
-import { DAppConnectionSettings } from '../../extension/dapp-connection-settings/dapp-connection-settings'
+import {
+  DAppConnectionSettings //
+} from '../../extension/dapp-connection-settings/dapp-connection-settings'
 
 // Styled Components
 import {

@@ -30,7 +30,9 @@ import {
   getTransactionTransferredValue,
   getIsTxApprovalUnlimited
 } from '../../../utils/tx-utils'
-import { accountInfoEntityAdaptorInitialState } from '../../../common/slices/entities/account-info.entity'
+import {
+  accountInfoEntityAdaptorInitialState //
+} from '../../../common/slices/entities/account-info.entity'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getAddressLabel, getAccountLabel } from '../../../utils/account-utils'
@@ -54,7 +56,9 @@ import {
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 import { withPlaceholderIcon } from '../../shared/create-placeholder-icon'
-import { TransactionDetailsModal } from '../popup-modals/transaction_details_modal/transaction_details_modal'
+import {
+  TransactionDetailsModal //
+} from '../popup-modals/transaction_details_modal/transaction_details_modal'
 import { CreateNetworkIcon } from '../../shared/create-network-icon'
 
 // Styled Components

@@ -6,7 +6,9 @@
 import * as React from 'react'
 
 import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
-import { TokenBalancesRegistry } from '../../../../common/slices/entities/token-balance.entity'
+import {
+  TokenBalancesRegistry //
+} from '../../../../common/slices/entities/token-balance.entity'
 
 // types
 import { BraveWallet } from '../../../../constants/types'

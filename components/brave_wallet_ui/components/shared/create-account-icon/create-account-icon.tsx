@@ -9,7 +9,9 @@ import { getRewardsProviderIcon } from '../../../utils/rewards_utils'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
-import { ExternalWalletProvider } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import {
+  ExternalWalletProvider //
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // styles
 import {

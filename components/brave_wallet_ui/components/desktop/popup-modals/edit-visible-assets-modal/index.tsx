@@ -29,7 +29,9 @@ import {
 } from '../../popup-modals/index'
 import { VirtualizedVisibleAssetsList } from './virtualized-visible-assets-list'
 import { AddAsset } from '../../add-asset/add-asset'
-import { SegmentedControl } from '../../../shared/segmented-control/segmented-control'
+import {
+  SegmentedControl //
+} from '../../../shared/segmented-control/segmented-control'
 import { SearchBar } from '../../../shared/search-bar'
 import { NetworkFilterSelector } from '../../network-filter-selector'
 
@@ -63,8 +65,12 @@ import {
   useGetSelectedChainQuery,
   useGetTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
-import { getEntitiesListFromEntityState } from '../../../../utils/entities.utils'
-import { blockchainTokenEntityAdaptorInitialState } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  getEntitiesListFromEntityState //
+} from '../../../../utils/entities.utils'
+import {
+  blockchainTokenEntityAdaptorInitialState //
+} from '../../../../common/slices/entities/blockchain-token.entity'
 
 export interface Props {
   onClose: () => void
@@ -107,9 +113,9 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     React.useState<boolean>(false)
 
   // If a user removes all of their assets from the userVisibleTokenInfo list,
-  // there is a check in the async/lib.ts folder that will still return the networks
-  // native asset (example 'ETH') with the value of visible: false to prevent breaking
-  // other parts of the wallet.
+  // there is a check in the async/lib.ts folder that will still return the
+  // networks native asset (example 'ETH') with the value of visible: false to
+  // prevent breaking other parts of the wallet.
 
   // This method here is used to determine if that is the case
   // and allows us to handle our true visible lists.

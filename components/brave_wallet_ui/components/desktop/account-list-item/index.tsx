@@ -37,7 +37,9 @@ import {
 } from '../../../common/hooks/use-safe-selector'
 
 // Queries
-import { TokenBalancesRegistry } from '../../../common/slices/entities/token-balance.entity'
+import {
+  TokenBalancesRegistry //
+} from '../../../common/slices/entities/token-balance.entity'
 import {
   useGetExternalRewardsWalletQuery,
   useGetRewardsBalanceQuery
@@ -57,9 +59,13 @@ import { AccountButtonOptions } from '../../../options/account-list-button-optio
 
 // components
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
-import { AccountActionsMenu } from '../wallet-menus/account-actions-menu'
+import {
+  AccountActionsMenu //
+} from '../wallet-menus/account-actions-menu'
 import { RewardsMenu } from '../wallet-menus/rewards_menu'
-import { CreateAccountIcon } from '../../shared/create-account-icon/create-account-icon'
+import {
+  CreateAccountIcon //
+} from '../../shared/create-account-icon/create-account-icon'
 import { TokenIconsStack } from '../../shared/icon-stacks/token-icons-stack'
 import LoadingSkeleton from '../../shared/loading-skeleton'
 import { RewardsLogin } from '../rewards_login/rewards_login'

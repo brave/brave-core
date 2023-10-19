@@ -22,7 +22,9 @@ import {
   selectAllUserAssetsFromQueryResult,
   selectAllBlockchainTokensFromQueryResult
 } from '../../../common/slices/entities/blockchain-token.entity'
-import { networkEntityAdapter } from '../../../common/slices/entities/network.entity'
+import {
+  networkEntityAdapter //
+} from '../../../common/slices/entities/network.entity'
 import {
   filterTransactionsBySearchValue,
   makeSearchableTransaction
@@ -43,8 +45,12 @@ import { UISelectors } from '../../../common/selectors'
 import {
   PortfolioTransactionItem //
 } from '../../../components/desktop/portfolio_transaction_item/portfolio_transaction_item'
-import { WalletPageWrapper } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
-import { ActivityPageHeader } from '../../../components/desktop/card-headers/activity_page_header'
+import {
+  WalletPageWrapper //
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import {
+  ActivityPageHeader //
+} from '../../../components/desktop/card-headers/activity_page_header'
 import { SearchBar } from '../../../components/shared/search-bar'
 
 // styles

@@ -10,11 +10,17 @@ import Checkbox from '@brave/leo/react/checkbox'
 import { getAccountTypeDescription } from '../../../../../utils/account-utils'
 import { getLocale } from '../../../../../../common/locale'
 
-import { useGetAccountInfosRegistryQuery } from '../../../../../common/slices/api.slice'
-import { selectAllAccountInfosFromQuery } from '../../../../../common/slices/entities/account-info.entity'
+import {
+  useGetAccountInfosRegistryQuery //
+} from '../../../../../common/slices/api.slice'
+import {
+  selectAllAccountInfosFromQuery //
+} from '../../../../../common/slices/entities/account-info.entity'
 
 // Components
-import { CreateAccountIcon } from '../../../../shared/create-account-icon/create-account-icon'
+import {
+  CreateAccountIcon //
+} from '../../../../shared/create-account-icon/create-account-icon'
 
 // Styled Components
 import {

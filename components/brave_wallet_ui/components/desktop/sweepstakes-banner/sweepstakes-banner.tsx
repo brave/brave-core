@@ -28,7 +28,8 @@ interface Props {
 }
 
 /**
- * Key for localStorage object that records if the user has closed the sweepstakes banner.
+ * Key for localStorage object that records if the user has closed the
+ * sweepstakes banner.
  */
 const STORAGE_KEY_SWAP_SWEEPSTAKES_CLOSED =
   'BRAVE_WALLET_SWAP_SWEEPSTAKES_BANNER_IS_CLOSED'

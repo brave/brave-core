@@ -12,7 +12,9 @@ import { getLocale } from '../../../../common/locale'
 import { HeaderTitle, HeaderWrapper, ActionIcon, ExpandIcon } from './style'
 
 // components
-import { WalletSettingsMenu } from '../../desktop/wallet-menus/wallet-settings-menu'
+import {
+  WalletSettingsMenu //
+} from '../../desktop/wallet-menus/wallet-settings-menu'
 
 export interface Props {
   onExpand: () => void

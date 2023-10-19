@@ -36,7 +36,8 @@ export type CacheList<T, ID> = Array<
 >
 
 /**
- * Inner function returned by `providesList` to be passed to the `provides` property of a query
+ * Inner function returned by `providesList` to be passed to the `provides`
+ * property of a query
  */
 type InnerProvidesList<T> = <
   Results extends Array<{ id?: unknown }>,
@@ -47,7 +48,8 @@ type InnerProvidesList<T> = <
 ) => CacheList<T, Results[number]['id']>
 
 /**
- * Inner function returned by `providesRegistry` to be passed to the `provides` property of a query
+ * Inner function returned by `providesRegistry` to be passed to the `provides`
+ * property of a query
  */
 type InnerProvidesRegistry<T> = <
   Results extends EntityState<{}>,
@@ -146,7 +148,8 @@ export const invalidatesList =
     [{ type, id: 'LIST' }] as const
 
 /**
- * HOF to create an entity cache for a single item using the query argument as the ID.
+ * HOF to create an entity cache for a single item using the query argument as
+ * the ID.
  *
  * @example
  * ```ts
@@ -165,7 +168,8 @@ export const cacheByIdArg =
     [{ type, id }] as const
 
 /**
- * HOF to create an entity cache for a single item using the id property from the query argument as the ID.
+ * HOF to create an entity cache for a single item using the id property from
+ * the query argument as the ID.
  *
  * @example
  * ```ts
@@ -209,7 +213,8 @@ export const cacheByBlockchainTokenArg =
   }
 
 /**
- * HOF to create an entity cache for a single item using the id property from the query result as the ID.
+ * HOF to create an entity cache for a single item using the id property from
+ * the query result as the ID.
  *
  * @example
  * ```ts

@@ -43,22 +43,34 @@ import {
   useGetUserTokensRegistryQuery,
   useGetAccountInfosRegistryQuery
 } from '../../../../../common/slices/api.slice'
-import { querySubscriptionOptions60s } from '../../../../../common/slices/constants'
+import {
+  querySubscriptionOptions60s //
+} from '../../../../../common/slices/constants'
 
 // hooks
-import { useBalancesFetcher } from '../../../../../common/hooks/use-balances-fetcher'
+import {
+  useBalancesFetcher //
+} from '../../../../../common/hooks/use-balances-fetcher'
 
 // Options
-import { AllNetworksOption } from '../../../../../options/network-filter-options'
+import {
+  AllNetworksOption //
+} from '../../../../../options/network-filter-options'
 
 // Assets
 import CloseIcon from '../../../../../assets/svg-icons/close.svg'
 
 // Components
 import { TokenListItem } from '../token-list-item/token-list-item'
-import { TokenListItemSkeleton } from '../token-list-item/token_list_item_skeleton'
-import { LoadingSkeleton } from '../../../../../components/shared/loading-skeleton/index'
-import { NetworkFilterWithSearch } from '../../../../../components/desktop/network-filter-with-search'
+import {
+  TokenListItemSkeleton //
+} from '../token-list-item/token_list_item_skeleton'
+import {
+  LoadingSkeleton //
+} from '../../../../../components/shared/loading-skeleton/index'
+import {
+  NetworkFilterWithSearch //
+} from '../../../../../components/desktop/network-filter-with-search'
 
 // Styled Components
 import {

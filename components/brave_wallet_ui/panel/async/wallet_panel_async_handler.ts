@@ -225,7 +225,8 @@ handler.on(
   PanelActions.cancelConnectHardwareWallet.type,
   async (store: Store, payload: BraveWallet.AccountInfo) => {
     if (payload.hardware) {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+      // eslint-disable-next-line max-len
+      // eslint-disable @typescript-eslint/no-unnecessary-type-assertion
       await cancelHardwareOperation(
         payload.hardware.vendor as HardwareVendor,
         payload.accountId.coin
@@ -450,8 +451,9 @@ handler.on(
     assert(info)
 
     const signed = await signMessageWithHardwareKeyring(
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+      // eslint-disable @typescript-eslint/no-unnecessary-type-assertion
       info.vendor as HardwareVendor,
+      // eslint-enable @typescript-eslint/no-unnecessary-type-assertion
       info.path,
       messageData.request
     )

@@ -257,7 +257,8 @@ function AssetSelection() {
     }, [combinedTokensList])
 
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    // separate BAT from other tokens in the list so they can be placed higher in the list
+    // separate BAT from other tokens in the list so they can be placed higher
+    // in the list
     const { bat, nonBat } = getBatTokensFromList(combinedTokensList)
     return [
       ...mainnetNetworkAssetsList,

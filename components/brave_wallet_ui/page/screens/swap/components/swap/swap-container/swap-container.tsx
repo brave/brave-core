@@ -8,7 +8,10 @@ import * as React from 'react'
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 
-import { useGetSelectedChainQuery } from '../../../../../../common/slices/api.slice'
+// Queries
+import {
+  useGetSelectedChainQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // Components
 import { Header } from '../header/header'

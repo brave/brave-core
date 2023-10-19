@@ -11,7 +11,9 @@ import { getLocale } from '../../../../../../../common/locale'
 // Types
 import { GasFeeOption, GasEstimate } from '../../../../../../constants/types'
 
-import { useGetSelectedChainQuery } from '../../../../../../common/slices/api.slice'
+import {
+  useGetSelectedChainQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // Styled Components
 import { Button, ButtonIcon, IconWrapper } from './settings.style'

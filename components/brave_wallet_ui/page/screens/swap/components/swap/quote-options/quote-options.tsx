@@ -10,7 +10,9 @@ import { QuoteOption } from '../../../constants/types'
 import { SpotPriceRegistry } from '../../../../../../constants/types'
 
 // Components
-import { SelectQuoteOptionButton } from '../../buttons/select-quote-option-button/select-quote-option-button'
+import {
+  SelectQuoteOptionButton //
+} from '../../buttons/select-quote-option-button/select-quote-option-button'
 
 // Styled Components
 import { MoreOptionsButton } from './quote-options.style'

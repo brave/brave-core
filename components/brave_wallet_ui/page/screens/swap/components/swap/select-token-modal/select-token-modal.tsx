@@ -10,15 +10,21 @@ import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
 
 // Queries
-import { useGetSelectedChainQuery } from '../../../../../../common/slices/api.slice'
+import {
+  useGetSelectedChainQuery //
+} from '../../../../../../common/slices/api.slice'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
-import { SearchWithNetworkSelector } from '../search-with-network-selector/search-with-network-selector'
+import {
+  SearchWithNetworkSelector //
+} from '../search-with-network-selector/search-with-network-selector'
 import { StandardModal } from '../../modals/standard-modal/standard-modal'
-import { VirtualizedTokenList } from '../virtualized-swap-token-list/virtualized-swap-tokens-list'
+import {
+  VirtualizedTokenList //
+} from '../virtualized-swap-token-list/virtualized-swap-tokens-list'
 
 // Styled Components
 import { Button, ScrollContainer } from './select-token-modal.style'

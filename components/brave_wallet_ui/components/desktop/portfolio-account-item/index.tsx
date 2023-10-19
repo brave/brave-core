@@ -24,7 +24,9 @@ import { getPriceIdForToken } from '../../../utils/api-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 import { getIsRewardsAccount } from '../../../utils/rewards_utils'
-import { externalWalletProviderFromString } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import {
+  externalWalletProviderFromString //
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 import { getLocale } from '../../../../common/locale'
 
 // Components
@@ -34,7 +36,9 @@ import { PortfolioAccountMenu } from '../wallet-menus/portfolio-account-menu'
 import { RewardsMenu } from '../wallet-menus/rewards_menu'
 
 // Styled Components
-import { CreateAccountIcon } from '../../shared/create-account-icon/create-account-icon'
+import {
+  CreateAccountIcon //
+} from '../../shared/create-account-icon/create-account-icon'
 
 // Queries
 import {

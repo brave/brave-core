@@ -16,8 +16,10 @@ import {
 } from './sol-ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 
-// SolanaLedgerUntrustedMessagingTransport makes calls to the Solana app on a Ledger device
-export class SolanaLedgerUntrustedMessagingTransport extends LedgerUntrustedMessagingTransport {
+/** makes calls to the Solana app on a Ledger device */
+export class SolanaLedgerUntrustedMessagingTransport //
+  extends LedgerUntrustedMessagingTransport
+{
   constructor(targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
     this.addCommandHandler<UnlockResponse>(

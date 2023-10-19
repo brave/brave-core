@@ -66,7 +66,8 @@ export const BitcoinTransactionInfo = ({
     .split('.')
 
   /**
-   * Inserts a <wbr /> tag between the integer and decimal portions of the value for wrapping
+   * Inserts a <wbr /> tag between the integer and decimal portions of the value
+   * for wrapping
    * This will need updating if we ever switch to using per-locale formatting
    */
   const transactionValueText = (

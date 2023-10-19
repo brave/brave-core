@@ -19,8 +19,12 @@ import { SignPanel } from '../components/extension/sign-panel/index'
 import {
   AllowAddChangeNetworkPanel //
 } from '../components/extension/allow-add-change-network-panel/index'
-import { ConfirmTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
-import { ConnectHardwareWalletPanel } from '../components/extension/connect-hardware-wallet-panel/index'
+import {
+  ConfirmTransactionPanel //
+} from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
+import {
+  ConnectHardwareWalletPanel //
+} from '../components/extension/connect-hardware-wallet-panel/index'
 import {
   SitePermissions //
 } from '../components/extension/site-permissions-panel/index'
@@ -99,9 +103,13 @@ import {
   useAccountsQuery,
   useSelectedAccountQuery
 } from '../common/slices/api.slice.extra'
-import { usePendingTransactions } from '../common/hooks/use-pending-transaction'
+import {
+  usePendingTransactions //
+} from '../common/hooks/use-pending-transaction'
 import PageContainer from '../page/container'
-import { SignInWithEthereumError } from '../components/extension/sign-panel/sign_in_with_ethereum_error'
+import {
+  SignInWithEthereumError //
+} from '../components/extension/sign-panel/sign_in_with_ethereum_error'
 
 // Allow BigInts to be stringified
 ;(BigInt.prototype as any).toJSON = function () {

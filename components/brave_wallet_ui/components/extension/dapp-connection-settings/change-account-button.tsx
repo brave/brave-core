@@ -18,15 +18,21 @@ import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 
 // Components
-import { CreateAccountIcon } from '../../shared/create-account-icon/create-account-icon'
+import {
+  CreateAccountIcon //
+} from '../../shared/create-account-icon/create-account-icon'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Selectors
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import {
+  useUnsafeWalletSelector //
+} from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Queries
-import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useSelectedAccountQuery //
+} from '../../../common/slices/api.slice.extra'
 import {
   useGetDefaultFiatCurrencyQuery,
   useSetSelectedAccountMutation
@@ -41,7 +47,12 @@ import {
   DescriptionText,
   NameText
 } from './dapp-connection-settings.style'
-import { Row, Column, VerticalSpace, HorizontalSpace } from '../../shared/style'
+import {
+  Row,
+  Column,
+  VerticalSpace,
+  HorizontalSpace //
+} from '../../shared/style'
 
 interface Props {
   account: BraveWallet.AccountInfo

@@ -79,8 +79,9 @@ export const StyledBox = styled('span')`
   color: var(--checkbox-box-color);
   margin: 8px;
   :after {
-    /* Border provided by :after element so that transition of size is smooth without
-      svg-resizing 'jumping' effect from resizing padding + border space at the same time */
+    /* Border provided by :after element so that transition of size is smooth
+    without svg-resizing 'jumping' effect from resizing padding + border space
+    at the same time */
     transition: border 0.1s ease-in-out;
     position: absolute;
     top: 0;

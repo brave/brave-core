@@ -425,7 +425,8 @@ function AssetSelection({ isAndroid }: Props) {
                 makeFundWalletRoute(
                   selectedCurrency,
                   buyAmount,
-                  // save latest search-box value (if it matches selection name or symbol)
+                  // save latest search-box value (if it matches selection name
+                  // or symbol)
                   searchValue &&
                     (selectedAsset?.name
                       .toLowerCase()
