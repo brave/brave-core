@@ -11,6 +11,7 @@ const os = require('os')
 const assert = require('assert')
 const { spawnSync } = require('child_process')
 const dotenv = require('dotenv')
+const Log = require('./logging')
 
 let npmCommand = 'npm'
 if (process.platform === 'win32') {
@@ -221,7 +222,8 @@ const Config = function () {
   this.braveVariationsServerUrl = getNPMConfig(['brave_variations_server_url']) || ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.use_goma = getNPMConfig(['brave_use_goma']) || false
-  this.goma_offline = false
+  this.useRemoteExec = getNPMConfig(['use_remoteexec']) || false
+  this.offline = getNPMConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
   this.enable_dangling_raw_ptr_checks = false
@@ -816,8 +818,17 @@ Config.prototype.update = function (options) {
     this.use_goma = options.use_goma
   }
 
-  if (options.goma_offline) {
-    this.goma_offline = true
+  if (options.use_remoteexec !== undefined) {
+    this.useRemoteExec = options.use_remoteexec
+  }
+
+  if (options.offline || options.goma_offline) {
+    if (options.goma_offline) {
+      Log.warn(
+        '--goma_offline is deprecated and will be removed, please use --offline'
+      )
+    }
+    this.offline = true
   }
 
   if (options.force_gn_gen) {
@@ -1108,7 +1119,7 @@ Config.prototype.update = function (options) {
     })
   }
 
-  if (this.goma_offline || !this.use_goma) {
+  if (this.offline || (!this.use_goma && !this.useRemoteExec)) {
     // Pass '--offline' also when '--use_goma' is not set to disable goma detect in
     // autoninja when doing local builds.
     this.extraNinjaOpts.push('--offline')
@@ -1185,7 +1196,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
     }
 
-    if (!this.use_goma && this.sccache) {
+    if ((!this.use_goma && !this.useRemoteExec) && this.sccache) {
       env.CC_WRAPPER = this.sccache
       console.log('using cc wrapper ' + path.basename(this.sccache))
       if (path.basename(this.sccache) === 'ccache') {
