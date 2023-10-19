@@ -27,6 +27,7 @@
 <translation id="4988333904713528597">הרשו תמיד הפעלה אוטומטית ל-<ph name="HOST"/></translation>
 <translation id="4150684676757176434">המשיכו לחסום הפעלה אוטומטית</translation>
 <translation id="3477357195688115718">Brave אינו בודק את האבטחה והבטיחות של הרחבות. התקן/י הרחבה זו רק אם יש לך אמון במפתח.</translation>
+<translation id="2928844661231356557">הענקת גישה למכשיר Bluetooth תאפשר לאתר לקרוא מידע מזהה עליכם שעלול גם להיות מידע רגיש. רצוי לאפשר גישה למכשירי Bluetooth, רק לאתרים שסומכים עליהם.<ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">חלונות Tor</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
 <translation id="6924909138923993900">חיבור Tor חדש לאתר זה</translation>
@@ -205,11 +206,14 @@
 <translation id="5268098808165185458">מעתיק טקסט מתוך תמונה...</translation>
 <translation id="4046485130884276245">הועתק טקסט מתוך תמונה</translation>
 <translation id="3639779775496569782">העתקת הטקסט נכשלה</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2506438154311626334">השתמש בפרוטוקול WireGuard ב-Brave VPN</translation>
+<translation id="8519170191215826548">לא ניתן לשנות הגדרה זו בזמן ש-Brave VPN מחובר</translation>
+<translation id="5620961847363372221">יש צורך לאתחל את הסייר</translation>
 <translation id="4235920711083356755">הצג את לחצן VPN</translation>
 <translation id="4070612712151038707">מציג את לחצן VPN בסרגל הכלים</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">הפעלה/השבתה של VPN</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">אודות Brave VPN</translation>
 <translation id="4378551569595875038">מתחבר...</translation>
 <translation id="3368922792935385530">מחובר</translation>
@@ -218,13 +222,11 @@
 <translation id="1863950594388384201">הצג את לחצן VPN בסרגל הכלים</translation>
 <translation id="5187139277471084437">הסתר את לחצן VPN בסרגל הכלים</translation>
 <translation id="1177917174080821247">הצג את סמל מגש VPN</translation>
-<translation id="7645031001744446123">הסתר סמל מגש VPN</translation>
 <translation id="8041089156583427627">שליחת משוב</translation>
 <translation id="4049186905514157504">ניהול התוכנית שלי</translation>
 <translation id="7570585565843385325">הצג את לחצן VPN בסרגל הכלים</translation>
 <translation id="5310426188697803101">הסתר את לחצן VPN בסרגל הכלים</translation>
 <translation id="639450633459241724">הצג את סמל מגש VPN</translation>
-<translation id="7430264749441182065">הסתר סמל מגש VPN</translation>
 <translation id="945522503751344254">שליחת משוב</translation>
 <translation id="3015685033234401792">ניהול התוכנית שלי</translation>
 <translation id="4989337484121655457">דרושה גישה מלאה לדיסק</translation>
@@ -273,6 +275,14 @@
 <translation id="8152485753254079984">רשימת השמעה חדשה</translation>
 <translation id="5397019762993984652">הוסף מתיקיית Play Later שלך</translation>
 <translation id="7525067979554623046">צור</translation>
+<translation id="9065203028668620118">ערוך</translation>
+<translation id="6527303717912515753">שיתוף</translation>
+<translation id="760410268786807021">השאר למשחק לא מקוון</translation>
+<translation id="705344722465356351">הסר תכנים שכבר הושמעו</translation>
+<translation id="1173894706177603556">שנה שם</translation>
+<translation id="7765158879357617694">העבר</translation>
+<translation id="6648536728577053364">הסר נתונים לא מקוונים</translation>
+<translation id="5181358966317519720">הסר מרשימת השמעה</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
@@ -312,6 +322,8 @@
 <translation id="2025435450953474282">מאמרים נטענים באופן אוטומטי במצב קריאה, כדי לחסוך לך זמן</translation>
 <translation id="2422927186524098759">סרגל צידי</translation>
 <translation id="832432428796481785">הצג כפתור הסרגל הצידי</translation>
+<translation id="5581036754486769849">אפשר מילוי אוטומטי בחלונות אנונימיים</translation>
+<translation id="2262012219398520969">ניתן לקרוא/למלא אוטומטית מידע מחלונות רגילים, בחלונות פרטיים</translation>
 <translation id="7781069478569868053">דף כרטיסייה חדשה</translation>
 <translation id="1988804048511540801">דף לשונית חדשה מוצג</translation>
 <translation id="2970343821770026391">דשבורד</translation>

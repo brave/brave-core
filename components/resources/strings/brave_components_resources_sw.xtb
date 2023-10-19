@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">Rangi ambazo hazijachanganywa</translation>
 <translation id="7610541582755894669">Miteremko</translation>
 <translation id="1606851618930975029">Onyesha upya kwa kila kichupo kipya</translation>
+<translation id="7040134046053881468">Fungua kidirisha cha Zawadi</translation>
 <translation id="9024104284526126630">Unaweza kuanzisha simu ya faragha katika Brave.</translation>
 <translation id="370665806235115550">Inapakia...</translation>
 <translation id="4634933166298842522">Dhibiti Usajili</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">Jiondoe</translation>
 <translation id="1209739344687072997">Ripoti tovuti yenye hitilafu</translation>
 <translation id="8510478288840333677">Wafahamishe wasanidi programu wa Brave kuwa tovuti hii haifanyi kazi vizuri kwa Shields:</translation>
-<translation id="4105411033440701818">Kumbuka: Ukibofya "Wasilisha", utashiriki anwani ya tovuti, nambari ya toleo lako la Brave na anwani yako ya IP na wasanidi wa Brave. (Anwani ya IP haitahifadhiwa.)</translation>
+<translation id="8265244536487014968">Kumbuka: Ripoti zilizotumwa kwenye seva za Brave zitajumuisha anwani ya tovuti, nambari ya toleo la Brave, mipangilio ya Shield, hali ya VPN na mipangilio ya lugha. Anwani ya IP itasambazwa lakini haitahifadhiwa.</translation>
 <translation id="6476216365964140603">Maelezo ya ziada (kwa hiari)</translation>
 <translation id="6145852496180774737">Wasiliana nami kupitia kwa: (kwa hiari)</translation>
 <translation id="7616645803364270729">Barua pepe, Twitter, n.k.</translation>
@@ -597,7 +598,6 @@
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Ingia kwenye<ph name="PROVIDER"/><ph name="END_BOLD"/> ili uone salio lako</translation>
 <translation id="2659764755126740206">Nenda kwenye akaunti yangu ya <ph name="PROVIDER"/></translation>
 <translation id="2394961582378297792">Umeondoka</translation>
-<translation id="7091980679045978090">Mapato yanayokadiriwa</translation>
 <translation id="7934950257968365573">Ingia kwenye akaunti yako ya <ph name="PROVIDER"/></translation>
 <translation id="8631427463833030968">Dhibiti matangazo</translation>
 <translation id="590733288489975971">Zawadi kutoka kwenye Matangazo</translation>
@@ -689,6 +689,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Jifunze zaidi<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Usiwe na wasiwasi.</translation>
 <translation id="5027616819996705541">Bado unaweza kuvinjari kwa faragha!</translation>
+<translation id="1886682615222609631">Mapato kufikia sasa</translation>
 <translation id="86107454835395919">Weka mchango wa kila mwezi</translation>
 <translation id="6621880242105464352">Brave hukusanya <ph name="FEE_PCT"/> ya kiwango kilichotumwa kama ada ya muamala.</translation>
 <translation id="1420756770787071946">Mfadhili mtayarishi huyu</translation>
@@ -1040,6 +1041,10 @@
 <translation id="4305817255990598646">Badilisha</translation>
 <translation id="3423275441470187644">Trust</translation>
 <translation id="2391762656119864333">Kufuta</translation>
+<translation id="9218424917282368512">Badilisha mtandao</translation>
+<translation id="7526139040829362392">Badilisha akaunti</translation>
+<translation id="4217695020908122747">Akaunti zilizounganishwa</translation>
+<translation id="8497650996740651467">Akaunti zinazopatikana</translation>
 <translation id="5677928146339483299">Kumezuiwa</translation>
 <translation id="3890989020011724401">Akaunti mpya</translation>
 <translation id="7257603403519636638">Tazama rasilimali za akaunti</translation>
@@ -1220,6 +1225,7 @@
 <translation id="3648994606506382289">Njia rahisi, ya haraka na nafuu zaidi ya kununua crypto kwa uhamisho wa kadi na benki.</translation>
 <translation id="3101839349578102016">Ununuzi wa papo hapo kwa akaunti yako ya benki. Ada za chini.</translation>
 <translation id="8280898387224328221">Lipa kwa kadi ya mkopo, kadi ya malipo, akaunti ya benki</translation>
+<translation id="2218174283683424104">Nunua kwa jina linaloaminika zaidi katika crypto.</translation>
 <translation id="8528916244724490964">Mitandao Yote</translation>
 <translation id="7721139939763655123">Chini hadi Juu</translation>
 <translation id="5458608274117818139">Juu hadi Chini</translation>
@@ -1484,6 +1490,7 @@
 <translation id="8007404171238546456">Kiwango cha chini ulichopokea baada ya tofauti katika bei</translation>
 <translation id="767199001998615704">Ada ya mtandao</translation>
 <translation id="7057870207229052478">Ada ya Brave</translation>
+<translation id="81116374028657878">Ada ya itifaki</translation>
 <translation id="3624518972158401291">Bila malipo</translation>
 <translation id="5038255447967558645">Mtoa huduma ya kufilisika</translation>
 <translation id="8450638959928932199">Telezesha na utume</translation>
@@ -1511,7 +1518,6 @@
 <translation id="3143110700666266545">Programu hii hutumia API zifuatazo za mhusika mwingine:</translation>
 <translation id="163536108506359457">Brave Swap hutumia <ph name="AGGREGATOR"/> kama kijumuishaji cha DEX kwa mitandao <ph name="NETWORKS"/> inayotumika. <ph name="AGGREGATOR"/> itachakata <ph name="NETWORK"/> anwani ya pochi na anwani ya IP ili kutimiza muamala (ikiwa ni pamoja na kupata manukuu). <ph name="AGGREGATOR"/> itatumia TU data hii kwa madhumuni ya kuchakata miamala.</translation>
 <translation id="1847885264294023691">Bofya hapa kwa <ph name="AGGREGATOR"/> Sera ya Faragha.</translation>
-<translation id="9218424917282368512">Badilisha mtandao</translation>
 <translation id="644984757357042735">Mtandao unahitajika</translation>
 <translation id="132243864024778443">Jina la tokeni linahitajika</translation>
 <translation id="3617263699756744037">Anwani ya kandarasi ya tokeni si sahihi au ni tupu</translation>
@@ -1547,8 +1553,15 @@
 <translation id="9085765419770918643">Hakuna NFT hapa bado.</translation>
 <translation id="8445532667841598737">Je, uko tayari kuongeza baadhi? Bofya tu kitufe kilicho hapa chini ili kuhamisha.</translation>
 <translation id="9136462955850040542">Zinaweza Kuchukuana na NFT kwenye Solana (SPL) na Ethereum (ERC-721).</translation>
+<translation id="137671950541962857">Imekusanywa</translation>
 <translation id="8849001918648564819">Imefichwa</translation>
 <translation id="4905092798795191201">Fichua</translation>
+<translation id="6167809958646114660">Usionyeshe katika pochi</translation>
+<translation id="6948667383954749033">Tia alama kuwa si taka</translation>
+<translation id="5810047320613496595">Taka</translation>
+<translation id="7257605968082307175">Tia alama kuwa taka</translation>
+<translation id="7600335727434653744">Ondoa kwenye Brave Wallet?</translation>
+<translation id="6657860743511185539">NFT itaondolewa kwenye Brave Wallet lakini itasalia kwenye mnyororo wa bloku. Ukiiondoa, basi badilisha nia yako, utahitaji kuileta tena mwenyewe.</translation>
 <translation id="849880459530751909">Hariri NFT</translation>
 <translation id="5925465310724910998">Ungependa NFT zako zionyeshwe kiotomatiki?</translation>
 <translation id="5400791731776892411">Brave Wallet inaweza kutumia huduma ya wahusika wengine kuonyesha NFT zako kiotomatiki. Brave itashiriki anwani za pochi yako na <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> ili kutoa huduma hii. <ph name="BEFORE_URL"/>Pata maelezo zaidi.<ph name="AFTER_URL"/></translation>
@@ -1747,9 +1760,6 @@
 <translation id="6938154350999993769">Tatua tatizo la kugeuza hali ya kompyuta kibao</translation>
 <translation id="5854741377790551127">Tatua tatizo la kuchapisha muundo wa kuonyesha</translation>
 <translation id="8199130368328220410">Geuza manukuu ya moja kwa moja</translation>
-<translation id="4233010476457917696">Onyesha utepe</translation>
-<translation id="2207125676134752863">Onyesha upau wa pembeni katika usogezaji kipanya</translation>
-<translation id="2613033293035359003">Ficha upau upande</translation>
 <translation id="9055778350624039365">Onyesha paneli ya Pochi ya Brave</translation>
 <translation id="2548853975094084059">Funga paneli ya Pochi ya Brave</translation>
 <translation id="3765209580429944524">Onyesha paneli ya VPN ya Brave</translation>
@@ -1812,7 +1822,7 @@
 <translation id="1199355487114804640">Cheza/Sitisha</translation>
 <translation id="1689210457482459023">Punguza kasi ya kucheza tena</translation>
 <translation id="5872363163901278000">Ongeza kasi ya kucheza tena</translation>
-<translation id="8178821080790541548">Brave AI</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">Ulinzi</translation>
 <translation id="8458987127502506209">Wezesha Ulinzi wa Brave</translation>
 <translation id="7509914170164691086">Ngao Zinatumika <ph name="LINK_BEFORE"/>kwa<ph name="LINK_AFTER"/></translation>
@@ -1884,16 +1894,18 @@
 <translation id="8637805148029768813">Kipengele cha kufupisha kwa sasa kinapatikana tu kwa makala teule na kurasa nyingine za wavuti zenye maudhui marefu.</translation>
 <translation id="2346991295632453064">Kubali na uanze</translation>
 <translation id="1223498995510244364">Fupisha</translation>
-<translation id="8758939268013768602">Kuhusu Brave AI</translation>
-<translation id="1704821516241545704">Kipengele cha Gumzo la AI la ABrave hufupisha maudhui ya ukurasa wa wavuti unaovinjari na kinajumuisha kiolesura cha gumzo kinachokuruhusu kuuliza maswali ya ufuatiliaji kuhusu maudhui yaliyofupishwa ya ukurasa huo.</translation>
-<translation id="58643773598235831">Ukurasa uliofupishwa na maswali yoyote unayouliza kwa kipengele cha Gumzo hutumwa kwa seva za mhusika wa nje wa API (hakuna vitambulishi vinavyotumwa na swali hilo).</translation>
-<translation id="917619443165595947">Tafadhali hakikisha kwamba maudhui ya ukurasa na maswali yoyote ya ufuatiliaji hayana taarifa za kibinafsi au nyeti. Usahihi wa ufupisho na majibu ya maswali hauhakikishwi na hivyo hupaswi kutegemea matini yoyote yanayohusiana na afya, usalama wa kibinafsi au masuala ya kifedha.</translation>
-<translation id="1829889011559313790">Uliza Brave AI</translation>
-<translation id="7226268079740406209">Kulikuwa na hitilafu katika kuchakata ujumbe wako, tafadhali jaribu tena.</translation>
+<translation id="6966669506908435195">Kuhusu Brave Leo</translation>
+<translation id="1667863995484767951">Kipengele cha AI Chat kinatoa muhtasari wa ukurasa wavuti unaovinjari na ni pamoja na kiolesura cha gumzo kinachokuruhusu kutuma maswali na kupokea majibu kuhusu maudhui ya ukurasa huo. Usahihi wa mihtasari hautoi hakikisho na unaweza kujumuisha taarifa zisizo sahihi, za kupotosha na za uongo. Hupaswi kutuma taarifa nyeti wala za faragha na unapaswa kutahadhari ujumbe wowote unaohusiana na afya, fedha au usalama binafsi na visa kama hivyo.</translation>
+<translation id="7636915524386889836">AI Chat ya Brave hutumia muundo <ph name="LINK_BEFORE"/>wa kujianzishia mkubwa<ph name="LINK_AFTER"/>  Kipengele cha  AI Chat hakikusanyi wala kuchakata vitambulishi kama vile Anwani ya IP inayoweza kuunganishwa kwako. Hakuna data binafsi inayohifadhiwa na muundo wa AI.</translation>
+<translation id="7839853125981164613">Weka kidokezo hapa</translation>
 <translation id="1171287413830401223">Ungependa kuwezesha maswali yaliyopendekezwa?</translation>
 <translation id="8723991872343294222">Brave AI inaweza kupendekeza maswali kiotomatiki kulingana na maudhui ya  tovuti. Unaweza kuilemaza baadaye katika Mipangilio.</translation>
 <translation id="3435896845095436175">Washa</translation>
 <translation id="7473891865547856676">La Asante</translation>
+<translation id="7932221068776853847">Tenganisha ili kuacha kutuma maudhui ya ukurasa huu kwenye Leo na uanzishe mazungumzo mapya</translation>
+<translation id="1167803637855350748">Kulikuwa na hitilafu ya mtandao kuunganisha kwenye Leo, angalia muunganisho wano na ujaribu tena.</translation>
+<translation id="5095201428204952524">Leo ina shughuli nyingi sana. Tafadhali jaribu tena baada ya dakika chache.</translation>
+<translation id="7144878232160441200">Jaribu tena</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Vimeunganishwa</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Havijaunganishwa</translation>
 <translation id="3541307549916475335">UI ya Paneli ya VPN ya Brave</translation>
@@ -1953,10 +1965,10 @@ Brave ina huduma ya usaidizi inayokulinda dhidi ya ufichuzi huu kwa kuchuja jins
 Hata hivyo, tuligundua kwamba huduma hii ya usaidizi haitumiki - na hatutaki kukuacha bila ulinzi. Tumebadilisha mipangilio ya DNS katika kivinjari ili kutoa ulinzi dhidi ya ufichuzi huu. Mipangilio hiyo itaendelea kutumika na kufungwa wakati VPN imeunganishwa.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">Inaonekana kuna matatizo fulani katika muunganisho wa WireGuard. Unataka kuwezesha urejeshaji wa IKEv2 kwa VPN ya kutegemeka? Anzisha tena kivinjari chako tu.
+<translation id="5004375364898143117">Inaonekana kuna matatizo fulani katika muunganisho wa WireGuard. Unataka kuwezesha urejeshaji wa IKEv2 kwa VPN ya kutegemeka? Anzisha tena kivinjari chako tu.
 
 Je, unahitaji usaidizi kuhusu uoanifu au usanidi? Wasiliana na timu yetu njema ya usaidizi.
-Daima unaweza kurejea kwenye WireGuard kwa brave://flags/#brave-vpn-wireguard.
+Daima unaweza kurejea kwenye WireGuard kwa brave://settings/system.
 
 Acha tukuunganishe!
 
@@ -1968,10 +1980,14 @@ Acha tukuunganishe!
 <translation id="8295393906499561642">Muda wa kikao umeisha</translation>
 <translation id="3312623558576021182">Tafadhali ingia katika <ph name="BRAVE_ACCOUNT_BEGIN"/>Akaunti yako ya Brave<ph name="BRAVE_ACCOUNT_END"/> ili kufungua upya kika chako cha VPN.</translation>
 <translation id="6021669293402055982">Brave VPN: Haijaunganishwa</translation>
+<translation id="7861195049821776142">Brave VPN: Inatenganisha</translation>
 <translation id="958268166261124668">Brave VPN: Imeunganishwa</translation>
+<translation id="2061807837510296780">Brave VPN: Inaunganisha</translation>
 <translation id="1313124107969703758">Brave VPN: Hitilafu</translation>
 <translation id="8273420301954598554">Hali: Imeunganishwa</translation>
 <translation id="7155657348064536843">Hali: Haijaunganishwa</translation>
+<translation id="2413929902277520460">Brave VPN - Imetenganishwa</translation>
+<translation id="8048263175525832621">Brave VPN - Imetenganishwa</translation>
 <translation id="1498770726476841108">Dhibiti Akaunti</translation>
 <translation id="6825718953004242472">Ondoa ikoni</translation>
 </translationbundle>

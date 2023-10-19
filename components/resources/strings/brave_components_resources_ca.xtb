@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">Colors sòlids</translation>
 <translation id="7610541582755894669">Gradients</translation>
 <translation id="1606851618930975029">Refresca en cada pestanya nova</translation>
+<translation id="7040134046053881468">Obre el panell de recompenses</translation>
 <translation id="9024104284526126630">Podeu començar una trucada privada a Brave.</translation>
 <translation id="370665806235115550">S'està carregant...</translation>
 <translation id="4634933166298842522">Gestiona les subscripcions</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">Cancel·la la subscripció</translation>
 <translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
 <translation id="8510478288840333677">Fes saber als desenvolupadors de Brace que aquesta web no funciona de forma adequada amb els Escuts:</translation>
-<translation id="4105411033440701818">Nota: quan fas clic a "Envia", comparteixes l'adreça del lloc, el teu número de versió de Brave i la teva adreça IP amb els desenvolupadors de Brave. (L'adreça IP no es guardarà.)</translation>
+<translation id="8265244536487014968">Nota: L'informe enviat als servidors de Brave inclourà l'adreça del lloc, el número de versió de Brave, la configuració dels escuts, l'estat de la VPN i la configuració de l'idioma. L'adreça IP es transmetrà, però no s'emmagatzemarà.</translation>
 <translation id="6476216365964140603">Informació addicional (opcional)</translation>
 <translation id="6145852496180774737">Contacta amb mi a través de: (opcional)</translation>
 <translation id="7616645803364270729">Correu electrònic, Twitter, etc.</translation>
@@ -597,7 +598,6 @@
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Accedeix a <ph name="PROVIDER"/><ph name="END_BOLD"/> per veure el teu saldo</translation>
 <translation id="2659764755126740206">Anar al meu compte <ph name="PROVIDER"/></translation>
 <translation id="2394961582378297792">Sessió tancada</translation>
-<translation id="7091980679045978090">Guanys estimats</translation>
 <translation id="7934950257968365573">Inicieu sessió al vostre compte <ph name="PROVIDER"/></translation>
 <translation id="8631427463833030968">Gestioneu els anuncis</translation>
 <translation id="590733288489975971">Brave Rewards de Brave Ads</translation>
@@ -689,6 +689,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">No us preocupeu.</translation>
 <translation id="5027616819996705541">Encara podeu navegar en privat!</translation>
+<translation id="1886682615222609631">Guanys fins ara</translation>
 <translation id="86107454835395919">Establir com a contribució mensual</translation>
 <translation id="6621880242105464352">Brave recull el <ph name="FEE_PCT"/>de l'import enviat com a comissió de processament.</translation>
 <translation id="1420756770787071946">Doneu suport a aquest creador</translation>
@@ -1040,6 +1041,10 @@
 <translation id="4305817255990598646">Canvia</translation>
 <translation id="3423275441470187644">Confiança</translation>
 <translation id="2391762656119864333">Revoca</translation>
+<translation id="9218424917282368512">Canvia xarxa</translation>
+<translation id="7526139040829362392">Canvia el compte</translation>
+<translation id="4217695020908122747">Comptes connectats</translation>
+<translation id="8497650996740651467">Comptes disponibles</translation>
 <translation id="5677928146339483299">Bloquejat</translation>
 <translation id="3890989020011724401">Nou compte</translation>
 <translation id="7257603403519636638">Visualitza els actius del compte</translation>
@@ -1220,6 +1225,7 @@
 <translation id="3648994606506382289">La manera més fàcil, ràpida i econòmica de comprar criptomonedes amb targetes i transferències bancàries.</translation>
 <translation id="3101839349578102016">Compra instantània amb el teu compte bancari. Tarifes més baixes.</translation>
 <translation id="8280898387224328221">Pagueu amb una targeta de crèdit o de dèbit o amb un compte bancari</translation>
+<translation id="2218174283683424104">Compra amb el nom més fiable en criptomonedes.</translation>
 <translation id="8528916244724490964">Totes les xarxes</translation>
 <translation id="7721139939763655123">Ascendent</translation>
 <translation id="5458608274117818139">Descendent</translation>
@@ -1484,6 +1490,7 @@
 <translation id="8007404171238546456">S'ha rebut el mínim després d'un desviament</translation>
 <translation id="767199001998615704">Tarifa de xarxa</translation>
 <translation id="7057870207229052478">Tarifa de Brave</translation>
+<translation id="81116374028657878">Tarifa de protocol</translation>
 <translation id="3624518972158401291">Gratis</translation>
 <translation id="5038255447967558645">Proveïdor de liquiditat</translation>
 <translation id="8450638959928932199">Intercanvia i envia</translation>
@@ -1511,7 +1518,6 @@
 <translation id="3143110700666266545">Aquesta aplicació utilitza les API de tercers següents:</translation>
 <translation id="163536108506359457">Intercanvi de Brave fa servir <ph name="AGGREGATOR"/> com a agregador de DEX per a xarxes <ph name="NETWORKS"/> admeses. <ph name="AGGREGATOR"/> processarà l'adreça de la cartera<ph name="NETWORK"/> i l'adreça IP per completar una transacció (incloent-hi l'obtenció de pressupostos). <ph name="AGGREGATOR"/> NOMÉS farà servir aquestes dades amb l'objectiu de processar les transaccions.</translation>
 <translation id="1847885264294023691">Fes clic aquí per conèixer la política de privacitat de <ph name="AGGREGATOR"/>.</translation>
-<translation id="9218424917282368512">Canvia xarxa</translation>
 <translation id="644984757357042735">És obligatòria una xarxa</translation>
 <translation id="132243864024778443">És obligatori el nom del token</translation>
 <translation id="3617263699756744037">Adreça de contracte del token no vàlida o buida</translation>
@@ -1547,8 +1553,15 @@
 <translation id="9085765419770918643">Encara no hi ha cap NFT aquí.</translation>
 <translation id="8445532667841598737">Estàs preparat per a afegir-ne algun? Fes clic en el botó de sota per a importar.</translation>
 <translation id="9136462955850040542">Compatible amb les NFT a Solana (SPL) i Ethereum (ERC-721).</translation>
+<translation id="137671950541962857">Recopilat</translation>
 <translation id="8849001918648564819">Amagat</translation>
 <translation id="4905092798795191201">Mostra</translation>
+<translation id="6167809958646114660">No ho mostris a la cartera</translation>
+<translation id="6948667383954749033">Marca com no brossa</translation>
+<translation id="5810047320613496595">Brossa</translation>
+<translation id="7257605968082307175">Marcar com brossa</translation>
+<translation id="7600335727434653744">Suprimir de la cartera de Brave?</translation>
+<translation id="6657860743511185539">L'NFT s'eliminarà de la cartera de Brave, però romandrà en la cadena de blocs. Si l'elimineu i després canvieu d'opinió, haureu de tornar a importar-lo manualment.</translation>
 <translation id="849880459530751909">Edita el NFT</translation>
 <translation id="5925465310724910998">Voleu mostrar automàticament els vostres NFT?</translation>
 <translation id="5400791731776892411">Brave Wallet pot utilitzar un servei de tercers per mostrar automàticament els vostres NFT. Brave compartirà les vostres adreces del moneder amb <ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> per proporcionar aquest servei. <ph name="BEFORE_URL"/>Més informació.<ph name="AFTER_URL"/></translation>
@@ -1747,9 +1760,6 @@
 <translation id="6938154350999993769">Depurant: activa/desactiva el mode tauleta</translation>
 <translation id="5854741377790551127">Depura l'arbre de vistes d'impressió</translation>
 <translation id="8199130368328220410">Activa/Desactiva els Subtítols instantanis</translation>
-<translation id="4233010476457917696">Mostra la barra lateral</translation>
-<translation id="2207125676134752863">Mostra la barra lateral en passar-hi el cursor per sobre</translation>
-<translation id="2613033293035359003">Amaga la barra lateral</translation>
 <translation id="9055778350624039365">Mostra el panell del moneder de Brave</translation>
 <translation id="2548853975094084059">Tanca el panell del moneder de Brave</translation>
 <translation id="3765209580429944524">Mostra el panell de la VPN de Brave</translation>
@@ -1812,7 +1822,7 @@
 <translation id="1199355487114804640">Reprodueix/posa en pausa</translation>
 <translation id="1689210457482459023">Disminueix la velocitat de reproducció</translation>
 <translation id="5872363163901278000">Augmenta la velocitat de reproducció</translation>
-<translation id="8178821080790541548">Brave AI</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">Proteccions</translation>
 <translation id="8458987127502506209">Activa els protectors de Brave</translation>
 <translation id="7509914170164691086">Els protectors estan activats <ph name="LINK_BEFORE"/>per a <ph name="LINK_AFTER"/></translation>
@@ -1884,16 +1894,18 @@
 <translation id="8637805148029768813">La funció de resum actualment només està disponible per a articles seleccionats i altres pàgines web de llarg format.</translation>
 <translation id="2346991295632453064">Accepta i comença</translation>
 <translation id="1223498995510244364">Resumeix</translation>
-<translation id="8758939268013768602">Sobre Brave AI</translation>
-<translation id="1704821516241545704">La característica de xat Brave AI resumeix el contingut d'una pàgina web que naveguis i inclou una interfície de xat que et permet fer consultes de seguiment del contingut resumit per a aquesta pàgina.</translation>
-<translation id="58643773598235831">La pàgina resumida i les preguntes que fas de la funció de xat s'envien als servidors d'un soci extern de l'API (no s'envien identificadors amb aquesta consulta).</translation>
-<translation id="917619443165595947">Assegura't que el contingut de la pàgina i qualsevol recerca de seguiment no contingui informació personal o sensible. L'exactitud dels resums i les respostes de recerca no estan garantides, per la qual cosa no ha de confiar en cap text relacionat amb la salut, la seguretat personal o assumptes financers.</translation>
-<translation id="1829889011559313790">Demana-li a Brave AI</translation>
-<translation id="7226268079740406209">Hi ha hagut un problema en processar el missatge, torna-ho a provar.</translation>
+<translation id="6966669506908435195">Sobre Brave Leo</translation>
+<translation id="1667863995484767951">La funció de xat d'IA proporciona resums de la pàgina web per la qual esteu navegant i inclou una interfície de xat que us permet enviar preguntes i rebre respostes sobre el contingut d'aquesta pàgina. L'exactitud dels resums no està garantida i pot incloure informació inexacta, enganyosa o falsa. No heu d'enviar informació confidencial o privada i heu d'anar amb compte amb qualsevol text relacionat amb la salut, les finances o la seguretat personal i casos similars.</translation>
+<translation id="7636915524386889836">El xat d'IA de Brave utilitza un <ph name="LINK_BEFORE"/>gran model de llenguatge<ph name="LINK_AFTER"/> propi. La funció de xat d'IA no recopila ni processa identificadors com ara adreces IP que puguin relacionar-se amb tu. El model d'IA no conserva cap dada personal.</translation>
+<translation id="7839853125981164613">Introdueix un missatge aquí</translation>
 <translation id="1171287413830401223">Voleu activar les preguntes suggerides?</translation>
 <translation id="8723991872343294222">Brave AI pot suggerir preguntes automàticament a partir del contingut del lloc. Podeu desactivar-ho més endavant a la configuració.</translation>
 <translation id="3435896845095436175">Activa</translation>
 <translation id="7473891865547856676">No, gràcies</translation>
+<translation id="7932221068776853847">Desconnecteu per deixar d'enviar el contingut d'aquesta pàgina a Leo i inicieu una nova conversa</translation>
+<translation id="1167803637855350748">Hi ha hagut un problema de xarxa en connectar amb Leo, comproveu la connexió i intenteu-ho de nou.</translation>
+<translation id="5095201428204952524">Leo està massa ocupat en aquests moments. Torneu-ho a provar d'aquí a uns minuts.</translation>
+<translation id="7144878232160441200">Torna-ho a intentar</translation>
 <translation id="7821773512278295352">Tallafoc + VPN de Brave: connectat</translation>
 <translation id="6019088868713395120">Tallafoc + VPN de Brave: desconnectat</translation>
 <translation id="3541307549916475335">IU del tauler de la VPN de Brave</translation>
@@ -1953,10 +1965,10 @@ Brave té un servei d'ajuda que et protegeix d'aquesta divulgació filtrant la f
 Hem canviat la configuració de DNS al navegador per protegir-te d'aquesta divulgació. La configuració romandrà vigent i bloquejada mentre la VPN estigui connectada.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">Sembla que hi ha problemes amb la connexió de WireGuard. Voleu activar l'alternativa IKEv2 per gaudir d'una VPN segura? Només cal que reinicieu el navegador.
+<translation id="5004375364898143117">Sembla que hi ha problemes amb la connexió de WireGuard. Voleu activar l'alternativa IKEv2 per gaudir d'una VPN segura? Només cal que reinicieu el navegador.
 
 Necessiteu ajuda amb la compatibilitat o la configuració? Contacteu amb el nostre equip d'assistència.
-Podreu tornar a WireGuard en qualsevol moment a brave://flags/#brave-vpn-wireguard.
+Podreu tornar a WireGuard en qualsevol moment a brave://settings/system.
 
 Connecteu-vos ara mateix!
 
@@ -1968,10 +1980,14 @@ Connecteu-vos ara mateix!
 <translation id="8295393906499561642">La sessió ha caducat</translation>
 <translation id="3312623558576021182">Inicia sessió al teu compte de <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave<ph name="BRAVE_ACCOUNT_END"/> per actualitzar la sessió VPN.</translation>
 <translation id="6021669293402055982">Brave VPN: desconnectat</translation>
+<translation id="7861195049821776142">Brave VPN: desconnectant-se</translation>
 <translation id="958268166261124668">Brave VPN: connectat</translation>
+<translation id="2061807837510296780">Brave VPN: connectant-se</translation>
 <translation id="1313124107969703758">Brave VPN: error</translation>
 <translation id="8273420301954598554">Estat: connectat</translation>
 <translation id="7155657348064536843">Estat: desconnectat</translation>
+<translation id="2413929902277520460">Brave VPN - Connectat</translation>
+<translation id="8048263175525832621">Brave VPN - Desconnectat</translation>
 <translation id="1498770726476841108">Gestioneu el compte</translation>
 <translation id="6825718953004242472">Treu la icona</translation>
 </translationbundle>

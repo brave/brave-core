@@ -28,6 +28,7 @@
 <translation id="4988333904713528597">Всегда разрешать автоматическое воспроизведение на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продолжить блокирование автоматического воспроизведения</translation>
 <translation id="3477357195688115718">Brave не проверяет безопасность и надежность расширений. Устанавливайте только те расширения, разработчикам которых вы доверяете.</translation>
+<translation id="2928844661231356557">Если сайты получат доступ к устройствам Bluetooth, то смогут узнать потенциально конфиденциальную информацию о вас. Предоставляйте такие разрешения только доверенным ресурсам. <ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Окна Tor</translation>
 <translation id="7965178729203412357">Новый Tor-идентификатор</translation>
 <translation id="6924909138923993900">Новое соединение Tor для этого сайта</translation>
@@ -206,11 +207,14 @@
 <translation id="5268098808165185458">Копирование текста с изображения…</translation>
 <translation id="4046485130884276245">Текст скопирован</translation>
 <translation id="3639779775496569782">Не удалось скопировать текст</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2506438154311626334">Использовать протокол WireGuard в Brave VPN</translation>
+<translation id="8519170191215826548">Этот параметр нельзя изменить при включенном Brave VPN</translation>
+<translation id="5620961847363372221">Потребуется перезапуск браузера</translation>
 <translation id="4235920711083356755">Показать кнопку VPN</translation>
 <translation id="4070612712151038707">Показывает кнопку VPN на панели инструментов</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">Вкл./выкл. VPN</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">О Brave VPN</translation>
 <translation id="4378551569595875038">Connecting...</translation>
 <translation id="3368922792935385530">Подключено</translation>
@@ -219,13 +223,11 @@
 <translation id="1863950594388384201">Показать кнопку VPN на панели инструментов</translation>
 <translation id="5187139277471084437">Скрыть кнопку VPN на панели инструментов</translation>
 <translation id="1177917174080821247">Показать значок VPN в области уведомлений</translation>
-<translation id="7645031001744446123">Скрыть значок VPN в области уведомлений</translation>
 <translation id="8041089156583427627">Отправить отзыв</translation>
 <translation id="4049186905514157504">Настроить мой план</translation>
 <translation id="7570585565843385325">Показать кнопку VPN на панели инструментов</translation>
 <translation id="5310426188697803101">Скрыть кнопку VPN на панели инструментов</translation>
 <translation id="639450633459241724">Показать значок VPN в области уведомлений</translation>
-<translation id="7430264749441182065">Скрыть значок VPN в области уведомлений</translation>
 <translation id="945522503751344254">Отправить отзыв</translation>
 <translation id="3015685033234401792">Настроить мой план</translation>
 <translation id="4989337484121655457">Требуется полный доступ к диску</translation>
@@ -274,6 +276,14 @@
 <translation id="8152485753254079984">Новый плейлист</translation>
 <translation id="5397019762993984652">Добавить из плейлиста «Воспроизвести позже»</translation>
 <translation id="7525067979554623046">Создать</translation>
+<translation id="9065203028668620118">Редактировать</translation>
+<translation id="6527303717912515753">Поделиться</translation>
+<translation id="760410268786807021">Сохранять для воспроизведения офлайн</translation>
+<translation id="705344722465356351">Удалить воспроизведенный контент</translation>
+<translation id="1173894706177603556">Переименовать</translation>
+<translation id="7765158879357617694">Переместить</translation>
+<translation id="6648536728577053364">Удалить офлайн-данные</translation>
+<translation id="5181358966317519720">Удалить из плейлиста</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
 <translation id="4472575034687746823">Начало работы</translation>
@@ -313,6 +323,8 @@
 <translation id="2025435450953474282">Статьи автоматически загружаются в режиме чтения — это экономит ваше время</translation>
 <translation id="2422927186524098759">Боковая панель</translation>
 <translation id="832432428796481785">Показывать кнопку боковой панели</translation>
+<translation id="5581036754486769849">Разрешить автозаполнение в режиме инкогнито</translation>
+<translation id="2262012219398520969">Сведения из обычных окон можно считывать и автоматически переносить в окна инкогнито</translation>
 <translation id="7781069478569868053">Страница новой вкладки</translation>
 <translation id="1988804048511540801">Страница новой вкладки отображает</translation>
 <translation id="2970343821770026391">Информационную панель</translation>
