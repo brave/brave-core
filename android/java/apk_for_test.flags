@@ -73,6 +73,12 @@
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
     *** mGoogleActivityControls;
     *** mSyncEncryption;
+    *** mSyncEverything;
+}
+
+-keep class org.chromium.chrome.browser.password_manager.settings.PasswordAccessReauthenticationHelper {
+    *** mCallback;
+    *** mFragmentManager;
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
