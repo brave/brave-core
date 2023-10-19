@@ -23,7 +23,7 @@ import {
   ConnectWithSite //
 } from '../components/extension/connect-with-site-panel/connect-with-site-panel'
 import {
-  ConfirmTransactionPanel // //
+  ConfirmTransactionPanel //
 } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
 import { ConnectedPanel } from '../components/extension/connected-panel/index'
 import { Panel } from '../components/extension/panel/index'

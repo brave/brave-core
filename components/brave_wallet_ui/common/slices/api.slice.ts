@@ -573,17 +573,17 @@ export function createWalletApi() {
                             network.coin
                           )
 
-                        const fullTokensListForChain: BraveWallet.BlockchainToken[] =
-                          await mapLimit(
-                            tokens,
-                            10,
-                            async (token: BraveWallet.BlockchainToken) => {
-                              return addChainIdToToken(
-                                await addLogoToToken(token),
-                                network.chainId
-                              )
-                            }
-                          )
+                        const fullTokensListForChain: //
+                        BraveWallet.BlockchainToken[] = await mapLimit(
+                          tokens,
+                          10,
+                          async (token: BraveWallet.BlockchainToken) => {
+                            return addChainIdToToken(
+                              await addLogoToToken(token),
+                              network.chainId
+                            )
+                          }
+                        )
 
                         tokenIdsByChainId[networkId] =
                           fullTokensListForChain.map(getAssetIdKey)
@@ -607,7 +607,8 @@ export function createWalletApi() {
                   const timeoutSeconds = 5
                   const timeoutMilliseconds = timeoutSeconds * 1000
 
-                  // retry until we have some tokens or the request takes too long
+                  // retry until we have some tokens or the request takes too
+                  // long
                   while (
                     // empty list
                     flattenedTokensList.length < 1 &&
@@ -1128,15 +1129,16 @@ export function createWalletApi() {
                       const baseTokenBalances: TokenBalancesForChainId = {}
                       if (nativeTokenArg) {
                         const balance = await dispatch(
-                          walletApi.endpoints.getAccountTokenCurrentBalance.initiate(
-                            {
-                              accountId: arg.accountId,
-                              token: nativeTokenArg
-                            },
-                            {
-                              forceRefetch: true
-                            }
-                          )
+                          walletApi.endpoints.getAccountTokenCurrentBalance //
+                            .initiate(
+                              {
+                                accountId: arg.accountId,
+                                token: nativeTokenArg
+                              },
+                              {
+                                forceRefetch: true
+                              }
+                            )
                         ).unwrap()
                         baseTokenBalances[nativeTokenArg.contractAddress] =
                           balance
@@ -1146,8 +1148,8 @@ export function createWalletApi() {
                         baseQuery(undefined).data
 
                       if (arg.coin === CoinTypes.ETH) {
-                        // jsonRpcService.getERC20TokenBalances cannot handle native
-                        // assets
+                        // jsonRpcService.getERC20TokenBalances cannot handle
+                        // native assets
                         const contracts = arg.tokens
                           .filter((token) => !isNativeAsset(token))
                           .map((token) => token.contractAddress)
@@ -1159,10 +1161,11 @@ export function createWalletApi() {
                           }
                         }
 
-                        // TODO(josheleonard): aggresively cache this response since
-                        // it never changes
+                        // TODO(josheleonard): aggresively cache this response
+                        // since it never changes
                         const { chainIds: supportedChainIds } =
-                          await braveWalletService.getBalanceScannerSupportedChains()
+                          await braveWalletService //
+                            .getBalanceScannerSupportedChains()
 
                         if (supportedChainIds.includes(arg.chainId)) {
                           const result =
@@ -1204,9 +1207,9 @@ export function createWalletApi() {
                             }
                           } else {
                             console.error(
-                              `Error calling jsonRpcService.getERC20TokenBalances:
-                        error=${result.errorMessage}
-                        arg=`,
+                              'Error calling ' +
+                                'jsonRpcService.getERC20TokenBalances: ' +
+                                `error=${result.errorMessage} arg=`,
                               JSON.stringify(arg, undefined, 2)
                             )
                           }
@@ -1261,15 +1264,16 @@ export function createWalletApi() {
                         10,
                         async (token: BraveWallet.BlockchainToken) => {
                           const result: string = await dispatch(
-                            walletApi.endpoints.getAccountTokenCurrentBalance.initiate(
-                              {
-                                accountId: arg.accountId,
-                                token
-                              },
-                              {
-                                forceRefetch: true
-                              }
-                            )
+                            walletApi.endpoints.getAccountTokenCurrentBalance //
+                              .initiate(
+                                {
+                                  accountId: arg.accountId,
+                                  token
+                                },
+                                {
+                                  forceRefetch: true
+                                }
+                              )
                           ).unwrap()
 
                           return {
@@ -1326,7 +1330,12 @@ export function createWalletApi() {
                       tokens
                         ? tokens.map((token) => ({
                             type: 'TokenBalancesForChainId',
-                            id: `${accountId.uniqueKey}-${coin}-${chainId}-${token.contractAddress}`
+                            id: [
+                              accountId.uniqueKey,
+                              coin,
+                              chainId,
+                              token.contractAddress
+                            ].join('-')
                           }))
                         : [
                             {
@@ -1535,7 +1544,8 @@ export function createWalletApi() {
                 baseQuery
               ) => {
                 try {
-                  const { jsonRpcService } = baseQuery(undefined).data // apiProxy
+                  // apiProxy
+                  const { jsonRpcService } = baseQuery(undefined).data
 
                   switch (coin) {
                     case BraveWallet.CoinType.SOL: {
@@ -1642,8 +1652,8 @@ export function createWalletApi() {
                     data: { txService },
                     cache
                   } = baseQuery(undefined)
-                  // TODO(apaymyshev): getAllTransactionInfo already supports getting
-                  // transaction for all accounts.
+                  // TODO(apaymyshev): getAllTransactionInfo already supports
+                  // getting transaction for all accounts.
                   const txInfos =
                     fromAccountId && coinType !== null
                       ? (
@@ -1724,7 +1734,8 @@ export function createWalletApi() {
                 try {
                   const { txService } = baseQuery(undefined).data
                   /***
-                   * Determine whether to create a legacy or EIP-1559 transaction.
+                   * Determine whether to create a legacy or EIP-1559
+                   * transaction.
                    *
                    * isEIP1559 is true IFF:
                    *   - network supports EIP-1559
@@ -1736,13 +1747,13 @@ export function createWalletApi() {
                    *
                    *     AND
                    *
-                   *   - payload: SendEthTransactionParams has NOT specified legacy
-                   *              gas-pricing fields.
+                   *   - payload: SendEthTransactionParams has NOT specified
+                   *     legacy gas-pricing fields.
                    *
                    * In all other cases, fallback to legacy gas-pricing fields.
-                   * For example, if network and keyring support EIP-1559, but the
-                   * legacy gasPrice field is specified in the payload, then type-0
-                   * transaction should be created.
+                   * For example, if network and keyring support EIP-1559, but
+                   * the legacy gasPrice field is specified in the payload, then
+                   * type-0 transaction should be created.
                    */
                   const isEIP1559 =
                     payload.gasPrice === undefined &&
@@ -1888,17 +1899,18 @@ export function createWalletApi() {
                     error,
                     errorMessage: transferTxDataErrorMessage,
                     txData
-                  } = await solanaTxManagerProxy.makeSystemProgramTransferTxData(
-                    payload.fromAccount.address,
-                    payload.to,
-                    BigInt(payload.value)
-                  )
+                  } = await solanaTxManagerProxy //
+                    .makeSystemProgramTransferTxData(
+                      payload.fromAccount.address,
+                      payload.to,
+                      BigInt(payload.value)
+                    )
 
                   if (error && transferTxDataErrorMessage) {
                     return {
-                      error: `Failed to make SOL system program transfer txData): ${
-                        transferTxDataErrorMessage || 'unknown error'
-                      }`
+                      error:
+                        'Failed to make SOL system program transfer txData): ' +
+                          transferTxDataErrorMessage || 'unknown error'
                     }
                   }
 
@@ -2218,7 +2230,8 @@ export function createWalletApi() {
                     )
 
                   if (!success) {
-                    const errorMsg = `Unable to send SPL Transfer: ${errorMessage}`
+                    const errorMsg =
+                      'Unable to send SPL Transfer: ' + errorMessage
                     console.error(errorMessage)
                     return {
                       error: errorMsg
@@ -2325,10 +2338,12 @@ export function createWalletApi() {
                     )
 
                   if (!success) {
-                    throw new Error(`Failed making FilForwarder transferFrom data,
-                from: ${payload.fromAccount.address}
-                to: ${payload.to}
-              `)
+                    throw new Error(
+                      'Failed making FilForwarder transferFrom data, from: ' +
+                        payload.fromAccount.address +
+                        ' to: ' +
+                        payload.to
+                    )
                   }
 
                   const result: { success: boolean } = await dispatch(
@@ -2581,7 +2596,8 @@ export function createWalletApi() {
                     return {
                       error:
                         'failed to approve hardware transaction - ' +
-                        `account not found or is not hardware: ${txInfo.fromAccountId.uniqueKey}`
+                        'account not found or is not hardware: ' +
+                        txInfo.fromAccountId.uniqueKey
                     }
                   }
 
@@ -2711,14 +2727,15 @@ export function createWalletApi() {
                       )
                       apiProxy.panelHandler?.setCloseOnDeactivate(true)
                       // By default the focus is moved to the browser window
-                      // automatically when Trezor popup closed which triggers an
-                      // OnDeactivate event that would close the wallet panel because
-                      // of the above API call. However, there could be times that
-                      // the above call happens after OnDeactivate event, so the
-                      // wallet panel would stay open after Trezor popup closed. As a
-                      // workaround, we manually set the focus back to wallet panel
-                      // here so it would trigger another OnDeactivate event when
-                      // user clicks outside of the wallet panel.
+                      // automatically when Trezor popup closed which triggers
+                      // an OnDeactivate event that would close the wallet panel
+                      // because of the above API call. However, there could be
+                      // times that the above call happens after OnDeactivate
+                      // event, so the wallet panel would stay open after Trezor
+                      // popup closed. As a workaround, we manually set the
+                      // focus back to wallet panel here so it would trigger
+                      // another OnDeactivate event when user clicks outside of
+                      // the wallet panel.
                       apiProxy.panelHandler?.focus()
                       return {
                         data: { success: true }
@@ -2865,7 +2882,8 @@ export function createWalletApi() {
                       throw new Error(
                         'Failed to update unapproved transaction: ' +
                           `id=${payload.txMetaId} ` +
-                          `maxPriorityFeePerGas=${payload.maxPriorityFeePerGas}` +
+                          'maxPriorityFeePerGas=' +
+                          payload.maxPriorityFeePerGas +
                           `maxFeePerGas=${payload.maxFeePerGas}` +
                           `gasLimit=${payload.gasLimit}`
                       )
@@ -2952,11 +2970,12 @@ export function createWalletApi() {
                     )
 
                   if (!result.success) {
-                    throw new Error(`Failed to set data for unapproved transaction:
-                chainId=${payload.chainId}
-                txMetaId=${payload.txMetaId}
-                data=${data.join(',')}
-              `)
+                    throw new Error(
+                      'Failed to set data for unapproved transaction: ' +
+                        `chainId=${payload.chainId} txMetaId=${
+                          payload.txMetaId
+                        } data=${data.join(',')}`
+                    )
                   }
 
                   return {
@@ -3174,7 +3193,8 @@ export function createWalletApi() {
                 extraOptions,
                 baseQuery
               ) => {
-                return { data: { success: true } } // no-op (invalidate pending txs)
+                // no-op (invalidate pending txs)
+                return { data: { success: true } }
               },
               invalidatesTags: (_, err, arg) =>
                 err ? [] : [TX_CACHE_TAGS.ID(arg.id)]
@@ -3382,7 +3402,8 @@ export function createWalletApi() {
                 } catch (error) {
                   return handleEndpointError(
                     endpoint,
-                    `Unable generate receive address for account: ${accountId.uniqueKey}`,
+                    'Unable generate receive address for account: ' +
+                      accountId.uniqueKey,
                     error
                   )
                 }

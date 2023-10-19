@@ -49,7 +49,8 @@ export const formatOrdinals = (n: number) => {
 
 export const getWordIndicesToVerfy = (_wordsLength: number): number[] => {
   if (_wordsLength < 3) {
-    return [-3, -2, -1] // phrase is not long enough (must be longer than 3 words)
+    // phrase is not long enough (must be longer than 3 words)
+    return [-3, -2, -1]
   }
 
   // limit randomness to first 24 words

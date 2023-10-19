@@ -114,20 +114,36 @@ module.exports = {
     'multiline-ternary': 0,
     '@typescript-eslint/prefer-readonly': 0,
     '@typescript-eslint/key-spacing': 0,
-    'max-len': [
-      1,
-      {
-        'code': 80,
-        ignoreStrings: true, // to allow long import paths
-        ignoreRegExpLiterals: true
-      }
-    ],
     /* TODO(nullhook): ENABLE the below rules in the future */
     'no-useless-call': 0,
     '@typescript-eslint/consistent-type-assertions': 0,
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-invalid-void-type': 0,
     'prefer-const': 0,
-    '@typescript-eslint/return-await': 0
-  }
+    '@typescript-eslint/return-await': 0,
+  },
+  "overrides": [
+    {
+      // opt-in directories for line length warnings
+      "files": [
+        "components/brave_wallet/**/*.js",
+        "components/brave_wallet/**/*.ts",
+        "components/brave_wallet/**/*.tsx",
+        "components/brave_wallet_ui/**/*.js",
+        "components/brave_wallet_ui/**/*.ts",
+        "components/brave_wallet_ui/**/*.tsx"
+      ],
+      "rules": {
+        'max-len': [
+          1,
+          {
+            'code': 80,
+            'ignoreStrings': true, // to allow long import paths
+            'ignoreUrls': true, // allow URLs to be clickable
+            'ignoreRegExpLiterals': true,
+          }
+        ],
+      }
+    }
+  ]
 }
