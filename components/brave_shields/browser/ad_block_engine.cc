@@ -12,7 +12,11 @@
 
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
+#include "base/metrics/histogram_functions.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/timer/elapsed_timer.h"
+#include "base/trace_event/trace_event.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
@@ -243,6 +247,7 @@ base::Value::List AdBlockEngine::HiddenClassIdSelectors(
 void AdBlockEngine::Load(bool deserialize,
                          const DATFileDataBuffer& dat_buf,
                          const std::string& resources_json) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (deserialize) {
     OnDATLoaded(dat_buf, resources_json);
   } else {
@@ -275,7 +280,23 @@ void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
 
 void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,
                                        const std::string& resources_json) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  base::ElapsedTimer timer;
+  TRACE_EVENT_BEGIN2("brave.adblock", "MakeEngineWithRules", "size",
+                     filters.size(), "is_default_engine", is_default_engine_);
+
   auto result = adblock::engine_with_rules(filters);
+
+  TRACE_EVENT_END0("brave.adblock", "MakeEngineWithRules");
+  if (is_default_engine_) {
+    base::UmaHistogramTimes("Brave.Adblock.MakeEngineWithRules.Default",
+                            timer.Elapsed());
+  } else {
+    base::UmaHistogramTimes("Brave.Adblock.MakeEngineWithRules.Additional",
+                            timer.Elapsed());
+  }
+
   if (result.result_kind != adblock::ResultKind::Success) {
     LOG(ERROR) << "AdBlockEngine::OnListSourceLoaded failed: "
                << result.error_message.c_str();
@@ -286,13 +307,30 @@ void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,
 
 void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,
                                 const std::string& resources_json) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   // An empty buffer will not load successfully.
   if (dat_buf.empty()) {
     return;
   }
 
+  base::ElapsedTimer timer;
+  TRACE_EVENT_BEGIN2("brave.adblock", "EngineDeserialize", "size",
+                     dat_buf.size(), "is_default_engine", is_default_engine_);
+
   auto client = adblock::new_engine();
-  if (!client->deserialize(dat_buf)) {
+  const auto result = client->deserialize(dat_buf);
+
+  TRACE_EVENT_END0("brave.adblock", "EngineDeserialize");
+  if (is_default_engine_) {
+    base::UmaHistogramTimes("Brave.Adblock.EngineDeserialize.Default",
+                            timer.Elapsed());
+  } else {
+    base::UmaHistogramTimes("Brave.Adblock.EngineDeserialize.Additional",
+                            timer.Elapsed());
+  }
+
+  if (!result) {
     LOG(ERROR) << "AdBlockEngine::OnDATLoaded deserialize failed";
     return;
   }

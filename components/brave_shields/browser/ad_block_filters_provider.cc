@@ -36,9 +36,9 @@ void AdBlockFiltersProvider::RemoveObserver(
     observers_.RemoveObserver(observer);
 }
 
-void AdBlockFiltersProvider::NotifyObservers() {
+void AdBlockFiltersProvider::NotifyObservers(bool is_for_default_engine) {
   for (auto& observer : observers_) {
-    observer.OnChanged();
+    observer.OnChanged(is_for_default_engine);
   }
 }
 
