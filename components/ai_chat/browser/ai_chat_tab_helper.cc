@@ -332,6 +332,7 @@ void AIChatTabHelper::CleanUp() {
   article_text_.clear();
   suggested_questions_.clear();
   pending_request_.reset();
+  is_same_document_navigation_ = false;
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
   has_generated_questions_ = false;
