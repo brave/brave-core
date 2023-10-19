@@ -137,7 +137,7 @@ type GetTokenBalancesForAddressAndChainIdArg = {
   tokens: GetBlockchainTokenIdArg[]
   chainId: string
   coin:
-    | typeof CoinTypes.ETH
+        | typeof CoinTypes.ETH
     | typeof CoinTypes.FIL
     | typeof CoinTypes.BTC
     | typeof CoinTypes.ZEC
