@@ -9,6 +9,7 @@
 #include "base/component_export.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/services/brave_wallet/public/mojom/filecoin_utility.mojom.h"
+#include "brave/components/services/brave_wallet/public/mojom/json_converter.mojom.h"
 #include "brave/components/services/brave_wallet/public/mojom/third_party_service.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -32,6 +33,9 @@ class COMPONENT_EXPORT(BRAVE_WALLET_SERVICE) ThirdPartyServiceImpl
   // mojom::ThirdPartyService implementation:
   void BindFilecoinUtility(
       mojo::PendingReceiver<third_party_service::mojom::FilecoinUtility>
+          receiver) override;
+  void BindJsonConverter(
+      mojo::PendingReceiver<third_party_service::mojom::JsonConverter>
           receiver) override;
 
   // Disconnect handler for the receiver.

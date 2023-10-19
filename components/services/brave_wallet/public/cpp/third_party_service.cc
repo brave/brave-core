@@ -11,6 +11,7 @@
 #include "base/no_destructor.h"
 #include "brave/components/services/brave_wallet/public/cpp/third_party_service_launcher.h"
 #include "brave/components/services/brave_wallet/public/mojom/filecoin_utility.mojom.h"
+#include "brave/components/services/brave_wallet/public/mojom/json_converter.mojom.h"
 #include "build/build_config.h"
 
 namespace brave_wallet {
@@ -100,6 +101,7 @@ void ThirdPartyService::BindRemote() {
     return;
   }
 
+  // launcher_ should already be set before running any of the APIs.
   CHECK(launcher_);
   launcher_->Launch(service_.BindNewPipeAndPassReceiver());
 
@@ -135,6 +137,108 @@ void ThirdPartyService::SignFilecoinTransaction(
   request->remote()->TransactionSign(
       is_mainnet, transaction, private_key,
       base::BindOnce(&Request<third_party_service::mojom::FilecoinUtility,
+                              std::string>::OnResult,
+                     request));
+}
+
+void ThirdPartyService::ConvertUint64ValueToString(
+    const std::string& path,
+    const std::string& json,
+    bool optional,
+    JsonConverterStringCallback callback) {
+  BindRemote();
+  auto request = base::MakeRefCounted<
+      Request<third_party_service::mojom::JsonConverter, std::string>>(
+      std::move(callback));
+  service_->BindJsonConverter(request->BindRemote());
+  request->remote()->ConvertUint64ValueToString(
+      path, json, optional,
+      base::BindOnce(&Request<third_party_service::mojom::JsonConverter,
+                              std::string>::OnResult,
+                     request));
+}
+
+void ThirdPartyService::ConvertInt64ValueToString(
+    const std::string& path,
+    const std::string& json,
+    bool optional,
+    JsonConverterStringCallback callback) {
+  BindRemote();
+  auto request = base::MakeRefCounted<
+      Request<third_party_service::mojom::JsonConverter, std::string>>(
+      std::move(callback));
+  service_->BindJsonConverter(request->BindRemote());
+  request->remote()->ConvertInt64ValueToString(
+      path, json, optional,
+      base::BindOnce(&Request<third_party_service::mojom::JsonConverter,
+                              std::string>::OnResult,
+                     request));
+}
+
+void ThirdPartyService::ConvertStringValueToUint64(
+    const std::string& path,
+    const std::string& json,
+    bool optional,
+    JsonConverterStringCallback callback) {
+  BindRemote();
+  auto request = base::MakeRefCounted<
+      Request<third_party_service::mojom::JsonConverter, std::string>>(
+      std::move(callback));
+  service_->BindJsonConverter(request->BindRemote());
+  request->remote()->ConvertStringValueToUint64(
+      path, json, optional,
+      base::BindOnce(&Request<third_party_service::mojom::JsonConverter,
+                              std::string>::OnResult,
+                     request));
+}
+
+void ThirdPartyService::ConvertStringValueToInt64(
+    const std::string& path,
+    const std::string& json,
+    bool optional,
+    JsonConverterStringCallback callback) {
+  BindRemote();
+  auto request = base::MakeRefCounted<
+      Request<third_party_service::mojom::JsonConverter, std::string>>(
+      std::move(callback));
+  service_->BindJsonConverter(request->BindRemote());
+  request->remote()->ConvertStringValueToInt64(
+      path, json, optional,
+      base::BindOnce(&Request<third_party_service::mojom::JsonConverter,
+                              std::string>::OnResult,
+                     request));
+}
+
+void ThirdPartyService::ConvertUint64InObjectArrayToString(
+    const std::string& path_to_list,
+    const std::string& path_to_object,
+    const std::string& key,
+    const std::string& json,
+    JsonConverterStringCallback callback) {
+  BindRemote();
+  auto request = base::MakeRefCounted<
+      Request<third_party_service::mojom::JsonConverter, std::string>>(
+      std::move(callback));
+  service_->BindJsonConverter(request->BindRemote());
+  request->remote()->ConvertUint64InObjectArrayToString(
+      path_to_list, path_to_object, key, json,
+      base::BindOnce(&Request<third_party_service::mojom::JsonConverter,
+                              std::string>::OnResult,
+                     request));
+}
+
+void ThirdPartyService::ConvertAllNumbersToString(
+    const std::string& json,
+    const std::string& path,
+    JsonConverterStringCallback callback) {
+  BindRemote();
+  auto request = base::MakeRefCounted<
+      Request<third_party_service::mojom::JsonConverter, std::string>>(
+      std::move(callback));
+  service_->BindJsonConverter(request->BindRemote());
+  request->remote()->ConvertAllNumbersToString(
+      json, path,
+      base::BindOnce(&Request<third_party_service::mojom::JsonConverter,
                               std::string>::OnResult,
                      request));
 }

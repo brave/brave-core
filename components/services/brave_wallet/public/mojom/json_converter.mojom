@@ -1,0 +1,23 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.third_party_service.mojom;
+
+interface JsonConverter {
+  ConvertUint64ValueToString(string path, string json, bool optional)
+    => (string? result);
+  ConvertInt64ValueToString(string path, string json, bool optional)
+    => (string? result);
+  ConvertStringValueToUint64(string path, string json, bool optional)
+    => (string? result);
+  ConvertStringValueToInt64(string path, string json, bool optional)
+    => (string? result);
+
+  ConvertUint64InObjectArrayToString(
+      string path_to_list, string path_to_object, string key, string json)
+    => (string? result);
+
+  ConvertAllNumbersToString(string json, string path) => (string? result);
+};

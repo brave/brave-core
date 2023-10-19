@@ -17,6 +17,7 @@
 #include "base/time/time.h"
 #include "brave/components/services/brave_wallet/public/cpp/third_party_service_launcher.h"
 #include "brave/components/services/brave_wallet/public/mojom/filecoin_utility.mojom.h"
+#include "brave/components/services/brave_wallet/public/mojom/json_converter.mojom.h"
 #include "brave/components/services/brave_wallet/public/mojom/third_party_service.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -48,6 +49,7 @@ class COMPONENT_EXPORT(BRAVE_WALLET_CPP) ThirdPartyService {
   template <typename T>
   using ResultCallback = base::OnceCallback<void(const absl::optional<T>&)>;
 
+  // filecoin utility
   using BLSPrivateKeyToPublicKeyCallback = third_party_service::mojom::
       FilecoinUtility::BLSPrivateKeyToPublicKeyCallback;
   using TransactionSignCallback =
@@ -60,6 +62,22 @@ class COMPONENT_EXPORT(BRAVE_WALLET_CPP) ThirdPartyService {
                                const std::string& transaction,
                                const std::vector<uint8_t>& private_key,
                                TransactionSignCallback callback);
+
+  // json converter
+  using JsonConverterStringCallback = ResultCallback<std::string>;
+  void ConvertUint64ValueToString(
+      const std::string& path, const std::string& json, bool optional, JsonConverterStringCallback callback);
+  void ConvertInt64ValueToString(
+      const std::string& path, const std::string& json, bool optional, JsonConverterStringCallback callback);
+  void ConvertStringValueToUint64(
+      const std::string& path, const std::string& json, bool optional, JsonConverterStringCallback callback);
+  void ConvertStringValueToInt64(
+      const std::string& path, const std::string& json, bool optional, JsonConverterStringCallback callback);
+  void ConvertUint64InObjectArrayToString(
+      const std::string& path_to_list, const std::string& path_to_object,
+      const std::string& key, const std::string& json, JsonConverterStringCallback callback);
+  void ConvertAllNumbersToString(
+      const std::string& json, const std::string& path, JsonConverterStringCallback callback);
 
   void ResetForTesting();
 

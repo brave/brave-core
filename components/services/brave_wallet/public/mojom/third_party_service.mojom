@@ -6,6 +6,7 @@
 module brave_wallet.third_party_service.mojom;
 
 import "brave/components/services/brave_wallet/public/mojom/filecoin_utility.mojom";
+import "brave/components/services/brave_wallet/public/mojom/json_converter.mojom";
 import "sandbox/policy/mojom/sandbox.mojom";
 
 // The main interface to access third party libraries used by Brave wallet
@@ -13,4 +14,5 @@ import "sandbox/policy/mojom/sandbox.mojom";
 [ServiceSandbox=sandbox.mojom.Sandbox.kService]
 interface ThirdPartyService {
   BindFilecoinUtility(pending_receiver<FilecoinUtility> receiver);
+  BindJsonConverter(pending_receiver<JsonConverter> receiver);
 };

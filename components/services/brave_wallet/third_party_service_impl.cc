@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/services/brave_wallet/filecoin_utility_impl.h"
+#include "brave/components/services/brave_wallet/json_converter_impl.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
 namespace brave_wallet {
@@ -30,6 +31,13 @@ void ThirdPartyServiceImpl::BindFilecoinUtility(
     mojo::PendingReceiver<third_party_service::mojom::FilecoinUtility>
         receiver) {
   mojo::MakeSelfOwnedReceiver(std::make_unique<FilecoinUtilityImpl>(),
+                              std::move(receiver));
+}
+
+void ThirdPartyServiceImpl::BindJsonConverter(
+      mojo::PendingReceiver<third_party_service::mojom::JsonConverter>
+          receiver) {
+  mojo::MakeSelfOwnedReceiver(std::make_unique<JsonConverterImpl>(),
                               std::move(receiver));
 }
 

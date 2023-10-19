@@ -7,6 +7,8 @@ component("brave_wallet") {
   sources = [
     "filecoin_utility_impl.cc",
     "filecoin_utility_impl.h",
+    "json_converter_impl.cc",
+    "json_converter_impl.h",
     "third_party_service_impl.cc",
     "third_party_service_impl.h",
   ]
@@ -21,6 +23,7 @@ component("brave_wallet") {
 
   deps = [
     "//brave/components/filecoin/rs:rust_lib",
+    "//brave/components/json/rs:rust_lib",
     "//mojo/public/cpp/bindings",
   ]
 

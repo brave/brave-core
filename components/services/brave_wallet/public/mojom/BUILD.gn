@@ -8,6 +8,7 @@ import("//mojo/public/tools/bindings/mojom.gni")
 mojom("mojom") {
   sources = [
     "filecoin_utility.mojom",
+    "json_converter.mojom",
     "third_party_service.mojom",
   ]
 
