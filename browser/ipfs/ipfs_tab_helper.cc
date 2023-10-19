@@ -70,6 +70,24 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
       ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
 }
 
+//TODO Remove later
+void PrintEntries(content::WebContents* webcontents) {
+  if(!webcontents) {
+    LOG(INFO) << "[IPFS]  PrintEntries No webcontents";
+    return;
+  }
+  auto& controller = webcontents->GetController();
+
+  for(int i = 0; i < controller.GetEntryCount(); i++) {
+    auto* entry = controller.GetEntryAtIndex(i);
+    if(!entry) {
+      continue;
+    }
+    auto* nav_data = ipfs::IpfsFallbackRedirectNavigationData::GetFallbackData(entry);
+    LOG(INFO) << "[IPFS] Entry index: " << i << " Id: " << entry->GetUniqueID() << " url: " << entry->GetURL() << " user_data:" << (nav_data ? nav_data->ToDebugString() : "n/a");
+  }
+}
+
 }  // namespace
 
 namespace ipfs {
@@ -211,6 +229,10 @@ void IPFSTabHelper::LoadUrl(const GURL& gurl,
                                 WindowOpenDisposition::CURRENT_TAB,
                                 ui::PAGE_TRANSITION_LINK, false);
   params.should_replace_current_entry = should_replace_current_entry;
+  LOG(INFO) << "[IPFS] LoadUrl"
+  <<"\r\ngurl:"<< gurl
+  <<"\r\nshould_replace_current_entry:"<< should_replace_current_entry
+  ;
   web_contents()->OpenURL(params);
 }
 
@@ -427,35 +449,55 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
     if (!is_ipfs_companion_enabled &&
         ((handle->IsErrorPage() && handle->GetNetErrorCode() != net::OK) ||
          (headers && headers->response_code() != net::HTTP_OK))) {
+      LOG(INFO) << "[IPFS] DidFinishNavigation 5 current_url:" << current_url;
       auto* nav_data =
-          IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+          IpfsFallbackRedirectNavigationData::FindFallbackData(
               web_contents());
-      if (!nav_data /*!initial_navigation_url_.has_value()*/) {
+      PrintEntries(web_contents());
+      if (!nav_data) {
         auto* nav_data_original_url =
             IpfsFallbackRedirectNavigationData::GetOrCreate(
                 web_contents()->GetController().GetLastCommittedEntry());
         nav_data_original_url->SetOriginalUrl(current_url);
         should_replace_entry = false;
+        LOG(INFO) << "[IPFS] DidFinishNavigation 10"
+        << "\r\ncurrent_url:" << current_url
+        ;
       } else if (!nav_data->IsAutoRedirectBlocked() &&
-                 nav_data->GetOriginalUrl() != GetCurrentPageURL() &&
-                 IpfsFallbackRedirectNavigationData::IsSameIpfsLink(
-                     handle->GetWebContents(), GetCurrentPageURL())) {
+                 nav_data->GetOriginalUrl() != GetCurrentPageURL()) {
         ShowBraveIPFSFallbackInfoBar(nav_data->GetOriginalUrl());
-        nav_data->SetValid(false);
+        LOG(INFO) << "[IPFS] DidFinishNavigation 20"
+        << "\r\ncurrent_url:" << current_url
+        ;        
+        auto copy = nav_data->Clone();
+        nav_data->SetRemoveFlag(true);
+        IpfsFallbackRedirectNavigationData::CleanAll(handle->GetWebContents());
+        IpfsFallbackRedirectNavigationData::Create(web_contents()->GetController().GetLastCommittedEntry(), std::move(copy));
+        PrintEntries(web_contents());
         return;
       } else {
-        auto_redirect_blocked =
-            IpfsFallbackRedirectNavigationData::IsAutoRedirectBlocked(
-                handle->GetWebContents(), GetCurrentPageURL(), true);
+        auto_redirect_blocked = nav_data->IsAutoRedirectBlocked();
+        LOG(INFO) << "[IPFS] DidFinishNavigation 30"
+        << "\r\ncurrent_url:" << current_url
+        << "\r\nauto_redirect_blocked:" << auto_redirect_blocked
+        ; 
         IpfsFallbackRedirectNavigationData::CleanAll(handle->GetWebContents());
+
+        PrintEntries(web_contents());
       }
     }
+  } else {
+    IpfsFallbackRedirectNavigationData::CleanAll(handle->GetWebContents());
   }
 
   if (handle->GetResponseHeaders() &&
       handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
     MaybeSetupIpfsProtocolHandlers(handle->GetURL());
   }
+  LOG(INFO) << "[IPFS] DidFinishNavigation 100 "
+  << "\r\ncurrent_url:" << current_url
+  << "\r\nauto_redirect_blocked:" << auto_redirect_blocked
+  ;
   MaybeCheckDNSLinkRecord(handle->GetResponseHeaders(), auto_redirect_blocked,
                           should_replace_entry);
 }
@@ -482,12 +524,14 @@ void IPFSTabHelper::ShowBraveIPFSFallbackInfoBar(
 void IPFSTabHelper::SetFallbackAddress(const GURL& original_url) {
   auto url_to_catch = ExtractSourceFromGateway(original_url);
   if (url_to_catch.has_value()) {
-    auto* lc_entry = web_contents()->GetController().GetLastCommittedEntry();
-    if (lc_entry && lc_entry->GetURL() == GetCurrentPageURL()) {
-      auto* nav_data =
-          IpfsFallbackRedirectNavigationData::GetOrCreate(lc_entry);
-      nav_data->SetOriginalUrl(original_url);
+    auto* nav_data = IpfsFallbackRedirectNavigationData::FindFallbackData(web_contents());
+    LOG(INFO) << "[IPFS] SetFallbackAddress"
+    <<"\r\noriginal_url:" << original_url
+    <<"\r\nnav_data:" << (nav_data?nav_data->ToDebugString(): "n/a")
+    ;
+    if (nav_data) {
       nav_data->SetAutoRedirectBlock(true);
+      nav_data->SetRemoveFlag(true);
     }
   }
 

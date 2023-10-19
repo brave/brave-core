@@ -19,30 +19,32 @@ class IpfsFallbackRedirectNavigationData : public base::SupportsUserData::Data {
   explicit IpfsFallbackRedirectNavigationData(const GURL& url);
   IpfsFallbackRedirectNavigationData(const GURL& url,
                                      const bool block_auto_redirect,
-                                     const bool valid);
+                                     const bool remove_this_entry_at_the_end);
   ~IpfsFallbackRedirectNavigationData() override;
 
   static IpfsFallbackRedirectNavigationData* GetOrCreate(
       content::NavigationEntry* entry);
+  static IpfsFallbackRedirectNavigationData* Create(
+      content::NavigationEntry* entry,
+      std::unique_ptr<base::SupportsUserData::Data> data);
   static IpfsFallbackRedirectNavigationData* GetFallbackData(
       content::NavigationEntry* entry);
-  static IpfsFallbackRedirectNavigationData* GetFallbackDataFromRedirectChain(
+  static IpfsFallbackRedirectNavigationData* FindFallbackData(
       content::WebContents* web_contents);
-  static bool IsAutoRedirectBlocked(content::WebContents* web_contents,
-                                    const GURL& current_page_url,
-                                    const bool remove_from_history);
 
-  static bool IsSameIpfsLink(content::WebContents* web_contents,
-                             const GURL& current_page_url);
   static void CleanAll(content::WebContents* web_contents);
 
   GURL GetOriginalUrl() const;
   bool IsAutoRedirectBlocked() const;
-  bool IsValid() const;
+  bool GetRemoveFlag() const;
 
   void SetOriginalUrl(const GURL& url);
   void SetAutoRedirectBlock(const bool new_val);
-  void SetValid(const bool new_val);
+  void SetRemoveFlag(const bool new_val);
+
+  std::unique_ptr<base::SupportsUserData::Data> Clone() override;
+
+  std::string ToDebugString() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsFallbackRedirectNavigationDataUnitTest,
@@ -56,7 +58,7 @@ class IpfsFallbackRedirectNavigationData : public base::SupportsUserData::Data {
 
   GURL original_url_;
   bool block_auto_redirect_{false};
-  bool valid_{true};
+  bool remove_this_entry_at_the_end_{false};
 };
 
 }  // namespace ipfs

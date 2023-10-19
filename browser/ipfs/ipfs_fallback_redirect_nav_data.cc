@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/ipfs/ipfs_utils.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 
@@ -26,10 +25,10 @@ IpfsFallbackRedirectNavigationData::IpfsFallbackRedirectNavigationData(
 IpfsFallbackRedirectNavigationData::IpfsFallbackRedirectNavigationData(
     const GURL& url,
     const bool block_auto_redirect,
-    const bool valid)
+    const bool remove_this_entry_at_the_end)
     : original_url_(url),
       block_auto_redirect_(block_auto_redirect),
-      valid_(valid) {}
+      remove_this_entry_at_the_end_(remove_this_entry_at_the_end) {}
 
 IpfsFallbackRedirectNavigationData::~IpfsFallbackRedirectNavigationData() =
     default;
@@ -47,6 +46,15 @@ IpfsFallbackRedirectNavigationData::GetOrCreate(
 }
 
 // static
+IpfsFallbackRedirectNavigationData* IpfsFallbackRedirectNavigationData::Create(
+    content::NavigationEntry* entry,
+    std::unique_ptr<base::SupportsUserData::Data> data) {
+  DCHECK(entry);
+  entry->SetUserData(kIpfsFallbackRedirectNavigationDataKey, std::move(data));
+  return GetFallbackData(entry);
+}
+
+// static
 IpfsFallbackRedirectNavigationData*
 IpfsFallbackRedirectNavigationData::GetFallbackData(
     content::NavigationEntry* entry) {
@@ -58,92 +66,48 @@ IpfsFallbackRedirectNavigationData::GetFallbackData(
 
 // static
 IpfsFallbackRedirectNavigationData*
-IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+IpfsFallbackRedirectNavigationData::FindFallbackData(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
-  IpfsFallbackRedirectNavigationData* ipfs_fallback_nav_data = nullptr;
   auto& controller = web_contents->GetController();
   for (int i = 0; i < controller.GetEntryCount(); i++) {
     auto* entry = controller.GetEntryAtIndex(i);
     if (!entry) {
       continue;
     }
-    if (!ipfs_fallback_nav_data) {
-      auto* nav_data = GetFallbackData(entry);
-      ipfs_fallback_nav_data =
-          (nav_data && nav_data->IsValid()) ? nav_data : nullptr;
-    } else {
-      break;
+    auto* nav_data = GetFallbackData(entry);
+    if (nav_data) {
+      return nav_data;
     }
   }
-  return ipfs_fallback_nav_data;
-}
-
-// static
-bool IpfsFallbackRedirectNavigationData::IsAutoRedirectBlocked(
-    content::WebContents* web_contents,
-    const GURL& current_page_url,
-    const bool remove_from_history) {
-  DCHECK(web_contents);
-  bool is_blocked{false};
-  auto& controller = web_contents->GetController();
-  for (int i = 0; i < controller.GetEntryCount(); i++) {
-    auto* entry = controller.GetEntryAtIndex(i);
-    if (!entry) {
-      continue;
-    }
-    const auto* nav_data = GetFallbackData(entry);
-    is_blocked = nav_data && nav_data->IsValid() &&
-                 nav_data->IsAutoRedirectBlocked() &&
-                 !nav_data->GetOriginalUrl().is_empty() &&
-                 nav_data->GetOriginalUrl() == current_page_url;
-    if (is_blocked) {
-      if (remove_from_history) {
-        controller.RemoveEntryAtIndex(i);
-      }
-      break;
-    }
-  }
-  return is_blocked;
-}
-
-// static
-bool IpfsFallbackRedirectNavigationData::IsSameIpfsLink(
-    content::WebContents* web_contents,
-    const GURL& current_page_url) {
-  DCHECK(web_contents);
-  auto& controller = web_contents->GetController();
-  if (controller.GetEntryCount() <= 0) {
-    return false;
-  }
-
-  auto current_page_url_converted =
-      ipfs::IsIPFSScheme(current_page_url)
-          ? current_page_url
-          : ipfs::ExtractSourceFromGateway(current_page_url);
-  for (int i = controller.GetEntryCount() - 1; i >= 0; i--) {
-    auto* entry = controller.GetEntryAtIndex(i);
-    if (!entry) {
-      continue;
-    }
-    auto entry_url_converted = ipfs::ExtractSourceFromGateway(entry->GetURL());
-    return entry_url_converted.has_value() &&
-           entry_url_converted.value() == current_page_url_converted;
-  }
-  return false;
+  return nullptr;
 }
 
 // static
 void IpfsFallbackRedirectNavigationData::CleanAll(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
+  int index_to_remove{-1};
   auto& controller = web_contents->GetController();
   for (int i = 0; i < controller.GetEntryCount(); i++) {
     auto* entry = controller.GetEntryAtIndex(i);
     if (!entry) {
       continue;
     }
+    auto* nav_data = GetFallbackData(entry);
+    if (!nav_data) {
+      continue;
+    }
+
+    if (nav_data->GetRemoveFlag()) {
+      index_to_remove = i;
+    }
+
     entry->RemoveUserData(kIpfsFallbackRedirectNavigationDataKey);
+  }
+
+  if (index_to_remove >= 0) {
+    controller.RemoveEntryAtIndex(index_to_remove);
   }
 }
 
@@ -155,8 +119,8 @@ bool IpfsFallbackRedirectNavigationData::IsAutoRedirectBlocked() const {
   return block_auto_redirect_;
 }
 
-bool IpfsFallbackRedirectNavigationData::IsValid() const {
-  return valid_;
+bool IpfsFallbackRedirectNavigationData::GetRemoveFlag() const {
+  return remove_this_entry_at_the_end_;
 }
 
 void IpfsFallbackRedirectNavigationData::SetOriginalUrl(const GURL& url) {
@@ -168,8 +132,24 @@ void IpfsFallbackRedirectNavigationData::SetAutoRedirectBlock(
   block_auto_redirect_ = new_val;
 }
 
-void IpfsFallbackRedirectNavigationData::SetValid(const bool new_val) {
-  valid_ = new_val;
+void IpfsFallbackRedirectNavigationData::SetRemoveFlag(const bool new_val) {
+  remove_this_entry_at_the_end_ = new_val;
+}
+
+std::unique_ptr<base::SupportsUserData::Data>
+IpfsFallbackRedirectNavigationData::Clone() {
+  auto copy = std::make_unique<IpfsFallbackRedirectNavigationData>();
+  copy->original_url_ = original_url_;
+  copy->block_auto_redirect_ = block_auto_redirect_;
+  copy->remove_this_entry_at_the_end_ = remove_this_entry_at_the_end_;
+  return std::move(copy);
+}
+
+std::string IpfsFallbackRedirectNavigationData::ToDebugString() const {
+  return base::StringPrintf(
+      "remove_this_entry_at_the_end_:%d block_auto_redirect:%d original_url:%s",
+      remove_this_entry_at_the_end_, block_auto_redirect_,
+      original_url_.spec().c_str());
 }
 
 }  // namespace ipfs

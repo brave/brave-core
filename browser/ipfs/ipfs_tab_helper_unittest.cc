@@ -807,7 +807,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
             1);
         auto* nav_data_detected_original_url =
             IpfsFallbackRedirectNavigationData::
-                GetFallbackDataFromRedirectChain(web_contents());
+                FindFallbackData(web_contents());
         EXPECT_NE(nav_data_detected_original_url, nullptr);
         EXPECT_EQ(nav_data_detected_original_url->GetOriginalUrl(), url);
         EXPECT_FALSE(nav_data_detected_original_url->IsAutoRedirectBlocked());
@@ -818,7 +818,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
             2);
         auto* nav_data_auto_redirected = IpfsFallbackRedirectNavigationData::
-            GetFallbackDataFromRedirectChain(web_contents());
+            FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_auto_redirected, nullptr);
       }));
   web_contents()->SetOnDidFinishNavigationCompleted(
@@ -827,7 +827,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
             2);
         auto* nav_data_after_redirect = IpfsFallbackRedirectNavigationData::
-            GetFallbackDataFromRedirectChain(web_contents());
+            FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_after_redirect, nullptr);
       }));
 
@@ -838,7 +838,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
   ipfs_tab_helper()->SetFallbackAddress(url);
 
   auto* nav_data_after_redirect =
-      IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+      IpfsFallbackRedirectNavigationData::FindFallbackData(
           web_contents());
   EXPECT_NE(nav_data_after_redirect, nullptr);
   EXPECT_TRUE(nav_data_after_redirect->IsAutoRedirectBlocked());
@@ -860,7 +860,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_Broken_Redirect_Chain) {
       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
         auto* nav_data_detected_original_url =
             IpfsFallbackRedirectNavigationData::
-                GetFallbackDataFromRedirectChain(web_contents());
+                FindFallbackData(web_contents());
         EXPECT_NE(nav_data_detected_original_url, nullptr);
         EXPECT_EQ(nav_data_detected_original_url->GetOriginalUrl(), url);
         EXPECT_FALSE(nav_data_detected_original_url->IsAutoRedirectBlocked());
@@ -868,7 +868,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_Broken_Redirect_Chain) {
   web_contents()->SetOnDidFinishNavigationCompleted(
       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
         auto* nav_data_auto_redirected = IpfsFallbackRedirectNavigationData::
-            GetFallbackDataFromRedirectChain(web_contents());
+            FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_auto_redirected, nullptr);
       }));
 
@@ -877,7 +877,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_Broken_Redirect_Chain) {
   NavigateAndComitFailedFailedPage(redirected_to_url, 500);
 
   auto* nav_data_after_chain_break =
-      IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+      IpfsFallbackRedirectNavigationData::FindFallbackData(
           web_contents());
   EXPECT_EQ(nav_data_after_chain_break, nullptr);
 }
@@ -904,7 +904,7 @@ TEST_F(IpfsTabHelperUnitTest,
             1);
         auto* nav_data_detected_original_url =
             IpfsFallbackRedirectNavigationData::
-                GetFallbackDataFromRedirectChain(web_contents());
+                FindFallbackData(web_contents());
         EXPECT_NE(nav_data_detected_original_url, nullptr);
         EXPECT_EQ(nav_data_detected_original_url->GetOriginalUrl(), url);
         EXPECT_FALSE(nav_data_detected_original_url->IsAutoRedirectBlocked());
@@ -915,7 +915,7 @@ TEST_F(IpfsTabHelperUnitTest,
             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
             2);
         auto* nav_data_chain_break = IpfsFallbackRedirectNavigationData::
-            GetFallbackDataFromRedirectChain(web_contents());
+            FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_chain_break, nullptr);
       }));
   web_contents()->SetOnDidFinishNavigationCompleted(
@@ -925,7 +925,7 @@ TEST_F(IpfsTabHelperUnitTest,
             3);
         auto* nav_data_detected_new_original_url =
             IpfsFallbackRedirectNavigationData::
-                GetFallbackDataFromRedirectChain(web_contents());
+                FindFallbackData(web_contents());
         EXPECT_NE(nav_data_detected_new_original_url, nullptr);
         EXPECT_EQ(nav_data_detected_new_original_url->GetOriginalUrl(),
                   new_redirect_chain_start_url);
@@ -938,7 +938,7 @@ TEST_F(IpfsTabHelperUnitTest,
             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
             4);
         auto* nav_data_new_chain_start = IpfsFallbackRedirectNavigationData::
-            GetFallbackDataFromRedirectChain(web_contents());
+            FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_new_chain_start, nullptr);
       }));
   web_contents()->SetOnDidFinishNavigationCompleted(
@@ -948,7 +948,7 @@ TEST_F(IpfsTabHelperUnitTest,
             4);
         auto* nav_data_after_redirect_new_chain =
             IpfsFallbackRedirectNavigationData::
-                GetFallbackDataFromRedirectChain(web_contents());
+                FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_after_redirect_new_chain, nullptr);
       }));
 
@@ -957,7 +957,7 @@ TEST_F(IpfsTabHelperUnitTest,
   NavigateAndComitFailedFailedPage(breake_redirected_to_url, 500);
 
   auto* nav_data_after_chain_break =
-      IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+      IpfsFallbackRedirectNavigationData::FindFallbackData(
           web_contents());
   EXPECT_EQ(nav_data_after_chain_break, nullptr);
 
@@ -968,7 +968,7 @@ TEST_F(IpfsTabHelperUnitTest,
   ipfs_tab_helper()->SetFallbackAddress(new_redirect_chain_start_url);
 
   auto* nav_data_after_redirect_new_chain =
-      IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+      IpfsFallbackRedirectNavigationData::FindFallbackData(
           web_contents());
   EXPECT_NE(nav_data_after_redirect_new_chain, nullptr);
   EXPECT_TRUE(nav_data_after_redirect_new_chain->IsAutoRedirectBlocked());
@@ -991,7 +991,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_NoRedirectAsNonIPFSLink) {
             1);
         auto* nav_data_detected_original_url =
             IpfsFallbackRedirectNavigationData::
-                GetFallbackDataFromRedirectChain(web_contents());
+                FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_detected_original_url, nullptr);
       }));
   web_contents()->SetOnDidFinishNavigationCompleted(
@@ -1001,7 +1001,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_NoRedirectAsNonIPFSLink) {
             1);
         auto* nav_data_detected_original_url =
             IpfsFallbackRedirectNavigationData::
-                GetFallbackDataFromRedirectChain(web_contents());
+                FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_detected_original_url, nullptr);
       }));
   NavigateAndComitFailedFailedPage(url, 500);
@@ -1021,7 +1021,7 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_IPFSCompanion_Enabled) {
             1);
         auto* nav_data_detected_original_url =
             IpfsFallbackRedirectNavigationData::
-                GetFallbackDataFromRedirectChain(web_contents());
+                FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_detected_original_url, nullptr);
       }));
 
