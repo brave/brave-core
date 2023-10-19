@@ -64,7 +64,7 @@ export const AccountAddressText = styled.span`
   color: ${(p) => p.theme.color.text02};
 `
 
-export const PrimaryButton = styled(WalletButton) <Partial<StyleProps>>`
+export const PrimaryButton = styled(WalletButton)<Partial<StyleProps>>`
   display: flex;
   cursor: pointer;
   outline: none;

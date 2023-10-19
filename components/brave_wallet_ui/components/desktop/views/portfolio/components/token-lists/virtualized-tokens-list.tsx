@@ -22,9 +22,9 @@ type RenderTokenProps<T> = {
   account?: BraveWallet.AccountInfo
 }
 
-export type RenderTokenFunc<
-  T
-> = (props: RenderTokenProps<T>) => JSX.Element | undefined | null
+export type RenderTokenFunc<T> = (
+  props: RenderTokenProps<T>
+) => JSX.Element | undefined | null
 
 type VirtualizedTokensListProps<T extends any[]> = {
   userAssetList: T
@@ -74,11 +74,8 @@ export const VirtualizedTokensList = React.memo(function <T extends any[]>({
   // computed
   // last item shown as 50% visible to indicate that scrolling is possible here
   const maxTokens =
-    maximumViewableTokens !== undefined
-      ? maximumViewableTokens
-      : 4.5
-  const minimumItems =
-    (Math.min(maxTokens, userAssetList.length || 1)) // min: 1, max: 4.5
+    maximumViewableTokens !== undefined ? maximumViewableTokens : 4.5
+  const minimumItems = Math.min(maxTokens, userAssetList.length || 1) // min: 1, max: 4.5
   const listHeight = estimatedItemSize * minimumItems
 
   // methods

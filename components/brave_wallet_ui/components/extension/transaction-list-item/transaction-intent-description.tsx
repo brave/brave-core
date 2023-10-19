@@ -12,11 +12,17 @@ interface Props {
   wrapFrom?: boolean
 }
 
-export const TransactionIntentDescription = ({ from, to, wrapFrom }: Props): JSX.Element => {
+export const TransactionIntentDescription = ({
+  from,
+  to,
+  wrapFrom
+}: Props): JSX.Element => {
   const fromText = <DetailTextLight>{from}</DetailTextLight>
-  return <>
-    {wrapFrom ? <DetailWrappedText>{fromText}</DetailWrappedText> : fromText}
-    {' '}<ArrowIcon />
-    <DetailTextLight>{to}</DetailTextLight>
-  </>
+  return (
+    <>
+      {wrapFrom ? <DetailWrappedText>{fromText}</DetailWrappedText> : fromText}{' '}
+      <ArrowIcon />
+      <DetailTextLight>{to}</DetailTextLight>
+    </>
+  )
 }

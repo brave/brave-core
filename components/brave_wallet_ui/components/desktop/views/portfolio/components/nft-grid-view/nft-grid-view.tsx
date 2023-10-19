@@ -9,22 +9,16 @@ import * as React from 'react'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Styled Components
-import {
-  StyledWrapper
-} from './style'
+import { StyledWrapper } from './style'
 
 interface Props {
   nonFungibleTokens: BraveWallet.BlockchainToken[]
-  renderToken: (item: BraveWallet.BlockchainToken, index: number) => JSX.Element | undefined | null
+  renderToken: (
+    item: BraveWallet.BlockchainToken,
+    index: number
+  ) => JSX.Element | undefined | null
 }
 
-export const NFTGridView = ({
-  nonFungibleTokens,
-  renderToken
-}: Props) => {
-  return (
-    <StyledWrapper>
-      {nonFungibleTokens.map(renderToken)}
-    </StyledWrapper>
-  )
+export const NFTGridView = ({ nonFungibleTokens, renderToken }: Props) => {
+  return <StyledWrapper>{nonFungibleTokens.map(renderToken)}</StyledWrapper>
 }

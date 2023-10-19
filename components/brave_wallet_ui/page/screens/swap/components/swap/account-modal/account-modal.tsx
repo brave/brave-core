@@ -6,9 +6,7 @@
 import * as React from 'react'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 
 import {
   useGetAccountInfosRegistryQuery,
@@ -20,9 +18,7 @@ import {
   accountInfoEntityAdaptorInitialState
 } from '../../../../../../common/slices/entities/account-info.entity'
 
-import {
-  getEntitiesListFromEntityState
-} from '../../../../../../utils/entities.utils'
+import { getEntitiesListFromEntityState } from '../../../../../../utils/entities.utils'
 
 // Components
 import { AccountListItemButton } from './account-list-item-button'
@@ -36,7 +32,6 @@ import {
   Icon,
   ShownResponsiveRow
 } from '../../shared-swap.styles'
-
 
 interface Props {
   onHideModal: () => void
@@ -54,7 +49,9 @@ export const AccountModal = (props: Props) => {
 
   // Memos
   const networkAccounts = React.useMemo(() => {
-    return accounts.filter(account => account.accountId.coin === selectedNetwork?.coin)
+    return accounts.filter(
+      (account) => account.accountId.coin === selectedNetwork?.coin
+    )
   }, [accounts, selectedNetwork])
 
   // Methods
@@ -69,12 +66,11 @@ export const AccountModal = (props: Props) => {
   return (
     <ModalBox>
       {/*
-        * TODO(onyb): this should be removed since the account dropdown is
-        * eventually going to be replaced with Send-like UX.
-        *
-        * Hiding Porfolio Section until we support/remove it
-        */
-      }
+       * TODO(onyb): this should be removed since the account dropdown is
+       * eventually going to be replaced with Send-like UX.
+       *
+       * Hiding Porfolio Section until we support/remove it
+       */}
       {/* <Column
         columnWidth='full'
         verticalPadding={16}
@@ -116,7 +112,10 @@ export const AccountModal = (props: Props) => {
           </Row>
           <ShownResponsiveRow maxWidth={570}>
             <IconButton onClick={onHideModal}>
-              <Icon size={28} name='close' />
+              <Icon
+                size={28}
+                name='close'
+              />
             </IconButton>
           </ShownResponsiveRow>
         </Row>

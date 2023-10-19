@@ -19,10 +19,8 @@ import { SignPanel } from '../components/extension/sign-panel/index'
 import {
   AllowAddChangeNetworkPanel //
 } from '../components/extension/allow-add-change-network-panel/index'
-import { ConfirmTransactionPanel } from
-  '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
-import { ConnectHardwareWalletPanel }
-  from '../components/extension/connect-hardware-wallet-panel/index'
+import { ConfirmTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
+import { ConnectHardwareWalletPanel } from '../components/extension/connect-hardware-wallet-panel/index'
 import {
   SitePermissions //
 } from '../components/extension/site-permissions-panel/index'
@@ -54,10 +52,7 @@ import {
   LongWrapper,
   ConnectWithSiteWrapper
 } from '../stories/style'
-import {
-  PanelWrapper,
-  WelcomePanelWrapper
-} from './style'
+import { PanelWrapper, WelcomePanelWrapper } from './style'
 
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
@@ -65,7 +60,7 @@ import {
   AppsListType,
   BraveWallet,
   PanelTypes,
-  WalletRoutes,
+  WalletRoutes
 } from '../constants/types'
 
 import { AppsList } from '../options/apps-list-options'
@@ -85,7 +80,12 @@ import { SignTransactionPanel } from '../components/extension/sign-panel/sign-tr
 import { useDispatch } from 'react-redux'
 import { ConfirmSwapTransaction } from '../components/extension/confirm-transaction-panel/swap'
 import { TransactionStatus } from '../components/extension/post-confirmation'
-import { useSafePanelSelector, useSafeWalletSelector, useUnsafePanelSelector, useUnsafeWalletSelector } from '../common/hooks/use-safe-selector'
+import {
+  useSafePanelSelector,
+  useSafeWalletSelector,
+  useUnsafePanelSelector,
+  useUnsafeWalletSelector
+} from '../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
@@ -101,12 +101,10 @@ import {
 } from '../common/slices/api.slice.extra'
 import { usePendingTransactions } from '../common/hooks/use-pending-transaction'
 import PageContainer from '../page/container'
-import {
-  SignInWithEthereumError
-} from '../components/extension/sign-panel/sign_in_with_ethereum_error'
+import { SignInWithEthereumError } from '../components/extension/sign-panel/sign_in_with_ethereum_error'
 
 // Allow BigInts to be stringified
-(BigInt.prototype as any).toJSON = function () {
+;(BigInt.prototype as any).toJSON = function () {
   return this.toString()
 }
 
@@ -114,7 +112,7 @@ const initialSessionRoute =
   getInitialSessionRoute() || WalletRoutes.PortfolioAssets
 let hasInitializedRouter = false
 
-function Container () {
+function Container() {
   // routing
   const history = useHistory()
 
@@ -125,31 +123,45 @@ function Container () {
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
-  const isPanelV2FeatureEnabled =
-    useSafeWalletSelector(WalletSelectors.isPanelV2FeatureEnabled)
+  const isPanelV2FeatureEnabled = useSafeWalletSelector(
+    WalletSelectors.isPanelV2FeatureEnabled
+  )
 
   // wallet selectors (unsafe)
   const favoriteApps = useUnsafeWalletSelector(WalletSelectors.favoriteApps)
-  const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
+  const userVisibleTokensInfo = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
 
   // panel selectors (safe)
   const panelTitle = useSafePanelSelector(PanelSelectors.panelTitle)
   const selectedPanel = useSafePanelSelector(PanelSelectors.selectedPanel)
-  const hardwareWalletCode = useSafePanelSelector(PanelSelectors.hardwareWalletCode)
+  const hardwareWalletCode = useSafePanelSelector(
+    PanelSelectors.hardwareWalletCode
+  )
   const selectedTransactionId = useSafePanelSelector(
     PanelSelectors.selectedTransactionId
   )
 
   // panel selectors (unsafe)
-  const connectToSiteOrigin = useUnsafePanelSelector(PanelSelectors.connectToSiteOrigin)
+  const connectToSiteOrigin = useUnsafePanelSelector(
+    PanelSelectors.connectToSiteOrigin
+  )
   const addChainRequest = useUnsafePanelSelector(PanelSelectors.addChainRequest)
   const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
-  const switchChainRequest = useUnsafePanelSelector(PanelSelectors.switchChainRequest)
-  const getEncryptionPublicKeyRequest = useUnsafePanelSelector(PanelSelectors.getEncryptionPublicKeyRequest)
+  const switchChainRequest = useUnsafePanelSelector(
+    PanelSelectors.switchChainRequest
+  )
+  const getEncryptionPublicKeyRequest = useUnsafePanelSelector(
+    PanelSelectors.getEncryptionPublicKeyRequest
+  )
   const decryptRequest = useUnsafePanelSelector(PanelSelectors.decryptRequest)
-  const connectingAccounts = useUnsafePanelSelector(PanelSelectors.connectingAccounts)
-  const signMessageErrorData =
-    useUnsafePanelSelector(PanelSelectors.signMessageErrorData)
+  const connectingAccounts = useUnsafePanelSelector(
+    PanelSelectors.connectingAccounts
+  )
+  const signMessageErrorData = useUnsafePanelSelector(
+    PanelSelectors.signMessageErrorData
+  )
 
   // queries & mutations
   const { accounts } = useAccountsQuery()
@@ -171,11 +183,12 @@ function Container () {
   const { data: addTokenRequests = [] } =
     useGetPendingTokenSuggestionRequestsQuery()
 
-  // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
-  // consider rendering a "loading" indicator when `hasInitialized === false`, and
-  // also using `React.lazy` to put all the main UI in a separate JS bundle and display
-  // that loading indicator ASAP.
-  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
+  // TODO(petemill): If initial data or UI takes a noticeable amount of time to
+  // arrive consider rendering a "loading" indicator when `hasInitialized ===
+  // false`, and also using `React.lazy` to put all the main UI in a separate JS
+  // bundle and display that loading indicator ASAP.
+  const [filteredAppsList, setFilteredAppsList] =
+    React.useState<AppsListType[]>(AppsList)
 
   const { selectedPendingTransaction } = usePendingTransactions()
 
@@ -232,26 +245,48 @@ function Container () {
   }
 
   const onCancelSigning = () => {
-    dispatch(WalletPanelActions.signMessageProcessed({
+    dispatch(
+      WalletPanelActions.signMessageProcessed({
         approved: false,
         id: signMessageData[0].id
-    }))
+      })
+    )
   }
 
   const onApproveAddNetwork = () => {
-    dispatch(WalletPanelActions.addEthereumChainRequestCompleted({ chainId: addChainRequest.networkInfo.chainId, approved: true }))
+    dispatch(
+      WalletPanelActions.addEthereumChainRequestCompleted({
+        chainId: addChainRequest.networkInfo.chainId,
+        approved: true
+      })
+    )
   }
 
   const onCancelAddNetwork = () => {
-    dispatch(WalletPanelActions.addEthereumChainRequestCompleted({ chainId: addChainRequest.networkInfo.chainId, approved: false }))
+    dispatch(
+      WalletPanelActions.addEthereumChainRequestCompleted({
+        chainId: addChainRequest.networkInfo.chainId,
+        approved: false
+      })
+    )
   }
 
   const onApproveChangeNetwork = () => {
-    dispatch(WalletPanelActions.switchEthereumChainProcessed({ requestId: switchChainRequest.requestId, approved: true }))
+    dispatch(
+      WalletPanelActions.switchEthereumChainProcessed({
+        requestId: switchChainRequest.requestId,
+        approved: true
+      })
+    )
   }
 
   const onCancelChangeNetwork = () => {
-    dispatch(WalletPanelActions.switchEthereumChainProcessed({ requestId: switchChainRequest.requestId, approved: false }))
+    dispatch(
+      WalletPanelActions.switchEthereumChainProcessed({
+        requestId: switchChainRequest.requestId,
+        approved: false
+      })
+    )
   }
 
   const onCancelConnectHardwareWallet = (account: BraveWallet.AccountInfo) => {
@@ -382,13 +417,19 @@ function Container () {
 
   if (isWalletLocked) {
     return isPanelV2FeatureEnabled ? (
-      <PanelWrapper width={390} height={650}>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
         <PageContainer />
       </PanelWrapper>
     ) : (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <LockPanel onSubmit={unlockWallet} onClickRestore={onRestore} />
+          <LockPanel
+            onSubmit={unlockWallet}
+            onClickRestore={onRestore}
+          />
         </StyledExtensionWrapper>
       </PanelWrapper>
     )
@@ -398,9 +439,7 @@ function Container () {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <TransactionStatus
-            transactionId={selectedTransactionId}
-          />
+          <TransactionStatus transactionId={selectedTransactionId} />
         </StyledExtensionWrapper>
       </PanelWrapper>
     )
@@ -425,7 +464,9 @@ function Container () {
     )
   }
 
-  if (selectedPendingTransaction?.txType === BraveWallet.TransactionType.ETHSwap) {
+  if (
+    selectedPendingTransaction?.txType === BraveWallet.TransactionType.ETHSwap
+  ) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
@@ -526,12 +567,17 @@ function Container () {
     )
   }
 
-  if (selectedPanel === 'signTransaction' || selectedPanel === 'signAllTransactions') {
+  if (
+    selectedPanel === 'signTransaction' ||
+    selectedPanel === 'signAllTransactions'
+  ) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <SignTransactionPanel
-            signMode={selectedPanel === 'signAllTransactions' ? 'signAllTxs' : 'signTx'}
+            signMode={
+              selectedPanel === 'signAllTransactions' ? 'signAllTxs' : 'signTx'
+            }
           />
         </LongWrapper>
       </PanelWrapper>
@@ -627,11 +673,14 @@ function Container () {
   }
 
   if (selectedPanel === 'connectWithSite') {
-    const accountsToConnect = accounts.filter(
-      (account) => connectingAccounts.includes(account.address.toLowerCase())
+    const accountsToConnect = accounts.filter((account) =>
+      connectingAccounts.includes(account.address.toLowerCase())
     )
     return (
-      <PanelWrapper width={390} height={600}>
+      <PanelWrapper
+        width={390}
+        height={600}
+      >
         <ConnectWithSiteWrapper>
           <ConnectWithSite
             originInfo={connectToSiteOrigin}
@@ -729,7 +778,10 @@ function Container () {
 
   if (isPanelV2FeatureEnabled) {
     return (
-      <PanelWrapper width={390} height={650}>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
         <PageContainer />
       </PanelWrapper>
     )

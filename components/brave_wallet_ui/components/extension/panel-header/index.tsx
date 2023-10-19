@@ -7,12 +7,7 @@ import * as React from 'react'
 import { SearchBar } from '../../shared/search-bar/index'
 
 // Styled Components
-import {
-  HeaderTitle,
-  HeaderWrapper,
-  TopRow,
-  CloseButton
-} from './style'
+import { HeaderTitle, HeaderWrapper, TopRow, CloseButton } from './style'
 import { getLocale } from '../../../../common/locale'
 import { PanelTypes } from '../../../constants/types'
 
@@ -28,7 +23,7 @@ export class PanelHeader extends React.PureComponent<Props> {
     this.props.action(path)
   }
 
-  render () {
+  render() {
     const { title, searchAction, useSearch } = this.props
     return (
       <HeaderWrapper hasSearch={useSearch || false}>
@@ -36,12 +31,12 @@ export class PanelHeader extends React.PureComponent<Props> {
           <HeaderTitle>{title}</HeaderTitle>
           <CloseButton onClick={this.navigate('main')} />
         </TopRow>
-        {useSearch &&
+        {useSearch && (
           <SearchBar
             placeholder={getLocale('braveWalletSearchText')}
             action={searchAction}
           />
-        }
+        )}
       </HeaderWrapper>
     )
   }

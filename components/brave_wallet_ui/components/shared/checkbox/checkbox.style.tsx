@@ -17,42 +17,41 @@ const getLabelProps = (p: StyleProps) => {
     --checkbox-box-size: ${p.size === 'big' ? 24 : 18}px;
     --checkbox-label-size: ${p.size === 'big' ? 16 : 14}px;
     --checkbox-box-spacing: ${p.size === 'big' ? 17 : 12}px;
-    --checkbox-box-color: #696FDC;
-    --checkbox-label-color: #B8B9C4;
-    --checkbox-border-color: ${
-      p.disabled
-        ? '#EBECF0'
-        : p.selected
-          ? '#A1A8F2'
-          : '#D1D1DB'
-    };
+    --checkbox-box-color: #696fdc;
+    --checkbox-label-color: #b8b9c4;
+    --checkbox-border-color: ${p.disabled
+      ? '#EBECF0'
+      : p.selected
+      ? '#A1A8F2'
+      : '#D1D1DB'};
 
     @media (prefers-color-scheme: dark) {
-      --checkbox-box-color: #A1A8F2;
-      --checkbox-label-color: #B8B9C4;
-      --checkbox-border-color: ${
-        p.disabled
-          ? '#686978'
-          : p.selected
-            ? '#696FDC'
-            : '#D1D1DB'
-      };
+      --checkbox-box-color: #a1a8f2;
+      --checkbox-label-color: #b8b9c4;
+      --checkbox-border-color: ${p.disabled
+        ? '#686978'
+        : p.selected
+        ? '#696FDC'
+        : '#D1D1DB'};
     }
 
-    &:focus, &:hover:not([disabled]) {
+    &:focus,
+    &:hover:not([disabled]) {
       outline: none;
-      --checkbox-border-color: #A0A5EB;
+      --checkbox-border-color: #a0a5eb;
       --checkbox-border-size: 3px;
     }
   `
 }
 
-export const StyledLabel = styled('label')<StyleProps & {
-  alignItems?: CSSProperties['alignItems']
-  justifyContent?: CSSProperties['justifyContent']
-}>`
+export const StyledLabel = styled('label')<
+  StyleProps & {
+    alignItems?: CSSProperties['alignItems']
+    justifyContent?: CSSProperties['justifyContent']
+  }
+>`
   ${getLabelProps};
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${(p) => p.theme.fontFamily.body};
   display: flex;
   align-items: ${(p) => p?.alignItems ?? 'center'};
   justify-content: ${(p) => p?.justifyContent ?? 'center'};
@@ -82,7 +81,7 @@ export const StyledBox = styled('span')`
   :after {
     /* Border provided by :after element so that transition of size is smooth without
       svg-resizing 'jumping' effect from resizing padding + border space at the same time */
-    transition: border .1s ease-in-out;
+    transition: border 0.1s ease-in-out;
     position: absolute;
     top: 0;
     left: 0;
@@ -97,7 +96,7 @@ export const StyledBox = styled('span')`
 
 export const StyledText = styled('span')<{ size?: 'big' | 'small' }>`
   flex: 1;
-  padding-top: ${(p) => p?.size === 'big' ? '2px' : '1px'};
+  padding-top: ${(p) => (p?.size === 'big' ? '2px' : '1px')};
   letter-spacing: 0;
   display: flex;
 `

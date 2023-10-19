@@ -53,7 +53,7 @@ export interface Props {
   onClickInstructions: () => void
 }
 
-function getAppName (coinType: BraveWallet.CoinType): string {
+function getAppName(coinType: BraveWallet.CoinType): string {
   switch (coinType) {
     case BraveWallet.CoinType.SOL:
       return 'Solana'
@@ -184,28 +184,34 @@ export const ConnectHardwareWalletPanel = ({
       <ConnectionRow>
         <Indicator isConnected={isConnected} />
         <Description>
-          {
-            isConnected
-              ? getLocale('braveWalletConnectHardwarePanelConnected').replace('$1', account.name)
-              : getLocale('braveWalletConnectHardwarePanelDisconnected').replace('$1', account.name)
-          }
+          {isConnected
+            ? getLocale('braveWalletConnectHardwarePanelConnected').replace(
+                '$1',
+                account.name
+              )
+            : getLocale('braveWalletConnectHardwarePanelDisconnected').replace(
+                '$1',
+                account.name
+              )}
         </Description>
       </ConnectionRow>
       <Title>{title}</Title>
-      <InstructionsButton onClick={onClickInstructions}>{getLocale('braveWalletConnectHardwarePanelInstructions')}</InstructionsButton>
+      <InstructionsButton onClick={onClickInstructions}>
+        {getLocale('braveWalletConnectHardwarePanelInstructions')}
+      </InstructionsButton>
       <PageIcon />
-      {
-        hardwareWalletCode !== 'deviceBusy' && (hardwareWalletCode === 'unauthorized'
-          ? <AuthorizeHardwareDeviceIFrame coinType={coinType}/>
-          : <ButtonWrapper>
-              <NavButton
-                buttonType='secondary'
-                text={getLocale('braveWalletButtonCancel')}
-                onSubmit={onCancelConnect}
-              />
-            </ButtonWrapper>
-        )
-      }
+      {hardwareWalletCode !== 'deviceBusy' &&
+        (hardwareWalletCode === 'unauthorized' ? (
+          <AuthorizeHardwareDeviceIFrame coinType={coinType} />
+        ) : (
+          <ButtonWrapper>
+            <NavButton
+              buttonType='secondary'
+              text={getLocale('braveWalletButtonCancel')}
+              onSubmit={onCancelConnect}
+            />
+          </ButtonWrapper>
+        ))}
     </StyledWrapper>
   )
 }

@@ -8,14 +8,10 @@ import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 import { BraveWallet, AccountPageTabs } from '../../../../constants/types'
-import {
-  querySubscriptionOptions60s
-} from '../../../../common/slices/constants'
+import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
 
 // Selectors
-import {
-  useUnsafeWalletSelector
-} from '../../../../common/hooks/use-safe-selector'
+import { useUnsafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
 
 // utils
@@ -26,36 +22,21 @@ import {
   sortAccountsByName
 } from '../../../../utils/account-utils'
 import { makeAccountRoute } from '../../../../utils/routes-utils'
-import {
-  getPriceIdForToken
-} from '../../../../utils/api-utils'
-import {
-  getNormalizedExternalRewardsWallet
-} from '../../../../utils/rewards_utils'
+import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { getNormalizedExternalRewardsWallet } from '../../../../utils/rewards_utils'
 
 // Styled Components
-import {
-  SectionTitle
-} from './style'
+import { SectionTitle } from './style'
 
-import {
-  Column,
-  Row
-} from '../../../shared/style'
+import { Column, Row } from '../../../shared/style'
 
 // Components
 import AccountListItem from '../../account-list-item'
-import {
-  WalletPageWrapper
-} from '../../wallet-page-wrapper/wallet-page-wrapper'
-import {
-  AccountsHeader
-} from '../../card-headers/accounts-header'
+import { WalletPageWrapper } from '../../wallet-page-wrapper/wallet-page-wrapper'
+import { AccountsHeader } from '../../card-headers/accounts-header'
 
 // Hooks
-import {
-  useBalancesFetcher
-} from '../../../../common/hooks/use-balances-fetcher'
+import { useBalancesFetcher } from '../../../../common/hooks/use-balances-fetcher'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
@@ -83,94 +64,98 @@ export const Accounts = () => {
   const onSelectAccount = React.useCallback(
     (account: BraveWallet.AccountInfo | undefined) => {
       if (account) {
-        history.push(makeAccountRoute(account, AccountPageTabs.AccountAssetsSub))
+        history.push(
+          makeAccountRoute(account, AccountPageTabs.AccountAssetsSub)
+        )
       }
     },
     [history]
   )
 
   // memos && computed
-  const externalRewardsAccount =
-    isRewardsEnabled
-      ? getNormalizedExternalRewardsWallet(
+  const externalRewardsAccount = isRewardsEnabled
+    ? getNormalizedExternalRewardsWallet(
         externalRewardsInfo?.provider ?? undefined
       )
-      : undefined
+    : undefined
 
   const derivedAccounts = React.useMemo(() => {
     return accounts.filter(
-      (account) =>
-        account.accountId.kind === BraveWallet.AccountKind.kDerived)
+      (account) => account.accountId.kind === BraveWallet.AccountKind.kDerived
+    )
   }, [accounts])
 
   const importedAccounts = React.useMemo(() => {
     return accounts.filter(
-      (account) =>
-        account.accountId.kind === BraveWallet.AccountKind.kImported)
+      (account) => account.accountId.kind === BraveWallet.AccountKind.kImported
+    )
   }, [accounts])
 
   const trezorAccounts = React.useMemo(() => {
-    const foundTrezorAccounts = accounts.filter((account) => getAccountType(account) === 'Trezor')
+    const foundTrezorAccounts = accounts.filter(
+      (account) => getAccountType(account) === 'Trezor'
+    )
     return groupAccountsById(foundTrezorAccounts, 'deviceId')
   }, [accounts])
 
   const ledgerAccounts = React.useMemo(() => {
-    const foundLedgerAccounts = accounts.filter((account) => getAccountType(account) === 'Ledger')
+    const foundLedgerAccounts = accounts.filter(
+      (account) => getAccountType(account) === 'Ledger'
+    )
     return groupAccountsById(foundLedgerAccounts, 'deviceId')
   }, [accounts])
 
   const { data: networks } = useGetVisibleNetworksQuery()
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const {
-    data: tokenBalancesRegistry,
-    isLoading: isLoadingBalances
-  } = useBalancesFetcher({
-    accounts,
-    networks
-  })
+  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
+    useBalancesFetcher({
+      accounts,
+      networks
+    })
 
-  const tokenPriceIds = React.useMemo(() =>
-    userVisibleTokensInfo
-      .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
-      .map(token => getPriceIdForToken(token)),
+  const tokenPriceIds = React.useMemo(
+    () =>
+      userVisibleTokensInfo
+        .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
+        .map((token) => getPriceIdForToken(token)),
     [userVisibleTokensInfo]
   )
 
-  const {
-    data: spotPriceRegistry,
-    isLoading: isLoadingSpotPrices
-  } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && defaultFiatCurrency
-      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
-      : skipToken,
-    querySubscriptionOptions60s
-  )
+  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+    useGetTokenSpotPricesQuery(
+      tokenPriceIds.length && defaultFiatCurrency
+        ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+        : skipToken,
+      querySubscriptionOptions60s
+    )
 
   const trezorKeys = React.useMemo(() => {
     return Object.keys(trezorAccounts)
   }, [trezorAccounts])
 
   const trezorList = React.useMemo(() => {
-    return trezorKeys.map(key => <Column
-      fullWidth={true}
-      alignItems='flex-start'
-      key={key}
-    >
-      {sortAccountsByName(trezorAccounts[key])
-        .map((account: BraveWallet.AccountInfo) =>
-          <AccountListItem
-            key={account.accountId.uniqueKey}
-            onClick={onSelectAccount}
-            account={account}
-            tokenBalancesRegistry={tokenBalancesRegistry}
-            isLoadingBalances={isLoadingBalances}
-            spotPriceRegistry={spotPriceRegistry}
-            isLoadingSpotPrices={isLoadingSpotPrices}
-          />
+    return trezorKeys.map((key) => (
+      <Column
+        fullWidth={true}
+        alignItems='flex-start'
+        key={key}
+      >
+        {sortAccountsByName(trezorAccounts[key]).map(
+          (account: BraveWallet.AccountInfo) => (
+            <AccountListItem
+              key={account.accountId.uniqueKey}
+              onClick={onSelectAccount}
+              account={account}
+              tokenBalancesRegistry={tokenBalancesRegistry}
+              isLoadingBalances={isLoadingBalances}
+              spotPriceRegistry={spotPriceRegistry}
+              isLoadingSpotPrices={isLoadingSpotPrices}
+            />
+          )
         )}
-    </Column>
-    )
+      </Column>
+    ))
   }, [
     trezorKeys,
     trezorAccounts,
@@ -186,25 +171,27 @@ export const Accounts = () => {
   }, [ledgerAccounts])
 
   const ledgerList = React.useMemo(() => {
-    return ledgerKeys.map(key => <Column
-      fullWidth={true}
-      alignItems='flex-start'
-      key={key}
-    >
-      {sortAccountsByName(ledgerAccounts[key])
-        .map((account: BraveWallet.AccountInfo) =>
-          <AccountListItem
-            key={account.accountId.uniqueKey}
-            onClick={onSelectAccount}
-            account={account}
-            tokenBalancesRegistry={tokenBalancesRegistry}
-            isLoadingBalances={isLoadingBalances}
-            spotPriceRegistry={spotPriceRegistry}
-            isLoadingSpotPrices={isLoadingSpotPrices}
-          />
+    return ledgerKeys.map((key) => (
+      <Column
+        fullWidth={true}
+        alignItems='flex-start'
+        key={key}
+      >
+        {sortAccountsByName(ledgerAccounts[key]).map(
+          (account: BraveWallet.AccountInfo) => (
+            <AccountListItem
+              key={account.accountId.uniqueKey}
+              onClick={onSelectAccount}
+              account={account}
+              tokenBalancesRegistry={tokenBalancesRegistry}
+              isLoadingBalances={isLoadingBalances}
+              spotPriceRegistry={spotPriceRegistry}
+              isLoadingSpotPrices={isLoadingSpotPrices}
+            />
+          )
         )}
-    </Column>
-    )
+      </Column>
+    ))
   }, [
     ledgerKeys,
     ledgerAccounts,
@@ -215,34 +202,27 @@ export const Accounts = () => {
     isLoadingSpotPrices
   ])
 
-
   // computed
-  const showHardwareWallets = trezorKeys.length !== 0 ||
-    ledgerKeys.length !== 0
+  const showHardwareWallets = trezorKeys.length !== 0 || ledgerKeys.length !== 0
 
   // render
   return (
     <WalletPageWrapper
       wrapContentInBox
-      cardHeader={
-        <AccountsHeader />
-      }
+      cardHeader={<AccountsHeader />}
     >
       <Row
         padding='8px'
         justifyContent='flex-start'
       >
-        <SectionTitle
-        >
-          {getLocale('braveWalletAccounts')}
-        </SectionTitle>
+        <SectionTitle>{getLocale('braveWalletAccounts')}</SectionTitle>
       </Row>
       <Column
         fullWidth={true}
         alignItems='flex-start'
         margin='0px 0px 24px 0px'
       >
-        {derivedAccounts.map((account) =>
+        {derivedAccounts.map((account) => (
           <AccountListItem
             key={account.accountId.uniqueKey}
             onClick={onSelectAccount}
@@ -252,10 +232,10 @@ export const Accounts = () => {
             spotPriceRegistry={spotPriceRegistry}
             isLoadingSpotPrices={isLoadingSpotPrices}
           />
-        )}
+        ))}
       </Column>
 
-      {importedAccounts.length !== 0 &&
+      {importedAccounts.length !== 0 && (
         <>
           <Row
             padding='8px'
@@ -270,7 +250,7 @@ export const Accounts = () => {
             alignItems='flex-start'
             margin='0px 0px 24px 0px'
           >
-            {importedAccounts.map((account) =>
+            {importedAccounts.map((account) => (
               <AccountListItem
                 key={account.accountId.uniqueKey}
                 onClick={onSelectAccount}
@@ -280,12 +260,12 @@ export const Accounts = () => {
                 spotPriceRegistry={spotPriceRegistry}
                 isLoadingSpotPrices={isLoadingSpotPrices}
               />
-            )}
+            ))}
           </Column>
         </>
-      }
+      )}
 
-      {showHardwareWallets &&
+      {showHardwareWallets && (
         <>
           <Row
             padding='8px'
@@ -304,9 +284,9 @@ export const Accounts = () => {
             {ledgerList}
           </Column>
         </>
-      }
+      )}
 
-      {externalRewardsAccount &&
+      {externalRewardsAccount && (
         <>
           <Row
             padding='8px'
@@ -332,7 +312,7 @@ export const Accounts = () => {
             />
           </Column>
         </>
-      }
+      )}
     </WalletPageWrapper>
   )
 }

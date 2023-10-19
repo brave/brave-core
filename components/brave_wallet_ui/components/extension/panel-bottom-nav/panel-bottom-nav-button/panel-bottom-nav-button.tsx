@@ -38,7 +38,11 @@ export const PanelBottomNavButton = (props: Props) => {
   }, [])
 
   return (
-    <Button onMouseEnter={showTip} onMouseLeave={hideTip} onClick={onClick}>
+    <Button
+      onMouseEnter={showTip}
+      onMouseLeave={hideTip}
+      onClick={onClick}
+    >
       <ButtonIcon name={option.icon} />
 
       <NavTooltip
@@ -50,8 +54,8 @@ export const PanelBottomNavButton = (props: Props) => {
           option.id === 'buy'
             ? 'left'
             : option.id === 'activity'
-              ? 'right'
-              : 'center'
+            ? 'right'
+            : 'center'
         }
       />
     </Button>

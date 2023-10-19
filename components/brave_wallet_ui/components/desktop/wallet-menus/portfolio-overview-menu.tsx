@@ -15,20 +15,14 @@ import { WalletRoutes } from '../../../constants/types'
 import { WalletActions } from '../../../common/actions'
 
 // Selectors
-import {
-  useSafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import {
-  WalletSelectors
-} from '../../../common/selectors'
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 
 // Constants
-import {
-  LOCAL_STORAGE_KEYS
-} from '../../../common/constants/local-storage-keys'
+import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Styled Components
 import {
@@ -37,9 +31,7 @@ import {
   ButtonIcon,
   ToggleRow
 } from './wellet-menus.style'
-import {
-  Row
-} from '../../shared/style'
+import { Row } from '../../shared/style'
 
 export const PortfolioOverviewMenu = () => {
   // Routing
@@ -49,40 +41,31 @@ export const PortfolioOverviewMenu = () => {
   // Redux
   const dispatch = useDispatch()
 
-  const hidePortfolioGraph =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioGraph)
-  const hidePortfolioBalances =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
-  const hidePortfolioNFTsTab =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioNFTsTab)
+  const hidePortfolioGraph = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioGraph
+  )
+  const hidePortfolioBalances = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioBalances
+  )
+  const hidePortfolioNFTsTab = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioNFTsTab
+  )
 
   // Methods
   const onToggleHideGraph = React.useCallback(() => {
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
-      hidePortfolioGraph
-        ? 'false'
-        : 'true'
+      hidePortfolioGraph ? 'false' : 'true'
     )
-    dispatch(
-      WalletActions
-        .setHidePortfolioGraph(
-          !hidePortfolioGraph
-        ))
+    dispatch(WalletActions.setHidePortfolioGraph(!hidePortfolioGraph))
   }, [hidePortfolioGraph])
 
   const onToggleHideBalances = React.useCallback(() => {
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-      hidePortfolioBalances
-        ? 'false'
-        : 'true'
+      hidePortfolioBalances ? 'false' : 'true'
     )
-    dispatch(
-      WalletActions
-        .setHidePortfolioBalances(
-          !hidePortfolioBalances
-        ))
+    dispatch(WalletActions.setHidePortfolioBalances(!hidePortfolioBalances))
   }, [hidePortfolioBalances])
 
   const onToggleHideNFTsTab = React.useCallback(() => {
@@ -91,15 +74,9 @@ export const PortfolioOverviewMenu = () => {
     }
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
-      hidePortfolioNFTsTab
-        ? 'false'
-        : 'true'
+      hidePortfolioNFTsTab ? 'false' : 'true'
     )
-    dispatch(
-      WalletActions
-        .setHidePortfolioNFTsTab(
-          !hidePortfolioNFTsTab
-        ))
+    dispatch(WalletActions.setHidePortfolioNFTsTab(!hidePortfolioNFTsTab))
   }, [hidePortfolioNFTsTab, walletLocation])
 
   return (
@@ -145,7 +122,6 @@ export const PortfolioOverviewMenu = () => {
           size='small'
         />
       </ToggleRow>
-
     </StyledWrapper>
   )
 }

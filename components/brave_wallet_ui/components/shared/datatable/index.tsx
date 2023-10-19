@@ -55,85 +55,83 @@ export interface Props {
 export const Table = (props: Props) => {
   const { id, headers, rows, children, stickyHeaders, onSort } = props
 
-  const onHeaderClick = React.useCallback((header: Header) => () => {
-    if (!header.sortable) return
-    const currentSortOrder = header.sortOrder ?? 'desc'
-    const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc'
+  const onHeaderClick = React.useCallback(
+    (header: Header) => () => {
+      if (!header.sortable) return
+      const currentSortOrder = header.sortOrder ?? 'desc'
+      const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc'
 
-    if (onSort) {
-      onSort(header.id, newSortOrder)
-    }
-  }, [onSort])
+      if (onSort) {
+        onSort(header.id, newSortOrder)
+      }
+    },
+    [onSort]
+  )
 
-  const onRowClick = React.useCallback((row: Row) => () => {
-    if (row.onClick) {
-      row.onClick(row.data)
-    }
-  }, [])
+  const onRowClick = React.useCallback(
+    (row: Row) => () => {
+      if (row.onClick) {
+        row.onClick(row.data)
+      }
+    },
+    []
+  )
 
   return (
     <StyledWrapper id={id}>
-      {headers && headers.length > 0 &&
+      {headers && headers.length > 0 && (
         <StyledTable>
-          {headers &&
+          {headers && (
             <StyledTHead>
               <tr>
-                {
-                  headers.map((header) =>
-                    <StyledTH
-                      id={`${header.id}-th`}
-                      key={`${header.id}-th`}
-                      style={header.customStyle}
-                      sortable={header.sortable}
-                      sortOrder={header.sortOrder}
-                      onClick={onHeaderClick(header)}
-                      stickyHeaders={stickyHeaders}
-                    >
-                      {header.sortable &&
-                        <ArrowWrapper>
-                          {header.sortOrder === 'asc' ? <ArrowUp /> : null}
-                          {header.sortOrder === 'desc' ? <ArrowDown /> : null}
-                        </ArrowWrapper>
-                      }
-                      {header.content}
-                    </StyledTH>
-                  )
-                }
+                {headers.map((header) => (
+                  <StyledTH
+                    id={`${header.id}-th`}
+                    key={`${header.id}-th`}
+                    style={header.customStyle}
+                    sortable={header.sortable}
+                    sortOrder={header.sortOrder}
+                    onClick={onHeaderClick(header)}
+                    stickyHeaders={stickyHeaders}
+                  >
+                    {header.sortable && (
+                      <ArrowWrapper>
+                        {header.sortOrder === 'asc' ? <ArrowUp /> : null}
+                        {header.sortOrder === 'desc' ? <ArrowDown /> : null}
+                      </ArrowWrapper>
+                    )}
+                    {header.content}
+                  </StyledTH>
+                ))}
               </tr>
             </StyledTHead>
-          }
-          {rows &&
+          )}
+          {rows && (
             <StyledTBody>
-              {
-                rows.map((row: Row, i: number) =>
-                  <StyledTR
-                    id={row.id}
-                    key={`tr-${row.id}-${i}`}
-                    style={row.customStyle}
-                  >
-                    {
-                      row.content.map((cell: Cell, j: number) =>
-                        <StyledTD
-                          key={`${id}-td-${i}-${j}`}
-                          style={cell.customStyle}
-                          onClick={onRowClick(row)}
-                        >
-                          {cell.content}
-                        </StyledTD>
-                      )
-                    }
-                  </StyledTR>
-                )
-              }
+              {rows.map((row: Row, i: number) => (
+                <StyledTR
+                  id={row.id}
+                  key={`tr-${row.id}-${i}`}
+                  style={row.customStyle}
+                >
+                  {row.content.map((cell: Cell, j: number) => (
+                    <StyledTD
+                      key={`${id}-td-${i}-${j}`}
+                      style={cell.customStyle}
+                      onClick={onRowClick(row)}
+                    >
+                      {cell.content}
+                    </StyledTD>
+                  ))}
+                </StyledTR>
+              ))}
             </StyledTBody>
-          }
+          )}
         </StyledTable>
-      }
-      {(!rows || rows.length === 0) &&
-        <StyledNoContent>
-          {children}
-        </StyledNoContent>
-      }
+      )}
+      {(!rows || rows.length === 0) && (
+        <StyledNoContent>{children}</StyledNoContent>
+      )}
     </StyledWrapper>
   )
 }

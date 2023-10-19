@@ -29,7 +29,7 @@ export const CenterColumn = styled.div`
   max-width: 300px;
 `
 
-export const AccountCircle = styled(WalletButton) <{ orb: string }>`
+export const AccountCircle = styled(WalletButton)<{ orb: string }>`
   display: flex;
   cursor: pointer;
   width: 54px;
@@ -98,7 +98,7 @@ export const NotConnectedIcon = styled.div`
   height: 14px;
   margin-right: 8px;
   border-radius: 24px;
-  border: 1px solid rgba(255,255,255,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 `
 
 export const OvalButton = styled(WalletButton)`
@@ -110,7 +110,7 @@ export const OvalButton = styled(WalletButton)`
   background: none;
   border-radius: 48px;
   padding: 3px 10px;
-  border: 1px solid rgba(255,255,255,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   color: ${(p) => p.theme.palette.white};
   &:disabled {
     cursor: default;
@@ -173,7 +173,8 @@ export const ConnectedStatusBubble = styled.div<{ isConnected: boolean }>`
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  background-color: ${(p) => p.isConnected ? p.theme.color.successBorder : p.theme.color.errorBorder};
+  background-color: ${(p) =>
+    p.isConnected ? p.theme.color.successBorder : p.theme.color.errorBorder};
   margin-right: 6px;
-  border: 1px solid rgba(255,255,255, 1);
+  border: 1px solid rgba(255, 255, 255, 1);
 `

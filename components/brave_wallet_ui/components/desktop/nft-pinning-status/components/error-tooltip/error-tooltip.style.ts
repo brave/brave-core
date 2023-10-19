@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div`
   z-index: 3;
   background-color: ${leo.color.white};
   @media (prefers-color-scheme: dark) {
-    background-color: ${leo.color.black}
+    background-color: ${leo.color.black};
   }
   width: 280px;
   border-radius: 6px;

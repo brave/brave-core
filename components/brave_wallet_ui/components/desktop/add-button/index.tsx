@@ -16,21 +16,15 @@ export interface Props {
 }
 
 export default class AddButton extends React.PureComponent<Props, {}> {
-  render () {
-    const {
-      onSubmit,
-      text,
-      buttonType,
-      disabled,
-      editIcon
-    } = this.props
+  render() {
+    const { onSubmit, text, buttonType, disabled, editIcon } = this.props
     return (
-      <StyledButton disabled={disabled} buttonType={buttonType} onClick={onSubmit}>
-        {!editIcon ? (
-          <PlusIcon />
-        ) : (
-          <EditIcon />
-        )}
+      <StyledButton
+        disabled={disabled}
+        buttonType={buttonType}
+        onClick={onSubmit}
+      >
+        {!editIcon ? <PlusIcon /> : <EditIcon />}
         <ButtonText buttonType={buttonType}>{text}</ButtonText>
       </StyledButton>
     )

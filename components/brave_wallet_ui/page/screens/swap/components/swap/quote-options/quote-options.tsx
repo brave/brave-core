@@ -6,27 +6,15 @@
 import * as React from 'react'
 
 // Types
-import {
-  QuoteOption
-} from '../../../constants/types'
-import {
-  SpotPriceRegistry
-} from '../../../../../../constants/types'
+import { QuoteOption } from '../../../constants/types'
+import { SpotPriceRegistry } from '../../../../../../constants/types'
 
 // Components
-import {
-  SelectQuoteOptionButton
-} from '../../buttons/select-quote-option-button/select-quote-option-button'
+import { SelectQuoteOptionButton } from '../../buttons/select-quote-option-button/select-quote-option-button'
 
 // Styled Components
-import {
-  MoreOptionsButton
-} from './quote-options.style'
-import {
-  VerticalSpacer,
-  Column,
-  Icon
-} from '../../shared-swap.styles'
+import { MoreOptionsButton } from './quote-options.style'
+import { VerticalSpacer, Column, Icon } from '../../shared-swap.styles'
 
 interface Props {
   options: QuoteOption[]
@@ -36,12 +24,8 @@ interface Props {
 }
 
 export const QuoteOptions = (props: Props) => {
-  const {
-    options,
-    selectedQuoteOptionIndex,
-    onSelectQuoteOption,
-    spotPrices
-  } = props
+  const { options, selectedQuoteOptionIndex, onSelectQuoteOption, spotPrices } =
+    props
 
   // State
   const [showAllOptions, setShowAllOptions] = React.useState<boolean>(false)
@@ -62,7 +46,10 @@ export const QuoteOptions = (props: Props) => {
   return (
     <>
       <VerticalSpacer size={15} />
-      <Column columnHeight='dynamic' columnWidth='full'>
+      <Column
+        columnHeight='dynamic'
+        columnWidth='full'
+      >
         {filteredQuoteOptions.map((option: QuoteOption, index) => (
           <SelectQuoteOptionButton
             isBest={index === 0}

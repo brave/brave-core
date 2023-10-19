@@ -35,5 +35,9 @@ export type SolSignTransactionCommand = CommandMessage & {
   rawTxBytes: Buffer
 }
 
-export type SolLedgerFrameCommand = SolGetAccountCommand | SolSignTransactionCommand
-export type SolLedgerFrameResponse = SolGetAccountResponse | SolSignTransactionResponse
+export type SolLedgerFrameCommand =
+  | SolGetAccountCommand
+  | SolSignTransactionCommand
+export type SolLedgerFrameResponse =
+  | SolGetAccountResponse
+  | SolSignTransactionResponse

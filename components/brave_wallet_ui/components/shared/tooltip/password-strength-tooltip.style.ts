@@ -30,7 +30,8 @@ export const PasswordStrengthText = styled.p<{ isStrong?: boolean }>`
   letter-spacing: 0.01em;
   margin-bottom: 6px;
   vertical-align: middle;
-  color: ${(p) => p.isStrong ? p.theme.color.successBorder : p.theme.palette.white};
+  color: ${(p) =>
+    p.isStrong ? p.theme.color.successBorder : p.theme.palette.white};
 `
 
 export const PasswordStrengthHeading = styled(PasswordStrengthText)`

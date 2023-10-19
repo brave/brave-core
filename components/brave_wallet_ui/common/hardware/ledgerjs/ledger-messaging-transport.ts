@@ -20,14 +20,19 @@ export class LedgerMessagingTransport {
   protected targetUrl: string
   protected handlers: Map<string, Function>
 
-  constructor (targetWindow: Window, targetUrl: string) {
+  constructor(targetWindow: Window, targetUrl: string) {
     this.targetWindow = targetWindow
     this.targetUrl = targetUrl
-    this.handlers = new Map<string, LedgerCommandHandlerUnion<LedgerFrameResponse>>()
+    this.handlers = new Map<
+      string,
+      LedgerCommandHandlerUnion<LedgerFrameResponse>
+    >()
   }
 
   // T is response type, e.g. GetAccountResponse
-  sendCommand = <T> (command: LedgerFrameCommand): Promise<T | LedgerBridgeErrorCodes> => {
+  sendCommand = <T>(
+    command: LedgerFrameCommand
+  ): Promise<T | LedgerBridgeErrorCodes> => {
     return new Promise<T | LedgerBridgeErrorCodes>(async (resolve) => {
       // Set handler for the response by passing the resolve function to be run
       // when targetWindow responds using the same command.id.
@@ -72,8 +77,14 @@ export class LedgerMessagingTransport {
   // It fetches and runs the handler if one exists. If the received message event
   // itself is a response to a sendCommand, the command handler is then removed.
   // Otherwise, the response is posted back to the Window that sent the message.
-  protected onMessageReceived = async (event: MessageEvent<LedgerFrameCommand>) => {
-    if (event.type !== 'message' || (event.origin !== this.targetUrl) || !event.source) {
+  protected onMessageReceived = async (
+    event: MessageEvent<LedgerFrameCommand>
+  ) => {
+    if (
+      event.type !== 'message' ||
+      event.origin !== this.targetUrl ||
+      !event.source
+    ) {
       return
     }
 
@@ -86,7 +97,7 @@ export class LedgerMessagingTransport {
       return
     }
     const response = await callback(event.data)
-    const isResponseMessage = (event.origin !== event.data.origin)
+    const isResponseMessage = event.origin !== event.data.origin
     if (isResponseMessage) {
       this.removeCommandHandler(event.data.id)
       return

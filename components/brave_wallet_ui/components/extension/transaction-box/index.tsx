@@ -7,8 +7,17 @@ import * as React from 'react'
 
 import { getLocale } from '../../../../common/locale'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
-import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
-import { CodeSnippet, CodeSnippetText, DetailColumn, DetailText, TransactionText } from './style'
+import {
+  BraveWallet,
+  SerializableTransactionInfo
+} from '../../../constants/types'
+import {
+  CodeSnippet,
+  CodeSnippetText,
+  DetailColumn,
+  DetailText,
+  TransactionText
+} from './style'
 
 export interface Props {
   transactionInfo: SerializableTransactionInfo
@@ -18,33 +27,36 @@ const txKeys = Object.keys(BraveWallet.TransactionType)
 
 export const TransactionDetailBox = (props: Props) => {
   const { transactionInfo } = props
-  const {
-    txArgs,
-    txParams,
-    txType
-  } = transactionInfo
+  const { txArgs, txParams, txType } = transactionInfo
   const data = transactionInfo.txDataUnion.ethTxData1559?.baseData.data || []
   return (
     <>
       {data.length === 0 ? (
         <CodeSnippet>
           <code>
-            <CodeSnippetText>{getLocale('braveWalletConfirmTransactionNoData')}</CodeSnippetText>
+            <CodeSnippetText>
+              {getLocale('braveWalletConfirmTransactionNoData')}
+            </CodeSnippetText>
           </code>
         </CodeSnippet>
       ) : (
         <>
           <DetailColumn>
-            <TransactionText>{getLocale('braveWalletTransactionDetailBoxFunction')}:</TransactionText>
+            <TransactionText>
+              {getLocale('braveWalletTransactionDetailBoxFunction')}:
+            </TransactionText>
             <DetailText>{txKeys[txType]}</DetailText>
           </DetailColumn>
-          {txType !== BraveWallet.TransactionType.Other && txParams.map((param, i) =>
-            <CodeSnippet key={i}>
-              <code>
-                <CodeSnippetText>{param}: {txArgs[i]}</CodeSnippetText>
-              </code>
-            </CodeSnippet>
-          )}
+          {txType !== BraveWallet.TransactionType.Other &&
+            txParams.map((param, i) => (
+              <CodeSnippet key={i}>
+                <code>
+                  <CodeSnippetText>
+                    {param}: {txArgs[i]}
+                  </CodeSnippetText>
+                </code>
+              </CodeSnippet>
+            ))}
 
           {txType === BraveWallet.TransactionType.Other && (
             <CodeSnippet>

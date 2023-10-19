@@ -9,7 +9,7 @@ export const StyledExtensionWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
   border-radius: 4px;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   width: 320px;
@@ -21,7 +21,7 @@ export const StyledExtensionWrapperLonger = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
   border-radius: 4px;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   width: 320px;

@@ -7,9 +7,7 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // Constants
-import {
-  HIDE_SMALL_BALANCES_FIAT_THRESHOLD
-} from '../../../../../../common/constants/magics'
+import { HIDE_SMALL_BALANCES_FIAT_THRESHOLD } from '../../../../../../common/constants/magics'
 
 // Selectors
 import {
@@ -31,7 +29,10 @@ import {
 import { RenderTokenFunc } from './virtualized-tokens-list'
 
 // Options
-import { AssetFilterOptions, HighToLowAssetsFilterOption } from '../../../../../../options/asset-filter-options'
+import {
+  AssetFilterOptions,
+  HighToLowAssetsFilterOption
+} from '../../../../../../options/asset-filter-options'
 import {
   AccountsGroupByOption,
   NetworksGroupByOption
@@ -40,9 +41,7 @@ import {
 // Utils
 import Amount from '../../../../../../utils/amount'
 import { getLocale } from '../../../../../../../common/locale'
-import {
-  networkEntityAdapter
-} from '../../../../../../common/slices/entities/network.entity'
+import { networkEntityAdapter } from '../../../../../../common/slices/entities/network.entity'
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
 import {
   emptyNetwork,
@@ -59,21 +58,15 @@ import {
 import SearchBar from '../../../../../shared/search-bar/index'
 import NetworkFilterSelector from '../../../../network-filter-selector/index'
 import { PortfolioAssetItemLoadingSkeleton } from '../../../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
-import {
-  AssetGroupContainer
-} from '../../../../asset-group-container/asset-group-container'
-import {
-  EmptyTokenListState
-} from '../empty-token-list-state/empty-token-list-state'
+import { AssetGroupContainer } from '../../../../asset-group-container/asset-group-container'
+import { EmptyTokenListState } from '../empty-token-list-state/empty-token-list-state'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetExternalRewardsWalletQuery
 } from '../../../../../../common/slices/api.slice'
-import {
-  TokenBalancesRegistry
-} from '../../../../../../common/slices/entities/token-balance.entity'
+import { TokenBalancesRegistry } from '../../../../../../common/slices/entities/token-balance.entity'
 
 // Styled Components
 import {
@@ -128,20 +121,24 @@ export const TokenLists = ({
   const history = useHistory()
 
   // unsafe selectors
-  const selectedAssetFilter = useSafeWalletSelector(WalletSelectors.selectedAssetFilter)
+  const selectedAssetFilter = useSafeWalletSelector(
+    WalletSelectors.selectedAssetFilter
+  )
 
   // safe selectors
-  const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
-  const selectedGroupAssetsByItem =
-    useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
+  const assetAutoDiscoveryCompleted = useSafeWalletSelector(
+    WalletSelectors.assetAutoDiscoveryCompleted
+  )
+  const selectedGroupAssetsByItem = useSafeWalletSelector(
+    WalletSelectors.selectedGroupAssetsByItem
+  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
   const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
 
   // computed
-  const externalRewardsProvider =
-    externalRewardsInfo?.provider ?? undefined
+  const externalRewardsProvider = externalRewardsInfo?.provider ?? undefined
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -150,9 +147,12 @@ export const TokenLists = ({
   // methods
 
   // This filters a list of assets when the user types in search bar
-  const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
-  }, [])
+  const onSearchValueChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value)
+    },
+    []
+  )
 
   const showAddAssetsModal = React.useCallback(() => {
     history.push(WalletRoutes.AddAssetModal)
@@ -167,43 +167,35 @@ export const TokenLists = ({
 
   const filteredOutSmallBalanceTokens = React.useMemo(() => {
     if (hideSmallBalances) {
-      return visibleTokens.filter(
-        (token) =>
-          computeFiatAmount({
-            spotPriceRegistry,
-            value: token.assetBalance,
-            token: token.asset
-          }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
+      return visibleTokens.filter((token) =>
+        computeFiatAmount({
+          spotPriceRegistry,
+          value: token.assetBalance,
+          token: token.asset
+        }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
       )
     }
     return visibleTokens
   }, [visibleTokens, hideSmallBalances, spotPriceRegistry])
 
   const fungibleTokens = React.useMemo(() => {
-    return filteredOutSmallBalanceTokens
-      .filter(
-        (token) => !(
-          token.asset.isErc721 ||
-          token.asset.isNft ||
-          token.asset.isErc1155
-        )
-      )
-  },
-    [filteredOutSmallBalanceTokens]
-  )
+    return filteredOutSmallBalanceTokens.filter(
+      (token) =>
+        !(token.asset.isErc721 || token.asset.isNft || token.asset.isErc1155)
+    )
+  }, [filteredOutSmallBalanceTokens])
 
   const assetFilterItemInfo = React.useMemo(() => {
-    return AssetFilterOptions.find(item => item.id === selectedAssetFilter) ?? HighToLowAssetsFilterOption
+    return (
+      AssetFilterOptions.find((item) => item.id === selectedAssetFilter) ??
+      HighToLowAssetsFilterOption
+    )
   }, [selectedAssetFilter])
 
-
   const filteredAssetList = React.useMemo(() => {
-    const listToUse = isPortfolio
-      ? fungibleTokens
-      : userAssetList
+    const listToUse = isPortfolio ? fungibleTokens : userAssetList
     if (searchValue === '') {
-      return listToUse
-        .filter((asset) => asset.asset.visible)
+      return listToUse.filter((asset) => asset.asset.visible)
     }
     return listToUse.filter((item) => {
       return (
@@ -213,12 +205,7 @@ export const TokenLists = ({
         item.asset.symbol.toLowerCase().startsWith(searchValue.toLowerCase())
       )
     })
-  }, [
-    searchValue,
-    fungibleTokens,
-    isPortfolio,
-    userAssetList
-  ])
+  }, [searchValue, fungibleTokens, isPortfolio, userAssetList])
 
   // Returns a sorted list of assets based on the users
   // sort by pref.
@@ -262,30 +249,25 @@ export const TokenLists = ({
         })
       }
       return tokens
-    }, [
-    assetFilterItemInfo.id,
-    spotPriceRegistry
-  ])
+    },
+    [assetFilterItemInfo.id, spotPriceRegistry]
+  )
 
   // Returns a list of assets based on provided network
   const getAssetsByNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
-      return getSortedFungibleTokensList(filteredAssetList)
-        .filter(
-          (asset) =>
-            networkEntityAdapter
-              .selectId(
-                {
-                  chainId: asset.asset.chainId,
-                  coin: asset.asset.coin
-                }).toString() ===
-            networkEntityAdapter
-              .selectId(network).toString()
-        )
-    }, [
-    filteredAssetList,
-    getSortedFungibleTokensList
-  ])
+      return getSortedFungibleTokensList(filteredAssetList).filter(
+        (asset) =>
+          networkEntityAdapter
+            .selectId({
+              chainId: asset.asset.chainId,
+              coin: asset.asset.coin
+            })
+            .toString() === networkEntityAdapter.selectId(network).toString()
+      )
+    },
+    [filteredAssetList, getSortedFungibleTokensList]
+  )
 
   // Returns the full fiat value of provided network
   const getNetworkFiatValue = React.useCallback(
@@ -302,36 +284,36 @@ export const TokenLists = ({
         return new Amount(0)
       }
 
-      const amounts = networksAssets
-        .map((asset) => computeFiatAmount({
+      const amounts = networksAssets.map((asset) =>
+        computeFiatAmount({
           spotPriceRegistry,
           value: asset.assetBalance,
           token: asset.asset
-        }))
-
-      const reducedAmounts =
-        amounts.reduce(function (a, b) {
-          return a.plus(b)
         })
+      )
 
-      return !reducedAmounts.isUndefined()
-        ? reducedAmounts
-        : Amount.empty()
-    }, [
-    computeFiatAmount,
-    getAssetsByNetwork,
-    filteredAssetList,
-    spotPriceRegistry
-  ])
+      const reducedAmounts = amounts.reduce(function (a, b) {
+        return a.plus(b)
+      })
+
+      return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
+    },
+    [
+      computeFiatAmount,
+      getAssetsByNetwork,
+      filteredAssetList,
+      spotPriceRegistry
+    ]
+  )
 
   // Returns a list of assets based on provided coin type
   const getAssetsByCoin = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
       const isRewardsAccount = getIsRewardsAccount(account.accountId)
       if (isRewardsAccount) {
-        return filteredAssetList
-          .filter(
-            (asset) => getIsRewardsToken(asset.asset))
+        return filteredAssetList.filter((asset) =>
+          getIsRewardsToken(asset.asset)
+        )
       }
       return filteredAssetList.filter((asset) => {
         const networkInfo = networks?.find(
@@ -357,10 +339,9 @@ export const TokenLists = ({
         return getAssetsByCoin(account).filter((token) =>
           computeFiatAmount({
             spotPriceRegistry,
-            value:
-              isRewardsAccount
-                ? token.assetBalance
-                : getBalance(
+            value: isRewardsAccount
+              ? token.assetBalance
+              : getBalance(
                   account.accountId,
                   token.asset,
                   tokenBalancesRegistry
@@ -371,12 +352,14 @@ export const TokenLists = ({
       }
 
       return getAssetsByCoin(account)
-    }, [
-    getAssetsByCoin,
-    hideSmallBalances,
-    spotPriceRegistry,
-    tokenBalancesRegistry
-  ])
+    },
+    [
+      getAssetsByCoin,
+      hideSmallBalances,
+      spotPriceRegistry,
+      tokenBalancesRegistry
+    ]
+  )
 
   // Returns a new list of assets with the accounts
   // balance for each token.
@@ -385,26 +368,22 @@ export const TokenLists = ({
       const isRewardsAccount = getIsRewardsAccount(account.accountId)
       return getFilteredOutAssetsByAccount(account).map((asset) => ({
         ...asset,
-        assetBalance:
-          isRewardsAccount
-            ? asset.assetBalance
-            : getBalance(
-              account.accountId,
-              asset.asset,
-              tokenBalancesRegistry
-            )
+        assetBalance: isRewardsAccount
+          ? asset.assetBalance
+          : getBalance(account.accountId, asset.asset, tokenBalancesRegistry)
       }))
-    }, [getFilteredOutAssetsByAccount, tokenBalancesRegistry])
+    },
+    [getFilteredOutAssetsByAccount, tokenBalancesRegistry]
+  )
 
   // Returns a sorted assets list for an account.
   const getSortedAssetsByAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
       const accountsAssets = getAccountsAssetBalances(account)
       return getSortedFungibleTokensList(accountsAssets)
-    }, [
-    getAccountsAssetBalances,
-    getSortedFungibleTokensList
-  ])
+    },
+    [getAccountsAssetBalances, getSortedFungibleTokensList]
+  )
 
   // Returns the full fiat value of provided account
   const getAccountFiatValue = React.useCallback(
@@ -417,35 +396,26 @@ export const TokenLists = ({
       const accountsAssets = getSortedAssetsByAccount(account)
       // Return a 0 balance if the account has no
       // assets to display.
-      if (
-        accountsAssets
-          .length === 0
-      ) {
+      if (accountsAssets.length === 0) {
         return new Amount(0)
       }
 
-      const amounts =
-        accountsAssets
-          .map((asset) => {
-            return computeFiatAmount({
-              spotPriceRegistry,
-              value: asset.assetBalance,
-              token: asset.asset
-            })
-          })
-
-      const reducedAmounts =
-        amounts.reduce(function (a, b) {
-          return a.plus(b)
+      const amounts = accountsAssets.map((asset) => {
+        return computeFiatAmount({
+          spotPriceRegistry,
+          value: asset.assetBalance,
+          token: asset.asset
         })
+      })
 
-      return !reducedAmounts.isUndefined()
-        ? reducedAmounts
-        : Amount.empty()
-    }, [
-    getSortedAssetsByAccount,
-    filteredAssetList
-  ])
+      const reducedAmounts = amounts.reduce(function (a, b) {
+        return a.plus(b)
+      })
+
+      return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
+    },
+    [getSortedAssetsByAccount, filteredAssetList]
+  )
 
   const onCloseSearchBar = React.useCallback(() => {
     setShowSearchBar(false)
@@ -460,18 +430,16 @@ export const TokenLists = ({
     if (noNetworks) {
       return undefined
     }
-    return [...networks].filter((network) => {
-      return getNetworkFiatValue(network).gt(0)
-    }).sort((a, b) => {
-      const aBalance = getNetworkFiatValue(a)
-      const bBalance = getNetworkFiatValue(b)
-      return bBalance.minus(aBalance).toNumber()
-    })
-  }, [
-    networks,
-    noNetworks,
-    getNetworkFiatValue
-  ])
+    return [...networks]
+      .filter((network) => {
+        return getNetworkFiatValue(network).gt(0)
+      })
+      .sort((a, b) => {
+        const aBalance = getNetworkFiatValue(a)
+        const bBalance = getNetworkFiatValue(b)
+        return bBalance.minus(aBalance).toNumber()
+      })
+  }, [networks, noNetworks, getNetworkFiatValue])
 
   const listUiByNetworks = React.useMemo(() => {
     if (showEmptyState) {
@@ -481,47 +449,41 @@ export const TokenLists = ({
       !sortedNetworksWithBalances ||
       sortedNetworksWithBalances.length === 0
     ) {
-      return <AssetGroupContainer
-        balance=''
-        isSkeleton={true}
-        isDisabled={true}
-        network={emptyNetwork}
-      />
+      return (
+        <AssetGroupContainer
+          balance=''
+          isSkeleton={true}
+          isDisabled={true}
+          network={emptyNetwork}
+        />
+      )
     }
     return sortedNetworksWithBalances.map((network) => {
       const networksFiatValue = getNetworkFiatValue(network)
       const isRewardsNetwork = getIsRewardsNetwork(network)
       const networksAssets = getAssetsByNetwork(network)
-      return <AssetGroupContainer
-        key={networkEntityAdapter
-          .selectId(network).toString()}
-        balance={
-          networksFiatValue
-            .isUndefined()
-            ? ''
-            : networksFiatValue
-              .formatAsFiat(defaultFiatCurrency)
-        }
-        network={network}
-        isDisabled={networksAssets.length === 0}
-        externalProvider={
-          isRewardsNetwork
-            ? externalRewardsProvider
-            : undefined
-        }
-      >
-        {networksAssets
-          .map(
-            (token, index) =>
-              renderToken(
-                { index, item: token, viewMode: 'list' }
-              )
-          )
-        }
-        {!assetAutoDiscoveryCompleted && !isRewardsNetwork &&
-          <PortfolioAssetItemLoadingSkeleton />
-        }
-      </AssetGroupContainer>
+      return (
+        <AssetGroupContainer
+          key={networkEntityAdapter.selectId(network).toString()}
+          balance={
+            networksFiatValue.isUndefined()
+              ? ''
+              : networksFiatValue.formatAsFiat(defaultFiatCurrency)
+          }
+          network={network}
+          isDisabled={networksAssets.length === 0}
+          externalProvider={
+            isRewardsNetwork ? externalRewardsProvider : undefined
+          }
+        >
+          {networksAssets.map((token, index) =>
+            renderToken({ index, item: token, viewMode: 'list' })
+          )}
+          {!assetAutoDiscoveryCompleted && !isRewardsNetwork && (
+            <PortfolioAssetItemLoadingSkeleton />
+          )}
+        </AssetGroupContainer>
+      )
     })
   }, [
     getAssetsByNetwork,
@@ -538,18 +500,16 @@ export const TokenLists = ({
     if (noAccounts) {
       return undefined
     }
-    return [...accounts].filter((account) => {
-      return getAccountFiatValue(account).gt(0)
-    }).sort((a, b) => {
-      const aBalance = getAccountFiatValue(a)
-      const bBalance = getAccountFiatValue(b)
-      return bBalance.minus(aBalance).toNumber()
-    })
-  }, [
-    accounts,
-    noAccounts,
-    getAccountFiatValue
-  ])
+    return [...accounts]
+      .filter((account) => {
+        return getAccountFiatValue(account).gt(0)
+      })
+      .sort((a, b) => {
+        const aBalance = getAccountFiatValue(a)
+        const bBalance = getAccountFiatValue(b)
+        return bBalance.minus(aBalance).toNumber()
+      })
+  }, [accounts, noAccounts, getAccountFiatValue])
 
   const listUiByAccounts = React.useMemo(() => {
     if (showEmptyState) {
@@ -559,45 +519,40 @@ export const TokenLists = ({
       !sortedAccountsWithBalances ||
       sortedAccountsWithBalances.length === 0
     ) {
-      return <AssetGroupContainer
-        balance=''
-        isSkeleton={true}
-        isDisabled={true}
-      />
+      return (
+        <AssetGroupContainer
+          balance=''
+          isSkeleton={true}
+          isDisabled={true}
+        />
+      )
     }
     return sortedAccountsWithBalances.map((account) => {
       const accountsFiatValue = getAccountFiatValue(account)
       const isRewardsAccount = getIsRewardsAccount(account.accountId)
       const accountsAssets = getSortedAssetsByAccount(account)
-      return <AssetGroupContainer
-        key={account.accountId.uniqueKey}
-        balance={
-          accountsFiatValue
-            .isUndefined()
-            ? ''
-            : accountsFiatValue
-              .formatAsFiat(defaultFiatCurrency)
-        }
-        account={account}
-        isDisabled={accountsAssets.length === 0}
-        externalProvider={
-          isRewardsAccount
-            ? externalRewardsProvider
-            : undefined
-        }
-      >
-        {accountsAssets
-          .map(
-            (token, index) =>
-              renderToken(
-                { index, item: token, viewMode: 'list', account }
-              )
-          )
-        }
-        {!assetAutoDiscoveryCompleted && !isRewardsAccount &&
-          <PortfolioAssetItemLoadingSkeleton />
-        }
-      </AssetGroupContainer>
+      return (
+        <AssetGroupContainer
+          key={account.accountId.uniqueKey}
+          balance={
+            accountsFiatValue.isUndefined()
+              ? ''
+              : accountsFiatValue.formatAsFiat(defaultFiatCurrency)
+          }
+          account={account}
+          isDisabled={accountsAssets.length === 0}
+          externalProvider={
+            isRewardsAccount ? externalRewardsProvider : undefined
+          }
+        >
+          {accountsAssets.map((token, index) =>
+            renderToken({ index, item: token, viewMode: 'list', account })
+          )}
+          {!assetAutoDiscoveryCompleted && !isRewardsAccount && (
+            <PortfolioAssetItemLoadingSkeleton />
+          )}
+        </AssetGroupContainer>
+      )
     })
   }, [
     getSortedAssetsByAccount,
@@ -612,37 +567,30 @@ export const TokenLists = ({
 
   const listUi = React.useMemo(() => {
     if (isPortfolio) {
-      return selectedGroupAssetsByItem === NetworksGroupByOption.id
-        ? listUiByNetworks
-        : selectedGroupAssetsByItem === AccountsGroupByOption.id
-          ? listUiByAccounts
-          : noNetworks
-            ? <EmptyTokenListState />
-            : <>
-              {
-                getSortedFungibleTokensList(filteredAssetList)
-                  .map((token, index) =>
-                    renderToken(
-                      { index, item: token, viewMode: 'list' }
-                    )
-                  )
-              }
-              {!assetAutoDiscoveryCompleted &&
-                <PortfolioAssetItemLoadingSkeleton />
-              }
-            </>
+      return selectedGroupAssetsByItem === NetworksGroupByOption.id ? (
+        listUiByNetworks
+      ) : selectedGroupAssetsByItem === AccountsGroupByOption.id ? (
+        listUiByAccounts
+      ) : noNetworks ? (
+        <EmptyTokenListState />
+      ) : (
+        <>
+          {getSortedFungibleTokensList(filteredAssetList).map((token, index) =>
+            renderToken({ index, item: token, viewMode: 'list' })
+          )}
+          {!assetAutoDiscoveryCompleted && (
+            <PortfolioAssetItemLoadingSkeleton />
+          )}
+        </>
+      )
     }
-    return <>
-      {
-        filteredAssetList
-          .map(
-            (token, index) =>
-              renderToken(
-                { index, item: token, viewMode: 'list' }
-              )
-          )
-      }
-    </>
+    return (
+      <>
+        {filteredAssetList.map((token, index) =>
+          renderToken({ index, item: token, viewMode: 'list' })
+        )}
+      </>
+    )
   }, [
     selectedGroupAssetsByItem,
     filteredAssetList,
@@ -663,12 +611,16 @@ export const TokenLists = ({
       justifyContent='flex-start'
       isPanel={isPanel}
     >
-      {!isPortfolio &&
+      {!isPortfolio && (
         <FilterTokenRow
           horizontalPadding={horizontalPadding}
           isV2={isV2}
         >
-          <Column flex={1} style={{ minWidth: '25%' }} alignItems='flex-start'>
+          <Column
+            flex={1}
+            style={{ minWidth: '25%' }}
+            alignItems='flex-start'
+          >
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
               action={onSearchValueChange}
@@ -681,26 +633,24 @@ export const TokenLists = ({
             isV2={isV2}
           />
         </FilterTokenRow>
-      }
+      )}
 
-      {isPortfolio &&
+      {isPortfolio && (
         <ControlBarWrapper
           justifyContent='space-between'
           alignItems='center'
           showSearchBar={showSearchBar}
         >
-          {!showSearchBar &&
+          {!showSearchBar && (
             <Text
               textSize='16px'
               isBold={true}
             >
               {getLocale('braveWalletAccountsAssets')}
             </Text>
-          }
-          <Row
-            width={showSearchBar ? '100%' : 'unset'}
-          >
-            {!showEmptyState &&
+          )}
+          <Row width={showSearchBar ? '100%' : 'unset'}>
+            {!showEmptyState && (
               <SearchBarWrapper
                 margin='0px 12px 0px 0px'
                 showSearchBar={showSearchBar}
@@ -712,26 +662,18 @@ export const TokenLists = ({
                   isV2={isV2}
                 />
               </SearchBarWrapper>
-            }
-            {showSearchBar &&
-              <Row
-                width='unset'
-              >
-                <CircleButton
-                  onClick={onCloseSearchBar}
-                >
+            )}
+            {showSearchBar && (
+              <Row width='unset'>
+                <CircleButton onClick={onCloseSearchBar}>
                   <ButtonIcon name='close' />
                 </CircleButton>
               </Row>
-            }
-            {!showSearchBar &&
-              <Row
-                width='unset'
-              >
-                {!showEmptyState &&
-                  <SearchButtonWrapper
-                    width='unset'
-                  >
+            )}
+            {!showSearchBar && (
+              <Row width='unset'>
+                {!showEmptyState && (
+                  <SearchButtonWrapper width='unset'>
                     <CircleButton
                       marginRight={12}
                       onClick={() => setShowSearchBar(true)}
@@ -739,7 +681,7 @@ export const TokenLists = ({
                       <ButtonIcon name='search' />
                     </CircleButton>
                   </SearchButtonWrapper>
-                }
+                )}
                 <CircleButton
                   marginRight={12}
                   onClick={showAddAssetsModal}
@@ -747,38 +689,32 @@ export const TokenLists = ({
                   <ButtonIcon name='list-settings' />
                 </CircleButton>
 
-                <CircleButton
-                  onClick={onShowPortfolioSettings}
-                >
+                <CircleButton onClick={onShowPortfolioSettings}>
                   <ButtonIcon name='filter-settings' />
                 </CircleButton>
               </Row>
-            }
+            )}
           </Row>
         </ControlBarWrapper>
-      }
+      )}
 
-      {enableScroll
-        ? (
-          <ScrollableColumn
-            maxHeight={maxListHeight}
-            padding={
-              `0px ${horizontalPadding !== undefined
-                ? horizontalPadding
-                : 0}px`
-            }
-          >
-            {listUi}
-          </ScrollableColumn>
-        ) : (
-          <Column
-            fullWidth={true}
-            padding='0px 24px 24px 24px'
-          >
-            {listUi}
-          </Column>
-        )
-      }
+      {enableScroll ? (
+        <ScrollableColumn
+          maxHeight={maxListHeight}
+          padding={`0px ${
+            horizontalPadding !== undefined ? horizontalPadding : 0
+          }px`}
+        >
+          {listUi}
+        </ScrollableColumn>
+      ) : (
+        <Column
+          fullWidth={true}
+          padding='0px 24px 24px 24px'
+        >
+          {listUi}
+        </Column>
+      )}
     </ContentWrapper>
   )
 }

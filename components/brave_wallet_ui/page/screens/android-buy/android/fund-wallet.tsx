@@ -24,8 +24,7 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
 import { store, walletPageApiProxy } from '../../../store'
-import BraveCoreThemeProvider
-  from '../../../../../common/BraveCoreThemeProvider'
+import BraveCoreThemeProvider from '../../../../../common/BraveCoreThemeProvider'
 import { FundWalletScreen } from '../../fund-wallet/fund-wallet'
 
 // Hooks
@@ -40,7 +39,10 @@ export function AndroidFundWalletApp() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+        <BraveCoreThemeProvider
+          dark={walletDarkTheme}
+          light={walletLightTheme}
+        >
           <ApiProxyContext.Provider value={walletPageApiProxy}>
             <LibContext.Provider value={Lib}>
               <FundWalletScreen isAndroid={true} />

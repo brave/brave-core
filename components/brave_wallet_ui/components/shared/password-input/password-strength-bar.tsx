@@ -37,7 +37,7 @@ export const PasswordStrengthBar: React.FC<Props> = ({
 }) => {
   // memos
   const strongPasswordCrtieriaPercentComplete = React.useMemo(
-    () => ((criteria.filter(c => !!c).length / criteria.length) * 100),
+    () => (criteria.filter((c) => !!c).length / criteria.length) * 100,
     [criteria]
   )
 
@@ -47,9 +47,7 @@ export const PasswordStrengthBar: React.FC<Props> = ({
       <Bar>
         <BarBackground />
         <BarProgress criteria={criteria}>
-          <BarProgressTooltipContainer
-            criteria={criteria}
-          >
+          <BarProgressTooltipContainer criteria={criteria}>
             <PasswordStrengthTooltip
               passwordStrength={passwordStrength}
               isVisible={isVisible}
@@ -62,9 +60,8 @@ export const PasswordStrengthBar: React.FC<Props> = ({
         {strongPasswordCrtieriaPercentComplete === 100
           ? getLocale('braveWalletPasswordIsStrong')
           : strongPasswordCrtieriaPercentComplete < 50
-            ? getLocale('braveWalletPasswordIsWeak')
-            : getLocale('braveWalletPasswordIsMediumStrength')
-        }
+          ? getLocale('braveWalletPasswordIsWeak')
+          : getLocale('braveWalletPasswordIsMediumStrength')}
       </BarMessage>
     </BarAndMessageContainer>
   )

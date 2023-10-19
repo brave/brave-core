@@ -19,12 +19,12 @@ export const Button = styled(WalletButton)`
   border: none;
   background: none;
   pointer-events: auto;
-  border-right: 1px solid rgba(255,255,255,0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
   height: 100%;
   box-sizing: border-box;
   cursor: pointer;
   position: relative;
-  &:last-child { 
+  &:last-child {
     border-right: none;
   }
 `

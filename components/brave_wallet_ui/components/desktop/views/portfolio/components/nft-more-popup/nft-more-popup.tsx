@@ -47,7 +47,10 @@ export const NftMorePopup = (props: Props) => {
   useOnClickOutside(popupRef, onClose, isOpen)
 
   return (
-    <Popup isOpen={isOpen} ref={popupRef}>
+    <Popup
+      isOpen={isOpen}
+      ref={popupRef}
+    >
       {/* show hide and edit option if a token is not hidden or not spam */}
       {!isTokenHidden && !isTokenSpam && (
         <>
@@ -76,7 +79,7 @@ export const NftMorePopup = (props: Props) => {
           <ButtonIcon name='eye-on' />
           <PopupButtonText>{getLocale('braveNftsTabUnhide')}</PopupButtonText>
         </PopupButton>
-      ): null}
+      ) : null}
 
       {/* remove option */}
       <PopupButton onClick={onRemoveNft}>

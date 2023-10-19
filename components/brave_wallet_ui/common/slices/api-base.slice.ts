@@ -13,8 +13,8 @@ import { baseQueryFunction } from '../async/base-query-cache'
 /**
  * Creates an api to use as a base for adding endpoints
  * endpoints can be added via `.injectEndpoints(endpoints)`
-*/
-export function createWalletApiBase () {
+ */
+export function createWalletApiBase() {
   return createApi({
     reducerPath: 'walletApi',
     baseQuery: baseQueryFunction,
@@ -56,7 +56,7 @@ export function createWalletApiBase () {
       'EthTokenDecimals',
       'EthTokenSymbol',
       'EnsOffchainLookupEnabled',
-      'NameServiceAddress',
+      'NameServiceAddress'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

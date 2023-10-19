@@ -6,12 +6,8 @@
 import * as React from 'react'
 
 // Selectors
-import {
-  useSafeUISelector
-} from '../../../../../../common/hooks/use-safe-selector'
-import {
-  UISelectors
-} from '../../../../../../common/selectors'
+import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../../../common/selectors'
 
 // Queries
 import {
@@ -24,38 +20,20 @@ import {
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
-import {
-  reduceNetworkDisplayName
-} from '../../../../../../utils/network-utils'
+import { getLocale } from '../../../../../../../common/locale'
+import { reduceNetworkDisplayName } from '../../../../../../utils/network-utils'
 
 // Components
-import {
-  ConnectWalletButton
-} from '../../buttons/connect-wallet-button/connect-wallet-button'
-import {
-  SelectTokenOrNetworkButton
-} from '../../buttons/select-token-or-network/select-token-or-network'
-import {
-  NetworkSelector
-} from '../network-selector/network-selector'
-import {
-  AccountModal
-} from '../account-modal/account-modal'
+import { ConnectWalletButton } from '../../buttons/connect-wallet-button/connect-wallet-button'
+import { SelectTokenOrNetworkButton } from '../../buttons/select-token-or-network/select-token-or-network'
+import { NetworkSelector } from '../network-selector/network-selector'
+import { AccountModal } from '../account-modal/account-modal'
 
 // Hooks
-import {
-  useOnClickOutside
-} from '../../../../../../common/hooks/useOnClickOutside'
+import { useOnClickOutside } from '../../../../../../common/hooks/useOnClickOutside'
 
 // Styled Components
-import {
-  BraveLogo,
-  SelectorWrapper,
-  Wrapper
-} from './header.style'
+import { BraveLogo, SelectorWrapper, Wrapper } from './header.style'
 import {
   Row,
   HorizontalSpacer,
@@ -76,8 +54,7 @@ export const Header = () => {
   // State
   const [showNetworkSelector, setShowNetworkSelector] =
     React.useState<boolean>(false)
-  const [showAccountModal, setShowAccountModal] =
-    React.useState<boolean>(false)
+  const [showAccountModal, setShowAccountModal] = React.useState<boolean>(false)
 
   // Refs
   const networkSelectorRef = React.useRef<HTMLDivElement>(null)
@@ -85,15 +62,15 @@ export const Header = () => {
 
   // Methods
   const onSelectNetwork = React.useCallback(
-    async (
-      network: BraveWallet.NetworkInfo
-    ) => {
+    async (network: BraveWallet.NetworkInfo) => {
       await setNetwork({
         chainId: network.chainId,
         coin: network.coin
       }).unwrap()
       setShowNetworkSelector(false)
-    }, [setNetwork])
+    },
+    [setNetwork]
+  )
 
   // Hooks
   // Click away for network selector
@@ -111,16 +88,14 @@ export const Header = () => {
   )
 
   const isNetworkSupported = React.useMemo(() => {
-    return supportedNetworks
-      .some(
-        supportedNetwork =>
-          supportedNetwork.chainId ===
-          selectedNetwork?.chainId
-      )
+    return supportedNetworks.some(
+      (supportedNetwork) =>
+        supportedNetwork.chainId === selectedNetwork?.chainId
+    )
   }, [selectedNetwork, supportedNetworks])
 
   const onClickConnectWalletButton = React.useCallback(async () => {
-    setShowAccountModal(prev => !prev)
+    setShowAccountModal((prev) => !prev)
   }, [])
 
   return (
@@ -128,7 +103,10 @@ export const Header = () => {
       {isPanel ? (
         <HorizontalSpacer size={2} />
       ) : (
-        <Row rowHeight='full' verticalAlign='center'>
+        <Row
+          rowHeight='full'
+          verticalAlign='center'
+        >
           <BraveLogo />
           <HiddenResponsiveRow maxWidth={570}>
             <HorizontalDivider
@@ -149,10 +127,8 @@ export const Header = () => {
       <Row>
         <SelectorWrapper ref={networkSelectorRef}>
           <SelectTokenOrNetworkButton
-            onClick={() => setShowNetworkSelector(prev => !prev)}
-            text={
-              reduceNetworkDisplayName(selectedNetwork?.chainName)
-            }
+            onClick={() => setShowNetworkSelector((prev) => !prev)}
+            text={reduceNetworkDisplayName(selectedNetwork?.chainName)}
             network={selectedNetwork}
             buttonSize='medium'
             hasBackground={true}
@@ -165,16 +141,15 @@ export const Header = () => {
             <NetworkSelector
               isHeader={true}
               onSelectNetwork={onSelectNetwork}
-              onClose={() => setShowNetworkSelector(false)} />
+              onClose={() => setShowNetworkSelector(false)}
+            />
           )}
         </SelectorWrapper>
         <HorizontalSpacer size={15} />
         <SelectorWrapper ref={accountModalRef}>
           <ConnectWalletButton onClick={onClickConnectWalletButton} />
           {showAccountModal && (
-            <AccountModal
-              onHideModal={() => setShowAccountModal(false)}
-            />
+            <AccountModal onHideModal={() => setShowAccountModal(false)} />
           )}
         </SelectorWrapper>
       </Row>

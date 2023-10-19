@@ -20,18 +20,11 @@ import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 
 // selectors
-import {
-  UISelectors,
-  WalletSelectors
-} from '../common/selectors'
+import { UISelectors, WalletSelectors } from '../common/selectors'
 import { PageSelectors } from './selectors'
 
 // types
-import {
-  WalletOrigin,
-  WalletRoutes,
-  WalletState
-} from '../constants/types'
+import { WalletOrigin, WalletRoutes, WalletState } from '../constants/types'
 
 // hooks
 import {
@@ -43,9 +36,7 @@ import { useLocationPathName } from '../common/hooks/use-pathname'
 
 // style
 import 'emptykit.css'
-import {
-  SimplePageWrapper
-} from './screens/page-screen.styles'
+import { SimplePageWrapper } from './screens/page-screen.styles'
 
 // components
 import { CryptoView } from '../components/desktop/views/crypto/index'
@@ -53,9 +44,7 @@ import { LockScreen } from '../components/desktop/lock-screen/index'
 import {
   WalletPageLayout //
 } from '../components/desktop/wallet-page-layout/index'
-import {
-  WalletSubViewLayout
-} from '../components/desktop/wallet-sub-view-layout/index'
+import { WalletSubViewLayout } from '../components/desktop/wallet-sub-view-layout/index'
 import { Skeleton } from '../components/shared/loading-skeleton/styles'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import { BackupWalletRoutes } from './screens/backup-wallet/backup-wallet.routes'
@@ -66,9 +55,7 @@ import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send_screen/send_screen'
 import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
-import {
-  WalletPageWrapper
-} from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { WalletPageWrapper } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { PageTitleHeader } from '../components/desktop/card-headers/page-title-header'
 
 const initialSessionRoute = getInitialSessionRoute()
@@ -87,15 +74,27 @@ export const Container = () => {
   // wallet selectors (safe)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
-  const isWalletBackedUp = useSafeWalletSelector(WalletSelectors.isWalletBackedUp)
-  const hasIncorrectPassword = useSafeWalletSelector(WalletSelectors.hasIncorrectPassword)
+  const isWalletBackedUp = useSafeWalletSelector(
+    WalletSelectors.isWalletBackedUp
+  )
+  const hasIncorrectPassword = useSafeWalletSelector(
+    WalletSelectors.hasIncorrectPassword
+  )
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
-  const defaultEthereumWallet = useSafeWalletSelector(WalletSelectors.defaultEthereumWallet)
-  const defaultSolanaWallet = useSafeWalletSelector(WalletSelectors.defaultSolanaWallet)
-  const isMetaMaskInstalled = useSafeWalletSelector(WalletSelectors.isMetaMaskInstalled)
+  const defaultEthereumWallet = useSafeWalletSelector(
+    WalletSelectors.defaultEthereumWallet
+  )
+  const defaultSolanaWallet = useSafeWalletSelector(
+    WalletSelectors.defaultSolanaWallet
+  )
+  const isMetaMaskInstalled = useSafeWalletSelector(
+    WalletSelectors.isMetaMaskInstalled
+  )
 
   // page selectors (safe)
-  const setupStillInProgress = useSafePageSelector(PageSelectors.setupStillInProgress)
+  const setupStillInProgress = useSafePageSelector(
+    PageSelectors.setupStillInProgress
+  )
 
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -113,8 +112,8 @@ export const Container = () => {
         history.push(WalletRoutes.Onboarding)
         return
       }
-      // If a user has created a wallet and clicks Restore from the panel
-      // while the wallet is locked, we need to route to unlock if they click back.
+      // If a user has created a wallet and clicks Restore from the panel while
+      // the wallet is locked, we need to route to unlock if they click back.
       if (isWalletCreated && isWalletLocked) {
         history.push(WalletRoutes.Unlock)
       }
@@ -127,10 +126,11 @@ export const Container = () => {
           if (chrome.runtime.lastError) {
             console.error(
               'tabs.create failed: ' + //
-              chrome.runtime.lastError.message
+                chrome.runtime.lastError.message
             )
           }
-        })
+        }
+      )
       return
     }
     history.push(WalletRoutes.Restore)
@@ -146,19 +146,22 @@ export const Container = () => {
     }
   }, [inputValue, sessionRoute])
 
-  const handlePasswordChanged = React.useCallback((value: string) => {
-    setInputValue(value)
-    if (hasIncorrectPassword) {
-      dispatch(WalletActions.hasIncorrectPassword(false))
-    }
-  }, [hasIncorrectPassword])
+  const handlePasswordChanged = React.useCallback(
+    (value: string) => {
+      setInputValue(value)
+      if (hasIncorrectPassword) {
+        dispatch(WalletActions.hasIncorrectPassword(false))
+      }
+    },
+    [hasIncorrectPassword]
+  )
 
   const onOpenWalletSettings = React.useCallback(() => {
     dispatch(WalletPageActions.openWalletSettings())
   }, [])
 
   // computed
-  const walletNotYetCreated = (!isWalletCreated || setupStillInProgress)
+  const walletNotYetCreated = !isWalletCreated || setupStillInProgress
 
   // effects
   React.useEffect(() => {
@@ -230,19 +233,19 @@ export const Container = () => {
   return (
     <>
       <Switch>
-
-        {walletNotYetCreated
-          ?
+        {walletNotYetCreated ? (
           <WalletPageLayout>
             <WalletSubViewLayout>
               <OnboardingRoutes />
             </WalletSubViewLayout>
           </WalletPageLayout>
-
+        ) : (
           // Post-onboarding flows
-          : <Switch>
-
-            <Route path={WalletRoutes.OnboardingComplete} exact>
+          <Switch>
+            <Route
+              path={WalletRoutes.OnboardingComplete}
+              exact
+            >
               <WalletPageLayout>
                 <WalletSubViewLayout>
                   <OnboardingSuccess />
@@ -250,7 +253,10 @@ export const Container = () => {
               </WalletPageLayout>
             </Route>
 
-            <Route path={WalletRoutes.Restore} exact={true}>
+            <Route
+              path={WalletRoutes.Restore}
+              exact={true}
+            >
               <WalletPageLayout>
                 <WalletSubViewLayout>
                   <SimplePageWrapper>
@@ -260,8 +266,11 @@ export const Container = () => {
               </WalletPageLayout>
             </Route>
 
-            {isWalletLocked &&
-              <Route path={WalletRoutes.Unlock} exact={true}>
+            {isWalletLocked && (
+              <Route
+                path={WalletRoutes.Unlock}
+                exact={true}
+              >
                 <WalletPageWrapper
                   wrapContentInBox={true}
                   cardWidth={680}
@@ -279,9 +288,9 @@ export const Container = () => {
                   />
                 </WalletPageWrapper>
               </Route>
-            }
+            )}
 
-            {!isWalletLocked &&
+            {!isWalletLocked && (
               <Route path={WalletRoutes.Backup}>
                 <WalletPageLayout>
                   <WalletSubViewLayout>
@@ -291,47 +300,54 @@ export const Container = () => {
                   </WalletSubViewLayout>
                 </WalletPageLayout>
               </Route>
-            }
+            )}
 
-            {!isWalletLocked &&
+            {!isWalletLocked && (
               <Route path={WalletRoutes.FundWalletPageStart}>
                 <FundWalletScreen />
               </Route>
-            }
+            )}
 
-            {!isWalletLocked &&
+            {!isWalletLocked && (
               <Route path={WalletRoutes.DepositFundsPageStart}>
-                  <DepositFundsScreen />
+                <DepositFundsScreen />
               </Route>
-            }
+            )}
 
-            {!isWalletLocked &&
-              <Route path={WalletRoutes.Swap} exact={true}>
+            {!isWalletLocked && (
+              <Route
+                path={WalletRoutes.Swap}
+                exact={true}
+              >
                 <WalletPageWrapper
                   hideHeader={true}
                   hideBackground={true}
-                  cardHeader={
-                    <PageTitleHeader title={'braveWalletSwap'} />
-                  }
+                  cardHeader={<PageTitleHeader title={'braveWalletSwap'} />}
                 >
                   <Swap />
                 </WalletPageWrapper>
               </Route>
-            }
+            )}
 
             {isBitcoinEnabled && !isWalletLocked && (
-              <Route path={WalletRoutes.DevBitcoin} exact={true}>
+              <Route
+                path={WalletRoutes.DevBitcoin}
+                exact={true}
+              >
                 <DevBitcoin />
               </Route>
             )}
 
-            {!isWalletLocked &&
-              <Route path={WalletRoutes.SendPage} exact>
+            {!isWalletLocked && (
+              <Route
+                path={WalletRoutes.SendPage}
+                exact
+              >
                 <SendScreen />
               </Route>
-            }
+            )}
 
-            {!isWalletLocked &&
+            {!isWalletLocked && (
               <Route path={WalletRoutes.CryptoPage}>
                 <CryptoView
                   needsBackup={!isWalletBackedUp}
@@ -342,12 +358,12 @@ export const Container = () => {
                   sessionRoute={sessionRoute}
                 />
               </Route>
-            }
+            )}
 
             {isWalletLocked && <Redirect to={WalletRoutes.Unlock} />}
             {!isWalletLocked && <Redirect to={WalletRoutes.PortfolioAssets} />}
           </Switch>
-        }
+        )}
       </Switch>
     </>
   )

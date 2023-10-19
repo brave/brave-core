@@ -9,12 +9,7 @@ import { Provider } from 'react-redux'
 
 // types
 import { WalletActions } from '../common/actions'
-import {
-  PageState,
-  PanelState,
-  UIState,
-  WalletState
-} from '../constants/types'
+import { PageState, PanelState, UIState, WalletState } from '../constants/types'
 
 // reducers
 import { createWalletApi } from '../common/slices/api.slice'
@@ -44,9 +39,7 @@ import {
   resetCache,
   setApiProxyFetcher
 } from '../common/async/base-query-cache'
-import {
-  setRewardsProxyFetcher
-} from '../common/slices/endpoints/rewards.endpoints'
+import { setRewardsProxyFetcher } from '../common/slices/endpoints/rewards.endpoints'
 import {
   BraveRewardsProxyOverrides,
   getMockedBraveRewardsProxy

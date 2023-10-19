@@ -21,9 +21,7 @@ import { maxConcurrentPriceRequests, maxBatchSizePrice } from '../constants'
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../../constants/magics'
 
 // Utils
-import {
-  makeSerializableTimeDelta
-} from '../../../utils/model-serialization-utils'
+import { makeSerializableTimeDelta } from '../../../utils/model-serialization-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import Amount from '../../../utils/amount'
 
@@ -94,7 +92,7 @@ export const pricingEndpoints = ({
           const {
             data: { assetRatioService }
           } = baseQuery(undefined)
-          
+
           if (!ids.length) {
             throw new Error('no token ids provided for price lookup')
           }
@@ -102,7 +100,7 @@ export const pricingEndpoints = ({
           // dedupe ids to prevent duplicate price requests
           const uniqueIds = [...new Set(ids)]
             // skip flagged coins such as testnet coins other than Goerli-ETH
-            .filter(id => id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
+            .filter((id) => id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
 
           const chunkedParams = []
           for (let i = 0; i < uniqueIds.length; i += maxBatchSizePrice) {
@@ -156,7 +154,7 @@ export const pricingEndpoints = ({
               acc[assetPrice.fromAsset.toLowerCase()] = assetPrice
               return acc
             }, {})
-          
+
           // add skipped value
           registry[SKIP_PRICE_LOOKUP_COINGECKO_ID] = {
             assetTimeframeChange: (

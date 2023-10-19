@@ -5,7 +5,7 @@
 import {
   getMockedTransactionInfo,
   mockAccount,
-  mockNetwork,
+  mockNetwork
 } from '../common/constants/mocks'
 import { SwapExchangeProxy } from '../common/constants/registry'
 import { BraveWallet, SerializableTransactionInfo } from '../constants/types'
@@ -16,7 +16,10 @@ import {
   mockErc20TokensList
 } from '../stories/mock-data/mock-asset-options'
 import { mockEthMainnet } from '../stories/mock-data/mock-networks'
-import { mockFilSendTransaction, mockTransactionInfo } from '../stories/mock-data/mock-transaction-info'
+import {
+  mockFilSendTransaction,
+  mockTransactionInfo
+} from '../stories/mock-data/mock-transaction-info'
 import { mockEthAccount } from '../stories/mock-data/mock-wallet-accounts'
 import Amount from './amount'
 import {
@@ -32,35 +35,50 @@ import {
 
 describe('Check Transaction Status Strings Value', () => {
   test('Transaction ID 0 should return Unapproved', () => {
-    expect(getTransactionStatusString(0)).toEqual('braveWalletTransactionStatusUnapproved')
+    expect(getTransactionStatusString(0)).toEqual(
+      'braveWalletTransactionStatusUnapproved'
+    )
   })
   test('Transaction ID 1 should return Approved', () => {
-    expect(getTransactionStatusString(1)).toEqual('braveWalletTransactionStatusApproved')
+    expect(getTransactionStatusString(1)).toEqual(
+      'braveWalletTransactionStatusApproved'
+    )
   })
 
   test('Transaction ID 2 should return Rejected', () => {
-    expect(getTransactionStatusString(2)).toEqual('braveWalletTransactionStatusRejected')
+    expect(getTransactionStatusString(2)).toEqual(
+      'braveWalletTransactionStatusRejected'
+    )
   })
 
   test('Transaction ID 3 should return Submitted', () => {
-    expect(getTransactionStatusString(3)).toEqual('braveWalletTransactionStatusSubmitted')
+    expect(getTransactionStatusString(3)).toEqual(
+      'braveWalletTransactionStatusSubmitted'
+    )
   })
 
   test('Transaction ID 4 should return Confirmed', () => {
-    expect(getTransactionStatusString(4)).toEqual('braveWalletTransactionStatusConfirmed')
+    expect(getTransactionStatusString(4)).toEqual(
+      'braveWalletTransactionStatusConfirmed'
+    )
   })
 
   test('Transaction ID 5 should return Error', () => {
-    expect(getTransactionStatusString(5)).toEqual('braveWalletTransactionStatusError')
+    expect(getTransactionStatusString(5)).toEqual(
+      'braveWalletTransactionStatusError'
+    )
   })
 
   test('Transaction ID 6 should return Dropped', () => {
-    expect(getTransactionStatusString(6)).toEqual('braveWalletTransactionStatusDropped')
+    expect(getTransactionStatusString(6)).toEqual(
+      'braveWalletTransactionStatusDropped'
+    )
   })
 
   test('Transaction ID 7 should return Signed', () => {
-    expect(getTransactionStatusString(7))
-      .toEqual('braveWalletTransactionStatusSigned')
+    expect(getTransactionStatusString(7)).toEqual(
+      'braveWalletTransactionStatusSigned'
+    )
   })
 
   test('Transaction ID 8 should return an empty string', () => {
@@ -97,7 +115,6 @@ describe('getTransactionGas()', () => {
 
 describe('getETHSwapTransactionBuyAndSellTokens', () => {
   it('should detect the correct but/swap tokens of a transaction', () => {
-
     const fillPath = `${
       mockBasicAttentionToken.contractAddress //
     }${
@@ -108,51 +125,47 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
     const sellAmountArg = '1'
     const minBuyAmountArg = '2'
 
-    const {
-      buyAmountWei,
-      sellAmountWei,
-      buyToken,
-      sellToken
-    } = getETHSwapTransactionBuyAndSellTokens({
-      tokensList: mockErc20TokensList,
-      tx: {
-        chainId: BraveWallet.MAINNET_CHAIN_ID,
-        confirmedTime: { microseconds: Date.now() },
-        createdTime: { microseconds: Date.now() },
-        fromAddress: mockAccount.address,
-        effectiveRecipient: mockAccount.address,
-        fromAccountId: mockAccount.accountId,
-        groupId: undefined,
-        id: 'swap',
-        originInfo: undefined,
-        submittedTime: { microseconds: Date.now() },
-        // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
-        txArgs: [fillPath, sellAmountArg, minBuyAmountArg],
-        txDataUnion: {
-          ethTxData1559: {
-            baseData: {
-              data: [],
-              gasLimit: '',
-              gasPrice: '',
-              nonce: '',
-              signedTransaction: '',
-              signOnly: false,
-              to: SwapExchangeProxy,
-              value: ''
-            },
-            chainId: BraveWallet.MAINNET_CHAIN_ID,
-            gasEstimation: undefined,
-            maxFeePerGas: '1',
-            maxPriorityFeePerGas: '1'
-          }
+    const { buyAmountWei, sellAmountWei, buyToken, sellToken } =
+      getETHSwapTransactionBuyAndSellTokens({
+        tokensList: mockErc20TokensList,
+        tx: {
+          chainId: BraveWallet.MAINNET_CHAIN_ID,
+          confirmedTime: { microseconds: Date.now() },
+          createdTime: { microseconds: Date.now() },
+          fromAddress: mockAccount.address,
+          effectiveRecipient: mockAccount.address,
+          fromAccountId: mockAccount.accountId,
+          groupId: undefined,
+          id: 'swap',
+          originInfo: undefined,
+          submittedTime: { microseconds: Date.now() },
+          // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
+          txArgs: [fillPath, sellAmountArg, minBuyAmountArg],
+          txDataUnion: {
+            ethTxData1559: {
+              baseData: {
+                data: [],
+                gasLimit: '',
+                gasPrice: '',
+                nonce: '',
+                signedTransaction: '',
+                signOnly: false,
+                to: SwapExchangeProxy,
+                value: ''
+              },
+              chainId: BraveWallet.MAINNET_CHAIN_ID,
+              gasEstimation: undefined,
+              maxFeePerGas: '1',
+              maxPriorityFeePerGas: '1'
+            }
+          },
+          txHash: '123',
+          txParams: [],
+          txStatus: BraveWallet.TransactionStatus.Unapproved,
+          txType: BraveWallet.TransactionType.ETHSwap
         },
-        txHash: '123',
-        txParams: [],
-        txStatus: BraveWallet.TransactionStatus.Unapproved,
-        txType: BraveWallet.TransactionType.ETHSwap
-      },
-      nativeAsset: makeNetworkAsset(mockNetwork)
-    })
+        nativeAsset: makeNetworkAsset(mockNetwork)
+      })
 
     expect(buyToken).toBeDefined()
     expect(sellToken).toBeDefined()
@@ -262,17 +275,15 @@ describe('check for insufficient funds errors', () => {
         mockErc20TokensList
       )
 
-      const {
-        sellAmountWei,
-        sellToken
-      } = getETHSwapTransactionBuyAndSellTokens({
-        tokensList: mockErc20TokensList,
-        tx: mockTransactionInfo,
-        nativeAsset: {
-          ...makeNetworkAsset(mockEthMainnet),
-          chainId: mockTransactionInfo.chainId
-        }
-      })
+      const { sellAmountWei, sellToken } =
+        getETHSwapTransactionBuyAndSellTokens({
+          tokensList: mockErc20TokensList,
+          tx: mockTransactionInfo,
+          nativeAsset: {
+            ...makeNetworkAsset(mockEthMainnet),
+            chainId: mockTransactionInfo.chainId
+          }
+        })
 
       const accountNativeBalance =
         nativeBalanceRegistry[mockTransactionInfo.chainId]
@@ -340,8 +351,7 @@ describe('check for insufficient funds errors', () => {
       }
 
       const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
-        accountNativeBalance:
-          nativeBalanceRegistry[transactionInfo.chainId],
+        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
         gasFee
       })
 
@@ -353,7 +363,6 @@ describe('check for insufficient funds errors', () => {
         sellTokenBalance: '',
         tx: transactionInfo
       })
-
 
       expect(insufficientFundsError).toBeTruthy()
       expect(insufficientFundsForGasError).toBeFalsy()
@@ -593,23 +602,27 @@ describe('toTxDataUnion', () => {
 
 describe('getIsRevokeApprovalTx', () => {
   test('correctly detects revocations', () => {
-    expect(getIsRevokeApprovalTx({
-      ...mockTransactionInfo,
-      txType: BraveWallet.TransactionType.ERC20Approve,
-      txArgs: [
-        mockEthAccount.address, // spender
-        '0' // amount
-      ]
-    })).toBe(true)
+    expect(
+      getIsRevokeApprovalTx({
+        ...mockTransactionInfo,
+        txType: BraveWallet.TransactionType.ERC20Approve,
+        txArgs: [
+          mockEthAccount.address, // spender
+          '0' // amount
+        ]
+      })
+    ).toBe(true)
   })
   test('correctly detects non-revocation approvals', () => {
-    expect(getIsRevokeApprovalTx({
-      ...mockTransactionInfo,
-      txType: BraveWallet.TransactionType.ERC20Approve,
-      txArgs: [
-        mockEthAccount.address, // spender
-        '10' // amount
-      ]
-    })).toBe(false)
+    expect(
+      getIsRevokeApprovalTx({
+        ...mockTransactionInfo,
+        txType: BraveWallet.TransactionType.ERC20Approve,
+        txArgs: [
+          mockEthAccount.address, // spender
+          '10' // amount
+        ]
+      })
+    ).toBe(false)
   })
 })

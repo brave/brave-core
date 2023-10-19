@@ -6,9 +6,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
 import { Column } from '../../../shared/style'
-import {
-  layoutPanelWidth
-} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const ControlsWrapper = styled(Column)`
   padding: 0px 32px;

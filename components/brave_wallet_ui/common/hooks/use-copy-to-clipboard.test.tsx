@@ -30,7 +30,9 @@ describe('useTemporaryCopyToClipboard Hook', () => {
 
     const timeoutTime = 5000 // 5 seconds
 
-    const { result } = renderHook(() => useTemporaryCopyToClipboard(timeoutTime))
+    const { result } = renderHook(() =>
+      useTemporaryCopyToClipboard(timeoutTime)
+    )
 
     await act(async () => {
       await result.current.temporaryCopyToClipboard('some text')

@@ -20,37 +20,17 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 import { getLocale } from '$web-common/locale'
 
 // Components
-import {
-  StandardButton
-} from './components/buttons/standard-button/standard-button'
-import {
-  FlipTokensButton
-} from './components/buttons/flip-tokens-button/flip-tokens-button'
-import {
-  SwapContainer
-} from './components/swap/swap-container/swap-container'
-import {
-  FromSection
-} from './components/swap/from-section/from-section'
-import {
-  ToSection
-} from './components/swap/to-section/to-section'
-import {
-  SelectTokenModal
-} from './components/swap/select-token-modal/select-token-modal'
-import {
-  QuoteInfo
-} from './components/swap/quote-info/quote-info'
-import {
-  QuoteOptions
-} from './components/swap/quote-options/quote-options'
-import {
-  SwapSettingsModal
-} from './components/swap/settings/swap-settings-modal'
+import { StandardButton } from './components/buttons/standard-button/standard-button'
+import { FlipTokensButton } from './components/buttons/flip-tokens-button/flip-tokens-button'
+import { SwapContainer } from './components/swap/swap-container/swap-container'
+import { FromSection } from './components/swap/from-section/from-section'
+import { ToSection } from './components/swap/to-section/to-section'
+import { SelectTokenModal } from './components/swap/select-token-modal/select-token-modal'
+import { QuoteInfo } from './components/swap/quote-info/quote-info'
+import { QuoteOptions } from './components/swap/quote-options/quote-options'
+import { SwapSettingsModal } from './components/swap/settings/swap-settings-modal'
 // import { SwapSkeleton } from './components/swap/swap-skeleton/swap-skeleton'
-import {
-  PrivacyModal
-} from './components/swap/privacy-modal/privacy-modal'
+import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
 
 import { SwapSectionBox } from './components/boxes/swap-section-box'
 
@@ -143,9 +123,7 @@ export const Swap = () => {
   // render
   return (
     <>
-      <SwapContainer
-        showPrivacyModal={() => setShowPrivacyModal(true)}
-      >
+      <SwapContainer showPrivacyModal={() => setShowPrivacyModal(true)}>
         <Row
           rowWidth='full'
           horizontalPadding={16}
@@ -154,9 +132,7 @@ export const Swap = () => {
         >
           <Text isBold={true}>{getLocale('braveSwap')}</Text>
           <SettingsWrapper ref={swapSettingsModalRef}>
-            <IconButton
-              onClick={onToggleShowSwapSettings}
-            >
+            <IconButton onClick={onToggleShowSwapSettings}>
               <Icon name='tune' />
             </IconButton>
             {showSwapSettings && (
@@ -196,10 +172,8 @@ export const Swap = () => {
             isLoading={isFetchingQuote}
             disabled={selectedNetwork?.coin === BraveWallet.CoinType.SOL}
           />
-          {
-            selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
-            quoteOptions.length > 0 &&
-            (
+          {selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
+            quoteOptions.length > 0 && (
               <QuoteOptions
                 options={quoteOptions}
                 selectedQuoteOptionIndex={selectedQuoteOptionIndex}

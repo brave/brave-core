@@ -21,7 +21,7 @@ export const Wrapper = styled(StyledDiv)`
   z-index: 10;
 `
 
-export const Modal = styled(StyledDiv) <{
+export const Modal = styled(StyledDiv)<{
   modalHeight?: 'standard' | 'full' | 'dynamic'
   modalBackground?: 'background01' | 'background02'
 }>`
@@ -37,8 +37,8 @@ export const Modal = styled(StyledDiv) <{
     p.modalHeight === 'full'
       ? '85%'
       : p.modalHeight === 'dynamic'
-        ? 'unset'
-        : '520px'};
+      ? 'unset'
+      : '520px'};
   justify-content: flex-start;
   overflow: hidden;
   position: absolute;

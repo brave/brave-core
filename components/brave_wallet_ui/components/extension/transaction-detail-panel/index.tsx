@@ -17,17 +17,13 @@ import {
   useGetTokenSpotPricesQuery,
   walletApi
 } from '../../../common/slices/api.slice'
-import {
-  useUnsafeUISelector
-} from '../../../common/hooks/use-safe-selector'
+import { useUnsafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
   useAccountQuery,
   useGetCombinedTokensListQuery,
   useTransactionQuery
 } from '../../../common/slices/api.slice.extra'
-import {
-  querySubscriptionOptions60s
-} from '../../../common/slices/constants'
+import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 import { useAccountOrb, useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Utils
@@ -53,9 +49,7 @@ import { UISelectors } from '../../../common/selectors'
 import { serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 
 // Constants
-import {
-  BraveWallet
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Styled Components
 import {
@@ -76,10 +70,7 @@ import {
   ArrowIcon,
   AlertIcon
 } from './style'
-import {
-  DetailTextDarkBold,
-  DetailTextDark
-} from '../shared-panel-styles'
+import { DetailTextDarkBold, DetailTextDark } from '../shared-panel-styles'
 import Header from '../../buy-send-swap/select-header'
 import { StatusBubble } from '../../shared/style'
 import { TransactionStatusTooltip } from '../transaction-status-tooltip'
@@ -94,10 +85,7 @@ interface Props {
 
 export const TransactionDetailPanel = (props: Props) => {
   // props
-  const {
-    transactionId,
-    onBack,
-  } = props
+  const { transactionId, onBack } = props
 
   // redux
   const dispatch = useDispatch()
@@ -115,9 +103,7 @@ export const TransactionDetailPanel = (props: Props) => {
   const { data: accounts } = useGetAccountInfosRegistryQuery()
   const { account } = useAccountQuery(transaction?.fromAccountId)
 
-  const isSolanaTxn = transaction
-    ? isSolanaTransaction(transaction)
-    : undefined
+  const isSolanaTxn = transaction ? isSolanaTransaction(transaction) : undefined
 
   const { data: transactionsNetwork } = useGetNetworkQuery(
     transaction && txCoinType
@@ -156,9 +142,7 @@ export const TransactionDetailPanel = (props: Props) => {
     [txToken, networkAsset, buyToken, sellToken]
   )
 
-  const {
-    data: spotPriceRegistry = {}
-  } = useGetTokenSpotPricesQuery(
+  const { data: spotPriceRegistry = {} } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length && defaultFiatCurrency
       ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
       : skipToken,
@@ -215,7 +199,7 @@ export const TransactionDetailPanel = (props: Props) => {
     recipient,
     recipientLabel,
     senderLabel,
-    symbol,
+    symbol
   } = transactionDetails || {}
 
   const fromOrb = useAccountOrb(account)
@@ -349,7 +333,11 @@ export const TransactionDetailPanel = (props: Props) => {
           <AccountNameText>{senderLabel}</AccountNameText>
         </Tooltip>
         <ArrowIcon />
-        <Tooltip text={recipient} isAddress={true} position={'right'}>
+        <Tooltip
+          text={recipient}
+          isAddress={true}
+          position={'right'}
+        >
           <AccountNameText>{recipientLabel}</AccountNameText>
         </Tooltip>
       </FromToRow>

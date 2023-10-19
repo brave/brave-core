@@ -113,6 +113,9 @@ README.md
 .clang-tidy
 chromium_presubmit_config.json5
 
+# Ignored minified javascript
+components/brave_wallet/resources/solana_web3_script.js
+
 # Ignored components (remove to opt-in):
 components/ai_chat
 components/api_request_helper
@@ -140,8 +143,6 @@ components/brave_shields
 components/brave_stats
 components/brave_sync
 components/brave_vpn
-components/brave_wallet
-components/brave_wallet_ui
 components/brave_wayback_machine
 components/brave_webtorrent
 components/brave_welcome

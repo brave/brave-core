@@ -9,9 +9,7 @@ import * as React from 'react'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
-import {
-  CreateNetworkIcon
-} from '../../../../../../components/shared/create-network-icon'
+import { CreateNetworkIcon } from '../../../../../../components/shared/create-network-icon'
 
 // Styled Components
 import { Button } from './network-list-button.style'
@@ -32,14 +30,20 @@ export const NetworkListButton = (props: Props) => {
   }, [network, onClick])
 
   return (
-    <Button onClick={onSelectNetwork} isHeader={isHeader}>
+    <Button
+      onClick={onSelectNetwork}
+      isHeader={isHeader}
+    >
       <Row>
         <CreateNetworkIcon
           size='big'
           marginRight={8}
           network={network}
         />
-        <Text isBold={true} textSize='14px'>
+        <Text
+          isBold={true}
+          textSize='14px'
+        >
           {network.chainName}
         </Text>
       </Row>

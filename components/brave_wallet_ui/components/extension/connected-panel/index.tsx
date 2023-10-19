@@ -31,30 +31,18 @@ import {
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
-import {
-  querySubscriptionOptions60s
-} from '../../../common/slices/constants'
+import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
-import {
-  useScopedBalanceUpdater
-} from '../../../common/hooks/use-scoped-balance-updater'
-import {
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
+import { useScopedBalanceUpdater } from '../../../common/hooks/use-scoped-balance-updater'
+import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 
 // types
-import {
-  PanelTypes,
-  BraveWallet,
-  WalletOrigin
-} from '../../../constants/types'
+import { PanelTypes, BraveWallet, WalletOrigin } from '../../../constants/types'
 
 // Components
-import {
-  ConnectedHeader
-} from '../connected-header/index'
+import { ConnectedHeader } from '../connected-header/index'
 import {
   SelectNetworkButton //
 } from '../../shared/select-network-button/select-network-button'
@@ -87,9 +75,7 @@ interface Props {
 }
 
 export const ConnectedPanel = (props: Props) => {
-  const {
-    navAction
-  } = props
+  const { navAction } = props
 
   const originInfo = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
   const connectedAccounts = useUnsafeWalletSelector(
@@ -102,8 +88,8 @@ export const ConnectedPanel = (props: Props) => {
   const selectedCoin = selectedNetwork?.coin
   const { data: selectedAccount } = useSelectedAccountQuery()
 
-  const networkAsset = React.useMemo(() =>
-    makeNetworkAsset(selectedNetwork),
+  const networkAsset = React.useMemo(
+    () => makeNetworkAsset(selectedNetwork),
     [selectedNetwork]
   )
 
@@ -119,29 +105,27 @@ export const ConnectedPanel = (props: Props) => {
           tokens: [networkAsset]
         }
       : skipToken
-    )
+  )
 
-  const networkTokenPriceIds = React.useMemo(() =>
-    networkAsset
-      ? [getPriceIdForToken(networkAsset)]
-      : [],
+  const networkTokenPriceIds = React.useMemo(
+    () => (networkAsset ? [getPriceIdForToken(networkAsset)] : []),
     [networkAsset]
   )
 
-  const {
-    data: spotPriceRegistry,
-    isLoading: isLoadingSpotPrices
-  } = useGetTokenSpotPricesQuery(
-    networkTokenPriceIds.length && defaultFiatCurrency
-      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
-      : skipToken,
-    querySubscriptionOptions60s
-  )
+  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+    useGetTokenSpotPricesQuery(
+      networkTokenPriceIds.length && defaultFiatCurrency
+        ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+        : skipToken,
+      querySubscriptionOptions60s
+    )
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
-  const [isSolanaConnected, setIsSolanaConnected] = React.useState<boolean>(false)
-  const [isPermissionDenied, setIsPermissionDenied] = React.useState<boolean>(false)
+  const [isSolanaConnected, setIsSolanaConnected] =
+    React.useState<boolean>(false)
+  const [isPermissionDenied, setIsPermissionDenied] =
+    React.useState<boolean>(false)
 
   // computed
   // TODO(apaymyshev): handle bitcoin address
@@ -153,9 +137,12 @@ export const ConnectedPanel = (props: Props) => {
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   // methods
-  const navigate = React.useCallback((path: PanelTypes) => () => {
-    navAction(path)
-  }, [navAction])
+  const navigate = React.useCallback(
+    (path: PanelTypes) => () => {
+      navAction(path)
+    },
+    [navAction]
+  )
 
   const onExpand = React.useCallback(() => {
     navAction('expanded')
@@ -163,10 +150,15 @@ export const ConnectedPanel = (props: Props) => {
 
   const onShowSitePermissions = React.useCallback(() => {
     if (isPermissionDenied) {
-      const contentPath = selectedCoin === BraveWallet.CoinType.SOL ? 'solana' : 'ethereum'
-      chrome.tabs.create({
-        url: `brave://settings/content/${contentPath}`
-      }).catch((e) => { console.error(e) })
+      const contentPath =
+        selectedCoin === BraveWallet.CoinType.SOL ? 'solana' : 'ethereum'
+      chrome.tabs
+        .create({
+          url: `brave://settings/content/${contentPath}`
+        })
+        .catch((e) => {
+          console.error(e)
+        })
       return
     }
     navAction('sitePermissions')
@@ -187,14 +179,15 @@ export const ConnectedPanel = (props: Props) => {
     let subscribed = true
 
     if (selectedCoin) {
-      (async () => {
-        await braveWalletService.isPermissionDenied(selectedCoin)
-          .then(result => {
+      ;(async () => {
+        await braveWalletService
+          .isPermissionDenied(selectedCoin)
+          .then((result) => {
             if (subscribed) {
               setIsPermissionDenied(result.denied)
             }
           })
-          .catch(e => console.log(e))
+          .catch((e) => console.log(e))
       })()
     }
 
@@ -209,15 +202,16 @@ export const ConnectedPanel = (props: Props) => {
     let subscribed = true
 
     if (selectedAccount?.address && selectedCoin === BraveWallet.CoinType.SOL) {
-      (async () => {
+      ;(async () => {
         const { panelHandler } = getWalletPanelApiProxy()
-        await panelHandler.isSolanaAccountConnected(selectedAccount?.address)
-          .then(result => {
+        await panelHandler
+          .isSolanaAccountConnected(selectedAccount?.address)
+          .then((result) => {
             if (subscribed) {
               setIsSolanaConnected(result.connected)
             }
           })
-          .catch(e => console.log(e))
+          .catch((e) => console.log(e))
       })()
     }
 
@@ -269,8 +263,9 @@ export const ConnectedPanel = (props: Props) => {
       return Amount.empty()
     }
 
-    return selectedAccountBalance
-      .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
+    return selectedAccountBalance.times(
+      getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset)
+    )
   }, [
     selectedAccountBalance,
     networkAsset,
@@ -289,10 +284,17 @@ export const ConnectedPanel = (props: Props) => {
       return true
     } else {
       return connectedAccounts.some(
-        (accountId) => accountId.uniqueKey === selectedAccount.accountId.uniqueKey
+        (accountId) =>
+          accountId.uniqueKey === selectedAccount.accountId.uniqueKey
       )
     }
-  }, [connectedAccounts, selectedAccount, originInfo, selectedCoin, isSolanaConnected])
+  }, [
+    connectedAccounts,
+    selectedAccount,
+    originInfo,
+    selectedCoin,
+    isSolanaConnected
+  ])
 
   const connectedStatusText = React.useMemo((): string => {
     if (isPermissionDenied) {
@@ -315,39 +317,38 @@ export const ConnectedPanel = (props: Props) => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
       return connectedAccounts.length !== 0
     }
-    if (!originInfo)
-      return false
+    if (!originInfo) return false
 
     return !originInfo.originSpec.startsWith('chrome')
   }, [selectedCoin, connectedAccounts, originInfo, isPermissionDenied])
 
   // computed
   const formattedAssetBalance = React.useMemo(() => {
-    if (
-      selectedAccountBalance.isUndefined() ||
-      !networkAsset
-    ) {
+    if (selectedAccountBalance.isUndefined() || !networkAsset) {
       return ''
     }
 
     return selectedAccountBalance.formatAsAsset(6, networkAsset.symbol)
-  }, [
-    selectedAccountBalance,
-    networkAsset
-  ])
+  }, [selectedAccountBalance, networkAsset])
 
   // render
   return (
-    <StyledWrapper onClick={onHideMore} panelBackground={bg}>
+    <StyledWrapper
+      onClick={onHideMore}
+      panelBackground={bg}
+    >
       <ConnectedHeader
         onExpand={onExpand}
         onClickMore={onShowMore}
-        onClickViewOnBlockExplorer={selectedAccount ? onClickViewOnBlockExplorer('address', selectedAccountAddress) : undefined}
+        onClickViewOnBlockExplorer={
+          selectedAccount
+            ? onClickViewOnBlockExplorer('address', selectedAccountAddress)
+            : undefined
+        }
         showMore={showMore}
       />
 
       <CenterColumn>
-
         <StatusRow>
           <SelectNetworkButton
             onClick={navigate('networks')}
@@ -362,9 +363,7 @@ export const ConnectedPanel = (props: Props) => {
               {selectedCoin === BraveWallet.CoinType.SOL ? (
                 <ConnectedStatusBubble isConnected={isConnected} />
               ) : (
-                <>
-                  {isConnected && <BigCheckMark />}
-                </>
+                <>{isConnected && <BigCheckMark />}</>
               )}
               <OvalButtonText>{connectedStatusText}</OvalButtonText>
             </OvalButton>
@@ -376,12 +375,19 @@ export const ConnectedPanel = (props: Props) => {
         <VerticalSpacer space='8px' />
 
         <BalanceColumn>
-          <AccountCircle orb={orb} onClick={navigate('accounts')}>
+          <AccountCircle
+            orb={orb}
+            onClick={navigate('accounts')}
+          >
             <SwitchIcon />
           </AccountCircle>
-          <AccountNameText>{reduceAccountDisplayName(selectedAccountName, 24)}</AccountNameText>
+          <AccountNameText>
+            {reduceAccountDisplayName(selectedAccountName, 24)}
+          </AccountNameText>
           <CopyTooltip text={selectedAccountAddress}>
-            <AccountAddressText>{reduceAddress(selectedAccountAddress)}</AccountAddressText>
+            <AccountAddressText>
+              {reduceAddress(selectedAccountAddress)}
+            </AccountAddressText>
           </CopyTooltip>
         </BalanceColumn>
         <BalanceColumn>
@@ -390,7 +396,11 @@ export const ConnectedPanel = (props: Props) => {
           ) : (
             <>
               <VerticalSpacer space={6} />
-              <LoadingSkeleton useLightTheme={true} width={120} height={24} />
+              <LoadingSkeleton
+                useLightTheme={true}
+                width={120}
+                height={24}
+              />
               <VerticalSpacer space={6} />
             </>
           )}
@@ -399,14 +409,18 @@ export const ConnectedPanel = (props: Props) => {
               {selectedAccountFiatBalance.formatAsFiat(defaultFiatCurrency)}
             </FiatBalanceText>
           ) : (
-            <LoadingSkeleton useLightTheme={true} width={80} height={20} />
+            <LoadingSkeleton
+              useLightTheme={true}
+              width={80}
+              height={20}
+            />
           )}
         </BalanceColumn>
-        <MoreAssetsButton onClick={navigate('assets')}>{getLocale('braveWalletPanelViewAccountAssets')}</MoreAssetsButton>
+        <MoreAssetsButton onClick={navigate('assets')}>
+          {getLocale('braveWalletPanelViewAccountAssets')}
+        </MoreAssetsButton>
       </CenterColumn>
-      <PanelBottomNav
-        onNavigate={navAction}
-      />
+      <PanelBottomNav onNavigate={navAction} />
     </StyledWrapper>
   )
 }

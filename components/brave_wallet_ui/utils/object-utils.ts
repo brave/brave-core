@@ -5,7 +5,7 @@
 
 type MaybeObj = Object | any[] | null | undefined | number | string
 
-export function objectEquals (x: MaybeObj, y: MaybeObj): boolean {
+export function objectEquals(x: MaybeObj, y: MaybeObj): boolean {
   // check falsey values
   if (x === null || x === undefined || y === null || y === undefined) {
     return x === y
@@ -32,20 +32,22 @@ export function objectEquals (x: MaybeObj, y: MaybeObj): boolean {
   }
 
   // check array lengths
-  if (
-    Array.isArray(x) &&
-    Array.isArray(y) &&
-    x.length !== y.length
-  ) {
+  if (Array.isArray(x) && Array.isArray(y) && x.length !== y.length) {
     return false
   }
 
   // if they are dates, they must have had equal valueOf
-  if (x instanceof Date) { return false }
+  if (x instanceof Date) {
+    return false
+  }
 
   // if they are strictly equal, they both need to be object at least
-  if (!(x instanceof Object)) { return false }
-  if (!(y instanceof Object)) { return false }
+  if (!(x instanceof Object)) {
+    return false
+  }
+  if (!(y instanceof Object)) {
+    return false
+  }
 
   // recursive object equality check
   const xKeys = Object.keys(x)

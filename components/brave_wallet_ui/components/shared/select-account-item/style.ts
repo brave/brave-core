@@ -12,10 +12,9 @@ interface StyleProps {
   orb: string
 }
 
-export const StyledWrapper = styled(WalletButton)<
-  {
-    isV2?: boolean
-  }>`
+export const StyledWrapper = styled(WalletButton)<{
+  isV2?: boolean
+}>`
   display: flex;
   width: 100%;
   flex-direction: row;
@@ -27,9 +26,10 @@ export const StyledWrapper = styled(WalletButton)<
   border: none;
   margin-bottom: 10px;
   padding: 0px;
-  background-color: ${p => p.isV2 ? leo.color.container.highlight : 'transparent'};
-  border-radius: ${p => p.isV2 ? '8px' : 0};
-  padding: ${p => p.isV2 ? '8px' : 0}
+  background-color: ${(p) =>
+    p.isV2 ? leo.color.container.highlight : 'transparent'};
+  border-radius: ${(p) => (p.isV2 ? '8px' : 0)};
+  padding: ${(p) => (p.isV2 ? '8px' : 0)};
 `
 
 export const AccountAndAddress = styled.div`
@@ -40,21 +40,21 @@ export const AccountAndAddress = styled.div`
 `
 
 export const AccountName = styled.span<{
-    isV2?: boolean
-  }>`
+  isV2?: boolean
+}>`
   font-family: Poppins;
-  font-size: ${p => p.isV2 ? '14px' : '13px'};
-  line-height: ${p => p.isV2 ? '24px' : '20px'};
+  font-size: ${(p) => (p.isV2 ? '14px' : '13px')};
+  line-height: ${(p) => (p.isV2 ? '24px' : '20px')};
   font-weight: 600;
   color: ${leo.color.text.primary};
-  `
-  
-  export const AccountAddress = styled.span<{
-    isV2?: boolean
-  }>`
+`
+
+export const AccountAddress = styled.span<{
+  isV2?: boolean
+}>`
   font-family: Poppins;
-  font-size: ${p => p.isV2 ? '11px' : '12px'};
-  line-height: ${p => p.isV2 ? '16px' : '18px'};
+  font-size: ${(p) => (p.isV2 ? '11px' : '12px')};
+  line-height: ${(p) => (p.isV2 ? '16px' : '18px')};
   color: ${leo.color.text.secondary};
 `
 
@@ -90,8 +90,8 @@ export const SwitchAccountIconContainer = styled.div`
 `
 
 export const CaratDown = styled(Icon).attrs({
-    name: 'carat-down'
+  name: 'carat-down'
 })`
   --leo-icon-size: 20px;
-  color: ${leo.color.icon.default}
+  color: ${leo.color.icon.default};
 `

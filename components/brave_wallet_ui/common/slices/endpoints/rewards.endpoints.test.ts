@@ -9,7 +9,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import {
   useGetExternalRewardsWalletQuery,
   useGetRewardsBalanceQuery,
-  useGetRewardsEnabledQuery,
+  useGetRewardsEnabledQuery
 } from '../api.slice'
 
 // utils

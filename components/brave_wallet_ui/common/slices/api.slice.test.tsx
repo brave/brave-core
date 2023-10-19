@@ -15,9 +15,7 @@ import {
   mockSolanaAccountInfo
 } from '../constants/mocks'
 import { createMockStore } from '../../utils/test-utils'
-import {
-  createMockTransactionInfo
-} from '../../stories/mock-data/mock-transaction-info'
+import { createMockTransactionInfo } from '../../stories/mock-data/mock-transaction-info'
 import { BraveWallet } from '../../constants/types'
 import { mockAccounts } from '../../stories/mock-data/mock-wallet-accounts'
 import {
@@ -25,12 +23,11 @@ import {
   mockBitcoinErc20Token
 } from '../../stories/mock-data/mock-asset-options'
 
-function renderHookOptionsWithCustomStore (store: any) {
+function renderHookOptionsWithCustomStore(store: any) {
   return {
-    wrapper: ({ children }: { children?: React.ReactChildren }) =>
-      <Provider store={store}>
-          {children}
-      </Provider>
+    wrapper: ({ children }: { children?: React.ReactChildren }) => (
+      <Provider store={store}>{children}</Provider>
+    )
   }
 }
 
@@ -69,20 +66,24 @@ const mockEthErc20SendTx = createMockTransactionInfo({
   coinType: BraveWallet.CoinType.ETH,
   fromAccount: mockEthAccountInfo,
   toAddress: mockAccounts[1].address,
-  sendApproveOrSellAssetContractAddress: mockBasicAttentionToken.contractAddress,
+  sendApproveOrSellAssetContractAddress:
+    mockBasicAttentionToken.contractAddress,
   isERC20Send: true,
   sendApproveOrSellAmount: '100'
 })
 
 describe('api slice: useGetTransactionsQuery', () => {
   it('should fetch & cache transaction infos for given data', async () => {
-    const store = createMockStore({}, {
-      transactionInfos: [
-        mockSolanaSendTokenTx,
-        // this tx should be the only one returned
-        mockEthErc20SendTx,
-      ]
-    })
+    const store = createMockStore(
+      {},
+      {
+        transactionInfos: [
+          mockSolanaSendTokenTx,
+          // this tx should be the only one returned
+          mockEthErc20SendTx
+        ]
+      }
+    )
 
     const { result, waitForValueToChange } = renderHook(
       () =>
@@ -107,15 +108,18 @@ describe('api slice: useGetTransactionsQuery', () => {
     expect(txs?.[0].fromAccountId).toEqual(mockEthErc20SendTx.fromAccountId)
   })
   it('should fetch all transaction infos for all accounts when all filters are null', async () => {
-    const store = createMockStore({}, {
-      transactionInfos: [
-        // all txs should be returned
-        mockSolanaSendTokenTx,
-        mockAvaxErc20SendTx,
-        mockEthErc20SendTx,
-        mockFilSendTx,
-      ]
-    })
+    const store = createMockStore(
+      {},
+      {
+        transactionInfos: [
+          // all txs should be returned
+          mockSolanaSendTokenTx,
+          mockAvaxErc20SendTx,
+          mockEthErc20SendTx,
+          mockFilSendTx
+        ]
+      }
+    )
 
     const { result, waitForValueToChange } = renderHook(
       () =>

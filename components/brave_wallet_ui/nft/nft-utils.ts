@@ -13,17 +13,17 @@ export type MultimediaType =
 
 export const getMediaType = (mediaMimeType: string): MultimediaType => {
   const mimeType = mediaMimeType.toLowerCase()
-   if (mimeType.startsWith('image/')) {
-     return 'image'
-   } else if (mimeType.startsWith('audio/')) {
-     return 'audio'
-   } else if (mimeType.startsWith('video/')) {
-     return 'video'
-   } else if (mimeType.startsWith('model/')) {
-     return 'model'
-   } else if (mimeType === 'text/html') {
-     return 'html'
-   }
+  if (mimeType.startsWith('image/')) {
+    return 'image'
+  } else if (mimeType.startsWith('audio/')) {
+    return 'audio'
+  } else if (mimeType.startsWith('video/')) {
+    return 'video'
+  } else if (mimeType.startsWith('model/')) {
+    return 'model'
+  } else if (mimeType === 'text/html') {
+    return 'html'
+  }
 
   return 'other'
 }

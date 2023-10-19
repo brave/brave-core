@@ -8,7 +8,7 @@ import { selectCombinedTokensList } from './blockchain-token.entity'
 // mocks
 import {
   mockMoonCatNFT,
-  mockErc20TokensList,
+  mockErc20TokensList
 } from '../../../stories/mock-data/mock-asset-options'
 
 describe('blockchain token entity', () => {

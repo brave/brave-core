@@ -6,9 +6,7 @@
 import * as React from 'react'
 
 // Types
-import {
-  externalWalletProviderFromString
-} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { externalWalletProviderFromString } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Constants
 import { BraveWallet, SupportedTestNetworks } from '../../../constants/types'
@@ -51,22 +49,23 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
   // exit early if no network
   if (!network) {
     return (
-      <NetworkPlaceholderIcon marginRight={marginRight} network={network} />
+      <NetworkPlaceholderIcon
+        marginRight={marginRight}
+        network={network}
+      />
     )
   }
 
   // Computed
   const isRewardsNetwork = getIsRewardsNetwork(network)
 
-  const externalProvider =
-    isRewardsNetwork
-      ? externalWalletProviderFromString(network.chainId)
-      : null
+  const externalProvider = isRewardsNetwork
+    ? externalWalletProviderFromString(network.chainId)
+    : null
 
-  const networkLogo =
-    isRewardsNetwork
-      ? getRewardsProviderIcon(externalProvider)
-      : getNetworkLogo(network.chainId, network.symbol)
+  const networkLogo = isRewardsNetwork
+    ? getRewardsProviderIcon(externalProvider)
+    : getNetworkLogo(network.chainId, network.symbol)
 
   const isTestnet = SupportedTestNetworks.includes(network.chainId)
 
@@ -106,7 +105,10 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
       : true)
   ) {
     return (
-      <NetworkPlaceholderIcon marginRight={marginRight} network={network} />
+      <NetworkPlaceholderIcon
+        marginRight={marginRight}
+        network={network}
+      />
     )
   }
 
@@ -138,7 +140,10 @@ function NetworkPlaceholderIcon({
 
   // render
   return (
-    <IconWrapper marginRight={marginRight ?? 0} isTestnet={false}>
+    <IconWrapper
+      marginRight={marginRight ?? 0}
+      isTestnet={false}
+    >
       <Placeholder orb={orb} />
     </IconWrapper>
   )

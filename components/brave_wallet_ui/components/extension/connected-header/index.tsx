@@ -9,17 +9,10 @@ import * as React from 'react'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
-import {
-  HeaderTitle,
-  HeaderWrapper,
-  ActionIcon,
-  ExpandIcon
-} from './style'
+import { HeaderTitle, HeaderWrapper, ActionIcon, ExpandIcon } from './style'
 
 // components
-import {
-  WalletSettingsMenu
-} from '../../desktop/wallet-menus/wallet-settings-menu'
+import { WalletSettingsMenu } from '../../desktop/wallet-menus/wallet-settings-menu'
 
 export interface Props {
   onExpand: () => void
@@ -29,12 +22,7 @@ export interface Props {
 }
 
 export const ConnectedHeader = (props: Props) => {
-  const {
-    onClickMore,
-    onExpand,
-    onClickViewOnBlockExplorer,
-    showMore
-  } = props
+  const { onClickMore, onExpand, onClickViewOnBlockExplorer, showMore } = props
 
   // render
   return (
@@ -42,11 +30,11 @@ export const ConnectedHeader = (props: Props) => {
       <ExpandIcon onClick={onExpand} />
       <HeaderTitle>{getLocale('braveWalletPanelTitle')}</HeaderTitle>
       <ActionIcon onClick={onClickMore} />
-      {showMore &&
+      {showMore && (
         <WalletSettingsMenu
           onClickViewOnBlockExplorer={onClickViewOnBlockExplorer}
         />
-      }
+      )}
     </HeaderWrapper>
   )
 }

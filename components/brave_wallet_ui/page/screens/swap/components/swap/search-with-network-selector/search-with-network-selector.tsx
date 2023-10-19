@@ -12,28 +12,19 @@ import {
 } from '../../../../../../common/slices/api.slice'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
-import {
-  reduceNetworkDisplayName
-} from '../../../../../../utils/network-utils'
+import { getLocale } from '../../../../../../../common/locale'
+import { reduceNetworkDisplayName } from '../../../../../../utils/network-utils'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
-import {
-  SelectTokenOrNetworkButton
-} from '../../buttons/select-token-or-network/select-token-or-network'
+import { SelectTokenOrNetworkButton } from '../../buttons/select-token-or-network/select-token-or-network'
 import { SearchInput } from '../../inputs/search-input/search-input'
 import { NetworkSelector } from '../network-selector/network-selector'
 
 // Styled Components
-import {
-  Wrapper,
-  SelectorWrapper
-} from './search-with-network-selector.style'
+import { Wrapper, SelectorWrapper } from './search-with-network-selector.style'
 import {
   HorizontalDivider,
   HiddenResponsiveRow
@@ -46,11 +37,7 @@ interface Props {
 }
 
 export const SearchWithNetworkSelector = (props: Props) => {
-  const {
-    onSearchChanged,
-    searchValue,
-    networkSelectorDisabled
-  } = props
+  const { onSearchChanged, searchValue, networkSelectorDisabled } = props
 
   // Queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -67,7 +54,9 @@ export const SearchWithNetworkSelector = (props: Props) => {
         coin: network.coin
       }).unwrap()
       setShowNetworkSelector(false)
-    }, [setNetwork])
+    },
+    [setNetwork]
+  )
 
   return (
     <Wrapper>
@@ -78,22 +67,22 @@ export const SearchWithNetworkSelector = (props: Props) => {
         value={searchValue}
       />
       <HiddenResponsiveRow maxWidth={570}>
-        <HorizontalDivider marginRight={8} height={24} />
+        <HorizontalDivider
+          marginRight={8}
+          height={24}
+        />
         <SelectorWrapper>
           <SelectTokenOrNetworkButton
             network={selectedNetwork}
-            onClick={() => setShowNetworkSelector(prev => !prev)}
-            text={
-              reduceNetworkDisplayName(selectedNetwork?.chainName)
-            }
+            onClick={() => setShowNetworkSelector((prev) => !prev)}
+            text={reduceNetworkDisplayName(selectedNetwork?.chainName)}
             buttonSize='small'
             disabled={networkSelectorDisabled}
             iconType='network'
           />
-          {
-            showNetworkSelector &&
+          {showNetworkSelector && (
             <NetworkSelector onSelectNetwork={onSelectNetwork} />
-          }
+          )}
         </SelectorWrapper>
       </HiddenResponsiveRow>
     </Wrapper>

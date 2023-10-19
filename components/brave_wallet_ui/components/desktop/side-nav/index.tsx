@@ -21,19 +21,23 @@ export class SideNav extends React.PureComponent<Props, {}> {
     this.props.onSubmit(id)
   }
 
-  render () {
+  render() {
     const { navList, selectedButton } = this.props
     return (
       <StyledWrapper>
-        {navList.map((option) =>
+        {navList.map((option) => (
           <SideNavButton
             key={option.id}
             isSelected={selectedButton === option.id}
             onSubmit={this.onNav(option.id)}
             text={option.name}
-            icon={selectedButton === option.id ? option.primaryIcon : option.secondaryIcon}
+            icon={
+              selectedButton === option.id
+                ? option.primaryIcon
+                : option.secondaryIcon
+            }
           />
-        )}
+        ))}
       </StyledWrapper>
     )
   }

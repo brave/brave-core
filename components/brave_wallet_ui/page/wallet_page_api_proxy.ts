@@ -11,7 +11,7 @@ let walletPageApiProxyInstance: WalletPageApiProxy
 export class WalletPageApiProxy extends WalletApiProxy {
   callbackRouter = new BraveWallet.PageCallbackRouter()
   pageHandler = new BraveWallet.PageHandlerRemote()
-  constructor () {
+  constructor() {
     super()
 
     const factory = BraveWallet?.PageHandlerFactory?.getRemote?.()
@@ -34,11 +34,12 @@ export class WalletPageApiProxy extends WalletApiProxy {
       this.braveWalletP3A.$.bindNewPipeAndPassReceiver(),
       this.braveWalletPinService.$.bindNewPipeAndPassReceiver(),
       this.braveWalletAutoPinService.$.bindNewPipeAndPassReceiver(),
-      this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver())
+      this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver()
+    )
   }
 }
 
-export default function getWalletPageApiProxy () {
+export default function getWalletPageApiProxy() {
   if (!walletPageApiProxyInstance) {
     walletPageApiProxyInstance = new WalletPageApiProxy()
   }

@@ -32,7 +32,8 @@ export type EthereumSignedTx = {
   r: string
   s: string
 }
-export type EthSignTransactionResponsePayload = LedgerResponsePayload & EthereumSignedTx
+export type EthSignTransactionResponsePayload = LedgerResponsePayload &
+  EthereumSignedTx
 
 export type EthSignTransactionResponse = CommandMessage & {
   payload: EthSignTransactionResponsePayload | LedgerError
@@ -62,7 +63,8 @@ export type EthSignPersonalMessageCommand = CommandMessage & {
 }
 
 // SignEip712Message command
-export type EthSignEip712MessageResponsePayload = EthSignPersonalMessageResponsePayload
+export type EthSignEip712MessageResponsePayload =
+  EthSignPersonalMessageResponsePayload
 
 export type EthSignEip712MessageResponse = CommandMessage & {
   payload: EthSignEip712MessageResponsePayload | LedgerError
@@ -75,5 +77,13 @@ export type EthSignEip712MessageCommand = CommandMessage & {
   hashStructMessageHex: string
 }
 
-export type EthLedgerFrameCommand = EthGetAccountCommand | EthSignTransactionCommand | EthSignPersonalMessageCommand | EthSignEip712MessageCommand
-export type EthLedgerFrameResponse = EthGetAccountResponse | EthSignTransactionResponse | EthSignPersonalMessageResponse | EthSignEip712MessageResponse
+export type EthLedgerFrameCommand =
+  | EthGetAccountCommand
+  | EthSignTransactionCommand
+  | EthSignPersonalMessageCommand
+  | EthSignEip712MessageCommand
+export type EthLedgerFrameResponse =
+  | EthGetAccountResponse
+  | EthSignTransactionResponse
+  | EthSignPersonalMessageResponse
+  | EthSignEip712MessageResponse

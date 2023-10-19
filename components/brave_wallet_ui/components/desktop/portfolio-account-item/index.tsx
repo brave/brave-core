@@ -15,9 +15,7 @@ import {
 
 // Hooks
 import { useExplorer } from '../../../common/hooks/explorer'
-import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -25,35 +23,25 @@ import Amount from '../../../utils/amount'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { makeAccountRoute } from '../../../utils/routes-utils'
-import {
-  getIsRewardsAccount
-} from '../../../utils/rewards_utils'
-import {
-  externalWalletProviderFromString
-} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { getIsRewardsAccount } from '../../../utils/rewards_utils'
+import { externalWalletProviderFromString } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 import { getLocale } from '../../../../common/locale'
 
 // Components
 import WithHideBalancePlaceholder from '../with-hide-balance-placeholder'
 import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
-import {
-  PortfolioAccountMenu
-} from '../wallet-menus/portfolio-account-menu'
+import { PortfolioAccountMenu } from '../wallet-menus/portfolio-account-menu'
 import { RewardsMenu } from '../wallet-menus/rewards_menu'
 
 // Styled Components
-import {
-  CreateAccountIcon
-} from '../../shared/create-account-icon/create-account-icon'
+import { CreateAccountIcon } from '../../shared/create-account-icon/create-account-icon'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
-import {
-  querySubscriptionOptions60s
-} from '../../../common/slices/constants'
+import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
 // Styled Components
 import {
@@ -72,10 +60,7 @@ import {
   CopyIcon,
   AddressAndButtonRow
 } from './style'
-import {
-  BraveRewardsIndicator,
-  VerticalSpacer
-} from '../../shared/style'
+import { BraveRewardsIndicator, VerticalSpacer } from '../../shared/style'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -115,10 +100,9 @@ export const PortfolioAccountItem = (props: Props) => {
   // Memos & Computed
   const isRewardsAccount = getIsRewardsAccount(account.accountId)
 
-  const externalProvider =
-    isRewardsAccount
-      ? externalWalletProviderFromString(account.accountId.uniqueKey)
-      : null
+  const externalProvider = isRewardsAccount
+    ? externalWalletProviderFromString(account.accountId.uniqueKey)
+    : null
 
   const formattedAssetBalance: string = React.useMemo(() => {
     return new Amount(assetBalance)
@@ -162,11 +146,7 @@ export const PortfolioAccountItem = (props: Props) => {
   }, [])
 
   // Hooks
-  useOnClickOutside(
-    accountMenuRef,
-    onHideAccountMenu,
-    showAccountMenu
-  )
+  useOnClickOutside(accountMenuRef, onHideAccountMenu, showAccountMenu)
 
   return (
     <StyledWrapper>
@@ -178,16 +158,18 @@ export const PortfolioAccountItem = (props: Props) => {
           externalProvider={externalProvider}
         />
         <AccountAndAddress>
-          <AccountNameButton onClick={onSelectAccount}>{account.name}</AccountNameButton>
-          {isRewardsAccount &&
+          <AccountNameButton onClick={onSelectAccount}>
+            {account.name}
+          </AccountNameButton>
+          {isRewardsAccount && (
             <>
               <VerticalSpacer space='6px' />
               <BraveRewardsIndicator>
                 {getLocale('braveWalletBraveRewardsTitle')}
               </BraveRewardsIndicator>
             </>
-          }
-          {account.address && !isRewardsAccount &&
+          )}
+          {account.address && !isRewardsAccount && (
             <AddressAndButtonRow>
               <AccountAddressButton onClick={onSelectAccount}>
                 {reduceAddress(account.address)}
@@ -196,9 +178,8 @@ export const PortfolioAccountItem = (props: Props) => {
                 <CopyIcon />
               </CopyTooltip>
             </AddressAndButtonRow>
-          }
+          )}
         </AccountAndAddress>
-
       </NameAndIcon>
       <RightSide>
         <BalanceColumn>
@@ -214,23 +195,22 @@ export const PortfolioAccountItem = (props: Props) => {
             </FiatBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>
-        <AccountMenuWrapper
-          ref={accountMenuRef}
-        >
+        <AccountMenuWrapper ref={accountMenuRef}>
           <AccountMenuButton
-            onClick={() => setShowAccountMenu(prev => !prev)}
+            onClick={() => setShowAccountMenu((prev) => !prev)}
           >
             <AccountMenuIcon />
           </AccountMenuButton>
-          {showAccountMenu &&
+          {showAccountMenu && (
             <>
               {isRewardsAccount ? (
                 <RewardsMenu />
               ) : (
                 <PortfolioAccountMenu
-                  onClickViewOnExplorer={
-                    onClickViewOnBlockExplorer('address', account.address)
-                  }
+                  onClickViewOnExplorer={onClickViewOnBlockExplorer(
+                    'address',
+                    account.address
+                  )}
                   onClickSell={
                     isSellSupported && !isAssetsBalanceZero
                       ? showSellModal
@@ -239,7 +219,7 @@ export const PortfolioAccountItem = (props: Props) => {
                 />
               )}
             </>
-          }
+          )}
         </AccountMenuWrapper>
       </RightSide>
     </StyledWrapper>

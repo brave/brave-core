@@ -6,21 +6,14 @@
 import * as React from 'react'
 
 // Types
-import {
-  BraveWallet
-} from '../../../../../../constants/types'
+import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 
 // Components
-import withPlaceholderIcon from
-  '../../../../../../components/shared/create-placeholder-icon'
-import {
-  CreateNetworkIcon
-} from '../../../../../../components/shared/create-network-icon/index'
+import withPlaceholderIcon from '../../../../../../components/shared/create-placeholder-icon'
+import { CreateNetworkIcon } from '../../../../../../components/shared/create-network-icon/index'
 
 // Styled Components
 import {
@@ -76,16 +69,11 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
   }, [text])
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(
-      AssetIcon,
-      {
-        size: buttonSize === 'small' ||
-          buttonSize === 'medium'
-          ? 'small'
-          : 'big',
-        marginLeft: 0,
-        marginRight: 8
-      })
+    return withPlaceholderIcon(AssetIcon, {
+      size: buttonSize === 'small' || buttonSize === 'medium' ? 'small' : 'big',
+      marginLeft: 0,
+      marginRight: 8
+    })
   }, [buttonSize])
 
   return (
@@ -135,8 +123,14 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
               <>
                 <HorizontalSpacer size={8} />
                 <GasBubble>
-                  <FuelTank name='search-fuel-tank' size={16} />
-                  <Text textSize='14px' textColor='text01'>
+                  <FuelTank
+                    name='search-fuel-tank'
+                    size={16}
+                  />
+                  <Text
+                    textSize='14px'
+                    textColor='text01'
+                  >
                     {networkFeeFiatValue}
                   </Text>
                 </GasBubble>
@@ -148,7 +142,10 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
       )}
       {networkNotSupported && (
         <>
-          <NotSupportedText isBold={true} textSize='14px'>
+          <NotSupportedText
+            isBold={true}
+            textSize='14px'
+          >
             {getLocale('braveSwapSwitchNetwork')}
           </NotSupportedText>
           <HorizontalSpacer size={8} />

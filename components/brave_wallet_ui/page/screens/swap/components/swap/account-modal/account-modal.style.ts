@@ -55,7 +55,6 @@ export const ModalButtonIcon = styled(Icon)`
   margin-right: 10px;
 `
 
-
 export const AccountButton = styled(StyledButton)`
   --account-text-color: ${(p) => p.theme.color.text02};
   display: flex;
@@ -68,7 +67,7 @@ export const AccountButton = styled(StyledButton)`
   }
 `
 
-export const AccountCircle = styled(StyledDiv) <{ orb: string }>`
+export const AccountCircle = styled(StyledDiv)<{ orb: string }>`
   width: 24px;
   height: 24px;
   border-radius: 100%;

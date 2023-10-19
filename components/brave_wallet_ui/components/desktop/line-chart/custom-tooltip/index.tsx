@@ -6,25 +6,19 @@ import * as React from 'react'
 import { TooltipProps } from 'recharts'
 
 // Utils
-import {
-  useSafeWalletSelector
-} from '../../../../common/hooks/use-safe-selector'
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
 import Amount from '../../../../utils/amount'
 import { formatTimelineDate } from '../../../../utils/datetime-utils'
 
 // Styled Components
-import {
-  TooltipWrapper,
-  ChartBalance,
-  ChartDate
-} from '../style'
+import { TooltipWrapper, ChartBalance, ChartDate } from '../style'
 
 type Props = TooltipProps<number, number> & {
   onUpdateViewBoxHeight: (value: number) => void
 }
 
-function CustomTooltip ({
+function CustomTooltip({
   active,
   coordinate,
   label,
@@ -33,10 +27,12 @@ function CustomTooltip ({
   viewBox
 }: Props) {
   // Selectors
-  const defaultFiatCurrency =
-    useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
-  const hidePortfolioBalances =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
+  const defaultFiatCurrency = useSafeWalletSelector(
+    WalletSelectors.defaultFiatCurrency
+  )
+  const hidePortfolioBalances = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioBalances
+  )
 
   // Effects
   React.useLayoutEffect(() => {
@@ -53,27 +49,22 @@ function CustomTooltip ({
     const isEndOrMiddle = xRightCoordinate >= -62 ? 'end' : 'middle'
     const labelPosition = xLeftCoordinate <= 62 ? 'start' : isEndOrMiddle
     const middleEndTranslate =
-      xRightCoordinate >= 8
-        ? 0
-        : Math.abs(xRightCoordinate) - 4
-    const balance =
-      new Amount(payload[0].value).formatAsFiat(defaultFiatCurrency)
+      xRightCoordinate >= 8 ? 0 : Math.abs(xRightCoordinate) - 4
+    const balance = new Amount(payload[0].value).formatAsFiat(
+      defaultFiatCurrency
+    )
 
     return (
       <TooltipWrapper
         labelTranslate={
-          labelPosition === 'start'
-            ? xLeftCoordinate
-            : middleEndTranslate
+          labelPosition === 'start' ? xLeftCoordinate : middleEndTranslate
         }
         labelPosition={labelPosition}
       >
         <ChartBalance>
           {hidePortfolioBalances ? '******' : balance}
         </ChartBalance>
-        <ChartDate>
-          {formatTimelineDate(label)}
-        </ChartDate>
+        <ChartDate>{formatTimelineDate(label)}</ChartDate>
       </TooltipWrapper>
     )
   }

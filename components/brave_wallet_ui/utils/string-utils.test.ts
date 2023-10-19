@@ -23,7 +23,11 @@ describe('Checking URL is remote image or not', () => {
   })
 
   test('Data URL image should return true', () => {
-    expect(isRemoteImageURL('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3A0FDAAAAAElFTkSuQmCC')).toEqual(true)
+    expect(
+      isRemoteImageURL(
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3A0FDAAAAAElFTkSuQmCC'
+      )
+    ).toEqual(true)
   })
 
   test('local path should return false', () => {

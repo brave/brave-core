@@ -12,9 +12,7 @@ import {
   useSafeUISelector
 } from '../../../common/hooks/use-safe-selector'
 import { PageSelectors } from '../../../page/selectors'
-import {
-  UISelectors
-} from '../../../common/selectors'
+import { UISelectors } from '../../../common/selectors'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -23,11 +21,10 @@ import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getTokenPriceFromRegistry } from '../../../utils/pricing-utils'
 import { BraveWallet } from '../../../constants/types'
 import {
-  getIsRewardsToken, getRewardsTokenDescription
+  getIsRewardsToken,
+  getRewardsTokenDescription
 } from '../../../utils/rewards_utils'
-import {
-  externalWalletProviderFromString
-} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { externalWalletProviderFromString } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Queries
 import {
@@ -36,14 +33,10 @@ import {
   useGetSelectedChainQuery,
   useGetTokenSpotPricesQuery
 } from '../../../common/slices/api.slice'
-import {
-  querySubscriptionOptions60s
-} from '../../../common/slices/constants'
+import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
 // Hooks
-import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 import useExplorer from '../../../common/hooks/explorer'
 
 // Components
@@ -67,15 +60,11 @@ import {
 } from './asset-details-header.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
 
-const AssetIconWithPlaceholder =
-  withPlaceholderIcon(
-    AssetIcon,
-    {
-      size: 'big',
-      marginLeft: 0,
-      marginRight: 8
-    }
-  )
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
+  size: 'big',
+  marginLeft: 0,
+  marginRight: 8
+})
 
 interface Props {
   selectedAsset?: BraveWallet.BlockchainToken
@@ -101,9 +90,7 @@ export const AssetDetailsHeader = (props: Props) => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
-  const { data: assetsNetwork } = useGetNetworkQuery(
-    selectedAsset ?? skipToken
-  )
+  const { data: assetsNetwork } = useGetNetworkQuery(selectedAsset ?? skipToken)
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { data: selectedNetwork } = useGetSelectedChainQuery(undefined, {
@@ -116,8 +103,7 @@ export const AssetDetailsHeader = (props: Props) => {
     React.useState<boolean>(false)
 
   // refs
-  const assetDetailsMenuRef =
-    React.useRef<HTMLDivElement>(null)
+  const assetDetailsMenuRef = React.useRef<HTMLDivElement>(null)
 
   // hooks
   useOnClickOutside(
@@ -145,10 +131,8 @@ export const AssetDetailsHeader = (props: Props) => {
     }
   }, [selectedAsset])
 
-  const tokenPriceIds = React.useMemo(() =>
-    selectedAsset
-      ? [getPriceIdForToken(selectedAsset)]
-      : [],
+  const tokenPriceIds = React.useMemo(
+    () => (selectedAsset ? [getPriceIdForToken(selectedAsset)] : []),
     [selectedAsset]
   )
 
@@ -167,34 +151,31 @@ export const AssetDetailsHeader = (props: Props) => {
   // computed
   const isRewardsToken = getIsRewardsToken(selectedAsset)
 
-  const networkDescription =
-    isShowingMarketData
-      ? selectedAsset?.symbol ?? ''
-      : isRewardsToken
-        ? getRewardsTokenDescription(
-          externalWalletProviderFromString(selectedAsset?.chainId ?? '')
-        )
-        : getLocale('braveWalletPortfolioAssetNetworkDescription')
-          .replace('$1', selectedAsset?.symbol ?? '')
-          .replace('$2', selectedAssetsNetwork?.chainName ?? '')
+  const networkDescription = isShowingMarketData
+    ? selectedAsset?.symbol ?? ''
+    : isRewardsToken
+    ? getRewardsTokenDescription(
+        externalWalletProviderFromString(selectedAsset?.chainId ?? '')
+      )
+    : getLocale('braveWalletPortfolioAssetNetworkDescription')
+        .replace('$1', selectedAsset?.symbol ?? '')
+        .replace('$2', selectedAssetsNetwork?.chainName ?? '')
 
-  const selectedAssetFiatPrice = selectedAsset &&
+  const selectedAssetFiatPrice =
+    selectedAsset &&
     spotPriceRegistry &&
     getTokenPriceFromRegistry(spotPriceRegistry, selectedAsset)
 
-  const isSelectedAssetPriceDown =
-    selectedAssetFiatPrice
-      ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0
-      : false
+  const isSelectedAssetPriceDown = selectedAssetFiatPrice
+    ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0
+    : false
 
   return (
     <Row
       padding={isPanel ? '12px 20px' : '24px 0px'}
       justifyContent='space-between'
     >
-      <Row
-        width='unset'
-      >
+      <Row width='unset'>
         <CircleButton
           size={28}
           marginRight={16}
@@ -202,40 +183,30 @@ export const AssetDetailsHeader = (props: Props) => {
         >
           <ButtonIcon
             size={16}
-            name='arrow-left' />
+            name='arrow-left'
+          />
         </CircleButton>
-        <Row
-          width='unset'
-        >
+        <Row width='unset'>
           <AssetIconWithPlaceholder
             asset={selectedAsset}
             network={selectedAssetsNetwork}
           />
-          <Column
-            alignItems='flex-start'
-          >
-            <AssetNameText>
-              {selectedAsset?.name ?? ''}
-            </AssetNameText>
+          <Column alignItems='flex-start'>
+            <AssetNameText>{selectedAsset?.name ?? ''}</AssetNameText>
             <NetworkDescriptionText>
               {networkDescription}
             </NetworkDescriptionText>
           </Column>
         </Row>
       </Row>
-      <Row
-        width='unset'
-      >
-        <Column
-          alignItems='flex-end'
-        >
+      <Row width='unset'>
+        <Column alignItems='flex-end'>
           <PriceText>
-            {
-              selectedAssetFiatPrice
-                ? new Amount(selectedAssetFiatPrice.price)
-                  .formatAsFiat(defaultFiatCurrency)
-                : '0.00'
-            }
+            {selectedAssetFiatPrice
+              ? new Amount(selectedAssetFiatPrice.price).formatAsFiat(
+                  defaultFiatCurrency
+                )
+              : '0.00'}
           </PriceText>
 
           {/* We may still keep BTC price value,
@@ -250,54 +221,43 @@ export const AssetDetailsHeader = (props: Props) => {
             }
           </PriceText> */}
 
-          <PercentChange
-            isDown={isSelectedAssetPriceDown}
-          >
+          <PercentChange isDown={isSelectedAssetPriceDown}>
             <UpDownIcon
               name={
-                isSelectedAssetPriceDown
-                  ? 'arrow-small-down'
-                  : 'arrow-small-up'
+                isSelectedAssetPriceDown ? 'arrow-small-down' : 'arrow-small-up'
               }
             />
-            {
-              selectedAssetFiatPrice
-                ? Number(selectedAssetFiatPrice.assetTimeframeChange)
-                  .toFixed(2)
-                : '0.00'
-            }%
+            {selectedAssetFiatPrice
+              ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2)
+              : '0.00'}
+            %
           </PercentChange>
         </Column>
         {selectedAsset?.contractAddress &&
           !selectedAsset?.isErc721 &&
           !selectedAsset.isNft &&
-          !isRewardsToken &&
-          <>
-            <HorizontalSpace space='16px' />
-            <HorizontalDivider />
-            <HorizontalSpace space='16px' />
-            <MenuWrapper
-              ref={assetDetailsMenuRef}
-            >
-              <CircleButton
-                onClick={
-                  () => setShowAssetDetailsMenu(prev => !prev)
-                }
-              >
-                <ButtonIcon
-                  name='more-vertical' />
-              </CircleButton>
-              {showAssetDetailsMenu &&
-                <AssetDetailsMenu
-                  assetSymbol={selectedAsset?.symbol ?? ''}
-                  onClickHideToken={handleOnClickHideToken}
-                  onClickTokenDetails={handleOnClickTokenDetails}
-                  onClickViewOnExplorer={onClickViewOnExplorer}
-                />
-              }
-            </MenuWrapper>
-          </>
-        }
+          !isRewardsToken && (
+            <>
+              <HorizontalSpace space='16px' />
+              <HorizontalDivider />
+              <HorizontalSpace space='16px' />
+              <MenuWrapper ref={assetDetailsMenuRef}>
+                <CircleButton
+                  onClick={() => setShowAssetDetailsMenu((prev) => !prev)}
+                >
+                  <ButtonIcon name='more-vertical' />
+                </CircleButton>
+                {showAssetDetailsMenu && (
+                  <AssetDetailsMenu
+                    assetSymbol={selectedAsset?.symbol ?? ''}
+                    onClickHideToken={handleOnClickHideToken}
+                    onClickTokenDetails={handleOnClickTokenDetails}
+                    onClickViewOnExplorer={onClickViewOnExplorer}
+                  />
+                )}
+              </MenuWrapper>
+            </>
+          )}
       </Row>
     </Row>
   )

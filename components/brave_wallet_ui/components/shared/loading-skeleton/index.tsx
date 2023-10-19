@@ -19,7 +19,8 @@ export const LoadingSkeleton = (props: LoadingSkeletonProps) => {
   for (let i = 0; i < count; i++) {
     const skeletonSpan = (
       <Skeleton
-        aria-busy={enableAnimation} {...styleProps}
+        aria-busy={enableAnimation}
+        {...styleProps}
         enableAnimation={enableAnimation}
         key={i}
       >
@@ -43,8 +44,7 @@ export const LoadingSkeleton = (props: LoadingSkeletonProps) => {
     <>
       {Wrapper
         ? elements.map((el, i) => <Wrapper key={i}>{el}</Wrapper>)
-        : elements
-      }
+        : elements}
     </>
   )
 }

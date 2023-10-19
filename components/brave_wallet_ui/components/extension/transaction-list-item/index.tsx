@@ -18,13 +18,19 @@ import {
   getETHSwapTransactionBuyAndSellTokens
 } from '../../../utils/tx-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
-import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
+import {
+  formatDateAsRelative,
+  serializedTimeDeltaToJSDate
+} from '../../../utils/datetime-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
 // Types
-import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
+import {
+  BraveWallet,
+  SerializableTransactionInfo
+} from '../../../constants/types'
 import { SwapExchangeProxy } from '../../../common/constants/registry'
 
 // Hooks
@@ -39,19 +45,14 @@ import {
   useAccountQuery,
   useGetCombinedTokensListQuery
 } from '../../../common/slices/api.slice.extra'
-import {
-  querySubscriptionOptions60s
-} from '../../../common/slices/constants'
+import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 import { useAccountOrb, useAddressOrb } from '../../../common/hooks/use-orb'
 
 // Components
 import { TransactionIntentDescription } from './transaction-intent-description'
 
 // Styled Components
-import {
-  DetailTextDarkBold,
-  DetailTextDark
-} from '../shared-panel-styles'
+import { DetailTextDarkBold, DetailTextDark } from '../shared-panel-styles'
 import { StatusBubble } from '../../shared/style'
 import {
   DetailColumn,
@@ -69,7 +70,8 @@ interface Props {
   onSelectTransaction: (transaction: SerializableTransactionInfo) => void
 }
 
-const { ERC20Approve, ERC721TransferFrom, ERC721SafeTransferFrom } = BraveWallet.TransactionType
+const { ERC20Approve, ERC721TransferFrom, ERC721SafeTransferFrom } =
+  BraveWallet.TransactionType
 
 export const TransactionsListItem = ({
   transaction,
@@ -96,10 +98,7 @@ export const TransactionsListItem = ({
     return makeNetworkAsset(transactionsNetwork)
   }, [transactionsNetwork])
 
-  const {
-    buyToken,
-    sellToken
-  } = getETHSwapTransactionBuyAndSellTokens({
+  const { buyToken, sellToken } = getETHSwapTransactionBuyAndSellTokens({
     tokensList: combinedTokensList,
     tx: transaction,
     nativeAsset: networkAsset
@@ -113,9 +112,7 @@ export const TransactionsListItem = ({
     [txToken, networkAsset, combinedTokensList]
   )
 
-  const {
-    data: spotPriceRegistry = {}
-  } = useGetTokenSpotPricesQuery(
+  const { data: spotPriceRegistry = {} } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length && defaultFiatCurrency
       ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
       : skipToken,
@@ -140,18 +137,23 @@ export const TransactionsListItem = ({
   const gasFee = isSolTx ? solEstimatedFee : getTransactionGasFee(transaction)
 
   const transactionDetails = React.useMemo(() => {
-    if (!spotPriceRegistry || !transactionsNetwork || !transactionAccount || !accounts)
+    if (
+      !spotPriceRegistry ||
+      !transactionsNetwork ||
+      !transactionAccount ||
+      !accounts
+    )
       return undefined
 
     return parseTransactionWithPrices({
-        tx: transaction,
-        accounts,
-        gasFee,
-        spotPriceRegistry,
-        transactionAccount,
-        transactionNetwork: transactionsNetwork,
-        tokensList: combinedTokensList
-      })
+      tx: transaction,
+      accounts,
+      gasFee,
+      spotPriceRegistry,
+      transactionAccount,
+      transactionNetwork: transactionsNetwork,
+      tokensList: combinedTokensList
+    })
   }, [
     accounts,
     gasFee,
@@ -181,23 +183,21 @@ export const TransactionsListItem = ({
     }
 
     // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
-    let erc721ID = transaction.txType === ERC721TransferFrom || transaction.txType === ERC721SafeTransferFrom
-      ? ' ' + transactionDetails.erc721TokenId
-      : ''
+    let erc721ID =
+      transaction.txType === ERC721TransferFrom ||
+      transaction.txType === ERC721SafeTransferFrom
+        ? ' ' + transactionDetails.erc721TokenId
+        : ''
 
     return (
       <DetailTextDark>
-        {`${
-            toProperCase(getLocale('braveWalletTransactionSent'))
-          } ${
-            transactionDetails.value
-          } ${
-            transactionDetails.symbol
-          } ${
-            erc721ID
-          } (${
-            new Amount(transactionDetails.fiatValue).formatAsFiat(defaultFiatCurrency) || '...'
-          })`}
+        {`${toProperCase(getLocale('braveWalletTransactionSent'))} ${
+          transactionDetails.value
+        } ${transactionDetails.symbol} ${erc721ID} (${
+          new Amount(transactionDetails.fiatValue).formatAsFiat(
+            defaultFiatCurrency
+          ) || '...'
+        })`}
       </DetailTextDark>
     )
   }, [transaction.txType, transactionDetails, defaultFiatCurrency])
@@ -213,22 +213,37 @@ export const TransactionsListItem = ({
     let to = reduceAddress(transactionDetails.recipient)
     const wrapFromText =
       transaction.txType === ERC20Approve ||
-      transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy
+      transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() ===
+        SwapExchangeProxy
 
     if (transaction.txType === ERC20Approve) {
       // Approval
       from = transactionDetails.isApprovalUnlimited
-        ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${transactionDetails.symbol}`
-        : new Amount(transactionDetails.value).formatAsAsset(undefined, transactionDetails.symbol)
+        ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${
+            transactionDetails.symbol
+          }`
+        : new Amount(transactionDetails.value).formatAsAsset(
+            undefined,
+            transactionDetails.symbol
+          )
       to = transactionDetails.approvalTargetLabel || ''
-    } else if (transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy) {
+    } else if (
+      transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() ===
+      SwapExchangeProxy
+    ) {
       // Brave Swap
       // FIXME: Add as new TransactionType on the service side.
       from = `${transactionDetails.value} ${transactionDetails.symbol}`
       to = transactionDetails.recipientLabel
     }
 
-    return <TransactionIntentDescription from={from} to={to} wrapFrom={wrapFromText} />
+    return (
+      <TransactionIntentDescription
+        from={from}
+        to={to}
+        wrapFrom={wrapFromText}
+      />
+    )
   }, [transactionDetails])
 
   // render

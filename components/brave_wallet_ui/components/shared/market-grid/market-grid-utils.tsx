@@ -25,7 +25,6 @@ import { AssetNameAndIcon } from '../../asset-name-and-icon'
 import { AssetPriceChange } from '../../asset-price-change'
 import { getLocale } from '../../../../common/locale'
 
-
 // Render cells for a grid row
 export const renderCells = (
   coinMarkDataItem: BraveWallet.CoinMarket,
@@ -65,10 +64,10 @@ export const renderCells = (
     />,
 
     // Price Column
-    <TextWrapper alignment="left">{formattedPrice}</TextWrapper>,
+    <TextWrapper alignment='left'>{formattedPrice}</TextWrapper>,
 
     // Price Change Column
-    <TextWrapper alignment="left">
+    <TextWrapper alignment='left'>
       <AssetPriceChange
         isDown={isDown}
         priceChangePercentage={formattedPercentageChange}
@@ -76,26 +75,28 @@ export const renderCells = (
     </TextWrapper>,
 
     // Market Cap Column
-    <TextWrapper alignment="left">{formattedMarketCap}</TextWrapper>,
+    <TextWrapper alignment='left'>{formattedMarketCap}</TextWrapper>,
 
     // Volume Column
-    <TextWrapper alignment="left">{formattedVolume}</TextWrapper>,
+    <TextWrapper alignment='left'>{formattedVolume}</TextWrapper>,
 
     <ButtonsRow>
-      {buttonOptions.map((option) =>
+      {buttonOptions.map((option) => (
         <ActionButton
           key={option.id}
-          onClick={option.id === 'buy'
-            ? () => onClickBuy(coinMarkDataItem)
-            : () => onClickDeposit(coinMarkDataItem)}
+          onClick={
+            option.id === 'buy'
+              ? () => onClickBuy(coinMarkDataItem)
+              : () => onClickDeposit(coinMarkDataItem)
+          }
         >
           {getLocale(option.name)}
         </ActionButton>
-      )}
+      ))}
     </ButtonsRow>
   ]
 
-  return cellsContent.map(cellContent => ({ content: cellContent }))
+  return cellsContent.map((cellContent) => ({ content: cellContent }))
 }
 
 /**
@@ -106,9 +107,7 @@ export const renderCells = (
 export const createColumnTemplate = (headers: MarketGridHeader[]) => {
   let filteredHeaders = headers
 
-  const mediaQueryPanel = window.matchMedia(
-    `(max-width: ${breakpoints.panel})`
-  )
+  const mediaQueryPanel = window.matchMedia(`(max-width: ${breakpoints.panel})`)
   const mediaQuerySmall = window.matchMedia(
     `(min-width: ${breakpoints.panel}) and (max-width: ${breakpoints.small})`
   )

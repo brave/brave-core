@@ -3,12 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { MessagingTransport, TrezorFrameCommand, TrezorCommand } from './trezor-messages'
+import {
+  MessagingTransport,
+  TrezorFrameCommand,
+  TrezorCommand
+} from './trezor-messages'
 
 // Handles commands forwarding to the Trezor library inside the iframe.
 export class TrezorCommandHandler extends MessagingTransport {
   protected onMessageReceived = async (event: MessageEvent) => {
-    if (event.origin !== event.data.origin || event.type !== 'message' || !event.source) {
+    if (
+      event.origin !== event.data.origin ||
+      event.type !== 'message' ||
+      !event.source
+    ) {
       return
     }
     const message = event.data as TrezorFrameCommand
@@ -24,7 +32,10 @@ export class TrezorCommandHandler extends MessagingTransport {
 
 let handler: TrezorCommandHandler
 
-export function addTrezorCommandHandler (command: TrezorCommand, listener: Function): Boolean {
+export function addTrezorCommandHandler(
+  command: TrezorCommand,
+  listener: Function
+): Boolean {
   if (!handler) {
     handler = new TrezorCommandHandler()
   }

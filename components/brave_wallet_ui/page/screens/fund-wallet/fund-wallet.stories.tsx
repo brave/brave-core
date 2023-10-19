@@ -9,9 +9,11 @@ import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper
 import { FundWalletScreen } from './fund-wallet'
 
 export const _FundWalletScreen = () => {
-  return <WalletPageStory>
-    <FundWalletScreen />
-  </WalletPageStory>
+  return (
+    <WalletPageStory>
+      <FundWalletScreen />
+    </WalletPageStory>
+  )
 }
 
 _FundWalletScreen.story = {

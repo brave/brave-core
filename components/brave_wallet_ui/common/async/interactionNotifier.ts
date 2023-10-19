@@ -17,15 +17,18 @@ export default class InteractionNotifier {
     }
   }
 
-  beginWatchingForInteraction (timeMs: number, isWalletLocked: boolean, onInteractionInterval: () => unknown) {
+  beginWatchingForInteraction(
+    timeMs: number,
+    isWalletLocked: boolean,
+    onInteractionInterval: () => unknown
+  ) {
     if (!isWalletLocked && !this.intervalId) {
-      this.intervalId = setInterval(
-        () => {
-          if (this.userHasInteracted) {
-            this.userHasInteracted = false
-            onInteractionInterval()
-          }
-        }, timeMs)
+      this.intervalId = setInterval(() => {
+        if (this.userHasInteracted) {
+          this.userHasInteracted = false
+          onInteractionInterval()
+        }
+      }, timeMs)
       window.addEventListener('mousemove', this.handleInteraction)
       window.addEventListener('keydown', this.handleInteraction)
       window.addEventListener('focus', this.handleInteraction, true)
@@ -34,7 +37,7 @@ export default class InteractionNotifier {
     }
   }
 
-  stopWatchingForInteraction () {
+  stopWatchingForInteraction() {
     if (this.intervalId) {
       clearTimeout(this.intervalId)
       this.intervalId = undefined
@@ -42,7 +45,10 @@ export default class InteractionNotifier {
       window.removeEventListener('keydown', this.handleInteraction)
       window.removeEventListener('focus', this.handleInteraction, true)
       window.removeEventListener('scroll', this.handleInteraction, true)
-      document.removeEventListener('visibilitychange', this.handleVisibilityChange)
+      document.removeEventListener(
+        'visibilitychange',
+        this.handleVisibilityChange
+      )
     }
   }
 }

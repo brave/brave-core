@@ -6,21 +6,13 @@
 import styled from 'styled-components'
 
 export const RevealableContentContainer = styled.div<{ hideContent?: boolean }>`
-  --scroll-offset: ${(p) => p?.hideContent ? '-400px' : '0px'};
+  --scroll-offset: ${(p) => (p?.hideContent ? '-400px' : '0px')};
   width: 100%;
   white-space: nowrap;
-  overflow: ${(p) =>
-    p.hideContent
-      ? 'hidden'
-      : 'unset'
-  };
-  opacity: ${(p) =>
-    p.hideContent
-      ? 0
-      : 1
-  };
-  transition: opacity .3s ease-in-out;
-  transition-delay: .3s;
+  overflow: ${(p) => (p.hideContent ? 'hidden' : 'unset')};
+  opacity: ${(p) => (p.hideContent ? 0 : 1)};
+  transition: opacity 0.3s ease-in-out;
+  transition-delay: 0.3s;
   height: auto;
 `
 
@@ -28,7 +20,7 @@ export const RevealableContentColumn = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: var(--scroll-offset);
-  transition: margin-top .3s ease-in-out;
+  transition: margin-top 0.3s ease-in-out;
   white-space: nowrap;
   align-items: center;
 `

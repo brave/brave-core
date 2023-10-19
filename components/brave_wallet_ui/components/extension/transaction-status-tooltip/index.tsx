@@ -4,18 +4,14 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-import {
-  StyledWrapper,
-  Tip,
-  Pointer
-} from './style'
+import { StyledWrapper, Tip, Pointer } from './style'
 
 export interface Props {
   children?: React.ReactNode
   text: string
 }
 
-function TransactionStatusTooltip (props: Props) {
+function TransactionStatusTooltip(props: Props) {
   const { children, text } = props
   const [active, setActive] = React.useState(false)
 
@@ -33,14 +29,12 @@ function TransactionStatusTooltip (props: Props) {
       onMouseLeave={hideTip}
     >
       {children}
-      {active &&
+      {active && (
         <>
           <Pointer />
-          <Tip>
-            {text}
-          </Tip>
+          <Tip>{text}</Tip>
         </>
-      }
+      )}
     </StyledWrapper>
   )
 }

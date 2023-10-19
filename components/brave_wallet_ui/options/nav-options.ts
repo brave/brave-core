@@ -148,7 +148,7 @@ export const PortfolioNavOptions: NavOption[] = [
     name: 'braveWalletTopNavNFTS',
     icon: 'grid04',
     route: WalletRoutes.PortfolioNFTs
-  },
+  }
 ]
 
 export const PortfolioAssetOptions: NavOption[] = [
@@ -199,7 +199,7 @@ export const CreateAccountOptions: NavOption[] = [
     name: 'braveWalletConnectHardwareWallet',
     icon: 'flashdrive',
     route: WalletRoutes.AddHardwareAccountModalStart
-  },
+  }
 ]
 
 export const AccountDetailsOptions: NavOption[] = [
@@ -220,5 +220,5 @@ export const AccountDetailsOptions: NavOption[] = [
     name: 'braveWalletTransactions',
     icon: '',
     route: AccountPageTabs.AccountTransactionsSub
-  },
+  }
 ]

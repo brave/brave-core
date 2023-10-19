@@ -42,7 +42,10 @@ export const HowToSolveButton = styled(WalletButton)`
   }
 `
 
-export const ErrorIcon = styled(Icon) <{ type: 'error' | 'warning' }>`
-  background-color: ${(p) => p.type === 'error' ? p.theme.color.errorBorder : p.theme.color.warningBorder};
+export const ErrorIcon = styled(Icon)<{ type: 'error' | 'warning' }>`
+  background-color: ${(p) =>
+    p.type === 'error'
+      ? p.theme.color.errorBorder
+      : p.theme.color.warningBorder};
   margin-right: 10px;
 `

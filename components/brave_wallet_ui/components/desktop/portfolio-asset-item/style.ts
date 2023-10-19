@@ -5,32 +5,39 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
+import {
+  AssetIconProps,
+  AssetIconFactory,
+  WalletButton
+} from '../../shared/style'
 
-export const StyledWrapper = styled.div<{isPanel?: boolean}>`
+export const StyledWrapper = styled.div<{ isPanel?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: 12px ${(p) => p.isPanel ? 0 : 12}px;
+  padding: 12px ${(p) => (p.isPanel ? 0 : 12)}px;
   border-radius: 10px;
   &:hover {
     background-color: ${(p) => p.theme.color.background01}85;
   }
 `
 
-export const ButtonArea = styled(WalletButton) <{ disabled: boolean, rightMargin?: number }>`
+export const ButtonArea = styled(WalletButton)<{
+  disabled: boolean
+  rightMargin?: number
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  cursor: ${(p) => p.disabled ? 'default' : 'pointer'};
+  cursor: ${(p) => (p.disabled ? 'default' : 'pointer')};
   outline: none;
   background: none;
   border: none;
-  margin-right: ${(p) => p.rightMargin ? p.rightMargin : 0}px;
+  margin-right: ${(p) => (p.rightMargin ? p.rightMargin : 0)}px;
   padding: 0px;
 `
 

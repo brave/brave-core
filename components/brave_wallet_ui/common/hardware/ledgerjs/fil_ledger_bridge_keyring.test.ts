@@ -3,11 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { TextDecoder, TextEncoder } from 'util'
 import { BraveWallet } from '../../../constants/types'
 import { SignHardwareOperationResult } from '../types'
-import { FilGetAccountResponse, FilLotusMessage, FilSignedLotusMessage, FilSignTransactionResponse } from './fil-ledger-messages'
+import {
+  FilGetAccountResponse,
+  FilLotusMessage,
+  FilSignedLotusMessage,
+  FilSignTransactionResponse
+} from './fil-ledger-messages'
 import FilecoinLedgerBridgeKeyring from './fil_ledger_bridge_keyring'
 import { LedgerCommand, UnlockResponse } from './ledger-messages'
 import { MockLedgerTransport } from './ledger_bridge_keyring.test'
@@ -84,77 +89,102 @@ const createKeyring = (): FilecoinLedgerBridgeKeyring => {
 
 test('Extracting accounts from device MAIN', async () => {
   const keyring = createKeyring()
-  if (!keyring['transport']) { fail('transport should be defined') }
+  if (!keyring['transport']) {
+    fail('transport should be defined')
+  }
   keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
   keyring['transport']['addSendCommandResponse'](getAccountsResponse)
 
-  return expect(await keyring.getAccounts(-2, 1, BraveWallet.FILECOIN_MAINNET))
-    .toEqual({
-      payload: [{
+  return expect(
+    await keyring.getAccounts(-2, 1, BraveWallet.FILECOIN_MAINNET)
+  ).toEqual({
+    payload: [
+      {
         address: '0',
         coin: BraveWallet.CoinType.FIL,
-        derivationPath: 'm/44\'/461\'/0\'/0/0',
+        derivationPath: "m/44'/461'/0'/0/0",
         deviceId: 'device1',
         hardwareVendor: 'Ledger',
         name: 'Filecoin Ledger',
         keyringId: BraveWallet.KeyringId.kFilecoin
-      }],
-      success: true
-    })
+      }
+    ],
+    success: true
+  })
 })
 
 test('Extracting accounts from device TEST', async () => {
   const keyring = createKeyring()
-  if (!keyring['transport']) { fail('transport should be defined') }
+  if (!keyring['transport']) {
+    fail('transport should be defined')
+  }
   keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
   keyring['transport']['addSendCommandResponse'](getAccountsResponse)
 
-  return expect(await keyring.getAccounts(-2, 1, BraveWallet.FILECOIN_TESTNET))
-    .toEqual({
-      payload: [{
+  return expect(
+    await keyring.getAccounts(-2, 1, BraveWallet.FILECOIN_TESTNET)
+  ).toEqual({
+    payload: [
+      {
         address: '0',
         coin: BraveWallet.CoinType.FIL,
-        derivationPath: 'm/44\'/1\'/0\'/0/0',
+        derivationPath: "m/44'/1'/0'/0/0",
         deviceId: 'device1',
         hardwareVendor: 'Ledger',
         name: 'Filecoin Ledger',
         keyringId: BraveWallet.KeyringId.kFilecoinTestnet
-      }],
-      success: true
-    })
+      }
+    ],
+    success: true
+  })
 })
 
 test('Check ledger bridge type', async () => {
   const ledgerHardwareKeyring = new FilecoinLedgerBridgeKeyring()
-  return expect(ledgerHardwareKeyring.type()).toStrictEqual(LEDGER_HARDWARE_VENDOR)
+  return expect(ledgerHardwareKeyring.type()).toStrictEqual(
+    LEDGER_HARDWARE_VENDOR
+  )
 })
 
 test('Unlock device success', async () => {
   const keyring = createKeyring()
-  if (!keyring['transport']) { fail('transport should be defined') }
+  if (!keyring['transport']) {
+    fail('transport should be defined')
+  }
   keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
   expect(await keyring.unlock()).toEqual({ success: true })
 })
 
 test('Unlock device failed', async () => {
   const keyring = createKeyring()
-  if (!keyring['transport']) { fail('transport should be defined') }
+  if (!keyring['transport']) {
+    fail('transport should be defined')
+  }
   keyring['transport']['addSendCommandResponse'](unlockErrorResponse)
-  expect(await keyring.unlock()).toEqual({ message: 'LedgerError', statusCode: 101, success: false })
+  expect(await keyring.unlock()).toEqual({
+    message: 'LedgerError',
+    statusCode: 101,
+    success: false
+  })
 })
 
 test('Extract accounts from locked device success', async () => {
   const keyring = createKeyring()
-  if (!keyring['transport']) { fail('transport should be defined') }
+  if (!keyring['transport']) {
+    fail('transport should be defined')
+  }
   keyring['transport']['addSendCommandResponse'](unlockErrorResponse)
 
-  return expect(await keyring.getAccounts(-2, 1, BraveWallet.FILECOIN_TESTNET))
-    .toEqual({ message: 'LedgerError', statusCode: 101, success: false })
+  return expect(
+    await keyring.getAccounts(-2, 1, BraveWallet.FILECOIN_TESTNET)
+  ).toEqual({ message: 'LedgerError', statusCode: 101, success: false })
 })
 
 test('signTransaction success', async () => {
   const keyring = createKeyring()
-  if (!keyring['transport']) { fail('transport should be defined') }
+  if (!keyring['transport']) {
+    fail('transport should be defined')
+  }
   keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
   const signTransactionResponse: FilSignTransactionResponse = {
     id: LedgerCommand.SignTransaction,
@@ -181,7 +211,9 @@ test('signTransaction success', async () => {
 
 test('Sign transaction locked device, unlock error', async () => {
   const keyring = createKeyring()
-  if (!keyring['transport']) { fail('transport should be defined') }
+  if (!keyring['transport']) {
+    fail('transport should be defined')
+  }
   keyring['transport']['addSendCommandResponse'](unlockErrorResponse)
   const signTransactionResponse: FilSignTransactionResponse = {
     id: LedgerCommand.SignTransaction,
@@ -195,13 +227,16 @@ test('Sign transaction locked device, unlock error', async () => {
 
   keyring['transport']['addSendCommandResponse'](signTransactionResponse)
 
-  return expect(await keyring.signTransaction(JSON.stringify('message')))
-    .toEqual({ message: 'LedgerError', statusCode: 101, success: false })
+  return expect(
+    await keyring.signTransaction(JSON.stringify('message'))
+  ).toEqual({ message: 'LedgerError', statusCode: 101, success: false })
 })
 
 test('Sign transaction locked device, parsing error', async () => {
   const keyring = createKeyring()
-  if (!keyring['transport']) { fail('transport should be defined') }
+  if (!keyring['transport']) {
+    fail('transport should be defined')
+  }
   keyring['transport']['addSendCommandResponse'](unlockSuccessResponse)
   const signTransactionResponse: FilSignTransactionResponse = {
     id: LedgerCommand.SignTransaction,
@@ -215,14 +250,13 @@ test('Sign transaction locked device, parsing error', async () => {
   }
   keyring['transport']['addSendCommandResponse'](signTransactionResponse)
 
-  return expect(await keyring.signTransaction('{,,'))
-    .toEqual({
+  return expect(await keyring.signTransaction('{,,')).toEqual({
+    success: false,
+    code: 101,
+    error: {
       success: false,
-      code: 101,
-      error: {
-        success: false,
-        message: 'LedgerError',
-        statusCode: 101
-      }
-    })
+      message: 'LedgerError',
+      statusCode: 101
+    }
+  })
 })

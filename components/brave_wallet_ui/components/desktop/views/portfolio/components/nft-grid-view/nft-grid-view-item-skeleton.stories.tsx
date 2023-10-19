@@ -4,12 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { NftGridViewItemSkeleton } from "./nft-grid-view-item-skeleton"
+import { NftGridViewItemSkeleton } from './nft-grid-view-item-skeleton'
 
 export const _NftGridViewItemSkeleton = () => {
-  return (
-    <NftGridViewItemSkeleton />
-  )
+  return <NftGridViewItemSkeleton />
 }
 
 export default _NftGridViewItemSkeleton

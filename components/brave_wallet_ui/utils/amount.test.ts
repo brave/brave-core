@@ -42,9 +42,12 @@ describe('Amount class', () => {
       ['1234567.890', 6, '1234567.89'],
       ['123456.7890', 6, '123456.79'],
       ['12345.67890', 6, '12345.68']
-    ])('should format asset amount %s to %d significant digits', (value: string, sd: number, expected: string) => {
-      expect(new Amount(value).format(sd)).toBe(expected)
-    })
+    ])(
+      'should format asset amount %s to %d significant digits',
+      (value: string, sd: number, expected: string) => {
+        expect(new Amount(value).format(sd)).toBe(expected)
+      }
+    )
 
     it('should optionally format asset amount 100001.1 with full precision', () => {
       expect(new Amount('100001.1').format()).toBe('100001.1')
@@ -61,18 +64,25 @@ describe('Amount class', () => {
       ['1234567.890', '1,234,567.89'],
       ['123456.7890', '123,456.79'],
       ['12345.67890', '12,345.68']
-    ])('should format fiat amount %s to %s', (value: string, expected: string) => {
-      expect(new Amount(value).formatAsFiat()).toBe(expected)
-    })
+    ])(
+      'should format fiat amount %s to %s',
+      (value: string, expected: string) => {
+        expect(new Amount(value).formatAsFiat()).toBe(expected)
+      }
+    )
   })
 
   describe('decimals conversion tests', () => {
     it('should convert from Wei to ETH', () => {
-      expect(new Amount('1').divideByDecimals(18).format()).toBe('0.000000000000000001')
+      expect(new Amount('1').divideByDecimals(18).format()).toBe(
+        '0.000000000000000001'
+      )
     })
 
     it('should convert from ETH to Wei', () => {
-      expect(new Amount('1').multiplyByDecimals(18).format()).toBe('1000000000000000000')
+      expect(new Amount('1').multiplyByDecimals(18).format()).toBe(
+        '1000000000000000000'
+      )
     })
 
     it('should convert from Wei to GWei', () => {
@@ -318,9 +328,15 @@ describe('Amount class', () => {
     })
 
     it('should format amount with commas', () => {
-      expect(new Amount('1.23456789').format(undefined, true)).toBe('1.23456789')
-      expect(new Amount('12345.6789').format(undefined, true)).toBe('12,345.6789')
-      expect(new Amount('12345678.9').format(undefined, true)).toBe('12,345,678.9')
+      expect(new Amount('1.23456789').format(undefined, true)).toBe(
+        '1.23456789'
+      )
+      expect(new Amount('12345.6789').format(undefined, true)).toBe(
+        '12,345.6789'
+      )
+      expect(new Amount('12345678.9').format(undefined, true)).toBe(
+        '12,345,678.9'
+      )
 
       expect(new Amount('1.23456789').formatAsFiat()).toBe('1.235')
       expect(new Amount('12345.6789').formatAsFiat()).toBe('12,345.68')
@@ -328,7 +344,9 @@ describe('Amount class', () => {
     })
 
     it('should format amount with symbol', () => {
-      expect(new Amount('123.456').formatAsAsset(undefined, 'ETH')).toBe('123.456 ETH')
+      expect(new Amount('123.456').formatAsAsset(undefined, 'ETH')).toBe(
+        '123.456 ETH'
+      )
     })
 
     it.each([
@@ -336,9 +354,12 @@ describe('Amount class', () => {
       ['0', 'RUB', '₽0.00'],
       ['0.1', 'RUB', '₽0.10'],
       ['0.001', 'RUB', '₽0.001']
-    ])('should format fiat amount %s with currency %s as %s', (value, currency, expected) => {
-      expect(new Amount(value).formatAsFiat(currency)).toBe(expected)
-    })
+    ])(
+      'should format fiat amount %s with currency %s as %s',
+      (value, currency, expected) => {
+        expect(new Amount(value).formatAsFiat(currency)).toBe(expected)
+      }
+    )
 
     it.each([
       ['122', 2, 'USD', '$122.00'],
@@ -351,8 +372,11 @@ describe('Amount class', () => {
       ['1361500000', 2, undefined, '1.36B'],
       ['1358900000000', 3, 'USD', '$1.359T'],
       ['1358900000000000', 3, 'USD', '$1,358.900T']
-    ])('should abbreviate amount %s to have %s decimal places with currency %s as %s', (value: string, decimals: number, currency: string, expected: string) => {
-      expect(new Amount(value).abbreviate(decimals, currency)).toBe(expected)
-    })
+    ])(
+      'should abbreviate amount %s to have %s decimal places with currency %s as %s',
+      (value: string, decimals: number, currency: string, expected: string) => {
+        expect(new Amount(value).abbreviate(decimals, currency)).toBe(expected)
+      }
+    )
   })
 })

@@ -37,18 +37,33 @@ export const ExpandSection = (props: Props) => {
   // render
   return (
     <Column columnWidth='full'>
-      <Row rowWidth='full' verticalPadding={16}>
-        <Text textColor='text02' textSize='14px' isBold={true}>
+      <Row
+        rowWidth='full'
+        verticalPadding={16}
+      >
+        <Text
+          textColor='text02'
+          textSize='14px'
+          isBold={true}
+        >
           {label}
         </Text>
         <Row>
-          <Text textColor='text01' textSize='14px' isBold={true}>
+          <Text
+            textColor='text01'
+            textSize='14px'
+            isBold={true}
+          >
             {value}
           </Text>
           {secondaryValue && (
             <>
               <HorizontalSpacer size={4} />
-              <Text textColor='text03' textSize='14px' isBold={true}>
+              <Text
+                textColor='text03'
+                textSize='14px'
+                isBold={true}
+              >
                 {secondaryValue}
               </Text>
             </>
@@ -59,7 +74,10 @@ export const ExpandSection = (props: Props) => {
             expandOut={onExpandOut !== undefined}
             onClick={onExpandOut ?? toggleExpanded}
           >
-            <Icon name='carat-down' size={20} />
+            <Icon
+              name='carat-down'
+              size={20}
+            />
           </MoreButton>
         </Row>
       </Row>

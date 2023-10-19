@@ -44,7 +44,11 @@ export const TransactionComplete = (props: Props) => {
   const { transactionsQueueLength } = usePendingTransactions()
 
   return (
-    <Panel navAction={onClose} title={headerTitle} headerStyle='slim'>
+    <Panel
+      navAction={onClose}
+      title={headerTitle}
+      headerStyle='slim'
+    >
       <SuccessIcon />
       <Title>{getLocale('braveWalletTransactionCompleteTitle')}</Title>
       <TransactionStatusDescription>{description}</TransactionStatusDescription>

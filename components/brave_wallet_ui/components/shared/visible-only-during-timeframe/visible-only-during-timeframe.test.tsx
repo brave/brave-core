@@ -15,15 +15,15 @@ describe('<VisibleOnlyDuringTimeFrame />', () => {
     const END_DATE = new Date()
     END_DATE.setTime(START_DATE.getTime() + 1000 * 60 * 60 * 24 * 35) // 35 Days from start
 
-    const wrapper = shallow((
+    const wrapper = shallow(
       <VisibleOnlyDuringTimeFrame
         startDate={START_DATE}
         endDate={END_DATE}
       >
-        <div className="unique" />
+        <div className='unique' />
       </VisibleOnlyDuringTimeFrame>
-    ))
-    expect(wrapper.contains(<div className="unique" />)).toEqual(true)
+    )
+    expect(wrapper.contains(<div className='unique' />)).toEqual(true)
   })
 
   it('does not render children when not within start/end dates', () => {
@@ -33,14 +33,14 @@ describe('<VisibleOnlyDuringTimeFrame />', () => {
     const END_DATE = new Date()
     END_DATE.setTime(START_DATE.getTime() + 1000 * 60 * 60 * 24 * 20) // 20 Days from start (5 days ago)
 
-    const wrapper = shallow((
+    const wrapper = shallow(
       <VisibleOnlyDuringTimeFrame
         startDate={START_DATE}
         endDate={END_DATE}
       >
-        <div className="unique" />
+        <div className='unique' />
       </VisibleOnlyDuringTimeFrame>
-    ))
-    expect(wrapper.contains(<div className="unique" />)).toEqual(false)
+    )
+    expect(wrapper.contains(<div className='unique' />)).toEqual(false)
   })
 })

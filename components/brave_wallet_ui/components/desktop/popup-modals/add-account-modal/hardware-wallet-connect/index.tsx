@@ -56,7 +56,10 @@ export interface Props {
   onSuccess: () => void
 }
 
-const getErrorMessage = (error: undefined | string | LedgerError, accountTypeName: string) => {
+const getErrorMessage = (
+  error: undefined | string | LedgerError,
+  accountTypeName: string
+) => {
   if (typeof error === 'undefined') {
     return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
   }
@@ -69,22 +72,39 @@ const getErrorMessage = (error: undefined | string | LedgerError, accountTypeNam
   if (
     error.statusCode &&
     (error.statusCode === 27404 || error.statusCode === 21781)
-  ) { // Unknown Error
-    return { error: getLocale('braveWalletConnectHardwareInfo2').replace('$1', accountTypeName), userHint: '' }
+  ) {
+    // Unknown Error
+    return {
+      error: getLocale('braveWalletConnectHardwareInfo2').replace(
+        '$1',
+        accountTypeName
+      ),
+      userHint: ''
+    }
   }
 
   if (!error.message) {
     return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
   }
 
-  if (error.statusCode && (error.statusCode === 27904 || error.statusCode === 26368)) { // INCORRECT_LENGTH or INS_NOT_SUPPORTED
-    return { error: error.message, userHint: getLocale('braveWalletConnectHardwareWrongApplicationUserHint') }
+  if (
+    error.statusCode &&
+    (error.statusCode === 27904 || error.statusCode === 26368)
+  ) {
+    // INCORRECT_LENGTH or INS_NOT_SUPPORTED
+    return {
+      error: error.message,
+      userHint: getLocale('braveWalletConnectHardwareWrongApplicationUserHint')
+    }
   }
 
   return { error: error.message, userHint: '' }
 }
 
-export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props) => {
+export const HardwareWalletConnect = ({
+  onSuccess,
+  selectedAccountType
+}: Props) => {
   // lib
   const { onConnectHardwareWallet } = useLib()
 
@@ -95,95 +115,135 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   const { accounts: savedAccounts } = useAccountsQuery()
 
   // state
-  const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
+  const [selectedHardwareWallet, setSelectedHardwareWallet] =
+    React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
-  const [accounts, setAccounts] = React.useState<BraveWallet.HardwareWalletAccount[]>([])
-  const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
-  const [connectionError, setConnectionError] = React.useState<ErrorMessage | undefined>(undefined)
-  const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<HardwareDerivationScheme>(
-    selectedAccountType.coin === BraveWallet.CoinType.SOL
-      ? SolDerivationPaths.Default
-      : LedgerDerivationPaths.LedgerLive
-  )
+  const [accounts, setAccounts] = React.useState<
+    BraveWallet.HardwareWalletAccount[]
+  >([])
+  const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<
+    string[]
+  >([])
+  const [connectionError, setConnectionError] = React.useState<
+    ErrorMessage | undefined
+  >(undefined)
+  const [selectedDerivationScheme, setSelectedDerivationScheme] =
+    React.useState<HardwareDerivationScheme>(
+      selectedAccountType.coin === BraveWallet.CoinType.SOL
+        ? SolDerivationPaths.Default
+        : LedgerDerivationPaths.LedgerLive
+    )
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
-  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
-  const [showAuthorizeDevice, setShowAuthorizeDevice] = React.useState<boolean>(false)
+  const [filecoinNetwork, setFilecoinNetwork] =
+    React.useState<FilecoinNetwork>('f')
+  const [showAuthorizeDevice, setShowAuthorizeDevice] =
+    React.useState<boolean>(false)
   const hideAuthorizeDevice = () => setShowAuthorizeDevice(false)
 
   // methods
-  const onFilecoinNetworkChanged = React.useCallback((network: FilecoinNetwork) => {
-    // clear previous accounts & show loading spinner
-    setAccounts([])
-    setFilecoinNetwork(network)
-    onConnectHardwareWallet({
-      hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
-      startIndex: 0,
-      stopIndex: DerivationBatchSize,
-      network: network,
-      coin: BraveWallet.CoinType.FIL,
-      onAuthorized: hideAuthorizeDevice
-    }).then((result) => {
-      setAccounts(result)
-    }).catch((error) => {
-      setConnectionError(getErrorMessage(error, selectedAccountType.name))
-      setShowAccountsList(false)
-    }).finally(
-      () => setIsConnecting(false)
-    )
-  }, [onConnectHardwareWallet, selectedAccountType])
+  const onFilecoinNetworkChanged = React.useCallback(
+    (network: FilecoinNetwork) => {
+      // clear previous accounts & show loading spinner
+      setAccounts([])
+      setFilecoinNetwork(network)
+      onConnectHardwareWallet({
+        hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
+        startIndex: 0,
+        stopIndex: DerivationBatchSize,
+        network: network,
+        coin: BraveWallet.CoinType.FIL,
+        onAuthorized: hideAuthorizeDevice
+      })
+        .then((result) => {
+          setAccounts(result)
+        })
+        .catch((error) => {
+          setConnectionError(getErrorMessage(error, selectedAccountType.name))
+          setShowAccountsList(false)
+        })
+        .finally(() => setIsConnecting(false))
+    },
+    [onConnectHardwareWallet, selectedAccountType]
+  )
 
-  const onAddHardwareAccounts = React.useCallback((selected: BraveWallet.HardwareWalletAccount[]) => {
-    dispatch(WalletPageActions.addHardwareAccounts(selected))
-    onSuccess()
-  }, [onSuccess])
+  const onAddHardwareAccounts = React.useCallback(
+    (selected: BraveWallet.HardwareWalletAccount[]) => {
+      dispatch(WalletPageActions.addHardwareAccounts(selected))
+      onSuccess()
+    },
+    [onSuccess]
+  )
 
-  const onChangeDerivationScheme = React.useCallback((scheme: HardwareDerivationScheme) => {
-    setSelectedDerivationScheme(scheme)
-    setAccounts([])
-    onConnectHardwareWallet({
-      hardware: selectedHardwareWallet,
-      startIndex: 0,
-      stopIndex: DerivationBatchSize,
-      scheme: scheme,
-      coin: selectedAccountType.coin,
-      network: filecoinNetwork,
-      onAuthorized: hideAuthorizeDevice
-    }).then((result) => {
-      setAccounts(result)
-    }).catch((error) => {
-      setConnectionError(getErrorMessage(error, selectedAccountType.name))
-      setShowAccountsList(false)
-    }).finally(
-      () => setIsConnecting(false)
-    )
-  }, [onConnectHardwareWallet, selectedHardwareWallet, selectedAccountType, filecoinNetwork])
+  const onChangeDerivationScheme = React.useCallback(
+    (scheme: HardwareDerivationScheme) => {
+      setSelectedDerivationScheme(scheme)
+      setAccounts([])
+      onConnectHardwareWallet({
+        hardware: selectedHardwareWallet,
+        startIndex: 0,
+        stopIndex: DerivationBatchSize,
+        scheme: scheme,
+        coin: selectedAccountType.coin,
+        network: filecoinNetwork,
+        onAuthorized: hideAuthorizeDevice
+      })
+        .then((result) => {
+          setAccounts(result)
+        })
+        .catch((error) => {
+          setConnectionError(getErrorMessage(error, selectedAccountType.name))
+          setShowAccountsList(false)
+        })
+        .finally(() => setIsConnecting(false))
+    },
+    [
+      onConnectHardwareWallet,
+      selectedHardwareWallet,
+      selectedAccountType,
+      filecoinNetwork
+    ]
+  )
 
-  const getDefaultAccountName = React.useCallback((account: BraveWallet.HardwareWalletAccount) => {
-    const index = accounts.findIndex(e => e.address === account.address)
-    let schemeString
-    switch (selectedDerivationScheme) {
-      case LedgerDerivationPaths.Legacy:
-        schemeString = ' (Legacy)'
-        break
-      default:
-        schemeString = ''
-    }
+  const getDefaultAccountName = React.useCallback(
+    (account: BraveWallet.HardwareWalletAccount) => {
+      const index = accounts.findIndex((e) => e.address === account.address)
+      let schemeString
+      switch (selectedDerivationScheme) {
+        case LedgerDerivationPaths.Legacy:
+          schemeString = ' (Legacy)'
+          break
+        default:
+          schemeString = ''
+      }
 
-    return index === 0
-      ? `${account.hardwareVendor}${schemeString}`
-      : `${account.hardwareVendor} ${index}${schemeString}`
-  }, [accounts, selectedDerivationScheme])
+      return index === 0
+        ? `${account.hardwareVendor}${schemeString}`
+        : `${account.hardwareVendor} ${index}${schemeString}`
+    },
+    [accounts, selectedDerivationScheme]
+  )
 
   const onAddAccounts = React.useCallback(() => {
-    const selectedAccounts = accounts.filter(account => selectedDerivationPaths.includes(account.derivationPath))
-    const renamedSelectedAccounts = selectedAccounts
-      .map(account => ({ ...account, name: getDefaultAccountName(account) }))
+    const selectedAccounts = accounts.filter((account) =>
+      selectedDerivationPaths.includes(account.derivationPath)
+    )
+    const renamedSelectedAccounts = selectedAccounts.map((account) => ({
+      ...account,
+      name: getDefaultAccountName(account)
+    }))
     onAddHardwareAccounts(renamedSelectedAccounts)
-  }, [accounts, selectedDerivationPaths, getDefaultAccountName, onAddHardwareAccounts])
+  }, [
+    accounts,
+    selectedDerivationPaths,
+    getDefaultAccountName,
+    onAddHardwareAccounts
+  ])
 
   const selectVendor = React.useCallback((vendor: HardwareVendor) => {
     const derivationPathsEnum = HardwareWalletDerivationPathsMapping[vendor]
-    setSelectedDerivationScheme(Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme)
+    setSelectedDerivationScheme(
+      Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme
+    )
     setSelectedHardwareWallet(vendor)
   }, [])
 
@@ -214,26 +274,34 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
       coin: selectedAccountType.coin,
       network: filecoinNetwork,
       onAuthorized: hideAuthorizeDevice
-    }).then((result) => {
-      setAccounts([...accounts, ...result])
-      setShowAccountsList(true)
-    }).catch((error) => {
-      if (error === 'unauthorized') {
-        setShowAuthorizeDevice(true)
-        setShowAccountsList(false)
-      } else {
-        setConnectionError(getErrorMessage(error, selectedAccountType.name))
-        setShowAccountsList(false)
-      }
-    }).finally(
-      () => setIsConnecting(false)
-    )
-  }, [onConnectHardwareWallet, selectedHardwareWallet, accounts, selectedDerivationScheme, selectedAccountType, filecoinNetwork])
+    })
+      .then((result) => {
+        setAccounts([...accounts, ...result])
+        setShowAccountsList(true)
+      })
+      .catch((error) => {
+        if (error === 'unauthorized') {
+          setShowAuthorizeDevice(true)
+          setShowAccountsList(false)
+        } else {
+          setConnectionError(getErrorMessage(error, selectedAccountType.name))
+          setShowAccountsList(false)
+        }
+      })
+      .finally(() => setIsConnecting(false))
+  }, [
+    onConnectHardwareWallet,
+    selectedHardwareWallet,
+    accounts,
+    selectedDerivationScheme,
+    selectedAccountType,
+    filecoinNetwork
+  ])
 
   // memos
   const preAddedHardwareWalletAccounts = React.useMemo(() => {
-    return savedAccounts.filter(account =>
-      account.accountId.kind === BraveWallet.AccountKind.kHardware
+    return savedAccounts.filter(
+      (account) => account.accountId.kind === BraveWallet.AccountKind.kHardware
     )
   }, [savedAccounts])
 
@@ -275,53 +343,78 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
 
   return (
     <>
-      {(selectedAccountType.coin !== BraveWallet.CoinType.FIL &&
-        selectedAccountType.coin !== BraveWallet.CoinType.SOL
-      ) &&
-        <>
-          <HardwareTitle>{getLocale('braveWalletConnectHardwareTitle')}</HardwareTitle>
-          <HardwareButtonRow>
-            <HardwareButton
-              onClick={onSelectLedger}
-              isSelected={selectedHardwareWallet === BraveWallet.LEDGER_HARDWARE_VENDOR}
-              disabled={isConnecting && selectedHardwareWallet !== BraveWallet.LEDGER_HARDWARE_VENDOR}
-            >
-              <LedgerIcon />
-            </HardwareButton>
+      {selectedAccountType.coin !== BraveWallet.CoinType.FIL &&
+        selectedAccountType.coin !== BraveWallet.CoinType.SOL && (
+          <>
+            <HardwareTitle>
+              {getLocale('braveWalletConnectHardwareTitle')}
+            </HardwareTitle>
+            <HardwareButtonRow>
+              <HardwareButton
+                onClick={onSelectLedger}
+                isSelected={
+                  selectedHardwareWallet === BraveWallet.LEDGER_HARDWARE_VENDOR
+                }
+                disabled={
+                  isConnecting &&
+                  selectedHardwareWallet !== BraveWallet.LEDGER_HARDWARE_VENDOR
+                }
+              >
+                <LedgerIcon />
+              </HardwareButton>
 
-            <HardwareButton
-              onClick={onSelectTrezor}
-              isSelected={selectedHardwareWallet === BraveWallet.TREZOR_HARDWARE_VENDOR}
-              disabled={isConnecting && selectedHardwareWallet !== BraveWallet.TREZOR_HARDWARE_VENDOR}
-            >
-              <TrezorIcon />
-            </HardwareButton>
-          </HardwareButtonRow>
-        </>
-      }
+              <HardwareButton
+                onClick={onSelectTrezor}
+                isSelected={
+                  selectedHardwareWallet === BraveWallet.TREZOR_HARDWARE_VENDOR
+                }
+                disabled={
+                  isConnecting &&
+                  selectedHardwareWallet !== BraveWallet.TREZOR_HARDWARE_VENDOR
+                }
+              >
+                <TrezorIcon />
+              </HardwareButton>
+            </HardwareButtonRow>
+          </>
+        )}
       <HardwareInfoRow>
         <InfoIcon />
         <HardwareInfoColumn>
           <DisclaimerText>
-            {getLocale('braveWalletConnectHardwareInfo1').replace('$1', selectedHardwareWallet)}
+            {getLocale('braveWalletConnectHardwareInfo1').replace(
+              '$1',
+              selectedHardwareWallet
+            )}
           </DisclaimerText>
-          <DisclaimerText>{getLocale('braveWalletConnectHardwareInfo2').replace('$1', selectedAccountType.name)}</DisclaimerText>
+          <DisclaimerText>
+            {getLocale('braveWalletConnectHardwareInfo2').replace(
+              '$1',
+              selectedAccountType.name
+            )}
+          </DisclaimerText>
         </HardwareInfoColumn>
       </HardwareInfoRow>
-      {connectionError &&
+      {connectionError && (
         <>
           <ErrorText>{connectionError.error}</ErrorText>
           <ErrorText>{connectionError.userHint}</ErrorText>
         </>
-      }
+      )}
 
       {isConnecting ? (
         <ConnectingButton>
           <LoadIcon size='small' />
-          <ConnectingButtonText>{getLocale('braveWalletConnectingHardwareWallet')}</ConnectingButtonText>
+          <ConnectingButtonText>
+            {getLocale('braveWalletConnectingHardwareWallet')}
+          </ConnectingButtonText>
         </ConnectingButton>
       ) : (
-        <NavButton onSubmit={onSubmit} text={getLocale('braveWalletAddAccountConnect')} buttonType='primary' />
+        <NavButton
+          onSubmit={onSubmit}
+          text={getLocale('braveWalletAddAccountConnect')}
+          buttonType='primary'
+        />
       )}
     </>
   )

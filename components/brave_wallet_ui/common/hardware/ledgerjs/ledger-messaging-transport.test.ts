@@ -17,10 +17,14 @@ import {
 //
 /* eslint-disable @typescript-eslint/dot-notation */
 
-const createTransport = (targetUrl: string = 'chrome-untrusted://ledger-bridge'): LedgerMessagingTransport => {
+const createTransport = (
+  targetUrl: string = 'chrome-untrusted://ledger-bridge'
+): LedgerMessagingTransport => {
   const iframe = document.createElement('iframe')
   document.body.appendChild(iframe)
-  if (!iframe.contentWindow) { fail('transport should be defined') }
+  if (!iframe.contentWindow) {
+    fail('transport should be defined')
+  }
   // Use Object.defineProperty in order to assign to
   // window.crypto because standard assignment results in
   // assignment error because window.origin is read-only
@@ -37,10 +41,7 @@ const createTransport = (targetUrl: string = 'chrome-untrusted://ledger-bridge')
 }
 
 test('constructor', () => {
-  const transport = new LedgerMessagingTransport(
-    window,
-    window.origin
-  )
+  const transport = new LedgerMessagingTransport(window, window.origin)
 
   expect(transport['targetWindow']).toEqual(window)
   expect(transport['targetUrl']).toEqual(window.origin)
@@ -117,7 +118,7 @@ test('onMessageReceived ignores messages not from the targetUrl', () => {
     origin: transport['senderWindow']['origin'],
     source: transport['senderWindow']
   })
-  transport['addCommandHandler'](testId, () => callbackCalled = true)
+  transport['addCommandHandler'](testId, () => (callbackCalled = true))
   transport['senderWindow'].dispatchEvent(invalidEvent)
   expect(callbackCalled).toEqual(false)
 

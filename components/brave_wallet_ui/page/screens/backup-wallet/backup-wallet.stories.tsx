@@ -14,9 +14,7 @@ import { BackupWalletRoutes } from './backup-wallet.routes'
 
 export const _BackupWallet = () => {
   return (
-    <WalletPageStory
-      pageStateOverride={{ mnemonic: mockedMnemonic }}
-    >
+    <WalletPageStory pageStateOverride={{ mnemonic: mockedMnemonic }}>
       <BackupWalletRoutes />
     </WalletPageStory>
   )

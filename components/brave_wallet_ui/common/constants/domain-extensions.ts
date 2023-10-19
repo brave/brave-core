@@ -7,7 +7,15 @@ export const supportedENSExtensions = ['.eth']
 export const supportedSNSExtensions = ['.sol']
 // Should match `kUDPattern` array from json_rpc_service.cc.
 export const supportedUDExtensions = [
-  '.crypto', '.x', '.nft', '.dao', '.wallet', '.888', '.blockchain', '.bitcoin']
+  '.crypto',
+  '.x',
+  '.nft',
+  '.dao',
+  '.wallet',
+  '.888',
+  '.blockchain',
+  '.bitcoin'
+]
 export const allSupportedExtensions = [
   ...supportedENSExtensions,
   ...supportedSNSExtensions,

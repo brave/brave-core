@@ -17,9 +17,7 @@ import {
 } from '../../../../common/slices/api.slice'
 
 // Hooks
-import {
-  useExplorer
-} from '../../../../common/hooks/explorer'
+import { useExplorer } from '../../../../common/hooks/explorer'
 
 // Types
 import {
@@ -39,18 +37,10 @@ import {
   isSolanaTransaction,
   isFilecoinTransaction
 } from '../../../../utils/tx-utils'
-import {
-  serializedTimeDeltaToJSDate
-} from '../../../../utils/datetime-utils'
-import {
-  getCoinFromTxDataUnion
-} from '../../../../utils/network-utils'
-import {
-  copyToClipboard
-} from '../../../../utils/copy-to-clipboard'
-import {
-  computeFiatAmount
-} from '../../../../utils/pricing-utils'
+import { serializedTimeDeltaToJSDate } from '../../../../utils/datetime-utils'
+import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
+import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
+import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 
 // Components
@@ -105,18 +95,24 @@ import {
   VerticalSpace
 } from '../../../shared/style'
 
-const ICON_ASSET_CONFIG =
-  { size: 'big', marginLeft: 0, marginRight: 0 } as const
-const AssetIconWithPlaceholder =
-  withPlaceholderIcon(AssetIcon, ICON_ASSET_CONFIG)
+const ICON_ASSET_CONFIG = {
+  size: 'big',
+  marginLeft: 0,
+  marginRight: 0
+} as const
+const AssetIconWithPlaceholder = withPlaceholderIcon(
+  AssetIcon,
+  ICON_ASSET_CONFIG
+)
 
-const ICON_SWAP_CONFIG =
-  { size: 'small', marginLeft: 0, marginRight: 8 } as const
-const SwapIconWithPlaceholder =
-  withPlaceholderIcon(SwapIcon, ICON_SWAP_CONFIG)
+const ICON_SWAP_CONFIG = {
+  size: 'small',
+  marginLeft: 0,
+  marginRight: 8
+} as const
+const SwapIconWithPlaceholder = withPlaceholderIcon(SwapIcon, ICON_SWAP_CONFIG)
 
-const NftIconWithPlaceholder =
-  withPlaceholderIcon(NftIcon, ICON_ASSET_CONFIG)
+const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_ASSET_CONFIG)
 
 const cancelSpeedupTxTypes = [
   BraveWallet.TransactionStatus.Submitted,
@@ -195,13 +191,11 @@ export const TransactionDetailsModal = (props: Props) => {
 
   // Queries
   const { data: solFeeEstimates } = useGetSolanaEstimatedFeeQuery(
-    isSolanaTx &&
-      transaction.chainId &&
-      transaction.id
+    isSolanaTx && transaction.chainId && transaction.id
       ? {
-        chainId: transaction.chainId,
-        txId: transaction.id
-      }
+          chainId: transaction.chainId,
+          txId: transaction.id
+        }
       : skipToken
   )
 
@@ -245,16 +239,16 @@ export const TransactionDetailsModal = (props: Props) => {
   const formattedGasFeeFiatValue =
     networkAsset && spotPriceRegistry
       ? computeFiatAmount({
-        spotPriceRegistry,
-        value: gasFee,
-        token: networkAsset
-      }).formatAsFiat(defaultFiatCurrency) : ''
+          spotPriceRegistry,
+          value: gasFee,
+          token: networkAsset
+        }).formatAsFiat(defaultFiatCurrency)
+      : ''
 
   const { txStatus } = transaction
 
   const showCancelSpeedupButtons =
-    isEthereumTx &&
-    cancelSpeedupTxTypes.includes(transaction.txStatus)
+    isEthereumTx && cancelSpeedupTxTypes.includes(transaction.txStatus)
 
   const showRetryTransactionButton =
     BraveWallet.TransactionStatus.Error === transaction.txStatus &&
@@ -264,26 +258,24 @@ export const TransactionDetailsModal = (props: Props) => {
   const txCurrencyTotal =
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
       ? getIsTxApprovalUnlimited(transaction)
-        ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${ //
-        sendToken?.symbol ?? ''}`
+        ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${
+            //
+            sendToken?.symbol ?? ''
+          }`
         : formattedSendCurrencyTotal
       : sendToken?.isNft
-        ? sendToken.name
-        : formattedSendCurrencyTotal
+      ? sendToken.name
+      : formattedSendCurrencyTotal
 
-  const txFiatTotal =
-    sendToken?.isNft
-      ? sendToken.symbol
-      : formattedSendFiatValue
+  const txFiatTotal = sendToken?.isNft
+    ? sendToken.symbol
+    : formattedSendFiatValue
 
-  const showPendingTxStatus =
-    pendingTxTypes.includes(txStatus)
+  const showPendingTxStatus = pendingTxTypes.includes(txStatus)
 
-  const showSuccessTxStatus =
-    successTxTypes.includes(txStatus)
+  const showSuccessTxStatus = successTxTypes.includes(txStatus)
 
-  const showErrorTxStatus =
-    errorTxTypes.includes(txStatus)
+  const showErrorTxStatus = errorTxTypes.includes(txStatus)
 
   return (
     <PopupModal
@@ -297,23 +289,17 @@ export const TransactionDetailsModal = (props: Props) => {
         fullHeight={true}
         justifyContent='flex-start'
       >
-        <HeroContainer
-          width='100%'
-        >
+        <HeroContainer width='100%'>
           <HeroBackground />
           <HeroContent
             width='100%'
             justifyContent='space-between'
           >
-            <IconAndValue
-              width='unset'
-            >
-              {!isSwapTx &&
+            <IconAndValue width='unset'>
+              {!isSwapTx && (
                 <>
                   {sendToken?.isNft ? (
-                    <NFTIconWrapper
-                      width='unset'
-                    >
+                    <NFTIconWrapper width='unset'>
                       <NftIconWithPlaceholder
                         asset={sendToken}
                         network={txNetwork}
@@ -332,7 +318,7 @@ export const TransactionDetailsModal = (props: Props) => {
                     </Row>
                   )}
                 </>
-              }
+              )}
               <TransactionValues
                 padding={isSwapTx ? '0px 0px 0px 24px' : '0px'}
               >
@@ -341,13 +327,11 @@ export const TransactionDetailsModal = (props: Props) => {
                   textSize='16px'
                   textAlign='left'
                 >
-                  {
-                    isSolanaSwap
-                      ? getLocale('braveWalletSolanaSwap')
-                      : getLocale(txTypeLocale)
-                  }
+                  {isSolanaSwap
+                    ? getLocale('braveWalletSolanaSwap')
+                    : getLocale(txTypeLocale)}
                 </TransactionTypeText>
-                {isSwapTx &&
+                {isSwapTx && (
                   <>
                     {isSolanaSwap ? (
                       <Row
@@ -394,7 +378,6 @@ export const TransactionDetailsModal = (props: Props) => {
                             width='unset'
                             justifyContent='flex-start'
                           >
-
                             <SwapAmountText
                               textSize='14px'
                               isBold={true}
@@ -413,8 +396,8 @@ export const TransactionDetailsModal = (props: Props) => {
                       </>
                     )}
                   </>
-                }
-                {!isSwapTx &&
+                )}
+                {!isSwapTx && (
                   <>
                     <TransactionTotalText
                       isBold={true}
@@ -423,9 +406,8 @@ export const TransactionDetailsModal = (props: Props) => {
                     >
                       {txCurrencyTotal}
                     </TransactionTotalText>
-                    {
-                      transaction.txType !==
-                      BraveWallet.TransactionType.ERC20Approve &&
+                    {transaction.txType !==
+                      BraveWallet.TransactionType.ERC20Approve && (
                       <TransactionFiatText
                         isBold={false}
                         textSize='12px'
@@ -433,28 +415,16 @@ export const TransactionDetailsModal = (props: Props) => {
                       >
                         {txFiatTotal}
                       </TransactionFiatText>
-                    }
+                    )}
                   </>
-                }
+                )}
               </TransactionValues>
             </IconAndValue>
-            <StatusBoxWrapper
-              alignItems='flex-end'
-            >
-              <StatusBox
-                status={txStatus}
-              >
-                {showPendingTxStatus &&
-                  <LoadingIcon
-                    status={txStatus}
-                  />
-                }
-                {showSuccessTxStatus &&
-                  <SuccessIcon />
-                }
-                {showErrorTxStatus &&
-                  <ErrorIcon />
-                }
+            <StatusBoxWrapper alignItems='flex-end'>
+              <StatusBox status={txStatus}>
+                {showPendingTxStatus && <LoadingIcon status={txStatus} />}
+                {showSuccessTxStatus && <SuccessIcon />}
+                {showErrorTxStatus && <ErrorIcon />}
                 <StatusText
                   status={txStatus}
                   isBold={true}
@@ -467,11 +437,9 @@ export const TransactionDetailsModal = (props: Props) => {
                 textSize='12px'
                 textAlign='right'
               >
-                {
-                  serializedTimeDeltaToJSDate(
-                    transaction.createdTime
-                  ).toUTCString()
-                }
+                {serializedTimeDeltaToJSDate(
+                  transaction.createdTime
+                ).toUTCString()}
               </DateText>
               <NetworkNameText
                 textSize='12px'
@@ -483,34 +451,26 @@ export const TransactionDetailsModal = (props: Props) => {
           </HeroContent>
         </HeroContainer>
 
-        {transaction.txHash &&
+        {transaction.txHash && (
           <>
-            <SectionRow
-              padding='16px 0px'
-            >
+            <SectionRow padding='16px 0px'>
               <SectionLabel
                 textAlign='left'
                 textSize='14px'
               >
                 {getLocale('braveWalletTransactionDetailHash')}
               </SectionLabel>
-              <Row
-                justifyContent='space-between'
-              >
+              <Row justifyContent='space-between'>
                 <SectionInfoText
                   textAlign='left'
                   textSize='14px'
                 >
                   {transaction.txHash}
                 </SectionInfoText>
-                <Row
-                  width='unset'
-                >
+                <Row width='unset'>
                   <HorizontalSpace space='12px' />
                   <Button
-                    onClick={
-                      () => copyToClipboard(transaction.txHash)
-                    }
+                    onClick={() => copyToClipboard(transaction.txHash)}
                     kind='outline'
                     size='tiny'
                     fab
@@ -534,23 +494,17 @@ export const TransactionDetailsModal = (props: Props) => {
             </SectionRow>
             <VerticalDivider />
           </>
-        }
+        )}
 
-        <SectionRow
-          padding='16px 0px'
-        >
+        <SectionRow padding='16px 0px'>
           <SectionLabel
             textAlign='left'
             textSize='14px'
           >
             {getLocale('braveWalletFrom')}
           </SectionLabel>
-          <Row
-            justifyContent='space-between'
-          >
-            <Column
-              alignItems='flex-start'
-            >
+          <Row justifyContent='space-between'>
+            <Column alignItems='flex-start'>
               <SectionInfoText
                 textAlign='left'
                 textSize='14px'
@@ -564,15 +518,11 @@ export const TransactionDetailsModal = (props: Props) => {
                 {senderLabel}
               </IntentAddressText>
             </Column>
-            <Row
-              width='unset'
-            >
+            <Row width='unset'>
               <HorizontalSpace space='12px' />
               <Button
-                onClick={
-                  () => copyToClipboard(
-                    transaction.fromAccountId.address
-                  )
+                onClick={() =>
+                  copyToClipboard(transaction.fromAccountId.address)
                 }
                 kind='outline'
                 size='tiny'
@@ -585,23 +535,17 @@ export const TransactionDetailsModal = (props: Props) => {
         </SectionRow>
         <VerticalDivider />
 
-        {recipient &&
+        {recipient && (
           <>
-            <SectionRow
-              padding='16px 0px'
-            >
+            <SectionRow padding='16px 0px'>
               <SectionLabel
                 textAlign='left'
                 textSize='14px'
               >
                 {getLocale('braveWalletSwapTo')}
               </SectionLabel>
-              <Row
-                justifyContent='space-between'
-              >
-                <Column
-                  alignItems='flex-start'
-                >
+              <Row justifyContent='space-between'>
+                <Column alignItems='flex-start'>
                   <SectionInfoText
                     textAlign='left'
                     textSize='14px'
@@ -612,23 +556,17 @@ export const TransactionDetailsModal = (props: Props) => {
                     textAlign='left'
                     textSize='12px'
                   >
-                    {
-                      transaction.txType ===
-                        BraveWallet.TransactionType.ERC20Approve
-                        ? approvalTargetLabel
-                        : recipientLabel
-                    }
+                    {transaction.txType ===
+                    BraveWallet.TransactionType.ERC20Approve
+                      ? approvalTargetLabel
+                      : recipientLabel}
                   </IntentAddressText>
                 </Column>
-                <Row
-                  width='unset'
-                >
+                <Row width='unset'>
                   <HorizontalSpace space='12px' />
                   <Button
-                    onClick={
-                      () => copyToClipboard(
-                        transaction?.effectiveRecipient ?? ''
-                      )
+                    onClick={() =>
+                      copyToClipboard(transaction?.effectiveRecipient ?? '')
                     }
                     kind='outline'
                     size='tiny'
@@ -641,20 +579,16 @@ export const TransactionDetailsModal = (props: Props) => {
             </SectionRow>
             <VerticalDivider />
           </>
-        }
+        )}
 
-        <SectionRow
-          padding='16px 0px 0px 0px'
-        >
+        <SectionRow padding='16px 0px 0px 0px'>
           <SectionLabel
             textAlign='left'
             textSize='14px'
           >
             {getLocale('braveWalletConfirmTransactionTransactionFee')}
           </SectionLabel>
-          <Row
-            width='unset'
-          >
+          <Row width='unset'>
             <SectionInfoText
               textAlign='left'
               textSize='14px'
@@ -662,16 +596,19 @@ export const TransactionDetailsModal = (props: Props) => {
               {txNetwork &&
                 new Amount(gasFee)
                   .divideByDecimals(txNetwork.decimals)
-                  .formatAsAsset(6, txNetwork.symbol)} ({ //
-                formattedGasFeeFiatValue})
+                  .formatAsAsset(6, txNetwork.symbol)}{' '}
+              (
+              {
+                //
+                formattedGasFeeFiatValue
+              }
+              )
             </SectionInfoText>
           </Row>
         </SectionRow>
 
-        {showCancelSpeedupButtons &&
-          <Row
-            padding='32px 0px 0px 0px'
-          >
+        {showCancelSpeedupButtons && (
+          <Row padding='32px 0px 0px 0px'>
             <Row>
               <Button
                 onClick={onClickCancelTransaction}
@@ -682,9 +619,7 @@ export const TransactionDetailsModal = (props: Props) => {
             </Row>
             <HorizontalSpace space='16px' />
             <Row>
-              <Button
-                onClick={onClickSpeedupTransaction}
-              >
+              <Button onClick={onClickSpeedupTransaction}>
                 <Row>
                   <SpeedupIcon />
                   {getLocale('braveWalletTransactionSpeedup')}
@@ -692,12 +627,10 @@ export const TransactionDetailsModal = (props: Props) => {
               </Button>
             </Row>
           </Row>
-        }
+        )}
 
-        {showRetryTransactionButton &&
-          <Row
-            padding='32px 0px 0px 0px'
-          >
+        {showRetryTransactionButton && (
+          <Row padding='32px 0px 0px 0px'>
             <Button
               onClick={onClickRetryTransaction}
               kind='outline'
@@ -708,8 +641,8 @@ export const TransactionDetailsModal = (props: Props) => {
               </Row>
             </Button>
           </Row>
-        }
+        )}
       </ContentWrapper>
-    </PopupModal >
+    </PopupModal>
   )
 }

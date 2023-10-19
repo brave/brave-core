@@ -28,7 +28,6 @@ export const PriceChange = styled.span<{
       ? leo.color.systemfeedback.errorText
       : leo.color.systemfeedback.successText};
 
-
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font-size: 12px;
     font-weight: 400;

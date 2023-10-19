@@ -44,9 +44,15 @@ export const RestoreWallet = () => {
 
   // redux
   const dispatch = useDispatch()
-  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
-  const isWalletLocked = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletLocked)
-  const invalidMnemonic = useSelector(({ page }: { page: PageState }) => page.invalidMnemonic)
+  const isWalletCreated = useSelector(
+    ({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated
+  )
+  const isWalletLocked = useSelector(
+    ({ wallet }: { wallet: WalletState }) => wallet.isWalletLocked
+  )
+  const invalidMnemonic = useSelector(
+    ({ page }: { page: PageState }) => page.invalidMnemonic
+  )
 
   // custom hooks
   const {
@@ -59,7 +65,8 @@ export const RestoreWallet = () => {
   } = usePasswordStrength()
 
   // state
-  const [showRecoveryPhrase, setShowRecoveryPhrase] = React.useState<boolean>(false)
+  const [showRecoveryPhrase, setShowRecoveryPhrase] =
+    React.useState<boolean>(false)
   const [isLegacyWallet, setIsLegacyWallet] = React.useState<boolean>(false)
   const [recoveryPhrase, setRecoveryPhrase] = React.useState<string>('')
 
@@ -100,55 +107,72 @@ export const RestoreWallet = () => {
   }, [toggleShowRestore])
 
   const onSubmitRestore = React.useCallback(async () => {
-    dispatch(WalletPageActions.restoreWallet({
-      // added an additional trim here in case the phrase length is
-      // 12, 15, 18 or 21 long and has a space at the end.
-      mnemonic: recoveryPhrase.trimEnd(),
-      password,
-      isLegacy: isLegacyWallet,
-      completeWalletSetup: true
-    }))
+    dispatch(
+      WalletPageActions.restoreWallet({
+        // added an additional trim here in case the phrase length is
+        // 12, 15, 18 or 21 long and has a space at the end.
+        mnemonic: recoveryPhrase.trimEnd(),
+        password,
+        isLegacy: isLegacyWallet,
+        completeWalletSetup: true
+      })
+    )
     history.push(WalletRoutes.PortfolioAssets)
   }, [recoveryPhrase, password, isLegacyWallet])
 
-  const handleRecoveryPhraseChanged = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
+  const handleRecoveryPhraseChanged = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value
 
-    // This prevents there from being a space at the begining of the phrase.
-    const removeBegginingWhiteSpace = value.trimStart()
+      // This prevents there from being a space at the begining of the phrase.
+      const removeBegginingWhiteSpace = value.trimStart()
 
-    // This Prevents there from being more than one space between words.
-    const removedDoubleSpaces = removeBegginingWhiteSpace.replace(/ +(?= )/g, '')
+      // This Prevents there from being more than one space between words.
+      const removedDoubleSpaces = removeBegginingWhiteSpace.replace(
+        / +(?= )/g,
+        ''
+      )
 
-    // Although the above removes double spaces, it is initialy recognized as a
-    // a double-space before it is removed and macOS automatically replaces double-spaces with a period.
-    const removePeriod = removedDoubleSpaces.replace(/['/.']/g, '')
+      // Although the above removes double spaces, it is initialy recognized as a
+      // a double-space before it is removed and macOS automatically replaces double-spaces with a period.
+      const removePeriod = removedDoubleSpaces.replace(/['/.']/g, '')
 
-    // This prevents an extra space at the end of a 24 word phrase.
-    if (recoveryPhrase.split(' ').length === 24) {
-      setRecoveryPhrase(removePeriod.trimEnd())
-    } else {
-      setRecoveryPhrase(removePeriod)
-    }
-  }, [])
+      // This prevents an extra space at the end of a 24 word phrase.
+      if (recoveryPhrase.split(' ').length === 24) {
+        setRecoveryPhrase(removePeriod.trimEnd())
+      } else {
+        setRecoveryPhrase(removePeriod)
+      }
+    },
+    []
+  )
 
-  const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && !isDisabled) {
-      onSubmitRestore()
-    }
-  }, [onSubmitRestore, isDisabled])
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter' && !isDisabled) {
+        onSubmitRestore()
+      }
+    },
+    [onSubmitRestore, isDisabled]
+  )
 
-  const onShowRecoveryPhrase = React.useCallback((key: string, selected: boolean) => {
-    if (key === 'showPhrase') {
-      setShowRecoveryPhrase(selected)
-    }
-  }, [])
+  const onShowRecoveryPhrase = React.useCallback(
+    (key: string, selected: boolean) => {
+      if (key === 'showPhrase') {
+        setShowRecoveryPhrase(selected)
+      }
+    },
+    []
+  )
 
-  const onSetIsLegacyWallet = React.useCallback((key: string, selected: boolean) => {
-    if (key === 'isLegacy') {
-      setIsLegacyWallet(selected)
-    }
-  }, [])
+  const onSetIsLegacyWallet = React.useCallback(
+    (key: string, selected: boolean) => {
+      if (key === 'isLegacy') {
+        setIsLegacyWallet(selected)
+      }
+    },
+    []
+  )
 
   const onClearClipboard = React.useCallback(() => {
     copyToClipboard('')
@@ -157,12 +181,9 @@ export const RestoreWallet = () => {
   // effects
   React.useEffect(() => {
     if (invalidMnemonic) {
-      setTimeout(
-        () => {
-          dispatch(WalletPageActions.hasMnemonicError(false))
-        },
-        5000
-      )
+      setTimeout(() => {
+        dispatch(WalletPageActions.hasMnemonicError(false))
+      }, 5000)
     }
   }, [invalidMnemonic])
 
@@ -172,7 +193,6 @@ export const RestoreWallet = () => {
       <BackButton onSubmit={onBack} />
 
       <StyledWrapper>
-
         <Title>{getLocale('braveWalletRestoreTite')}</Title>
         <Description>{getLocale('braveWalletRestoreDescription')}</Description>
 
@@ -187,24 +207,38 @@ export const RestoreWallet = () => {
             onPaste={onClearClipboard}
           />
 
-          {invalidMnemonic && <ErrorText>{getLocale('braveWalletRestoreError')}</ErrorText>}
+          {invalidMnemonic && (
+            <ErrorText>{getLocale('braveWalletRestoreError')}</ErrorText>
+          )}
 
-          {recoveryPhrase.split(' ').length === 24 &&
+          {recoveryPhrase.split(' ').length === 24 && (
             <LegacyCheckboxRow>
-              <Checkbox value={{ isLegacy: isLegacyWallet }} onChange={onSetIsLegacyWallet}>
-                <div data-key='isLegacy'>{getLocale('braveWalletRestoreLegacyCheckBox')}</div>
+              <Checkbox
+                value={{ isLegacy: isLegacyWallet }}
+                onChange={onSetIsLegacyWallet}
+              >
+                <div data-key='isLegacy'>
+                  {getLocale('braveWalletRestoreLegacyCheckBox')}
+                </div>
               </Checkbox>
             </LegacyCheckboxRow>
-          }
+          )}
 
           <CheckboxRow>
-            <Checkbox value={{ showPhrase: showRecoveryPhrase }} onChange={onShowRecoveryPhrase}>
-              <div data-key='showPhrase'>{getLocale('braveWalletRestoreShowPhrase')}</div>
+            <Checkbox
+              value={{ showPhrase: showRecoveryPhrase }}
+              onChange={onShowRecoveryPhrase}
+            >
+              <div data-key='showPhrase'>
+                {getLocale('braveWalletRestoreShowPhrase')}
+              </div>
             </Checkbox>
           </CheckboxRow>
 
           <FormText>{getLocale('braveWalletRestoreFormText')}</FormText>
-          <Description textAlign='left'>{getLocale('braveWalletCreatePasswordDescription')}</Description>
+          <Description textAlign='left'>
+            {getLocale('braveWalletCreatePasswordDescription')}
+          </Description>
           <InputColumn>
             <PasswordInput
               placeholder={getLocale('braveWalletCreatePasswordInput')}
@@ -221,7 +255,6 @@ export const RestoreWallet = () => {
               onKeyDown={handleKeyDown}
             />
           </InputColumn>
-
         </FormWrapper>
 
         <NavButton
@@ -230,7 +263,6 @@ export const RestoreWallet = () => {
           text={getLocale('braveWalletWelcomeRestoreButton')}
           onSubmit={onSubmitRestore}
         />
-
       </StyledWrapper>
     </>
   )

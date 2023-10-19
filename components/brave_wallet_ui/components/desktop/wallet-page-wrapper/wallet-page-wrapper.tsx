@@ -6,10 +6,7 @@
 import * as React from 'react'
 
 // Selectors
-import {
-  WalletSelectors,
-  UISelectors
-} from '../../../common/selectors'
+import { WalletSelectors, UISelectors } from '../../../common/selectors'
 
 // Hooks
 import {
@@ -19,12 +16,8 @@ import {
 
 // Components
 import { WalletNav } from '../wallet-nav/wallet-nav'
-import {
-  FeatureRequestButton
-} from '../../shared/feature-request-button/feature-request-button'
-import {
-  TabHeader
-} from '../../../page/screens/shared-screen-components/tab-header/tab-header'
+import { FeatureRequestButton } from '../../shared/feature-request-button/feature-request-button'
+import { TabHeader } from '../../../page/screens/shared-screen-components/tab-header/tab-header'
 
 // Styles
 import {
@@ -85,10 +78,10 @@ export const WalletPageWrapper = (props: Props) => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // State
-  const [headerShadowOpacity, setHeaderShadowOpacity]
-    = React.useState<number>(0)
-  const [headerDividerOpacity, setHeaderDividerOpacity]
-    = React.useState<number>(1)
+  const [headerShadowOpacity, setHeaderShadowOpacity] =
+    React.useState<number>(0)
+  const [headerDividerOpacity, setHeaderDividerOpacity] =
+    React.useState<number>(1)
   const [headerHeight, setHeaderHeight] = React.useState<number>(0)
 
   // Refs
@@ -119,7 +112,6 @@ export const WalletPageWrapper = (props: Props) => {
 
       // Calculates opacity values for the first 64 scroll positions.
       if (scrollTop <= 64) {
-
         // Increases shadowOpacity by 0.00125 until it reaches
         // desired opacity of 0.08, or will decrease shadowOpacity by
         // 0.00125 until it reaches desired opacity of 0.
@@ -130,9 +122,7 @@ export const WalletPageWrapper = (props: Props) => {
         // desired opacity of 0, or will increase dividerOpacity by
         // 0.015625 until it reaches desired opacity of 1.
         // example: 0.015625 * 64 = 1
-        setHeaderDividerOpacity(
-          (100 - ((100 / 64) * scrollTop)) * 0.01
-        )
+        setHeaderDividerOpacity((100 - (100 / 64) * scrollTop) * 0.01)
         return
       }
 
@@ -147,36 +137,26 @@ export const WalletPageWrapper = (props: Props) => {
   return (
     <>
       <StaticBackground />
-      {!hideBackground &&
+      {!hideBackground && (
         <BackgroundGradientWrapper>
           <BackgroundGradientTopLayer />
           <BackgroundGradientMiddleLayer />
           <BackgroundGradientBottomLayer />
         </BackgroundGradientWrapper>
-      }
+      )}
       <Wrapper
         noPadding={noPadding}
         isPanel={isPanel}
       >
-        {
-          isWalletCreated &&
-          !hideHeader &&
-          !isPanel &&
-          <TabHeader
-            hideHeaderMenu={hideHeaderMenu}
-          />
-        }
-        {
-          isWalletCreated &&
-          !isWalletLocked &&
-          !hideNav &&
-          <WalletNav />
-        }
-        {!isWalletLocked &&
+        {isWalletCreated && !hideHeader && !isPanel && (
+          <TabHeader hideHeaderMenu={hideHeaderMenu} />
+        )}
+        {isWalletCreated && !isWalletLocked && !hideNav && <WalletNav />}
+        {!isWalletLocked && (
           <FeatureRequestButtonWrapper>
             <FeatureRequestButton />
           </FeatureRequestButtonWrapper>
-        }
+        )}
         <BlockForHeight />
 
         {wrapContentInBox ? (
@@ -187,16 +167,14 @@ export const WalletPageWrapper = (props: Props) => {
             headerHeight={headerHeight}
             hideNav={hideNav}
           >
-            {cardHeader &&
+            {cardHeader && (
               <CardHeaderWrapper
                 maxWidth={cardWidth}
                 isPanel={isPanel}
               >
-                <CardHeaderShadow
-                  headerHeight={headerHeight}
-                />
+                <CardHeaderShadow headerHeight={headerHeight} />
               </CardHeaderWrapper>
-            }
+            )}
 
             <ContainerCard
               noPadding={noCardPadding}
@@ -209,7 +187,7 @@ export const WalletPageWrapper = (props: Props) => {
               {children}
             </ContainerCard>
 
-            {cardHeader &&
+            {cardHeader && (
               <CardHeaderWrapper
                 ref={headerRef}
                 maxWidth={cardWidth}
@@ -228,7 +206,7 @@ export const WalletPageWrapper = (props: Props) => {
                   </CardHeaderContentWrapper>
                 </CardHeader>
               </CardHeaderWrapper>
-            }
+            )}
           </LayoutCardWrapper>
         ) : (
           children

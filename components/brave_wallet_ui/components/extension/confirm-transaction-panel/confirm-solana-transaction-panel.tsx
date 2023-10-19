@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 
-
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
@@ -49,17 +48,20 @@ import {
   TransactionTypeText,
   AccountCircleWrapper,
   ArrowIcon,
-  FromToRow,
+  FromToRow
 } from './style'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
 const onClickLearnMore = () => {
-  chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/5546517853325' }, () => {
-    if (chrome.runtime.lastError) {
-      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+  chrome.tabs.create(
+    { url: 'https://support.brave.com/hc/en-us/articles/5546517853325' },
+    () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
     }
-  })
+  )
 }
 
 export const ConfirmSolanaTransactionPanel = () => {
@@ -89,12 +91,14 @@ export const ConfirmSolanaTransactionPanel = () => {
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // state
-  const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
+  const [selectedTab, setSelectedTab] =
+    React.useState<confirmPanelTabs>('transaction')
 
   // methods
   const onSelectTab = React.useCallback(
     (tab: confirmPanelTabs) => () => setSelectedTab(tab),
-  [])
+    []
+  )
 
   // render
   if (
@@ -105,14 +109,17 @@ export const ConfirmSolanaTransactionPanel = () => {
   ) {
     return (
       <StyledWrapper>
-        <Skeleton width={'100%'} height={'100%'} enableAnimation />
+        <Skeleton
+          width={'100%'}
+          height={'100%'}
+          enableAnimation
+        />
       </StyledWrapper>
     )
   }
 
   return (
     <StyledWrapper>
-
       <TopRow>
         <NetworkText>{transactionsNetwork.chainName}</NetworkText>
         <TransactionQueueSteps
@@ -141,52 +148,54 @@ export const ConfirmSolanaTransactionPanel = () => {
           <AccountNameText>{fromAccount.name}</AccountNameText>
         </Tooltip>
 
-        {transactionDetails.recipient && transactionDetails.recipient !== fromAccount.address &&
-          <>
-            <ArrowIcon />
-            <Tooltip
-              text={transactionDetails.recipient}
-              isAddress={true}
-              position='right'
-            >
-              <AccountNameText>{transactionDetails.recipientLabel}</AccountNameText>
-            </Tooltip>
-          </>
-        }
+        {transactionDetails.recipient &&
+          transactionDetails.recipient !== fromAccount.address && (
+            <>
+              <ArrowIcon />
+              <Tooltip
+                text={transactionDetails.recipient}
+                isAddress={true}
+                position='right'
+              >
+                <AccountNameText>
+                  {transactionDetails.recipientLabel}
+                </AccountNameText>
+              </Tooltip>
+            </>
+          )}
       </FromToRow>
 
       <TransactionTypeText>{transactionTitle}</TransactionTypeText>
 
-      {!isSolanaDappTransaction &&
+      {!isSolanaDappTransaction && (
         <>
           <TransactionAmountBig>
-            {new Amount(transactionDetails.valueExact)
-                .formatAsAsset(undefined, transactionDetails.symbol)
-            }
+            {new Amount(transactionDetails.valueExact).formatAsAsset(
+              undefined,
+              transactionDetails.symbol
+            )}
           </TransactionAmountBig>
 
           <TransactionFiatAmountBig>
-            {
-              new Amount(transactionDetails.fiatValue).formatAsFiat(defaultCurrencies.fiat)
-            }
+            {new Amount(transactionDetails.fiatValue).formatAsFiat(
+              defaultCurrencies.fiat
+            )}
           </TransactionFiatAmountBig>
         </>
-      }
+      )}
 
-      {isAssociatedTokenAccountCreation &&
+      {isAssociatedTokenAccountCreation && (
         <WarningBox warningType='warning'>
           <WarningBoxTitleRow>
             <WarningTitle warningType='warning'>
               {getLocale('braveWalletConfirmTransactionAccountCreationFee')}
-              <LearnMoreButton
-                onClick={onClickLearnMore}
-              >
+              <LearnMoreButton onClick={onClickLearnMore}>
                 {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
               </LearnMoreButton>
             </WarningTitle>
           </WarningBoxTitleRow>
         </WarningBox>
-      }
+      )}
 
       <TabRow>
         <PanelTab
@@ -204,17 +213,20 @@ export const ConfirmSolanaTransactionPanel = () => {
       <MessageBox
         isDetails={selectedTab === 'details'}
       >
-
-        {selectedTab === 'transaction'
-          ? <TransactionInfo />
-          : <SolanaTransactionDetailBox
-              data={selectedPendingTransaction?.txDataUnion?.solanaTxData}
-              instructions={transactionDetails.instructions}
-              txType={selectedPendingTransaction.txType}
-            />
-        }
+        {selectedTab === 'transaction' ? (
+          <TransactionInfo />
+        ) : (
+          <SolanaTransactionDetailBox
+            data={selectedPendingTransaction?.txDataUnion?.solanaTxData}
+            instructions={transactionDetails.instructions}
+            txType={selectedPendingTransaction.txType}
+          />
+        )}
       </MessageBox>
-      <Footer onConfirm={onConfirm} onReject={onReject} />
+      <Footer
+        onConfirm={onConfirm}
+        onReject={onReject}
+      />
     </StyledWrapper>
   )
 }

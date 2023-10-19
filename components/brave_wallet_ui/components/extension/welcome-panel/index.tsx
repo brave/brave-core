@@ -12,15 +12,8 @@ import { getLocale } from '../../../../common/locale'
 import { NavButton } from '../buttons/nav-button/index'
 
 // style
-import {
-  VerticalSpace,
-  WalletWelcomeGraphic
-} from '../../shared/style'
-import {
-  StyledWrapper,
-  Title,
-  Description
-} from './style'
+import { VerticalSpace, WalletWelcomeGraphic } from '../../shared/style'
+import { StyledWrapper, Title, Description } from './style'
 
 interface Props {
   onSetup: () => void
@@ -29,7 +22,7 @@ interface Props {
 export const WelcomePanel = ({ onSetup }: Props) => {
   return (
     <StyledWrapper>
-      <WalletWelcomeGraphic scale={0.9}/>
+      <WalletWelcomeGraphic scale={0.9} />
 
       <VerticalSpace space='16px' />
 

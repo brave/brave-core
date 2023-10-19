@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import { StyledDiv } from '../shared-swap.styles'
 
-export const Wrapper = styled(StyledDiv) <{ boxType: 'primary' | 'secondary' }>`
+export const Wrapper = styled(StyledDiv)<{ boxType: 'primary' | 'secondary' }>`
   --box-background-primary: ${leo.color.purple[10]};
   @media (prefers-color-scheme: dark) {
     --box-background-primary: ${(p) => p.theme.color.background02};

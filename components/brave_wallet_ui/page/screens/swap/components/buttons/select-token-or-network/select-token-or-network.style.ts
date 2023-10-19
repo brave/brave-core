@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import { StyledButton, Icon, Row, Text } from '../../shared-swap.styles'
 
-export const Button = styled(StyledButton) <SelectTokenButtonStyleProps>`
+export const Button = styled(StyledButton)<SelectTokenButtonStyleProps>`
   /* Variables */
   --big-padding: 10px ${(p) => (p.moreRightPadding ? 12 : 10)}px 10px 12px;
   --medium-padding: 8px 16px;
@@ -42,8 +42,8 @@ export const Button = styled(StyledButton) <SelectTokenButtonStyleProps>`
     p.buttonSize === 'small'
       ? 'var(--small-padding)'
       : p.buttonSize === 'medium'
-        ? 'var(--medium-padding)'
-        : 'var(--big-padding)'};
+      ? 'var(--medium-padding)'
+      : 'var(--big-padding)'};
   white-space: nowrap;
   width: ${(p) => (p.buttonSize === 'small' ? '140px' : 'unset')};
   :disabled {
@@ -51,15 +51,15 @@ export const Button = styled(StyledButton) <SelectTokenButtonStyleProps>`
   }
   &:hover:not([disabled]) {
     background-color: ${(p) =>
-    p.networkNotSupported
-      ? leo.color.red[40]
-      : p.buttonType === 'secondary' || p.buttonSize === 'small'
+      p.networkNotSupported
+        ? leo.color.red[40]
+        : p.buttonType === 'secondary' || p.buttonSize === 'small'
         ? 'var(--background-color-hover-secondary)'
         : 'var(--background-color-hover-primary)'};
   }
 `
 
-export const ButtonIcon = styled(Icon) <{ networkNotSupported?: boolean }>`
+export const ButtonIcon = styled(Icon)<{ networkNotSupported?: boolean }>`
   color: ${(p) =>
     p.networkNotSupported ? p.theme.palette.white : p.theme.color.text01};
 `

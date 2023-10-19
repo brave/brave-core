@@ -12,7 +12,7 @@ import { BraveWallet } from '../../constants/types'
 import { useGetSelectedChainQuery } from '../slices/api.slice'
 import { useAccountsQuery } from '../slices/api.slice.extra'
 
-export function useHasAccount () {
+export function useHasAccount() {
   // redux
   const { accounts } = useAccountsQuery()
 
@@ -44,9 +44,12 @@ export function useHasAccount () {
     }
 
     switch (selectedNetwork?.coin) {
-      case BraveWallet.CoinType.SOL: return !hasSolAccount
-      case BraveWallet.CoinType.FIL: return !hasFilAccount
-      default: return false
+      case BraveWallet.CoinType.SOL:
+        return !hasSolAccount
+      case BraveWallet.CoinType.FIL:
+        return !hasFilAccount
+      default:
+        return false
     }
   }, [hasSolAccount, hasFilAccount, selectedNetwork])
 

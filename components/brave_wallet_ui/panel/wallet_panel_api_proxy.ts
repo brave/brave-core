@@ -15,32 +15,33 @@ export class WalletPanelApiProxy extends WalletApiProxy {
 
     const factory = BraveWallet.PanelHandlerFactory.getRemote()
     factory.createPanelHandler(
-        this.callbackRouter.$.bindNewPipeAndPassRemote(),
-        this.panelHandler.$.bindNewPipeAndPassReceiver(),
-        this.walletHandler.$.bindNewPipeAndPassReceiver(),
-        this.jsonRpcService.$.bindNewPipeAndPassReceiver(),
-        this.bitcoinWalletService.$.bindNewPipeAndPassReceiver(),
-        this.zcashWalletService.$.bindNewPipeAndPassReceiver(),
-        this.swapService.$.bindNewPipeAndPassReceiver(),
-        this.simulationService.$.bindNewPipeAndPassReceiver(),
-        this.assetRatioService.$.bindNewPipeAndPassReceiver(),
-        this.keyringService.$.bindNewPipeAndPassReceiver(),
-        this.blockchainRegistry.$.bindNewPipeAndPassReceiver(),
-        this.txService.$.bindNewPipeAndPassReceiver(),
-        this.ethTxManagerProxy.$.bindNewPipeAndPassReceiver(),
-        this.solanaTxManagerProxy.$.bindNewPipeAndPassReceiver(),
-        this.filTxManagerProxy.$.bindNewPipeAndPassReceiver(),
-        this.braveWalletService.$.bindNewPipeAndPassReceiver(),
-        this.braveWalletP3A.$.bindNewPipeAndPassReceiver(),
-        this.braveWalletPinService.$.bindNewPipeAndPassReceiver(),
-        this.braveWalletAutoPinService.$.bindNewPipeAndPassReceiver(),
-        this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver())
+      this.callbackRouter.$.bindNewPipeAndPassRemote(),
+      this.panelHandler.$.bindNewPipeAndPassReceiver(),
+      this.walletHandler.$.bindNewPipeAndPassReceiver(),
+      this.jsonRpcService.$.bindNewPipeAndPassReceiver(),
+      this.bitcoinWalletService.$.bindNewPipeAndPassReceiver(),
+      this.zcashWalletService.$.bindNewPipeAndPassReceiver(),
+      this.swapService.$.bindNewPipeAndPassReceiver(),
+      this.simulationService.$.bindNewPipeAndPassReceiver(),
+      this.assetRatioService.$.bindNewPipeAndPassReceiver(),
+      this.keyringService.$.bindNewPipeAndPassReceiver(),
+      this.blockchainRegistry.$.bindNewPipeAndPassReceiver(),
+      this.txService.$.bindNewPipeAndPassReceiver(),
+      this.ethTxManagerProxy.$.bindNewPipeAndPassReceiver(),
+      this.solanaTxManagerProxy.$.bindNewPipeAndPassReceiver(),
+      this.filTxManagerProxy.$.bindNewPipeAndPassReceiver(),
+      this.braveWalletService.$.bindNewPipeAndPassReceiver(),
+      this.braveWalletP3A.$.bindNewPipeAndPassReceiver(),
+      this.braveWalletPinService.$.bindNewPipeAndPassReceiver(),
+      this.braveWalletAutoPinService.$.bindNewPipeAndPassReceiver(),
+      this.braveWalletIpfsService.$.bindNewPipeAndPassReceiver()
+    )
   }
 }
 
 let walletPanelApiProxyInstance: WalletPanelApiProxy
 
-export default function getWalletPanelApiProxy () {
+export default function getWalletPanelApiProxy() {
   if (!walletPanelApiProxyInstance) {
     walletPanelApiProxyInstance = new WalletPanelApiProxy()
   }

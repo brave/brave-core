@@ -4,12 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 // Styled Components
-import {
-  StyledWrapper,
-  WarningText,
-  BannerButton,
-  ButtonRow
-} from './style'
+import { StyledWrapper, WarningText, BannerButton, ButtonRow } from './style'
 import { getLocale } from '../../../../common/locale'
 export interface Props {
   onClick: () => void
@@ -26,8 +21,18 @@ export const WalletBanner = (props: Props) => {
     <StyledWrapper bannerType={bannerType}>
       <WarningText>{description}</WarningText>
       <ButtonRow>
-        <BannerButton onClick={onClick} buttonType='primary'>{buttonText}</BannerButton>
-        <BannerButton onClick={onDismiss} buttonType='secondary'>{getLocale('braveWalletDismissButton')}</BannerButton>
+        <BannerButton
+          onClick={onClick}
+          buttonType='primary'
+        >
+          {buttonText}
+        </BannerButton>
+        <BannerButton
+          onClick={onDismiss}
+          buttonType='secondary'
+        >
+          {getLocale('braveWalletDismissButton')}
+        </BannerButton>
       </ButtonRow>
     </StyledWrapper>
   )

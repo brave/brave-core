@@ -26,29 +26,41 @@ import {
 import { useSelectedAccountQuery } from '../../../../common/slices/api.slice.extra'
 import { useLib } from '../../../../common/hooks/useLib'
 
-export function useZeroEx (params: SwapParams) {
+export function useZeroEx(params: SwapParams) {
   // Queries
   // FIXME(onyb): what happens when defaultFiatCurrency is empty
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
-  const nativeAsset = useMemo(() =>
-    makeNetworkAsset(selectedNetwork),
+  const nativeAsset = useMemo(
+    () => makeNetworkAsset(selectedNetwork),
     [selectedNetwork]
   )
 
   // State
-  const [quote, setQuote] = useState<BraveWallet.SwapResponse | undefined>(undefined)
-  const [error, setError] = useState<BraveWallet.SwapErrorResponse | undefined>(undefined)
+  const [quote, setQuote] = useState<BraveWallet.SwapResponse | undefined>(
+    undefined
+  )
+  const [error, setError] = useState<BraveWallet.SwapErrorResponse | undefined>(
+    undefined
+  )
   const [hasAllowance, setHasAllowance] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
-  const [braveFee, setBraveFee] =
-    useState<BraveWallet.BraveSwapFeeResponse | undefined>(undefined)
-  const [abortController, setAbortController] = useState<AbortController | undefined>(undefined)
+  const [braveFee, setBraveFee] = useState<
+    BraveWallet.BraveSwapFeeResponse | undefined
+  >(undefined)
+  const [abortController, setAbortController] = useState<
+    AbortController | undefined
+  >(undefined)
 
   // Custom hooks
   // FIXME(josheleonard): use slices API
-  const { getERC20Allowance, getEthTxManagerProxy, getSwapService, sendEthTransaction } = useLib()
+  const {
+    getERC20Allowance,
+    getEthTxManagerProxy,
+    getSwapService,
+    sendEthTransaction
+  } = useLib()
   const swapService = getSwapService()
   const ethTxManagerProxy = getEthTxManagerProxy()
 
@@ -92,9 +104,13 @@ export function useZeroEx (params: SwapParams) {
       const fromAmountWrapped = new Amount(overriddenParams.fromAmount)
       const toAmountWrapped = new Amount(overriddenParams.toAmount)
       const isFromAmountEmpty =
-        fromAmountWrapped.isZero() || fromAmountWrapped.isNaN() || fromAmountWrapped.isUndefined()
+        fromAmountWrapped.isZero() ||
+        fromAmountWrapped.isNaN() ||
+        fromAmountWrapped.isUndefined()
       const isToAmountEmpty =
-        toAmountWrapped.isZero() || toAmountWrapped.isNaN() || toAmountWrapped.isUndefined()
+        toAmountWrapped.isZero() ||
+        toAmountWrapped.isNaN() ||
+        toAmountWrapped.isUndefined()
 
       if (isFromAmountEmpty && isToAmountEmpty) {
         await reset()
@@ -190,9 +206,11 @@ export function useZeroEx (params: SwapParams) {
             priceQuoteResponse.response.sellTokenAddress,
             selectedAccount.address,
             priceQuoteResponse.response.allowanceTarget,
-            selectedNetwork.chainId,
+            selectedNetwork.chainId
           )
-          hasAllowanceResult = new Amount(allowance).gte(priceQuoteResponse.response.sellAmount)
+          hasAllowanceResult = new Amount(allowance).gte(
+            priceQuoteResponse.response.sellAmount
+          )
         } catch (e) {
           // bubble up error
           console.log(`Error getting ERC20 allowance: ${e}`)
@@ -232,7 +250,10 @@ export function useZeroEx (params: SwapParams) {
   )
 
   const exchange = useCallback(
-    async function (overrides: Partial<SwapParams> = {}, callback?: () => Promise<void>) {
+    async function (
+      overrides: Partial<SwapParams> = {},
+      callback?: () => Promise<void>
+    ) {
       const overriddenParams: SwapParams = {
         ...params,
         ...overrides
@@ -256,9 +277,13 @@ export function useZeroEx (params: SwapParams) {
       const fromAmountWrapped = new Amount(overriddenParams.fromAmount)
       const toAmountWrapped = new Amount(overriddenParams.toAmount)
       const isFromAmountEmpty =
-        fromAmountWrapped.isZero() || fromAmountWrapped.isNaN() || fromAmountWrapped.isUndefined()
+        fromAmountWrapped.isZero() ||
+        fromAmountWrapped.isNaN() ||
+        fromAmountWrapped.isUndefined()
       const isToAmountEmpty =
-        toAmountWrapped.isZero() || toAmountWrapped.isNaN() || toAmountWrapped.isUndefined()
+        toAmountWrapped.isZero() ||
+        toAmountWrapped.isNaN() ||
+        toAmountWrapped.isUndefined()
 
       if (isFromAmountEmpty && isToAmountEmpty) {
         return
@@ -303,7 +328,8 @@ export function useZeroEx (params: SwapParams) {
         return
       }
 
-      const { data, to, value, estimatedGas } = transactionPayloadResponse.response
+      const { data, to, value, estimatedGas } =
+        transactionPayloadResponse.response
 
       try {
         await sendEthTransaction({
@@ -322,7 +348,14 @@ export function useZeroEx (params: SwapParams) {
         setLoading(false)
       }
     },
-    [params, selectedNetwork, selectedAccount, swapService, sendEthTransaction, reset]
+    [
+      params,
+      selectedNetwork,
+      selectedAccount,
+      swapService,
+      sendEthTransaction,
+      reset
+    ]
   )
 
   const approve = useCallback(async () => {
@@ -374,7 +407,9 @@ export function useZeroEx (params: SwapParams) {
       return Amount.empty()
     }
 
-    return new Amount(quote.gasPrice).times(quote.gas).divideByDecimals(selectedNetwork.decimals)
+    return new Amount(quote.gasPrice)
+      .times(quote.gas)
+      .divideByDecimals(selectedNetwork.decimals)
   }, [quote, selectedNetwork?.decimals])
 
   const quoteOptions: QuoteOption[] = useMemo(() => {
@@ -421,10 +456,10 @@ export function useZeroEx (params: SwapParams) {
         networkFee: networkFee.isUndefined()
           ? ''
           : networkFee
-            .times(
-              getTokenPriceAmountFromRegistry(params.spotPrices, nativeAsset)
-            )
-            .formatAsFiat(defaultFiatCurrency),
+              .times(
+                getTokenPriceAmountFromRegistry(params.spotPrices, nativeAsset)
+              )
+              .formatAsFiat(defaultFiatCurrency),
         braveFee
       }
     ]

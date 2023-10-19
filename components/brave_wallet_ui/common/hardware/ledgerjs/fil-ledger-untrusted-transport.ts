@@ -5,15 +5,21 @@
 
 import { CoinType } from '@glif/filecoin-address'
 import { LotusMessage, SignedLotusMessage } from '@glif/filecoin-message'
-import { LedgerProvider, TransportWrapper } from '@glif/filecoin-wallet-provider'
+import {
+  LedgerProvider,
+  TransportWrapper
+} from '@glif/filecoin-wallet-provider'
 import { BraveWallet } from '../../../constants/types'
 import {
   FilGetAccountCommand,
-  FilGetAccountResponse, FilSignTransactionCommand, FilSignTransactionResponse
+  FilGetAccountResponse,
+  FilSignTransactionCommand,
+  FilSignTransactionResponse
 } from './fil-ledger-messages'
 import {
   LedgerBridgeErrorCodes,
-  LedgerCommand, UnlockResponse
+  LedgerCommand,
+  UnlockResponse
 } from './ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 
@@ -23,16 +29,27 @@ export class FilecoinLedgerUntrustedMessagingTransport extends LedgerUntrustedMe
   provider?: LedgerProvider
   deviceId: string
 
-  constructor (targetWindow: Window, targetUrl: string) {
+  constructor(targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
-    this.addCommandHandler<UnlockResponse>(LedgerCommand.Unlock, this.handleUnlock)
-    this.addCommandHandler<FilGetAccountResponse>(LedgerCommand.GetAccount, this.handleGetAccount)
-    this.addCommandHandler<FilSignTransactionResponse>(LedgerCommand.SignTransaction, this.handleSignTransaction)
+    this.addCommandHandler<UnlockResponse>(
+      LedgerCommand.Unlock,
+      this.handleUnlock
+    )
+    this.addCommandHandler<FilGetAccountResponse>(
+      LedgerCommand.GetAccount,
+      this.handleGetAccount
+    )
+    this.addCommandHandler<FilSignTransactionResponse>(
+      LedgerCommand.SignTransaction,
+      this.handleSignTransaction
+    )
   }
 
-  private handleGetAccount = async (command: FilGetAccountCommand): Promise<FilGetAccountResponse> => {
+  private handleGetAccount = async (
+    command: FilGetAccountCommand
+  ): Promise<FilGetAccountResponse> => {
     try {
-      if (!this.provider && !await this.makeProvider()) {
+      if (!this.provider && !(await this.makeProvider())) {
         return {
           command: LedgerCommand.GetAccount,
           id: LedgerCommand.GetAccount,
@@ -44,8 +61,15 @@ export class FilecoinLedgerUntrustedMessagingTransport extends LedgerUntrustedMe
         }
       }
 
-      const coinType = command.network === BraveWallet.FILECOIN_TESTNET ? CoinType.TEST : CoinType.MAIN
-      const accounts = await this.provider!.getAccounts(command.from, command.to, coinType)
+      const coinType =
+        command.network === BraveWallet.FILECOIN_TESTNET
+          ? CoinType.TEST
+          : CoinType.MAIN
+      const accounts = await this.provider!.getAccounts(
+        command.from,
+        command.to,
+        coinType
+      )
 
       return {
         command: LedgerCommand.GetAccount,
@@ -67,9 +91,11 @@ export class FilecoinLedgerUntrustedMessagingTransport extends LedgerUntrustedMe
     }
   }
 
-  private handleSignTransaction = async (command: FilSignTransactionCommand): Promise<FilSignTransactionResponse> => {
+  private handleSignTransaction = async (
+    command: FilSignTransactionCommand
+  ): Promise<FilSignTransactionResponse> => {
     try {
-      if (!this.provider && !await this.makeProvider()) {
+      if (!this.provider && !(await this.makeProvider())) {
         return {
           command: LedgerCommand.SignTransaction,
           id: LedgerCommand.SignTransaction,
@@ -94,7 +120,10 @@ export class FilecoinLedgerUntrustedMessagingTransport extends LedgerUntrustedMe
         Method: parsed.Method,
         Params: parsed.Params
       }
-      const signed: SignedLotusMessage = await this.provider!.sign(parsed.From, lotusMessage)
+      const signed: SignedLotusMessage = await this.provider!.sign(
+        parsed.From,
+        lotusMessage
+      )
       return {
         command: LedgerCommand.SignTransaction,
         id: LedgerCommand.SignTransaction,
@@ -133,7 +162,7 @@ export class FilecoinLedgerUntrustedMessagingTransport extends LedgerUntrustedMe
         }
       })
 
-      if (!await provider.ready()) {
+      if (!(await provider.ready())) {
         return false
       }
 

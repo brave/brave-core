@@ -42,7 +42,11 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
   const history = useHistory()
 
   // redux
-  const { pinnableNftsCount, pinnedNftsCount, pinningStatusSummary: status } = useNftPin()
+  const {
+    pinnableNftsCount,
+    pinnedNftsCount,
+    pinningStatusSummary: status
+  } = useNftPin()
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
@@ -73,7 +77,10 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
 
   return (
     <StyledWrapper status={bannerStatus}>
-      <Row gap='12px' justifyContent='flex-start'>
+      <Row
+        gap='12px'
+        justifyContent='flex-start'
+      >
         <NftPinningStatusAnimation
           size='14px'
           status={status}
@@ -81,25 +88,23 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
         />
         <Text status={bannerStatus}>
           {bannerStatus === 'start' ? (
-            <>
-              {getLocale('braveWalletNftPinningBannerStart')}
-            </>
+            <>{getLocale('braveWalletNftPinningBannerStart')}</>
           ) : bannerStatus === 'success' ? (
-            `${getLocale('braveWalletNftPinningBannerSuccess')
-              .replace('$1', `${pinnedNftsCount}`)}`
+            `${getLocale('braveWalletNftPinningBannerSuccess').replace(
+              '$1',
+              `${pinnedNftsCount}`
+            )}`
           ) : (
             `${getLocale('braveWalletNftPinningBannerUploading')}`
           )}
         </Text>
-        {bannerStatus === 'start' &&
+        {bannerStatus === 'start' && (
           <LearnMore onClick={onLearnMore}>
             {getLocale('braveWalletNftPinningBannerLearnMore')}
           </LearnMore>
-        }
+        )}
       </Row>
-      {(bannerStatus === 'success') && (
-        <CloseButton onClick={onDismiss} />
-      )}
+      {bannerStatus === 'success' && <CloseButton onClick={onDismiss} />}
     </StyledWrapper>
   )
 }

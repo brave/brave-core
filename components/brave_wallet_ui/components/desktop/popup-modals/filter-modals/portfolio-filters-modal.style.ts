@@ -6,16 +6,10 @@
 import styled from 'styled-components'
 
 // Constants
-import {
-  layoutPanelWidth
-} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 // Shared Styles
-import {
-  Column,
-  Row
-} from '../../../shared/style'
-
+import { Column, Row } from '../../../shared/style'
 
 export const ContentWrapper = styled(Column)`
   padding: 16px 32px;

@@ -20,10 +20,7 @@ import { SelectNetwork } from '../../shared/select-network/index'
 import Header from '../select-header'
 
 // Styled Components
-import {
-  SelectWrapper,
-  SelectScrollContainer
-} from '../shared-styles'
+import { SelectWrapper, SelectScrollContainer } from '../shared-styles'
 
 export interface Props {
   hasAddButton?: boolean

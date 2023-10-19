@@ -29,23 +29,26 @@ const loadingAnimation = keyframes`
 `
 
 export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
-  background-color: ${p => p.theme.color.panelBackgroundSecondary};
-  width: ${(p) => typeof (p.width) === 'number' ? `${p.width}px` : p.width};
-  height: ${(p) => typeof (p.height) === 'number' ? `${p.height}px` : p.height};
-  border-radius: ${p => p.circle ? '50%' : '0.25rem'};
+  background-color: ${(p) => p.theme.color.panelBackgroundSecondary};
+  width: ${(p) => (typeof p.width === 'number' ? `${p.width}px` : p.width)};
+  height: ${(p) => (typeof p.height === 'number' ? `${p.height}px` : p.height)};
+  border-radius: ${(p) => (p.circle ? '50%' : '0.25rem')};
   display: inline-flex;
   line-height: 1;
   position: relative;
   overflow: hidden;
-  opacity: ${p => p.useLightTheme ? 0.6 : 1};
+  opacity: ${(p) => (p.useLightTheme ? 0.6 : 1)};
 
   @media (prefers-color-scheme: dark) {
-    background-color: ${p => p.useLightTheme ? p.theme.color.panelBackgroundSecondary : p.theme.color.divider01};
+    background-color: ${(p) =>
+      p.useLightTheme
+        ? p.theme.color.panelBackgroundSecondary
+        : p.theme.color.divider01};
   }
-  
+
   &:after {
     content: ' ';
-    display: ${p => p.enableAnimation ? 'block' : 'none'};
+    display: ${(p) => (p.enableAnimation ? 'block' : 'none')};
     position: absolute;
     top: 0;
     left: 0;
@@ -55,21 +58,23 @@ export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
     background-image: linear-gradient(90deg, transparent, #ededed, transparent);
     transform: translateX(-100%);
     animation-name: ${loadingAnimation};
-    animation-direction: ${p => p.direction === 'rtl' ? 'reverse' : 'normal'};
-    animation-duration: ${p => p.duration ? p.duration : '2s'};
+    animation-direction: ${(p) =>
+      p.direction === 'rtl' ? 'reverse' : 'normal'};
+    animation-duration: ${(p) => (p.duration ? p.duration : '2s')};
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
-    
+
     @media (prefers-color-scheme: dark) {
-      background-image: ${p => p.useLightTheme
-    ? 'linear-gradient(90deg, transparent, #ededed, transparent)'
-    : 'linear-gradient(90deg, transparent, #30303d, transparent)'};
+      background-image: ${(p) =>
+        p.useLightTheme
+          ? 'linear-gradient(90deg, transparent, #ededed, transparent)'
+          : 'linear-gradient(90deg, transparent, #30303d, transparent)'};
     }
   }
 `
 
 export const LineBreak = styled.br`
-  content: ''
+  content: '';
 `
 
 Skeleton.defaultProps = {

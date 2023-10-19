@@ -9,25 +9,16 @@ import { useDispatch } from 'react-redux'
 // Selectors
 import {
   useSafeWalletSelector,
-  useUnsafeUISelector,
+  useUnsafeUISelector
 } from '../../../common/hooks/use-safe-selector'
-import {
-  UISelectors,
-  WalletSelectors
-} from '../../../common/selectors'
+import { UISelectors, WalletSelectors } from '../../../common/selectors'
 
 // Constants
-import {
-  LOCAL_STORAGE_KEYS
-} from '../../../common/constants/local-storage-keys'
+import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Slices
-import {
-  UIActions
-} from '../../../common/slices/ui.slice'
-import {
-  networkEntityAdapter
-} from '../../../common/slices/entities/network.entity'
+import { UIActions } from '../../../common/slices/ui.slice'
+import { networkEntityAdapter } from '../../../common/slices/entities/network.entity'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -35,16 +26,12 @@ import { getLocale } from '../../../../common/locale'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
-import {
-  ExternalWalletProvider
-} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { ExternalWalletProvider } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Components
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
-import {
-  CreateAccountIcon
-} from '../../shared/create-account-icon/create-account-icon'
+import { CreateAccountIcon } from '../../shared/create-account-icon/create-account-icon'
 
 // Styled Components
 import {
@@ -72,7 +59,7 @@ interface Props {
   isDisabled?: boolean
   balance: string
   hideBalance?: boolean
-  children?: React.ReactNode,
+  children?: React.ReactNode
   hasBorder?: boolean
 }
 
@@ -93,48 +80,43 @@ export const AssetGroupContainer = (props: Props) => {
   const dispatch = useDispatch()
 
   // Selectors
-  const hidePortfolioBalances =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
-  const collapsedAccounts =
-    useUnsafeUISelector(UISelectors.collapsedPortfolioAccountAddresses)
-  const collapsedNetworks =
-    useUnsafeUISelector(UISelectors.collapsedPortfolioNetworkKeys)
+  const hidePortfolioBalances = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioBalances
+  )
+  const collapsedAccounts = useUnsafeUISelector(
+    UISelectors.collapsedPortfolioAccountAddresses
+  )
+  const collapsedNetworks = useUnsafeUISelector(
+    UISelectors.collapsedPortfolioNetworkKeys
+  )
 
   // Memos & Computed
-  const externalRewardsDescription =
-    network
-      ? network.chainName
-      : account
-        ? account.name
-        : ''
+  const externalRewardsDescription = network
+    ? network.chainName
+    : account
+    ? account.name
+    : ''
 
   const isCollapsed = React.useMemo(() => {
     if (network) {
-      return collapsedNetworks
-        .includes(networkEntityAdapter
-          .selectId(network)
-          .toString()
-        )
+      return collapsedNetworks.includes(
+        networkEntityAdapter.selectId(network).toString()
+      )
     }
     if (account) {
       return collapsedAccounts.includes(account.address)
     }
     return false
-  }, [
-    network,
-    account,
-    collapsedAccounts,
-    collapsedNetworks
-  ])
+  }, [network, account, collapsedAccounts, collapsedNetworks])
 
   const onToggleCollapsed = React.useCallback(() => {
     if (account) {
       // Construct new list
-      const newCollapsedAccounts =
-        isCollapsed
-          ? collapsedAccounts
-            .filter((addressKey) => addressKey !== account.address)
-          : [...collapsedAccounts, account.address]
+      const newCollapsedAccounts = isCollapsed
+        ? collapsedAccounts.filter(
+            (addressKey) => addressKey !== account.address
+          )
+        : [...collapsedAccounts, account.address]
 
       // Update Collapsed Account Addresses in Local Storage
       window.localStorage.setItem(
@@ -144,23 +126,17 @@ export const AssetGroupContainer = (props: Props) => {
 
       // Update Collapsed Account Addresses in Redux
       dispatch(
-        UIActions
-          .setCollapsedPortfolioAccountAddresses(
-            newCollapsedAccounts
-          ))
+        UIActions.setCollapsedPortfolioAccountAddresses(newCollapsedAccounts)
+      )
     }
 
     if (network) {
-      const networksKey = networkEntityAdapter
-        .selectId(network)
-        .toString()
+      const networksKey = networkEntityAdapter.selectId(network).toString()
 
       // Construct new list
-      const newCollapsedNetworks =
-        isCollapsed
-          ? collapsedNetworks
-            .filter((networkKey) => networkKey !== networksKey)
-          : [...collapsedNetworks, networksKey]
+      const newCollapsedNetworks = isCollapsed
+        ? collapsedNetworks.filter((networkKey) => networkKey !== networksKey)
+        : [...collapsedNetworks, networksKey]
 
       // Update Collapsed Network Keys in Local Storage
       window.localStorage.setItem(
@@ -169,19 +145,9 @@ export const AssetGroupContainer = (props: Props) => {
       )
 
       // Update Collapsed Network Keys in Redux
-      dispatch(
-        UIActions
-          .setCollapsedPortfolioNetworkKeys(
-            newCollapsedNetworks
-          ))
+      dispatch(UIActions.setCollapsedPortfolioNetworkKeys(newCollapsedNetworks))
     }
-  }, [
-    account,
-    network,
-    isCollapsed,
-    collapsedAccounts,
-    collapsedNetworks
-  ])
+  }, [account, network, isCollapsed, collapsedAccounts, collapsedNetworks])
 
   return (
     <StyledWrapper
@@ -192,33 +158,36 @@ export const AssetGroupContainer = (props: Props) => {
         onClick={onToggleCollapsed}
         disabled={isDisabled}
       >
-        {isSkeleton &&
-          <Row
-            width='unset'
-          >
-            <LoadingSkeleton width={24} height={24} circle={!!network} />
+        {isSkeleton && (
+          <Row width='unset'>
+            <LoadingSkeleton
+              width={24}
+              height={24}
+              circle={!!network}
+            />
             <HorizontalSpace space='16px' />
-            <LoadingSkeleton width={60} height={14} />
+            <LoadingSkeleton
+              width={60}
+              height={14}
+            />
           </Row>
-        }
-        {externalProvider && !isSkeleton &&
-          <Row
-            width='unset'
-          >
-            {network &&
+        )}
+        {externalProvider && !isSkeleton && (
+          <Row width='unset'>
+            {network && (
               <CreateNetworkIcon
                 network={network}
                 marginRight={16}
                 size='big'
               />
-            }
-            {account &&
+            )}
+            {account && (
               <CreateAccountIcon
                 size='small'
                 externalProvider={externalProvider}
                 marginRight={16}
               />
-            }
+            )}
             <RewardsProviderContainer>
               <RewardsText
                 textSize='14px'
@@ -233,12 +202,10 @@ export const AssetGroupContainer = (props: Props) => {
               </BraveRewardsIndicator>
             </RewardsProviderContainer>
           </Row>
-        }
+        )}
 
-        {network && !externalProvider && !isSkeleton &&
-          <Row
-            width='unset'
-          >
+        {network && !externalProvider && !isSkeleton && (
+          <Row width='unset'>
             <CreateNetworkIcon
               network={network}
               marginRight={16}
@@ -253,20 +220,16 @@ export const AssetGroupContainer = (props: Props) => {
               {network.chainName}
             </Text>
           </Row>
-        }
+        )}
 
-        {account && !externalProvider && !isSkeleton &&
-          <Row
-            width='unset'
-          >
+        {account && !externalProvider && !isSkeleton && (
+          <Row width='unset'>
             <CreateAccountIcon
               size='small'
               account={account}
               marginRight={16}
             />
-            <AccountDescriptionWrapper
-              width='unset'
-            >
+            <AccountDescriptionWrapper width='unset'>
               <Text
                 textSize='14px'
                 isBold={true}
@@ -285,11 +248,9 @@ export const AssetGroupContainer = (props: Props) => {
               </Text>
             </AccountDescriptionWrapper>
           </Row>
-        }
+        )}
 
-        <Row
-          width='unset'
-        >
+        <Row width='unset'>
           {balance !== '' && !hideBalance ? (
             <Text
               textSize='12px'
@@ -300,32 +261,32 @@ export const AssetGroupContainer = (props: Props) => {
             </Text>
           ) : (
             <>
-              {!hideBalance && <LoadingSkeleton width={60} height={14} />}
+              {!hideBalance && (
+                <LoadingSkeleton
+                  width={60}
+                  height={14}
+                />
+              )}
             </>
           )}
 
-          {!isDisabled &&
+          {!isDisabled && (
             <CollapseIcon
               isCollapsed={isCollapsed}
               name='carat-down'
             />
-          }
+          )}
         </Row>
       </CollapseButton>
 
-      {!isCollapsed && !isDisabled &&
-        <Column
-          fullWidth={true}
-        >
-          <Row
-            padding='0px 8px'
-          >
+      {!isCollapsed && !isDisabled && (
+        <Column fullWidth={true}>
+          <Row padding='0px 8px'>
             <VerticalDivider />
           </Row>
           {children}
         </Column>
-      }
+      )}
     </StyledWrapper>
-
   )
 }

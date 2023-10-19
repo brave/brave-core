@@ -4,13 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import {
-  BraveWallet,
-  SupportedOnRampNetworks,
-} from '../../../constants/types'
-import {
-  WalletApiEndpointBuilderParams
-} from '../api-base.slice'
+import { BraveWallet, SupportedOnRampNetworks } from '../../../constants/types'
+import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Utils
 import {
@@ -22,9 +17,7 @@ import { addLogoToToken } from '../../async/lib'
 import { mapLimit } from 'async'
 import { handleEndpointError } from '../../../utils/api-utils'
 
-export const onRampEndpoints = ({
-  query
-}: WalletApiEndpointBuilderParams) => {
+export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
   return {
     getOnRampAssets: query<
       {
@@ -147,57 +140,43 @@ export const onRampEndpoints = ({
           } = getNativeTokensFromList(coinbaseAssetOptions)
 
           // separate BAT from other tokens
-          const {
-            bat: rampBatTokens,
-            nonBat: rampNonBatTokens
-          } = getBatTokensFromList(rampTokenOptions)
+          const { bat: rampBatTokens, nonBat: rampNonBatTokens } =
+            getBatTokensFromList(rampTokenOptions)
 
-          const {
-            bat: sardineBatTokens,
-            nonBat: sardineNonBatTokens
-          } = getBatTokensFromList(sardineTokenOptions)
+          const { bat: sardineBatTokens, nonBat: sardineNonBatTokens } =
+            getBatTokensFromList(sardineTokenOptions)
 
-          const {
-            bat: transakBatTokens,
-            nonBat: transakNonBatTokens
-          } = getBatTokensFromList(transakTokenOptions)
+          const { bat: transakBatTokens, nonBat: transakNonBatTokens } =
+            getBatTokensFromList(transakTokenOptions)
 
-          const {
-            bat: stripeBatTokens,
-            nonBat: stripeNonBatTokens
-          } = getBatTokensFromList(stripeTokenOptions)
+          const { bat: stripeBatTokens, nonBat: stripeNonBatTokens } =
+            getBatTokensFromList(stripeTokenOptions)
 
-          const {
-            bat: coinbaseBatTokens,
-            nonBat: coinbaseNonBatTokens
-          } = getBatTokensFromList(coinbaseTokenOptions)
+          const { bat: coinbaseBatTokens, nonBat: coinbaseNonBatTokens } =
+            getBatTokensFromList(coinbaseTokenOptions)
 
           // sort lists
           // Move Gas coins and BAT to front of list
-          const sortedRampOptions =
-            [
-              ...rampNativeAssetOptions,
-              ...rampBatTokens,
-              ...rampNonBatTokens
-            ]
-          const sortedSardineOptions =
-            [
-              ...sardineNativeAssetOptions,
-              ...sardineBatTokens,
-              ...sardineNonBatTokens
-            ]
-          const sortedTransakOptions =
-            [
-              ...transakNativeAssetOptions,
-              ...transakBatTokens,
-              ...transakNonBatTokens
-            ]
-          const sortedStripeOptions =
-            [
-              ...stripeNativeAssetOptions,
-              ...stripeBatTokens,
-              ...stripeNonBatTokens
-            ]
+          const sortedRampOptions = [
+            ...rampNativeAssetOptions,
+            ...rampBatTokens,
+            ...rampNonBatTokens
+          ]
+          const sortedSardineOptions = [
+            ...sardineNativeAssetOptions,
+            ...sardineBatTokens,
+            ...sardineNonBatTokens
+          ]
+          const sortedTransakOptions = [
+            ...transakNativeAssetOptions,
+            ...transakBatTokens,
+            ...transakNonBatTokens
+          ]
+          const sortedStripeOptions = [
+            ...stripeNativeAssetOptions,
+            ...stripeBatTokens,
+            ...stripeNonBatTokens
+          ]
 
           const sortedCoinbaseOptions = [
             ...coinbaseNativeAssetOptions,
@@ -229,7 +208,8 @@ export const onRampEndpoints = ({
             error: errorMessage
           }
         }
-      }, providesTags: (_results, error, _arg) => {
+      },
+      providesTags: (_results, error, _arg) => {
         if (error) {
           return ['UNKNOWN_ERROR']
         }
@@ -259,14 +239,17 @@ export const onRampEndpoints = ({
       }
     }),
 
-    getBuyUrl: query<string, {
-      onRampProvider: BraveWallet.OnRampProvider,
-      chainId: string,
-      address: string,
-      assetSymbol: string,
-      amount: string,
-      currencyCode: string
-    }>({
+    getBuyUrl: query<
+      string,
+      {
+        onRampProvider: BraveWallet.OnRampProvider
+        chainId: string
+        address: string
+        assetSymbol: string
+        amount: string
+        currencyCode: string
+      }
+    >({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
@@ -293,8 +276,7 @@ export const onRampEndpoints = ({
             error
           )
         }
-      },
-    }),
+      }
+    })
   }
-
 }

@@ -27,10 +27,10 @@ export const StyledTBody = styled.tbody`
   }
 `
 
-export const StyledNoContent = styled('div') <{}>`
+export const StyledNoContent = styled('div')<{}>`
   text-align: center;
   padding: 30px 0;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   font-size: 14px;
   font-family: Poppins;
 `
@@ -40,16 +40,15 @@ export const StyledTable = styled('table')`
   min-width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  
+
   tr {
     cursor: pointer;
   }
 `
 
-export const StyledTHead = styled('thead')`
-`
+export const StyledTHead = styled('thead')``
 
-export const StyledTH = styled('th') <Partial<StyleProps>>`
+export const StyledTH = styled('th')<Partial<StyleProps>>`
   text-align: left;
   font-family: Poppins;
   font-size: 12px;
@@ -57,18 +56,19 @@ export const StyledTH = styled('th') <Partial<StyleProps>>`
   line-height: 18px;
   letter-spacing: 0.01em;
   border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
-  color: ${(p) => p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
+  color: ${(p) =>
+    p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
   padding: 10px 0 10px 0px;
-  cursor: ${p => p.sortable ? 'pointer' : 'default'};
-  position: ${p => p.stickyHeaders ? 'sticky' : 'relative'};
+  cursor: ${(p) => (p.sortable ? 'pointer' : 'default')};
+  position: ${(p) => (p.stickyHeaders ? 'sticky' : 'relative')};
   background-color: ${(p) => p.theme.color.background02};
-  top:  ${p => p.stickyHeaders ? 0 : 'inherit'};
+  top: ${(p) => (p.stickyHeaders ? 0 : 'inherit')};
   z-index: 2;
-  
+
   &:hover {
-    color: ${p => p.sortable ? p.theme.color.text02 : p.theme.color.text03};
+    color: ${(p) => (p.sortable ? p.theme.color.text02 : p.theme.color.text03)};
   }
-  
+
   &:last-child {
     padding-right: 6px;
   }
@@ -81,10 +81,10 @@ export const StyledTR = styled('tr')`
 export const StyledTD = styled('td')`
   vertical-align: middle;
   letter-spacing: 0.01em;
-  font-family:Poppins;
+  font-family: Poppins;
   font-size: 14px;
   font-weight: 400;
-  color: ${p => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   font-family: Poppins;
   font-size: 14px;
   line-height: 20px;

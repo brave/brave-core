@@ -122,7 +122,10 @@ export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
         <NetworkFeeTitle>{getLocale('braveWalletNetworkFees')}</NetworkFeeTitle>
         <NetworkFeeValue>
           {showNetworkLogo ? (
-            <CreateNetworkIcon network={txNetwork} marginRight={0} />
+            <CreateNetworkIcon
+              network={txNetwork}
+              marginRight={0}
+            />
           ) : null}
           {feeDisplayMode === 'fiat' ? (
             networkFeeFiat ? (

@@ -11,9 +11,13 @@ import { BraveWallet } from '../../constants/types'
 import * as HWInterfaces from '../hardware/interfaces'
 import FilecoinLedgerBridgeKeyring from '../../common/hardware/ledgerjs/fil_ledger_bridge_keyring'
 
-export type HardwareKeyring = HWInterfaces.LedgerEthereumKeyring | HWInterfaces.TrezorKeyring | HWInterfaces.LedgerFilecoinKeyring | HWInterfaces.LedgerSolanaKeyring
+export type HardwareKeyring =
+  | HWInterfaces.LedgerEthereumKeyring
+  | HWInterfaces.TrezorKeyring
+  | HWInterfaces.LedgerFilecoinKeyring
+  | HWInterfaces.LedgerSolanaKeyring
 
-export function getCoinName (coin: BraveWallet.CoinType) {
+export function getCoinName(coin: BraveWallet.CoinType) {
   switch (coin) {
     case BraveWallet.CoinType.FIL:
       return 'Filecoin'
@@ -27,7 +31,7 @@ const VendorTypes = [
   BraveWallet.TREZOR_HARDWARE_VENDOR,
   BraveWallet.LEDGER_HARDWARE_VENDOR
 ] as const
-export type HardwareVendor = typeof VendorTypes[number]
+export type HardwareVendor = (typeof VendorTypes)[number]
 
 // Lazy instances for keyrings
 let ethereumHardwareKeyring: EthereumLedgerBridgeKeyring
@@ -35,11 +39,15 @@ let filecoinHardwareKeyring: FilecoinLedgerBridgeKeyring
 let solanaHardwareKeyring: SolanaLedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
 
-export function getHardwareKeyring (
+export function getHardwareKeyring(
   type: HardwareVendor,
   coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH,
   onAuthorized?: () => void
-): EthereumLedgerBridgeKeyring | HWInterfaces.TrezorKeyring | FilecoinLedgerBridgeKeyring | SolanaLedgerBridgeKeyring {
+):
+  | EthereumLedgerBridgeKeyring
+  | HWInterfaces.TrezorKeyring
+  | FilecoinLedgerBridgeKeyring
+  | SolanaLedgerBridgeKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     if (coin === BraveWallet.CoinType.ETH) {
       return getLedgerEthereumHardwareKeyring(onAuthorized)
@@ -55,28 +63,34 @@ export function getHardwareKeyring (
   return trezorKeyring
 }
 
-export function getLedgerEthereumHardwareKeyring (onAuthorized?: () => void): EthereumLedgerBridgeKeyring {
+export function getLedgerEthereumHardwareKeyring(
+  onAuthorized?: () => void
+): EthereumLedgerBridgeKeyring {
   if (!ethereumHardwareKeyring) {
     ethereumHardwareKeyring = new EthereumLedgerBridgeKeyring(onAuthorized)
   }
   return ethereumHardwareKeyring
 }
 
-export function getLedgerFilecoinHardwareKeyring (onAuthorized?: () => void): FilecoinLedgerBridgeKeyring {
+export function getLedgerFilecoinHardwareKeyring(
+  onAuthorized?: () => void
+): FilecoinLedgerBridgeKeyring {
   if (!filecoinHardwareKeyring) {
     filecoinHardwareKeyring = new FilecoinLedgerBridgeKeyring(onAuthorized)
   }
   return filecoinHardwareKeyring
 }
 
-export function getLedgerSolanaHardwareKeyring (onAuthorized?: () => void): SolanaLedgerBridgeKeyring {
+export function getLedgerSolanaHardwareKeyring(
+  onAuthorized?: () => void
+): SolanaLedgerBridgeKeyring {
   if (!solanaHardwareKeyring) {
     solanaHardwareKeyring = new SolanaLedgerBridgeKeyring(onAuthorized)
   }
   return solanaHardwareKeyring
 }
 
-export function getTrezorHardwareKeyring (): TrezorBridgeKeyring {
+export function getTrezorHardwareKeyring(): TrezorBridgeKeyring {
   if (!trezorHardwareKeyring) {
     trezorHardwareKeyring = new TrezorBridgeKeyring()
   }

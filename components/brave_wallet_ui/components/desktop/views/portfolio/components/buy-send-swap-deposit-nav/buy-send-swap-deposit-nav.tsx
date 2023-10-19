@@ -9,20 +9,15 @@ import { useHistory } from 'react-router-dom'
 // Types
 import { NavOption, WalletRoutes } from '../../../../../../constants/types'
 
-
 // Selectors
 import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../../common/selectors'
 
 // Options
-import {
-  BuySendSwapDepositOptions
-} from '../../../../../../options/nav-options'
+import { BuySendSwapDepositOptions } from '../../../../../../options/nav-options'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 
 // Styled Components
 import {
@@ -61,23 +56,15 @@ export const BuySendSwapDepositNav = () => {
   )
 
   return (
-    <ButtonsRow
-      width='unset'
-    >
-      {BuySendSwapDepositOptions.map((option) =>
-        <ButtonWrapper
-          key={option.id}
-        >
-          <Button
-            onClick={() => onClick(option)}
-          >
+    <ButtonsRow width='unset'>
+      {BuySendSwapDepositOptions.map((option) => (
+        <ButtonWrapper key={option.id}>
+          <Button onClick={() => onClick(option)}>
             <ButtonIcon name={option.icon} />
           </Button>
-          <ButtonText>
-            {getLocale(option.name)}
-          </ButtonText>
+          <ButtonText>{getLocale(option.name)}</ButtonText>
         </ButtonWrapper>
-      )}
+      ))}
     </ButtonsRow>
   )
 }

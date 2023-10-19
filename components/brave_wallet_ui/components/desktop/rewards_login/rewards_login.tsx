@@ -7,17 +7,13 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 // Types
-import {
-  RewardsExternalWallet
-} from '../../../common/async/brave_rewards_api_proxy'
+import { RewardsExternalWallet } from '../../../common/async/brave_rewards_api_proxy'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { getRewardsProviderName } from '../../../utils/rewards_utils'
 import {
-  getRewardsProviderName
-} from '../../../utils/rewards_utils'
-import {
-  reconnectURL
+  reconnectURL //
 } from '../../../../brave_rewards/resources/shared/lib/rewards_urls'
 
 // Styled Components
@@ -39,23 +35,24 @@ export const RewardsLogin = (props: Props) => {
   // Computed
   const provider = externalRewardsInfo?.provider ?? ''
   const providerName = getRewardsProviderName(provider)
-  const loginDescription =
-    getLocale('braveWalletBraveRewardsLoggedOutDescription')
-      .replace('$1', providerName)
+  const loginDescription = getLocale(
+    'braveWalletBraveRewardsLoggedOutDescription'
+  ).replace('$1', providerName)
 
   // Methods
   const onClickLogin = () => {
     chrome.tabs.create(
       {
         url: reconnectURL
-      }, () => {
+      },
+      () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: '
-            + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message
           )
         }
-      })
+      }
+    )
   }
 
   return (

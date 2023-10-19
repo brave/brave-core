@@ -6,11 +6,7 @@
 import * as React from 'react'
 
 // Styled Components
-import {
-  SkeletonBox,
-  SkeletonIndicator,
-  Wrapper
-} from './swap-skeleton.style'
+import { SkeletonBox, SkeletonIndicator, Wrapper } from './swap-skeleton.style'
 
 export interface Props {
   width?: number

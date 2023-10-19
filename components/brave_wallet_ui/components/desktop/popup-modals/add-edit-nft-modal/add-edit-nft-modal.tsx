@@ -23,12 +23,23 @@ interface Props {
   onTokenFound?: (contractAddress: string) => void
 }
 
-export const AddOrEditNftModal = ({ nftToken, onClose, onHideForm, onTokenFound }: Props) => {
-  const [contractAddress, setContractAddress] = React.useState<string>(nftToken?.contractAddress || '')
+export const AddOrEditNftModal = ({
+  nftToken,
+  onClose,
+  onHideForm,
+  onTokenFound
+}: Props) => {
+  const [contractAddress, setContractAddress] = React.useState<string>(
+    nftToken?.contractAddress || ''
+  )
 
   return (
     <PopupModal
-      title={nftToken ? getLocale('braveWalletEditNftModalTitle') : getLocale('braveWalletImportNftModalTitle')}
+      title={
+        nftToken
+          ? getLocale('braveWalletEditNftModalTitle')
+          : getLocale('braveWalletImportNftModalTitle')
+      }
       onClose={onClose}
       width='584px'
       showDivider={true}
@@ -40,7 +51,7 @@ export const AddOrEditNftModal = ({ nftToken, onClose, onHideForm, onTokenFound 
           onHideForm={onHideForm}
           onTokenFound={onTokenFound}
           onChangeContractAddress={setContractAddress}
-          />
+        />
       </StyledWrapper>
     </PopupModal>
   )

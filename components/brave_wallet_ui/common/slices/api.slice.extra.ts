@@ -19,7 +19,7 @@ import {
   useGetSelectedAccountIdQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
-  useGetUserTokensRegistryQuery,
+  useGetUserTokensRegistryQuery
 } from './api.slice'
 
 // entities
@@ -95,7 +95,7 @@ export const useSelectedAccountQuery = () => {
   } = useGetAccountInfosRegistryQuery(undefined)
 
   const { data: selectedAccountId, isFetching: isLoadingSelectedAccountId } =
-  useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
+    useGetSelectedAccountIdQuery(isLoadingAccounts ? skipToken : undefined)
 
   const selectedAccount = selectedAccountId
     ? accountInfosRegistry.entities[

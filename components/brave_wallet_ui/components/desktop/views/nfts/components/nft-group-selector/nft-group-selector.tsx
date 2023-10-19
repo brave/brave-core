@@ -50,11 +50,17 @@ export const NftDropdown = ({ selectedOptionId, options, onSelect }: Props) => {
             {selectedOption.labelSummary}
           </DropdownButtonLabel>
         ) : null}
-        <DropDownIcon name='carat-down' isOpen={isOpen} />
+        <DropDownIcon
+          name='carat-down'
+          isOpen={isOpen}
+        />
       </DropdownButton>
       <DropDown isOpen={isOpen}>
         {options.map((option) => (
-          <DropDownItem key={option.id} onClick={() => onSelectOption(option)}>
+          <DropDownItem
+            key={option.id}
+            onClick={() => onSelectOption(option)}
+          >
             {option.label}
           </DropDownItem>
         ))}

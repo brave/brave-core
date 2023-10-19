@@ -48,21 +48,23 @@ interface Props {
 
 const TermsOfUseText: React.FC<{}> = () => {
   const text = getLocaleWithTag('braveWalletTermsOfServiceCheckboxText')
-  return <p key={text.duringTag}>
-    {text.beforeTag}
-    <LinkText
-      href='https://brave.com/terms-of-use/'
-      target='_blank'
-      rel='noopener noreferrer'
-      onClick={
-        // prevent checkbox toggle when clicking this link
-        (e) => e.stopPropagation()
-      }
-    >
-      {text.duringTag}
-    </LinkText>
-    {text.afterTag}
-  </p>
+  return (
+    <p key={text.duringTag}>
+      {text.beforeTag}
+      <LinkText
+        href='https://brave.com/terms-of-use/'
+        target='_blank'
+        rel='noopener noreferrer'
+        onClick={
+          // prevent checkbox toggle when clicking this link
+          (e) => e.stopPropagation()
+        }
+      >
+        {text.duringTag}
+      </LinkText>
+      {text.afterTag}
+    </p>
+  )
 }
 
 export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
@@ -71,12 +73,13 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
 
   // redux
   const dispatch = useDispatch()
-  const walletTermsAcknowledged = useSelector(({ page }: { page: PageState }) => page.walletTermsAcknowledged)
+  const walletTermsAcknowledged = useSelector(
+    ({ page }: { page: PageState }) => page.walletTermsAcknowledged
+  )
 
   // state
-  const [isResponsibilityCheckboxChecked, setIsResponsibilityCheckboxChecked] = React.useState(
-    walletTermsAcknowledged
-  )
+  const [isResponsibilityCheckboxChecked, setIsResponsibilityCheckboxChecked] =
+    React.useState(walletTermsAcknowledged)
   const [isTermsCheckboxChecked, setIsTermsCheckboxChecked] = React.useState(
     walletTermsAcknowledged
   )
@@ -99,18 +102,18 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-
           <OnboardingNewWalletStepsNavigation
             goBack={onBack}
             currentStep={WalletRoutes.OnboardingWelcome}
-            isHardwareOnboarding={nextStep === WalletRoutes.OnboardingConnectHarwareWalletCreatePassword}
+            isHardwareOnboarding={
+              nextStep ===
+              WalletRoutes.OnboardingConnectHarwareWalletCreatePassword
+            }
             preventSkipAhead
           />
 
           <TitleAndDescriptionContainer style={{ marginLeft: 18 }}>
-            <Title>
-              {getLocale('braveWalletDisclosuresTitle')}
-            </Title>
+            <Title>{getLocale('braveWalletDisclosuresTitle')}</Title>
             <Description>
               {getLocale('braveWalletDisclosuresDescription')}
             </Description>
@@ -150,7 +153,6 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
               disabled={!isNextStepEnabled}
             />
           </NextButtonRow>
-
         </StyledWrapper>
       </MainWrapper>
     </CenteredPageLayout>

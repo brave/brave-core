@@ -6,17 +6,10 @@
 import * as React from 'react'
 
 // Components
-import {
-  StandardSwitch
-} from '../../form-controls/standard-switch/standard-switch'
+import { StandardSwitch } from '../../form-controls/standard-switch/standard-switch'
 
 // Styled Components
-import {
-  Row,
-  Column,
-  Text,
-  VerticalSpacer
-} from '../../shared-swap.styles'
+import { Row, Column, Text, VerticalSpacer } from '../../shared-swap.styles'
 
 interface Props {
   label: string

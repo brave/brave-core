@@ -28,7 +28,7 @@ export const transactionEntityAdapter: TransactionEntityAdaptor =
   })
 
 export type TransactionEntityState = ReturnType<
-  typeof transactionEntityAdapter['getInitialState']
+  (typeof transactionEntityAdapter)['getInitialState']
 > & {
   idsByChainId: Record<EntityId, EntityId[]>
   pendingIds: EntityId[]
