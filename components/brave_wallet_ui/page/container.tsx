@@ -5,10 +5,15 @@
 
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
 
 // utils
 import { getWalletLocationTitle } from '../utils/string-utils'
+import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
+import {
+  getInitialSessionRoute,
+  isPersistableSessionRoute
+} from '../utils/routes-utils'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
@@ -34,6 +39,7 @@ import {
   useSafeUISelector,
   useSafeWalletSelector
 } from '../common/hooks/use-safe-selector'
+import { useLocationPathName } from '../common/hooks/use-pathname'
 
 // style
 import 'emptykit.css'
@@ -65,10 +71,12 @@ import {
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { PageTitleHeader } from '../components/desktop/card-headers/page-title-header'
 
+const initialSessionRoute = getInitialSessionRoute()
+
 export const Container = () => {
   // routing
   let history = useHistory()
-  const { pathname: walletLocation } = useLocation()
+  const walletLocation = useLocationPathName()
 
   // redux
   const dispatch = useDispatch()
@@ -93,7 +101,7 @@ export const Container = () => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // state
-  const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
+  const [sessionRoute, setSessionRoute] = React.useState(initialSessionRoute)
   const [inputValue, setInputValue] = React.useState<string>('')
 
   // methods
@@ -163,21 +171,11 @@ export const Container = () => {
   React.useEffect(() => {
     // store the last url before wallet lock
     // so that we can return to that page after unlock
-    if (
-      walletLocation.includes(WalletRoutes.Accounts) ||
-      walletLocation.includes(WalletRoutes.Activity) ||
-      walletLocation.includes(WalletRoutes.Backup) ||
-      walletLocation.includes(WalletRoutes.DepositFundsPageStart) ||
-      walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
-      walletLocation.includes(WalletRoutes.PortfolioAssets) ||
-      walletLocation.includes(WalletRoutes.PortfolioNFTs) ||
-      walletLocation.includes(WalletRoutes.PortfolioNFTAsset) ||
-      walletLocation.includes(WalletRoutes.Market) ||
-      walletLocation.includes(WalletRoutes.Swap) ||
-      walletLocation.includes(WalletRoutes.SendPageStart) ||
-      walletLocation.includes(WalletRoutes.LocalIpfsNode ||
-        walletLocation.includes(WalletRoutes.InspectNfts))
-    ) {
+    if (isPersistableSessionRoute(walletLocation)) {
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.SESSION_ROUTE,
+        walletLocation
+      )
       setSessionRoute(walletLocation)
     }
   }, [walletLocation, isWalletCreated])

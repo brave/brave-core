@@ -3,39 +3,38 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { PanelTitleObjectType } from '../constants/types'
-import { getLocale } from '../../common/locale'
 
-export const PanelTitles = (): PanelTitleObjectType[] => [
+export const PANEL_TITLES: PanelTitleObjectType[] = [
   {
     id: 'buy',
-    title: getLocale('braveWalletBuy')
+    title: 'braveWalletBuy'
   },
   {
     id: 'send',
-    title: getLocale('braveWalletSend')
+    title: 'braveWalletSend'
   },
   {
     id: 'swap',
-    title: getLocale('braveWalletSwap')
+    title: 'braveWalletSwap'
   },
   {
     id: 'apps',
-    title: getLocale('braveWalletTopTabApps')
+    title: 'braveWalletTopTabApps'
   },
   {
     id: 'sitePermissions',
-    title: getLocale('braveWalletSitePermissionsTitle')
+    title: 'braveWalletSitePermissionsTitle'
   },
   {
     id: 'activity', // Transactions
-    title: getLocale('braveWalletActivity')
+    title: 'braveWalletActivity'
   },
   {
     id: 'transactionDetails',
-    title: getLocale('braveWalletTransactionDetails')
+    title: 'braveWalletTransactionDetails'
   },
   {
     id: 'assets',
-    title: getLocale('braveWalletAssetsPanelTitle')
+    title: 'braveWalletAssetsPanelTitle'
   }
 ]

@@ -4,6 +4,38 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { AccountPageTabs, BraveWallet, WalletRoutes } from '../constants/types'
+import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
+
+/**
+ * Checks the provided route against a list of routes that we are OK with the
+ * wallet opening to when the app is unlocked or when the panel is re-opened
+ */
+export function isPersistableSessionRoute(route?: string) {
+  if (!route) {
+    return
+  }
+  return (
+    route.includes(WalletRoutes.Accounts) ||
+    route.includes(WalletRoutes.Activity) ||
+    route.includes(WalletRoutes.Backup) ||
+    route.includes(WalletRoutes.DepositFundsPageStart) ||
+    route.includes(WalletRoutes.FundWalletPageStart) ||
+    route.includes(WalletRoutes.PortfolioAssets) ||
+    route.includes(WalletRoutes.PortfolioNFTs) ||
+    route.includes(WalletRoutes.PortfolioNFTAsset) ||
+    route.includes(WalletRoutes.Market) ||
+    route.includes(WalletRoutes.Swap) ||
+    route.includes(WalletRoutes.SendPageStart) ||
+    route.includes(WalletRoutes.LocalIpfsNode) ||
+    route.includes(WalletRoutes.InspectNfts)
+  )
+}
+
+export function getInitialSessionRoute(): string | undefined {
+  const route =
+    window.localStorage.getItem(LOCAL_STORAGE_KEYS.SESSION_ROUTE) || ''
+  return isPersistableSessionRoute(route) ? route : undefined
+}
 
 export const makeAccountRoute = (
   accountInfo: Pick<BraveWallet.AccountInfo, 'address' | 'accountId'>,

@@ -4,28 +4,56 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createReducer } from 'redux-act'
+
+// types
 import {
   BraveWallet,
   PanelState,
   PanelTypes
 } from '../../constants/types'
+import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
   ShowConnectToSitePayload
 } from '../constants/action_types'
-import { PanelTitles } from '../../options/panel-titles'
-import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
+
+// options
+import { PANEL_TITLES } from '../../options/panel-titles'
+import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
+
+// utils
+import { isValidPanelNavigationOption } from '../../options/nav-options'
 
 const defaultOriginInfo: BraveWallet.OriginInfo = {
   originSpec: '',
   eTldPlusOne: ''
 }
 
+const persistedSelectedPanelType = window.localStorage.getItem(
+  LOCAL_STORAGE_KEYS.CURRENT_PANEL
+) as PanelTypes
+const selectedPanel = isValidPanelNavigationOption(persistedSelectedPanelType)
+  ? persistedSelectedPanelType
+  : 'main'
+const persistedSelectedPanelTitle = PANEL_TITLES.find(
+  (title) => persistedSelectedPanelType === title.id
+)?.title
+
+const persistedLastSelectedPanelType =
+  (window.localStorage.getItem(
+    LOCAL_STORAGE_KEYS.LAST_VISITED_PANEL
+  ) as PanelTypes) || undefined
+const lastSelectedPanel = isValidPanelNavigationOption(
+  persistedLastSelectedPanelType
+)
+  ? persistedLastSelectedPanelType
+  : undefined
+
 const defaultState: PanelState = {
   hasInitialized: false,
   connectToSiteOrigin: defaultOriginInfo,
-  selectedPanel: 'main',
-  panelTitle: '',
+  selectedPanel,
+  panelTitle: persistedSelectedPanelTitle || '',
   connectingAccounts: [],
   addChainRequest: {
     originInfo: defaultOriginInfo,
@@ -56,13 +84,14 @@ const defaultState: PanelState = {
   },
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,
-  signMessageErrorData: []
+  signMessageErrorData: [],
+  lastSelectedPanel
 }
 
 export const createPanelReducer = (initialState: PanelState) => {
   const reducer = createReducer<PanelState>({}, initialState)
   reducer.on(PanelActions.navigateTo.type, (state: PanelState, selectedPanel: PanelTypes) => {
-    const foundTitle = PanelTitles().find((title) => selectedPanel === title.id)
+    const foundTitle = PANEL_TITLES.find((title) => selectedPanel === title.id)
     const panelTitle = foundTitle ? foundTitle.title : ''
     return {
       ...state,
@@ -73,11 +102,12 @@ export const createPanelReducer = (initialState: PanelState) => {
   })
 
   reducer.on(PanelActions.navigateBack.type, (state: PanelState) => {
-    const selectedPanel = state.lastSelectedPanel === undefined
-      ? state.selectedPanel
-      : state.lastSelectedPanel
+    const selectedPanel =
+      state.lastSelectedPanel === undefined
+        ? ('main' as PanelTypes)
+        : state.lastSelectedPanel
 
-    const foundTitle = PanelTitles().find((title) => selectedPanel === title.id)
+    const foundTitle = PANEL_TITLES.find((title) => selectedPanel === title.id)
     const panelTitle = foundTitle ? foundTitle.title : ''
 
     return {

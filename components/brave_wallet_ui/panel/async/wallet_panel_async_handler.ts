@@ -12,7 +12,8 @@ import {
   BraveWallet,
   WalletPanelState,
   PanelState,
-  WalletRoutes
+  WalletRoutes,
+  PanelTypes
 } from '../../constants/types'
 import {
   ConnectWithSitePayloadType,
@@ -41,6 +42,7 @@ import { getLocale } from '../../../common/locale'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { isHardwareAccount } from '../../utils/account-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
+import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys';
 
 const handler = new AsyncActionHandler()
 
@@ -155,6 +157,26 @@ async function navigateToConnectHardwareWallet (store: Store) {
   await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
 }
 
+function isPersistanceOfPanelProhibited (panelType: PanelTypes) {
+  return panelType === 'connectWithSite'
+}
+
+function storeCurrentAndPreviousPanel(
+  panelType: PanelTypes,
+  previousPanel: PanelTypes | undefined
+) {
+  if (!isPersistanceOfPanelProhibited(panelType)) {
+    window.localStorage.setItem(LOCAL_STORAGE_KEYS.CURRENT_PANEL, panelType)
+  }
+
+  if (previousPanel && !isPersistanceOfPanelProhibited(previousPanel)) {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.LAST_VISITED_PANEL,
+      previousPanel
+    )
+  }
+}
+
 handler.on(PanelActions.navigateToMain.type, async (store: Store) => {
   const apiProxy = getWalletPanelApiProxy()
 
@@ -162,9 +184,30 @@ handler.on(PanelActions.navigateToMain.type, async (store: Store) => {
   await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
   apiProxy.panelHandler.setCloseOnDeactivate(true)
   apiProxy.panelHandler.showUI()
+
+  // persist navigation state
+  const selectedPanel = store.getState().panel?.selectedPanel
+  storeCurrentAndPreviousPanel('main', selectedPanel)
 })
 
+handler.on(PanelActions.navigateBack.type, async (store: Store) => {
+  const { lastSelectedPanel, selectedPanel } = store.getState().panel || {}
+  storeCurrentAndPreviousPanel(
+    lastSelectedPanel || 'main',
+    selectedPanel
+  )
+})
+
+handler.on(
+  PanelActions.navigateTo.type,
+  async (store: Store, payload: PanelTypes) => {
+    // navigating away from the current panel, store the last known location
+    storeCurrentAndPreviousPanel(payload, store.getState().panel?.selectedPanel)
+  }
+)
+
 handler.on(PanelActions.cancelConnectToSite.type, async () => {
+  storeCurrentAndPreviousPanel('main', undefined)
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.cancelConnectToSite()
   apiProxy.panelHandler.closeUI()
