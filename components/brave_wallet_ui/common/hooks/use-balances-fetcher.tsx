@@ -2,7 +2,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { useMemo } from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // hooks
@@ -10,24 +9,13 @@ import { useSafeWalletSelector } from './use-safe-selector'
 import { useGetTokenBalancesRegistryQuery } from '../slices/api.slice'
 import { querySubscriptionOptions60s } from '../slices/constants'
 
-// Types / constants
-import { BraveWallet, CoinTypes } from '../../constants/types'
+// Types
+import { BraveWallet } from '../../constants/types'
 import { WalletSelectors } from '../selectors'
-
-// Utils
-import { networkSupportsAccount } from '../../utils/network-utils'
 
 interface Arg {
   networks: BraveWallet.NetworkInfo[]
   accounts: BraveWallet.AccountInfo[]
-}
-
-const coinTypesMapping = {
-  [BraveWallet.CoinType.SOL]: CoinTypes.SOL,
-  [BraveWallet.CoinType.ETH]: CoinTypes.ETH,
-  [BraveWallet.CoinType.FIL]: CoinTypes.FIL,
-  [BraveWallet.CoinType.BTC]: CoinTypes.BTC,
-  [BraveWallet.CoinType.ZEC]: CoinTypes.ZEC,
 }
 
 export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
@@ -36,27 +24,18 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
 
-  const args = useMemo(() => arg !== skipToken && arg.accounts && arg.networks
-    ? arg.accounts.flatMap(account =>
-        arg.networks
-        .filter(network => networkSupportsAccount(network, account.accountId))
-        .map(network => ({
-          accountId: account.accountId,
-          chainId: network.chainId,
-          coin: coinTypesMapping[network.coin]
-        }))
-        .filter(({ coin }) => coin !== undefined)
-      )
-    : skipToken,
-    [arg]
-  )
-
   return useGetTokenBalancesRegistryQuery(
-    args !== skipToken &&
+    arg !== skipToken &&
     !isWalletLocked &&
     isWalletCreated &&
-    hasInitialized
-      ? args
+    hasInitialized &&
+    arg.accounts.length &&
+    arg.networks.length
+      ? {
+          accounts: arg.accounts.map(account => account.accountId),
+          networks: arg.networks
+            .map(({ chainId, coin }) => ({ chainId, coin }))
+        }
       : skipToken,
     querySubscriptionOptions60s
   )
