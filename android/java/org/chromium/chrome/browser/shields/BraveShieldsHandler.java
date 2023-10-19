@@ -134,12 +134,13 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     public boolean isDisconnectEntityLoaded;
 
     private static Context scanForActivity(Context cont) {
-        if (cont == null)
+        if (cont == null) {
             return null;
-        else if (cont instanceof Activity)
+        } else if (cont instanceof Activity) {
             return cont;
-        else if (cont instanceof ContextWrapper)
+        } else if (cont instanceof ContextWrapper) {
             return scanForActivity(((ContextWrapper)cont).getBaseContext());
+        }
 
         return cont;
     }
@@ -201,32 +202,34 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         return json;
     }
 
-    public void addStat(int tabId, String block_type, String subresource) {
+    public void addStat(int tabId, String blockType, String subResource) {
         if (!mTabsStat.containsKey(tabId)) {
             mTabsStat.put(tabId, new BlockersInfo());
         }
         BlockersInfo blockersInfo = mTabsStat.get(tabId);
-        if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
+        if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
             blockersInfo.mAdsBlocked++;
             if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
-                blockersInfo = addBlockerNames(blockersInfo, subresource);
+                blockersInfo = addBlockerNames(blockersInfo, subResource);
             }
-        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
+        } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
             blockersInfo.mTrackersBlocked++;
             if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
-                blockersInfo = addBlockerNames(blockersInfo, subresource);
+                blockersInfo = addBlockerNames(blockersInfo, subResource);
             }
-        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
+        } else if (blockType.equals(BraveShieldsContentSettings
+                                            .RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
             blockersInfo.mHTTPSUpgrades++;
-        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+        } else if (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             blockersInfo.mScriptsBlocked++;
-        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+        } else if (blockType.equals(
+                           BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             blockersInfo.mFingerprintsBlocked++;
         }
     }
 
-    private BlockersInfo addBlockerNames(BlockersInfo blockersInfo, String subresource) {
-        GURL gurl = new GURL(subresource);
+    private BlockersInfo addBlockerNames(BlockersInfo blockersInfo, String subResource) {
+        GURL gurl = new GURL(subResource);
         if (!GURL.isEmptyOrInvalid(gurl)) {
             String companyName = getBlockerCompanyName(gurl);
             if (!blockersInfo.mBlockerNames.contains(companyName)) {
@@ -1091,11 +1094,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     @Override
     public void onLargeIconReady(Bitmap icon) {
-        SetFavIcon(icon);
+        setFavIcon(icon);
     }
 
-
-    private void SetFavIcon(Bitmap bmp) {
+    private void setFavIcon(Bitmap bmp) {
         if (bmp != null && mContext != null) {
             ((Activity)mContext).runOnUiThread(
             new Runnable() {
