@@ -23,7 +23,7 @@ interface MenuProps {
   onDismissMenu?: () => void
 }
 
-const StyledRow = styled('leo-menu-item')`
+const StyledRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -60,10 +60,12 @@ export default function ContextualMenuAnchorButton ({
         <Icon name='more-horizontal' />
       </div>
       {items.map(i => (
-        <StyledRow key={i.name} onClick={i.onClick}>
-          <span>{i.name}</span>
-          <Icon name={i.iconName} />
-        </StyledRow>
+        <leo-menu-item key={i.name} onClick={i.onClick}>
+          <StyledRow>
+            <span>{i.name}</span>
+            <Icon name={i.iconName} />
+          </StyledRow>
+        </leo-menu-item>
       ))}
     </StyledButtonMenu>
   )
