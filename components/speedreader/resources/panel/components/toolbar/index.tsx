@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import * as S from './style'
-import getToolbarAPI, { AppearanceSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed } from '../../api/browser'
+import getToolbarAPI, { AppearanceSettings, TtsSettings, ToolbarColors, Theme, FontSize, FontFamily, PlaybackSpeed, ColumnWidth } from '../../api/browser'
 import { MainButtonType, MainButtonsList } from '../lists'
 import ReaderModeControl from "../reader-mode-control"
 import AppearanceControl from "../appearance-control"
@@ -70,6 +70,11 @@ function Toolbar() {
     getToolbarAPI().dataHandler.setAppearanceSettings(settings)
   }
 
+  const handleColumnWidthChange = (columnWidth: ColumnWidth) => {
+    const settings = { ...appearanceSettings, columnWidth }
+    getToolbarAPI().dataHandler.setAppearanceSettings(settings)
+  }
+
   const handleTtsVoiceChange = (voice: string) => {
     const settings = { ...ttsSettings, voice }
     setTtsSettings(settings)
@@ -119,6 +124,7 @@ function Toolbar() {
           appearanceSettings={appearanceSettings}
           onThemeChange={handleThemeChange.bind(this)}
           onFontFamilyChange={handleFontFamilyChange.bind(this)}
+          onColumnWidthChange={handleColumnWidthChange.bind(this)}
           onFontSizeChange={handleFontSizeChange.bind(this)}
           onClose={() => { setActiveButton(MainButtonType.None) }}
         />)}

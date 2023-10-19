@@ -369,6 +369,8 @@ if (enable_speedreader) {
     "play-outline.svg",
     "product-readermode.svg",
     "product-speedreader.svg",
+    "readermode-column-default.svg",
+    "readermode-column-wide.svg",
     "readermode-dislexyc.svg",
     "readermode-mono.svg",
     "readermode-sans.svg",

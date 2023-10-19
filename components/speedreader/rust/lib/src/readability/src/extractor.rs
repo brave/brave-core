@@ -233,7 +233,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     theme: Option<String>,
     font_family: Option<String>,
     font_size: Option<String>,
-    content_style: Option<String>,
+    column_width: Option<String>,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
     let handle = dom.document_node.clone();
@@ -301,7 +301,7 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         content = title_blob + &content;
     }
 
-    if theme.is_some() || font_family.is_some() || font_size.is_some() || content_style.is_some() {
+    if theme.is_some() || font_family.is_some() || font_size.is_some() || column_width.is_some() {
         let mut header: String = String::from("<html");
         if let Some(theme) = theme {
             header = [header, format!(" data-theme=\"{}\"", theme)].concat();
@@ -312,8 +312,8 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         if let Some(font_size) = font_size {
             header = [header, format!(" data-font-size=\"{}\"", font_size)].concat();
         }
-        if let Some(content_style) = content_style {
-            header = [header, format!(" data-content-style=\"{}\"", content_style)].concat();
+        if let Some(column_width) = column_width {
+            header = [header, format!(" data-column-width=\"{}\"", column_width)].concat();
         }
         content = [header, ">".to_string(), content, "</html>".to_string()].concat();
     }

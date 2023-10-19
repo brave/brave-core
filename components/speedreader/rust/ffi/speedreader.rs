@@ -119,13 +119,13 @@ pub extern "C" fn rewriter_set_font_size(rewriter: *mut CRewriter, size: *const 
 }
 
 #[no_mangle]
-pub extern "C" fn rewriter_set_content_style(rewriter: *mut CRewriter, style: *const c_char) {
+pub extern "C" fn rewriter_set_column_width(rewriter: *mut CRewriter, width: *const c_char) {
     let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
-    let the_style = unsafe {
-        let c_s = style;
+    let the_width = unsafe {
+        let c_s = width;
         str::from_utf8_unchecked(slice::from_raw_parts(c_s as *const u8, strlen(c_s)))
     };
-    rewriter.set_content_style(the_style);
+    rewriter.set_column_width(the_width);
 }
 
 /// Write a new chunk of data (byte array) to the rewriter instance.

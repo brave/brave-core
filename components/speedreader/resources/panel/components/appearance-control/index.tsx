@@ -8,14 +8,15 @@ import * as React from 'react'
 import * as S from './style'
 import ThemeControl from '../theme-control'
 
-import { AppearanceSettings, Theme, FontSize, FontFamily } from '../../api/browser'
-import { FontStyleList, FontSizeList } from '../lists'
+import { AppearanceSettings, Theme, FontSize, FontFamily, ColumnWidth } from '../../api/browser'
+import { FontStyleList, FontSizeList, ColumnWidthList } from '../lists'
 import { getLocale } from '$web-common/locale'
 
 interface AppearanceControlProps {
   appearanceSettings: AppearanceSettings
   onThemeChange: (theme: Theme) => void
   onFontFamilyChange: (fontFamily: FontFamily) => void
+  onColumnWidthChange: (columnWidth: ColumnWidth) => void
   onFontSizeChange: (fontSize: FontSize) => void
   onClose: () => void
 }
@@ -30,6 +31,10 @@ function AppearanceControl (props: AppearanceControlProps) {
       <FontStyleList
         activeFontFamily={props.appearanceSettings.fontFamily}
         onClick={props.onFontFamilyChange}
+      />
+      <ColumnWidthList
+        columnWidth={props.appearanceSettings.columnWidth}
+        onClick={props.onColumnWidthChange}
       />
       <FontSizeList
         currentSize={props.appearanceSettings.fontSize}

@@ -49,6 +49,7 @@ struct AppearanceSettings {
   Theme theme = Theme.kNone;
   FontSize fontSize = FontSize.k100;
   FontFamily fontFamily = FontFamily.kSans;
+  ColumnWidth columnWidth = ColumnWidth.kNarrow;
 };
 
 struct TtsSettings {
@@ -95,6 +96,12 @@ enum FontFamily {
   kSerif = 1,
   kMono = 2,
   kDyslexic = 3,
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+enum ColumnWidth {
+  kNarrow = 0,
+  kWide = 1,
 };
 
 // Enum is used in prefs. Be careful when changing or extending.
