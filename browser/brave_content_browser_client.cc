@@ -1063,7 +1063,8 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
       ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
 
-  // Rewards
+  // inserting the navigation throttle at the fist position before any java
+  // navigation happens
   throttles.insert(
       throttles.begin(),
       std::make_unique<brave_rewards::RewardsProtocolNavigationThrottle>(
