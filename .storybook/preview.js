@@ -40,7 +40,7 @@ export const parameters = {
 
 window.loadTimeData = {
   getString,
-  getBoolean (key) {
+  getBoolean(key) {
     return false
   }
 }
@@ -49,7 +49,18 @@ chrome.extension = {
 }
 
 export const decorators = [
-  (Story) => <div dir={boolean('rtl?', false) ? 'rtl' : ''}><Story /></div>,
-  (Story, context) => <ThemeProvider dark={context.args.darkTheme} light={context.args.lightTheme}><Story /></ThemeProvider>,
+  (Story) => (
+    <div dir={boolean('rtl?', false) ? 'rtl' : ''}>
+      <Story />
+    </div>
+  ),
+  (Story, context) => (
+    <ThemeProvider
+      dark={context.args.darkTheme}
+      light={context.args.lightTheme}
+    >
+      <Story />
+    </ThemeProvider>
+  ),
   withKnobs
 ]

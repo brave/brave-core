@@ -44,7 +44,7 @@
         "../out/Component_arm64/gen/*",
         "../out/Static_arm64/gen/*",
         "../out/Release_arm64/gen/*",
-        "../out/Debug_arm64/gen/*",
+        "../out/Debug_arm64/gen/*"
       ],
       "chrome://resources/*": [
         "../out/Component/gen/ui/webui/resources/tsc/*",
@@ -54,7 +54,7 @@
         "../out/Component_arm64/gen/ui/webui/resources/tsc/*",
         "../out/Static_arm64/gen/ui/webui/resources/tsc/*",
         "../out/Release_arm64/gen/ui/webui/resources/tsc/*",
-        "../out/Debug_arm64/gen/ui/webui/resources/tsc/*",
+        "../out/Debug_arm64/gen/ui/webui/resources/tsc/*"
       ],
       "chrome://resources/brave/*": [
         "../out/Component/gen/brave/ui/webui/resources/tsc/*",
@@ -64,15 +64,12 @@
         "../out/Component_arm64/gen/brave/ui/webui/resources/tsc/*",
         "../out/Static_arm64/gen/brave/ui/webui/resources/tsc/*",
         "../out/Release_arm64/gen/brave/ui/webui/resources/tsc/*",
-        "../out/Debug_arm64/gen/brave/ui/webui/resources/tsc/*",
+        "../out/Debug_arm64/gen/brave/ui/webui/resources/tsc/*"
       ],
       "$web-common/*": ["components/common/*"],
-      "$web-components/*": ["components/web-components/*"],
+      "$web-components/*": ["components/web-components/*"]
     },
-    "typeRoots": [
-      "./node_modules/@types",
-      "./components/definitions"
-    ],
+    "typeRoots": ["./node_modules/@types", "./components/definitions"],
     // optional
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,

@@ -1,7 +1,4 @@
 {
   "extends": "./tsconfig",
-  "include": [
-    "./components/definitions/*",
-    "./components/**/storybook"
-  ]
+  "include": ["./components/definitions/*", "./components/**/storybook"]
 }
