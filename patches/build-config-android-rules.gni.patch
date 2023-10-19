@@ -22,7 +22,7 @@ index 4b2024518f1fc9214d0c893ead69c2d59909388c..777d597466ef34aef99ba76cccf6e4e7
      if (_enable_language_splits) {
        _split_dimensions += [ "language" ]
      }
-+    _split_dimensions += [ "abi" ]
++    if (invoker.android_app_abi != "x86" && invoker.android_app_abi != "armeabi-v7a") { _split_dimensions += [ "abi" ] }
  
      _keystore_path = android_keystore_path
      _keystore_password = android_keystore_password
