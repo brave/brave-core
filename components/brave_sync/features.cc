@@ -12,21 +12,5 @@ namespace features {
 
 BASE_FEATURE(kBraveSync, "BraveSync", base::FEATURE_ENABLED_BY_DEFAULT);
 
-// When this feature is enabled through brave://flags it adds to history entry's
-// title additional info for sync diagnostics:
-// - whether history entry should be synced;
-// - typed count;
-// - page transition.
-BASE_FEATURE(kBraveSyncHistoryDiagnostics,
-             "BraveSyncHistoryDiagnostics",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
-// When this feature is enabled, Sync sends to remote server all the history
-// entries, including page transition beyond typed url (link, bookmark, reload,
-// etc).
-BASE_FEATURE(kBraveSyncSendAllHistory,
-             "BraveSyncSendAllHistory",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 }  // namespace features
 }  // namespace brave_sync
