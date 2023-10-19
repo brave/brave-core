@@ -8,9 +8,11 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
+#include "brave/browser/ipfs/ipfs_fallback_redirect_nav_data.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "chrome/browser/media/webrtc/tab_capture_access_handler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -19,238 +21,17 @@
 #include "components/version_info/channel.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_browser_context.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/public/test/web_contents_tester.h"
 #include "content/test/test_web_contents.h"
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
 #include "services/network/test/test_network_context.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-namespace content {
-class NavigationHandleMock : public content::NavigationHandle {
- public:
-  MOCK_METHOD(int64_t, GetNavigationId, (), (override));
-  MOCK_METHOD(ukm::SourceId, GetNextPageUkmSourceId, (), (override));
-  MOCK_METHOD(const GURL&, GetURL, (), (override));
-  MOCK_METHOD(SiteInstance*, GetStartingSiteInstance, (), (override));
-  MOCK_METHOD(SiteInstance*, GetSourceSiteInstance, (), (override));
-  MOCK_METHOD(bool, IsInMainFrame, (), (const override));
-  MOCK_METHOD(bool, IsInPrimaryMainFrame, (), (const override));
-  MOCK_METHOD(bool, IsInOutermostMainFrame, (), (override));
-  MOCK_METHOD(bool, IsInPrerenderedMainFrame, (), (const override));
-  MOCK_METHOD(bool, IsPrerenderedPageActivation, (), (const override));
-  MOCK_METHOD(bool, IsInFencedFrameTree, (), (const override));
-  MOCK_METHOD(FrameType, GetNavigatingFrameType, (), (const override));
-  MOCK_METHOD(bool, IsRendererInitiated, (), (override));
-  MOCK_METHOD(blink::mojom::NavigationInitiatorActivationAndAdStatus,
-              GetNavigationInitiatorActivationAndAdStatus,
-              (),
-              (override));
-  MOCK_METHOD(bool, IsSameOrigin, (), (override));
-  MOCK_METHOD(int, GetFrameTreeNodeId, (), (override));
-  MOCK_METHOD(RenderFrameHost*, GetParentFrame, (), (override));
-  MOCK_METHOD(RenderFrameHost*, GetParentFrameOrOuterDocument, (), (override));
-  MOCK_METHOD(base::TimeTicks, NavigationStart, (), (override));
-  MOCK_METHOD(base::TimeTicks, NavigationInputStart, (), (override));
-  MOCK_METHOD(const NavigationHandleTiming&,
-              GetNavigationHandleTiming,
-              (),
-              (override));
-  MOCK_METHOD(bool, WasStartedFromContextMenu, (), (override));
-  MOCK_METHOD(const GURL&, GetSearchableFormURL, (), (override));
-  MOCK_METHOD(const std::string&, GetSearchableFormEncoding, (), (override));
-  MOCK_METHOD(ReloadType, GetReloadType, (), (override));
-  MOCK_METHOD(RestoreType, GetRestoreType, (), (override));
-  MOCK_METHOD(const GURL&, GetBaseURLForDataURL, (), (override));
-  MOCK_METHOD(bool, IsPost, (), (override));
-  MOCK_METHOD(const blink::mojom::Referrer&, GetReferrer, (), (override));
-  MOCK_METHOD(void,
-              SetReferrer,
-              (blink::mojom::ReferrerPtr referrer),
-              (override));
-  MOCK_METHOD(bool, HasUserGesture, (), (override));
-  MOCK_METHOD(ui::PageTransition, GetPageTransition, (), (override));
-  MOCK_METHOD(NavigationUIData*, GetNavigationUIData, (), (override));
-  MOCK_METHOD(bool, IsExternalProtocol, (), (override));
-  MOCK_METHOD(bool, IsServedFromBackForwardCache, (), (override));
-  MOCK_METHOD(bool, IsPageActivation, (), (const override));
-  MOCK_METHOD(net::Error, GetNetErrorCode, (), (override));
-  MOCK_METHOD(RenderFrameHost*, GetRenderFrameHost, (), (const override));
-  MOCK_METHOD(GlobalRenderFrameHostId,
-              GetPreviousRenderFrameHostId,
-              (),
-              (override));
-  MOCK_METHOD(int, GetExpectedRenderProcessHostId, (), (override));
-  MOCK_METHOD(bool, IsSameDocument, (), (const override));
-  MOCK_METHOD(bool, WasServerRedirect, (), (override));
-  MOCK_METHOD(const std::vector<GURL>&, GetRedirectChain, (), (override));
-  MOCK_METHOD(bool, HasCommitted, (), (const override));
-  MOCK_METHOD(bool, IsErrorPage, (), (const override));
-  MOCK_METHOD(bool, HasSubframeNavigationEntryCommitted, (), (override));
-  MOCK_METHOD(bool, DidReplaceEntry, (), (override));
-  MOCK_METHOD(bool, ShouldUpdateHistory, (), (override));
-  MOCK_METHOD(const GURL&, GetPreviousPrimaryMainFrameURL, (), (override));
-  MOCK_METHOD(net::IPEndPoint, GetSocketAddress, (), (override));
-  MOCK_METHOD(const net::HttpRequestHeaders&,
-              GetRequestHeaders,
-              (),
-              (override));
-  MOCK_METHOD(void,
-              RemoveRequestHeader,
-              (const std::string& header_name),
-              (override));
-  MOCK_METHOD(void,
-              SetRequestHeader,
-              (const std::string& header_name, const std::string& header_value),
-              (override));
-  MOCK_METHOD(void,
-              SetCorsExemptRequestHeader,
-              (const std::string& header_name, const std::string& header_value),
-              (override));
-  MOCK_METHOD(
-      void,
-      SetLCPPNavigationHint,
-      (const blink::mojom::LCPCriticalPathPredictorNavigationTimeHint& hint),
-      (override));
-  MOCK_METHOD(
-      const blink::mojom::LCPCriticalPathPredictorNavigationTimeHintPtr&,
-      GetLCPPNavigationHint,
-      (),
-      (override));
-  MOCK_METHOD(const net::HttpResponseHeaders*,
-              GetResponseHeaders,
-              (),
-              (override));
-  MOCK_METHOD(net::HttpResponseInfo::ConnectionInfo,
-              GetConnectionInfo,
-              (),
-              (override));
-  MOCK_METHOD(const absl::optional<net::SSLInfo>&, GetSSLInfo, (), (override));
-  MOCK_METHOD(const absl::optional<net::AuthChallengeInfo>&,
-              GetAuthChallengeInfo,
-              (),
-              (override));
-  MOCK_METHOD(net::ResolveErrorInfo, GetResolveErrorInfo, (), (override));
-  MOCK_METHOD(net::IsolationInfo, GetIsolationInfo, (), (override));
-  MOCK_METHOD(const GlobalRequestID&, GetGlobalRequestID, (), (override));
-  MOCK_METHOD(bool, IsDownload, (), (override));
-  MOCK_METHOD(bool, IsFormSubmission, (), (override));
-  MOCK_METHOD(bool, WasInitiatedByLinkClick, (), (override));
-  MOCK_METHOD(bool, IsSignedExchangeInnerResponse, (), (override));
-  MOCK_METHOD(bool,
-              HasPrefetchedAlternativeSubresourceSignedExchange,
-              (),
-              (override));
-  MOCK_METHOD(bool, WasResponseCached, (), (override));
-  MOCK_METHOD(const net::ProxyServer&, GetProxyServer, (), (override));
-  MOCK_METHOD(const std::string&, GetHrefTranslate, (), (override));
-  MOCK_METHOD(const absl::optional<blink::Impression>&,
-              GetImpression,
-              (),
-              (override));
-  MOCK_METHOD(const absl::optional<blink::LocalFrameToken>&,
-              GetInitiatorFrameToken,
-              (),
-              (override));
-  MOCK_METHOD(int, GetInitiatorProcessId, (), (override));
-  MOCK_METHOD(const absl::optional<url::Origin>&,
-              GetInitiatorOrigin,
-              (),
-              (override));
-  MOCK_METHOD(network::mojom::WebSandboxFlags,
-              SandboxFlagsInitiator,
-              (),
-              (override));
-  MOCK_METHOD(const absl::optional<GURL>&, GetInitiatorBaseUrl, (), (override));
-  MOCK_METHOD(const std::vector<std::string>&, GetDnsAliases, (), (override));
-  MOCK_METHOD(bool, IsSameProcess, (), (override));
-  MOCK_METHOD(NavigationEntry*, GetNavigationEntry, (), (override));
-  MOCK_METHOD(int, GetNavigationEntryOffset, (), (override));
-  MOCK_METHOD(void,
-              RegisterSubresourceOverride,
-              (blink::mojom::TransferrableURLLoaderPtr transferrable_loader),
-              (override));
-  MOCK_METHOD(void,
-              ForceEnableOriginTrials,
-              (const std::vector<std::string>& trials),
-              (override));
-  MOCK_METHOD(void, SetIsOverridingUserAgent, (bool override_ua), (override));
-  MOCK_METHOD(void, SetSilentlyIgnoreErrors, (), (override));
-  MOCK_METHOD(network::mojom::WebSandboxFlags,
-              SandboxFlagsInherited,
-              (),
-              (override));
-  MOCK_METHOD(network::mojom::WebSandboxFlags,
-              SandboxFlagsToCommit,
-              (),
-              (override));
-  MOCK_METHOD(bool, IsWaitingToCommit, (), (override));
-  MOCK_METHOD(bool, WasResourceHintsReceived, (), (override));
-  MOCK_METHOD(bool, IsPdf, (), (override));
-  MOCK_METHOD(void,
-              WriteIntoTrace,
-              (perfetto::TracedProto<TraceProto> context),
-              (const override));
-  MOCK_METHOD(bool,
-              SetNavigationTimeout,
-              (base::TimeDelta timeout),
-              (override));
-  MOCK_METHOD(void,
-              SetAllowCookiesFromBrowser,
-              (bool allow_cookies_from_browser),
-              (override));
-  MOCK_METHOD(void,
-              GetResponseBody,
-              (ResponseBodyCallback callback),
-              (override));
-  MOCK_METHOD(PrerenderTriggerType, GetPrerenderTriggerType, (), (override));
-  MOCK_METHOD(std::string, GetPrerenderEmbedderHistogramSuffix, (), (override));
-  MOCK_METHOD(base::SafeRef<NavigationHandle>, GetSafeRef, (), (override));
-  MOCK_METHOD(void,
-              RegisterThrottleForTesting,
-              (std::unique_ptr<NavigationThrottle> navigation_throttle),
-              (override));
-  MOCK_METHOD(bool, IsDeferredForTesting, (), (override));
-  MOCK_METHOD(bool,
-              IsCommitDeferringConditionDeferredForTesting,
-              (),
-              (override));
-  MOCK_METHOD(CommitDeferringCondition*,
-              GetCommitDeferringConditionForTesting,
-              (),
-              (override));
-  MOCK_METHOD(bool, ExistingDocumentWasDiscarded, (), (const override));
-  MOCK_METHOD(blink::RuntimeFeatureStateContext&,
-              GetMutableRuntimeFeatureStateContext,
-              (),
-              (override));
-#if BUILDFLAG(IS_ANDROID)
-  MOCK_METHOD(const base::android::JavaRef<jobject>&,
-              GetJavaNavigationHandle,
-              (),
-              (override));
-#endif
-
-  void SetUp(const net::Error get_net_error,
-             const bool is_error_page,
-             net::HttpResponseHeaders* parsed_headers) {
-    ON_CALL(*this, IsInMainFrame()).WillByDefault(::testing::Return(true));
-    ON_CALL(*this, HasCommitted()).WillByDefault(::testing::Return(true));
-    ON_CALL(*this, IsSameDocument()).WillByDefault(::testing::Return(false));
-    ON_CALL(*this, GetNetErrorCode())
-        .WillByDefault(::testing::Return(get_net_error));
-    ON_CALL(*this, IsErrorPage())
-        .WillByDefault(::testing::Return(is_error_page));
-    ON_CALL(*this, GetResponseHeaders())
-        .WillByDefault(::testing::Return(parsed_headers));
-  }
-};
-}  // namespace content
 
 namespace ipfs {
 
@@ -291,6 +72,42 @@ class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
   std::string dnslink_;
 };
 
+class FakeTestWebContents : public content::TestWebContents {
+ public:
+  explicit FakeTestWebContents(content::BrowserContext* browser_context)
+      : TestWebContents(browser_context) {}
+
+  static std::unique_ptr<FakeTestWebContents> Create(
+      content::BrowserContext* browser_context,
+      scoped_refptr<content::SiteInstance> instance) {
+    std::unique_ptr<FakeTestWebContents> test_web_contents(
+        new FakeTestWebContents(browser_context));
+    test_web_contents->Init(CreateParams(browser_context, std::move(instance)),
+                            blink::FramePolicy());
+    return test_web_contents;
+  }
+
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override {
+    WebContentsImpl::DidFinishNavigation(navigation_handle);
+    if (!on_did_finish_navigation_completed.empty()) {
+      auto curr_callback = on_did_finish_navigation_completed.back();
+      on_did_finish_navigation_completed.pop_back();
+      curr_callback.Run(navigation_handle);
+    }
+  }
+
+  void SetOnDidFinishNavigationCompleted(
+      base::RepeatingCallback<void(content::NavigationHandle*)> callback) {
+    on_did_finish_navigation_completed.insert(
+        on_did_finish_navigation_completed.begin(), callback);
+  }
+
+ private:
+  std::vector<base::RepeatingCallback<void(content::NavigationHandle*)>>
+      on_did_finish_navigation_completed;
+};
+
 class IpfsTabHelperUnitTest : public testing::Test {
  public:
   IpfsTabHelperUnitTest()
@@ -301,7 +118,7 @@ class IpfsTabHelperUnitTest : public testing::Test {
     ASSERT_TRUE(profile_manager_.SetUp());
     test_network_context_ = std::make_unique<network::TestNetworkContext>();
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
-    web_contents_ = content::TestWebContents::Create(profile(), nullptr);
+    web_contents_ = FakeTestWebContents::Create(profile(), nullptr);
     auto ipfs_host_resolver = std::make_unique<FakeIPFSHostResolver>();
     ipfs_host_resolver_ = ipfs_host_resolver.get();
     ipfs_host_resolver_->SetNetworkContextForTesting(
@@ -336,43 +153,24 @@ class IpfsTabHelperUnitTest : public testing::Test {
     return ipfs_host_resolver_;
   }
 
-  content::TestWebContents* web_contents() { return web_contents_.get(); }
+  FakeTestWebContents* web_contents() { return web_contents_.get(); }
 
   GURL redirect_url() { return redirect_url_; }
 
   void ResetRedirectUrl() { redirect_url_ = GURL(); }
 
-  void DetectPageLoadingErrorFallbackTest(
-      const GURL url,
-      const GURL redirected_to_url,
-      base::OnceCallback<void(ipfs::IPFSTabHelper*,
-                              content::NavigationHandleMock*)> callback,
-      const net::Error get_net_error,
-      const bool is_error_page,
-      net::HttpResponseHeaders* parsed_headers,
-      const int is_error_page_call_count,
-      const int get_net_error_code_call_count) {
-    content::NavigationHandleMock navHandlerMocked;
-    navHandlerMocked.SetUp(get_net_error, is_error_page, parsed_headers);
-    EXPECT_CALL(navHandlerMocked, IsInMainFrame()).Times(::testing::AtLeast(1));
-    EXPECT_CALL(navHandlerMocked, HasCommitted()).Times(::testing::AtLeast(1));
-    EXPECT_CALL(navHandlerMocked, IsSameDocument())
-        .Times(::testing::AtLeast(1));
-    EXPECT_CALL(navHandlerMocked, GetResponseHeaders())
-        .Times(::testing::AtLeast(1));
-    EXPECT_CALL(navHandlerMocked, GetNetErrorCode())
-        .Times(::testing::AtLeast(get_net_error_code_call_count));
-    EXPECT_CALL(navHandlerMocked, IsErrorPage())
-        .Times(::testing::AtLeast(is_error_page_call_count));
-
-    auto* helper = ipfs_tab_helper();
-    ASSERT_TRUE(helper);
-    helper->SetPageURLForTesting(redirected_to_url);
-    helper->SetSetShowFallbackInfobarCallbackForTesting(
-        base::BindLambdaForTesting([&](const GURL& initial_navigation_url) {
-          EXPECT_EQ(url, initial_navigation_url);
-        }));
-    std::move(callback).Run(helper, &navHandlerMocked);
+  void NavigateAndCommit(const GURL& url) {
+    static_cast<content::TestWebContents*>(web_contents())
+        ->NavigateAndCommit(url);
+  }
+  void NavigateAndComitFailedFailedPage(const GURL& url,
+                                        const int& error_code) {
+    std::unique_ptr<content::NavigationSimulator> navigation =
+        content::NavigationSimulator::CreateBrowserInitiated(
+            url, web_contents_.get());
+    navigation->Fail(error_code);
+    navigation->CommitErrorPage();
+    navigation->Wait();
   }
 
  private:
@@ -383,7 +181,7 @@ class IpfsTabHelperUnitTest : public testing::Test {
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   TestingProfileManager profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;
-  std::unique_ptr<content::TestWebContents> web_contents_;
+  std::unique_ptr<FakeTestWebContents> web_contents_;
   std::unique_ptr<network::TestNetworkContext> test_network_context_;
   raw_ptr<FakeIPFSHostResolver> ipfs_host_resolver_;
 };
@@ -427,7 +225,7 @@ TEST_F(IpfsTabHelperUnitTest,
   headers->AddHeader("x-ipfs-path", "somevalue");
 
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
@@ -444,7 +242,7 @@ TEST_F(IpfsTabHelperUnitTest,
 
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 400 Nan");
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
@@ -461,7 +259,7 @@ TEST_F(IpfsTabHelperUnitTest,
   auto headers = net::HttpResponseHeaders::TryToCreate(
       "HTTP/1.1 500 Internal server error");
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
@@ -479,7 +277,7 @@ TEST_F(IpfsTabHelperUnitTest,
   auto headers = net::HttpResponseHeaders::TryToCreate(
       "HTTP/1.1 505 Version not supported");
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
@@ -497,7 +295,7 @@ TEST_F(IpfsTabHelperUnitTest,
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
 
   ipfs_host_resolver()->SetDNSLinkToRespond("");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
@@ -513,8 +311,8 @@ TEST_F(IpfsTabHelperUnitTest, DNSLinkRecordResolved_AutoRedirectDNSLink) {
   helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
   helper->HostResolvedCallback(GURL("https://brantly.eth/page?query#ref"),
                                GURL("https://brantly.eth/page?query#ref"),
-                               false, absl::nullopt, "brantly.eth",
-                               "/ipns/brantly.eth/");
+                               false, absl::nullopt, false, false,
+                               "brantly.eth", "/ipns/brantly.eth/");
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
             helper->GetIPFSResolvedURL());
 }
@@ -533,7 +331,7 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPFS) {
   headers->AddHeader("x-ipfs-path", base::StringPrintf("/ipfs/%s", kCid1));
 
   ipfs_host_resolver()->SetDNSLinkToRespond("");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   GURL resolved_url = helper->GetIPFSResolvedURL();
@@ -556,7 +354,7 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS) {
   headers->AddHeader("x-ipfs-path", "/ipns/brantly.eth/");
 
   ipfs_host_resolver()->SetDNSLinkToRespond("");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   GURL resolved_url = helper->GetIPFSResolvedURL();
@@ -602,7 +400,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
 
   GURL api_server = GetAPIServer(chrome::GetChannel());
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(GURL(), false);
+  helper->DNSLinkResolved(GURL(), false, false, false);
   ASSERT_FALSE(helper->GetIPFSResolvedURL().is_valid());
 
   scoped_refptr<net::HttpResponseHeaders> response_headers(
@@ -612,24 +410,24 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
   response_headers->AddHeader("x-ipfs-path",
                               base::StringPrintf("/ipfs/%s", kCid1));
 
-  helper->MaybeCheckDNSLinkRecord(response_headers.get());
+  helper->MaybeCheckDNSLinkRecord(response_headers.get(), false, false);
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   GURL test_url("ipns://brantly.eth/");
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(test_url, false);
+  helper->DNSLinkResolved(test_url, false, false, false);
 
-  helper->MaybeCheckDNSLinkRecord(response_headers.get());
+  helper->MaybeCheckDNSLinkRecord(response_headers.get(), false, false);
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(test_url, false);
+  helper->DNSLinkResolved(test_url, false, false, false);
   helper->UpdateDnsLinkButtonState();
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(GURL(), false);
-  helper->MaybeCheckDNSLinkRecord(response_headers.get());
+  helper->DNSLinkResolved(GURL(), false, false, false);
+  helper->MaybeCheckDNSLinkRecord(response_headers.get(), false, false);
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 }
 
@@ -900,7 +698,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_ResolveUrl) {
 
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
@@ -920,7 +718,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect) {
 
   ipfs_host_resolver()->SetDNSLinkToRespond("x");
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"), redirect_url());
@@ -939,7 +737,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_No_Redirect_WhenNoDnsLink) {
 
   ipfs_host_resolver()->SetDNSLinkToRespond("");
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), redirect_url());
@@ -987,7 +785,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_NoRedirect_WhenNoDnsLinkRecord) {
       GURL("https://ipfs.io/ipns/brantly.eth/page?query#ref"));
 
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
-  helper->MaybeCheckDNSLinkRecord(headers.get());
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
@@ -1002,76 +800,182 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
 
   SetIpfsCompanionEnabledFlag(false);
 
-  std::string headers = "HTTP/1.1 500 Internal Server Error\n";
-  HeadersToRaw(&headers);
-  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>(headers);
-  DetectPageLoadingErrorFallbackTest(
-      url, redirected_to_url,
-      base::BindLambdaForTesting(
-          [&](ipfs::IPFSTabHelper* helper,
-              content::NavigationHandleMock* nav_handle) {
-            helper->SetPageURLForTesting(url);
-            helper->DidFinishNavigation(nav_handle);
-            EXPECT_EQ(helper->initial_navigation_url_.value(), url);
-            EXPECT_FALSE(helper->auto_redirect_blocked_);
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            1);
+        auto* nav_data_detected_original_url =
+            IpfsFallbackRedirectNavigationData::
+                GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_NE(nav_data_detected_original_url, nullptr);
+        EXPECT_EQ(nav_data_detected_original_url->GetOriginalUrl(), url);
+        EXPECT_FALSE(nav_data_detected_original_url->IsAutoRedirectBlocked());
+      }));
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            2);
+        auto* nav_data_auto_redirected = IpfsFallbackRedirectNavigationData::
+            GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_EQ(nav_data_auto_redirected, nullptr);
+      }));
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            2);
+        auto* nav_data_after_redirect = IpfsFallbackRedirectNavigationData::
+            GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_EQ(nav_data_after_redirect, nullptr);
+      }));
 
-            helper->SetPageURLForTesting(redirected_to_url);
-            helper->DidFinishNavigation(nav_handle);
-            EXPECT_FALSE(helper->initial_navigation_url_.has_value());
+  NavigateAndComitFailedFailedPage(url, 500);
 
-            helper->SetFallbackAddress(url);
-            EXPECT_TRUE(helper->auto_redirect_blocked_);
-          }),
-      net::Error::OK, false, parsed.get(), 1, 0);
+  NavigateAndComitFailedFailedPage(redirected_to_url, 500);
+
+  ipfs_tab_helper()->SetFallbackAddress(url);
+
+  auto* nav_data_after_redirect =
+      IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+          web_contents());
+  EXPECT_NE(nav_data_after_redirect, nullptr);
+  EXPECT_TRUE(nav_data_after_redirect->IsAutoRedirectBlocked());
+  EXPECT_EQ(nav_data_after_redirect->GetOriginalUrl(), url);
+
+  NavigateAndComitFailedFailedPage(url, 500);
 }
 
-TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_HeadersOk_ShowInfobar) {
+TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_Broken_Redirect_Chain) {
   const GURL url(
       "https://drweb.link/ipns/"
       "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
   const GURL redirected_to_url(
-      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+      "ipns://bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
 
   SetIpfsCompanionEnabledFlag(false);
 
-  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
-  DetectPageLoadingErrorFallbackTest(
-      url, redirected_to_url,
-      base::BindLambdaForTesting(
-          [&](ipfs::IPFSTabHelper* helper,
-              content::NavigationHandleMock* nav_handle) {
-            helper->initial_navigation_url_ = url;
-            helper->DidFinishNavigation(nav_handle);
-            EXPECT_FALSE(helper->initial_navigation_url_.has_value());
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        auto* nav_data_detected_original_url =
+            IpfsFallbackRedirectNavigationData::
+                GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_NE(nav_data_detected_original_url, nullptr);
+        EXPECT_EQ(nav_data_detected_original_url->GetOriginalUrl(), url);
+        EXPECT_FALSE(nav_data_detected_original_url->IsAutoRedirectBlocked());
+      }));
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        auto* nav_data_auto_redirected = IpfsFallbackRedirectNavigationData::
+            GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_EQ(nav_data_auto_redirected, nullptr);
+      }));
 
-            helper->SetFallbackAddress(url);
-            EXPECT_TRUE(helper->auto_redirect_blocked_);
-          }),
-      net::Error::ERR_FAILED, true, parsed.get(), 1, 1);
+  NavigateAndComitFailedFailedPage(url, 500);
+
+  NavigateAndComitFailedFailedPage(redirected_to_url, 500);
+
+  auto* nav_data_after_chain_break =
+      IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+          web_contents());
+  EXPECT_EQ(nav_data_after_chain_break, nullptr);
 }
 
-TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_IPFSCompanion_Enabled) {
+TEST_F(IpfsTabHelperUnitTest,
+       DetectPageLoadingError_Broken_Redirect_Chain_Start_New) {
   const GURL url(
       "https://drweb.link/ipns/"
       "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
-  const GURL redirected_to_url(
-      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+  const GURL breake_redirected_to_url(
+      "ipns://bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
+  const GURL new_redirect_chain_start_url(
+      "https://ipfs.io/ipfs/"
+      "bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
+  const GURL new_chain_redirected_to_url(
+      "ipns://bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
 
-  SetIpfsCompanionEnabledFlag(true);
+  SetIpfsCompanionEnabledFlag(false);
 
-  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
-  DetectPageLoadingErrorFallbackTest(
-      url, redirected_to_url,
-      base::BindLambdaForTesting(
-          [&](ipfs::IPFSTabHelper* helper,
-              content::NavigationHandleMock* nav_handle) {
-            helper->SetPageURLForTesting(url);
-            helper->DidFinishNavigation(nav_handle);
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            1);
+        auto* nav_data_detected_original_url =
+            IpfsFallbackRedirectNavigationData::
+                GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_NE(nav_data_detected_original_url, nullptr);
+        EXPECT_EQ(nav_data_detected_original_url->GetOriginalUrl(), url);
+        EXPECT_FALSE(nav_data_detected_original_url->IsAutoRedirectBlocked());
+      }));
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            2);
+        auto* nav_data_chain_break = IpfsFallbackRedirectNavigationData::
+            GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_EQ(nav_data_chain_break, nullptr);
+      }));
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            3);
+        auto* nav_data_detected_new_original_url =
+            IpfsFallbackRedirectNavigationData::
+                GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_NE(nav_data_detected_new_original_url, nullptr);
+        EXPECT_EQ(nav_data_detected_new_original_url->GetOriginalUrl(),
+                  new_redirect_chain_start_url);
+        EXPECT_FALSE(
+            nav_data_detected_new_original_url->IsAutoRedirectBlocked());
+      }));
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            4);
+        auto* nav_data_new_chain_start = IpfsFallbackRedirectNavigationData::
+            GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_EQ(nav_data_new_chain_start, nullptr);
+      }));
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            4);
+        auto* nav_data_after_redirect_new_chain =
+            IpfsFallbackRedirectNavigationData::
+                GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_EQ(nav_data_after_redirect_new_chain, nullptr);
+      }));
 
-            EXPECT_FALSE(helper->initial_navigation_url_.has_value());
-            EXPECT_FALSE(helper->auto_redirect_blocked_);
-          }),
-      net::Error::ERR_FAILED, true, parsed.get(), 0, 0);
+  NavigateAndComitFailedFailedPage(url, 500);
+
+  NavigateAndComitFailedFailedPage(breake_redirected_to_url, 500);
+
+  auto* nav_data_after_chain_break =
+      IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+          web_contents());
+  EXPECT_EQ(nav_data_after_chain_break, nullptr);
+
+  NavigateAndComitFailedFailedPage(new_redirect_chain_start_url, 500);
+
+  NavigateAndComitFailedFailedPage(new_chain_redirected_to_url, 500);
+
+  ipfs_tab_helper()->SetFallbackAddress(new_redirect_chain_start_url);
+
+  auto* nav_data_after_redirect_new_chain =
+      IpfsFallbackRedirectNavigationData::GetFallbackDataFromRedirectChain(
+          web_contents());
+  EXPECT_NE(nav_data_after_redirect_new_chain, nullptr);
+  EXPECT_TRUE(nav_data_after_redirect_new_chain->IsAutoRedirectBlocked());
+  EXPECT_EQ(nav_data_after_redirect_new_chain->GetOriginalUrl(),
+            new_redirect_chain_start_url);
+
+  NavigateAndComitFailedFailedPage(new_redirect_chain_start_url, 500);
 }
 
 TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_NoRedirectAsNonIPFSLink) {
@@ -1080,19 +984,48 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_NoRedirectAsNonIPFSLink) {
 
   SetIpfsCompanionEnabledFlag(false);
 
-  auto parsed = base::MakeRefCounted<net::HttpResponseHeaders>("");
-  DetectPageLoadingErrorFallbackTest(
-      url, redirected_to_url,
-      base::BindLambdaForTesting(
-          [&](ipfs::IPFSTabHelper* helper,
-              content::NavigationHandleMock* nav_handle) {
-            helper->initial_navigation_url_.reset();
-            helper->SetPageURLForTesting(url);
-            helper->DidFinishNavigation(nav_handle);
-            EXPECT_FALSE(helper->initial_navigation_url_.has_value());
-            EXPECT_FALSE(helper->auto_redirect_blocked_);
-          }),
-      net::Error::ERR_FAILED, true, parsed.get(), 0, 0);
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            1);
+        auto* nav_data_detected_original_url =
+            IpfsFallbackRedirectNavigationData::
+                GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_EQ(nav_data_detected_original_url, nullptr);
+      }));
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            1);
+        auto* nav_data_detected_original_url =
+            IpfsFallbackRedirectNavigationData::
+                GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_EQ(nav_data_detected_original_url, nullptr);
+      }));
+  NavigateAndComitFailedFailedPage(url, 500);
+  NavigateAndComitFailedFailedPage(redirected_to_url, 500);
+}
+
+TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_IPFSCompanion_Enabled) {
+  const GURL url(
+      "https://drweb.link/ipns/"
+      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
+  SetIpfsCompanionEnabledFlag(true);
+
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            1);
+        auto* nav_data_detected_original_url =
+            IpfsFallbackRedirectNavigationData::
+                GetFallbackDataFromRedirectChain(web_contents());
+        EXPECT_EQ(nav_data_detected_original_url, nullptr);
+      }));
+
+  NavigateAndComitFailedFailedPage(url, 500);
 }
 
 }  // namespace ipfs

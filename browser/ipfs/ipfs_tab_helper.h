@@ -113,7 +113,10 @@ class IPFSTabHelper : public content::WebContentsObserver,
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
                            DetectPageLoadingError_ShowInfobar);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
-                           DetectPageLoadingError_HeadersOk_ShowInfobar);
+                           DetectPageLoadingError_Broken_Redirect_Chain);
+  FRIEND_TEST_ALL_PREFIXES(
+      IpfsTabHelperUnitTest,
+      DetectPageLoadingError_Broken_Redirect_Chain_Start_New);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
                            DetectPageLoadingError_IPFSCompanion_Enabled);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
@@ -128,8 +131,13 @@ class IPFSTabHelper : public content::WebContentsObserver,
   bool IsDNSLinkCheckEnabled() const;
   bool IsAutoRedirectIPFSResourcesEnabled() const;
   void IPFSResourceLinkResolved(const GURL& ipfs);
-  void DNSLinkResolved(const GURL& ipfs, bool is_gateway_url);
-  void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers);
+  void DNSLinkResolved(const GURL& ipfs,
+                       bool is_gateway_url,
+                       const bool& auto_redirect_blocked,
+                       const bool& should_replace_current_entry);
+  void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers,
+                               const bool& auto_redirect_blocked,
+                               const bool should_replace_current_entry = true);
   void UpdateDnsLinkButtonState();
   absl::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
 
@@ -146,17 +154,23 @@ class IPFSTabHelper : public content::WebContentsObserver,
 
   void CheckDNSLinkRecord(const GURL& gurl,
                           bool is_gateway_url,
-                          absl::optional<std::string> x_ipfs_path_header);
+                          absl::optional<std::string> x_ipfs_path_header,
+                          const bool& auto_redirect_blocked,
+                          const bool& should_replace_current_entry);
   void HostResolvedCallback(const GURL& current,
                             const GURL& url,
                             bool is_gateway_url,
                             absl::optional<std::string> x_ipfs_path_header,
+                            const bool auto_redirect_blocked,
+                            const bool should_replace_current_entry,
                             const std::string& host,
                             const absl::optional<std::string>& dnslink);
 
-  void LoadUrl(const GURL& gurl);
+  void LoadUrl(const GURL& gurl,
+               const bool should_replace_current_entry = true);
 
   void SetFallbackAddress(const GURL& original_url);
+  void InvalidateFallbackNavData();
 
   void ShowBraveIPFSFallbackInfoBar(const GURL& initial_navigation_url);
 
@@ -168,8 +182,6 @@ class IPFSTabHelper : public content::WebContentsObserver,
   base::RepeatingCallback<void(const GURL&)>
       show_fallback_infobar_callback_for_testing_;
   std::unique_ptr<IPFSHostResolver> resolver_;
-  absl::optional<GURL> initial_navigation_url_;
-  bool auto_redirect_blocked_{false};
   base::WeakPtrFactory<IPFSTabHelper> weak_ptr_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

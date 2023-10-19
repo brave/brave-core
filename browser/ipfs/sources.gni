@@ -21,6 +21,8 @@ if (enable_ipfs) {
     "//brave/browser/ipfs/ipfs_blob_context_getter_factory.h",
     "//brave/browser/ipfs/ipfs_dns_resolver_impl.cc",
     "//brave/browser/ipfs/ipfs_dns_resolver_impl.h",
+    "//brave/browser/ipfs/ipfs_fallback_redirect_nav_data.cc",
+    "//brave/browser/ipfs/ipfs_fallback_redirect_nav_data.h",
     "//brave/browser/ipfs/ipfs_host_resolver.cc",
     "//brave/browser/ipfs/ipfs_host_resolver.h",
     "//brave/browser/ipfs/ipfs_service_factory.cc",
