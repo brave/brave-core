@@ -1,13 +1,12 @@
 diff --git a/chrome/browser/ui/side_panel/side_panel_entry_id.h b/chrome/browser/ui/side_panel/side_panel_entry_id.h
-index ab41305e86ec79edb527c76042f3b1cd96805922..38069712ec7310e6ef7f1d06adfd4cc5aa41b423 100644
+index 274f68acce5dc237bd02e967d9d81b66ae1a5845..2b5c13effa34217615f2926524aa4c6df53a9592 100644
 --- a/chrome/browser/ui/side_panel/side_panel_entry_id.h
 +++ b/chrome/browser/ui/side_panel/side_panel_entry_id.h
-@@ -26,7 +26,7 @@
-   /* Contextual Entries */                                   \
-   V(kSideSearch)                                             \
-   V(kLens)                                                   \
--  V(kAssistant)                                              \
-+  V(kAssistant) V(kPlaylist) V(kChatUI)                      \
-   V(kAboutThisSite)                                          \
-   V(kCustomizeChrome)                                        \
-   V(kSearchCompanion)                                        \
+@@ -33,6 +33,7 @@
+   V(kSideSearch, kActionSidePanelShowSideSearch, "SideSearch")                \
+   V(kLens, kActionSidePanelShowLens, "Lens")                                  \
+   V(kAssistant, kActionSidePanelShowAssistant, "Assistant")                   \
++  V(kPlaylist, kPlaylistSidePanelShowAssistant, "Playlist") V(kChatUI, kChatUISidePanelShowAssistant, "ChatUI") \
+   V(kAboutThisSite, kActionSidePanelShowAboutThisSite, "AboutThisSite")       \
+   V(kCustomizeChrome, kActionSidePanelShowCustomizeChrome, "CustomizeChrome") \
+   V(kSearchCompanion, kActionSidePanelShowSearchCompanion, "Companion")       \
