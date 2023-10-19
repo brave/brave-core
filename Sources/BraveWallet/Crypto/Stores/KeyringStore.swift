@@ -304,6 +304,10 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         self.defaultKeyring = defaultKeyring
         self.isDefaultKeyringLoaded = true
         self.isDefaultKeyringCreated = defaultKeyring.isKeyringCreated
+        // fallback case where user completed front-end onboarding, but has no keyring created/accounts.
+        if !defaultKeyring.isKeyringCreated && Preferences.Wallet.isOnboardingCompleted.value {
+          Preferences.Wallet.isOnboardingCompleted.reset()
+        }
       }
       self.allKeyrings = allKeyrings
       if let selectedAccountKeyring = allKeyrings.first(where: { $0.id == selectedAccount?.keyringId }) {
