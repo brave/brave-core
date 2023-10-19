@@ -1,0 +1,21 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "//components/history/core/browser/sync/delete_directive_handler_unittest.cc" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//components/history/core/browser:browser",
+    "//components/history/core/common",
+    "//components/history/core/test",
+    "//components/prefs:test_support",
+    "//components/sync",
+    "//components/sync:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+}

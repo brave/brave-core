@@ -76,6 +76,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
                            OnAccountDeleted_FailureAndRetry);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinActiveOrNewChain);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinDeletedChain);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, HistoryPreconditions);
 
   BraveSyncAuthManager* GetBraveSyncAuthManager();
   SyncServiceCrypto* GetCryptoForTests();
