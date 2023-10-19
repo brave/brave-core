@@ -27,7 +27,7 @@ function Main() {
   const {
     siteInfo,
     userAutoGeneratePref,
-    hasSeenAgreement,
+    hasAcceptedAgreement,
     currentError,
     apiHasError
   } = context
@@ -36,15 +36,15 @@ function Main() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const shouldPromptSuggestQuestions = hasSeenAgreement && userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset
+  const shouldPromptSuggestQuestions = hasAcceptedAgreement && userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset
 
-  const shouldShowPremiumSuggestionForModel = hasSeenAgreement && !context.isPremiumUser && context.currentModel?.isPremium
+  const shouldShowPremiumSuggestionForModel = hasAcceptedAgreement && !context.isPremiumUser && context.currentModel?.isPremium
 
   const shouldShowPremiumSuggestionStandalone =
-    hasSeenAgreement &&
+    hasAcceptedAgreement &&
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
-    shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
-    !context.hasUserDissmisedPremiumPrompt &&
+    !shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
+    context.canShowPremiumPrompt &&
     !siteInfo &&
     !context.isPremiumUser
 
@@ -54,7 +54,7 @@ function Main() {
   let siteTitleElement = null
   let currentErrorElement = null
 
-  if (hasSeenAgreement) {
+  if (hasAcceptedAgreement) {
     conversationListElement = <ConversationList />
 
     if (siteInfo) {
@@ -89,7 +89,7 @@ function Main() {
           {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
         </div>
         <div className={styles.actions}>
-          {hasSeenAgreement && (
+          {hasAcceptedAgreement && (
             <>
             {shouldDisplayEraseAction && (
               <Button

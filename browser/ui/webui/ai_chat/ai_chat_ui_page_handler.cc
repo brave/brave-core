@@ -226,15 +226,33 @@ void AIChatUIPageHandler::GetAPIResponseError(
   std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
 }
 
-void AIChatUIPageHandler::GetHasUserDismissedPremiumPrompt(
-    GetHasUserDismissedPremiumPromptCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetBoolean(
-      ai_chat::prefs::kUserDismissedPremiumPrompt));
+void AIChatUIPageHandler::GetCanShowPremiumPrompt(
+    GetCanShowPremiumPromptCallback callback) {
+  bool has_user_dismissed_prompt = profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kUserDismissedPremiumPrompt);
+
+  if (has_user_dismissed_prompt) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  base::Time last_accepted_disclaimer =
+      profile_->GetPrefs()->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
+  base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
+  bool is_more_than_24h_since_last_seen =
+      last_accepted_disclaimer < time_1_day_ago;
+
+  if (is_more_than_24h_since_last_seen && !has_user_dismissed_prompt) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  std::move(callback).Run(false);
 }
 
-void AIChatUIPageHandler::SetHasUserDismissedPremiumPrompt(bool has_dismissed) {
+void AIChatUIPageHandler::DismissPremiumPrompt() {
   profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kUserDismissedPremiumPrompt,
-                                   has_dismissed);
+                                   true);
 }
 
 void AIChatUIPageHandler::RateMessage(bool is_liked,
@@ -294,8 +312,8 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
-  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
-                                   true);
+  profile_->GetPrefs()->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
+                                base::Time::Now());
 }
 
 void AIChatUIPageHandler::OnHistoryUpdate() {

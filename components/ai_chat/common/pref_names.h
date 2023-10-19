@@ -10,8 +10,8 @@ class PrefRegistrySimple;
 
 namespace ai_chat::prefs {
 
-constexpr char kBraveChatHasSeenDisclaimer[] =
-    "brave.ai_chat.has_seen_disclaimer";
+constexpr char kLastAcceptedDisclaimer[] =
+    "brave.ai_chat.last_accepted_disclaimer";
 constexpr char kBraveChatAutoGenerateQuestions[] =
     "brave.ai_chat.auto_generate_questions";
 constexpr char kBraveChatAutocompleteProviderEnabled[] =
