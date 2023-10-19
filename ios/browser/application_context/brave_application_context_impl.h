@@ -28,18 +28,22 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
       const std::string& locale,
       const std::string& country);
 
-  brave::URLSanitizerComponentInstaller* url_sanitizer_component_installer();
-
-  // Disable copy constructor and assignment operator
   BraveApplicationContextImpl(const BraveApplicationContextImpl&) = delete;
   BraveApplicationContextImpl& operator=(const BraveApplicationContextImpl&) =
       delete;
 
+  ~BraveApplicationContextImpl() override;
+
+  // ApplicationContextImpl
+  ukm::UkmRecorder* GetUkmRecorder() override;
+  BrowserPolicyConnectorIOS* GetBrowserPolicyConnector() override;
+  gcm::GCMDriver* GetGCMDriver() override;
+
+  // BraveApplicationContextImpl
+  brave::URLSanitizerComponentInstaller* url_sanitizer_component_installer();
+
   // Start any services that we may need later
   void StartBraveServices();
-
-  // Out-of-line destructor declaration
-  ~BraveApplicationContextImpl() override;
 
  private:
   brave_component_updater::BraveComponent::Delegate*
