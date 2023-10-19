@@ -113,6 +113,15 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 0,
     'multiline-ternary': 0,
     '@typescript-eslint/prefer-readonly': 0,
+    '@typescript-eslint/key-spacing': 0,
+    'max-len': [
+      1,
+      {
+        'code': 80,
+        ignoreStrings: true, // to allow long import paths
+        ignoreRegExpLiterals: true
+      }
+    ],
     /* TODO(nullhook): ENABLE the below rules in the future */
     'no-useless-call': 0,
     '@typescript-eslint/consistent-type-assertions': 0,

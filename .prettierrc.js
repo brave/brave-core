@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+/** @type {import("prettier").Config} */
 module.exports = {
   'trailingComma': 'none',
   'tabWidth': 2,
@@ -10,5 +11,24 @@ module.exports = {
   'singleQuote': true,
   'jsxSingleQuote': true,
   'bracketSameLine': false,
-  'quoteProps': 'preserve'
+  'quoteProps': 'preserve',
+  'arrowParens': 'always',
+  'bracketSpacing': true,
+  'embeddedLanguageFormatting': 'auto',
+  'endOfLine': 'lf',
+  'htmlWhitespaceSensitivity': 'css',
+  'insertPragma': false,
+  'plugins': [],
+  'pluginSearchDirs': false,
+  'printWidth': 80,
+  'proseWrap': 'always',
+  'rangeEnd': Infinity,
+  'rangeStart': 0,
+  'requirePragma': false,
+  'useTabs': false,
+  'vueIndentScriptAndStyle': false,
+  'jsxSingleQuote': true,
+  'jsxBracketSameLine': false,
+  'singleAttributePerLine': true,
+  'overrides': undefined
 }
