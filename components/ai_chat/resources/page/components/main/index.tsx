@@ -7,6 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
+import Alert from '@brave/leo/react/alert'
 import AlertCenter from '@brave/leo/react/alertCenter'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
@@ -150,6 +151,23 @@ function Main() {
                 }
               />
             </div>
+          )
+        }
+        {
+          context.isPremiumUserDisconnected && (
+            <Alert
+              mode='full'
+              type='warning'
+            >
+              {getLocale('premiumRefreshWarningDescription')}
+              <Button
+                slot='actions'
+                kind='filled'
+                onClick={context.userRefreshPremiumSession}
+              >
+                  {getLocale('premiumRefreshWarningAction')}
+              </Button>
+            </Alert>
           )
         }
       </div>

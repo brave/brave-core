@@ -89,6 +89,8 @@ export default {
     hasQuestions: true,
     hasChangedModel: false,
     hasAcceptedAgreement: true,
+    isPremiumUser: true,
+    isPremiumUserDisconnected: false,
     currentErrorState: select(
       'Current Status',
       mojom.APIError,
@@ -110,7 +112,7 @@ export default {
         options.args.currentErrorState
       )
       const [hasAcceptedAgreement] = React.useState(options.args.hasAcceptedAgreement)
-      const [isPremiumUser] = React.useState(options.args.isPremiumUser)
+
 
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
@@ -132,7 +134,8 @@ export default {
         hasAcceptedAgreement,
         apiHasError,
         shouldDisableUserInput,
-        isPremiumUser
+        isPremiumUser: options.args.isPremiumUser,
+        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected
       }
 
       return (
