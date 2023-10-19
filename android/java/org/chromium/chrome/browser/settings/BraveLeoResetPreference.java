@@ -73,7 +73,7 @@ public class BraveLeoResetPreference
                     return;
                 }
                 UserPrefs.get(profile)
-                        .setBoolean(BravePref.BRAVE_CHAT_HAS_SEEN_DISCLAIMER, false);
+                        .clearPref(BravePref.LAST_ACCEPTED_DISCLAIMER);
                 UserPrefs.get(profile)
                         .setBoolean(BravePref.BRAVE_CHAT_AUTO_GENERATE_QUESTIONS, false);
             } else {
