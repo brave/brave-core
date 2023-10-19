@@ -1209,11 +1209,10 @@ mojom::AccountInfoPtr KeyringService::AddAccountSync(
     return nullptr;
   }
 
-  if (IsZCashKeyring(keyring_id)) {
-    if (!IsZCashEnabled()) {
-      return nullptr;
-    }
+  if (IsZCashKeyring(keyring_id) && !IsZCashEnabled()) {
+    return nullptr;
   }
+
   auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring) {
     return nullptr;
@@ -2580,9 +2579,9 @@ absl::optional<std::string> KeyringService::GetZCashAddress(
 
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     const mojom::AccountIdPtr& account_id,
-    const mojom::BitcoinKeyIdPtr& key_id) {
+    absl::optional<uint32_t> next_receive_index,
+    absl::optional<uint32_t> next_change_index) {
   CHECK(account_id);
-  CHECK(key_id);
   CHECK(IsBitcoinAccount(*account_id));
 
   ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
@@ -2592,14 +2591,15 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     if (auto derived_account = DerivedAccountInfo::FromValue(item)) {
       if (*account_id == *MakeAccountIdForDerivedAccount(
                              *derived_account, account_id->keyring_id)) {
-        if (key_id->change == kBitcoinReceiveIndex) {
-          derived_account->bitcoin_next_receive_address_index = key_id->index;
-        } else if (key_id->change == kBitcoinChangeIndex) {
-          derived_account->bitcoin_next_change_address_index = key_id->index;
-        } else {
-          NOTREACHED();
-          return;
+        if (next_receive_index) {
+          derived_account->bitcoin_next_receive_address_index =
+              *next_receive_index;
         }
+        if (next_change_index) {
+          derived_account->bitcoin_next_change_address_index =
+              *next_change_index;
+        }
+
         item = derived_account->ToValue();
         NotifyAccountsChanged();
         return;
@@ -2710,6 +2710,24 @@ mojom::BitcoinAddressPtr KeyringService::GetBitcoinAddress(
 
   auto address_string =
       bitcoin_keyring->GetAddress(account_id->bitcoin_account_index, *key_id);
+  if (!address_string) {
+    return {};
+  }
+
+  return mojom::BitcoinAddress::New(*address_string, key_id.Clone());
+}
+
+mojom::BitcoinAddressPtr KeyringService::GetBitcoinAccountDiscoveryAddress(
+    const mojom::KeyringId keyring_id,
+    uint32_t account_index,
+    const mojom::BitcoinKeyIdPtr& key_id) {
+  CHECK(IsBitcoinKeyring(keyring_id));
+  auto* bitcoin_keyring = GetBitcoinKeyringById(keyring_id);
+  if (!bitcoin_keyring) {
+    return {};
+  }
+
+  auto address_string = bitcoin_keyring->GetAddress(account_index, *key_id);
   if (!address_string) {
     return {};
   }

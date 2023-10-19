@@ -261,16 +261,20 @@ mojom::AccountIdPtr MakeBitcoinAccountId(mojom::CoinType coin,
                                std::move(unique_key));
 }
 
-std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id) {
-  CHECK(account_id);
-  CHECK(IsBitcoinAccount(*account_id));
-  if (IsBitcoinMainnetKeyring(account_id->keyring_id)) {
+std::string GetNetworkForBitcoinKeyring(const mojom::KeyringId& keyring_id) {
+  if (IsBitcoinMainnetKeyring(keyring_id)) {
     return mojom::kBitcoinMainnet;
   }
-  if (IsBitcoinTestnetKeyring(account_id->keyring_id)) {
+  if (IsBitcoinTestnetKeyring(keyring_id)) {
     return mojom::kBitcoinTestnet;
   }
   NOTREACHED_NORETURN();
+}
+
+std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id) {
+  CHECK(account_id);
+  CHECK(IsBitcoinAccount(*account_id));
+  return GetNetworkForBitcoinKeyring(account_id->keyring_id);
 }
 
 mojom::AccountIdPtr MakeZCashAccountId(mojom::CoinType coin,
