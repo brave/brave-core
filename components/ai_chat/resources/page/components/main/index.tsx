@@ -7,7 +7,6 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import Alert from '@brave/leo/react/alert'
 import AlertCenter from '@brave/leo/react/alertCenter'
 import getPageHandlerInstance, * as mojom from '../../api/page_handler'
 import DataContext from '../../state/context'
@@ -15,13 +14,14 @@ import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
 import SiteTitle from '../site_title'
 import PromptAutoSuggestion from '../prompt_auto_suggestion'
-import ErrorConnection from '../error_connection'
-import ErrorRateLimit from '../error_rate_limit'
+import ErrorConnection from '../alerts/error_connection'
+import ErrorRateLimit from '../alerts/error_rate_limit'
 import InputBox from '../input_box'
 import FeatureButtonMenu from '../feature_button_menu'
-import styles from './style.module.scss'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
+import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
+import styles from './style.module.scss'
 
 function Main() {
   const context = React.useContext(DataContext)
@@ -153,22 +153,10 @@ function Main() {
             </div>
           )
         }
-        {
-          context.isPremiumUserDisconnected && (
-            <Alert
-              mode='full'
-              type='warning'
-            >
-              {getLocale('premiumRefreshWarningDescription')}
-              <Button
-                slot='actions'
-                kind='filled'
-                onClick={context.userRefreshPremiumSession}
-              >
-                  {getLocale('premiumRefreshWarningAction')}
-              </Button>
-            </Alert>
-          )
+        {context.isPremiumUserDisconnected &&
+        <div className={styles.promptContainer}>
+          <WarningPremiumDisconnected />
+        </div>
         }
       </div>
       <div className={styles.inputBox}>

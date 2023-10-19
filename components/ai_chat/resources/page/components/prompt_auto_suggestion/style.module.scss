@@ -4,7 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .box {
+  align-self: end;
   width: 100%;
+  max-width: 460px;
   background: var(--leo-color-page-background);
   border-radius: 16px;
   padding: 24px 16px 24px 24px;

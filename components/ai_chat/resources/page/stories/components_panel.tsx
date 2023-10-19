@@ -87,6 +87,7 @@ export default {
   },
   args: {
     hasQuestions: true,
+    hasChosenSuggestedQuestions: true,
     hasChangedModel: false,
     hasAcceptedAgreement: true,
     isPremiumUser: true,
@@ -104,8 +105,7 @@ export default {
       const [suggestedQuestions] = React.useState<string[]>(SAMPLE_QUESTIONS)
       const [isGenerating] = React.useState(false)
       const [canGenerateQuestions] = React.useState(false)
-      const [userAutoGeneratePref] =
-        React.useState<mojom.AutoGenerateQuestionsPref>()
+      const userAutoGeneratePref: mojom.AutoGenerateQuestionsPref = options.args.hasChosenSuggestedQuestions ? mojom.AutoGenerateQuestionsPref.Enabled : mojom.AutoGenerateQuestionsPref.Unset
       const [siteInfo] = React.useState<mojom.SiteInfo | null>(SITE_INFO)
       const [favIconUrl] = React.useState<string>()
       const [currentError] = React.useState<mojom.APIError>(
