@@ -108,10 +108,10 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
-  GetHasUserDismissedPremiumPrompt() => (bool has_dismissed);
-  SetHasUserDismissedPremiumPrompt(bool has_dismissed);
+  GetCanShowPremiumPrompt() => (bool can_show);
+  DismissPremiumPrompt();
 
-  // Send a user-rating for a chat 
+  // Send a user-rating for a chat
   // message. |turn_id| is the index of the message in the
   // current conversation.
   RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);

@@ -25,7 +25,7 @@ function InputBox () {
 
   const isInputDisabled = context.shouldDisableUserInput || (!context.isPremiumUser && context.currentModel?.isPremium)
 
-  if (!context.hasSeenAgreement) {
+  if (!context.hasAcceptedAgreement) {
     return (
       <div className={styles.container}>
         <button className={styles.buttonAgree} onClick={context.handleAgreeClick}>{getLocale('acceptButtonLabel')}</button>

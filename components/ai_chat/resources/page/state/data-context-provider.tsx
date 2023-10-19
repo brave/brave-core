@@ -7,7 +7,7 @@ import * as React from 'react'
 import { loadTimeData } from '$web-common/loadTimeData'
 
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
-import DataContext from './context'
+import DataContext, { AIChatContext } from './context'
 
 function toBlobURL(data: number[] | null) {
   if (!data) return undefined
@@ -32,10 +32,9 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null>(null)
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
-  const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
+  const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
-
-  const [hasUserDissmisedPremiumPrompt, setHasUserDissmisedPremiumPrompt] = React.useState(loadTimeData.getBoolean("hasUserDismissedPremiumPrompt"))
+  const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -99,18 +98,18 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const handleAgreeClick = () => {
-    setHasSeenAgreement(true)
+    setHasAcceptedAgreement(true)
     getPageHandlerInstance().pageHandler.markAgreementAccepted()
   }
 
-  const getHasUserDismissedPremiumPrompt = () => {
-    getPageHandlerInstance().pageHandler.getHasUserDismissedPremiumPrompt()
-      .then(resp => setHasUserDissmisedPremiumPrompt(resp.hasDismissed))
+  const getCanShowPremiumPrompt = () => {
+    getPageHandlerInstance().pageHandler.getCanShowPremiumPrompt()
+      .then(resp => setCanShowPremiumPrompt(resp.canShow))
   }
 
   const dismissPremiumPrompt = () => {
-    getPageHandlerInstance().pageHandler.setHasUserDismissedPremiumPrompt(true)
-    setHasUserDissmisedPremiumPrompt(true)
+    getPageHandlerInstance().pageHandler.dismissPremiumPrompt()
+    setCanShowPremiumPrompt(false)
   }
 
   const switchToDefaultModel = () => {
@@ -141,7 +140,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     getSiteInfo()
     getFaviconData()
     getCurrentAPIError()
-    getHasUserDismissedPremiumPrompt()
+    getCanShowPremiumPrompt()
   }
 
   React.useEffect(() => {
@@ -184,7 +183,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     })
   }, [])
 
-  const store = {
+  const store: AIChatContext = {
     allModels,
     currentModel,
     hasChangedModel,
@@ -196,18 +195,19 @@ function DataContextProvider (props: DataContextProviderProps) {
     siteInfo,
     favIconUrl,
     currentError,
-    hasSeenAgreement,
+    hasAcceptedAgreement,
     apiHasError,
     shouldDisableUserInput,
     isPremiumUser: premiumStatus !== mojom.PremiumStatus.Inactive,
     isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
-    hasUserDissmisedPremiumPrompt,
+    canShowPremiumPrompt,
     setCurrentModel,
     switchToDefaultModel,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,
-    dismissPremiumPrompt
+    dismissPremiumPrompt,
+    getCanShowPremiumPrompt
   }
 
   return (
