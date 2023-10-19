@@ -633,8 +633,8 @@ const util = {
       ...config.extraNinjaOpts
     ]
 
-    const use_goma_online = config.use_goma && !config.goma_offline
-    if (use_goma_online) {
+    const useGomaOnline = config.use_goma && !config.offline
+    if (useGomaOnline) {
       if (config.isCI) {
         Log.progressStart('goma pre build')
       }
@@ -669,7 +669,7 @@ const util = {
       util.run('autoninja', ninjaOpts, options)
     })
 
-    if (config.isCI && use_goma_online) {
+    if (config.isCI && useGomaOnline) {
       Log.progressScope('goma post build', () => {
         util.run('goma_ctl', ['stat'], options)
       })
