@@ -66,7 +66,7 @@ void AdBlockComponentFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
   component_path_ = path;
 
-  NotifyObservers();
+  NotifyObservers(engine_is_default_);
 }
 
 void AdBlockComponentFiltersProvider::LoadDATBuffer(
