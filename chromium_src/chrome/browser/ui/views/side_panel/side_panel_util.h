@@ -9,7 +9,6 @@
 #define PopulateGlobalEntries                                             \
   PopulateGlobalEntries_ChromiumImpl(Browser* browser,                    \
                                      SidePanelRegistry* global_registry); \
-  static std::string GetHistogramNameForId(SidePanelEntry::Id id);        \
   static void PopulateGlobalEntries
 
 #include "src/chrome/browser/ui/views/side_panel/side_panel_util.h"  // IWYU pragma: export
