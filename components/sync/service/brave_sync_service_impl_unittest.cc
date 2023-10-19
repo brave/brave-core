@@ -531,7 +531,7 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
 
   auto history_model_type_controller =
       std::make_unique<history::BraveHistoryModelTypeController>(
-          HISTORY, brave_sync_service_impl(), identity_manager(), nullptr,
+          brave_sync_service_impl(), identity_manager(), nullptr,
           pref_service());
 
   auto history_precondition_state =
