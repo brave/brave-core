@@ -4053,7 +4053,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_MENU_BRAVE_LEO" desc="Brave AI menu item text">
       Brave Leo
     </message>
-<<<<<<< HEAD
     <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET" desc="Sign in with Brave Wallet Title">
       Sign in with Brave Wallet
     </message>
@@ -4084,7 +4083,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Brave Leo confirm button text.">
       Confirm
     </message>
-    <message name="IDS_ELLIP_TEXT" desc="Generic ellip text" translateable="false">
+    <message name="IDS_ELLIPSIS_TEXT" desc="Generic ellipsis text" translateable="false">
       ...
     </message>
   </messages>

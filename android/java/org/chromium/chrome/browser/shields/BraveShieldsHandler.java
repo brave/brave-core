@@ -14,6 +14,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
@@ -804,7 +805,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     private void setUpReportBrokenSiteLayout() {
         TextView mReportSiteUrlText = mReportBrokenSiteLayout.findViewById(R.id.report_site_url);
-        mReportSiteUrlText.setText(mUrlSpec);
+        final Uri reportUri = Uri.parse(mUrlSpec).buildUpon().clearQuery().build();
+        mReportSiteUrlText.setText(reportUri.toString());
         mReportSiteUrlText.setMovementMethod(new ScrollingMovementMethod());
 
         Button mCancelButton = mReportBrokenSiteLayout.findViewById(R.id.btn_cancel);
@@ -824,7 +826,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 String referralApiKey =
                         NTPBackgroundImagesBridge.getInstance(mProfile).getReferralApiKey();
                 BraveShieldsUtils.BraveShieldsWorkerTask mWorkerTask =
-                        new BraveShieldsUtils.BraveShieldsWorkerTask(mUrlSpec, referralApiKey);
+                        new BraveShieldsUtils.BraveShieldsWorkerTask(
+                                reportUri.toString(), referralApiKey);
                 mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 mReportBrokenSiteLayout.setVisibility(View.GONE);
                 mThankYouLayout.setVisibility(View.VISIBLE);
