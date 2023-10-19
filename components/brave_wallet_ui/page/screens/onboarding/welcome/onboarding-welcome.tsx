@@ -4,10 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useHistory } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
-// actions
+// redux
 import { WalletPageActions } from '../../../actions'
+import { PageSelectors } from '../../../selectors'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -20,17 +22,13 @@ import {
 import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button'
+import { OnboardingDisclosures } from '../disclosures/disclosures'
 import {
-  OnboardingDisclosures,
-  OnboardingDisclosuresNextSteps
-} from '../disclosures/disclosures'
+  OnboardingNetworkSelection //
+} from '../network_selection/onboarding_network_selection'
 
-// routes
-import {
-  BraveWallet,
-  PageState,
-  WalletRoutes
-} from '../../../../constants/types'
+// types & routes
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // styles
 import {
@@ -50,34 +48,64 @@ import {
   SubDividerText
 } from './onboarding-welcome.style'
 
+type PossibleNextStep =
+  | WalletRoutes.OnboardingCreatePassword
+  | WalletRoutes.OnboardingConnectHardwareWalletCreatePassword
+  | WalletRoutes.OnboardingImportOrRestore
+  | WalletRoutes.OnboardingConnectHardwareWalletStart
+
 export const OnboardingWelcome = () => {
+  // routing
+  const history = useHistory()
+
   // redux
   const dispatch = useDispatch()
-  const setupStillInProgress = useSelector(
-    ({ page }: { page: PageState }) => page.setupStillInProgress
-  )
+  const setupStillInProgress = useSelector(PageSelectors.setupStillInProgress)
 
   // state
-  const [nextStep, setNextStep] = React.useState<
-    OnboardingDisclosuresNextSteps | undefined
-  >(undefined)
+  const [showChainSelection, setShowChainSelection] = React.useState(false)
+  const [nextStep, setNextStep] = React.useState<PossibleNextStep | undefined>(
+    undefined
+  )
 
+  // TODO: handle chain selection "Back" button
   // methods
-  const hideDisclosures = React.useCallback(() => setNextStep(undefined), [])
-
-  const showNewWalletDisclosures = React.useCallback(
-    () => setNextStep(WalletRoutes.OnboardingCreatePassword),
-    []
-  )
-
-  const showRestoredWalletDisclosures = React.useCallback(
-    () => setNextStep(WalletRoutes.OnboardingImportOrRestore),
-    []
-  )
-
-  const showConnectHardwareDisclosures = React.useCallback(() => {
-    setNextStep(WalletRoutes.OnboardingConnectHarwareWalletCreatePassword)
+  const {
+    hideDisclosures,
+    showConnectHardwareDisclosures,
+    showNewWalletDisclosures,
+    showRestoredWalletDisclosures,
+    onAgreeToWalletTerms,
+    hideChainSelection
+  } = React.useMemo(function () {
+    return {
+      hideDisclosures: function () {
+        setNextStep(undefined)
+      },
+      hideChainSelection: function () {
+        setShowChainSelection(false)
+      },
+      showNewWalletDisclosures: function () {
+        setNextStep(WalletRoutes.OnboardingCreatePassword)
+      },
+      showRestoredWalletDisclosures: function () {
+        setNextStep(WalletRoutes.OnboardingImportOrRestore)
+      },
+      showConnectHardwareDisclosures: function () {
+        setNextStep(WalletRoutes.OnboardingConnectHardwareWalletCreatePassword)
+      },
+      onAgreeToWalletTerms: function () {
+        dispatch(WalletPageActions.agreeToWalletTerms())
+        setShowChainSelection(true)
+      }
+    }
   }, [])
+
+  const onAfterChainSelection = React.useCallback(async () => {
+    if (nextStep) {
+      history.push(nextStep)
+    }
+  }, [nextStep])
 
   // custom hooks
   const { braveWalletP3A } = useApiProxy()
@@ -104,10 +132,27 @@ export const OnboardingWelcome = () => {
   }, [nextStep, braveWalletP3A])
 
   // render
+  if (showChainSelection) {
+    return (
+      <OnboardingNetworkSelection
+        onContinue={onAfterChainSelection}
+        isHardwareOnboarding={
+          nextStep ===
+          WalletRoutes.OnboardingConnectHardwareWalletCreatePassword
+        }
+        onBack={hideChainSelection}
+      />
+    )
+  }
+
   if (nextStep !== undefined) {
     return (
       <OnboardingDisclosures
-        nextStep={nextStep}
+        onContinue={onAgreeToWalletTerms}
+        isHardwareOnboarding={
+          nextStep ===
+          WalletRoutes.OnboardingConnectHardwareWalletCreatePassword
+        }
         onBack={hideDisclosures}
       />
     )

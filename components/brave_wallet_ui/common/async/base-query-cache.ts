@@ -132,10 +132,7 @@ export class BaseQueryCache {
       const { jsonRpcService } = apiProxyFetcher()
 
       // network type flags
-      const {
-        isBitcoinEnabled,
-        isZCashEnabled
-      } = await this.getWalletInfo()
+      const { isBitcoinEnabled, isZCashEnabled } = await this.getWalletInfo()
 
       // Get all networks
       const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {

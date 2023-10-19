@@ -62,6 +62,23 @@ export function createWalletApiBase() {
   })
 }
 
+export const ACCOUNT_TAG_IDS = {
+  REGISTRY: 'REGISTRY',
+  SELECTED: 'SELECTED',
+}
+
+export const NETWORK_TAG_IDS = {
+  HIDDEN: 'HIDDEN',
+  LIST: 'LIST',
+  MAINNETS: 'MAINNETS',
+  OFF_RAMPS: 'OFF_RAMP',
+  ON_RAMPS: 'ON_RAMP',
+  REGISTRY: 'REGISTRY',
+  SELECTED: 'SELECTED',
+  SWAP_SUPPORTED: 'SWAP_SUPPORTED',
+  VISIBLE: 'VISIBLE',
+} as const
+
 export type WalletApiBase = ReturnType<typeof createWalletApiBase>
 export const walletApiBase: WalletApiBase = createWalletApiBase()
 

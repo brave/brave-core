@@ -40,12 +40,12 @@ const NEW_WALLET_STEPS: OnboardingNewWalletSteps[] = [
 //
 type OnboardingConnectHardwareWalletSteps =
   | WalletRoutes.OnboardingWelcome
-  | WalletRoutes.OnboardingConnectHarwareWalletCreatePassword
+  | WalletRoutes.OnboardingConnectHardwareWalletCreatePassword
   | WalletRoutes.OnboardingComplete
 
 const CONNECT_HARDWARE_WALLET_STEPS: OnboardingConnectHardwareWalletSteps[] = [
   WalletRoutes.OnboardingWelcome,
-  WalletRoutes.OnboardingConnectHarwareWalletCreatePassword,
+  WalletRoutes.OnboardingConnectHardwareWalletCreatePassword,
   WalletRoutes.OnboardingComplete
 ]
 

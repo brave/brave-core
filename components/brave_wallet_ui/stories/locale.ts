@@ -126,6 +126,7 @@ provideStrings({
 
   // Buttons
   braveWalletButtonContinue: 'Continue',
+  braveWalletContinueWithXItems: 'Continue with $1 $2',
   braveWalletButtonNext: 'Next',
   braveWalletButtonGotIt: 'Got it',
   braveWalletButtonCopy: 'Copy',
@@ -478,6 +479,16 @@ provideStrings({
   braveWalletNetworkBinance: 'Binance Smart Chain',
   braveWalletNetworkBinanceAbbr: 'BSC',
   braveWalletNetworkLocalhost: 'Localhost',
+  braveWalletAddNetworksAnytimeInSettings:
+    'You can add networks anytime in Settings.',
+  braveWalletSupportedNetworks: 'Supported networks',
+  braveWalletChooseChainsToUse:
+    'Choose which blockchains to use in your wallet.',
+  braveWalletShowTestnets: 'Show testnets',
+
+  // Grouping Labels
+  braveWalletFeatured: 'Featured',
+  braveWalletPopular: 'Popular',
 
   // Select Screens
   braveWalletSelectAccount: 'Select account',

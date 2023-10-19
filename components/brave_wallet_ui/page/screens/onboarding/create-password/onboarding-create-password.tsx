@@ -5,17 +5,24 @@
 
 import * as React from 'react'
 
+// constants
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+
 // utils
 import { getLocale } from '../../../../../common/locale'
-import { useCreateWalletMutation } from '../../../../common/slices/api.slice'
+import {
+  useCreateWalletMutation,
+  useAddAccountMutation,
+  useGetVisibleNetworksQuery
+} from '../../../../common/slices/api.slice'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   useSafeUISelector,
   useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
 import { UISelectors, WalletSelectors } from '../../../../common/selectors'
-
-// routes
-import { WalletRoutes } from '../../../../constants/types'
+import { keyringIdForNewAccount } from '../../../../utils/account-utils'
+import { suggestNewAccountName } from '../../../../utils/address-utils'
 
 // components
 import {
@@ -59,15 +66,53 @@ export const OnboardingCreatePassword = (
 
   // mutations
   const [createWallet] = useCreateWalletMutation()
+  const [addAccount] = useAddAccountMutation()
+
+  // queries
+  const { accounts } = useAccountsQuery()
+  const { data: visibleNetworks } = useGetVisibleNetworksQuery()
+  const visibleNetworkTypes = React.useMemo(() => {
+    return visibleNetworks.map((n) => ({
+      coin: n.coin,
+      symbolName: n.symbolName,
+      keyringId: keyringIdForNewAccount(n.coin, n.chainId)
+    }))
+  }, [visibleNetworks])
 
   // methods
   const nextStep = React.useCallback(async () => {
-    if (isValid) {
-      // Note: intentionally not using unwrapped value
-      // results are returned before other redux actions complete
-      await createWallet({ password }).unwrap()
+    if (!isValid) {
+      return
     }
-  }, [password, isValid, createWallet])
+    // Note: intentionally not using unwrapped value
+    // results are returned before other redux actions complete
+    await createWallet({ password }).unwrap()
+
+    // TODO: FIL mainnet cannot be hidden
+    // find another way to prevent account creation
+
+    // create accounts for visible network coin types if needed
+    for (const netType of visibleNetworkTypes) {
+      if (
+        // TODO: remove this check when disable ETH and SOL default networks
+        netType.coin !== BraveWallet.CoinType.ETH &&
+        netType.coin !== BraveWallet.CoinType.SOL
+      ) {
+        await addAccount({
+          accountName: suggestNewAccountName(accounts, netType),
+          coin: netType.coin,
+          keyringId: netType.keyringId
+        }).unwrap()
+      }
+    }
+  }, [
+    password,
+    isValid,
+    createWallet,
+    visibleNetworkTypes,
+    accounts,
+    addAccount
+  ])
 
   const handlePasswordChange = React.useCallback(
     ({ isValid, password }: NewPasswordValues) => {

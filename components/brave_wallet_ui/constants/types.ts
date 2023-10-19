@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { EntityId } from '@reduxjs/toolkit'
+
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
@@ -599,7 +601,8 @@ export enum WalletRoutes {
   OnboardingImportCryptoWalletsSeed = '/crypto/onboarding/import-legacy-seed',
 
   // onboarding (connect hardware wallet)
-  OnboardingConnectHarwareWalletCreatePassword = '/crypto/onboarding/connect-hardware-wallet/create-password',
+  OnboardingConnectHardwareWalletCreatePassword = '/crypto/onboarding/' +
+    'connect-hardware-wallet/create-password',
   OnboardingConnectHardwareWalletStart = '/crypto/onboarding/connect-hardware-wallet',
   OnboardingConnectHardwareWallet = '/crypto/onboarding/connect-hardware-wallet/:accountTypeName?',
 
@@ -784,6 +787,22 @@ export const SupportedTestNetworks = [
   BraveWallet.GOERLI_CHAIN_ID,
   BraveWallet.SEPOLIA_CHAIN_ID,
   BraveWallet.LOCALHOST_CHAIN_ID,
+  BraveWallet.SOLANA_DEVNET,
+  BraveWallet.SOLANA_TESTNET,
+  BraveWallet.FILECOIN_TESTNET,
+  BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID,
+  BraveWallet.BITCOIN_TESTNET,
+  BraveWallet.Z_CASH_TESTNET
+]
+
+export const SupportedTestNetworkEntityIds: EntityId[] = [
+  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.BTC}`,
+  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.ETH}`,
+  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.FIL}`,
+  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.SOL}`,
+  `${BraveWallet.LOCALHOST_CHAIN_ID}-${BraveWallet.CoinType.ZEC}`,
+  BraveWallet.GOERLI_CHAIN_ID,
+  BraveWallet.SEPOLIA_CHAIN_ID,
   BraveWallet.SOLANA_DEVNET,
   BraveWallet.SOLANA_TESTNET,
   BraveWallet.FILECOIN_TESTNET,

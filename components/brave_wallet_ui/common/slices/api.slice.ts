@@ -94,11 +94,6 @@ import { coinMarketEndpoints } from './endpoints/market.endpoints'
 import { tokenBalancesEndpoints } from './endpoints/token_balances.endpoints'
 import { fiatCurrencyEndpoints } from './endpoints/fiat_currency.endpoints'
 
-export interface IsEip1559ChangedMutationArg {
-  id: string
-  isEip1559: boolean
-}
-
 interface GetTransactionsQueryArg {
   /**
    * will fetch for all account addresses if null
@@ -1965,6 +1960,7 @@ export const {
   useGetAccountTokenCurrentBalanceQuery,
   useGetAddressByteCodeQuery,
   useGetAddressFromNameServiceUrlQuery,
+  useGetAllKnownNetworksQuery,
   useGetAutopinEnabledQuery,
   useGetBuyUrlQuery,
   useGetCoingeckoIdQuery,
@@ -2011,6 +2007,7 @@ export const {
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
   useGetWalletsToImportQuery,
+  useHideNetworksMutation,
   useImportFromCryptoWalletsMutation,
   useImportFromMetaMaskMutation,
   useInvalidateAccountInfosMutation,
@@ -2020,6 +2017,7 @@ export const {
   useLazyGetAccountInfosRegistryQuery,
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,
+  useLazyGetAllKnownNetworksQuery,
   useLazyGetBuyUrlQuery,
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC721MetadataQuery,
@@ -2053,6 +2051,7 @@ export const {
   useRejectTransactionMutation,
   useRemoveUserTokenMutation,
   useReportActiveWalletsToP3AMutation,
+  useRestoreNetworksMutation,
   useRestoreWalletMutation,
   useRetryTransactionMutation,
   useSendBtcTransactionMutation,

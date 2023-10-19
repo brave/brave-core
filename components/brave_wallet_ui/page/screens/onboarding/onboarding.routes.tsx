@@ -75,7 +75,7 @@ export const OnboardingRoutes = () => {
     if (action) {
       braveWalletP3A.reportOnboardingAction(action)
     }
-  }, [location])
+  }, [location.pathname])
 
   // computed
   const showOnboardingRestore = !isWalletCreated || isCreatingWallet
@@ -113,7 +113,7 @@ export const OnboardingRoutes = () => {
       </Route>
 
       <Route
-        path={WalletRoutes.OnboardingConnectHarwareWalletCreatePassword}
+        path={WalletRoutes.OnboardingConnectHardwareWalletCreatePassword}
         exact
       >
         <OnboardingCreatePassword

@@ -50,7 +50,7 @@ export function isValidZecAddress(value: string): boolean {
 
 export const suggestNewAccountName = (
   accounts: BraveWallet.AccountInfo[],
-  network: BraveWallet.NetworkInfo
+  network: Pick<BraveWallet.NetworkInfo, 'coin' | 'symbolName'>
 ) => {
   const accountTypeLength =
     accounts.filter((account) => account.accountId.coin === network.coin)

@@ -153,13 +153,25 @@ export const makeSendRoute = (
   return `${WalletRoutes.Send}?${params.toString()}${SendPageTabHashes.token}`
 }
 
-export const openWalletRouteTab = (route: WalletRoutes) => {
-  chrome.tabs.create({ url: `${WalletOrigin}${route}` }, () => {
+// Tabs
+function openTab(url: string) {
+  chrome.tabs.create({ url }, () => {
     if (chrome.runtime.lastError) {
-      console.error(
-        'tabs.create failed: ' + //
-          chrome.runtime.lastError.message
-      )
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
     }
   })
+}
+
+// Wallet Page Tabs
+export const openWalletRouteTab = (route: WalletRoutes) => {
+  openTab(`${WalletOrigin}${route}`)
+}
+
+// Settings tabs
+export function openWalletSettings() {
+  openTab('chrome://settings/wallet')
+}
+
+export function openNetworkSettings() {
+  openTab('chrome://settings/wallet/networks')
 }

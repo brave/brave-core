@@ -4,17 +4,14 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
+import { PageSelectors } from '../../../selectors'
 
 // routes
-import { PageState, WalletRoutes } from '../../../../constants/types'
-
-// actions
-import { WalletPageActions } from '../../../actions'
+import { WalletRoutes } from '../../../../constants/types'
 
 // components
 import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
@@ -34,16 +31,10 @@ import {
 } from '../onboarding.style'
 import { CheckboxText } from './disclosures.style'
 
-export type OnboardingDisclosuresNextSteps =
-  | WalletRoutes.OnboardingCreatePassword
-  | WalletRoutes.OnboardingConnectHarwareWalletCreatePassword
-  | WalletRoutes.OnboardingImportOrRestore
-  | WalletRoutes.OnboardingConnectHardwareWalletStart
-
 interface Props {
-  nextStep: OnboardingDisclosuresNextSteps
-  onBack?: () => void
-  isHardwareOnboarding?: boolean
+  onBack: () => void
+  onContinue: () => void
+  isHardwareOnboarding: boolean
 }
 
 const TermsOfUseText: React.FC<{}> = () => {
@@ -67,14 +58,14 @@ const TermsOfUseText: React.FC<{}> = () => {
   )
 }
 
-export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
-  // routing
-  const history = useHistory()
-
+export const OnboardingDisclosures = ({
+  onBack,
+  onContinue,
+  isHardwareOnboarding
+}: Props) => {
   // redux
-  const dispatch = useDispatch()
   const walletTermsAcknowledged = useSelector(
-    ({ page }: { page: PageState }) => page.walletTermsAcknowledged
+    PageSelectors.walletTermsAcknowledged
   )
 
   // state
@@ -84,19 +75,6 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
     walletTermsAcknowledged
   )
 
-  // memos
-  const isNextStepEnabled = React.useMemo(() => {
-    return isResponsibilityCheckboxChecked && isTermsCheckboxChecked
-  }, [isResponsibilityCheckboxChecked, isTermsCheckboxChecked])
-
-  // methods
-  const onNext = React.useCallback(() => {
-    if (isNextStepEnabled) {
-      dispatch(WalletPageActions.agreeToWalletTerms())
-      history.push(nextStep)
-    }
-  }, [isNextStepEnabled, nextStep])
-
   // render
   return (
     <CenteredPageLayout>
@@ -105,10 +83,7 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
           <OnboardingNewWalletStepsNavigation
             goBack={onBack}
             currentStep={WalletRoutes.OnboardingWelcome}
-            isHardwareOnboarding={
-              nextStep ===
-              WalletRoutes.OnboardingConnectHarwareWalletCreatePassword
-            }
+            isHardwareOnboarding={isHardwareOnboarding}
             preventSkipAhead
           />
 
@@ -149,8 +124,10 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonContinue')}
-              onSubmit={onNext}
-              disabled={!isNextStepEnabled}
+              onSubmit={onContinue}
+              disabled={
+                !(isResponsibilityCheckboxChecked && isTermsCheckboxChecked)
+              }
             />
           </NextButtonRow>
         </StyledWrapper>
