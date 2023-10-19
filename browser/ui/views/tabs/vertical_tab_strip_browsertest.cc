@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
+#include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
@@ -874,3 +875,25 @@ VERTICAL_TAB_STRIP_DPI_TEST(3.00f, Dpi300)
 VERTICAL_TAB_STRIP_DPI_TEST(3.50f, Dpi350)
 
 #undef VERTICAL_TAB_STRIP_DPI_TEST
+
+class VerticalTabStripSwitchTest : public VerticalTabStripBrowserTest {
+ public:
+  using VerticalTabStripBrowserTest::VerticalTabStripBrowserTest;
+  ~VerticalTabStripSwitchTest() override = default;
+
+  // VerticalTabStripBrowserTest:
+  void SetUp() override {
+    base::CommandLine::ForCurrentProcess()->AppendSwitch(
+        tabs::switches::kDisableVerticalTabsSwitch);
+    VerticalTabStripBrowserTest::SetUp();
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripSwitchTest, DisableSwitch) {
+  EXPECT_FALSE(tabs::utils::SupportsVerticalTabs(browser()));
+
+  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  // Even when we toggle on the tab strip, this state should persist.
+  ToggleVerticalTabStrip();
+  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+}
