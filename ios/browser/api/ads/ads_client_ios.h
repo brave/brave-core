@@ -66,32 +66,16 @@ class AdsClientIOS : public brave_ads::AdsClient {
   void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
                         brave_ads::RunDBTransactionCallback callback) override;
   void UpdateAdRewards() override;
-  void SetBooleanPref(const std::string& path, const bool value) override;
-  bool GetBooleanPref(const std::string& path) const override;
-  void SetIntegerPref(const std::string& path, const int value) override;
-  int GetIntegerPref(const std::string& path) const override;
-  void SetDoublePref(const std::string& path, const double value) override;
-  double GetDoublePref(const std::string& path) const override;
-  void SetStringPref(const std::string& path,
-                     const std::string& value) override;
-  std::string GetStringPref(const std::string& path) const override;
-  void SetInt64Pref(const std::string& path, const int64_t value) override;
-  int64_t GetInt64Pref(const std::string& path) const override;
-  void SetUint64Pref(const std::string& path, const uint64_t value) override;
-  uint64_t GetUint64Pref(const std::string& path) const override;
-  void SetTimePref(const std::string& path, const base::Time value) override;
-  base::Time GetTimePref(const std::string& path) const override;
-  void SetDictPref(const std::string& path, base::Value::Dict value) override;
-  absl::optional<base::Value::Dict> GetDictPref(
+  void SetProfilePref(const std::string& path, base::Value value) override;
+  absl::optional<base::Value> GetProfilePref(
       const std::string& path) const override;
-  void SetListPref(const std::string& path, base::Value::List value) override;
-  absl::optional<base::Value::List> GetListPref(
-      const std::string& path) const override;
-  void ClearPref(const std::string& path) override;
-  bool HasPrefPath(const std::string& path) const override;
+  void ClearProfilePref(const std::string& path) override;
+  bool HasProfilePrefPath(const std::string& path) const override;
   void SetLocalStatePref(const std::string& path, base::Value value) override;
   absl::optional<base::Value> GetLocalStatePref(
       const std::string& path) const override;
+  void ClearLocalStatePref(const std::string& path) override;
+  bool HasLocalStatePrefPath(const std::string& path) const override;
   void RecordP2AEvents(const std::vector<std::string>& events) override;
   void AddFederatedLearningPredictorTrainingSample(
       const std::vector<brave_federated::mojom::CovariateInfoPtr>

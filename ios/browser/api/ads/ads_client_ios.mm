@@ -150,91 +150,21 @@ void AdsClientIOS::UpdateAdRewards() {
   [bridge_ updateAdRewards];
 }
 
-void AdsClientIOS::SetBooleanPref(const std::string& path, const bool value) {
-  [bridge_ setBooleanPref:path value:value];
+void AdsClientIOS::SetProfilePref(const std::string& path, base::Value value) {
+  [bridge_ setProfilePref:path value:std::move(value)];
 }
 
-bool AdsClientIOS::GetBooleanPref(const std::string& path) const {
-  return [bridge_ getBooleanPref:path];
-}
-
-void AdsClientIOS::SetIntegerPref(const std::string& path, const int value) {
-  [bridge_ setIntegerPref:path value:value];
-}
-
-int AdsClientIOS::GetIntegerPref(const std::string& path) const {
-  return [bridge_ getIntegerPref:path];
-}
-
-void AdsClientIOS::SetDoublePref(const std::string& path, const double value) {
-  [bridge_ setDoublePref:path value:value];
-}
-
-double AdsClientIOS::GetDoublePref(const std::string& path) const {
-  return [bridge_ getDoublePref:path];
-}
-
-void AdsClientIOS::SetStringPref(const std::string& path,
-                                 const std::string& value) {
-  [bridge_ setStringPref:path value:value];
-}
-
-std::string AdsClientIOS::GetStringPref(const std::string& path) const {
-  return [bridge_ getStringPref:path];
-}
-
-void AdsClientIOS::SetInt64Pref(const std::string& path, const int64_t value) {
-  [bridge_ setInt64Pref:path value:value];
-}
-
-int64_t AdsClientIOS::GetInt64Pref(const std::string& path) const {
-  return [bridge_ getInt64Pref:path];
-}
-
-void AdsClientIOS::SetUint64Pref(const std::string& path,
-                                 const uint64_t value) {
-  [bridge_ setUint64Pref:path value:value];
-}
-
-uint64_t AdsClientIOS::GetUint64Pref(const std::string& path) const {
-  return [bridge_ getUint64Pref:path];
-}
-
-void AdsClientIOS::SetTimePref(const std::string& path,
-                               const base::Time value) {
-  [bridge_ setTimePref:path value:value];
-}
-
-base::Time AdsClientIOS::GetTimePref(const std::string& path) const {
-  return [bridge_ getTimePref:path];
-}
-
-void AdsClientIOS::SetDictPref(const std::string& path,
-                               base::Value::Dict value) {
-  [bridge_ setDictPref:path value:std::move(value)];
-}
-
-absl::optional<base::Value::Dict> AdsClientIOS::GetDictPref(
+absl::optional<base::Value> AdsClientIOS::GetProfilePref(
     const std::string& path) const {
-  return [bridge_ getDictPref:path];
+  return [bridge_ getProfilePref:path];
 }
 
-void AdsClientIOS::SetListPref(const std::string& path,
-                               base::Value::List value) {
-  [bridge_ setListPref:path value:std::move(value)];
+void AdsClientIOS::ClearProfilePref(const std::string& path) {
+  [bridge_ clearProfilePref:path];
 }
 
-absl::optional<base::Value::List> AdsClientIOS::GetListPref(
-    const std::string& path) const {
-  return [bridge_ getListPref:path];
-}
-
-void AdsClientIOS::ClearPref(const std::string& path) {
-  [bridge_ clearPref:path];
-}
-
-bool AdsClientIOS::HasPrefPath(const std::string& path) const {
-  return [bridge_ hasPrefPath:path];
+bool AdsClientIOS::HasProfilePrefPath(const std::string& path) const {
+  return [bridge_ hasProfilePrefPath:path];
 }
 
 void AdsClientIOS::SetLocalStatePref(const std::string& path,
@@ -245,6 +175,14 @@ void AdsClientIOS::SetLocalStatePref(const std::string& path,
 absl::optional<base::Value> AdsClientIOS::GetLocalStatePref(
     const std::string& path) const {
   return [bridge_ getLocalStatePref:path];
+}
+
+void AdsClientIOS::ClearLocalStatePref(const std::string& path) {
+  [bridge_ clearLocalStatePref:path];
+}
+
+bool AdsClientIOS::HasLocalStatePrefPath(const std::string& path) const {
+  return [bridge_ hasLocalStatePrefPath:path];
 }
 
 void AdsClientIOS::RecordP2AEvents(const std::vector<std::string>& events) {
