@@ -6,11 +6,11 @@
 import { css } from 'styled-components'
 
 const miniPlayerHeight = 80
-const playlistControlsAreaHeights = 168
+const playlistControlsAreaHeights = 128
 
 export const playerTypes = {
   miniPlayer: `(max-height: ${miniPlayerHeight + 'px'})`,
-  normalPlayer: `(min-height: ${(miniPlayerHeight + 1) + 'px'})`,
+  normalPlayer: `(min-height: ${miniPlayerHeight + 1 + 'px'})`
 }
 
 export const hiddenOnMiniPlayer = css`
@@ -27,5 +27,5 @@ export const hiddenOnNormalPlayer = css`
 
 export const playerVariables = css`
   --player-controls-area-height: ${playlistControlsAreaHeights + 'px'};
-  --mini-player-height: ${ miniPlayerHeight + 'px' };
+  --mini-player-height: ${miniPlayerHeight + 'px'};
 `

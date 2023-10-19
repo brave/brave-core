@@ -25,7 +25,8 @@ import PlayerSeeker from './playerSeeker'
 import {
   playerTypes,
   playerVariables,
-  hiddenOnMiniPlayer
+  hiddenOnMiniPlayer,
+  hiddenOnNormalPlayer
 } from '../constants/style'
 import {
   notifyEventsToTopFrame,
@@ -58,6 +59,7 @@ const StyledSeeker = styled(PlayerSeeker)`
 const ControlsContainer = styled.div`
   display: flex;
   position: relative;
+
   @media ${playerTypes.normalPlayer} {
     position: absolute;
     bottom: 0;
@@ -65,24 +67,24 @@ const ControlsContainer = styled.div`
     width: 100%;
 
     flex-direction: column;
-    padding: ${spacing['2XL']} ${spacing.xl};
-    gap: 8px;
+    padding: ${spacing.m} ${spacing.xl};
+    gap: ${spacing.m};
     flex-shrink: 0;
     justify-content: center;
     box-sizing: border-box;
     height: var(--player-controls-area-height);
-    --leo-icon-color: ${color.white};
-    --seeker-progress-background: color-mix(
-      in srgb,
-      ${color.white} 20%,
-      transparent
-    );
 
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.5) 0%,
-      rgba(0, 0, 0, 0.8) 100%
-    );
+    &::before {
+      content: '';
+      background-color: ${color.dialogs.frostedGlassBackground};
+      background-position: center;
+      position: absolute;
+      width: 100%;
+      height: calc(100% + ${spacing.m});
+      z-index: -1;
+      left: 0;
+      bottom: 0;
+    }
   }
 
   @media ${playerTypes.miniPlayer} {
@@ -118,16 +120,8 @@ const PlayerContainer = styled.div<{ backgroundUrl?: string }>`
   }
 
   @media ${playerTypes.normalPlayer} {
-    ${ControlsContainer} {
-      visibility: hidden;
-    }
-
-    &:hover,
-    &:focus-within {
-      ${ControlsContainer} {
-        visibility: visible;
-      }
-    }
+    display: flex;
+    flex-direction: column;
   }
 
   @media ${playerTypes.miniPlayer} {
@@ -161,13 +155,7 @@ const StyledFavicon = styled.img<{ clickable: boolean }>`
 `
 
 const StyledTitle = styled.div<{ clickable: boolean }>`
-  @media ${playerTypes.normalPlayer} {
-    color: ${color.white};
-  }
-  @media ${playerTypes.miniPlayer} {
-    color: ${color.text.primary};
-  }
-
+  color: ${color.text.primary};
   font: ${font.primary.large.semibold};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -179,10 +167,8 @@ const StyledTitle = styled.div<{ clickable: boolean }>`
     `}
 `
 
-const StyledPlayerControls = styled(PlayerControls)`
-  @media ${playerTypes.normalPlayer} {
-    padding-top: 8px;
-  }
+const StyledProgressBar = styled(ProgressBar)`
+  ${hiddenOnNormalPlayer}
 `
 
 // Route changes of PlayerState to parent frame.
@@ -299,7 +285,7 @@ export default function Player () {
           }}
         />
         {!!currentItem?.duration && (
-          <ProgressBar
+          <StyledProgressBar
             progress={currentPosition / (+currentItem.duration / 1e6)}
           />
         )}
@@ -340,7 +326,7 @@ export default function Player () {
           </StyledTitle>
         </FaviconAndTitle>
         <StyledSeeker videoElement={videoElement} />
-        <StyledPlayerControls videoElement={videoElement} />
+        <PlayerControls videoElement={videoElement} />
       </ControlsContainer>
     </PlayerContainer>
   )
