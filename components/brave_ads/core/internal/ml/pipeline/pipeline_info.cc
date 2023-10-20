@@ -9,15 +9,11 @@
 
 namespace brave_ads::ml::pipeline {
 
-PipelineInfo::PipelineInfo(const int version,
-                           std::string timestamp,
-                           std::string locale,
+PipelineInfo::PipelineInfo(std::string locale,
                            TransformationVector transformations,
                            absl::optional<LinearModel> linear_model,
                            absl::optional<NeuralModel> neural_model)
-    : version(version),
-      timestamp(std::move(timestamp)),
-      locale(std::move(locale)),
+    : locale(std::move(locale)),
       transformations(std::move(transformations)),
       linear_model(std::move(linear_model)),
       neural_model(std::move(neural_model)) {}

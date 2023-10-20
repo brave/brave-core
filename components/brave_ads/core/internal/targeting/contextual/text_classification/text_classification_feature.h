@@ -16,6 +16,9 @@ BASE_DECLARE_FEATURE(kTextClassificationFeature);
 constexpr base::FeatureParam<int> kTextClassificationResourceVersion{
     &kTextClassificationFeature, "resource_version", 1};
 
+constexpr base::FeatureParam<int> kFlatBuffersTextClassificationResourceVersion{
+    &kTextClassificationFeature, "flatbuffers_resource_version", 1};
+
 constexpr base::FeatureParam<int>
     kTextClassificationPageProbabilitiesHistorySize{
         &kTextClassificationFeature, "page_probabilities_history_size", 5};

@@ -12,11 +12,23 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_buffer_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::ml::pipeline {
+
+// static
+base::expected<TextProcessing, std::string>
+TextProcessing::CreateFromFlatBuffers(std::string buffer) {
+  TextProcessing text_processing;
+  if (!text_processing.SetPipeline(std::move(buffer))) {
+    return base::unexpected(
+        "Failed to parse flatbuffers text classification pipeline");
+  }
+  return text_processing;
+}
 
 // static
 base::expected<TextProcessing, std::string> TextProcessing::CreateFromValue(
@@ -46,8 +58,6 @@ TextProcessing::TextProcessing(TransformationVector transformations,
 }
 
 void TextProcessing::SetPipeline(PipelineInfo pipeline) {
-  version_ = pipeline.version;
-  timestamp_ = pipeline.timestamp;
   locale_ = pipeline.locale;
   linear_model_ = std::move(pipeline.linear_model);
   neural_model_ = std::move(pipeline.neural_model);
@@ -61,6 +71,23 @@ bool TextProcessing::SetPipeline(base::Value::Dict dict) {
     SetPipeline(std::move(pipeline).value());
     is_initialized_ = true;
   } else {
+    SetPipeline(PipelineInfo{});
+    is_initialized_ = false;
+  }
+
+  return is_initialized_;
+}
+
+bool TextProcessing::SetPipeline(std::string buffer) {
+  pipeline_buffer_ = std::move(buffer);
+
+  absl::optional<PipelineInfo> pipeline =
+      ParseNeuralPipelineBuffer(*pipeline_buffer_);
+  if (pipeline) {
+    SetPipeline(std::move(pipeline).value());
+    is_initialized_ = true;
+  } else {
+    pipeline_buffer_.reset();
     SetPipeline(PipelineInfo{});
     is_initialized_ = false;
   }

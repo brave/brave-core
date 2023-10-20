@@ -9,20 +9,20 @@
 #include <map>
 #include <string>
 
+#include "base/allocator/partition_allocator/pointers/raw_ptr.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
-#include "brave/components/brave_ads/core/internal/ml/model/neural/neural_architecture_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace brave_ads::text_classification::flat {
+struct NeuralModel;
+}  // namespace brave_ads::text_classification::flat
 
 namespace brave_ads::ml {
 
 class NeuralModel final {
  public:
-  NeuralModel();
-
-  explicit NeuralModel(const std::string& model);
-  NeuralModel(std::vector<std::vector<VectorData>> matricies,
-              std::vector<std::string>& post_matrix_functions,
-              std::vector<std::string> classes);
+  explicit NeuralModel(const text_classification::flat::NeuralModel* model);
 
   NeuralModel(const NeuralModel&);
   NeuralModel& operator=(const NeuralModel&);
@@ -32,18 +32,24 @@ class NeuralModel final {
 
   ~NeuralModel();
 
-  PredictionMap Predict(const VectorData& data) const;
+  const text_classification::flat::NeuralModel* model() const {
+    return model_.get();
+  }
 
-  PredictionMap GetTopPredictions(const VectorData& data) const;
+  absl::optional<PredictionMap> Predict(const VectorData& data) const;
 
-  PredictionMap GetTopCountPredictions(const VectorData& data,
-                                       size_t top_count) const;
+  absl::optional<PredictionMap> GetTopPredictions(const VectorData& data) const;
+
+  absl::optional<PredictionMap> GetTopCountPredictions(const VectorData& data,
+                                                       size_t top_count) const;
 
  private:
-  PredictionMap GetTopCountPredictionsImpl(const VectorData& data,
-                                           size_t top_count) const;
+  absl::optional<PredictionMap> GetTopCountPredictionsImpl(
+      const VectorData& data,
+      size_t top_count) const;
 
-  NeuralArchitectureInfo neural_architecture_info_;
+  std::string buffer_;
+  raw_ptr<const text_classification::flat::NeuralModel> model_;
 };
 
 }  // namespace brave_ads::ml

@@ -1,0 +1,23 @@
+include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_transformation.fbs";
+
+namespace brave_ads.text_classification.flat;
+
+table StringToFloat32Entry {
+    key: string (key, required);
+    numbers: [float32] (required);
+}
+
+table LinearClassifier {
+  classes: [string] (required);
+  classifier_type: string (required);
+  biases: [float32] (required);
+  class_weights: [StringToFloat32Entry] (required);
+}
+
+table LinearModel {
+  classifier: LinearClassifier (required);
+  locale: string (required);
+  transformations: [TransformationEntry] (required);
+}
+
+root_type LinearModel;

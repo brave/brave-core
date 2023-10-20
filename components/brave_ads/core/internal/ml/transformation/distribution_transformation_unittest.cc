@@ -36,7 +36,7 @@ TEST_F(BraveAdsDistributionTransformationTest, ToDistribution) {
 
   // Assert
   ASSERT_EQ(DataType::kVector, data->GetType());
-  ASSERT_TRUE(transformed_vector_values.size() == 5);
+  ASSERT_EQ(transformed_vector_values.size(), 5U);
   EXPECT_TRUE(
       (std::fabs(0.14224751 - transformed_vector_values.at(0)) < kTolerance) &&
       (std::fabs(0.28449502 - transformed_vector_values.at(1)) < kTolerance) &&
@@ -63,7 +63,7 @@ TEST_F(BraveAdsDistributionTransformationTest, ZeroVector) {
 
   // Assert
   ASSERT_EQ(DataType::kVector, data->GetType());
-  ASSERT_TRUE(transformed_vector_values.size() == 5);
+  ASSERT_EQ(transformed_vector_values.size(), 5U);
   EXPECT_TRUE((std::fabs(0 - transformed_vector_values.at(0)) < kTolerance) &&
               (std::fabs(0 - transformed_vector_values.at(1)) < kTolerance) &&
               (std::fabs(0 - transformed_vector_values.at(2)) < kTolerance) &&

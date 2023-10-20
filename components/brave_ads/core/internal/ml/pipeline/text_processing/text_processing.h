@@ -22,6 +22,8 @@ struct PipelineInfo;
 
 class TextProcessing final {
  public:
+  static base::expected<TextProcessing, std::string> CreateFromFlatBuffers(
+      std::string buffer);
   static base::expected<TextProcessing, std::string> CreateFromValue(
       base::Value::Dict dict);
   static PredictionMap FilterPredictions(const PredictionMap& predictions);
@@ -42,6 +44,7 @@ class TextProcessing final {
 
   void SetPipeline(PipelineInfo pipeline);
   bool SetPipeline(base::Value::Dict dict);
+  bool SetPipeline(std::string buffer);
 
   absl::optional<PredictionMap> Predict(VectorData* vector_data) const;
 
@@ -58,9 +61,9 @@ class TextProcessing final {
  private:
   bool is_initialized_ = false;
 
-  int version_ = 0;
-  std::string timestamp_;
   std::string locale_ = "en";
+
+  absl::optional<std::string> pipeline_buffer_;
   TransformationVector transformations_;
   absl::optional<LinearModel> linear_model_;
   absl::optional<NeuralModel> neural_model_;

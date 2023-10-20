@@ -11,6 +11,9 @@ namespace brave_ads {
 constexpr char kTextClassificationResourceId[] =
     "feibnmjhecfbjpeciancnchbmlobenjn";
 
+constexpr char kFlatBuffersTextClassificationResourceId[] =
+    "flatbmjhecfbjpeciancnchbmlobenjn";
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_CONTEXTUAL_TEXT_CLASSIFICATION_RESOURCE_TEXT_CLASSIFICATION_RESOURCE_CONSTANTS_H_

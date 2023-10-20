@@ -11,18 +11,21 @@
 #include <string>
 #include <vector>
 
+#include "base/allocator/partition_allocator/pointers/raw_ptr.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace brave_ads::text_classification::flat {
+struct MappedTokenTransformation;
+}  // namespace brave_ads::text_classification::flat
 
 namespace brave_ads::ml {
 
 class MappedTokensTransformation final : public Transformation {
  public:
-  MappedTokensTransformation();
-  MappedTokensTransformation(
-      int vector_dimension,
-      std::map<std::string, std::vector<int>> huffman_coding_mapping,
-      std::map<std::basic_string<unsigned char>, std::vector<unsigned char>>
-          token_categories_mapping);
+  explicit MappedTokensTransformation(
+      const text_classification::flat::MappedTokenTransformation*
+          mapped_token_transformation);
 
   MappedTokensTransformation(
       MappedTokensTransformation&& mapped_tokens) noexcept;
@@ -36,17 +39,15 @@ class MappedTokensTransformation final : public Transformation {
   static std::vector<std::string> GetWordsFromText(
       const std::unique_ptr<Data>& input_data);
 
-  std::map<unsigned, double> GetCategoryFrequencies(
-      std::vector<std::string> words) const;
+  absl::optional<std::map<uint32_t, double>> GetCategoryFrequencies(
+      const std::vector<std::string>& words) const;
 
   std::unique_ptr<Data> Apply(
       const std::unique_ptr<Data>& input_data) const override;
 
  private:
-  int vector_dimension_ = 0;
-  std::map<std::string, std::vector<int>> huffman_coding_mapping_;
-  std::map<std::basic_string<unsigned char>, std::vector<unsigned char>>
-      token_categories_mapping_;
+  raw_ptr<const text_classification::flat::MappedTokenTransformation>
+      mapped_token_transformation_;
 };
 
 }  // namespace brave_ads::ml

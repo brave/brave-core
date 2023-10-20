@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/resources/flatbuffers_resources_util_impl.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resources_util_impl.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
@@ -25,6 +26,10 @@ namespace {
 
 bool DoesRequireResource() {
   return UserHasOptedInToNotificationAds();
+}
+
+const char* GetResourceId() {
+  return kFlatBuffersTextClassificationResourceId;
 }
 
 }  // namespace
@@ -52,33 +57,33 @@ void TextClassificationResource::MaybeLoadOrReset() {
 void TextClassificationResource::Load() {
   did_load_ = true;
 
-  LoadAndParseResource(kTextClassificationResourceId,
-                       kTextClassificationResourceVersion.Get(),
-                       base::BindOnce(&TextClassificationResource::LoadCallback,
-                                      weak_factory_.GetWeakPtr()));
+  LoadFlatBuffersResource(
+      kFlatBuffersTextClassificationResourceId,
+      kFlatBuffersTextClassificationResourceVersion.Get(),
+      base::BindOnce(&TextClassificationResource::LoadCallback,
+                      weak_factory_.GetWeakPtr()));
 }
 
 void TextClassificationResource::LoadCallback(
     ResourceParsingErrorOr<ml::pipeline::TextProcessing> result) {
   if (!result.has_value()) {
-    return BLOG(0, "Failed to initialize " << kTextClassificationResourceId
+    return BLOG(0, "Failed to initialize " << GetResourceId()
                                            << " text classification resource ("
                                            << result.error() << ")");
   }
 
   if (!result.value().IsInitialized()) {
-    return BLOG(1, kTextClassificationResourceId
+    return BLOG(1, GetResourceId()
                        << " text classification resource is not available");
   }
 
-  BLOG(1, "Successfully loaded " << kTextClassificationResourceId
+  BLOG(1, "Successfully loaded " << GetResourceId()
                                  << " text classification resource");
 
   text_processing_pipeline_ = std::move(result).value();
 
   BLOG(1, "Successfully initialized "
-              << kTextClassificationResourceId
-              << " text classification resource version "
+              << GetResourceId() << " text classification resource version "
               << kTextClassificationResourceVersion.Get());
 }
 
@@ -89,8 +94,7 @@ void TextClassificationResource::MaybeReset() {
 }
 
 void TextClassificationResource::Reset() {
-  BLOG(1, "Reset " << kTextClassificationResourceId
-                   << " text classification resource");
+  BLOG(1, "Reset " << GetResourceId() << " text classification resource");
   text_processing_pipeline_.reset();
   did_load_ = false;
 }
