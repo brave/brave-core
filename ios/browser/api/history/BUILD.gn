@@ -12,6 +12,8 @@ source_set("history") {
     "brave_history_api.h",
     "brave_history_api.mm",
     "brave_history_observer.h",
+    "history_driver_ios.h",
+    "history_driver_ios.mm",
     "history_service_listener_ios.h",
     "history_service_listener_ios.mm",
   ]
@@ -19,7 +21,11 @@ source_set("history") {
   deps = [
     "//base",
     "//components/history/core/browser",
+    "//components/browsing_data/core",
+    "//components/keyed_service/core",
     "//ios/chrome/browser/history",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/sync/",
     "//ios/web/public/thread",
     "//net",
     "//ui/base",
