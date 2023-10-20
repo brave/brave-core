@@ -53,7 +53,6 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
       GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
-  int GetPageContentCharacterLimit() override;
 
  private:
   void OnGenerateQuestionSuggestionsResponse(
@@ -61,6 +60,8 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
       GenerationResult result);
 
   std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
+
+  const mojom::Model& model_;
 
   base::WeakPtrFactory<EngineConsumerClaudeRemote> weak_ptr_factory_{this};
 };

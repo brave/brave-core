@@ -643,8 +643,8 @@ bool AIChatTabHelper::IsPageContentsTruncated() {
     return false;
   }
 
-  return (static_cast<int>(article_text_.length()) >
-          engine_->GetPageContentCharacterLimit());
+  return (static_cast<uint32_t>(article_text_.length()) >
+          GetCurrentModel().max_page_content_length);
 }
 
 void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {

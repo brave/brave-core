@@ -242,7 +242,8 @@ namespace ai_chat {
 EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
     const mojom::Model& model,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    AIChatCredentialManager* credential_manager) {
+    AIChatCredentialManager* credential_manager)
+    : model_(model) {
   // Allow specific model name to be overriden by feature flag
   // TODO(petemill): verify premium status, or ensure server will verify even
   // when given a model name override via cli flag param.
@@ -261,14 +262,6 @@ EngineConsumerLlamaRemote::~EngineConsumerLlamaRemote() = default;
 
 void EngineConsumerLlamaRemote::ClearAllQueries() {
   api_->ClearAllQueries();
-}
-
-int EngineConsumerLlamaRemote::GetPageContentCharacterLimit() {
-  // tokens + max_new_tokens must be <= 4096 (llama2)
-  // 8092 chars, ~3,098 toks reserved for article
-  // 1k chars, ~380 toks reserved for prompt
-  // 400 toks reserved for max_tokens_to_sample
-  return 8092;
 }
 
 void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
@@ -342,7 +335,7 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   const std::string& truncated_page_content =
-      page_content.substr(0, GetPageContentCharacterLimit());
+      page_content.substr(0, model_.max_page_content_length);
   std::string prompt = BuildLlama2Prompt(
       conversation_history, truncated_page_content, is_video, human_input);
   DCHECK(api_);

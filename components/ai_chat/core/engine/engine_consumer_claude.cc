@@ -124,7 +124,8 @@ void CheckPrompt(std::string& prompt) {
 EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
     const mojom::Model& model,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    AIChatCredentialManager* credential_manager) {
+    AIChatCredentialManager* credential_manager)
+    : model_(model) {
   // Allow specific model name to be overriden by feature flag
   // TODO(petemill): verify premium status, or ensure server will verify even
   // when given a model name override via cli flag param.
@@ -143,11 +144,6 @@ EngineConsumerClaudeRemote::~EngineConsumerClaudeRemote() = default;
 
 void EngineConsumerClaudeRemote::ClearAllQueries() {
   api_->ClearAllQueries();
-}
-
-int EngineConsumerClaudeRemote::GetPageContentCharacterLimit() {
-  //  limit is: 100k tokens / ~75k words
-  return 75000;
 }
 
 void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
@@ -200,7 +196,7 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   const std::string& truncated_page_content =
-      page_content.substr(0, GetPageContentCharacterLimit());
+      page_content.substr(0, model_.max_page_content_length);
   std::string prompt = BuildClaudePrompt(human_input, truncated_page_content,
                                          is_video, conversation_history);
   CheckPrompt(prompt);
