@@ -1073,9 +1073,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_ADS_NOTIFICATION_SUB_TEXT" desc='Brave Ads notification sub text'>
         You have <ph name="TOKEN">%1$s<ex>89</ex></ph> days left to claim
       </message>
-      <message name="IDS_BRAVE_WALLET_PORTFOLIO_BALANCE_UPDATING" desc="A placeholder to display for unupdated balance" translateable="false">
-        ...
-      </message>
       <message name="IDS_BRAVE_UI_ON_YOUTUBE" desc="A suffix to YouTube channel creator">
         on YouTube
       </message>
@@ -4085,6 +4082,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Brave Leo confirm button text.">
       Confirm
+    </message>
+    <message name="IDS_ELLIPSIS_TEXT" desc="Generic ellipsis text" translateable="false">
+      ...
     </message>
   </messages>
   </release>
