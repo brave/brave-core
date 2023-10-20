@@ -143,7 +143,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 @property(nonatomic) dispatch_group_t prefsWriteGroup;
 @property(nonatomic) dispatch_queue_t prefsWriteThread;
 @property(nonatomic) NSMutableDictionary* prefs;
-@property(nonatomic, copy) NSDictionary* adsResourceMetadata;
+@property(nonatomic) dispatch_group_t componentUpdaterPrefsWriteGroup;
+@property(nonatomic) dispatch_queue_t componentUpdaterPrefsWriteThread;
+@property(nonatomic) NSMutableDictionary* componentUpdaterPrefs;
 @property(nonatomic) NSTimer* updateAdsResourceTimer;
 @property(nonatomic) int64_t adsResourceRetryCount;
 @property(nonatomic, readonly) NSDictionary* componentPaths;
@@ -171,12 +173,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     }
 
     [self setupNetworkMonitoring];
+    [self initComponentUpdaterPrefs];
 
-    if (self.adsResourceMetadata == nil) {
-      self.adsResourceMetadata = [[NSDictionary alloc] init];
-    }
 
-    self.adsResourceRetryCount = 1;
 
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -316,37 +315,43 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)shutdown:(nullable void (^)())completion {
   if ([self isAdsServiceRunning]) {
-    dispatch_group_notify(self.prefsWriteGroup, dispatch_get_main_queue(), ^{
-      self->ads->Shutdown(base::BindOnce(^(bool) {
-        if (self->ads != nil) {
-          delete self->ads;
-        }
-        if (self->adsClientNotifier != nil) {
-          delete self->adsClientNotifier;
-        }
-        if (self->adsClient != nil) {
-          delete self->adsClient;
-        }
-        if (self->adsDatabase != nil) {
-          self->databaseQueue->PostTask(
-              FROM_HERE,
-              base::BindOnce(
-                  [](brave_ads::Database* database) { delete database; },
-                  self->adsDatabase));
-        }
-        if (self->adEventCache != nil) {
-          delete self->adEventCache;
-        }
-        self->ads = nil;
-        self->adsClientNotifier = nil;
-        self->adsClient = nil;
-        self->adsDatabase = nil;
-        self->adEventCache = nil;
-        if (completion) {
-          completion();
-        }
-      }));
-    });
+    dispatch_group_notify(
+        self.componentUpdaterPrefsWriteGroup, dispatch_get_main_queue(), ^{
+          self->ads->Shutdown(base::BindOnce(^(bool) {
+            if (self->ads != nil) {
+              delete self->ads;
+            }
+            self->ads = nil;
+
+            if (self->adsClientNotifier != nil) {
+              delete self->adsClientNotifier;
+            }
+            self->adsClientNotifier = nil;
+
+            if (self->adsClient != nil) {
+              delete self->adsClient;
+            }
+            self->adsClient = nil;
+
+            if (self->adsDatabase != nil) {
+              self->databaseQueue->PostTask(
+                  FROM_HERE,
+                  base::BindOnce(
+                      [](brave_ads::Database* database) { delete database; },
+                      self->adsDatabase));
+            }
+            self->adsDatabase = nil;
+
+            if (self->adEventCache != nil) {
+              delete self->adEventCache;
+            }
+            self->adEventCache = nil;
+
+            if (completion) {
+              completion();
+            }
+          }));
+        });
   } else {
     if (completion) {
       completion();
@@ -858,15 +863,43 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
             }];
 }
 
-#pragma mark - File IO
+#pragma mark - Component updater
 
-- (NSDictionary*)adsResourceMetadata {
-  return (NSDictionary*)self.prefs[kAdsResourceMetadataPrefKey];
+- (NSString*)componentUpdaterPrefsPath {
+  return [self.storagePath
+      stringByAppendingPathComponent:@"component_updater_pref.plist"];
 }
 
-- (void)setAdsResourceMetadata:(NSDictionary*)adsResourceMetadata {
-  self.prefs[kAdsResourceMetadataPrefKey] = adsResourceMetadata;
-  [self savePref:kAdsResourceMetadataPrefKey];
+- (void)initComponentUpdaterPrefs {
+  self.componentUpdaterPrefsWriteThread =
+      dispatch_queue_create("com.rewards.ads.prefs", DISPATCH_QUEUE_SERIAL);
+  self.componentUpdaterPrefsWriteGroup = dispatch_group_create();
+  self.componentUpdaterPrefs = [[NSMutableDictionary alloc]
+      initWithContentsOfFile:[self componentUpdaterPrefsPath]];
+  if (!self.componentUpdaterPrefs) {
+    self.componentUpdaterPrefs = [[NSMutableDictionary alloc] init];
+  }
+}
+
+- (void)saveComponentUpdaterPrefs {
+  NSDictionary* prefs = [self.componentUpdaterPrefs copy];
+  NSString* path = [[self componentUpdaterPrefsPath] copy];
+  dispatch_group_enter(self.componentUpdaterPrefsWriteGroup);
+  dispatch_async(self.componentUpdaterPrefsWriteThread, ^{
+    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
+    dispatch_group_leave(self.componentUpdaterPrefsWriteGroup);
+  });
+}
+
+- (NSDictionary*)componentUpdaterResourceMetadata {
+  return (NSDictionary*)self.componentUpdaterPrefs[kAdsResourceMetadataPrefKey];
+}
+
+- (void)setCmponentUpdaterResourceMetadata:
+    (NSDictionary*)componentUpdaterResourceMetadata {
+  self.componentUpdaterPrefs[kAdsResourceMetadataPrefKey] =
+      componentUpdaterResourceMetadata;
+  [self saveComponentUpdaterPrefs];
 }
 
 - (BOOL)registerAdsResourcesForLanguageCode:(NSString*)languageCode {
@@ -1147,7 +1180,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
           }
 
           NSDictionary* adsResourceMetadataDict =
-              [strongSelf adsResourceMetadata];
+              [strongSelf componentUpdaterResourceMetadata];
           if (version <= adsResourceMetadataDict[adsResourceId]) {
             BLOG(1, @"%@ ads resource is up to date on version %@",
                  adsResourceId, version);
@@ -1195,9 +1228,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      version);
 
                 NSMutableDictionary* dictionary =
-                    [[strongSelf adsResourceMetadata] mutableCopy];
+                    [[strongSelf componentUpdaterResourceMetadata] mutableCopy];
                 dictionary[adsResourceId] = version;
-                [strongSelf setAdsResourceMetadata:dictionary];
+                [strongSelf setCmponentUpdaterResourceMetadata:dictionary];
 
                 BLOG(1, @"%@ ads resource updated to version %@", adsResourceId,
                      version);
