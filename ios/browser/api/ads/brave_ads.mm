@@ -75,9 +75,9 @@
     brave_ads::__cpp_var = newValue;                                       \
   }
 
-static const int kCurrentAdsResourceManifestSchemaVersion = 1;
-
-static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
+static const int kComponentUpdaterManifestSchemaVersion = 1;
+static NSString* const kComponentUpdaterMetadataPrefKey =
+    @"BraveAdsComponentUpdaterMetadata";
 
 namespace {
 
@@ -126,8 +126,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 @property(nonatomic) dispatch_group_t componentUpdaterPrefsWriteGroup;
 @property(nonatomic) dispatch_queue_t componentUpdaterPrefsWriteThread;
 @property(nonatomic) NSMutableDictionary* componentUpdaterPrefs;
-@property(nonatomic) NSTimer* updateAdsResourceTimer;
-@property(nonatomic) int64_t adsResourceRetryCount;
+@property(nonatomic, copy) NSDictionary* componentUpdaterMetadata;
+@property(nonatomic) NSTimer* componentUpdaterTimer;
+@property(nonatomic) int64_t componentUpdaterRetryCount;
 @property(nonatomic, readonly) NSDictionary* componentPaths;
 @end
 
@@ -140,7 +141,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
     [self setupNetworkMonitoring];
 
-    [self initComponentUpdaterPrefs];
+    [self initComponentUpdater];
 
     [self initProfilePrefService];
     [self initLocalStatePrefService];
@@ -173,8 +174,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)dealloc {
-  [self.updateAdsResourceTimer invalidate];
-  self.updateAdsResourceTimer = nil;
+  [self.componentUpdaterTimer invalidate];
+  self.componentUpdaterTimer = nil;
 
   [NSNotificationCenter.defaultCenter removeObserver:self];
   if (networkMonitor) {
@@ -718,7 +719,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       stringByAppendingPathComponent:@"component_updater_pref.plist"];
 }
 
-- (void)initComponentUpdaterPrefs {
+- (void)initComponentUpdater {
   self.componentUpdaterPrefsWriteThread =
       dispatch_queue_create("com.rewards.ads.prefs", DISPATCH_QUEUE_SERIAL);
   self.componentUpdaterPrefsWriteGroup = dispatch_group_create();
@@ -727,6 +728,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (!self.componentUpdaterPrefs) {
     self.componentUpdaterPrefs = [[NSMutableDictionary alloc] init];
   }
+
+  if (self.componentUpdaterMetadata == nil) {
+    self.componentUpdaterMetadata = [[NSDictionary alloc] init];
+  }
+
+  self.componentUpdaterRetryCount = 1;
 }
 
 - (void)saveComponentUpdaterPrefs {
@@ -734,19 +741,23 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   NSString* path = [[self componentUpdaterPrefsPath] copy];
   dispatch_group_enter(self.componentUpdaterPrefsWriteGroup);
   dispatch_async(self.componentUpdaterPrefsWriteThread, ^{
-    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
+    NSError* error = nil;
+    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:&error];
+    if (error) {
+      BLOG(0, @"Failed to write component updater prefs: %@", error);
+    }
     dispatch_group_leave(self.componentUpdaterPrefsWriteGroup);
   });
 }
 
-- (NSDictionary*)componentUpdaterResourceMetadata {
-  return (NSDictionary*)self.componentUpdaterPrefs[kAdsResourceMetadataPrefKey];
+- (NSDictionary*)componentUpdaterMetadata {
+  return (NSDictionary*)
+      self.componentUpdaterPrefs[kComponentUpdaterMetadataPrefKey];
 }
 
-- (void)setCmponentUpdaterResourceMetadata:
-    (NSDictionary*)componentUpdaterResourceMetadata {
-  self.componentUpdaterPrefs[kAdsResourceMetadataPrefKey] =
-      componentUpdaterResourceMetadata;
+- (void)setComponentUpdaterMetadata:(NSDictionary*)componentUpdaterMetadata {
+  self.componentUpdaterPrefs[kComponentUpdaterMetadataPrefKey] =
+      componentUpdaterMetadata;
   [self saveComponentUpdaterPrefs];
 }
 
@@ -779,11 +790,10 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      return;
                    }
                    if (success) {
-                     const std::string bridged_language_code_adsResource_idkey =
-                         base::SysNSStringToUTF8(languageCodeAdsResourceId);
                      strongSelf->adsClientNotifier
                          ->NotifyDidUpdateResourceComponent(
-                             "1", bridged_language_code_adsResource_idkey);
+                             "1", base::SysNSStringToUTF8(
+                                      languageCodeAdsResourceId));
                    }
                  }];
 
@@ -817,12 +827,10 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      return;
                    }
                    if (success) {
-                     const std::string bridged_country_code_adsResource_idkey =
-                         base::SysNSStringToUTF8(countryCodeAdsResourceId);
-
                      strongSelf->adsClientNotifier
                          ->NotifyDidUpdateResourceComponent(
-                             "1", bridged_country_code_adsResource_idkey);
+                             "1",
+                             base::SysNSStringToUTF8(countryCodeAdsResourceId));
                    }
                  }];
 
@@ -847,7 +855,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   const double time_interval = 6 * base::Time::kSecondsPerHour;
 
   const auto __weak weakSelf = self;
-  self.updateAdsResourceTimer = [NSTimer
+  self.componentUpdaterTimer = [NSTimer
       scheduledTimerWithTimeInterval:time_interval
                              repeats:YES
                                block:^(NSTimer* _Nonnull timer) {
@@ -913,11 +921,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   void (^handleRetry)() = ^{
     const auto strongSelf = weakSelf;
     const int64_t backoff = 1 * 60;
-    int64_t delay = backoff << strongSelf.adsResourceRetryCount;
+    int64_t delay = backoff << strongSelf.componentUpdaterRetryCount;
     if (delay >= 60 * 60) {
       delay = 60 * 60;
     } else {
-      strongSelf.adsResourceRetryCount++;
+      strongSelf.componentUpdaterRetryCount++;
     }
 
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
@@ -992,7 +1000,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
         NSNumber* schemaVersion = dict[@"schemaVersion"];
         if ([schemaVersion intValue] !=
-            kCurrentAdsResourceManifestSchemaVersion) {
+            kComponentUpdaterManifestSchemaVersion) {
           BLOG(1, @"Invalid schema version for ads resource manifest %@ (%d)",
                folderName, [schemaVersion intValue]);
           handleRetry();
@@ -1028,7 +1036,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
           }
 
           NSDictionary* adsResourceMetadataDict =
-              [strongSelf componentUpdaterResourceMetadata];
+              [strongSelf componentUpdaterMetadata];
           if (version <= adsResourceMetadataDict[adsResourceId]) {
             BLOG(1, @"%@ ads resource is up to date on version %@",
                  adsResourceId, version);
@@ -1076,9 +1084,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      version);
 
                 NSMutableDictionary* dictionary =
-                    [[strongSelf componentUpdaterResourceMetadata] mutableCopy];
+                    [[strongSelf componentUpdaterMetadata] mutableCopy];
                 dictionary[adsResourceId] = version;
-                [strongSelf setCmponentUpdaterResourceMetadata:dictionary];
+                [strongSelf setComponentUpdaterMetadata:dictionary];
 
                 BLOG(1, @"%@ ads resource updated to version %@", adsResourceId,
                      version);
