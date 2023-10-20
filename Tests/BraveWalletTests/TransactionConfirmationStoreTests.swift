@@ -114,16 +114,17 @@ import Preferences
         id: id,
         isKeyringCreated: true,
         isLocked: false,
-        isBackedUp: true,
-        accountInfos: [])
-      if id == BraveWallet.KeyringId.default {
-        keyring.accountInfos = accountInfos.filter { $0.coin == .eth }
-      } else if id == .solana {
-        keyring.accountInfos = accountInfos.filter { $0.coin == .sol }
-      } else {
-        keyring.accountInfos = accountInfos.filter { $0.coin == .fil }
-      }
+        isBackedUp: true
+      )
       completion(keyring)
+    }
+    keyringService._allAccounts = {
+      $0(.init(
+        accounts: accountInfos,
+        selectedAccount: accountInfos.first,
+        ethDappSelectedAccount: accountInfos.first(where: { $0.coin == .eth }),
+        solDappSelectedAccount: accountInfos.first(where: { $0.coin == .sol })
+      ))
     }
     
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()

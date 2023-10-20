@@ -337,7 +337,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   ) {
     let eip1559Data = BraveWallet.TxData1559(baseData: baseData, chainId: chainId, maxPriorityFeePerGas: "", maxFeePerGas: "", gasEstimation: nil)
     let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
-    self.txService.addUnapprovedTransaction(txDataUnion, from: accountId, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
+    self.txService.addUnapprovedTransaction(txDataUnion, from: accountId) { success, txMetaId, errorMessage in
       completion(success, errorMessage)
     }
   }
@@ -573,7 +573,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           }
         } else {
           let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
+          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId) { success, txMetaId, errorMessage in
             self.isMakingTx = false
             completion(success, errorMessage)
           }
@@ -586,7 +586,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           }
           let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data, signOnly: false, signedTransaction: nil)
           let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
+          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId) { success, txMetaId, errorMessage in
             self.isMakingTx = false
             completion(success, errorMessage)
           }
@@ -605,7 +605,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             }
           } else {
             let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-            self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
+            self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId) { success, txMetaId, errorMessage in
               self.isMakingTx = false
               completion(success, errorMessage)
             }
@@ -641,7 +641,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             return
           }
           let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solanaTxData)
-          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId, origin: nil, groupId: nil) { success, txMetaId, errMsg in
+          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId) { success, txMetaId, errMsg in
             completion(success, errMsg)
           }
         }
@@ -658,7 +658,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             return
           }
           let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solanaTxData)
-          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
+          self.txService.addUnapprovedTransaction(txDataUnion, from: fromAccountId) { success, txMetaId, errorMessage in
             completion(success, errorMessage)
           }
         }
@@ -688,7 +688,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       to: sendAddress,
       value: weiString
     )
-    self.txService.addUnapprovedTransaction(BraveWallet.TxDataUnion(filTxData: filTxData), from: fromAccountId, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
+    self.txService.addUnapprovedTransaction(BraveWallet.TxDataUnion(filTxData: filTxData), from: fromAccountId) { success, txMetaId, errorMessage in
       self.isMakingTx = false
       completion(success, errorMessage)
     }

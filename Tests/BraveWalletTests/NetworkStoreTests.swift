@@ -31,13 +31,11 @@ import Preferences
     
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._keyringInfo = { keyringId, completion in
-      let isEthereumKeyringId = keyringId == BraveWallet.KeyringId.default
       let keyring: BraveWallet.KeyringInfo = .init(
-        id: BraveWallet.KeyringId.default,
+        id: keyringId,
         isKeyringCreated: true,
         isLocked: false,
-        isBackedUp: true,
-        accountInfos: isEthereumKeyringId ? [.previewAccount] : []
+        isBackedUp: true
       )
       completion(keyring)
     }

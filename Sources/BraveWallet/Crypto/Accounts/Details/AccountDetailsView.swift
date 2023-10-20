@@ -185,7 +185,7 @@ struct AccountDetailsView_Previews: PreviewProvider {
   static var previews: some View {
     AccountDetailsView(
       keyringStore: .previewStoreWithWalletCreated,
-      account: KeyringStore.previewStoreWithWalletCreated.defaultKeyring.accountInfos.first!,
+      account: KeyringStore.previewStoreWithWalletCreated.allAccounts.first!,
       editMode: false
     )
     .previewColorSchemes()

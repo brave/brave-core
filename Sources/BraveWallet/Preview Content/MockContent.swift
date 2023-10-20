@@ -205,7 +205,6 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
       confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca"
     )
@@ -245,7 +244,6 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
       confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0xdef1c0ded9bec7f1a1670819833240f027b25eff"
     )
@@ -283,7 +281,6 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
       confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: BraveWallet.BlockchainToken.previewDaiToken.contractAddress
     )
@@ -322,7 +319,6 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1667854810), // Monday, November 7, 2022 9:00:10 PM GMT
       confirmedTime: Date(timeIntervalSince1970: 1667854820), // Monday, November 7, 2022 9:00:20 PM GMT
       originInfo: .init(),
-      groupId: nil,
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil // Currently only available for ETH and FIL
     )
@@ -361,7 +357,6 @@ extension BraveWallet.TransactionInfo {
       submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
       confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
-      groupId: nil,
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil // Currently only available for ETH and FIL
     )
@@ -392,7 +387,6 @@ extension BraveWallet.TransactionInfo {
     submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
     confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
     originInfo: nil,
-    groupId: nil,
     chainId: BraveWallet.FilecoinMainnet,
     effectiveRecipient: nil
   )
@@ -408,12 +402,15 @@ extension BraveWallet.SignMessageRequest {
       originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
       id: 1,
       accountId: BraveWallet.AccountInfo.previewAccount.accountId,
-      domain: "example.com",
-      message: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
-      isEip712: false,
-      domainHash: "",
-      primaryHash: "",
-      messageBytes: [],
+      signData: .init(
+        ethSignTypedData: .init(
+          message: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
+          domain: "",
+          domainHash: nil,
+          primaryHash: nil,
+          meta: nil
+        )
+      ),
       coin: .eth,
       chainId: BraveWallet.MainnetChainId
     )

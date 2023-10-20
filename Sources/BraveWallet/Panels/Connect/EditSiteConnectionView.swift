@@ -131,7 +131,7 @@ struct EditSiteConnectionView: View {
   }
   
   private var accountInfos: [BraveWallet.AccountInfo] {
-    keyringStore.allKeyrings.first(where: { $0.coin == coin })?.accountInfos ?? []
+    keyringStore.allAccounts.filter { $0.coin == coin }
   }
   
   var body: some View {

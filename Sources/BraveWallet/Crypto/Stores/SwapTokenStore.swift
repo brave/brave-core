@@ -407,7 +407,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         signedTransaction: nil
       )
       let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.accountId, origin: nil, groupId: nil)
+      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.accountId)
       if !success {
         self.state = .error(Strings.Wallet.unknownError)
         self.clearAllAmount()
@@ -529,7 +529,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return success
     } else {
       let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.accountId, origin: nil, groupId: nil)
+      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.accountId)
       if !success {
         self.state = .error(Strings.Wallet.unknownError)
         self.clearAllAmount()
@@ -559,7 +559,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
     let eip1559Data = BraveWallet.TxData1559(baseData: baseData, chainId: chainId, maxPriorityFeePerGas: maxPriorityFeePerGas, maxFeePerGas: maxFeePerGas, gasEstimation: gasEstimation)
     let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
-    let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: account.accountId, origin: nil, groupId: nil)
+    let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, from: account.accountId)
     if !success {
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
@@ -770,15 +770,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.state = .error(Strings.Wallet.unknownError)
       return false
     }
-    /* Group transactions no longer used in core.
-      let serializedTransactions = [
-        swapTransactions.setupTransaction,
-        swapTransactions.swapTransaction,
-        swapTransactions.cleanupTransaction
-      ].filter { !$0.isEmpty }
-      let hasParts = serializedTransactions.count > 1
-      let groupId: String? = hasParts ? UUID().uuidString : nil
-    */
     let (solTxData, status, _) = await solTxManagerProxy.makeTxData(
       fromBase64EncodedTransaction: swapTransactions.swapTransaction,
       txType: .solanaSwap,
@@ -794,9 +785,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
     let (success, _, _) = await txService.addUnapprovedTransaction(
       .init(solanaTxData: solTxData),
-      from: accountInfo.accountId,
-      origin: nil,
-      groupId: nil
+      from: accountInfo.accountId
     )
     return success
   }

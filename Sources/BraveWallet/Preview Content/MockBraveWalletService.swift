@@ -266,5 +266,13 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func convertFevm(toFvmAddress isMainnet: Bool, fevmAddresses: [String], completion: @escaping ([String: String]) -> Void) {
     completion([:])
   }
+
+  func pendingSignMessageErrors(_ completion: @escaping ([BraveWallet.SignMessageError]) -> Void) {
+    completion([])
+  }
+  
+  func notifySignMessageErrorProcessed(_ errorId: String) {
+
+  }
 }
 #endif

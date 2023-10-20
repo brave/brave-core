@@ -55,6 +55,9 @@ class AccountActivityStoreTests: XCTestCase {
         completion(.mockDefaultKeyringInfo)
       }
     }
+    keyringService._allAccounts = {
+      $0(.mock)
+    }
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
@@ -414,7 +417,6 @@ class AccountActivityStoreTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.FilecoinMainnet,
       effectiveRecipient: nil
     )

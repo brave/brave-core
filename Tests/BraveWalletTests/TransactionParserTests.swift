@@ -114,7 +114,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: transactionData.baseData.to
     )
@@ -210,7 +209,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: transactionData.baseData.to
     )
@@ -297,7 +295,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: transactionData.baseData.to
     )
@@ -388,7 +385,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: transactionData.baseData.to
     )
@@ -475,7 +471,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: transactionData.baseData.to
     )
@@ -560,7 +555,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: transactionData.baseData.to
     )
@@ -649,7 +643,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: transactionData.baseData.to
     )
@@ -735,7 +728,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil
     )
@@ -833,7 +825,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil
     )
@@ -918,7 +909,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil
     )
@@ -1129,7 +1119,6 @@ class TransactionParserTests: XCTestCase {
       submittedTime: Date(),
       confirmedTime: Date(),
       originInfo: nil,
-      groupId: nil,
       chainId: BraveWallet.FilecoinTestnet,
       effectiveRecipient: nil
     )

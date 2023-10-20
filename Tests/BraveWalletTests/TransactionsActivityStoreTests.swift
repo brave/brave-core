@@ -65,6 +65,9 @@ class TransactionsActivityStoreTests: XCTestCase {
         completion(.mockDefaultKeyringInfo)
       }
     }
+    keyringService._allAccounts = {
+      $0(.mock)
+    }
     
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = { coin, completion in

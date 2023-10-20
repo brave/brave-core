@@ -27,6 +27,9 @@ class AssetDetailStoreTests: XCTestCase {
     keyringService._keyringInfo = {
       $1(.mockDefaultKeyringInfo)
     }
+    keyringService._allAccounts = { completion in
+      completion(.mock)
+    }
     keyringService._addObserver = { _ in }
     
     let mockEthBalance: Double = 1
@@ -235,15 +238,10 @@ class AssetDetailStoreTests: XCTestCase {
     keyringService._keyringInfo = {
       $1(keyring)
     }
-    keyringService._addObserver = { _ in }
     keyringService._allAccounts = { completion in
-      completion(.init(
-        accounts: keyring.accountInfos,
-        selectedAccount: keyring.accountInfos.first,
-        ethDappSelectedAccount: keyring.accountInfos.first,
-        solDappSelectedAccount: nil
-      ))
+      completion(.mock)
     }
+    keyringService._addObserver = { _ in }
     
     let mockEthBalance: Double = 1
     let ethBalanceWei = formatter.weiString(
@@ -251,7 +249,6 @@ class AssetDetailStoreTests: XCTestCase {
       radix: .hex,
       decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
     ) ?? ""
-    let formattedEthBalance = currencyFormatter.string(from: NSNumber(value: mockEthBalance)) ?? ""
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._network = {
       $2(.mockMainnet)
