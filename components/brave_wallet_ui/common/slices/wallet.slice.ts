@@ -289,7 +289,8 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           payload.walletInfo.isNftPinningFeatureEnabled
         state.isPanelV2FeatureEnabled =
           payload.walletInfo.isPanelV2FeatureEnabled
-        state.isAnkrBalancesFeatureEnabled = payload.walletInfo.isAnkrBalancesFeatureEnabled
+        state.isAnkrBalancesFeatureEnabled =
+          payload.walletInfo.isAnkrBalancesFeatureEnabled
       },
 
       portfolioTimelineUpdated(

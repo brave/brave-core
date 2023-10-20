@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/values.h"

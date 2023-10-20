@@ -8,6 +8,7 @@
 #include <memory>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/environment.h"
 #include "base/json/json_writer.h"

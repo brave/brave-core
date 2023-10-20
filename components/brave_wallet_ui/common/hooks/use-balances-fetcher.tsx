@@ -23,7 +23,8 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
-  const useAnkrBalancesFeature = useSafeWalletSelector(WalletSelectors.isAnkrBalancesFeatureEnabled)
+  const useAnkrBalancesFeature =
+    useSafeWalletSelector(WalletSelectors.isAnkrBalancesFeatureEnabled)
 
   return useGetTokenBalancesRegistryQuery(
     arg !== skipToken &&
