@@ -23,6 +23,7 @@
 #include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/analytics/p3a/notification.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -111,7 +112,7 @@ class AdsServiceImpl : public AdsService,
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
 
-  void InitializeNotificationsForCurrentProfile() const;
+  void InitializeNotificationsForCurrentProfile();
 
   void GetDeviceIdAndMaybeStartBatAdsService();
   void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
@@ -194,6 +195,8 @@ class AdsServiceImpl : public AdsService,
   void URLRequestCallback(SimpleURLLoaderList::iterator url_loader_iter,
                           UrlRequestCallback callback,
                           std::unique_ptr<std::string> response_body);
+
+  void OnNotificationPositionChanged();
 
   // KeyedService:
   void Shutdown() override;
@@ -426,6 +429,8 @@ class AdsServiceImpl : public AdsService,
   base::CancelableTaskTracker history_service_task_tracker_;
 
   SimpleURLLoaderList url_loaders_;
+
+  NotificationMetrics notification_metrics_;
 
   const raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 

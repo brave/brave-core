@@ -16,6 +16,8 @@ static_library("browser") {
     "analytics/p2a/p2a.cc",
     "analytics/p2a/p2a.h",
     "analytics/p2a/p2a_constants.h",
+    "analytics/p3a/notification.cc",
+    "analytics/p3a/notification.h",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
