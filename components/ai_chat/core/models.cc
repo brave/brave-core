@@ -18,22 +18,27 @@ constexpr char kModelsDefaultKey[] = "chat-default";
 // This also applies for modifying keys, since some of the strings are based
 // on the model key.
 
-// llama2 limit: tokens + max_new_tokens must be <= 4096
-// 400 toks reserved for max_new_tokens
-// 380 toks (1k chars) reserved for prompt
-// 3098 toks (8092 chars) reserved for page contents
+// Llama2 Token Allocation:
+// - Llama2 has a context limit: tokens + max_new_tokens <= 4096
+//
+// Breakdown:
+// - Reserved for max_new_tokens: 400 tokens
+// - Reserved for prompt: 300 tokens
+// - Reserved for page content: 4096 - (400 + 300) = 3396 tokens
+// - Long conversation warning threshold: 3396 * 0.80 = 2716 tokens
 
-// claude context limit: 100k tokens / ~75k words
+// Claude Token Allocation:
+// - Claude has total token limit 100k tokens (75k words)
 
 const base::flat_map<std::string_view, mojom::Model> kAllModels = {
     {"chat-default",
      {"chat-default", "llama-2-13b-chat", "llama2 13b", "Meta",
       mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT, false,
-      8092, 8092}},
+      10000, 9700}},
     {"chat-leo-expanded",
      {"chat-leo-expanded", "llama-2-70b-chat", "llama2 70b", "Meta",
       mojom::ModelEngineType::LLAMA_REMOTE, mojom::ModelCategory::CHAT, true,
-      8092, 8092}},
+      10000, 9700}},
     {"chat-claude-instant",
      {"chat-claude-instant", "claude-instant-v1", "Claude Instant", "Anthropic",
       mojom::ModelEngineType::CLAUDE_REMOTE, mojom::ModelCategory::CHAT, true,
