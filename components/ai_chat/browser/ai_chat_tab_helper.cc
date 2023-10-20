@@ -639,14 +639,12 @@ void AIChatTabHelper::SetAPIError(const mojom::APIError& error) {
 }
 
 bool AIChatTabHelper::IsPageContentsTruncated() {
-  bool page_contents_is_truncated = false;
-
-  if (!article_text_.empty()) {
-    page_contents_is_truncated = static_cast<int>(article_text_.length()) >
-                                 engine_->GetPageContentCharacterLimit();
+  if (article_text_.empty()) {
+    return false;
   }
 
-  return page_contents_is_truncated;
+  return (static_cast<int>(article_text_.length()) >
+          engine_->GetPageContentCharacterLimit());
 }
 
 void AIChatTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {

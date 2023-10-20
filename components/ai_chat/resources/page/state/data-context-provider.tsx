@@ -37,6 +37,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
+  const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean | undefined>()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -135,7 +136,19 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.openURL({ url: URL_REFRESH_PREMIUM_SESSION })
   }
 
-  const dismissArticleLongPrompt = () => {}
+  const shouldShowLongPageWarning = React.useMemo(() => {
+    if (hasDismissedLongPageWarning === undefined &&
+      conversationHistory.length >= 1 &&
+      siteInfo?.isContentTruncated) {
+      return true
+    }
+
+    return false
+  }, [conversationHistory, hasDismissedLongPageWarning, siteInfo?.isContentTruncated])
+
+  const dismissLongPageWarning = () => {
+    setHasDismissedLongPageWarning(true)
+  }
 
   const initialiseForTargetTab = async () => {
     // Replace state from backend
@@ -209,6 +222,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     isPremiumUser: premiumStatus !== mojom.PremiumStatus.Inactive,
     isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
     canShowPremiumPrompt,
+    shouldShowLongPageWarning,
     setCurrentModel,
     switchToDefaultModel,
     generateSuggestedQuestions,
@@ -217,7 +231,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     dismissPremiumPrompt,
     getCanShowPremiumPrompt,
     userRefreshPremiumSession,
-    dismissArticleLongPrompt
+    dismissLongPageWarning
   }
 
   return (

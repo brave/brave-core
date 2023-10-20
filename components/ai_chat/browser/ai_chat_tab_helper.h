@@ -90,6 +90,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   mojom::APIError GetCurrentAPIError();
   void GetPremiumStatus(
       ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
+  bool IsPageContentsTruncated();
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -138,7 +139,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   mojom::AutoGenerateQuestionsPref GetAutoGeneratePref();
   void SetAPIError(const mojom::APIError& error);
-  bool IsPageContentsTruncated();
 
   raw_ptr<PrefService> pref_service_;
   std::unique_ptr<EngineConsumer> engine_ = nullptr;

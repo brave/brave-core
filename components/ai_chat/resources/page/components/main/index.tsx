@@ -21,6 +21,7 @@ import FeatureButtonMenu from '../feature_button_menu'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
+import WarningLongPage from '../alerts/warning_long_page'
 import styles from './style.module.scss'
 
 function Main() {
@@ -158,6 +159,10 @@ function Main() {
           <WarningPremiumDisconnected />
         </div>
         }
+        {context.shouldShowLongPageWarning &&
+        <div className={styles.promptContainer}>
+            <WarningLongPage />
+        </div>}
       </div>
       <div className={styles.inputBox}>
         {shouldPromptSuggestQuestions &&

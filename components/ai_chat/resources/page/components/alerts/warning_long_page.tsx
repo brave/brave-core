@@ -23,7 +23,7 @@ export default function WarningLongPage() {
         <Button
           slot='actions'
           kind='filled'
-          onClick={context.dismissArticleLongPrompt}
+          onClick={context.dismissLongPageWarning}
         >
             {getLocale('gotItButtonLabel')}
         </Button>

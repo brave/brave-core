@@ -24,6 +24,7 @@ export interface AIChatContext {
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
   canShowPremiumPrompt?: boolean
+  shouldShowLongPageWarning: boolean
   setCurrentModel: (model: mojom.Model) => void,
   switchToDefaultModel: () => void,
   generateSuggestedQuestions: () => void
@@ -32,7 +33,7 @@ export interface AIChatContext {
   dismissPremiumPrompt: () => void
   getCanShowPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
-  dismissArticleLongPrompt: () => void
+  dismissLongPageWarning: () => void
 }
 
 export const defaultContext: AIChatContext = {
@@ -52,6 +53,7 @@ export const defaultContext: AIChatContext = {
   favIconUrl: undefined,
   currentError: mojom.APIError.None,
   canShowPremiumPrompt: undefined,
+  shouldShowLongPageWarning: false,
   setCurrentModel: () => {},
   switchToDefaultModel: () => {},
   generateSuggestedQuestions: () => {},
@@ -60,7 +62,7 @@ export const defaultContext: AIChatContext = {
   dismissPremiumPrompt: () => {},
   getCanShowPremiumPrompt: () => {},
   userRefreshPremiumSession: () => {},
-  dismissArticleLongPrompt: () => {}
+  dismissLongPageWarning: () => {}
 }
 
 export default React.createContext<AIChatContext>(defaultContext)
