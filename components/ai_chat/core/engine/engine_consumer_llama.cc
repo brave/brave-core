@@ -242,8 +242,7 @@ namespace ai_chat {
 EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
     const mojom::Model& model,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    AIChatCredentialManager* credential_manager)
-    : model_(model) {
+    AIChatCredentialManager* credential_manager) {
   // Allow specific model name to be overriden by feature flag
   // TODO(petemill): verify premium status, or ensure server will verify even
   // when given a model name override via cli flag param.
@@ -256,6 +255,8 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
                                                   kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(
       model_name, stop_sequences, url_loader_factory, credential_manager);
+
+  max_page_content_length_ = model.max_page_content_length;
 }
 
 EngineConsumerLlamaRemote::~EngineConsumerLlamaRemote() = default;
@@ -335,7 +336,7 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   const std::string& truncated_page_content =
-      page_content.substr(0, model_.max_page_content_length);
+      page_content.substr(0, max_page_content_length_);
   std::string prompt = BuildLlama2Prompt(
       conversation_history, truncated_page_content, is_video, human_input);
   DCHECK(api_);
