@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <message name="IDS_CHAT_UI_TITLE" translateable="false" desc="Title for the Brave AI product">
-    Brave Leo
+    Leo
   </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_FAILED_LABEL" desc="Label for when summarization is not possible">
     The summarizer feature is currently available only for select articles and other long-form web pages.
@@ -13,7 +13,7 @@
     Summarize
   </message>
   <message name="IDS_CHAT_UI_ABOUT_TITLE" desc="A concise title that summarizes the purpose of AIChat">
-    About Brave Leo
+    About Leo
   </message>
    <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="An outlining the functioning of AIChat">
     The AI Chat feature provides summaries of the web page you are browsing and includes a chat interface that allows you to submit questions and receive responses about the content of that page.  The accuracy of summaries is not guaranteed and may include inaccurate, misleading and false information. You should not submit sensitive or private information and should exercise caution with any text related to health, finance or personal safety and similar cases.
@@ -98,7 +98,7 @@
      Higher rate limits
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_LABEL" translateable="false" desc="A label for Brave premium products">
-     Brave Leo Premium
+     Leo Premium
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_PRICING" desc="Price label to subscribe for Premium model">
     USD $ <ph name="PRICE_VALUE">$1<ex>15</ex></ph> /month
@@ -158,7 +158,7 @@
     Provide feedback here
   </message>
   <message name="IDS_CHAT_UI_FEEDBACK_PREMIUM_NOTE" desc="Note about the benefits of a premium subscription">
-    Brave Leo Premium provides access to an expanded set of language models for even greater answer nuance. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Leo Premium provides access to an expanded set of language models for even greater answer nuance. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
   <message name="IDS_CHAT_UI_SUBMIT_BUTTON_LABEL" desc="Button label to submit data/form">
     Submit

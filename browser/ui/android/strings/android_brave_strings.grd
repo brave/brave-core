@@ -4051,7 +4051,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       No available assets
     </message>
     <message name="IDS_MENU_BRAVE_LEO" desc="Brave AI menu item text">
-      Brave Leo
+      Leo
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET" desc="Sign in with Brave Wallet Title">
       Sign in with Brave Wallet
@@ -4071,16 +4071,16 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_REQUEST_ID" desc="Sign in with Brave Wallet Request ID label">
       Request ID
     </message>
-    <message name="IDS_LEO_SUMMARY" desc="Title for Brave Leo options.">
+    <message name="IDS_LEO_SUMMARY" desc="Title for Leo options.">
       Leo is an AI-powered smart assistant, built right into the browser
     </message>
-    <message name="IDS_LEO_RESET_DATA" desc="Title for Brave Leo Reset and clear data option.">
+    <message name="IDS_LEO_RESET_DATA" desc="Title for Leo Reset and clear data option.">
       Reset and clear Leo data
     </message>
-    <message name="IDS_BRAVE_LEO_RESET_CONFIRMATION" desc="Title for preference to reset Brave Leo.">
-      Resetting the Leo assistant will require you to opt-in to use Brave Leo in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Brave Leo. This action cannot be undone.
+    <message name="IDS_BRAVE_LEO_RESET_CONFIRMATION" desc="Title for preference to reset Leo.">
+      Resetting the Leo assistant will require you to opt-in to use Leo in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Leo. This action cannot be undone.
     </message>
-    <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Brave Leo confirm button text.">
+    <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Leo confirm button text.">
       Confirm
     </message>
     <message name="IDS_ELLIPSIS_TEXT" desc="Generic ellipsis text" translateable="false">
