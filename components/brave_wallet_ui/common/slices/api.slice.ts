@@ -176,13 +176,6 @@ interface GetFVMAddressArg {
   addresses: string[]
 }
 
-type GetZCashReceiverAddressArg = {
-  accountId: BraveWallet.AccountId | undefined | null
-  chainId: string | undefined
-} | undefined
-
-type GetZCashReceiverAddressResult = string | undefined | null
-
 type GetFVMAddressResult = Map<string, {address: string, fvmAddress: string}>
 
 interface GetTransactionsQueryArg {
@@ -1498,32 +1491,6 @@ export function createWalletApi () {
             return handleEndpointError(
               endpoint,
               'Unable to getFVMAddress',
-              error
-            )
-          }
-        }
-      }),
-      getZCashReceiverAddress: query<GetZCashReceiverAddressResult, GetZCashReceiverAddressArg>({
-        queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
-          if (!arg?.chainId || arg?.accountId?.coin !== BraveWallet.CoinType.ZEC) {
-            // invalid coin type
-            return {
-              data: undefined
-            }
-          }
-          try {
-            const { zcashWalletService } = baseQuery(undefined).data
-            const result =
-              (await zcashWalletService.getReceiverAddress(
-                arg.accountId
-              )).address?.addressString
-            return {
-              data: result
-            }
-          } catch (error) {
-            return handleEndpointError(
-              endpoint,
-              'Unable to getZCashReceiverAddress',
               error
             )
           }
@@ -3255,7 +3222,6 @@ export const {
   useGetEVMTransactionSimulationQuery,
   useGetExternalRewardsWalletQuery,
   useGetFVMAddressQuery,
-  useGetZCashReceiverAddressQuery,
   useGetGasEstimation1559Query,
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,

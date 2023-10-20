@@ -43,8 +43,8 @@ import {
   ArrowIcon,
   FromToRow,
 } from './style'
-import { ZCashTransactionInfo } from './zcash-transaction-info'
-import { ZCashTransactionDetailBox } from '../transaction-box/zcash-transaction-detail-box'
+import { ZCashTransactionInfo } from './zcash_transaction_info'
+import { ZCashTransactionDetailBox } from '../transaction-box/zcash_transaction_detail_box'
 
 
 type confirmPanelTabs = 'transaction' | 'details'

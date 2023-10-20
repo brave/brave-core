@@ -13,10 +13,10 @@ import CaratDownIcon from '../../assets/carat-down-icon.svg'
 // Hooks
 import { useOnClickOutside } from '../../../../../common/hooks/useOnClickOutside'
 import {
+  useGenerateReceiveAddressMutation,
   useGetFVMAddressQuery,
   useGetSelectedAccountIdQuery,
   useGetSelectedChainQuery, //
-  useGetZCashReceiverAddressQuery
 } from '../../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 
@@ -55,16 +55,17 @@ export const AccountSelector = (props: Props) => {
     setShowAccountSelector(prev => !prev)
   }, [])
 
-  const zcashReceiverAddr = useGetZCashReceiverAddressQuery({chainId: selectedNetwork?.chainId, accountId: selectedAccountId});
+  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
 
-  const handleOnSelectAccount = React.useCallback((account: BraveWallet.AccountInfo) => {
+  const handleOnSelectAccount = React.useCallback(async (account: BraveWallet.AccountInfo) => {
       setShowAccountSelector(false)
       if (account.accountId.coin === BraveWallet.CoinType.ZEC) {
-        onSelectAddress(zcashReceiverAddr.data || "")
+        const generatedAddress = await generateReceiveAddress(account.accountId).unwrap()
+        onSelectAddress(generatedAddress)
       } else {
         onSelectAddress(account.address)
       }
-    }, [onSelectAddress, zcashReceiverAddr])
+    }, [onSelectAddress, generateReceiveAddress])
 
   const isFVMAccount = React.useCallback(
     (account) =>

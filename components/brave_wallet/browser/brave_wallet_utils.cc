@@ -1543,7 +1543,7 @@ std::string GetKnownNetworkId(mojom::CoinType coin,
   if (coin == mojom::CoinType::ZEC) {
     return GetKnownZecNetworkId(chain_id);
   }
-  NOTREACHED();
+  NOTREACHED() << coin;
   return "";
 }
 

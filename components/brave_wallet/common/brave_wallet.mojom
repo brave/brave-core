@@ -1394,6 +1394,16 @@ struct BitcoinAccountInfo {
   BitcoinAddress next_change_address;
 };
 
+interface BitcoinWalletService {
+  // Fetches BitcoinBalance struct for all addresses associated with account_id.
+  // Now includes both confirmed and mempool utxos.
+  GetBalance(AccountId account_id) => (BitcoinBalance? balance, string? error_message);
+
+  // These are parts of wallet internals api(brave://wallet/dev-bitcoin)
+  RunDiscovery(AccountId account_id, bool change) => (BitcoinAddress? address, string? error_message);
+  GetBitcoinAccountInfo(AccountId account_id) => (BitcoinAccountInfo? account_info);
+};
+
 struct ZCashKeyId {
   uint32 account;
   uint32 change;
@@ -1408,16 +1418,6 @@ struct ZCashBalance {
 struct ZCashAddress {
   string address_string;
   ZCashKeyId key_id;
-};
-
-interface BitcoinWalletService {
-  // Fetches BitcoinBalance struct for all addresses associated with account_id.
-  // Now includes both confirmed and mempool utxos.
-  GetBalance(AccountId account_id) => (BitcoinBalance? balance, string? error_message);
-
-  // These are parts of wallet internals api(brave://wallet/dev-bitcoin)
-  RunDiscovery(AccountId account_id, bool change) => (BitcoinAddress? address, string? error_message);
-  GetBitcoinAccountInfo(AccountId account_id) => (BitcoinAccountInfo? account_info);
 };
 
 interface ZCashWalletService {

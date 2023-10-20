@@ -222,8 +222,6 @@ ZCashTransaction::TxInput::FromRpcUtxo(const std::string& address,
 }
 
 uint32_t ZCashTransaction::TxInput::n_sequence() const {
-  // Fixed value by now.
-  // https://github.com/ZCash/ZCash/blob/v24.0/src/wallet/spend.cpp#L945
   return 0xfffffffd;
 }
 
