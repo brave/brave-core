@@ -132,7 +132,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
             iconName='pause-filled'
             size='jumbo'
             visibility='both'
-            title={getLocalizedString('bravePlaylistA11YPlay')}
+            title={getLocalizedString('bravePlaylistA11YPause')}
             onClick={() => videoElement?.pause()}
           />
         ) : (
@@ -140,7 +140,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
             iconName='play-filled'
             size='jumbo'
             visibility='both'
-            title={getLocalizedString('bravePlaylistA11YPause')}
+            title={getLocalizedString('bravePlaylistA11YPlay')}
             onClick={() => videoElement?.play()}
           />
         )}
