@@ -65,5 +65,6 @@ provideStrings({
   clearChatButtonLabel: 'Clear chat',
   errorContextLimitReaching: 'This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it',
   gotItButtonLabel: 'Got it',
-  pageContentTooLongWarning: 'The page you\'re trying to summarize is too long. Some context could be missing from the conversation.'
+  pageContentTooLongWarning: 'The page you\'re trying to summarize is too long. Some context could be missing from the conversation.',
+  errorConversationEnd: 'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.'
 })

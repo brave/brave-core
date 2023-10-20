@@ -26,7 +26,8 @@ enum AutoGenerateQuestionsPref {
 enum APIError {
   None,
   ConnectionIssue,
-  RateLimitReached
+  RateLimitReached,
+  ContextLimitReached
 };
 
 enum ModelEngineType {

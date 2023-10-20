@@ -368,10 +368,12 @@ void AIChatTabHelper::DisconnectPageContents() {
 void AIChatTabHelper::ClearConversationHistory() {
   chat_history_.clear();
   engine_->ClearAllQueries();
+  current_error_ = mojom::APIError::None;
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
+    obs.OnAPIResponseError(current_error_);
   }
 }
 

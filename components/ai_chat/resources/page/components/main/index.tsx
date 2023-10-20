@@ -23,6 +23,7 @@ import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import WarningLongPage from '../alerts/warning_long_page'
 import InfoLongConversation from '../alerts/info_long_conversation'
+import ErrorConversationEnd from '../alerts/error_conversation_end'
 import styles from './style.module.scss'
 
 function Main() {
@@ -77,6 +78,12 @@ function Main() {
         <ErrorRateLimit
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
         />
+      )
+    }
+
+    if (apiHasError && currentError === mojom.APIError.ContextLimitReached) {
+      currentErrorElement = (
+        <ErrorConversationEnd />
       )
     }
   }
