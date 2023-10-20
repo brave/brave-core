@@ -13,9 +13,12 @@ import os.log
 public actor AdBlockStats {
   /// The max number of enabled filter lists depending on the amount memory available to the device
   static var maxNumberOfAllowedFilterLists: Int = {
-    let memory = Int(ProcessInfo.processInfo.physicalMemory / 1073741824)
-    ContentBlockerManager.log.debug("Memory: \(memory)")
-    return min(5 * memory, 40)
+    // Get the number of gigs (memory in bytes divided by the size of a gig in bytes)
+    let numberOfGigs = Int(ProcessInfo.processInfo.physicalMemory / 1073741824)
+    ContentBlockerManager.log.debug("Number of gigs (rounded down): \(numberOfGigs)")
+    // Take a value between 20 and 40,
+    // with the real value somewhere in the middle depending on the device's memory
+    return max(min(5 * numberOfGigs, 40), 20)
   }()
   
   typealias CosmeticFilterModelTuple = (isAlwaysAggressive: Bool, model: CosmeticFilterModel)
