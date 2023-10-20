@@ -90,7 +90,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   mojom::APIError GetCurrentAPIError();
   void GetPremiumStatus(
       ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
-  void ResetAPIError();
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;

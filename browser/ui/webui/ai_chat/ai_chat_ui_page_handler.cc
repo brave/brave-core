@@ -311,12 +311,6 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
                               std::move(on_complete));
 }
 
-void AIChatUIPageHandler::ResetAPIError() {
-  if (active_chat_tab_helper_) {
-    active_chat_tab_helper_->ResetAPIError();
-  }
-}
-
 void AIChatUIPageHandler::MarkAgreementAccepted() {
   profile_->GetPrefs()->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
                                 base::Time::Now());

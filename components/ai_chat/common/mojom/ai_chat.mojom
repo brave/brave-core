@@ -26,8 +26,7 @@ enum AutoGenerateQuestionsPref {
 enum APIError {
   None,
   ConnectionIssue,
-  RateLimitReached,
-  ContextLimitReaching
+  RateLimitReached
 };
 
 enum ModelEngineType {
@@ -119,7 +118,6 @@ interface PageHandler {
   RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
   SendFeedback(string category, string feedback, string rating_id) => (bool is_success);
   GetPremiumStatus() => (PremiumStatus result);
-  ResetAPIError();
 };
 
 interface ChatUIPage {

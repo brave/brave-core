@@ -16,9 +16,7 @@ function ErrorContextLimitReaching () {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const handleDismiss = () => {
-    getPageHandlerInstance().pageHandler.resetAPIError()
-  }
+  const handleDismiss = () => {}
 
   return (
     <div className={styles.box}>
