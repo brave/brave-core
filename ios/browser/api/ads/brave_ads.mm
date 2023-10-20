@@ -140,9 +140,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 @property(nonatomic) BraveCommonOperations* commonOps;
 @property(nonatomic) BOOL networkConnectivityAvailable;
 @property(nonatomic, copy) NSString* storagePath;
-@property(nonatomic) dispatch_group_t prefsWriteGroup;
-@property(nonatomic) dispatch_queue_t prefsWriteThread;
-@property(nonatomic) NSMutableDictionary* prefs;
 @property(nonatomic) dispatch_group_t componentUpdaterPrefsWriteGroup;
 @property(nonatomic) dispatch_queue_t componentUpdaterPrefsWriteThread;
 @property(nonatomic) NSMutableDictionary* componentUpdaterPrefs;
@@ -159,18 +156,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     self.commonOps = [[BraveCommonOperations alloc] initWithStoragePath:path];
     adsDatabase = nullptr;
     adEventCache = nullptr;
-
-    self.prefsWriteThread =
-        dispatch_queue_create("com.rewards.ads.prefs", DISPATCH_QUEUE_SERIAL);
-    self.prefsWriteGroup = dispatch_group_create();
-    self.prefs =
-        [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
-    if (!self.prefs) {
-      self.prefs = [[NSMutableDictionary alloc] init];
-      self.numberOfAllowableAdsPerHour = kDefaultNumberOfAdsPerHour;
-    } else {
-      [self migratePrefs];
-    }
 
     [self setupNetworkMonitoring];
     [self initComponentUpdaterPrefs];
@@ -232,10 +217,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   adsClientNotifier = nil;
   adsClient = nil;
   adEventCache = nil;
-}
-
-- (NSString*)prefsPath {
-  return [self.storagePath stringByAppendingPathComponent:@"ads_pref.plist"];
 }
 
 #pragma mark - Global
