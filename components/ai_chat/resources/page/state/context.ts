@@ -31,6 +31,7 @@ export interface AIChatContext {
   handleAgreeClick: () => void
   dismissPremiumPrompt: () => void
   getCanShowPremiumPrompt: () => void
+  userRefreshPremiumSession: () => void
 }
 
 export const defaultContext: AIChatContext = {
@@ -56,7 +57,8 @@ export const defaultContext: AIChatContext = {
   setUserAllowsAutoGenerating: () => {},
   handleAgreeClick: () => {},
   dismissPremiumPrompt: () => {},
-  getCanShowPremiumPrompt: () => {}
+  getCanShowPremiumPrompt: () => {},
+  userRefreshPremiumSession: () => {}
 }
 
 export default React.createContext<AIChatContext>(defaultContext)

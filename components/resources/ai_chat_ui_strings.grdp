@@ -118,6 +118,12 @@
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature that allows priority access">
     Priority access and increased response limits
   </message>
+  <message name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_DESCRIPTION" desc="Warning message when AI Chat Premium authentication is expired">
+    Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_ACTION" desc="Action to take when AI Chat Premium authentication is expired">
+    Refresh
+  </message>
   <message name="IDS_CHAT_UI_FEEDBACK_SENT" desc="Notification message for successful feedback submission">
     Feedback sent successfully
   </message>
