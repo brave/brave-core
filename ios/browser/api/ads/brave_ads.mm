@@ -154,13 +154,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if ((self = [super init])) {
     self.storagePath = path;
     self.commonOps = [[BraveCommonOperations alloc] initWithStoragePath:path];
-    adsDatabase = nullptr;
-    adEventCache = nullptr;
 
     [self setupNetworkMonitoring];
+
     [self initComponentUpdaterPrefs];
 
-
+    [self maybeMigrateProfilePrefs];
 
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -203,20 +202,23 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   if (ads != nil) {
     delete ads;
+    ads = nil;
   }
+
   if (adsClientNotifier != nil) {
     delete adsClientNotifier;
+    adsClientNotifier = nil;
   }
+
   if (adsClient != nil) {
     delete adsClient;
+    adsClient = nil;
   }
+
   if (adEventCache != nil) {
     delete adEventCache;
+    adEventCache = nil;
   }
-  ads = nil;
-  adsClientNotifier = nil;
-  adsClient = nil;
-  adEventCache = nil;
 }
 
 #pragma mark - Global
@@ -232,8 +234,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    walletInfo:(nullable BraveAdsWalletInfo*)walletInfo
                    completion:(void (^)(bool))completion {
   if ([self isAdsServiceRunning]) {
-    completion(false);
-    return;
+    return completion(false);
   }
 
   adsClientNotifier = new brave_ads::AdsClientNotifier();
@@ -262,21 +263,22 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                       if (self->ads != nil) {
                         delete self->ads;
                       }
+                      self->ads = nil;
+
                       if (self->adsClientNotifier != nil) {
                         delete self->adsClientNotifier;
                       }
-                      self->ads = nil;
                       self->adsClientNotifier = nil;
                     }
                   }));
 }
 
 - (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {
-  if (![self isAdsServiceRunning]) {
-    return;
+  if ([self isAdsServiceRunning]) {
+    adsClientNotifier->NotifyRewardsWalletDidUpdate(
+        base::SysNSStringToUTF8(paymentId),
+        base::SysNSStringToUTF8(base64Seed));
   }
-  adsClientNotifier->NotifyRewardsWalletDidUpdate(
-      base::SysNSStringToUTF8(paymentId), base::SysNSStringToUTF8(base64Seed));
 }
 
 - (NSString*)adsDatabasePath {
@@ -450,19 +452,17 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)applicationDidBecomeActive {
-  if (![self isAdsServiceRunning]) {
-    return;
+  if ([self isAdsServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidEnterForeground();
+    adsClientNotifier->NotifyBrowserDidBecomeActive();
   }
-  adsClientNotifier->NotifyBrowserDidEnterForeground();
-  adsClientNotifier->NotifyBrowserDidBecomeActive();
 }
 
 - (void)applicationDidBackground {
-  if (![self isAdsServiceRunning]) {
-    return;
+  if ([self isAdsServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidResignActive();
+    adsClientNotifier->NotifyBrowserDidEnterBackground();
   }
-  adsClientNotifier->NotifyBrowserDidResignActive();
-  adsClientNotifier->NotifyBrowserDidEnterBackground();
 }
 
 #pragma mark - History
@@ -522,6 +522,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   std::vector<GURL> urls;
   for (NSURL* redirectURL in redirectionURLs) {
     urls.push_back(net::GURLWithNSURL(redirectURL));
@@ -534,17 +535,15 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId {
-  if (![self isAdsServiceRunning]) {
-    return;
+  if ([self isAdsServiceRunning]) {
+    adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
   }
-  adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
-  if (![self isAdsServiceRunning]) {
-    return;
+  if ([self isAdsServiceRunning]) {
+    adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
   }
-  adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportTabUpdated:(NSInteger)tabId
@@ -554,6 +553,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   std::vector<GURL> urls;
   for (NSURL* redirectURL in redirectionURLs) {
     urls.push_back(net::GURLWithNSURL(redirectURL));
@@ -564,10 +564,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {
-  if (![self isAdsServiceRunning]) {
-    return;
+  if ([self isAdsServiceRunning]) {
+    adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
   }
-  adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
 }
 
 - (void)reportNotificationAdEvent:(NSString*)placementId
@@ -576,6 +575,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   ads->TriggerNotificationAdEvent(
       base::SysNSStringToUTF8(placementId),
       static_cast<brave_ads::mojom::NotificationAdEventType>(eventType),
@@ -591,6 +591,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   ads->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
       base::SysNSStringToUTF8(creativeInstanceId),
@@ -607,6 +608,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   ads->MaybeServeInlineContentAd(
       base::SysNSStringToUTF8(dimensionsArg),
       base::BindOnce(
@@ -630,6 +632,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   ads->TriggerInlineContentAdEvent(
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
@@ -647,6 +650,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   ads->TriggerPromotedContentAdEvent(
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
@@ -661,6 +665,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   ads->PurgeOrphanedAdEventsForType(
       static_cast<brave_ads::mojom::AdType>(adType),
       base::BindOnce(^(const bool success) {
@@ -674,6 +679,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   ads->GetStatementOfAccounts(
       base::BindOnce(^(brave_ads::mojom::StatementInfoPtr statement) {
         if (!statement) {
@@ -698,6 +704,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   brave_ads::AdContentInfo ad_content;
   ad_content.type = brave_ads::AdType::kNotificationAd;
   ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
@@ -712,6 +719,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (![self isAdsServiceRunning]) {
     return;
   }
+
   brave_ads::AdContentInfo ad_content;
   ad_content.type = brave_ads::AdType::kNotificationAd;
   ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
@@ -721,14 +729,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 #pragma mark - Configuration
-
-- (uint64_t)getNotificationAdsPerHour {
-  return self.numberOfAllowableAdsPerHour;
-}
-
-- (bool)isAdsEnabled {
-  return self.enabled;
-}
 
 - (bool)isBrowserActive {
   return UIApplication.sharedApplication.applicationState ==
@@ -778,6 +778,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
               if (!strongSelf || ![strongSelf isAdsServiceRunning]) {
                 return;
               }
+
               brave_ads::mojom::UrlResponseInfo url_response;
               url_response.url = copiedURL;
               url_response.status_code = statusCode;
@@ -922,11 +923,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)periodicallyCheckForAdsResourceUpdates {
-  const uint64_t time_offset = 6 * 60 * 60;  // every 6 hours
+  const double time_interval = 6 * base::Time::kSecondsPerHour;
 
   const auto __weak weakSelf = self;
   self.updateAdsResourceTimer = [NSTimer
-      scheduledTimerWithTimeInterval:time_offset
+      scheduledTimerWithTimeInterval:time_interval
                              repeats:YES
                                block:^(NSTimer* _Nonnull timer) {
                                  const auto strongSelf = weakSelf;
@@ -945,7 +946,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                                           stringFromDate:
                                               [[NSDate date]
                                                   dateByAddingTimeInterval:
-                                                      time_offset]]);
+                                                      time_interval]]);
                                }];
 }
 
@@ -1215,10 +1216,10 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     callback:(brave_ads::LoadCallback)callback {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
-    std::move(callback).Run(/*value*/ absl::nullopt);
-  } else {
-    std::move(callback).Run(contents);
+    return std::move(callback).Run(/*value*/ absl::nullopt);
   }
+
+  std::move(callback).Run(contents);
 }
 
 - (const std::string)loadDataResource:(const std::string&)name {
@@ -1241,11 +1242,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)save:(const std::string&)name
        value:(const std::string&)value
     callback:(brave_ads::SaveCallback)callback {
-  if ([self.commonOps saveContents:value name:name]) {
-    std::move(callback).Run(/*success*/ true);
-  } else {
-    std::move(callback).Run(/*success*/ false);
-  }
+  const bool success = [self.commonOps saveContents:value name:name];
+  std::move(callback).Run(success);
 }
 
 #pragma mark - Logging
@@ -1254,8 +1252,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
             line:(const int)line
     verboseLevel:(const int)verbose_level
          message:(const std::string&)message {
-  const int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
-  if (verbose_level <= vlog_level) {
+  if (verbose_level <= logging::GetVlogLevelHelper(file, strlen(file))) {
     logging::LogMessage(file, line, -verbose_level).stream() << message;
   }
 }
