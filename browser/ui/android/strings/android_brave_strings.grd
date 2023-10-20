@@ -207,7 +207,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         You're already sending monthly contributions to this creator
       </message>
       <message name="IDS_ALREADY_MONTHLY_CONTRIBUTION_DESCRIPTION" desc="Text for You're already sending monthly contributions description">
-        You can still send a contribution now, and you can cancel your monthly contributions to this Creator by removing them from <ph name="MONTHLY_CONTRIBUTION">%1$s</ph>.
+        You can still send a contribution now, and you can cancel your monthly contributions to this creator by removing them from <ph name="MONTHLY_CONTRIBUTION">%1$s</ph>.
       </message>
       <message name="IDS_CONTRIBUTION_SENT" desc="Text for Contribution sent">
         Contribution sent!
@@ -240,7 +240,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         It looks like you're logged out of <ph name="CUSTODIAN">%1$s</ph> for Brave Rewards. Log in again to continue.
       </message>
       <message name="IDS_INFO_CREATOR_NOT_VERIFIED"  desc="Text for This creator is not verified description">
-        This Creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified. <ph name="LEARN_MORE">%1$s</ph>
+        This creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified. <ph name="LEARN_MORE">%1$s</ph>
       </message>
       <message name="IDS_SEND_CONTRIBUTION"  desc="Text for Send contribution">
         Send Contribution
@@ -279,7 +279,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Please try again.
       </message>
       <message name="IDS_TIPPING_TOOLTIP_DESCRIPTION"  desc="Text for tipping tooltip description">
-        This Creator has registered with Brave and can receive contributions from Brave Rewards users. <ph name="LEARN_MORE">%1$s</ph>
+        This creator has registered with Brave and can receive contributions from Brave Rewards users. <ph name="LEARN_MORE">%1$s</ph>
       </message>
       <message name="IDS_BRAVE_REWARDS_MAY_NOT_WORK_WHILE_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Brave Rewards may not work while notifications are disabled.">
         Brave Rewards may not work while notifications are disabled.
