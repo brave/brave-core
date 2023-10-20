@@ -1184,7 +1184,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     verboseLevel:(const int)verbose_level
          message:(const std::string&)message {
   if (verbose_level <= logging::GetVlogLevelHelper(file, strlen(file))) {
-    logging::LogMessage(file, line, -verbose_level).stream() << message;
+    logging::LogMessage(file, line, -verbose_level).stream()
+        << "[ads] " << message;
   }
 }
 
