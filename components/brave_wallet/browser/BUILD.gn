@@ -205,6 +205,7 @@ static_library("browser") {
     "unstoppable_domains_multichain_calls.h",
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
+    "wallet_data_files_installer_delegate.h",
     "zcash/zcash_block_tracker.cc",
     "zcash/zcash_block_tracker.h",
     "zcash/zcash_rpc.cc",

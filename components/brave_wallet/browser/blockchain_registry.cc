@@ -9,17 +9,205 @@
 #include <utility>
 
 #include "base/containers/flat_set.h"
+#include "base/files/file_path.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/url_util.h"
+#include "services/data_decoder/public/cpp/json_sanitizer.h"
 
 namespace brave_wallet {
 
-BlockchainRegistry::BlockchainRegistry() = default;
+namespace {
+
+void HandleRampTokenLists(const absl::optional<std::string>& result) {
+  if (!result.has_value()) {
+    return;
+  }
+  auto parsedRampTokensListMaps = ParseRampTokenListMaps(*result);
+  if (!parsedRampTokensListMaps) {
+    VLOG(1) << "Can't parse on/off ramp token lists.";
+    return;
+  }
+
+  if (parsedRampTokensListMaps->first.empty()) {
+    VLOG(1) << "On ramp supported token lists is empty.";
+  } else {
+    BlockchainRegistry::GetInstance()->UpdateOnRampTokenLists(
+        std::move(parsedRampTokensListMaps->first));
+  }
+
+  if (parsedRampTokensListMaps->second.empty()) {
+    VLOG(1) << "Off ramp supported sell token lists is empty.";
+  } else {
+    BlockchainRegistry::GetInstance()->UpdateOffRampTokenLists(
+        std::move(parsedRampTokensListMaps->second));
+  }
+}
+
+void HandleOnRampCurrenciesLists(const absl::optional<std::string>& result) {
+  if (!result.has_value()) {
+    return;
+  }
+
+  absl::optional<std::vector<mojom::OnRampCurrency>> lists =
+      ParseOnRampCurrencyLists(*result);
+  if (!lists) {
+    VLOG(1) << "Can't parse on ramp supported sell token lists.";
+    return;
+  }
+
+  BlockchainRegistry::GetInstance()->UpdateOnRampCurrenciesLists(
+      std::move(*lists));
+}
+
+base::FilePath ResolveAbsolutePath(const base::FilePath& input_path) {
+  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
+  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
+  // requires IO so it can only be done in this function and be posted to the
+  // sequenced runner.
+  const base::FilePath output_path = base::MakeAbsoluteFilePath(input_path);
+
+  if (output_path.empty()) {
+    LOG(ERROR) << "Failed to get absolute install path.";
+  }
+
+  return output_path;
+}
+
+absl::optional<std::string> ParseJsonFile(base::FilePath path,
+                                          const std::string& filename) {
+  // We do not sanitize the result here via JsonSanitizer::Sanitize to optimize
+  // the performance because we are processing data from our own CRX downloaded
+  // via component updater, hence it is considered as trusted input.
+  // See https://github.com/brave/brave-browser/issues/30940 for details.
+  std::string json_content;
+  const base::FilePath json_path = path.AppendASCII(filename);
+  if (!base::ReadFileToString(json_path, &json_content)) {
+    LOG(ERROR) << "Can't read file: " << filename;
+    return absl::nullopt;
+  }
+
+  return json_content;
+}
+
+void ParseCoingeckoIdsMapAndUpdateRegistry(const base::FilePath& dir) {
+  auto result = ParseJsonFile(dir, "coingecko-ids.json");
+  if (!result) {
+    return;
+  }
+
+  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+      ParseCoingeckoIdsMap(*result);
+  if (!coingecko_ids_map) {
+    VLOG(1) << "Can't parse coingecko-ids.json";
+    return;
+  }
+
+  BlockchainRegistry::GetInstance()->UpdateCoingeckoIdsMap(
+      std::move(*coingecko_ids_map));
+}
+
+void HandleParseTokenList(const base::FilePath& dir,
+                          const std::string& filename,
+                          mojom::CoinType coin_type) {
+  auto result = ParseJsonFile(dir, filename);
+  if (!result) {
+    return;
+  }
+
+  TokenListMap lists;
+  if (!ParseTokenList(*result, &lists, coin_type)) {
+    VLOG(1) << "Can't parse token list.";
+    return;
+  }
+
+  for (auto& list_pair : lists) {
+    BlockchainRegistry::GetInstance()->UpdateTokenList(
+        list_pair.first, std::move(list_pair.second));
+  }
+}
+
+void ParseTokenListAndUpdateRegistry(const base::FilePath& dir) {
+  HandleParseTokenList(dir, "contract-map.json", mojom::CoinType::ETH);
+  HandleParseTokenList(dir, "evm-contract-map.json", mojom::CoinType::ETH);
+  HandleParseTokenList(dir, "solana-contract-map.json", mojom::CoinType::SOL);
+}
+
+void ParseChainListAndUpdateRegistry(const base::FilePath& dir) {
+  auto result = ParseJsonFile(dir, "chainlist.json");
+  if (!result) {
+    return;
+  }
+
+  ChainList chains;
+  if (!ParseChainList(*result, &chains)) {
+    VLOG(1) << "Can't parse chain list.";
+    return;
+  }
+
+  BlockchainRegistry::GetInstance()->UpdateChainList(std::move(chains));
+}
+
+void ParseDappListsAndUpdateRegistry(const base::FilePath& dir) {
+  auto result = ParseJsonFile(dir, "dapp-lists.json");
+  if (!result) {
+    return;
+  }
+
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(*result, ""));
+  if (converted_json.empty()) {
+    return;
+  }
+
+  absl::optional<DappListMap> lists = ParseDappLists(converted_json);
+  if (!lists) {
+    VLOG(1) << "Can't parse dapp lists.";
+    return;
+  }
+
+  BlockchainRegistry::GetInstance()->UpdateDappList(std::move(*lists));
+}
+
+void ParseOnRampListsAndUpdateRegistry(const base::FilePath& dir) {
+  auto result = ParseJsonFile(dir, "ramp-tokens.json");
+  HandleRampTokenLists(result);
+
+  result = ParseJsonFile(dir, "on-ramp-currency-lists.json");
+  HandleOnRampCurrenciesLists(result);
+}
+
+void ParseOfacAddressesListsAndUpdateRegistry(const base::FilePath& dir) {
+  auto result =
+      ParseJsonFile(dir, "ofac-sanctioned-digital-currency-addresses.json");
+  if (!result) {
+    return;
+  }
+
+  absl::optional<std::vector<std::string>> list =
+      ParseOfacAddressesList(*result);
+  if (!list) {
+    VLOG(1) << "Can't parse ofac addresses list.";
+    return;
+  }
+
+  BlockchainRegistry::GetInstance()->UpdateOfacAddressesList(std::move(*list));
+}
+
+}  // namespace
+
+BlockchainRegistry::BlockchainRegistry() {
+  sequenced_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+}
+
 BlockchainRegistry::~BlockchainRegistry() = default;
 
 BlockchainRegistry* BlockchainRegistry::GetInstance() {
@@ -306,6 +494,45 @@ void BlockchainRegistry::GetCoingeckoId(const std::string& chain_id,
 
 bool BlockchainRegistry::IsOfacAddress(const std::string& address) {
   return base::Contains(ofac_addresses_, base::ToLowerASCII(address));
+}
+
+void BlockchainRegistry::ParseLists(const base::FilePath& install_dir,
+                                    base::OnceClosure callback) {
+  if (install_dir.empty()) {
+    std::move(callback).Run();
+    return;
+  }
+
+  // ResolveAbsolutePath needs to be posted due to I/O operation.
+  // base::Unretained(this) is safe here due to NoDestructor.
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&ResolveAbsolutePath, install_dir),
+      base::BindOnce(&BlockchainRegistry::DoParseLists, base::Unretained(this),
+                     std::move(callback)));
+}
+
+void BlockchainRegistry::DoParseLists(
+    base::OnceClosure callback,
+    const base::FilePath& absolute_install_dir) {
+  if (absolute_install_dir.empty()) {
+    std::move(callback).Run();
+    return;
+  }
+
+  // These parsing function needs to be posted due to reading JSON files.
+  sequenced_task_runner_->PostTaskAndReply(
+      FROM_HERE,
+      base::BindOnce(
+          [](const base::FilePath& absolute_install_dir) {
+            ParseCoingeckoIdsMapAndUpdateRegistry(absolute_install_dir);
+            ParseTokenListAndUpdateRegistry(absolute_install_dir);
+            ParseChainListAndUpdateRegistry(absolute_install_dir);
+            ParseDappListsAndUpdateRegistry(absolute_install_dir);
+            ParseOnRampListsAndUpdateRegistry(absolute_install_dir);
+            ParseOfacAddressesListsAndUpdateRegistry(absolute_install_dir);
+          },
+          absolute_install_dir),
+      std::move(callback));
 }
 
 }  // namespace brave_wallet

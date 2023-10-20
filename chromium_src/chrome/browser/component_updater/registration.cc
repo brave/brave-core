@@ -30,7 +30,9 @@ namespace component_updater {
 void RegisterComponentsForUpdate() {
   RegisterComponentsForUpdate_ChromiumImpl();
   ComponentUpdateService* cus = g_browser_process->component_updater();
-  brave_wallet::RegisterWalletDataFilesComponent(cus);
+  brave_wallet::WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponent(cus,
+                                             g_browser_process->local_state());
 }
 
 }  // namespace component_updater

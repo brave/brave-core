@@ -1217,6 +1217,10 @@ void UpdateLastUnlockPref(PrefService* prefs) {
   prefs->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 }
 
+bool HasCreatedWallets(PrefService* prefs) {
+  return prefs->GetTime(kBraveWalletLastUnlockTime).is_null();
+}
+
 base::Value::Dict TransactionReceiptToValue(
     const TransactionReceipt& tx_receipt) {
   base::Value::Dict dict;
