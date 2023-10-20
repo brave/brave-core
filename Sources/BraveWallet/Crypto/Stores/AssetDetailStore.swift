@@ -191,9 +191,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.isSwapSupported = await swapService.isSwapSupported(token.chainId)
         
         // fetch accounts
-        let keyringId = BraveWallet.KeyringId.keyringId(for: token.coin, on: token.chainId)
-        let keyring = await keyringService.keyringInfo(keyringId)
-        var updatedAccounts = keyring.accountInfos.map {
+        let allAccountsForTokenCoin = await keyringService.allAccounts().accounts.filter { $0.coin == token.coin }
+        var updatedAccounts = allAccountsForTokenCoin.map {
           AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
         }
         
@@ -220,9 +219,13 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           }
         }
         
-        self.accounts = await fetchAccountBalances(updatedAccounts, keyring: keyring, network: network)
+        self.accounts = await fetchAccountBalances(updatedAccounts, network: network)
         let assetRatios = [token.assetRatioId.lowercased(): assetPriceValue]
-        self.transactionSummaries = await fetchTransactionSummarys(keyring: keyring, network: network, assetRatios: assetRatios)
+        self.transactionSummaries = await fetchTransactionSummarys(
+          accounts: allAccountsForTokenCoin,
+          network: network,
+          assetRatios: assetRatios
+        )
       case .coinMarket(let coinMarket):
         // comes from Market tab
         self.price = self.currencyFormatter.string(from: NSNumber(value: coinMarket.currentPrice)) ?? ""
@@ -277,7 +280,6 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   
   @MainActor private func fetchAccountBalances(
     _ accountAssetViewModels: [AccountAssetViewModel],
-    keyring: BraveWallet.KeyringInfo,
     network: BraveWallet.NetworkInfo
   ) async -> [AccountAssetViewModel] {
     guard case let .blockchainToken(token) = assetDetailType
@@ -311,7 +313,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   }
   
   @MainActor private func fetchTransactionSummarys(
-    keyring: BraveWallet.KeyringInfo,
+    accounts: [BraveWallet.AccountInfo],
     network: BraveWallet.NetworkInfo,
     assetRatios: [String: Double]
   ) async -> [TransactionSummary] {
@@ -320,7 +322,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
     let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
     let allTransactions = await withTaskGroup(of: [BraveWallet.TransactionInfo].self) { @MainActor group -> [BraveWallet.TransactionInfo] in
-      for account in keyring.accountInfos {
+      for account in accounts {
         group.addTask { @MainActor in
           await self.txService.allTransactionInfo(
             network.coin,
@@ -370,7 +372,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         TransactionParser.transactionSummary(
           from: transaction,
           network: network,
-          accountInfos: keyring.accountInfos,
+          accountInfos: accounts,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetRatios,
@@ -401,5 +403,86 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     } else {
       return false
     }
+  }
+}
+
+extension AssetDetailStore: BraveWalletKeyringServiceObserver {
+  func keyringReset() {
+  }
+
+  func accountsChanged() {
+    update()
+  }
+
+  func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
+  }
+
+  func walletRestored() {
+  }
+
+  func locked() {
+  }
+
+  func unlocked() {
+  }
+
+  func backedUp() {
+  }
+
+  func autoLockMinutesChanged() {
+  }
+
+  func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+  }
+  
+  func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
+  }
+  
+  func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
+  }
+}
+
+extension AssetDetailStore: BraveWalletTxServiceObserver {
+  func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
+  }
+  func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
+  }
+  func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
+    update()
+  }
+  func onTxServiceReset() {
+  }  
+}
+
+extension AssetDetailStore: BraveWalletBraveWalletServiceObserver {
+  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
+  }
+
+  public func onDefaultWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+
+  public func onDefaultBaseCurrencyChanged(_ currency: String) {
+    currencyCode = currency
+  }
+
+  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
+  }
+
+  public func onNetworkListChanged() {
+  }
+  
+  func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  func onDiscoverAssetsStarted() {
+  }
+  
+  func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
+  }
+
+  func onResetWallet() {
   }
 }

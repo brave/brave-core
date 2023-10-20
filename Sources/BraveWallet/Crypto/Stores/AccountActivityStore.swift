@@ -172,7 +172,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       self.userAssets = updatedUserAssets
       self.userNFTs = updatedUserNFTs
       
-      let keyringForAccount = await keyringService.keyringInfo(account.keyringId)
       typealias TokenNetworkAccounts = (token: BraveWallet.BlockchainToken, network: BraveWallet.NetworkInfo, accounts: [BraveWallet.AccountInfo])
       let allTokenNetworkAccounts = allUserAssets.flatMap { networkAssets in
         networkAssets.tokens.map { token in
@@ -253,9 +252,10 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         $0[$1.token.assetRatioId.lowercased()] = Double($1.price)
       })
       
+      let allAccountsForCoin = await keyringService.allAccounts().accounts.filter { $0.coin == account.coin }
       self.transactionSummaries = await fetchTransactionSummarys(
         networksForAccountCoin: networksForAccountCoin,
-        accountInfos: keyringForAccount.accountInfos,
+        accountInfos: allAccountsForCoin,
         userAssets: userAssets.map(\.token),
         allTokens: allTokens,
         assetRatios: assetRatios
@@ -326,4 +326,104 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     transactionSummaries = [.previewConfirmedSwap, .previewConfirmedSend, .previewConfirmedERC20Approve]
   }
   #endif
+}
+
+extension AccountActivityStore: BraveWalletKeyringServiceObserver {
+  func keyringCreated(_ keyringId: BraveWallet.KeyringId) {
+  }
+
+  func walletRestored() {
+  }
+  
+  func keyringReset() {
+  }
+  
+  func locked() {
+  }
+  
+  func unlocked() {
+  }
+  
+  func backedUp() {
+  }
+  
+  func accountsChanged() {
+  }
+  
+  func autoLockMinutesChanged() {
+  }
+  
+  func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+    guard observeAccountUpdates else { return }
+    self.account = account
+    update()
+  }
+  
+  func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
+    guard observeAccountUpdates, let account else { return }
+    self.account = account
+    update()
+  }
+  
+  func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
+  }
+}
+
+extension AccountActivityStore: BraveWalletJsonRpcServiceObserver {
+  func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      // Handle small gap between chain changing and txController having the correct chain Id
+      self.update()
+    }
+  }
+  func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
+  }
+  func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
+  }
+}
+
+extension AccountActivityStore: BraveWalletTxServiceObserver {
+  func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
+    update()
+  }
+  func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
+    update()
+  }
+  func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
+  }
+  func onTxServiceReset() {
+  }
+}
+
+extension AccountActivityStore: BraveWalletBraveWalletServiceObserver {
+  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
+  }
+
+  public func onDefaultWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+
+  public func onDefaultBaseCurrencyChanged(_ currency: String) {
+    currencyCode = currency
+  }
+
+  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
+  }
+
+  public func onNetworkListChanged() {
+  }
+  
+  func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  }
+  
+  public func onDiscoverAssetsStarted() {
+  }
+  
+  func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
+  }
+  
+  func onResetWallet() {
+  }
 }

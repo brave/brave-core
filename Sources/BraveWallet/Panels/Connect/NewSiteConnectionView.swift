@@ -41,7 +41,7 @@ public struct NewSiteConnectionView: View {
   @State private var isConfirmationViewVisible: Bool = false
   
   private var accountInfos: [BraveWallet.AccountInfo] {
-    let allAccounts = keyringStore.allKeyrings.first(where: { $0.coin == coin })?.accountInfos ?? []
+    let allAccounts = keyringStore.allAccounts.filter { $0.coin == coin }
     return allAccounts.filter { self.accounts.contains($0.address) }
   }
   
@@ -194,7 +194,7 @@ public struct NewSiteConnectionView: View {
   }
   
   private var accountsAddressesToConfirm: String {
-    keyringStore.defaultKeyring.accountInfos
+    accountInfos
       .filter { selectedAccounts.contains($0.id) }
       .map(\.address.truncatedAddress)
       .joined(separator: ", ")
@@ -228,7 +228,7 @@ public struct NewSiteConnectionView: View {
       }
       Section {
         Button {
-          let accounts = keyringStore.allKeyrings.flatMap(\.accountInfos)
+          let accounts = accountInfos
             .filter { selectedAccounts.contains($0.id) }
             .map(\.address)
           onConnect(accounts)

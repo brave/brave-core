@@ -11,30 +11,25 @@ extension BraveWalletTxService {
   // Fetches all pending transactions for all given keyrings
   func pendingTransactions(
     networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
-    for keyrings: [BraveWallet.KeyringInfo]
+    for accounts: [BraveWallet.AccountInfo]
   ) async -> [BraveWallet.TransactionInfo] {
-    await allTransactions(networksForCoin: networksForCoin, for: keyrings)
+    await allTransactions(networksForCoin: networksForCoin, for: accounts)
       .filter { $0.txStatus == .unapproved }
   }
   
   // Fetches all transactions for all given keyrings
   func allTransactions(
     networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
-    for keyrings: [BraveWallet.KeyringInfo]
+    for accounts: [BraveWallet.AccountInfo]
   ) async -> [BraveWallet.TransactionInfo] {
     return await withTaskGroup(
       of: [BraveWallet.TransactionInfo].self,
       body: { @MainActor group in
-        for keyring in keyrings {
-          guard let keyringCoin = keyring.coin,
-                let networksForKeyringCoin = networksForCoin[keyringCoin] else {
-            continue
-          }
-          for info in keyring.accountInfos {
-            for network in networksForKeyringCoin where network.supportedKeyrings.contains(keyring.id.rawValue as NSNumber) {
-              group.addTask { @MainActor in
-                await self.allTransactionInfo(info.coin, chainId: network.chainId, from: info.accountId)
-              }
+        for account in accounts {
+          guard let networksForAccount = networksForCoin[account.coin] else { continue }
+          for network in networksForAccount where network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber) {
+            group.addTask { @MainActor in
+              await self.allTransactionInfo(account.coin, chainId: network.chainId, from: account.accountId)
             }
           }
         }

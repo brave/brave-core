@@ -4633,5 +4633,19 @@ extension Strings {
       value: "An internal error has occurred",
       comment: "The title of a button that Deselects all visible options."
     )
+    public static let signInWithBraveWallet = NSLocalizedString(
+      "wallet.signInWithBraveWallet",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Sign in with Brave Wallet",
+      comment: "The title of the view shown above a Sign In With Ethereum request."
+    )
+    public static let securityRiskDetectedTitle = NSLocalizedString(
+      "wallet.securityRiskDetectedTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Security Risk Detected",
+      comment: "The title of the view shown when a security issue is detected with a Sign In With Ethereum request."
+    )
   }
 }

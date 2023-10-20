@@ -119,8 +119,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     id: .default,
     isKeyringCreated: false,
     isLocked: true,
-    isBackedUp: false,
-    accountInfos: []
+    isBackedUp: false
   )
   /// A boolean indciates front-end has or has not loaded Keyring from the core
   @Published var isDefaultKeyringLoaded = false
@@ -154,9 +153,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   /// keyring has been created
   @Published var isDefaultKeyringCreated: Bool = false
   /// All `AccountInfo` for all available keyrings
-  var allAccounts: [BraveWallet.AccountInfo] {
-    allKeyrings.flatMap(\.accountInfos)
-  }
+  @Published var allAccounts: [BraveWallet.AccountInfo] = []
   
   /// A list of default account with all support coin types
   @Published var defaultAccounts: [BraveWallet.AccountInfo] = []
@@ -234,18 +231,18 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         }
         
         Task { @MainActor in
-          let newKeyring = await self.keyringService.keyringInfo(keyringId)
-          let selectedAccount = await self.keyringService.allAccounts().selectedAccount
+          let allAccounts = await self.keyringService.allAccounts()
+          let allAccountsForKeyring = allAccounts.accounts.filter { $0.keyringId == keyringId }
           // if the new Keyring doesn't have a selected account, select the first account
-          if selectedAccount == nil, let newAccount = newKeyring.accountInfos.first {
+          if allAccounts.selectedAccount == nil, let newAccount = allAccountsForKeyring.first {
             await self.keyringService.setSelectedAccount(newAccount.accountId)
           }
           self.updateKeyringInfo()
         }
       },
-      _keyringRestored: { [weak self] keyringId in
+      _walletRestored: { [weak self] in
         guard let self else { return }
-        if self.isOnboardingVisible && !self.isRestoringWallet, keyringId == BraveWallet.KeyringId.default {
+        if self.isOnboardingVisible && !self.isRestoringWallet {
           // Another window has restored a wallet. We should dismiss onboarding on this
           // window and allow the other window to continue with it's onboarding flow.
           self.isOnboardingVisible = false
@@ -297,8 +294,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       return
     }
     Task { @MainActor in // fetch all KeyringInfo for all coin types
-      let selectedAccount = await keyringService.allAccounts().selectedAccount
-      let selectedAccountAddress = selectedAccount?.address
+      let allAccounts = await keyringService.allAccounts()
       let allKeyrings = await keyringService.keyrings(for: WalletConstants.supportedCoinTypes())
       if let defaultKeyring = allKeyrings.first(where: { $0.id == BraveWallet.KeyringId.default }) {
         self.defaultKeyring = defaultKeyring
@@ -310,16 +306,10 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         }
       }
       self.allKeyrings = allKeyrings
-      if let selectedAccountKeyring = allKeyrings.first(where: { $0.id == selectedAccount?.keyringId }) {
-        if self.selectedAccount.address != selectedAccountAddress {
-          if let selectedAccount = selectedAccountKeyring.accountInfos.first(where: { $0.address == selectedAccountAddress }) {
-            self.selectedAccount = selectedAccount
-          } else if let firstAccount = selectedAccountKeyring.accountInfos.first {
-            // try and correct invalid state (no selected account for this coin type)
-            self.selectedAccount = firstAccount
-          } // else selected account address does not exist in keyring (should not occur...)
-        } // else `self.selectedAccount` is already the currently selected account
-      } // else keyring for selected coin is unavailable (should not occur...)
+      self.allAccounts = allAccounts.accounts
+      if let selectedAccount = allAccounts.selectedAccount {
+        self.selectedAccount = selectedAccount
+      }
     }
   }
   

@@ -348,12 +348,13 @@ struct AddAccountView: View {
   }
   
   private func defaultAccountName(for coin: BraveWallet.CoinType, chainId: String, isPrimary: Bool) -> String {
-    let keyringId = BraveWallet.KeyringId.keyringId(for: coin, on: chainId)
-    let keyringInfo = keyringStore.allKeyrings.first { $0.id == keyringId }
+    let accountsForCoin = keyringStore.allAccounts.filter { $0.coin == coin }
     if isPrimary {
-      return String.localizedStringWithFormat(coin.defaultAccountName, (keyringInfo?.accountInfos.filter(\.isPrimary).count ?? 0) + 1)
+      let numberOfPrimaryAccountsForCoin = accountsForCoin.filter(\.isPrimary).count
+      return String.localizedStringWithFormat(coin.defaultAccountName, numberOfPrimaryAccountsForCoin + 1)
     } else {
-      return String.localizedStringWithFormat(coin.defaultSecondaryAccountName, (keyringInfo?.accountInfos.filter(\.isImported).count ?? 0) + 1)
+      let numberOfImportedAccounts = accountsForCoin.filter(\.isImported).count
+      return String.localizedStringWithFormat(coin.defaultSecondaryAccountName, numberOfImportedAccounts + 1)
     }
   }
 }

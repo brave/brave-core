@@ -250,11 +250,11 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
     completion(true, .success, "")
   }
   
-  func ethTokenSymbol(_ chainId: String, contractAddress: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+  func ethTokenSymbol(_ contractAddress: String, chainId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     completion("", .internalError, "Error Message")
   }
   
-  func ethTokenDecimals(_ chainId: String, contractAddress: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+  func ethTokenDecimals(_ contractAddress: String, chainId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     completion("", .internalError, "Error Message")
   }
 }

@@ -118,7 +118,6 @@ import Preferences
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     
     // config filecoin on mainnet
-    let mockFilAccountInfos: [BraveWallet.AccountInfo] = [filAccount1, filAccount2]
     let mockFilUserAssets: [BraveWallet.BlockchainToken] = [
       BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.copy(asVisibleAsset: true)
     ]
@@ -128,7 +127,6 @@ import Preferences
       decimals: Int(BraveWallet.BlockchainToken.mockFilToken.decimals)
     ) ?? ""
     // config filecoin on testnet
-    let mockFilTestnetAccountInfos: [BraveWallet.AccountInfo] = [filTestnetAccount]
     let mockFilTestnetBalanceInWei = formatter.weiString(
       from: mockFILBalanceTestnet,
       radix: .decimal,
@@ -136,13 +134,11 @@ import Preferences
     ) ?? ""
     
     // config Solana
-    let mockSolAccountInfos: [BraveWallet.AccountInfo] = [solAccount1, solAccount2]
     let mockSolUserAssets: [BraveWallet.BlockchainToken] = [
       BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
       .mockSpdToken // Verify non-visible assets not displayed #6386
     ]
     // config Ethereum
-    let mockEthAccountInfos: [BraveWallet.AccountInfo] = [ethAccount1, ethAccount2]
     let mockEthUserAssets: [BraveWallet.BlockchainToken] = [
       .previewToken.copy(asVisibleAsset: true),
       .previewDaiToken, // Verify non-visible assets not displayed #6386
@@ -172,35 +168,6 @@ import Preferences
       filTestnet.nativeToken.copy(asVisibleAsset: true)
     ]
     
-    let ethKeyring: BraveWallet.KeyringInfo = .init(
-      id: BraveWallet.KeyringId.default,
-      isKeyringCreated: true,
-      isLocked: false,
-      isBackedUp: true,
-      accountInfos: mockEthAccountInfos
-    )
-    let solKeyring: BraveWallet.KeyringInfo = .init(
-      id: BraveWallet.KeyringId.solana,
-      isKeyringCreated: true,
-      isLocked: false,
-      isBackedUp: true,
-      accountInfos: mockSolAccountInfos
-    )
-    let filKeyring: BraveWallet.KeyringInfo = .init(
-      id: .filecoin,
-      isKeyringCreated: true,
-      isLocked: false,
-      isBackedUp: true,
-      accountInfos: mockFilAccountInfos
-    )
-    let filTestnetKeyring: BraveWallet.KeyringInfo = .init(
-      id: .filecoinTestnet,
-      isKeyringCreated: true,
-      isLocked: false,
-      isBackedUp: true,
-      accountInfos: mockFilTestnetAccountInfos
-    )
-    
     // setup test services
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -210,10 +177,15 @@ import Preferences
     }
     keyringService._allAccounts = {
       $0(.init(
-        accounts: ethKeyring.accountInfos + solKeyring.accountInfos + filKeyring.accountInfos + filTestnetKeyring.accountInfos,
-        selectedAccount: ethKeyring.accountInfos.first,
-        ethDappSelectedAccount: ethKeyring.accountInfos.first,
-        solDappSelectedAccount: solKeyring.accountInfos.first
+        accounts: [
+          self.ethAccount1, self.ethAccount2,
+          self.solAccount1, self.solAccount2,
+          self.filAccount1, self.filAccount2,
+          self.filTestnetAccount
+        ],
+        selectedAccount: self.ethAccount1,
+        ethDappSelectedAccount: self.ethAccount1,
+        solDappSelectedAccount: self.solAccount1
       ))
     }
     let rpcService = BraveWallet.TestJsonRpcService()

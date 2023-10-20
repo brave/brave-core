@@ -145,8 +145,7 @@ import Preferences
           id: BraveWallet.KeyringId.default,
           isKeyringCreated: true,
           isLocked: false,
-          isBackedUp: true,
-          accountInfos: [.mockEthAccount, self.mockEthAccount2]
+          isBackedUp: true
         )
         completion(keyring)
       case .solana:
@@ -154,8 +153,7 @@ import Preferences
           id: BraveWallet.KeyringId.solana,
           isKeyringCreated: true,
           isLocked: false,
-          isBackedUp: true,
-          accountInfos: [.mockSolAccount]
+          isBackedUp: true
         )
         completion(keyring)
       case .filecoin:
@@ -165,6 +163,20 @@ import Preferences
       default:
         completion(.mockDefaultKeyringInfo)
       }
+    }
+    keyringService._allAccounts = {
+      $0(.init(
+        accounts: [
+          .mockEthAccount,
+          self.mockEthAccount2,
+          .mockSolAccount,
+          .mockFilAccount,
+          .mockFilTestnetAccount
+        ],
+        selectedAccount: .mockEthAccount,
+        ethDappSelectedAccount: .mockEthAccount,
+        solDappSelectedAccount: .mockSolAccount
+      ))
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = { coin, completion in
