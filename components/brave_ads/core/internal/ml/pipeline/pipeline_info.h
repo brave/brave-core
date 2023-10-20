@@ -16,9 +16,7 @@ namespace brave_ads::ml::pipeline {
 
 struct PipelineInfo final {
   PipelineInfo();
-  PipelineInfo(int version,
-               std::string timestamp,
-               std::string locale,
+  PipelineInfo(std::string locale,
                TransformationVector transformations,
                absl::optional<LinearModel> linear_model,
                absl::optional<NeuralModel> neural_model);
@@ -28,8 +26,6 @@ struct PipelineInfo final {
 
   ~PipelineInfo();
 
-  int version;
-  std::string timestamp;
   std::string locale;
   TransformationVector transformations;
   absl::optional<LinearModel> linear_model;

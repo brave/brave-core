@@ -11,24 +11,18 @@
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_transformation_generated.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-#include "brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation_util.h"
 
 namespace brave_ads::ml {
 
-MappedTokensTransformation::MappedTokensTransformation()
-    : Transformation(TransformationType::kMappedTokens) {}
-
 MappedTokensTransformation::MappedTokensTransformation(
-    int vector_dimension,
-    std::map<std::string, std::vector<int>> huffman_coding_mapping,
-    std::map<std::basic_string<unsigned char>, std::vector<unsigned char>>
-        token_categories_mapping)
-    : Transformation(TransformationType::kMappedTokens) {
-  vector_dimension_ = vector_dimension;
-  huffman_coding_mapping_ = std::move(huffman_coding_mapping);
-  token_categories_mapping_ = std::move(token_categories_mapping);
+    const text_classification::flat::MappedTokenTransformation*
+        mapped_token_transformation)
+    : Transformation(TransformationType::kMappedTokens),
+      mapped_token_transformation_(mapped_token_transformation) {
+  CHECK(mapped_token_transformation_);
 }
 
 MappedTokensTransformation::MappedTokensTransformation(
@@ -46,9 +40,15 @@ std::vector<std::string> MappedTokensTransformation::GetWordsFromText(
   return words;
 }
 
-std::map<unsigned, double> MappedTokensTransformation::GetCategoryFrequencies(
-    std::vector<std::string> words) const {
-  std::map<unsigned, double> frequencies;
+absl::optional<std::map<uint32_t, double>>
+MappedTokensTransformation::GetCategoryFrequencies(
+    const std::vector<std::string>& words) const {
+  const auto* token_categories = mapped_token_transformation_->mapping();
+  if (!token_categories) {
+    return absl::nullopt;
+  }
+
+  std::map<uint32_t, double> frequencies;
 
   size_t token_max_length = 5;
   size_t words_length = words.size();
@@ -62,23 +62,14 @@ std::map<unsigned, double> MappedTokensTransformation::GetCategoryFrequencies(
       std::string token_candidate_addition = token_separator + words[i + j];
       token_candidate += token_candidate_addition;
 
-      absl::optional<std::basic_string<unsigned char>>
-          compressed_token_candidate =
-              CompressToken(token_candidate, huffman_coding_mapping_);
-      if (!compressed_token_candidate) {
-        break;
-      }
-
-      const auto iter =
-          token_categories_mapping_.find(*compressed_token_candidate);
-      if (iter == token_categories_mapping_.end()) {
+      const auto* iter = token_categories->LookupByKey(token_candidate.c_str());
+      if (!iter || !iter->numbers()) {
         continue;
       }
 
       BLOG(9, token_candidate << " - token found in category mapping");
-      const std::vector<unsigned char>& category_indexes = iter->second;
-      for (const auto& category_index : category_indexes) {
-        ++frequencies[static_cast<int>(category_index)];
+      for (const uint8_t category_index : *iter->numbers()) {
+        ++frequencies[static_cast<uint32_t>(category_index)];
       }
     }
   }
@@ -95,8 +86,14 @@ std::unique_ptr<Data> MappedTokensTransformation::Apply(
   }
 
   std::vector<std::string> words = GetWordsFromText(input_data);
-  std::map<unsigned, double> frequencies = GetCategoryFrequencies(words);
-  return std::make_unique<VectorData>(vector_dimension_, frequencies);
+  absl::optional<std::map<uint32_t, double>> frequencies =
+      GetCategoryFrequencies(words);
+  if (!frequencies) {
+    return {};
+  }
+
+  return std::make_unique<VectorData>(mapped_token_transformation_->dimension(),
+                                      *frequencies);
 }
 
 }  // namespace brave_ads::ml

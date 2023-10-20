@@ -9,15 +9,99 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_model_generated.h"
+#include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_transformation_generated.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
-class BraveAdsMappedTokensTransformationTest : public UnitTestBase {};
+namespace {
+
+std::string BuildRawNeuralModel(
+    const int vector_dimension,
+    const std::map<std::string, std::vector<uint8_t>>&
+        token_categories_mapping) {
+  flatbuffers::FlatBufferBuilder builder;
+
+  std::vector<
+      ::flatbuffers::Offset<text_classification::flat::StringToNumbersMap>>
+      mapping_data;
+  for (const auto& [name, numbers] : token_categories_mapping) {
+    auto numbers_data = builder.CreateVector(numbers);
+    auto map_data = text_classification::flat::CreateStringToNumbersMap(
+        builder, builder.CreateString(name), numbers_data);
+    mapping_data.push_back(map_data);
+  }
+  auto mapping = builder.CreateVector(mapping_data);
+
+  auto mapped_token_transformation =
+      text_classification::flat::CreateMappedTokenTransformation(
+          builder, vector_dimension, mapping,
+          builder.CreateString("MAPPED_TOKENS"));
+  auto transformation_entry =
+      text_classification::flat::CreateTransformationEntry(
+          builder,
+          text_classification::flat::Transformation_MappedTokenTransformation,
+          mapped_token_transformation.Union());
+  std::vector<
+      flatbuffers::Offset<text_classification::flat::TransformationEntry>>
+      transformations_data;
+  transformations_data.push_back(transformation_entry);
+  auto transformations = builder.CreateVector(transformations_data);
+
+  text_classification::flat::NeuralModelBuilder neural_model_builder(builder);
+  neural_model_builder.add_transformations(transformations);
+  builder.Finish(neural_model_builder.Finish());
+
+  std::string buffer(reinterpret_cast<char*>(builder.GetBufferPointer()),
+                     builder.GetSize());
+
+  return buffer;
+}
+
+}  // namespace
+
+class BraveAdsMappedTokensTransformationTest : public UnitTestBase {
+ public:
+  absl::optional<MappedTokensTransformation> BuildMappedTokensTransformation(
+      const int vector_dimension,
+      const std::map<std::string, std::vector<uint8_t>>&
+          token_categories_mapping) {
+    buffer_ = BuildRawNeuralModel(vector_dimension, token_categories_mapping);
+    flatbuffers::Verifier verifier(
+        reinterpret_cast<const uint8_t*>(buffer_.data()), buffer_.size());
+    if (!text_classification::flat::VerifyNeuralModelBuffer(verifier)) {
+      return absl::nullopt;
+    }
+
+    const auto* raw_model =
+        text_classification::flat::GetNeuralModel(buffer_.data());
+    if (!raw_model || !raw_model->transformations()) {
+      return absl::nullopt;
+    }
+
+    const auto* transformation_entry = raw_model->transformations()->Get(0);
+    if (!transformation_entry) {
+      return absl::nullopt;
+    }
+
+    const auto* transformation =
+        transformation_entry->transformation_as_MappedTokenTransformation();
+    if (!transformation) {
+      return absl::nullopt;
+    }
+
+    return MappedTokensTransformation(transformation);
+  }
+
+ private:
+  std::string buffer_;
+};
 
 TEST_F(BraveAdsMappedTokensTransformationTest, ToMappedTokens) {
   // Arrange
@@ -27,14 +111,16 @@ TEST_F(BraveAdsMappedTokensTransformationTest, ToMappedTokens) {
   std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
   int vector_dimension = 6;
-  std::map<std::string, std::vector<int>> token_categories_mapping = {
+  std::map<std::string, std::vector<uint8_t>> token_categories_mapping = {
       {"is", {1}}, {"this", {5}}, {"test-string", {0, 3}}, {"simple", {1, 4}}};
 
-  const MappedTokensTransformation to_mapped_tokens(vector_dimension,
-                                                    token_categories_mapping);
+  absl::optional<MappedTokensTransformation> to_mapped_tokens =
+      BuildMappedTokensTransformation(vector_dimension,
+                                      token_categories_mapping);
+  ASSERT_TRUE(to_mapped_tokens);
 
-  // // Act
-  data = to_mapped_tokens.Apply(data);
+  // Act
+  data = to_mapped_tokens->Apply(data);
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
 
@@ -63,14 +149,16 @@ TEST_F(BraveAdsMappedTokensTransformationTest, EmptyText) {
   std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
   int vector_dimension = 6;
-  std::map<std::string, std::vector<int>> token_categories_mapping = {
+  std::map<std::string, std::vector<uint8_t>> token_categories_mapping = {
       {"is", {1}}, {"this", {5}}, {"test-string", {0, 3}}, {"simple", {1, 4}}};
 
-  const MappedTokensTransformation to_mapped_tokens(vector_dimension,
-                                                    token_categories_mapping);
+  absl::optional<MappedTokensTransformation> to_mapped_tokens =
+      BuildMappedTokensTransformation(vector_dimension,
+                                      token_categories_mapping);
+  ASSERT_TRUE(to_mapped_tokens);
 
-  // // Act
-  data = to_mapped_tokens.Apply(data);
+  // Act
+  data = to_mapped_tokens->Apply(data);
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
 
@@ -99,13 +187,15 @@ TEST_F(BraveAdsMappedTokensTransformationTest, EmptyMap) {
   std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
   int vector_dimension = 6;
-  std::map<std::string, std::vector<int>> token_categories_mapping = {};
+  std::map<std::string, std::vector<uint8_t>> token_categories_mapping = {};
 
-  const MappedTokensTransformation to_mapped_tokens(vector_dimension,
-                                                    token_categories_mapping);
+  absl::optional<MappedTokensTransformation> to_mapped_tokens =
+      BuildMappedTokensTransformation(vector_dimension,
+                                      token_categories_mapping);
+  ASSERT_TRUE(to_mapped_tokens);
 
-  // // Act
-  data = to_mapped_tokens.Apply(data);
+  // Act
+  data = to_mapped_tokens->Apply(data);
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
 
@@ -132,14 +222,16 @@ TEST_F(BraveAdsMappedTokensTransformationTest, NonTextData) {
   std::unique_ptr<Data> data = std::make_unique<VectorData>(vector_data);
 
   int vector_dimension = 6;
-  std::map<std::string, std::vector<int>> token_categories_mapping = {
+  std::map<std::string, std::vector<uint8_t>> token_categories_mapping = {
       {"is", {1}}, {"this", {5}}, {"test-string", {0, 3}}, {"simple", {1, 4}}};
 
-  const MappedTokensTransformation to_mapped_tokens(vector_dimension,
-                                                    token_categories_mapping);
+  absl::optional<MappedTokensTransformation> to_mapped_tokens =
+      BuildMappedTokensTransformation(vector_dimension,
+                                      token_categories_mapping);
+  ASSERT_TRUE(to_mapped_tokens);
 
-  // // Act
-  data = to_mapped_tokens.Apply(data);
+  // Act
+  data = to_mapped_tokens->Apply(data);
 
   // Assert
   EXPECT_TRUE(data == nullptr);

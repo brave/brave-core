@@ -1,0 +1,32 @@
+namespace brave_ads.text_classification.flat;
+
+table SimpleTransformation {
+  transformation_type: string (required);
+}
+
+table HashedNGramsTransformation {
+  ngrams_range: [uint8] (required);
+  num_buckets: uint32;
+  transformation_type: string (required);
+}
+
+table StringToNumbersMap {
+    code: string (key, required);
+    numbers: [uint8] (required);
+}
+
+table MappedTokenTransformation {
+  dimension: int32;
+  mapping: [StringToNumbersMap] (required);
+  transformation_type: string (required);
+}
+
+union Transformation {
+  SimpleTransformation,
+  MappedTokenTransformation,
+  HashedNGramsTransformation
+}
+
+table TransformationEntry {
+  transformation: Transformation (required);
+}

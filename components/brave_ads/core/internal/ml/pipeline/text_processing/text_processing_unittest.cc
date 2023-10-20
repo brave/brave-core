@@ -212,7 +212,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptyModelTest) {
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_FALSE(text_processing_pipeline.SetPipeline({}));
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(base::Value::Dict()));
 }
 
 TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
