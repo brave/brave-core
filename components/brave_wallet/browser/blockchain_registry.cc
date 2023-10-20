@@ -9,21 +9,246 @@
 #include <utility>
 
 #include "base/containers/flat_set.h"
+#include "base/files/file_path.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/url_util.h"
+#include "services/data_decoder/public/cpp/json_sanitizer.h"
 
 namespace brave_wallet {
 
+namespace {
+
+struct ParseListsResult {
+  CoingeckoIdsMap coingecko_ids_map;
+  TokenListMap token_list_map;
+  ChainList chain_list;
+  DappListMap dapp_lists;
+  OnRampTokensListMap on_ramp_token_lists;
+  OffRampTokensListMap off_ramp_token_lists;
+  std::vector<mojom::OnRampCurrency> on_ramp_currencies_list;
+  std::vector<std::string> ofac_addresses;
+};
+
+void HandleRampTokenLists(const absl::optional<std::string>& result,
+                          ParseListsResult& out) {
+  if (!result.has_value()) {
+    return;
+  }
+  auto parsedRampTokensListMaps = ParseRampTokenListMaps(*result);
+  if (!parsedRampTokensListMaps) {
+    VLOG(1) << "Can't parse on/off ramp token lists.";
+    return;
+  }
+
+  if (parsedRampTokensListMaps->first.empty()) {
+    VLOG(1) << "On ramp supported token lists is empty.";
+  } else {
+    out.on_ramp_token_lists = std::move(parsedRampTokensListMaps->first);
+  }
+
+  if (parsedRampTokensListMaps->second.empty()) {
+    VLOG(1) << "Off ramp supported sell token lists is empty.";
+  } else {
+    out.off_ramp_token_lists = std::move(parsedRampTokensListMaps->second);
+  }
+}
+
+void HandleOnRampCurrenciesLists(const absl::optional<std::string>& result,
+                                 ParseListsResult& out) {
+  if (!result.has_value()) {
+    return;
+  }
+
+  absl::optional<std::vector<mojom::OnRampCurrency>> lists =
+      ParseOnRampCurrencyLists(*result);
+  if (!lists) {
+    VLOG(1) << "Can't parse on ramp supported sell token lists.";
+    return;
+  }
+
+  out.on_ramp_currencies_list = std::move(*lists);
+}
+
+base::FilePath ResolveAbsolutePath(const base::FilePath& input_path) {
+  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
+  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
+  // requires IO so it needs to be posted.
+  const base::FilePath output_path = base::MakeAbsoluteFilePath(input_path);
+
+  if (output_path.empty()) {
+    LOG(ERROR) << "Failed to get absolute install path.";
+  }
+
+  return output_path;
+}
+
+absl::optional<std::string> ParseJsonFile(base::FilePath path,
+                                          const std::string& filename) {
+  // We do not sanitize the result here via JsonSanitizer::Sanitize to optimize
+  // the performance because we are processing data from our own CRX downloaded
+  // via component updater, hence it is considered as trusted input.
+  // See https://github.com/brave/brave-browser/issues/30940 for details.
+  std::string json_content;
+  const base::FilePath json_path = path.AppendASCII(filename);
+  if (!base::ReadFileToString(json_path, &json_content)) {
+    LOG(ERROR) << "Can't read file: " << filename;
+    return absl::nullopt;
+  }
+
+  return json_content;
+}
+
+void DoParseCoingeckoIdsMap(const base::FilePath& dir, ParseListsResult& out) {
+  auto result = ParseJsonFile(dir, "coingecko-ids.json");
+  if (!result) {
+    return;
+  }
+
+  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+      ParseCoingeckoIdsMap(*result);
+  if (!coingecko_ids_map) {
+    VLOG(1) << "Can't parse coingecko-ids.json";
+    return;
+  }
+
+  out.coingecko_ids_map = std::move(*coingecko_ids_map);
+}
+
+void HandleParseTokenList(const base::FilePath& dir,
+                          const std::string& filename,
+                          mojom::CoinType coin_type,
+                          ParseListsResult& out) {
+  auto result = ParseJsonFile(dir, filename);
+  if (!result) {
+    return;
+  }
+
+  TokenListMap lists;
+  if (!ParseTokenList(*result, &lists, coin_type)) {
+    VLOG(1) << "Can't parse token list.";
+    return;
+  }
+
+  for (auto& list_pair : lists) {
+    out.token_list_map[list_pair.first] = std::move(list_pair.second);
+  }
+}
+
+void DoParseTokenList(const base::FilePath& dir, ParseListsResult& out) {
+  HandleParseTokenList(dir, "contract-map.json", mojom::CoinType::ETH, out);
+  HandleParseTokenList(dir, "evm-contract-map.json", mojom::CoinType::ETH, out);
+  HandleParseTokenList(dir, "solana-contract-map.json", mojom::CoinType::SOL,
+                       out);
+}
+
+void DoParseChainList(const base::FilePath& dir, ParseListsResult& out) {
+  auto result = ParseJsonFile(dir, "chainlist.json");
+  if (!result) {
+    return;
+  }
+
+  ChainList chains;
+  if (!ParseChainList(*result, &chains)) {
+    VLOG(1) << "Can't parse chain list.";
+    return;
+  }
+
+  out.chain_list = std::move(chains);
+}
+
+void DoParseDappLists(const base::FilePath& dir, ParseListsResult& out) {
+  auto result = ParseJsonFile(dir, "dapp-lists.json");
+  if (!result) {
+    return;
+  }
+
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(*result, ""));
+  if (converted_json.empty()) {
+    return;
+  }
+
+  absl::optional<DappListMap> lists = ParseDappLists(converted_json);
+  if (!lists) {
+    VLOG(1) << "Can't parse dapp lists.";
+    return;
+  }
+
+  out.dapp_lists = std::move(*lists);
+}
+
+void DoParseOnRampLists(const base::FilePath& dir, ParseListsResult& out) {
+  auto result = ParseJsonFile(dir, "ramp-tokens.json");
+  HandleRampTokenLists(result, out);
+
+  result = ParseJsonFile(dir, "on-ramp-currency-lists.json");
+  HandleOnRampCurrenciesLists(result, out);
+}
+
+void DoParseOfacAddressesLists(const base::FilePath& dir,
+                               ParseListsResult& out) {
+  auto result =
+      ParseJsonFile(dir, "ofac-sanctioned-digital-currency-addresses.json");
+  if (!result) {
+    return;
+  }
+
+  absl::optional<std::vector<std::string>> list =
+      ParseOfacAddressesList(*result);
+  if (!list) {
+    VLOG(1) << "Can't parse ofac addresses list.";
+    return;
+  }
+
+  out.ofac_addresses = std::move(*list);
+}
+
+void UpdateRegistry(base::OnceClosure callback, ParseListsResult result) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateCoingeckoIdsMap(std::move(result.coingecko_ids_map));
+  registry->UpdateTokenList(std::move(result.token_list_map));
+  registry->UpdateChainList(std::move(result.chain_list));
+  registry->UpdateDappList(std::move(result.dapp_lists));
+  registry->UpdateOnRampTokenLists(std::move(result.on_ramp_token_lists));
+  registry->UpdateOffRampTokenLists(std::move(result.off_ramp_token_lists));
+  registry->UpdateOnRampCurrenciesLists(
+      std::move(result.on_ramp_currencies_list));
+  registry->UpdateOfacAddressesList(std::move(result.ofac_addresses));
+  std::move(callback).Run();
+}
+
+ParseListsResult DoParseLists(const base::FilePath& install_dir) {
+  const base::FilePath absolute_install_dir = ResolveAbsolutePath(install_dir);
+  if (absolute_install_dir.empty()) {
+    return {};
+  }
+
+  ParseListsResult result;
+  DoParseCoingeckoIdsMap(absolute_install_dir, result);
+  DoParseTokenList(absolute_install_dir, result);
+  DoParseChainList(absolute_install_dir, result);
+  DoParseDappLists(absolute_install_dir, result);
+  DoParseOnRampLists(absolute_install_dir, result);
+  DoParseOfacAddressesLists(absolute_install_dir, result);
+  return result;
+}
+
+}  // namespace
+
 BlockchainRegistry::BlockchainRegistry() = default;
+
 BlockchainRegistry::~BlockchainRegistry() = default;
 
 BlockchainRegistry* BlockchainRegistry::GetInstance() {
   static base::NoDestructor<BlockchainRegistry> instance;
+  DCHECK_CALLED_ON_VALID_SEQUENCE(instance->sequence_checker_);
   return instance.get();
 }
 
@@ -306,6 +531,39 @@ void BlockchainRegistry::GetCoingeckoId(const std::string& chain_id,
 
 bool BlockchainRegistry::IsOfacAddress(const std::string& address) {
   return base::Contains(ofac_addresses_, base::ToLowerASCII(address));
+}
+
+void BlockchainRegistry::ParseLists(const base::FilePath& install_dir,
+                                    base::OnceClosure callback) {
+  if (install_dir.empty()) {
+    std::move(callback).Run();
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(&DoParseLists, install_dir),
+      base::BindOnce(&UpdateRegistry, std::move(callback)));
+}
+
+bool BlockchainRegistry::IsEmptyForTesting() {
+  return coingecko_ids_map_.empty() && token_list_map_.empty() &&
+         chain_list_.empty() && dapp_lists_.empty() &&
+         on_ramp_token_lists_.empty() && off_ramp_token_lists_.empty() &&
+         on_ramp_currencies_list_.empty() && ofac_addresses_.empty();
+}
+
+void BlockchainRegistry::ResetForTesting() {
+  coingecko_ids_map_.clear();
+  token_list_map_.clear();
+  dapp_lists_.clear();
+  on_ramp_token_lists_.clear();
+  off_ramp_token_lists_.clear();
+  on_ramp_currencies_list_.clear();
+  ofac_addresses_.clear();
+  receivers_.Clear();
 }
 
 }  // namespace brave_wallet

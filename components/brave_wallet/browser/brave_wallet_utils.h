@@ -53,6 +53,10 @@ bool DecodeString(size_t offset, const std::string& input, std::string* output);
 // it unlocks.
 void UpdateLastUnlockPref(PrefService* prefs);
 
+// Use kBraveWalletLastUnlockTime pref to determine if any wallets has been
+// created before, regardless of still existed or not.
+bool HasCreatedWallets(PrefService* prefs);
+
 base::Value::Dict TransactionReceiptToValue(
     const TransactionReceipt& tx_receipt);
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(

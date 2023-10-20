@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -1682,7 +1683,17 @@ void BraveWalletService::OnGetImportInfo(
                                                  mojom::kDefaultKeyringId,
                                                  info.number_of_accounts - 1);
   }
-  std::move(callback).Run(is_valid_mnemonic, absl::nullopt);
+
+  // Only register the component if the import is successful.
+  CHECK(is_valid_mnemonic);
+  WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
+          [](base::OnceCallback<void(bool, const absl::optional<std::string>&)>
+                 callback) {
+            std::move(callback).Run(true /* is_valid_mnemonic */,
+                                    absl::nullopt);
+          },
+          std::move(callback)));
 }
 
 void BraveWalletService::AddSignMessageRequest(
