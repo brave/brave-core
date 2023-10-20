@@ -283,17 +283,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return [self.storagePath stringByAppendingPathComponent:@"Ads.db"];
 }
 
-- (void)resetAdsDatabase {
-  delete adsDatabase;
-  const auto dbPath = [self adsDatabasePath];
-  [NSFileManager.defaultManager removeItemAtPath:dbPath error:nil];
-  [NSFileManager.defaultManager
-      removeItemAtPath:[dbPath stringByAppendingString:@"-journal"]
-                 error:nil];
-  adsDatabase =
-      new brave_ads::Database(base::FilePath(base::SysNSStringToUTF8(dbPath)));
-}
-
 - (void)shutdown:(nullable void (^)())completion {
   if ([self isAdsServiceRunning]) {
     dispatch_group_notify(
@@ -355,50 +344,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   [self savePref:kRewardsEnabledPrefKey];
   self.prefs[kOptedInToNotificationAdsPrefKey] = @(enabled);
   [self savePref:kOptedInToNotificationAdsPrefKey];
-}
-
-- (NSInteger)numberOfAllowableAdsPerHour {
-  return [self.prefs[kMaximumNotificationAdsPerHourPrefKey] integerValue];
-}
-
-- (void)setNumberOfAllowableAdsPerHour:(NSInteger)numberOfAllowableAdsPerHour {
-  self.prefs[kMaximumNotificationAdsPerHourPrefKey] =
-      @(numberOfAllowableAdsPerHour);
-  [self savePref:kMaximumNotificationAdsPerHourPrefKey];
-}
-
-- (BOOL)shouldAllowSubdivisionTargeting {
-  return [self.prefs[kShouldAllowSubdivisionTargetingPrefKey] boolValue];
-}
-
-- (void)setAllowSubdivisionTargeting:(BOOL)allowAdsSubdivisionTargeting {
-  self.prefs[kShouldAllowSubdivisionTargetingPrefKey] =
-      @(allowAdsSubdivisionTargeting);
-  [self savePref:kShouldAllowSubdivisionTargetingPrefKey];
-}
-
-- (NSString*)subdivisionTargetingCode {
-  return (NSString*)self.prefs[kSubdivisionTargetingSubdivisionPrefKey]
-             ?: @"AUTO";
-}
-
-- (void)setSubdivisionTargetingCode:(NSString*)subdivisionTargetingCode {
-  self.prefs[kSubdivisionTargetingSubdivisionPrefKey] =
-      subdivisionTargetingCode;
-  [self savePref:kSubdivisionTargetingSubdivisionPrefKey];
-}
-
-- (NSString*)autoDetectedSubdivisionTargetingCode {
-  return (NSString*)
-                 self.prefs[kSubdivisionTargetingAutoDetectedSubdivisionPrefKey]
-             ?: @"";
-}
-
-- (void)setAutoDetectedSubdivisionTargetingCode:
-    (NSString*)autoDetectedSubdivisionTargetingCode {
-  self.prefs[kSubdivisionTargetingAutoDetectedSubdivisionPrefKey] =
-      autoDetectedSubdivisionTargetingCode;
-  [self savePref:kSubdivisionTargetingAutoDetectedSubdivisionPrefKey];
 }
 
 - (void)savePref:(NSString*)name {
@@ -1379,36 +1324,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 
   return adEventCache->ResetForInstanceId(id);
-}
-
-- (bool)shouldAllowAdsSubdivisionTargeting {
-  return self.shouldAllowSubdivisionTargeting;
-}
-
-- (void)setAllowAdsSubdivisionTargeting:(const bool)should_allow {
-  self.allowSubdivisionTargeting = should_allow;
-}
-
-- (std::string)adsSubdivisionTargetingCode {
-  return base::SysNSStringToUTF8(self.subdivisionTargetingCode);
-}
-
-- (void)setAdsSubdivisionTargetingCode:
-    (const std::string&)subdivision_targeting_code {
-  self.subdivisionTargetingCode =
-      [NSString stringWithCString:subdivision_targeting_code.c_str()
-                         encoding:[NSString defaultCStringEncoding]];
-}
-
-- (std::string)autoDetectedAdsSubdivisionTargetingCode {
-  return base::SysNSStringToUTF8(self.autoDetectedSubdivisionTargetingCode);
-}
-
-- (void)setAutoDetectedAdsSubdivisionTargetingCode:
-    (const std::string&)subdivision_targeting_code {
-  self.autoDetectedSubdivisionTargetingCode =
-      [NSString stringWithCString:subdivision_targeting_code.c_str()
-                         encoding:[NSString defaultCStringEncoding]];
 }
 
 - (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
