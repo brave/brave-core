@@ -7,22 +7,38 @@
 
 #include "base/functional/bind.h"
 #include "base/strings/sys_string_conversions.h"
+#include "components/history/core/browser/browsing_history_service.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
+#include "components/keyed_service/core/service_access_type.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "net/base/mac/url_conversions.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
-
+#include "brave/ios/browser/api/history/history_driver_ios.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "brave/ios/browser/api/history/history_service_listener_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
+
+namespace {
+
+history::WebHistoryService* WebHistoryServiceGetter(
+    base::WeakPtr<ChromeBrowserState> weak_browser_state) {
+  DCHECK(weak_browser_state.get())
+      << "Getter should not be called after ChromeBrowserState destruction.";
+  return ios::WebHistoryServiceFactory::GetForBrowserState(
+      weak_browser_state.get());
+}
+
+}  // anonymous namespace
 
 DomainMetricTypeIOS const DomainMetricTypeIOSNoMetric =
     static_cast<history::DomainMetricType>(
@@ -100,20 +116,40 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
   history::WebHistoryService* web_history_service_;
   // Tracker for history requests.
   base::CancelableTaskTracker tracker_;
+
+  // Provides dependencies and funnels callbacks from BrowsingHistoryService.
+  std::unique_ptr<HistoryDriverIOS> _browsingHistoryDriver;
+  // Abstraction to communicate with HistoryService and WebHistoryService.
+  std::unique_ptr<history::BrowsingHistoryService> _browsingHistoryService;
 }
 @property(nonatomic, strong) void (^query_completion)(NSArray<IOSHistoryNode*>*)
     ;
 @end
 
-@implementation BraveHistoryAPI
+@implementation BraveHistoryAPI {
+    ChromeBrowserState* _mainBrowserState;  // NOT OWNED
+}
 
-- (instancetype)initWithHistoryService:(history::HistoryService*)historyService
-                     webHistoryService:
-                         (history::WebHistoryService*)webHistoryService {
+- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    history_service_ = historyService;
-    web_history_service_ = webHistoryService;
+    _mainBrowserState = mainBrowserState;
+
+    history_service_ =
+        ios::HistoryServiceFactory::GetForBrowserState(
+            _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS);
+    web_history_service_ =
+        ios::WebHistoryServiceFactory::GetForBrowserState(_mainBrowserState);
+
+    _browsingHistoryDriver = std::make_unique<HistoryDriverIOS>(
+      base::BindRepeating(&WebHistoryServiceGetter,
+                          _mainBrowserState->AsWeakPtr()));
+      
+    _browsingHistoryService = std::make_unique<history::BrowsingHistoryService>(
+      _browsingHistoryDriver.get(),
+      ios::HistoryServiceFactory::GetForBrowserState(
+          _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS),
+      SyncServiceFactory::GetForBrowserState(_mainBrowserState));
   }
   return self;
 }
@@ -163,9 +199,14 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 - (void)removeHistory:(IOSHistoryNode*)history {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
 
-  // Deletes a specific URL using history service and web history service
-  history_service_->DeleteLocalAndRemoteUrl(web_history_service_,
-                                            net::GURLWithNSURL(history.url));
+  // Delete items from Browser History.
+  std::vector<history::BrowsingHistoryService::HistoryEntry> entries;
+  history::BrowsingHistoryService::HistoryEntry entry;
+  entry.url = net::GURLWithNSURL(history.url);
+  entry.all_timestamps.insert(base::Time::FromNSDate(history.dateAdded).ToInternalValue());
+  entries.push_back(entry);
+  
+  _browsingHistoryService->RemoveVisits(entries);
 }
 
 - (void)removeAllWithCompletion:(void (^)())completion {
