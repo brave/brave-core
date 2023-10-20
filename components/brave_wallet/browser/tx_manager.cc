@@ -125,7 +125,7 @@ void TxManager::Unlocked() {
   UpdatePendingTransactions(absl::nullopt);
 }
 
-void TxManager::KeyringReset() {
+void TxManager::WalletReset() {
   Reset();
 }
 

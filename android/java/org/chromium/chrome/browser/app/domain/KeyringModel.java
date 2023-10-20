@@ -160,7 +160,7 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringCreated(@KeyringId.EnumType int keyringId) {
+    public void walletCreated() {
         update();
     }
 
@@ -170,7 +170,7 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringReset() {
+    public void walletReset() {
         update();
     }
 

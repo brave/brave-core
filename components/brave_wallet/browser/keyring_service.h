@@ -91,6 +91,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& password,
       GetMnemonicForDefaultKeyringCallback callback) override;
   void MaybeCreateDefaultSolanaAccount();
+  void IsWalletCreated(IsWalletCreatedCallback callback) override;
+  bool IsWalletCreatedSync();
   void CreateWallet(const std::string& mnemonic,
                     const std::string& password,
                     CreateWalletCallback callback);
@@ -139,14 +141,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void IsWalletBackedUp(IsWalletBackedUpCallback callback) override;
   bool IsWalletBackedUpSync();
   void NotifyWalletBackupComplete() override;
-  mojom::KeyringInfoPtr GetKeyringInfoSync(mojom::KeyringId keyring_id);
-  void GetKeyringInfo(mojom::KeyringId keyring_id,
-                      GetKeyringInfoCallback callback) override;
   void SetAccountName(mojom::AccountIdPtr account_id,
                       const std::string& name,
                       SetAccountNameCallback callback) override;
   void Reset(bool notify_observer = true);
-  bool IsKeyringCreated(mojom::KeyringId keyring_id) const;
   void SignTransactionByDefaultKeyring(const mojom::AccountId& account_id,
                                        EthTransaction* tx,
                                        uint256_t chain_id);
@@ -217,7 +215,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                              GetChecksumEthAddressCallback callback) override;
   void HasPendingUnlockRequest(
       HasPendingUnlockRequestCallback callback) override;
-  absl::optional<size_t> GetAccountsNumber(mojom::KeyringId keyring_id);
 
   void UpdateNextUnusedAddressForBitcoinAccount(
       const mojom::AccountIdPtr& account_id,
@@ -331,8 +328,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       mojom::KeyringId keyring_id,
       const std::string& account_name,
       const std::vector<uint8_t>& private_key);
-  bool IsKeyringExist(mojom::KeyringId keyring_id) const;
-  bool LazilyCreateKeyring(mojom::KeyringId keyring_id);
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
       mojom::KeyringId keyring_id) const;

@@ -709,13 +709,6 @@ struct AllAccountsInfo {
   AccountInfo? sol_dapp_selected_account;
 };
 
-struct KeyringInfo {
-  KeyringId id;
-  bool is_keyring_created;
-  bool is_locked;
-  bool is_backed_up;
-};
-
 struct WalletInfo {
   bool is_wallet_created;
   bool is_wallet_locked;
@@ -768,14 +761,14 @@ interface Page {
 };
 
 interface KeyringServiceObserver {
-  // Fired when a keyring is created
-  KeyringCreated(KeyringId keyring_id);
+  // Fired when wallet is created
+  WalletCreated();
 
   // Fired when wallet is restored
   WalletRestored();
 
-  // Fired when a keyring is reset
-  KeyringReset();
+  // Fired when wallet is reset
+  WalletReset();
 
   // Fired when a keyring is locked
   Locked();
@@ -853,6 +846,9 @@ interface BlockchainRegistry {
 // Implements the HD wallet, Ledger & Trezor integration, account management,
 // and signing.
 interface KeyringService {
+  // True if wallet was created or restored. Wallet needs onboarding when false.
+  IsWalletCreated() => (bool isCreated);
+
   // Creates a new wallet and encrypts it using the specified password
   CreateWallet(string password) => (string mnemonic);
 
@@ -902,12 +898,6 @@ interface KeyringService {
 
   // Informs the keyring that the wallet has been backed up
   NotifyWalletBackupComplete();
-
-  // TODO(apaymyshev): remove that one:
-
-  // DEPREACATED and to be removed soon. Do not use.
-  // Obtains the keyring information
-  GetKeyringInfo(KeyringId keyring_id) => (KeyringInfo keyring);
 
   // Adds a KeyringServiceObserver
   AddObserver(pending_remote<KeyringServiceObserver> observer);

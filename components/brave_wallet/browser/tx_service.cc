@@ -257,7 +257,11 @@ void TxService::GetAllTransactionInfo(
 
 void TxService::GetPendingTransactionsCount(
     GetPendingTransactionsCountCallback callback) {
-  size_t counter = 0;
+  std::move(callback).Run(GetPendingTransactionsCountSync());
+}
+
+uint32_t TxService::GetPendingTransactionsCountSync() {
+  uint32_t counter = 0;
 
   for (auto& tx_manager : tx_manager_map_) {
     auto transactions =
@@ -265,7 +269,7 @@ void TxService::GetPendingTransactionsCount(
     counter += CalculatePendingTxCount(transactions);
   }
 
-  std::move(callback).Run(counter);
+  return counter;
 }
 
 void TxService::SpeedupOrCancelTransaction(

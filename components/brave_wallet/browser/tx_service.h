@@ -101,6 +101,7 @@ class TxService : public KeyedService,
                              GetAllTransactionInfoCallback) override;
   void GetPendingTransactionsCount(
       GetPendingTransactionsCountCallback callback) override;
+  uint32_t GetPendingTransactionsCountSync();
 
   void SpeedupOrCancelTransaction(
       mojom::CoinType coin_type,

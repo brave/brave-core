@@ -108,7 +108,7 @@ handler.on(
   await refreshWalletInfo(store, payload)
 })
 
-handler.on(WalletActions.keyringCreated.type, async (store) => {
+handler.on(WalletActions.walletCreated.type, async (store) => {
   await refreshWalletInfo(store)
 })
 
@@ -116,7 +116,7 @@ handler.on(WalletActions.walletRestored.type, async (store) => {
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.keyringReset.type, async (store) => {
+handler.on(WalletActions.walletReset.type, async (store) => {
   window.location.reload()
 })
 

@@ -253,11 +253,9 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
   url::Origin origin = delegate_->GetOrigin();
   mojom::NetworkInfoPtr chain =
       json_rpc_service_->GetNetworkSync(mojom::CoinType::ETH, origin);
-  mojom::KeyringInfoPtr keyring_info =
-      keyring_service_->GetKeyringInfoSync(mojom::kDefaultKeyringId);
 
   bool reject = false;
-  if (!chain || !keyring_info) {
+  if (!chain) {
     mojom::ProviderError code = mojom::ProviderError::kInternalError;
     std::string message = "Internal JSON-RPC error";
     base::Value formed_response = GetProviderErrorDictionary(code, message);
@@ -1102,11 +1100,15 @@ void EthereumProviderImpl::RequestEthereumPermissions(
                                  std::vector<std::string>());
     return;
   }
-  const auto keyring_info = keyring_service_->GetKeyringInfoSync(
-      brave_wallet::mojom::kDefaultKeyringId);
 
-  DCHECK_EQ(keyring_info->id, brave_wallet::mojom::kDefaultKeyringId);
-  if (!keyring_info->is_keyring_created) {
+  std::vector<std::string> addresses;
+  for (auto& account_info : keyring_service_->GetAllAccountInfos()) {
+    if (account_info->account_id->coin == mojom::CoinType::ETH) {
+      addresses.push_back(account_info->address);
+    }
+  }
+
+  if (addresses.empty()) {
     if (!wallet_onboarding_shown_) {
       delegate_->ShowWalletOnboarding();
       wallet_onboarding_shown_ = true;
@@ -1117,14 +1119,7 @@ void EthereumProviderImpl::RequestEthereumPermissions(
     return;
   }
 
-  std::vector<std::string> addresses;
-  for (auto& account_info : keyring_service_->GetAllAccountInfos()) {
-    if (account_info->account_id->coin == mojom::CoinType::ETH) {
-      addresses.push_back(account_info->address);
-    }
-  }
-
-  if (keyring_info->is_locked) {
+  if (keyring_service_->IsLockedSync()) {
     if (pending_request_ethereum_permissions_callback_) {
       OnRequestEthereumPermissions(
           std::move(callback), std::move(id), method, origin,
@@ -1236,9 +1231,6 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
 
 absl::optional<std::vector<std::string>>
 EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
-  const auto keyring_info = keyring_service_->GetKeyringInfoSync(
-      brave_wallet::mojom::kDefaultKeyringId);
-
   std::vector<std::string> addresses;
   for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
     if (account_info->account_id->coin == mojom::CoinType::ETH) {
@@ -1258,7 +1250,7 @@ EthereumProviderImpl::GetAllowedAccounts(bool include_accounts_when_locked) {
   }
 
   std::vector<std::string> filtered_accounts;
-  if (!keyring_info->is_locked || include_accounts_when_locked) {
+  if (!keyring_service_->IsLockedSync() || include_accounts_when_locked) {
     filtered_accounts = FilterAccounts(*allowed_accounts, selected_account);
   }
 

@@ -14,9 +14,9 @@
 namespace brave_wallet {
 
 class KeyringServiceObserverBase : public mojom::KeyringServiceObserver {
-  void KeyringCreated(mojom::KeyringId keyring_id) override {}
+  void WalletCreated() override {}
   void WalletRestored() override {}
-  void KeyringReset() override {}
+  void WalletReset() override {}
   void Locked() override {}
   void Unlocked() override {}
   void BackedUp() override {}
