@@ -5,11 +5,14 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "absl/types/optional.h"
+#include "base/strings/string_util.h"
 #include "base/supports_user_data.h"
 #include "brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_fallback_redirect_nav_data.h"
@@ -68,6 +71,46 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
 
   base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(protocol)
       ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
+}
+
+bool IsSameIpfsLink(const GURL& url_first, const GURL& url_second) {
+  LOG(INFO) << "[IPFS] IsSameIpfsLink"
+  << "\r\nurl_first:" << url_first
+  << "\r\nurl_second:" << url_second
+  ;
+  absl::optional<GURL> first, second;
+  if(!ipfs::IsIPFSScheme(url_first) && url_first.SchemeIsHTTPOrHTTPS()) {
+    first = ipfs::ExtractSourceFromGateway(url_first);
+  } else {
+    first = url_first;
+  }
+  if(!ipfs::IsIPFSScheme(url_second) && url_second.SchemeIsHTTPOrHTTPS()) {
+    second = ipfs::ExtractSourceFromGateway(url_second);
+  } else {
+    second = url_second;
+  }
+  if(!first.has_value() || !second.has_value()) {
+    return false;
+  }
+  auto str_first= first->spec();
+  auto str_second= second->spec();
+  LOG(INFO) << "[IPFS] IsSameIpfsLink"
+  << "\r\nstr_first:" << str_first
+  << "\r\nstr_second:" << str_second
+  ;
+  
+  if(str_first.ends_with("/")) {
+    str_first.pop_back();
+  }
+  if(str_second.ends_with("/")) {
+    str_second.pop_back();
+  }
+    LOG(INFO) << "[IPFS] IsSameIpfsLink"
+  << "\r\nstr_first:" << str_first
+  << "\r\nstr_second:" << str_second
+  << "\r\ncmpr:" << str_first.compare(str_second)
+  ;
+  return str_first.compare(str_second) == 0;
 }
 
 //TODO Remove later
@@ -464,7 +507,8 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
         << "\r\ncurrent_url:" << current_url
         ;
       } else if (!nav_data->IsAutoRedirectBlocked() &&
-                 nav_data->GetOriginalUrl() != GetCurrentPageURL()) {
+                 nav_data->GetOriginalUrl() != GetCurrentPageURL() &&
+                 IsSameIpfsLink(nav_data->GetOriginalUrl(), GetCurrentPageURL())) {
         ShowBraveIPFSFallbackInfoBar(nav_data->GetOriginalUrl());
         LOG(INFO) << "[IPFS] DidFinishNavigation 20"
         << "\r\ncurrent_url:" << current_url

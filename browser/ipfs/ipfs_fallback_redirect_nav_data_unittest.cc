@@ -87,19 +87,25 @@ class IpfsFallbackRedirectNavigationDataUnitTest : public testing::Test {
 TEST_F(IpfsFallbackRedirectNavigationDataUnitTest,
        CleanUserDataForAllNavEntries) {
   NavigateAndCommit(GURL("http://address.adr"));
+  NavigateAndCommit(GURL("http://address12adr"));
   NavigateAndCommit(GURL("http://address1.adr"));
 
-  EXPECT_EQ(web_contents()->GetController().GetEntryCount(), 2);
+  EXPECT_EQ(web_contents()->GetController().GetEntryCount(), 3);
 
   auto* entry0 = SetUserDataForNavEntry(0);
   EXPECT_NE(entry0, nullptr);
   EXPECT_TRUE(entry0->GetOriginalUrl().is_empty());
   EXPECT_FALSE(entry0->IsAutoRedirectBlocked());
 
-  auto* entry1 = SetUserDataForNavEntry(1);
+  auto* entry2 = SetUserDataForNavEntry(1);
+  EXPECT_NE(entry2, nullptr);
+  entry2->SetRemoveFlag(true);
+
+  auto* entry1 = SetUserDataForNavEntry(2);
   EXPECT_NE(entry1, nullptr);
   EXPECT_TRUE(entry1->GetOriginalUrl().is_empty());
   EXPECT_FALSE(entry1->IsAutoRedirectBlocked());
+
 
   IpfsFallbackRedirectNavigationData::CleanAll(web_contents());
   EXPECT_EQ(web_contents()->GetController().GetEntryCount(), 2);
@@ -109,71 +115,6 @@ TEST_F(IpfsFallbackRedirectNavigationDataUnitTest,
             IpfsFallbackRedirectNavigationData::GetFallbackData(entry);
         EXPECT_EQ(current_entry_data, nullptr);
       }));
-}
-
-TEST_F(IpfsFallbackRedirectNavigationDataUnitTest, IsSameIpfsLink) {
-  auto same_link_test_action = [&](std::vector<GURL> entries,
-                                   const GURL& current_url,
-                                   const std::string error_msg = "") {
-    std::for_each(entries.begin(), entries.end(),
-                  [&](const GURL& url) { NavigateAndCommit(url); });
-    if (web_contents()->GetController().GetEntryCount() > 0) {
-      web_contents()->GetController().RemoveEntryAtIndex(0);
-    }
-    EXPECT_EQ(web_contents()->GetController().GetEntryCount(),
-              entries.empty() ? 1 : static_cast<int>(entries.size()));
-    // EXPECT_TRUE(IpfsFallbackRedirectNavigationData::IsSameIpfsLink(
-    //     web_contents(), current_url));
-    DeleteAllEntriesExceptLastCommitted();
-  };
-
-  auto not_same_link_test_action = [&](std::vector<GURL> entries,
-                                       const GURL& current_url,
-                                       const std::string error_msg = "") {
-    std::for_each(entries.begin(), entries.end(),
-                  [&](const GURL& url) { NavigateAndCommit(url); });
-    if (web_contents()->GetController().GetEntryCount() > 0) {
-      web_contents()->GetController().RemoveEntryAtIndex(0);
-    }
-    EXPECT_EQ(web_contents()->GetController().GetEntryCount(),
-              entries.empty() ? 1 : static_cast<int>(entries.size()));
-    // EXPECT_FALSE(IpfsFallbackRedirectNavigationData::IsSameIpfsLink(
-    //     web_contents(), current_url))
-    //     << error_msg;
-    DeleteAllEntriesExceptLastCommitted();
-  };
-
-  not_same_link_test_action(
-      {},
-      GURL("ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4"),
-      "No Entries Test");
-
-  NavigateAndCommit(GURL("about:blank"));
-
-  same_link_test_action(
-      {GURL("https://drweb.link/ipns/"
-            "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/")},
-      GURL("ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4"));
-
-  same_link_test_action(
-      {GURL("ipns://"
-            "bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq"),
-       GURL("https://drweb.link/ipns/"
-            "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-       GURL("https://localhos:45008/ipns/"
-            "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/")},
-      GURL("ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4"));
-
-  not_same_link_test_action(
-      {GURL("https://ipfs.io/ipfs/"
-            "bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq")},
-      GURL("ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4"));
-  not_same_link_test_action(
-      {GURL("https://drweb.link/ipns/"
-            "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-       GURL("https://ipfs.io/ipfs/"
-            "bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq")},
-      GURL("ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4"));
 }
 
 TEST_F(IpfsFallbackRedirectNavigationDataUnitTest,
@@ -199,7 +140,7 @@ TEST_F(IpfsFallbackRedirectNavigationDataUnitTest,
                 user_data->SetOriginalUrl(std::get<1>(item)->GetOriginalUrl());
                 user_data->SetAutoRedirectBlock(
                     std::get<1>(item)->IsAutoRedirectBlocked());
-                // user_data->SetValid(std::get<1>(item)->IsValid());
+                user_data->SetRemoveFlag(std::get<1>(item)->GetRemoveFlag());
               }
             });
         if (web_contents()->GetController().GetEntryCount() > 0) {
@@ -233,7 +174,7 @@ TEST_F(IpfsFallbackRedirectNavigationDataUnitTest,
             GURL("https://drweb.link/ipns/"
                  "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"));
         EXPECT_EQ(nav_data->IsAutoRedirectBlocked(), false);
-        // EXPECT_EQ(nav_data->IsValid(), true);
+        EXPECT_EQ(nav_data->GetRemoveFlag(), true);
       }));
   test_action(
       {{GURL("https://drweb.link/ipns/"
@@ -253,7 +194,7 @@ TEST_F(IpfsFallbackRedirectNavigationDataUnitTest,
             GURL("https://drweb.link/ipns/"
                  "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"));
         EXPECT_EQ(nav_data->IsAutoRedirectBlocked(), false);
-        // EXPECT_EQ(nav_data->IsValid(), true);
+        EXPECT_EQ(nav_data->GetRemoveFlag(), true);
       }));
 
   test_action(
@@ -268,127 +209,8 @@ TEST_F(IpfsFallbackRedirectNavigationDataUnitTest,
       base::BindLambdaForTesting([&]() {
         auto* nav_data = IpfsFallbackRedirectNavigationData::
             FindFallbackData(web_contents());
-        EXPECT_EQ(nav_data, nullptr);
-      }));
-}
-
-TEST_F(IpfsFallbackRedirectNavigationDataUnitTest, IsAutoRedirectBlocked) {
-  auto test_action =
-      [&](std::vector<std::tuple<
-              GURL, absl::optional<IpfsFallbackRedirectNavigationData>>>
-              entries,
-          base::RepeatingCallback<void(const std::string&)> check_callback,
-          const std::string error_msg = "") {
-        std::for_each(
-            entries.begin(), entries.end(),
-            [&](const std::tuple<
-                GURL, absl::optional<IpfsFallbackRedirectNavigationData>>&
-                    item) {
-              NavigateAndCommit(std::get<0>(item));
-              if (std::get<1>(item).has_value()) {
-                auto* user_data =
-                    IpfsFallbackRedirectNavigationData::GetOrCreate(
-                        web_contents()
-                            ->GetController()
-                            .GetLastCommittedEntry());
-                user_data->SetOriginalUrl(std::get<1>(item)->GetOriginalUrl());
-                user_data->SetAutoRedirectBlock(
-                    std::get<1>(item)->IsAutoRedirectBlocked());
-                // user_data->SetValid(std::get<1>(item)->IsValid());
-              }
-            });
-        if (web_contents()->GetController().GetEntryCount() > 0) {
-          web_contents()->GetController().RemoveEntryAtIndex(0);
-        }
-        EXPECT_EQ(web_contents()->GetController().GetEntryCount(),
-                  entries.empty() ? 1 : static_cast<int>(entries.size()))
-            << error_msg;
-
-        check_callback.Run(error_msg);
-
-        NavigateAndCommit(GURL("about:blank"));
-
-        DeleteAllEntriesExceptLastCommitted();
-      };
-
-  NavigateAndCommit(GURL("about:blank"));
-
-  test_action(
-      {{GURL("https://drweb.link/ipns/"
-             "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-        IpfsFallbackRedirectNavigationData(
-            GURL("https://drweb.link/ipns/"
-                 "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-            true, true)}},
-      base::BindLambdaForTesting([&](const std::string& error_msg) {
-        // EXPECT_TRUE(IpfsFallbackRedirectNavigationData::IsAutoRedirectBlocked(
-        //     web_contents(),
-        //     GURL("https://drweb.link/ipns/"
-        //          "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-        //     false))
-        //     << error_msg;
-        auto* nav_data = IpfsFallbackRedirectNavigationData::
-            FindFallbackData(web_contents());
         EXPECT_NE(nav_data, nullptr);
-        EXPECT_EQ(
-            nav_data->GetOriginalUrl(),
-            GURL("https://drweb.link/ipns/"
-                 "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"));
-        EXPECT_EQ(nav_data->IsAutoRedirectBlocked(), true);
-        // EXPECT_EQ(nav_data->IsValid(), true);
-      }),
-      "auto redirect with no autoremove of the navigation entry");
-
-  test_action(
-      {{GURL("https://drweb.link/ipns/"
-             "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-        {}},
-       {GURL("ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4"),
-        IpfsFallbackRedirectNavigationData(
-            GURL("https://drweb.link/ipns/"
-                 "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-            true, true)},
-       {GURL("https://drweb.link/ipns/"
-             "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-        {}}},
-      base::BindLambdaForTesting([&](const std::string& error_msg) {
-        // EXPECT_TRUE(IpfsFallbackRedirectNavigationData::IsAutoRedirectBlocked(
-        //     web_contents(),
-        //     GURL("https://drweb.link/ipns/"
-        //          "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-        //     true))
-        //     << error_msg;
-        auto* nav_data = IpfsFallbackRedirectNavigationData::
-            FindFallbackData(web_contents());
-        EXPECT_EQ(nav_data, nullptr);
-        EXPECT_EQ(web_contents()->GetController().GetEntryCount(), 2);
-        EXPECT_EQ(
-            web_contents()->GetController().GetEntryAtIndex(0)->GetURL(),
-            GURL("https://drweb.link/ipns/"
-                 "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"));
-        EXPECT_EQ(
-            web_contents()->GetController().GetEntryAtIndex(1)->GetURL(),
-            GURL("https://drweb.link/ipns/"
-                 "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"));
-      }),
-      "auto redirect with autoremove of the navigation entry");
-
-  test_action(
-      {{GURL("https://drweb.link/ipns/"
-             "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-        {}}},
-      base::BindLambdaForTesting([&](const std::string& error_msg) {
-        // EXPECT_FALSE(IpfsFallbackRedirectNavigationData::IsAutoRedirectBlocked(
-        //     web_contents(),
-        //     GURL("https://drweb.link/ipns/"
-        //          "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/"),
-        //     false))
-        //     << error_msg;
-        auto* nav_data = IpfsFallbackRedirectNavigationData::
-            FindFallbackData(web_contents());
-        EXPECT_EQ(nav_data, nullptr);
-      }),
-      "should not find auto redirect");
+      }));
 }
 
 }  // namespace ipfs

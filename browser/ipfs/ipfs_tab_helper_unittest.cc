@@ -816,19 +816,23 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
         EXPECT_EQ(
             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-            2);
+            1);
         auto* nav_data_auto_redirected = IpfsFallbackRedirectNavigationData::
             FindFallbackData(web_contents());
-        EXPECT_EQ(nav_data_auto_redirected, nullptr);
+        EXPECT_NE(nav_data_auto_redirected, nullptr);
+        EXPECT_EQ(nav_data_auto_redirected->GetOriginalUrl(), url);
+        EXPECT_EQ(nav_data_auto_redirected->GetRemoveFlag(), false);
+        EXPECT_EQ(nav_data_auto_redirected->IsAutoRedirectBlocked(), false);
       }));
   web_contents()->SetOnDidFinishNavigationCompleted(
       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
         EXPECT_EQ(
             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-            2);
+            1);
         auto* nav_data_after_redirect = IpfsFallbackRedirectNavigationData::
             FindFallbackData(web_contents());
         EXPECT_EQ(nav_data_after_redirect, nullptr);
+        EXPECT_EQ(ipfs_tab_helper()->GetWebContents().GetController().GetLastCommittedEntry()->GetURL(), url);
       }));
 
   NavigateAndComitFailedFailedPage(url, 500);
@@ -845,6 +849,12 @@ TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
   EXPECT_EQ(nav_data_after_redirect->GetOriginalUrl(), url);
 
   NavigateAndComitFailedFailedPage(url, 500);
+  
+  EXPECT_EQ(
+            ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
+            1);
+  EXPECT_EQ(IpfsFallbackRedirectNavigationData::FindFallbackData(
+          web_contents()), nullptr);  
 }
 
 TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_Broken_Redirect_Chain) {
@@ -893,7 +903,7 @@ TEST_F(IpfsTabHelperUnitTest,
       "https://ipfs.io/ipfs/"
       "bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
   const GURL new_chain_redirected_to_url(
-      "ipns://bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
+      "ipfs://bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
 
   SetIpfsCompanionEnabledFlag(false);
 
@@ -936,16 +946,20 @@ TEST_F(IpfsTabHelperUnitTest,
       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
         EXPECT_EQ(
             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-            4);
+            3);
         auto* nav_data_new_chain_start = IpfsFallbackRedirectNavigationData::
             FindFallbackData(web_contents());
-        EXPECT_EQ(nav_data_new_chain_start, nullptr);
+        EXPECT_NE(nav_data_new_chain_start, nullptr);
+        EXPECT_EQ(nav_data_new_chain_start->GetOriginalUrl(),
+                  new_redirect_chain_start_url);
+        EXPECT_FALSE(
+            nav_data_new_chain_start->IsAutoRedirectBlocked());        
       }));
   web_contents()->SetOnDidFinishNavigationCompleted(
       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
         EXPECT_EQ(
             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-            4);
+            3);
         auto* nav_data_after_redirect_new_chain =
             IpfsFallbackRedirectNavigationData::
                 FindFallbackData(web_contents());
@@ -971,9 +985,10 @@ TEST_F(IpfsTabHelperUnitTest,
       IpfsFallbackRedirectNavigationData::FindFallbackData(
           web_contents());
   EXPECT_NE(nav_data_after_redirect_new_chain, nullptr);
-  EXPECT_TRUE(nav_data_after_redirect_new_chain->IsAutoRedirectBlocked());
-  EXPECT_EQ(nav_data_after_redirect_new_chain->GetOriginalUrl(),
-            new_redirect_chain_start_url);
+        EXPECT_EQ(nav_data_after_redirect_new_chain->GetOriginalUrl(),
+                  new_redirect_chain_start_url);
+        EXPECT_TRUE(
+            nav_data_after_redirect_new_chain->IsAutoRedirectBlocked());        
 
   NavigateAndComitFailedFailedPage(new_redirect_chain_start_url, 500);
 }

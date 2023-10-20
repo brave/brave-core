@@ -50,11 +50,7 @@ class IpfsFallbackRedirectNavigationData : public base::SupportsUserData::Data {
   FRIEND_TEST_ALL_PREFIXES(IpfsFallbackRedirectNavigationDataUnitTest,
                            CleanUserDataForAllNavEntries);
   FRIEND_TEST_ALL_PREFIXES(IpfsFallbackRedirectNavigationDataUnitTest,
-                           IsSameIpfsLink);
-  FRIEND_TEST_ALL_PREFIXES(IpfsFallbackRedirectNavigationDataUnitTest,
                            GetFallbackDataFromRedirectChain);
-  FRIEND_TEST_ALL_PREFIXES(IpfsFallbackRedirectNavigationDataUnitTest,
-                           IsAutoRedirectBlocked);
 
   GURL original_url_;
   bool block_auto_redirect_{false};
