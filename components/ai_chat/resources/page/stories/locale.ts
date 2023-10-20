@@ -59,5 +59,8 @@ provideStrings({
   optionUnsafeHarmful: 'Unsafe/harmful',
   optionOther: 'Other',
   ratingError: 'Your rating could not be submitted, please check network connection and try again',
-  feedbackError: 'Your feedback could not be submitted, please check network connection and try again'
+  feedbackError: 'Your feedback could not be submitted, please check network connection and try again',
+  premiumRefreshWarningDescription: 'Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.',
+  premiumRefreshWarningAction: 'Refresh'
+
 })

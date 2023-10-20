@@ -87,8 +87,11 @@ export default {
   },
   args: {
     hasQuestions: true,
+    hasChosenSuggestedQuestions: true,
     hasChangedModel: false,
     hasAcceptedAgreement: true,
+    isPremiumUser: true,
+    isPremiumUserDisconnected: false,
     currentErrorState: select(
       'Current Status',
       mojom.APIError,
@@ -102,15 +105,14 @@ export default {
       const [suggestedQuestions] = React.useState<string[]>(SAMPLE_QUESTIONS)
       const [isGenerating] = React.useState(false)
       const [canGenerateQuestions] = React.useState(false)
-      const [userAutoGeneratePref] =
-        React.useState<mojom.AutoGenerateQuestionsPref>()
+      const userAutoGeneratePref: mojom.AutoGenerateQuestionsPref = options.args.hasChosenSuggestedQuestions ? mojom.AutoGenerateQuestionsPref.Enabled : mojom.AutoGenerateQuestionsPref.Unset
       const [siteInfo] = React.useState<mojom.SiteInfo | null>(SITE_INFO)
       const [favIconUrl] = React.useState<string>()
       const [currentError] = React.useState<mojom.APIError>(
         options.args.currentErrorState
       )
       const [hasAcceptedAgreement] = React.useState(options.args.hasAcceptedAgreement)
-      const [isPremiumUser] = React.useState(options.args.isPremiumUser)
+
 
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
@@ -132,7 +134,8 @@ export default {
         hasAcceptedAgreement,
         apiHasError,
         shouldDisableUserInput,
-        isPremiumUser
+        isPremiumUser: options.args.isPremiumUser,
+        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected
       }
 
       return (

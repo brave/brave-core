@@ -4,11 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
+import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
-
-import styles from './style.module.scss'
+import { getLocale } from '$web-common/locale'
+import styles from './alerts.module.scss'
 
 interface PromptAutoSuggestionProps {
   onRetry?: () => void
@@ -16,16 +15,20 @@ interface PromptAutoSuggestionProps {
 
 function ErrorConnection (props: PromptAutoSuggestionProps) {
   return (
-    <div className={styles.box}>
-      <Icon name="warning-circle-filled" className={styles.icon} />
-      <div>
-        <p>{getLocale('errorNetworkLabel')}</p>
-        <div className={styles.actionsBox}>
-          <Button onClick={props.onRetry}>
+    <div className={styles.alert}>
+      <Alert
+        mode='full'
+        type='warning'
+      >
+        {getLocale('errorNetworkLabel')}
+        <Button
+          slot='actions'
+          kind='filled'
+          onClick={props.onRetry}
+        >
             {getLocale('retryButtonLabel')}
-          </Button>
-        </div>
-      </div>
+        </Button>
+      </Alert>
     </div>
   )
 }
