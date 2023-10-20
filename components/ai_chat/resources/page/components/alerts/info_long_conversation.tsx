@@ -7,18 +7,17 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
-// import DataContext from '../../state/context'
+import DataContext from '../../state/context'
 import styles from './alerts.module.scss'
 import getPageHandlerInstance from '../../api/page_handler'
 
 export default function InfoLongConversation() {
-  // const context = React.useContext(DataContext)
+  const context = React.useContext(DataContext)
 
   const handleClearChat = () => {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
+    context.dismissLongConversationInfo()
   }
-
-  const handleDismiss = () => {}
 
   return (
     <div className={styles.alert}>
@@ -37,7 +36,7 @@ export default function InfoLongConversation() {
         <Button
           slot='actions'
           kind='plain-faint'
-          onClick={handleDismiss}
+          onClick={context.dismissLongConversationInfo}
         >
           {getLocale('dismissButtonLabel')}
         </Button>

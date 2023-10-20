@@ -38,6 +38,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
   const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean | undefined>()
+  const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean | undefined>()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -146,8 +147,24 @@ function DataContextProvider (props: DataContextProviderProps) {
     return false
   }, [conversationHistory, hasDismissedLongPageWarning, siteInfo?.isContentTruncated])
 
+  const shouldShowLongConversationInfo = React.useMemo(() => {
+    const conversationHistoryText = conversationHistory.map(turn => turn.text).join('')
+
+    if (hasDismissedLongConversationInfo === undefined &&
+      currentModel &&
+      conversationHistoryText.length >= currentModel?.warningConversationLength) {
+      return true
+    }
+
+    return false
+  }, [conversationHistory, currentModel, hasDismissedLongConversationInfo])
+
   const dismissLongPageWarning = () => {
     setHasDismissedLongPageWarning(true)
+  }
+
+  const dismissLongConversationInfo = () => {
+    setHasDismissedLongConversationInfo(true)
   }
 
   const initialiseForTargetTab = async () => {
@@ -223,6 +240,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
     canShowPremiumPrompt,
     shouldShowLongPageWarning,
+    shouldShowLongConversationInfo,
     setCurrentModel,
     switchToDefaultModel,
     generateSuggestedQuestions,
@@ -231,7 +249,8 @@ function DataContextProvider (props: DataContextProviderProps) {
     dismissPremiumPrompt,
     getCanShowPremiumPrompt,
     userRefreshPremiumSession,
-    dismissLongPageWarning
+    dismissLongPageWarning,
+    dismissLongConversationInfo,
   }
 
   return (
