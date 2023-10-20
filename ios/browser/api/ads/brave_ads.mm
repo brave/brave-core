@@ -147,22 +147,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     [self initLocalStatePrefService];
     [self maybeMigrateProfilePrefs];
 
+    [self initObservers];
+
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
-
-    // Add notifications for standard app foreground/background
-    [NSNotificationCenter.defaultCenter
-        addObserver:self
-           selector:@selector(applicationDidBecomeActive)
-               name:UIApplicationDidBecomeActiveNotification
-             object:nil];
-    [NSNotificationCenter.defaultCenter
-        addObserver:self
-           selector:@selector(applicationDidBackground)
-               name:UIApplicationDidEnterBackgroundNotification
-             object:nil];
-
     const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
     adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
 
@@ -214,6 +203,20 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 #pragma mark - Initialization / Shutdown
+
+- (void)initObservers {
+  [NSNotificationCenter.defaultCenter
+      addObserver:self
+         selector:@selector(applicationDidBecomeActive)
+             name:UIApplicationDidBecomeActiveNotification
+           object:nil];
+
+  [NSNotificationCenter.defaultCenter
+      addObserver:self
+         selector:@selector(applicationDidBackground)
+             name:UIApplicationDidEnterBackgroundNotification
+           object:nil];
+}
 
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
