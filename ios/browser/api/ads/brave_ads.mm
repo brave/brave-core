@@ -7,11 +7,10 @@
 #import <UIKit/UIKit.h>
 
 #include "base/base64.h"
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -51,6 +50,10 @@
 #import "brave/ios/browser/api/ads/notification_ad_ios.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_service.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
@@ -74,29 +77,6 @@
 
 static const int kCurrentAdsResourceManifestSchemaVersion = 1;
 
-static NSString* const kLegacyOptedInToNotificationAdsPrefKey =
-    @"BATAdsEnabled";
-static NSString* const kLegacyNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
-static NSString* const kLegacyShouldAllowAdsSubdivisionTargetingPrefKey =
-    @"BATShouldAllowAdsSubdivisionTargetingPrefKey";
-static NSString* const kLegacyAdsSubdivisionTargetingCodePrefKey =
-    @"BATAdsSubdivisionTargetingCodePrefKey";
-static NSString* const kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey =
-    @"BATAutoDetectedAdsSubdivisionTargetingCodePrefKey";
-
-static NSString* const kOptedInToNotificationAdsPrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kOptedInToNotificationAds);
-static NSString* const kRewardsEnabledPrefKey =
-    base::SysUTF8ToNSString(brave_rewards::prefs::kEnabled);
-static NSString* const kMaximumNotificationAdsPerHourPrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kMaximumNotificationAdsPerHour);
-static NSString* const kShouldAllowSubdivisionTargetingPrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kShouldAllowSubdivisionTargeting);
-static NSString* const kSubdivisionTargetingSubdivisionPrefKey =
-    base::SysUTF8ToNSString(brave_ads::prefs::kSubdivisionTargetingSubdivision);
-static NSString* const kSubdivisionTargetingAutoDetectedSubdivisionPrefKey =
-    base::SysUTF8ToNSString(
-        brave_ads::prefs::kSubdivisionTargetingAutoDetectedSubdivision);
 static NSString* const kAdsResourceMetadataPrefKey = @"BATAdsResourceMetadata";
 
 namespace {
@@ -141,6 +121,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 @property(nonatomic) BraveCommonOperations* commonOps;
 @property(nonatomic) BOOL networkConnectivityAvailable;
 @property(nonatomic, copy) NSString* storagePath;
+@property(nonatomic) PrefService* profilePrefService;
+@property(nonatomic) PrefService* localStatePrefService;
 @property(nonatomic) dispatch_group_t componentUpdaterPrefsWriteGroup;
 @property(nonatomic) dispatch_queue_t componentUpdaterPrefsWriteThread;
 @property(nonatomic) NSMutableDictionary* componentUpdaterPrefs;
@@ -160,6 +142,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
     [self initComponentUpdaterPrefs];
 
+    [self initProfilePrefService];
+    [self initLocalStatePrefService];
     [self maybeMigrateProfilePrefs];
 
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
@@ -339,78 +323,14 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 #pragma mark - Configuration
 
 - (BOOL)isEnabled {
-  return [self.prefs[kRewardsEnabledPrefKey] boolValue];
+  return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
 - (void)setEnabled:(BOOL)enabled {
-  self.prefs[kRewardsEnabledPrefKey] = @(enabled);
-  [self savePref:kRewardsEnabledPrefKey];
-  self.prefs[kOptedInToNotificationAdsPrefKey] = @(enabled);
-  [self savePref:kOptedInToNotificationAdsPrefKey];
-}
-
-- (void)savePref:(NSString*)name {
-  [self savePrefs];
-
-  if ([self isAdsServiceRunning]) {
-    adsClientNotifier->NotifyPrefDidChange(base::SysNSStringToUTF8(name));
-  }
-}
-
-- (void)savePrefs {
-  NSDictionary* prefs = [self.prefs copy];
-  NSString* path = [[self prefsPath] copy];
-  dispatch_group_enter(self.prefsWriteGroup);
-  dispatch_async(self.prefsWriteThread, ^{
-    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
-    dispatch_group_leave(self.prefsWriteGroup);
-  });
-}
-
-#pragma mark -
-
-- (void)migratePrefs {
-  if ([self.prefs objectForKey:kLegacyOptedInToNotificationAdsPrefKey]) {
-    self.prefs[kOptedInToNotificationAdsPrefKey] =
-        self.prefs[kLegacyOptedInToNotificationAdsPrefKey];
-    [self.prefs removeObjectForKey:kLegacyOptedInToNotificationAdsPrefKey];
-  }
-
-  if (![self.prefs objectForKey:kRewardsEnabledPrefKey] &&
-      [self.prefs objectForKey:kOptedInToNotificationAdsPrefKey]) {
-    self.prefs[kRewardsEnabledPrefKey] =
-        self.prefs[kOptedInToNotificationAdsPrefKey];
-  }
-
-  if ([self.prefs objectForKey:kLegacyNumberOfAdsPerHourKey]) {
-    self.prefs[kMaximumNotificationAdsPerHourPrefKey] =
-        self.prefs[kLegacyNumberOfAdsPerHourKey];
-    [self.prefs removeObjectForKey:kLegacyNumberOfAdsPerHourKey];
-  }
-
-  if ([self.prefs
-          objectForKey:kLegacyShouldAllowAdsSubdivisionTargetingPrefKey]) {
-    self.prefs[kShouldAllowSubdivisionTargetingPrefKey] =
-        self.prefs[kLegacyShouldAllowAdsSubdivisionTargetingPrefKey];
-    [self.prefs
-        removeObjectForKey:kLegacyShouldAllowAdsSubdivisionTargetingPrefKey];
-  }
-
-  if ([self.prefs objectForKey:kLegacyAdsSubdivisionTargetingCodePrefKey]) {
-    self.prefs[kSubdivisionTargetingSubdivisionPrefKey] =
-        self.prefs[kLegacyAdsSubdivisionTargetingCodePrefKey];
-    [self.prefs removeObjectForKey:kLegacyAdsSubdivisionTargetingCodePrefKey];
-  }
-
-  if ([self.prefs
-          objectForKey:kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey]) {
-    self.prefs[kSubdivisionTargetingAutoDetectedSubdivisionPrefKey] =
-        self.prefs[kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];
-    [self.prefs removeObjectForKey:
-                    kLegacyAutoDetectedAdsSubdivisionTargetingCodePrefKey];
-  }
-
-  [self savePrefs];
+  [self setProfilePref:brave_rewards::prefs::kEnabled
+                 value:base::Value(enabled)];
+  [self setProfilePref:brave_ads::prefs::kOptedInToNotificationAds
+                 value:base::Value(enabled)];
 }
 
 - (void)setupNetworkMonitoring {
@@ -1347,183 +1267,140 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   // Not needed on iOS because ads do not show unless you are viewing a tab
 }
 
-- (void)setBooleanPref:(const std::string&)path value:(const bool)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (bool)getBooleanPref:(const std::string&)path {
-  // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
-  // code that permanently sets values for preferences when the issue is
-  // resolved.
+- (absl::optional<base::Value>)getProfilePref:(const std::string&)path {
   if (path == brave_news::prefs::kBraveNewsOptedIn ||
       path == brave_news::prefs::kNewTabPageShowToday ||
       path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
       path == ntp_background_images::prefs::
                   kNewTabPageShowSponsoredImagesBackgroundImage) {
-    return true;
+    // TODO(https://github.com/brave/brave-browser/issues/33745): Decouple Brave
+    // Rewards, News and New Tab Page prefs from core.
+    return base::Value(true);
   }
 
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] boolValue];
+  return self.profilePrefService->GetValue(path).Clone();
 }
 
-- (void)setIntegerPref:(const std::string&)path value:(const int)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
+- (void)setProfilePref:(const std::string&)path value:(base::Value)value {
+  self.profilePrefService->Set(path, value);
+  [self notifyPrefDidChange:path];
 }
 
-- (int)getIntegerPref:(const std::string&)path {
-  // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
-  // code that permanently sets values for preferences when the issue is
-  // resolved.
-  if (path == brave_ads::prefs::kIssuerPing && ![self hasPrefPath:path]) {
-    return 7'200'000;
-  }
-
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] intValue];
+- (void)clearProfilePref:(const std::string&)path {
+  self.profilePrefService->ClearPref(path);
+  [self notifyPrefDidChange:path];
 }
 
-- (void)setDoublePref:(const std::string&)path value:(const double)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (double)getDoublePref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] doubleValue];
-}
-
-- (void)setStringPref:(const std::string&)path value:(const std::string&)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = base::SysUTF8ToNSString(value);
-  [self savePref:key];
-}
-
-- (std::string)getStringPref:(const std::string&)path {
-  // TODO(https://github.com/brave/brave-browser/issues/32112): Remove the
-  // code that permanently sets values for preferences when the issue is
-  // resolved.
-  if (path == brave_ads::prefs::kSubdivisionTargetingSubdivision) {
-    return "AUTO";
-  }
-
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto value = (NSString*)self.prefs[key];
-  if (!value) {
-    return "";
-  }
-  return value.UTF8String;
-}
-
-- (void)setInt64Pref:(const std::string&)path value:(const int64_t)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (int64_t)getInt64Pref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] longLongValue];
-}
-
-- (void)setUint64Pref:(const std::string&)path value:(const uint64_t)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value);
-  [self savePref:key];
-}
-
-- (uint64_t)getUint64Pref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs[key] unsignedLongLongValue];
-}
-
-- (void)setTimePref:(const std::string&)path value:(const base::Time)value {
-  const auto key = base::SysUTF8ToNSString(path);
-  self.prefs[key] = @(value.ToDoubleT());
-  [self savePref:key];
-}
-
-- (base::Time)getTimePref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return base::Time::FromDoubleT([self.prefs[key] doubleValue]);
-}
-
-- (void)setDictPref:(const std::string&)path value:(base::Value::Dict)value {
-  std::string json;
-  if (base::JSONWriter::Write(value, &json)) {
-    const auto key = base::SysUTF8ToNSString(path);
-    self.prefs[key] = base::SysUTF8ToNSString(json);
-    [self savePref:key];
-  }
-}
-
-- (absl::optional<base::Value::Dict>)getDictPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto json = (NSString*)self.prefs[key];
-  if (!json) {
-    return absl::nullopt;
-  }
-
-  absl::optional<base::Value> value =
-      base::JSONReader::Read(base::SysNSStringToUTF8(json));
-  if (!value || !value->is_dict()) {
-    return absl::nullopt;
-  }
-
-  return value->GetDict().Clone();
-}
-
-- (void)setListPref:(const std::string&)path value:(base::Value::List)value {
-  std::string json;
-  if (base::JSONWriter::Write(value, &json)) {
-    const auto key = base::SysUTF8ToNSString(path);
-    self.prefs[key] = base::SysUTF8ToNSString(json);
-    [self savePref:key];
-  }
-}
-
-- (absl::optional<base::Value::List>)getListPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  const auto json = (NSString*)self.prefs[key];
-  if (!json) {
-    return absl::nullopt;
-  }
-
-  absl::optional<base::Value> value =
-      base::JSONReader::Read(base::SysNSStringToUTF8(json));
-  if (!value || !value->is_list()) {
-    return absl::nullopt;
-  }
-
-  return value->GetList().Clone();
-}
-
-- (void)clearPref:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  [self.prefs removeObjectForKey:key];
-  [self savePref:key];
-}
-
-- (bool)hasPrefPath:(const std::string&)path {
-  const auto key = base::SysUTF8ToNSString(path);
-  return [self.prefs objectForKey:key] != nil;
+- (bool)hasProfilePrefPath:(const std::string&)path {
+  return self.profilePrefService->HasPrefPath(path);
 }
 
 - (void)setLocalStatePref:(const std::string&)path value:(base::Value)value {
-  // Not needed on iOS
+  self.localStatePrefService->Set(path, value);
+  [self notifyPrefDidChange:path];
 }
 
 - (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path {
-  if (path == brave_l10n::prefs::kCountryCode) {
-    return base::Value(brave_l10n::GetDefaultISOCountryCodeString());
+  return self.localStatePrefService->GetValue(path).Clone();
+}
+
+- (void)clearLocalStatePref:(const std::string&)path {
+  self.localStatePrefService->ClearPref(path);
+  [self notifyPrefDidChange:path];
+}
+
+- (bool)hasLocalStatePrefPath:(const std::string&)path {
+  return self.localStatePrefService->HasPrefPath(path);
+}
+
+#pragma mark - Prefs
+
+- (void)initProfilePrefService {
+  ios::ChromeBrowserStateManager* browserStateManager =
+      GetApplicationContext()->GetChromeBrowserStateManager();
+  CHECK(browserStateManager);
+
+  ChromeBrowserState* chromeBrowserState =
+      browserStateManager->GetLastUsedBrowserState();
+  CHECK(chromeBrowserState);
+
+  _profilePrefService = chromeBrowserState->GetPrefs();
+  CHECK(_profilePrefService);
+}
+
+- (void)migrateBooleanProfilePref:(NSDictionary*)legacyProfilePrefs
+                             path:(const std::string&)path {
+  // Only for "ads_pref.plist" migration; please see pref service migration
+  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
+  NSString* legacyProfilePref = base::SysUTF8ToNSString(path);
+  if ([legacyProfilePrefs objectForKey:legacyProfilePref]) {
+    self.profilePrefService->SetBoolean(
+        path, [legacyProfilePrefs[legacyProfilePref] boolValue]);
+  }
+}
+
+- (void)maybeMigrateProfilePrefs {
+  // Only for "ads_pref.plist" migration; please see pref service migration
+  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
+  NSString* legacyProfilePrefsPath =
+      [self.storagePath stringByAppendingPathComponent:@"ads_pref.plist"];
+  NSDictionary* legacyProfilePrefs = [[NSMutableDictionary alloc]
+      initWithContentsOfFile:legacyProfilePrefsPath];
+  if (!legacyProfilePrefs) {
+    return;
   }
 
-  return absl::nullopt;
+  BLOG(1, @"Migrating profile prefs");
+
+  if ([legacyProfilePrefs objectForKey:@"BATAdsEnabled"]) {
+    const BOOL isEnabled = [legacyProfilePrefs[@"BATAdsEnabled"] boolValue];
+    self.profilePrefService->SetBoolean(brave_rewards::prefs::kEnabled,
+                                        isEnabled);
+    self.profilePrefService->SetBoolean(
+        brave_ads::prefs::kOptedInToNotificationAds, isEnabled);
+  } else {
+    [self migrateBooleanProfilePref:legacyProfilePrefs
+                               path:brave_rewards::prefs::kEnabled];
+    [self
+        migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::kOptedInToNotificationAds];
+  }
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::kHasMigratedClientState];
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::
+                                      kHasMigratedConfirmationState];
+
+  [self
+      migrateBooleanProfilePref:legacyProfilePrefs
+                           path:brave_ads::prefs::kHasMigratedConversionState];
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::
+                                      kHasMigratedNotificationState];
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::kHasMigratedRewardsState];
+
+  NSError* error = nil;
+  [[NSFileManager defaultManager] removeItemAtPath:legacyProfilePrefsPath
+                                             error:&error];
+  if (error) {
+    BLOG(0, @"Failed to remove legacy prefs: %@", error);
+  }
+}
+
+- (void)initLocalStatePrefService {
+  _localStatePrefService = GetApplicationContext()->GetLocalState();
+  CHECK(_localStatePrefService);
+}
+
+- (void)notifyPrefDidChange:(const std::string&)path {
+  if ([self isAdsServiceRunning]) {
+    adsClientNotifier->NotifyPrefDidChange(path);
+  }
 }
 
 #pragma mark - Ads Resources Paths
