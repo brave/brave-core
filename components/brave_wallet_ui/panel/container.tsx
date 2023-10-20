@@ -350,6 +350,7 @@ function Container () {
   }, [needsAccount, selectedPanel])
 
   const canInitializePageRouter =
+    !isWalletLocked &&
     !hasInitializedRouter &&
     isPanelV2FeatureEnabled &&
     hasInitialized &&
