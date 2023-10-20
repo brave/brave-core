@@ -18,7 +18,7 @@ function ErrorConnection (props: PromptAutoSuggestionProps) {
     <div className={styles.alert}>
       <Alert
         mode='full'
-        type='warning'
+        type='error'
       >
         {getLocale('errorNetworkLabel')}
         <Button
