@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -22,6 +23,7 @@
 
 void BraveRegisterBrowserStatePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
+  brave_ads::RegisterProfilePrefs(registry);
   brave_rewards::RegisterProfilePrefs(registry);
   brave_rewards::RegisterProfilePrefsForMigration(registry);
   brave_sync::Prefs::RegisterProfilePrefs(registry);
