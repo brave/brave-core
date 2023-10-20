@@ -32,6 +32,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_keyring.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -1101,15 +1102,32 @@ void KeyringService::CreateWallet(const std::string& mnemonic,
   }
 
   ResetAllAccountInfosCache();
-  std::move(callback).Run(mnemonic);
+
+  WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
+          [](const std::string& mnemonic, CreateWalletCallback callback) {
+            std::move(callback).Run(mnemonic);
+          },
+          mnemonic, std::move(callback)));
 }
 
 void KeyringService::RestoreWallet(const std::string& mnemonic,
                                    const std::string& password,
                                    bool is_legacy_brave_wallet,
                                    RestoreWalletCallback callback) {
-  std::move(callback).Run(
-      RestoreWalletSync(mnemonic, password, is_legacy_brave_wallet));
+  bool is_valid_mnemonic =
+      RestoreWalletSync(mnemonic, password, is_legacy_brave_wallet);
+  if (!is_valid_mnemonic) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  // Only register the component if restore is successful.
+  CHECK(is_valid_mnemonic);
+  WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
+          [](RestoreWalletCallback callback) { std::move(callback).Run(true); },
+          std::move(callback)));
 }
 
 bool KeyringService::RestoreWalletSync(const std::string& mnemonic,

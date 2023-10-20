@@ -313,7 +313,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
           base::BindRepeating(&component_updater::BraveOnDemandUpdate));
 
   RegisterSafetyTipsComponent(cus);
-  brave_wallet::RegisterWalletDataFilesComponent(cus);
+  brave_wallet::WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponent(
+          cus, GetApplicationContext()->GetLocalState());
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {

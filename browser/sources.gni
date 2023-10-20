@@ -88,6 +88,8 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_shell_integration.h",
   "//brave/browser/brave_tab_helpers.cc",
   "//brave/browser/brave_tab_helpers.h",
+  "//brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.cc",
+  "//brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h",
   "//brave/browser/browser_context_keyed_service_factories.cc",
   "//brave/browser/browser_context_keyed_service_factories.h",
   "//brave/browser/geolocation/brave_geolocation_permission_context_delegate.cc",

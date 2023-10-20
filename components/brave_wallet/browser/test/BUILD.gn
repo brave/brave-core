@@ -92,6 +92,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/tx_storage_delegate_impl_unittest.cc",
     "//brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve_unittest.cc",
     "//brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls_unittest.cc",
+    "//brave/components/brave_wallet/browser/wallet_data_files_installer_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_keyring_unittest.cc",
   ]
 
@@ -106,6 +107,7 @@ source_set("brave_wallet_unit_tests") {
     ":test_data",
     ":test_support",
     "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:generated_bitcoin_rpc_responses",
@@ -128,6 +130,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/ipfs",
     "//brave/components/json/rs:rust_lib",
     "//brave/components/resources:strings_grit",
+    "//components/component_updater:test_support",
     "//components/permissions",
     "//components/prefs",
     "//components/prefs:test_support",
