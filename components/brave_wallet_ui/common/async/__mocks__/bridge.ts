@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 /* eslint-disable @typescript-eslint/key-spacing */
-import { assert } from 'chrome://resources/js/assert_ts.js'
+import { assert } from 'chrome://resources/js/assert.js'
 
 // redux
 import { createStore, combineReducers } from 'redux'

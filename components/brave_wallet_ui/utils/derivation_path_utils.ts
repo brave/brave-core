@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // utils
-import { assert } from 'chrome://resources/js/assert_ts.js'
+import { assert } from 'chrome://resources/js/assert.js'
 import { getLocale } from '../../common/locale'
 
 // types
