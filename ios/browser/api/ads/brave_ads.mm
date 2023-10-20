@@ -6,7 +6,6 @@
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
 
-#include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
