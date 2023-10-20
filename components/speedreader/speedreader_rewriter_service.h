@@ -41,7 +41,7 @@ class SpeedreaderRewriterService {
                                          const std::string& theme,
                                          const std::string& font_family,
                                          const std::string& font_size,
-                                         const std::string& content_style);
+                                         const std::string& column_width);
   const std::string& GetContentStylesheet();
 
  private:

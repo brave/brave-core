@@ -8,9 +8,10 @@
 #include <memory>
 #include <string>
 
-#include "base/logging.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/logging.h"
+#include "base/trace_event/trace_event.h"
 
 namespace {
 
@@ -40,8 +41,11 @@ void GetDATFileData(const base::FilePath& file_path,
 namespace brave_component_updater {
 
 DATFileDataBuffer ReadDATFileData(const base::FilePath& dat_file_path) {
+  TRACE_EVENT_BEGIN1("brave.adblock", "ReadDATFileData", "path",
+                     dat_file_path.MaybeAsASCII());
   DATFileDataBuffer buffer;
   GetDATFileData(dat_file_path, &buffer);
+  TRACE_EVENT_END1("brave.adblock", "ReadDATFileData", "size", buffer.size());
   return buffer;
 }
 

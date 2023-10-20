@@ -28,6 +28,7 @@
 <translation id="4988333904713528597"><ph name="HOST"/> で自動再生を常に許可する。</translation>
 <translation id="4150684676757176434">自動再生のブロックを継続する</translation>
 <translation id="3477357195688115718">Braveではセキュリティおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、この拡張機能をインストールしてください。</translation>
+<translation id="2928844661231356557">Bluetoothデバイスへのアクセスを許可すると、サイトがあなたに関する識別情報や潜在的な機密情報を読み取ることができるようになります。Bluetoothデバイスへのアクセスは、信頼できるサイトのみに許可してください。<ph name="LEARN_MORE"/></translation>
 <translation id="9005883459983913482">Torウィンドウ</translation>
 <translation id="7965178729203412357">新しいTorのID</translation>
 <translation id="6924909138923993900">このサイトに新しくTor接続する</translation>
@@ -206,11 +207,14 @@
 <translation id="5268098808165185458">画像からテキストをコピーしています...</translation>
 <translation id="4046485130884276245">画像からテキストをコピーしました</translation>
 <translation id="3639779775496569782">テキストのコピーに失敗しました</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2506438154311626334">Brave VPNでWireGuardプロトコルを使用します</translation>
+<translation id="8519170191215826548">Brave VPNの接続中は、この設定を変更できません。</translation>
+<translation id="5620961847363372221">ブラウザの再起動が必要です。</translation>
 <translation id="4235920711083356755">VPNボタンを表示</translation>
 <translation id="4070612712151038707">ツールバーにVPNボタンを表示します</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">VPNの切り替え</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Brave VPNについて</translation>
 <translation id="4378551569595875038">接続しています...</translation>
 <translation id="3368922792935385530">接続済み</translation>
@@ -219,13 +223,11 @@
 <translation id="1863950594388384201">ツールバーにVPNボタンを表示</translation>
 <translation id="5187139277471084437">ツールバーにVPNボタンを非表示</translation>
 <translation id="1177917174080821247">VPNトレイアイコンを表示</translation>
-<translation id="7645031001744446123">VPNトレイアイコンを非表示</translation>
 <translation id="8041089156583427627">フィードバックを送信</translation>
 <translation id="4049186905514157504">プランの管理</translation>
 <translation id="7570585565843385325">ツールバーにVPNボタンを表示</translation>
 <translation id="5310426188697803101">ツールバーにVPNボタンを非表示</translation>
 <translation id="639450633459241724">VPNトレイアイコンを表示</translation>
-<translation id="7430264749441182065">VPNトレイアイコンを非表示</translation>
 <translation id="945522503751344254">フィードバックを送信</translation>
 <translation id="3015685033234401792">プランの管理</translation>
 <translation id="4989337484121655457">フルディスクアクセスが必要です</translation>
@@ -274,9 +276,17 @@
 <translation id="8152485753254079984">新しいプレイリスト</translation>
 <translation id="5397019762993984652">「後で再生」フォルダから追加</translation>
 <translation id="7525067979554623046">Create</translation>
+<translation id="9065203028668620118">Edit</translation>
+<translation id="6527303717912515753">共有</translation>
+<translation id="760410268786807021">オフライン再生用に保存</translation>
+<translation id="705344722465356351">再生済みのコンテンツを削除</translation>
+<translation id="1173894706177603556">名前を変更</translation>
+<translation id="7765158879357617694">移動</translation>
+<translation id="6648536728577053364">オフラインデータを削除</translation>
+<translation id="5181358966317519720">プレイリストから削除</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
-<translation id="4472575034687746823">Get started</translation>
+<translation id="4472575034687746823">利用を開始</translation>
 <translation id="8081858229109418493">プロフィール名とアイコン</translation>
 <translation id="6786747875388722282">拡張機能</translation>
 <translation id="984275831282074731">お支払い方法</translation>
@@ -313,6 +323,8 @@
 <translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
 <translation id="2422927186524098759">サイドバー</translation>
 <translation id="832432428796481785">サイドバーのボタンを表示</translation>
+<translation id="5581036754486769849">プライベートウィンドウでオートフィルを許可</translation>
+<translation id="2262012219398520969">通常のウィンドウの情報をプライベートウィンドウで読み取り / 自動入力できます</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
 <translation id="1988804048511540801">新しいタブページが表示されます</translation>
 <translation id="2970343821770026391">ダッシュボード</translation>

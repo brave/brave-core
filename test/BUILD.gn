@@ -109,8 +109,6 @@ test("brave_unit_tests") {
     "//brave/chromium_src/chrome/browser/lookalikes/lookalike_url_navigation_throttle_unittest.cc",
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
     "//brave/chromium_src/components/autofill/core/browser/autofill_experiments_unittest.cc",
-    "//brave/chromium_src/components/history/core/browser/sync/brave_typed_url_sync_bridge_unittest.cc",
-    "//brave/chromium_src/components/history/core/browser/sync/chromium_typed_url_sync_bridge_unittest.cc",
     "//brave/chromium_src/components/variations/service/field_trial_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
     "//brave/chromium_src/services/network/public/cpp/cors/cors_unittest.cc",
@@ -237,6 +235,7 @@ test("brave_unit_tests") {
     "//brave/components/de_amp/browser/test:unit_tests",
     "//brave/components/debounce/browser/test:unit_tests",
     "//brave/components/embedder_support:unit_tests",
+    "//brave/components/history/core/browser/sync:unit_tests",
     "//brave/components/ipfs/buildflags",
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",
     "//brave/components/json:brave_json_unit_tests",
@@ -359,8 +358,7 @@ test("brave_unit_tests") {
   }
 
   if (enable_ai_chat) {
-    sources += [ "//brave/components/ai_chat/core/ai_chat_metrics_unittest.cc" ]
-    deps += [ "//brave/components/ai_chat/core" ]
+    deps += [ "//brave/components/ai_chat/core:unit_tests" ]
   }
 
   data = [ "data/" ]

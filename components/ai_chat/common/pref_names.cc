@@ -10,10 +10,14 @@
 namespace ai_chat::prefs {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kBraveChatHasSeenDisclaimer, false);
+  registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
   registry->RegisterBooleanPref(kBraveChatAutoGenerateQuestions, false);
   registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
   registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
+}
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterDictionaryPref(kBraveChatPremiumCredentialCache);
 }
 
 }  // namespace ai_chat::prefs

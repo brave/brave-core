@@ -27,6 +27,12 @@
   <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_TITLE" desc="Title to enable suggested questions">
     Enable suggested questions?
   </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_VIDEO" desc="Button to summarize the video on the current page">
+    Summarize this video
+  </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
+    Summarize this page
+  </message>
   <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_DESC" desc="Description about suggested questions">
     Brave AI can automatically suggest questions based on the content of the site. You can disable it later in Settings.
   </message>
@@ -99,6 +105,9 @@
   </message>
   <message name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
     Dismiss
+  </message>
+  <message name="IDS_CHAT_UI_SWITCH_TO_DEFAULT_MODEL_BUTTON_LABEL" desc="A button label to switch to the free model">
+    Switch to the default model
   </message>
   <message name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
     Unlock the full potential of Leo

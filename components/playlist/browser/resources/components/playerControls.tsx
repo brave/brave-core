@@ -14,6 +14,7 @@ import { spacing } from '@brave/leo/tokens/css'
 import { getPlayerActions } from '../api/getPlayerActions'
 import { ApplicationState } from '../reducers/states'
 import { hiddenOnMiniPlayer, hiddenOnNormalPlayer } from '../constants/style'
+import { getLocalizedString } from '../utils/l10n'
 
 interface Props {
   videoElement?: HTMLVideoElement | null
@@ -49,9 +50,11 @@ function Control ({
   iconName,
   size,
   visibility,
+  title,
   onClick
 }: {
   iconName: string
+  title: string
   size: 'jumbo' | 'large'
   visibility: 'mini' | 'normal' | 'both'
   onClick: () => void
@@ -63,7 +66,7 @@ function Control ({
       ? MiniPlayerButton
       : NormalPlayerButton
   return (
-    <Button kind='plain-faint' size={size} onClick={onClick}>
+    <Button kind='plain-faint' size={size} onClick={onClick} title={title}>
       <Icon name={iconName}></Icon>
     </Button>
   )
@@ -106,6 +109,7 @@ export default function PlayerControls ({ videoElement, className }: Props) {
           iconName='previous-outline'
           size='jumbo'
           visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YPrevious')}
           onClick={() => {
             if (!videoElement) return
 
@@ -115,54 +119,61 @@ export default function PlayerControls ({ videoElement, className }: Props) {
               getPlayerActions().playPreviousItem()
             }
           }}
-        ></Control>
+        />
         <Control
           iconName='rewind-15'
           size='jumbo'
           visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YRewind')}
           onClick={() => videoElement && (videoElement.currentTime -= 15)}
-        ></Control>
+        />
         {isPlaying ? (
           <Control
             iconName='pause-filled'
             size='jumbo'
             visibility='both'
+            title={getLocalizedString('bravePlaylistA11YPlay')}
             onClick={() => videoElement?.pause()}
-          ></Control>
+          />
         ) : (
           <Control
             iconName='play-filled'
             size='jumbo'
             visibility='both'
+            title={getLocalizedString('bravePlaylistA11YPause')}
             onClick={() => videoElement?.play()}
-          ></Control>
+          />
         )}
         <Control
           iconName='forward-15'
           size='jumbo'
           visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YForward')}
           onClick={() => videoElement && (videoElement.currentTime += 15)}
-        ></Control>
+        />
         <Control
           iconName='next-outline'
           size='jumbo'
           visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YNext')}
           onClick={() => getPlayerActions().playNextItem()}
-        ></Control>
+        />
         <Control
           iconName='close'
           size='jumbo'
           visibility='mini'
+          title={getLocalizedString('bravePlaylistA11YClose')}
           onClick={() => getPlayerActions().unloadPlaylist()}
-        ></Control>
+        />
       </div>
       <div>
         <Control
           iconName={shuffleEnabled ? 'shuffle-on' : 'shuffle-off'}
           size='large'
           visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YShuffle')}
           onClick={() => getPlayerActions().toggleShuffle()}
-        ></Control>
+        />
         {/* TODO(sko) We disabled PIP and fullscreen button at the moment */}
       </div>
     </Container>

@@ -9,7 +9,7 @@ deps = {
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
   "vendor/omaha": {
-    "url": "https://github.com/brave/omaha.git@826cb43721b58d6da989c8486af9bfe0edb99e22",
+    "url": "https://github.com/brave/omaha.git@138c95d58f9c41113f7e0dd5acdbcaab8be20df9",
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
@@ -18,7 +18,7 @@ deps = {
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
-  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@0c281cbdba6fe9c9bbe1d96095e20f857268ddbf",
+  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@2d05ad803e249f3686d093b9318f783c6cb5f380",
   "third_party/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@8105bce5b384c72cf08b25b7c5343622754e7337", # v25.0
@@ -34,7 +34,7 @@ deps = {
       'condition': 'checkout_android',
       'dep_type': 'cipd',
   },
-  "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@5434730bf7342f1ba5c057f1640882bb38604a85",
+  "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@c043566e2ff6133d110cf516ed472451039139e2",
   "third_party/rust/star_constellation/v0_2/crate": "https://github.com/brave/constellation.git@db575edec12509ce1bda6afe68bb58e538a21d3a",
   "third_party/rust/challenge_bypass_ristretto/v1/crate": "https://github.com/brave-intl/challenge-bypass-ristretto.git@a1da4641734adc8312215b38a8221962d2c8e045",
   "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",

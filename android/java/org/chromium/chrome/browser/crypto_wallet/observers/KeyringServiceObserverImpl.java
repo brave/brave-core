@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.observers;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.mojo.system.MojoException;
 
@@ -17,9 +16,9 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     public interface KeyringServiceObserverImplDelegate {
         default void locked() {}
         default void backedUp() {}
-        default void keyringCreated(@KeyringId.EnumType int keyringId) {}
+        default void walletCreated() {}
         default void walletRestored() {}
-        default void keyringReset() {}
+        default void walletReset() {}
         default void unlocked() {}
         default void accountsChanged() {}
         default void accountsAdded(AccountInfo[] addedAccounts) {}
@@ -36,8 +35,8 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringCreated(@KeyringId.EnumType int keyringId) {
-        if (isActive()) getRef().keyringCreated(keyringId);
+    public void walletCreated() {
+        if (isActive()) getRef().walletCreated();
     }
 
     @Override
@@ -46,8 +45,8 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringReset() {
-        if (isActive()) getRef().keyringReset();
+    public void walletReset() {
+        if (isActive()) getRef().walletReset();
     }
 
     @Override

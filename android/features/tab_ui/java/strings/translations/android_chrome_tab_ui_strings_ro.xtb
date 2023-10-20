@@ -60,7 +60,6 @@
 <translation id="6228793724645064692">(evaluare a magazinului)</translation>
 <translation id="6333260925957816943">Informații despre magazin</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{Anulează <ph name="TABS_COUNT_ONE"/> filă selectată}few{Anulează <ph name="TABS_COUNT_MANY"/> file selectate}other{Anulează <ph name="TABS_COUNT_MANY"/> de file selectate}}</translation>
-<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT,plural, =1{Poți găsi filele închise în filele Recente din meniul principal Brave. Fila incognito nu va fi disponibilă.}few{Poți găsi filele închise în filele Recente din meniul principal Brave. Cele # file incognito nu vor fi disponibile.}other{Poți găsi filele închise în filele Recente din meniul principal Brave. Cele # de file incognito nu vor fi disponibile.}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> filă}few{<ph name="TABS_COUNT_MANY"/> file}other{<ph name="TABS_COUNT_MANY"/> de file}}</translation>
 <translation id="6549021453810473782">Vezi informații despre magazin</translation>
 <translation id="6562820390860419811">Mută fila spre stânga</translation>
@@ -89,11 +88,14 @@
 <translation id="8398929769197326728">Dosar nou – <ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="8557923272772633250">Extinde grupul de file cu <ph name="NUMBER_OF_TABS"/> file.</translation>
 <translation id="8714939927607906138">Preț mai mic</translation>
-<translation id="6687920250729800417">Activitatea ta în filele incognito va fi eliminată de pe acest dispozitiv</translation>
 <translation id="8820741577754260431">Vezi scăderile de prețuri din file</translation>
 <translation id="9090098097337832354">Informațiile despre magazin închise</translation>
 <translation id="9150694013019234766">Comută între filele din grupul de file în partea de jos a ecranului</translation>
 <translation id="9169594135889675189">Adaugă o filă nouă în grup</translation>
 <translation id="959682366969460160">Organizează-te</translation>
+<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Găsiți filele închise în Filele recente din meniul principal Brave. Fila dvs. privată nu va fi disponibilă.}
+        other {Găsiți filele închise în Filele recente din meniul principal Brave. Filele dvs. # Private nu vor fi disponibile.}}</translation>
 <translation id="3228718275011575753">Închideți filele private?</translation>
+<translation id="6687920250729800417">Activitatea în aceste file private va fi eliminată de pe acest dispozitiv</translation>
 </translationbundle>

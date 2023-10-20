@@ -102,7 +102,6 @@ export interface HostState {
   availableCountries: string[]
   defaultCountry: string
   declaredCountry: string
-  isGrandfatheredUser: boolean
   userType: UserType
   publishersVisitedCount: number
 }

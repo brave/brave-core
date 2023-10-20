@@ -46,7 +46,7 @@ const GradientIcon = styled(Icon)`
     #a78aff 99.51%
   );
   ${iconSize}
-  margin-right: calc(-1 * (${spacing.xl} - ${spacing.m}))
+  margin-right: calc(-1 * (${spacing.xl} - ${spacing.m}));
 `
 
 const ColoredIcon = styled(Icon)<{ color: string }>`
@@ -79,9 +79,8 @@ const StyledPlaylistInfo = styled(PlaylistInfo)`
   flex-grow: 1;
 `
 
-const LeoButtonContainer = styled.button`
-  display: contents;
-  cursor: pointer;
+const StyledButton = styled(LeoButton)`
+  flex: 0 0 auto;
 `
 
 const StyledInput = styled.input`
@@ -94,7 +93,7 @@ const StyledInput = styled.input`
   padding: 10px 8px;
 `
 
-const SaveButton = styled(LeoButton)`
+const SaveButton = styled(StyledButton)`
   width: fit-content;
   min-width: 72px;
   flex-grow: 0;
@@ -107,11 +106,13 @@ function BackButton ({
   playlistEditMode?: PlaylistEditMode
 }) {
   return playlistEditMode === PlaylistEditMode.BULK_EDIT ? (
-    <LeoButtonContainer
+    <StyledButton
+      size='large'
+      kind='plain'
       onClick={() => getPlaylistActions().setPlaylistEditMode(undefined)}
     >
       <ColoredIcon name='arrow-left' color={color.icon.default} />
-    </LeoButtonContainer>
+    </StyledButton>
   ) : (
     <StyledLink to='/'>
       <ColoredIcon name='arrow-left' color={color.icon.default} />
@@ -262,21 +263,29 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
 
 function NewPlaylistButton () {
   return (
-    <LeoButtonContainer
+    <StyledButton
+      size='large'
+      kind='plain'
+      title={getLocalizedString('bravePlaylistA11YCreatePlaylistFolder')}
       onClick={() => {
         getPlaylistAPI().showCreatePlaylistUI()
       }}
     >
       <ColoredIcon name='plus-add' color={color.icon.default} />
-    </LeoButtonContainer>
+    </StyledButton>
   )
 }
 
 function SettingButton () {
   return (
-    <LeoButtonContainer onClick={() => {}}>
+    <StyledButton
+      size='large'
+      kind='plain'
+      title={getLocalizedString('bravePlaylistA11YOpenPlaylistSettings')}
+      onClick={() => {}}
+    >
       <ColoredIcon name='settings' color={color.icon.default} />
-    </LeoButtonContainer>
+    </StyledButton>
   )
 }
 

@@ -39,8 +39,6 @@
         "chrome/install_static/brave_restore_google_update_integration.h",
         "chrome/install_static/brave_stash_google_update_integration.h",
         "chrome/install_static/brave_user_data_dir_win_unittest.cc",
-        "components/history/core/browser/sync/brave_typed_url_sync_bridge_unittest.cc",
-        "components/history/core/browser/sync/chromium_typed_url_sync_bridge_unittest.cc",
         "components/privacy_sandbox/privacy_sandbox_settings_unittest.cc",
         "components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
         "components/search_engines/brave_template_url_service_util_unittest.cc",

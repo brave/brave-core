@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { ThunkDispatch } from '@reduxjs/toolkit'
+import { useHistory } from 'react-router'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -71,6 +72,7 @@ export const ConnectHardwareWalletPanel = ({
 }: Props) => {
   // redux
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
+  const history = useHistory()
 
   /**
    * signMessageData by default initialized as:
@@ -168,6 +170,13 @@ export const ConnectHardwareWalletPanel = ({
 
   // custom hooks
   useInterval(retryHardwareOperation, 3000, !isConnected ? 5000 : null)
+
+  React.useEffect(() => {
+    // After Panel V2 this is needed to reset the origin
+    // back to brave://wallet-panel.top-chrome/ without any
+    // params. Otherwise hardware authorization will fail.
+    history.push('')
+  }, [])
 
   // render
   return (

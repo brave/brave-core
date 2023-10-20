@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">Retomar instalación</translation>
 <translation id="7099479769133613710">Reiniciar para actualizar Chrome OS</translation>
 <translation id="2479110114759182442">Brave recoméndache revisar esta extensión.</translation>
+<translation id="3814674848168165531">Cando un sitio solicita precargar as ligazóns da súa páxina de forma privada, Brave usa os servidores de Brave. Deste xeito, ocúltaselle a túa identidade ao sitio precargado, pero Brave sabe que sitios se precargan.</translation>
 <translation id="1065672644894730302">Non se poden ler as túas preferencias.
 
 É posible que algunhas funcións non estean dispoñibles e que non se garden os cambios nas preferencias.</translation>
@@ -119,6 +120,8 @@
 <translation id="2100587595569959771">Máis información sobre a personalización de anuncios en Brave</translation>
 <translation id="1807774211756215222">Abrir ligazón nunha nova &amp;pestana de Brave</translation>
 <translation id="2106568569080763501">Brave permíteche facer clic nun número de teléfono da web e chamar mediante Skype.</translation>
+<translation id="308146532933302843">Descubre por que Brave bloquea algunhas descargas</translation>
+<translation id="6324134303015966238">Brave precargará as páxinas que é probable que visites para que carguen máis rapidamente cando accedas a elas</translation>
 <translation id="2401189691232800402">Sistema Chrome OS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/>: Brave</translation>
 <translation id="3744202345691150878">Obter axuda sobre Chrome OS</translation>
@@ -143,6 +146,7 @@
 <translation id="5757460455745382269">Este é o idioma no que se mostra a IU de Brave</translation>
 <translation id="4222932583846282852">Cancelando…</translation>
 <translation id="1853997773668795891">Queres ligar os teus datos de Brave a esta conta?</translation>
+<translation id="4732930052828648898">Analiza máis datos de sitios que a protección estándar para avisarte sobre os que sexan perigosos (mesmo sobre os que Brave non coñeza ata ese momento). Se queres, podes omitir as advertencias de Brave.</translation>
 <translation id="3262506503470845422">Obter axuda sobre Brave</translation>
 <translation id="4281844954008187215">Condicións de servizo</translation>
 <translation id="7691786510374174420">Non se puido efectuar a instalación debido a un erro non especificado. Se se está executando Brave actualmente, péchao e téntao de novo.</translation>
@@ -213,7 +217,6 @@
 <translation id="5225261774087485064">É habitual que os sitios que visitas lembren o que che interesa para personalizar a experiencia que se che ofrece neles. Os sitios tamén poden almacenar con Brave información sobre os teus intereses.</translation>
 <translation id="6003112304606738118">Descargando… Tempo restante: <ph name="HOURS"/> h</translation>
 <translation id="6040143037577758943">Pechar</translation>
-<translation id="1268000445919601231">Brave bloquea algunhas descargas</translation>
 <translation id="505042220086416644">Hai unha nova versión de Brave dispoñible que é máis rápida que nunca.</translation>
 <translation id="9071554113102421877">&amp;Abrir en Brave</translation>
 <translation id="7861579472672677409">Engadiuse a extensión <ph name="EXTENSION_NAME"/> a Brave</translation>
@@ -227,6 +230,7 @@
 <translation id="991182453936521413">Brave pecharase en breve e eliminaranse os datos</translation>
 <translation id="7006260220514217183">A opción Navegación segura está desactivada. Brave recomenda activala.</translation>
 <translation id="4060970194201477024">Aquí podes cambiar entre perfís de Brave</translation>
+<translation id="7815000350132166985">Se permites o uso de cookies, Brave poderá utilizalas para as precargas</translation>
 <translation id="3156047523158042818">En función da túa configuración, é posible que Brave tamén envíe cookies e o teu URL actual</translation>
 <translation id="4368341489795135329">Asegúrate de iniciar sesión en Brave no teu <ph name="TARGET_DEVICE_NAME"/> e proba a enviar o número de novo.</translation>
 <translation id="8320964054148936490">Este ordenador xa conta cunha versión máis recente de Brave. Se o software non funciona, desinstala Brave e téntao de novo.</translation>
@@ -251,12 +255,14 @@
 <translation id="3256100650978957522">O logotipo de Brave dentro da pantalla dun ordenador.</translation>
 <translation id="6373767849825830651">Brave é un navegador web que executa páxinas web e aplicacións a gran velocidade. É rápido, estable e fácil de utilizar. Brave permíteche navegar na web de forma máis segura, xa que inclúe protección contra malware e phishing.</translation>
 <translation id="2139300032719313227">Reiniciar Chrome OS</translation>
+<translation id="638302211119176182">Brave precargará aínda máis páxinas que é probable que visites para que carguen máis rapidamente cando accedas a elas</translation>
 <translation id="1684121725014454063">Dámosche a benvida aos perfís de Brave</translation>
 <translation id="2675662665675552980">Tamén controla a páxina que se mostra ao iniciar Brave.</translation>
 <translation id="648319183876919572">Navegación segura mellorada é máis eficaz á hora de protexerte de descargas e sitios web perigosos</translation>
 <translation id="5590013613412457132">Desinstalar Brave</translation>
 <translation id="3617744907966785605">A túa organización pecha Brave cando non se usa durante <ph name="TIMEOUT_DURATION"/>. Elimináronse os datos de navegación. Entre esa información, poden incluírse o historial, os datos da función de autocompletar e as descargas.</translation>
 <translation id="8646609321956191980">En cada perfil gárdase a información de Brave que lle corresponde (por exemplo, os marcadores, o historial ou os contrasinais)</translation>
+<translation id="6756656512757374876">Máis información sobre <ph name="BEGIN_LINK"/>como protexe Brave a privacidade dos teus datos<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">Podes cambiar de perfil para ver os contrasinais doutro perfil de Brave</translation>
 <translation id="2312399718665761438">Para solucionar os erros ortográficos, Brave envía a Brave o texto que escribes nos campos de texto</translation>
 <translation id="3507835409099344374">Ir á configuración de notificacións de Brave</translation>

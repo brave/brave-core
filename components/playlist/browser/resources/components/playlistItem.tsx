@@ -35,6 +35,7 @@ interface Props {
   isSelected?: boolean
   isHighlighted?: boolean
   canReorder: boolean
+  forwardedRef?: React.ForwardedRef<HTMLAnchorElement>
   shouldBeHidden: boolean
   onClick: (item: PlaylistItemMojo) => void
 }
@@ -87,9 +88,6 @@ const PlaylistItemContainer = styled.li<{
   align-items: center;
   gap: ${spacing.xl};
   user-select: none;
-  & > a {
-    margin-right: calc(-1 * ${spacing.xl});
-  }
 
   ${p =>
     p.shouldBeHidden &&
@@ -248,6 +246,8 @@ export function PlaylistItem ({
       isActive={(isEditing && isSelected) || isPlaying}
       isHighlighted={isHighlighted}
       shouldBeHidden={shouldBeHidden}
+      tabIndex={0}
+      onKeyDown={e => e.key === 'Enter' && onClick(item)}
       onClick={() => onClick(item)}
     >
       {isEditing && (
@@ -351,8 +351,20 @@ export const SortablePlaylistItem = React.forwardRef(
     })
 
     return (
-      <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-        <a ref={forwardedRef} href={`#${itemId}`} />
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        tabIndex={-1} // disables tab traversal for sortable as we have our own tab traversal logic
+        aria-hidden='true'
+      >
+        <a
+          ref={forwardedRef}
+          href={`#${itemId}`}
+          tabIndex={-1} // disables tab traversal for <a> as we only use this for auto scrolling.
+          aria-hidden='true'
+        />
         <PlaylistItem {...props} />
       </div>
     )

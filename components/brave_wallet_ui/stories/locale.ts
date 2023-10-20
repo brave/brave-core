@@ -495,7 +495,7 @@ provideStrings({
   // Sign in with Ethereum
   braveWalletSignInWithBraveWallet: 'Sign in with Brave Wallet',
   braveWalletSignInWithBraveWalletMessage:
-    'You are signing into $1. Brave wallet will share your wallet address with $1.',
+    'You are signing into $1. Brave Wallet will share your wallet address with $1.',
   braveWalletSeeDetails: 'See details',
   braveWalletSignIn: 'Sign in',
   braveWalletOrigin: 'Origin',
@@ -1031,5 +1031,20 @@ provideStrings({
   braveWalletAutoDiscoveryEmptyStateSubHeading: 'Once an NFT is detected, it\’ll be displayed here.',
   braveWalletAutoDiscoveryEmptyStateFooter: 'Can\’t see your NFTs?',
   braveWalletAutoDiscoveryEmptyStateActions: '$1Refresh$2 or $3Import Manually$4',
-  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing'
+  braveWalletAutoDiscoveryEmptyStateRefresh: 'Refreshing',
+
+  // Brave Wallet Rewards
+  braveWalletUphold: 'Uphold',
+  braveWalletGemini: 'Gemini',
+  braveWalletZebpay: 'Zebpay',
+  braveWalletBitflyer: 'bitFlyer',
+  braveWalletRewardsAccount: '$1 account',
+  braveWalletBraveRewardsTitle: 'Brave Rewards',
+  braveWalletBraveRewardsDescription: 'Brave Rewards BAT on $1',
+  braveWalletBraveRewardsLoggedOutDescription:
+    'You\’re currently logged out of $1. Please log in to view your balance.',
+  braveWalletLogIn: 'Log in',
+  braveWalletViewOn: 'View on $1',
+  braveWalletRewardsSettings: 'Rewards settings',
+  braveWalletPlatforms: 'Platforms'
 })

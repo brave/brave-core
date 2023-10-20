@@ -17,7 +17,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/common/buildflags/buildflags.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/core/constants.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -94,19 +94,14 @@ std::string CreateJSONRequestBody(base::ValueView node) {
   return json;
 }
 
-const GURL GetEndpointBaseUrl() {
-  auto* endpoint = BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT);
-  // Simply log if we have empty endpoint, it's probably just a local
-  // non-configured build.
-  if (strlen(endpoint) != 0) {
-    static base::NoDestructor<GURL> url{
-        base::StrCat({url::kHttpsScheme, "://", endpoint})};
-    return *url;
-  } else {
-    LOG(ERROR) << "BRAVE_AI_CHAT_ENDPOINT was empty. Must supply an AI Chat"
-                  "endpoint via build flag to use the AI Chat feature.";
-    return GURL::EmptyGURL();
-  }
+const GURL GetEndpointBaseUrl(bool premium) {
+  auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
+  auto hostname = brave_domains::GetServicesDomain(prefix);
+
+  static base::NoDestructor<GURL> url{base::StrCat(
+      {url::kHttpsScheme, url::kStandardSchemeSeparator, hostname})};
+
+  return *url;
 }
 
 }  // namespace
@@ -116,20 +111,12 @@ const GURL GetEndpointBaseUrl() {
 RemoteCompletionClient::RemoteCompletionClient(
     const std::string& model_name,
     const base::flat_set<std::string_view>& stop_sequences,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    AIChatCredentialManager* credential_manager)
     : model_name_(model_name),
       stop_sequences_(stop_sequences),
-      api_request_helper_(GetNetworkTrafficAnnotationTag(),
-                          url_loader_factory) {
-  // Validate configuration
-  const GURL api_base_url = GetEndpointBaseUrl();
-  if (!api_base_url.is_empty()) {
-    // Crash quickly if we have an invalid non-empty Url configured
-    // as a build flag
-    CHECK(api_base_url.is_valid()) << "API Url generated was invalid."
-                                      "Please check configuration parameter.";
-  }
-}
+      api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      credential_manager_(credential_manager) {}
 
 RemoteCompletionClient::~RemoteCompletionClient() = default;
 
@@ -139,7 +126,30 @@ void RemoteCompletionClient::QueryPrompt(
     EngineConsumer::GenerationCompletedCallback data_completed_callback,
     EngineConsumer::GenerationDataCallback
         data_received_callback /* = base::NullCallback() */) {
-  const GURL api_base_url = GetEndpointBaseUrl();
+  auto callback = base::BindOnce(
+      &RemoteCompletionClient::OnFetchPremiumCredential,
+      weak_ptr_factory_.GetWeakPtr(), prompt, extra_stop_sequences,
+      std::move(data_completed_callback), std::move(data_received_callback));
+  credential_manager_->FetchPremiumCredential(std::move(callback));
+}
+
+void RemoteCompletionClient::OnFetchPremiumCredential(
+    const std::string& prompt,
+    const std::vector<std::string> extra_stop_sequences,
+    EngineConsumer::GenerationCompletedCallback data_completed_callback,
+    EngineConsumer::GenerationDataCallback data_received_callback,
+    absl::optional<CredentialCacheEntry> credential) {
+  bool premium_enabled = credential.has_value();
+  const GURL api_base_url = GetEndpointBaseUrl(premium_enabled);
+  base::flat_map<std::string, std::string> headers;
+  if (premium_enabled) {
+    // Add Leo premium SKU credential as a Cookie header.
+    std::string cookie_header_value =
+        "__Secure-sku#brave-leo-premium=" + credential->credential;
+    headers.emplace("Cookie", cookie_header_value);
+  }
+  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  headers.emplace("Accept", "text/event-stream");
 
   // Validate that the path is valid
   GURL api_url = api_base_url.Resolve(kAIChatCompletionPath);
@@ -152,27 +162,25 @@ void RemoteCompletionClient::QueryPrompt(
   const base::Value::Dict& dict =
       CreateApiParametersDict(prompt, model_name_, stop_sequences_,
                               std::move(extra_stop_sequences), is_sse_enabled);
-  base::flat_map<std::string, std::string> headers;
-  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
-  headers.emplace("Accept", "text/event-stream");
-
   if (is_sse_enabled) {
     VLOG(2) << "Making streaming AI Chat API Request";
     auto on_received = base::BindRepeating(
         &RemoteCompletionClient::OnQueryDataReceived,
         weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback));
-    auto on_complete = base::BindOnce(&RemoteCompletionClient::OnQueryCompleted,
-                                      weak_ptr_factory_.GetWeakPtr(),
-                                      std::move(data_completed_callback));
+    auto on_complete =
+        base::BindOnce(&RemoteCompletionClient::OnQueryCompleted,
+                       weak_ptr_factory_.GetWeakPtr(), credential,
+                       std::move(data_completed_callback));
 
     api_request_helper_.RequestSSE("POST", api_url, CreateJSONRequestBody(dict),
                                    "application/json", std::move(on_received),
                                    std::move(on_complete), headers, {});
   } else {
     VLOG(2) << "Making non-streaming AI Chat API Request";
-    auto on_complete = base::BindOnce(&RemoteCompletionClient::OnQueryCompleted,
-                                      weak_ptr_factory_.GetWeakPtr(),
-                                      std::move(data_completed_callback));
+    auto on_complete =
+        base::BindOnce(&RemoteCompletionClient::OnQueryCompleted,
+                       weak_ptr_factory_.GetWeakPtr(), credential,
+                       std::move(data_completed_callback));
 
     api_request_helper_.Request("POST", api_url, CreateJSONRequestBody(dict),
                                 "application/json", std::move(on_complete),
@@ -200,6 +208,7 @@ void RemoteCompletionClient::OnQueryDataReceived(
 }
 
 void RemoteCompletionClient::OnQueryCompleted(
+    absl::optional<CredentialCacheEntry> credential,
     EngineConsumer::GenerationCompletedCallback callback,
     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
@@ -214,14 +223,22 @@ void RemoteCompletionClient::OnQueryCompleted(
     } else {
       completion = "";
     }
+
     std::move(callback).Run(base::ok(std::move(completion)));
     return;
   }
+
+  // If error code is not 401, put credential in cache
+  if (result.response_code() != net::HTTP_UNAUTHORIZED && credential) {
+    credential_manager_->PutCredentialInCache(std::move(*credential));
+  }
+
   // Handle error
   mojom::APIError error =
       (net::HTTP_TOO_MANY_REQUESTS == result.response_code())
           ? mojom::APIError::RateLimitReached
           : mojom::APIError::ConnectionIssue;
+
   std::move(callback).Run(base::unexpected(std::move(error)));
 }
 

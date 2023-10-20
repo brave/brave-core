@@ -29,7 +29,6 @@ import { UnsupportedRegionCard } from './unsupported_region_card'
 import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { Optional } from '../../../shared/lib/optional'
-import Icon from '@brave/leo/react/icon'
 
 import * as urls from '../../lib/rewards_urls'
 
@@ -55,7 +54,6 @@ export function RewardsCardHeader () {
 
 interface Props {
   rewardsEnabled: boolean
-  isGrandfatheredUser: boolean
   userType: UserType
   vbatDeadline: number | undefined
   isUnsupportedRegion: boolean
@@ -170,21 +168,6 @@ export function RewardsCard (props: Props) {
             : <>
                 <style.balanceAmount>
                   <TokenAmount amount={props.rewardsBalance.value()} />
-                  {
-                    props.externalWallet?.provider === 'zebpay' &&
-                    props.isGrandfatheredUser &&
-                    <style.balanceInfo>
-                      <Icon name='help-outline' />
-                      <div className='tooltip'>
-                        <div className='tooltip-arrow' />
-                        <div className='tooltip-bubble'>
-                          <style.balanceTooltip>
-                            {getString('rewardsBalanceInfoText')}
-                          </style.balanceTooltip>
-                        </div>
-                      </div>
-                    </style.balanceInfo>
-                  }
                 </style.balanceAmount>
                 <style.balanceExchange>
                   <style.balanceExchangeAmount>

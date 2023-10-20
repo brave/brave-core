@@ -66,7 +66,11 @@ void CountryCode::CacheCountryCode() {
       AdsClientHelper::GetInstance()->GetLocalStatePref(
           brave_l10n::prefs::kCountryCode);
 
-  CHECK(country_code_value);
+  if (!country_code_value) {
+    return;
+  }
+
+  CHECK(country_code_value->is_string());
   cached_country_code_ = country_code_value->GetString();
 }
 

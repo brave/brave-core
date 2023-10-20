@@ -18,6 +18,13 @@
       ]
     },
     {
+      "name": "loading.desktop.brave.startup",
+      "pageset-repeat": 10,
+      "stories": [
+        "example.com_cold",
+      ]
+    },
+    {
       "name": "system_health.memory_desktop",
       "pageset-repeat": 10,
       "stories": [

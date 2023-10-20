@@ -376,6 +376,7 @@ source_set("ui") {
       "views/tabs/brave_tab_strip.h",
       "views/tabs/brave_tab_strip_layout_helper.cc",
       "views/tabs/brave_tab_strip_layout_helper.h",
+      "views/tabs/switches.h",
       "views/tabs/tab_drag_controller.cc",
       "views/tabs/tab_drag_controller.h",
       "views/tabs/vertical_tab_utils.cc",
@@ -384,6 +385,8 @@ source_set("ui") {
       "views/toolbar/bookmark_button.h",
       "views/toolbar/brave_app_menu.cc",
       "views/toolbar/brave_app_menu.h",
+      "views/view_shadow.cc",
+      "views/view_shadow.h",
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
     ]
@@ -1096,8 +1099,10 @@ source_set("unit_tests") {
       sources += [ "views/toolbar/brave_vpn_button_unittest.cc" ]
       deps += [
         "//base",
+        "//brave/components/brave_vpn/browser",
         "//brave/components/brave_vpn/browser/connection:api",
         "//brave/components/brave_vpn/browser/connection/ikev2:sim",
+        "//brave/components/skus/browser",
         "//chrome/test:test_support",
         "//skia",
         "//testing/gtest",

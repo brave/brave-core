@@ -27,7 +27,7 @@ function Main() {
   const {
     siteInfo,
     userAutoGeneratePref,
-    hasSeenAgreement,
+    hasAcceptedAgreement,
     currentError,
     apiHasError
   } = context
@@ -36,26 +36,29 @@ function Main() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const shouldShowPremiumSuggestionForModel = !context.isPremiumUser && context.currentModel?.isPremium
+  const shouldPromptSuggestQuestions = hasAcceptedAgreement && userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset
 
-  const shouldShowPremiumSuggestionStandalone = !context.hasUserDissmisedPremiumPrompt && !siteInfo && !context.isPremiumUser
+  const shouldShowPremiumSuggestionForModel = hasAcceptedAgreement && !context.isPremiumUser && context.currentModel?.isPremium
+
+  const shouldShowPremiumSuggestionStandalone =
+    hasAcceptedAgreement &&
+    !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
+    !shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
+    context.canShowPremiumPrompt &&
+    !siteInfo &&
+    !context.isPremiumUser
 
   const shouldDisplayEraseAction = context.conversationHistory.length >= 1
 
   let conversationListElement = <PrivacyMessage />
   let siteTitleElement = null
-  let promptAutoSuggestionElement = null
   let currentErrorElement = null
 
-  if (hasSeenAgreement) {
+  if (hasAcceptedAgreement) {
     conversationListElement = <ConversationList />
 
     if (siteInfo) {
       siteTitleElement = <SiteTitle />
-    }
-
-    if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset) {
-      promptAutoSuggestionElement = <PromptAutoSuggestion />
     }
 
     if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
@@ -86,7 +89,7 @@ function Main() {
           {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
         </div>
         <div className={styles.actions}>
-          {hasSeenAgreement && (
+          {hasAcceptedAgreement && (
             <>
             {shouldDisplayEraseAction && (
               <Button
@@ -119,6 +122,14 @@ function Main() {
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
                 verbose={true}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => context.dismissPremiumPrompt()}
+                  >
+                    {getLocale('switchToDefaultModelButtonLabel')}
+                  </Button>
+                }
               />
             </div>
           )
@@ -143,7 +154,9 @@ function Main() {
         }
       </div>
       <div className={styles.inputBox}>
-        {promptAutoSuggestionElement}
+        {shouldPromptSuggestQuestions &&
+        <PromptAutoSuggestion />
+        }
         <InputBox />
       </div>
     </main>

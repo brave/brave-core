@@ -22,7 +22,6 @@ export function createWalletApiBase () {
       ...cacher.defaultTags,
       'AccountInfos',
       'AccountTokenCurrentBalance',
-      'CombinedTokenBalanceForAllAccounts',
       'TokenBalancesForChainId',
       'TokenBalances',
       'HardwareAccountDiscoveryBalance',

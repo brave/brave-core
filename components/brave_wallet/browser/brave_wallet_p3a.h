@@ -82,7 +82,7 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void RecordNFTGalleryView(int nft_count) override;
 
   // KeyringServiceObserverBase:
-  void KeyringCreated(mojom::KeyringId keyring_id) override;
+  void WalletCreated() override;
 
  private:
   void MigrateUsageProfilePrefsToLocalState();

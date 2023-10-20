@@ -7,6 +7,9 @@ package org.brave.bytecode;
 
 import org.objectweb.asm.ClassVisitor;
 
+/**
+ * Adapter to perform Java asm patches on upstreams' classes.
+ */
 public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
         chain = new BraveActivityClassAdapter(chain);
@@ -66,6 +69,7 @@ public class BraveClassAdapter {
         chain = new BraveNotificationBuilderClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
         chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);
+        chain = new BravePasswordAccessReauthenticationHelperClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);
         chain = new BravePermissionDialogDelegateClassAdapter(chain);
         chain = new BravePermissionDialogModelClassAdapter(chain);

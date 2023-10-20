@@ -152,9 +152,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ESTIMATED_TOOLTIP_TEXT"  desc="Text for This reflects your estimated earnings range for Brave Ads this month.">
         This reflects your estimated earnings range for Brave Ads this month.
       </message>
-      <message name="IDS_VBAT_USERDRAIN_TOOLTIP_TEXT"  desc="Text for vbat userdrain tooltip">
-        Now that you're connected to ZebPay, any previous balance you had will be deposited into your ZebPay account as part of your next earnings payout. Once it arrives, you'll see your BAT reflected in your Rewards balance.
-      </message>
       <message name="IDS_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Notifications are disabled">
         Notifications are disabled
       </message>
@@ -1358,6 +1355,18 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_SYNC_CAMERA_PERMISSION_WAS_NOT_GRANTED_TOAST" desc="Popup message displayed when user did not granted camera permission when joining the sync chain by scanning QR code">
         Camera permission was not granted
+      </message>
+      <message name="IDS_PASSWORD_SYNC_TYPE_SET_SCREEN_LOCK" desc="Text prompting user to set up screen lock on their device in order to change Sync passwords type">
+        To enable passwords sync, first set a screen lock on your device
+      </message>
+      <message name="IDS_ENABLING_PASSWORD_SYNC_AUTH_MESSAGE" desc="Description shown when we ask for auth while enabling passwords sync">
+        Unlock to enable passwords sync
+      </message>
+      <message name="IDS_SYNC_PASSWORD_REQUIRE_AUTH_SUMMARY" desc="Summary displayed on Sync passwords data preference turned off switch to inform user that authentication will be required">
+        Before you can sync passwords, you'll need to authenticate with your device biometrics/passcode. This extra security measure helps keep your passwords safe.
+      </message>
+      <message name="IDS_DEVICE_REQUIRE_AUTH_TO_SYNC_PASSWORDS_SUMMARY" desc="Summary displayed on Sync passwords data preference turned off switch to inform user that in order to turn on Passwords sync, device should have enabled lockscreen biometrics/passcode authentication">
+        To sync passwords, please enable biometrics/passcode authentication on your Android device. This extra security measure helps keep your passwords safe.
       </message>
       <message name="IDS_BRAVE_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
         https://brave.com/privacy_android
@@ -3202,7 +3211,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Solana
     </message>
     <message name="IDS_DOWNLOAD_WALLET_DATA_FILES_PROGRESS" desc="Caption for displaying download progress of Brave Wallet datafiles component">
-      Downloading wallet data file \u2022 <ph name="percentage">%1$d<ex>37</ex></ph>\u0025\u0025
+      Downloading wallet data file \u2022 <ph name="PERCENTAGE">%1$d<ex>37</ex></ph>\u0025\u0025
     </message>
     <message name="IDS_CONNECTED_TO_HOST" desc="Brave Vpn notification statistics text">
       Connected to <ph name="VALUE">%1$s</ph>

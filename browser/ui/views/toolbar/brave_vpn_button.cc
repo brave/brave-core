@@ -146,6 +146,7 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
       service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->profile())) {
   CHECK(service_);
+  UpdateButtonState();
   Observe(service_);
 
   // Replace ToolbarButton's highlight path generator.
@@ -211,15 +212,14 @@ void BraveVPNButton::OnConnectionStateChanged(ConnectionState state) {
 
 void BraveVPNButton::UpdateButtonState() {
   is_error_state_ = IsConnectError();
+  is_connected_ = IsConnected();
 }
 
 void BraveVPNButton::OnPurchasedStateChanged(
     brave_vpn::mojom::PurchasedState state,
     const absl::optional<std::string>& description) {
   UpdateButtonState();
-  if (IsPurchased()) {
-    UpdateColorsAndInsets();
-  }
+  UpdateColorsAndInsets();
 }
 
 std::unique_ptr<views::Border> BraveVPNButton::GetBorder(
@@ -256,13 +256,12 @@ void BraveVPNButton::UpdateColorsAndInsets() {
     image()->SetBackground(std::make_unique<ConnectErrorIconBackground>(
         cp->GetColor(kColorBraveVpnButtonIconErrorInner)));
   } else {
-    const bool is_connected = IsConnected();
-    SetImage(
-        views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(
-            is_connected ? kVpnIndicatorOnIcon : kVpnIndicatorOffIcon,
-            cp->GetColor(is_connected ? kColorBraveVpnButtonIconConnected
-                                      : kColorBraveVpnButtonIconDisconnected)));
+    SetImage(views::Button::STATE_NORMAL,
+             gfx::CreateVectorIcon(
+                 is_connected_ ? kVpnIndicatorOnIcon : kVpnIndicatorOffIcon,
+                 cp->GetColor(is_connected_
+                                  ? kColorBraveVpnButtonIconConnected
+                                  : kColorBraveVpnButtonIconDisconnected)));
 
     // Use background for inner color of button image.
     // Adjusted border thickness to make invisible to the outside of the icon.

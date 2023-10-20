@@ -81,6 +81,7 @@
 <translation id="4225429340218993596">纯色</translation>
 <translation id="7610541582755894669">渐变</translation>
 <translation id="1606851618930975029">在每个新的选项卡上刷新</translation>
+<translation id="7040134046053881468">打开奖励面板</translation>
 <translation id="9024104284526126630">您可以在 Brave 中发起私人通话。</translation>
 <translation id="370665806235115550">正在加载...</translation>
 <translation id="4634933166298842522">管理订阅</translation>
@@ -164,7 +165,7 @@
 <translation id="4720556299488643018">退订</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="8510478288840333677">让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：</translation>
-<translation id="4105411033440701818">注意：单击“提交”时，您将与 Brave 开发者分享网站地址、Brave 版本号和 IP 地址。（IP 地址不存储。）</translation>
+<translation id="8265244536487014968">注意：发送到 Brave 服务器的报告将包括站点地址、Brave 版本号、Shields 设置、VPN 状态和语言设置。IP 地址将被传输但不会被存储。</translation>
 <translation id="6476216365964140603">其他详细信息（可选）</translation>
 <translation id="6145852496180774737">联系方式：（可选）</translation>
 <translation id="7616645803364270729">电子邮箱、Twitter 等</translation>
@@ -597,7 +598,6 @@
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>登录到<ph name="PROVIDER"/><ph name="END_BOLD"/> 查看您的余额</translation>
 <translation id="2659764755126740206">前往我的 <ph name="PROVIDER"/> 帐户</translation>
 <translation id="2394961582378297792">已退出登录</translation>
-<translation id="7091980679045978090">预估收益</translation>
 <translation id="7934950257968365573">登录您的<ph name="PROVIDER"/>账户</translation>
 <translation id="8631427463833030968">管理广告</translation>
 <translation id="590733288489975971">广告奖励</translation>
@@ -689,6 +689,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">别担心。</translation>
 <translation id="5027616819996705541">您仍然可以私下浏览！</translation>
+<translation id="1886682615222609631">截止目前的收益</translation>
 <translation id="86107454835395919">设置为每月捐款</translation>
 <translation id="6621880242105464352">Brave 将收取捐款金额的 <ph name="FEE_PCT"/> 作为手续费。</translation>
 <translation id="1420756770787071946">支持此创作者</translation>
@@ -1040,6 +1041,10 @@
 <translation id="4305817255990598646">切换</translation>
 <translation id="3423275441470187644">信任</translation>
 <translation id="2391762656119864333">撤消</translation>
+<translation id="9218424917282368512">更改网络</translation>
+<translation id="7526139040829362392">更改账户</translation>
+<translation id="4217695020908122747">已连接的账户</translation>
+<translation id="8497650996740651467">可用账户</translation>
 <translation id="5677928146339483299">已禁止</translation>
 <translation id="3890989020011724401">新账户</translation>
 <translation id="7257603403519636638">查看账户钱包</translation>
@@ -1220,6 +1225,7 @@
 <translation id="3648994606506382289">通过银行卡和银行转账购买加密货币最简单、最快和最便宜的方式。</translation>
 <translation id="3101839349578102016">通过您的银行账户进行即时购买。费用较低。</translation>
 <translation id="8280898387224328221">使用信用卡、借记卡、银行账户支付</translation>
+<translation id="2218174283683424104">使用加密货币领域最值得信赖的品牌购买。</translation>
 <translation id="8528916244724490964">所有网络</translation>
 <translation id="7721139939763655123">从低至高</translation>
 <translation id="5458608274117818139">从高至低</translation>
@@ -1484,6 +1490,7 @@
 <translation id="8007404171238546456">波动后最小接收量</translation>
 <translation id="767199001998615704">网络费用</translation>
 <translation id="7057870207229052478">Brave 费用</translation>
+<translation id="81116374028657878">协议费用</translation>
 <translation id="3624518972158401291">免费</translation>
 <translation id="5038255447967558645">流动性提供者</translation>
 <translation id="8450638959928932199">兑换 &amp; 发送</translation>
@@ -1511,7 +1518,6 @@
 <translation id="3143110700666266545">此应用程序使用以下第三方 API：</translation>
 <translation id="163536108506359457">Brave 兑换使用<ph name="AGGREGATOR"/>作为支持<ph name="NETWORKS"/> 网络的 DEX 聚合器。<ph name="AGGREGATOR"/>将处理<ph name="NETWORK"/> 钱包地址和 IP 地址以完成交易（包括获得报价）。<ph name="AGGREGATOR"/>只会将这些数据用于处理交易。</translation>
 <translation id="1847885264294023691">点击此处<ph name="AGGREGATOR"/>查看隐私政策。</translation>
-<translation id="9218424917282368512">更改网络</translation>
 <translation id="644984757357042735">需要连接网络</translation>
 <translation id="132243864024778443">代币名称为必填项</translation>
 <translation id="3617263699756744037">无效或空白的代币合同地址</translation>
@@ -1547,8 +1553,15 @@
 <translation id="9085765419770918643">这里还没有 NFT。</translation>
 <translation id="8445532667841598737">准备好添加内容了吗？只需点击下面的按钮即可导入。</translation>
 <translation id="9136462955850040542">兼容 Solana (SPL)和 Ethereum (ERC-721)上的 NFT。</translation>
+<translation id="137671950541962857">已收集</translation>
 <translation id="8849001918648564819">隐藏</translation>
 <translation id="4905092798795191201">取消隐藏</translation>
+<translation id="6167809958646114660">不要在钱包中显示</translation>
+<translation id="6948667383954749033">标记为不是垃圾</translation>
+<translation id="5810047320613496595">垃圾</translation>
+<translation id="7257605968082307175">标记为垃圾</translation>
+<translation id="7600335727434653744">从 Brave 钱包中移除吗？</translation>
+<translation id="6657860743511185539">NFT 将从 Brave 钱包中移除，但仍保留在区块链上。移除之后如果改变主意，则需要再次手动导入。</translation>
 <translation id="849880459530751909">编辑 NFT</translation>
 <translation id="5925465310724910998">想要自动显示 NFT ？</translation>
 <translation id="5400791731776892411">Brave 钱包可利用第三方服务来自动显示您的 NFT。Brave 会与<ph name="BEFORE_UNDERLINE"/>SimpleHash<ph name="AFTER_UNDERLINE"/> 分享您的钱包地址，以提供此服务。<ph name="BEFORE_URL"/>了解更多。<ph name="AFTER_URL"/></translation>
@@ -1747,9 +1760,6 @@ other {# 个来源}
 <translation id="6938154350999993769">调试切换平板模式</translation>
 <translation id="5854741377790551127">调试打印视图树</translation>
 <translation id="8199130368328220410">切换实时字幕</translation>
-<translation id="4233010476457917696">显示侧边栏</translation>
-<translation id="2207125676134752863">鼠标悬停时显示侧边栏</translation>
-<translation id="2613033293035359003">隐藏侧边栏</translation>
 <translation id="9055778350624039365">显示 Brave 的钱包面板</translation>
 <translation id="2548853975094084059">关闭 Brave 的钱包面板</translation>
 <translation id="3765209580429944524">显示 Brave 的 VPN 面板</translation>
@@ -1812,7 +1822,7 @@ other {# 个来源}
 <translation id="1199355487114804640">播放/暂停</translation>
 <translation id="1689210457482459023">降低播放速度</translation>
 <translation id="5872363163901278000">提高播放速度</translation>
-<translation id="8178821080790541548">Brave 人工智能</translation>
+<translation id="3507699941492423127">Brave Leo</translation>
 <translation id="6303294677342628402">盾牌</translation>
 <translation id="8458987127502506209">启用 Brave 盾牌</translation>
 <translation id="7509914170164691086">Shields 已为<ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
@@ -1884,16 +1894,18 @@ other {# 个来源}
 <translation id="8637805148029768813">摘要器功能目前仅适用于选定的文章和其他长篇网页。</translation>
 <translation id="2346991295632453064">接受并开始</translation>
 <translation id="1223498995510244364">总结</translation>
-<translation id="8758939268013768602">关于 Brave 人工智能</translation>
-<translation id="1704821516241545704">Brave 人工智能聊天功能汇总了您浏览的网页的内容，并包括一个聊天界面，允许您对该页面的汇总内容进行后续查询。</translation>
-<translation id="58643773598235831">总结页面和您对聊天功能提出的任何问题都会发送到外部 API 合作伙伴的服务器（该查询不会发送任何标识符）。</translation>
-<translation id="917619443165595947">请确保网页内容和任何后续查询不包含个人或敏感信息。摘要和查询回复的准确性无法保证，因此您不应依赖任何与健康，人身安全或财务事项相关的文本。</translation>
-<translation id="1829889011559313790">询问 Brave 人工智能</translation>
-<translation id="7226268079740406209">处理您的消息时出错，请重试。</translation>
+<translation id="6966669506908435195">关于 Brave Leo</translation>
+<translation id="1667863995484767951">AI 聊天功能为您提供正在浏览的网页的摘要，并包含聊天界面，允许您提交问题并接收有关该页面内容的回答。不保证摘要的准确性，并且可能包含不准确、误导性和虚假信息。您不应提交敏感或私人信息，并且应谨慎对待与健康、财务或个人安全以及类似情况相关的任何文本。</translation>
+<translation id="7636915524386889836">Brave 的 AI 聊天功能使用自托管的<ph name="LINK_BEFORE"/>大语言模型<ph name="LINK_AFTER"/>。AI 聊天功能不会收集或以其他方式处理可识别您身分的 IP 地址等信息。AI 模型不会保留任何个人数据。</translation>
+<translation id="7839853125981164613">在这里输入你的问题</translation>
 <translation id="1171287413830401223">启用建议问题？</translation>
 <translation id="8723991872343294222">Brave 人工智能可以根据网站内容自动推荐问题。您可以稍后在设置中将其禁用。</translation>
 <translation id="3435896845095436175">启用</translation>
 <translation id="7473891865547856676">不，谢谢</translation>
+<translation id="7932221068776853847">断开连接以停止向 Leo 发送此页面内容，并开始新的对话</translation>
+<translation id="1167803637855350748">连接 Leo 时出现网络问题，请检查您的连接并重试。</translation>
+<translation id="5095201428204952524">Leo 现在太忙了。请几分钟后再试一次。</translation>
+<translation id="7144878232160441200">重试</translation>
 <translation id="7821773512278295352">Brave 防火墙 + VPN：已连接</translation>
 <translation id="6019088868713395120">Brave 防火墙 + VPN：已断开连接</translation>
 <translation id="3541307549916475335">Brave VPN 面板 UI</translation>
@@ -1953,10 +1965,10 @@ Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的�
 但是，我们注意到这个助手服务没有运行——我们不想让您不受保护。我们已经更改了浏览器中的 DNS 设置，以防止这种暴露。当 VPN 连接时，设置将保持有效并锁定。
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="4828320950595742243">似乎 WireGuard 的连接存在一些问题。想要启用 IKEv2 后备功能以获得可靠的 VPN？只需重启浏览器即可。
+<translation id="5004375364898143117">似乎 WireGuard 的连接存在一些问题。想要启用 IKEv2 后备功能以获得可靠的 VPN？只需重启浏览器即可。
 
 在兼容性或配置方面需要帮助吗？请联系我们友好的支持团队。
-您可以随时通过 brave://flags/#brave-vpn-wireguard 恢复到 WireGuard。
+您可以随时通过 brave://settings/system 恢复到 WireGuard。
 
 让我们为您连线吧！
 
@@ -1968,10 +1980,14 @@ Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的�
 <translation id="8295393906499561642">会话已过期</translation>
 <translation id="3312623558576021182">请登录您的<ph name="BRAVE_ACCOUNT_BEGIN"/> Brave 帐号<ph name="BRAVE_ACCOUNT_END"/>刷新您的 VPN 会话。</translation>
 <translation id="6021669293402055982">Brave VPN：已断开连接</translation>
+<translation id="7861195049821776142">Brave VPN：正在断开连接</translation>
 <translation id="958268166261124668">Brave VPN：已连接</translation>
+<translation id="2061807837510296780">Brave VPN：正在连接</translation>
 <translation id="1313124107969703758">Brave VPN：错误</translation>
 <translation id="8273420301954598554">状态：已连接</translation>
 <translation id="7155657348064536843">状态：已断开连接</translation>
+<translation id="2413929902277520460">Brave VPN - 已连接</translation>
+<translation id="8048263175525832621">Brave VPN - 已断开连接</translation>
 <translation id="1498770726476841108">管理账户</translation>
 <translation id="6825718953004242472">移除图标</translation>
 </translationbundle>

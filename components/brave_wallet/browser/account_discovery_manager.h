@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ACCOUNT_DISCOVERY_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ACCOUNT_DISCOVERY_MANAGER_H_
 
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -44,6 +45,8 @@ class AccountDiscoveryManager {
     size_t discovery_account_index;
     int attempts_left;
   };
+
+  std::map<mojom::KeyringId, uint32_t> GetDerivedAccountsCount();
 
   void AddDiscoveryAccount(std::unique_ptr<DiscoveryContext> context);
 

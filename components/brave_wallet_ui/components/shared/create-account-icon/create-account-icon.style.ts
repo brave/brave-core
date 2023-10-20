@@ -7,8 +7,18 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 
+// Utils
+import {
+  getRewardsProviderBackground
+} from '../../../utils/rewards_utils'
+
+// Types
+import {
+  ExternalWalletProvider
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+
 export const AccountBox = styled.div<{
-  orb: string
+  orb?: string
   size?: 'big' | 'medium' | 'small' | 'tiny'
   marginRight?: number
   round?: boolean
@@ -64,4 +74,34 @@ export const AccountIcon = styled(Icon) <{
       : 'var(--icon-medium)'
   };
   color: ${leo.color.white};
+`
+
+export const ExternalAccountBox = styled(AccountBox) <{
+  provider: ExternalWalletProvider | null
+}>`
+  background-color: ${(p) => p.provider
+    ? getRewardsProviderBackground(p.provider)
+    : 'none'
+  };
+  background-image: unset;
+  background-size: unset;
+`
+
+export const ExternalAccountIcon = styled.img<{
+  size?: 'big' | 'medium' | 'small' | 'tiny'
+}>`
+  --icon-big: 32px;
+  --icon-medium: 24px;
+  --icon-small: 18px;
+  --icon-tiny: 14px;
+  width: ${(p) =>
+    p.size
+      ? `var(--icon-${p.size})`
+      : 'var(--icon-medium)'
+  };
+  height: ${(p) =>
+    p.size
+      ? `var(--icon-${p.size})`
+      : 'var(--icon-medium)'
+  };
 `

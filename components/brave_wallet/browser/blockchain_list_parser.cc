@@ -67,6 +67,17 @@ absl::optional<uint32_t> ParseNullableStringAsUint32(const base::Value& value) {
   return absl::nullopt;
 }
 
+absl::optional<base::Value> ParseJsonToDict(const std::string& json) {
+  absl::optional<base::Value> records_v =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!records_v || !records_v->is_dict()) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return absl::nullopt;
+  }
+  return records_v;
+}
+
 std::string EmptyIfNull(const std::string* str) {
   if (str) {
     return *str;
@@ -374,12 +385,8 @@ absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
   //   ]
   // }
 
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!records_v || !records_v->is_dict()) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  if (!records_v) {
     return absl::nullopt;
   }
 
@@ -403,12 +410,8 @@ absl::optional<RampTokenListMaps> ParseRampTokenListMaps(
 
 absl::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
     const std::string& json) {
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!records_v || !records_v->is_dict()) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  if (!records_v) {
     return absl::nullopt;
   }
 
@@ -639,12 +642,8 @@ absl::optional<DappListMap> ParseDappLists(const std::string& json) {
   //   ...
   // }
 
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!records_v || !records_v->is_dict()) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  if (!records_v) {
     return absl::nullopt;
   }
 
@@ -696,12 +695,8 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
   //   }
   // }
 
-  absl::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-
-  if (!records_v || !records_v->is_dict()) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  if (!records_v) {
     return absl::nullopt;
   }
 
@@ -732,6 +727,34 @@ absl::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
   }
 
   return CoingeckoIdsMap(coingecko_ids_map.begin(), coingecko_ids_map.end());
+}
+
+absl::optional<std::vector<std::string>> ParseOfacAddressesList(
+    const std::string& json) {
+  // {
+  //   "addresses": [
+  //     "t1MMXtBrSp1XG38Lx9cePcNUCJj5vdWfUWL",
+  //     "t1WSKwCDL1QYRRUrCCknEs5tDLhtGVYu9KM",
+  //     ...
+  //   ]
+  // }
+  absl::optional<base::Value> records_v = ParseJsonToDict(json);
+  if (!records_v) {
+    return absl::nullopt;
+  }
+
+  auto ofac_list_from_component =
+      blockchain_lists::OfacAddressesList::FromValue(records_v->GetDict());
+  if (!ofac_list_from_component) {
+    return absl::nullopt;
+  }
+
+  std::vector<std::string> ofac_list;
+  for (const auto& address : (*ofac_list_from_component).addresses) {
+    ofac_list.push_back(base::ToLowerASCII(address));
+  }
+
+  return ofac_list;
 }
 
 }  // namespace brave_wallet

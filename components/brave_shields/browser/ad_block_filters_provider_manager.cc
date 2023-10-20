@@ -63,15 +63,15 @@ void AdBlockFiltersProviderManager::RemoveProvider(
   auto it = filters_providers.find(provider);
   DCHECK(it != filters_providers.end());
   filters_providers.erase(it);
-  NotifyObservers();
+  NotifyObservers(is_for_default_engine);
 }
 
 std::string AdBlockFiltersProviderManager::GetNameForDebugging() {
   return "AdBlockCustomFiltersProvider";
 }
 
-void AdBlockFiltersProviderManager::OnChanged() {
-  NotifyObservers();
+void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
+  NotifyObservers(is_for_default_engine);
 }
 
 // Use LoadDATBufferForEngine instead, for Filter Provider Manager.

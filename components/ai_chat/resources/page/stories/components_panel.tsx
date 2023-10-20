@@ -76,7 +76,7 @@ const SITE_INFO = {
 
 interface StoryArgs {
   hasQuestions: boolean
-  hasSeenAgreement: boolean
+  hasAcceptedAgreement: boolean
   currentErrorState: mojom.APIError
 }
 
@@ -88,7 +88,7 @@ export default {
   args: {
     hasQuestions: true,
     hasChangedModel: false,
-    hasSeenAgreement: true,
+    hasAcceptedAgreement: true,
     currentErrorState: select(
       'Current Status',
       mojom.APIError,
@@ -109,7 +109,7 @@ export default {
       const [currentError] = React.useState<mojom.APIError>(
         options.args.currentErrorState
       )
-      const [hasSeenAgreement] = React.useState(options.args.hasSeenAgreement)
+      const [hasAcceptedAgreement] = React.useState(options.args.hasAcceptedAgreement)
       const [isPremiumUser] = React.useState(options.args.isPremiumUser)
 
       const apiHasError = currentError !== mojom.APIError.None
@@ -129,7 +129,7 @@ export default {
         siteInfo,
         favIconUrl,
         currentError,
-        hasSeenAgreement,
+        hasAcceptedAgreement,
         apiHasError,
         shouldDisableUserInput,
         isPremiumUser

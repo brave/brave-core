@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/engine/engine_consumer.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -87,12 +88,18 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void DisconnectPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
+  void GetPremiumStatus(
+      ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
 
-  AIChatTabHelper(content::WebContents* web_contents,
-                  AIChatMetrics* ai_chat_metrics);
+  AIChatTabHelper(
+      content::WebContents* web_contents,
+      AIChatMetrics* ai_chat_metrics,
+      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+          skus_service_getter,
+      PrefService* local_state_prefs);
 
   void InitEngine();
   bool HasUserOptedIn();
@@ -156,6 +163,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   mojom::APIError current_error_ = mojom::APIError::None;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
   std::unique_ptr<mojom::ConversationTurn> pending_request_;
 

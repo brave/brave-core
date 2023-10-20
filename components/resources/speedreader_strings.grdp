@@ -32,6 +32,8 @@
       <message name="IDS_READER_MODE_APPEARANCE_FONT_DYSLEXIC"  desc="Tooltip for dyslexic font button">Dyslexic</message>
       <message name="IDS_READER_MODE_APPEARANCE_FONT_SIZE_DECREASE"  desc="Tooltip for decrease font size button">Decrease the font size</message>
       <message name="IDS_READER_MODE_APPEARANCE_FONT_SIZE_INCREASE"  desc="Tooltip for increase font size button">Increase the font size</message>
+      <message name="IDS_READER_MODE_APPEARANCE_COLUMN_WIDTH_NARROW"  desc="Tooltip for narrow column width button">Narrow content column</message>
+      <message name="IDS_READER_MODE_APPEARANCE_COLUMN_WIDTH_WIDE"  desc="Tooltip for wide column width button">Wide content column</message>      
       <message name="IDS_READER_MODE_TEXT_TO_SPEECH" desc="Tooltip for text-to-speech button">Text to speech</message>
       <message name="IDS_READER_MODE_TEXT_TO_SPEECH_REWIND"  desc="Tooltip for rewind button">Rewind</message>
       <message name="IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE"  desc="Tooltip for play/pause button">Play/Pause</message>

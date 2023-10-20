@@ -50,6 +50,8 @@ export const Button = styled(StyledButton) <{ morePadding?: boolean, isNFT: bool
 export const ButtonIcon = styled(Icon)`
   background-color: ${(p) => p.theme.color.text01};
   margin-left: 8px;
+  min-width: 12px;
+  min-height: 12px;
 `
 
 export const IconsWrapper = styled.div<{
@@ -64,7 +66,8 @@ export const IconsWrapper = styled.div<{
 `
 
 export const ButtonText = styled(Text) <{ isNFT: boolean }>`
-  max-width: ${(p) => p.isNFT ? '250px' : 'unset'};
+  max-width: ${(p) => p.isNFT ? '100%' : 'unset'};
   overflow: hidden;
   white-space: ${(p) => p.isNFT ? 'pre-wrap' : 'nowrap'};
+  word-break: break-all;
 `

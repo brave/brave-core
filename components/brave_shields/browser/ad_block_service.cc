@@ -13,7 +13,10 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/rand_util.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/time/time.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
@@ -32,6 +35,8 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
+
+using brave_component_updater::BraveOnDemandUpdater;
 
 namespace {
 
@@ -96,7 +101,11 @@ AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
   resource_provider_->RemoveObserver(this);
 }
 
-void AdBlockService::SourceProviderObserver::OnChanged() {
+void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
+  if (adblock_engine_->IsDefaultEngine() != is_default_engine) {
+    // Skip updates of another engine.
+    return;
+  }
   if (is_filter_provider_manager_) {
     static_cast<AdBlockFiltersProviderManager*>(filters_provider_.get())
         ->LoadDATBufferForEngine(
@@ -467,6 +476,15 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
       base::BindOnce(&AdBlockEngine::TagExists,
                      base::Unretained(default_engine_.get()), tag),
       std::move(cb));
+}
+
+void CheckAdBlockExceptionComponentsUpdate() {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, base::BindOnce([]() {
+        BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+            kAdBlockExceptionComponentId);
+      }),
+      base::Seconds(base::RandInt(0, 10)));
 }
 
 // static

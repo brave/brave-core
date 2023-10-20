@@ -10,6 +10,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
@@ -45,6 +46,31 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
 
   if (tx_data_union.is_btc_tx_data()) {
     return mojom::CoinType::BTC;
+  }
+
+  NOTREACHED_NORETURN();
+}
+
+std::string GetToAddressFromTxDataUnion(
+    const mojom::TxDataUnion& tx_data_union) {
+  if (tx_data_union.is_eth_tx_data_1559()) {
+    return tx_data_union.get_eth_tx_data_1559()->base_data->to;
+  }
+
+  if (tx_data_union.is_eth_tx_data()) {
+    return tx_data_union.get_eth_tx_data()->to;
+  }
+
+  if (tx_data_union.is_solana_tx_data()) {
+    return tx_data_union.get_solana_tx_data()->to_wallet_address;
+  }
+
+  if (tx_data_union.is_fil_tx_data()) {
+    return tx_data_union.get_fil_tx_data()->to;
+  }
+
+  if (tx_data_union.is_btc_tx_data()) {
+    return tx_data_union.get_btc_tx_data()->to;
   }
 
   NOTREACHED_NORETURN();
@@ -181,6 +207,13 @@ void TxService::AddUnapprovedTransactionWithOrigin(
     return;
   }
 
+  if (BlockchainRegistry::GetInstance()->IsOfacAddress(
+          GetToAddressFromTxDataUnion(*tx_data_union))) {
+    std::move(callback).Run(
+        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+    return;
+  }
+
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
   GetTxManager(coin_type)->AddUnapprovedTransaction(
       json_rpc_service_->GetChainIdSync(coin_type, origin),
@@ -224,7 +257,11 @@ void TxService::GetAllTransactionInfo(
 
 void TxService::GetPendingTransactionsCount(
     GetPendingTransactionsCountCallback callback) {
-  size_t counter = 0;
+  std::move(callback).Run(GetPendingTransactionsCountSync());
+}
+
+uint32_t TxService::GetPendingTransactionsCountSync() {
+  uint32_t counter = 0;
 
   for (auto& tx_manager : tx_manager_map_) {
     auto transactions =
@@ -232,7 +269,7 @@ void TxService::GetPendingTransactionsCount(
     counter += CalculatePendingTxCount(transactions);
   }
 
-  std::move(callback).Run(counter);
+  return counter;
 }
 
 void TxService::SpeedupOrCancelTransaction(

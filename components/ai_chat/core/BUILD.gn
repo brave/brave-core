@@ -7,12 +7,10 @@ import("//brave/components/ai_chat/common/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
-if (is_official_build) {
-  assert(brave_ai_chat_endpoint != "")
-}
-
 static_library("core") {
   sources = [
+    "ai_chat_credential_manager.cc",
+    "ai_chat_credential_manager.h",
     "ai_chat_metrics.cc",
     "ai_chat_metrics.h",
     "constants.cc",
@@ -30,6 +28,7 @@ static_library("core") {
 
   deps = [
     "//base",
+    "//brave/brave_domains",
     "//brave/components/ai_chat/common",
     "//brave/components/ai_chat/common/buildflags",
     "//brave/components/ai_chat/common/mojom",
@@ -37,6 +36,7 @@ static_library("core") {
     "//brave/components/constants",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
+    "//brave/components/skus/common:mojom",
     "//brave/components/time_period_storage",
     "//components/prefs",
     "//components/user_prefs",
@@ -47,5 +47,28 @@ static_library("core") {
     "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "ai_chat_credential_manager_unittest.cc",
+    "ai_chat_metrics_unittest.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/ai_chat/common",
+    "//brave/components/ai_chat/common/mojom",
+    "//brave/components/ai_chat/core",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp:cpp",
+    "//testing/gtest:gtest",
   ]
 }

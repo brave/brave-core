@@ -173,6 +173,8 @@ TEST(BitcoinSerializerStream, NoVectorInCtor) {
 TEST(BitcoinSerializer, SerializeInputForSign) {
   BitcoinTransaction tx;
 
+  tx.inputs().reserve(2);
+
   auto& input1 = tx.inputs().emplace_back();
   input1.utxo_address = kAddress1;
   input1.utxo_outpoint.index = 123;
@@ -231,6 +233,8 @@ TEST(BitcoinSerializer, SerializeSignedTransaction) {
   std::vector<uint8_t> pubkey = {0xaa, 0xbb, 0xcc, 0xdd};
 
   BitcoinTransaction tx;
+
+  tx.inputs().reserve(2);
 
   auto& input1 = tx.inputs().emplace_back();
   input1.utxo_address = kAddress1;

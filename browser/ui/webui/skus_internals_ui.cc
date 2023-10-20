@@ -31,6 +31,8 @@
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -156,6 +158,10 @@ void SkusInternalsUI::ResetSkusState() {
   auto* profile = Profile::FromWebUI(web_ui());
   if (brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())) {
     brave_vpn::ClearSubscriberCredential(local_state_);
+    if (auto* service =
+            brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
+      service->ReloadPurchasedState();
+    }
   }
 #endif
 

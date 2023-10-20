@@ -18,6 +18,17 @@ export type Message =
   | 'bravePlaylistContextMenuDeletePlaylist'
   | 'bravePlaylistContextMenuViewOriginalPage'
   | 'bravePlaylistEmptyFolderMessage'
+  | 'bravePlaylistA11YCreatePlaylistFolder'
+  | 'bravePlaylistA11YOpenPlaylistSettings'
+  | 'bravePlaylistA11YOpenPlaylistSettings'
+  | 'bravePlaylistA11YPlay'
+  | 'bravePlaylistA11YPause'
+  | 'bravePlaylistA11YNext'
+  | 'bravePlaylistA11YPrevious'
+  | 'bravePlaylistA11YShuffle'
+  | 'bravePlaylistA11YRewind'
+  | 'bravePlaylistA11YForward'
+  | 'bravePlaylistA11YClose'
 
 export function getLocalizedString (message: Message) {
   return getLocale(message)

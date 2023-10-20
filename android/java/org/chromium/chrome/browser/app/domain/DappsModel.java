@@ -13,7 +13,6 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ByteArrayStringUnion;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
@@ -296,13 +295,13 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     @Override
-    public void keyringCreated(@KeyringId.EnumType int keyringId) {}
+    public void walletCreated() {}
 
     @Override
     public void walletRestored() {}
 
     @Override
-    public void keyringReset() {}
+    public void walletReset() {}
 
     @Override
     public void locked() {}

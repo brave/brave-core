@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">Nastavi instalaciju</translation>
 <translation id="7099479769133613710">Ponovo pokreni da bi se &amp;Chrome OS ažurirao</translation>
 <translation id="2479110114759182442">Brave preporučuje da pregledate ovaj dodatak</translation>
+<translation id="3814674848168165531">Kada sajt zatraži da privatno predučitava linkove na stranici, Brave koristi Brave servere. Na taj način se vaš identitet krije od predučitanog sajta, ali Brave saznaje koji sajtovi su unapred učitani.</translation>
 <translation id="1065672644894730302">Podešavanja ne mogu da se pročitaju.
 
 Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.</translation>
@@ -120,6 +121,8 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="2100587595569959771">Saznajte više o personalizaciji oglasa u Brave-u</translation>
 <translation id="1807774211756215222">Otvori link u novoj Brave &amp;kartici</translation>
 <translation id="2106568569080763501">Brave vam omogućava da kliknete na broj telefona na vebu i da ga pozovete pomoću Skype-a!</translation>
+<translation id="308146532933302843">Saznajte zašto Brave blokira neka preuzimanja</translation>
+<translation id="6324134303015966238">Brave predučitava stranice koje ćete verovatno posetiti, kako bi se brže učitavale kada ih posetite</translation>
 <translation id="2401189691232800402">Sistem Chrome OS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="3744202345691150878">Pronađite pomoć za Chrome OS</translation>
@@ -145,6 +148,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="5757460455745382269">Ovaj jezik se koristi za prikazivanje korisničkog interfejsa Brave-a</translation>
 <translation id="4222932583846282852">Otkazuje se...</translation>
 <translation id="1853997773668795891">Želite li da povežete Brave podatke sa ovim nalogom?</translation>
+<translation id="4732930052828648898">Upozorava vas na opasne sajtove, čak i na one za koje Brave ranije nije znao, analizirajući više podataka sa sajtova nego standardna zaštita. Možete da odaberete da preskočite upozorenja Brave-a.</translation>
 <translation id="3262506503470845422">Pronađite pomoć za Brave</translation>
 <translation id="4281844954008187215">Uslovi korišćenja usluge</translation>
 <translation id="7691786510374174420">Instalacija nije uspela zbog neodređene greške. Ako je Brave trenutno otvoren, zatvorite ga i pokušajte ponovo.</translation>
@@ -215,7 +219,6 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="5225261774087485064">Uobičajeno je da sajtovi koje posećujete pamte stvari koje vas zanimaju radi personalizacije doživljaja. Sajtovi mogu i da čuvaju informacije o vašim interesovanjima u Brave-u.</translation>
 <translation id="6003112304606738118">Preuzima se... Još <ph name="HOURS"/> č</translation>
 <translation id="6040143037577758943">Zatvori</translation>
-<translation id="1268000445919601231">Brave blokira neka preuzimanja</translation>
 <translation id="505042220086416644">Dostupna je nova verzija Brave-a, brža nego ikada pre.</translation>
 <translation id="9071554113102421877">&amp;Otvori u Brave-u</translation>
 <translation id="7861579472672677409">Dodatak <ph name="EXTENSION_NAME"/> je dodat u Brave</translation>
@@ -229,6 +232,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="991182453936521413">Brave će se uskoro zatvoriti i izbrisati podatke</translation>
 <translation id="7006260220514217183">Bezbedno pregledanje je isključeno. Brave preporučuje da ga uključite.</translation>
 <translation id="4060970194201477024">Ovde možete da prelazite sa jednog Brave profila na drugi</translation>
+<translation id="7815000350132166985">Ako dozvolite kolačiće, Brave može da ih koristi kada predučitava stranice</translation>
 <translation id="3156047523158042818">U zavisnosti od podešavanja, Brave može da šalje i kolačiće i aktuelni URL</translation>
 <translation id="4368341489795135329">Uverite se da ste prijavljeni u Brave na uređaju <ph name="TARGET_DEVICE_NAME"/> i probajte da pošaljete ponovo.</translation>
 <translation id="8320964054148936490">Ovaj računar već ima noviju verziju Brave-a. Ako softver ne funkcioniše, deinstalirajte Brave i pokušajte ponovo.</translation>
@@ -253,12 +257,14 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="3256100650978957522">Brave logotip na ekranu računara.</translation>
 <translation id="6373767849825830651">Brave je veb pregledač koji pokreće veb-stranice i aplikacije munjevitom brzinom. Brz je, stabilan i jednostavan za korišćenje. Pregledajte Veb bezbednije sa zaštitom od malvera i „pecanja“ koja je ugrađena u Brave.</translation>
 <translation id="2139300032719313227">Restartujte Chrome OS</translation>
+<translation id="638302211119176182">Brave predučitava još više stranica koje ćete verovatno posetiti, kako bi se brže učitavale kada ih posetite</translation>
 <translation id="1684121725014454063">Dobro došli u Brave profile</translation>
 <translation id="2675662665675552980">Kontroliše i stranicu koja se prikazuje kada pokrenete Brave.</translation>
 <translation id="648319183876919572">Poboljšano bezbedno pregledanje doprinosi zaštiti od opasnih veb-sajtova i preuzimanja</translation>
 <translation id="5590013613412457132">Deinstaliraj Brave</translation>
 <translation id="3617744907966785605">Organizacija zatvara Brave kada se ne koristi <ph name="TIMEOUT_DURATION"/>. Podaci pregledanja su izbrisani. To može da obuhvata istoriju, automatsko popunjavanje i preuzimanja.</translation>
 <translation id="8646609321956191980">Svaki profil zadržava sopstvene Brave podatke, poput obeleživača, istorije, lozinki i drugog sadržaja</translation>
+<translation id="6756656512757374876">Saznajte više o tome <ph name="BEGIN_LINK"/>kako Brave štiti privatnost podataka<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">Možete da se prebacite da biste videli lozinke sa drugog Brave profila</translation>
 <translation id="2312399718665761438">Da bi ispravio pravopisne greške, Brave šalje Brave-ovim serverima tekst koji unosite u polja za tekst.</translation>
 <translation id="3507835409099344374">Idi na podešavanja obaveštenja za Brave</translation>

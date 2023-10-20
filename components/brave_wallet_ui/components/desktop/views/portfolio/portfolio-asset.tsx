@@ -32,6 +32,10 @@ import {
 import { getLocale } from '../../../../../common/locale'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { makeDepositFundsRoute } from '../../../../utils/routes-utils'
+import {
+  getIsRewardsToken,
+  getRewardsBATToken
+} from '../../../../utils/rewards_utils'
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
@@ -64,7 +68,9 @@ import {
   useGetTransactionsQuery,
   useGetTokenSpotPricesQuery,
   useGetPriceHistoryQuery,
-  useGetDefaultFiatCurrencyQuery
+  useGetDefaultFiatCurrencyQuery,
+  useGetRewardsEnabledQuery,
+  useGetExternalRewardsWalletQuery
 } from '../../../../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -129,6 +135,23 @@ export const PortfolioAsset = (props: Props) => {
   const coinMarketData = useUnsafeWalletSelector(WalletSelectors.coinMarketData)
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
 
+  // Queries
+  const { data: isRewardsEnabled } = useGetRewardsEnabledQuery()
+  const { data: externalRewardsInfo } = useGetExternalRewardsWalletQuery()
+
+  // Memos
+  const userTokensInfo = React.useMemo(() => {
+    const rewardsToken =
+      getRewardsBATToken(externalRewardsInfo?.provider ?? undefined)
+    return isRewardsEnabled &&
+      rewardsToken
+      ? [rewardsToken, ...userVisibleTokensInfo]
+      : userVisibleTokensInfo
+  }, [
+    isRewardsEnabled,
+    userVisibleTokensInfo
+  ])
+
   // params
   const selectedAssetFromParams = React.useMemo(() => {
     if (!chainIdOrMarketSymbol) {
@@ -156,7 +179,7 @@ export const PortfolioAsset = (props: Props) => {
       return undefined
     }
     const contractOrSymbolLower = contractOrSymbol.toLowerCase()
-    const userToken = userVisibleTokensInfo.find(
+    const userToken = userTokensInfo.find(
       (token) =>
         (token.contractAddress.toLowerCase() === contractOrSymbolLower &&
           token.chainId === chainIdOrMarketSymbol) ||
@@ -166,12 +189,14 @@ export const PortfolioAsset = (props: Props) => {
     )
     return userToken
   }, [
-    userVisibleTokensInfo,
+    userTokensInfo,
     selectedTimeline,
     chainIdOrMarketSymbol,
     contractOrSymbol,
     isShowingMarketData
   ])
+
+  const isRewardsToken = getIsRewardsToken(selectedAssetFromParams)
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -229,7 +254,9 @@ export const PortfolioAsset = (props: Props) => {
     )
 
   // custom hooks
-  const isAssetBuySupported = useIsBuySupported(selectedAssetFromParams)
+  const isAssetBuySupported =
+    useIsBuySupported(selectedAssetFromParams) &&
+    !isRewardsToken
 
   // memos
   // This will scrape all the user's accounts and combine the asset balances for a single asset
@@ -335,7 +362,7 @@ export const PortfolioAsset = (props: Props) => {
   )
 
   const isSelectedAssetDepositSupported = React.useMemo(() => {
-    if (!selectedAssetFromParams) {
+    if (!selectedAssetFromParams || isRewardsToken) {
       return false
     }
 
@@ -344,7 +371,11 @@ export const PortfolioAsset = (props: Props) => {
         token.symbol.toLowerCase() ===
         selectedAssetFromParams.symbol.toLowerCase()
     )
-  }, [combinedTokensList, selectedAssetFromParams?.symbol])
+  }, [
+    combinedTokensList,
+    selectedAssetFromParams?.symbol,
+    isRewardsToken
+  ])
 
   const goBack = React.useCallback(() => {
     dispatch(WalletPageActions.selectCoinMarket(undefined))

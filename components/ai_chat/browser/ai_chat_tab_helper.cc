@@ -47,8 +47,12 @@ static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
 
 namespace ai_chat {
 
-AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
-                                 AIChatMetrics* ai_chat_metrics)
+AIChatTabHelper::AIChatTabHelper(
+    content::WebContents* web_contents,
+    AIChatMetrics* ai_chat_metrics,
+    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+        skus_service_getter,
+    PrefService* local_state_prefs)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AIChatTabHelper>(*web_contents),
       pref_service_(
@@ -57,7 +61,7 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
   DCHECK(pref_service_);
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
-      prefs::kBraveChatHasSeenDisclaimer,
+      prefs::kLastAcceptedDisclaimer,
       base::BindRepeating(&AIChatTabHelper::OnUserOptedIn,
                           weak_ptr_factory_.GetWeakPtr()));
   pref_change_registrar_.Add(
@@ -65,6 +69,9 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
       base::BindRepeating(
           &AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions,
           weak_ptr_factory_.GetWeakPtr()));
+  credential_manager_ = std::make_unique<ai_chat::AIChatCredentialManager>(
+      skus_service_getter, local_state_prefs);
+
   // Engines and model names are be selectable
   // per conversation, not static.
   // Start with default.
@@ -121,27 +128,34 @@ void AIChatTabHelper::InitEngine() {
       model_match = kAllModels.begin();
     }
   }
+
   auto model = model_match->second;
   // TODO(petemill): Engine enum on model to decide which one
   if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
     VLOG(1) << "Started tab helper for AI engine: llama";
     engine_ = std::make_unique<EngineConsumerLlamaRemote>(
-        model, web_contents()
-                   ->GetBrowserContext()
-                   ->GetDefaultStoragePartition()
-                   ->GetURLLoaderFactoryForBrowserProcess());
+        model,
+        web_contents()
+            ->GetBrowserContext()
+            ->GetDefaultStoragePartition()
+            ->GetURLLoaderFactoryForBrowserProcess(),
+        credential_manager_.get());
   } else {
     VLOG(1) << "Started tab helper for AI engine: claude";
     engine_ = std::make_unique<EngineConsumerClaudeRemote>(
-        model, web_contents()
-                   ->GetBrowserContext()
-                   ->GetDefaultStoragePartition()
-                   ->GetURLLoaderFactoryForBrowserProcess());
+        model,
+        web_contents()
+            ->GetBrowserContext()
+            ->GetDefaultStoragePartition()
+            ->GetURLLoaderFactoryForBrowserProcess(),
+        credential_manager_.get());
   }
 }
 
 bool AIChatTabHelper::HasUserOptedIn() {
-  return pref_service_->GetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer);
+  base::Time last_accepted_disclaimer =
+      pref_service_->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
+  return !last_accepted_disclaimer.is_null();
 }
 
 void AIChatTabHelper::OnUserOptedIn() {
@@ -306,9 +320,9 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
 
   // Now that we have content, we can provide a summary on-demand. Add that to
   // suggested questions.
-  // TODO(petemill): translation for this question
-  suggested_questions_.emplace_back(is_video_ ? "Summarize this video"
-                                              : "Summarize this page");
+  suggested_questions_.emplace_back(
+      is_video_ ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
+                : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
   OnSuggestedQuestionsChanged();
   MaybeGenerateQuestions();
 }
@@ -446,7 +460,7 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
   std::string question_part;
-  if (turn.text == "Summarize this video") {
+  if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
     question_part =
         l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO_BULLETS);
   } else {
@@ -638,6 +652,11 @@ void AIChatTabHelper::WebContentsDestroyed() {
   CleanUp();
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
       ->RemoveObserver(this);
+}
+
+void AIChatTabHelper::GetPremiumStatus(
+    ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback) {
+  credential_manager_->GetPremiumStatus(std::move(callback));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

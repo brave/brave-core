@@ -70,7 +70,7 @@ class AdBlockService {
     void OnDATLoaded(bool deserialize, const DATFileDataBuffer& dat_buf);
 
     // AdBlockFiltersProvider::Observer
-    void OnChanged() override;
+    void OnChanged(bool is_default_engine) override;
 
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(const std::string& resources_json) override;
@@ -198,6 +198,8 @@ class AdBlockService {
 
   base::WeakPtrFactory<AdBlockService> weak_factory_{this};
 };
+
+void CheckAdBlockExceptionComponentsUpdate();
 
 // Registers the local_state preferences used by Adblock
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);

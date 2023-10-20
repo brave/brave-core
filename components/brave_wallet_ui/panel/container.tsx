@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
-import { BrowserRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 // Components
 import {
@@ -46,6 +46,7 @@ import { SelectNetworkWithHeader } from '../components/buy-send-swap/select-netw
 import { SelectAccountWithHeader } from '../components/buy-send-swap/select-account-with-header'
 import { AppList } from '../components/shared/app-list/index'
 import { filterAppList } from '../utils/filter-app-list'
+import { getInitialSessionRoute } from '../utils/routes-utils'
 import {
   ScrollContainer,
   StyledExtensionWrapper,
@@ -64,6 +65,7 @@ import {
   AppsListType,
   BraveWallet,
   PanelTypes,
+  WalletRoutes,
 } from '../constants/types'
 
 import { AppsList } from '../options/apps-list-options'
@@ -106,7 +108,14 @@ import {
   return this.toString()
 }
 
+const initialSessionRoute =
+  getInitialSessionRoute() || WalletRoutes.PortfolioAssets
+let hasInitializedRouter = false
+
 function Container () {
+  // routing
+  const history = useHistory()
+
   // redux
   const dispatch = useDispatch()
 
@@ -340,6 +349,20 @@ function Container () {
     }
   }, [needsAccount, selectedPanel])
 
+  const canInitializePageRouter =
+    !hasInitializedRouter &&
+    isPanelV2FeatureEnabled &&
+    hasInitialized &&
+    isWalletCreated
+
+  // initialize session route
+  React.useEffect(() => {
+    if (canInitializePageRouter) {
+      history.push(initialSessionRoute)
+      hasInitializedRouter = true
+    }
+  }, [canInitializePageRouter])
+
   if (!hasInitialized) {
     return null
   }
@@ -355,20 +378,17 @@ function Container () {
   }
 
   if (isWalletLocked) {
-    return isPanelV2FeatureEnabled
-      ? <BrowserRouter>
-        <PanelWrapper width={390} height={650}>
-          <PageContainer />
-        </PanelWrapper>
-      </BrowserRouter>
-      : <PanelWrapper isLonger={false}>
+    return isPanelV2FeatureEnabled ? (
+      <PanelWrapper width={390} height={650}>
+        <PageContainer />
+      </PanelWrapper>
+    ) : (
+      <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
-          <LockPanel
-            onSubmit={unlockWallet}
-            onClickRestore={onRestore}
-          />
+          <LockPanel onSubmit={unlockWallet} onClickRestore={onRestore} />
         </StyledExtensionWrapper>
       </PanelWrapper>
+    )
   }
 
   if (selectedPanel === 'transactionStatus' && selectedTransactionId) {
@@ -383,8 +403,11 @@ function Container () {
     )
   }
 
-  if (selectedAccount && (selectedPendingTransaction || signMessageData.length) &&
-    selectedPanel === 'connectHardwareWallet') {
+  if (
+    selectedAccount &&
+    (selectedPendingTransaction || signMessageData.length) &&
+    selectedPanel === 'connectHardwareWallet'
+  ) {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
@@ -698,17 +721,17 @@ function Container () {
     )
   }
 
-  return (
-    isPanelV2FeatureEnabled
-      ? <BrowserRouter>
+  if (isPanelV2FeatureEnabled) {
+    return (
       <PanelWrapper width={390} height={650}>
         <PageContainer />
       </PanelWrapper>
-    </BrowserRouter>
-      : <PanelWrapper isLonger={false}>
-        <ConnectedPanel
-          navAction={navigateTo}
-        />
+    )
+  }
+
+  return (
+    <PanelWrapper isLonger={false}>
+      <ConnectedPanel navAction={navigateTo} />
     </PanelWrapper>
   )
 }

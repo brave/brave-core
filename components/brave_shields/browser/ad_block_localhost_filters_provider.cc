@@ -50,7 +50,7 @@ void AdBlockLocalhostFiltersProvider::LoadDATBuffer(
 void AdBlockLocalhostFiltersProvider::AddObserver(
     AdBlockFiltersProvider::Observer* observer) {
   AdBlockFiltersProvider::AddObserver(observer);
-  NotifyObservers();
+  NotifyObservers(engine_is_default_);
 }
 
 }  // namespace brave_shields

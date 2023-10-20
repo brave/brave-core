@@ -43,8 +43,15 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
   if (!IsWaybackMachineEnabled())
     return;
 
-  if (IsWaybackMachineDisabledFor(navigation_handle->GetURL()))
+  if (IsWaybackMachineDisabledFor(navigation_handle->GetURL())) {
     return;
+  }
+
+  // Double check with user visible url to check user visible only schemes such
+  // as "view-source:"
+  if (IsWaybackMachineDisabledFor(web_contents()->GetLastCommittedURL())) {
+    return;
+  }
 
   if (!navigation_handle->IsInMainFrame() ||
       navigation_handle->IsSameDocument()) {

@@ -5,13 +5,18 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton, Text } from '../../shared/style'
+
+// Shared Styles
+import { WalletButton, Text, Row } from '../../shared/style'
+import {
+  layoutPanelWidth
+} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
+  justify-content: center;
+  flex-direction: column;
   width: 100%;
   padding: 8px;
   border-radius: 12px;
@@ -91,4 +96,11 @@ export const AccountDescription = styled.span`
   line-height: 16px;
   font-weight: 400;
   color: ${leo.color.text.secondary};
+`
+
+export const AccountNameWrapper = styled(Row)`
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `

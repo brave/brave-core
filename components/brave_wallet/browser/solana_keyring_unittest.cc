@@ -43,7 +43,7 @@ TEST(SolanaKeyringUnitTest, Accounts) {
             "Rw9pd8CYVxZ8wLt8cUoVZb");
 
   keyring.AddAccounts(2);
-  std::vector<std::string> accounts = keyring.GetAccounts();
+  std::vector<std::string> accounts = keyring.GetAccountsForTesting();
   EXPECT_EQ(accounts.size(), 3u);
 
   EXPECT_EQ(keyring.GetAddress(1),
@@ -61,7 +61,7 @@ TEST(SolanaKeyringUnitTest, Accounts) {
 
   // remove the last account
   keyring.RemoveAccount();
-  accounts = keyring.GetAccounts();
+  accounts = keyring.GetAccountsForTesting();
   EXPECT_EQ(accounts.size(), 2u);
   EXPECT_EQ(keyring.GetAddress(0),
             "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu");
@@ -72,7 +72,7 @@ TEST(SolanaKeyringUnitTest, Accounts) {
   }
 
   keyring.AddAccounts(1);
-  EXPECT_EQ(keyring.GetAccounts().size(), 3u);
+  EXPECT_EQ(keyring.GetAccountsForTesting().size(), 3u);
   EXPECT_EQ(keyring.GetAddress(2),
             "HEuGsnLvkzHxmmCrFAPJpfSsGvW1zK6bSQykmPRhLxmY");
   EXPECT_EQ(keyring.EncodePrivateKeyForExport(

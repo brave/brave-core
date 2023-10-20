@@ -139,9 +139,6 @@ class RewardsService : public KeyedService {
   // Returns the country code associated with the user's Rewards profile.
   virtual std::string GetCountryCode() const = 0;
 
-  // Returns if the user is grandfathered.
-  virtual bool IsGrandfatheredUser() const = 0;
-
   // Returns the Rewards user type for the current profile.
   virtual void GetUserType(
       base::OnceCallback<void(mojom::UserType)> callback) = 0;

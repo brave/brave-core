@@ -18,12 +18,20 @@ import { useExplorer } from '../../../common/hooks/explorer'
 import {
   useOnClickOutside
 } from '../../../common/hooks/useOnClickOutside'
+
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { makeAccountRoute } from '../../../utils/routes-utils'
+import {
+  getIsRewardsAccount
+} from '../../../utils/rewards_utils'
+import {
+  externalWalletProviderFromString
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { getLocale } from '../../../../common/locale'
 
 // Components
 import WithHideBalancePlaceholder from '../with-hide-balance-placeholder'
@@ -31,6 +39,7 @@ import { CopyTooltip } from '../../shared/copy-tooltip/copy-tooltip'
 import {
   PortfolioAccountMenu
 } from '../wallet-menus/portfolio-account-menu'
+import { RewardsMenu } from '../wallet-menus/rewards_menu'
 
 // Styled Components
 import {
@@ -63,6 +72,10 @@ import {
   CopyIcon,
   AddressAndButtonRow
 } from './style'
+import {
+  BraveRewardsIndicator,
+  VerticalSpacer
+} from '../../shared/style'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -99,7 +112,14 @@ export const PortfolioAccountItem = (props: Props) => {
   // Refs
   const accountMenuRef = React.useRef<HTMLDivElement>(null)
 
-  // Memos
+  // Memos & Computed
+  const isRewardsAccount = getIsRewardsAccount(account.accountId)
+
+  const externalProvider =
+    isRewardsAccount
+      ? externalWalletProviderFromString(account.accountId.uniqueKey)
+      : null
+
   const formattedAssetBalance: string = React.useMemo(() => {
     return new Amount(assetBalance)
       .divideByDecimals(asset.decimals)
@@ -155,10 +175,19 @@ export const PortfolioAccountItem = (props: Props) => {
           size='big'
           marginRight={12}
           account={account}
+          externalProvider={externalProvider}
         />
         <AccountAndAddress>
           <AccountNameButton onClick={onSelectAccount}>{account.name}</AccountNameButton>
-          {account.address && (
+          {isRewardsAccount &&
+            <>
+              <VerticalSpacer space='6px' />
+              <BraveRewardsIndicator>
+                {getLocale('braveWalletBraveRewardsTitle')}
+              </BraveRewardsIndicator>
+            </>
+          }
+          {account.address && !isRewardsAccount &&
             <AddressAndButtonRow>
               <AccountAddressButton onClick={onSelectAccount}>
                 {reduceAddress(account.address)}
@@ -167,7 +196,7 @@ export const PortfolioAccountItem = (props: Props) => {
                 <CopyIcon />
               </CopyTooltip>
             </AddressAndButtonRow>
-          )}
+          }
         </AccountAndAddress>
 
       </NameAndIcon>
@@ -194,16 +223,22 @@ export const PortfolioAccountItem = (props: Props) => {
             <AccountMenuIcon />
           </AccountMenuButton>
           {showAccountMenu &&
-            <PortfolioAccountMenu
-              onClickViewOnExplorer={
-                onClickViewOnBlockExplorer('address', account.address)
-              }
-              onClickSell={
-                isSellSupported && !isAssetsBalanceZero
-                  ? showSellModal
-                  : undefined
-              }
-            />
+            <>
+              {isRewardsAccount ? (
+                <RewardsMenu />
+              ) : (
+                <PortfolioAccountMenu
+                  onClickViewOnExplorer={
+                    onClickViewOnBlockExplorer('address', account.address)
+                  }
+                  onClickSell={
+                    isSellSupported && !isAssetsBalanceZero
+                      ? showSellModal
+                      : undefined
+                  }
+                />
+              )}
+            </>
           }
         </AccountMenuWrapper>
       </RightSide>

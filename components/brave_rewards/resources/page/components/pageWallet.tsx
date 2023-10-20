@@ -519,7 +519,6 @@ class PageWallet extends React.Component<Props, State> {
       ui,
       externalWallet,
       parameters,
-      isGrandfatheredUser,
       userType
     } = this.props.rewardsData
     const { modalReset, modalConnect } = ui
@@ -550,7 +549,6 @@ class PageWallet extends React.Component<Props, State> {
             <WalletCard
               userType={userType}
               balance={balance}
-              isGrandfatheredUser={isGrandfatheredUser}
               externalWallet={externalWalletInfo}
               providerPayoutStatus={'off'}
               minEarningsThisMonth={adsData.adsMinEarningsThisMonth || 0}

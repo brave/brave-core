@@ -122,6 +122,7 @@ const playerReducer: Reducer<PlayerState | undefined> = (
 
         if (currentIndex !== items.length - 1) {
           const currentItem = items[currentIndex + 1]
+          currentItem.lastPlayedPosition = 0 // Don't resume at the last position unless user explicitly selects an item
           state = { ...state, currentItem }
         }
       }
@@ -137,6 +138,7 @@ const playerReducer: Reducer<PlayerState | undefined> = (
 
         if (currentIndex !== 0) {
           const currentItem = items[currentIndex - 1]
+          currentItem.lastPlayedPosition = 0 // Don't resume at the last position unless user explicitly selects an item
           state = { ...state, currentItem }
         }
       }

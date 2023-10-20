@@ -40,6 +40,12 @@ enum ModelCategory {
   CHAT,
 };
 
+enum PremiumStatus {
+  Inactive,
+  Active,
+  ActiveDisconnected,
+};
+
 struct SiteInfo {
   string title;
 };
@@ -102,14 +108,15 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
-  GetHasUserDismissedPremiumPrompt() => (bool has_dismissed);
-  SetHasUserDismissedPremiumPrompt(bool has_dismissed);
+  GetCanShowPremiumPrompt() => (bool can_show);
+  DismissPremiumPrompt();
 
-  // Send a user-rating for a chat 
+  // Send a user-rating for a chat
   // message. |turn_id| is the index of the message in the
   // current conversation.
   RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
   SendFeedback(string category, string feedback, string rating_id) => (bool is_success);
+  GetPremiumStatus() => (PremiumStatus result);
 };
 
 interface ChatUIPage {

@@ -4,6 +4,7 @@
 <translation id="1026101648481255140">Lanjutkan Penginstalan</translation>
 <translation id="7099479769133613710">Luncurkan kembali untuk mengupdate &amp;ChromeOS</translation>
 <translation id="2479110114759182442">Brave merekomendasikan Anda untuk meninjau ekstensi ini</translation>
+<translation id="3814674848168165531">Saat sebuah situs meminta untuk melakukan pramuat link yang ada di halamannya secara pribadi, Brave akan menggunakan server Brave. Hal ini akan menyembunyikan identitas Anda dari situs yang dipramuat, tetapi Brave akan mempelajari situs apa yang dipramuat.</translation>
 <translation id="1065672644894730302">Preferensi Anda tidak dapat dibaca. Beberapa fitur mungkin tidak tersedia dan perubahan pada preferensi tidak akan disimpan.</translation>
 <translation id="7577672138294294152">Orang tuamu telah menonaktifkan "Izin untuk situs, aplikasi, dan ekstensi" untuk Brave</translation>
 <translation id="2796517443093885402">Brave dapat membantu Anda agar tetap aman dari pelanggaran data, ekstensi berbahaya, dan lainnya</translation>
@@ -117,6 +118,8 @@
 <translation id="2100587595569959771">Pelajari lebih lanjut personalisasi iklan di Brave</translation>
 <translation id="1807774211756215222">Buka link di &amp;tab Brave baru</translation>
 <translation id="2106568569080763501">Brave memungkinkan Anda mengklik nomor telepon pada web dan menghubunginya melalui Skype!</translation>
+<translation id="308146532933302843">Pelajari alasan Brave memblokir beberapa download</translation>
+<translation id="6324134303015966238">Brave melakukan pramuat halaman yang mungkin akan Anda buka, agar halaman tersebut dimuat lebih cepat saat Anda membukanya</translation>
 <translation id="2401189691232800402">Sistem ChromeOS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">Dapatkan bantuan ChromeOS</translation>
@@ -141,6 +144,7 @@
 <translation id="5757460455745382269">Bahasa ini digunakan untuk menampilkan UI Brave</translation>
 <translation id="4222932583846282852">Membatalkan...</translation>
 <translation id="1853997773668795891">Tautkan data Brave Anda ke akun ini?</translation>
+<translation id="4732930052828648898">Memperingatkan Anda tentang situs berbahaya, bahkan situs yang tidak diketahui Brave sebelumnya, dengan menganalisis lebih banyak data dari situs dibandingkan perlindungan standar. Anda dapat memilih untuk melewati peringatan Brave.</translation>
 <translation id="3262506503470845422">Dapatkan bantuan Brave</translation>
 <translation id="4281844954008187215">Persyaratan Layanan</translation>
 <translation id="7691786510374174420">Pemasangan gagal karena kesalahan yang tidak diketahui. Jika Brave sedang berjalan, tutup, lalu ulang kembali.</translation>
@@ -211,7 +215,6 @@
 <translation id="5225261774087485064">Situs yang Anda buka biasanya mengingat hal-hal yang Anda minati agar dapat mempersonalisasi pengalaman Anda. Situs juga dapat menyimpan informasi tentang minat Anda ke Brave.</translation>
 <translation id="6003112304606738118">Mendownload... <ph name="HOURS"/> jam lagi</translation>
 <translation id="6040143037577758943">Tutup</translation>
-<translation id="1268000445919601231">Brave memblokir beberapa download</translation>
 <translation id="505042220086416644">Tersedia Brave versi baru, dan versi ini lebih cepat dari sebelumnya.</translation>
 <translation id="9071554113102421877">&amp;Buka di Brave</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> telah ditambahkan ke Brave</translation>
@@ -225,6 +228,7 @@
 <translation id="991182453936521413">Brave akan segera ditutup serta menghapus data</translation>
 <translation id="7006260220514217183">Safe Browsing nonaktif. Brave merekomendasikan untuk mengaktifkannya.</translation>
 <translation id="4060970194201477024">Anda dapat berpindah-pindah profil Brave di sini</translation>
+<translation id="7815000350132166985">Jika Anda mengizinkan cookie, Brave dapat menggunakannya saat melakukan pramuat</translation>
 <translation id="3156047523158042818">Bergantung pada setelan Anda, Brave juga dapat mengirim cookie dan URL Anda saat ini</translation>
 <translation id="4368341489795135329">Pastikan Anda login ke Brave di <ph name="TARGET_DEVICE_NAME"/> Anda, lalu coba kirimkan lagi.</translation>
 <translation id="8320964054148936490">Komputer ini sudah memiliki versi Brave yang lebih baru. Jika software tidak bekerja, harap coba uninstal Brave, lalu cobalah kembali.</translation>
@@ -249,12 +253,14 @@
 <translation id="3256100650978957522">Logo Brave di dalam layar komputer.</translation>
 <translation id="6373767849825830651">Brave adalah browser web yang menjalankan halaman web dan aplikasi dengan kecepatan kilat. Browser ini cepat, stabil, dan mudah digunakan. Jelajahi web lebih aman dengan perlindungan dari software perusak dan phishing yang tertanam di dalam Brave.</translation>
 <translation id="2139300032719313227">Mulai ulang ChromeOS</translation>
+<translation id="638302211119176182">Brave melakukan pramuat lebih banyak halaman yang mungkin akan Anda buka, agar halaman tersebut dimuat lebih cepat saat Anda membukanya</translation>
 <translation id="1684121725014454063">Selamat datang di profil Brave</translation>
 <translation id="2675662665675552980">Juga mengontrol halaman apa yang ditampilkan saat Anda memulai Brave.</translation>
 <translation id="648319183876919572">Safe Browsing yang Disempurnakan melakukan lebih banyak hal untuk melindungi Anda dari situs dan download berbahaya</translation>
 <translation id="5590013613412457132">Uninstal Brave</translation>
 <translation id="3617744907966785605">Organisasi Anda menutup Brave saat tidak digunakan selama <ph name="TIMEOUT_DURATION"/>. Data penjelajahan dihapus. Data ini dapat mencakup histori, isi otomatis, dan download.</translation>
 <translation id="8646609321956191980">Setiap profil memiliki info Brave tersendiri, seperti bookmark, histori, sandi, dan lainnya</translation>
+<translation id="6756656512757374876">Pelajari lebih lanjut <ph name="BEGIN_LINK"/>cara Brave menjaga privasi data Anda<ph name="END_LINK"/></translation>
 <translation id="2535436634051789953">Anda dapat beralih untuk melihat sandi dari profil Brave lainnya</translation>
 <translation id="2312399718665761438">Untuk memperbaiki kesalahan ejaan, Brave mengirimkan teks yang Anda ketik di kolom teks ke Brave</translation>
 <translation id="3507835409099344374">Buka setelan notifikasi Brave</translation>

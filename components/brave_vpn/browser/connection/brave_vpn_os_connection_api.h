@@ -98,6 +98,8 @@ class BraveVPNOSConnectionAPI
       net::NetworkChangeNotifier::ConnectionType type) override;
 
  private:
+  friend class BraveVpnButtonUnitTest;
+
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, NeedsConnectTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest, ConnectionInfoTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNOSConnectionAPIUnitTest,

@@ -37,7 +37,7 @@ std::vector<AddedAcountInfo> HDKeyring::AddAccounts(size_t number) {
   return result;
 }
 
-std::vector<std::string> HDKeyring::GetAccounts() const {
+std::vector<std::string> HDKeyring::GetAccountsForTesting() const {
   std::vector<std::string> addresses;
   for (size_t i = 0; i < accounts_.size(); ++i) {
     addresses.push_back(GetAddress(i));

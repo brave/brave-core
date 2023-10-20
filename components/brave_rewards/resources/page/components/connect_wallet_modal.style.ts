@@ -1,242 +1,235 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
 
-import greenCheckIcon from '../assets/green_check.svg'
+import * as leo from '@brave/leo/tokens/css'
 
-export const root = styled.div`
-  position: relative;
-  font-family: var(--brave-font-heading);
-  max-width: 880px;
-  min-width: 820px;
-  min-height: 545px;
-  margin: 0 10px;
-  background: var(--brave-palette-white);
-  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
-  border-radius: 16px;
+import * as mixins from '../../shared/lib/css_mixins'
+
+export const root = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  font-family: Poppins;
+  background: ${leo.color.container.background};
+  overflow: auto;
+  padding: 32px 30px;
   display: flex;
-  overflow: hidden;
+  flex-direction: column;
+  align-items: center;
+
+  --self-content-max-width: 607px;
+  --self-text-max-width: 479px;
 
   a {
-    color: var(--brave-color-brandBat);
+    color: ${leo.color.text.interactive};
     text-decoration: underline;
   }
+`
 
-  .layout-narrow & {
+export const branding = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+
+  .logo {
+    --leo-icon-size: 36px;
+  }
+
+  .logo-text .icon {
     display: block;
-    max-width: 375px;
-    min-width: unset;
-    min-height: unset;
-    border-radius: 8px;
+    height: 18px;
+    width: auto;
   }
 `
 
-export const close = styled.div`
-  position: absolute;
-  top: 28px;
-  right: 28px;
-
-  .layout-narrow & {
-    top: 16px;
-    right: 16px;
-  }
+export const content = styled.div`
+  max-width: var(--self-content-max-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
-export const leftPanel = styled.div`
-  flex: 0 1 448px;
-  padding: 94px 64px;
-
-  .layout-narrow & {
-    padding: 40px 24px 24px;
-  }
-`
-
-export const rightPanel = styled.div`
-  flex: 1 1 430px;
-  background: var(--brave-palette-neutral000);
-
-  .layout-narrow & {
-    background: var(--brave-palette-white);
-  }
-`
-
-export const panelHeader = styled.div`
-  flex: 1;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 30px;
-  color: var(--brave-palette-black);
-
-  .layout-narrow & {
-    font-size: 18px;
-    line-height: 26px;
-  }
-`
-
-export const panelText = styled.div`
-  flex: 1;
+export const nav = styled.div`
+  width: 100%;
   margin-top: 8px;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--brave-palette-neutral700);
 `
 
-export const panelListItem = styled.div`
-  margin-top: 24px;
-  color: var(--brave-palette-black);
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  background: top 2px left no-repeat url(/${greenCheckIcon});
-  padding-left: 23px;
+export const title = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  color: ${leo.color.text.primary};
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 40px;
+  margin-top: 32px;
+  padding: 8px 0;
+  text-align: center;
 `
 
-export const connectWalletLeftPanel = styled.div`
+export const text = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  width: 100%;
+  max-width: var(--self-text-max-width);
+  color: ${leo.color.text.secondary};
+  font-size: 14px;
+  line-height: 24px;
+  padding: 8px 0;
+`
+
+export const providerSelection = styled.div`
+  width: 100%;
+  max-width: var(--self-text-max-width);
+  padding: 32px 0;
+
+  .layout-narrow & {
+    padding: 8px 0;
+  }
+`
+
+export const providerGroupHeader = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  color: ${leo.color.text.secondary};
+  font-size: 14px;
+  line-height: 24px;
+
+  ${mixins.tooltipAnchor}
+
+  .tooltip {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 6px;
+  }
+
+  /* Tooltips are anchored to this element, but triggered by a child element */
+  &:hover .tooltip {
+    visibility: hidden;
+  }
+`
+
+export const providerGroupHeaderIcon = styled.span.attrs({
+  'data-theme': 'light'
+})`
+  color: ${leo.color.icon.default};
+
+  --leo-icon-size: 20px;
+
+  leo-icon {
+    display: inline-block;
+    vertical-align: text-bottom;
+    margin-left: 8px;
+  }
+
+  &:hover .tooltip {
+    visibility: initial;
+  }
+`
+
+export const providerGroupTooltip = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  ${mixins.tooltipContainer}
+
+  width: 270px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 22px;
+  color: ${leo.color.text.primary};
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px -2px rgba(0, 0, 0, 0.08);
+  background: ${leo.color.white};
+
+  &:before {
+    height: 9px;
+    width: 9px;
+    top: -3px;
+    left: calc(50% - 1px);
+  }
+`
+
+export const providerGroup = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid ${leo.color.divider.subtle};
   display: flex;
   flex-direction: column;
-  height: 100%;
-`
-
-export const connectWalletContent = styled.div`
-  flex: 1 0 auto;
-`
-
-export const connectWalletDisclaimer = styled.div`
-  font-size: 12px;
-  line-height: 18px;
-  color: var(--brave-palette-neutral600);
-`
-
-export const providerButtons = styled.div`
-  padding: 20px 40px 40px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 16px;
+  padding: 0 24px;
 
   button {
-    height: 79px;
+    ${mixins.buttonReset};
+    padding: 16px 0;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    background: var(--brave-palette-white);
-    border: 2px solid var(--brave-palette-grey200);
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 28px;
-    color: var(--brave-palette-black);
-    padding: 14px 20px;
-    cursor: pointer;
+    gap: 11px;
+    text-align: left;
+    border-top: solid 1px ${leo.color.divider.subtle};
 
-    &:active {
-      border-color: var(--brave-palette-grey300);
+    --self-icon-color: ${leo.color.icon.default};
+
+    &:first-child {
+      border-top: none;
     }
 
-    &.selected {
-      border-color: var(--brave-color-brandBat);
+    &:disabled {
+      cursor: default;
     }
 
-    &.disabled {
-      background: var(--brave-palette-neutral000);
+    &:hover {
+      --self-icon-color: ${leo.color.icon.interactive};
     }
-  }
-
-  .layout-narrow & {
-    padding: 0 24px 24px;
-  }
-`
-
-export const providerButtonGrid = styled.div`
-  display: grid;
-  width: 100%;
-
-  grid-template-areas: "icon name caret";
-  grid-template-columns: auto 1fr auto;
-
-  .disabled & {
-    grid-template-areas:
-      "icon name"
-      "icon message";
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto;
   }
 `
 
 export const providerButtonIcon = styled.div`
-  align-self: center;
-  display: flex;
-  height: 52px;
-  width: 52px;
-
-  background: var(--brave-palette-neutral000);
-
-  grid-area: icon;
-
-  border-radius: 50%;
+  padding: 10px;
 
   .icon {
-    height: 25px;
-    margin: auto;
-  }
-
-  .disabled & {
-    background: var(--brave-palette-white);
-
-    --provider-icon-color: var(--brave-palette-neutral600);
+    height: 32px;
   }
 `
 
-export const providerButtonName = styled.div`
-  align-items: center;
-  display: flex;
-  padding-left: 14px;
-
+export const providerButtonName = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  flex: 1 1 auto;
+  color: ${leo.color.text.primary};
   font-size: 16px;
   font-weight: 600;
-  line-height: normal;
-  text-align: left;
-
-  color: var(--brave-palette-black);
-
-  grid-area: name;
-
-  .disabled & {
-    align-items: end;
-
-    color: var(--brave-palette-neutral700);
-  }
+  line-height: 24px;
 `
 
-export const providerButtonMessage = styled.div`
-  align-items: start;
-  display: flex;
-  padding-left: 14px;
-
-  font-size: 11px;
-  font-weight: 400;
-  line-height: normal;
-  text-align: left;
-
-  color: var(--brave-palette-neutral700);
-
-  grid-area: message;
+export const providerButtonMessage = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  color: ${leo.color.text.secondary};
+  font-size: 12px;
+  line-height: 18px;
 `
 
 export const providerButtonCaret = styled.div`
-  display: flex;
-
-  grid-area: caret;
-
-  .icon {
-    height: 16px;
-    margin: auto;
-
-    fill: var(--brave-palette-blurple500);
-    stroke: var(--brave-palette-blurple500);
-  }
+  color: var(--self-icon-color);
+  --leo-icon-size: 24px;
 `
 
-export const learnMoreLink = styled.div``
+export const regionsLearnMore = styled.div`
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.12px;
+`

@@ -51,7 +51,7 @@ TEST(EthereumKeyringUnitTest, Accounts) {
   EXPECT_EQ(keyring.GetAddress(0),
             "0x2166fB4e11D44100112B1124ac593081519cA1ec");
   keyring.AddAccounts(2);
-  std::vector<std::string> accounts = keyring.GetAccounts();
+  std::vector<std::string> accounts = keyring.GetAccountsForTesting();
   EXPECT_EQ(accounts.size(), 3u);
   EXPECT_EQ(keyring.GetAddress(1),
             "0x2A22ad45446E8b34Da4da1f4ADd7B1571Ab4e4E7");
@@ -63,7 +63,7 @@ TEST(EthereumKeyringUnitTest, Accounts) {
 
   // remove the last account
   keyring.RemoveAccount();
-  accounts = keyring.GetAccounts();
+  accounts = keyring.GetAccountsForTesting();
   EXPECT_EQ(accounts.size(), 2u);
   EXPECT_EQ(keyring.GetAddress(0),
             "0x2166fB4e11D44100112B1124ac593081519cA1ec");
@@ -74,7 +74,7 @@ TEST(EthereumKeyringUnitTest, Accounts) {
   }
 
   keyring.AddAccounts(1);
-  EXPECT_EQ(keyring.GetAccounts().size(), 3u);
+  EXPECT_EQ(keyring.GetAccountsForTesting().size(), 3u);
   EXPECT_EQ(keyring.GetAddress(2),
             "0x02e77f0e2fa06F95BDEa79Fad158477723145838");
 

@@ -106,6 +106,8 @@ TEST(BitcoinTransaction, TxOutput_Value) {
 TEST(BitcoinTransaction, Value) {
   BitcoinTransaction tx;
 
+  tx.inputs().reserve(2);
+
   auto& input1 = tx.inputs().emplace_back();
   input1.utxo_address = kAddress1;
   input1.utxo_outpoint.index = 123;
@@ -148,6 +150,8 @@ TEST(BitcoinTransaction, IsSigned) {
   BitcoinTransaction tx;
   EXPECT_FALSE(tx.IsSigned());
 
+  tx.inputs().reserve(2);
+
   auto& input1 = tx.inputs().emplace_back();
   input1.utxo_address = kAddress1;
   input1.utxo_outpoint.index = 123;
@@ -185,6 +189,8 @@ TEST(BitcoinTransaction, TotalInputsAmount) {
   BitcoinTransaction tx;
   EXPECT_EQ(tx.TotalInputsAmount(), 0u);
 
+  tx.inputs().reserve(2);
+
   auto& input1 = tx.inputs().emplace_back();
   input1.utxo_address = kAddress1;
   input1.utxo_outpoint.index = 123;
@@ -220,6 +226,8 @@ TEST(BitcoinTransaction, TotalOutputsAmount) {
 TEST(BitcoinTransaction, EffectiveFeeAmount) {
   BitcoinTransaction tx;
   EXPECT_EQ(tx.EffectiveFeeAmount(), 0u);
+
+  tx.inputs().reserve(2);
 
   auto& input1 = tx.inputs().emplace_back();
   input1.utxo_address = kAddress1;

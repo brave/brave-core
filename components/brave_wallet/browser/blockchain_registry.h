@@ -43,6 +43,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void UpdateOffRampTokenLists(OffRampTokensListMap onramp_lists);
   void UpdateOnRampCurrenciesLists(
       std::vector<mojom::OnRampCurrency> onramp_currencies_lists);
+  void UpdateOfacAddressesList(std::vector<std::string> ofac_addresses_list);
   mojom::BlockchainTokenPtr GetTokenByAddress(const std::string& chain_id,
                                               mojom::CoinType coin,
                                               const std::string& address);
@@ -83,6 +84,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void GetCoingeckoId(const std::string& chain_id,
                       const std::string& contract_address,
                       GetCoingeckoIdCallback callback) override;
+  bool IsOfacAddress(const std::string& address);
 
  protected:
   std::vector<mojom::BlockchainTokenPtr>* GetTokenListFromChainId(
@@ -95,6 +97,7 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   OnRampTokensListMap on_ramp_token_lists_;
   OffRampTokensListMap off_ramp_token_lists_;
   std::vector<mojom::OnRampCurrency> on_ramp_currencies_list_;
+  base::flat_set<std::string> ofac_addresses_;
   friend base::NoDestructor<BlockchainRegistry>;
 
   BlockchainRegistry();

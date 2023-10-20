@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,22 +34,25 @@ public class BraveWalletSolanaConnectedSitesPreference
     }
 
     @Override
-    public void onBindViewHolder(PreferenceViewHolder holder) {
+    public void onBindViewHolder(@NonNull PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
         initBraveWalletService();
 
         mRecyclerView = (RecyclerView) holder.findViewById(R.id.connected_sites_list);
-        updateWebSitestList();
+        updateWebSitesList();
     }
 
     public void destroy() {
+        if (mBraveWalletService == null) {
+            return;
+        }
         mBraveWalletService.close();
         mBraveWalletService = null;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void updateWebSitestList() {
+    private void updateWebSitesList() {
         mBraveWalletService.getWebSitesWithPermission(CoinType.SOL, webSites -> {
             if (mAdapter == null) {
                 mAdapter = new BraveWalletEthereumConnectedSitesListAdapter(webSites, this);
@@ -64,7 +68,7 @@ public class BraveWalletSolanaConnectedSitesPreference
     public void removePermission(String webSite) {
         mBraveWalletService.resetWebSitePermission(CoinType.SOL, webSite, success -> {
             if (success) {
-                updateWebSitestList();
+                updateWebSitesList();
             }
         });
     }

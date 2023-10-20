@@ -169,13 +169,13 @@ std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
     const std::string& theme,
     const std::string& font_family,
     const std::string& font_size,
-    const std::string& content_style) {
+    const std::string& column_width) {
   auto rewriter = speedreader_->MakeRewriter(url.spec());
   rewriter->SetMinOutLength(speedreader::kSpeedreaderMinOutLengthParam.Get());
   rewriter->SetTheme(theme);
   rewriter->SetFontFamily(font_family);
   rewriter->SetFontSize(font_size);
-  rewriter->SetContentStyle(content_style);
+  rewriter->SetColumnWidth(column_width);
   return rewriter;
 }
 

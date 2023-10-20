@@ -157,6 +157,7 @@ class BraveVpnService :
 
  private:
   friend class BraveVPNServiceTest;
+  friend class BraveVpnButtonUnitTest;
 
 #if !BUILDFLAG(IS_ANDROID)
   friend class ::BraveAppMenuBrowserTest;

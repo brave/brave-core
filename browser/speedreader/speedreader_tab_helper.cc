@@ -434,6 +434,8 @@ void SpeedreaderTabHelper::OnAppearanceSettingsChanged(
                        speedreader_service->GetFontFamilyName());
   SetDocumentAttribute("data-font-size",
                        speedreader_service->GetFontSizeName());
+  SetDocumentAttribute("data-column-width",
+                       speedreader_service->GetColumnWidth());
 }
 
 void SpeedreaderTabHelper::OnResult(

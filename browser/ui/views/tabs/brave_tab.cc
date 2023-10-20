@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/view_shadow.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
@@ -29,79 +30,11 @@
 
 namespace {
 
-#define FILL_SHADOW_LAYER_FOR_DEBUG 0
-
-class ShadowLayer : public ui::Layer, public ui::LayerDelegate {
- public:
-  static constexpr int kBlurRadius = 4;
-
-  static const gfx::ShadowValues& GetShadowValues() {
-    static const base::NoDestructor<gfx::ShadowValues> shadow(([]() {
-#if FILL_SHADOW_LAYER_FOR_DEBUG
-      constexpr SkColor kShadowColor = SkColorSetA(SK_ColorCYAN, 0.07 * 255);
-#else
-      constexpr SkColor kShadowColor = SkColorSetA(SK_ColorBLACK, 0.07 * 255);
-#endif
-
-      // Shadow matches `box-shadow: 0 1px 4px rgba(0, 0, 0, .0.07)`
-      constexpr gfx::ShadowValue kShadow{
-          /* offset= */ {0, 1},
-          kBlurRadius * 2 /* correction value used in shadow_value.cc */,
-          kShadowColor};
-      return gfx::ShadowValues{kShadow};
-    })());
-
-    return *shadow;
-  }
-
-  static gfx::Insets GetBlurRegionInsets() {
-    return gfx::ShadowValue::GetBlurRegion(ShadowLayer::GetShadowValues());
-  }
-
-  static gfx::Rect GetShadowLayerBounds(const gfx::Rect& anchor_bounds) {
-    // Enlarge shadow layer bigger than the |anchor_bounds| so that we can
-    // draw the full range of blur.
-    gfx::Rect shadow_layer_bounds = anchor_bounds;
-    shadow_layer_bounds.Inset(-GetBlurRegionInsets());
-    return shadow_layer_bounds;
-  }
-
-  explicit ShadowLayer(Tab* tab) : tab_(tab) {
-    CHECK(tab);
-    set_delegate(this);
-  }
-  ~ShadowLayer() override = default;
-
-  // LayerDelegate:
-  void OnPaintLayer(const ui::PaintContext& context) override {
-    ui::PaintRecorder recorder(context, size());
-    // Clear out the canvas so that transparency can be applied properly.
-#if FILL_SHADOW_LAYER_FOR_DEBUG
-    recorder.canvas()->DrawColor(gfx::kPlaceholderColor);
-#else
-    recorder.canvas()->DrawColor(SK_ColorTRANSPARENT);
-#endif
-
-    cc::PaintFlags flags;
-    flags.setStyle(cc::PaintFlags::kFill_Style);
-    flags.setAntiAlias(true);
-    flags.setColor(SK_ColorTRANSPARENT);
-    flags.setLooper(gfx::CreateShadowDrawLooper(GetShadowValues()));
-
-    // The looper will draw around the area. So we should inset the layer
-    // bounds.
-    gfx::Rect shadow_bounds(size());
-    shadow_bounds.Inset(GetBlurRegionInsets());
-    const int radius = tabs::GetTabCornerRadius(*tab_);
-    recorder.canvas()->DrawRoundRect(shadow_bounds, radius, flags);
-  }
-
-  void OnDeviceScaleFactorChanged(float old_device_scale_factor,
-                                  float new_device_scale_factor) override {}
-
- private:
-  raw_ptr<Tab> tab_;
-};
+constexpr ViewShadow::ShadowParameters kShadow{
+    .offset_x = 0,
+    .offset_y = 1,
+    .blur_radius = 4,
+    .shadow_color = SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
 
 }  // namespace
 
@@ -191,27 +124,6 @@ void BraveTab::UpdateIconVisibility() {
   }
 }
 
-void BraveTab::ViewHierarchyChanged(
-    const views::ViewHierarchyChangedDetails& details) {
-  if (details.child != this) {
-    return;
-  }
-
-  if (details.is_add && shadow_layer_) {
-    AddLayerToBelowThis();
-  }
-}
-
-void BraveTab::OnLayerBoundsChanged(const gfx::Rect& old_bounds,
-                                    ui::PropertyChangeReason reason) {
-  Tab::OnLayerBoundsChanged(old_bounds, reason);
-
-  if (shadow_layer_ && shadow_layer_->parent() &&
-      shadow_layer_->parent() == layer()->parent()) {
-    LayoutShadowLayer();
-  }
-}
-
 void BraveTab::Layout() {
   Tab::Layout();
   if (IsAtMinWidthForVerticalTabStrip()) {
@@ -246,26 +158,6 @@ gfx::Insets BraveTab::GetInsets() const {
   return insets;
 }
 
-void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
-  Tab::ReorderChildLayers(parent_layer);
-
-  if (!layer() || layer()->parent() != parent_layer || !shadow_layer_) {
-    return;
-  }
-
-  if (shadow_layer_->parent() != layer()->parent()) {
-    if (shadow_layer_->parent()) {
-      shadow_layer_->parent()->Remove(shadow_layer_.get());
-    }
-    layer()->parent()->Add(shadow_layer_.get());
-  }
-
-  DCHECK_EQ(shadow_layer_->parent(), layer()->parent());
-  layer()->parent()->StackBelow(shadow_layer_.get(), layer());
-
-  LayoutShadowLayer();
-}
-
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                            int visual_width) const {
   if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
@@ -298,45 +190,21 @@ void BraveTab::UpdateShadowForActiveTab() {
       tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser());
 
   if (IsActive() && can_render_shadows) {
-    shadow_layer_ = CreateShadowLayer();
-    AddLayerToBelowThis();
-    LayoutShadowLayer();
-  } else if (shadow_layer_) {
-    if (layer()) {
-      layer()->parent()->Remove(shadow_layer_.get());
+    if (!view_shadow_) {
+      view_shadow_ = std::make_unique<ViewShadow>(
+          this, tabs::GetTabCornerRadius(*this), kShadow);
+      layer()->SetFillsBoundsOpaquely(false);
     }
-    shadow_layer_.reset();
-    if (layer()) {
-      DestroyLayer();
+
+    gfx::Insets shadow_insets;
+    if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+      // For horizontal tabs, inset the shadow layer to match the visual rounded
+      // rectangle of the tab, which is inset from the tab view.
+      shadow_insets = gfx::Insets::VH(0, brave_tabs::kHorizontalTabInset);
     }
+    view_shadow_->SetInsets(shadow_insets);
+  } else if (view_shadow_) {
+    view_shadow_.reset();
+    DestroyLayer();
   }
-}
-
-std::unique_ptr<ui::Layer> BraveTab::CreateShadowLayer() {
-  auto layer = std::make_unique<ShadowLayer>(this);
-  layer->SetFillsBoundsOpaquely(false);
-  return layer;
-}
-
-void BraveTab::LayoutShadowLayer() {
-  CHECK(shadow_layer_);
-  CHECK(shadow_layer_->parent());
-  CHECK(layer());
-  DCHECK_EQ(layer()->parent(), shadow_layer_->parent());
-  auto bounds = ShadowLayer::GetShadowLayerBounds(layer()->bounds());
-  if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
-    // For horizontal tabs, inset the shadow layer to match the visual rounded
-    // rectangle of the tab, which is inset from the tab view.
-    bounds.Inset(gfx::Insets::VH(0, brave_tabs::kHorizontalTabInset));
-  }
-  shadow_layer_->SetBounds(bounds);
-}
-
-void BraveTab::AddLayerToBelowThis() {
-  if (!layer()) {
-    SetPaintToLayer();
-    layer()->SetFillsBoundsOpaquely(false);
-  }
-
-  ReorderChildLayers(layer()->parent());
 }

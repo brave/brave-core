@@ -32,6 +32,12 @@ import Amount from '../../../../../../utils/amount'
 import { WalletSelectors } from '../../../../../../common/selectors'
 import { getBalance } from '../../../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
+import {
+  getIsRewardsToken, getNormalizedExternalRewardsWallet
+} from '../../../../../../utils/rewards_utils'
+import {
+  externalWalletProviderFromString
+} from '../../../../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Options
 import {
@@ -62,6 +68,7 @@ import {
 } from '../../../../../../common/hooks/use-multi-chain-sell-assets'
 import {
   useGetNetworkQuery,
+  useGetRewardsBalanceQuery,
   useGetSelectedChainQuery
 } from '../../../../../../common/slices/api.slice'
 import {
@@ -119,6 +126,7 @@ export const AccountsAndTransactionsList = ({
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken
   )
+  const { data: rewardsBalance } = useGetRewardsBalanceQuery()
 
   // hooks
   const {
@@ -133,6 +141,16 @@ export const AccountsAndTransactionsList = ({
     React.useState<BraveWallet.AccountInfo>()
   const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
 
+  // Memos & Computed
+  const isRewardsToken = getIsRewardsToken(selectedAsset)
+
+  const externalRewardsAccount =
+    isRewardsToken
+      ? getNormalizedExternalRewardsWallet(
+        externalWalletProviderFromString(selectedAsset?.chainId ?? '')
+      )
+      : undefined
+
   const filteredAccountsByCoinType = React.useMemo(() => {
     if (!selectedAsset) {
       return []
@@ -143,6 +161,11 @@ export const AccountsAndTransactionsList = ({
   const accountsList = React.useMemo(() => {
     if (!selectedAsset) {
       return []
+    }
+    if (isRewardsToken) {
+      return externalRewardsAccount
+        ? [externalRewardsAccount]
+        : []
     }
     return filteredAccountsByCoinType
       .filter((account) =>
@@ -208,12 +231,14 @@ export const AccountsAndTransactionsList = ({
     <>
       {selectedAsset &&
         <>
-          <Row padding='24px 0px'>
-            <SegmentedControl
-              navOptions={PortfolioAssetOptions}
-              width={384}
-            />
-          </Row>
+          {!isRewardsToken &&
+            <Row padding='24px 0px'>
+              <SegmentedControl
+                navOptions={PortfolioAssetOptions}
+                width={384}
+              />
+            </Row>
+          }
           {hash !== WalletRoutes.TransactionsHash &&
             <>
               {accountsList.length !== 0 ? (
@@ -232,53 +257,55 @@ export const AccountsAndTransactionsList = ({
                     >
                       {getLocale('braveWalletAccounts')}
                     </Text>
-                    <Row
-                      width='unset'
-                      justifyContent='flex-end'
-                    >
-                      {!hidePortfolioBalances ? (
-                        <>
+                    {!isRewardsToken &&
+                      <Row
+                        width='unset'
+                        justifyContent='flex-end'
+                      >
+                        {!hidePortfolioBalances ? (
+                          <>
+                            <Text
+                              isBold={true}
+                              textColor='text01'
+                              textSize='14px'
+                            >
+                              {formattedFullAssetBalance}
+                            </Text>
+                            <HorizontalSpace space='4px' />
+                            <Text
+                              isBold={false}
+                              textColor='text03'
+                              textSize='14px'
+                            >
+                              {
+                                '(' + fullAssetFiatBalance
+                                  .formatAsFiat(defaultCurrencies.fiat) + ')'
+                              }
+                            </Text>
+                          </>
+                        ) : (
                           <Text
                             isBold={true}
                             textColor='text01'
                             textSize='14px'
                           >
-                            {formattedFullAssetBalance}
+                            ******
                           </Text>
-                          <HorizontalSpace space='4px' />
-                          <Text
-                            isBold={false}
-                            textColor='text03'
-                            textSize='14px'
-                          >
-                            {
-                              '(' + fullAssetFiatBalance
-                                .formatAsFiat(defaultCurrencies.fiat) + ')'
-                            }
-                          </Text>
-                        </>
-                      ) : (
-                        <Text
-                          isBold={true}
-                          textColor='text01'
-                          textSize='14px'
+                        )}
+                        <HorizontalSpace space='16px' />
+                        <ToggleVisibilityButton
+                          onClick={onToggleHideBalances}
                         >
-                          ******
-                        </Text>
-                      )}
-                      <HorizontalSpace space='16px' />
-                      <ToggleVisibilityButton
-                        onClick={onToggleHideBalances}
-                      >
-                        <EyeIcon
-                          name={
-                            hidePortfolioBalances
-                              ? 'eye-off'
-                              : 'eye-on'
-                          }
-                        />
-                      </ToggleVisibilityButton>
-                    </Row>
+                          <EyeIcon
+                            name={
+                              hidePortfolioBalances
+                                ? 'eye-off'
+                                : 'eye-on'
+                            }
+                          />
+                        </ToggleVisibilityButton>
+                      </Row>
+                    }
                   </Row>
                   <VerticalDivider />
                   <VerticalSpacer space={8} />
@@ -289,11 +316,15 @@ export const AccountsAndTransactionsList = ({
                       defaultCurrencies={defaultCurrencies}
                       account={account}
                       assetBalance={
-                        getBalance(
-                          account.accountId,
-                          selectedAsset,
-                          tokenBalancesRegistry
-                        )
+                        isRewardsToken && rewardsBalance
+                          ? new Amount(rewardsBalance)
+                            .multiplyByDecimals(selectedAsset.decimals)
+                            .format()
+                          : getBalance(
+                            account.accountId,
+                            selectedAsset,
+                            tokenBalancesRegistry
+                          )
                       }
                       selectedNetwork={selectedAssetNetwork || selectedNetwork}
                       showSellModal={() => onShowSellModal(account)}

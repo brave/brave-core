@@ -585,6 +585,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
             speedreader_service()->GetAppearanceSettings().fontFamily);
   EXPECT_EQ(speedreader::mojom::FontSize::k100,
             speedreader_service()->GetAppearanceSettings().fontSize);
+  EXPECT_EQ(speedreader::mojom::ColumnWidth::kNarrow,
+            speedreader_service()->GetAppearanceSettings().columnWidth);
 
   EXPECT_EQ(nullptr, content::EvalJs(contents, GetDataAttribute("data-theme"),
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
@@ -592,7 +594,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   speedreader_service()->SetAppearanceSettings(
       speedreader::mojom::AppearanceSettings(
           speedreader::mojom::Theme::kDark, speedreader::mojom::FontSize::k130,
-          speedreader::mojom::FontFamily::kDyslexic));
+          speedreader::mojom::FontFamily::kDyslexic,
+          speedreader::mojom::ColumnWidth::kWide));
 
   auto EvalAttr = [&](content::WebContents* contents, const std::string& attr) {
     return content::EvalJs(contents, GetDataAttribute(attr),
@@ -604,11 +607,13 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   EXPECT_EQ("dark", EvalAttr(contents, "data-theme"));
   EXPECT_EQ("dyslexic", EvalAttr(contents, "data-font-family"));
   EXPECT_EQ("130", EvalAttr(contents, "data-font-size"));
+  EXPECT_EQ("wide", EvalAttr(contents, "data-column-width"));
 
   // Same in the second tab
   EXPECT_EQ("dark", EvalAttr(ActiveWebContents(), "data-theme"));
   EXPECT_EQ("dyslexic", EvalAttr(ActiveWebContents(), "data-font-family"));
   EXPECT_EQ("130", EvalAttr(ActiveWebContents(), "data-font-size"));
+  EXPECT_EQ("wide", EvalAttr(contents, "data-column-width"));
 
   EXPECT_EQ(speedreader::mojom::Theme::kDark,
             speedreader_service()->GetAppearanceSettings().theme);
@@ -616,12 +621,15 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
             speedreader_service()->GetAppearanceSettings().fontFamily);
   EXPECT_EQ(speedreader::mojom::FontSize::k130,
             speedreader_service()->GetAppearanceSettings().fontSize);
+  EXPECT_EQ(speedreader::mojom::ColumnWidth::kWide,
+            speedreader_service()->GetAppearanceSettings().columnWidth);
 
   // New page
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_EQ("dark", EvalAttr(ActiveWebContents(), "data-theme"));
   EXPECT_EQ("dyslexic", EvalAttr(ActiveWebContents(), "data-font-family"));
   EXPECT_EQ("130", EvalAttr(ActiveWebContents(), "data-font-size"));
+  EXPECT_EQ("wide", EvalAttr(contents, "data-column-width"));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
