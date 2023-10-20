@@ -75,7 +75,7 @@
     Send contributions with Brave Rewards
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_TEXT" desc="">
-    You'll be able to send on-demand contributions to your favorite Creators with your Brave Rewards balance once you have a custodial account connected.
+    You'll be able to send on-demand contributions to your favorite creators with your Brave Rewards balance once you have a custodial account connected.
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_NO_PROVIDERS" desc="">
     To send on-demand contributions, users must connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so sending isn’t available. In the meantime, you’re still automatically supporting creators.
@@ -154,13 +154,13 @@
     Unverified Creator
   </message>
   <message name="IDS_REWARDS_PANEL_UNVERIFIED_TEXT" desc="">
-    This Creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified.
+    This creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified.
   </message>
   <message name="IDS_REWARDS_PANEL_VERIFIED_CREATOR" desc="">
     Verified Creator
   </message>
   <message name="IDS_REWARDS_PANEL_REFRESH_STATUS" desc="">
-    Refresh Creator verification status
+    Refresh creator verification status
   </message>
   <message name="IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE" desc="">
     <ph name="NAME">$1<ex>Brave</ex></ph> on <ph name="PLATFORM">$2<ex>Twitter</ex></ph>
@@ -452,7 +452,7 @@
     Verified Creator
   </message>
   <message name="IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TEXT" desc="">
-    This Creator has registered with Brave and can receive contributions from Brave Rewards users.
+    This creator has registered with Brave and can receive contributions from Brave Rewards users.
   </message>
   <message name="IDS_REWARDS_TIP_MONTHLY_TOOLTIP_TEXT" desc="">
     Make this a monthly recurring contribution. You can cancel it at any time.
@@ -467,7 +467,7 @@
     You're already sending monthly contributions to this creator
   </message>
   <message name="IDS_REWARDS_TIP_MONTHLY_SET_TEXT" desc="">
-    You can still send a contribution now, and you can cancel your monthly contributions to this Creator by removing them from <ph name="LINK_BEGIN">$1</ph>Monthly Contributions<ph name="LINK_END">$2</ph>.
+    You can still send a contribution now, and you can cancel your monthly contributions to this creator by removing them from <ph name="LINK_BEGIN">$1</ph>Monthly Contributions<ph name="LINK_END">$2</ph>.
   </message>
   <message name="IDS_REWARDS_TIP_PROVIDER_MISMATCH_TITLE" desc="">
     Can't send your contribution
