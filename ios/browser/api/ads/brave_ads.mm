@@ -210,6 +210,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
+#pragma mark -
+
+- (BOOL)isServiceRunning {
+  return ads != nil && adsClientNotifier != nil;
+}
+
 + (BOOL)isSupportedRegion {
   return brave_ads::IsSupportedRegion();
 }
@@ -235,10 +241,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 #pragma mark - Database
-
-- (BOOL)isServiceRunning {
-  return ads != nil && adsClientNotifier != nil;
-}
 
 - (BOOL)isEnabled {
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
