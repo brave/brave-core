@@ -1654,8 +1654,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
-// TODO(tmancey): Rename to match API.
-- (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived,
+- (void)getStatementOfAccounts:(void (^)(NSInteger adsReceived,
                                          double estimatedEarnings,
                                          NSDate* nextPaymentDate))completion {
   if (![self isServiceRunning]) {
@@ -1680,11 +1679,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       }));
 }
 
-// TODO(tmancey): Rename to match API.
-- (void)inlineContentAdsWithDimensions:(NSString*)dimensionsArg
-                            completion:
-                                (void (^)(NSString* dimensions,
-                                          InlineContentAdIOS* ad))completion {
+- (void)maybeServeInlineContentAd:(NSString*)dimensionsArg
+                       completion:(void (^)(NSString* dimensions,
+                                            InlineContentAdIOS* ad))completion {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1705,11 +1702,10 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
           }));
 }
 
-// TODO(tmancey): Rename to match API.
-- (void)reportInlineContentAdEvent:(NSString*)placementId
-                creativeInstanceId:(NSString*)creativeInstanceId
-                         eventType:(BraveAdsInlineContentAdEventType)eventType
-                        completion:(void (^)(BOOL success))completion {
+- (void)triggerInlineContentAdEvent:(NSString*)placementId
+                 creativeInstanceId:(NSString*)creativeInstanceId
+                          eventType:(BraveAdsInlineContentAdEventType)eventType
+                         completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1726,11 +1722,10 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 // TODO(https://github.com/brave/brave-browser/issues/33470): Unify Brave Ads
 // new tab page ad serving.
 
-// TODO(tmancey): Rename to match API.
-- (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
-             creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(BraveAdsNewTabPageAdEventType)eventType
-                     completion:(void (^)(BOOL success))completion {
+- (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
+              creativeInstanceId:(NSString*)creativeInstanceId
+                       eventType:(BraveAdsNewTabPageAdEventType)eventType
+                      completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1744,9 +1739,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       }));
 }
 
-// TODO(tmancey): Rename to match API.
-- (nullable NotificationAdIOS*)notificationAdForIdentifier:
-    (NSString*)identifier {
+- (nullable NotificationAdIOS*)maybeGetNotificationAd:(NSString*)identifier {
   if (![self isServiceRunning]) {
     return nil;
   }
@@ -1760,10 +1753,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return [[NotificationAdIOS alloc] initWithNotificationInfo:*ad];
 }
 
-// TODO(tmancey): Rename to match API.
-- (void)reportNotificationAdEvent:(NSString*)placementId
-                        eventType:(BraveAdsNotificationAdEventType)eventType
-                       completion:(void (^)(BOOL success))completion {
+- (void)triggerNotificationAdEvent:(NSString*)placementId
+                         eventType:(BraveAdsNotificationAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1776,12 +1768,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       }));
 }
 
-// TODO(tmancey): Rename to match API.
-- (void)reportPromotedContentAdEvent:(NSString*)placementId
-                  creativeInstanceId:(NSString*)creativeInstanceId
-                           eventType:
-                               (BraveAdsPromotedContentAdEventType)eventType
-                          completion:(void (^)(BOOL success))completion {
+- (void)triggerPromotedContentAdEvent:(NSString*)placementId
+                   creativeInstanceId:(NSString*)creativeInstanceId
+                            eventType:
+                                (BraveAdsPromotedContentAdEventType)eventType
+                           completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1798,9 +1789,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 // TODO(https://github.com/brave/brave-browser/issues/33469): Unify Brave Ads
 // search result attribution.
 
-// TODO(tmancey): Rename to match API.
-- (void)purgeOrphanedAdEvents:(BraveAdsAdType)adType
-                   completion:(void (^)(BOOL success))completion {
+- (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
+                          completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1812,10 +1802,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       }));
 }
 
-// TODO(tmancey): Rename to match API.
-- (void)toggleThumbsUpForAd:(NSString*)creativeInstanceId
-               advertiserId:(NSString*)advertiserId
-                    segment:(NSString*)segment {
+- (void)toggleLikeAd:(NSString*)creativeInstanceId
+        advertiserId:(NSString*)advertiserId
+             segment:(NSString*)segment {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1825,13 +1814,13 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
   ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
   ad_content.segment = base::SysNSStringToUTF8(segment);
+
   ads->ToggleLikeAd(brave_ads::AdContentToValue(ad_content));
 }
 
-// TODO(tmancey): Rename to match API.
-- (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
-                 advertiserId:(NSString*)advertiserId
-                      segment:(NSString*)segment {
+- (void)toggleDislikeAd:(NSString*)creativeInstanceId
+           advertiserId:(NSString*)advertiserId
+                segment:(NSString*)segment {
   if (![self isServiceRunning]) {
     return;
   }
@@ -1841,6 +1830,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
   ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
   ad_content.segment = base::SysNSStringToUTF8(segment);
+
   ads->ToggleDislikeAd(brave_ads::AdContentToValue(ad_content));
 }
 
@@ -1882,61 +1872,54 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportLoadedPageWithURL:(NSURL*)url
-             redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-                           html:(NSString*)html
-                      innerText:(NSString*)text
-                          tabId:(NSInteger)tabId {
+- (void)notifyTabContentDidChange:(NSInteger)tabId
+                              url:(NSURL*)url
+                    redirectChain:(NSArray<NSURL*>*)redirectChain
+                             html:(NSString*)html
+                             text:(NSString*)text {
   if (![self isServiceRunning]) {
     return;
   }
 
-  std::vector<GURL> urls;
-  for (NSURL* redirectURL in redirectionURLs) {
-    urls.push_back(net::GURLWithNSURL(redirectURL));
-  }
-  urls.push_back(net::GURLWithNSURL(url));
+  const std::vector<GURL> urls = [self GURLsWithNSURLs:url
+                                         redirectChain:redirectChain];
+
   adsClientNotifier->NotifyTabTextContentDidChange(
       (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
+
   adsClientNotifier->NotifyTabHtmlContentDidChange(
       (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
 }
 
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportMediaStartedWithTabId:(NSInteger)tabId {
+- (void)notifyTabDidStartPlayingMedia:(NSInteger)tabId {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
   }
 }
 
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
+- (void)notifyTabDidStopPlayingMedia:(NSInteger)tabId {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
   }
 }
 
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportTabUpdated:(NSInteger)tabId
-                     url:(NSURL*)url
-      redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-              isSelected:(BOOL)isSelected {
+- (void)notifyTabDidChange:(NSInteger)tabId
+                       url:(NSURL*)url
+             redirectChain:(NSArray<NSURL*>*)redirectChain
+                isSelected:(BOOL)isSelected {
   if (![self isServiceRunning]) {
     return;
   }
 
-  std::vector<GURL> urls;
-  for (NSURL* redirectURL in redirectionURLs) {
-    urls.push_back(net::GURLWithNSURL(redirectURL));
-  }
-  urls.push_back(net::GURLWithNSURL(url));
+  const std::vector<GURL> urls = [self GURLsWithNSURLs:url
+                                         redirectChain:redirectChain];
+
   const bool isVisible = isSelected && [self isBrowserActive];
+
   adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isVisible);
 }
 
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportTabClosedWithTabId:(NSInteger)tabId {
+- (void)notifyDidCloseTab:(NSInteger)tabId {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
   }
