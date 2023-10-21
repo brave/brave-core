@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_RENDER_FRAME_BROWSER_CLIENT_H_
-#define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_RENDER_FRAME_BROWSER_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_HANDLER_H_
+#define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_HANDLER_H_
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -13,15 +13,14 @@
 namespace playlist {
 
 class PlaylistService;
-class PlaylistRenderFrameBrowserClient
-    : public mojom::PlaylistRenderFrameBrowserClient {
+class PlaylistMediaHandler: public mojom::PlaylistMediaHandler{
  public:
-  PlaylistRenderFrameBrowserClient(
+  PlaylistMediaHandler(
       content::GlobalRenderFrameHostId frame_id,
       const base::WeakPtr<PlaylistService>& service);
-  ~PlaylistRenderFrameBrowserClient() override;
+  ~PlaylistMediaHandler() override;
 
-  // mojom::PlaylistRenderFrameBrowserClient:
+  // mojom::PlaylistMediaHandler:
   void OnMediaUpdatedFromRenderFrame() override;
 
  private:
@@ -31,4 +30,4 @@ class PlaylistRenderFrameBrowserClient
 
 }  // namespace playlist
 
-#endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_RENDER_FRAME_BROWSER_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_HANDLER_H_
