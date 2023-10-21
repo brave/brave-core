@@ -311,6 +311,21 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
+#pragma mark - URLs
+
+- (std::vector<GURL>)GURLsWithNSURLs:(NSURL*)url
+                       redirectChain:(NSArray<NSURL*>*)redirectChain {
+  std::vector<GURL> urls;
+
+  for (NSURL* redirect_chain_url in redirectChain) {
+    urls.push_back(net::GURLWithNSURL(redirect_chain_url));
+  }
+
+  urls.push_back(net::GURLWithNSURL(url));
+
+  return urls;
+}
+
 #pragma mark - History
 
 - (BOOL)hasViewedAdsInPreviousCycle {
