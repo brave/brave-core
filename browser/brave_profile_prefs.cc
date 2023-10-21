@@ -22,6 +22,7 @@
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/utils.h"
@@ -192,7 +193,7 @@ void RegisterProfilePrefsForMigration(
   // Added Feb 2023
   registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
 
-  brave_rewards::RewardsService::RegisterProfilePrefsForMigration(registry);
+  brave_rewards::RegisterProfilePrefsForMigration(registry);
 
   brave_news::p3a::RegisterProfilePrefsForMigration(registry);
 

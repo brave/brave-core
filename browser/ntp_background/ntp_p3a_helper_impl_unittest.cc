@@ -11,10 +11,10 @@
 #include "base/strings/strcat.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
@@ -54,8 +54,8 @@ class NTPP3AHelperImplTest : public testing::Test {
                                    /*first_run*/ false);
     NTPP3AHelperImpl::RegisterLocalStatePrefs(local_state_.registry());
 
-    brave_ads::AdsService::RegisterProfilePrefs(prefs_.registry());
-    brave_rewards::RewardsService::RegisterProfilePrefs(prefs_.registry());
+    brave_ads::RegisterProfilePrefs(prefs_.registry());
+    brave_rewards::RegisterProfilePrefs(prefs_.registry());
 
     p3a::P3AConfig config;
     config.p3a_json_upload_url = GURL(kTestP3AJsonHost);
