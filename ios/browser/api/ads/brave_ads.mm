@@ -1571,16 +1571,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
-#pragma mark - Rewards
-
-- (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyRewardsWalletDidUpdate(
-        base::SysNSStringToUTF8(paymentId),
-        base::SysNSStringToUTF8(base64Seed));
-  }
-}
-
 #pragma mark - Ads
 
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
@@ -1869,6 +1859,15 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)notifyPrefDidChange:(const std::string&)path {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyPrefDidChange(path);
+  }
+}
+
+- (void)notifyRewardsWalletDidUpdate:(NSString*)paymentId
+                          base64Seed:(NSString*)base64Seed {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyRewardsWalletDidUpdate(
+        base::SysNSStringToUTF8(paymentId),
+        base::SysNSStringToUTF8(base64Seed));
   }
 }
 
