@@ -339,6 +339,25 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return NO;
 }
 
+- (NSArray<NSDate*>*)getAdsHistoryDates {
+  if (![self isServiceRunning]) {
+    return @[];
+  }
+
+  const auto history_items = ads->GetHistory(
+      brave_ads::HistoryFilterType::kNone, brave_ads::HistorySortType::kNone,
+      base::Time::Min(), base::Time::Max());
+
+  const auto dates = [[NSMutableArray<NSDate*> alloc] init];
+  for (const auto& history_item : history_items) {
+    const auto date = [NSDate
+        dateWithTimeIntervalSince1970:history_item.created_at.ToDoubleT()];
+    [dates addObject:date];
+  }
+
+  return dates;
+}
+
 #pragma mark - Profile prefs
 
 - (void)initProfilePrefService {
@@ -1776,26 +1795,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       base::BindOnce(^(const bool success) {
         completion(success);
       }));
-}
-
-// TODO(tmancey): Rename to match API.
-- (NSArray<NSDate*>*)getAdsHistoryDates {
-  if (![self isServiceRunning]) {
-    return @[];
-  }
-
-  const auto history_items = ads->GetHistory(
-      brave_ads::HistoryFilterType::kNone, brave_ads::HistorySortType::kNone,
-      base::Time::Min(), base::Time::Max());
-
-  const auto dates = [[NSMutableArray<NSDate*> alloc] init];
-  for (const auto& history_item : history_items) {
-    const auto date = [NSDate
-        dateWithTimeIntervalSince1970:history_item.created_at.ToDoubleT()];
-    [dates addObject:date];
-  }
-
-  return dates;
 }
 
 // TODO(tmancey): Rename to match API.
