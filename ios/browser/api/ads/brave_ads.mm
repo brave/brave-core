@@ -115,7 +115,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   brave_ads::Database* adsDatabase;
   brave_ads::AdEventCache* adEventCache;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
-
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
 }
@@ -147,13 +146,14 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     self.storagePath = path;
     self.commonOps = [[BraveCommonOperations alloc] initWithStoragePath:path];
 
-    [self setupNetworkMonitoring];
+    [self startNetworkMonitoring];
 
     [self initComponentUpdater];
 
     [self initProfilePrefService];
-    [self initLocalStatePrefService];
     [self maybeMigrateProfilePrefs];
+
+    [self initLocalStatePrefService];
 
     [self initObservers];
 
@@ -167,46 +167,54 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)dealloc {
-  [self.componentUpdaterTimer invalidate];
-  self.componentUpdaterTimer = nil;
+  [self removeObservers];
 
-  [NSNotificationCenter.defaultCenter removeObserver:self];
-  if (networkMonitor) {
-    nw_path_monitor_cancel(networkMonitor);
-  }
+  [self stopComponentUpdaterTimer];
 
-  if (adsDatabase) {
-    databaseQueue->DeleteSoon(FROM_HERE, adsDatabase);
-  }
+  [self stopNetworkMonitor];
 
+  [self shutdownDatabase];
+
+  [self deallocAds];
+  [self deallocAdsClientNotifier];
+  [self deallocAdsClient];
+
+  [self deallocAdEventCache];
+}
+
+- (void)deallocAds {
   if (ads != nil) {
     delete ads;
     ads = nil;
   }
+}
 
+- (void)deallocAdsClientNotifier {
   if (adsClientNotifier != nil) {
     delete adsClientNotifier;
     adsClientNotifier = nil;
   }
+}
 
+- (void)deallocAdsClient {
   if (adsClient != nil) {
     delete adsClient;
     adsClient = nil;
   }
+}
 
+- (void)deallocAdEventCache {
   if (adEventCache != nil) {
     delete adEventCache;
     adEventCache = nil;
   }
 }
 
-#pragma mark - Global
-
 + (BOOL)isSupportedRegion {
   return brave_ads::IsSupportedRegion();
 }
 
-#pragma mark - Initialization / Shutdown
+#pragma mark - Observers
 
 - (void)initObservers {
   [NSNotificationCenter.defaultCenter
@@ -222,7 +230,26 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
            object:nil];
 }
 
+- (void)removeObservers {
+  [NSNotificationCenter.defaultCenter removeObserver:self];
+}
+
 #pragma mark - Database
+
+- (BOOL)isServiceRunning {
+  return ads != nil && adsClientNotifier != nil;
+}
+
+- (BOOL)isEnabled {
+  return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
+- (void)setEnabled:(BOOL)enabled {
+  [self setProfilePref:brave_rewards::prefs::kEnabled
+                 value:base::Value(enabled)];
+  [self setProfilePref:brave_ads::prefs::kOptedInToNotificationAds
+                 value:base::Value(enabled)];
+}
 
 - (NSString*)adsDatabasePath {
   return [self.storagePath stringByAppendingPathComponent:@"Ads.db"];
@@ -236,26 +263,16 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
 }
 
-- (BOOL)isServiceRunning {
-  return ads != nil && adsClientNotifier != nil;
+- (void)shutdownDatabase {
+  if (adsDatabase) {
+    databaseQueue->DeleteSoon(FROM_HERE, adsDatabase);
+  }
 }
 
-#pragma mark - Configuration
+#pragma mark - Network
 
-- (BOOL)isEnabled {
-  return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
-}
-
-- (void)setEnabled:(BOOL)enabled {
-  [self setProfilePref:brave_rewards::prefs::kEnabled
-                 value:base::Value(enabled)];
-  [self setProfilePref:brave_ads::prefs::kOptedInToNotificationAds
-                 value:base::Value(enabled)];
-}
-
-- (void)setupNetworkMonitoring {
+- (void)startNetworkMonitoring {
   auto const __weak weakSelf = self;
-
   monitorQueue = dispatch_queue_create("bat.nw.monitor", DISPATCH_QUEUE_SERIAL);
   networkMonitor = nw_path_monitor_create();
   nw_path_monitor_set_queue(networkMonitor, monitorQueue);
@@ -272,6 +289,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   nw_path_monitor_start(networkMonitor);
 }
 
+- (void)stopNetworkMonitor {
+  if (networkMonitor) {
+    nw_path_monitor_cancel(networkMonitor);
   }
 }
 
@@ -536,6 +556,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                                                   dateByAddingTimeInterval:
                                                       time_interval]]);
                                }];
+}
+
+- (void)stopComponentUpdaterTimer {
+  [self.componentUpdaterTimer invalidate];
+  self.componentUpdaterTimer = nil;
 }
 
 - (void)updateAdsResources {
@@ -1613,15 +1638,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                     }
                     completion(success);
                     if (!success) {
-                      if (self->ads != nil) {
-                        delete self->ads;
-                      }
-                      self->ads = nil;
-
-                      if (self->adsClientNotifier != nil) {
-                        delete self->adsClientNotifier;
-                      }
-                      self->adsClientNotifier = nil;
+                      [self deallocAds];
+                      [self deallocAdsClientNotifier];
                     }
                   }));
 }
@@ -1633,20 +1651,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
           // TODO(https://github.com/brave/brave-browser/issues/32917):
           // Deprecate shutdown API call.
           self->ads->Shutdown(base::BindOnce(^(bool) {
-            if (self->ads != nil) {
-              delete self->ads;
-            }
-            self->ads = nil;
+            [self deallocAds];
+            [self deallocAdsClientNotifier];
+            [self deallocAdsClient];
 
-            if (self->adsClientNotifier != nil) {
-              delete self->adsClientNotifier;
-            }
-            self->adsClientNotifier = nil;
-
-            if (self->adsClient != nil) {
-              delete self->adsClient;
-            }
-            self->adsClient = nil;
+            [self deallocAdEventCache];
 
             if (self->adsDatabase != nil) {
               self->databaseQueue->PostTask(
@@ -1654,13 +1663,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                   base::BindOnce(
                       [](brave_ads::Database* database) { delete database; },
                       self->adsDatabase));
+              self->adsDatabase = nil;
             }
-            self->adsDatabase = nil;
-
-            if (self->adEventCache != nil) {
-              delete self->adEventCache;
-            }
-            self->adEventCache = nil;
 
             if (completion) {
               completion();
