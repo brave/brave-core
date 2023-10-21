@@ -80,6 +80,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
 namespace {
 
+// TODO(tmancey): Decouple |RunDBTransactionOnFileTaskRunner| from
+// |ads_service_impl| and remove code duplication.
 brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     brave_ads::mojom::DBTransactionInfoPtr transaction,
     brave_ads::Database* database) {
@@ -155,11 +157,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
     [self initObservers];
 
-    databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
-        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
-    const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
-    adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
+    [self initDatabase];
 
     adEventCache = new brave_ads::AdEventCache();
 
@@ -224,8 +222,18 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
            object:nil];
 }
 
+#pragma mark - Database
+
 - (NSString*)adsDatabasePath {
   return [self.storagePath stringByAppendingPathComponent:@"Ads.db"];
+}
+
+- (void)initDatabase {
+  databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
+  adsDatabase = new brave_ads::Database(base::FilePath(dbPath));
 }
 
 - (BOOL)isServiceRunning {
