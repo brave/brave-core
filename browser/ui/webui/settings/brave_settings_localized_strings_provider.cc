@@ -19,6 +19,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -38,6 +39,10 @@
 #include "extensions/common/extension_urls.h"
 #include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/common/features.h"
+#endif
 
 namespace settings {
 
@@ -941,6 +946,23 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "serviceWorkerSize",
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // We add strings regardless of the FeatureFlag state to prevent crash
+
+  // At this moment, the feature name is DNT.
+  html_source->AddString("playlist", "Playlist");
+
+  html_source->AddString("bravePlaylistEnablePlaylistLabel",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_PLAYLIST_ENABLE_PLAYLIST_LABEL));
+  html_source->AddString("bravePlaylistCacheByDefaultLabel",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_LABEL));
+  html_source->AddString("bravePlaylistCacheByDefaultSubLabel",
+                         brave_l10n::GetLocalizedResourceUTF16String(
+                             IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_SUB_LABEL));
+#endif
 }
 
 }  // namespace settings

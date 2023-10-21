@@ -8,6 +8,10 @@
 
 namespace playlist {
 
+// A boolean preference indicates whether playlist feature is enabled or not by
+// the user.
+constexpr char kPlaylistEnabledPref[] = "brave.playlist.enabled";
+
 // Set of playlists. Each playlist has ids of its items
 // so that playlists can share same item efficiently
 // Currently, List type preference always has to be updated entirely but there

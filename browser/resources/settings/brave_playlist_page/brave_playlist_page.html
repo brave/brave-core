@@ -1,0 +1,22 @@
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<settings-toggle-button class="cr-row hr"
+  pref="{{prefs.brave.playlist.enabled}}"
+  label="$i18n{bravePlaylistEnablePlaylistLabel}">
+</settings-toggle-button>
+<template
+  is="dom-if"
+  if="[[prefs.brave.playlist.enabled.value]]">
+  <div class="cr-row continuation list-frame">
+    <settings-toggle-button
+      class="list-item"
+      pref="{{prefs.brave.playlist.cache}}"
+      label="$i18n{bravePlaylistCacheByDefaultLabel}"
+      sub-label="$i18n{bravePlaylistCacheByDefaultSubLabel}"
+    >
+    </settings-toggle-button>
+  </div>
+</template> <!-- playlist.enabled.value -->

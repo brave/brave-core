@@ -210,6 +210,16 @@ void ShowMoveItemsDialog(content::WebContents* contents,
       FindBrowserViewFromSidebarContents(contents), std::move(param));
 }
 
+void ShowPlaylistSettings(content::WebContents* contents) {
+  auto* browser_view = FindBrowserViewFromSidebarContents(contents);
+  CHECK(browser_view);
+  content::OpenURLParams open_params(GURL("brave://settings/playlist"),
+                                     content::Referrer(),
+                                     WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                     ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+  browser_view->browser()->OpenURL(open_params);
+}
+
 }  // namespace playlist
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -33,6 +33,7 @@
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
@@ -76,6 +77,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
 #include "brave/components/ai_chat/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/common/features.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -204,6 +209,14 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #else
   html_source->AddBoolean("isLeoAssistantAllowed", false);
   html_source->AddBoolean("isLeoAssistantHistoryAllowed", false);
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  html_source->AddBoolean(
+      "isPlaylistAllowed",
+      base::FeatureList::IsEnabled(playlist::features::kPlaylist));
+#else
+  html_source->AddBoolean("isPlaylistAllowed", false);
 #endif
 }
 

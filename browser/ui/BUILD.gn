@@ -1078,6 +1078,7 @@ source_set("ui") {
     deps += [
       "//brave/components/playlist/browser",
       "//brave/components/playlist/browser/resources:generated_resources",
+      "//components/user_prefs",
     ]
   }
 

@@ -14,6 +14,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/resources/grit/playlist_generated_map.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,7 +22,9 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
@@ -123,7 +126,9 @@ bool PlaylistUI::ShouldBlockPlaylistWebUI(
     return false;
   }
 
-  return !PlaylistServiceFactory::IsPlaylistEnabled(browser_context);
+  return !PlaylistServiceFactory::IsPlaylistEnabled(browser_context) ||
+         !user_prefs::UserPrefs::Get(browser_context)
+              ->GetBoolean(playlist::kPlaylistEnabledPref);
 }
 
 PlaylistUI::PlaylistUI(content::WebUI* web_ui, const std::string& name)
@@ -203,6 +208,10 @@ void PlaylistUI::ShowRemovePlaylistUI(const std::string& playlist_id) {
 void PlaylistUI::ShowMoveItemsUI(const std::string& playlist_id,
                                  const std::vector<std::string>& items) {
   playlist::ShowMoveItemsDialog(web_ui()->GetWebContents(), playlist_id, items);
+}
+
+void PlaylistUI::OpenSettingsPage() {
+  playlist::ShowPlaylistSettings(web_ui()->GetWebContents());
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)
