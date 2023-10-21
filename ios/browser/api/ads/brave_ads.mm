@@ -251,6 +251,20 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
+- (void)applicationDidBecomeActive {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidEnterForeground();
+    adsClientNotifier->NotifyBrowserDidBecomeActive();
+  }
+}
+
+- (void)applicationDidBackground {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidResignActive();
+    adsClientNotifier->NotifyBrowserDidEnterBackground();
+  }
+}
+
 #pragma mark - Database
 
 - (NSString*)adsDatabasePath {
@@ -1913,20 +1927,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)notifyPendingObservers {
   if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyPendingObservers();
-  }
-}
-
-- (void)applicationDidBecomeActive {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyBrowserDidEnterForeground();
-    adsClientNotifier->NotifyBrowserDidBecomeActive();
-  }
-}
-
-- (void)applicationDidBackground {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyBrowserDidResignActive();
-    adsClientNotifier->NotifyBrowserDidEnterBackground();
   }
 }
 
