@@ -654,64 +654,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Configuration
 
-- (bool)isBrowserActive {
-  return UIApplication.sharedApplication.applicationState ==
-         UIApplicationStateActive;
-}
-
-- (bool)isBrowserInFullScreenMode {
-  return true;
-}
-
-- (bool)canShowNotificationAdsWhileBrowserIsBackgrounded {
-  return false;
-}
-
-- (bool)isNetworkConnectionAvailable {
-  return self.networkConnectivityAvailable;
-}
-
 - (void)setIdleThreshold:(const int)threshold {
   // Not needed on mobile
-}
-
-#pragma mark - Network
-
-- (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
-          callback:(brave_ads::UrlRequestCallback)callback {
-  std::map<brave_ads::mojom::UrlRequestMethodType, std::string> methodMap{
-      {brave_ads::mojom::UrlRequestMethodType::kGet, "GET"},
-      {brave_ads::mojom::UrlRequestMethodType::kPost, "POST"},
-      {brave_ads::mojom::UrlRequestMethodType::kPut, "PUT"}};
-
-  const auto copiedURL = url_request->url;
-
-  auto cb = std::make_shared<decltype(callback)>(std::move(callback));
-  const auto __weak weakSelf = self;
-  return [self.commonOps
-      loadURLRequest:url_request->url.spec()
-             headers:url_request->headers
-             content:url_request->content
-        content_type:url_request->content_type
-              method:methodMap[url_request->method]
-            callback:^(
-                const std::string& errorDescription, int statusCode,
-                const std::string& response,
-                const base::flat_map<std::string, std::string>& headers) {
-              const auto strongSelf = weakSelf;
-              if (!strongSelf || ![strongSelf isServiceRunning]) {
-                return;
-              }
-
-              brave_ads::mojom::UrlResponseInfo url_response;
-              url_response.url = copiedURL;
-              url_response.status_code = statusCode;
-              url_response.body = response;
-              url_response.headers = headers;
-              if (cb) {
-                std::move(*cb).Run(url_response);
-              }
-            }];
 }
 
 #pragma mark - Component updater
@@ -1106,89 +1050,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       }];
 }
 
-- (void)getBrowsingHistory:(const int)max_count
-                   forDays:(const int)days_ago
-                  callback:(brave_ads::GetBrowsingHistoryCallback)callback {
-  // To be implemented https://github.com/brave/brave-ios/issues/3499
-  std::move(callback).Run({});
-}
-
-- (void)loadFileResource:(const std::string&)id
-                 version:(const int)version
-                callback:(brave_ads::LoadFileCallback)callback {
-  NSString* bridgedId = base::SysUTF8ToNSString(id);
-  NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
-
-  BLOG(1, @"Loading %@ ads resource descriptor", nsFilePath);
-
-  base::FilePath file_path(nsFilePath.UTF8String);
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()}, base::BindOnce(^base::File {
-        return base::File(file_path,
-                          base::File::FLAG_OPEN | base::File::FLAG_READ);
-      }),
-      base::BindOnce(std::move(callback)));
-}
-
-- (void)getScheduledCaptcha:(const std::string&)payment_id
-                   callback:(brave_ads::GetScheduledCaptchaCallback)callback {
-  // Adaptive captcha not supported on iOS
-  std::move(callback).Run("");
-}
-
-- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
-                               captchaId:(const std::string&)captcha_id {
-  [self.captchaHandler
-      handleAdaptiveCaptchaForPaymentId:base::SysUTF8ToNSString(payment_id)
-                              captchaId:base::SysUTF8ToNSString(captcha_id)];
-}
-
-- (void)load:(const std::string&)name
-    callback:(brave_ads::LoadCallback)callback {
-  const auto contents = [self.commonOps loadContentsFromFileWithName:name];
-  if (contents.empty()) {
-    return std::move(callback).Run(/*value*/ absl::nullopt);
-  }
-
-  std::move(callback).Run(contents);
-}
-
-- (const std::string)loadDataResource:(const std::string&)name {
-  const auto bundle = [NSBundle bundleForClass:[BraveAds class]];
-  const auto path = [bundle pathForResource:base::SysUTF8ToNSString(name)
-                                     ofType:nil];
-  if (!path || path.length == 0) {
-    return "";
-  }
-  NSError* error = nil;
-  const auto contents = [NSString stringWithContentsOfFile:path
-                                                  encoding:NSUTF8StringEncoding
-                                                     error:&error];
-  if (!contents || error) {
-    return "";
-  }
-  return std::string(contents.UTF8String);
-}
-
-- (void)save:(const std::string&)name
-       value:(const std::string&)value
-    callback:(brave_ads::SaveCallback)callback {
-  const bool success = [self.commonOps saveContents:value name:name];
-  std::move(callback).Run(success);
-}
-
-#pragma mark - Logging
-
-- (void)log:(const char*)file
-            line:(const int)line
-    verboseLevel:(const int)verbose_level
-         message:(const std::string&)message {
-  if (verbose_level <= logging::GetVlogLevelHelper(file, strlen(file))) {
-    logging::LogMessage(file, line, -verbose_level).stream()
-        << "[ads] " << message;
-  }
-}
-
 #pragma mark - Notifications
 
 - (nullable NotificationAdIOS*)notificationAdForIdentifier:
@@ -1204,124 +1065,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 
   return [[NotificationAdIOS alloc] initWithNotificationInfo:*ad];
-}
-
-- (bool)canShowNotificationAds {
-  return [self.notificationsHandler shouldShowNotifications];
-}
-
-- (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info {
-  const auto notification =
-      [[NotificationAdIOS alloc] initWithNotificationInfo:info];
-  [self.notificationsHandler showNotification:notification];
-}
-
-- (void)closeNotificationAd:(const std::string&)placement_id {
-  const auto bridgedPlacementId = base::SysUTF8ToNSString(placement_id);
-  [self.notificationsHandler
-      clearNotificationWithIdentifier:bridgedPlacementId];
-}
-
-- (void)showReminder:(const brave_ads::mojom::ReminderType)type {
-  // Not needed on iOS
-}
-
-- (void)cacheAdEventForInstanceId:(const std::string&)id
-                           adType:(const std::string&)ad_type
-                 confirmationType:(const std::string&)confirmation_type
-                             time:(const base::Time)time {
-  if (!adEventCache) {
-    return;
-  }
-
-  adEventCache->AddEntryForInstanceId(id, ad_type, confirmation_type, time);
-}
-
-- (std::vector<base::Time>)getCachedAdEvents:(const std::string&)ad_type
-                            confirmationType:
-                                (const std::string&)confirmation_type {
-  if (!adEventCache) {
-    return {};
-  }
-
-  return adEventCache->Get(ad_type, confirmation_type);
-}
-
-- (void)resetAdEventCacheForInstanceId:(const std::string&)id {
-  if (!adEventCache) {
-    return;
-  }
-
-  return adEventCache->ResetForInstanceId(id);
-}
-
-- (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
-                callback:(brave_ads::RunDBTransactionCallback)completion {
-  __weak BraveAds* weakSelf = self;
-  databaseQueue->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
-                     adsDatabase),
-      base::BindOnce(
-          ^(brave_ads::RunDBTransactionCallback callback,
-            brave_ads::mojom::DBCommandResponseInfoPtr response) {
-            const auto strongSelf = weakSelf;
-            if (!strongSelf || ![strongSelf isServiceRunning]) {
-              return;
-            }
-            std::move(callback).Run(std::move(response));
-          },
-          std::move(completion)));
-}
-
-- (void)updateAdRewards {
-  // Not needed on iOS because ads do not show unless you are viewing a tab
-}
-
-- (absl::optional<base::Value>)getProfilePref:(const std::string&)path {
-  if (path == brave_news::prefs::kBraveNewsOptedIn ||
-      path == brave_news::prefs::kNewTabPageShowToday ||
-      path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
-      path == ntp_background_images::prefs::
-                  kNewTabPageShowSponsoredImagesBackgroundImage) {
-    // TODO(https://github.com/brave/brave-browser/issues/33745): Decouple Brave
-    // Rewards, News and New Tab Page prefs from core.
-    return base::Value(true);
-  }
-
-  return self.profilePrefService->GetValue(path).Clone();
-}
-
-- (void)setProfilePref:(const std::string&)path value:(base::Value)value {
-  self.profilePrefService->Set(path, value);
-  [self notifyPrefDidChange:path];
-}
-
-- (void)clearProfilePref:(const std::string&)path {
-  self.profilePrefService->ClearPref(path);
-  [self notifyPrefDidChange:path];
-}
-
-- (bool)hasProfilePrefPath:(const std::string&)path {
-  return self.profilePrefService->HasPrefPath(path);
-}
-
-- (void)setLocalStatePref:(const std::string&)path value:(base::Value)value {
-  self.localStatePrefService->Set(path, value);
-  [self notifyPrefDidChange:path];
-}
-
-- (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path {
-  return self.localStatePrefService->GetValue(path).Clone();
-}
-
-- (void)clearLocalStatePref:(const std::string&)path {
-  self.localStatePrefService->ClearPref(path);
-  [self notifyPrefDidChange:path];
-}
-
-- (bool)hasLocalStatePrefPath:(const std::string&)path {
-  return self.localStatePrefService->HasPrefPath(path);
 }
 
 #pragma mark - Prefs
@@ -1853,7 +1596,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       @"gjigddoamjemfcahionjikmlfijoiecf" : @"iso_639_1_xh",
       @"jhnklldjooclfmgpkipaemehnngabckf" : @"iso_639_1_yi",
       @"fjfbodkpnkomodlcanacakhcfmjjgkdf" : @"iso_639_1_yo",
-      @"bncbapkadghlbephbogcmomlecfmdhnb" : @"iso_639_1_za",
+      fIsBrowserActive @"bncbapkadghlbephbogcmomlecfmdhnb" : @"iso_639_1_za",
       @"dhlnknppkgfgehmmipicnlplhjgpnmnh" : @"iso_639_1_zu"
     };
   });
@@ -1861,13 +1604,271 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return _paths;
 }
 
+#pragma mark - Ads client
+
+- (bool)isNetworkConnectionAvailable {
+  return self.networkConnectivityAvailable;
+}
+
+- (bool)isBrowserActive {
+  return UIApplication.sharedApplication.applicationState ==
+         UIApplicationStateActive;
+}
+
+- (bool)isBrowserInFullScreenMode {
+  return true;
+}
+
+- (bool)canShowNotificationAds {
+  return [self.notificationsHandler shouldShowNotifications];
+}
+
+- (bool)canShowNotificationAdsWhileBrowserIsBackgrounded {
+  return false;
+}
+
+- (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info {
+  const auto notification =
+      [[NotificationAdIOS alloc] initWithNotificationInfo:info];
+  [self.notificationsHandler showNotification:notification];
+}
+
+- (void)closeNotificationAd:(const std::string&)placement_id {
+  const auto bridgedPlacementId = base::SysUTF8ToNSString(placement_id);
+  [self.notificationsHandler
+      clearNotificationWithIdentifier:bridgedPlacementId];
+}
+
+- (void)showReminder:(const brave_ads::mojom::ReminderType)type {
+  // This feature is not required on iOS.
+}
+
+- (void)updateAdRewards {
+  // This feature is not required on iOS.
+}
+
+- (void)cacheAdEventForInstanceId:(const std::string&)id
+                           adType:(const std::string&)ad_type
+                 confirmationType:(const std::string&)confirmation_type
+                             time:(const base::Time)time {
+  if (!adEventCache) {
+    return;
+  }
+
+  adEventCache->AddEntryForInstanceId(id, ad_type, confirmation_type, time);
+}
+
+- (std::vector<base::Time>)getCachedAdEvents:(const std::string&)ad_type
+                            confirmationType:
+                                (const std::string&)confirmation_type {
+  if (!adEventCache) {
+    return {};
+  }
+
+  return adEventCache->Get(ad_type, confirmation_type);
+}
+
+- (void)resetAdEventCacheForInstanceId:(const std::string&)id {
+  if (!adEventCache) {
+    return;
+  }
+
+  return adEventCache->ResetForInstanceId(id);
+}
+
+- (void)getBrowsingHistory:(const int)max_count
+                   forDays:(const int)days_ago
+                  callback:(brave_ads::GetBrowsingHistoryCallback)callback {
+  // TODO(https://github.com/brave/brave-browser/issues/33681): Unify Brave Ads
+  // browsing history.
+  std::move(callback).Run({});
+}
+
+- (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
+          callback:(brave_ads::UrlRequestCallback)callback {
+  std::map<brave_ads::mojom::UrlRequestMethodType, std::string> methodMap{
+      {brave_ads::mojom::UrlRequestMethodType::kGet, "GET"},
+      {brave_ads::mojom::UrlRequestMethodType::kPost, "POST"},
+      {brave_ads::mojom::UrlRequestMethodType::kPut, "PUT"}};
+
+  const auto copiedURL = url_request->url;
+
+  auto cb = std::make_shared<decltype(callback)>(std::move(callback));
+  const auto __weak weakSelf = self;
+  return [self.commonOps
+      loadURLRequest:url_request->url.spec()
+             headers:url_request->headers
+             content:url_request->content
+        content_type:url_request->content_type
+              method:methodMap[url_request->method]
+            callback:^(
+                const std::string& errorDescription, int statusCode,
+                const std::string& response,
+                const base::flat_map<std::string, std::string>& headers) {
+              const auto strongSelf = weakSelf;
+              if (!strongSelf || ![strongSelf isServiceRunning]) {
+                return;
+              }
+
+              brave_ads::mojom::UrlResponseInfo url_response;
+              url_response.url = copiedURL;
+              url_response.status_code = statusCode;
+              url_response.body = response;
+              url_response.headers = headers;
+              if (cb) {
+                std::move(*cb).Run(url_response);
+              }
+            }];
+}
+
+- (void)save:(const std::string&)name
+       value:(const std::string&)value
+    callback:(brave_ads::SaveCallback)callback {
+  const bool success = [self.commonOps saveContents:value name:name];
+  std::move(callback).Run(success);
+}
+
+- (void)load:(const std::string&)name
+    callback:(brave_ads::LoadCallback)callback {
+  const auto contents = [self.commonOps loadContentsFromFileWithName:name];
+  if (contents.empty()) {
+    return std::move(callback).Run(/*value*/ absl::nullopt);
+  }
+
+  std::move(callback).Run(contents);
+}
+
+- (void)loadFileResource:(const std::string&)id
+                 version:(const int)version
+                callback:(brave_ads::LoadFileCallback)callback {
+  NSString* bridgedId = base::SysUTF8ToNSString(id);
+  NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
+
+  BLOG(1, @"Loading %@ ads resource descriptor", nsFilePath);
+
+  base::FilePath file_path(nsFilePath.UTF8String);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()}, base::BindOnce(^base::File {
+        return base::File(file_path,
+                          base::File::FLAG_OPEN | base::File::FLAG_READ);
+      }),
+      base::BindOnce(std::move(callback)));
+}
+
+- (const std::string)loadDataResource:(const std::string&)name {
+  const auto bundle = [NSBundle bundleForClass:[BraveAds class]];
+  const auto path = [bundle pathForResource:base::SysUTF8ToNSString(name)
+                                     ofType:nil];
+  if (!path || path.length == 0) {
+    return "";
+  }
+  NSError* error = nil;
+  const auto contents = [NSString stringWithContentsOfFile:path
+                                                  encoding:NSUTF8StringEncoding
+                                                     error:&error];
+  if (!contents || error) {
+    return "";
+  }
+  return std::string(contents.UTF8String);
+}
+
+- (void)getScheduledCaptcha:(const std::string&)payment_id
+                   callback:(brave_ads::GetScheduledCaptchaCallback)callback {
+  // Adaptive captcha not supported on iOS
+  std::move(callback).Run("");
+}
+
+- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
+                               captchaId:(const std::string&)captcha_id {
+  [self.captchaHandler
+      handleAdaptiveCaptchaForPaymentId:base::SysUTF8ToNSString(payment_id)
+                              captchaId:base::SysUTF8ToNSString(captcha_id)];
+}
+
+- (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
+                callback:(brave_ads::RunDBTransactionCallback)completion {
+  __weak BraveAds* weakSelf = self;
+  databaseQueue->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
+                     adsDatabase),
+      base::BindOnce(
+          ^(brave_ads::RunDBTransactionCallback callback,
+            brave_ads::mojom::DBCommandResponseInfoPtr response) {
+            const auto strongSelf = weakSelf;
+            if (!strongSelf || ![strongSelf isServiceRunning]) {
+              return;
+            }
+            std::move(callback).Run(std::move(response));
+          },
+          std::move(completion)));
+}
+
 - (void)recordP2AEvents:(const std::vector<std::string>&)events {
-  // Not needed on iOS
+  // TODO(https://github.com/brave/brave-browser/issues/33786): Unify Brave Ads
+  // P3A analytics.
 }
 
 - (void)addFederatedLearningPredictorTrainingSample:
     (std::vector<brave_federated::mojom::CovariateInfoPtr>)training_sample {
-  // Not needed on iOS
+  // TODO(https://github.com/brave/brave-browser/issues/33787): Unify Brave Ads
+  // federated learning.
+}
+
+- (absl::optional<base::Value>)getProfilePref:(const std::string&)path {
+  if (path == brave_news::prefs::kBraveNewsOptedIn ||
+      path == brave_news::prefs::kNewTabPageShowToday ||
+      path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
+      path == ntp_background_images::prefs::
+                  kNewTabPageShowSponsoredImagesBackgroundImage) {
+    // TODO(https://github.com/brave/brave-browser/issues/33745): Decouple Brave
+    // Rewards, News and New Tab Page prefs from core.
+    return base::Value(true);
+  }
+
+  return self.profilePrefService->GetValue(path).Clone();
+}
+
+- (void)setProfilePref:(const std::string&)path value:(base::Value)value {
+  self.profilePrefService->Set(path, value);
+  [self notifyPrefDidChange:path];
+}
+
+- (void)clearProfilePref:(const std::string&)path {
+  self.profilePrefService->ClearPref(path);
+  [self notifyPrefDidChange:path];
+}
+
+- (bool)hasProfilePrefPath:(const std::string&)path {
+  return self.profilePrefService->HasPrefPath(path);
+}
+
+- (absl::optional<base::Value>)getLocalStatePref:(const std::string&)path {
+  return self.localStatePrefService->GetValue(path).Clone();
+}
+
+- (void)setLocalStatePref:(const std::string&)path value:(base::Value)value {
+  self.localStatePrefService->Set(path, value);
+  [self notifyPrefDidChange:path];
+}
+
+- (void)clearLocalStatePref:(const std::string&)path {
+  self.localStatePrefService->ClearPref(path);
+  [self notifyPrefDidChange:path];
+}
+
+- (bool)hasLocalStatePrefPath:(const std::string&)path {
+  return self.localStatePrefService->HasPrefPath(path);
+}
+
+- (void)log:(const char*)file
+            line:(const int)line
+    verboseLevel:(const int)verbose_level
+         message:(const std::string&)message {
+  if (verbose_level <= logging::GetVlogLevelHelper(file, strlen(file))) {
+    logging::LogMessage(file, line, -verbose_level).stream()
+        << "[ads] " << message;
+  }
 }
 
 @end
