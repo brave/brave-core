@@ -1,3 +1,4 @@
 include_rules = [
+  "+brave/net",
   "+components/content_settings/core/common",
 ]
