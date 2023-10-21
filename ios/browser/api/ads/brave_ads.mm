@@ -1874,7 +1874,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)notifyTabContentDidChange:(NSInteger)tabId
                               url:(NSURL*)url
                     redirectChain:(NSArray<NSURL*>*)redirectChain
-                             html:(NSString*)html
                              text:(NSString*)text {
   if (![self isServiceRunning]) {
     return;
@@ -1885,6 +1884,18 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   adsClientNotifier->NotifyTabTextContentDidChange(
       (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
+}
+
+- (void)notifyTabContentDidChange:(NSInteger)tabId
+                              url:(NSURL*)url
+                    redirectChain:(NSArray<NSURL*>*)redirectChain
+                             html:(NSString*)html {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  const std::vector<GURL> urls = [self GURLsWithNSURLs:url
+                                         redirectChain:redirectChain];
 
   adsClientNotifier->NotifyTabHtmlContentDidChange(
       (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
