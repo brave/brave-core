@@ -220,6 +220,17 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return brave_ads::IsSupportedRegion();
 }
 
+- (BOOL)isEnabled {
+  return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
+- (void)setEnabled:(BOOL)enabled {
+  [self setProfilePref:brave_rewards::prefs::kEnabled
+                 value:base::Value(enabled)];
+  [self setProfilePref:brave_ads::prefs::kOptedInToNotificationAds
+                 value:base::Value(enabled)];
+}
+
 #pragma mark - Observers
 
 - (void)initObservers {
@@ -241,17 +252,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 #pragma mark - Database
-
-- (BOOL)isEnabled {
-  return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
-}
-
-- (void)setEnabled:(BOOL)enabled {
-  [self setProfilePref:brave_rewards::prefs::kEnabled
-                 value:base::Value(enabled)];
-  [self setProfilePref:brave_ads::prefs::kOptedInToNotificationAds
-                 value:base::Value(enabled)];
-}
 
 - (NSString*)adsDatabasePath {
   return [self.storagePath stringByAppendingPathComponent:@"Ads.db"];
