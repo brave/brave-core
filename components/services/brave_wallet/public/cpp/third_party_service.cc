@@ -81,14 +81,7 @@ ThirdPartyService& ThirdPartyService::Get() {
   return *service;
 }
 
-void ThirdPartyService::SetLauncher(
-    std::unique_ptr<ThirdPartyServiceLauncher> launcher) {
-  CHECK(!launcher_);
-  launcher_ = std::move(launcher);
-}
-
 void ThirdPartyService::ResetForTesting() {
-  launcher_.reset();
   service_.reset();
 }
 
@@ -100,8 +93,8 @@ void ThirdPartyService::BindRemote() {
     return;
   }
 
-  CHECK(launcher_);
-  launcher_->Launch(service_.BindNewPipeAndPassReceiver());
+  ThirdPartyServiceLauncher::GetInstance()->Launch(
+      service_.BindNewPipeAndPassReceiver());
 
   service_.reset_on_disconnect();
   service_.reset_on_idle_timeout(kServiceProcessIdleTimeout);

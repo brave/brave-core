@@ -44,6 +44,7 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/services/brave_wallet/content/out_of_process_third_party_service_launcher.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
@@ -242,6 +243,9 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
   brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
       g_browser_process->network_time_tracker());
+
+  third_party_service_launcher_ =
+      std::make_unique<brave_wallet::OutOfProcessThirdPartyServiceLauncher>();
 }
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {

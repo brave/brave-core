@@ -14,7 +14,7 @@ component("content") {
     "//brave/components/services/brave_wallet/public/mojom",
   ]
 
-  visibility = [ "//brave/browser/brave_wallet" ]
+  visibility = [ "//chrome/browser" ]
 
   deps = [ "//content/public/browser" ]
 

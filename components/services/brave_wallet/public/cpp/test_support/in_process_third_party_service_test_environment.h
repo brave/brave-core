@@ -6,7 +6,11 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BRAVE_WALLET_PUBLIC_CPP_TEST_SUPPORT_IN_PROCESS_THIRD_PARTY_SERVICE_TEST_ENVIRONMENT_H_
 #define BRAVE_COMPONENTS_SERVICES_BRAVE_WALLET_PUBLIC_CPP_TEST_SUPPORT_IN_PROCESS_THIRD_PARTY_SERVICE_TEST_ENVIRONMENT_H_
 
+#include <memory>
+
 namespace brave_wallet {
+
+class ThirdPartyServiceLauncher;
 
 class InProcessThirdPartyServiceTestEnvironment {
  public:
@@ -16,6 +20,9 @@ class InProcessThirdPartyServiceTestEnvironment {
   InProcessThirdPartyServiceTestEnvironment& operator=(
       const InProcessThirdPartyServiceTestEnvironment& other) = delete;
   virtual ~InProcessThirdPartyServiceTestEnvironment();
+
+ private:
+  std::unique_ptr<ThirdPartyServiceLauncher> third_party_service_launcher_;
 };
 
 }  // namespace brave_wallet

@@ -14,8 +14,8 @@ namespace brave_wallet {
 
 InProcessThirdPartyServiceTestEnvironment::
     InProcessThirdPartyServiceTestEnvironment() {
-  ThirdPartyService::Get().SetLauncher(
-      std::make_unique<InProcessThirdPartyServiceLauncher>());
+  third_party_service_launcher_ =
+      std::make_unique<InProcessThirdPartyServiceLauncher>();
 }
 
 InProcessThirdPartyServiceTestEnvironment::

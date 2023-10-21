@@ -15,7 +15,6 @@
 #include "base/memory/ref_counted.h"
 #include "base/no_destructor.h"
 #include "base/time/time.h"
-#include "brave/components/services/brave_wallet/public/cpp/third_party_service_launcher.h"
 #include "brave/components/services/brave_wallet/public/mojom/filecoin_utility.mojom.h"
 #include "brave/components/services/brave_wallet/public/mojom/third_party_service.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -32,7 +31,8 @@ namespace brave_wallet {
 // environments, operations will be running in-process using a sequenced task
 // runner.
 //
-// To run the service in-process, SetLauncher should be called with an instance
+// To run the service in-process, the global instance of
+// ThirdPartyServiceLauncher should be initialized using an instance
 // of InProcessThirdPartyServiceLauncher which is limited to iOS and test files.
 class COMPONENT_EXPORT(BRAVE_WALLET_CPP) ThirdPartyService {
  public:
@@ -40,10 +40,6 @@ class COMPONENT_EXPORT(BRAVE_WALLET_CPP) ThirdPartyService {
   ThirdPartyService& operator=(const ThirdPartyService&) = delete;
 
   static ThirdPartyService& Get();
-
-  // This needs to be called once before using any APIs provided by this
-  // service.
-  void SetLauncher(std::unique_ptr<ThirdPartyServiceLauncher> launcher);
 
   template <typename T>
   using ResultCallback = base::OnceCallback<void(const absl::optional<T>&)>;
@@ -70,7 +66,6 @@ class COMPONENT_EXPORT(BRAVE_WALLET_CPP) ThirdPartyService {
 
   void BindRemote();
 
-  std::unique_ptr<ThirdPartyServiceLauncher> launcher_;
   mojo::Remote<third_party_service::mojom::ThirdPartyService> service_;
 };
 

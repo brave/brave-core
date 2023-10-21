@@ -14,13 +14,15 @@ namespace brave_wallet {
 
 class COMPONENT_EXPORT(BRAVE_WALLET_CPP) ThirdPartyServiceLauncher {
  public:
-  ThirdPartyServiceLauncher() = default;
+  ThirdPartyServiceLauncher();
 
   ThirdPartyServiceLauncher(const ThirdPartyServiceLauncher&) = delete;
   ThirdPartyServiceLauncher& operator=(const ThirdPartyServiceLauncher&) =
       delete;
 
-  virtual ~ThirdPartyServiceLauncher() = default;
+  virtual ~ThirdPartyServiceLauncher();
+
+  static ThirdPartyServiceLauncher* GetInstance();
 
   virtual void Launch(
       mojo::PendingReceiver<third_party_service::mojom::ThirdPartyService>

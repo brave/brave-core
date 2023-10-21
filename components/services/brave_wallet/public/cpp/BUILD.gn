@@ -7,6 +7,7 @@ component("cpp") {
   sources = [
     "third_party_service.cc",
     "third_party_service.h",
+    "third_party_service_launcher.cc",
     "third_party_service_launcher.h",
   ]
 
