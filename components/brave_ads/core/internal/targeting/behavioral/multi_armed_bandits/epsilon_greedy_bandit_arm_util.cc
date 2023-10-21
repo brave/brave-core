@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_util.h"
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_arm_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -14,18 +14,17 @@
 namespace brave_ads {
 
 void SetEpsilonGreedyBanditArms(const EpsilonGreedyBanditArmMap& arms) {
-  AdsClientHelper::GetInstance()->SetDictPref(
-      prefs::kEpsilonGreedyBanditArms, EpsilonGreedyBanditArmsToValue(arms));
+  SetProfileDictPref(prefs::kEpsilonGreedyBanditArms,
+                     EpsilonGreedyBanditArmsToValue(arms));
 }
 
 void ResetEpsilonGreedyBanditArms() {
-  AdsClientHelper::GetInstance()->ClearPref(prefs::kEpsilonGreedyBanditArms);
+  ClearProfilePref(prefs::kEpsilonGreedyBanditArms);
 }
 
 EpsilonGreedyBanditArmMap GetEpsilonGreedyBanditArms() {
   const absl::optional<base::Value::Dict> dict =
-      AdsClientHelper::GetInstance()->GetDictPref(
-          prefs::kEpsilonGreedyBanditArms);
+      GetProfileDictPref(prefs::kEpsilonGreedyBanditArms);
   if (!dict) {
     return {};
   }

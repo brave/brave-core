@@ -10,8 +10,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/net/brave_ads_status_header_network_delegate_helper.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
@@ -59,7 +59,7 @@ class AdsStatusHeaderDelegateHelperTest : public testing::Test {
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    brave_rewards::RewardsService::RegisterProfilePrefs(prefs->registry());
+    brave_rewards::RegisterProfilePrefs(prefs->registry());
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();

@@ -14,7 +14,7 @@ namespace brave_ads {
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest, HasVisitedAntiTargetedSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = BuildBrowsingHistoryForTesting();
+  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
 
   const AntiTargetingSiteList anti_targeting_sites = {
       GURL("https://www.foo.com"), GURL("https://www.bar.com")};
@@ -27,7 +27,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest, HasVisitedAntiTargetedSites) {
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasVisitedCaseInsensitiveAntiTargetedSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = BuildBrowsingHistoryForTesting();
+  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
 
   const AntiTargetingSiteList anti_targeting_sites = {
       GURL("HTTPS://WWW.FOO.COM"), GURL("HTTPS://WWW.BAR.COM")};
@@ -40,7 +40,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasNotVisitedAntiTargetedSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = BuildBrowsingHistoryForTesting();
+  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
 
   const AntiTargetingSiteList anti_targeting_sites = {
       GURL("https://www.brave.com"),
@@ -54,7 +54,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasNotVisitedAntiTargetedInvalidSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = BuildBrowsingHistoryForTesting();
+  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
 
   const AntiTargetingSiteList anti_targeting_sites = {GURL("INVALID")};
 
@@ -78,7 +78,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasNotVisitedIfNoAntiTargetedSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = BuildBrowsingHistoryForTesting();
+  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
 
   const AntiTargetingSiteList anti_targeting_sites;
 

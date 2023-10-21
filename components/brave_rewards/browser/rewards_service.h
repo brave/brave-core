@@ -23,9 +23,6 @@
 #include "components/sessions/core/session_id.h"
 #include "url/gurl.h"
 
-class PrefRegistrySimple;
-class PrefService;
-
 namespace content {
 class NavigationHandle;
 }
@@ -252,9 +249,6 @@ class RewardsService : public KeyedService {
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
-
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
 
   // DEPRECATED: Use `SetMonthlyContribution`.
   virtual void SaveRecurringTip(const std::string& publisher_key,

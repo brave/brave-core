@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
+#include "brave/components/brave_ads/core/internal/common/instance_id.h"
 
 #include "base/no_destructor.h"
 #include "base/uuid.h"

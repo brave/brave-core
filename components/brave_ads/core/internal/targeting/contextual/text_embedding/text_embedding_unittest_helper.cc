@@ -9,21 +9,20 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/resource/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/text_embedding_processor.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-TextEmbeddingHelperForTesting::TextEmbeddingHelperForTesting()
-    : processor_(resource_) {}
+TextEmbeddingHelper::TextEmbeddingHelper() : processor_(resource_) {}
 
-TextEmbeddingHelperForTesting::~TextEmbeddingHelperForTesting() = default;
+TextEmbeddingHelper::~TextEmbeddingHelper() = default;
 
-void TextEmbeddingHelperForTesting::Mock() {
+void TextEmbeddingHelper::Mock() {
   processor_.Process(
       /*html=*/
       R"(<meta property="og:title" content="This simple unittest mock checks for embedding accuracy." />)");
 }
 
 // static
-TextEmbeddingHtmlEventList TextEmbeddingHelperForTesting::Expectation() {
+TextEmbeddingHtmlEventList TextEmbeddingHelper::Expectation() {
   TextEmbeddingHtmlEventList expected_text_embedding_html_events;
 
   TextEmbeddingHtmlEventInfo expected_text_embedding_html_event;
@@ -38,4 +37,4 @@ TextEmbeddingHtmlEventList TextEmbeddingHelperForTesting::Expectation() {
   return expected_text_embedding_html_events;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

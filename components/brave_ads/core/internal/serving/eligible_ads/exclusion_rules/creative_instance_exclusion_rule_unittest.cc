@@ -35,7 +35,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
   creative_ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEventForTesting(
+  const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
@@ -56,22 +56,22 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 = BuildAdEventForTesting(
+  const AdEventInfo ad_event_1 = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 = BuildAdEventForTesting(
+  const AdEventInfo ad_event_2 = test::BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_3 = BuildAdEventForTesting(
+  const AdEventInfo ad_event_3 = test::BuildAdEvent(
       creative_ad, AdType::kPromotedContentAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
-  const AdEventInfo ad_event_4 = BuildAdEventForTesting(
+  const AdEventInfo ad_event_4 = test::BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event_4);
@@ -91,7 +91,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   creative_ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEventForTesting(
+  const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServed, Now(),
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);

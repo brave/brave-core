@@ -15,8 +15,8 @@
 #include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -153,7 +153,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     // Need ntp_sponsored_images prefs
     auto* registry = prefs()->registry();
     ViewCounterService::RegisterProfilePrefs(registry);
-    brave_rewards::RewardsService::RegisterProfilePrefs(registry);
+    brave_rewards::RegisterProfilePrefs(registry);
     auto* local_registry = local_pref_.registry();
     brave::RegisterPrefsForBraveReferralsService(local_registry);
     NTPBackgroundImagesService::RegisterLocalStatePrefs(local_registry);

@@ -26,20 +26,20 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/
-                                            true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/
+                                        true);
   creative_ad_1.segment = "parent-child";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/
-                                            true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/
+                                        true);
   creative_ad_2.segment = "xyzzy-thud";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/
-                                            true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/
+                                        true);
   creative_ad_3.segment = "parent";
   creative_ads.push_back(creative_ad_3);
 
@@ -51,9 +51,9 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
-      BuildAdEventForTesting(creative_ad_2, AdType::kNotificationAd,
-                             ConfirmationType::kViewed, Now() - base::Hours(3),
-                             /*should_use_random_uuids=*/true);
+      test::BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
+                         ConfirmationType::kViewed, Now() - base::Hours(3),
+                         /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   // Act & Assert

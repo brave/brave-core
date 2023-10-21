@@ -22,10 +22,6 @@
 
 class GURL;
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}  // namespace user_prefs
-
 namespace brave_ads {
 
 class AdsService : public KeyedService {
@@ -42,9 +38,6 @@ class AdsService : public KeyedService {
 
   void AddObserver(AdsServiceObserver* observer);
   void RemoveObserver(AdsServiceObserver* observer);
-
-  // static
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   // Returns the maximum number of notification ads that can be served per hour.
   virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;

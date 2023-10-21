@@ -26,7 +26,7 @@ TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeActive) {
 
 TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeActive) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   const UserIdleDetection user_idle_detection;
 
@@ -50,7 +50,7 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 TEST_F(BraveAdsUserIdleDetectionTest,
        NonRewardsUserDidBecomeActiveWhileScreenWasLocked) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   const UserIdleDetection user_idle_detection;
 
@@ -71,7 +71,7 @@ TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeIdle) {
 
 TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeIdle) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   const UserIdleDetection user_idle_detection;
 

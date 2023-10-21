@@ -31,7 +31,7 @@ TEST_F(BraveAdsLocaleUserDataTest,
 TEST_F(BraveAdsLocaleUserDataTest,
        DoNotBuildLocaleUserDataForReleaseBuildChannelForNonRewardsUser) {
   // Arrange
-  DisableBraveRewardsForTesting();
+  test::DisableBraveRewards();
 
   // Act & Assert
   EXPECT_TRUE(BuildLocaleUserData().empty());

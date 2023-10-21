@@ -30,7 +30,7 @@ TEST_F(BraveAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
   CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad.pass_through_rate = 0.0;
   creative_ads.push_back(creative_ad);
 
@@ -47,7 +47,7 @@ TEST_F(BraveAdsPacingTest, DoNotPaceCreativeAdsWithMaxPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
   CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad.pass_through_rate = 1.0;
   creative_ads.push_back(creative_ad);
 
@@ -64,7 +64,7 @@ TEST_F(BraveAdsPacingTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
   CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad);
 
@@ -84,12 +84,12 @@ TEST_F(BraveAdsPacingTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_1.pass_through_rate = 0.1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   creative_ad_2.pass_through_rate = 0.5;
   creative_ads.push_back(creative_ad_2);
 

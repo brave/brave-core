@@ -12,7 +12,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
@@ -209,13 +209,10 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
 
 TEST_F(BraveAdsTextProcessingTest, EmptyModelTest) {
   // Arrange
-  // Act
   pipeline::TextProcessing text_processing_pipeline;
-  const bool success =
-      text_processing_pipeline.SetPipeline(base::Value::Dict());
 
-  // Assert
-  EXPECT_FALSE(success);
+  // Act & Assert
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline({}));
 }
 
 TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {

@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_value_util.h"
 
 #include <string>
-#include <utility>
 
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
@@ -41,15 +40,13 @@ base::Value::List PaymentTokensToValue(const PaymentTokenList& payment_tokens) {
       continue;
     }
 
-    auto dict = base::Value::Dict()
+    list.Append(base::Value::Dict()
                     .Set(kTransactionIdKey, payment_token.transaction_id)
                     .Set(kUnblindedTokenKey, *unblinded_token_base64)
                     .Set(kPublicKey, *public_key_base64)
                     .Set(kConfirmationTypeKey,
                          payment_token.confirmation_type.ToString())
-                    .Set(kAdTypeKey, payment_token.ad_type.ToString());
-
-    list.Append(std::move(dict));
+                    .Set(kAdTypeKey, payment_token.ad_type.ToString()));
   }
 
   return list;

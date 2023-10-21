@@ -6,8 +6,8 @@
 #include "chrome/browser/profiles/pref_service_builder_utils.h"
 
 #include "brave/browser/brave_profile_prefs.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
@@ -25,8 +25,8 @@ void RegisterProfilePrefs(bool is_signin_profile,
                           user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefs_ChromiumImpl(is_signin_profile, locale, registry);
 
-  brave_ads::AdsService::RegisterProfilePrefs(registry);
-  brave_rewards::RewardsService::RegisterProfilePrefs(registry);
+  brave_ads::RegisterProfilePrefs(registry);
+  brave_rewards::RegisterProfilePrefs(registry);
 
   // Disable spell check service
   registry->SetDefaultPrefValue(

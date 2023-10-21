@@ -29,7 +29,7 @@ class BraveAdsAdContentUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsAdContentUtilTest, Build) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act & Assert

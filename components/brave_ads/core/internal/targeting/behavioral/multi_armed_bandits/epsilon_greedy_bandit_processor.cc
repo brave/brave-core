@@ -11,7 +11,7 @@
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/notreached.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -97,11 +97,11 @@ void UpdateArm(const double reward, const std::string& segment) {
 }  // namespace
 
 EpsilonGreedyBanditProcessor::EpsilonGreedyBanditProcessor() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 EpsilonGreedyBanditProcessor::~EpsilonGreedyBanditProcessor() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 void EpsilonGreedyBanditProcessor::Process(

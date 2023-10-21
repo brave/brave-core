@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_pref_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
@@ -24,7 +24,8 @@ TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
 
   const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /*is_local=*/false);
-  SetTimePrefValue(prefs::kNextTokenRedemptionAt, next_token_redemption_at);
+  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt,
+                          next_token_redemption_at);
 
   // Act & Assert
   const base::Time expected_next_payment_date =
@@ -39,34 +40,34 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.02, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  const TransactionInfo transaction_2 = BuildTransactionForTesting(
+  const TransactionInfo transaction_2 = test::BuildTransaction(
       /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
-  const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo transaction_4 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
       /*value=*/0.03, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
-  const TransactionInfo transaction_5 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
       /*value=*/0.02, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
-  TransactionInfo transaction_6 = BuildUnreconciledTransactionForTesting(
+  TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
       /*value=*/0.02, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transaction_6.ad_type = AdType::kNewTabPageAd;
@@ -86,30 +87,30 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
 
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildTransactionForTesting(
+  const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.02, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  TransactionInfo transaction_2 = BuildTransactionForTesting(
+  TransactionInfo transaction_2 = test::BuildTransaction(
       /*value=*/0.02, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transaction_2.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_2);
 
-  const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
-  const TransactionInfo transaction_4 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
-  const TransactionInfo transaction_5 = BuildTransactionForTesting(
+  const TransactionInfo transaction_5 = test::BuildTransaction(
       /*value=*/0.03, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_5);
@@ -122,40 +123,70 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
   EXPECT_DOUBLE_EQ(0.04, max);
 }
 
-TEST_F(BraveAdsStatementUtilTest, GetAdTypesReceivedThisMonth) {
+TEST_F(BraveAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   // Arrange
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
 
   TransactionList transactions;
 
-  const TransactionInfo transaction_1 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
 
-  const TransactionInfo transaction_2 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  const TransactionInfo transaction_3 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.03, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
-  const TransactionInfo transaction_4 = BuildUnreconciledTransactionForTesting(
+  const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
       /*value=*/0.02, ConfirmationType::kViewed,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
-  // Act
-  auto result = GetAdTypesReceivedThisMonth(transactions);
+  // Act & Assert
+  EXPECT_EQ(2, GetAdsReceivedThisMonth(transactions));
+}
 
-  // Assert
-  EXPECT_EQ(1U, result.size());
-  EXPECT_EQ(2, result["ad_notification"]);
+TEST_F(BraveAdsStatementUtilTest, GetAdsSummaryThisMonth) {
+  // Arrange
+  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
+
+  TransactionList transactions;
+
+  const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
+      /*value=*/0.01, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
+  transactions.push_back(transaction_1);
+
+  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
+
+  const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
+      /*value=*/0.0, ConfirmationType::kClicked,
+      /*should_use_random_uuids=*/true);
+  transactions.push_back(transaction_2);
+
+  const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
+      /*value=*/0.03, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
+  transactions.push_back(transaction_3);
+
+  const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
+      /*value=*/0.02, ConfirmationType::kViewed,
+      /*should_use_random_uuids=*/true);
+  transactions.push_back(transaction_4);
+
+  // Act & Assert
+  const base::flat_map<std::string, int32_t> expected_ads_summary = {
+      {"ad_notification", 2}};
+  EXPECT_EQ(expected_ads_summary, GetAdsSummaryThisMonth(transactions));
 }
 
 }  // namespace brave_ads

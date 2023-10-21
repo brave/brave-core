@@ -44,7 +44,7 @@ TEST_F(BraveAdsEpsilonGreedyBanditProcessorTest, InitializeArmsFromResource) {
 
   // Assert
   const EpsilonGreedyBanditArmMap arms = GetEpsilonGreedyBanditArms();
-  EXPECT_EQ(30U, arms.size());
+  EXPECT_EQ(27U, arms.size());
   EXPECT_EQ(0U, arms.count("foo"));
   EXPECT_EQ(0U, arms.count("bar"));
 }

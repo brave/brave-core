@@ -12,8 +12,8 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
-#include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/common/instance_id.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
@@ -22,13 +22,13 @@
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-AdEventInfo BuildAdEventForTesting(const CreativeAdInfo& creative_ad,
-                                   const AdType& ad_type,
-                                   const ConfirmationType& confirmation_type,
-                                   const base::Time created_at,
-                                   const bool should_use_random_uuids) {
+AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
+                         const AdType& ad_type,
+                         const ConfirmationType& confirmation_type,
+                         const base::Time created_at,
+                         const bool should_use_random_uuids) {
   AdEventInfo ad_event;
 
   ad_event.type = ad_type;
@@ -47,14 +47,14 @@ AdEventInfo BuildAdEventForTesting(const CreativeAdInfo& creative_ad,
   return ad_event;
 }
 
-void RecordAdEventForTesting(const AdType& type,
-                             const ConfirmationType& confirmation_type) {
-  RecordAdEventsForTesting(type, confirmation_type, /*count=*/1);
+void RecordAdEvent(const AdType& type,
+                   const ConfirmationType& confirmation_type) {
+  RecordAdEvents(type, confirmation_type, /*count=*/1);
 }
 
-void RecordAdEventsForTesting(const AdType& type,
-                              const ConfirmationType& confirmation_type,
-                              const int count) {
+void RecordAdEvents(const AdType& type,
+                    const ConfirmationType& confirmation_type,
+                    const int count) {
   CHECK_GT(count, 0);
 
   const std::string& id = GetInstanceId();
@@ -62,20 +62,20 @@ void RecordAdEventsForTesting(const AdType& type,
   const std::string confirmation_type_as_string = confirmation_type.ToString();
 
   for (int i = 0; i < count; ++i) {
-    AdsClientHelper::GetInstance()->CacheAdEventForInstanceId(
-        id, ad_type_as_string, confirmation_type_as_string, Now());
+    CacheAdEventForInstanceId(id, ad_type_as_string,
+                              confirmation_type_as_string, Now());
   }
 }
 
-void RecordAdEventForTesting(const AdEventInfo& ad_event) {
+void RecordAdEvent(const AdEventInfo& ad_event) {
   RecordAdEvent(ad_event,
                 base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
-void RecordAdEventsForTesting(const AdEventInfo& ad_event, const int count) {
+void RecordAdEvents(const AdEventInfo& ad_event, const int count) {
   for (int i = 0; i < count; ++i) {
-    RecordAdEventForTesting(ad_event);
+    RecordAdEvent(ad_event);
   }
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

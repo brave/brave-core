@@ -19,6 +19,8 @@ static_library("common") {
   sources = [
     "pref_names.cc",
     "pref_names.h",
+    "pref_registry.cc",
+    "pref_registry.h",
     "rewards_flags.cc",
     "rewards_flags.h",
     "rewards_util.cc",

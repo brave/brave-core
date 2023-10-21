@@ -12,15 +12,13 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/multi_armed_bandits/resource/epsilon_greedy_bandit_resource_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-EpsilonGreedyBanditHelperForTesting::EpsilonGreedyBanditHelperForTesting() =
-    default;
+EpsilonGreedyBanditHelper::EpsilonGreedyBanditHelper() = default;
 
-EpsilonGreedyBanditHelperForTesting::~EpsilonGreedyBanditHelperForTesting() =
-    default;
+EpsilonGreedyBanditHelper::~EpsilonGreedyBanditHelper() = default;
 
-void EpsilonGreedyBanditHelperForTesting::Mock() {
+void EpsilonGreedyBanditHelper::Mock() {
   SetEpsilonGreedyBanditEligibleSegments(
       SupportedEpsilonGreedyBanditSegments());
 
@@ -57,8 +55,8 @@ void EpsilonGreedyBanditHelperForTesting::Mock() {
 }
 
 // static
-SegmentList EpsilonGreedyBanditHelperForTesting::Expectation() {
+SegmentList EpsilonGreedyBanditHelper::Expectation() {
   return {"science", "travel", "technology & computing"};
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
@@ -66,9 +66,9 @@ void CatalogUrlRequest::Fetch() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request), base::BindOnce(&CatalogUrlRequest::FetchCallback,
-                                             weak_factory_.GetWeakPtr()));
+  UrlRequest(std::move(url_request),
+             base::BindOnce(&CatalogUrlRequest::FetchCallback,
+                            weak_factory_.GetWeakPtr()));
 }
 
 void CatalogUrlRequest::FetchCallback(

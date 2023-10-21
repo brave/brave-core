@@ -7,7 +7,7 @@
 
 #include "base/check_op.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
@@ -54,8 +54,7 @@ bool DidUserClickTheSameAdMultipleTimes(const HistoryItemInfo& history_item) {
 }
 
 void RemindUserTheyDoNotNeedToClickToEarnRewards() {
-  AdsClientHelper::GetInstance()->ShowReminder(
-      mojom::ReminderType::kClickedSameAdMultipleTimes);
+  ShowReminder(mojom::ReminderType::kClickedSameAdMultipleTimes);
 }
 
 }  // namespace brave_ads

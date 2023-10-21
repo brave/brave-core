@@ -32,7 +32,7 @@ void AddConfirmationTokens(const ConfirmationTokenList& confirmation_tokens) {
   ConfirmationStateManager::GetInstance().GetConfirmationTokens().AddTokens(
       confirmation_tokens);
 
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 }
 
 bool RemoveConfirmationToken(const ConfirmationTokenInfo& confirmation_token) {
@@ -42,7 +42,7 @@ bool RemoveConfirmationToken(const ConfirmationTokenInfo& confirmation_token) {
     return false;
   }
 
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 
   return true;
 }
@@ -52,7 +52,7 @@ void RemoveConfirmationTokens(
   ConfirmationStateManager::GetInstance().GetConfirmationTokens().RemoveTokens(
       confirmation_tokens);
 
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 }
 
 void RemoveAllConfirmationTokens() {
@@ -60,7 +60,7 @@ void RemoveAllConfirmationTokens() {
       .GetConfirmationTokens()
       .RemoveAllTokens();
 
-  ConfirmationStateManager::GetInstance().Save();
+  ConfirmationStateManager::GetInstance().SaveState();
 }
 
 bool ConfirmationTokenExists(const ConfirmationTokenInfo& confirmation_token) {

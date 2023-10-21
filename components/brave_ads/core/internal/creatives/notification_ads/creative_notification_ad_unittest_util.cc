@@ -11,18 +11,16 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_unittest_constants.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-CreativeNotificationAdList BuildCreativeNotificationAdsForTesting(
-    const int count) {
+CreativeNotificationAdList BuildCreativeNotificationAds(const int count) {
   CHECK_GT(count, 0);
 
   CreativeNotificationAdList creative_ads;
 
   for (int i = 0; i < count; ++i) {
-    CreativeNotificationAdInfo creative_ad =
-        BuildCreativeNotificationAdForTesting(
-            /*should_use_random_uuids=*/true);
+    CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd(
+        /*should_use_random_uuids=*/true);
     creative_ad.segment = kSegments[i % std::size(kSegments)];
 
     creative_ads.push_back(creative_ad);
@@ -31,10 +29,9 @@ CreativeNotificationAdList BuildCreativeNotificationAdsForTesting(
   return creative_ads;
 }
 
-CreativeNotificationAdInfo BuildCreativeNotificationAdForTesting(
+CreativeNotificationAdInfo BuildCreativeNotificationAd(
     const bool should_use_random_uuids) {
-  const CreativeAdInfo creative_ad =
-      BuildCreativeAdForTesting(should_use_random_uuids);
+  const CreativeAdInfo creative_ad = BuildCreativeAd(should_use_random_uuids);
   CreativeNotificationAdInfo creative_notification_ad(creative_ad);
 
   creative_notification_ad.title = "Test Ad Title";
@@ -43,4 +40,4 @@ CreativeNotificationAdInfo BuildCreativeNotificationAdForTesting(
   return creative_notification_ad;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

@@ -29,7 +29,7 @@ std::vector<float> DelimitedStringToVector(const std::string& string,
   vector_components.reserve(string_components.size());
   for (const auto& string_component : string_components) {
     double value;
-    base::StringToDouble(string_component, &value);
+    CHECK(base::StringToDouble(string_component, &value));
     vector_components.push_back(static_cast<float>(value));
   }
 

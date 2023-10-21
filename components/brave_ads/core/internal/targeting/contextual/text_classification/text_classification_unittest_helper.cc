@@ -8,15 +8,13 @@
 #include <string>
 #include <vector>
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-TextClassificationHelperForTesting::TextClassificationHelperForTesting()
-    : processor_(resource_) {}
+TextClassificationHelper::TextClassificationHelper() : processor_(resource_) {}
 
-TextClassificationHelperForTesting::~TextClassificationHelperForTesting() =
-    default;
+TextClassificationHelper::~TextClassificationHelper() = default;
 
-void TextClassificationHelperForTesting::Mock() {
+void TextClassificationHelper::Mock() {
   const std::vector<std::string> texts = {
       "Savoring food and drinks, life's simple pleasure.",
       "Decentralization frees finance, making banking borderless.",
@@ -28,7 +26,7 @@ void TextClassificationHelperForTesting::Mock() {
 }
 
 // static
-SegmentList TextClassificationHelperForTesting::Expectation() {
+SegmentList TextClassificationHelper::Expectation() {
   return {"personal finance-banking",
           "technology & computing-technology & computing",
           "food & drink-cocktails",
@@ -147,4 +145,4 @@ SegmentList TextClassificationHelperForTesting::Expectation() {
           "pets-cats"};
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

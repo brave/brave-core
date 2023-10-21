@@ -35,7 +35,7 @@ constexpr char kDaysDeltaTimeTagValue[] = "days";
 absl::optional<base::TimeDelta> ParseTimeDelta(const std::string& value) {
   const std::vector<std::string> components = base::SplitString(
       value, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-  CHECK(components.size() == 2) << "Invalid time tag: " << value;
+  CHECK_EQ(2U, components.size()) << "Invalid time tag: " << value;
 
   int n;
   if (!base::StringToInt(components.at(0), &n)) {
@@ -103,7 +103,7 @@ void ReplaceTagsForText(const std::vector<std::string>& tags,
   for (const auto& tag : tags) {
     const std::vector<std::string> components = base::SplitString(
         tag, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-    CHECK(components.size() == 2) << "Invalid tag: " << tag;
+    CHECK_EQ(2U, components.size()) << "Invalid tag: " << tag;
 
     const std::string& key = components.at(0);
     std::string value = components.at(1);

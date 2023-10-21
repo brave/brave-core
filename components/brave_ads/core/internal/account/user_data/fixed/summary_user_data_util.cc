@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/summary_user_data_util.h"
 
-#include <string>
-
 namespace brave_ads {
 
 AdTypeBucketMap BuildBuckets(const PaymentTokenList& payment_tokens) {

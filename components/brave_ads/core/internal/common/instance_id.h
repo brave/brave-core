@@ -3,16 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_INSTANCE_ID_CONSTANTS_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_INSTANCE_ID_CONSTANTS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_INSTANCE_ID_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_INSTANCE_ID_H_
 
 #include <string>
 
 namespace brave_ads {
 
-// Returns an id for this instance
 const std::string& GetInstanceId();
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_INSTANCE_ID_CONSTANTS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_INSTANCE_ID_H_

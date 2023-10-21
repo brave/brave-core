@@ -79,17 +79,14 @@ base::Value::Dict ClientInfo::ToValue() const {
     for (const auto& [segmemt, page_score] : item) {
       CHECK(!segmemt.empty());
 
-      base::Value::Dict probability_dict;
-      probability_dict.Set("segment", segmemt);
-      probability_dict.Set("pageScore", base::NumberToString(page_score));
-
-      probabilities_list.Append(std::move(probability_dict));
+      probabilities_list.Append(
+          base::Value::Dict()
+              .Set("segment", segmemt)
+              .Set("pageScore", base::NumberToString(page_score)));
     }
 
-    base::Value::Dict probability_dict;
-    probability_dict.Set("textClassificationProbabilities",
-                         std::move(probabilities_list));
-    probabilities_history_list.Append(std::move(probability_dict));
+    probabilities_history_list.Append(base::Value::Dict().Set(
+        "textClassificationProbabilities", std::move(probabilities_list)));
   }
 
   dict.Set("textClassificationProbabilitiesHistory",
@@ -192,9 +189,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
           page_score = *page_score_value;
         } else if (const auto* const legacy_page_score_value =
                        dict.FindString("pageScore")) {
-          const bool success =
-              base::StringToDouble(*legacy_page_score_value, &page_score);
-          CHECK(success);
+          CHECK(base::StringToDouble(*legacy_page_score_value, &page_score));
         }
 
         probabilities.insert({*segment, page_score});
@@ -214,14 +209,14 @@ std::string ClientInfo::ToJson() const {
 }
 
 bool ClientInfo::FromJson(const std::string& json) {
-  const absl::optional<base::Value> root =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!root || !root->is_dict()) {
+  const absl::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!dict) {
     return false;
   }
 
-  return FromValue(root->GetDict());
+  return FromValue(*dict);
 }
 
 }  // namespace brave_ads

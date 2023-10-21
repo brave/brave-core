@@ -24,19 +24,19 @@ TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
   // Arrange
   PaymentTokenList payment_tokens;
 
-  const PaymentTokenInfo payment_token_1 = BuildPaymentTokenForTesting(
+  const PaymentTokenInfo payment_token_1 = test::BuildPaymentToken(
       ConfirmationType::kViewed, AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_1);
 
-  const PaymentTokenInfo payment_token_2 = BuildPaymentTokenForTesting(
+  const PaymentTokenInfo payment_token_2 = test::BuildPaymentToken(
       ConfirmationType::kViewed, AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_2);
 
-  const PaymentTokenInfo payment_token_3 = BuildPaymentTokenForTesting(
+  const PaymentTokenInfo payment_token_3 = test::BuildPaymentToken(
       ConfirmationType::kClicked, AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_3);
 
-  const PaymentTokenInfo payment_token_4 = BuildPaymentTokenForTesting(
+  const PaymentTokenInfo payment_token_4 = test::BuildPaymentToken(
       ConfirmationType::kViewed, AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 

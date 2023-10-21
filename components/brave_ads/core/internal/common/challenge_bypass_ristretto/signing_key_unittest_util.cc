@@ -8,14 +8,14 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"
 
-namespace brave_ads::cbr {
+namespace brave_ads::cbr::test {
 
-SigningKey GetSigningKeyForTesting() {
+SigningKey GetSigningKey() {
   return SigningKey(kSigningKeyBase64);
 }
 
-SigningKey GetInvalidSigningKeyForTesting() {
+SigningKey GetInvalidSigningKey() {
   return SigningKey(kInvalidBase64);
 }
 
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads::cbr::test

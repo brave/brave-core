@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resources_util_impl.h"
@@ -30,11 +30,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 TextClassificationResource::TextClassificationResource() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 TextClassificationResource::~TextClassificationResource() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

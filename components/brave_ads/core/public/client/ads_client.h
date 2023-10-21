@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_H_
 
-#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -137,44 +136,25 @@ class ADS_EXPORT AdsClient {
   // Record P2A (Private Advertising Analytics) |events|.
   virtual void RecordP2AEvents(const std::vector<std::string>& events) = 0;
 
-  // Add |training_sample|.
-  virtual void AddTrainingSample(
+  // Add federated learning |training_sample|.
+  virtual void AddFederatedLearningPredictorTrainingSample(
       std::vector<brave_federated::mojom::CovariateInfoPtr>
           training_sample) = 0;
 
-  // Get the value from the specified preference |path|. Returns the default
-  // value if the path does not exist.
-  virtual bool GetBooleanPref(const std::string& path) const = 0;
-  virtual int GetIntegerPref(const std::string& path) const = 0;
-  virtual double GetDoublePref(const std::string& path) const = 0;
-  virtual std::string GetStringPref(const std::string& path) const = 0;
-  virtual int64_t GetInt64Pref(const std::string& path) const = 0;
-  virtual uint64_t GetUint64Pref(const std::string& path) const = 0;
-  virtual base::Time GetTimePref(const std::string& path) const = 0;
-  virtual absl::optional<base::Value::Dict> GetDictPref(
-      const std::string& path) const = 0;
-  virtual absl::optional<base::Value::List> GetListPref(
+  // Get the value from the specified profile preference |path|. Returns the
+  // default value if the path does not exist.
+  virtual absl::optional<base::Value> GetProfilePref(
       const std::string& path) const = 0;
 
-  // Update the value for the specified preference |path|.
-  virtual void SetBooleanPref(const std::string& path, bool value) = 0;
-  virtual void SetIntegerPref(const std::string& path, int value) = 0;
-  virtual void SetDoublePref(const std::string& path, double value) = 0;
-  virtual void SetStringPref(const std::string& path,
-                             const std::string& value) = 0;
-  virtual void SetInt64Pref(const std::string& path, int64_t value) = 0;
-  virtual void SetUint64Pref(const std::string& path, uint64_t value) = 0;
-  virtual void SetTimePref(const std::string& path, base::Time value) = 0;
-  virtual void SetDictPref(const std::string& path,
-                           base::Value::Dict value) = 0;
-  virtual void SetListPref(const std::string& path,
-                           base::Value::List value) = 0;
+  // Update the value for the specified profile preference |path|.
+  virtual void SetProfilePref(const std::string& path, base::Value value) = 0;
 
-  // Remove the preference from the specified |path|.
-  virtual void ClearPref(const std::string& path) = 0;
+  // Remove the preference from the specified profile |path|.
+  virtual void ClearProfilePref(const std::string& path) = 0;
 
-  // Returns |true| if a value has been set for the specified preference |path|.
-  virtual bool HasPrefPath(const std::string& path) const = 0;
+  // Returns |true| if a value has been set for the specified profile preference
+  // |path|.
+  virtual bool HasProfilePrefPath(const std::string& path) const = 0;
 
   // Get the value from the specified local state preference |path|. Returns the
   // default value if the path does not exist.
@@ -184,6 +164,13 @@ class ADS_EXPORT AdsClient {
   // Update the value for the specified local state preference |path|.
   virtual void SetLocalStatePref(const std::string& path,
                                  base::Value value) = 0;
+
+  // Remove the preference from the specified local state |path|.
+  virtual void ClearLocalStatePref(const std::string& path) = 0;
+
+  // Returns |true| if a value has been set for the specified local state
+  // preference |path|.
+  virtual bool HasLocalStatePrefPath(const std::string& path) const = 0;
 
   // Log a |message| to |file| and the console log with |line| and
   // |verbose_level|.

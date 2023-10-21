@@ -92,17 +92,16 @@ TEST(BraveAdsCryptoUtilTest, Encrypt) {
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
   const std::vector<uint8_t> nonce = GenerateRandomNonce();
-  const std::string message = kMessage;
-  const std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
+  const std::vector<uint8_t> plaintext(kMessage,
+                                       kMessage + std::size(kMessage));
 
   // Act
   const std::vector<uint8_t> ciphertext = Encrypt(
       plaintext, nonce, key_pair.public_key, ephemeral_key_pair.secret_key);
 
   // Assert
-  const std::vector<uint8_t> decrypted_plaintext = Decrypt(
-      ciphertext, nonce, ephemeral_key_pair.public_key, key_pair.secret_key);
-  EXPECT_EQ(plaintext, decrypted_plaintext);
+  EXPECT_EQ(plaintext, Decrypt(ciphertext, nonce, ephemeral_key_pair.public_key,
+                               key_pair.secret_key));
 }
 
 }  // namespace brave_ads::crypto

@@ -38,11 +38,11 @@ TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
   // Arrange
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
-       {{net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
+       {{net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers(BuildIssuersForTesting()));
+  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers(test::BuildIssuers()));
   EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers).Times(0);
   EXPECT_CALL(delegate_mock_, OnWillRetryFetchingIssuers).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidRetryFetchingIssuers).Times(0);
@@ -73,7 +73,7 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
        {{net::HTTP_INTERNAL_SERVER_ERROR,
          /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
-        {net::HTTP_OK, BuildIssuersUrlResponseBodyForTesting()}}}};
+        {net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   ON_CALL(delegate_mock_, OnDidFetchIssuers)

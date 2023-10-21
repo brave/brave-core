@@ -6,11 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_UNITS_NOTIFICATION_AD_NOTIFICATION_AD_HANDLER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_UNITS_NOTIFICATION_AD_NOTIFICATION_AD_HANDLER_UTIL_H_
 
-#include <string>
-
 namespace brave_ads {
-
-struct NotificationAdInfo;
 
 bool ShouldServe();
 
@@ -18,11 +14,6 @@ bool CanServeIfUserIsActive();
 
 bool CanServeAtRegularIntervals();
 bool ShouldServeAtRegularIntervals();
-
-void ShowNotificationAd(const NotificationAdInfo& ad);
-void CloseNotificationAd(const std::string& placement_id);
-void DismissNotificationAd(const std::string& placement_id);
-void NotificationAdTimedOut(const std::string& placement_id);
 
 }  // namespace brave_ads
 

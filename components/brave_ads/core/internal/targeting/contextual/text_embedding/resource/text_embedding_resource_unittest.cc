@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resources_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_embedding/resource/text_embedding_resource_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -86,7 +86,7 @@ TEST_F(BraveAdsTextEmbeddingResourceTest, LoadResourceWhenLocaleDidChange) {
 TEST_F(BraveAdsTextEmbeddingResourceTest,
        DoNotLoadResourceWhenLocaleDidChangeIfOptedOutOfNotificationAds) {
   // Arrange
-  OptOutOfNotificationAdsForTesting();
+  test::OptOutOfNotificationAds();
 
   ASSERT_FALSE(LoadResource(kLanguageComponentId));
 
@@ -127,7 +127,7 @@ TEST_F(
   // Arrange
   ASSERT_TRUE(LoadResource(kLanguageComponentId));
 
-  OptOutOfNotificationAdsForTesting();
+  test::OptOutOfNotificationAds();
 
   // Act
   NotifyPrefDidChange(prefs::kOptedInToNotificationAds);
@@ -165,7 +165,7 @@ TEST_F(
     BraveAdsTextEmbeddingResourceTest,
     DoNotLoadResourceWhenDidUpdateResourceComponentIfOptedOutOfNotificationAds) {
   // Arrange
-  OptOutOfNotificationAdsForTesting();
+  test::OptOutOfNotificationAds();
 
   // Act & Assert
   EXPECT_FALSE(LoadResource(kLanguageComponentId));

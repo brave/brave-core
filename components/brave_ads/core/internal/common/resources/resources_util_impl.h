@@ -17,7 +17,6 @@
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
@@ -67,7 +66,7 @@ template <typename T>
 void LoadAndParseResource(const std::string& id,
                           const int version,
                           LoadAndParseResourceCallback<T> callback) {
-  AdsClientHelper::GetInstance()->LoadFileResource(
+  LoadFileResource(
       id, version,
       base::BindOnce(&LoadFileResourceCallback<T>, std::move(callback)));
 }

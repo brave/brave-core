@@ -38,8 +38,8 @@ HistoryItemInfo AddHistory(
   AdInfo ad;
   for (int i = 0; i < count; ++i) {
     if (i == 0 || should_use_random_creative_instance_uuid) {
-      ad = BuildAdForTesting(AdType::kNotificationAd,
-                             /*should_use_random_uuids=*/true);
+      ad = test::BuildAd(AdType::kNotificationAd,
+                         /*should_use_random_uuids=*/true);
       CHECK(ad.IsValid());
     }
 
@@ -126,8 +126,8 @@ TEST_F(
     BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
     RemindUserAfterClickingTheSameAdMultipleTimesOnTheCuspOfExpiringHistory) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
 
   AddHistory(ad, ConfirmationType::kClicked);
   AddHistory(ad, ConfirmationType::kClicked);
@@ -174,8 +174,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        DoNotRemindTheUserForTheSameAdWithDifferentConfirmationTypes) {
   // Arrange
-  const AdInfo ad = BuildAdForTesting(AdType::kNotificationAd,
-                                      /*should_use_random_uuids=*/true);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_use_random_uuids=*/true);
 
   AddHistory(ad, ConfirmationType::kServed);
   AddHistory(ad, ConfirmationType::kViewed);

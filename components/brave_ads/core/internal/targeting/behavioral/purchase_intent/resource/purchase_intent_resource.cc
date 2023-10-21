@@ -30,11 +30,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 PurchaseIntentResource::PurchaseIntentResource() {
-  AdsClientHelper::AddObserver(this);
+  AddAdsClientNotifierObserver(this);
 }
 
 PurchaseIntentResource::~PurchaseIntentResource() {
-  AdsClientHelper::RemoveObserver(this);
+  RemoveAdsClientNotifierObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

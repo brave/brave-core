@@ -11,10 +11,9 @@
 #include "brave/components/brave_ads/core/public/units/ad_type.h"
 #include "url/gurl.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
-AdInfo BuildAdForTesting(const AdType& ad_type,
-                         const bool should_use_random_uuids) {
+AdInfo BuildAd(const AdType& ad_type, const bool should_use_random_uuids) {
   AdInfo ad;
 
   ad.type = ad_type;
@@ -47,4 +46,4 @@ AdInfo BuildAdForTesting(const AdType& ad_type,
   return ad;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

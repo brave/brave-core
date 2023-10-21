@@ -31,14 +31,14 @@ class BraveAdsUserReactionsTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    MockTokenGenerator(token_generator_mock_, /*count=*/1);
+    test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
     account_ = std::make_unique<Account>(&token_generator_mock_);
     account_->AddObserver(&observer_mock_);
 
     user_reactions_ = std::make_unique<UserReactions>(*account_);
 
-    ForcePermissionRulesForTesting();
+    test::ForcePermissionRules();
   }
 
   void TearDown() override {
@@ -58,7 +58,7 @@ class BraveAdsUserReactionsTest : public UnitTestBase {
 TEST_F(BraveAdsUserReactionsTest, LikeAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
@@ -75,7 +75,7 @@ TEST_F(BraveAdsUserReactionsTest, LikeAd) {
 TEST_F(BraveAdsUserReactionsTest, DislikeAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
@@ -92,7 +92,7 @@ TEST_F(BraveAdsUserReactionsTest, DislikeAd) {
 TEST_F(BraveAdsUserReactionsTest, MarkAdAsInappropriate) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
@@ -109,7 +109,7 @@ TEST_F(BraveAdsUserReactionsTest, MarkAdAsInappropriate) {
 TEST_F(BraveAdsUserReactionsTest, SaveAd) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      BuildCreativeNotificationAdForTesting(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 

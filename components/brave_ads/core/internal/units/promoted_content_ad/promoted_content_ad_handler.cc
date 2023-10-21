@@ -13,8 +13,8 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
+#include "brave/components/brave_ads/core/internal/units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/units/promoted_content_ad/promoted_content_ad_info.h"
 
 namespace brave_ads {
 

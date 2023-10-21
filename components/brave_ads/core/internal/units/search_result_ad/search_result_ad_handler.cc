@@ -88,7 +88,7 @@ void SearchResultAd::TriggerDeferredAdViewedEvent() {
   g_deferred_search_result_ad_for_testing
       ->trigger_ad_viewed_event_in_progress_ = false;
   g_deferred_search_result_ad_for_testing->MaybeTriggerAdViewedEventFromQueue(
-      /*intentional=*/base::DoNothing());
+      /*intentional*/ base::DoNothing());
   g_deferred_search_result_ad_for_testing = nullptr;
 }
 

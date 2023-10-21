@@ -17,10 +17,10 @@ class BraveAdsIssuersUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   // Act
-  const IssuersInfo issuers = BuildIssuersForTesting(
+  const IssuersInfo issuers = test::BuildIssuers(
       3'600'000,
       {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
        {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
@@ -33,7 +33,7 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
 
 TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
   // Act
-  const IssuersInfo issuers = BuildIssuersForTesting(
+  const IssuersInfo issuers = test::BuildIssuers(
       3'600'000,
       {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
        {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
@@ -46,10 +46,10 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
 
 TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   // Act
-  const IssuersInfo issuers = BuildIssuersForTesting(
+  const IssuersInfo issuers = test::BuildIssuers(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
@@ -62,7 +62,7 @@ TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   // Act & Assert
   EXPECT_TRUE(IssuerExistsForType(IssuerType::kConfirmations));
@@ -70,7 +70,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
   // Arrange
-  const IssuersInfo issuers = BuildIssuersForTesting(
+  const IssuersInfo issuers = test::BuildIssuers(
       7'200'000, {},
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
@@ -83,7 +83,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   // Act & Assert
   EXPECT_TRUE(IssuerExistsForType(IssuerType::kPayments));
@@ -91,7 +91,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
   // Arrange
-  const IssuersInfo issuers = BuildIssuersForTesting(
+  const IssuersInfo issuers = test::BuildIssuers(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
        {"cKo0rk1iS8Obgyni0X3RRoydDIGHsivTkfX/TM1Xl24=", 0.0}},
@@ -105,7 +105,7 @@ TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   // Act & Assert
   EXPECT_TRUE(PublicKeyExistsForIssuerType(
@@ -115,7 +115,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   // Act & Assert
   EXPECT_FALSE(PublicKeyExistsForIssuerType(
@@ -125,7 +125,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   // Act & Assert
   EXPECT_TRUE(PublicKeyExistsForIssuerType(
@@ -135,7 +135,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
   // Arrange
-  BuildAndSetIssuersForTesting();
+  test::BuildAndSetIssuers();
 
   // Act & Assert
   EXPECT_FALSE(PublicKeyExistsForIssuerType(
@@ -145,7 +145,7 @@ TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
 
 TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
   // Arrange
-  const IssuersInfo issuers = BuildIssuersForTesting(
+  const IssuersInfo issuers = test::BuildIssuers(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
@@ -163,7 +163,7 @@ TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
 
 TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
   // Arrange
-  const IssuersInfo issuers = BuildIssuersForTesting(
+  const IssuersInfo issuers = test::BuildIssuers(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
@@ -175,7 +175,7 @@ TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
 
 TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {
   // Arrange
-  const IssuersInfo issuers = BuildIssuersForTesting(
+  const IssuersInfo issuers = test::BuildIssuers(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
@@ -193,7 +193,7 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {
 
 TEST_F(BraveAdsIssuersUtilTest, IsIssuersInvalid) {
   // Arrange
-  const IssuersInfo issuers = BuildIssuersForTesting(
+  const IssuersInfo issuers = test::BuildIssuers(
       7'200'000,
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},

@@ -20,9 +20,7 @@ namespace brave_ads {
 
 class BraveAdsNotificationAdIntegrationTest : public UnitTestBase {
  protected:
-  void SetUp() override {
-    UnitTestBase::SetUpForTesting(/*is_integration_test=*/true);
-  }
+  void SetUp() override { UnitTestBase::SetUp(/*is_integration_test=*/true); }
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
@@ -40,7 +38,7 @@ class BraveAdsNotificationAdIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, ServeAd) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents);
@@ -54,7 +52,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, DoNotServe) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
-  EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
+  EXPECT_CALL(ads_client_mock_, AddFederatedLearningPredictorTrainingSample)
+      .Times(0);
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
@@ -69,9 +68,10 @@ TEST_F(BraveAdsNotificationAdIntegrationTest,
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
-  EXPECT_CALL(ads_client_mock_, AddTrainingSample).Times(0);
+  EXPECT_CALL(ads_client_mock_, AddFederatedLearningPredictorTrainingSample)
+      .Times(0);
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
@@ -94,7 +94,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
@@ -102,7 +102,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        EXPECT_CALL(ads_client_mock_, AddTrainingSample);
+        EXPECT_CALL(ads_client_mock_,
+                    AddFederatedLearningPredictorTrainingSample);
 
         EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id));
 
@@ -121,7 +122,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
@@ -129,7 +130,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        EXPECT_CALL(ads_client_mock_, AddTrainingSample);
+        EXPECT_CALL(ads_client_mock_,
+                    AddFederatedLearningPredictorTrainingSample);
 
         base::MockCallback<TriggerAdEventCallback> callback;
         EXPECT_CALL(callback, Run(/*success=*/true));
@@ -146,7 +148,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
 
 TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
   // Arrange
-  ForcePermissionRulesForTesting();
+  test::ForcePermissionRules();
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([=](const NotificationAdInfo& ad) {
@@ -154,7 +156,8 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        EXPECT_CALL(ads_client_mock_, AddTrainingSample);
+        EXPECT_CALL(ads_client_mock_,
+                    AddFederatedLearningPredictorTrainingSample);
 
         base::MockCallback<TriggerAdEventCallback> callback;
         EXPECT_CALL(callback, Run(/*success=*/true));
