@@ -798,7 +798,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       }];
 }
 
-#pragma mark - Prefs
+#pragma mark - Profile prefs
 
 - (void)initProfilePrefService {
   ios::ChromeBrowserStateManager* browserStateManager =
@@ -877,15 +877,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
+#pragma mark - Local state prefs
+
 - (void)initLocalStatePrefService {
   _localStatePrefService = GetApplicationContext()->GetLocalState();
   CHECK(_localStatePrefService);
-}
-
-- (void)notifyPrefDidChange:(const std::string&)path {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyPrefDidChange(path);
-  }
 }
 
 #pragma mark - Ads Resources Paths
@@ -1927,6 +1923,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)notifyPendingObservers {
   if (adsClientNotifier != nil) {
     adsClientNotifier->NotifyPendingObservers();
+  }
+}
+
+- (void)notifyPrefDidChange:(const std::string&)path {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyPrefDidChange(path);
   }
 }
 
