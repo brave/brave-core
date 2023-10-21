@@ -38,6 +38,9 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
   const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean | undefined>()
+
+  // Use a tri-state to avoid showing the alert in
+  // subsequent conversations within the same panel instance.
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean | undefined>()
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
@@ -148,16 +151,21 @@ function DataContextProvider (props: DataContextProviderProps) {
   }, [conversationHistory, hasDismissedLongPageWarning, siteInfo?.isContentTruncated])
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
-    const conversationHistoryText = conversationHistory.map(turn => turn.text).join('')
+    if (!currentModel) return false
+
+    const chatHistoryCharTotal = conversationHistory.reduce((charCount, curr) => charCount + curr.text.length, 0)
+
+    // TODO(nullhook): make this more accurately based on the actual page content length
+    let totalCharLimit = currentModel?.longConversationWarningCharacterLimit
+    if (!siteInfo) totalCharLimit += currentModel?.maxPageContentLength
 
     if (hasDismissedLongConversationInfo === undefined &&
-      currentModel &&
-      conversationHistoryText.length >= currentModel?.longConversationWarningCharacterLimit) {
+      chatHistoryCharTotal >= totalCharLimit) {
       return true
     }
 
     return false
-  }, [conversationHistory, currentModel, hasDismissedLongConversationInfo])
+  }, [conversationHistory, currentModel, hasDismissedLongConversationInfo, siteInfo])
 
   const dismissLongPageWarning = () => {
     setHasDismissedLongPageWarning(true)
