@@ -117,11 +117,13 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
 }
+
+// TODO(https://github.com/brave/brave-browser/issues/33730): Unify Brave Ads
+// common operations.
 @property(nonatomic) BraveCommonOperations* commonOps;
-@property(nonatomic) BOOL networkConnectivityAvailable;
-@property(nonatomic, copy) NSString* storagePath;
-@property(nonatomic) PrefService* profilePrefService;
-@property(nonatomic) PrefService* localStatePrefService;
+
+// TODO(https://github.com/brave/brave-browser/issues/33574): Unify Brave Ads
+// component updater.
 @property(nonatomic) dispatch_group_t componentUpdaterPrefsWriteGroup;
 @property(nonatomic) dispatch_queue_t componentUpdaterPrefsWriteThread;
 @property(nonatomic) NSMutableDictionary* componentUpdaterPrefs;
@@ -129,6 +131,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 @property(nonatomic) NSTimer* componentUpdaterTimer;
 @property(nonatomic) int64_t componentUpdaterRetryCount;
 @property(nonatomic, readonly) NSDictionary* componentPaths;
+
+@property(nonatomic) BOOL networkConnectivityAvailable;
+@property(nonatomic, copy) NSString* storagePath;
+@property(nonatomic) PrefService* profilePrefService;
+@property(nonatomic) PrefService* localStatePrefService;
 @end
 
 @implementation BraveAds
@@ -329,6 +336,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Reporting
 
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
 - (void)reportLoadedPageWithURL:(NSURL*)url
              redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
                            html:(NSString*)html
@@ -349,18 +357,21 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
 }
 
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
   }
 }
 
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
 - (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
   }
 }
 
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
 - (void)reportTabUpdated:(NSInteger)tabId
                      url:(NSURL*)url
       redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
@@ -378,6 +389,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isVisible);
 }
 
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
@@ -1355,11 +1367,13 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)showReminder:(const brave_ads::mojom::ReminderType)type {
-  // This feature is not required on iOS.
+  // TODO(https://github.com/brave/brave-browser/issues/33799): Unify Brave Ads
+  // reminders.
 }
 
 - (void)updateAdRewards {
-  // This feature is not required on iOS.
+  // TODO(https://github.com/brave/brave-browser/issues/33800): Unify Brave Ads
+  // update rewards.
 }
 
 - (void)cacheAdEventForInstanceId:(const std::string&)id
@@ -1489,7 +1503,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(brave_ads::GetScheduledCaptchaCallback)callback {
-  // Adaptive captcha not supported on iOS
+  // TODO(https://github.com/brave/brave-browser/issues/33794): Unify Brave Ads
+  // adaptive captcha.
   std::move(callback).Run("");
 }
 
@@ -1588,7 +1603,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Ads
 
-// TODO(tmancey): Decouple SetsysInfo, SetBuildChannel and SetFlags API calls.
 - (void)initializeWithSysInfo:(BraveAdsSysInfo*)sysInfo
              buildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo
                    walletInfo:(nullable BraveAdsWalletInfo*)walletInfo
@@ -1633,11 +1647,12 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                   }));
 }
 
-// TODO(tmancey): Decouple shutdown API call.
 - (void)shutdown:(nullable void (^)())completion {
   if ([self isServiceRunning]) {
     dispatch_group_notify(
         self.componentUpdaterPrefsWriteGroup, dispatch_get_main_queue(), ^{
+          // TODO(https://github.com/brave/brave-browser/issues/32917):
+          // Deprecate shutdown API call.
           self->ads->Shutdown(base::BindOnce(^(bool) {
             if (self->ads != nil) {
               delete self->ads;
@@ -1750,7 +1765,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33470): Unify Brave Ads
-// |MaybeServeNewTabPageAd|.
+// new tab page ad serving.
 
 // TODO(tmancey): Rename to match API.
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
@@ -1822,7 +1837,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33469): Unify Brave Ads
-// |TriggerSearchResultAdEvent|.
+// search result attribution.
 
 // TODO(tmancey): Rename to match API.
 - (void)purgeOrphanedAdEvents:(BraveAdsAdType)adType
@@ -1891,15 +1906,15 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33788): Unify Brave Ads
-// |ToggleLikeCategory|.
+// like category.
 
 // TODO(https://github.com/brave/brave-browser/issues/33788): Unify Brave Ads
-// |ToggleDislikeCategory|.
+// dislike category.
 
 // TODO(https://github.com/brave/brave-browser/issues/33789): Unify Brave Ads
-// |ToggleSaveAd|.
+// save ad.
 
 // TODO(https://github.com/brave/brave-browser/issues/33790): Unify Brave Ads
-// |ToggleMarkAdAsInappropriate|.
+// mark ad as inappropriate.
 
 @end
