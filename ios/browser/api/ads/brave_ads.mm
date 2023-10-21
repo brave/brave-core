@@ -387,12 +387,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
-#pragma mark - Configuration
-
-- (void)setIdleThreshold:(const int)threshold {
-  // Not needed on mobile
-}
-
 #pragma mark - Component updater
 
 - (NSString*)componentUpdaterPrefsPath {
