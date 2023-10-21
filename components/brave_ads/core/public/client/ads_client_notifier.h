@@ -33,6 +33,11 @@ class AdsClientNotifier {
 
   virtual ~AdsClientNotifier();
 
+  void set_should_queue_notifications_for_testing(
+      bool should_queue_notifications) {
+    should_queue_notifications_ = should_queue_notifications;
+  }
+
   void AddObserver(AdsClientNotifierObserver* observer);
   void RemoveObserver(AdsClientNotifierObserver* observer);
 
@@ -59,6 +64,10 @@ class AdsClientNotifier {
   // Invoked when a resource component with |id| has been unregistered.
   void NotifyDidUnregisterResourceComponent(const std::string& id) const;
 
+  // Invoked when the Brave Rewards wallet did update.
+  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
+                                    const std::string& recovery_seed) const;
+
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that
   // occurred on the way to the current page. The current page is the last one
@@ -67,10 +76,6 @@ class AdsClientNotifier {
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
                                      const std::string& text) const;
-
-  // Invoked when the Brave Rewards wallet did update.
-  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
-                                    const std::string& recovery_seed) const;
 
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that
@@ -132,11 +137,6 @@ class AdsClientNotifier {
 
   // Invoked when the user solves an adaptive captch.
   void NotifyDidSolveAdaptiveCaptcha() const;
-
-  void set_should_queue_notifications_for_testing(
-      bool should_queue_notifications) {
-    should_queue_notifications_ = should_queue_notifications;
-  }
 
  private:
   base::ObserverList<AdsClientNotifierObserver> observers_;
