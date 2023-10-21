@@ -224,14 +224,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
            object:nil];
 }
 
-- (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyRewardsWalletDidUpdate(
-        base::SysNSStringToUTF8(paymentId),
-        base::SysNSStringToUTF8(base64Seed));
-  }
-}
-
 - (NSString*)adsDatabasePath {
   return [self.storagePath stringByAppendingPathComponent:@"Ads.db"];
 }
@@ -1598,6 +1590,16 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   if (verbose_level <= logging::GetVlogLevelHelper(file, strlen(file))) {
     logging::LogMessage(file, line, -verbose_level).stream()
         << "[ads] " << message;
+  }
+}
+
+#pragma mark - Rewards
+
+- (void)updateWalletInfo:(NSString*)paymentId base64Seed:(NSString*)base64Seed {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyRewardsWalletDidUpdate(
+        base::SysNSStringToUTF8(paymentId),
+        base::SysNSStringToUTF8(base64Seed));
   }
 }
 
