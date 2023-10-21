@@ -264,37 +264,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   nw_path_monitor_start(networkMonitor);
 }
 
-#pragma mark - Observers
-
-- (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->AddObserver(observer);
-  }
-}
-
-- (void)removeObserver:(brave_ads::AdsClientNotifierObserver*)observer {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->RemoveObserver(observer);
-  }
-}
-
-- (void)notifyPendingObservers {
-  if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyPendingObservers();
-  }
-}
-
-- (void)applicationDidBecomeActive {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyBrowserDidEnterForeground();
-    adsClientNotifier->NotifyBrowserDidBecomeActive();
-  }
-}
-
-- (void)applicationDidBackground {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyBrowserDidResignActive();
-    adsClientNotifier->NotifyBrowserDidEnterBackground();
   }
 }
 
@@ -1918,5 +1887,39 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 // TODO(https://github.com/brave/brave-browser/issues/33790): Unify Brave Ads
 // mark ad as inappropriate.
+
+#pragma mark - Ads client notifier
+
+- (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer {
+  if (adsClientNotifier != nil) {
+    adsClientNotifier->AddObserver(observer);
+  }
+}
+
+- (void)removeObserver:(brave_ads::AdsClientNotifierObserver*)observer {
+  if (adsClientNotifier != nil) {
+    adsClientNotifier->RemoveObserver(observer);
+  }
+}
+
+- (void)notifyPendingObservers {
+  if (adsClientNotifier != nil) {
+    adsClientNotifier->NotifyPendingObservers();
+  }
+}
+
+- (void)applicationDidBecomeActive {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidEnterForeground();
+    adsClientNotifier->NotifyBrowserDidBecomeActive();
+  }
+}
+
+- (void)applicationDidBackground {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidResignActive();
+    adsClientNotifier->NotifyBrowserDidEnterBackground();
+  }
+}
 
 @end
