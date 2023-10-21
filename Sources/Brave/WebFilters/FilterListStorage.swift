@@ -134,6 +134,7 @@ import Combine
     upsertSetting(
       uuid: filterList.entry.uuid,
       isEnabled: filterList.isEnabled,
+      isHidden: false,
       componentId: filterList.entry.componentId,
       allowCreation: true,
       order: filterList.order,
@@ -146,7 +147,7 @@ import Combine
   ///
   /// - Warning: Do not call this before we load core data
   private func upsertSetting(
-    uuid: String, isEnabled: Bool, componentId: String,
+    uuid: String, isEnabled: Bool, isHidden: Bool, componentId: String,
     allowCreation: Bool, order: Int, isAlwaysAggressive: Bool
   ) {
     if allFilterListSettings.contains(where: { $0.uuid == uuid }) {
@@ -154,6 +155,7 @@ import Combine
         uuid: uuid,
         componentId: componentId,
         isEnabled: isEnabled,
+        isHidden: isHidden,
         order: order,
         isAlwaysAggressive: isAlwaysAggressive
       )
@@ -162,6 +164,7 @@ import Combine
         uuid: uuid,
         componentId: componentId,
         isEnabled: isEnabled,
+        isHidden: isHidden,
         order: order,
         isAlwaysAggressive: isAlwaysAggressive
       )
@@ -183,29 +186,34 @@ import Combine
   
   /// Update the filter list settings with the given `componentId` and `isEnabled` status
   /// Will not write unless one of these two values have changed
-  private func updateSetting(uuid: String, componentId: String, isEnabled: Bool, order: Int, isAlwaysAggressive: Bool) {
+  private func updateSetting(uuid: String, componentId: String, isEnabled: Bool, isHidden: Bool, order: Int, isAlwaysAggressive: Bool) {
     guard let index = allFilterListSettings.firstIndex(where: { $0.uuid == uuid }) else {
       return
     }
     
-    guard allFilterListSettings[index].isEnabled != isEnabled || allFilterListSettings[index].componentId != componentId || allFilterListSettings[index].order?.intValue != order || allFilterListSettings[index].isAlwaysAggressive != isAlwaysAggressive else {
-      // Ensure we stop if this is already in sync in order to avoid an event loop
-      // And things hanging for too long.
-      // This happens because we care about UI changes but not when our downloads finish
+    // Ensure we stop if this is already in sync in order to avoid an event loop
+    // And things hanging for too long.
+    guard allFilterListSettings[index].isEnabled != isEnabled
+            || allFilterListSettings[index].componentId != componentId
+            || allFilterListSettings[index].order?.intValue != order
+            || allFilterListSettings[index].isAlwaysAggressive != isAlwaysAggressive
+            || allFilterListSettings[index].isHidden != isHidden
+    else {
       return
     }
       
     allFilterListSettings[index].isEnabled = isEnabled
     allFilterListSettings[index].isAlwaysAggressive = isAlwaysAggressive
+    allFilterListSettings[index].isHidden = isHidden
     allFilterListSettings[index].componentId = componentId
     allFilterListSettings[index].order = NSNumber(value: order)
     FilterListSetting.save(inMemory: !persistChanges)
   }
   
   /// Create a filter list setting for the given UUID and enabled status
-  private func create(uuid: String, componentId: String, isEnabled: Bool, order: Int, isAlwaysAggressive: Bool) {
+  private func create(uuid: String, componentId: String, isEnabled: Bool, isHidden: Bool, order: Int, isAlwaysAggressive: Bool) {
     let setting = FilterListSetting.create(
-      uuid: uuid, componentId: componentId, isEnabled: isEnabled, order: order, inMemory: !persistChanges,
+      uuid: uuid, componentId: componentId, isEnabled: isEnabled, isHidden: isHidden, order: order, inMemory: !persistChanges,
       isAlwaysAggressive: isAlwaysAggressive
     )
     allFilterListSettings.append(setting)

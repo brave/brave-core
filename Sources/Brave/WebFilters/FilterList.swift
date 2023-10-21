@@ -46,6 +46,11 @@ struct FilterList: Identifiable {
   let entry: AdblockFilterListCatalogEntry
   var isEnabled: Bool = false
   
+  /// Tells us if this filter list is regional (i.e. if it contains language restrictions)
+  var isRegional: Bool {
+    return !entry.languages.isEmpty
+  }
+  
   /// Lets us know if this filter list is always aggressive.
   /// Aggressive filter lists are those that are non regional.
   var isAlwaysAggressive: Bool { !isRegional }
