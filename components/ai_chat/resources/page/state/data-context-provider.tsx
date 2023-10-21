@@ -152,7 +152,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
     if (hasDismissedLongConversationInfo === undefined &&
       currentModel &&
-      conversationHistoryText.length >= currentModel?.maxConversationLength) {
+      conversationHistoryText.length >= currentModel?.longConversationWarningCharacterLimit) {
       return true
     }
 

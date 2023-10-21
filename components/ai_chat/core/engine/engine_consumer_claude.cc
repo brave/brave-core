@@ -151,6 +151,8 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
     SuggestedQuestionsCallback callback) {
+  const std::string& truncated_page_content =
+      page_content.substr(0, max_page_content_length_);
   std::string prompt;
   std::vector<std::string> stop_sequences;
   prompt = base::StrCat(
@@ -159,7 +161,7 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
            l10n_util::GetStringUTF8(
                is_video ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
                         : IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT),
-           {page_content}, nullptr),
+           {truncated_page_content}, nullptr),
        "\n\n",
        l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_QUESTION_PROMPT_SEGMENT),
        kAIPromptSequence, "<response>"});

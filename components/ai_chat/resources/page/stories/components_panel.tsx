@@ -50,7 +50,9 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: false
+    isPremium: false,
+    maxPageContentLength: 10000,
+    longConversationWarningCharacterLimit: 9700
   },
   {
     key: '2',
@@ -59,7 +61,9 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: true
+    isPremium: true,
+    maxPageContentLength: 10000,
+    longConversationWarningCharacterLimit: 9700
   }
 ]
 

@@ -269,9 +269,11 @@ void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
     SuggestedQuestionsCallback callback) {
+  const std::string& truncated_page_content =
+      page_content.substr(0, max_page_content_length_);
   std::string prompt;
   std::vector<std::string> stop_sequences;
-  prompt = BuildLlama2GenerateQuestionsPrompt(is_video, page_content);
+  prompt = BuildLlama2GenerateQuestionsPrompt(is_video, truncated_page_content);
   stop_sequences.push_back(kLlama2Eos);
   stop_sequences.push_back("</ul>");
   DCHECK(api_);
