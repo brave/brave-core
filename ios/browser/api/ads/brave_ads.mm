@@ -339,66 +339,90 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return NO;
 }
 
-#pragma mark - Reporting
+#pragma mark - Profile prefs
 
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportLoadedPageWithURL:(NSURL*)url
-             redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-                           html:(NSString*)html
-                      innerText:(NSString*)text
-                          tabId:(NSInteger)tabId {
-  if (![self isServiceRunning]) {
+- (void)initProfilePrefService {
+  ios::ChromeBrowserStateManager* browserStateManager =
+      GetApplicationContext()->GetChromeBrowserStateManager();
+  CHECK(browserStateManager);
+
+  ChromeBrowserState* chromeBrowserState =
+      browserStateManager->GetLastUsedBrowserState();
+  CHECK(chromeBrowserState);
+
+  _profilePrefService = chromeBrowserState->GetPrefs();
+  CHECK(_profilePrefService);
+}
+
+- (void)migrateBooleanProfilePref:(NSDictionary*)legacyProfilePrefs
+                             path:(const std::string&)path {
+  // Only for "ads_pref.plist" migration; please see pref service migration
+  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
+  NSString* legacyProfilePref = base::SysUTF8ToNSString(path);
+  if ([legacyProfilePrefs objectForKey:legacyProfilePref]) {
+    self.profilePrefService->SetBoolean(
+        path, [legacyProfilePrefs[legacyProfilePref] boolValue]);
+  }
+}
+
+- (void)maybeMigrateProfilePrefs {
+  // Only for "ads_pref.plist" migration; please see pref service migration
+  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
+  NSString* legacyProfilePrefsPath =
+      [self.storagePath stringByAppendingPathComponent:@"ads_pref.plist"];
+  NSDictionary* legacyProfilePrefs = [[NSMutableDictionary alloc]
+      initWithContentsOfFile:legacyProfilePrefsPath];
+  if (!legacyProfilePrefs) {
     return;
   }
 
-  std::vector<GURL> urls;
-  for (NSURL* redirectURL in redirectionURLs) {
-    urls.push_back(net::GURLWithNSURL(redirectURL));
+  BLOG(1, @"Migrating profile prefs");
+
+  if ([legacyProfilePrefs objectForKey:@"BATAdsEnabled"]) {
+    const BOOL isEnabled = [legacyProfilePrefs[@"BATAdsEnabled"] boolValue];
+    self.profilePrefService->SetBoolean(brave_rewards::prefs::kEnabled,
+                                        isEnabled);
+    self.profilePrefService->SetBoolean(
+        brave_ads::prefs::kOptedInToNotificationAds, isEnabled);
+  } else {
+    [self migrateBooleanProfilePref:legacyProfilePrefs
+                               path:brave_rewards::prefs::kEnabled];
+    [self
+        migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::kOptedInToNotificationAds];
   }
-  urls.push_back(net::GURLWithNSURL(url));
-  adsClientNotifier->NotifyTabTextContentDidChange(
-      (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
-  adsClientNotifier->NotifyTabHtmlContentDidChange(
-      (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::kHasMigratedClientState];
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::
+                                      kHasMigratedConfirmationState];
+
+  [self
+      migrateBooleanProfilePref:legacyProfilePrefs
+                           path:brave_ads::prefs::kHasMigratedConversionState];
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::
+                                      kHasMigratedNotificationState];
+
+  [self migrateBooleanProfilePref:legacyProfilePrefs
+                             path:brave_ads::prefs::kHasMigratedRewardsState];
+
+  NSError* error = nil;
+  [[NSFileManager defaultManager] removeItemAtPath:legacyProfilePrefsPath
+                                             error:&error];
+  if (error) {
+    BLOG(0, @"Failed to remove legacy prefs: %@", error);
+  }
 }
 
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportMediaStartedWithTabId:(NSInteger)tabId {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
-  }
-}
+#pragma mark - Local state prefs
 
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
-  }
-}
-
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportTabUpdated:(NSInteger)tabId
-                     url:(NSURL*)url
-      redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
-              isSelected:(BOOL)isSelected {
-  if (![self isServiceRunning]) {
-    return;
-  }
-
-  std::vector<GURL> urls;
-  for (NSURL* redirectURL in redirectionURLs) {
-    urls.push_back(net::GURLWithNSURL(redirectURL));
-  }
-  urls.push_back(net::GURLWithNSURL(url));
-  const bool isVisible = isSelected && [self isBrowserActive];
-  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isVisible);
-}
-
-// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
-- (void)reportTabClosedWithTabId:(NSInteger)tabId {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
-  }
+- (void)initLocalStatePrefService {
+  _localStatePrefService = GetApplicationContext()->GetLocalState();
+  CHECK(_localStatePrefService);
 }
 
 #pragma mark - Component updater
@@ -797,94 +821,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
         });
       }];
 }
-
-#pragma mark - Profile prefs
-
-- (void)initProfilePrefService {
-  ios::ChromeBrowserStateManager* browserStateManager =
-      GetApplicationContext()->GetChromeBrowserStateManager();
-  CHECK(browserStateManager);
-
-  ChromeBrowserState* chromeBrowserState =
-      browserStateManager->GetLastUsedBrowserState();
-  CHECK(chromeBrowserState);
-
-  _profilePrefService = chromeBrowserState->GetPrefs();
-  CHECK(_profilePrefService);
-}
-
-- (void)migrateBooleanProfilePref:(NSDictionary*)legacyProfilePrefs
-                             path:(const std::string&)path {
-  // Only for "ads_pref.plist" migration; please see pref service migration
-  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-  NSString* legacyProfilePref = base::SysUTF8ToNSString(path);
-  if ([legacyProfilePrefs objectForKey:legacyProfilePref]) {
-    self.profilePrefService->SetBoolean(
-        path, [legacyProfilePrefs[legacyProfilePref] boolValue]);
-  }
-}
-
-- (void)maybeMigrateProfilePrefs {
-  // Only for "ads_pref.plist" migration; please see pref service migration
-  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-  NSString* legacyProfilePrefsPath =
-      [self.storagePath stringByAppendingPathComponent:@"ads_pref.plist"];
-  NSDictionary* legacyProfilePrefs = [[NSMutableDictionary alloc]
-      initWithContentsOfFile:legacyProfilePrefsPath];
-  if (!legacyProfilePrefs) {
-    return;
-  }
-
-  BLOG(1, @"Migrating profile prefs");
-
-  if ([legacyProfilePrefs objectForKey:@"BATAdsEnabled"]) {
-    const BOOL isEnabled = [legacyProfilePrefs[@"BATAdsEnabled"] boolValue];
-    self.profilePrefService->SetBoolean(brave_rewards::prefs::kEnabled,
-                                        isEnabled);
-    self.profilePrefService->SetBoolean(
-        brave_ads::prefs::kOptedInToNotificationAds, isEnabled);
-  } else {
-    [self migrateBooleanProfilePref:legacyProfilePrefs
-                               path:brave_rewards::prefs::kEnabled];
-    [self
-        migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::kOptedInToNotificationAds];
-  }
-
-  [self migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::kHasMigratedClientState];
-
-  [self migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::
-                                      kHasMigratedConfirmationState];
-
-  [self
-      migrateBooleanProfilePref:legacyProfilePrefs
-                           path:brave_ads::prefs::kHasMigratedConversionState];
-
-  [self migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::
-                                      kHasMigratedNotificationState];
-
-  [self migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::kHasMigratedRewardsState];
-
-  NSError* error = nil;
-  [[NSFileManager defaultManager] removeItemAtPath:legacyProfilePrefsPath
-                                             error:&error];
-  if (error) {
-    BLOG(0, @"Failed to remove legacy prefs: %@", error);
-  }
-}
-
-#pragma mark - Local state prefs
-
-- (void)initLocalStatePrefService {
-  _localStatePrefService = GetApplicationContext()->GetLocalState();
-  CHECK(_localStatePrefService);
-}
-
-#pragma mark - Ads Resources Paths
 
 - (NSDictionary*)componentPaths {
   static NSDictionary* _paths = nil;
@@ -1323,7 +1259,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       @"gjigddoamjemfcahionjikmlfijoiecf" : @"iso_639_1_xh",
       @"jhnklldjooclfmgpkipaemehnngabckf" : @"iso_639_1_yi",
       @"fjfbodkpnkomodlcanacakhcfmjjgkdf" : @"iso_639_1_yo",
-      fIsBrowserActive @"bncbapkadghlbephbogcmomlecfmdhnb" : @"iso_639_1_za",
+      @"bncbapkadghlbephbogcmomlecfmdhnb" : @"iso_639_1_za",
       @"dhlnknppkgfgehmmipicnlplhjgpnmnh" : @"iso_639_1_zu"
     };
   });
@@ -1929,6 +1865,66 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)notifyPrefDidChange:(const std::string&)path {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyPrefDidChange(path);
+  }
+}
+
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
+- (void)reportLoadedPageWithURL:(NSURL*)url
+             redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
+                           html:(NSString*)html
+                      innerText:(NSString*)text
+                          tabId:(NSInteger)tabId {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  std::vector<GURL> urls;
+  for (NSURL* redirectURL in redirectionURLs) {
+    urls.push_back(net::GURLWithNSURL(redirectURL));
+  }
+  urls.push_back(net::GURLWithNSURL(url));
+  adsClientNotifier->NotifyTabTextContentDidChange(
+      (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
+  adsClientNotifier->NotifyTabHtmlContentDidChange(
+      (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
+}
+
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
+- (void)reportMediaStartedWithTabId:(NSInteger)tabId {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
+  }
+}
+
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
+- (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
+  }
+}
+
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
+- (void)reportTabUpdated:(NSInteger)tabId
+                     url:(NSURL*)url
+      redirectedFromURLs:(NSArray<NSURL*>*)redirectionURLs
+              isSelected:(BOOL)isSelected {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  std::vector<GURL> urls;
+  for (NSURL* redirectURL in redirectionURLs) {
+    urls.push_back(net::GURLWithNSURL(redirectURL));
+  }
+  urls.push_back(net::GURLWithNSURL(url));
+  const bool isVisible = isSelected && [self isBrowserActive];
+  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isVisible);
+}
+
+// TODO(tmancey): Rename to match adsClientNotifier->Notify*.
+- (void)reportTabClosedWithTabId:(NSInteger)tabId {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
   }
 }
 
