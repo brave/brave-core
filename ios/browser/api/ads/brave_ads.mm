@@ -252,17 +252,13 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)applicationDidBecomeActive {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyBrowserDidEnterForeground();
-    adsClientNotifier->NotifyBrowserDidBecomeActive();
-  }
+  [self notifyBrowserDidEnterForeground];
+  [self notifyBrowserDidBecomeActive];
 }
 
 - (void)applicationDidBackground {
-  if ([self isServiceRunning]) {
-    adsClientNotifier->NotifyBrowserDidResignActive();
-    adsClientNotifier->NotifyBrowserDidEnterBackground();
-  }
+  [self notifyBrowserDidResignActive];
+  [self notifyBrowserDidEnterBackground];
 }
 
 #pragma mark - Database
@@ -537,10 +533,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      return;
                    }
                    if (success) {
-                     strongSelf->adsClientNotifier
-                         ->NotifyDidUpdateResourceComponent(
-                             "1", base::SysNSStringToUTF8(
-                                      languageCodeAdsResourceId));
+                     strongSelf->notifyDidUpdateResourceComponent(
+                         /*manifest_version=*/"1",
+                         base::SysNSStringToUTF8(languageCodeAdsResourceId));
                    }
                  }];
 
@@ -566,6 +561,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
        countryCode, countryCodeAdsResourceId);
 
   BLOG(1, @"Notifying ads resource observers");
+
   const auto __weak weakSelf = self;
   [self downloadAdsResource:isoCountryCode
                  completion:^(BOOL success) {
@@ -574,10 +570,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      return;
                    }
                    if (success) {
-                     strongSelf->adsClientNotifier
-                         ->NotifyDidUpdateResourceComponent(
-                             "1",
-                             base::SysNSStringToUTF8(countryCodeAdsResourceId));
+                     strongSelf->notifyDidUpdateResourceComponent(
+                         /*manifest_version=*/"1",
+                         base::SysNSStringToUTF8(countryCodeAdsResourceId));
                    }
                  }];
 
@@ -657,9 +652,10 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      }
 
                      BLOG(1, @"Notifying ads resource observers");
-                     strongSelf->adsClientNotifier
-                         ->NotifyDidUpdateResourceComponent(
-                             "1", base::SysNSStringToUTF8(key));
+
+                     strongSelf->notifyDidUpdateResourceComponent(
+                         /*manifest_version=*/"1",
+                         base::SysNSStringToUTF8(key));
                    }];
   }
 }
@@ -1599,8 +1595,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                   base::BindOnce(^(const bool success) {
                     [self periodicallyCheckForAdsResourceUpdates];
                     [self registerAdsResources];
-                    if (success && self->adsClientNotifier != nil) {
-                      self->adsClientNotifier->NotifyDidInitializeAds();
+                    if (success) {
+                      [self notifyDidInitializeAds];
                     }
                     completion(success);
                     if (!success) {
@@ -1856,9 +1852,22 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
 }
 
+- (void)notifyDidInitializeAds {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyDidInitializeAds();
+  }
+}
+
 - (void)notifyPrefDidChange:(const std::string&)path {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyPrefDidChange(path);
+  }
+}
+
+- (void)notifyDidUpdateResourceComponent:(const std::string&)manifest_version
+                                      id:(const std::string&)id {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyDidUpdateResourceComponent(manifest_version, id);
   }
 }
 
@@ -1932,6 +1941,30 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)notifyDidCloseTab:(NSInteger)tabId {
   if ([self isServiceRunning]) {
     adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
+  }
+}
+
+- (void)notifyBrowserDidEnterForeground {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidEnterForeground();
+  }
+}
+
+- (void)notifyBrowserDidEnterBackground {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidEnterBackground();
+  }
+}
+
+- (void)notifyBrowserDidBecomeActive {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidBecomeActive();
+  }
+}
+
+- (void)notifyBrowserDidResignActive {
+  if ([self isServiceRunning]) {
+    adsClientNotifier->NotifyBrowserDidResignActive();
   }
 }
 
