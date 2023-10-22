@@ -4,13 +4,12 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
+
 #include <algorithm>
 
 #include "base/check.h"
-#include "base/logging.h"
 #include "base/rand_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace ntp_background_images {
