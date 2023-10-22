@@ -4,23 +4,15 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
+
 #include <algorithm>
 
 #include "base/check.h"
-#include "base/logging.h"
 #include "base/rand_util.h"
-#include "base/time/time.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace ntp_background_images {
-
-namespace {
-
-constexpr base::TimeDelta kCountsResetTimeDelay = base::Days(1);
-
-}  // namespace
 
 ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
   CHECK(prefs);
@@ -30,7 +22,7 @@ ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
   count_to_branded_wallpaper_ = features::kInitialCountToBrandedWallpaper.Get();
 
   // We also reset when a specific amount of time is elapsed when in SI mode
-  timer_counts_reset_.Start(FROM_HERE, kCountsResetTimeDelay, this,
+  timer_counts_reset_.Start(FROM_HERE, features::kResetCounterAfter.Get(), this,
                             &ViewCounterModel::OnTimerCountsResetExpired);
 }
 
