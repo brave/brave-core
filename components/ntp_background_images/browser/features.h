@@ -26,6 +26,10 @@ constexpr base::FeatureParam<int> kInitialCountToBrandedWallpaper{
 constexpr base::FeatureParam<int> kCountToBrandedWallpaper{
     &kBraveNTPBrandedWallpaper, "count_to_branded_wallpaper", 2};
 
+// Reset counter when a specific amount of time has elapsed in SI mode.
+constexpr base::FeatureParam<base::TimeDelta> kResetCounterAfter{
+    &kBraveNTPBrandedWallpaper, "reset_counter_after", base::Days(1)};
+
 }  // namespace features
 }  // namespace ntp_background_images
 
