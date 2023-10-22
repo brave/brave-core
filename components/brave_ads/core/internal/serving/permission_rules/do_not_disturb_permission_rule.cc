@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
 
-#include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
@@ -28,7 +27,6 @@ bool DoesRespectCap() {
   const base::Time time = base::Time::Now();
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   return exploded.hour >= kDoNotDisturbToHour.Get() &&
          exploded.hour < kDoNotDisturbFromHour.Get();

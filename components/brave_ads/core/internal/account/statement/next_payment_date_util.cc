@@ -17,7 +17,6 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
 
   base::Time::Exploded now_exploded;
   now.UTCExplode(&now_exploded);
-  CHECK(now_exploded.HasValidValues());
 
   int month = now_exploded.month;
 
@@ -40,7 +39,6 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
     } else {
       base::Time::Exploded next_token_redemption_at_exploded;
       next_token_redemption_at.UTCExplode(&next_token_redemption_at_exploded);
-      CHECK(next_token_redemption_at_exploded.HasValidValues());
 
       if (next_token_redemption_at_exploded.month == month) {
         // If this month does not have reconciled transactions and our next
