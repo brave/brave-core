@@ -30,6 +30,8 @@ export const Title = styled.h3`
 `
 
 export const SmallImage = styled.img`
+  &:not([src]) { opacity: 0; }
+
   min-width: 96px;
   width: 96px;
 
@@ -42,6 +44,8 @@ export const SmallImage = styled.img`
 `
 
 export const LargeImage = styled.img`
+  &:not([src]) { opacity: 0; }
+
   width: 100%;
   height: 269px;
 
