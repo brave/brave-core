@@ -173,7 +173,7 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetTimerTest) {
   model.RegisterPageView();
   EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
   EXPECT_EQ(model.count_to_branded_wallpaper_, 3);
-  task_environment_.FastForwardBy(base::Days(1));
+  task_environment_.FastForwardBy(features::kResetCounterAfter.Get());
   EXPECT_EQ(model.count_to_branded_wallpaper_, 1);
 }
 
