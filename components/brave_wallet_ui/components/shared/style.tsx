@@ -150,6 +150,7 @@ export const Row = styled.div<
     $wrap?: boolean
   }
 >`
+  cursor: ${(p) => (p.onClick ? 'pointer' : 'unset')};
   font-family: 'Poppins';
   display: flex;
   flex-direction: row;

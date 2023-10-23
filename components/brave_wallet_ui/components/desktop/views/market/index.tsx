@@ -19,6 +19,16 @@ import {
 // Constants
 import { WalletRoutes } from '../../../../constants/types'
 
+// Options
+import { ExploreNavOptions } from '../../../../options/nav-options'
+
+// Components
+import { Column } from '../../../shared/style'
+import { ControlsRow } from '../portfolio/style'
+import {
+  SegmentedControl //
+} from '../../../shared/segmented_control/segmented_control'
+
 // Styled Components
 import { LoadIcon, LoadIconWrapper, MarketDataIframe } from './style'
 
@@ -214,13 +224,24 @@ export const MarketView = () => {
           <LoadIcon />
         </LoadIconWrapper>
       ) : (
-        <MarketDataIframe
-          iframeHeight={iframeHeight}
-          ref={marketDataIframeRef}
-          onLoad={onMarketDataFrameLoad}
-          src='chrome-untrusted://market-display'
-          sandbox='allow-scripts allow-same-origin'
-        />
+        <Column
+          fullHeight
+          fullWidth
+        >
+          <ControlsRow>
+            <SegmentedControl
+              navOptions={ExploreNavOptions}
+              width={384}
+            />
+          </ControlsRow>
+          <MarketDataIframe
+            iframeHeight={iframeHeight}
+            ref={marketDataIframeRef}
+            onLoad={onMarketDataFrameLoad}
+            src='chrome-untrusted://market-display'
+            sandbox='allow-scripts allow-same-origin'
+          />
+        </Column>
       )}
     </>
   )

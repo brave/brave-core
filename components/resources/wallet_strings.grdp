@@ -1042,4 +1042,6 @@
   <message name="IDS_BRAVE_WALLET_UNTRUSTED_REQUEST_WARNING" desc="Warning that the pending request may be malicious">This request appears malicious, and may leave you vulnerable to theft. Do not continue unless you trust the app.</message>
   <message name="IDS_BRAVE_WALLET_PROCEED_BUTTON" desc="Proceed action button text">Proceed</message>
   <message name="IDS_BRAVE_WALLET_FOUND_ISSUES" desc="Notice that a number of issues were found">We found <ph name="VALUE">$1<ex>2</ex></ph> issues.</message>
+  <message name="IDS_BRAVE_WALLET_WEB_3" desc="Web3 page title">Web3</message>
+  <message name="IDS_BRAVE_WALLET_TOP_NAV_EXPLORE" desc="Navigation title for the 'Explore' tab/page">Explore</message>
 </grit-part>

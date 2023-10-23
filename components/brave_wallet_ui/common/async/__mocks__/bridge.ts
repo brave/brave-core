@@ -68,6 +68,7 @@ import {
   mockSignMessageRequest,
   mockSwitchChainRequest
 } from '../../../stories/mock-data/mock-eth-requests'
+import { mockDappsListMap } from '../../../mocks/mock-dapps-list'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(
@@ -330,6 +331,71 @@ export class MockedWalletApiProxy {
     getOnRampCurrencies: async () => {
       return {
         currencies: mockOnRampCurrencies
+      }
+    },
+
+    getTopDapps: async (chainId, coin) => {
+      switch (chainId) {
+        case BraveWallet.MAINNET_CHAIN_ID: {
+          const parser = createDappParserForRange(
+            mockDappsListMap.ethereum.range
+          )
+          return {
+            dapps: mockDappsListMap.ethereum.results.map(parser)
+          }
+        }
+        case BraveWallet.SOLANA_MAINNET: {
+          const parser = createDappParserForRange(mockDappsListMap.solana.range)
+          return {
+            dapps: mockDappsListMap.solana.results.map(parser)
+          }
+        }
+        case BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID: {
+          const parser = createDappParserForRange(
+            mockDappsListMap['binance-smart-chain'].range
+          )
+          return {
+            dapps: mockDappsListMap['binance-smart-chain'].results.map(parser)
+          }
+        }
+        case BraveWallet.POLYGON_MAINNET_CHAIN_ID: {
+          const parser = createDappParserForRange(
+            mockDappsListMap.polygon.range
+          )
+          return {
+            dapps: mockDappsListMap.polygon.results.map(parser)
+          }
+        }
+        case BraveWallet.OPTIMISM_MAINNET_CHAIN_ID: {
+          const parser = createDappParserForRange(
+            mockDappsListMap.optimism.range
+          )
+          return {
+            dapps: mockDappsListMap.optimism.results.map(parser)
+          }
+        }
+        case BraveWallet.AURORA_MAINNET_CHAIN_ID: {
+          const parser = createDappParserForRange(mockDappsListMap.aurora.range)
+          return {
+            dapps: mockDappsListMap.aurora.results.map(parser)
+          }
+        }
+        case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID: {
+          const parser = createDappParserForRange(
+            mockDappsListMap.avalanche.range
+          )
+          return {
+            dapps: mockDappsListMap.avalanche.results.map(parser)
+          }
+        }
+        case BraveWallet.FANTOM_MAINNET_CHAIN_ID: {
+          const parser = createDappParserForRange(mockDappsListMap.fantom.range)
+          return {
+            dapps: mockDappsListMap.fantom.results.map(parser)
+          }
+        }
+        default:
+          return { dapps: [] }
       }
     }
   }
@@ -1132,6 +1198,28 @@ export class MockedWalletApiProxy {
 }
 
 let apiProxy: Partial<WalletApiProxy> | undefined
+
+type DappListResult =
+  (typeof mockDappsListMap)[keyof typeof mockDappsListMap]['results'][number]
+
+function createDappParserForRange(
+  range: string
+): (value: DappListResult) => BraveWallet.Dapp {
+  return (d) => ({
+    balance: d.metrics.balance || 0,
+    categories: d.categories,
+    chains: d.chains,
+    description: d.description,
+    id: d.dappId,
+    logo: d.logo,
+    name: d.name,
+    range: range,
+    transactions: d.metrics.transactions,
+    uaw: d.metrics.uaw,
+    volume: d.metrics.volume,
+    website: d.website
+  })
+}
 
 export function getAPIProxy(): Partial<WalletApiProxy> {
   if (!apiProxy) {

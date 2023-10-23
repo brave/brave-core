@@ -50,13 +50,21 @@ export const Text = styled.span<TextProps>`
     p.textSize === '12px' ? '18px' : p.textSize === '22px' ? '24px' : '20px'};
   font-family: 'Poppins';
   color: ${(p) =>
-    p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
+    p.color ?? p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
   font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
   font-weight: ${(p) => (p.isBold ? 500 : 400)};
   height: ${(p) => (p.maintainHeight ? 'var(--line-height)' : 'unset')};
   line-height: var(--line-height);
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   word-wrap: wrap;
+`
+
+export const TextWithOverflowEllipsis = styled(Text)<{ maxLines?: number }>`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: ${(p) => p.maxLines || '1'};
+  -webkit-box-orient: vertical;
 `
 
 export const StyledDiv = styled.div`
