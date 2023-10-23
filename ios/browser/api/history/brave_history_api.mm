@@ -173,7 +173,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
   return history_service_->BackendLoaded();
 }
 
-- (void)addHistory:(IOSHistoryNode*)history isURLTyped:(BOOL)isURLTyped {
+- (void)addHistory:(IOSHistoryNode*)history {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
 
   // Important! Only Typed URL is being synced in core side
@@ -184,8 +184,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
       /*nav_entry_id=*/0, /*local_navigation_id=*/absl::nullopt,
       /*referrer=*/GURL(),
       /*redirect_list*/ history::RedirectList(),
-      /*transition*/
-      isURLTyped ? ui::PAGE_TRANSITION_TYPED : ui::PAGE_TRANSITION_LINK,
+      /*transition*/ ui::PAGE_TRANSITION_TYPED,
       /*hidden=*/false, /*visit_source*/ history::VisitSource::SOURCE_BROWSED,
       /*did_replace_entry=*/false, /*consider_for_ntp_most_visited=*/true,
       /*title*/ base::SysNSStringToUTF16(history.title),
