@@ -76,18 +76,20 @@ std::vector<mojom::Signal*> GetSignals(
   }
 
   auto publisher_it = publishers.find(article->publisher_id);
-  if (publisher_it != publishers.end()) {
-    for (const auto& locale_info : publisher_it->second->locales) {
-      if (locale_info->locale != locale) {
+  if (publisher_it == publishers.end()) {
+    return result;
+  }
+
+  for (const auto& locale_info : publisher_it->second->locales) {
+    if (locale_info->locale != locale) {
+      continue;
+    }
+    for (const auto& channel : locale_info->channels) {
+      auto signal_it = signals.find(channel);
+      if (signal_it == signals.end()) {
         continue;
       }
-      for (const auto& channel : locale_info->channels) {
-        auto signal_it = signals.find(channel);
-        if (signal_it == signals.end()) {
-          continue;
-        }
-        result.push_back(signal_it->second.get());
-      }
+      result.push_back(signal_it->second.get());
     }
   }
   return result;
@@ -230,11 +232,7 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     }) {
   double total_weight = 0;
   for (const auto& [article, weight] : articles) {
-    auto weighting = get_weighting(weight);
-    if (weighting == 0) {
-      continue;
-    }
-    total_weight += weighting;
+    total_weight += get_weighting(weight);
   }
 
   // None of the items are eligible to be picked.
@@ -248,12 +246,7 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
   uint64_t i;
   for (i = 0; i < articles.size(); ++i) {
     auto& [article, weight] = articles[i];
-    auto weighting = get_weighting(weight);
-    if (weighting == 0) {
-      continue;
-    }
-
-    current_weight += weighting;
+    current_weight += get_weighting(weight);
     if (current_weight > picked_value) {
       break;
     }
