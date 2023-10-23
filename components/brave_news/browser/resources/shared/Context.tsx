@@ -61,7 +61,7 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   toggleBraveNewsOnNTP: (enabled: boolean) => { }
 })
 
-const publishersCache = new PublishersCachingWrapper()
+export const publishersCache = new PublishersCachingWrapper()
 const channelsCache = new ChannelsCachingWrapper()
 const configurationCache = new ConfigurationCachingWrapper()
 
