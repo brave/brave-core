@@ -42,6 +42,8 @@ static_library("browser") {
     "signal_calculator.h",
     "suggestions_controller.cc",
     "suggestions_controller.h",
+    "topics_fetcher.cc",
+    "topics_fetcher.h",
     "unsupported_publisher_migrator.cc",
     "unsupported_publisher_migrator.h",
     "urls.cc",

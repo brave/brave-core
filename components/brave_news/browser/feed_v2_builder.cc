@@ -17,6 +17,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
@@ -27,6 +28,7 @@
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
+#include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
@@ -251,11 +253,12 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles) {
 // 1 - 5 Inline Articles (from the channel)
 // This function is the same as GenerateBlock, except that the available
 // articles are filtered to only be from the specified channel.
+// https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.kxe6xeqm2vfn
 std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
-    ArticleInfos& articles,
+    const std::string& locale,
     const Publishers& publishers,
     const std::string& channel,
-    const std::string& locale) {
+    ArticleInfos& articles) {
   DVLOG(1) << __FUNCTION__;
   // First, create a set of all publishers in this channel.
   base::flat_set<std::string> allowed_publishers;
@@ -310,9 +313,92 @@ std::vector<mojom::FeedItemV2Ptr> GenerateChannelBlock(
   }
 
   std::vector<mojom::FeedItemV2Ptr> result;
-  result.push_back(mojom::FeedItemV2::NewCluster(
-      mojom::Cluster::New("channel", channel, std::move(article_elements))));
+  result.push_back(mojom::FeedItemV2::NewCluster(mojom::Cluster::New(
+      mojom::ClusterType::CHANNEL, channel, std::move(article_elements))));
   return result;
+}
+
+// Generate a Topic Cluster block
+// https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4vwmn4vmf2tq
+std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
+    const Publishers& publishers,
+    base::span<const TopicAndArticles>& topics) {
+  if (topics.empty()) {
+    return {};
+  }
+  DVLOG(1) << __FUNCTION__;
+  auto result = mojom::Cluster::New();
+  result->type = mojom::ClusterType::TOPIC;
+
+  auto& [topic, articles] = topics.front();
+  result->id = topic.title;
+
+  uint64_t max_articles = features::kBraveNewsMaxBlockCards.Get();
+  for (const auto& article : articles) {
+    auto item = mojom::FeedItemMetadata::New();
+    auto id_it = base::ranges::find_if(publishers, [&article](const auto& p) {
+      return p.second->publisher_name == article.publisher_name;
+    });
+    if (id_it != publishers.end()) {
+      item->publisher_id = id_it->first;
+    }
+    item->publisher_name = article.publisher_name;
+    item->category_name = article.category;
+    item->description = article.description.value_or("");
+    item->title = article.title;
+    item->url = GURL(article.url);
+    item->publish_time = base::Time::Now();
+    item->image = mojom::Image::NewImageUrl(GURL(article.img.value_or("")));
+    result->articles.push_back(mojom::ArticleElements::NewArticle(
+        mojom::Article::New(std::move(item), false)));
+
+    // For now, we truncate at |max_articles|. In future we may want to include
+    // more articles here and have the option to show more in the front end.
+    if (result->articles.size() >= max_articles) {
+      break;
+    }
+  }
+
+  // Make sure we don't reuse the topic by excluding it from our span.
+  topics = base::make_span(std::next(topics.begin()), topics.end());
+
+  std::vector<mojom::FeedItemV2Ptr> items;
+  items.push_back(mojom::FeedItemV2::NewCluster(std::move(result)));
+  return items;
+}
+
+// This function will generate a cluster block (if we have
+// articles/topics/channels available).
+// This could be either a Channel cluster or a Topic cluster, based on a ratio
+// configured through the |kBraveNewsCategoryTopicRatio| FeatureParam.
+// https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.agyx2d7gifd9
+std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
+    const std::string& locale,
+    const Publishers& publishers,
+    const std::vector<std::string>& channels,
+    base::span<const TopicAndArticles>& topics,
+    ArticleInfos& articles) {
+  // If we have no channels, and no topics there's nothing we can do here.
+  if (channels.empty() && topics.empty()) {
+    DVLOG(1) << "Step 4: Nothing (no subscribed channels or unshown topics)";
+    return {};
+  }
+
+  // Determine whether we should generate a channel or topic cluster.
+  auto generate_channel =
+      (!channels.empty() &&
+       base::RandDouble() < features::kBraveNewsCategoryTopicRatio.Get()) ||
+      topics.empty();
+
+  if (generate_channel) {
+    auto channel = PickRandom(channels);
+    DVLOG(1) << "Step 4: Cluster Block (channel: " << channel << ")";
+    return GenerateChannelBlock(locale, publishers, PickRandom(channels),
+                                articles);
+  } else {
+    DVLOG(1) << "Step: Cluster Block (topic)";
+    return GenerateTopicBlock(publishers, topics);
+  }
 }
 
 // Generates a "Special Block" this will be one of the following:
@@ -374,6 +460,7 @@ FeedV2Builder::FeedV2Builder(
       suggestions_controller_(suggestions_controller),
       prefs_(prefs),
       fetcher_(publishers_controller, channels_controller, url_loader_factory),
+      topics_fetcher_(url_loader_factory),
       signal_calculator_(publishers_controller,
                          channels_controller,
                          prefs,
@@ -468,6 +555,21 @@ void FeedV2Builder::OnGotSuggestedPublisherIds(
     const std::vector<std::string>& suggested_ids) {
   DVLOG(1) << __FUNCTION__;
   suggested_publisher_ids_ = suggested_ids;
+
+  GetTopics();
+}
+
+void FeedV2Builder::GetTopics() {
+  DVLOG(1) << __FUNCTION__;
+  topics_fetcher_.GetTopics(publishers_controller_->GetLastLocale(),
+                            base::BindOnce(&FeedV2Builder::OnGotTopics,
+                                           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void FeedV2Builder::OnGotTopics(TopicsResult topics) {
+  DVLOG(1) << __FUNCTION__ << " (topic count: " << topics.size() << ")";
+  topics_ = std::move(topics);
+
   BuildFeedFromArticles();
 }
 
@@ -491,6 +593,7 @@ void FeedV2Builder::BuildFeedFromArticles() {
   auto suggested_publisher_ids = suggested_publisher_ids_;
   auto articles = GetArticleInfos(raw_feed_items_, signals_);
   auto feed = mojom::FeedV2::New();
+  base::span<const TopicAndArticles> topics = base::make_span(topics_);
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
     base::ranges::move(items, std::back_inserter(feed->items));
@@ -506,7 +609,7 @@ void FeedV2Builder::BuildFeedFromArticles() {
   // Step 2: Generate a top news block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.7z05nb4b269d
   auto top_news_block =
-      GenerateChannelBlock(articles, publishers, kTopNewsChannel, locale);
+      GenerateChannelBlock(locale, publishers, kTopNewsChannel, articles);
   DVLOG(1) << "Step 2: Top News Block";
   add_items(top_news_block);
 
@@ -530,15 +633,9 @@ void FeedV2Builder::BuildFeedFromArticles() {
       if (TossCoin()) {
         DVLOG(1) << "Step 4: Standard Block";
         items = GenerateBlock(articles);
-      } else if (!subscribed_channels.empty()) {
-        // If we have any subscribed channels, display a channel cluster.
-        // TODO(fallaciousreasoning): When we have topic support, add them here
-        // too.
-        auto channel = PickRandom(subscribed_channels);
-        DVLOG(1) << "Step 4: Cluster Block (channel: " << channel << ")";
-        items = GenerateChannelBlock(articles, publishers, channel, locale);
       } else {
-        DVLOG(1) << "Step 4: Nothing (no subscribed channels)";
+        items = GenerateClusterBlock(locale, publishers, subscribed_channels,
+                                     topics, articles);
       }
     } else if (iteration_type == 2) {
       // Step 5: Optional special card

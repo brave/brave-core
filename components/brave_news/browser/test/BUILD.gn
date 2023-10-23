@@ -20,6 +20,7 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_news/browser/publishers_controller_unittest.cc",
     "//brave/components/brave_news/browser/publishers_parsing_unittest.cc",
     "//brave/components/brave_news/browser/suggestions_controller_unittest.cc",
+    "//brave/components/brave_news/browser/topics_fetcher_unittest.cc",
     "//brave/components/brave_news/browser/unsupported_publisher_migrator_unittest.cc",
   ]
 

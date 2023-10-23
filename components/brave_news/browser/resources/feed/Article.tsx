@@ -33,7 +33,7 @@ const ArticleImage = styled.img`
 export const openArticle = (article: FeedItemMetadata) => window.location.href = article.url.url
 
 export default function Article({ info, hideChannel }: Props) {
-  const { url: imageUrl, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url, { useCache: true })
+  const { url: imageUrl, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, { useCache: true })
   const url = info.data.url.url;
 
   return <Container ref={setElementRef} onClick={() => openArticle(info.data)}>
