@@ -116,6 +116,7 @@
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "services/device/public/cpp/geolocation/location_provider.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/features.h"
@@ -229,6 +230,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#endif
+
+#if BUILDFLAG(IS_LINUX)
+#include "brave/services/device/geolocation/geoclue_location_provider.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -1249,4 +1254,13 @@ blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
   metadata.full_version =
       base::StrCat({base::NumberToString(version.components()[0]), ".0.0.0"});
   return metadata;
+}
+
+std::unique_ptr<device::LocationProvider>
+BraveContentBrowserClient::OverrideSystemLocationProvider() {
+#if BUILDFLAG(IS_LINUX)
+  return device::MaybeCreateGeoClueLocationProvider();
+#else
+  return nullptr;
+#endif
 }
