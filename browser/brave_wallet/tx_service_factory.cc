@@ -15,6 +15,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -137,6 +138,7 @@ TxServiceFactory::TxServiceFactory()
   DependsOn(BitcoinWalletServiceFactory::GetInstance());
   DependsOn(KeyringServiceFactory::GetInstance());
   DependsOn(AssetRatioServiceFactory::GetInstance());
+  DependsOn(ZCashWalletServiceFactory::GetInstance());
 }
 
 TxServiceFactory::~TxServiceFactory() = default;
@@ -146,6 +148,7 @@ KeyedService* TxServiceFactory::BuildServiceInstanceFor(
   return new TxService(
       JsonRpcServiceFactory::GetServiceForContext(context),
       BitcoinWalletServiceFactory::GetServiceForContext(context),
+      ZCashWalletServiceFactory::GetServiceForContext(context),
       KeyringServiceFactory::GetServiceForContext(context),
       user_prefs::UserPrefs::Get(context), context->GetPath(),
       base::SequencedTaskRunner::GetCurrentDefault());

@@ -48,7 +48,8 @@ import {
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   isValidEVMAddress,
-  isValidFilAddress
+  isValidFilAddress,
+  isValidZecAddress
 } from '../../../../utils/address-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult //
@@ -1140,6 +1141,13 @@ const processEthereumAddress = (
     : 'braveWalletInvalidRecipientAddress'
 }
 
+const processZCashAddress = (addressOrUrl: string) => {
+  if (!isValidZecAddress(addressOrUrl)) {
+    return 'braveWalletInvalidRecipientAddress';
+  }
+  return undefined
+}
+
 const processFilecoinAddress = (
   addressOrUrl: string,
   checksum: string
@@ -1214,6 +1222,9 @@ function processAddressOrUrl({
     }
     case BraveWallet.CoinType.BTC: {
       return processBitcoinAddress(addressOrUrl)
+    }
+    case BraveWallet.CoinType.ZEC: {
+      return processZCashAddress(addressOrUrl)
     }
     default: {
       console.log(`Unknown coin ${coinType}`)

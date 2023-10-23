@@ -672,6 +672,10 @@ const base::flat_map<std::string, std::string> kBitcoinSubdomains = {
     {mojom::kBitcoinMainnet, "mainnet"},
     {mojom::kBitcoinTestnet, "testnet"}};
 
+const base::flat_map<std::string, std::string> kZCashSubdomains = {
+    {mojom::kZCashMainnet, "mainnet"},
+    {mojom::kZCashTestnet, "testnet"}};
+
 // Addesses taken from https://docs.unstoppabledomains.com/developer-toolkit/
 // smart-contracts/uns-smart-contracts/#proxyreader
 const base::flat_map<std::string, std::string>
@@ -902,6 +906,14 @@ std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (kBitcoinSubdomains.contains(chain_id_lower)) {
     return kBitcoinSubdomains.at(chain_id_lower);
+  }
+  return std::string();
+}
+
+std::string GetZCashSubdomainForKnownChainId(const std::string& chain_id) {
+  std::string chain_id_lower = base::ToLowerASCII(chain_id);
+  if (kZCashSubdomains.contains(chain_id_lower)) {
+    return kZCashSubdomains.at(chain_id_lower);
   }
   return std::string();
 }
@@ -1422,6 +1434,17 @@ std::vector<std::string> GetAllKnownEthNetworkIds() {
   return network_ids;
 }
 
+std::vector<std::string> GetAllKnownZecNetworkIds() {
+  std::vector<std::string> network_ids;
+  for (const auto* network : GetKnownZCashNetworks()) {
+    std::string network_id = GetKnownZecNetworkId(network->chain_id);
+    if (!network_id.empty()) {
+      network_ids.push_back(network_id);
+    }
+  }
+  return network_ids;
+}
+
 std::string GetKnownEthNetworkId(const std::string& chain_id) {
   auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id);
   if (!subdomain.empty()) {
@@ -1494,6 +1517,15 @@ std::string GetKnownBtcNetworkId(const std::string& chain_id) {
   return "";
 }
 
+std::string GetKnownZecNetworkId(const std::string& chain_id) {
+  auto subdomain = GetZCashSubdomainForKnownChainId(chain_id);
+  if (!subdomain.empty()) {
+    return subdomain;
+  }
+
+  return "";
+}
+
 std::string GetKnownNetworkId(mojom::CoinType coin,
                               const std::string& chain_id) {
   if (coin == mojom::CoinType::ETH) {
@@ -1508,6 +1540,10 @@ std::string GetKnownNetworkId(mojom::CoinType coin,
   if (coin == mojom::CoinType::BTC) {
     return GetKnownBtcNetworkId(chain_id);
   }
+  if (coin == mojom::CoinType::ZEC) {
+    return GetKnownZecNetworkId(chain_id);
+  }
+  NOTREACHED() << coin;
   return "";
 }
 

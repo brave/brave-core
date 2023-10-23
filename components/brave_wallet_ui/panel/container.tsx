@@ -75,10 +75,12 @@ import {
   isBitcoinTransaction,
   isEthereumTransaction,
   isFilecoinTransaction,
-  isSolanaTransaction
+  isSolanaTransaction,
+  isZCashTransaction
 } from '../utils/tx-utils'
 import { ConfirmSolanaTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-solana-transaction-panel'
 import { ConfirmBitcoinTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm-bitcoin-transaction-panel'
+import { ConfirmZCashTransactionPanel } from '../components/extension/confirm-transaction-panel/confirm_zcash_transaction_panel'
 import { SignTransactionPanel } from '../components/extension/sign-panel/sign-transaction-panel'
 import { useDispatch } from 'react-redux'
 import { ConfirmSwapTransaction } from '../components/extension/confirm-transaction-panel/swap'
@@ -448,6 +450,9 @@ function Container () {
           )}
           {isFilecoinTransaction(selectedPendingTransaction) && (
             <ConfirmTransactionPanel />
+          )}
+          {isZCashTransaction(selectedPendingTransaction) && (
+            <ConfirmZCashTransactionPanel />
           )}
         </LongWrapper>
       </PanelWrapper>

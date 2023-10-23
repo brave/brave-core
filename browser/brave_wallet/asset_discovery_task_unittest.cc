@@ -178,7 +178,8 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service_, nullptr, GetPrefs(), GetLocalState());
+        json_rpc_service_, tx_service_, nullptr, nullptr, GetPrefs(),
+        GetLocalState());
 
     api_request_helper_ =
         std::make_unique<api_request_helper::APIRequestHelper>(

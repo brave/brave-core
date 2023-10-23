@@ -20,6 +20,7 @@
 #include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -164,6 +165,8 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(json_rpc_service_receiver));
   brave_wallet::BitcoinWalletServiceFactory::BindForContext(
       profile, std::move(bitcoin_rpc_service_receiver));
+  brave_wallet::ZCashWalletServiceFactory::BindForContext(
+      profile, std::move(zcash_rpc_service_receiver));
   brave_wallet::SwapServiceFactory::BindForContext(
       profile, std::move(swap_service_receiver));
   brave_wallet::SimulationServiceFactory::BindForContext(

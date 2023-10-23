@@ -47,8 +47,9 @@ class WalletNotificationServiceUnitTest : public testing::Test {
                                                         prefs(), local_state());
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), nullptr, keyring_service_.get(), prefs(),
-        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
+        json_rpc_service_.get(), nullptr, nullptr, keyring_service_.get(),
+        prefs(), temp_dir_.GetPath(),
+        base::SequencedTaskRunner::GetCurrentDefault());
     notification_service_ = std::make_unique<WalletNotificationService>(
         tx_service_.get(), profile());
     tester_ = std::make_unique<NotificationDisplayServiceTester>(profile());
