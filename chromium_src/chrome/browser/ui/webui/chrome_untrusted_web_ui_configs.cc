@@ -49,10 +49,10 @@
 
 void RegisterChromeUntrustedWebUIConfigs() {
   RegisterChromeUntrustedWebUIConfigs_ChromiumImpl();
-content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
-    std::make_unique<market::UntrustedMarketUIConfig>());
-content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
-    std::make_unique<nft::UntrustedNftUIConfig>());
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<market::UntrustedMarketUIConfig>());
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<nft::UntrustedNftUIConfig>());
 #if !BUILDFLAG(IS_ANDROID)
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<ledger::UntrustedLedgerUIConfig>());
