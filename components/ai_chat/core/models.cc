@@ -12,6 +12,7 @@
 namespace ai_chat {
 
 constexpr char kModelsDefaultKey[] = "chat-default";
+constexpr char kModelsPremiumDefaultKey[] = "chat-claude-instant";
 
 // When adding new models, especially for display, make sure to add the UI
 // strings to ai_chat_ui_strings.grdp and ai_chat/core/constants.cc.

@@ -69,14 +69,56 @@ AIChatTabHelper::AIChatTabHelper(
       base::BindRepeating(
           &AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions,
           weak_ptr_factory_.GetWeakPtr()));
+  // TODO(petemill): AIChatCredential manager could be singleton since it uses
+  // local state prefs.
   credential_manager_ = std::make_unique<ai_chat::AIChatCredentialManager>(
       skus_service_getter, local_state_prefs);
 
-  // Engines and model names are be selectable
-  // per conversation, not static.
-  // Start with default.
-  // TODO(petemill): Default should come from pref value.
-  model_key_ = features::kAIModelKey.Get();
+  // Engines and model names are selectable per conversation, not static.
+  // Start with default from pref value but only if user set. We can't rely on
+  // actual default pref value since we should vary if user is premium or not.
+  // TODO(petemill): When we have an event for premium status changed, and a
+  // profile service for AIChat, then we can call
+  // |pref_service_->SetDefaultPrefValue| when the user becomes premium. With
+  // that, we'll be able to simply call GetString(prefs::kDefaultModelKey) and
+  // not vary on premium status.
+  if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey)) {
+    credential_manager_->GetPremiumStatus(base::BindOnce(
+        [](AIChatTabHelper* instance, mojom::PremiumStatus status) {
+          if (!instance) {
+            // WebContents destroyed
+            return;
+          }
+          if (status == mojom::PremiumStatus::Inactive) {
+            // Not premium
+            return;
+          }
+          // Use default premium model for this instance
+          instance->ChangelModel(kModelsPremiumDefaultKey);
+          // Make sure default model reflects premium status
+          const auto* current_default =
+              instance->pref_service_
+                  ->GetDefaultPrefValue(prefs::kDefaultModelKey)
+                  ->GetIfString();
+
+          if (current_default && *current_default != kModelsPremiumDefaultKey) {
+            instance->pref_service_->SetDefaultPrefValue(
+                prefs::kDefaultModelKey, base::Value(kModelsPremiumDefaultKey));
+          }
+        },
+        base::Unretained(this)));
+  }
+  // Most calls to credential_manager_->GetPremiumStatus will call the callback
+  // synchronously - when the user is premium and does not have expired
+  // credentials. We avoid double-constructing engine_ in those cases
+  // by checking here if the callback has already fired. In the case where the
+  // callback will be called asynchronously, we need to initialize a model now.
+  // Worst-case is that this will get double initialized for premium users
+  // once whenever all credentials are expired.
+  if (model_key_.empty()) {
+    model_key_ = pref_service_->GetString(prefs::kDefaultModelKey);
+    InitEngine();
+  }
   InitEngine();
   DCHECK(engine_);
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
@@ -130,7 +172,11 @@ void AIChatTabHelper::InitEngine() {
   }
 
   auto model = model_match->second;
-  // TODO(petemill): Engine enum on model to decide which one
+  // Model's key might not be the same as what we asked for (e.g. if the model
+  // no longer exists).
+  model_key_ = model.key;
+
+  // Engine enum on model to decide which one
   if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
     VLOG(1) << "Started tab helper for AI engine: llama";
     engine_ = std::make_unique<EngineConsumerLlamaRemote>(

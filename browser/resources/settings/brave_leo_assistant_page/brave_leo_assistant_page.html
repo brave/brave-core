@@ -51,11 +51,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   </div>
   <leo-dropdown
     class="cr-padded-text"
-    value="[[toModelName_(defaultModelKeyPrefValue_)]]"
+    value="[[defaultModelKeyPrefValue_]]"
     on-change="onModelSelectionChange_"
   >
+    <div slot="value">[[selectedModelDisplayName_]]</div>
     <div class="menu-subtitle">
-      Chat
+      $i18n{braveLeoModelCategory-chat}
     </div>
     <template is="dom-repeat" items="[[models_]]">
         <leo-option value$="[[item.key]]">
