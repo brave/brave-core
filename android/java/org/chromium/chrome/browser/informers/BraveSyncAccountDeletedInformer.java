@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.informers;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.base.annotations.CalledByNative;
+import org.jni_zero.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.app.BraveActivity;

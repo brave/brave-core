@@ -13,7 +13,7 @@ import android.graphics.Bitmap;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.annotations.CalledByNative;
+import org.jni_zero.CalledByNative;
 
 public class BraveNotificationPlatformBridge extends NotificationPlatformBridge {
     private static final int[] EMPTY_VIBRATION_PATTERN = new int[0];

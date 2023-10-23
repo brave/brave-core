@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.download;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.annotations.CalledByNative;
+import org.jni_zero.CalledByNative;
 
 public class BraveMimeUtils {
     @CalledByNative
