@@ -48,17 +48,23 @@ export default function FeatureMenu() {
       {context.allModels.map((model) => (
         <leo-menu-item
           key={model.key}
-          aria-selected={(model.key === context.currentModel?.key) || undefined}
+          aria-selected={model.key === context.currentModel?.key || undefined}
           onClick={() => context.setCurrentModel(model)}
         >
           <div className={styles.menuItemWithIcon}>
             <div>
               <div>{model.name}</div>
-              <p className={styles.modelSubtitle}>{getLocale(`braveLeoModelSubtitle-${model.key}`)}</p>
+              <p className={styles.modelSubtitle}>
+                {getLocale(`braveLeoModelSubtitle-${model.key}`)}
+              </p>
             </div>
-            {model.isPremium && (<Icon
-              className={classnames({[styles.lockOpen]: context.isPremiumUser})}
-              name={context.isPremiumUser ? 'lock-open' : 'lock-plain'} />
+            {model.isPremium && (
+              <Icon
+                className={classnames({
+                  [styles.lockOpen]: context.isPremiumUser
+                })}
+                name={context.isPremiumUser ? 'lock-open' : 'lock-plain'}
+              />
             )}
           </div>
         </leo-menu-item>
@@ -73,7 +79,6 @@ export default function FeatureMenu() {
         </div>
       </leo-menu-item>
 
-
       <leo-menu-item
         onClick={handleAutoGenerateQuestionsClick}
         data-is-interactive={true}
@@ -87,7 +92,6 @@ export default function FeatureMenu() {
           />
         </div>
       </leo-menu-item>
-
 
       <leo-menu-item onClick={handleSettingsClick}>
         <div className={styles.menuItemWithIcon}>

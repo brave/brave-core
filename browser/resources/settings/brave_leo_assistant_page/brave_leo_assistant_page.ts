@@ -38,6 +38,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           type: Boolean,
           value: false,
           notify: true,
+        },
+        selectedModelDisplayName_: {
+          type: String,
+          computed: 'computeDisplayName_(models_, defaultModelKeyPrefValue_)'
         }
       }
     }
@@ -83,8 +87,18 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       }
     }
 
-    toModelName_(modelKey: string) {
-      return MODEL_NAMES.get(modelKey)
+    computeDisplayName_() {
+      const model = this.models_?.find(
+        (m) => m.key === this.defaultModelKeyPrefValue_
+      )
+      if (!model) {
+        return '' // It should appear as if nothing is selected
+      }
+      return model.display_name
+    }
+
+    isModelSelected_(modelKey: string) {
+      return (modelKey === this.defaultModelKeyPrefValue_)
     }
 
     getModelSubtitle_(modelKey: string) {
