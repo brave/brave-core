@@ -52,5 +52,4 @@ class HistoryDriverIOS : public history::BrowsingHistoryDriver {
   WebHistoryServiceGetter history_service_getter_;
 };
 
-
 #endif  // BRAVE_IOS_BROWSER_API_HISTORY_HISTORY_DRIVER_IOS_H_

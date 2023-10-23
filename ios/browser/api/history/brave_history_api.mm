@@ -7,6 +7,9 @@
 
 #include "base/functional/bind.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/ios/browser/api/history/brave_history_observer.h"
+#include "brave/ios/browser/api/history/history_driver_ios.h"
+#include "brave/ios/browser/api/history/history_service_listener_ios.h"
 #include "components/history/core/browser/browsing_history_service.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
@@ -20,9 +23,6 @@
 #include "net/base/mac/url_conversions.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
-#include "brave/ios/browser/api/history/history_driver_ios.h"
-#include "brave/ios/browser/api/history/brave_history_observer.h"
-#include "brave/ios/browser/api/history/history_service_listener_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -127,7 +127,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 @end
 
 @implementation BraveHistoryAPI {
-    ChromeBrowserState* _mainBrowserState;  // NOT OWNED
+  ChromeBrowserState* _mainBrowserState;  // NOT OWNED
 }
 
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
@@ -135,21 +135,20 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
     _mainBrowserState = mainBrowserState;
 
-    history_service_ =
-        ios::HistoryServiceFactory::GetForBrowserState(
-            _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS);
+    history_service_ = ios::HistoryServiceFactory::GetForBrowserState(
+        _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS);
     web_history_service_ =
         ios::WebHistoryServiceFactory::GetForBrowserState(_mainBrowserState);
 
-    _browsingHistoryDriver = std::make_unique<HistoryDriverIOS>(
-      base::BindRepeating(&WebHistoryServiceGetter,
-                          _mainBrowserState->AsWeakPtr()));
-      
+    _browsingHistoryDriver =
+        std::make_unique<HistoryDriverIOS>(base::BindRepeating(
+            &WebHistoryServiceGetter, _mainBrowserState->AsWeakPtr()));
+
     _browsingHistoryService = std::make_unique<history::BrowsingHistoryService>(
-      _browsingHistoryDriver.get(),
-      ios::HistoryServiceFactory::GetForBrowserState(
-          _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS),
-      SyncServiceFactory::GetForBrowserState(_mainBrowserState));
+        _browsingHistoryDriver.get(),
+        ios::HistoryServiceFactory::GetForBrowserState(
+            _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS),
+        SyncServiceFactory::GetForBrowserState(_mainBrowserState));
   }
   return self;
 }
@@ -203,9 +202,10 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
   std::vector<history::BrowsingHistoryService::HistoryEntry> entries;
   history::BrowsingHistoryService::HistoryEntry entry;
   entry.url = net::GURLWithNSURL(history.url);
-  entry.all_timestamps.insert(base::Time::FromNSDate(history.dateAdded).ToInternalValue());
+  entry.all_timestamps.insert(
+      base::Time::FromNSDate(history.dateAdded).ToInternalValue());
   entries.push_back(entry);
-  
+
   _browsingHistoryService->RemoveVisits(entries);
 }
 
