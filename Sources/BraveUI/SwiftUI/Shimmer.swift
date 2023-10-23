@@ -38,15 +38,9 @@ private struct ShimmerViewModifier: ViewModifier {
         endPoint: points.1
       )
       .onAppear {
-        if #available(iOS 16, *) {
+        DispatchQueue.main.async { [self] in  // Need this due to a SwiftUI bug…
           withAnimation(animation) {
             points = (.trailing, UnitPoint(x: 2, y: 0.5))
-          }
-        } else {
-          DispatchQueue.main.async { [self] in  // Need this due to a SwiftUI bug…
-            withAnimation(animation) {
-              points = (.trailing, UnitPoint(x: 2, y: 0.5))
-            }
           }
         }
       }
