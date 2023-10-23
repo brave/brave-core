@@ -37,11 +37,8 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
-  const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean | undefined>()
-
-  // Use a tri-state to avoid showing the alert in
-  // subsequent conversations within the same panel instance.
-  const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean | undefined>()
+  const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean>(false)
+  const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -141,9 +138,11 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const shouldShowLongPageWarning = React.useMemo(() => {
-    if (hasDismissedLongPageWarning === undefined &&
+    if (
+      !hasDismissedLongPageWarning &&
       conversationHistory.length >= 1 &&
-      siteInfo?.isContentTruncated) {
+      siteInfo?.isContentTruncated
+    ) {
       return true
     }
 
@@ -159,8 +158,10 @@ function DataContextProvider (props: DataContextProviderProps) {
     let totalCharLimit = currentModel?.longConversationWarningCharacterLimit
     if (!siteInfo) totalCharLimit += currentModel?.maxPageContentLength
 
-    if (hasDismissedLongConversationInfo === undefined &&
-      chatHistoryCharTotal >= totalCharLimit) {
+    if (
+      !hasDismissedLongConversationInfo &&
+      chatHistoryCharTotal >= totalCharLimit
+    ) {
       return true
     }
 
