@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.notifications;
 
 import org.jni_zero.CalledByNative;
+
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 
 /**

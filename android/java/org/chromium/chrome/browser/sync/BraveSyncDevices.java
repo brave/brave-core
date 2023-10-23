@@ -5,15 +5,15 @@
 
 package org.chromium.chrome.browser.sync;
 
+import org.jni_zero.CalledByNative;
+import org.jni_zero.JNINamespace;
+import org.jni_zero.NativeMethods;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
-import org.jni_zero.CalledByNative;
-import org.jni_zero.JNINamespace;
-import org.jni_zero.NativeMethods;
 
 import java.util.ArrayList;
 import java.util.Date;

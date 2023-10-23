@@ -7,6 +7,7 @@ package org.chromium.chrome.browser;
 
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.components.prefs.PrefService;
 
 /**

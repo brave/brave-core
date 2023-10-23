@@ -31,8 +31,9 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.base.ContextUtils;
 import org.jni_zero.CalledByNative;
+
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;

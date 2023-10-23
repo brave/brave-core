@@ -42,6 +42,9 @@ import com.brave.playlist.util.PlaylistUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.wireguard.android.backend.GoBackend;
 
+import org.jni_zero.JNINamespace;
+import org.jni_zero.NativeMethods;
+
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
@@ -52,8 +55,6 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
-import org.jni_zero.JNINamespace;
-import org.jni_zero.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;

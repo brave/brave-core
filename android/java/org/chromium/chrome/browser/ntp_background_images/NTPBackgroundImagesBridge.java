@@ -7,10 +7,11 @@ package org.chromium.chrome.browser.ntp_background_images;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.base.ObserverList;
-import org.chromium.base.ThreadUtils;
 import org.jni_zero.CalledByNative;
 import org.jni_zero.NativeMethods;
+
+import org.chromium.base.ObserverList;
+import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;

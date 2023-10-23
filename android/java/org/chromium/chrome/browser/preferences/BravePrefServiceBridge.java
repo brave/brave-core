@@ -5,9 +5,10 @@
 
 package org.chromium.chrome.browser.preferences;
 
-import org.chromium.base.ThreadUtils;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
+import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 
 /**

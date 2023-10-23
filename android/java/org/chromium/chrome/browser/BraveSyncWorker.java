@@ -7,11 +7,12 @@ package org.chromium.chrome.browser;
 
 import android.content.Context;
 
-import org.chromium.base.Callback;
-import org.chromium.base.ContextUtils;
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
+import org.chromium.base.Callback;
+import org.chromium.base.ContextUtils;
 
 @JNINamespace("chrome::android")
 public class BraveSyncWorker {

@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;

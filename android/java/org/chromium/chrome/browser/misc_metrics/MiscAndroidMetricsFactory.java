@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.misc_metrics;
 
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;

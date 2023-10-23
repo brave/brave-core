@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.speedreader;
 
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.content_public.browser.WebContents;
 

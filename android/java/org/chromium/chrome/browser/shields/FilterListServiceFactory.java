@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.shields;
 
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.profiles.Profile;

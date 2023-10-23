@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.chrome.browser.profiles.Profile;
 
 @JNINamespace("chrome::android")
