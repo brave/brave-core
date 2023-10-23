@@ -359,7 +359,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
             self.action(bookmark, .opened(inNewTab: true, switchingToPrivateMode: false))
           })
         let edit = UIAction(
-          title: Strings.editBookmark,
+          title: Strings.editFavorite,
           handler: UIAction.deferredActionHandler { _ in
             self.action(bookmark, .edited)
           })

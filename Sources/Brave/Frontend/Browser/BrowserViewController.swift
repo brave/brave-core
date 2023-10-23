@@ -3063,7 +3063,7 @@ extension BrowserViewController: NewTabPageDelegate {
       let editPopup =
         UIAlertController
         .userTextInputAlert(
-          title: Strings.editBookmark,
+          title: Strings.editFavorite,
           message: urlString,
           startingText: title, startingText2: favorite.url,
           placeholder2: urlString,
