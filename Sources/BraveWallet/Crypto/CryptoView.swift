@@ -312,12 +312,11 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
   }
 
   var body: some View {
-    UIKitNavigationView {
-      CryptoPagesView(cryptoStore: cryptoStore, keyringStore: keyringStore)
-        .toolbar {
-          toolbarDismissContent
-        }
-    }
+    CryptoTabsView(
+      cryptoStore: cryptoStore,
+      keyringStore: keyringStore,
+      toolbarDismissContent: toolbarDismissContent
+    )
     .background(
       Color.clear
         .sheet(item: $cryptoStore.buySendSwapDestination) { action in
@@ -366,7 +365,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
     )
     .environment(
       \.buySendSwapDestination,
-      Binding(
+       Binding(
         get: { [weak cryptoStore] in cryptoStore?.buySendSwapDestination },
         set: { [weak cryptoStore] destination in
           if cryptoStore?.isPresentingAssetSearch == true {
