@@ -201,6 +201,10 @@ export const providerButtonIcon = styled.div`
   .icon {
     height: 32px;
   }
+
+  button:disabled & {
+    --provider-icon-color: ${leo.color.icon.disabled};
+  }
 `
 
 export const providerButtonName = styled.div.attrs({
@@ -211,14 +215,19 @@ export const providerButtonName = styled.div.attrs({
   font-size: 16px;
   font-weight: 600;
   line-height: 24px;
+
+  button:disabled & {
+    color: ${leo.color.text.tertiary};
+  }
 `
 
 export const providerButtonMessage = styled.div.attrs({
   'data-theme': 'light'
 })`
-  color: ${leo.color.text.secondary};
+  color: ${leo.color.text.tertiary};
   font-size: 12px;
   line-height: 18px;
+  font-weight: 400;
 `
 
 export const providerButtonCaret = styled.div`
