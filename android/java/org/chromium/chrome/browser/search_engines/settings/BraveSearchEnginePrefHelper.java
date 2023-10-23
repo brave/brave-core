@@ -6,7 +6,7 @@
 package org.chromium.chrome.browser.search_engines.settings;
 
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.annotations.NativeMethods;
+import org.jni_zero.NativeMethods;
 
 public class BraveSearchEnginePrefHelper {
     private static BraveSearchEnginePrefHelper sInstance;

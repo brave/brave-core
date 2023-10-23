@@ -7,8 +7,8 @@ package org.chromium.chrome.browser.bookmarks;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.chromium.base.annotations.CalledByNative;
-import org.chromium.base.annotations.NativeMethods;
+import org.jni_zero.CalledByNative;
+import org.jni_zero.NativeMethods;
 import org.chromium.ui.base.WindowAndroid;
 
 class BraveBookmarkBridge extends BookmarkBridge {
