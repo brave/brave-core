@@ -30,10 +30,6 @@ const initShowOriginalLink = () => {
     link.addEventListener('click', (e) => {
         window.speedreader.showOriginalPage()
     })
-
-    if (!navigator.userAgentData.mobile) {
-        link.style.display = 'none'
-    }
 }
 
 const calculateReadtime = () => {
