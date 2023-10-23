@@ -29,6 +29,10 @@ constexpr char kModelsDefaultKey[] = "chat-default";
 
 // Claude Token Allocation:
 // - Claude has total token limit 100k tokens (75k words)
+//
+// Breakdown:
+// - Reserverd for page content: 100k / 2 = 50k tokens
+// - Long conversation warning threshold: 100k * 0.80 = 80k tokens
 
 const base::flat_map<std::string_view, mojom::Model> kAllModels = {
     {"chat-default",
@@ -42,7 +46,7 @@ const base::flat_map<std::string_view, mojom::Model> kAllModels = {
     {"chat-claude-instant",
      {"chat-claude-instant", "claude-instant-v1", "Claude Instant", "Anthropic",
       mojom::ModelEngineType::CLAUDE_REMOTE, mojom::ModelCategory::CHAT, true,
-      75000, 75000}},
+      200000, 320000}},
 };
 
 const std::vector<std::string_view> kAllModelKeysDisplayOrder = {
