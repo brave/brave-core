@@ -117,7 +117,8 @@ class P3AMessageManagerTest : public testing::Test,
               response = "invalid response that is not json";
             } else if (base::EndsWith(request.url.spec(), "/info")) {
               EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
-              std::string next_epoch_time_str = TimeFormatAsIso8601(next_epoch_time_);
+              std::string next_epoch_time_str =
+                  TimeFormatAsIso8601(next_epoch_time_);
               response = HandleInfoRequest(request, log_type, current_epoch_,
                                            next_epoch_time_str.c_str());
               info_request_made_[log_type] = true;
@@ -392,8 +393,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
         base::Seconds(kUploadIntervalSeconds * 100));
 
     EXPECT_EQ(points_requests_made_[log_type], 3U);
-    // Should not send metrics, since they are in current epoch
-    EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 0U);
+    EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 3U);
 
     ResetInterceptorStores();
     current_epoch_++;
@@ -406,8 +406,8 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
       // We can only check non-express metrics, since there are very little
       // non-ephemeral metrics for the express cadence.
       EXPECT_EQ(points_requests_made_[log_type], 3U);
+      EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 3U);
     }
-    EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 3U);
 
     ResetInterceptorStores();
     current_epoch_++;
@@ -495,8 +495,8 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationInvalidResponse) {
       // We can only check non-express metrics, since there are very little
       // non-ephemeral metrics for the express cadence.
       EXPECT_EQ(points_requests_made_[log_type], 3U);
+      EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 3U);
     }
-    EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 3U);
   }
 }
 
@@ -553,8 +553,8 @@ TEST_F(P3AMessageManagerTest,
       // We can only check non-express metrics, since there are very little
       // non-ephemeral metrics for the express cadence.
       EXPECT_EQ(points_requests_made_[log_type], 3U);
+      EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 3U);
     }
-    EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 3U);
   }
 }
 
@@ -611,8 +611,8 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationUnavailable) {
       // We can only check non-express metrics, since there are very little
       // non-ephemeral metrics for the express cadence.
       EXPECT_EQ(points_requests_made_[log_type], 3U);
+      EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 3U);
     }
-    EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 3U);
   }
 }
 

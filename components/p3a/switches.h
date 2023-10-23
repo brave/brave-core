@@ -35,7 +35,8 @@ constexpr char kP3AFakeTypicalStarEpoch[] = "p3a-fake-typical-star-epoch";
 constexpr char kP3AFakeSlowStarEpoch[] = "p3a-fake-slow-star-epoch";
 constexpr char kP3AFakeExpressStarEpoch[] = "p3a-fake-express-star-epoch";
 
-// P3A cloud backend URL.
+// P3A cloud backend URL. These switches are used for testing/debugging,
+// i.e. with localhost services
 constexpr char kP3AJsonUploadUrl[] = "p3a-json-upload-url";
 constexpr char kP3ACreativeUploadUrl[] = "p3a-creative-upload-url";
 constexpr char kP2AJsonUploadUrl[] = "p2a-json-upload-url";
