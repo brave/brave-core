@@ -91,6 +91,37 @@ struct PortfolioView: View {
   }
 }
 
+/// Builds the in-section header for `Assets`/`NFT` that is shown in expanded and non-expanded state. Not used for ungrouped assets.
+struct PortfolioAssetGroupHeaderView: View {
+  let group: any WalletAssetGroupViewModel
+  
+  var body: some View {
+    VStack(spacing: 0) {
+      HStack {
+        if case let .network(networkInfo) = group.groupType {
+          NetworkIcon(network: networkInfo, length: 32)
+        } else if case let .account(accountInfo) = group.groupType {
+          Blockie(address: accountInfo.address, shape: .rectangle)
+            .frame(width: 32, height: 32)
+            .clipShape(RoundedRectangle(cornerRadius: 4))
+        }
+        VStack(alignment: .leading) {
+          Text(group.title)
+            .font(.callout.weight(.semibold))
+            .foregroundColor(Color(WalletV2Design.textPrimary))
+          if let description = group.description {
+            Text(description)
+              .font(.footnote)
+              .foregroundColor(Color(WalletV2Design.textSecondary))
+          }
+        }
+        .multilineTextAlignment(.leading)
+      }
+      .padding(.vertical, 4)
+    }
+  }
+}
+
 #if DEBUG
 struct PortfolioViewController_Previews: PreviewProvider {
   static var previews: some View {

@@ -166,6 +166,7 @@ struct PortfolioAssetsView: View {
   /// Builds the expandable/collapseable (expanded by default) section content for a given group.
   @ViewBuilder private func groupedAssetsSection(for group: AssetGroupViewModel) -> some View {
     WalletDisclosureGroup(
+      isNFTGroup: false,
       isExpanded: Binding(
         get: { groupToggleState[group.id, default: true] },
         set: { isExpanded in
@@ -196,44 +197,12 @@ struct PortfolioAssetsView: View {
       label: {
         if case let .account(account) = group.groupType {
           AddressView(address: account.address) {
-            groupHeader(for: group)
+            PortfolioAssetGroupHeaderView(group: group)
           }
         } else {
-          groupHeader(for: group)
+          PortfolioAssetGroupHeaderView(group: group)
         }
       }
     )
-  }
-  
-  /// Builds the in-section header for an AssetGroupViewModel that is shown in expanded and non-expanded state. Not used for ungrouped assets.
-  private func groupHeader(for group: AssetGroupViewModel) -> some View {
-    VStack(spacing: 0) {
-      HStack {
-        if case let .network(networkInfo) = group.groupType {
-          NetworkIcon(network: networkInfo, length: 32)
-        } else if case let .account(accountInfo) = group.groupType {
-          Blockie(address: accountInfo.address, shape: .rectangle)
-            .frame(width: 32, height: 32)
-            .clipShape(RoundedRectangle(cornerRadius: 4))
-        }
-        VStack(alignment: .leading) {
-          Text(group.title)
-            .font(.callout.weight(.semibold))
-            .foregroundColor(Color(WalletV2Design.textPrimary))
-          if let description = group.description {
-            Text(description)
-              .font(.footnote)
-              .foregroundColor(Color(WalletV2Design.textSecondary))
-          }
-        }
-        .multilineTextAlignment(.leading)
-        Spacer()
-        Text(isShowingBalances.value ? portfolioStore.currencyFormatter.string(from: NSNumber(value: group.totalFiatValue)) ?? "" : "****")
-          .font(.callout.weight(.semibold))
-          .foregroundColor(Color(WalletV2Design.textPrimary))
-          .multilineTextAlignment(.trailing)
-      }
-      .padding(.vertical, 4)
-    }
   }
 }

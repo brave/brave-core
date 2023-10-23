@@ -6,6 +6,7 @@
 import SwiftUI
 
 struct WalletDisclosureGroup<Label: View, Content: View>: View {
+  var isNFTGroup: Bool
   @Binding var isExpanded: Bool
   @ViewBuilder var content: () -> Content
   @ViewBuilder var label: () -> Label
@@ -44,7 +45,7 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
       if isExpanded {
         Divider()
           .padding(.top, 6)
-          .padding(.horizontal, 8)
+          .padding(.horizontal, isNFTGroup ? nil : 8)
         content()
           .padding(.horizontal)
       }
@@ -52,10 +53,14 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
     // when collapsed, padding is applied to `header`
     .padding(.vertical, isExpanded ? 6 : 0)
     .osAvailabilityModifiers {
-      if isExpanded {
-        $0.overlay {
-          RoundedRectangle(cornerRadius: 16)
-            .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
+      if !isNFTGroup {
+        if isExpanded {
+          $0.overlay {
+            RoundedRectangle(cornerRadius: 16)
+              .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
+          }
+        } else {
+          $0
         }
       } else {
         $0

@@ -105,6 +105,8 @@ struct FiltersDisplaySettingsView: View {
   @State var isHidingUnownedNFTs: Bool
   /// If we are showing the network logo on NFTs. Default is true.
   @State var isShowingNFTNetworkLogo: Bool
+  /// If we should disable `Hide Unowned`
+  @State var isHidingUnownedNFTsDisabled: Bool
   
   /// All accounts and if they are currently selected. Default is all accounts selected.
   @State var accounts: [Selectable<BraveWallet.AccountInfo>]
@@ -152,8 +154,9 @@ struct FiltersDisplaySettingsView: View {
     self._groupBy = State(initialValue: filters.groupBy)
     self._sortOrder = State(initialValue: filters.sortOrder)
     self._isHidingSmallBalances = State(initialValue: filters.isHidingSmallBalances)
-    self._isHidingUnownedNFTs = State(initialValue: filters.isHidingUnownedNFTs)
+    self._isHidingUnownedNFTs = State(initialValue: filters.groupBy == .accounts ? true : filters.isHidingUnownedNFTs)
     self._isShowingNFTNetworkLogo = State(initialValue: filters.isShowingNFTNetworkLogo)
+    self._isHidingUnownedNFTsDisabled = State(initialValue: filters.groupBy == .accounts)
     self._accounts = State(initialValue: filters.accounts)
     self._networks = State(initialValue: filters.networks)
     self.isNFTFilters = isNFTFilters
@@ -167,6 +170,9 @@ struct FiltersDisplaySettingsView: View {
       ScrollView {
         LazyVStack(spacing: 0) {
           if isNFTFilters {
+            groupByRow
+              .padding(.vertical, rowPadding)
+            
             showNFTNetworkLogo
               .padding(.vertical, rowPadding)
             
@@ -194,6 +200,16 @@ struct FiltersDisplaySettingsView: View {
         }
         .padding(.horizontal)
       }
+      .onChange(of: groupBy, perform: { newValue in
+        if isNFTFilters {
+          if newValue == .accounts {
+            isHidingUnownedNFTs = true
+            isHidingUnownedNFTsDisabled = true
+          } else {
+            isHidingUnownedNFTsDisabled = false
+          }
+        }
+      })
       .background(Color(uiColor: WalletV2Design.containerBackground))
       .safeAreaInset(edge: .bottom, content: {
         saveChangesContainer
@@ -268,6 +284,7 @@ struct FiltersDisplaySettingsView: View {
       )
     }
     .tint(Color(.braveBlurpleTint))
+    .disabled(isHidingUnownedNFTsDisabled)
   }
   
   private var showNFTNetworkLogo: some View {

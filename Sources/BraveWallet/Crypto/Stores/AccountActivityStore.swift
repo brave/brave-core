@@ -150,6 +150,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           if token.isErc721 || token.isNft {
             updatedUserNFTs.append(
               NFTAssetViewModel(
+                groupType: .none,
                 token: token,
                 network: networkAssets.network,
                 balanceForAccounts: [:]
@@ -225,6 +226,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           if token.isErc721 || token.isNft {
             updatedUserNFTs.append(
               NFTAssetViewModel(
+                groupType: .none,
                 token: token,
                 network: networkAssets.network,
                 balanceForAccounts: [account.address: Int(totalBalances[token.assetBalanceId] ?? 0)],
