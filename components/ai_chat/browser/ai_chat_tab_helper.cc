@@ -85,10 +85,6 @@ AIChatTabHelper::AIChatTabHelper(
   if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey)) {
     credential_manager_->GetPremiumStatus(base::BindOnce(
         [](AIChatTabHelper* instance, mojom::PremiumStatus status) {
-          if (!instance) {
-            // WebContents destroyed
-            return;
-          }
           if (status == mojom::PremiumStatus::Inactive) {
             // Not premium
             return;
@@ -106,6 +102,9 @@ AIChatTabHelper::AIChatTabHelper(
                 prefs::kDefaultModelKey, base::Value(kModelsPremiumDefaultKey));
           }
         },
+        // Unretained is ok as credential manager is owned by this class,
+        // and it owns the mojo binding that is used to make async call in
+        // |GetPremiumStatus|.
         base::Unretained(this)));
   }
   // Most calls to credential_manager_->GetPremiumStatus will call the callback
