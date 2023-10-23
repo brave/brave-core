@@ -20,6 +20,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #endif
     {kPrivacyGuide3, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_ANDROID)
+    {kPrivacyGuideAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacyGuideAndroidPostMVP, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kPrivacyGuidePreload, base::FEATURE_DISABLED_BY_DEFAULT},

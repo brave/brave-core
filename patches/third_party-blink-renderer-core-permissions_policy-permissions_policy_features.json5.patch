@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5 b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-index 8066dafa639c5d6e6cc4b954b778de1e9ddf3c93..59f6b4f87b7845e0ca93a62fc5162a7d9c87ec98 100644
+index d85afb91d6568d819e3d11aaaf64e92c9f3be6f8..049184b8a864a4365a34853a547daa4cb49c2977 100644
 --- a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
 +++ b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
 @@ -428,5 +428,13 @@
-       // Parser also accepts "window-management" alias (crbug.com/1328581).
-       permissions_policy_name: "window-placement",
+       // Parser also accepts "window-placement" alias (crbug.com/1328581).
+       permissions_policy_name: "window-management",
      },
 +    {
 +      name: "Ethereum",

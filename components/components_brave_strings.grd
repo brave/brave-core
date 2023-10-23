@@ -2,7 +2,7 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
   <outputs>
-    <output filename="grit/components_chromium_strings.h" type="rc_header">
+    <output filename="grit/components_branded_strings.h" type="rc_header">
       <emit emit_type="prepend" />
     </output>
     <output filename="components_brave_strings_af.pak" type="data_package" lang="af" />

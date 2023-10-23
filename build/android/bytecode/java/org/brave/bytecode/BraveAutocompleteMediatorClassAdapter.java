@@ -23,5 +23,8 @@ public class BraveAutocompleteMediatorClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveAutocompleteMediator, "mDropdownViewInfoListManager");
         makeProtectedField(sAutocompleteMediator, "mDropdownViewInfoListManager");
+
+        deleteField(sBraveAutocompleteMediator, "mDropdownViewInfoListBuilder");
+        makeProtectedField(sAutocompleteMediator, "mDropdownViewInfoListBuilder");
     }
 }

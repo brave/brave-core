@@ -29,12 +29,13 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_controller.h"
-#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/branded_strings.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/navigation_entry.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -348,3 +349,6 @@ BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   DCHECK(idx < content_setting_views_.size());
   return content_setting_views_[idx];
 }
+
+BEGIN_METADATA(BraveLocationBarView, LocationBarView)
+END_METADATA

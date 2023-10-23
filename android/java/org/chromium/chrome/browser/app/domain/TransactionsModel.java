@@ -95,110 +95,166 @@ public class TransactionsModel implements TxServiceObserverImpl.TxServiceObserve
             if (JavaUtils.anyNull(
                         mJsonRpcService, mKeyringService, mActivityRef, mActivityRef.get()))
                 return;
-            NetworkModel.getAllNetworks(mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
-                mAllNetworkInfoList = allNetworks;
-                mKeyringService.getAllAccounts(allAccounts -> {
-                    mAllAccountInfoList = Arrays.asList(allAccounts.accounts);
-                    var allAccountsArray = allAccounts.accounts;
-                    // Fetch transactions
-                    PendingTxHelper pendingTxHelper =
-                            new PendingTxHelper(mTxService, allAccountsArray, true, null);
-                    pendingTxHelper.fetchTransactions(() -> {
-                        HashMap<String, TransactionInfo[]> pendingTxInfos =
-                                pendingTxHelper.getTransactions();
-                        pendingTxHelper.destroy();
-                        TransactionInfo[] filteredTransactions =
-                                pendingTxInfos.values()
-                                        .stream()
-                                        .flatMap(
-                                                transactionInfos -> Arrays.stream(transactionInfos))
-                                        .filter(tx -> tx.txStatus != TransactionStatus.REJECTED)
-                                        .toArray(TransactionInfo[] ::new);
-                        if (filteredTransactions.length == 0) {
-                            postTxListResponse(Collections.emptyList());
-                            return;
-                        }
-                        // Fetch tokens, balances, price etc.
-                        List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances =
-                                new ArrayList<>();
-                        AtomicInteger balanceResultCounter = new AtomicInteger();
-                        List<NetworkInfo> txNetworks =
-                                mAllNetworkInfoList.stream()
-                                        .filter(networkInfo
-                                                -> Arrays.stream(filteredTransactions)
-                                                           .anyMatch(transactionInfo
-                                                                   -> transactionInfo.chainId.equals(
-                                                                           networkInfo.chainId)))
-                                        .collect(Collectors.toList());
-                        for (NetworkInfo networkInfo : txNetworks) {
-                            var accountInfoListPerCoin =
-                                    mAllAccountInfoList.stream()
-                                            .filter(accountInfo
-                                                    -> accountInfo.accountId.coin
-                                                            == networkInfo.coin)
-                                            .collect(Collectors.toList());
+            NetworkModel.getAllNetworks(
+                    mJsonRpcService,
+                    mSharedData.getSupportedCryptoCoins(),
+                    allNetworks -> {
+                        mAllNetworkInfoList = allNetworks;
+                        mKeyringService.getAllAccounts(
+                                allAccounts -> {
+                                    mAllAccountInfoList = Arrays.asList(allAccounts.accounts);
+                                    var allAccountsArray = allAccounts.accounts;
+                                    // Fetch transactions
+                                    PendingTxHelper pendingTxHelper =
+                                            new PendingTxHelper(
+                                                    mTxService, allAccountsArray, true, null);
+                                    pendingTxHelper.fetchTransactions(
+                                            () -> {
+                                                HashMap<String, TransactionInfo[]> pendingTxInfos =
+                                                        pendingTxHelper.getTransactions();
+                                                pendingTxHelper.destroy();
+                                                TransactionInfo[] filteredTransactions =
+                                                        pendingTxInfos.values().stream()
+                                                                .flatMap(
+                                                                        transactionInfos ->
+                                                                                Arrays.stream(
+                                                                                        transactionInfos))
+                                                                .filter(
+                                                                        tx ->
+                                                                                tx.txStatus
+                                                                                        != TransactionStatus
+                                                                                                .REJECTED)
+                                                                .toArray(TransactionInfo[]::new);
+                                                if (filteredTransactions.length == 0) {
+                                                    postTxListResponse(Collections.emptyList());
+                                                    return;
+                                                }
+                                                // Fetch tokens, balances, price etc.
+                                                List<AssetAccountsNetworkBalance>
+                                                        assetAccountsNetworkBalances =
+                                                                new ArrayList<>();
+                                                AtomicInteger balanceResultCounter =
+                                                        new AtomicInteger();
+                                                List<NetworkInfo> txNetworks =
+                                                        mAllNetworkInfoList.stream()
+                                                                .filter(
+                                                                        networkInfo ->
+                                                                                Arrays.stream(
+                                                                                                filteredTransactions)
+                                                                                        .anyMatch(
+                                                                                                transactionInfo ->
+                                                                                                        transactionInfo
+                                                                                                                .chainId
+                                                                                                                .equals(
+                                                                                                                        networkInfo
+                                                                                                                                .chainId)))
+                                                                .collect(Collectors.toList());
+                                                for (NetworkInfo networkInfo : txNetworks) {
+                                                    var accountInfoListPerCoin =
+                                                            mAllAccountInfoList.stream()
+                                                                    .filter(
+                                                                            accountInfo ->
+                                                                                    accountInfo
+                                                                                                    .accountId
+                                                                                                    .coin
+                                                                                            == networkInfo
+                                                                                                    .coin)
+                                                                    .collect(Collectors.toList());
 
-                            Utils.getTxExtraInfo(mActivityRef, TokenUtils.TokenType.ALL,
-                                    mAllNetworkInfoList, networkInfo,
-                                    accountInfoListPerCoin.toArray(new AccountInfo[0]), null, false,
-                                    (assetPrices, userAssetsList, nativeAssetsBalances,
-                                            blockchainTokensBalances) -> {
-                                        AssetAccountsNetworkBalance asset =
-                                                new AssetAccountsNetworkBalance(assetPrices,
-                                                        userAssetsList, nativeAssetsBalances,
-                                                        blockchainTokensBalances, networkInfo,
-                                                        accountInfoListPerCoin);
-                                        assetAccountsNetworkBalances.add(asset);
-                                        if (balanceResultCounter.incrementAndGet()
-                                                == txNetworks.size()) {
-                                            parseTransactions(mActivityRef,
-                                                    assetAccountsNetworkBalances,
-                                                    filteredTransactions, networkInfo.coin);
-                                        }
-                                    });
-                        }
+                                                    Utils.getTxExtraInfo(
+                                                            mActivityRef,
+                                                            TokenUtils.TokenType.ALL,
+                                                            mAllNetworkInfoList,
+                                                            networkInfo,
+                                                            accountInfoListPerCoin.toArray(
+                                                                    new AccountInfo[0]),
+                                                            null,
+                                                            false,
+                                                            (assetPrices,
+                                                                    userAssetsList,
+                                                                    nativeAssetsBalances,
+                                                                    blockchainTokensBalances) -> {
+                                                                AssetAccountsNetworkBalance asset =
+                                                                        new AssetAccountsNetworkBalance(
+                                                                                assetPrices,
+                                                                                userAssetsList,
+                                                                                nativeAssetsBalances,
+                                                                                blockchainTokensBalances,
+                                                                                networkInfo,
+                                                                                accountInfoListPerCoin);
+                                                                assetAccountsNetworkBalances.add(
+                                                                        asset);
+                                                                if (balanceResultCounter
+                                                                                .incrementAndGet()
+                                                                        == txNetworks.size()) {
+                                                                    parseTransactions(
+                                                                            mActivityRef,
+                                                                            assetAccountsNetworkBalances,
+                                                                            filteredTransactions,
+                                                                            networkInfo.coin);
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                });
                     });
-                });
-            });
         }
     }
 
-    private void parseTransactions(WeakReference<BraveWalletBaseActivity> activityRef,
+    private void parseTransactions(
+            WeakReference<BraveWalletBaseActivity> activityRef,
             List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances,
-            TransactionInfo[] transactionInfoArr, int coin) {
+            TransactionInfo[] transactionInfoArr,
+            int coin) {
         // Received balances of all network, can now fetch transaction
         var allAccountsArray = mAllAccountInfoList.toArray(new AccountInfo[0]);
         SolanaTransactionsGasHelper solanaTransactionsGasHelper =
                 new SolanaTransactionsGasHelper(activityRef.get(), transactionInfoArr);
-        solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
-            List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-            var perTxSolanaFee = solanaTransactionsGasHelper.getPerTxFee();
-            for (TransactionInfo txInfo : transactionInfoArr) {
-                AccountInfo txAccountInfo =
-                        Utils.findAccount(allAccountsArray, txInfo.fromAccountId);
-                if (txAccountInfo == null) {
-                    continue;
-                }
-                long solanaEstimatedTxFee = 0;
-                if (perTxSolanaFee.get(txInfo.id) != null) {
-                    solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
-                }
-                var txNetwork = NetworkUtils.findNetwork(mAllNetworkInfoList, txInfo.chainId, coin);
-                var txExtraData =
-                        assetAccountsNetworkBalances.stream()
-                                .filter(data -> data.networkInfo.chainId.equals(txInfo.chainId))
-                                .findFirst()
-                                .get();
-                ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo, txNetwork,
-                        allAccountsArray, txExtraData.assetPrices, solanaEstimatedTxFee,
-                        txExtraData.userAssetsList, txExtraData.nativeAssetsBalances,
-                        txExtraData.blockchainTokensBalances);
-                WalletListItemModel itemModel = Utils.makeWalletItem(
-                        activityRef.get(), txInfo, txNetwork, parsedTx, txAccountInfo);
-                walletListItemModelList.add(itemModel);
-            }
-            postTxListResponse(walletListItemModelList);
-        });
+        solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(
+                () -> {
+                    List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+                    var perTxSolanaFee = solanaTransactionsGasHelper.getPerTxFee();
+                    for (TransactionInfo txInfo : transactionInfoArr) {
+                        AccountInfo txAccountInfo =
+                                Utils.findAccount(allAccountsArray, txInfo.fromAccountId);
+                        if (txAccountInfo == null) {
+                            continue;
+                        }
+                        long solanaEstimatedTxFee = 0;
+                        if (perTxSolanaFee.get(txInfo.id) != null) {
+                            solanaEstimatedTxFee = perTxSolanaFee.get(txInfo.id);
+                        }
+                        var txNetwork =
+                                NetworkUtils.findNetwork(mAllNetworkInfoList, txInfo.chainId, coin);
+                        var txExtraData =
+                                assetAccountsNetworkBalances.stream()
+                                        .filter(
+                                                data ->
+                                                        data.networkInfo.chainId.equals(
+                                                                txInfo.chainId))
+                                        .findFirst()
+                                        .get();
+                        ParsedTransaction parsedTx =
+                                ParsedTransaction.parseTransaction(
+                                        txInfo,
+                                        txNetwork,
+                                        allAccountsArray,
+                                        txExtraData.assetPrices,
+                                        solanaEstimatedTxFee,
+                                        txExtraData.userAssetsList,
+                                        txExtraData.nativeAssetsBalances,
+                                        txExtraData.blockchainTokensBalances);
+                        WalletListItemModel itemModel =
+                                Utils.makeWalletItem(
+                                        activityRef.get(),
+                                        txInfo,
+                                        txNetwork,
+                                        parsedTx,
+                                        txAccountInfo);
+                        walletListItemModelList.add(itemModel);
+                    }
+                    postTxListResponse(walletListItemModelList);
+                });
     }
 
     private void postTxListResponse(List<WalletListItemModel> walletListItemModelList) {

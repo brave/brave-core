@@ -11,12 +11,12 @@
 #include <string_view>
 #include <vector>
 
+#include "base/i18n/time_formatting.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
-#include "base/time/time_to_iso8601.h"
 #include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -113,8 +113,8 @@ class P3AMessageManagerTest : public testing::Test,
             url_loader_factory.AddResponse(
                 request.url.spec(),
                 "{\"currentEpoch\":" + base::NumberToString(current_epoch) +
-                    ", \"nextEpochTime\": \"" + TimeToISO8601(next_epoch_time) +
-                    "\"}",
+                    ", \"nextEpochTime\": \"" +
+                    TimeFormatAsIso8601(next_epoch_time) + "\"}",
                 interceptor_status_code_from_randomness);
             info_request_made = true;
           } else if (request.url ==

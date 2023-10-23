@@ -22,6 +22,8 @@
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -29,6 +31,8 @@ namespace brave_wallet {
 
 class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
  public:
+  METADATA_HEADER(WalletWebUIBubbleDialogView);
+
   WalletWebUIBubbleDialogView(
       views::View* anchor_view,
       BubbleContentsWrapper* contents_wrapper,
@@ -50,6 +54,9 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
                                      params);
   }
 };
+
+BEGIN_METADATA(WalletWebUIBubbleDialogView, WebUIBubbleDialogView)
+END_METADATA
 
 class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
                                  public views::ViewObserver {

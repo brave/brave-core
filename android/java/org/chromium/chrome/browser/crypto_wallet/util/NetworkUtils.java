@@ -93,6 +93,7 @@ public class NetworkUtils {
 
     /**
      * Gets the network info object of given chainId and symbol.
+     *
      * @param networks All networks available.
      * @param chainId Chain Id of the network to be found.
      * @param coin Coin type of the network to be found.
@@ -104,7 +105,8 @@ public class NetworkUtils {
         if (networks.isEmpty() || TextUtils.isEmpty(chainId)) {
             return null;
         }
-        return JavaUtils.find(networks,
+        return JavaUtils.find(
+                networks,
                 networkInfo -> networkInfo.chainId.equals(chainId) && networkInfo.coin == coin);
     }
 

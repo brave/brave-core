@@ -1233,9 +1233,11 @@ public class Utils {
                     continue;
                 }
 
-                var txNetwork = JavaUtils.safeVal(
-                        NetworkUtils.findNetwork(allNetworks, txInfo.chainId, selectedNetwork.coin),
-                        selectedNetwork);
+                var txNetwork =
+                        JavaUtils.safeVal(
+                                NetworkUtils.findNetwork(
+                                        allNetworks, txInfo.chainId, selectedNetwork.coin),
+                                selectedNetwork);
                 ParsedTransaction parsedTx = ParsedTransaction.parseTransaction(txInfo, txNetwork,
                         accounts, assetPrices, solanaEstimatedTxFee, fullTokenList,
                         nativeAssetsBalances, blockchainTokensBalances);

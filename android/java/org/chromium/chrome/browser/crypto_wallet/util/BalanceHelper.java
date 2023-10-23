@@ -251,33 +251,48 @@ public class BalanceHelper {
                     blockchainTokensBalancesResponses) {
         if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
 
-        keyringService.getAllAccounts(allAccounts -> {
-            for (NetworkInfo network : networks) {
-                AccountInfo[] accountInfoArray = AssetUtils.filterAccountsByNetwork(
-                        allAccounts.accounts, network.coin, network.chainId);
+        keyringService.getAllAccounts(
+                allAccounts -> {
+                    for (NetworkInfo network : networks) {
+                        AccountInfo[] accountInfoArray =
+                                AssetUtils.filterAccountsByNetwork(
+                                        allAccounts.accounts, network.coin, network.chainId);
 
-                TokenUtils.getVisibleUserAssetsFiltered(
-                        braveWalletService, network, coinType, TokenUtils.TokenType.ALL, tokens -> {
-                            // Assets balances.
-                            GetNativeAssetsBalancesResponseContext getNativeAssetsBalancesContext =
-                                    new GetNativeAssetsBalancesResponseContext(
-                                            multiResponse.singleResponseComplete);
-                            getNativeAssetsBalances(jsonRpcService, network, accountInfoArray,
-                                    getNativeAssetsBalancesContext);
-                            nativeAssetsBalancesResponses.add(getNativeAssetsBalancesContext);
+                        TokenUtils.getVisibleUserAssetsFiltered(
+                                braveWalletService,
+                                network,
+                                coinType,
+                                TokenUtils.TokenType.ALL,
+                                tokens -> {
+                                    // Assets balances.
+                                    GetNativeAssetsBalancesResponseContext
+                                            getNativeAssetsBalancesContext =
+                                                    new GetNativeAssetsBalancesResponseContext(
+                                                            multiResponse.singleResponseComplete);
+                                    getNativeAssetsBalances(
+                                            jsonRpcService,
+                                            network,
+                                            accountInfoArray,
+                                            getNativeAssetsBalancesContext);
+                                    nativeAssetsBalancesResponses.add(
+                                            getNativeAssetsBalancesContext);
 
-                            // Tokens balances.
-                            GetBlockchainTokensBalancesResponseContext
-                                    getBlockchainTokensBalancesContext =
-                                            new GetBlockchainTokensBalancesResponseContext(
-                                                    multiResponse.singleResponseComplete);
-                            getBlockchainTokensBalances(jsonRpcService, network, accountInfoArray,
-                                    tokens, getBlockchainTokensBalancesContext);
-                            blockchainTokensBalancesResponses.add(
-                                    getBlockchainTokensBalancesContext);
-                        });
-            }
-        });
+                                    // Tokens balances.
+                                    GetBlockchainTokensBalancesResponseContext
+                                            getBlockchainTokensBalancesContext =
+                                                    new GetBlockchainTokensBalancesResponseContext(
+                                                            multiResponse.singleResponseComplete);
+                                    getBlockchainTokensBalances(
+                                            jsonRpcService,
+                                            network,
+                                            accountInfoArray,
+                                            tokens,
+                                            getBlockchainTokensBalancesContext);
+                                    blockchainTokensBalancesResponses.add(
+                                            getBlockchainTokensBalancesContext);
+                                });
+                    }
+                });
     }
 
     private static <T extends GetBalanceResponseBaseContext> T addBalanceResponseContext(

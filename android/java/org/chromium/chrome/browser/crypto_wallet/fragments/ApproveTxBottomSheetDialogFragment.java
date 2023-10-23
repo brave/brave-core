@@ -272,8 +272,9 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         networkName.setText(mTxNetwork.chainName);
         keyringService.getAllAccounts(
                 allAccounts -> {
-                    AccountInfo[] accounts = AssetUtils.filterAccountsByNetwork(
-                            allAccounts.accounts, mTxNetwork.coin, mTxNetwork.chainId);
+                    AccountInfo[] accounts =
+                            AssetUtils.filterAccountsByNetwork(
+                                    allAccounts.accounts, mTxNetwork.coin, mTxNetwork.chainId);
 
                     AccountInfo txAccountInfo = Utils.findAccount(accounts, mTxInfo.fromAccountId);
                     if (txAccountInfo == null) {
@@ -285,42 +286,58 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                             mExecutor, mHandler, icon, txAccountInfo, true);
 
                     // First fill in data that does not require remote queries
-                    TokenUtils.getAllTokensFiltered(getBraveWalletService(),
-                            getBlockchainRegistry(), mTxNetwork, TokenUtils.TokenType.ALL,
+                    TokenUtils.getAllTokensFiltered(
+                            getBraveWalletService(),
+                            getBlockchainRegistry(),
+                            mTxNetwork,
+                            TokenUtils.TokenType.ALL,
                             tokenList -> {
                                 SolanaTransactionsGasHelper solanaTransactionsGasHelper =
                                         new SolanaTransactionsGasHelper(
                                                 (BraveWalletBaseActivity) getActivity(),
                                                 new TransactionInfo[] {mTxInfo});
-                                solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(() -> {
-                                    HashMap<String, Long> perTxFee =
-                                            solanaTransactionsGasHelper.getPerTxFee();
-                                    if (perTxFee.get(mTxInfo.id) != null) {
-                                        mSolanaEstimatedTxFee = perTxFee.get(mTxInfo.id);
-                                    }
-                                    if (!canUpdateUi()) return;
-                                    ParsedTransaction parsedTx = fillAssetDependentControls(view,
-                                            mTxNetwork, txAccountInfo, accounts,
-                                            new HashMap<String, Double>(), tokenList,
-                                            new HashMap<String, Double>(),
-                                            new HashMap<String, HashMap<String, Double>>(),
-                                            mSolanaEstimatedTxFee);
+                                solanaTransactionsGasHelper.maybeGetSolanaGasEstimations(
+                                        () -> {
+                                            HashMap<String, Long> perTxFee =
+                                                    solanaTransactionsGasHelper.getPerTxFee();
+                                            if (perTxFee.get(mTxInfo.id) != null) {
+                                                mSolanaEstimatedTxFee = perTxFee.get(mTxInfo.id);
+                                            }
+                                            if (!canUpdateUi()) return;
+                                            ParsedTransaction parsedTx =
+                                                    fillAssetDependentControls(
+                                                            view,
+                                                            mTxNetwork,
+                                                            txAccountInfo,
+                                                            accounts,
+                                                            new HashMap<String, Double>(),
+                                                            tokenList,
+                                                            new HashMap<String, Double>(),
+                                                            new HashMap<
+                                                                    String,
+                                                                    HashMap<String, Double>>(),
+                                                            mSolanaEstimatedTxFee);
 
-                                    // Get tokens involved in this transaction
-                                    List<BlockchainToken> tokens = new ArrayList<>();
-                                    tokens.add(Utils.makeNetworkAsset(
-                                            mTxNetwork)); // Always add native asset
-                                    if (parsedTx.getIsSwap()) {
-                                        tokens.add(parsedTx.getSellToken());
-                                        tokens.add(parsedTx.getBuyToken());
-                                    } else if (parsedTx.getToken() != null)
-                                        tokens.add(parsedTx.getToken());
-                                    BlockchainToken[] filterByTokens =
-                                            tokens.toArray(new BlockchainToken[0]);
+                                            // Get tokens involved in this transaction
+                                            List<BlockchainToken> tokens = new ArrayList<>();
+                                            tokens.add(
+                                                    Utils.makeNetworkAsset(
+                                                            mTxNetwork)); // Always add native asset
+                                            if (parsedTx.getIsSwap()) {
+                                                tokens.add(parsedTx.getSellToken());
+                                                tokens.add(parsedTx.getBuyToken());
+                                            } else if (parsedTx.getToken() != null)
+                                                tokens.add(parsedTx.getToken());
+                                            BlockchainToken[] filterByTokens =
+                                                    tokens.toArray(new BlockchainToken[0]);
 
-                                    fetchTxBalanceAndUpdateUi(view, mTxNetwork, txAccountInfo,
-                                            accounts, filterByTokens);
-                                });
+                                            fetchTxBalanceAndUpdateUi(
+                                                    view,
+                                                    mTxNetwork,
+                                                    txAccountInfo,
+                                                    accounts,
+                                                    filterByTokens);
+                                        });
                             });
                 });
         Button reject = view.findViewById(R.id.reject);

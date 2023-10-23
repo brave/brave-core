@@ -44,15 +44,15 @@ void AddBookmarkNode(Profile* profile) {
   bookmarks::BookmarkModel* bookmark_model =
       BookmarkModelFactory::GetForBrowserContext(profile);
 
-  std::vector<const bookmarks::BookmarkNode*> nodes;
-  bookmark_model->GetNodesByURL(url, &nodes);
+  std::vector<const bookmarks::BookmarkNode*> nodes =
+      bookmark_model->GetNodesByURL(url);
   EXPECT_EQ(0UL, nodes.size());
 
   // We need to pass a non-empty title when creating a bookmark so that an
   // accessible name is also available, otherwise we'll hit a CHECK() and
   // the test will crash (see accessibility_paint_checks.cc).
   bookmarks::AddIfNotBookmarked(bookmark_model, url, u"brave");
-  bookmark_model->GetNodesByURL(url, &nodes);
+  nodes = bookmark_model->GetNodesByURL(url);
   EXPECT_EQ(1UL, nodes.size());
 }
 

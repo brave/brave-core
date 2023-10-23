@@ -49,7 +49,7 @@
   <if expr="not chromeos_ash">
     </if>
 
-  <if expr="chrome_root_store_supported">
-    </if>
-
+  <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_INCOGNITO_HEADER" desc="The header of the second item in the 'User Education Module' in the Safety Hub page. This item explains Private mode.">
+    Brave Private
+  </message>
   </grit-part>

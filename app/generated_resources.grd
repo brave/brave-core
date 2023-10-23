@@ -760,12 +760,6 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION" desc="The context-menu item that asks whether to use the PDF OCR service to convert image to text.">
             Extract text from PDF
           </message>
-          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ALWAYS" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text always.">
-            Always
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ONCE" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text, for a single use.">
-            Just once
-          </message>
           <message name="IDS_CONTENT_CONTEXT_RUN_LAYOUT_EXTRACTION" desc="The context-menu item that runs a local machine intelligence model to extract visual layout semantics.">
            Recognize visual layout semantics
           </message>
@@ -1049,12 +1043,6 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION" desc="The context-menu item that asks whether to use the PDF OCR service to convert image to text.">
             Extract Text From PDF
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ALWAYS" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text always.">
-            Always
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION_ONCE" desc="The context-menu sub-item that asks whether to use the PDF OCR service to convert image to text, for a single use.">
-            Just once
           </message>
           <message name="IDS_CONTENT_CONTEXT_RUN_LAYOUT_EXTRACTION" desc="In Title Case: The context-menu item that runs a local machine intelligence model to extract visual layout semantics.">
            Recognize Visual Layout Semantics
@@ -2106,9 +2094,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_BLOCK_REASON_DEEP_SCANNING_SECOND_UPDATED" desc="Second line of the message shown on chrome://downloads when a download is being scanned. Follows IDS_BLOCK_REASON_DEEP_SCANNING_UPDATED">
         Scanning for malware...
       </message>
-      <message name="IDS_BLOCK_REASON_ACCOUNT_COMPROMISE" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is associated with account compromise.">
-        This file could let attackers steal your personal information.
-      </message>
       <message name="IDS_BLOCK_REASON_PROMPT_FOR_SCANNING_UPDATED" desc="Message shown to the user on chrome://downloads page to explain that this download is recommended to be scanned.">
         This file might be a virus or malware. You can send it to Brave to check if it's unsafe.
       </message>
@@ -2307,6 +2292,21 @@ are declared in tools/grit/grit_rule.gni.
         Open anyway
       </message>
 
+      <message name="IDS_DOWNLOAD_KEEP_DANGEROUS_FILE" desc="On the downloads page, the label for the button to download a dangerous file despite its danger.">
+        Download dangerous file
+      </message>
+      <message name="IDS_DOWNLOAD_KEEP_SUSPICIOUS_FILE" desc="On the downloads page, the label for the button to download a suspicious file despite its danger.">
+        Download suspicious file
+      </message>
+      <message name="IDS_DOWNLOAD_KEEP_UNVERIFIED_FILE" desc="On the downloads page, the label for the button to download an unverified file despite its danger.">
+        Download unverified file
+      </message>
+      <message name="IDS_DOWNLOAD_KEEP_INSECURE_FILE" desc="On the downloads page, the label for the button to download an insecure file despite its danger.">
+        Download insecure file
+      </message>
+      <message name="IDS_DOWNLOAD_DELETE_FROM_HISTORY" desc="On the downloads page, the label for the button to remove a downloaded file from the history.">
+        Delete from history
+      </message>
 
       <!-- Download Alerts for Accessibility -->
       <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_ACCESSIBLE_ALERT" desc="The title of a download notification: the current download status is in progress. This message is for screen reader users.">
@@ -3616,6 +3616,15 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_COOKIE_CONTROLS_PROMO_SEE_HOW_BUTTON_TEXT" desc="Text on the button that opens the cookie controls bubble on the in-product-help bubble shown for the cookie controls bubble. Encourages users to see how to temporarily enable third-party cookies.">
         See how
+      </message>
+      <message name="IDS_3PCD_USER_BYPASS_PROMO_TITLE" desc="Title of the in-product-help bubble shown for the user bypass feature. Reminds the user that tracking protection is on.">
+        Reminder: Tracking Protection is on
+      </message>
+      <message name="IDS_3PCD_USER_BYPASS_PROMO_TEXT" desc="Text on the in-product-help bubble shown for the user bypass feature. Explains that if a site is broken, enabling third-party cookies for the site might fix it.">
+        If a site you visit isn't working as expected, try temporarily allowing third-party cookies for that site. That will mean less protection but site features are more likely to work as expected.
+      </message>
+      <message name="IDS_3PCD_USER_BYPASS_PROMO_SCREENREADER" desc="Text announced with the in-product-help bubble shown for the user bypass feature. Explains how to temporarily enable third-party cookies if a site isn't working.">
+        If a site isn't working as expected, you can enable third-party cookies for it by selecting third-party cookie blocking in the search and address bar.
       </message>
 
       <!-- Win certificate selector dialog strings.  -->
@@ -6436,6 +6445,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SAVE_ACCOUNT" desc="The title of the save password bubble when a federated credential can be saved.">
         Save username?
       </message>
+      <message name="IDS_ADD_USERNAME_TITLE" desc="The title of the add username bubble when username was not detected.">
+        Add username?
+      </message>
+      <message name="IDS_ADD_USERNAME" desc="Confirmation button in the add username bubble.">
+        Add Username
+      </message>
+      <message name="IDS_ADD_USERNAME_BODY" desc="Body text in the add username bubble.">
+        To help Brave Password Manager save your sing-in info, add your username for this site
+      </message>
       <message name="IDS_UPDATE_PASSWORD" desc="The title of the save password bubble when a password can be updated.">
         Update password?
       </message>
@@ -6458,12 +6476,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_UPDATE_PASSWORD_DIFFERENT_DOMAINS_TITLE" desc="The title of the update password bubble when the submitted form origin isn't equal to saved credentials origin.">
         Update password for <ph name="ORIGIN">$1<ex>example.com</ex></ph>?
-      </message>
-      <message name="IDS_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_GOOGLE_ACCOUNT" desc="The description of save password message when the user is signed in.">
-        Save it in your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
-      </message>
-      <message name="IDS_UPDATE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_GOOGLE_ACCOUNT" desc="The description of update password message when the signed-in user updates the password.">
-        Update it in your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
       </message>
       <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
         Passwords are saved in your Brave sync chain so you can use them on any device
@@ -7516,7 +7528,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         From your Google Drive
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_TITLE_V2" desc="Title shown in the header of the drive module and various other UIs in NTP Launchpad 2.0.">
-        From Your Drive
+        From your Drive
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_INFO" desc="Text shown in the body of the info dialog of the drive module.">
         You’re seeing suggested files to help you easily get back to your most recent activity in Google Drive.
@@ -7698,10 +7710,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_FEED_TITLE" desc="Title shown in the header of the Following feed NTP module on the new tab page showing updates from sites followed by the user.">
         Following
       </message>
-      <message name="IDS_NTP_MODULES_RESUME_YOUR_JOURNEY" desc="A label for the title in NTP Quests Module.">
-        Resume your journey for <ph name="MODULE_TITLE">$1<ex>Office Chairs</ex></ph>
+      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_RESUME_BROWSING" desc="A label for the title in NTP History clusters Module.">
+        Resume browsing
       </message>
-      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_RESUME_BROWSING" desc="A label for the title in NTP History Clusters Module in sentence case.">
+      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_RESUME_BROWSING_FOR" desc="A label for the title in NTP History Clusters Module in sentence case.">
         Resume browsing for <ph name="MODULE_TITLE">$1<ex>Office Chairs</ex></ph>
       </message>
       <message name="IDS_NTP_MODULES_SHOW_ALL" desc="A label for the show all button in NTP Quests Module.">
@@ -7710,13 +7722,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_BOOKMARKED" desc="A label for the bookmarked annotation in NTP Quests Module.">
         Bookmarked
       </message>
-      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_INFO" desc="Text shown in the body of the info dialog of the history clusters module.">
-        You’re seeing pages you've visited and suggested searches to help you easily get back to your most recent activity in Brave Journeys.
-        <ph name="BREAK">&lt;br&gt;</ph>
-        <ph name="BREAK">&lt;br&gt;</ph>
-        You can manage settings from the card menu or see more options in Customize Brave.
-      </message>
-      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_INFO2" desc="Text shown in the body of the info dialog of the NTP History Clusters module.">
+      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_INFO" desc="Text shown in the body of the info dialog of the NTP History Clusters module.">
         You’re seeing pages you've visited and suggested searches to help you easily get back to your most recent activity.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
@@ -7736,9 +7742,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_DISMISS_BUTTON" desc="A label for the dismiss button in the dropdown.">
         No longer interested
-      </message>
-      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_DISABLE_TEXT" desc="A label to append to the disable text in the dropdown.">
-        Journeys card
       </message>
       <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_DISABLE_DROPDOWN_TEXT" desc="A label to append to the disable text in the dropdown.">
         this card
@@ -7909,8 +7912,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_COMPANION_TOOLBAR_TOOLTIP" desc="The tooltip for the companion feature toolbar button.">
         Brave Search side panel
       </message>
-      <message name="IDS_SIDE_PANEL_COMPANION_PROMO" desc="Text shown on promotional UI appearing next to the pinned companion button, which excourages users to try the feature.">
-        Get additional useful info as you explore this page
+      <message name="IDS_SIDE_PANEL_COMPANION_PROMO" desc="Text shown on promotional UI appearing next to the pinned companion button, which encourages users to try the feature.">
+        Get a page summary, related searches, and other useful info about this page
+      </message>
+      <message name="IDS_SIDE_PANEL_COMPANION_PROMO_SCREEN_READER" is_accessibility_with_no_ui="true" desc="Screen reader announcement on the promotional UI appearing next to the pinned companion button, which excourages users to try the feature.">
+        To get a page summary, related searches, and other useful info about this page, select Brave Search side panel button in the toolbar
       </message>
       <message name="IDS_SIDE_PANEL_COMPANION_ERROR_PAGE_FIRST_LINE" desc="Text shown on the side panel for the companion feature when there is a network or other navigation error. The texts informs the user the panel can not be loaded.">
         Can't load this panel right now
@@ -8193,8 +8199,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READ_ANYTHING_LOADING" desc="Message to show while Read Anything is figuring out what text to display.">
         Getting ready
       </message>
-      <message name="IDS_READING_MODE_BACK" desc="Label for button that navigates to previous menu within the settings menu." translateable="false">
-        Back
+      <message name="IDS_READING_MODE_FONT_RESET" desc="Label for button that resets the font size of the reading mode feature back to the default font setting." translateable="false">
+        Reset
+      </message>
+      <message name="IDS_READING_MODE_TURN_HIGHLIGHT_OFF" desc="Tooltip label for button that turns off highlighting in Read Aloud." translateable="false">
+        Turn off highlight
+      </message>
+      <message name="IDS_READING_MODE_TURN_HIGHLIGHT_ON" desc="Tooltip label for button that turns on highlighting in Read Aloud." translateable="false">
+        Turn on highlight
       </message>
       <message name="IDS_READING_MODE_SIDE_PANEL_PROMO" desc="Text for the in-product-help bubble shown for the reading mode bubble.">
         To show a simplified view of this page, open the side panel and select Reading mode
@@ -8296,6 +8308,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TOOLTIP_EXTENSIONS_BUTTON" desc="The tooltip for the extensions button">
         Extensions
+      </message>
+      <message name="IDS_TOOLTIP_OVERFLOW_BUTTON" desc="The tooltip for the overflow button">
+        Hidden toolbar buttons
       </message>
       <message name="IDS_TOOLTIP_EXTENSIONS_BUTTON_ALL_EXTENSIONS_BLOCKED" desc="The tooltip for the extensions button when all the extensions are blocked on the current site.">
         Extensions are blocked on this site
@@ -8427,6 +8442,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TOOLTIP_TAB_SEARCH" desc="The tooltip for the Tab Search bubble.">
         Search tabs
+      </message>
+      <message name="IDS_TOOLTIP_TAB_ORGANIZE" desc="The tooltip for the Tab Organization button." translateable="false">
+        Organize tabs
+      </message>
+      <message name="IDS_TAB_ORGANIZE" desc="The text label of the Tab Organization button." translateable="false">
+        Organize tabs?
       </message>
 
       <!-- Strings for intent picker -->
@@ -8612,6 +8633,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_TAB_SEARCH" desc="The accessible name for the Tab Search bubble.">
         Search tabs
+      </message>
+      <message name="IDS_ACCNAME_TAB_ORGANIZE" desc="The accessible name for the Tab Organization button." translateable="false">
+        Organize tabs
       </message>
       <message name="IDS_ACCNAME_TAB_SCROLL_LEADING" desc="The accessible name for the TabStrip leading scroll button.">
         Scroll towards the first tab
@@ -9187,10 +9211,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_DEVICE_PASSKEY" desc="The text of the link in the password sheet that will use a different device’s passkey. This string also exists for desktop password manager and translations should match. See IDS_PASSWORD_MANAGER_USE_DEVICE_PASSKEY in components/password_manager_strings.grdp.">
           Use a passkey on a different device
         </message>
-        <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain.">
-          Password will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>. You won’t have to remember it.
-        </message>
-        <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION_UPM_BRANDED" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain. Unified Password Manager branded variant.">
+        <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION_BRANDED" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain. Unified Password Manager branded variant.">
           You won’t need to remember this password. It will be saved to Brave Password Manager for <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>.
         </message>
         <message name="IDS_CONFIRM_USERNAME_DIALOG_TITLE" desc="The title of the confirm username dialog." formatter_data="android_java">
@@ -9489,55 +9510,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         Report an issue
       </message>
 
-      <!-- Brave Cleanup prompt and web UI -->
-      <if expr="is_win">
-        <message name="IDS_CHROME_CLEANUP_PROMPT_DETAILS_BUTTON_LABEL" desc="The button in the Brave Cleanup dialog that lets users see more details, such as what files will be deleted from their computer. Brave browser shows the dialog when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is found on the user's computer. Noun; verb 'See' is omitted.">
-          Details
-        </message>
-        <message name="IDS_CHROME_CLEANUP_PROMPT_REMOVE_BUTTON_LABEL" desc="A button in the Brave Cleanup dialog. When clicked, Brave will begin to remove unwanted software and restore browser settings to default values. Appears next to a 'Cancel' button and a 'Details' button that opens a page that shows which unwanted software will be deleted. 'Remove' is imperative.">
-          Remove
-        </message>
-        <message name="IDS_CHROME_CLEANUP_PROMPT_TITLE" desc="Title of the Brave Cleanup dialog. Brave browser shows the dialog when unwanted software, like ad injectors or software that changes the user's settings without their knowledge, is found on the user's computer. Appears above a description of what the cleanup dialog does, along with a 'Remove', 'Cancel', and 'Details' button. 'Remove' is imperative, asking the user, do you want Brave to remove harmful software?">
-          Remove harmful software?
-        </message>
-        <message name="IDS_CHROME_CLEANUP_REBOOT_PROMPT_TITLE" desc="Title of the Brave Cleanup reboot prompt dialog. Brave browser shows the dialog when the user runs the Brave Cleanup tool and computer restart is required to finish the cleanup. User must take additional action to finish the cleanup. 'Restart' is imperative.">
-          To finish removing harmful software, restart your computer
-        </message>
-        <message name="IDS_CHROME_CLEANUP_REBOOT_PROMPT_RESTART_BUTTON_LABEL" desc="A button in the Brave Cleanup reboot prompt dialog. Clicking this button causes the user's computer to turn off (shut down) and turn back on again. Imperative.">
-          Restart computer
-        </message>
-        <message name="IDS_CHROME_CLEANUP_LOGS_PERMISSION" desc="A checkbox label, appearing on the Brave Cleanup modal dialog, asking the user for permission to send details about the cleanup operation to Brave.">
-          Report details to Brave
-        </message>
-      </if>
-
-      <!-- Settings reset prompt dialog messages -->
-      <message name="IDS_SETTINGS_RESET_PROMPT_TITLE_SEARCH_ENGINE" desc="The title for the settings reset dialog when the user's search engine setting has been modified. The dialog will ask users if they want to restore their modified setting to its original default value.">
-        Restore default search engine?
-      </message>
-      <message name="IDS_SETTINGS_RESET_PROMPT_TITLE_STARTUP_PAGE" desc="The title for the settings reset dialog when the user's startup page setting has been modified. The dialog will ask users if they want to restore their modified setting to its original default value.">
-        Restore default startup page?
-      </message>
-      <message name="IDS_SETTINGS_RESET_PROMPT_TITLE_HOMEPAGE" desc="The title for the settings reset dialog when the user's homepage setting has been modified by. The dialog will ask users if they want to restore their modified setting to its original default value.">
-        Restore default homepage?
-      </message>
-      <message name="IDS_SETTINGS_RESET_PROMPT_ACCEPT_BUTTON_LABEL" desc="The settings reset dialog asks users if they want to restore a Brave setting that has been modified by an unwanted software or extension to its original default value. This text is displayed on the main button in the dialog that, when clicked, will restore the setting.">
-        Restore
-      </message>
-
-      <message name="IDS_SETTINGS_RESET_PROMPT_EXPLANATION_FOR_SEARCH_ENGINE_NO_EXTENSIONS" desc="This text is shown in the settings reset dialog to inform the user that their search engine has been modified, for example by unwanted software or extension, to something that they might not want. The value of the setting that is shown in the text is the possibly unwanted setting that will be reset to its original default if the user clicks the Restore button.">
-        Your search engine was changed to <ph name="URL">$1<ex>www.some-domain.com</ex></ph>.
-      </message>
-      <message name="IDS_SETTINGS_RESET_PROMPT_EXPLANATION_FOR_STARTUP_PAGE_SINGLE_NO_EXTENSIONS" desc="This text is shown in the settings reset dialog to inform the user that their startup page setting has been modified, for example by unwanted software or extension, to something that they might not want. The value of the setting that is shown in the text is the possibly unwanted setting that will be reset to its original default value if the user clicks the Restore button.">
-        Your startup page was changed to <ph name="URL">$1<ex>www.some-domain.com</ex></ph>.
-      </message>
-      <message name="IDS_SETTINGS_RESET_PROMPT_EXPLANATION_FOR_STARTUP_PAGE_MULTIPLE_NO_EXTENSIONS" desc="This text is shown in the settings reset dialog to inform the user that their startup page setting has been modified, for example by unwanted software or extension, to something that they might not want. The value of the setting that is shown in the text is the possibly unwanted setting that will be reset to its original default if the user clicks the Restore button.">
-        Your startup pages were changed to include <ph name="URL">$1<ex>www.some-domain.com</ex></ph>.
-      </message>
-      <message name="IDS_SETTINGS_RESET_PROMPT_EXPLANATION_FOR_HOMEPAGE_NO_EXTENSIONS" desc="This text is shown in the settings reset dialog to inform the user that their homepage setting has been modified, for example by unwanted software or extension, to something that they might not want. The value of the setting that is shown in the text is the possibly unwanted setting that will be reset to its original default value if the user clicks the Restore button.">
-        Your homepage was changed to <ph name="URL">$1<ex>www.some-domain.com</ex></ph>.
-      </message>
-
       <!-- Upgrade bubble messages -->
       <message name="IDS_REENABLE_UPDATES" desc="Text for the button the user clicks to re-enable automatic updates.">
         Turn on autoupdate
@@ -9604,6 +9576,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_PICTURE_IN_PICTURE_NEXT_SLIDE_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button invokes next slide action.">
         Next slide
+      </message>
+      <message name="IDS_AUTO_PICTURE_IN_PICTURE_DESCRIPTION" desc="Auto Picture-in-Picture description displayed in the permissions prompt UI">
+        Enter picture-in-picture automatically, so you can use it on top of other tabs and windows.
       </message>
 
       <!-- Load State -->
@@ -9929,6 +9904,27 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TAB_SEARCH_COLLAPSE_RECENTLY_CLOSED" desc="The tooltip for the RECENTLY CLOSED button when it's expanded">
         Collapse recently closed
+      </message>
+      <message name="IDS_TAB_SEARCH_TAB_NAME" desc="The tab title for tab search in the tab search bubble">
+        All Tabs
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_TAB_NAME" desc="The tab title for tab organization in the tab search bubble" translateable="false">
+        Organize Tabs
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_CREATE_GROUP" desc="The label for the button that creates a tab group in the tab organization UI">
+        Create group
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_DISMISS" desc="The label for the button that dismisses the tab organization UI">
+        Dismiss
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_TITLE" desc="The header text for the not started state in the tab organization UI" translateable="false">
+        Organize tabs
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BODY" desc="The body text for the not started state in the tab organization UI" translateable="false">
+        You can organize your tabs anytime
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BUTTON" desc="The label for the button in the not started state of the tab organization UI" translateable="false">
+        Organize tabs
       </message>
 
       <!-- Strings for Window Titles in Menus -->
@@ -10977,6 +10973,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_MANAGED_BY_PARENT_WITH_HYPERLINK" desc="Message to supervised end users, with a link for more info.">
           Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your parent
+        </message>
+        <message name="IDS_BROWSER_MANAGED_AND_PROFILE_MANAGED_BY_TOOLTIP" desc="Text displayed in a tooltip to inform that the browser is managed by BROWSER_DOMAIN and the profile by PROFILE_DOMAIN.">
+          Browser managed by an organization, profile managed by <ph name="PROFILE_DOMAIN">$1<ex>bar.com</ex></ph>
+        </message>
+        <message name="IDS_BROWSER_AND_PROFILE_DIFFERENT_MANAGED_BY_TOOLTIP" desc="Text displayed in a tooltip to inform that the browser is managed by BROWSER_DOMAIN and the profile by PROFILE_DOMAIN.">
+         Browser managed by <ph name="BROWSER_DOMAIN">$1<ex>foo.com</ex></ph>, profile managed by <ph name="PROFILE_DOMAIN">$2<ex>bar.com</ex></ph>
         </message>
       </if>
 
@@ -13728,9 +13730,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SERIAL_PORT_CHOOSER_NAME_WITH_PATH" desc="User option displaying a human-readable name for a serial port with the device path in parenthesis">
         <ph name="FRIENDLY_NAME">$1<ex>Virtual COM Port</ex></ph> (<ph name="DEVICE_PATH">$2<ex>COM1</ex></ph>)
       </message>
-      <message name="IDS_SERIAL_PORT_CHOOSER_PATH_ONLY" desc="User option displaying only the device path for a serial port">
-        <ph name="DEVICE_PATH">$1<ex>COM1</ex></ph>
-      </message>
       <message name="IDS_SERIAL_PORT_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the serial port chooser popup and allows the requesting site access to the selected port.">
         Connect
       </message>
@@ -14057,6 +14056,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_FILE_SYSTEM_ACCESS_VIEW_DIRECTORY_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming read access to a directory (and the files in it) using the File System Access API">
       View files
+    </message>
+
+    <!-- File System Access restore permission prompt -->
+    <message name="IDS_FILE_SYSTEM_ACCESS_RESTORE_PERMISSION_DESCRIPTION" desc="Description text in the the dialog for restoring permissions to files and/or directories. Below this text lists files and/or directories for which user has granted permission during the last visit to the site">
+      View and edit files from the last time you visited this site:
     </message>
 
     <!-- File System Access usage indicator -->
@@ -15197,10 +15201,52 @@ Please help our engineers fix this problem. Tell us what happened right before y
       You can use your <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph> account on this site. To continue, sign in to <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph>.
     </message>
     <message name="IDS_SIGNIN_GENERIC_ERROR_DIALOG_SUMMARY" desc="Summary of generic error upon user failing to sign in with an account from an identity provider." translateable="false">
-      Cannot continue with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph>.
+      Can't continue with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph>
     </message>
     <message name="IDS_SIGNIN_GENERIC_ERROR_DIALOG_DESCRIPTION" desc="Description of generic error upon user failing to sign in with an account from an identity provider." translateable="false">
-      Something went wrong.
+      Something went wrong
+    </message>
+    <message name="IDS_SIGNIN_UNAUTHORIZED_CLIENT_ERROR_DIALOG_SUMMARY" desc="Summary of unauthorized client error upon user failing to sign in with an account from an identity provider." translateable="false">
+      <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> can't continue using <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
+    </message>
+    <message name="IDS_SIGNIN_UNAUTHORIZED_CLIENT_ERROR_DIALOG_DESCRIPTION" desc="Description of unauthorized client error upon user failing to sign in with an account from an identity provider." translateable="false">
+      This option is unavailable right now.
+    </message>
+    <message name="IDS_SIGNIN_INVALID_REQUEST_ERROR_DIALOG_SUMMARY" desc="Summary of invalid request error upon user failing to sign in with an account from an identity provider." translateable="false">
+      <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> can't continue using <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
+    </message>
+    <message name="IDS_SIGNIN_INVALID_REQUEST_ERROR_DIALOG_DESCRIPTION" desc="Description of invalid request error upon user failing to sign in with an account from an identity provider." translateable="false">
+      This option is unavailable right now.
+    </message>
+    <message name="IDS_SIGNIN_ACCESS_DENIED_ERROR_DIALOG_SUMMARY" desc="Summary of access denied error upon user failing to sign in with an account from an identity provider." translateable="false">
+      Check that you chose the right account
+    </message>
+    <message name="IDS_SIGNIN_ACCESS_DENIED_ERROR_DIALOG_DESCRIPTION" desc="Description of access denied error upon user failing to sign in with an account from an identity provider." translateable="false">
+      Check if the selected account is supported.
+    </message>
+    <message name="IDS_SIGNIN_SERVER_ERROR_DIALOG_SUMMARY" desc="Summary of server error upon user failing to sign in with an account from an identity provider." translateable="false">
+      Check your internet connection
+    </message>
+    <message name="IDS_SIGNIN_SERVER_ERROR_DIALOG_DESCRIPTION" desc="Description of server error upon user failing to sign in with an account from an identity provider." translateable="false">
+      If you're online but this issue keeps happening, you can try other ways to continue on <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph>.
+    </message>
+    <message name="IDS_SIGNIN_TEMPORARILY_UNAVAILABLE_ERROR_DIALOG_SUMMARY" desc="Summary of temporarily unavailable error upon user failing to sign in with an account from an identity provider." translateable="false">
+      Try again later
+    </message>
+    <message name="IDS_SIGNIN_TEMPORARILY_UNAVAILABLE_ERROR_DIALOG_DESCRIPTION" desc="Description of temporarily unavailable error upon user failing to sign in with an account from an identity provider." translateable="false">
+      <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph> isn't available right now.
+    </message>
+    <message name="IDS_SIGNIN_ERROR_DIALOG_GOT_IT_BUTTON" desc="The button text on the error dialog for the user to acknowledge that an error has occurred in their attempt to sign in with an account from an identity provider." translateable="false">
+      Got it
+    </message>
+    <message name="IDS_SIGNIN_ERROR_DIALOG_MORE_DETAILS_BUTTON" desc="The button text on the error dialog for the user to get more details about an error that has occurred in their attempt to sign in with an account from an identity provider." translateable="false">
+      More details
+    </message>
+    <message name="IDS_SIGNIN_ERROR_DIALOG_MORE_DETAILS_PROMPT" desc="Prompt user to click on the more details button to get more details about an error that has occurred in their attempt to sign in with an account from an identity provider." translateable="false">
+      If this issue keeps happening, choose "More details" below to get more information from <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph>.
+    </message>
+    <message name="IDS_SIGNIN_ERROR_DIALOG_TRY_OTHER_WAYS_PROMPT" desc="Prompt user to try other ways of signing in after an error has occurred in their attempt to sign in with an account from an identity provider." translateable="false">
+      If this issue keeps happening, you can try other ways to continue on <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph>.
     </message>
     <message name="IDS_MULTI_IDP_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet when there are multiple identity providers. Sheet is shown to prompt user for sign in consent." translateable="false">
       Sign in to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph>
@@ -15531,40 +15577,32 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
-    <!-- Search Engine Choice strings -->
-    <if expr="enable_search_engine_choice">
-      <message name="IDS_SEARCH_ENGINE_CHOICE_PAGE_TITLE" desc="The title for the Search Engine Choice page." translateable="false">
-        Lorem ipsum dolor sit amet
-      </message>
-      <message name="IDS_SEARCH_ENGINE_CHOICE_PAGE_SUBTITLE" desc="The subtitle for the Search Engine Choice page." translateable="false">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-      </message>
-      <message name="IDS_SEARCH_ENGINE_CHOICE_PAGE_SUBTITLE_INFO_LINK" desc="The info link in the subtitle of the Search Engine Choice page." translateable="false">
-        labore
-      </message>
-      <message name="IDS_SEARCH_ENGINE_CHOICE_BUTTON_TITLE" desc="The title of the button of the Search Engine Choice page." translateable="false">
-        Lorem ipsum
-      </message>
-      <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_TITLE" desc="The title of the info dialog of the Search Engine Choice page." translateable="false">
-        Lorem ipsum dolor sit amet
-      </message>
-       <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_BODY_FIRST_PARAGRAPH" desc="The first paragraph of the info dialog body of the Search Engine Choice page." translateable="false">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-      </message>
-      <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_BODY_SECOND_PARAGRAPH" desc="The second paragraph of the info dialog body of the Search Engine Choice page." translateable="false">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolorin reprehenderit in voluptate<ph name="END_BOLD">&lt;/b&gt;</ph> velit esse cillum dolore eufugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </message>
-      <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_BODY_THIRD_PARAGRAPH" desc="The third paragraph of the info dialog body of the Search Engine Choice page." translateable="false">
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.
-      </message>
-      <message name="IDS_SEARCH_ENGINE_CHOICE_INFO_DIALOG_BUTTON_TITLE" desc="The title of the button of the Search Engine Choice info dialog." translateable="false">
-        Lorem ipsum
-      </message>
-    </if>
-
     <!-- Infobar shown when Protected Audiences Debugging is enabled -->
     <message name="IDS_PROTECTED_AUDIENCE_DEBUGGING_DISCLAIMER" desc="Text of infobar that shows up when the consented debugging feature for Protected Audiences is enabled.">
       Protected Audiences Debugging is enabled.
+    </message>
+
+    <!-- Experimental enterprise plus_addresses feature strings -->
+    <message name="IDS_PLUS_ADDRESS_MODAL_TITLE" desc="Title for the experimental enterprise plus addresses feature modal" translateable="false">
+      Lorem Ipsum
+    </message>
+    <message name="IDS_PLUS_ADDRESS_MODAL_PLUS_ADDRESS_LABEL" desc="Label for the upper portion of the plus addresses modal" translateable="false" formatter_data="android_java">
+      Lorem Ipsum
+    </message>
+    <message name="IDS_PLUS_ADDRESS_MODAL_PROPOSED_PLUS_ADDRESS_PLACEHOLDER" desc="A placeholder for the plus address" translateable="false" formatter_data="android_java">
+      Lorem Ipsum or whatever
+    </message>
+    <message name="IDS_PLUS_ADDRESS_MODAL_REGULAR_ADDRESS_LABEL" desc="A label for the regular address in the plus address modal" translateable="false">
+      For <ph name="REGULAR_ADDRESS">$1<ex>test@example.test</ex></ph>
+    </message>
+    <message name="IDS_PLUS_ADDRESS_MODAL_PLUS_ADDRESS_DESCRIPTION" desc="An illustrative description of the plus addresses modal" translateable="false" formatter_data="android_java">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </message>
+    <message name="IDS_PLUS_ADDRESS_MODAL_CANCEL_TEXT" desc="Cancel button text for the experimental enterprise plus addresses feature modal" translateable="false" formatter_data="android_java">
+      Dolor
+    </message>
+    <message name="IDS_PLUS_ADDRESS_MODAL_OK_TEXT" desc="Ok button text for the experimental enterprise plus addresses feature modal" translateable="false" formatter_data="android_java">
+      Sit
     </message>
   </messages>
 </release>

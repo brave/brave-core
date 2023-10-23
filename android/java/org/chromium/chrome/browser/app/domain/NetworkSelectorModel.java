@@ -72,23 +72,28 @@ public class NetworkSelectorModel {
                 _mSelectedNetwork.postValue(NetworkUtils.getAllNetworkOption(mContext));
             }
         }
-        mNetworkListsLd = Transformations.map(mNetworkModel.mNetworkLists, networkLists -> {
-            if (networkLists == null) return new NetworkModel.NetworkLists();
-            NetworkModel.NetworkLists networkListsCopy =
-                    new NetworkModel.NetworkLists(networkLists);
-            List<NetworkInfo> allNetworkList = new ArrayList<>(networkLists.mCoreNetworks);
-            if (mMode == Mode.LOCAL_NETWORK_FILTER && SelectionMode.MULTI != mSelectionMode) {
-                NetworkInfo allNetwork = NetworkUtils.getAllNetworkOption(mContext);
-                networkListsCopy.mPrimaryNetworkList.add(0, allNetwork);
-                // Selected local network can be "All networks"
-                allNetworkList.add(0, allNetwork);
-            }
-            final NetworkInfo network = mNetworkModel.getNetwork(mSelectedChainId);
-            if (network != null) {
-                updateLocalNetwork(allNetworkList, mSelectedChainId, network.coin);
-            }
-            return networkListsCopy;
-        });
+        mNetworkListsLd =
+                Transformations.map(
+                        mNetworkModel.mNetworkLists,
+                        networkLists -> {
+                            if (networkLists == null) return new NetworkModel.NetworkLists();
+                            NetworkModel.NetworkLists networkListsCopy =
+                                    new NetworkModel.NetworkLists(networkLists);
+                            List<NetworkInfo> allNetworkList =
+                                    new ArrayList<>(networkLists.mCoreNetworks);
+                            if (mMode == Mode.LOCAL_NETWORK_FILTER
+                                    && SelectionMode.MULTI != mSelectionMode) {
+                                NetworkInfo allNetwork = NetworkUtils.getAllNetworkOption(mContext);
+                                networkListsCopy.mPrimaryNetworkList.add(0, allNetwork);
+                                // Selected local network can be "All networks"
+                                allNetworkList.add(0, allNetwork);
+                            }
+                            final NetworkInfo network = mNetworkModel.getNetwork(mSelectedChainId);
+                            if (network != null) {
+                                updateLocalNetwork(allNetworkList, mSelectedChainId, network.coin);
+                            }
+                            return networkListsCopy;
+                        });
     }
 
     /**
@@ -149,6 +154,7 @@ public class NetworkSelectorModel {
     public SelectionMode getSelectionType() {
         return mSelectionMode;
     }
+
     private void updateLocalNetwork(List<NetworkInfo> networkInfos, String chainId, int coin) {
         NetworkInfo networkInfo = NetworkUtils.findNetwork(networkInfos, chainId, coin);
         if (networkInfo != null) {

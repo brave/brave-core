@@ -23,7 +23,7 @@
 #include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_service_impl.h"
 #include "components/sync/service/sync_service_observer.h"
@@ -34,10 +34,10 @@
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
-#include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_setup_service.h"
-#include "ios/chrome/browser/sync/sync_setup_service_factory.h"
+#include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/sync_setup_service.h"
+#include "ios/chrome/browser/sync/model/sync_setup_service_factory.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 
@@ -56,9 +56,6 @@ BraveSyncAPISyncProtocolErrorResult const
 BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultThrottled =
         static_cast<NSInteger>(syncer::SyncProtocolErrorType::THROTTLED);
-BraveSyncAPISyncProtocolErrorResult const
-    BraveSyncAPISyncProtocolErrorResultClearPending =
-        static_cast<NSInteger>(syncer::SyncProtocolErrorType::CLEAR_PENDING);
 BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultTransientError =
         static_cast<NSInteger>(syncer::SyncProtocolErrorType::TRANSIENT_ERROR);

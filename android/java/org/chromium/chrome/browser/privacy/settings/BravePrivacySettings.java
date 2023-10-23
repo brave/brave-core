@@ -12,6 +12,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
@@ -142,11 +143,11 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final int STANDARD = 1;
     private static final int ALLOW = 2;
 
-    private final PrefService mPrefServiceBridge = UserPrefs.get(Profile.getLastUsedRegularProfile());
+    private final PrefService mPrefServiceBridge =
+            UserPrefs.get(Profile.getLastUsedRegularProfile());
     private final PrivacyPreferencesManagerImpl mPrivacyPrefManager =
             PrivacyPreferencesManagerImpl.getInstance();
-    private final ChromeManagedPreferenceDelegate mManagedPreferenceDelegate =
-            createManagedPreferenceDelegate();
+    private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
     private ChromeSwitchPreference mSearchSuggestions;
     private ChromeSwitchPreference mCanMakePayment;
     private BraveDialogPreference mAdsTrakersBlockPref;
@@ -210,6 +211,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
+
+        mManagedPreferenceDelegate = createManagedPreferenceDelegate();
 
         // override title
         getActivity().setTitle(R.string.brave_shields_and_privacy);
@@ -317,7 +320,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 (ChromeSwitchPreference) findPreference(PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR);
         mShowAutocompleteInAddressBar.setOnPreferenceChangeListener(this);
 
-        mAutocompleteTopSites = (ChromeSwitchPreference) findPreference(PREF_AUTOCOMPLETE_TOP_SITES);
+        mAutocompleteTopSites =
+                (ChromeSwitchPreference) findPreference(PREF_AUTOCOMPLETE_TOP_SITES);
         mAutocompleteTopSites.setOnPreferenceChangeListener(this);
 
         mSocialBlockingCategory =
@@ -336,13 +340,16 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             }
         }
 
-        mSocialBlockingFacebook = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_FACEBOOK);
+        mSocialBlockingFacebook =
+                (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_FACEBOOK);
         mSocialBlockingFacebook.setOnPreferenceChangeListener(this);
 
-        mSocialBlockingTwitter = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_TWITTER);
+        mSocialBlockingTwitter =
+                (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_TWITTER);
         mSocialBlockingTwitter.setOnPreferenceChangeListener(this);
 
-        mSocialBlockingLinkedin = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_LINKEDIN);
+        mSocialBlockingLinkedin =
+                (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_LINKEDIN);
         mSocialBlockingLinkedin.setOnPreferenceChangeListener(this);
 
         mAppLinks = (ChromeSwitchPreference) findPreference(PREF_APP_LINKS);
@@ -544,7 +551,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (PREF_FORGET_FIRST_PARTY_STORAGE.equals(key)) {
             BraveShieldsContentSettings.setForgetFirstPartyStoragePref((boolean) newValue);
         } else if (PREF_CLOSE_TABS_ON_EXIT.equals(key)) {
-            sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
+            sharedPreferencesEditor.putBoolean(
+                    BravePreferenceKeys.BRAVE_CLOSE_TABS_ON_EXIT, (boolean) newValue);
         } else if (PREF_SEND_P3A.equals(key)) {
             BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, (boolean) newValue);
             BraveLocalState.commitPendingWrite();
@@ -577,7 +585,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             UserPrefs.get(Profile.getLastUsedRegularProfile())
                     .setBoolean(BravePref.LINKED_IN_EMBED_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_CLEAR_ON_EXIT.equals(key)) {
-            sharedPreferencesEditor.putBoolean(PREF_CLEAR_ON_EXIT, (boolean) newValue);
+            sharedPreferencesEditor.putBoolean(
+                    BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, (boolean) newValue);
         } else if (PREF_APP_LINKS.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_APP_LINKS, (boolean) newValue);
             SharedPreferencesManager.getInstance().writeBoolean(
@@ -734,7 +743,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                         .getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
 
         mClearBrowsingDataOnExit.setChecked(
-                sharedPreferences.getBoolean(PREF_CLEAR_ON_EXIT, false));
+                sharedPreferences.getBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false));
 
         boolean autocompleteEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile())
                                               .getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
@@ -825,12 +834,15 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     }
 
     private ChromeManagedPreferenceDelegate createManagedPreferenceDelegate() {
-        return preference -> {
-            String key = preference.getKey();
-            if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
-                return mPrefServiceBridge.isManagedPreference(Pref.SEARCH_SUGGEST_ENABLED);
+        return new ChromeManagedPreferenceDelegate(getProfile()) {
+            @Override
+            public boolean isPreferenceControlledByPolicy(Preference preference) {
+                String key = preference.getKey();
+                if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
+                    return mPrefServiceBridge.isManagedPreference(Pref.SEARCH_SUGGEST_ENABLED);
+                }
+                return false;
             }
-            return false;
         };
     }
 

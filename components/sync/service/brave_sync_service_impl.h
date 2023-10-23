@@ -14,7 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/sync/protocol/sync_protocol_error.h"
+#include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service_impl.h"
 
 namespace syncer {

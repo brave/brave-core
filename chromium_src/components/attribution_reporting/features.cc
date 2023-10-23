@@ -7,11 +7,12 @@
 
 #include "base/feature_override.h"
 
-namespace attribution_reporting {
+namespace attribution_reporting::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAttributionReportingNullAggregatableReports,
      base::FEATURE_DISABLED_BY_DEFAULT},
+    {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace attribution_reporting
+}  // namespace attribution_reporting::features

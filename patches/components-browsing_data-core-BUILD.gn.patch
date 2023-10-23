@@ -1,11 +1,11 @@
 diff --git a/components/browsing_data/core/BUILD.gn b/components/browsing_data/core/BUILD.gn
-index 47b02706c77ba04fa994dd922e125a2e9bcd6119..020f099e7b07a563c7f0553fa774834ab33357d3 100644
+index b362eca9a018afd9a2453777e05eb698bda485d6..9170bc9d9738b6cf9a5c5872b9b9da999ba78897 100644
 --- a/components/browsing_data/core/BUILD.gn
 +++ b/components/browsing_data/core/BUILD.gn
-@@ -47,6 +47,7 @@ static_library("core") {
-     "//components/webdata/common",
-     "//ui/base",
+@@ -49,6 +49,7 @@ static_library("core") {
    ]
+ 
+   configs += [ "//build/config/compiler:wexit_time_destructors" ]
 +  import("//brave/components/browsing_data/core/sources.gni") deps += brave_components_browsing_data_core_deps
  }
  

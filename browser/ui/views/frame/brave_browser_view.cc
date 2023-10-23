@@ -269,8 +269,9 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
-  if (auto* button = tab_strip_region_view()->tab_search_button()) {
-    if (button) {
+  if (auto* tab_search_container =
+          tab_strip_region_view()->tab_search_container()) {
+    if (auto* button = tab_search_container->tab_search_button()) {
       auto is_tab_search_visible =
           GetProfile()->GetPrefs()->GetBoolean(kTabsSearchShow);
       button->SetVisible(is_tab_search_visible);
