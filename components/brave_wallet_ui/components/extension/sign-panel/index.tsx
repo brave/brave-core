@@ -108,6 +108,7 @@ export const SignPanel = (props: Props) => {
   const ethStandardSignData = selectedQueueData.signData.ethStandardSignData
   const ethSignTypedData = selectedQueueData.signData.ethSignTypedData
   const ethSIWETypedData = selectedQueueData.signData.ethSiweData
+  const solanaSignTypedData = selectedQueueData.signData.solanaSignData
 
   // memos
   const orb = useAccountOrb(account)
@@ -280,6 +281,14 @@ export const SignPanel = (props: Props) => {
                   ? unicodeEscape(ethStandardSignData.message)
                   : ethStandardSignData.message
                 }
+              </MessageText>
+            </MessageBox>
+          )}
+
+          {solanaSignTypedData && (
+            <MessageBox>
+              <MessageText>
+                {solanaSignTypedData.message}
               </MessageText>
             </MessageBox>
           )}
