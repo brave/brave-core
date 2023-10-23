@@ -39,10 +39,14 @@
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #else
+#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -103,6 +107,34 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
 
   void EnabledStateChanged(bool enabled) override {
 #if !BUILDFLAG(IS_ANDROID)
+    // Before removing the Playlist item from the service, close all active
+    // Playlist panels.
+    for (auto* browser : *BrowserList::GetInstance()) {
+      if (browser->profile() != profile_) {
+        continue;
+      }
+
+      auto* controller =
+          static_cast<BraveBrowser*>(browser)->sidebar_controller();
+      if (!controller) {
+        continue;
+      }
+
+      // The model is created in the constructor of the controller, so non-null.
+      auto* model = controller->model();
+      CHECK(model);
+
+      auto active_index = model->active_index();
+      if (!active_index.has_value()) {
+        continue;
+      }
+
+      if (model->GetAllSidebarItems().at(*active_index).built_in_item_type ==
+          sidebar::SidebarItem::BuiltInItemType::kPlaylist) {
+        controller->DeactivateCurrentPanel();
+      }
+    }
+
     auto* service =
         sidebar::SidebarServiceFactory::GetForProfile(profile_.get());
     if (enabled) {
