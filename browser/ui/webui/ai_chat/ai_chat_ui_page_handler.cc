@@ -359,10 +359,9 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
   }
 }
 
-void AIChatUIPageHandler::OnPageHasContent() {
+void AIChatUIPageHandler::OnPageHasContent(bool page_contents_is_truncated) {
   if (page_.is_bound()) {
     auto site_info = BuildSiteInfo();
-
     page_->OnSiteInfoChanged(site_info.has_value() ? site_info.value().Clone()
                                                    : nullptr);
   }
@@ -405,6 +404,8 @@ absl::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
     mojom::SiteInfo site_info;
     site_info.title =
         base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
+    site_info.is_content_truncated =
+        active_chat_tab_helper_->IsPageContentsTruncated();
 
     return site_info;
   }
