@@ -42,6 +42,10 @@ class FeedV2Builder {
   ~FeedV2Builder();
 
   void Build(bool recalculate_signals, BuildFeedCallback callback);
+  void BuildChannelFeed(const std::string& channel, BuildFeedCallback callback);
+  void BuildPublisherFeed(const std::string& publisher_id,
+                          BuildFeedCallback callback);
+
   void GetSignals(GetSignalsCallback callback);
 
  private:
