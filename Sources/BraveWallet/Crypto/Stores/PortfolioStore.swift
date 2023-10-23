@@ -407,7 +407,16 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       let filters = self.filters
       let selectedAccounts = filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = filters.networks.filter(\.isSelected).map(\.model)
-      let allVisibleUserAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: selectedNetworks, visible: true)
+      let allVisibleUserAssets: [NetworkAssets] = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+        networks: selectedNetworks,
+        visible: true
+      ).map { networkAssets in // filter out NFTs from Portfolio
+        NetworkAssets(
+          network: networkAssets.network,
+          tokens: networkAssets.tokens.filter { !($0.isNft || $0.isErc721) },
+          sortOrder: networkAssets.sortOrder
+        )
+      }
       // update assets on display immediately with empty values. Issue #5567
       self.assetGroups = buildAssetGroupViewModels(
         groupBy: filters.groupBy,
@@ -597,7 +606,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     switch groupType {
     case .none:
       return allVisibleUserAssets.flatMap { networkAssets in
-        networkAssets.tokens.filter { (!$0.isErc721 && !$0.isNft) }.map { token in
+        networkAssets.tokens.map { token in
           AssetViewModel(
             groupType: groupType,
             token: token,
@@ -629,7 +638,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         return []
       }
       return networkAssets.tokens
-        .filter { (!$0.isErc721 && !$0.isNft) }
         .map { token in
           AssetViewModel(
             groupType: groupType,
