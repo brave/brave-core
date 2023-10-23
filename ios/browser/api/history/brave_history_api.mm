@@ -199,7 +199,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 - (void)removeHistory:(IOSHistoryNode*)history {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
 
-  // Delete items from Browser History.
+  // Delete items from Browser History and from synced devices
   std::vector<history::BrowsingHistoryService::HistoryEntry> entries;
   history::BrowsingHistoryService::HistoryEntry entry;
   entry.url = net::GURLWithNSURL(history.url);
