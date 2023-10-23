@@ -244,9 +244,5 @@ void AddFootnoteViewIfNeeded(
     set_should_ignore_snapping(true);                                    \
   }
 
-// undef upstream one first then define it with our one.
-#undef IDS_PERMISSIONS_BUBBLE_PROMPT
-#define IDS_PERMISSIONS_BUBBLE_PROMPT IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT
 #include "src/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc"
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW
-#undef IDS_PERMISSIONS_BUBBLE_PROMPT

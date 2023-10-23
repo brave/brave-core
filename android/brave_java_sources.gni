@@ -7,10 +7,10 @@ import("//brave/android/features/tab_ui/brave_tab_management_java_sources.gni")
 import("//brave/android/feed/brave_feed_java_sources.gni")
 import(
     "//brave/android/java/org/chromium/chrome/browser/vpn/billing/sources.gni")
+import("//brave/base/brave_base_shared_preferences_java.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/flags/brave_flags_java_sources.gni")
 import("//brave/browser/incognito/android/java_sources.gni")
-import("//brave/browser/preferences/brave_preferences_java_sources.gni")
 import("//brave/browser/share/android/java_sources.gni")
 import("//brave/components/embedder_support/android/java_sources.gni")
 import("//brave/components/permissions/android/java_sources.gni")
@@ -301,7 +301,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/HighlightView.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/OnboardingV2Fragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/OnboardingV2PagerAdapter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/paint_preview/BraveStartupPaintPreviewHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/CloseBraveManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistHostActivity.java",

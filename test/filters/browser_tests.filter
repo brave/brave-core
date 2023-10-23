@@ -96,6 +96,7 @@
 -OmniboxPrerenderDefaultPrerender2BrowserTest.PrerenderFunctionsCheckWithDefaultFlag
 
 # These tests fail because kPrerender2 feature is disabled.
+-All/HostedAppTestWithPrerendering.*
 -NoCancelSearchPreloadUnifiedBrowserTest.SuggestionChangeAfterStartPrerender
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.OpenPrefetchedResponseInBackgroundedTab
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderingUntilCompletion
@@ -305,6 +306,8 @@
 
 # These tests fail because the primary account consent level is null instead of
 # signin::ConsentLevel::kSignin
+-LocalWebApprovalsEnabled/SupervisedUserIframeFilterTest.*/*
+-PasswordStatusCheckServiceBaseTest.CheckTimeUpdatedAfterRunScheduledInThePast
 -PowerBookmarkBubbleViewBrowserTest.InvokeUi_bookmark_details_on_trackable_product
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAborted/*
 -TurnSyncOnHelperBrowserTest.UndoSyncRemoveAccount
@@ -314,6 +317,12 @@
 -SupervisedUserBlockModeTest.OpenBlockedURLInNewTab
 -SupervisedUserBlockModeTest.SendAccessRequestOnBlockedURL
 -SupervisedUserBlockModeTest.Unblock
+-SupervisedUserNavigationThrottleFencedFramesTest.BlockFencedFrame
+-SupervisedUserNavigationThrottleTest.AllowFamiliesDotGoogleDotComAccess
+-SupervisedUserNavigationThrottleTest.BlockMainFrameWithInterstitial
+-SupervisedUserNavigationThrottleTest.DisallowPrerendering
+-SupervisedUserNavigationThrottleTest.DontBlockSubFrame
+-SupervisedUserNavigationThrottleTest.NoNavigationObserverBlock
 -SupervisedUserURLFilterPrerenderingTest.OnURLChecked
 -SupervisedUserURLFilterTest.BlockNewTabAfterLoading
 -SupervisedUserURLFilterTest.BlockThenUnblock
@@ -326,10 +335,18 @@
 # These tests fail because we patch
 # AccountConsistencyModeManager::ComputeAccountConsistencyMethod to return
 # AccountConsistencyMethod::kDisabled
+-All/SupervisedUserExtensionWebstorePrivateApiTest.InstallBlockedWhenPermissionsToggleOff/*
+-All/SupervisedUserExtensionWebstorePrivateApiTest.NoParentPermissionRequiredForTheme/*
+-All/SupervisedUserExtensionWebstorePrivateApiTest.ParentPermissionCanceled/*
 -ContextMenuWithFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
+-ContextMenuWithFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsNotAccessibleForChildWithFiltering
 -ContextMenuWithFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
 -ContextMenuWithoutFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
+-ContextMenuWithoutFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsNotAccessibleForChild
 -ContextMenuWithoutFilteringForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
+-ExtensionManagementApiTestSupervised.ParentBlockedExtensionEnable
+-ExtensionManagementApiTestSupervised.ParentPermissionGrantedForEnable
+-ExtensionManagementApiTestSupervised.ParentPermissionNotGrantedForEnable
 
 # These tests fail because "Isolated Web Apps are not enabled, or Isolated Web 
 # App Developer Mode is not enabled or blocked by policy."
@@ -353,15 +370,22 @@
 
 # These tests fail because of the Ephemeral Storage (they pass with
 # kBraveEphemeralStorage feature disabled).
+-All/UpdaterServiceCookiePrefsBrowserTest.NoSpecificBlockedCookieSpecs/*
+-All/UpdaterServiceCookiePrefsBrowserTest.NoSpecificBlockedCookieSpecs_AltRegularProfile/*
+-All/UpdaterServiceCookiePrefsBrowserTest.NoSpecificBlockedCookieSpecs_GuestProfile/*
+-All/UpdaterServiceCookiePrefsBrowserTest.NoSpecificBlockedCookieSpecs_IncognitoProfile/*
 -RequestStorageAccessForOriginBrowserTest.*
 -RequestStorageAccessForOriginEnabledBrowserTest.*
 -RequestStorageAccessForOriginWithCHIPSBrowserTest.*
 -RequestStorageAccessForOriginWithFirstPartySetsBrowserTest.*
 -RequestStorageAccessForOriginWithFirstPartySetsDisabledBrowserTest.*
+-RequestStorageAccessForWithFirstPartySetsBrowserTest.PermissionQueryCrossSiteFrame
+-RequestStorageAccessForWithFirstPartySetsBrowserTest.Permission_AutodeniedForServiceDomain
 -StorageAccessAPIForOriginBrowserTest.*
 -StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
--StorageAccessAPIWithCHIPSBrowserTest.*
 -StorageAccessAPIWith3PCEnabledBrowserTest.AllowedByUserBypass
+-StorageAccessAPIWithCHIPSBrowserTest.*
+-StorageAccessAPIWithFirstPartySetsAndPromptsBrowserTest.Permission_GrantedForServiceDomain/*
 
 # These tests fail because they expect the record of a cookie to go to the
 # "Standard" histogram mode, but instead it goes to the "Block3PC" mode.
@@ -379,6 +403,7 @@
 -BackgroundPage/ExtensionPreferenceApiTest.OnChange/0
 -BackgroundPage/ExtensionPreferenceApiTest.OnChangeSplit/0
 -BackgroundPage/ExtensionPreferenceApiTest.Standard/0
+-BackgroundPage/ExtensionPreferenceApiTest.ThirdPartyCookiesAllowed/0
 -EventPage/ExtensionPreferenceApiEventPageTest.ThirdPartyCookiesAllowed/0
 -ThirdPartyPartitionedStorageAccessibilityCanBeDisabledTest.Basic/*
 -ThirdPartyPartitionedStorageAccessibilitySharedWorkerTest.*
@@ -570,9 +595,15 @@
 
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
+-EnterpriseSigninServiceTest.CurrentlyActiveTabIsAlreadyLoginPage
+-EnterpriseSigninServiceTest.DoesNothingIfPolicyNotSet
+-EnterpriseSigninServiceTest.OpensNewTabOnSyncPaused
 -EnterpriseWelcomeUIDialogPixelTest.InvokeUi_default/*
 -EnterpriseWelcomeUIWindowPixelTest.InvokeUi_default/*
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninAbortedBySyncDeclined
+-ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninReauthNavigateBackShouldAbort
+-ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninReauthSuccessful
+-ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninReauthWithAnotherAccount
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninSuccessful
 -GaiaRemoteConsentFlowParamBrowserTest.*
 -PasswordRevampedManagementBubbleBrowserTest.InvokeUi_ManagePasswordBubbleWithRevampedDesign/*
@@ -588,6 +619,7 @@
 -All/SupervisedUserServiceBrowserTest.ProfileName/Regular
 -All/SupervisedUserServiceBrowserTest.ProfileName/Supervised
 -IpProtectionAuthTokenProviderBrowserTest.NetworkServiceCanRequestTokens
+-IpProtectionConfigProviderBrowserTest.BackoffTimeResetAfterProfileAvailabilityChange
 -IpProtectionConfigProviderBrowserTest.ExpectedReceiverSetStateAfterNetworkServiceCrash
 -IpProtectionConfigProviderBrowserTest.NetworkServiceCanRequestTokens
 -PersonalizedHintsFetcherBrowserTest.NoUserSignIn
@@ -633,16 +665,18 @@
 # These tests fail on CI but pass locally
 -All/PermissionPromptBubbleBaseViewBrowserTest.InvokeUi_storage_access/*
 -AutoPictureInPictureTabHelperBrowserTest.ImmediatelyClosesAutopipIfTabIsAlreadyFocused
--AutoPictureInPictureTabHelperBrowserTest.OpensAndClosesVideoAutopip
 -AutoPictureInPictureTabHelperBrowserTest.RespectsAutoPictureInPictureContentSetting
 -AutoPictureInPictureTabHelperBrowserTest.ShowsMostRecentlyHiddenTab
+-AutoPictureInPictureWithVideoPlaybackBrowserTest.OpensAndClosesVideoAutopip
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebHid
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebUsb
 -InstallPreloadedVerifiedAppCommandTest.SuccessCrossOriginManifest
 -InstallPreloadedVerifiedAppCommandTest.SuccessNewInstall
 -InstallPreloadedVerifiedAppCommandTest.SuccessWithManifestId
+-LcpBreakdownTimingsTest.*
 -MetricIntegrationTest.FirstInputDelay
 -MetricIntegrationTest.LargestContentfulPaint
+-PreinstalledWebAppManagerBrowserTest.PreinstalledAppsPrefInstall
 
 # Brave disables Session Cookies restore when ContinueWhereILeftOff is enabled.
 -ContinueWhereILeftOffTest.SessionCookies
@@ -654,11 +688,7 @@
 
 # These tests fail with "Check failed: value. Trying to read an unregistered
 # pref: brave.rewards.notifications"
--PdfOcrMenuObserverTest.CheckUmaWhenTurnOffPdfOcrFromContextMenu
--PdfOcrMenuObserverTest.CheckUmaWhenTurnOnPdfOcrAlwaysFromContextMenu
--PdfOcrMenuObserverTest.CheckUmaWhenTurnOnPdfOcrOnceFromContextMenu
--PdfOcrMenuObserverTest.PdfOcrItemNotShownWithoutScreenReader
--PdfOcrMenuObserverTest.PdfOcrItemShownWithScreenReaderEnabled
+-PdfOcrMenuObserverTest.*
 
 # These tests failed because we enable download bubble features by default.
 # safe_browsing::kDownloadBubble, safe_browsing::kDownloadBubbleV2
@@ -680,6 +710,9 @@
 
 # This test crashes because we have kOptimizationHints feature disabled.
 -PageInfoBubbleViewAboutThisSiteAllowNonMsbbBrowserTest.AboutThisSiteWithoutOptinAndWithNonMsbbUsers
+-SegmentationPlatformTest.NullModelUpdateForUnknownModelShouldBeNoOp
+-SegmentationPlatformTest.ReceiveModelUpdateFromOptimizationGuide
+-SegmentationPlatformTest.ReceiveNullModelUpdateFromOptimizationGuide
 -VisualSearchSuggestionsServiceBrowserTest.VisualSearchSuggestionsServiceEnabled
 
 # These tests fail because we do not show the profile type selection screen in
@@ -754,7 +787,8 @@
 -ThreadProfilerBrowserTest.*
 
 # These fail because we disable kPartitionedCookies
--All/BrowsingDataModelBrowserTest.PartitionedLocalStorageRemoved/*
+-All/BrowsingDataModelBrowserTest.LocalStorageRemovedBasedOnPartition/*
+-All/EligibilityServiceBrowserTest.EligibilityChanged_NetworkContextUpdated/*
 -ReadAnythingAppControllerTest.*
 -StorageAccessAPIEnterprisePolicyBrowserTest.PartitionedStorage/*
 -StorageAccessAPIWithNoRequiredTopLevelInteractionBrowserTest.TopLevelUserInteractionNotRequired
@@ -808,10 +842,6 @@
 # These tests fail because we disable kNtpChromeCartModule
 -CommerceHintFeatureDefaultWithGeoTest.EnableWithGeo
 -NewTabPageUtilBrowserTest.EnableCartByToT
-
-# These tests fail in CI, but they are also going away in CR115 so this filter
-# can be removed at that time
--ExtensionActionRunnerWithUserHostControlsBrowserTest.HandleUserSiteSettingModified_ExtensionHasNoAccess
 
 # These tests fail because we don't support the search companion.
 -CompanionPage*
@@ -911,6 +941,17 @@
 # privacy_sandbox::kEnforcePrivacySandboxAttestations feature
 -PrivacySandboxAttestationsBrowserTest.*
 -PrivacySandboxSettingsAttestPrivateAggregationInProtectedAudienceBrowserTest.*
+
+# This test fails because we disable
+# content_settings::features::kTrackingProtection3pcd
+-All/ExperimentManagerImplSyntheticTrialTest.RegistersSyntheticTrial/*
+
+# These tests fail because we enable features::kDestroyProfileOnBrowserClose
+-WebAppProfileDeletionTest_WebContentsGracefulShutdown.DataRetrieverWebAppInfoFetching
+-WebAppProfileDeletionTest_WebContentsGracefulShutdown.IconDownloading
+-WebAppProfileDeletionTest_WebContentsGracefulShutdown.UrlLoading
+-WebAppProfileDeletionTest_WebContentsGracefulShutdown.DataRetrieverIconFetch
+-WebAppProfileDeletionTest_WebContentsGracefulShutdown.DataRetrieverInstallabilityFetch
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*

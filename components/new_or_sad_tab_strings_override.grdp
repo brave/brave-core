@@ -71,6 +71,9 @@
         </if>
       <if expr="not _google_chrome">
         </if>
+      <if expr="not is_android">
+        </if>
+
       <if expr="_google_chrome">
         <message name="IDS_REVAMPED_INCOGNITO_NTP_TITLE" desc="Title of the Private new tab page." formatter_data="android_java">
           Private in Brave

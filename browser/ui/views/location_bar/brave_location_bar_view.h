@@ -13,6 +13,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveActionsContainer;
 class BraveActionsContainerTest;
@@ -36,6 +37,7 @@ FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 // - Add the BraveActionsContainer to the location bar
 class BraveLocationBarView : public LocationBarView {
  public:
+  METADATA_HEADER(BraveLocationBarView);
   using LocationBarView::LocationBarView;
 
   BraveLocationBarView(const BraveLocationBarView&) = delete;

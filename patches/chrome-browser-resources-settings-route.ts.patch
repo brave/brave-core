@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index 82631548e92c7b11cb0c1bfb673a809b11f3de00..06bb35a2710b0b070a3f910acc882ec231fbcaeb 100644
+index 26619e82e4a4d3162958184baba262c823243b3e..0057c9f5b540dbd59df0d34c01c84c7379083196 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
 @@ -8,6 +8,7 @@ import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
@@ -10,7 +10,7 @@ index 82631548e92c7b11cb0c1bfb673a809b11f3de00..06bb35a2710b0b070a3f910acc882ec2
  /**
   * Add all of the child routes that originate from the privacy route,
   * regardless of whether the privacy section under basic or advanced.
-@@ -283,6 +284,7 @@ function createBrowserSettingsRoutes(): SettingsRoutes {
+@@ -287,6 +288,7 @@ function createBrowserSettingsRoutes(): SettingsRoutes {
      }
      // </if>
    }

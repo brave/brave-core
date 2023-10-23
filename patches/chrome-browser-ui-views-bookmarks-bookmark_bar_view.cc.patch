@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
-index dffad1e2edeb86577e90578afc406aba02c532d9..08cad27acef3cbec29b3df8903d752dd55b5664e 100644
+index a9f542230542bc65e2108d0e346c9cc8a6c6c199..fe197f36fa328336ff0f174dc4af6320169759b6 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
-@@ -1157,6 +1157,7 @@ void BookmarkBarView::Layout() {
+@@ -1159,6 +1159,7 @@ void BookmarkBarView::Layout() {
        x = next_x;
      }
    }
 +  BRAVE_LAYOUT
  
-   // Set the visibility of the tab group separator if there are groups and
-   // bookmarks.
+   const bool show_bookmarks_overflow =
+       bookmark_model_->loaded() &&

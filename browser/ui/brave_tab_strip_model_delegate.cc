@@ -25,8 +25,7 @@ bool BraveTabStripModelDelegate::CanMoveTabsToWindow(
 }
 
 void BraveTabStripModelDelegate::CacheWebContents(
-    const std::vector<std::unique_ptr<TabStripModel::DetachedWebContents>>&
-        web_contents) {
+    const std::vector<std::unique_ptr<DetachedWebContents>>& web_contents) {
   BrowserTabStripModelDelegate::CacheWebContents(web_contents);
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
     return;

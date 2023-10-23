@@ -6,6 +6,7 @@
 import("//brave/android/brave_xml_preprocessor.gni")
 import("//brave/build/config.gni")
 import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
 import("//tools/grit/grit_rule.gni")
 
 _apksigner = "$android_sdk_build_tools/apksigner"

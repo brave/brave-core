@@ -34,7 +34,7 @@ if (!is_android) {
     "//brave/components/brave_sync:prefs",
     "//brave/components/constants",
     "//brave/components/p3a",
-    "//chrome/app:chromium_strings",
+    "//chrome/app:branded_strings",
     "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",
