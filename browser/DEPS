@@ -138,8 +138,4 @@ specific_include_rules = {
     "+gmock/gmock.h",
     "+gtest/gtest.h",
   ],
-  "ipfs_fallback_redirect_nav_data.cc": [
-    "+gmock/gmock.h",
-    "+gtest/gtest.h",
-  ],
 }

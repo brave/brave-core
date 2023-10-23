@@ -22,7 +22,6 @@ class BraveIPFSFallbackInfoBarDelegateObserver {
  public:
   BraveIPFSFallbackInfoBarDelegateObserver();
   virtual void OnRedirectToOriginalAddress() = 0;
-  virtual void OnCancel() = 0;
   virtual ~BraveIPFSFallbackInfoBarDelegateObserver();
 };
 

@@ -11,7 +11,6 @@ source_set("unittests") {
   sources = [
     "//brave/browser/ipfs/content_browser_client_helper_unittest.cc",
     "//brave/browser/ipfs/ipfs_blob_context_getter_factory_unittest.cc",
-    "//brave/browser/ipfs/ipfs_fallback_redirect_nav_data_unittest.cc",
     "//brave/browser/ipfs/ipfs_host_resolver_unittest.cc",
     "//brave/browser/ipfs/ipfs_tab_helper_unittest.cc",
     "//brave/browser/ipfs/test/ipfs_dns_resolver_impl_unittest.cc",

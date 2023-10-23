@@ -126,6 +126,9 @@ class IPFSTabHelper : public content::WebContentsObserver,
   friend class BraveIPFSFallbackInfoBarDelegateObserverImpl;
   explicit IPFSTabHelper(content::WebContents* web_contents);
 
+  using LoadUrlCallback =
+      base::OnceCallback<void(base::WeakPtr<content::NavigationHandle>)>;
+
   GURL GetCurrentPageURL() const;
   bool CanResolveURL(const GURL& url) const;
   bool IsDNSLinkCheckEnabled() const;
@@ -134,10 +137,10 @@ class IPFSTabHelper : public content::WebContentsObserver,
   void DNSLinkResolved(const GURL& ipfs,
                        bool is_gateway_url,
                        const bool& auto_redirect_blocked,
-                       const bool& should_replace_current_entry);
+                       LoadUrlCallback load_url_callback);
   void MaybeCheckDNSLinkRecord(const net::HttpResponseHeaders* headers,
                                const bool& auto_redirect_blocked,
-                               const bool should_replace_current_entry = true);
+                               LoadUrlCallback load_url_callback);
   void UpdateDnsLinkButtonState();
   absl::optional<GURL> ResolveIPFSUrlFromGatewayLikeUrl(const GURL& gurl);
 
@@ -156,22 +159,20 @@ class IPFSTabHelper : public content::WebContentsObserver,
                           bool is_gateway_url,
                           absl::optional<std::string> x_ipfs_path_header,
                           const bool& auto_redirect_blocked,
-                          const bool& should_replace_current_entry);
+                          LoadUrlCallback load_url_callback);
   void HostResolvedCallback(const GURL& current,
                             const GURL& url,
                             bool is_gateway_url,
                             absl::optional<std::string> x_ipfs_path_header,
                             const bool auto_redirect_blocked,
-                            const bool should_replace_current_entry,
+                            LoadUrlCallback load_url_callback,
                             const std::string& host,
                             const absl::optional<std::string>& dnslink);
 
   void LoadUrl(const GURL& gurl,
-               const bool should_replace_current_entry = true);
+               LoadUrlCallback on_url_loaded_callback = base::NullCallback());
 
   void SetFallbackAddress(const GURL& original_url);
-  void InvalidateFallbackNavData();
-
   void ShowBraveIPFSFallbackInfoBar(const GURL& initial_navigation_url);
 
   const raw_ptr<PrefService> pref_service_ = nullptr;
