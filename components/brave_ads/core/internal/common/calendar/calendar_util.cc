@@ -31,7 +31,6 @@ int DayOfWeek(const base::Time time, const bool is_local) {
   } else {
     time.UTCExplode(&exploded);
   }
-  CHECK(exploded.HasValidValues());
 
   return exploded.day_of_week;
 }
