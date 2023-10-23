@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.jni_zero.CalledByNative;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.ui.base.WindowAndroid;
 
 class BraveBookmarkBridge extends BookmarkBridge {

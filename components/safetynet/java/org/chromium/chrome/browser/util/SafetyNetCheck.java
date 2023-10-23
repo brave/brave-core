@@ -20,15 +20,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.jni_zero.CalledByNative;
+import org.jni_zero.JNINamespace;
+import org.jni_zero.NativeMethods;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.jni_zero.CalledByNative;
-import org.jni_zero.JNINamespace;
-import org.jni_zero.NativeMethods;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -126,7 +126,10 @@ public class SafetyNetCheck {
                     });
                 res = true;
             } else {
-                clientAttestationResult(false, "Google Play Services are not available", performAttestationOnClient);
+                clientAttestationResult(
+                        false,
+                        "Google Play Services are not available",
+                        performAttestationOnClient);
                 // This result just indicates that callback with the actual result was called
                 res = true;
             }

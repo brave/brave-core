@@ -10,8 +10,9 @@ import android.accounts.Account;
 import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
 
-import org.chromium.base.Callback;
 import org.jni_zero.CalledByNative;
+
+import org.chromium.base.Callback;
 import org.chromium.chrome.browser.signin.services.SigninManager;
 import org.chromium.components.signin.base.CoreAccountId;
 import org.chromium.components.signin.base.CoreAccountInfo;

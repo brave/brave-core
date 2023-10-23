@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;

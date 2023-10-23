@@ -22,9 +22,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import org.jni_zero.CalledByNative;
+
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
-import org.jni_zero.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;

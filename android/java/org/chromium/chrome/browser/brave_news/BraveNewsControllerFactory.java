@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_news;
 
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
+
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
