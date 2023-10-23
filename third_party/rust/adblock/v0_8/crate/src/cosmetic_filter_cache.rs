@@ -248,6 +248,8 @@ impl CosmeticFilterCache {
         let mut script_injections = HashMap::<&str, PermissionMask>::new();
         let mut exceptions = HashSet::new();
 
+        let mut except_all_scripts = false;
+
         let hashes: Vec<&Hash> = request_entities.iter().chain(request_hostnames.iter()).collect();
 
         fn populate_set(hash: &Hash, source_bin: &HostnameFilterBin<String>, dest_set: &mut HashSet<String>) {
@@ -308,9 +310,16 @@ impl CosmeticFilterCache {
             prune_set(hash, &self.specific_rules.unremove, &mut remove_selectors);
             // same logic but not using prune_set since strings are unowned, (see above)
             if let Some(s) = self.specific_rules.uninject_script.get(hash) {
-                s.iter().for_each(|s| {
+                for s in s {
+                    if s.is_empty() {
+                        except_all_scripts = true;
+                        script_injections.clear();
+                    }
+                    if except_all_scripts {
+                        continue;
+                    }
                     script_injections.remove(s.as_str());
-                });
+                }
             }
 
             prune_map(hash, &self.specific_rules.unstyle, &mut style_selectors);
@@ -657,6 +666,7 @@ mod cosmetic_cache_tests {
             "cosmetic.net##+js(nowebrtc.js)",
             "g.cosmetic.net##+js(window.open-defuser.js)",
             "c.g.cosmetic.net#@#+js(nowebrtc.js)",
+            "d.g.cosmetic.net#@#+js()",
         ]);
         let resources = ResourceStorage::from_resources([
             Resource {
@@ -697,6 +707,10 @@ mod cosmetic_cache_tests {
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "c.g.cosmetic.net", false);
         expected.injected_script = "try {\nwindow.open-defuser.js\n} catch ( e ) { }\n".to_owned();
+        assert_eq!(out, expected);
+
+        let out = cfcache.hostname_cosmetic_resources(&resources, "d.g.cosmetic.net", false);
+        expected.injected_script = "".to_owned();
         assert_eq!(out, expected);
     }
 
