@@ -19,7 +19,7 @@ class HistoryDriverIOS : public history::BrowsingHistoryDriver {
   using WebHistoryServiceGetter =
       base::RepeatingCallback<history::WebHistoryService*()>;
 
-  HistoryDriverIOS(WebHistoryServiceGetter history_service_getter);
+  explicit HistoryDriverIOS(WebHistoryServiceGetter history_service_getter);
 
   HistoryDriverIOS(const HistoryDriverIOS&) = delete;
   HistoryDriverIOS& operator=(const HistoryDriverIOS&) = delete;
