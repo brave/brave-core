@@ -26,7 +26,8 @@ enum AutoGenerateQuestionsPref {
 enum APIError {
   None,
   ConnectionIssue,
-  RateLimitReached
+  RateLimitReached,
+  ContextLimitReached
 };
 
 enum ModelEngineType {
@@ -48,6 +49,7 @@ enum PremiumStatus {
 
 struct SiteInfo {
   string title;
+  bool is_content_truncated;
 };
 
 // Represents a single turn in a conversation.
@@ -80,6 +82,10 @@ struct Model {
   // user-facing category
   ModelCategory category;
   bool is_premium;
+  // max limit to truncate page contents (measured in chars, not tokens)
+  uint32 max_page_content_length;
+  // max limit for overall conversation (measured in chars, not tokens)
+  uint32 long_conversation_warning_character_limit;
 };
 
 // Browser-side handler for requests from WebUI page.
