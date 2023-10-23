@@ -134,6 +134,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/utility/tokens_feature_unittest.cc",
+    "//brave/components/brave_ads/core/internal/account/utility/tokens_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h",
     "//brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.cc",
     "//brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h",

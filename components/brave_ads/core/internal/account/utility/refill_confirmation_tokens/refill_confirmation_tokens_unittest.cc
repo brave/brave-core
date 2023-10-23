@@ -130,7 +130,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, IssuersPublicKeyMismatch) {
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidRefillConfirmationTokens).Times(0);
   EXPECT_CALL(delegate_mock_, OnFailedToRefillConfirmationTokens);
-  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens).Times(0);
+  EXPECT_CALL(delegate_mock_, OnWillRetryRefillingConfirmationTokens);
   EXPECT_CALL(delegate_mock_, OnDidRetryRefillingConfirmationTokens).Times(0);
   refill_confirmation_tokens_->MaybeRefill(wallet);
 }

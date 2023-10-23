@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/payments_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -86,7 +87,7 @@ absl::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
 }
 
 bool PublicKeyExistsForIssuerType(const IssuerType issuer_type,
-                                  const std::string& public_key) {
+                                  const cbr::PublicKey& public_key) {
   const absl::optional<IssuersInfo> issuers = GetIssuers();
   if (!issuers) {
     return false;
