@@ -130,11 +130,18 @@ enum BitcoinProviderError {
   kInternalError = JsonRpcError.kInternalError,
 };
 
+enum ZCashProviderError {
+  kSuccess = ProviderError.kSuccess,  // No error
+  kUnknown = ProviderError.kUnknown,
+  kInternalError = JsonRpcError.kInternalError,
+};
+
 union ProviderErrorUnion {
   ProviderError provider_error;
   SolanaProviderError solana_provider_error;
   FilecoinProviderError filecoin_provider_error;
   BitcoinProviderError bitcoin_provider_error;
+  ZCashProviderError zcash_provider_error;
 };
 
 // There is one EthereumProvider per renderer, the renderer communicates
@@ -1356,12 +1363,6 @@ struct BitcoinKeyId {
   uint32 index;
 };
 
-struct ZCashKeyId {
-  uint32 account;
-  uint32 change;
-  uint32 index;
-};
-
 struct BitcoinUnspentOutput {
   array<uint8> txid;
   uint32 vout;
@@ -1383,11 +1384,6 @@ struct BitcoinAccountInfo {
   BitcoinAddress next_change_address;
 };
 
-struct ZCashBalance {
-  uint64 total_balance;
-  map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
-};
-
 interface BitcoinWalletService {
   // Fetches BitcoinBalance struct for all addresses associated with account_id.
   // Now includes both confirmed and mempool utxos.
@@ -1398,8 +1394,25 @@ interface BitcoinWalletService {
   GetBitcoinAccountInfo(AccountId account_id) => (BitcoinAccountInfo? account_info);
 };
 
+struct ZCashKeyId {
+  uint32 account;
+  uint32 change;
+  uint32 index;
+};
+
+struct ZCashBalance {
+  uint64 total_balance;
+  map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
+};
+
+struct ZCashAddress {
+  string address_string;
+  ZCashKeyId key_id;
+};
+
 interface ZCashWalletService {
   GetBalance(string network_id, AccountId account_id) => (ZCashBalance? balance, string? error_message);
+  GetReceiverAddress(AccountId account_id) => (ZCashAddress? address, string? error_message);
 };
 
 enum TransactionStatus {
@@ -1459,12 +1472,31 @@ struct BtcTxData {
   array<BtcTxOutput> outputs;
 };
 
+struct ZecTxInput {
+  string address;
+  uint64 value;
+};
+
+struct ZecTxOutput {
+  string address;
+  uint64 value;
+};
+
+struct ZecTxData {
+  string to;
+  uint64 amount;
+  uint64 fee;
+  array<ZecTxInput> inputs;
+  array<ZecTxOutput> outputs;
+};
+
 union TxDataUnion {
   TxData eth_tx_data;
   TxData1559 eth_tx_data_1559;
   SolanaTxData solana_tx_data;
   FilTxData fil_tx_data;
   BtcTxData btc_tx_data;
+  ZecTxData zec_tx_data;
 };
 
 struct TransactionInfo {

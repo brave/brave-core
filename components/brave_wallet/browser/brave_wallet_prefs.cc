@@ -41,6 +41,8 @@ base::Value::Dict GetDefaultUserAssets() {
                        BraveWalletService::GetDefaultFilecoinAssets());
   user_assets_pref.Set(kBitcoinPrefKey,
                        BraveWalletService::GetDefaultBitcoinAssets());
+  user_assets_pref.Set(kZCashPrefKey,
+                       BraveWalletService::GetDefaultZCashAssets());
   return user_assets_pref;
 }
 
@@ -50,6 +52,7 @@ base::Value::Dict GetDefaultSelectedNetworks() {
   selected_networks.Set(kSolanaPrefKey, mojom::kSolanaMainnet);
   selected_networks.Set(kFilecoinPrefKey, mojom::kFilecoinMainnet);
   selected_networks.Set(kBitcoinPrefKey, mojom::kBitcoinMainnet);
+  selected_networks.Set(kZCashPrefKey, mojom::kZCashMainnet);
 
   return selected_networks;
 }
@@ -60,6 +63,7 @@ base::Value::Dict GetDefaultSelectedNetworksPerOrigin() {
   selected_networks.Set(kSolanaPrefKey, base::Value::Dict());
   selected_networks.Set(kFilecoinPrefKey, base::Value::Dict());
   selected_networks.Set(kBitcoinPrefKey, base::Value::Dict());
+  selected_networks.Set(kZCashPrefKey, base::Value::Dict());
 
   return selected_networks;
 }
@@ -92,6 +96,10 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   btc_hidden.Append(mojom::kBitcoinTestnet);
   hidden_networks.Set(kBitcoinPrefKey, std::move(btc_hidden));
   */
+
+  base::Value::List zec_hidden;
+  zec_hidden.Append(mojom::kZCashTestnet);
+  hidden_networks.Set(kZCashPrefKey, std::move(zec_hidden));
 
   return hidden_networks;
 }
