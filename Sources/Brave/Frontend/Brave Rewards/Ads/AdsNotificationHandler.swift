@@ -48,9 +48,6 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
         self.ads.reportNotificationAdEvent(notification.placementID, eventType: .dismissed, completion: { _ in })
       case .timedOut:
         self.ads.reportNotificationAdEvent(notification.placementID, eventType: .timedOut, completion: { _ in })
-      case .disliked:
-        self.ads.reportNotificationAdEvent(notification.placementID, eventType: .dismissed, completion: { _ in })
-        self.ads.toggleThumbsDown(forAd: notification.creativeInstanceID, advertiserId: notification.advertiserID, segment: notification.segment)
       }
       self.actionOccured?(notification, action)
     }
