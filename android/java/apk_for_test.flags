@@ -512,14 +512,6 @@
     *** getCardViewBackgroundColor(...);
 }
 
--keep class org.chromium.chrome.browser.autofill.AutofillPopupBridge {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.autofill.BraveAutofillPopupBridge {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.download.BraveDownloadMessageUiControllerImpl {
     *** isVisibleToUser(...);
 }

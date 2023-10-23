@@ -274,9 +274,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/autofill/AutofillPopupBridge"));
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge"));
         Assert.assertTrue(
                 classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
         Assert.assertTrue(
@@ -751,10 +748,6 @@ public class BytecodeTest {
                 BottomSheetController.class, ActivityLifecycleDispatcher.class, Supplier.class,
                 Supplier.class, Supplier.class, ShareDelegateImpl.ShareSheetDelegate.class,
                 boolean.class));
-        Assert.assertTrue(
-                constructorsMatch("org/chromium/chrome/browser/autofill/AutofillPopupBridge",
-                        "org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge", View.class,
-                        long.class, WindowAndroid.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
