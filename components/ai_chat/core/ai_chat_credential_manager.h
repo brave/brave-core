@@ -48,7 +48,7 @@ class AIChatCredentialManager {
   void PutCredentialInCache(CredentialCacheEntry credential);
 
  private:
-  void EnsureMojoConnected();
+  bool EnsureMojoConnected();
 
   void OnMojoConnectionError();
 
