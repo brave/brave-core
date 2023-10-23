@@ -61,6 +61,8 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
 
   std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
 
+  int max_page_content_length_ = 0;
+
   base::WeakPtrFactory<EngineConsumerLlamaRemote> weak_ptr_factory_{this};
 };
 

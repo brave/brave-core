@@ -7,30 +7,27 @@ import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
+import getPageHandlerInstance from '../../api/page_handler'
 import styles from './alerts.module.scss'
 
-interface PromptAutoSuggestionProps {
-  onRetry?: () => void
-}
-
-function ErrorConnection (props: PromptAutoSuggestionProps) {
+function ErrorConversationEnd () {
   return (
     <div className={styles.alert}>
       <Alert
         mode='full'
         type='error'
       >
-        {getLocale('errorNetworkLabel')}
+        {getLocale('errorConversationEnd')}
         <Button
           slot='actions'
-          kind='filled'
-          onClick={props.onRetry}
+          kind='plain-faint'
+          onClick={() => { getPageHandlerInstance().pageHandler.clearConversationHistory() }}
         >
-            {getLocale('retryButtonLabel')}
+            {getLocale('menuNewChat')}
         </Button>
       </Alert>
     </div>
   )
 }
 
-export default ErrorConnection
+export default ErrorConversationEnd
