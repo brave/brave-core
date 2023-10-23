@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
 #include <memory>
+#include <string>
 
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"

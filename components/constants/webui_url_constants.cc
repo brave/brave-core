@@ -81,7 +81,6 @@ const char kWalletPagePaths[300][100] = {
     // NFT Pining
     "/crypto/local-ipfs-node",
     "/crypto/inspect-nfts",
-    
 };
 const char kWalletPagePath[] = "/crypto/portfolio/assets";
 const char kWalletBuyPagePath[] = "/crypto/fund-wallet";

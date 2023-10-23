@@ -44,16 +44,16 @@ source_set("ui") {
     "webui/brave_rewards_page_ui.h",
     "webui/brave_rewards_source.cc",
     "webui/brave_rewards_source.h",
+    "webui/brave_wallet/market/market_ui.cc",
+    "webui/brave_wallet/market/market_ui.h",
+    "webui/brave_wallet/nft/nft_ui.cc",
+    "webui/brave_wallet/nft/nft_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
     "webui/skus_internals_ui.cc",
     "webui/skus_internals_ui.h",
-    "webui/brave_wallet/market/market_ui.cc",
-    "webui/brave_wallet/market/market_ui.h",
-    "webui/brave_wallet/nft/nft_ui.cc",
-    "webui/brave_wallet/nft/nft_ui.h",
   ]
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
