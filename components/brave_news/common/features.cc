@@ -41,4 +41,7 @@ const base::FeatureParam<double> kBraveNewsChannelSubscribedBoost{
 const base::FeatureParam<double> kBraveNewsSourceVisitsMin{
     &kBraveNewsFeedUpdate, "source-visits-min", 0.2};
 
+const base::FeatureParam<double> kBraveNewsCategoryTopicRatio{
+    &kBraveNewsFeedUpdate, "category-topic-ratio", 0.5};
+
 }  // namespace brave_news::features

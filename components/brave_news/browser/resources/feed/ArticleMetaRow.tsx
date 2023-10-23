@@ -44,8 +44,12 @@ export function MetaInfo(props: { article: FeedItemMetadata, hideChannel?: boole
   const maybeChannel = !props.hideChannel && <>
     • {channelIcons[props.article.categoryName] ?? channelIcons.default} {props.article.categoryName}
   </>
+
+  const maybeTime = props.article.relativeTimeDescription && <>
+    • {props.article.relativeTimeDescription}
+  </>
   return <MetaInfoContainer>
-    {getOrigin(props.article)} {maybeChannel} • {props.article.relativeTimeDescription}
+    {getOrigin(props.article)} {maybeChannel} {maybeTime}
   </MetaInfoContainer>
 }
 
