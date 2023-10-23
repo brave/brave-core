@@ -50,9 +50,8 @@ void HistoryDriverIOS::HistoryDeleted() {
   // Ignored.
 }
 
-void HistoryDriverIOS::HasOtherFormsOfBrowsingHistory(
-    bool has_other_forms,
-    bool has_synced_results) {
+void HistoryDriverIOS::HasOtherFormsOfBrowsingHistory(bool has_other_forms,
+                                                      bool has_synced_results) {
   // Ignored.
 }
 
