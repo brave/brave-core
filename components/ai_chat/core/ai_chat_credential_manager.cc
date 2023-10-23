@@ -31,11 +31,12 @@ const char kLeoSkuHostnamePart[] = "leo";
 namespace ai_chat {
 
 AIChatCredentialManager::AIChatCredentialManager(
-    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-        skus_service_getter,
+    mojo::PendingRemote<skus::mojom::SkusService> skus_service,
     PrefService* prefs_service)
-    : skus_service_getter_(std::move(skus_service_getter)),
-      prefs_service_(prefs_service) {}
+    : prefs_service_(prefs_service) {
+  DCHECK(skus_service.is_valid());
+  skus_service_.Bind(std::move(skus_service));
+}
 AIChatCredentialManager::~AIChatCredentialManager() = default;
 
 void AIChatCredentialManager::GetPremiumStatus(
@@ -61,14 +62,6 @@ void AIChatCredentialManager::GetPremiumStatus(
 
   // If there aren't any valid in the cache, we must check the CredentialSummary
   // from from the SKU service.
-  if (!EnsureMojoConnected()) {
-    // This profile can't check skus
-    // TODO(petemill): Pass the original profile skus service from
-    // the incognito profile.
-    std::move(callback).Run(mojom::PremiumStatus::Inactive);
-    return;
-  }
-  DCHECK(skus_service_);
   skus_service_->CredentialSummary(
       leo_sku_domain,
       base::BindOnce(&AIChatCredentialManager::OnCredentialSummary,
@@ -192,11 +185,6 @@ void AIChatCredentialManager::OnGetPremiumStatus(
   const std::string leo_sku_domain =
       brave_domains::GetServicesDomain(kLeoSkuHostnamePart);
 
-  if (!EnsureMojoConnected()) {
-    std::move(callback).Run({});
-    return;
-  }
-  DCHECK(skus_service_);
   skus_service_->PrepareCredentialsPresentation(
       leo_sku_domain, "*",
       base::BindOnce(&AIChatCredentialManager::OnPrepareCredentialsPresentation,
@@ -263,28 +251,6 @@ void AIChatCredentialManager::PutCredentialInCache(
                               ai_chat::prefs::kBraveChatPremiumCredentialCache);
   base::Value::Dict& dict = update.Get();
   dict.Set(credential.credential, base::TimeToValue(credential.expires_at));
-}
-
-bool AIChatCredentialManager::EnsureMojoConnected() {
-  // Bind if not bound yet
-  if (!skus_service_) {
-    auto pending = skus_service_getter_.Run();
-    if (pending.is_valid()) {
-      skus_service_.Bind(std::move(pending));
-    }
-  }
-  // Some profiles can't have skus service, so we still might not have one
-  if (skus_service_) {
-    skus_service_.set_disconnect_handler(
-        base::BindOnce(&AIChatCredentialManager::OnMojoConnectionError,
-                       weak_ptr_factory_.GetWeakPtr()));
-  }
-  return !!skus_service_;
-}
-
-void AIChatCredentialManager::OnMojoConnectionError() {
-  skus_service_.reset();
-  EnsureMojoConnected();
 }
 
 }  // namespace ai_chat

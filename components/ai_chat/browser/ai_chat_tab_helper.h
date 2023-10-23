@@ -101,12 +101,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
 
-  AIChatTabHelper(
-      content::WebContents* web_contents,
-      AIChatMetrics* ai_chat_metrics,
-      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-          skus_service_getter,
-      PrefService* local_state_prefs);
+  AIChatTabHelper(content::WebContents* web_contents,
+                  AIChatMetrics* ai_chat_metrics,
+                  mojo::PendingRemote<skus::mojom::SkusService> skus_service,
+                  PrefService* local_state_prefs);
 
   void InitEngine();
   bool HasUserOptedIn();

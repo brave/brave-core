@@ -31,6 +31,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -120,17 +121,18 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled()) {
-    content::BrowserContext* context = web_contents->GetBrowserContext();
-    auto skus_service_getter = base::BindRepeating(
-        [](content::BrowserContext* context) {
-          return skus::SkusServiceFactory::GetForContext(context);
-        },
-        context);
-    ai_chat::AIChatTabHelper::CreateForWebContents(
-        web_contents,
-        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics(),
-        skus_service_getter, g_browser_process->local_state());
+  if (ai_chat::features::IsAIChatEnabled() &&
+      !web_contents->GetBrowserContext()->IsTor()) {
+    auto* profile =
+        Profile::FromBrowserContext(web_contents->GetBrowserContext());
+    if (!profile->IsGuestSession()) {
+      auto skus_service = skus::SkusServiceFactory::GetForContext(
+          profile->GetOriginalProfile());
+      ai_chat::AIChatTabHelper::CreateForWebContents(
+          web_contents,
+          g_brave_browser_process->process_misc_metrics()->ai_chat_metrics(),
+          std::move(skus_service), g_browser_process->local_state());
+    }
   }
 #endif
 
