@@ -86,6 +86,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAddNetworksAnytimeInSettings",
      IDS_BRAVE_WALLET_ADD_NETWORKS_ANYTIME_IN_SETTINGS},
     {"braveWalletContinueWithXItems", IDS_BRAVE_WALLET_CONTINUE_WITH_X_ITEMS},
+    {"braveWalletTopNavExplore", IDS_BRAVE_WALLET_TOP_NAV_EXPLORE},
+    {"braveWalletWeb3", IDS_BRAVE_WALLET_WEB_3},
     {"braveWalletSpenderAddress", IDS_BRAVE_WALLET_SPENDER_ADDRESS},
     {"braveWalletTokenIsVerifiedByLists",
      IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED_BY_LISTS},

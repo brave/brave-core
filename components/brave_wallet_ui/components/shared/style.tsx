@@ -152,6 +152,7 @@ export const Row = styled.div<
     gap?: string
   }
 >`
+  cursor: ${(p) => (p.onClick ? 'pointer' : 'unset')};
   font-family: 'Poppins';
   display: flex;
   flex-direction: row;

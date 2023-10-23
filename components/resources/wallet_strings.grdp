@@ -131,6 +131,7 @@
   <message name="IDS_BRAVE_WALLET_OTHERS" desc="Swap max slippage others label">Others: <ph name="SLIPPAGE_PERCENT"><ex>1</ex>$1</ph>%</message>
   <message name="IDS_BRAVE_WALLET_SUGGESTED" desc="Swap max slippage suggested option">Suggested</message>
   <message name="IDS_BRAVE_WALLET_CUSTOM" desc="Swap max slippage custom option">Custom</message>
+  <message name="IDS_BRAVE_WALLET_CHANGE_PROVIDER" desc="Change provider button">Change provider</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
   <message name="IDS_BRAVE_WALLET_EST_TIME" desc="Bridge and Swap estimated time label">Est time</message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_RATE" desc="Bridge and Swap exchange rate label">Exchange rate</message>
@@ -1083,4 +1084,6 @@
   <message name="IDS_BRAVE_WALLET_NFT_NAME_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT name field">The token name for an NFT refers to the specific name given to a non-fungible token within a particular collection or project. This name distinguishes one NFT from another within the same collection.</message>
   <message name="IDS_BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT symbol field">The NFT symbol refers to the unique identifier used to distinguish the NFT collection or project.</message>
   <message name="IDS_BRAVE_WALLET_WATCH_ONLY" desc="Label to indicate that an asset is watch-only. This means that the asset is not owned by the user or it cannot be transferred">Watch-only</message>
+  <message name="IDS_BRAVE_WALLET_WEB_3" desc="Web3 page title">Web3</message>
+  <message name="IDS_BRAVE_WALLET_TOP_NAV_EXPLORE" desc="Navigation title for the 'Explore' tab/page">Explore</message>
 </grit-part>
