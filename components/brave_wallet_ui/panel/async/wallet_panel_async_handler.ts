@@ -158,7 +158,7 @@ async function navigateToConnectHardwareWallet (store: Store) {
 }
 
 function isPersistanceOfPanelProhibited (panelType: PanelTypes) {
-  return panelType === 'connectWithSite'
+  return panelType === 'connectWithSite' || panelType === 'signData'
 }
 
 function storeCurrentAndPreviousPanel(
