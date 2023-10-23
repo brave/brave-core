@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-#include "base/check.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
@@ -23,7 +22,6 @@ base::Time CorrectLocalMidnightForDaylightSaving(const base::Time midnight,
   // Check for errors due to daylight saving time change.
   base::Time::Exploded midnight_exploded;
   midnight.LocalExplode(&midnight_exploded);
-  CHECK(midnight_exploded.HasValidValues());
 
   base::Time corrected_midnight = midnight;
   if (midnight_exploded.hour != 0) {
@@ -41,7 +39,6 @@ base::Time CorrectLocalMidnightForDaylightSaving(const base::Time midnight,
 base::Time CalculateBeginningOfMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   const base::Time midnight = GetLocalMidnight(time);
   const base::Time shifted_midnight =
@@ -55,7 +52,6 @@ base::Time CalculateBeginningOfMonth(const base::Time time) {
 base::Time CalculateBeginningOfNextMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   const base::Time midnight = GetLocalMidnight(time);
   const base::Time shifted_midnight =
@@ -95,7 +91,6 @@ base::Time CalculateEndOfMonth(const base::Time time) {
 base::Time GetLocalMidnight(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   const base::Time midnight =
       time - base::Hours(exploded.hour) - base::Minutes(exploded.minute) -
@@ -107,7 +102,6 @@ base::Time GetLocalMidnight(const base::Time time) {
 int GetLocalTimeInMinutes(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   const base::TimeDelta time_delta =
       base::Hours(exploded.hour) + base::Minutes(exploded.minute);
@@ -117,7 +111,6 @@ int GetLocalTimeInMinutes(const base::Time time) {
 base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   exploded.month--;
   if (exploded.month < 1) {
@@ -147,7 +140,6 @@ base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time time) {
 base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   exploded.month--;
   if (exploded.month < 1) {
@@ -177,7 +169,6 @@ base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time time) {
 base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   exploded.day_of_month = 1;
 
@@ -201,7 +192,6 @@ base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time time) {
 base::Time AdjustLocalTimeToEndOfMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  CHECK(exploded.HasValidValues());
 
   exploded.day_of_month = GetLastDayOfMonth(exploded.year, exploded.month);
 
