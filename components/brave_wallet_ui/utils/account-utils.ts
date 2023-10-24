@@ -95,7 +95,7 @@ export const findAccountByAddress = (
 }
 
 export const findAccountByAccountId = (
-  accountId: BraveWallet.AccountId,
+  accountId: Pick<BraveWallet.AccountId, 'address' | 'uniqueKey'>,
   accounts: EntityState<BraveWallet.AccountInfo> | undefined
 ): BraveWallet.AccountInfo | undefined => {
   if (!accounts) {
