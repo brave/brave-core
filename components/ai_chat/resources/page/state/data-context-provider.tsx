@@ -61,7 +61,8 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   // Wait to show model intro until we've received SiteInfo information
   // (valid or null) to avoid flash of content.
-  const showModelIntro = hasChangedModel || siteInfo === null
+  const showModelIntro =
+    hasAcceptedAgreement && (hasChangedModel || siteInfo === null)
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
