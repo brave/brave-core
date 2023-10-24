@@ -23,10 +23,14 @@ public struct BraveCertificateUtils {
     return result
   }
 
-  public static func formatDate(_ date: Date) -> String {
+  private static let dateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .full
     dateFormatter.timeStyle = .full
+    return dateFormatter
+  }()
+
+  public static func formatDate(_ date: Date) -> String {
     return dateFormatter.string(from: date)
   }
 }
