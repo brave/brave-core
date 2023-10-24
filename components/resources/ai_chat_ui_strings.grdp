@@ -73,13 +73,16 @@
     New chat
   </message>
   <message name="IDS_CHAT_UI_MENU_SUGGESTED_QUESTIONS" desc="Menu item for whether to enable suggested questions during chat conversations">
-    Suggest questions
+    Suggested questions
+  </message>
+  <message name="IDS_CHAT_UI_MENU_GO_PREMIUM" desc="Menu item for subscribing to premium">
+    Go Premium
   </message>
   <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
     Settings
   </message>
   <message name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
-    Available language models
+    Language models
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_BUTTON_LABEL" desc="A button label to subscribe for premium model">
      Go Premium

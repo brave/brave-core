@@ -21,15 +21,21 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
   .model-subtitle {
     font: var(--leo-font-primary-small-regular);
-    color: var(--leo-color-text-tertiary);
     padding: 0;
     margin: 0;
   }
 
   .menu-subtitle {
-    padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+    --leo-icon-size: 16px;
+    margin: 14px calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+    margin-bottom: 2px;
     color: var(--leo-color-text-tertiary);
-    font: var(--leo-font-primary-small-semibold);
+    font: var(--leo-font-primary-small-regular);
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 6px;
   }
 
   leo-dropdown {
@@ -56,7 +62,8 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   >
     <div slot="value">[[selectedModelDisplayName_]]</div>
     <div class="menu-subtitle">
-      $i18n{braveLeoModelCategory-chat}
+      <leo-icon name="speech-bubble-comments"></leo-icon>
+      <span>$i18n{braveLeoModelCategory-chat}</span>
     </div>
     <template is="dom-repeat" items="[[models_]]">
         <leo-option value$="[[item.key]]">
