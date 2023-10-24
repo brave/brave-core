@@ -631,8 +631,6 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
   DVLOG(1) << __func__ << ": hide animation (start, end) width: ("
            << animation_start_width_ << ", " << animation_end_width_ << ")";
 
-  GetFocusManager()->ClearFocus();
-
   if (ShouldUseAnimation()) {
     DVLOG(1) << __func__ << ": hide with animation";
 
