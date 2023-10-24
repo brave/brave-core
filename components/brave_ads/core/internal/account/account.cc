@@ -207,6 +207,8 @@ void Account::Initialize() {
 
   MaybeFetchIssuers();
 
+  MaybeRefillConfirmationTokens();
+
   MaybeProcessUnclearedTransactions();
 }
 
@@ -310,7 +312,7 @@ void Account::MaybeProcessUnclearedTransactions() const {
 }
 
 bool Account::ShouldRefillConfirmationTokens() const {
-  return wallet_ && refill_confirmation_tokens_;
+  return wallet_ && refill_confirmation_tokens_ && HasIssuers();
 }
 
 void Account::MaybeReset() {
