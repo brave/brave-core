@@ -83,6 +83,7 @@ function InputBox () {
           className={styles.buttonSend}
           onClick={handleSubmit}
           disabled={context.shouldDisableUserInput}
+          title={getLocale('sendChatButtonLabel')}
         >
           <Icon name='send' />
         </button>
