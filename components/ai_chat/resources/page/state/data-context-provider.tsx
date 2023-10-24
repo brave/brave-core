@@ -38,7 +38,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
-  const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
+  const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus | undefined>(undefined)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
   const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean>(false)
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
@@ -252,7 +252,8 @@ function DataContextProvider (props: DataContextProviderProps) {
     hasAcceptedAgreement,
     apiHasError,
     shouldDisableUserInput,
-    isPremiumUser: premiumStatus !== mojom.PremiumStatus.Inactive,
+    isPremiumStatusFetching: premiumStatus === undefined,
+    isPremiumUser: premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive,
     isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
     canShowPremiumPrompt,
     shouldShowLongPageWarning,
