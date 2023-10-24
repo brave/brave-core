@@ -36,6 +36,12 @@ class AdBlockService;
 class HTTPSEverywhereService;
 }  // namespace brave_shields
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+namespace brave_vpn {
+class BraveVpnClientUpdater;
+}  // namespace brave_vpn
+#endif
+
 namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
 }  // namespace https_upgrade_exceptions
@@ -150,6 +156,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVPNOSConnectionAPI* brave_vpn_os_connection_api() override;
+  brave_vpn::BraveVpnClientUpdater* brave_vpn_client_updater() override;
 #endif
   brave::BraveFarblingService* brave_farbling_service() override;
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
@@ -226,6 +233,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   std::unique_ptr<brave_vpn::BraveVPNOSConnectionAPI>
       brave_vpn_os_connection_api_;
+  std::unique_ptr<brave_vpn::BraveVpnClientUpdater> brave_vpn_client_updater_;
 #endif
 
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;

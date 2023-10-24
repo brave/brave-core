@@ -95,6 +95,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/browser/brave_vpn_client_updater.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
 #endif
 
@@ -516,6 +517,27 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
       shared_url_loader_factory(), local_state(), chrome::GetChannel());
   return brave_vpn_os_connection_api_.get();
 }
+
+// TODO(bsclifton): nothing is calling this yet
+// for an example see:
+// brave\browser\ipfs\ipfs_service_factory.cc
+// brave\browser\extensions\brave_extension_management.cc
+// (and the callers of ipfs_service_factory)
+//
+brave_vpn::BraveVpnClientUpdater*
+BraveBrowserProcessImpl::brave_vpn_client_updater() {
+  if (brave_vpn_client_updater_) {
+    return brave_vpn_client_updater_.get();
+  }
+
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+
+  brave_vpn_client_updater_ = brave_vpn::BraveVpnClientUpdaterFactory(
+      brave_component_updater_delegate(), user_data_dir);
+  return brave_vpn_client_updater_.get();
+}
+
 #endif
 
 brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
