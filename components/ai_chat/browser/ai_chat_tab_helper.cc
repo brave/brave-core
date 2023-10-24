@@ -556,6 +556,9 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   AddToConversationHistory(std::move(turn));
 
   is_request_in_progress_ = true;
+  for (auto& obs : observers_) {
+    obs.OnAPIRequestInProgress(IsRequestInProgress());
+  }
 }
 
 void AIChatTabHelper::RetryAPIRequest() {

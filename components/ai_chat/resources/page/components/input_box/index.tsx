@@ -38,6 +38,7 @@ function InputBox () {
   const submitInputTextToAPI = () => {
     if (!inputText) return
     if (isCharLimitExceeded) return
+    if (context.shouldDisableUserInput) return
 
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
     setInputText('')
@@ -67,7 +68,6 @@ function InputBox () {
           onChange={onInputChange}
           onKeyDown={onUserPressEnter}
           value={inputText}
-          disabled={context.shouldDisableUserInput}
           autoFocus
         />
         <div className={classnames({
