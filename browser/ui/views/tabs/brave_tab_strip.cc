@@ -65,7 +65,11 @@ bool BraveTabStrip::IsVerticalTabsFloating() const {
   auto* vertical_region_view =
       browser_view->vertical_tab_strip_widget_delegate_view()
           ->vertical_tab_strip_region_view();
-  DCHECK(vertical_region_view);
+  if (!vertical_region_view) {
+    // Could be null when we end up here from VerticalTabStripWidgetDelegateView
+    // d'tor.
+    return false;
+  }
 
   return vertical_region_view->state() ==
              VerticalTabStripRegionView::State::kFloating ||
