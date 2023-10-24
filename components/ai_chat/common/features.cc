@@ -22,9 +22,6 @@ BASE_FEATURE(kAIChat,
              base::FEATURE_DISABLED_BY_DEFAULT
 #endif
 );
-const base::FeatureParam<std::string> kAIModelKey(&kAIChat,
-                                                  "ai_model_key",
-                                                  "chat-default");
 const base::FeatureParam<std::string> kAIModelName{&kAIChat, "ai_model_name",
                                                    ""};
 const base::FeatureParam<bool> kAIChatSSE{&kAIChat, "ai_chat_sse", true};

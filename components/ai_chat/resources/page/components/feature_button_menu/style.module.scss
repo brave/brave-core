@@ -4,17 +4,24 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 .menuSectionTitle {
-  // height: 44px; // menu item height
   background-color: var(--leo-color-page-background);
   padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
   color: var(--leo-color-text-tertiary);
   font: var(--leo-font-primary-small-regular);
+
 }
 
 .menuSubtitle {
-  padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+  --leo-icon-size: 16px;
+  margin: 14px calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+  margin-bottom: 2px;
   color: var(--leo-color-text-tertiary);
-  font: var(--leo-font-primary-small-semibold);
+  font: var(--leo-font-primary-small-regular);
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 6px;
 }
 
 .menuSeparator {
@@ -24,14 +31,33 @@
 }
 
 .menuItemWithIcon {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-default);
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  // gap is for the minimum space between text and icon
-  gap: 22px;
+  gap: 12px;
+}
+
+.menuItemMainItem {
+  margin-left: -6px;
+  margin-right: -6px;
+}
+
+.menuText {
+  flex-grow: 2;
 }
 
 .menuIconSpace {
   width: calc(var(--leo-icon-size) + 8px);
+}
+
+.modelSubtitle {
+  font: var(--leo-font-primary-small-regular);
+  padding: 0;
+  margin: 0;
+}
+
+.lockOpen {
+  --leo-icon-color: var(--leo-color-icon-disabled);
 }

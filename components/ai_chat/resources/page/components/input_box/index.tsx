@@ -23,8 +23,6 @@ function InputBox () {
   const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
 
-  const isInputDisabled = context.shouldDisableUserInput || (!context.isPremiumUser && context.currentModel?.isPremium)
-
   if (!context.hasAcceptedAgreement) {
     return (
       <div className={styles.container}>
@@ -40,6 +38,7 @@ function InputBox () {
   const submitInputTextToAPI = () => {
     if (!inputText) return
     if (isCharLimitExceeded) return
+    if (context.shouldDisableUserInput) return
 
     getPageHandlerInstance().pageHandler.submitHumanConversationEntry(inputText)
     setInputText('')
@@ -69,7 +68,6 @@ function InputBox () {
           onChange={onInputChange}
           onKeyDown={onUserPressEnter}
           value={inputText}
-          disabled={isInputDisabled}
           autoFocus
         />
         <div className={classnames({
@@ -84,7 +82,8 @@ function InputBox () {
         <button
           className={styles.buttonSend}
           onClick={handleSubmit}
-          disabled={isInputDisabled}
+          disabled={context.shouldDisableUserInput}
+          title={getLocale('sendChatButtonLabel')}
         >
           <Icon name='send' />
         </button>

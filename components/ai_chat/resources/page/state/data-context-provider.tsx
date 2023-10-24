@@ -9,7 +9,9 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
 import DataContext, { AIChatContext } from './context'
 
+// TODO(petemill): Build account urls in the browser
 const URL_REFRESH_PREMIUM_SESSION = 'https://account.brave.com/?intent=recover&product=leo'
+const URL_GO_PREMIUM = 'https://account.brave.com/account/?intent=checkout&product=leo'
 
 function toBlobURL(data: number[] | null) {
   if (!data) return undefined
@@ -31,11 +33,14 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [isGenerating, setIsGenerating] = React.useState(false)
   const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
   const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<mojom.AutoGenerateQuestionsPref>()
-  const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null>(null)
+  // undefined for nothing received yet
+  // null for no site info
+  // mojom.SiteInfo for valid site info
+  const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null | undefined>(undefined)
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
-  const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus>(mojom.PremiumStatus.Inactive)
+  const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus | undefined>(undefined)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
   const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean>(false)
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
@@ -49,8 +54,14 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.changeModel(model.key)
   }
 
+  const isPremiumUser = premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive
+
   const apiHasError = (currentError !== mojom.APIError.None)
-  const shouldDisableUserInput = apiHasError || isGenerating
+  const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.isPremium))
+
+  // Wait to show model intro until we've received SiteInfo information
+  // (valid or null) to avoid flash of content.
+  const showModelIntro = hasChangedModel || siteInfo === null
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -77,11 +88,21 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.generateQuestions()
   }
 
+  const handleSiteInfo = (isFetching: boolean, siteInfo: mojom.SiteInfo | null) => {
+    // null siteInfo for no content
+    // true isFetching for unknown yet
+    if (!isFetching) {
+      setSiteInfo(siteInfo)
+    } else {
+      setSiteInfo(undefined)
+    }
+  }
+
   const getSiteInfo = () => {
     getPageHandlerInstance()
       .pageHandler.getSiteInfo()
-      .then(({ siteInfo }) => {
-        setSiteInfo(siteInfo)
+      .then(({ isFetching, siteInfo }) => {
+        handleSiteInfo(isFetching, siteInfo)
       })
   }
 
@@ -176,6 +197,12 @@ function DataContextProvider (props: DataContextProviderProps) {
     setHasDismissedLongConversationInfo(true)
   }
 
+  const goPremium = () => {
+    getPageHandlerInstance().pageHandler.openURL({
+      url: URL_GO_PREMIUM
+    })
+  }
+
   const initialiseForTargetTab = async () => {
     // Replace state from backend
     // TODO(petemill): Perhaps we need a simple GetState mojom function
@@ -213,7 +240,9 @@ function DataContextProvider (props: DataContextProviderProps) {
       }
     )
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
-    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: mojom.SiteInfo) => setSiteInfo(siteInfo))
+    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener(
+      handleSiteInfo
+    )
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
 
     // Since there is no server-side event for premium status changing,
@@ -233,25 +262,27 @@ function DataContextProvider (props: DataContextProviderProps) {
   const store: AIChatContext = {
     allModels,
     currentModel,
-    hasChangedModel,
+    showModelIntro,
     conversationHistory,
     isGenerating,
     suggestedQuestions,
     canGenerateQuestions,
     userAutoGeneratePref,
-    siteInfo,
+    siteInfo: siteInfo || null,
     favIconUrl,
     currentError,
     hasAcceptedAgreement,
     apiHasError,
     shouldDisableUserInput,
-    isPremiumUser: premiumStatus !== mojom.PremiumStatus.Inactive,
+    isPremiumStatusFetching: premiumStatus === undefined,
+    isPremiumUser,
     isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
     canShowPremiumPrompt,
     shouldShowLongPageWarning,
     shouldShowLongConversationInfo,
     setCurrentModel,
     switchToDefaultModel,
+    goPremium,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,

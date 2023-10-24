@@ -163,8 +163,11 @@ void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
 
 void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
   auto site_info = BuildSiteInfo();
-  std::move(callback).Run(site_info.has_value() ? site_info.value().Clone()
-                                                : nullptr);
+  const bool is_fetching_content = active_chat_tab_helper_->HasPageContent() ==
+                                   PageContentAssociation::FETCHING_CONTENT;
+  std::move(callback).Run(is_fetching_content, site_info.has_value()
+                                                   ? site_info.value().Clone()
+                                                   : nullptr);
 }
 
 void AIChatUIPageHandler::OpenBraveLeoSettings() {
@@ -353,9 +356,20 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
 
 void AIChatUIPageHandler::OnPageHasContent(bool page_contents_is_truncated) {
   if (page_.is_bound()) {
+    // TODO(petemill): Looking at the target webcontents'
+    // |IsDocumentOnLoadCompletedInPrimaryMainFrame| could be improved with
+    // a function on TabHelper / Conversation, e.g. IsContentLoading so that
+    // MaybeGeneratePageText and this function are looking at the same thing.
+    // This should be refactored with iOS support.
+    const bool is_fetching_content =
+        (active_chat_tab_helper_->HasPageContent() ==
+         PageContentAssociation::FETCHING_CONTENT) ||
+        !active_chat_tab_helper_->web_contents()
+             ->IsDocumentOnLoadCompletedInPrimaryMainFrame();
     auto site_info = BuildSiteInfo();
-    page_->OnSiteInfoChanged(site_info.has_value() ? site_info.value().Clone()
-                                                   : nullptr);
+    page_->OnSiteInfoChanged(
+        is_fetching_content,
+        site_info.has_value() ? site_info.value().Clone() : nullptr);
   }
 }
 
@@ -392,7 +406,8 @@ void AIChatUIPageHandler::GetFaviconImageData(
 }
 
 absl::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
-  if (active_chat_tab_helper_ && active_chat_tab_helper_->HasPageContent()) {
+  if (active_chat_tab_helper_ && active_chat_tab_helper_->HasPageContent() ==
+                                     PageContentAssociation::HAS_CONTENT) {
     mojom::SiteInfo site_info;
     site_info.title =
         base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());

@@ -42,10 +42,15 @@ function Main() {
 
   const shouldPromptSuggestQuestions = hasAcceptedAgreement && userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset
 
-  const shouldShowPremiumSuggestionForModel = hasAcceptedAgreement && !context.isPremiumUser && context.currentModel?.isPremium
+  const shouldShowPremiumSuggestionForModel =
+    hasAcceptedAgreement &&
+    !context.isPremiumStatusFetching && // Avoid flash of content
+    !context.isPremiumUser &&
+    context.currentModel?.isPremium
 
   const shouldShowPremiumSuggestionStandalone =
     hasAcceptedAgreement &&
+    !context.isPremiumStatusFetching && // Avoid flash of content
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
     !shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
     context.canShowPremiumPrompt &&
@@ -121,7 +126,7 @@ function Main() {
         {siteTitleElement && (
           <div className={styles.siteTitleBox}>{siteTitleElement}</div>
         )}
-        {context.hasChangedModel && <ModelIntro />}
+        {context.showModelIntro && <ModelIntro />}
         {conversationListElement}
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
@@ -135,7 +140,7 @@ function Main() {
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'
-                    onClick={() => context.dismissPremiumPrompt()}
+                    onClick={() => context.switchToDefaultModel()}
                   >
                     {getLocale('switchToDefaultModelButtonLabel')}
                   </Button>

@@ -69,14 +69,55 @@ AIChatTabHelper::AIChatTabHelper(
       base::BindRepeating(
           &AIChatTabHelper::OnPermissionChangedAutoGenerateQuestions,
           weak_ptr_factory_.GetWeakPtr()));
+  // TODO(petemill): AIChatCredential manager could be singleton since it uses
+  // local state prefs.
   credential_manager_ = std::make_unique<ai_chat::AIChatCredentialManager>(
       skus_service_getter, local_state_prefs);
 
-  // Engines and model names are be selectable
-  // per conversation, not static.
-  // Start with default.
-  // TODO(petemill): Default should come from pref value.
-  model_key_ = features::kAIModelKey.Get();
+  // Engines and model names are selectable per conversation, not static.
+  // Start with default from pref value but only if user set. We can't rely on
+  // actual default pref value since we should vary if user is premium or not.
+  // TODO(petemill): When we have an event for premium status changed, and a
+  // profile service for AIChat, then we can call
+  // |pref_service_->SetDefaultPrefValue| when the user becomes premium. With
+  // that, we'll be able to simply call GetString(prefs::kDefaultModelKey) and
+  // not vary on premium status.
+  if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey)) {
+    credential_manager_->GetPremiumStatus(base::BindOnce(
+        [](AIChatTabHelper* instance, mojom::PremiumStatus status) {
+          if (status == mojom::PremiumStatus::Inactive) {
+            // Not premium
+            return;
+          }
+          // Use default premium model for this instance
+          instance->ChangelModel(kModelsPremiumDefaultKey);
+          // Make sure default model reflects premium status
+          const auto* current_default =
+              instance->pref_service_
+                  ->GetDefaultPrefValue(prefs::kDefaultModelKey)
+                  ->GetIfString();
+
+          if (current_default && *current_default != kModelsPremiumDefaultKey) {
+            instance->pref_service_->SetDefaultPrefValue(
+                prefs::kDefaultModelKey, base::Value(kModelsPremiumDefaultKey));
+          }
+        },
+        // Unretained is ok as credential manager is owned by this class,
+        // and it owns the mojo binding that is used to make async call in
+        // |GetPremiumStatus|.
+        base::Unretained(this)));
+  }
+  // Most calls to credential_manager_->GetPremiumStatus will call the callback
+  // synchronously - when the user is premium and does not have expired
+  // credentials. We avoid double-constructing engine_ in those cases
+  // by checking here if the callback has already fired. In the case where the
+  // callback will be called asynchronously, we need to initialize a model now.
+  // Worst-case is that this will get double initialized for premium users
+  // once whenever all credentials are expired.
+  if (model_key_.empty()) {
+    model_key_ = pref_service_->GetString(prefs::kDefaultModelKey);
+    InitEngine();
+  }
   InitEngine();
   DCHECK(engine_);
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
@@ -130,7 +171,11 @@ void AIChatTabHelper::InitEngine() {
   }
 
   auto model = model_match->second;
-  // TODO(petemill): Engine enum on model to decide which one
+  // Model's key might not be the same as what we asked for (e.g. if the model
+  // no longer exists).
+  model_key_ = model.key;
+
+  // Engine enum on model to decide which one
   if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
     VLOG(1) << "Started tab helper for AI engine: llama";
     engine_ = std::make_unique<EngineConsumerLlamaRemote>(
@@ -151,7 +196,17 @@ void AIChatTabHelper::InitEngine() {
         credential_manager_.get());
   }
 
-  OnPageHasContentChanged(IsPageContentsTruncated());
+  // Pending requests have been deleted along with the model engine
+  is_request_in_progress_ = false;
+  for (auto& obs : observers_) {
+    obs.OnAPIRequestInProgress(false);
+  }
+
+  // When the model changes, the content truncation might be different,
+  // and the UI needs to know.
+  if (HasPageContent() == PageContentAssociation::HAS_CONTENT) {
+    OnPageHasContentChanged(IsPageContentsTruncated());
+  }
 }
 
 bool AIChatTabHelper::HasUserOptedIn() {
@@ -236,6 +291,8 @@ void AIChatTabHelper::MaybeGeneratePageText() {
   const GURL url = web_contents()->GetLastCommittedURL();
 
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
+    // Final decision, convey to observers
+    OnPageHasContentChanged(false);
     return;
   }
 
@@ -269,6 +326,8 @@ void AIChatTabHelper::MaybeGeneratePageText() {
 
   if (!should_page_content_be_disconnected_) {
     is_page_text_fetch_in_progress_ = true;
+    // Update fetching status
+    OnPageHasContentChanged(false);
     FetchPageContent(
         web_contents(),
         base::BindOnce(&AIChatTabHelper::OnTabContentRetrieved,
@@ -306,6 +365,7 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
   article_text_ = contents_text;
   engine_->SanitizeInput(article_text_);
 
+  // Update completion status
   OnPageHasContentChanged(IsPageContentsTruncated());
 
   // Now that we have article text, we can suggest to summarize it
@@ -341,6 +401,7 @@ void AIChatTabHelper::CleanUp() {
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
+    obs.OnAPIRequestInProgress(false);
     obs.OnPageHasContent(/* page_contents_is_truncated */ false);
   }
 }
@@ -355,8 +416,14 @@ std::vector<std::string> AIChatTabHelper::GetSuggestedQuestions(
   return suggested_questions_;
 }
 
-bool AIChatTabHelper::HasPageContent() {
-  return !article_text_.empty();
+PageContentAssociation AIChatTabHelper::HasPageContent() {
+  if (is_page_text_fetch_in_progress_) {
+    return PageContentAssociation::FETCHING_CONTENT;
+  }
+  if (article_text_.empty()) {
+    return PageContentAssociation::NO_CONTENT;
+  }
+  return PageContentAssociation::HAS_CONTENT;
 }
 
 void AIChatTabHelper::DisconnectPageContents() {
@@ -489,6 +556,9 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   AddToConversationHistory(std::move(turn));
 
   is_request_in_progress_ = true;
+  for (auto& obs : observers_) {
+    obs.OnAPIRequestInProgress(IsRequestInProgress());
+  }
 }
 
 void AIChatTabHelper::RetryAPIRequest() {
