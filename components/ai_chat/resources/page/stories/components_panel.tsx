@@ -93,7 +93,7 @@ export default {
   args: {
     hasQuestions: true,
     hasChosenSuggestedQuestions: true,
-    hasChangedModel: false,
+    showModelIntro: true,
     hasAcceptedAgreement: true,
     isPremiumUser: true,
     isPremiumUserDisconnected: false,
@@ -125,7 +125,7 @@ export default {
       const store: AIChatContext = {
         // Don't error when new properties are added
         ...defaultContext,
-        hasChangedModel: options.args.hasChangedModel,
+        showModelIntro: options.args.showModelIntro,
         allModels: MODELS,
         currentModel: MODELS[0],
         conversationHistory,
