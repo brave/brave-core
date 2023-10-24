@@ -44,8 +44,8 @@ class MockPrivacySandboxDelegate : public PrivacySandboxSettings::Delegate {
               IsCookieDeprecationExperimentEligible,
               (),
               (const, override));
-  MOCK_METHOD(bool,
-              IsCookieDeprecationExperimentCurrentlyEligible,
+  MOCK_METHOD(TpcdExperimentEligibility,
+              GetCookieDeprecationExperimentCurrentEligibility,
               (),
               (const, override));
 };
