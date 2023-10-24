@@ -14,6 +14,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
@@ -41,6 +42,7 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   decentralized_dns::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   p3a::P3AService::RegisterPrefs(registry, false);
+  p3a::StarRandomnessMeta::RegisterPrefsForMigration(registry);
 #endif
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
