@@ -54,8 +54,10 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.changeModel(model.key)
   }
 
+  const isPremiumUser = premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive
+
   const apiHasError = (currentError !== mojom.APIError.None)
-  const shouldDisableUserInput = apiHasError || isGenerating
+  const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.isPremium))
 
   // Wait to show model intro until we've received SiteInfo information
   // (valid or null) to avoid flash of content.
@@ -273,7 +275,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     apiHasError,
     shouldDisableUserInput,
     isPremiumStatusFetching: premiumStatus === undefined,
-    isPremiumUser: premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive,
+    isPremiumUser,
     isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
     canShowPremiumPrompt,
     shouldShowLongPageWarning,
