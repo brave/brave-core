@@ -21,6 +21,7 @@ export interface AIChatContext {
   currentError: mojom.APIError | undefined
   apiHasError: boolean
   shouldDisableUserInput: boolean
+  isPremiumStatusFetching: boolean
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
   canShowPremiumPrompt?: boolean
@@ -48,6 +49,7 @@ export const defaultContext: AIChatContext = {
   hasAcceptedAgreement: false,
   apiHasError: false,
   shouldDisableUserInput: false,
+  isPremiumStatusFetching: false,
   isPremiumUser: false,
   isPremiumUserDisconnected: false,
   userAutoGeneratePref: undefined,
