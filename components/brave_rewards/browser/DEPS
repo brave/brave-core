@@ -11,10 +11,6 @@ include_rules = [
 
 # Existing exceptions
 specific_include_rules = {
-  "rewards_protocol_handler.h": [
-    "+chrome/browser/external_protocol/external_protocol_handler.h",
-    "+chrome/browser/profiles/profile.h",
-  ],
   "rewards_service_impl.cc": [
     "+brave/browser/ui/webui/brave_rewards_source.h",
     "+chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h",

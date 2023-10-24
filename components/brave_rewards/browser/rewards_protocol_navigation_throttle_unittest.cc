@@ -8,10 +8,12 @@
 #include <tuple>
 #include <vector>
 
-#include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
+#include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter="*RewardsProtocolHandlerTest*"
+// clang-format off
+// npm run test -- brave_unit_tests --filter="*RewardsProtocolNavigationThrottleTest*"
+// clang-format on
 
 using ::testing::TestWithParam;
 using ::testing::Values;
@@ -26,7 +28,7 @@ bool IsValidWalletProviderRedirect(
     const std::map<std::string, std::vector<GURL>>& allowed_referrer_urls);
 
 // clang-format off
-using RewardsProtocolHandlerTestParamType = std::tuple<
+using RewardsProtocolNavigationThrottleTestParamType = std::tuple<
     std::string,  // test name suffix
     std::string,  // referrer URL
     std::string,  // redirect URL
@@ -34,10 +36,10 @@ using RewardsProtocolHandlerTestParamType = std::tuple<
 >;
 // clang-format on
 
-class RewardsProtocolHandlerTest
-    : public TestWithParam<RewardsProtocolHandlerTestParamType> {};
+class RewardsProtocolNavigationThrottleTest
+    : public TestWithParam<RewardsProtocolNavigationThrottleTestParamType> {};
 
-TEST(TransformUrl, RewardsProtocolHandlerTest) {
+TEST(TransformUrl, RewardsProtocolNavigationThrottleTest) {
   EXPECT_EQ(TransformUrl(GURL("rewards://uphold/"
                               "authorization")),
             GURL("chrome://rewards/uphold/authorization"));
@@ -53,42 +55,50 @@ TEST(TransformUrl, RewardsProtocolHandlerTest) {
            "error_description=User+does+not+meet+minimum+requirements"));
 }
 
-TEST_P(RewardsProtocolHandlerTest, Paths) {
+TEST_P(RewardsProtocolNavigationThrottleTest, Paths) {
   const auto& [ignore, referrer_url, redirect_url, result] = GetParam();
 
   const std::map<std::string, std::vector<GURL>> allowed_referrer_urls{
       {"bitflyer", {GURL("https://bitflyer.com")}},
       {"uphold", {GURL("https://uphold.com")}}};
 
-  EXPECT_EQ(IsValidWalletProviderRedirect(
-                GURL(referrer_url), GURL(redirect_url), allowed_referrer_urls),
+  const auto transformed_url = TransformUrl(GURL(redirect_url));
+
+  EXPECT_EQ(IsValidWalletProviderRedirect(GURL(referrer_url), transformed_url,
+                                          allowed_referrer_urls),
             result);
 }
 
 // clang-format off
 INSTANTIATE_TEST_SUITE_P(
   IsValidWalletProviderRedirect,
-  RewardsProtocolHandlerTest,
+  RewardsProtocolNavigationThrottleTest,
   Values(
-    RewardsProtocolHandlerTestParamType{
+    RewardsProtocolNavigationThrottleTestParamType{
       "no_redirect_to_enable",
       "https://bitflyer.com",
       "rewards://enable",
       false
     },
-    RewardsProtocolHandlerTestParamType{
+    RewardsProtocolNavigationThrottleTestParamType{
       "no_redirect_for_unknown_wallet_providers",
       "https://unknown.com",
       "rewards://unknown/authorization",
       false
     },
-    RewardsProtocolHandlerTestParamType{
+    RewardsProtocolNavigationThrottleTestParamType{
       "no_redirect_to_each_others_redirect_url",
       "https://bitflyer.com",
       "rewards://uphold/authorization",
       false
     },
-    RewardsProtocolHandlerTestParamType{
+    RewardsProtocolNavigationThrottleTestParamType{
+      "no_redirect_to_settings",
+      "https://uphold.com",
+      "rewards://uphold/../settings/",
+      false
+    },
+    RewardsProtocolNavigationThrottleTestParamType{
       "success",
       "https://uphold.com",
       "rewards://uphold/authorization",
