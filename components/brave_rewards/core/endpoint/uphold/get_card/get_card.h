@@ -10,7 +10,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 // GET https://api.uphold.com/v0/me/cards/{wallet_address}
 //

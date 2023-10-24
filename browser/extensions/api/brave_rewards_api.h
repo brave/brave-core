@@ -13,8 +13,7 @@
 
 #include "base/types/expected.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "extensions/browser/extension_function.h"
 
 namespace extensions {

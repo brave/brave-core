@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { ConnectExternalWalletError, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m.js'
+import { ConnectExternalWalletError, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m.js'
 import { Optional } from '../../shared/lib/optional'
 import { PublisherStatus } from '../../shared/lib/publisher_status'
 import { UserType } from '../../shared/lib/user_type'

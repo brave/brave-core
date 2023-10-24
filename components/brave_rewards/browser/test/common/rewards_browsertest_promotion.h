@@ -14,7 +14,7 @@
 #include "base/run_loop.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "chrome/browser/ui/browser.h"
 
 namespace brave_rewards::test_util {

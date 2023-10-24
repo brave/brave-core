@@ -12,6 +12,8 @@
 #include "brave/components/brave_rewards/core/endpoint/payment/post_transaction_gemini/post_transaction_sku_gemini.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_transaction_uphold/post_transaction_uphold.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_votes/post_votes.h"
+// TODO(zenparsing): Remove this. Audit elsewhere for unecessary includes of
+// this file.
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {

@@ -6,7 +6,6 @@
 module brave_rewards.mojom;
 
 import "brave/components/brave_rewards/common/mojom/rewards.mojom";
-import "brave/components/brave_rewards/common/mojom/rewards_types.mojom";
 
 // Used by the WebUI page to bootstrap bidirectional communication.
 interface TipPanelHandlerFactory {

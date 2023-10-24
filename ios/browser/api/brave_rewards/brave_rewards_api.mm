@@ -30,7 +30,6 @@
 #import "brave/ios/browser/api/brave_rewards/rewards_client_ios.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_notification.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_observer.h"
-#import "brave/ios/browser/api/brave_rewards/rewards_types.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"

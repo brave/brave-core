@@ -507,6 +507,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/mojom",
+    "//brave/components/brave_rewards/common/mojom:webui",
     "//brave/components/brave_rewards/core:headers",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_rewards/resources:internals_generated_resources",

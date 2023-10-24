@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
 #include "brave/components/brave_rewards/core/global_constants.h"

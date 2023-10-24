@@ -261,22 +261,6 @@ enum PublisherExclude {
   INCLUDED = 2   // user manually changed it to include and is overriding server
 };
 
-struct ContributionQueue {
-  string id;
-  RewardsType type;
-  double amount;
-  bool partial;
-  uint64 created_at;
-  uint64 completed_at;
-
-  array<ContributionQueuePublisher> publishers;
-};
-
-struct ContributionQueuePublisher {
-  string publisher_key;
-  double amount_percent;
-};
-
 enum PromotionType {
   UGP = 0,
   ADS = 1
@@ -304,18 +288,6 @@ struct Promotion {
   uint64 claimed_at;
   bool legacy_claimed;
   string claim_id;
-};
-
-struct UnblindedToken {
-  uint64 id;
-  string token_value;
-  string public_key;
-  double value;
-  string creds_id;
-  uint64 expires_at;
-  uint64 redeemed_at;
-  string redeem_id;
-  RewardsType redeem_type;
 };
 
 enum Platform {
@@ -364,94 +336,6 @@ struct MonthlyReportInfo {
   array<ContributionReportInfo> contributions;
 };
 
-enum CredsBatchType {
-  NONE = 0,
-  PROMOTION = 1,
-  SKU = 2
-};
-
-enum CredsBatchStatus {
-  NONE = 0,
-  BLINDED = 1,
-  CLAIMED = 2,
-  SIGNED = 3,
-  FINISHED = 4,
-  CORRUPTED = 5
-};
-
-struct CredsBatch {
-  string creds_id;
-  int32 size;
-  string creds; // JSONStringArray
-  string blinded_creds; // JSONStringArray
-  string signed_creds; // JSONStringArray
-  string public_key;
-  string batch_proof;
-  string trigger_id;
-  CredsBatchType trigger_type;
-  CredsBatchStatus status;
-};
-
-enum SKUOrderStatus {
-  NONE = 0,
-  PENDING = 1,
-  PAID = 2,
-  FULFILLED = 3,
-  CANCELED = 4
-};
-
-struct SKUOrder {
-  string order_id;
-  double total_amount;
-  string merchant_id;
-  string location;
-  SKUOrderStatus status;
-  string contribution_id;
-  uint64 created_at;
-  array<SKUOrderItem> items;
-};
-
-enum SKUOrderItemType {
-  NONE = 0,
-  SINGLE_USE = 1
-};
-
-struct SKUOrderItem {
-  string order_item_id;
-  string order_id;
-  string sku;
-  int32 quantity;
-  double price;
-  string name;
-  string description;
-  SKUOrderItemType type;
-  uint64 expires_at;
-  uint64 created_at;
-};
-
-enum SKUTransactionType {
-  NONE = 0,
-  UPHOLD = 1,
-  TOKENS = 3,
-  GEMINI = 4
-};
-
-enum SKUTransactionStatus {
-  NONE = 0,
-  CREATED = 1,
-  COMPLETED = 2
-};
-
-struct SKUTransaction {
-  string transaction_id;
-  string order_id;
-  string external_transaction_id;
-  SKUTransactionType type;
-  double amount;
-  SKUTransactionStatus status;
-  uint64 created_at;
-};
-
 struct UrlRequest {
   string url;
   UrlMethod method = UrlMethod.GET;
@@ -496,9 +380,96 @@ struct RewardsWallet {
   array<uint8> recovery_seed;
 };
 
-struct ExternalTransaction {
-  string transaction_id;
-  string contribution_id;
-  string destination;
-  string amount;
+// While the actual value of an error enumerator does not matter, we use only
+// non-zero values to ensure that `!error` in JavaScript unambiguously means
+// that the error value does not exist (as opposed to an error enumerator whose
+// integer value happens to be zero).
+const uint32 kErrorEnumStartValue = 1;
+
+struct ConnectExternalWalletValue {};
+
+enum ConnectExternalWalletError {
+  kDeviceLimitReached = kErrorEnumStartValue,
+  kFlaggedWallet,
+  kKYCRequired,
+  kMismatchedCountries,
+  kMismatchedProviderAccounts,
+  kProviderUnavailable,
+  kRegionNotSupported,
+  kRequestSignatureVerificationFailure,
+  kUnexpected,
+  kUpholdBATNotAllowed,
+  kUpholdInsufficientCapabilities,
+  kUpholdTransactionVerificationFailure
+};
+
+union ConnectExternalWalletResult {
+  ConnectExternalWalletValue value;
+  ConnectExternalWalletError error;
+};
+
+struct Balance {
+  double total;
+  map<string, double> wallets;
+};
+
+struct FetchBalanceValue {
+  Balance balance;
+};
+
+enum FetchBalanceError {
+  kAccessTokenExpired = kErrorEnumStartValue,
+  kUnexpected
+};
+
+union FetchBalanceResult {
+  FetchBalanceValue value;
+  FetchBalanceError error;
+};
+
+enum WalletStatus {
+  kNotConnected = 0,
+  kConnected = 2,
+  kLoggedOut = 4
+};
+
+struct ExternalWallet {
+  string type;
+  string token;
+  string address;
+  WalletStatus status;
+  string one_time_string;
+  string code_verifier;
+  string user_name;
+  string member_id;
+  string account_url;
+  string login_url;
+  string activity_url;
+  map<string, double> fees;
+};
+
+struct GetExternalWalletValue {
+  ExternalWallet wallet;
+};
+
+enum GetExternalWalletError {
+  kAccessTokenExpired = kErrorEnumStartValue,
+  kUnexpected
+};
+
+union GetExternalWalletResult {
+  GetExternalWalletValue value;
+  GetExternalWalletError error;
+};
+
+enum UserType {
+  kLegacyUnconnected,
+  kUnconnected,
+  kConnected
+};
+
+enum Environment {
+  STAGING = 0,
+  PRODUCTION = 1,
+  DEVELOPMENT = 2
 };

@@ -9,10 +9,7 @@ rewards_public_headers = [
   "//brave/ios/browser/api/brave_rewards/rewards_notification.h",
   "//brave/ios/browser/api/brave_rewards/rewards_observer.h",
   "$root_gen_dir/brave/ios/browser/api/brave_rewards/rewards.mojom.objc.h",
-  "$root_gen_dir/brave/ios/browser/api/brave_rewards/rewards_types.mojom.objc.h",
 ]
 
-rewards_public_deps = [
-  "//brave/ios/browser/api/brave_rewards:rewards_mojom_wrappers",
-  "//brave/ios/browser/api/brave_rewards:rewards_types_mojom_wrappers",
-]
+rewards_public_deps =
+    [ "//brave/ios/browser/api/brave_rewards:rewards_mojom_wrappers" ]

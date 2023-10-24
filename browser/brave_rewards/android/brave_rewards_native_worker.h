@@ -20,8 +20,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 namespace brave_rewards {
 class RewardsService;

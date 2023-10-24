@@ -10,5 +10,5 @@ mojom("interfaces") {
 
   public_deps = [ "//mojo/public/mojom/base" ]
 
-  deps = [ "//brave/components/brave_rewards/common/mojom:interfaces" ]
+  deps = [ "//brave/components/brave_rewards/common/mojom:engine" ]
 }

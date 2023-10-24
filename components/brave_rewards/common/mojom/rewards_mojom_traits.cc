@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/common/mojom/rewards_types_mojom_traits.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_mojom_traits.h"
 
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 namespace mojo {
 

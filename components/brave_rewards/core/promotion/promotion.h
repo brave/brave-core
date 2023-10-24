@@ -13,10 +13,10 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/timer/timer.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_promotion.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
