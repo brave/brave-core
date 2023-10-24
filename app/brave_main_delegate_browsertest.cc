@@ -119,8 +119,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     &apps::features::kDesktopPWAsLinkCapturing,
 #endif
-    &attribution_reporting::features::
-        kAttributionReportingNullAggregatableReports,
     &attribution_reporting::features::kConversionMeasurement,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
     &autofill::features::test::kAutofillServerCommunication,
