@@ -395,6 +395,7 @@ void AIChatTabHelper::CleanUp() {
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
+    obs.OnAPIRequestInProgress(false);
     obs.OnPageHasContent(/* page_contents_is_truncated */ false);
   }
 }
