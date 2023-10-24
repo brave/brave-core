@@ -45,7 +45,8 @@
     _path = paths;
     _title = base::SysUTF16ToNSString(entry.title);
     _creationTime =
-        [NSDate dateWithTimeIntervalSince1970:entry.creation_time.ToDoubleT()];
+        [NSDate dateWithTimeIntervalSince1970:entry.creation_time
+                                                  .InSecondsFSinceUnixEpoch()];
   }
   return self;
 }
@@ -57,8 +58,8 @@
   }
 
   ImportedBookmarkEntry entry;
-  entry.creation_time =
-      base::Time::FromDoubleT([self.creationTime timeIntervalSince1970]);
+  entry.creation_time = base::Time::FromSecondsSinceUnixEpoch(
+      [self.creationTime timeIntervalSince1970]);
   entry.url = net::GURLWithNSURL(self.url);
   entry.title = base::SysNSStringToUTF16(self.title);
   entry.in_toolbar = self.inToolbar;

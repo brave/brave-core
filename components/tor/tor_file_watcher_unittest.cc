@@ -93,28 +93,28 @@ TEST_F(TorFileWatcherTest, EatControlCookie) {
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlCookie(cookie, time));
   EXPECT_EQ(cookie.size(), 0u);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   // control_auth_cookie is a folder
   tor_file_watcher = std::make_unique<TorFileWatcher>(test_data_dir());
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlCookie(cookie, time));
   EXPECT_EQ(cookie.size(), 0u);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   tor_file_watcher = std::make_unique<TorFileWatcher>(
       test_data_dir().AppendASCII("empty_auth_cookies"));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlCookie(cookie, time));
   EXPECT_EQ(cookie.size(), 0u);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   tor_file_watcher = std::make_unique<TorFileWatcher>(
       test_data_dir().AppendASCII("auth_cookies_too_long"));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlCookie(cookie, time));
   EXPECT_EQ(cookie.size(), 0u);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   constexpr unsigned char expected_auth_cookie[] = {
       0x6c, 0x6e, 0x9d, 0x24, 0x78, 0xe6, 0x6d, 0x69, 0xd3, 0x2d, 0xc9,
@@ -130,7 +130,7 @@ TEST_F(TorFileWatcherTest, EatControlCookie) {
                         expected_auth_cookie_len),
             0);
   EXPECT_EQ(cookie.size(), expected_auth_cookie_len);
-  EXPECT_NE(time.ToJsTime(), 0u);
+  EXPECT_NE(time.InMillisecondsFSinceUnixEpoch(), 0u);
 }
 
 TEST_F(TorFileWatcherTest, EatControlPort) {
@@ -143,56 +143,56 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   // controlport is a folder
   tor_file_watcher = std::make_unique<TorFileWatcher>(test_data_dir());
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   tor_file_watcher = std::make_unique<TorFileWatcher>(
       test_data_dir().AppendASCII("empty_controlport"));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   tor_file_watcher = std::make_unique<TorFileWatcher>(
       test_data_dir().AppendASCII(kInvalidControlport));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   tor_file_watcher = std::make_unique<TorFileWatcher>(
       test_data_dir().AppendASCII(kValidControlportNotLocalhost));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   tor_file_watcher = std::make_unique<TorFileWatcher>(
       test_data_dir().AppendASCII(kControlportMax));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   tor_file_watcher = std::make_unique<TorFileWatcher>(
       test_data_dir().AppendASCII(kControlportTooLong));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, -1);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   tor_file_watcher = std::make_unique<TorFileWatcher>(
       test_data_dir().AppendASCII(kControlportOverflow));
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, 65536);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   port = -1;
   tor_file_watcher = std::make_unique<TorFileWatcher>(
@@ -200,7 +200,7 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   tor_file_watcher->polling_ = true;
   EXPECT_FALSE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, 0);
-  EXPECT_EQ(time.ToJsTime(), 0u);
+  EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
   port = -1;
   time = base::Time();
@@ -210,7 +210,7 @@ TEST_F(TorFileWatcherTest, EatControlPort) {
   tor_file_watcher->polling_ = true;
   EXPECT_TRUE(tor_file_watcher->EatControlPort(port, time));
   EXPECT_EQ(port, 5566);
-  EXPECT_NE(time.ToJsTime(), 0u);
+  EXPECT_NE(time.InMillisecondsFSinceUnixEpoch(), 0u);
 }
 
 }  // namespace tor

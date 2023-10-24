@@ -21,15 +21,15 @@ HistoryItemList GetUnsortedHistory() {
   HistoryItemList history;
 
   HistoryItemInfo history_item;
-  history_item.created_at = base::Time::FromDoubleT(222222222);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(222222222);
   history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(333333333);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(333333333);
   history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(111111111);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(111111111);
   history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(555555555);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(555555555);
   history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(444444444);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
   history.push_back(history_item);
 
   return history;
@@ -55,15 +55,15 @@ TEST(BraveAdsHistorySortTest, DescendingSortOrder) {
   // Assert
   HistoryItemList expected_history;
   HistoryItemInfo history_item;
-  history_item.created_at = base::Time::FromDoubleT(555555555);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(555555555);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(444444444);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(333333333);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(333333333);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(222222222);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(222222222);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(111111111);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(111111111);
   expected_history.push_back(history_item);
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
@@ -94,15 +94,15 @@ TEST(BraveAdsHistorySortTest, AscendingSortOrder) {
   // Assert
   HistoryItemList expected_history;
   HistoryItemInfo history_item;
-  history_item.created_at = base::Time::FromDoubleT(111111111);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(111111111);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(222222222);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(222222222);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(333333333);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(333333333);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(444444444);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(555555555);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(555555555);
   expected_history.push_back(history_item);
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }

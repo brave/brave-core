@@ -434,8 +434,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& history_item : history_items) {
-    const auto date = [NSDate
-        dateWithTimeIntervalSince1970:history_item.created_at.ToDoubleT()];
+    const auto date =
+        [NSDate dateWithTimeIntervalSince1970:history_item.created_at
+                                                  .InSecondsFSinceUnixEpoch()];
     [dates addObject:date];
   }
 
@@ -1641,9 +1642,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
         NSDate* nextPaymentDate = nil;
         if (!statement->next_payment_date.is_null()) {
-          nextPaymentDate =
-              [NSDate dateWithTimeIntervalSince1970:statement->next_payment_date
-                                                        .ToDoubleT()];
+          nextPaymentDate = [NSDate
+              dateWithTimeIntervalSince1970:statement->next_payment_date
+                                                .InSecondsFSinceUnixEpoch()];
         }
         completion(statement->ads_received_this_month,
                    statement->max_earnings_this_month, nextPaymentDate);

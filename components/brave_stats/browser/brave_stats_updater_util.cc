@@ -75,8 +75,9 @@ base::Time GetLastMondayTime(const base::Time& time) {
 
   int days_adjusted =
       (exploded.day_of_week == 0) ? 6 : exploded.day_of_week - 1;
-  base::Time last_monday = base::Time::FromJsTime(
-      time.ToJsTime() - (days_adjusted * base::Time::kMillisecondsPerDay));
+  base::Time last_monday = base::Time::FromMillisecondsSinceUnixEpoch(
+      time.InMillisecondsFSinceUnixEpoch() -
+      (days_adjusted * base::Time::kMillisecondsPerDay));
 
   return last_monday;
 }

@@ -146,9 +146,9 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
           chain_id, max_priority_fee_per_gas, max_fee_per_gas,
           std::move(gas_estimation_1559_ptr))),
       status_, tx_type, tx_params, tx_args,
-      base::Milliseconds(created_time_.ToJavaTime()),
-      base::Milliseconds(submitted_time_.ToJavaTime()),
-      base::Milliseconds(confirmed_time_.ToJavaTime()),
+      base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
+      base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
+      base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
       final_recepient);
 }

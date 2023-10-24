@@ -43,7 +43,7 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
   ConversionQueueItemInfo expected_conversion_queue_item;
   expected_conversion_queue_item.conversion = expected_conversion;
   expected_conversion_queue_item.process_at =
-      base::Time::FromDoubleT(1627581449);
+      base::Time::FromSecondsSinceUnixEpoch(1627581449);
   expected_conversion_queue_items.push_back(expected_conversion_queue_item);
 
   base::MockCallback<database::table::GetConversionQueueCallback> callback;
@@ -493,7 +493,7 @@ TEST_F(BraveAdsDatabaseMigrationIssue17231Test,
     expected_creative_set_conversion.observation_window =
         base::Days(observation_windows.at(i));
     expected_creative_set_conversion.expire_at =
-        base::Time::FromDoubleT(expire_ats.at(i));
+        base::Time::FromSecondsSinceUnixEpoch(expire_ats.at(i));
 
     expected_creative_set_conversions.push_back(
         expected_creative_set_conversion);

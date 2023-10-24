@@ -63,7 +63,7 @@ class BraveSyncAuthManagerTest : public testing::Test {
 
   void SetNetworkTime() {
     brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeForTest(
-        base::Time::FromJsTime(1234567));
+        base::Time::FromMillisecondsSinceUnixEpoch(1234567));
   }
 
  private:

@@ -686,7 +686,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   data.Set("payoutStatus", std::move(payout_status));
   data.Set("walletProviderRegions", std::move(wallet_provider_regions));
   if (!vbat_deadline.is_null()) {
-    data.Set("vbatDeadline", floor(vbat_deadline.ToDoubleT() *
+    data.Set("vbatDeadline", floor(vbat_deadline.InSecondsFSinceUnixEpoch() *
                                    base::Time::kMillisecondsPerSecond));
   }
   data.Set("vbatExpired", vbat_expired);
@@ -1505,7 +1505,7 @@ void RewardsDOMHandler::OnGetStatementOfAccounts(
 
   base::Value::Dict dict;
   dict.Set("adsNextPaymentDate",
-           statement->next_payment_date.ToDoubleT() * 1000);
+           statement->next_payment_date.InSecondsFSinceUnixEpoch() * 1000);
   dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
   dict.Set("adsMinEarningsThisMonth", statement->min_earnings_this_month);
   dict.Set("adsMaxEarningsThisMonth", statement->max_earnings_this_month);

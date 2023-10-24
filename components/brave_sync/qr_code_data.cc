@@ -32,11 +32,11 @@ QrCodeData::QrCodeData(const std::string& sync_code_hex,
       not_after(not_after) {}
 
 base::Time QrCodeData::FromEpochSeconds(int64_t seconds_since_epoch) {
-  return base::Time::FromJavaTime(seconds_since_epoch * 1000);
+  return base::Time::FromMillisecondsSinceUnixEpoch(seconds_since_epoch * 1000);
 }
 
 int64_t QrCodeData::ToEpochSeconds(const base::Time& time) {
-  return time.ToJavaTime() / 1000;
+  return time.InMillisecondsSinceUnixEpoch() / 1000;
 }
 
 std::unique_ptr<QrCodeData> QrCodeData::CreateWithActualDate(

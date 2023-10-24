@@ -21,15 +21,15 @@ HistoryItemList GetHistory() {
   HistoryItemList history;
 
   HistoryItemInfo history_item;
-  history_item.created_at = base::Time::FromDoubleT(333333333);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(333333333);
   history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(444444444);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
   history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(222222222);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(222222222);
   history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(666666666);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(666666666);
   history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(555555555);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(555555555);
   history.push_back(history_item);
 
   return history;
@@ -42,7 +42,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   // Arrange
   HistoryItemList history = GetHistory();
 
-  const base::Time from_time = base::Time::FromDoubleT(444444444);
+  const base::Time from_time = base::Time::FromSecondsSinceUnixEpoch(444444444);
   const base::Time to_time = DistantFuture();
 
   const DateRangeHistoryFilter filter(from_time, to_time);
@@ -53,11 +53,11 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   // Assert
   HistoryItemList expected_history;
   HistoryItemInfo history_item;
-  history_item.created_at = base::Time::FromDoubleT(444444444);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(666666666);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(666666666);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(555555555);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(555555555);
   expected_history.push_back(history_item);
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
@@ -67,7 +67,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   // Arrange
   HistoryItemList history = GetHistory();
 
-  const base::Time from_time = base::Time::FromDoubleT(777777777);
+  const base::Time from_time = base::Time::FromSecondsSinceUnixEpoch(777777777);
   const base::Time to_time = DistantFuture();
 
   const DateRangeHistoryFilter filter(from_time, to_time);
@@ -85,7 +85,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   HistoryItemList history = GetHistory();
 
   const base::Time from_time = DistantPast();
-  const base::Time to_time = base::Time::FromDoubleT(444444444);
+  const base::Time to_time = base::Time::FromSecondsSinceUnixEpoch(444444444);
 
   const DateRangeHistoryFilter filter(from_time, to_time);
 
@@ -95,11 +95,11 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   // Assert
   HistoryItemList expected_history;
   HistoryItemInfo history_item;
-  history_item.created_at = base::Time::FromDoubleT(333333333);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(333333333);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(444444444);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(222222222);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(222222222);
   expected_history.push_back(history_item);
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
@@ -110,7 +110,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   HistoryItemList history = GetHistory();
 
   const base::Time from_time = DistantPast();
-  const base::Time to_time = base::Time::FromDoubleT(111111111);
+  const base::Time to_time = base::Time::FromSecondsSinceUnixEpoch(111111111);
 
   const DateRangeHistoryFilter filter(from_time, to_time);
 
@@ -137,15 +137,15 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   // Assert
   HistoryItemList expected_history;
   HistoryItemInfo history_item;
-  history_item.created_at = base::Time::FromDoubleT(333333333);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(333333333);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(444444444);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(222222222);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(222222222);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(666666666);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(666666666);
   expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromDoubleT(555555555);
+  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(555555555);
   expected_history.push_back(history_item);
   EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
 }
@@ -171,7 +171,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   // Arrange
   HistoryItemList history;
 
-  const base::Time from_time = base::Time::FromDoubleT(444444444);
+  const base::Time from_time = base::Time::FromSecondsSinceUnixEpoch(444444444);
   const base::Time to_time = DistantFuture();
 
   const DateRangeHistoryFilter filter(from_time, to_time);
