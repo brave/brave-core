@@ -23,7 +23,7 @@ namespace webtorrent {
 // Determines whether a request should be redirected to a torrent file. This
 // will occur if the following conditions are met:
 // 1. The request succeeded
-// 2. The request is
+// 2. The request is in the Main frame
 // 3. WebTorrent is enabled
 // 4. The request is for a torrent file / or the WebTorrent extension initiated
 // the request.
