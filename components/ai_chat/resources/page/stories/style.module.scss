@@ -4,8 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .container {
-  width: 700px;
-  height: 800px;
+  // 100% width won't always grow
+  width: calc(100vw - 30px);
+  height: 95vh;
   border: 1px solid var(--leo-color-divider-subtle);
   font-family: Poppins, sans-serif;
   font-size: 14px;
