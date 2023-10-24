@@ -196,6 +196,12 @@ void AIChatTabHelper::InitEngine() {
         credential_manager_.get());
   }
 
+  // Pending requests have been deleted along with the model engine
+  is_request_in_progress_ = false;
+  for (auto& obs : observers_) {
+    obs.OnAPIRequestInProgress(false);
+  }
+
   // When the model changes, the content truncation might be different,
   // and the UI needs to know.
   if (HasPageContent() == PageContentAssociation::HAS_CONTENT) {
