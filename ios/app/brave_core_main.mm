@@ -356,15 +356,8 @@ static bool CustomLogHandler(int severity,
 
 - (BraveHistoryAPI*)historyAPI {
   if (!_historyAPI) {
-    history::HistoryService* history_service_ =
-        ios::HistoryServiceFactory::GetForBrowserState(
-            _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS);
-    history::WebHistoryService* web_history_service_ =
-        ios::WebHistoryServiceFactory::GetForBrowserState(_mainBrowserState);
-
     _historyAPI =
-        [[BraveHistoryAPI alloc] initWithHistoryService:history_service_
-                                      webHistoryService:web_history_service_];
+        [[BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
   }
   return _historyAPI;
 }
