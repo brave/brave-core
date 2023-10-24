@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/net/brave_torrent_redirect_network_delegate_helper.h"
 
@@ -88,9 +88,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader("Content-Type", kBittorrentMimeType);
-  std::string mimeType;
-  ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, kBittorrentMimeType);
+  std::string mime_type;
+  ASSERT_TRUE(orig_response_headers->GetMimeType(&mime_type));
+  ASSERT_EQ(mime_type, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
       new net::HttpResponseHeaders(std::string());
@@ -98,18 +98,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(),
-            "HTTP/1.1 307 Temporary Redirect");
-  std::string location;
-  EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                          &location));
-  EXPECT_EQ(location, torrent_extension_url().spec());
-  EXPECT_EQ(allowed_unsafe_redirect_url.spec(), torrent_extension_url().spec());
-  EXPECT_EQ(rc, net::OK);
+  auto will_redirect = webtorrent::ShouldRedirectRequest(
+      orig_response_headers.get(), request_info);
+  EXPECT_TRUE(will_redirect);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -127,18 +118,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(),
-            "HTTP/1.1 307 Temporary Redirect");
-  std::string location;
-  EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                          &location));
-  EXPECT_EQ(location, torrent_extension_url().spec());
-  EXPECT_EQ(allowed_unsafe_redirect_url.spec(), torrent_extension_url().spec());
-  EXPECT_EQ(rc, net::OK);
+  auto will_redirect = webtorrent::ShouldRedirectRequest(
+      orig_response_headers.get(), request_info);
+  EXPECT_TRUE(will_redirect);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -162,19 +144,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(),
-            "HTTP/1.1 307 Temporary Redirect");
-  std::string location;
-  EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                          &location));
-  EXPECT_EQ(location, non_torrent_extension_url().spec());
-  EXPECT_EQ(allowed_unsafe_redirect_url.spec(),
-            non_torrent_extension_url().spec());
-  EXPECT_EQ(rc, net::OK);
+  auto will_redirect = webtorrent::ShouldRedirectRequest(
+      orig_response_headers.get(), request_info);
+  EXPECT_TRUE(will_redirect);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -182,9 +154,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader("Content-Type", kOctetStreamMimeType);
-  std::string mimeType;
-  ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, kOctetStreamMimeType);
+  std::string mime_type;
+  ASSERT_TRUE(orig_response_headers->GetMimeType(&mime_type));
+  ASSERT_EQ(mime_type, kOctetStreamMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
       new net::HttpResponseHeaders(std::string());
@@ -193,25 +165,17 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
-  std::string location;
-  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                           &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_FALSE(webtorrent::ShouldRedirectRequest(orig_response_headers.get(),
+                                                 request_info));
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader("Content-Type", "text/html");
-  std::string mimeType;
-  ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, "text/html");
+  std::string mime_type;
+  ASSERT_TRUE(orig_response_headers->GetMimeType(&mime_type));
+  ASSERT_EQ(mime_type, "text/html");
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
       new net::HttpResponseHeaders(std::string());
@@ -219,16 +183,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
-  std::string location;
-  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                           &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_FALSE(webtorrent::ShouldRedirectRequest(orig_response_headers.get(),
+                                                 request_info));
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -236,9 +192,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader("Content-Type", kBittorrentMimeType);
-  std::string mimeType;
-  ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, kBittorrentMimeType);
+  std::string mime_type;
+  ASSERT_TRUE(orig_response_headers->GetMimeType(&mime_type));
+  ASSERT_EQ(mime_type, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
       new net::HttpResponseHeaders(std::string());
@@ -247,16 +203,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   request_info->initiator_url = torrent_extension_url();
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
-  std::string location;
-  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                           &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_FALSE(webtorrent::ShouldRedirectRequest(orig_response_headers.get(),
+                                                 request_info));
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -264,9 +212,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader("Content-Type", kBittorrentMimeType);
-  std::string mimeType;
-  ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, kBittorrentMimeType);
+  std::string mime_type;
+  ASSERT_TRUE(orig_response_headers->GetMimeType(&mime_type));
+  ASSERT_EQ(mime_type, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
       new net::HttpResponseHeaders(std::string());
@@ -276,19 +224,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   request_info->initiator_url = torrent_extension_url();
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
-  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(),
-            "HTTP/1.1 307 Temporary Redirect");
-  std::string location;
-  EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                          &location));
-  EXPECT_EQ(location, torrent_viewer_extension_url().spec());
-  EXPECT_EQ(allowed_unsafe_redirect_url.spec(),
-            torrent_viewer_extension_url().spec());
-  EXPECT_EQ(rc, net::OK);
+  auto will_redirect = webtorrent::ShouldRedirectRequest(
+      orig_response_headers.get(), request_info);
+  EXPECT_TRUE(will_redirect);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -296,9 +234,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
       new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader("Content-Type", kBittorrentMimeType);
-  std::string mimeType;
-  ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, kBittorrentMimeType);
+  std::string mime_type;
+  ASSERT_TRUE(orig_response_headers->GetMimeType(&mime_type));
+  ASSERT_EQ(mime_type, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
       new net::HttpResponseHeaders(std::string());
@@ -306,26 +244,6 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = blink::mojom::ResourceType::kXhr;
 
-  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
-  std::string location;
-  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                           &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
-  EXPECT_EQ(rc, net::OK);
-
-  request_info->resource_type = blink::mojom::ResourceType::kSubFrame;
-
-  rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
-  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                           &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_FALSE(webtorrent::ShouldRedirectRequest(orig_response_headers.get(),
+                                                 request_info));
 }
