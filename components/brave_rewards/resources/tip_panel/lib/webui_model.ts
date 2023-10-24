@@ -9,8 +9,7 @@ import { createStateManager } from '../../shared/lib/state_manager'
 import { ExternalWalletProvider, externalWalletProviderFromString } from '../../shared/lib/external_wallet'
 import { optional } from '../../shared/lib/optional'
 
-import { WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m'
-import { PublisherStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m'
+import { PublisherStatus, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m'
 
 export function createModel (): Model {
   const stateManager = createStateManager<ModelState>(defaultState())

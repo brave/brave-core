@@ -6,8 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_API_API_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_API_API_H_
 
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/api/api_parameters.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {

@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_MOJOM_REWARDS_TYPES_MOJOM_TRAITS_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_MOJOM_REWARDS_TYPES_MOJOM_TRAITS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_MOJOM_REWARDS_MOJOM_TRAITS_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_MOJOM_REWARDS_MOJOM_TRAITS_H_
 
 #include "base/types/expected.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom-forward.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom-shared.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom-shared.h"
 #include "mojo/public/cpp/bindings/union_traits.h"
 
 namespace mojo {
@@ -88,4 +88,4 @@ struct UnionTraits<
 
 }  // namespace mojo
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_MOJOM_REWARDS_TYPES_MOJOM_TRAITS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_MOJOM_REWARDS_MOJOM_TRAITS_H_

@@ -10,7 +10,6 @@
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_balance/post_balance_gemini.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_oauth/post_oauth_gemini.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
 class RewardsEngineImpl;

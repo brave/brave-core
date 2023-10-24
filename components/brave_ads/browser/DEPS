@@ -1,6 +1,5 @@
 
 include_rules = [
-  "+brave/components/brave_rewards/core/mojom_structs.h",
   "+brave/components/constants",
   "+content/public/browser",
   "+services/network/public",

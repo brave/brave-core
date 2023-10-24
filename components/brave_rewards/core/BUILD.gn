@@ -75,7 +75,6 @@ source_set("headers") {
 
   sources = [
     "global_constants.h",
-    "mojom_structs.h",
     "rewards_callbacks.h",
     "rewards_database.cc",
     "rewards_database.h",
@@ -85,9 +84,8 @@ source_set("headers") {
 
   public_deps = [
     ":buildflags",
-    "//brave/components/brave_rewards/common/mojom:interfaces",
-    "//brave/components/brave_rewards/common/mojom:rewards_interfaces",
-    "//brave/components/brave_rewards/common/mojom:rewards_types",
+    "//brave/components/brave_rewards/common/mojom",
+    "//brave/components/brave_rewards/common/mojom:engine",
   ]
 }
 
@@ -561,6 +559,7 @@ static_library("engine") {
     ":publishers_proto",
     "//base",
     "//brave/components/brave_private_cdn",
+    "//brave/components/brave_rewards/common/mojom:core",
     "//brave/third_party/bip39wally-core-native:bip39wally-core",
     "//brave/third_party/challenge_bypass_ristretto_ffi:rust_lib",
     "//brave/third_party/rapidjson",

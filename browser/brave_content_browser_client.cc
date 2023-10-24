@@ -224,7 +224,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/tip_panel.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_tip_panel.mojom.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"

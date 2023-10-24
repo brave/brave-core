@@ -869,6 +869,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_rewards/common/buildflags:buildflags",
+    "//brave/components/brave_rewards/common/mojom:core",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:publishers_proto",
     "//brave/components/brave_search/browser",

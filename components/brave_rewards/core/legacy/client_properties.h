@@ -11,8 +11,8 @@
 #include <string>
 
 #include "base/values.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/legacy/wallet_info_properties.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace brave_rewards::internal {
 

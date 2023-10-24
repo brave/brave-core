@@ -12,8 +12,8 @@
 
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"

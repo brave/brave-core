@@ -9,8 +9,9 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/common/request_util.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
