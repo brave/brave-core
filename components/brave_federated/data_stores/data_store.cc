@@ -56,7 +56,7 @@ void BindCovariateToStatement(
   stmt->BindInt(1, static_cast<int>(covariate.type));
   stmt->BindInt(2, static_cast<int>(covariate.data_type));
   stmt->BindString(3, covariate.value);
-  stmt->BindDouble(4, created_at.ToDoubleT());
+  stmt->BindDouble(4, created_at.InSecondsFSinceUnixEpoch());
 }
 
 }  // namespace
@@ -175,7 +175,8 @@ void DataStore::PurgeTrainingDataAfterExpirationDate() {
           .c_str()));
   base::Time expiration_threshold =
       base::Time::Now() - data_store_task_.max_retention_days;
-  delete_statement.BindDouble(0, expiration_threshold.ToDoubleT());
+  delete_statement.BindDouble(0,
+                              expiration_threshold.InSecondsFSinceUnixEpoch());
   delete_statement.BindInt(1, data_store_task_.max_number_of_records);
   delete_statement.Run();
 }

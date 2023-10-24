@@ -727,11 +727,12 @@ void BraveVpnService::RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
     return;
   }
   base::Time session_start_time =
-      base::Time::FromJsTime(static_cast<double>(session_start_time_ms))
+      base::Time::FromMillisecondsSinceUnixEpoch(
+          static_cast<double>(session_start_time_ms))
           .LocalMidnight();
-  base::Time session_end_time =
-      base::Time::FromJsTime(static_cast<double>(session_end_time_ms))
-          .LocalMidnight();
+  base::Time session_end_time = base::Time::FromMillisecondsSinceUnixEpoch(
+                                    static_cast<double>(session_end_time_ms))
+                                    .LocalMidnight();
   for (base::Time day = session_start_time; day <= session_end_time;
        day += base::Days(1)) {
     bool is_last_day = day == session_end_time;

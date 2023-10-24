@@ -261,8 +261,8 @@ void ChromeImporter::ImportHistory() {
 
     ImporterURLRow row(url);
     row.title = s.ColumnString16(1);
-    row.last_visit =
-        base::Time::FromDoubleT(chromeTimeToDouble((s.ColumnInt64(2))));
+    row.last_visit = base::Time::FromSecondsSinceUnixEpoch(
+        chromeTimeToDouble((s.ColumnInt64(2))));
     row.hidden = false;
     row.typed_count = s.ColumnInt(3);
     row.visit_count = s.ColumnInt(4);
@@ -423,7 +423,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
           entry.url = GURL();
           entry.path = parent_path;
           entry.title = name;
-          entry.creation_time = base::Time::FromDoubleT(
+          entry.creation_time = base::Time::FromSecondsSinceUnixEpoch(
               chromeTimeToDouble(std::stoll(*date_added)));
           bookmarks->push_back(entry);
         }
@@ -437,7 +437,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
         entry.url = GURL(*url);
         entry.path = parent_path;
         entry.title = name;
-        entry.creation_time = base::Time::FromDoubleT(
+        entry.creation_time = base::Time::FromSecondsSinceUnixEpoch(
             chromeTimeToDouble(std::stoll(*date_added)));
         bookmarks->push_back(entry);
       }

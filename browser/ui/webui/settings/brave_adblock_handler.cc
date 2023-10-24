@@ -265,9 +265,10 @@ base::Value::List BraveAdBlockHandler::GetSubscriptions() {
     dict.Set("subscription_url", subscription.subscription_url.spec());
     dict.Set("enabled", subscription.enabled);
     dict.Set("last_update_attempt",
-             subscription.last_update_attempt.ToJsTime());
+             subscription.last_update_attempt.InMillisecondsFSinceUnixEpoch());
     dict.Set("last_successful_update_attempt",
-             subscription.last_successful_update_attempt.ToJsTime());
+             subscription.last_successful_update_attempt
+                 .InMillisecondsFSinceUnixEpoch());
     dict.Set("last_updated_pretty_text", time_str);
     if (subscription.homepage) {
       dict.Set("homepage", *subscription.homepage);

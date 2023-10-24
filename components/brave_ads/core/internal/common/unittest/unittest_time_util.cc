@@ -45,7 +45,7 @@ base::Time DistantFuture() {
   // Chrome timestamps are 64-bit and will not overflow at 03:14:08 UTC on 19
   // January 2038. However, I only like to think about so far into the future
   // because it comes soon enough.
-  return base::Time::FromDoubleT(
+  return base::Time::FromSecondsSinceUnixEpoch(
       /*Tuesday, 19 January 2038 03:14:07=*/2147483647);
 }
 

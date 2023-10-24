@@ -377,7 +377,7 @@ base::Value::List PermissionRequestResponseToValue(
   caveats_list.Append(std::move(caveats_obj2));
   dict.Set("caveats", std::move(caveats_list));
 
-  dict.Set("date", base::Time::Now().ToJsTime());
+  dict.Set("date", base::Time::Now().InMillisecondsFSinceUnixEpoch());
   dict.Set("invoker", origin.Serialize());
   dict.Set("parentCapability", "eth_accounts");
   container_list.Append(std::move(dict));

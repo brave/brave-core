@@ -116,7 +116,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   ASSERT_TRUE(ParseAssetPriceHistory(ParseJson(json), &values));
   ASSERT_EQ(values.size(), 2UL);
   EXPECT_EQ(values[0]->price, "0.8201346624954003");
-  base::Time date = base::Time::FromJsTime(values[0]->date.InMilliseconds());
+  base::Time date = base::Time::FromMillisecondsSinceUnixEpoch(
+      values[0]->date.InMilliseconds());
   base::Time::Exploded exploded_time;
   date.UTCExplode(&exploded_time);
   EXPECT_EQ(exploded_time.year, 2021);
@@ -124,7 +125,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   EXPECT_EQ(exploded_time.day_of_month, 3);
 
   EXPECT_EQ(values[1]->price, "0.8096978545029869");
-  base::Time date1 = base::Time::FromJsTime(values[1]->date.InMilliseconds());
+  base::Time date1 = base::Time::FromMillisecondsSinceUnixEpoch(
+      values[1]->date.InMilliseconds());
   date1.UTCExplode(&exploded_time);
   EXPECT_EQ(exploded_time.year, 2021);
   EXPECT_EQ(exploded_time.month, 6);
