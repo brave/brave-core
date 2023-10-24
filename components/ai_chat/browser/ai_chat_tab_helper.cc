@@ -196,7 +196,11 @@ void AIChatTabHelper::InitEngine() {
         credential_manager_.get());
   }
 
-  OnPageHasContentChanged(IsPageContentsTruncated());
+  // When the model changes, the content truncation might be different,
+  // and the UI needs to know.
+  if (HasPageContent() == PageContentAssociation::HAS_CONTENT) {
+    OnPageHasContentChanged(IsPageContentsTruncated());
+  }
 }
 
 bool AIChatTabHelper::HasUserOptedIn() {
@@ -281,6 +285,8 @@ void AIChatTabHelper::MaybeGeneratePageText() {
   const GURL url = web_contents()->GetLastCommittedURL();
 
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
+    // Final decision, convey to observers
+    OnPageHasContentChanged(false);
     return;
   }
 
@@ -314,6 +320,8 @@ void AIChatTabHelper::MaybeGeneratePageText() {
 
   if (!should_page_content_be_disconnected_) {
     is_page_text_fetch_in_progress_ = true;
+    // Update fetching status
+    OnPageHasContentChanged(false);
     FetchPageContent(
         web_contents(),
         base::BindOnce(&AIChatTabHelper::OnTabContentRetrieved,
@@ -351,6 +359,7 @@ void AIChatTabHelper::OnTabContentRetrieved(int64_t for_navigation_id,
   article_text_ = contents_text;
   engine_->SanitizeInput(article_text_);
 
+  // Update completion status
   OnPageHasContentChanged(IsPageContentsTruncated());
 
   // Now that we have article text, we can suggest to summarize it
@@ -400,8 +409,14 @@ std::vector<std::string> AIChatTabHelper::GetSuggestedQuestions(
   return suggested_questions_;
 }
 
-bool AIChatTabHelper::HasPageContent() {
-  return !article_text_.empty();
+PageContentAssociation AIChatTabHelper::HasPageContent() {
+  if (is_page_text_fetch_in_progress_) {
+    return PageContentAssociation::FETCHING_CONTENT;
+  }
+  if (article_text_.empty()) {
+    return PageContentAssociation::NO_CONTENT;
+  }
+  return PageContentAssociation::HAS_CONTENT;
 }
 
 void AIChatTabHelper::DisconnectPageContents() {
