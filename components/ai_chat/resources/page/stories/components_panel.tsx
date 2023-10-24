@@ -117,7 +117,7 @@ export default {
       const [canGenerateQuestions] = React.useState(false)
       const userAutoGeneratePref: mojom.AutoGenerateQuestionsPref = mojom.AutoGenerateQuestionsPref[options.args.suggestedQuestionsPref]
       const [favIconUrl] = React.useState<string>()
-      const [hasAcceptedAgreement] = React.useState(options.args.hasAcceptedAgreement)
+      const hasAcceptedAgreement = options.args.hasAcceptedAgreement
 
       const siteInfo = options.args.hasSiteInfo ? SITE_INFO : null
       const suggestedQuestions = options.args.hasSuggestedQuestions
