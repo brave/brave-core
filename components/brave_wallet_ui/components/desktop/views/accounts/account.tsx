@@ -411,8 +411,6 @@ export const Account = () => {
                   onSelectAsset={() => onSelectAsset(nft)}
                   isTokenHidden={false}
                   isTokenSpam={false}
-                  accounts={accounts}
-                  networks={networkList}
                 />
               )}
             </NftGrid>

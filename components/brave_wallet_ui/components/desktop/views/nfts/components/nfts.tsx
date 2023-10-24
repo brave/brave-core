@@ -328,8 +328,6 @@ export const Nfts = (props: Props) => {
         <NFTGridViewItem
           key={assetId}
           token={nft}
-          accounts={accounts}
-          networks={networks}
           onSelectAsset={() => onSelectAsset(nft)}
           isTokenHidden={hiddenNftsIds.includes(assetId) || allSpamNftsIds.includes(assetId)}
           isTokenSpam={allSpamNftsIds.includes(assetId)}

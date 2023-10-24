@@ -279,8 +279,6 @@ export const _NFTGridViewItem = () => {
         isTokenSpam={false}
         token={mockErc721Token}
         onSelectAsset={() => {}}
-        networks={[]}
-        accounts={[]}
       />
     </WalletPageStory>
   )
