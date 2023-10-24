@@ -140,7 +140,7 @@ function Main() {
                 secondaryActionButton={
                   <Button
                     kind='plain-faint'
-                    onClick={() => context.dismissPremiumPrompt()}
+                    onClick={() => context.switchToDefaultModel()}
                   >
                     {getLocale('switchToDefaultModelButtonLabel')}
                   </Button>
