@@ -36,6 +36,12 @@ namespace ai_chat {
 
 class AIChatMetrics;
 
+enum PageContentAssociation {
+  HAS_CONTENT,
+  NO_CONTENT,
+  FETCHING_CONTENT,
+};
+
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper>,
@@ -84,7 +90,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::vector<std::string> GetSuggestedQuestions(
       bool& can_generate,
       mojom::AutoGenerateQuestionsPref& auto_generate);
-  bool HasPageContent();
+  PageContentAssociation HasPageContent();
   void DisconnectPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();

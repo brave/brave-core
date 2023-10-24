@@ -86,11 +86,21 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.generateQuestions()
   }
 
+  const handleSiteInfo = (isFetching: boolean, siteInfo: mojom.SiteInfo | null) => {
+    // null siteInfo for no content
+    // true isFetching for unknown yet
+    if (!isFetching) {
+      setSiteInfo(siteInfo)
+    } else {
+      setSiteInfo(undefined)
+    }
+  }
+
   const getSiteInfo = () => {
     getPageHandlerInstance()
       .pageHandler.getSiteInfo()
-      .then(({ siteInfo }) => {
-        setSiteInfo(siteInfo)
+      .then(({ isFetching, siteInfo }) => {
+        handleSiteInfo(isFetching, siteInfo)
       })
   }
 
@@ -228,7 +238,9 @@ function DataContextProvider (props: DataContextProviderProps) {
       }
     )
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
-    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: mojom.SiteInfo) => setSiteInfo(siteInfo))
+    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener(
+      handleSiteInfo
+    )
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
 
     // Since there is no server-side event for premium status changing,
