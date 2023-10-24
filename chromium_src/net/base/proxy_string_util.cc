@@ -68,6 +68,12 @@ std::string GetProxyServerAuthString(const ProxyServer& proxy_server) {
 
 }  // namespace
 
+// Declaring this function prototype is necessary, as the function is referenced
+// in the translation unit before its declaration, which breaks the substitution
+// below without this definition.
+std::string ProxyServerToPacResultElement_ChromiumImpl(
+    const ProxyServer& proxy_server);
+
 }  // namespace net
 
 #define ProxyServerToProxyUri ProxyServerToProxyUri_ChromiumImpl
