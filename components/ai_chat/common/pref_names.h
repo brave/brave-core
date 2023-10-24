@@ -26,6 +26,7 @@ constexpr char kBraveChatPremiumCredentialCache[] =
     "brave.ai_chat.premium_credential_cache";
 constexpr char kUserDismissedPremiumPrompt[] =
     "brave.ai_chat.user_dismissed_premium_prompt";
+constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 

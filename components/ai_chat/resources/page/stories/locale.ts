@@ -65,6 +65,9 @@ provideStrings({
   clearChatButtonLabel: 'Clear chat',
   errorContextLimitReaching: 'This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it',
   gotItButtonLabel: 'Got it',
+  braveLeoChatDefaultSubtitle: 'General purpose chat',
+  braveLeoChatLeoExpandedSubtitle: 'Advanced and accurate chat',
+  braveLeoChatClaudeInstantSubtitle: 'Strength in creative tasks',
   pageContentTooLongWarning: 'The page you\'re trying to summarize is too long. Some context could be missing from the conversation.',
   errorConversationEnd: 'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.'
 })

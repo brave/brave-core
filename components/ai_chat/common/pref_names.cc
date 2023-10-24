@@ -14,6 +14,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBraveChatAutoGenerateQuestions, false);
   registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
   registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
+  registry->RegisterStringPref(kDefaultModelKey, "chat-default");
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
