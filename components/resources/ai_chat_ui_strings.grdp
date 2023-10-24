@@ -15,11 +15,14 @@
   <message name="IDS_CHAT_UI_ABOUT_TITLE" desc="A concise title that summarizes the purpose of AIChat">
     About Leo
   </message>
-   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="An outlining the functioning of AIChat">
-    The AI Chat feature provides summaries of the web page you are browsing and includes a chat interface that allows you to submit questions and receive responses about the content of that page.  The accuracy of summaries is not guaranteed and may include inaccurate, misleading and false information. You should not submit sensitive or private information and should exercise caution with any text related to health, finance or personal safety and similar cases.
+   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="Outlining the functioning of AIChat (paragraph 1 of 3)">
+    Brave Leo is an AI smart assistant that can summarize web pages, transcribe videos, and answer questions. Brave Leo Premium uses advanced <ph name="LINK_BEFORE">$1</ph>AI models<ph name="LINK_AFTER">$2</ph> for even more nuanced replies, and gives early access to new features.
   </message>
-  <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_2" desc="An outlining the functioning of AIChat (cont)">
-    Brave's AI Chat uses a self-hosted <ph name="LINK_BEFORE">$1</ph>large language model<ph name="LINK_AFTER">$2</ph>  The AI Chat feature does not collect nor otherwise process identifiers such as an IP Address that can be linked to you.  No personal data is retained by the AI model.
+  <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_2" desc="Outlining the functioning of AIChat (paragraph 2 of 3)">
+    The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar.
+  </message>
+  <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_3" desc="Outlining the functioning of AIChat (paragraph 3 of 3)">
+    The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar.
   </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Enter a prompt here
