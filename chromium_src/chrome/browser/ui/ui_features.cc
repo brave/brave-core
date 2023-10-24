@@ -12,11 +12,12 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kChromeLabs, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kExtensionsMenuInAppMenu, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
     {kHaTSWebUI, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+    {kPowerBookmarksSidePanel, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kExtensionsMenuInAppMenu, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features
