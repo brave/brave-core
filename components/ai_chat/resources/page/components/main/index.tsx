@@ -121,7 +121,7 @@ function Main() {
         {siteTitleElement && (
           <div className={styles.siteTitleBox}>{siteTitleElement}</div>
         )}
-        {context.hasChangedModel && <ModelIntro />}
+        {context.showModelIntro && <ModelIntro />}
         {conversationListElement}
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>

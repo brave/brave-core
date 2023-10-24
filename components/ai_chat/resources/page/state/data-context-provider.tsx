@@ -31,7 +31,10 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [isGenerating, setIsGenerating] = React.useState(false)
   const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
   const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<mojom.AutoGenerateQuestionsPref>()
-  const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null>(null)
+  // undefined for nothing received yet
+  // null for no site info
+  // mojom.SiteInfo for valid site info
+  const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null | undefined>(undefined)
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
@@ -51,6 +54,10 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const apiHasError = (currentError !== mojom.APIError.None)
   const shouldDisableUserInput = apiHasError || isGenerating
+
+  // Wait to show model intro until we've received SiteInfo information
+  // (valid or null) to avoid flash of content.
+  const showModelIntro = hasChangedModel || siteInfo === null
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -233,13 +240,13 @@ function DataContextProvider (props: DataContextProviderProps) {
   const store: AIChatContext = {
     allModels,
     currentModel,
-    hasChangedModel,
+    showModelIntro,
     conversationHistory,
     isGenerating,
     suggestedQuestions,
     canGenerateQuestions,
     userAutoGeneratePref,
-    siteInfo,
+    siteInfo: siteInfo || null,
     favIconUrl,
     currentError,
     hasAcceptedAgreement,
