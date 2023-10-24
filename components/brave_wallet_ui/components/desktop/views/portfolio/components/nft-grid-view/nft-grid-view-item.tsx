@@ -19,7 +19,6 @@ import {
   useRemoveUserTokenMutation, //
   useUpdateNftSpamStatusMutation
 } from '../../../../../../common/slices/api.slice'
-import useBalancesFetcher from '../../../../../../common/hooks/use-balances-fetcher'
 
 // actions
 import { WalletActions } from '../../../../../../common/actions'
@@ -31,8 +30,6 @@ import { WalletSelectors } from '../../../../../../common/selectors'
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
 import { getLocale } from '../../../../../../../common/locale'
-import Amount from '../../../../../../utils/amount'
-import { getBalance } from '../../../../../../utils/balance-utils'
 
 // components
 import { DecoratedNftIcon } from '../../../../../shared/nft-icon/decorated-nft-icon'
@@ -56,15 +53,13 @@ import { Row } from '../../../../../shared/style'
 
 interface Props {
   token: BraveWallet.BlockchainToken
-  accounts: BraveWallet.AccountInfo[]
-  networks: BraveWallet.NetworkInfo[]
   isTokenHidden: boolean
   isTokenSpam: boolean
   onSelectAsset: () => void
 }
 
 export const NFTGridViewItem = (props: Props) => {
-  const { token, accounts, networks, isTokenHidden, isTokenSpam, onSelectAsset } = props
+  const { token, isTokenHidden, isTokenSpam, onSelectAsset } = props
   const tokenImageURL = stripERC20TokenImageURL(token.logo)
   const [showRemoveNftModal, setShowRemoveNftModal] = React.useState<boolean>(false)
 
@@ -79,12 +74,6 @@ export const NFTGridViewItem = (props: Props) => {
   const { data: remoteImage } = useGetIpfsGatewayTranslatedNftUrlQuery(
     tokenImageURL || skipToken
   )
-  const {
-    data: tokenBalancesRegistry
-  } = useBalancesFetcher({
-    accounts,
-    networks
-  })
 
   // hooks
   const dispatch = useDispatch()
@@ -93,17 +82,6 @@ export const NFTGridViewItem = (props: Props) => {
   // mutations
   const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()
   const [removeUserToken] = useRemoveUserTokenMutation()
-
-  // memos
-  const account = React.useMemo(() => {
-    return accounts.find(
-      (account) =>
-        token.coin === account.accountId.coin &&
-        new Amount(
-          getBalance(account.accountId, token, tokenBalancesRegistry)
-        ).gte('1')
-    )
-  }, [accounts, token, tokenBalancesRegistry])
 
   // methods
   const onToggleShowMore = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -180,7 +158,6 @@ export const NFTGridViewItem = (props: Props) => {
             chainId={token?.chainId}
             coinType={token?.coin}
             hideNetworkIcon={!showNetworkLogoOnNfts}
-            account={account}
           />
         </IconWrapper>
 
