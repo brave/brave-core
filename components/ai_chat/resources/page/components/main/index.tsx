@@ -53,6 +53,7 @@ function Main() {
     !context.isPremiumStatusFetching && // Avoid flash of content
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
     !shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
+    !apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
     context.canShowPremiumPrompt &&
     !siteInfo &&
     !context.isPremiumUser
