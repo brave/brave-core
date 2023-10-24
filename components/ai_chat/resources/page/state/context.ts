@@ -31,6 +31,7 @@ export interface AIChatContext {
   switchToDefaultModel: () => void,
   generateSuggestedQuestions: () => void
   setUserAllowsAutoGenerating: (value: boolean) => void
+  goPremium: () => void
   handleAgreeClick: () => void
   dismissPremiumPrompt: () => void
   getCanShowPremiumPrompt: () => void
@@ -63,6 +64,7 @@ export const defaultContext: AIChatContext = {
   switchToDefaultModel: () => {},
   generateSuggestedQuestions: () => {},
   setUserAllowsAutoGenerating: () => {},
+  goPremium: () => {},
   handleAgreeClick: () => {},
   dismissPremiumPrompt: () => {},
   getCanShowPremiumPrompt: () => {},
