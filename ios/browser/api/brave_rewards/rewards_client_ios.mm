@@ -6,7 +6,6 @@
 #import "rewards_client_ios.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_database.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_types.mojom.h"
 #import "rewards_client_bridge.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

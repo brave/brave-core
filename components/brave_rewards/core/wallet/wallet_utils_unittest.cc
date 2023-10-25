@@ -6,8 +6,8 @@
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"

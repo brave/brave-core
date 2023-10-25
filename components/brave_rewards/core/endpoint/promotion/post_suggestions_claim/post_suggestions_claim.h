@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 

@@ -10,7 +10,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 // GET https://bitflyer.com/api/link/v1/account/inventory
 //

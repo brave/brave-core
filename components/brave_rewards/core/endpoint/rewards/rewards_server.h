@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_REWARDS_REWARDS_SERVER_H_
 
 #include "brave/components/brave_rewards/core/endpoint/rewards/get_prefix_list/get_prefix_list.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
 class RewardsEngineImpl;

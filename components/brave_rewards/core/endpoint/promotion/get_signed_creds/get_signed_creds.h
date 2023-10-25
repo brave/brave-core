@@ -9,7 +9,8 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 
 // GET /v1/promotions/{promotion_id}/claims/{claim_id}
 //

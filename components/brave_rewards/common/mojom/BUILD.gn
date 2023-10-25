@@ -6,33 +6,14 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("mojom") {
-  sources = [
-    "rewards_panel.mojom",
-    "tip_panel.mojom",
-  ]
-
-  deps = [
-    ":rewards_interfaces",
-    ":rewards_types",
-  ]
-
-  public_deps = [ "//mojo/public/mojom/base" ]
-}
-
-mojom("rewards_interfaces") {
   generate_java = true
+
   sources = [
     "rewards.mojom",
     "rewards_database.mojom",
-    "rewards_endpoints.mojom",
   ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
-}
-
-mojom("rewards_types") {
-  generate_java = true
-  sources = [ "rewards_types.mojom" ]
 
   cpp_typemaps = [
     {
@@ -54,19 +35,35 @@ mojom("rewards_types") {
         },
       ]
 
-      traits_headers = [ "rewards_types_mojom_traits.h" ]
-      traits_sources = [ "rewards_types_mojom_traits.cc" ]
+      traits_headers = [ "rewards_mojom_traits.h" ]
+      traits_sources = [ "rewards_mojom_traits.cc" ]
     },
   ]
 }
 
-mojom("interfaces") {
+mojom("engine") {
   sources = [ "rewards_engine.mojom" ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 
-  deps = [
-    "//brave/components/brave_rewards/common/mojom:rewards_interfaces",
-    "//brave/components/brave_rewards/common/mojom:rewards_types",
+  deps = [ ":mojom" ]
+}
+
+mojom("core") {
+  sources = [ "rewards_core.mojom" ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+
+  deps = [ ":mojom" ]
+}
+
+mojom("webui") {
+  sources = [
+    "rewards_panel.mojom",
+    "rewards_tip_panel.mojom",
   ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+
+  deps = [ ":mojom" ]
 }

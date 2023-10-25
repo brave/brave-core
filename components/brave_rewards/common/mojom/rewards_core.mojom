@@ -5,6 +5,133 @@
 
 module brave_rewards.mojom;
 
+import "brave/components/brave_rewards/common/mojom/rewards.mojom";
+
+// The following definitions are used internally by `brave_rewards/core`.
+
+struct ContributionQueue {
+  string id;
+  RewardsType type;
+  double amount;
+  bool partial;
+  uint64 created_at;
+  uint64 completed_at;
+
+  array<ContributionQueuePublisher> publishers;
+};
+
+struct ContributionQueuePublisher {
+  string publisher_key;
+  double amount_percent;
+};
+
+struct UnblindedToken {
+  uint64 id;
+  string token_value;
+  string public_key;
+  double value;
+  string creds_id;
+  uint64 expires_at;
+  uint64 redeemed_at;
+  string redeem_id;
+  RewardsType redeem_type;
+};
+
+enum CredsBatchType {
+  NONE = 0,
+  PROMOTION = 1,
+  SKU = 2
+};
+
+enum CredsBatchStatus {
+  NONE = 0,
+  BLINDED = 1,
+  CLAIMED = 2,
+  SIGNED = 3,
+  FINISHED = 4,
+  CORRUPTED = 5
+};
+
+struct CredsBatch {
+  string creds_id;
+  int32 size;
+  string creds; // JSONStringArray
+  string blinded_creds; // JSONStringArray
+  string signed_creds; // JSONStringArray
+  string public_key;
+  string batch_proof;
+  string trigger_id;
+  CredsBatchType trigger_type;
+  CredsBatchStatus status;
+};
+
+enum SKUOrderStatus {
+  NONE = 0,
+  PENDING = 1,
+  PAID = 2,
+  FULFILLED = 3,
+  CANCELED = 4
+};
+
+struct SKUOrder {
+  string order_id;
+  double total_amount;
+  string merchant_id;
+  string location;
+  SKUOrderStatus status;
+  string contribution_id;
+  uint64 created_at;
+  array<SKUOrderItem> items;
+};
+
+enum SKUOrderItemType {
+  NONE = 0,
+  SINGLE_USE = 1
+};
+
+struct SKUOrderItem {
+  string order_item_id;
+  string order_id;
+  string sku;
+  int32 quantity;
+  double price;
+  string name;
+  string description;
+  SKUOrderItemType type;
+  uint64 expires_at;
+  uint64 created_at;
+};
+
+enum SKUTransactionType {
+  NONE = 0,
+  UPHOLD = 1,
+  TOKENS = 3,
+  GEMINI = 4
+};
+
+enum SKUTransactionStatus {
+  NONE = 0,
+  CREATED = 1,
+  COMPLETED = 2
+};
+
+struct SKUTransaction {
+  string transaction_id;
+  string order_id;
+  string external_transaction_id;
+  SKUTransactionType type;
+  double amount;
+  SKUTransactionStatus status;
+  uint64 created_at;
+};
+
+struct ExternalTransaction {
+  string transaction_id;
+  string contribution_id;
+  string destination;
+  string amount;
+};
+
 enum GetBalanceZebPayError {
   kFailedToCreateRequest,
   kAccessTokenExpired,                  // HTTP 401

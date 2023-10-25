@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_COMMON_TIME_UTIL_H_
 
 #include "base/time/time.h"
-#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 namespace brave_rewards::internal {
 namespace util {
