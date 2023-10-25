@@ -80,6 +80,15 @@
       on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
     </settings-toggle-button>
 
+    <settings-toggle-button id="ipfsAlwaysStartModeEnabled"
+      class="cr-row"
+      pref="{{prefs.brave.ipfs.always_start_mode}}"
+      label="$i18n{ipfsAlwaysStartModeLabel}"
+      sub-label="$i18n{ipfsAlwaysStartModeDesc}"
+      hidden="[[!isLocalNodeEnabled_]]"
+      on-settings-boolean-control-change="onIPFSAlwaysStartModeChange_">
+    </settings-toggle-button>
+    
     <div class="settings-box" hidden="[[!isLocalNodeEnabled_]]">
       <div class="flex cr-padded-text">
         <div>$i18n{changeIpfsStorageMaxLabel}</div>

@@ -892,6 +892,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IPFS_FALLBACK_INFOBAR_NO" desc="Close infobar without redirection">
         No thanks
       </message>
+      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_TEXT" desc="Text that propose user to enable IPFS alwats start mode">
+        Would you like to allow IPFS start always with Brave?
+      </message>
+      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_OK" desc="Enable IPFS alwats start mode">
+        Enable
+      </message>
+      <message name="IDS_BRAVE_IPFS_ALWAYS_START_INFOBAR_NO" desc="Ignore proposition">
+        Cancel
+      </message>
 
       <!-- Brave Wayback Machine -->
       <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">

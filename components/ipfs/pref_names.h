@@ -64,4 +64,12 @@ inline constexpr char kIPFSAutoRedirectDNSLink[] =
 inline constexpr char kIPFSAutoRedirectToConfiguredGateway[] =
     "brave.ipfs.auto_redirect_to_configured_gateway";
 
+// Used to determine whether to start IPFS daemon
+// at the same moment when Brave starts.
+inline constexpr char kIPFSAlwaysStartMode[] = "brave.ipfs.always_start_mode";
+
+// Stores info when the IPFS promo infobar was shown last time
+inline constexpr char kIPFSAlwaysStartInfobarLastShowTime[] =
+    "brave.ipfs.ipfs_always_start_infobar_last_show_time";
+
 #endif  // BRAVE_COMPONENTS_IPFS_PREF_NAMES_H_

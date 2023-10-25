@@ -14,6 +14,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/uuid.h"
+#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include "brave/browser/ipfs/import/save_package_observer.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"

@@ -10,12 +10,15 @@
 
 #include "base/files/file_util.h"
 #include "base/hash/hash.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ref.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/base/process/process_launcher.h"
+#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -146,6 +149,13 @@ IpfsService::IpfsService(
   ipfs_dns_resolver_subscription_ =
       ipfs_dns_resolver_->AddObserver(base::BindRepeating(
           &IpfsService::OnDnsConfigChanged, weak_factory_.GetWeakPtr()));
+
+
+  const auto isIpfsLocal = (prefs_->GetInteger(kIPFSResolveMethod) ==
+          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+  if (isIpfsLocal && prefs_->GetBoolean(kIPFSAlwaysStartMode)) {
+    StartDaemonAndLaunch(base::NullCallback());
+  }
 }
 
 IpfsService::~IpfsService() {
@@ -180,6 +190,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
+  registry->RegisterBooleanPref(kIPFSAlwaysStartMode, false);
 
   registry->RegisterBooleanPref(kIPFSAutoRedirectToConfiguredGateway, false);
   registry->RegisterBooleanPref(kIPFSLocalNodeUsed, false);
@@ -661,10 +672,16 @@ void IpfsService::ImportTextToIpfs(const std::string& text,
 void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
                                    size_t key,
                                    const ipfs::ImportedData& data) {
+  bool is_import_success{data.state == ipfs::IPFS_IMPORT_SUCCESS};
+
   if (callback)
     std::move(callback).Run(data);
 
   importers_.erase(key);
+
+  if (is_import_success) {
+    BraveIPFSAlwaysStartInfoBarDelegate::Create(this, prefs_);
+  }
 }
 #endif
 
@@ -1074,6 +1091,8 @@ void IpfsService::OnPinAddResult(
   }
 
   parse_result->recursive = recursive;
+
+  BraveIPFSAlwaysStartInfoBarDelegate::Create(this, prefs_);
 
   std::move(callback).Run(std::move(parse_result));
 }

@@ -15,6 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/supports_user_data.h"
 #include "brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h"
+#include "brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/constants/pref_names.h"
@@ -192,6 +193,10 @@ void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
 #if !BUILDFLAG(IS_ANDROID)
       && !auto_redirect_blocked) {
     LoadUrlForAutoRedirect(GetIPFSResolvedURL());
+    BraveIPFSAlwaysStartInfoBarDelegate::Create(
+    ipfs::IpfsServiceFactory::GetForContext(
+        web_contents()->GetBrowserContext()),
+    pref_service_);
 #else
   ) {
     LoadUrl(GetIPFSResolvedURL());
@@ -419,6 +424,10 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
     if (IsAutoRedirectIPFSResourcesEnabled() && !auto_redirect_blocked) {
 #if !BUILDFLAG(IS_ANDROID)
       LoadUrlForAutoRedirect(possible_redirect.value());
+      BraveIPFSAlwaysStartInfoBarDelegate::Create(
+          ipfs::IpfsServiceFactory::GetForContext(
+              web_contents()->GetBrowserContext()),
+          pref_service_);      
 #else
       LoadUrl(possible_redirect.value());
 #endif  // !BUILDFLAG(IS_ANDROID)

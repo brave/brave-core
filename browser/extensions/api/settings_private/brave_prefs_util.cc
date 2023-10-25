@@ -278,6 +278,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[kIPFSAutoRedirectToConfiguredGateway] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[kIPFSAlwaysStartMode] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kIpfsStorageMax] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
 #endif
