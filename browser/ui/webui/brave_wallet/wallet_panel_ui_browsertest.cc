@@ -11,10 +11,12 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
+#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -146,6 +148,9 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
             &url_loader_factory_);
     JsonRpcServiceFactory::GetServiceForContext(profile)
         ->SetAPIRequestHelperForTesting(shared_url_loader_factory_);
+
+    AssetRatioServiceFactory::GetServiceForContext(profile)
+        ->EnableDummyPricesForTesting();
 
     KeyringServiceFactory::GetServiceForContext(profile)->CreateWallet(
         "password_123", base::DoNothing());
@@ -279,6 +284,7 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, MAYBE_HideNetworkInSettings) {
 
   ActivateWalletTab();
   wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(wallet()));
   // Wait and click on DApp settings button.
   ASSERT_TRUE(
       WaitAndClickElement(wallet(), QuerySelectorJS(DAppSettingsButton())));
