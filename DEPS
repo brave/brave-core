@@ -63,6 +63,11 @@ hooks = [
     'action': ['vpython3', 'build/mac/download_hermetic_xcode.py'],
   },
   {
+    'name': 'configure_reclient',
+    'pattern': '.',
+    'action': ['python3', 'build/reclient_cfgs/configure_reclient.py'],
+  },
+  {
     'name': 'download_sparkle',
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
