@@ -194,9 +194,13 @@ const Config = function () {
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
   this.gomaServerHost = getNPMConfig(['goma_server_host']) || ''
+  this.realGomaDir = process.env.GOMA_DIR || path.join(this.depotToolsDir, '.cipd_bin')
   this.rbeService = getNPMConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getNPMConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getNPMConfig(['rbe_tls_client_auth_key']) || ''
+  // Make sure "src/" is a part of RBE "exec_root" to allow "src/" files as inputs.
+  this.rbeExecRoot = this.rootDir
+  this.realRewrapperDir = process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.isCI = process.env.BUILD_ID !== undefined || process.env.TEAMCITY_VERSION !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
@@ -234,12 +238,6 @@ const Config = function () {
     this.gomaServerHost.endsWith('.brave.com') ||
     this.rbeService.includes('.brave.com:') ||
     this.rbeService.includes('.engflow.com:')
-
-  if (process.env.GOMA_DIR !== undefined) {
-    this.realGomaDir = process.env.GOMA_DIR
-  } else {
-    this.realGomaDir = path.join(this.depotToolsDir, '.cipd_bin')
-  }
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -486,6 +484,9 @@ Config.prototype.buildArgs = function () {
     // set goma_dir to the redirect cc output dir which then calls gomacc
     // through env.CC_WRAPPER
     args.goma_dir = path.join(this.nativeRedirectCCDir)
+  } else if (this.useRemoteExec) {
+    args.rbe_exec_root = this.rbeExecRoot
+    args.rbe_bin_dir = path.join(this.nativeRedirectCCDir)
   } else {
     args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }
