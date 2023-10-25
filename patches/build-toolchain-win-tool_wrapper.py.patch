@@ -1,0 +1,25 @@
+diff --git a/build/toolchain/win/tool_wrapper.py b/build/toolchain/win/tool_wrapper.py
+index 47bbfe2a09d96222ee19d4ee4ccc60242e1179dd..f29c980a5fd39c32b21113fb3daf6bccd8f204f5 100644
+--- a/build/toolchain/win/tool_wrapper.py
++++ b/build/toolchain/win/tool_wrapper.py
+@@ -81,6 +81,12 @@ class WinTool(object):
+     kvs = [item.split('=', 1) for item in pairs]
+     return dict(kvs)
+ 
++  def _AddReclientEnv(self, env):
++    """Adds RBE environment variables to allow reclient to work properly."""
++    for env_key, env_value in os.environ.items():
++      if env_key.startswith('RBE_'):
++        env[env_key] = env_value
++
+   def ExecDeleteFile(self, path):
+     """Simple file delete command."""
+     if os.path.exists(path):
+@@ -150,6 +156,7 @@ class WinTool(object):
+   def ExecAsmWrapper(self, arch, *args):
+     """Filter logo banner from invocations of asm.exe."""
+     env = self._GetEnv(arch)
++    self._AddReclientEnv(env)
+     if sys.platform == 'win32':
+       # Windows ARM64 uses clang-cl as assembler which has '/' as path
+       # separator, convert it to '\\' when running on Windows.
