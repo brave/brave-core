@@ -2,6 +2,7 @@ import 'emptykit.css'
 import * as React from 'react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
 import { addParameters } from '@storybook/react'
+import {setIconBasePath} from '@brave/leo/shared/icon'
 import { initLocale } from 'brave-ui/helpers'
 import '../components/web-components/app.global.scss'
 import { getString } from './locale'
@@ -10,6 +11,19 @@ import ThemeProvider from '../components/common/BraveCoreThemeProvider'
 // Fonts
 import '../ui/webui/resources/fonts/poppins.css'
 import '../ui/webui/resources/fonts/manrope.css'
+
+// Icon path
+// The storybook might be hosted at the root, but it might also be hosted
+// somewhere deep. The icons will be hosted in the relative path of the
+// storybook. Let's find the relative path we're at, and give that to
+// Nala icons.
+if (!document.location.pathname.endsWith('/iframe.html')) {
+  // Perhaps storybook was upgraded and this changed?
+  console.error('Could not ascertain path that the storybook is hosted at. Not able to set static icon path!')
+} else {
+  const storybookPath = document.location.pathname.substring(0, document.location.pathname.lastIndexOf('/'))
+  setIconBasePath(`${storybookPath}/icons`)
+}
 
 export const parameters = {
   backgrounds: {
