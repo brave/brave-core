@@ -12,7 +12,8 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import {
   BraveWallet,
   WalletRoutes,
-  TokenPriceHistory
+  TokenPriceHistory,
+  LineChartIframeData
 } from '../../../../constants/types'
 
 // Utils
@@ -46,7 +47,6 @@ import { WalletSelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
 // Components
-import { LineChart } from '../../line-chart/index'
 import {
   LineChartControls //
 } from '../../line-chart/line-chart-controls/line-chart-controls'
@@ -61,6 +61,7 @@ import {
   useIsBuySupported //
 } from '../../../../common/hooks/use-multi-chain-buy-assets'
 import {
+  useSafeWalletSelector,
   useUnsafePageSelector,
   useUnsafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
@@ -132,16 +133,15 @@ export const PortfolioAsset = (props: Props) => {
 
   // redux
   const dispatch = useDispatch()
-
-  const defaultCurrencies = useUnsafeWalletSelector(
-    WalletSelectors.defaultCurrencies
-  )
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
   const coinMarketData = useUnsafeWalletSelector(WalletSelectors.coinMarketData)
   const selectedCoinMarket = useUnsafePageSelector(
     PageSelectors.selectedCoinMarket
+  )
+  const hidePortfolioBalances = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioBalances
   )
 
   // Queries
@@ -208,7 +208,7 @@ export const PortfolioAsset = (props: Props) => {
 
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
-  const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
+  const { data: defaultFiat = 'USD' } = useGetDefaultFiatCurrencyQuery()
 
   const { data: selectedAssetsNetwork } = useGetNetworkQuery(
     selectedAssetFromParams ?? skipToken
@@ -287,6 +287,8 @@ export const PortfolioAsset = (props: Props) => {
   }, [candidateAccounts, selectedAssetFromParams, tokenBalancesRegistry])
 
   // memos / computed
+  const isLoadingGraphData =
+    !selectedAssetFromParams || isFetchingPortfolioPriceHistory
 
   const tokenPriceIds = React.useMemo(
     () =>
@@ -481,6 +483,19 @@ export const PortfolioAsset = (props: Props) => {
     return <Redirect to={WalletRoutes.PortfolioAssets} />
   }
 
+  const priceData =
+    selectedAssetFromParams && selectedAssetPriceHistory
+      ? selectedAssetPriceHistory
+      : emptyPriceList
+
+  const iframeData: LineChartIframeData = {
+    priceData,
+    hidePortfolioBalances,
+    defaultFiatCurrency: defaultFiat || 'USD'
+  }
+
+  const encodedPriceData = encodeURIComponent(JSON.stringify(iframeData))
+
   // render
   return (
     <WalletPageWrapper
@@ -505,18 +520,14 @@ export const PortfolioAsset = (props: Props) => {
           />
         </Row>
 
-        <LineChart
-          priceData={
-            selectedAssetFromParams && selectedAssetPriceHistory
-              ? selectedAssetPriceHistory
-              : emptyPriceList
-          }
-          isLoading={
-            !selectedAssetFromParams || isFetchingPortfolioPriceHistory
-          }
-          isDisabled={
-            !selectedAssetFromParams || isFetchingPortfolioPriceHistory
-          }
+        <iframe
+          width={'100%'}
+          height={'130px'}
+          frameBorder={0}
+          src={`chrome-untrusted://line-chart-display${
+            isLoadingGraphData ? '' : `?${encodedPriceData}`
+          }`}
+          sandbox='allow-scripts allow-same-origin'
         />
         <Row padding='0px 20px'>
           <ButtonRow>
@@ -565,7 +576,7 @@ export const PortfolioAsset = (props: Props) => {
               selectedAssetNetwork={selectedAssetsNetwork}
               assetBalance={formattedAssetBalance}
               formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(
-                defaultCurrencies.fiat
+                defaultFiat
               )}
               onShowHideTokenModal={() => setShowHideTokenModal(true)}
             />
