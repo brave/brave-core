@@ -21,6 +21,7 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
@@ -467,6 +468,88 @@ FeedV2Builder::FeedV2Builder(
                          history_service) {}
 
 FeedV2Builder::~FeedV2Builder() = default;
+
+void FeedV2Builder::BuildChannelFeed(const std::string& channel,
+                                     BuildFeedCallback callback) {
+  Build(
+      /*recalculate_signals=*/true,
+      base::BindOnce(
+          [](base::WeakPtr<FeedV2Builder> builder, const std::string& channel,
+             BuildFeedCallback callback, mojom::FeedV2Ptr _) {
+            auto result = mojom::FeedV2::New();
+            auto& publishers =
+                builder->publishers_controller_->GetLastPublishers();
+            auto& locale = builder->publishers_controller_->GetLastLocale();
+
+            for (const auto& item : builder->raw_feed_items_) {
+              if (!item->is_article()) {
+                continue;
+              }
+
+              auto publisher_it =
+                  publishers.find(item->get_article()->data->publisher_id);
+              if (publisher_it == publishers.end()) {
+                continue;
+              }
+
+              auto locale_info_it =
+                  base::ranges::find_if(publisher_it->second->locales,
+                                        [&locale](const auto& locale_info) {
+                                          return locale == locale_info->locale;
+                                        });
+              if (locale_info_it == publisher_it->second->locales.end()) {
+                continue;
+              }
+
+              if (!base::Contains(locale_info_it->get()->channels, channel)) {
+                continue;
+              }
+
+              result->items.push_back(
+                  mojom::FeedItemV2::NewArticle(item->get_article()->Clone()));
+            }
+
+            base::ranges::sort(result->items, [](const auto& a, const auto& b) {
+              return GetPopRecency(b->get_article()->data) <
+                     GetPopRecency(a->get_article()->data);
+            });
+
+            std::move(callback).Run(std::move(result));
+          },
+          weak_ptr_factory_.GetWeakPtr(), channel, std::move(callback)));
+}
+
+void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
+                                       BuildFeedCallback callback) {
+  Build(
+      /*recalculate_signals=*/true,
+      base::BindOnce(
+          [](base::WeakPtr<FeedV2Builder> builder,
+             const std::string& publisher_id, BuildFeedCallback callback,
+             mojom::FeedV2Ptr _) {
+            auto result = mojom::FeedV2::New();
+
+            for (const auto& item : builder->raw_feed_items_) {
+              if (!item->is_article()) {
+                continue;
+              }
+              if (item->get_article()->data->publisher_id != publisher_id) {
+                continue;
+              }
+
+              result->items.push_back(
+                  mojom::FeedItemV2::NewArticle(item->get_article()->Clone()));
+            }
+
+            base::ranges::sort(result->items, [](const auto& a, const auto& b) {
+              return b->get_article()->data->publish_time <
+                     a->get_article()->data->publish_time;
+            });
+
+            std::move(callback).Run(std::move(result));
+          },
+          weak_ptr_factory_.GetWeakPtr(), publisher_id, std::move(callback)));
+}
 
 void FeedV2Builder::Build(bool recalculate_signals,
                           BuildFeedCallback callback) {

@@ -231,6 +231,8 @@ interface BraveNewsController {
   GetLocale() => (string locale);
 
   GetFeed() => (Feed feed);
+  GetChannelFeed(string channel) => (FeedV2 feed);
+  GetPublisherFeed(string publisher_id) => (FeedV2 feed);
   GetFeedV2() => (FeedV2 feed);
   GetSignals() => (map<string, Signal> signals);
 
