@@ -304,6 +304,8 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
 
   auto& output_0 = actual_tx.outputs().at(0);
   EXPECT_EQ(output_0.address, kMockBtcAddress);
+  EXPECT_EQ(base::HexEncode(output_0.script_pubkey),
+            "0014751E76E8199196D454941C45D1B3A323F1433BD6");
   EXPECT_EQ(output_0.amount, 6000u);
 
   auto& output_1 = actual_tx.outputs().at(1);
@@ -311,6 +313,8 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
             keyring_service_->GetBitcoinAccountInfo(account_id())
                 ->next_change_address->address_string);
   EXPECT_EQ(output_1.amount, 50000u + 5000u - 6000u - 4878u);
+  EXPECT_EQ(base::HexEncode(output_1.script_pubkey),
+            "00142DAF8BA8858A8D65B8C6107ECE99DA1FAEF0B944");
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {

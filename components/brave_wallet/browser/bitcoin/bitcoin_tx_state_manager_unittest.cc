@@ -11,6 +11,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -66,6 +67,8 @@ TEST_F(BitcoinTxStateManagerUnitTest, BitcoinTxMetaAndValue) {
   tx->inputs().back().utxo_value = 200000;
   tx->outputs().emplace_back();
   tx->outputs().back().address = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
+  tx->outputs().back().script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+      "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm", true);
   tx->outputs().back().amount = 200000 - 1000;
 
   BitcoinTxMeta meta(btc_account_id, std::move(tx));

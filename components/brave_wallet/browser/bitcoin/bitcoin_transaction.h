@@ -80,6 +80,7 @@ class BitcoinTransaction {
     static absl::optional<TxOutput> FromValue(const base::Value::Dict& value);
 
     std::string address;
+    std::vector<uint8_t> script_pubkey;  // Lock script.
     uint64_t amount = 0;
   };
 

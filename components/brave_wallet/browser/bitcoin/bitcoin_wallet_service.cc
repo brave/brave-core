@@ -33,20 +33,6 @@ const uint32_t kHighPriorityTargetBlock = 1;
 const uint32_t kMediumPriorityTargetBlock = 4;
 const double kFallbackFeeRate = 1;  // 1 sat per byte fallback rate.
 
-bool OutputAddressSupported(const std::string& address, bool is_testnet) {
-  auto decoded_address = DecodeBitcoinAddress(address);
-  if (!decoded_address) {
-    return false;
-  }
-  if (decoded_address->testnet != is_testnet) {
-    return false;
-  }
-  // Only segwit outputs are supported by now.
-  // TODO(apaymyshev): support more types
-  return decoded_address->address_type ==
-         BitcoinAddressType::kWitnessV0PubkeyHash;
-}
-
 uint64_t GetChainBalance(const bitcoin_rpc::AddressChainStats& chain_stats) {
   uint64_t funded = 0;
   if (!base::StringToUint64(chain_stats.funded_txo_sum, &funded)) {
@@ -346,7 +332,7 @@ class CreateTransactionTask {
 
   double GetFeeRate();
   bool PickInputs();
-  bool PrepareOutputs();
+  base::expected<void, std::string> PrepareOutputs();
 
   void OnGetChainHeight(base::expected<uint32_t, std::string> chain_height);
   void OnGetFeeEstimates(
@@ -438,8 +424,8 @@ void CreateTransactionTask::WorkOnTask() {
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
   transaction_.set_locktime(chain_height_.value());
 
-  if (!PrepareOutputs()) {
-    SetError("Couldn't prepare outputs");
+  if (auto outputs_result = PrepareOutputs(); !outputs_result.has_value()) {
+    SetError(outputs_result.error());
     ScheduleWorkOnTask();
     return;
   }
@@ -559,26 +545,30 @@ bool CreateTransactionTask::PickInputs() {
   return false;
 }
 
-bool CreateTransactionTask::PrepareOutputs() {
+base::expected<void, std::string> CreateTransactionTask::PrepareOutputs() {
   auto& target_output = transaction_.outputs().emplace_back();
-  target_output.address = transaction_.to();
   target_output.amount = transaction_.amount();
   if (target_output.amount == 0) {
-    return false;
+    return base::unexpected("Invalid send amount");
   }
-  if (!OutputAddressSupported(target_output.address, IsTestnet())) {
-    return false;
+  target_output.address = transaction_.to();
+  target_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+      target_output.address, IsTestnet());
+  if (target_output.script_pubkey.empty()) {
+    return base::unexpected("Invalid send address");
   }
 
   // Always add change address. Change amount is finalized when we have enough
   // inputs picked to pay target amount + fee.
   CHECK(change_address_);
-  CHECK(OutputAddressSupported(change_address_->address_string, IsTestnet()));
   auto& change_output = transaction_.outputs().emplace_back();
-  change_output.address = change_address_->address_string;
   change_output.amount = 0;
+  change_output.address = change_address_->address_string;
+  change_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
+      change_output.address, IsTestnet());
+  CHECK(change_output.script_pubkey.size());
 
-  return true;
+  return base::ok();
 }
 
 class DiscoverNextUnusedAddressTask
