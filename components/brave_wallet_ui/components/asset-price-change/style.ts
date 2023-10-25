@@ -25,8 +25,8 @@ export const PriceChange = styled.span<{
   letter-spacing: 0.14px;
   color: ${(p) =>
     p.isDown
-      ? leo.color.systemfeedback.successIcon
-      : leo.color.systemfeedback.errorIcon};
+      ? leo.color.systemfeedback.errorText
+      : leo.color.systemfeedback.successText};
 `
 
 export const Arrow = styled(Icon)<{
@@ -35,6 +35,6 @@ export const Arrow = styled(Icon)<{
   --leo-icon-size: 24px;
   color: ${(p) =>
     p.isDown
-      ? leo.color.systemfeedback.successIcon
-      : leo.color.systemfeedback.errorIcon};
+      ? leo.color.systemfeedback.errorText
+      : leo.color.systemfeedback.successText};
 `
