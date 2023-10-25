@@ -17,6 +17,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"aboutTitle", IDS_CHAT_UI_ABOUT_TITLE},
       {"aboutDescription", IDS_CHAT_UI_ABOUT_DESCRIPTION},
       {"aboutDescription_2", IDS_CHAT_UI_ABOUT_DESCRIPTION_2},
+      {"aboutDescription_3", IDS_CHAT_UI_ABOUT_DESCRIPTION_3},
       {"placeholderLabel", IDS_CHAT_UI_PLACEHOLDER_LABEL},
       {"enableQuestionsTitle", IDS_CHAT_UI_ENABLE_QUESTIONS_TITLE},
       {"enableQuestionsDesc", IDS_CHAT_UI_ENABLE_QUESTIONS_DESC},
