@@ -457,7 +457,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Override
             public void onPageLoadFinished(final Tab tab, GURL url) {
                 if (getToolbarDataProvider().getTab() == tab) {
-                    mBraveShieldsHandler.updateHost(url.getSpec());
+                    mBraveShieldsHandler.updateUrlSpec(url.getSpec());
                     updateBraveShieldsButtonState(tab);
 
                     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
