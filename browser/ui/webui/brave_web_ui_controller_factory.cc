@@ -64,6 +64,7 @@
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "third_party/re2/src/re2/re2.h"
 #endif
 
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -211,6 +212,11 @@ bool IsWalletPath(const std::string& path) {
       return true;
     }
   }
+  for (const char* regex : kWalletPatternPaths) {
+    if (RE2::FullMatch(path, regex)) {
+      return true;
+    }
+  }
   return false;
 }
 
@@ -239,7 +245,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       (url.host_piece() == kIPFSWebUIHost &&
        ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-// TODO(pav): Add regular expression path matching for desktop dynamic paths
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost &&
        (url.path() == kWalletSwapPagePath ||

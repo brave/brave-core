@@ -40,6 +40,20 @@ const char kVPNPanelHost[] = "vpn-panel.top-chrome";
 const char kBraveUIWalletPageURL[] = "chrome://wallet/";
 const char kWalletPageHost[] = "wallet";
 #if BUILDFLAG(IS_ANDROID)
+const char kWalletPatternPaths[300][100] = {
+    // Asset details
+    "/crypto/portfolio/assets/.+/.+",
+    // Account assets
+    "/crypto/accounts/.+/assets",
+    // Account transactions
+    "/crypto/accounts/.+/transactions",
+    // Account NFTs
+    "/crypto/accounts/.+/nfts",
+    // Market rank
+    "/crypto/market/.+",
+    // Hardware Wallet
+    "/crypto/accounts/add-account/hardware/.+"
+};
 const char kWalletPagePaths[300][100] = {
     // WalletOrigin
     "chrome://wallet",
@@ -81,6 +95,8 @@ const char kWalletPagePaths[300][100] = {
     // NFT Pining
     "/crypto/local-ipfs-node",
     "/crypto/inspect-nfts",
+    // Hardware Wallet
+    "/crypto/accounts/add-account/hardware"
 };
 const char kWalletPagePath[] = "/crypto/portfolio/assets";
 const char kWalletBuyPagePath[] = "/crypto/fund-wallet";
