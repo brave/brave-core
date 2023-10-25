@@ -193,7 +193,10 @@ const Config = function () {
   this.channel = 'development'
   this.git_cache_path = getNPMConfig(['git_cache_path'])
   this.sccache = getNPMConfig(['sccache'])
-  this.gomaServerHost = getNPMConfig(['goma_server_host'])
+  this.gomaServerHost = getNPMConfig(['goma_server_host']) || ''
+  this.rbeService = getNPMConfig(['rbe_service']) || ''
+  this.rbeTlsClientAuthCert = getNPMConfig(['rbe_tls_client_auth_cert']) || ''
+  this.rbeTlsClientAuthKey = getNPMConfig(['rbe_tls_client_auth_key']) || ''
   this.isCI = process.env.BUILD_ID !== undefined || process.env.TEAMCITY_VERSION !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
@@ -227,6 +230,10 @@ const Config = function () {
   this.use_libfuzzer = false
   this.androidAabToApk = false
   this.enable_dangling_raw_ptr_checks = false
+  this.useBraveHermeticToolchain =
+    this.gomaServerHost.endsWith('.brave.com') ||
+    this.rbeService.includes('.brave.com:') ||
+    this.rbeService.includes('.engflow.com:')
 
   if (process.env.GOMA_DIR !== undefined) {
     this.realGomaDir = process.env.GOMA_DIR
@@ -404,6 +411,7 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_goma: this.use_goma,
+    use_remoteexec: this.useRemoteExec,
     use_libfuzzer: this.use_libfuzzer,
     enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),
@@ -604,7 +612,7 @@ Config.prototype.buildArgs = function () {
       // When building locally iOS needs dSYMs in order for Xcode to map source
       // files correctly since we are using a framework build
       args.enable_dsyms = true
-      if (args.use_goma) {
+      if (args.use_goma || args.use_remoteexec) {
         // Goma expects relative paths in dSYMs
         args.strip_absolute_paths_from_debug_symbols = true
       }
@@ -1182,10 +1190,11 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.BRAVE_CHANNEL = this.channel
     }
 
-    if (!this.gomaServerHost || !this.gomaServerHost.endsWith('.brave.com')) {
+    if (!this.useBraveHermeticToolchain) {
       env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
     } else {
       // Use hermetic toolchain only internally.
+      env.USE_BRAVE_HERMETIC_TOOLCHAIN = '1'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
       env.GYP_MSVS_HASH_27370823e7 = '01b3b59461'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = 'https://brave-build-deps-public.s3.brave.com/windows-hermetic-toolchain/'
@@ -1216,8 +1225,23 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
       // Upload stats about Goma actions to the Goma backend.
       env.GOMA_PROVIDE_INFO = true
+    }
 
-      // Vars used by autoninja to generate -j value when goma is enabled,
+    if (this.rbeService) {
+      env.RBE_service = env.RBE_service || this.rbeService
+      if (this.rbeTlsClientAuthCert && this.rbeTlsClientAuthKey) {
+        env.RBE_tls_client_auth_cert =
+          env.RBE_tls_client_auth_cert || this.rbeTlsClientAuthCert
+        env.RBE_tls_client_auth_key =
+          env.RBE_tls_client_auth_key || this.rbeTlsClientAuthKey
+        env.RBE_service_no_auth = env.RBE_service_no_auth || true
+        env.RBE_use_application_default_credentials =
+          env.RBE_use_application_default_credentials || true
+      }
+    }
+
+    if (this.gomaServerHost || this.rbeService) {
+      // Vars used by autoninja to generate -j value when goma/rbe is enabled,
       // adjusted for Brave-specific setup.
       env.NINJA_CORE_MULTIPLIER = Math.min(20, env.NINJA_CORE_MULTIPLIER || 20)
       env.NINJA_CORE_LIMIT = Math.min(160, env.NINJA_CORE_LIMIT || 160)
