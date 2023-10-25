@@ -8,8 +8,14 @@
 #include <memory>
 #include <string>
 
+#include "base/containers/contains.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/path_service.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
+#include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -193,10 +199,14 @@ TEST(BitcoinSerializer, SerializeInputForSign) {
 
   auto& output1 = tx.outputs().emplace_back();
   output1.address = kAddress1;
+  output1.script_pubkey =
+      BitcoinSerializer::AddressToScriptPubkey(kAddress1, true);
   output1.amount = 5;
 
   auto& output2 = tx.outputs().emplace_back();
   output2.address = kAddress2;
+  output2.script_pubkey =
+      BitcoinSerializer::AddressToScriptPubkey(kAddress2, true);
   output2.amount = 50;
 
   tx.set_locktime(777);
@@ -252,10 +262,14 @@ TEST(BitcoinSerializer, SerializeSignedTransaction) {
 
   auto& output1 = tx.outputs().emplace_back();
   output1.address = kAddress1;
+  output1.script_pubkey =
+      BitcoinSerializer::AddressToScriptPubkey(kAddress1, true);
   output1.amount = 5;
 
   auto& output2 = tx.outputs().emplace_back();
   output2.address = kAddress2;
+  output2.script_pubkey =
+      BitcoinSerializer::AddressToScriptPubkey(kAddress2, true);
   output2.amount = 50;
 
   tx.set_locktime(777);
@@ -270,6 +284,59 @@ TEST(BitcoinSerializer, SerializeSignedTransaction) {
 
   EXPECT_EQ(BitcoinSerializer::CalcTransactionWeight(tx), 640u);
   EXPECT_EQ(BitcoinSerializer::CalcVSize(tx), 160u);
+}
+
+TEST(BitcoinSerializer, AddressToScriptPubkey_BitcoinCoreTestVectors) {
+  std::string file_contents;
+  ASSERT_TRUE(base::ReadFileToString(
+      base::PathService::CheckedGet(base::DIR_GEN_TEST_DATA_ROOT)
+          .Append(
+              FILE_PATH_LITERAL("brave/wallet-test-data/key_io_valid.json")),
+      &file_contents));
+  auto test_items = base::test::ParseJsonList(file_contents);
+  uint32_t total_tests = test_items.size();
+  uint32_t skipped_tests = 0;
+
+  std::vector<std::string> not_supported_addresses = {
+      // witness v2, too short
+      "bc1z2rksukkjr8",
+      // witness v3, too short
+      "tb1rgv5m6uvdk3kc7qsuz0c79v88ycr5w4wa",
+      // witness v2, too short
+      "bc1zmjtqxkzs89",
+      // witness v3, too short
+      "tb1r0ecpfxg2udhtc556gqrpwwhk4sw3f0kc",
+      // witness v3
+      "tb1rx9n9g37az8mu236e5jpxdt0m67y4fuq8rhs0ss3djnm0kscfrwvq0ntlyg",
+  };
+
+  for (auto& test_item : test_items) {
+    ASSERT_TRUE(test_item.is_list());
+    const auto& address = test_item.GetList()[0].GetString();
+    const auto& expected_script =
+        base::ToUpperASCII(test_item.GetList()[1].GetString());
+    const auto& options = test_item.GetList()[2].GetDict();
+    if (options.FindBool("isPrivkey").value()) {
+      skipped_tests++;
+      continue;
+    }
+    if (*options.FindString("chain") != "main" &&
+        *options.FindString("chain") != "test") {
+      skipped_tests++;
+      continue;
+    }
+
+    if (base::Contains(not_supported_addresses, address)) {
+      skipped_tests++;
+      continue;
+    }
+    bool testnet = *options.FindString("chain") == "test";
+    auto actual = base::HexEncode(
+        BitcoinSerializer::AddressToScriptPubkey(address, testnet));
+    EXPECT_EQ(expected_script, actual) << address;
+  }
+  EXPECT_EQ(70u, total_tests);
+  EXPECT_EQ(46u, skipped_tests);
 }
 
 }  // namespace brave_wallet

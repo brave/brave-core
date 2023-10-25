@@ -19,15 +19,19 @@ constexpr uint8_t kBitcoinSigHashAll = 1;
 constexpr uint32_t kBitcoinReceiveIndex = 0;
 constexpr uint32_t kBitcoinChangeIndex = 1;
 
-// TODO(apaymyshev): support more
 enum BitcoinAddressType {
+  kPubkeyHash,
+  kScriptHash,
   kWitnessV0ScriptHash,
   kWitnessV0PubkeyHash,
-  kWitnessUnknown
+  kWitnessV1Taproot
 };
 
 struct DecodedBitcoinAddress {
   DecodedBitcoinAddress();
+  DecodedBitcoinAddress(BitcoinAddressType address_type,
+                        std::vector<uint8_t> pubkey_hash,
+                        bool testnet = false);
   ~DecodedBitcoinAddress();
   DecodedBitcoinAddress(const DecodedBitcoinAddress& other);
   DecodedBitcoinAddress& operator=(const DecodedBitcoinAddress& other);
@@ -36,7 +40,6 @@ struct DecodedBitcoinAddress {
 
   BitcoinAddressType address_type;
   std::vector<uint8_t> pubkey_hash;
-  uint8_t witness_version = 0;
   bool testnet = false;
 };
 

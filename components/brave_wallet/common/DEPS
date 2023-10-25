@@ -4,6 +4,7 @@ include_rules = [
 
 specific_include_rules = {
   "bitcoin_utils\.cc": [
+    "+brave/third_party/bitcoin-core/src/src/base58.h",
     "+brave/third_party/bitcoin-core/src/src/bech32.h",
     "+brave/third_party/bitcoin-core/src/src/util/strencodings.h",
   ],

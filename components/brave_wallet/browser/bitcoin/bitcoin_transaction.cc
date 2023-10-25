@@ -250,8 +250,8 @@ BitcoinTransaction::TxOutput& BitcoinTransaction::TxOutput::operator=(
     BitcoinTransaction::TxOutput&& other) = default;
 bool BitcoinTransaction::TxOutput::operator==(
     const BitcoinTransaction::TxOutput& other) const {
-  return std::tie(this->address, this->amount) ==
-         std::tie(other.address, other.amount);
+  return std::tie(this->address, this->script_pubkey, this->amount) ==
+         std::tie(other.address, other.script_pubkey, other.amount);
 }
 bool BitcoinTransaction::TxOutput::operator!=(
     const BitcoinTransaction::TxOutput& other) const {
@@ -262,6 +262,7 @@ BitcoinTransaction::TxOutput BitcoinTransaction::TxOutput::Clone() const {
   BitcoinTransaction::TxOutput result;
 
   result.address = address;
+  result.script_pubkey = script_pubkey;
   result.amount = amount;
 
   return result;
@@ -271,6 +272,7 @@ base::Value::Dict BitcoinTransaction::TxOutput::ToValue() const {
   base::Value::Dict dict;
 
   dict.Set("address", address);
+  dict.Set("script_pubkey", base::HexEncode(script_pubkey));
   dict.Set("amount", base::NumberToString(amount));
 
   return dict;
@@ -281,6 +283,10 @@ absl::optional<BitcoinTransaction::TxOutput>
 BitcoinTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
   BitcoinTransaction::TxOutput result;
   if (!ReadStringTo(value, "address", result.address)) {
+    return absl::nullopt;
+  }
+
+  if (!ReadHexByteArrayTo(value, "script_pubkey", result.script_pubkey)) {
     return absl::nullopt;
   }
 

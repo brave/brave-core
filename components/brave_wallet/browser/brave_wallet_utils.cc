@@ -576,7 +576,7 @@ const mojom::NetworkInfo* GetBitcoinTestnet() {
        {},
        0,
        {BitcoinTestnetRpcUrl()},
-       "tBTC",
+       "BTC",
        "Bitcoin",
        8,
        coin,
