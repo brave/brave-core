@@ -355,6 +355,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
         JsonRpcServiceFactory::GetServiceForContext(browser()->profile());
     tx_service_ = TxServiceFactory::GetServiceForContext(browser()->profile());
     tx_service_->AddObserver(observer()->GetReceiver());
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
     StartRPCServer(base::BindRepeating(&SolanaProviderTest::HandleRequest,
                                        base::Unretained(this)));
