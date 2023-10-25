@@ -530,7 +530,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnP3ADailyTimer();
 
   void OnRecordBackendP3AExternalWallet(bool delay_report,
-                                        GetExternalWalletResult result);
+                                        mojom::ExternalWalletPtr wallet);
   void GetAllContributionsForP3A();
   void OnRecordBackendP3AStatsContributions(
       std::vector<mojom::ContributionInfoPtr> list);

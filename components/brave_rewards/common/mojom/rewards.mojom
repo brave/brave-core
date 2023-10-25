@@ -380,16 +380,9 @@ struct RewardsWallet {
   array<uint8> recovery_seed;
 };
 
-// While the actual value of an error enumerator does not matter, we use only
-// non-zero values to ensure that `!error` in JavaScript unambiguously means
-// that the error value does not exist (as opposed to an error enumerator whose
-// integer value happens to be zero).
-const uint32 kErrorEnumStartValue = 1;
-
-struct ConnectExternalWalletValue {};
-
-enum ConnectExternalWalletError {
-  kDeviceLimitReached = kErrorEnumStartValue,
+enum ConnectExternalWalletResult {
+  kSuccess,
+  kDeviceLimitReached,
   kFlaggedWallet,
   kKYCRequired,
   kMismatchedCountries,
@@ -403,28 +396,9 @@ enum ConnectExternalWalletError {
   kUpholdTransactionVerificationFailure
 };
 
-union ConnectExternalWalletResult {
-  ConnectExternalWalletValue value;
-  ConnectExternalWalletError error;
-};
-
 struct Balance {
   double total;
   map<string, double> wallets;
-};
-
-struct FetchBalanceValue {
-  Balance balance;
-};
-
-enum FetchBalanceError {
-  kAccessTokenExpired = kErrorEnumStartValue,
-  kUnexpected
-};
-
-union FetchBalanceResult {
-  FetchBalanceValue value;
-  FetchBalanceError error;
 };
 
 enum WalletStatus {
@@ -446,20 +420,6 @@ struct ExternalWallet {
   string login_url;
   string activity_url;
   map<string, double> fees;
-};
-
-struct GetExternalWalletValue {
-  ExternalWallet wallet;
-};
-
-enum GetExternalWalletError {
-  kAccessTokenExpired = kErrorEnumStartValue,
-  kUnexpected
-};
-
-union GetExternalWalletResult {
-  GetExternalWalletValue value;
-  GetExternalWalletError error;
 };
 
 enum UserType {

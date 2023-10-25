@@ -18,6 +18,7 @@ using brave_rewards::internal::endpoints::PostConnectZebPay;
 using brave_rewards::internal::endpoints::PostOAuthZebPay;
 using brave_rewards::internal::endpoints::RequestFor;
 using brave_rewards::internal::wallet_provider::ConnectExternalWallet;
+using brave_rewards::mojom::ConnectExternalWalletResult;
 
 namespace brave_rewards::internal::zebpay {
 
@@ -44,14 +45,12 @@ void ConnectZebPayWallet::OnAuthorize(
     endpoints::PostOAuthZebPay::Result&& result) const {
   if (!engine_->zebpay()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (!result.has_value()) {
     BLOG(0, "Couldn't exchange code for the access token!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   auto [access_token, linking_info, deposit_id] = std::move(result.value());

@@ -195,15 +195,14 @@ void BraveRewardsNativeWorker::FetchBalance(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::OnBalance(
-    base::expected<brave_rewards::mojom::BalancePtr,
-                   brave_rewards::mojom::FetchBalanceError> result) {
-  if (result.has_value()) {
-    balance_ = *result.value();
+    brave_rewards::mojom::BalancePtr balance) {
+  if (balance) {
+    balance_ = *balance;
   }
 
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onBalance(
-      env, weak_java_brave_rewards_native_worker_.get(env), result.has_value());
+      env, weak_java_brave_rewards_native_worker_.get(env), !!balance);
 }
 
 void BraveRewardsNativeWorker::GetPublisherInfo(
@@ -933,9 +932,7 @@ void BraveRewardsNativeWorker::onPublisherBanner(
 }
 
 void BraveRewardsNativeWorker::OnGetExternalWallet(
-    base::expected<brave_rewards::mojom::ExternalWalletPtr,
-                   brave_rewards::mojom::GetExternalWalletError> result) {
-  auto wallet = std::move(result).value_or(nullptr);
+    brave_rewards::mojom::ExternalWalletPtr wallet) {
   std::string json_wallet;
   if (!wallet) {
     json_wallet = "";

@@ -5,7 +5,6 @@
 
 import { Reducer } from 'redux'
 import { types } from '../actions/rewards_types'
-import * as mojom from '../../shared/lib/mojom'
 import {
   optional
 } from '../../../../brave_rewards/resources/shared/lib/optional'
@@ -64,18 +63,12 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.ON_BALANCE: {
-      const { value, error } = action.payload.result
-
-      if (value) {
-        state = { ...state, balance: optional(value.balance.total) }
+      const { balance } = action.payload
+      if (balance) {
+        state = { ...state, balance: optional(balance.total) }
       } else {
         state = { ...state, balance: optional<number>() }
-
-        if (error === mojom.FetchBalanceError.kAccessTokenExpired) {
-          chrome.send('brave_rewards.getExternalWallet')
-        }
       }
-
       break
     }
     case types.GET_EXTERNAL_WALLET_PROVIDERS: {
@@ -91,19 +84,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.ON_GET_EXTERNAL_WALLET: {
-      const { value, error } = action.payload.result
-
-      if (value) {
-        state = { ...state, externalWallet: value.wallet }
+      const { externalWallet } = action.payload
+      if (externalWallet) {
+        state = { ...state, externalWallet }
         chrome.send('brave_rewards.fetchBalance')
-      } else {
-        switch (error) {
-          case mojom.GetExternalWalletError.kAccessTokenExpired:
-            chrome.send('brave_rewards.getExternalWallet')
-            break
-        }
       }
-
       break
     }
     case types.GET_MONTHLY_REPORT: {

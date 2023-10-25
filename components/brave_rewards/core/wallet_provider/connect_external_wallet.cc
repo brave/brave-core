@@ -23,6 +23,7 @@ namespace brave_rewards::internal {
 using endpoints::GetWallet;
 using endpoints::PostConnect;
 using endpoints::RequestFor;
+using mojom::ConnectExternalWalletResult;
 using wallet::GetWalletIf;
 
 namespace wallet_provider {
@@ -43,19 +44,17 @@ void ConnectExternalWallet::Run(
       *engine_, WalletType(),
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   auto oauth_info = ExchangeOAuthInfo(std::move(wallet));
   if (!oauth_info) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   auto code = GetCode(query_parameters, oauth_info->one_time_string);
   if (!code.has_value()) {
-    return std::move(callback).Run(base::unexpected(code.error()));
+    return std::move(callback).Run(code.error());
   }
 
   oauth_info->code = std::move(code.value());
@@ -93,7 +92,7 @@ ConnectExternalWallet::ExchangeOAuthInfo(
   return oauth_info;
 }
 
-base::expected<std::string, mojom::ConnectExternalWalletError>
+base::expected<std::string, ConnectExternalWalletResult>
 ConnectExternalWallet::GetCode(
     const base::flat_map<std::string, std::string>& query_parameters,
     const std::string& current_one_time_string) const {
@@ -102,25 +101,24 @@ ConnectExternalWallet::GetCode(
     BLOG(1, message);
     if (base::Contains(message, "User does not meet minimum requirements")) {
       engine_->database()->SaveEventLog(log::kKYCRequired, WalletType());
-      return base::unexpected(mojom::ConnectExternalWalletError::kKYCRequired);
+      return base::unexpected(ConnectExternalWalletResult::kKYCRequired);
     } else if (base::Contains(message, "not available for user geolocation")) {
       engine_->database()->SaveEventLog(log::kRegionNotSupported, WalletType());
-      return base::unexpected(
-          mojom::ConnectExternalWalletError::kRegionNotSupported);
+      return base::unexpected(ConnectExternalWalletResult::kRegionNotSupported);
     }
 
-    return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+    return base::unexpected(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (!query_parameters.contains("code") ||
       !query_parameters.contains("state")) {
     BLOG(0, "Query parameters should contain both code and state!");
-    return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+    return base::unexpected(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (current_one_time_string != query_parameters.at("state")) {
     BLOG(0, "One time string mismatch!");
-    return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+    return base::unexpected(ConnectExternalWalletResult::kUnexpected);
   }
 
   return query_parameters.at("code");
@@ -171,8 +169,7 @@ void ConnectExternalWallet::OnConnect(
       *engine_, WalletType(),
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   DCHECK(!token.empty());
@@ -181,11 +178,11 @@ void ConnectExternalWallet::OnConnect(
 
   if (const auto connect_external_wallet_result =
           PostConnect::ToConnectExternalWalletResult(result);
-      !connect_external_wallet_result.has_value()) {
+      connect_external_wallet_result != ConnectExternalWalletResult::kSuccess) {
     BLOG(0, "Failed to connect " << WalletType() << " wallet!");
 
-    if (const auto key = log::GetEventLogKeyForLinkingResult(
-            connect_external_wallet_result.error());
+    if (const auto key =
+            log::GetEventLogKeyForLinkingResult(connect_external_wallet_result);
         !key.empty()) {
       engine_->database()->SaveEventLog(
           key, WalletType() + std::string("/") + abbreviated_address);
@@ -201,8 +198,7 @@ void ConnectExternalWallet::OnConnect(
   if (!wallet::TransitionWallet(*engine_, std::move(wallet),
                                 mojom::WalletStatus::kConnected)) {
     BLOG(0, "Failed to transition " << WalletType() << " wallet state!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   from_status == mojom::WalletStatus::kNotConnected
@@ -217,7 +213,7 @@ void ConnectExternalWallet::OnConnect(
   CHECK(result.has_value() && !result.value().empty());
   engine_->SetState(state::kDeclaredGeo, result.value());
 
-  std::move(callback).Run({});
+  std::move(callback).Run(ConnectExternalWalletResult::kSuccess);
 }
 
 }  // namespace wallet_provider

@@ -169,8 +169,8 @@ function excludedSiteChanged () {
   actions.getContributeList()
 }
 
-function balance (result: mojom.FetchBalanceResult) {
-  actions.onBalance(result)
+function balance (balance?: mojom.Balance) {
+  actions.onBalance(balance)
 }
 
 function reconcileComplete (properties: { type: number, result: number }) {
@@ -188,8 +188,8 @@ function reconcileComplete (properties: { type: number, result: number }) {
   }
 }
 
-function onGetExternalWallet (result: mojom.GetExternalWalletResult) {
-  actions.onGetExternalWallet(result)
+function onGetExternalWallet (externalWallet?: mojom.ExternalWallet) {
+  actions.onGetExternalWallet(externalWallet)
 }
 
 function onConnectExternalWallet (result: mojom.ConnectExternalWalletResult) {

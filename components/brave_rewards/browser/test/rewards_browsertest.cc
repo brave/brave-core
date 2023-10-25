@@ -147,8 +147,8 @@ class RewardsBrowserTest : public InProcessBrowserTest {
     double total = -1.0;
     base::RunLoop run_loop;
     rewards_service_->FetchBalance(base::BindLambdaForTesting(
-        [&](brave_rewards::FetchBalanceResult result) {
-          total = result.has_value() ? result.value()->total : -1.0;
+        [&](brave_rewards::mojom::BalancePtr balance) {
+          total = balance ? balance->total : -1.0;
           run_loop.Quit();
         }));
     run_loop.Run();

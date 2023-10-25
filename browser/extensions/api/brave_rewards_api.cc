@@ -1176,9 +1176,7 @@ ExtensionFunction::ResponseAction BraveRewardsFetchBalanceFunction::Run() {
 }
 
 void BraveRewardsFetchBalanceFunction::OnFetchBalance(
-    base::expected<::brave_rewards::mojom::BalancePtr,
-                   ::brave_rewards::mojom::FetchBalanceError> result) {
-  const auto balance = std::move(result).value_or(nullptr);
+    ::brave_rewards::mojom::BalancePtr balance) {
   Respond(balance ? WithArguments(balance->total) : NoArguments());
 }
 
@@ -1215,9 +1213,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetExternalWalletFunction::Run() {
 }
 
 void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
-    base::expected<::brave_rewards::mojom::ExternalWalletPtr,
-                   ::brave_rewards::mojom::GetExternalWalletError> result) {
-  auto wallet = std::move(result).value_or(nullptr);
+    ::brave_rewards::mojom::ExternalWalletPtr wallet) {
   if (!wallet) {
     return Respond(NoArguments());
   }

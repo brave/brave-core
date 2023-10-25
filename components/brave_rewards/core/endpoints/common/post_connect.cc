@@ -18,6 +18,7 @@
 namespace brave_rewards::internal::endpoints {
 using Error = PostConnect::Error;
 using Result = PostConnect::Result;
+using mojom::ConnectExternalWalletResult;
 
 namespace {
 
@@ -128,46 +129,39 @@ ConnectExternalWalletResult PostConnect::ToConnectExternalWalletResult(
   if (!result.has_value()) {
     switch (result.error()) {
       case Error::kFailedToCreateRequest:
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
       case Error::kFlaggedWallet:  // HTTP 400
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kFlaggedWallet);
+        return ConnectExternalWalletResult::kFlaggedWallet;
       case Error::kMismatchedCountries:  // HTTP 400
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kMismatchedCountries);
+        return ConnectExternalWalletResult::kMismatchedCountries;
       case Error::kProviderUnavailable:  // HTTP 400
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kProviderUnavailable);
+        return ConnectExternalWalletResult::kProviderUnavailable;
       case Error::kRegionNotSupported:  // HTTP 400
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kRegionNotSupported);
+        return ConnectExternalWalletResult::kRegionNotSupported;
       case Error::kUnknownMessage:  // HTTP 400, HTTP 403
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
       case Error::kKYCRequired:  // HTTP 403, HTTP 404
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kKYCRequired);
+        return ConnectExternalWalletResult::kKYCRequired;
       case Error::kMismatchedProviderAccounts:  // HTTP 403
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kMismatchedProviderAccounts);
+        return ConnectExternalWalletResult::kMismatchedProviderAccounts;
       case Error::kRequestSignatureVerificationFailure:  // HTTP 403
-        return base::unexpected(mojom::ConnectExternalWalletError::
-                                    kRequestSignatureVerificationFailure);
+        return ConnectExternalWalletResult::
+            kRequestSignatureVerificationFailure;
       case Error::kTransactionVerificationFailure:  // HTTP 403
-        return base::unexpected(mojom::ConnectExternalWalletError::
-                                    kUpholdTransactionVerificationFailure);
+        return ConnectExternalWalletResult::
+            kUpholdTransactionVerificationFailure;
       case Error::kDeviceLimitReached:  // HTTP 409
-        return base::unexpected(
-            mojom::ConnectExternalWalletError::kDeviceLimitReached);
+        return ConnectExternalWalletResult::kDeviceLimitReached;
       case Error::kUnexpectedError:  // HTTP 500
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
       case Error::kUnexpectedStatusCode:  // HTTP xxx
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
       case Error::kFailedToParseBody:
-        return base::unexpected(mojom::ConnectExternalWalletError::kUnexpected);
+        return ConnectExternalWalletResult::kUnexpected;
     }
   }
 
-  return {};
+  return ConnectExternalWalletResult::kSuccess;
 }
 
 PostConnect::PostConnect(RewardsEngineImpl& engine) : RequestBuilder(engine) {}

@@ -12,7 +12,7 @@
 
 namespace brave_rewards::internal {
 namespace log {
-std::string GetEventLogKeyForLinkingResult(mojom::ConnectExternalWalletError);
+std::string GetEventLogKeyForLinkingResult(mojom::ConnectExternalWalletResult);
 }  // namespace log
 }  // namespace brave_rewards::internal
 

@@ -597,8 +597,7 @@ void RewardsEngineImpl::GetExternalWallet(const std::string& wallet_type,
     }
 
     NOTREACHED() << "Unknown external wallet type!";
-    std::move(callback).Run(
-        base::unexpected(mojom::GetExternalWalletError::kUnexpected));
+    std::move(callback).Run(nullptr);
   });
 }
 
@@ -626,7 +625,7 @@ void RewardsEngineImpl::ConnectExternalWallet(
 
         NOTREACHED() << "Unknown external wallet type!";
         std::move(callback).Run(
-            base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+            mojom::ConnectExternalWalletResult::kUnexpected);
       });
 }
 

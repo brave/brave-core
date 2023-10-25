@@ -26,6 +26,7 @@ namespace brave_rewards::internal {
 using endpoints::GetRecipientIDGemini;
 using endpoints::PostConnectGemini;
 using endpoints::RequestFor;
+using mojom::ConnectExternalWalletResult;
 using wallet_provider::ConnectExternalWallet;
 
 namespace gemini {
@@ -46,8 +47,7 @@ void ConnectGeminiWallet::Authorize(OAuthInfo&& oauth_info,
   const auto rewards_wallet = engine_->wallet()->GetWallet();
   if (!rewards_wallet) {
     BLOG(0, "Rewards wallet is null!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   const std::string hashed_payment_id =
@@ -66,20 +66,17 @@ void ConnectGeminiWallet::OnAuthorize(ConnectExternalWalletCallback callback,
                                       std::string&& token) {
   if (!engine_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (result != mojom::Result::OK) {
     BLOG(0, "Couldn't get token");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (token.empty()) {
     BLOG(0, "Token is empty");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   auto on_get_recipient_id =
@@ -96,13 +93,11 @@ void ConnectGeminiWallet::OnGetRecipientID(
     endpoints::GetRecipientIDGemini::Result&& result) {
   if (!engine_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (!result.has_value()) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   auto recipient_id = std::move(result).value();
@@ -126,34 +121,29 @@ void ConnectGeminiWallet::OnPostRecipientID(
     std::string&& recipient_id) {
   if (!engine_->gemini()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                        mojom::WalletStatus::kLoggedOut})) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (result == mojom::Result::NOT_FOUND) {
     BLOG(0, "Unverified User");
     engine_->database()->SaveEventLog(log::kKYCRequired,
                                       constant::kWalletGemini);
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kKYCRequired));
+    return std::move(callback).Run(ConnectExternalWalletResult::kKYCRequired);
   }
 
   if (result != mojom::Result::OK) {
     BLOG(0, "Failed to create recipient ID!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (recipient_id.empty()) {
     BLOG(0, "Recipient ID is empty!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   gemini_server_.post_account().Request(
@@ -172,27 +162,23 @@ void ConnectGeminiWallet::OnPostAccount(ConnectExternalWalletCallback callback,
   auto wallet = engine_->gemini()->GetWalletIf(
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
   if (!wallet) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (result == mojom::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   if (result != mojom::Result::OK) {
     BLOG(0, "Failed to get account info!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   wallet->user_name = std::move(user_name);
   if (!engine_->gemini()->SetWallet(std::move(wallet))) {
     BLOG(0, "Failed to save " << constant::kWalletGemini << " wallet!");
-    return std::move(callback).Run(
-        base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
+    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
   auto on_connect =

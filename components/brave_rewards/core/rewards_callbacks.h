@@ -26,24 +26,15 @@ using ClaimPromotionCallback = mojom::RewardsEngine::ClaimPromotionCallback;
 using ConnectExternalWalletCallback =
     mojom::RewardsEngine::ConnectExternalWalletCallback;
 
-using ConnectExternalWalletResult =
-    base::expected<void, mojom::ConnectExternalWalletError>;
-
 using CreateRewardsWalletCallback =
     mojom::RewardsEngine::CreateRewardsWalletCallback;
 
 using FetchBalanceCallback = mojom::RewardsEngine::FetchBalanceCallback;
 
-using FetchBalanceResult =
-    base::expected<mojom::BalancePtr, mojom::FetchBalanceError>;
-
 using FetchPromotionsCallback = mojom::RewardsEngine::FetchPromotionsCallback;
 
 using GetExternalWalletCallback =
     mojom::RewardsEngine::GetExternalWalletCallback;
-
-using GetExternalWalletResult =
-    base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>;
 
 using GetRewardsParametersCallback =
     mojom::RewardsEngine::GetRewardsParametersCallback;
