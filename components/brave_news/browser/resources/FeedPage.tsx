@@ -8,6 +8,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Feed from './Feed';
 import { useInspectContext } from './context';
+import { useBraveNews } from './shared/Context';
 
 const Container = styled.div`
   display: flex;
@@ -18,9 +19,10 @@ const Container = styled.div`
 `
 
 export default function FeedPage() {
-  const { feed, truncate } = useInspectContext();
+  const { truncate } = useInspectContext();
+  const { feedV2 } = useBraveNews()
   return <Container>
-    <h2>The Feed ({feed?.items.length} items. Truncated at {truncate})</h2>
-    <Feed feed={feed} />
+    <h2>The Feed ({feedV2?.items.length} items. Truncated at {truncate})</h2>
+    <Feed feed={feedV2} />
   </Container>
 }

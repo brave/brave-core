@@ -5,10 +5,12 @@
 
 import * as React from 'react'
 import { useCallback, useMemo, useState, useEffect } from 'react'
-import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled, Configuration } from './api'
+import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled, Configuration, FeedV2 } from './api'
 import { PublishersCachingWrapper } from './publishersCache'
 import { ChannelsCachingWrapper } from './channelsCache'
 import { ConfigurationCachingWrapper } from './configurationCache'
+import usePromise from '../../../../common/usePromise'
+import { api } from '../context'
 
 // Leave possibility for more pages open.
 type NewsPage = null
@@ -16,8 +18,13 @@ type NewsPage = null
   | 'suggestions'
   | 'popular'
 
+export type FeedType = 'all' | `publishers/${string}` | `channels/${string}`
+
 interface BraveNewsContext {
   locale: string
+  feedView: FeedType,
+  feedV2?: FeedV2,
+  setFeedView: (feedType: FeedType) => void,
   customizePage: NewsPage
   setCustomizePage: (page: NewsPage) => void
   channels: Channels
@@ -38,6 +45,9 @@ interface BraveNewsContext {
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
   locale: '',
+  feedView: 'all',
+  feedV2: undefined,
+  setFeedView: () => { },
   customizePage: null,
   setCustomizePage: () => { },
   publishers: {},
@@ -58,6 +68,22 @@ const configurationCache = new ConfigurationCachingWrapper()
 
 export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const [locale, setLocale] = useState('')
+  const [feedView, setFeedView] = useState<FeedType>('all')
+
+  // Note: It's okay to fetch the FeedV2 even when the feature isn't enabled
+  // because the controller will just return an empty feed.
+  const { result: feedV2 } = usePromise<FeedV2 | undefined>(() => {
+    let promise: Promise<{ feed: FeedV2 }> | undefined
+    if (feedView.startsWith('publishers/')) {
+      promise = api.getPublisherFeed(feedView.split('/')[1]);
+    } else if (feedView.startsWith('channels/')) {
+      promise = api.getChannelFeed(feedView.split('/')[1])
+    } else {
+      promise = api.getFeedV2()
+    }
+    return promise?.then(f => f.feed)
+  }, [feedView])
+
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
@@ -119,6 +145,9 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
 
   const context = useMemo<BraveNewsContext>(() => ({
     locale,
+    feedView,
+    setFeedView,
+    feedV2: feedV2,
     customizePage,
     setCustomizePage,
     channels,
@@ -131,7 +160,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     isOptInPrefEnabled: configuration.isOptedIn,
     isShowOnNTPPrefEnabled: configuration.showOnNTP,
     toggleBraveNewsOnNTP
-  }), [customizePage, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP])
+  }), [customizePage, setFeedView, feedV2, channels, publishers, suggestedPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

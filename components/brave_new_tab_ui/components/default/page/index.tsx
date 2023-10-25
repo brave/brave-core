@@ -10,6 +10,7 @@ import { defaultState } from '../../../storage/new_tab_storage'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'
+export const CLASSNAME_PAGE_STUCK = 'page-stuck'
 
 const singleColumnSmallViewport = css`
  @media screen and (max-width: ${breakpointEveryBlock}) {
@@ -136,10 +137,12 @@ export const Page: React.FunctionComponent<PageProps> = (props) => {
             : (scrollPast - blurLowerLimit) / (blurUpperLimit - blurLowerLimit)
         if (root) {
           root.style.setProperty('--ntp-extra-content-effect-multiplier', blurAmount.toString())
+          root.classList.add(CLASSNAME_PAGE_STUCK)
         }
       } else {
         if (root) {
           root.style.setProperty('--ntp-extra-content-effect-multiplier', '0')
+          root.classList.remove(CLASSNAME_PAGE_STUCK)
         }
       }
       root?.style.setProperty('--ntp-fixed-content-height', Math.round(element.clientHeight) + 'px')

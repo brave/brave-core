@@ -59,13 +59,13 @@ const getPublisherKey = (p: Publisher) => p.publisherId
 const getPublisherName = (p: Publisher) => p.publisherName
 
 export default function SignalsPage(props: Props) {
-  const { feed, truncate, setTruncate } = useInspectContext();
-  const { channels, publishers } = useBraveNews();
+  const { truncate, setTruncate } = useInspectContext();
+  const { feedV2, channels, publishers } = useBraveNews();
 
   const [show, setShow] = React.useState<'all' | 'publishers' | 'channels'>('all')
   const [sort, setSort] = React.useState<'name' | 'subscribed' | 'visitWeight' | 'shownCount'>('visitWeight')
   const [filter, setFilter] = React.useState('')
-  const { channelStats, publisherStats, counts } = getFeedStats(feed, truncate)
+  const { channelStats, publisherStats, counts } = getFeedStats(feedV2, truncate)
 
   return <Container direction='column'>
     <h2>Signals</h2>
