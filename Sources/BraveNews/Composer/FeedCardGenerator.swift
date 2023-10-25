@@ -180,15 +180,15 @@ extension FeedCardGenerator {
       case .braveAd:
         // If we fail to obtain inline content ads during a card gen it can be assumed that
         // all further calls will fail since cards are generated all at once
-        guard !contentAdsQueryFailed, let ads = ads, ads.isAdsServiceRunning() else { return [] }
+        guard !contentAdsQueryFailed, let ads = ads, ads.isServiceRunning() else { return [] }
         if !inlineContentAdsPurged {
           inlineContentAdsPurged = true
           _ = await Task { @MainActor in
-            await ads.purgeOrphanedAdEvents(.inlineContentAd)
+              await ads.purgeOrphanedAdEvents(for: .inlineContentAd, completion: <#(Bool) -> Void#>)
           }.value
         }
         let contentAd = await Task { @MainActor in
-          await ads.inlineContentAds(dimensions: "900x750").1
+            await ads.maybeServeInlineContentAd("900x750").1
         }.value
         guard let ad = contentAd else {
           contentAdsQueryFailed = true
