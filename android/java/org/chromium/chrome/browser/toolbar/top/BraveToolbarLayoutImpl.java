@@ -420,123 +420,137 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // to proactively update the shields button state here, otherwise shields
         // might sometimes show as disabled while it is actually enabled.
         updateBraveShieldsButtonState(getToolbarDataProvider().getTab());
-        mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
-            @Override
-            protected void onTabRegistered(Tab tab) {
-                super.onTabRegistered(tab);
-                if (tab.isIncognito()) {
-                    showWalletIcon(false);
-                }
-            }
-
-            @Override
-            public void onShown(Tab tab, @TabSelectionType int type) {
-                // Update shields button state when visible tab is changed.
-                updateBraveShieldsButtonState(tab);
-                // case when window.open is triggered from dapps site and new tab is in focus
-                if (type != TabSelectionType.FROM_USER) {
-                    dismissWalletPanelOrDialog();
-                }
-                findMediaFiles(tab);
-            }
-
-            @Override
-            public void onHidden(Tab tab, @TabHidingType int reason) {
-                hidePlaylistButton();
-            }
-
-            @Override
-            public void onPageLoadStarted(Tab tab, GURL url) {
-                showWalletIcon(false, tab);
-                if (getToolbarDataProvider().getTab() == tab) {
-                    updateBraveShieldsButtonState(tab);
-                }
-                mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
-                dismissShieldsTooltip();
-                hidePlaylistButton();
-                hideBravePlayerButton();
-            }
-
-            @Override
-            public void onPageLoadFinished(final Tab tab, GURL url) {
-                if (getToolbarDataProvider().getTab() == tab) {
-                    mBraveShieldsHandler.updateUrlSpec(url.getSpec());
-                    updateBraveShieldsButtonState(tab);
-
-                    if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
-                        checkForTooltip(tab);
-                    }
-                }
-
-                if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                        && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
-                        && url.getSpec().contains("rewards")
-                        && ((!BravePermissionUtils.hasNotificationPermission(getContext()))
-                                || BraveNotificationWarningDialog.shouldShowRewardWarningDialog(
-                                        getContext()))) {
-                    showNotificationNotEarningDialog();
-                }
-
-                String countryCode = Locale.getDefault().getCountry();
-                if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
-                        && url.domainIs(YOUTUBE_DOMAIN)
-                        && SharedPreferencesManager.getInstance().readBoolean(
-                                BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, true)) {
-                    SharedPreferencesManager.getInstance().writeBoolean(
-                            BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
-                }
-
-                processPageLoadForBravePlayerButton(url);
-            }
-
-            private void showNotificationNotEarningDialog() {
-                try {
-                    RewardsYouAreNotEarningDialog rewardsYouAreNotEarningDialog =
-                            RewardsYouAreNotEarningDialog.newInstance();
-                    rewardsYouAreNotEarningDialog.setCancelable(false);
-                    rewardsYouAreNotEarningDialog.show(
-                            BraveActivity.getBraveActivity().getSupportFragmentManager(),
-                            RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
-
-                } catch (BraveActivity.BraveActivityNotFoundException | IllegalStateException e) {
-                    Log.e(TAG, "showNotificationNotEarningDialog " + e);
-                }
-            }
-
-            @Override
-            public void onDidFinishNavigationInPrimaryMainFrame(
-                    Tab tab, NavigationHandle navigation) {
-                if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
-                        && !tab.isIncognito()) {
-                    mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
-                            tab.getId(), tab.getUrl().getSpec());
-                }
-                if (PackageUtils.isFirstInstall(getContext()) && tab.getUrl().getSpec() != null
-                        && (tab.getUrl().getSpec().equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
-                        && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
-                        && mBraveRewardsNativeWorker != null
-                        && !mBraveRewardsNativeWorker.isRewardsEnabled()
-                        && mBraveRewardsNativeWorker.IsSupported()) {
-                    showOnBoarding();
-                }
-                findMediaFiles(tab);
-            }
-
-            @Override
-            public void onDestroyed(Tab tab) {
-                // Remove references for the ads from the Database. Tab is destroyed, they are not
-                // needed anymore.
-                new Thread() {
+        mTabModelSelectorTabObserver =
+                new TabModelSelectorTabObserver(selector) {
                     @Override
-                    public void run() {
-                        mDatabaseHelper.deleteDisplayAdsFromTab(tab.getId());
+                    protected void onTabRegistered(Tab tab) {
+                        super.onTabRegistered(tab);
+                        if (tab.isIncognito()) {
+                            showWalletIcon(false);
+                        }
                     }
-                }.start();
-                mBraveShieldsHandler.removeStat(tab.getId());
-                mTabsWithWalletIcon.remove(tab.getId());
-            }
-        };
+
+                    @Override
+                    public void onShown(Tab tab, @TabSelectionType int type) {
+                        // Update shields button state when visible tab is changed.
+                        updateBraveShieldsButtonState(tab);
+                        // case when window.open is triggered from dapps site and new tab is in
+                        // focus
+                        if (type != TabSelectionType.FROM_USER) {
+                            dismissWalletPanelOrDialog();
+                        }
+                        findMediaFiles(tab);
+                    }
+
+                    @Override
+                    public void onHidden(Tab tab, @TabHidingType int reason) {
+                        hidePlaylistButton();
+                    }
+
+                    @Override
+                    public void onPageLoadStarted(Tab tab, GURL url) {
+                        showWalletIcon(false, tab);
+                        if (getToolbarDataProvider().getTab() == tab) {
+                            updateBraveShieldsButtonState(tab);
+                        }
+                        mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
+                        dismissShieldsTooltip();
+                        hidePlaylistButton();
+                        hideBravePlayerButton();
+                    }
+
+                    @Override
+                    public void onPageLoadFinished(final Tab tab, GURL url) {
+                        if (getToolbarDataProvider().getTab() == tab) {
+                            mBraveShieldsHandler.updateUrlSpec(url.getSpec());
+                            updateBraveShieldsButtonState(tab);
+
+                            if (mBraveShieldsButton != null
+                                    && mBraveShieldsButton.isShown()
+                                    && mBraveShieldsHandler != null
+                                    && !mBraveShieldsHandler.isShowing()) {
+                                checkForTooltip(tab);
+                            }
+                        }
+
+                        if (mBraveShieldsButton != null
+                                && mBraveShieldsButton.isShown()
+                                && mBraveShieldsHandler != null
+                                && !mBraveShieldsHandler.isShowing()
+                                && url.getSpec().contains("rewards")
+                                && ((!BravePermissionUtils.hasNotificationPermission(getContext()))
+                                        || BraveNotificationWarningDialog
+                                                .shouldShowRewardWarningDialog(getContext()))) {
+                            showNotificationNotEarningDialog();
+                        }
+
+                        String countryCode = Locale.getDefault().getCountry();
+                        if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
+                                && url.domainIs(YOUTUBE_DOMAIN)
+                                && SharedPreferencesManager.getInstance()
+                                        .readBoolean(
+                                                BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG,
+                                                true)) {
+                            SharedPreferencesManager.getInstance()
+                                    .writeBoolean(BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
+                        }
+
+                        processPageLoadForBravePlayerButton(url);
+                    }
+
+                    private void showNotificationNotEarningDialog() {
+                        try {
+                            RewardsYouAreNotEarningDialog rewardsYouAreNotEarningDialog =
+                                    RewardsYouAreNotEarningDialog.newInstance();
+                            rewardsYouAreNotEarningDialog.setCancelable(false);
+                            rewardsYouAreNotEarningDialog.show(
+                                    BraveActivity.getBraveActivity().getSupportFragmentManager(),
+                                    RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
+
+                        } catch (BraveActivity.BraveActivityNotFoundException
+                                | IllegalStateException e) {
+                            Log.e(TAG, "showNotificationNotEarningDialog " + e);
+                        }
+                    }
+
+                    @Override
+                    public void onDidFinishNavigationInPrimaryMainFrame(
+                            Tab tab, NavigationHandle navigation) {
+                        if (getToolbarDataProvider().getTab() == tab
+                                && mBraveRewardsNativeWorker != null
+                                && !tab.isIncognito()) {
+                            mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
+                                    tab.getId(), tab.getUrl().getSpec());
+                        }
+                        if (PackageUtils.isFirstInstall(getContext())
+                                && tab.getUrl().getSpec() != null
+                                && (tab.getUrl()
+                                        .getSpec()
+                                        .equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
+                                && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
+                                && mBraveRewardsNativeWorker != null
+                                && !mBraveRewardsNativeWorker.isRewardsEnabled()
+                                && mBraveRewardsNativeWorker.IsSupported()) {
+                            showOnBoarding();
+                        }
+                        findMediaFiles(tab);
+                    }
+
+                    @Override
+                    public void onDestroyed(Tab tab) {
+                        // Remove references for the ads from the Database. Tab is destroyed, they
+                        // are not
+                        // needed anymore.
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                mDatabaseHelper.deleteDisplayAdsFromTab(tab.getId());
+                            }
+                        }.start();
+                        mBraveShieldsHandler.removeStat(tab.getId());
+                        mTabsWithWalletIcon.remove(tab.getId());
+                    }
+                };
 
         mTabModelSelectorTabModelObserver = new TabModelSelectorTabModelObserver(selector) {
             @Override
