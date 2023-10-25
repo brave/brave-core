@@ -82,12 +82,19 @@ struct IpfsFallbackOrigUrlData : public base::SupportsUserData::Data {
   GURL original_url;
 };
 struct IpfsFallbackBlockRedirectData : public base::SupportsUserData::Data {
-  explicit IpfsFallbackBlockRedirectData(const int& nav_id)
-      : block_for_navigation_id(nav_id) {}
+  explicit IpfsFallbackBlockRedirectData(const bool& enable_block)
+      : enable_redirect_block(enable_block) {}
   ~IpfsFallbackBlockRedirectData() override = default;
 
-  int block_for_navigation_id;
+  bool enable_redirect_block;
 };
+
+bool IsClientOrServerHttpError(content::NavigationHandle* handle) {
+  auto const* headers = handle->GetResponseHeaders();
+  const auto end_of_error_codes_range = 600;
+  return headers && headers->response_code() >= net::HTTP_BAD_REQUEST &&
+         headers->response_code() < end_of_error_codes_range;
+}
 
 }  // namespace
 
@@ -128,7 +135,7 @@ class BraveIPFSFallbackInfoBarDelegateObserverImpl
 
   void OnRedirectToOriginalAddress() override {
     if (ipfs_tab_helper_.get()) {
-      ipfs_tab_helper_->SetFallbackAddress(original_url_);
+      ipfs_tab_helper_->LoadUrlForFallback(original_url_);
     }
   }
 
@@ -177,15 +184,14 @@ void IPFSTabHelper::IPFSResourceLinkResolved(const GURL& ipfs) {
 
 void IPFSTabHelper::DNSLinkResolved(const GURL& ipfs,
                                     bool is_gateway_url,
-                                    const bool& auto_redirect_blocked,
-                                    LoadUrlCallback load_url_callback) {
+                                    const bool& auto_redirect_blocked) {
   DCHECK(!ipfs.is_valid() || ipfs.SchemeIs(kIPNSScheme));
   ipfs_resolved_url_ = ipfs.is_valid() ? ipfs : GURL();
   bool should_redirect =
       pref_service_->GetBoolean(kIPFSAutoRedirectToConfiguredGateway);
 
   if (ipfs.is_valid() && should_redirect && !auto_redirect_blocked) {
-    LoadUrl(GetIPFSResolvedURL(), std::move(load_url_callback));
+    LoadUrlForAutoRedirect(GetIPFSResolvedURL());
     return;
   }
   UpdateLocationBar();
@@ -197,7 +203,6 @@ void IPFSTabHelper::HostResolvedCallback(
     bool is_gateway_url,
     absl::optional<std::string> x_ipfs_path_header,
     const bool auto_redirect_blocked,
-    LoadUrlCallback load_url_callback,
     const std::string& host,
     const absl::optional<std::string>& dnslink) {
   // Check if user hasn't redirected to another host while dnslink was resolving
@@ -212,25 +217,46 @@ void IPFSTabHelper::HostResolvedCallback(
   }
 
   DNSLinkResolved(ResolveDNSLinkUrl(target_url), is_gateway_url,
-                  auto_redirect_blocked, std::move(load_url_callback));
+                  auto_redirect_blocked);
 }
 
-void IPFSTabHelper::LoadUrl(const GURL& gurl,
-                            LoadUrlCallback on_url_loaded_callback) {
+void IPFSTabHelper::LoadUrl(const GURL& gurl) {
   if (redirect_callback_for_testing_) {
     redirect_callback_for_testing_.Run(gurl);
     return;
   }
 
+  content::OpenURLParams params(gurl, content::Referrer(),
+                                WindowOpenDisposition::CURRENT_TAB,
+                                ui::PAGE_TRANSITION_LINK, false);
+  params.should_replace_current_entry = true;
+  web_contents()->OpenURL(params);
+}
+
+void IPFSTabHelper::LoadUrlForAutoRedirect(const GURL& gurl) {
   content::NavigationController::LoadURLParams params(content::OpenURLParams(
       gurl, content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
       ui::PAGE_TRANSITION_LINK, false));
   params.should_replace_current_entry = true;
-
   if (auto new_handle =
           web_contents()->GetController().LoadURLWithParams(params);
-      new_handle && on_url_loaded_callback) {
-    std::move(on_url_loaded_callback).Run(new_handle);
+      new_handle) {
+    new_handle->SetUserData(
+        kIpfsFallbackOriginalUrlKey,
+        std::make_unique<IpfsFallbackOrigUrlData>(GetCurrentPageURL()));
+  }
+}
+
+void IPFSTabHelper::LoadUrlForFallback(const GURL& gurl) {
+  content::NavigationController::LoadURLParams params(content::OpenURLParams(
+      gurl, content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+      ui::PAGE_TRANSITION_TYPED, false));
+  params.should_replace_current_entry = true;
+  if (auto new_handle =
+          web_contents()->GetController().LoadURLWithParams(params);
+      new_handle) {
+    new_handle->SetUserData(kIpfsFallbackBlockRedirectForNavEntryIdKey,
+                            std::make_unique<IpfsFallbackBlockRedirectData>(true));
   }
 }
 
@@ -276,18 +302,16 @@ void IPFSTabHelper::CheckDNSLinkRecord(
     const GURL& target,
     bool is_gateway_url,
     absl::optional<std::string> x_ipfs_path_header,
-    const bool& auto_redirect_blocked,
-    LoadUrlCallback load_url_callback) {
+    const bool& auto_redirect_blocked) {
   if (!target.SchemeIsHTTPOrHTTPS())
     return;
 
   auto host_port_pair = net::HostPortPair::FromURL(target);
 
-  auto resolved_callback =
-      base::BindOnce(&IPFSTabHelper::HostResolvedCallback,
-                     weak_ptr_factory_.GetWeakPtr(), GetCurrentPageURL(),
-                     target, is_gateway_url, std::move(x_ipfs_path_header),
-                     auto_redirect_blocked, std::move(load_url_callback));
+  auto resolved_callback = base::BindOnce(
+      &IPFSTabHelper::HostResolvedCallback, weak_ptr_factory_.GetWeakPtr(),
+      GetCurrentPageURL(), target, is_gateway_url,
+      std::move(x_ipfs_path_header), auto_redirect_blocked);
 
   const auto& network_anonymization_key =
       web_contents()->GetPrimaryMainFrame()
@@ -375,15 +399,14 @@ GURL IPFSTabHelper::ResolveDNSLinkUrl(const GURL& url) {
 
 void IPFSTabHelper::MaybeCheckDNSLinkRecord(
     const net::HttpResponseHeaders* headers,
-    const bool& auto_redirect_blocked,
-    LoadUrlCallback load_url_callback) {
+    const bool& auto_redirect_blocked) {
   UpdateDnsLinkButtonState();
   auto current_url = GetCurrentPageURL();
   auto dnslink_target = current_url;
   auto possible_redirect = ResolveIPFSUrlFromGatewayLikeUrl(current_url);
   if (possible_redirect && IsIPFSScheme(possible_redirect.value())) {
     if (IsAutoRedirectIPFSResourcesEnabled() && !auto_redirect_blocked) {
-      LoadUrl(possible_redirect.value(), std::move(load_url_callback));
+      LoadUrlForAutoRedirect(possible_redirect.value());
     } else {
       IPFSResourceLinkResolved(possible_redirect.value());
     }
@@ -401,17 +424,14 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
   if ((response_code >= net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR &&
        response_code <= net::HttpStatusCode::HTTP_VERSION_NOT_SUPPORTED)) {
     CheckDNSLinkRecord(dnslink_target, possible_redirect.has_value(),
-                       absl::nullopt, auto_redirect_blocked,
-                       std::move(load_url_callback));
+                       absl::nullopt, auto_redirect_blocked);
   } else if (headers->GetNormalizedHeader(kIfpsPathHeader,
                                           &normalized_header)) {
     CheckDNSLinkRecord(dnslink_target, possible_redirect.has_value(),
-                       normalized_header, auto_redirect_blocked,
-                       std::move(load_url_callback));
+                       normalized_header, auto_redirect_blocked);
   } else if (possible_redirect) {
     CheckDNSLinkRecord(dnslink_target, possible_redirect.has_value(),
-                       absl::nullopt, auto_redirect_blocked,
-                       std::move(load_url_callback));
+                       absl::nullopt, auto_redirect_blocked);
   }
 }
 
@@ -435,52 +455,31 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
       handle->IsSameDocument()) {
     return;
   }
-  bool auto_redirect_blocked = false;
-  LoadUrlCallback set_orig_url_cb = base::NullCallback();
-  const auto current_url = GetCurrentPageURL();
-  if (IsIPFSScheme(current_url) || IsLocalGatewayURL(current_url) ||
-      ExtractSourceFromGateway(current_url).has_value()) {
-    auto const* headers = handle->GetResponseHeaders();
     auto is_ipfs_companion_enabled(
         pref_service_->GetBoolean(kIPFSCompanionEnabled));
     if (!is_ipfs_companion_enabled &&
         ((handle->IsErrorPage() && handle->GetNetErrorCode() != net::OK) ||
-         (headers && headers->response_code() != net::HTTP_OK))) {
+         (IsClientOrServerHttpError(handle)))) {
       auto* orig_url_nav_data = static_cast<IpfsFallbackOrigUrlData*>(
           handle->GetUserData(kIpfsFallbackOriginalUrlKey));
-      auto* block_redirect_nav_data =
-          static_cast<IpfsFallbackBlockRedirectData*>(
-              handle->GetUserData(kIpfsFallbackBlockRedirectForNavEntryIdKey));
-      if (!orig_url_nav_data && !block_redirect_nav_data) {
-        set_orig_url_cb = base::BindOnce(
-            [](const GURL& url,
-               base::WeakPtr<content::NavigationHandle> new_handle) {
-              if (new_handle) {
-                new_handle->SetUserData(
-                    kIpfsFallbackOriginalUrlKey,
-                    std::make_unique<IpfsFallbackOrigUrlData>(url));
-              }
-            },
-            current_url);
-      } else if (orig_url_nav_data &&
-                 !orig_url_nav_data->original_url.is_empty()) {
+      if (orig_url_nav_data && !orig_url_nav_data->original_url.is_empty()) {
         ShowBraveIPFSFallbackInfoBar(orig_url_nav_data->original_url);
         return;
-      } else {
-        auto_redirect_blocked =
-            block_redirect_nav_data &&
-            (block_redirect_nav_data->block_for_navigation_id ==
-             handle->GetNavigationId());
       }
     }
-  }
 
   if (handle->GetResponseHeaders() &&
       handle->GetResponseHeaders()->HasHeader(kIfpsPathHeader)) {
     MaybeSetupIpfsProtocolHandlers(handle->GetURL());
   }
-  MaybeCheckDNSLinkRecord(handle->GetResponseHeaders(), auto_redirect_blocked,
-                          std::move(set_orig_url_cb));
+
+  auto* block_redirect_nav_data = static_cast<IpfsFallbackBlockRedirectData*>(
+      handle->GetUserData(kIpfsFallbackBlockRedirectForNavEntryIdKey));
+  const bool auto_redirect_blocked =
+      block_redirect_nav_data &&
+      block_redirect_nav_data->enable_redirect_block;
+
+  MaybeCheckDNSLinkRecord(handle->GetResponseHeaders(), auto_redirect_blocked);
 }
 
 void IPFSTabHelper::ShowBraveIPFSFallbackInfoBar(
@@ -500,24 +499,6 @@ void IPFSTabHelper::ShowBraveIPFSFallbackInfoBar(
         pref_service_);
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
-}
-
-void IPFSTabHelper::SetFallbackAddress(const GURL& original_url) {
-  auto url_to_catch = ExtractSourceFromGateway(original_url);
-  LoadUrl(original_url,
-          base::BindOnce(
-              [](absl::optional<GURL> url,
-                 base::WeakPtr<content::NavigationHandle> new_handle) {
-                if (new_handle && url.has_value()) {
-                  new_handle->SetUserData(
-                      kIpfsFallbackBlockRedirectForNavEntryIdKey,
-                      std::make_unique<IpfsFallbackBlockRedirectData>(
-                          new_handle->GetNavigationId()));
-                }
-              },
-              url_to_catch));
-
-  UpdateLocationBar();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSTabHelper);
