@@ -33,9 +33,6 @@
 #endif
 
 #include "src/chrome/installer/setup/install_worker.cc"
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#undef GetElevationServicePath
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 #if defined(OFFICIAL_BUILD)
 #include "chrome/install_static/brave_restore_google_update_integration.h"
 #endif
