@@ -133,7 +133,7 @@ void AssetDiscoveryTask::DiscoverAnkrTokens(
     const std::vector<std::string>& chain_ids,
     const std::vector<std::string>& account_addresses,
     DiscoverAssetsCompletedCallback callback) {
-  if (account_addresses.empty()) {
+  if (account_addresses.empty() || chain_ids.empty()) {
     std::move(callback).Run({});
     return;
   }
@@ -160,9 +160,10 @@ void AssetDiscoveryTask::OnAnkrGetAccountBalances(
     base::OnceCallback<void(std::vector<mojom::AnkrAssetBalancePtr>)>
         barrier_callback,
     std::vector<mojom::AnkrAssetBalancePtr> balances,
+    mojom::ProviderError error,
     const std::string& error_message) {
   // If the request failed, return an empty vector
-  if (!error_message.empty()) {
+  if (error != mojom::ProviderError::kSuccess || !error_message.empty()) {
     std::move(barrier_callback).Run({});
     return;
   }

@@ -82,6 +82,7 @@ class AssetDiscoveryTask {
       base::OnceCallback<void(std::vector<mojom::AnkrAssetBalancePtr>)>
           barrier_callback,
       std::vector<mojom::AnkrAssetBalancePtr> balances,
+      mojom::ProviderError error,
       const std::string& error_message);
   void MergeDiscoveredAnkrTokens(
       DiscoverAssetsCompletedCallback callback,

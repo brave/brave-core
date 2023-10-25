@@ -3430,7 +3430,7 @@ void JsonRpcService::OnGetSPLTokenBalances(
 }
 
 void JsonRpcService::AnkrGetAccountBalances(
-    const std::string& account,
+    const std::string& account_address,
     const std::vector<std::string>& chain_ids,
     AnkrGetAccountBalancesCallback callback) {
   auto internal_callback =
@@ -3449,7 +3449,7 @@ void JsonRpcService::AnkrGetAccountBalances(
   }
 
   std::string encoded_params =
-      EncodeAnkrGetAccountBalancesParams(account, blockchains);
+      EncodeAnkrGetAccountBalancesParams(account_address, blockchains);
 
   api_request_helper_->Request(
       "POST", GURL(kAnkrAdvancedAPIBaseURL), encoded_params, "application/json",
@@ -3462,28 +3462,42 @@ void JsonRpcService::OnAnkrGetAccountBalances(
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        {}, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+        {}, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   auto result =
       ankr::ParseGetAccountBalanceResponse(api_request_result.value_body());
   if (!result) {
-    std::move(callback).Run(
-        {}, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
+
+    if (!error_message.empty()) {
+      std::move(callback).Run({}, error, error_message);
+    } else {
+      std::move(callback).Run(
+          {}, mojom::ProviderError::kParsingError,
+          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    }
     return;
   }
 
+  auto* blockchain_registry = BlockchainRegistry::GetInstance();
+
   for (auto& balance : *result) {
     absl::optional<std::string> coingecko_id =
-        BlockchainRegistry::GetInstance()->GetCoingeckoId(
-            balance->asset->chain_id, balance->asset->contract_address);
+        blockchain_registry->GetCoingeckoId(balance->asset->chain_id,
+                                            balance->asset->contract_address);
     if (coingecko_id) {
       balance->asset->coingecko_id = *coingecko_id;
     }
   }
 
-  std::move(callback).Run(std::move(*result), "");
+  std::move(callback).Run(std::move(*result), mojom::ProviderError::kSuccess,
+                          "");
 }
 
 }  // namespace brave_wallet

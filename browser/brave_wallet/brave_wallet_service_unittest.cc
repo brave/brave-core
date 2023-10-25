@@ -3182,9 +3182,13 @@ TEST_F(BraveWalletServiceUnitTest, GetAnkrSupportedChainIds) {
             mojom::kBinanceSmartChainMainnetChainId,
             mojom::kMainnetChainId,
             mojom::kFantomMainnetChainId,
+            mojom::kFlareMainnetChainId,
+            mojom::kGnosisChainId,
             mojom::kOptimismMainnetChainId,
             mojom::kPolygonMainnetChainId,
             mojom::kPolygonZKEVMChainId,
+            mojom::kRolluxMainnetChainId,
+            mojom::kSyscoinMainnetChainId,
             mojom::kZkSyncEraChainId,
             mojom::kGoerliChainId};
         EXPECT_EQ(chains.size(), expected_chains.size());
