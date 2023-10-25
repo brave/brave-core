@@ -70,16 +70,20 @@ export const useAccountQuery = (
 }
 
 export const useAccountFromAddressQuery = (
-  address: string | undefined | typeof skipToken
+  uniqueKeyOrAddress: string | undefined | typeof skipToken
 ) => {
-  const skip = address === undefined || address === skipToken
+  const skip =
+    uniqueKeyOrAddress === undefined || uniqueKeyOrAddress === skipToken
   return useGetAccountInfosRegistryQuery(skip ? skipToken : undefined, {
     skip: skip,
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
       error: res.error,
       account:
-        res.data && !skip ? findAccountByAddress(address, res.data) : undefined
+        res.data && !skip
+          ? findAccountByAccountId({ address: '', uniqueKey: uniqueKeyOrAddress }, res.data)
+            || findAccountByAddress(uniqueKeyOrAddress, res.data)
+          : undefined
     })
   })
 }

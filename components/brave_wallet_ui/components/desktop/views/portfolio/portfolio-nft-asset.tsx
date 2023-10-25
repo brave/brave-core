@@ -137,10 +137,13 @@ export const PortfolioNftAsset = () => {
       return
     }
 
+    const uniqueKeyOrAddress =
+      ownerAccount.address || ownerAccount.accountId.uniqueKey
+
     history.push(
       `${WalletRoutes.SendPage
         .replace(':chainId?', selectedAssetNetwork.chainId)
-        .replace(':accountAddress?', ownerAccount.address)
+        .replace(':uniqueKeyOrAddress?', uniqueKeyOrAddress)
         .replace(
           ':contractAddressOrSymbol?',
           selectedAssetFromParams.contractAddress
