@@ -233,11 +233,18 @@ void AIChatUIPageHandler::GetCanShowPremiumPrompt(
 
   base::Time last_accepted_disclaimer =
       profile_->GetPrefs()->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
+
+  // Can't show if we haven't accepted disclaimer yet
+  if (last_accepted_disclaimer.is_null()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
   bool is_more_than_24h_since_last_seen =
       last_accepted_disclaimer < time_1_day_ago;
 
-  if (is_more_than_24h_since_last_seen && !has_user_dismissed_prompt) {
+  if (is_more_than_24h_since_last_seen) {
     std::move(callback).Run(true);
     return;
   }
