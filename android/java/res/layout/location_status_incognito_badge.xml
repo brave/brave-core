@@ -11,5 +11,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
     android:visibility="gone"
+    android:paddingStart="@dimen/incognito_badge_lateral_padding"
+    android:paddingEnd="@dimen/incognito_badge_lateral_padding"
     android:contentDescription="@string/accessibility_incognito_badge"
     android:src="@drawable/incognito_simple" />
