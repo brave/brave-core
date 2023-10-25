@@ -717,7 +717,7 @@ export enum WalletRoutes {
   SendPageStart = '/send',
   SendPage = '/send/' +
     ':chainId?/' +
-    ':accountAddress?/' +
+    ':uniqueKeyOrAddress?/' +
     ':contractAddressOrSymbol?/' +
     ':tokenId?',
 

@@ -146,10 +146,10 @@ export const SendScreen = React.memo((props: Props) => {
   const { isAndroid = false } = props
 
   // routing
-  const { chainId, accountAddress, contractAddressOrSymbol, tokenId } =
+  const { chainId, uniqueKeyOrAddress, contractAddressOrSymbol, tokenId } =
     useParams<{
       chainId?: string
-      accountAddress?: string
+      uniqueKeyOrAddress?: string
       contractAddressOrSymbol?: string
       tokenId?: string
     }>()
@@ -158,7 +158,7 @@ export const SendScreen = React.memo((props: Props) => {
   const selectedSendOption = (hash as SendPageTabHashes) || '#token'
 
   const { account: accountFromParams } =
-    useAccountFromAddressQuery(accountAddress)
+    useAccountFromAddressQuery(uniqueKeyOrAddress)
 
   // Refs
   const addressWidthRef = React.useRef<HTMLDivElement>(null)
@@ -406,6 +406,7 @@ export const SendScreen = React.memo((props: Props) => {
 
   const toAddressIsSelectedAccount =
     selectedAccount &&
+    selectedAccount.address &&
     resolvedDomainOrToAddressOrUrl.toLowerCase() ===
       selectedAccount.address.toLowerCase()
 

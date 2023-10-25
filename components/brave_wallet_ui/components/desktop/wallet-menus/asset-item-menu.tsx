@@ -107,7 +107,10 @@ export const AssetItemMenu = (props: Props) => {
   }, [asset.symbol])
 
   const onClickSend = React.useCallback(() => {
-    if (account?.address) {
+    if (account) {
+      const uniqueKeyOrAddress =
+        account.address || account.accountId.uniqueKey
+
       const contractAddressOrSymbol =
         asset.contractAddress === ''
           ? asset.symbol
@@ -115,14 +118,14 @@ export const AssetItemMenu = (props: Props) => {
       history.push(
         `${WalletRoutes.SendPage
           .replace(':chainId?', asset.chainId)
-          .replace(':accountAddress?', account.address)
+          .replace(':uniqueKeyOrAddress?', uniqueKeyOrAddress)
           .replace(':contractAddressOrSymbol?', contractAddressOrSymbol)
           .replace('/:tokenId?', '')}${ //
         SendPageTabHashes.token}`
       )
-      return
+    } else {
+      history.push(WalletRoutes.SendPageStart)
     }
-    history.push(WalletRoutes.SendPageStart)
   }, [asset.chainId, asset.contractAddress, account?.address])
 
   const onClickSwap = React.useCallback(() => {
