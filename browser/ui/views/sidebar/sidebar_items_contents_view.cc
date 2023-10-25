@@ -15,6 +15,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -480,7 +481,8 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
     }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    if (ai_chat::features::IsAIChatEnabled() && browser_->profile()->IsTor()) {
+    if (ai_chat::features::IsAIChatEnabled() &&
+        !brave::IsRegularProfile(browser_->profile())) {
       auto is_ai_chat = [](const auto& item) {
         return item.built_in_item_type ==
                sidebar::SidebarItem::BuiltInItemType::kChatUI;
