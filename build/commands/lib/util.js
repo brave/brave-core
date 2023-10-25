@@ -569,6 +569,10 @@ const util = {
       use_goma: config.use_goma,
       goma_dir: config.realGomaDir,
       real_gomacc: path.join(config.realGomaDir, 'gomacc'),
+      use_remoteexec: config.useRemoteExec,
+      rbe_exec_root: config.rbeExecRoot,
+      rbe_bin_dir: config.realRewrapperDir,
+      real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
 
     const buildArgsStr = util.buildArgsToString(gnArgs)
