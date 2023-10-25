@@ -1175,8 +1175,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public void openBravePlayerOrWarning() {
         try {
-            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            if (sharedPreferences.getBoolean(PREF_SHOW_BRAVE_PLAYER_BUTTON_WARNING, false)) {
+            if (SharedPreferencesManager.getInstance()
+                    .readBoolean(PREF_SHOW_BRAVE_PLAYER_BUTTON_WARNING, true)) {
                 // TODO(AlexeyBarabash): replace toast with an actual popup warning
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 Toast.makeText(activity, "Show BravePlayer warning", Toast.LENGTH_SHORT).show();
