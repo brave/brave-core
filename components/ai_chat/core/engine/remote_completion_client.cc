@@ -193,8 +193,8 @@ void RemoteCompletionClient::OnQueryDataReceived(
     return;
   }
 
-  if (const std::string* completion =
-          result->GetDict().FindString("completion")) {
+  const std::string* completion = result->GetDict().FindString("completion");
+  if (completion) {
     callback.Run(std::move(*completion));
   }
 }
@@ -205,14 +205,15 @@ void RemoteCompletionClient::OnQueryCompleted(
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
-    std::string completion;
+    std::string completion = "";
     // We're checking for a value body in case for non-streaming API results.
     if (result.value_body().is_dict()) {
-      completion = *result.value_body().GetDict().FindString("completion");
-      // Trimming necessary for Llama 2 which prepends responses with a " ".
-      completion = base::TrimWhitespaceASCII(completion, base::TRIM_ALL);
-    } else {
-      completion = "";
+      const std::string* value =
+          result.value_body().GetDict().FindString("completion");
+      if (value) {
+        // Trimming necessary for Llama 2 which prepends responses with a " ".
+        completion = base::TrimWhitespaceASCII(*value, base::TRIM_ALL);
+      }
     }
     std::move(callback).Run(base::ok(std::move(completion)));
     return;
