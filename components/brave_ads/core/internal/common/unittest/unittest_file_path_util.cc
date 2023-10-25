@@ -27,7 +27,7 @@ absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
 
 base::FilePath GetTestPath() {
   base::FilePath path;
-  base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
+  base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &path);
   return path.AppendASCII("brave")
       .AppendASCII("components")
       .AppendASCII("brave_ads")
@@ -60,7 +60,7 @@ base::FilePath GetFileResourcePath() {
 
 base::FilePath GetDataResourcePath() {
   base::FilePath path;
-  base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
+  base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &path);
   return path.AppendASCII("brave")
       .AppendASCII("components")
       .AppendASCII("brave_ads")

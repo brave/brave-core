@@ -143,7 +143,7 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
 
   void GetTestFile(const std::string& file_name, base::FilePath* path) const {
     base::FilePath test_path;
-    base::PathService::Get(base::DIR_SOURCE_ROOT, &test_path);
+    base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &test_path);
     test_path = test_path.Append(FILE_PATH_LITERAL("brave"));
     test_path = test_path.Append(FILE_PATH_LITERAL("test"));
     test_path = test_path.Append(FILE_PATH_LITERAL("data"));

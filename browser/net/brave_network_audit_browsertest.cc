@@ -220,7 +220,7 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     base::FilePath source_root_path;
-    base::PathService::Get(base::DIR_SOURCE_ROOT, &source_root_path);
+    base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &source_root_path);
 
     // Full log containing all the network requests.
     net_log_path_ = source_root_path.AppendASCII("network_log.json");

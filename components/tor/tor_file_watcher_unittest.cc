@@ -68,7 +68,8 @@ class TorFileWatcherTest : public testing::Test {
 
   void SetUp() override {
     testing::Test::SetUp();
-    ASSERT_TRUE(base::PathService::Get(base::DIR_SOURCE_ROOT, &test_data_dir_));
+    ASSERT_TRUE(
+        base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &test_data_dir_));
     test_data_dir_ = test_data_dir_.Append(FILE_PATH_LITERAL("brave"))
                          .Append(FILE_PATH_LITERAL("test"))
                          .Append(FILE_PATH_LITERAL("data"));
