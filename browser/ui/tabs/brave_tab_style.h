@@ -52,6 +52,16 @@ class BraveTabStyle : public TabStyleBase {
     }
     return GetLayoutConstant(TAB_HEIGHT) + brave_tabs::kHorizontalTabInset * 2;
   }
+
+  int GetDragHandleExtension(int height) const override {
+    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+      return TabStyleBase::GetDragHandleExtension(height);
+    }
+    // The "drag handle extension" is the amount of space in DIP at the top of
+    // inactive tabs where mouse clicks are treated as clicks in the "caption"
+    // area, i.e. the draggable part of the window frame.
+    return 4;
+  }
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STYLE_H_
