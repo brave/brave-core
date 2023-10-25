@@ -7,9 +7,11 @@
 
 #include <utility>
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/common/features.h"
 #include "brave/components/ai_chat/common/pref_names.h"
 #include "brave/components/ai_chat/core/constants.h"
 #include "brave/components/ai_chat/resources/page/grit/ai_chat_ui_generated_map.h"
@@ -54,6 +56,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui),
       profile_(Profile::FromWebUI(web_ui)) {
   DCHECK(profile_);
+  DCHECK(brave::IsRegularProfile(profile_));
 
   // Create a URLDataSource and add resources.
   content::WebUIDataSource* untrusted_source =
@@ -129,6 +132,12 @@ std::unique_ptr<content::WebUIController>
 UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui,
                                              const GURL& url) {
   return std::make_unique<AIChatUI>(web_ui);
+}
+
+bool UntrustedChatUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return ai_chat::features::IsAIChatEnabled() &&
+         brave::IsRegularProfile(browser_context);
 }
 
 UntrustedChatUIConfig::UntrustedChatUIConfig()
