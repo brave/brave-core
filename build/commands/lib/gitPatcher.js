@@ -56,7 +56,7 @@ module.exports = class GitPatcher {
     }
   }
 
-  async applyPatches () {
+  async applyPatches (threeWay = false) {
     // STRATEGY:
     // 1. iterate .patch files in dir
     // corresponding .patchinfo file?
@@ -118,7 +118,7 @@ module.exports = class GitPatcher {
     const pathStatuses = []
     try {
       if (patchesToApply.length) {
-        const appliedPathsStatuses = await this.performApplyForPatches(patchesToApply)
+        const appliedPathsStatuses = await this.performApplyForPatches(patchesToApply, threeWay)
         pathStatuses.push(...appliedPathsStatuses)
       }
       if (patchInfosObsolete.length) {
@@ -130,6 +130,10 @@ module.exports = class GitPatcher {
       console.error('There was an error applying added, modified or removed patches. Please consider running `init` to reset and re-apply all patches.')
     }
     return pathStatuses
+  }
+
+  async applyPatches3Way () {
+    return this.applyPatches(true)
   }
 
   async getPatchInfo (patchInfoPath) {
@@ -169,7 +173,7 @@ module.exports = class GitPatcher {
     return null
   }
 
-  async performApplyForPatches (patchesToApply) {
+  async performApplyForPatches (patchesToApply, threeWay = false) {
     // The actual apply cannot be done in parallel with other write ops,
     // but everything else can.
     // First, find out which files the patch applies to, so we know
@@ -211,9 +215,13 @@ module.exports = class GitPatcher {
     // Apply patches (in series)
     for (const patchData of patchSets) {
       const { patchPath } = patchData
+      let applyCmdArgs = ['apply', patchPath, ...applyArgs]
+      if (threeWay) {
+        applyCmdArgs = ['apply', '-3', patchPath]
+      }
       this.logProgress('.')
       try {
-        await util.runGitAsync(this.repoPath, ['apply', patchPath, ...applyArgs])
+        await util.runGitAsync(this.repoPath, applyCmdArgs)
       } catch (err) {
         patchData.error = err
       }
