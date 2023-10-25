@@ -5,11 +5,36 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
 
+#include "base/command_line.h"
+#include "base/files/file_path.h"
+#include "base/path_service.h"
+#include "base/process/launch.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
+#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
+#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
+#include "components/version_info/version_info.h"
+
+namespace {
+
+bool ElevatedRegisterBraveVPNService() {
+  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
+  base::CommandLine cmd(executable_path);
+  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceInstallSwitchName);
+  base::LaunchOptions options = base::LaunchOptions();
+  options.wait = true;
+  options.elevated = true;
+  return base::LaunchProcess(cmd, options).IsValid();
+}
+
+}
 
 namespace brave_vpn {
 
@@ -48,7 +73,46 @@ void BraveVPNWireguardConnectionAPIBase::RequestNewProfileCredentials(
       GetSubscriberCredential(local_prefs()), public_key, GetHostname());
 }
 
+void BraveVPNWireguardConnectionAPIBase::OnWireguardServiceRegistered(
+    bool success) {
+  if (success) {
+    // If WireGuard install happened, we need to prompt user to restart Brave
+    // before connect will work. Similar to toggling on brave://settings/system
+    LOG(ERROR) << "BSC]] WireGuard install success. Prompting user to relaunch.";
+    return;
+  }
+
+  // TODO(bsclifton): handle error case
+  if (!success) {
+    // ex: turn off WireGuard preference, default to IKEv2.
+    LOG(ERROR) << "BSC]] WireGuard install failure. Set back to IKEv2.";
+  }
+}
+
 void BraveVPNWireguardConnectionAPIBase::Connect() {
+  // Verify service is installed
+  // TODO(bsclifton): this is just a demo lifted from:
+  // brave/browser/ui/webui/settings/brave_vpn/brave_vpn_handler.cc
+  if (!brave_vpn::wireguard::IsWireguardServiceRegistered()) {
+    LOG(ERROR) << "BSC]] WireGuard is not installed. Elevating to install.";
+    // TODO(bsclifton): we may prompt here saying WG not installed
+    //                  ask if user would like to install
+
+    // If no, we can reset to IKEv2
+
+    // If yes, this logic will attempt service installation
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE,
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+         base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+        base::BindOnce(&ElevatedRegisterBraveVPNService),
+        base::BindOnce(
+            &BraveVPNWireguardConnectionAPIBase::OnWireguardServiceRegistered,
+            weak_factory_.GetWeakPtr()));
+    return;
+  }
+
+  // Connect
   VLOG(2) << __func__ << " : start connecting!";
   SetLastConnectionError(std::string());
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);

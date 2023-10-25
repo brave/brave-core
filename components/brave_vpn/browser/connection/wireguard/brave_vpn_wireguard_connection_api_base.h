@@ -43,6 +43,7 @@ class BraveVPNWireguardConnectionAPIBase
   void OnConnectionStateChanged(mojom::ConnectionState state) override;
 
  protected:
+  void OnWireguardServiceRegistered(bool success);
   void OnDisconnected(bool success);
   void RequestNewProfileCredentials(
       brave_vpn::wireguard::WireguardKeyPair key_pair);
