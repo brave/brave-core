@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "extensions/browser/extension_function.h"
@@ -454,9 +453,7 @@ class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnFetchBalance(
-      base::expected<brave_rewards::mojom::BalancePtr,
-                     brave_rewards::mojom::FetchBalanceError> result);
+  void OnFetchBalance(brave_rewards::mojom::BalancePtr balance);
 };
 
 class BraveRewardsGetExternalWalletProvidersFunction
@@ -480,9 +477,7 @@ class BraveRewardsGetExternalWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetExternalWallet(
-      base::expected<brave_rewards::mojom::ExternalWalletPtr,
-                     brave_rewards::mojom::GetExternalWalletError> result);
+  void OnGetExternalWallet(brave_rewards::mojom::ExternalWalletPtr wallet);
 };
 
 class BraveRewardsGetRewardsEnabledFunction : public ExtensionFunction {

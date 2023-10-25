@@ -49,7 +49,7 @@ class ConnectExternalWallet {
  private:
   absl::optional<OAuthInfo> ExchangeOAuthInfo(mojom::ExternalWalletPtr) const;
 
-  base::expected<std::string, mojom::ConnectExternalWalletError> GetCode(
+  base::expected<std::string, mojom::ConnectExternalWalletResult> GetCode(
       const base::flat_map<std::string, std::string>& query_parameters,
       const std::string& current_one_time_string) const;
 

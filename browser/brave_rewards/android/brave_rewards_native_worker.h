@@ -16,7 +16,6 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -246,9 +245,7 @@ class BraveRewardsNativeWorker
   void OnClaimPromotion(const brave_rewards::mojom::Result result,
                         brave_rewards::mojom::PromotionPtr promotion);
 
-  void OnGetExternalWallet(
-      base::expected<brave_rewards::mojom::ExternalWalletPtr,
-                     brave_rewards::mojom::GetExternalWalletError> result);
+  void OnGetExternalWallet(brave_rewards::mojom::ExternalWalletPtr wallet);
 
   void OnGetAvailableCountries(std::vector<std::string> countries);
 
@@ -272,9 +269,7 @@ class BraveRewardsNativeWorker
 
   void OnGetUserType(const brave_rewards::mojom::UserType user_type);
 
-  void OnBalance(
-      base::expected<brave_rewards::mojom::BalancePtr,
-                     brave_rewards::mojom::FetchBalanceError> result);
+  void OnBalance(brave_rewards::mojom::BalancePtr balance);
 
   void OnGetAdsAccountStatement(brave_ads::mojom::StatementInfoPtr statement);
 

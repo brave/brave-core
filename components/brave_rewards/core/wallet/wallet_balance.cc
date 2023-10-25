@@ -88,11 +88,7 @@ void WalletBalance::OnFetchExternalWalletBalance(const std::string& wallet_type,
     std::move(callback).Run(std::move(balance_ptr));
   } else {
     BLOG(0, "Failed to fetch balance for " << wallet_type << " wallet!");
-
-    std::move(callback).Run(
-        base::unexpected(result == mojom::Result::EXPIRED_TOKEN
-                             ? mojom::FetchBalanceError::kAccessTokenExpired
-                             : mojom::FetchBalanceError::kUnexpected));
+    std::move(callback).Run(nullptr);
   }
 }
 
