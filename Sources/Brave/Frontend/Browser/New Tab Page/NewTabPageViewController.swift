@@ -475,7 +475,7 @@ class NewTabPageViewController: UIViewController {
       if let eventType {
         p3aHelper.recordEvent(eventType, on: sponsoredBackground)
       }
-      rewards.ads.reportNewTabPageAdEvent(
+      rewards.ads.triggerNewTabPageAdEvent(
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
         eventType: event,
@@ -619,7 +619,7 @@ class NewTabPageViewController: UIViewController {
       let item = context.item
       if !switchingToPrivateMode, item.content.contentType == .partner,
         let creativeInstanceID = item.content.creativeInstanceID {
-        rewards.ads.reportPromotedContentAdEvent(
+        rewards.ads.triggerPromotedContentAdEvent(
           item.content.urlHash,
           creativeInstanceId: creativeInstanceID,
           eventType: .clicked,
@@ -660,7 +660,7 @@ class NewTabPageViewController: UIViewController {
     case .inlineContentAdAction(.opened(let inNewTab, let switchingToPrivateMode), let ad):
       guard let url = ad.targetURL.asURL else { return }
       if !switchingToPrivateMode {
-        rewards.ads.reportInlineContentAdEvent(
+        rewards.ads.triggerInlineContentAdEvent(
           ad.placementID,
           creativeInstanceId: ad.creativeInstanceID,
           eventType: .clicked,

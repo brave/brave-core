@@ -78,9 +78,9 @@ public class BraveRewards: NSObject {
         )
       }
       // If ads is already initialized just toggle rewards ads and update the wallet info
-      if self.ads.isAdsServiceRunning() {
+      if self.ads.isServiceRunning() {
         if let walletInfo {
-          self.ads.updateWalletInfo(walletInfo.paymentId, base64Seed: walletInfo.recoverySeed)
+          self.ads.notifyRewardsWalletDidUpdate(walletInfo.paymentId, base64Seed: walletInfo.recoverySeed)
         }
         if let toggleAds {
           self.ads.isEnabled = toggleAds
@@ -98,14 +98,14 @@ public class BraveRewards: NSObject {
   private var braveNewsObservation: AnyCancellable?
 
   private var shouldShutdownAds: Bool {
-    ads.isAdsServiceRunning() && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value
+    ads.isServiceRunning() && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value
   }
 
   /// Propose that the ads service should be shutdown based on whether or not that all features
   /// that use it are disabled
   private func proposeAdsShutdown() {
     if !shouldShutdownAds { return }
-    ads.shutdown {
+    ads.shutdownService {
       self.ads = BraveAds(stateStoragePath: self.configuration.storageURL.appendingPathComponent("ads").path)
     }
   }
@@ -160,8 +160,8 @@ public class BraveRewards: NSObject {
     try? FileManager.default.removeItem(
       at: configuration.storageURL.appendingPathComponent("ledger")
     )
-    if ads.isAdsServiceRunning(), !Preferences.BraveNews.isEnabled.value {
-      ads.shutdown { [self] in
+    if ads.isServiceRunning(), !Preferences.BraveNews.isEnabled.value {
+      ads.shutdownService { [self] in
         try? FileManager.default.removeItem(
           at: configuration.storageURL.appendingPathComponent("ads")
         )
@@ -186,8 +186,8 @@ public class BraveRewards: NSObject {
       rewardsAPI?.selectedTabId = UInt32(tabId)
       tabRetrieved(tabId, url: url, html: nil)
     }
-    if ads.isAdsServiceRunning() && !isPrivate {
-      ads.reportTabUpdated(tabId, url: url, redirectedFrom: tab.redirectURLs, isSelected: isSelected)
+    if ads.isServiceRunning() && !isPrivate {
+        ads.notifyTabDidChange(tabId, url: url, redirectChain: tab.redirectURLs, isSelected: isSelected)
     }
   }
 
@@ -203,13 +203,20 @@ public class BraveRewards: NSObject {
     adsInnerText: String?
   ) {
     tabRetrieved(tabId, url: url, html: html)
-    if let innerText = adsInnerText, ads.isAdsServiceRunning() {
-      ads.reportLoadedPage(
-        with: url,
-        redirectedFrom: redirectionURLs ?? [],
-        html: html,
-        innerText: innerText,
-        tabId: tabId
+    if let innerText = adsInnerText, ads.isServiceRunning() {
+      ads.notifyTabTextContentDidChange(
+        tabId,
+        url: url,
+        redirectChain: redirectionURLs ?? [],
+        text: innerText
+      )
+    }
+    if ads.isServiceRunning() {
+      ads.notifyTabHtmlContentDidChange(
+        tabId,
+        url: url,
+        redirectChain: redirectionURLs ?? [],
+        html: html
       )
     }
     rewardsAPI?.reportLoadedPage(url: url, tabId: UInt32(tabId))
@@ -227,14 +234,14 @@ public class BraveRewards: NSObject {
 
   /// Report that media has started on a tab with a given id
   func reportMediaStarted(tabId: Int) {
-    if !ads.isAdsServiceRunning() { return }
-    ads.reportMediaStarted(tabId: tabId)
+    if !ads.isServiceRunning() { return }
+    ads.notifyTabDidStartPlayingMedia(tabId)
   }
 
   /// Report that media has stopped on a tab with a given id
   func reportMediaStopped(tabId: Int) {
-    if !ads.isAdsServiceRunning() { return }
-    ads.reportMediaStopped(tabId: tabId)
+    if !ads.isServiceRunning() { return }
+    ads.notifyTabDidStopPlayingMedia(tabId)
   }
 
   /// Report that a tab with a given id navigated to a new page in the same tab
@@ -244,8 +251,8 @@ public class BraveRewards: NSObject {
 
   /// Report that a tab with a given id was closed by the user
   func reportTabClosed(tabId: Int) {
-    if ads.isAdsServiceRunning() {
-      ads.reportTabClosed(tabId: tabId)
+    if ads.isServiceRunning() {
+      ads.notifyDidCloseTab(tabId)
     }
     rewardsAPI?.reportTabNavigationOrClosed(tabId: UInt32(tabId))
   }

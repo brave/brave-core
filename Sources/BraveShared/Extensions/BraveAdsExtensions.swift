@@ -10,7 +10,7 @@ import UIKit
 
 extension BraveAds {
   public func initialize(walletInfo: BraveAds.WalletInfo? = nil, completion: @escaping (Bool) -> Void) {
-    self.initialize(
+    self.initService(
       with: .init(deviceId: UIDevice.current.identifierForVendor?.uuidString ?? ""),
       buildChannelInfo: .init(
         isRelease: AppConstants.buildChannel == .release,
