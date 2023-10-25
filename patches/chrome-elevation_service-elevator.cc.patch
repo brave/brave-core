@@ -1,0 +1,44 @@
+diff --git a/chrome/elevation_service/elevator.cc b/chrome/elevation_service/elevator.cc
+index 43526539839917601341cb33c5d7610bf4179f3b..90ee478728e75a1fa6a0dad78b1a836d2d58d098 100644
+--- a/chrome/elevation_service/elevator.cc
++++ b/chrome/elevation_service/elevator.cc
+@@ -20,6 +20,19 @@
+ #include "chrome/elevation_service/caller_validation.h"
+ #include "chrome/elevation_service/elevated_recovery_impl.h"
+ 
++#include "base/command_line.h"
++#include "base/files/file_path.h"
++#include "base/path_service.h"
++#include "base/process/launch.h"
++#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
++#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
++#include "brave/components/brave_vpn/common/pref_names.h"
++#include "brave/components/brave_vpn/common/wireguard/win/service_constants.h"
++#include "brave/components/brave_vpn/common/wireguard/win/service_details.h"
++#include "brave/components/brave_vpn/common/wireguard/win/storage_utils.h"
++#include "brave/components/brave_vpn/common/wireguard/win/wireguard_utils_win.h"
++#include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
++
+ namespace elevation_service {
+ 
+ namespace {
+@@ -195,6 +208,19 @@ HRESULT Elevator::DecryptData(const BSTR ciphertext,
+   return S_OK;
+ }
+ 
++HRESULT Elevator::InstallBraveVPNService() {
++  base::FilePath exe_dir;
++  base::PathService::Get(base::DIR_EXE, &exe_dir);
++
++  auto executable_path = exe_dir.Append(brave_vpn::kBraveVpnWireguardServiceExecutable);
++  base::CommandLine cmd(executable_path);
++  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceInstallSwitchName);
++  base::LaunchOptions options = base::LaunchOptions();
++  options.wait = true;
++  options.elevated = true;
++  return base::LaunchProcess(cmd, options).IsValid() ? S_OK : E_FAIL;
++}
++
+ // static
+ void Elevator::AppendStringWithLength(const std::string& to_append,
+                                       std::string& base) {

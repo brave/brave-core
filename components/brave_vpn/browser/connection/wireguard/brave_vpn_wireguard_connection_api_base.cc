@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
 
+#include <windows.h>
+#include <wrl/client.h>
+
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/path_service.h"
@@ -21,6 +24,9 @@
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/version_info.h"
+#include "chrome/install_static/install_modes.h"
+#include "chrome/install_static/install_util.h"
+#include "chrome/elevation_service/elevation_service_idl.h"
 
 namespace {
 
@@ -34,6 +40,25 @@ bool ElevatedRegisterBraveVPNService() {
   return base::LaunchProcess(cmd, options).IsValid();
 }
 
+bool RegisterBraveVPNService() {
+  Microsoft::WRL::ComPtr<IElevator> elevator;
+  HRESULT hr = CoCreateInstance(
+      install_static::GetElevatorClsid(), nullptr, CLSCTX_LOCAL_SERVER,
+      install_static::GetElevatorIid(), IID_PPV_ARGS_Helper(&elevator));
+  if (FAILED(hr)) {
+    LOG(ERROR) << "BSC]] RegisterBraveVPNService=false1";
+    return false;
+  }
+
+  hr = elevator->InstallBraveVPNService();
+  if (FAILED(hr)) {
+    LOG(ERROR) << "BSC]] RegisterBraveVPNService=false2";
+    return false;
+  }
+
+  LOG(ERROR) << "BSC]] RegisterBraveVPNService=true";
+  return true;
+}
 }
 
 namespace brave_vpn {
@@ -97,18 +122,29 @@ void BraveVPNWireguardConnectionAPIBase::Connect() {
     LOG(ERROR) << "BSC]] WireGuard is not installed. Elevating to install.";
     // TODO(bsclifton): we may prompt here saying WG not installed
     //                  ask if user would like to install
+    // if (!install_static::IsSystemInstall()) {
+    //   LOG(ERROR)
+    //       << "BSC]] WireGuard can't be registered because user is not admin.";
+    //   return;
+    // }
 
-    // If no, we can reset to IKEv2
+    int i = 0;
 
-    // If yes, this logic will attempt service installation
-    base::ThreadPool::PostTaskAndReplyWithResult(
-        FROM_HERE,
-        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-         base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-        base::BindOnce(&ElevatedRegisterBraveVPNService),
-        base::BindOnce(
-            &BraveVPNWireguardConnectionAPIBase::OnWireguardServiceRegistered,
-            weak_factory_.GetWeakPtr()));
+    if (i == 0) {
+      RegisterBraveVPNService();
+    } else {
+      // If no, we can reset to IKEv2
+
+      // If yes, this logic will attempt service installation
+      base::ThreadPool::PostTaskAndReplyWithResult(
+          FROM_HERE,
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+          base::BindOnce(&ElevatedRegisterBraveVPNService),
+          base::BindOnce(
+              &BraveVPNWireguardConnectionAPIBase::OnWireguardServiceRegistered,
+              weak_factory_.GetWeakPtr()));
+    }
     return;
   }
 

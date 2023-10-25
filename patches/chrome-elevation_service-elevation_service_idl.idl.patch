@@ -1,0 +1,17 @@
+diff --git a/chrome/elevation_service/elevation_service_idl.idl b/chrome/elevation_service/elevation_service_idl.idl
+index e28845867a46534a0f462814d70a03634db28155..118ae5fbcf350d8334be6791f8e42f808220a2f3 100644
+--- a/chrome/elevation_service/elevation_service_idl.idl
++++ b/chrome/elevation_service/elevation_service_idl.idl
+@@ -74,6 +74,12 @@ interface IElevator : IUnknown
+   HRESULT DecryptData([in] const BSTR ciphertext,
+                       [out] BSTR* plaintext,
+                       [out] DWORD* last_error);
++
++  // Used for installing the Brave VPN services. This is only applicable
++  // if Brave was installed with an admin account that accepted the UAC
++  // prompt. This method is NOT called until the person has purchased
++  // the product, has credentials, and goes to connect to the server.
++  HRESULT InstallBraveVPNService();
+ };
+ 
+ // The interfaces below are all IElevator with unique IIDs. IElevator is

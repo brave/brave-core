@@ -1,0 +1,12 @@
+diff --git a/chrome/elevation_service/elevator.h b/chrome/elevation_service/elevator.h
+index 2fd72264861f6a61d7fd0ea5a34865d798009ff9..ed145c6a7e652177be1103690e8dec6ed9be816a 100644
+--- a/chrome/elevation_service/elevator.h
++++ b/chrome/elevation_service/elevator.h
+@@ -75,6 +75,7 @@ class Elevator
+   IFACEMETHODIMP DecryptData(const BSTR ciphertext,
+                              BSTR* plaintext,
+                              DWORD* last_error) override;
++  IFACEMETHODIMP InstallBraveVPNService() override;
+ 
+  private:
+   FRIEND_TEST_ALL_PREFIXES(ElevatorTest, StringHandlingTest);

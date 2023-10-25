@@ -1,0 +1,139 @@
+diff --git a/third_party/win_build_output/midl/chrome/elevation_service/x64/elevation_service_idl.h b/third_party/win_build_output/midl/chrome/elevation_service/x64/elevation_service_idl.h
+index 5142e5ddb792d380d724eaf61aa1558a1b74a33f..f3a810b4d70a25cc3b0c3e5c8e7e74980b688b02 100644
+--- a/third_party/win_build_output/midl/chrome/elevation_service/x64/elevation_service_idl.h
++++ b/third_party/win_build_output/midl/chrome/elevation_service/x64/elevation_service_idl.h
+@@ -195,6 +195,8 @@ EXTERN_C const IID IID_IElevator;
+             /* [out] */ BSTR *plaintext,
+             /* [out] */ DWORD *last_error) = 0;
+         
++        virtual HRESULT STDMETHODCALLTYPE InstallBraveVPNService( void) = 0;
++        
+     };
+     
+     
+@@ -244,6 +246,10 @@ EXTERN_C const IID IID_IElevator;
+             /* [out] */ BSTR *plaintext,
+             /* [out] */ DWORD *last_error);
+         
++        DECLSPEC_XFGVIRT(IElevator, InstallBraveVPNService)
++        HRESULT ( STDMETHODCALLTYPE *InstallBraveVPNService )( 
++            IElevator * This);
++        
+         END_INTERFACE
+     } IElevatorVtbl;
+ 
+@@ -276,6 +282,9 @@ EXTERN_C const IID IID_IElevator;
+ #define IElevator_DecryptData(This,ciphertext,plaintext,last_error)	\
+     ( (This)->lpVtbl -> DecryptData(This,ciphertext,plaintext,last_error) ) 
+ 
++#define IElevator_InstallBraveVPNService(This)	\
++    ( (This)->lpVtbl -> InstallBraveVPNService(This) ) 
++
+ #endif /* COBJMACROS */
+ 
+ 
+@@ -351,6 +360,10 @@ EXTERN_C const IID IID_IElevatorChromium;
+             /* [out] */ BSTR *plaintext,
+             /* [out] */ DWORD *last_error);
+         
++        DECLSPEC_XFGVIRT(IElevator, InstallBraveVPNService)
++        HRESULT ( STDMETHODCALLTYPE *InstallBraveVPNService )( 
++            IElevatorChromium * This);
++        
+         END_INTERFACE
+     } IElevatorChromiumVtbl;
+ 
+@@ -383,6 +396,9 @@ EXTERN_C const IID IID_IElevatorChromium;
+ #define IElevatorChromium_DecryptData(This,ciphertext,plaintext,last_error)	\
+     ( (This)->lpVtbl -> DecryptData(This,ciphertext,plaintext,last_error) ) 
+ 
++#define IElevatorChromium_InstallBraveVPNService(This)	\
++    ( (This)->lpVtbl -> InstallBraveVPNService(This) ) 
++
+ 
+ #endif /* COBJMACROS */
+ 
+@@ -459,6 +475,10 @@ EXTERN_C const IID IID_IElevatorChrome;
+             /* [out] */ BSTR *plaintext,
+             /* [out] */ DWORD *last_error);
+         
++        DECLSPEC_XFGVIRT(IElevator, InstallBraveVPNService)
++        HRESULT ( STDMETHODCALLTYPE *InstallBraveVPNService )( 
++            IElevatorChrome * This);
++        
+         END_INTERFACE
+     } IElevatorChromeVtbl;
+ 
+@@ -491,6 +511,9 @@ EXTERN_C const IID IID_IElevatorChrome;
+ #define IElevatorChrome_DecryptData(This,ciphertext,plaintext,last_error)	\
+     ( (This)->lpVtbl -> DecryptData(This,ciphertext,plaintext,last_error) ) 
+ 
++#define IElevatorChrome_InstallBraveVPNService(This)	\
++    ( (This)->lpVtbl -> InstallBraveVPNService(This) ) 
++
+ 
+ #endif /* COBJMACROS */
+ 
+@@ -567,6 +590,10 @@ EXTERN_C const IID IID_IElevatorChromeBeta;
+             /* [out] */ BSTR *plaintext,
+             /* [out] */ DWORD *last_error);
+         
++        DECLSPEC_XFGVIRT(IElevator, InstallBraveVPNService)
++        HRESULT ( STDMETHODCALLTYPE *InstallBraveVPNService )( 
++            IElevatorChromeBeta * This);
++        
+         END_INTERFACE
+     } IElevatorChromeBetaVtbl;
+ 
+@@ -599,6 +626,9 @@ EXTERN_C const IID IID_IElevatorChromeBeta;
+ #define IElevatorChromeBeta_DecryptData(This,ciphertext,plaintext,last_error)	\
+     ( (This)->lpVtbl -> DecryptData(This,ciphertext,plaintext,last_error) ) 
+ 
++#define IElevatorChromeBeta_InstallBraveVPNService(This)	\
++    ( (This)->lpVtbl -> InstallBraveVPNService(This) ) 
++
+ 
+ #endif /* COBJMACROS */
+ 
+@@ -675,6 +705,10 @@ EXTERN_C const IID IID_IElevatorChromeDev;
+             /* [out] */ BSTR *plaintext,
+             /* [out] */ DWORD *last_error);
+         
++        DECLSPEC_XFGVIRT(IElevator, InstallBraveVPNService)
++        HRESULT ( STDMETHODCALLTYPE *InstallBraveVPNService )( 
++            IElevatorChromeDev * This);
++        
+         END_INTERFACE
+     } IElevatorChromeDevVtbl;
+ 
+@@ -707,6 +741,9 @@ EXTERN_C const IID IID_IElevatorChromeDev;
+ #define IElevatorChromeDev_DecryptData(This,ciphertext,plaintext,last_error)	\
+     ( (This)->lpVtbl -> DecryptData(This,ciphertext,plaintext,last_error) ) 
+ 
++#define IElevatorChromeDev_InstallBraveVPNService(This)	\
++    ( (This)->lpVtbl -> InstallBraveVPNService(This) ) 
++
+ 
+ #endif /* COBJMACROS */
+ 
+@@ -783,6 +820,10 @@ EXTERN_C const IID IID_IElevatorChromeCanary;
+             /* [out] */ BSTR *plaintext,
+             /* [out] */ DWORD *last_error);
+         
++        DECLSPEC_XFGVIRT(IElevator, InstallBraveVPNService)
++        HRESULT ( STDMETHODCALLTYPE *InstallBraveVPNService )( 
++            IElevatorChromeCanary * This);
++        
+         END_INTERFACE
+     } IElevatorChromeCanaryVtbl;
+ 
+@@ -815,6 +856,9 @@ EXTERN_C const IID IID_IElevatorChromeCanary;
+ #define IElevatorChromeCanary_DecryptData(This,ciphertext,plaintext,last_error)	\
+     ( (This)->lpVtbl -> DecryptData(This,ciphertext,plaintext,last_error) ) 
+ 
++#define IElevatorChromeCanary_InstallBraveVPNService(This)	\
++    ( (This)->lpVtbl -> InstallBraveVPNService(This) ) 
++
+ 
+ #endif /* COBJMACROS */
+ 
