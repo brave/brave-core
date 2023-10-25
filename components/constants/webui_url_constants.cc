@@ -40,6 +40,9 @@ const char kVPNPanelHost[] = "vpn-panel.top-chrome";
 const char kBraveUIWalletPageURL[] = "chrome://wallet/";
 const char kWalletPageHost[] = "wallet";
 #if BUILDFLAG(IS_ANDROID)
+const char kWalletPatternPaths[300][100] = {
+    // Asset details
+    "/crypto/portfolio/assets/.+/.+"};
 const char kWalletPagePaths[300][100] = {
     // WalletOrigin
     "chrome://wallet",
