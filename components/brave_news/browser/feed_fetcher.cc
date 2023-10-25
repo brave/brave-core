@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/location.h"
@@ -166,10 +167,29 @@ void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
   ETags etags;
   FeedItems feed;
   feed.reserve(total_size);
+
+  // We want to deduplicate the feed, as the feeds for different regions **may**
+  // have overlap.
+  base::flat_set<GURL> seen;
+
   for (auto& result : results) {
     etags[result.key] = result.etag;
-    feed.insert(feed.end(), std::make_move_iterator(result.items.begin()),
-                std::make_move_iterator(result.items.end()));
+    for (auto& item : result.items) {
+      GURL url;
+      if (item->is_article()) {
+        url = item->get_article()->data->url;
+      } else if (item->is_promoted_article()) {
+        url = item->get_promoted_article()->data->url;
+      }
+
+      // Skip this, we've already seen it.
+      if (!url.is_empty() && seen.contains(url)) {
+        continue;
+      }
+      seen.insert(url);
+
+      feed.push_back(std::move(item));
+    }
   }
 
   std::move(callback).Run(std::move(feed), std::move(etags));

@@ -88,9 +88,15 @@ class BraveNewsController : public KeyedService,
     return &publishers_controller_;
   }
 
+  bool MaybeInitFeedV2();
+
   // mojom::BraveNewsController
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;
+  void GetChannelFeed(const std::string& channel,
+                      GetChannelFeedCallback callback) override;
+  void GetPublisherFeed(const std::string& publisher_id,
+                        GetPublisherFeedCallback callback) override;
   void GetFeedV2(GetFeedV2Callback callback) override;
   void GetSignals(GetSignalsCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
