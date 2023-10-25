@@ -66,7 +66,10 @@ const getErrorMessage = (error: undefined | string | LedgerError, accountTypeNam
   }
 
   // error must be of type LedgerError
-  if (error.statusCode && error.statusCode === 27404) { // Unknown Error
+  if (
+    error.statusCode &&
+    (error.statusCode === 27404 || error.statusCode === 21781)
+  ) { // Unknown Error
     return { error: getLocale('braveWalletConnectHardwareInfo2').replace('$1', accountTypeName), userHint: '' }
   }
 
