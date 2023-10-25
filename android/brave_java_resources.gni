@@ -463,6 +463,7 @@ brave_java_resources = [
   "java/res/drawable/ic_brave_mobiledata.xml",
   "java/res/drawable/ic_brave_news_no_source.xml",
   "java/res/drawable/ic_brave_notification.xml",
+  "java/res/drawable/ic_brave_player.xml",
   "java/res/drawable/ic_brave_smiley_happy.xml",
   "java/res/drawable/ic_brave_smiley_sad.xml",
   "java/res/drawable/ic_brave_vpn_graphic.xml",
