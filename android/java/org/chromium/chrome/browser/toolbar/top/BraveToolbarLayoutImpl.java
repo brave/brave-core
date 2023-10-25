@@ -180,6 +180,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private FrameLayout mWalletLayout;
     private FrameLayout mShieldsLayout;
     private FrameLayout mRewardsLayout;
+    private FrameLayout mBravePlayerButtonLayout;
     private BraveShieldsHandler mBraveShieldsHandler;
     private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
     private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
@@ -254,6 +255,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mWalletLayout = (FrameLayout) findViewById(R.id.brave_wallet_button_layout);
         mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
         mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
+        mBravePlayerButtonLayout = (FrameLayout) findViewById(R.id.brave_player_button_layout);
         mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
         mBraveRewardsOnboardingIcon = findViewById(R.id.br_rewards_onboarding_icon);
         mBraveWalletButton = (ImageButton) findViewById(R.id.brave_wallet_button);
@@ -1342,6 +1344,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         if (mWalletLayout != null) {
             mWalletLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
+        if (mBravePlayerButtonLayout != null) {
+            mBravePlayerButtonLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
     }
 
