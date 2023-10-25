@@ -110,15 +110,14 @@ import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 import {
   tokenSuggestionsEndpoints //
 } from './endpoints/token_suggestions.endpoints'
+import {
+  coinTypesMapping //
+} from './constants'
 
 type GetAccountTokenCurrentBalanceArg = {
   accountId: BraveWallet.AccountId
   token: GetBlockchainTokenIdArg
 }
-
-type GetCombinedTokenBalanceForAllAccountsArg =
-  GetAccountTokenCurrentBalanceArg['token'] &
-    Pick<BraveWallet.BlockchainToken, 'coin'>
 
 type GetSPLTokenBalancesForAddressAndChainIdArg = {
   accountId: BraveWallet.AccountId
@@ -145,13 +144,14 @@ type GetTokenBalancesForChainIdArg =
   | GetTokenBalancesForAddressAndChainIdArg
 
 type GetTokenBalancesRegistryArg = {
-  accountId: BraveWallet.AccountId,
-  chainId: string,
-  coin:
-        | typeof CoinTypes.ETH
-    | typeof CoinTypes.SOL
-    | typeof CoinTypes.FIL
-    | typeof CoinTypes.BTC
+  accounts: BraveWallet.AccountId[]
+  networks: Array<
+    Pick<
+      BraveWallet.NetworkInfo,
+      | 'chainId'
+      | 'coin'
+    >
+  >
 }
 
 type GetHardwareAccountDiscoveryBalanceArg = {
@@ -914,7 +914,6 @@ export function createWalletApi () {
                     token.chainId,
                     accountId
                   )
-
                 if (errorMessage || balance === null) {
                   console.log(`getBalance error: ${errorMessage}`)
                   return {
@@ -989,64 +988,6 @@ export function createWalletApi () {
             error,
             token
           )
-      }),
-      getCombinedTokenBalanceForAllAccounts: query<
-        string,
-        GetCombinedTokenBalanceForAllAccountsArg
-      >({
-        queryFn: async (asset, { dispatch }, extraOptions, baseQuery) => {
-          const { cache } = baseQuery(undefined)
-          const { accounts } = await cache.getAllAccounts()
-
-          const accountsForAssetCoinType = accounts.filter(
-            (account) => account.accountId.coin === asset.coin
-          )
-
-          const accountTokenBalancesForChainId: string[] = await mapLimit(
-            accountsForAssetCoinType,
-            10,
-            async (account: BraveWallet.AccountInfo) => {
-              const balance = await dispatch(
-                walletApi.endpoints.getAccountTokenCurrentBalance.initiate({
-                  accountId: account.accountId,
-                  token: {
-                    chainId: asset.chainId,
-                    coin: asset.coin,
-                    contractAddress: asset.contractAddress,
-                    isErc721: asset.isErc721,
-                    isNft: asset.isNft,
-                    tokenId: asset.tokenId
-                  }
-                })
-              ).unwrap()
-
-              return balance ?? ''
-            }
-          )
-
-          // return a '0' balance until user has created a FIL or SOL account
-          if (accountTokenBalancesForChainId.length === 0) {
-            return {
-              data: '0'
-            }
-          }
-
-          const aggregatedAmount = accountTokenBalancesForChainId.reduce(
-            function (totalBalance, itemBalance) {
-              return itemBalance !== ''
-                ? new Amount(totalBalance).plus(itemBalance).format()
-                : itemBalance ?? '0'
-            },
-            '0'
-          )
-
-          return {
-            data: aggregatedAmount
-          }
-        },
-        providesTags: cacher.cacheByBlockchainTokenArg(
-          'CombinedTokenBalanceForAllAccounts'
-        )
       }),
       getTokenBalancesForChainId: query<
         TokenBalancesRegistry,
@@ -1283,7 +1224,7 @@ export function createWalletApi () {
       }),
       getTokenBalancesRegistry: query<
         TokenBalancesRegistry,
-        GetTokenBalancesRegistryArg[]
+        GetTokenBalancesRegistryArg
       >({
         queryFn: async (
           args,
@@ -1292,64 +1233,100 @@ export function createWalletApi () {
           baseQuery
         ) => {
           try {
+            const { getUserTokensRegistry, getTokenBalancesForChainId } =
+              walletApi.endpoints
+
             const userTokens = await dispatch(
-              walletApi.endpoints.getUserTokensRegistry.initiate()
+              getUserTokensRegistry.initiate()
             ).unwrap()
 
-            const registryArray = await mapLimit(
-              args,
-              10,
-              async (arg: GetTokenBalancesRegistryArg) => {
-                const partialRegistry: TokenBalancesRegistry = await dispatch(
-                  walletApi.endpoints.getTokenBalancesForChainId.initiate(
-                    arg.coin === CoinTypes.SOL
-                      ? [
-                          {
-                            accountId: arg.accountId,
-                            coin: arg.coin,
-                            chainId: arg.chainId
-                          }
-                        ]
-                      : [
-                          {
-                            accountId: arg.accountId,
-                            coin: arg.coin,
-                            chainId: arg.chainId,
-                            tokens: getEntitiesListFromEntityState(
-                              userTokens,
-                              userTokens.idsByChainId[
-                                networkEntityAdapter.selectId({
-                                  coin: arg.coin,
-                                  chainId: arg.chainId
-                                })
-                              ]
-                            )
-                          }
-                        ],
-                    {
-                      forceRefetch: true
-                    }
-                  )
-                ).unwrap()
+            const tokenBalancesRegistryArray = await mapLimit(
+              args.accounts,
+              3,
+              async (accountId: BraveWallet.AccountId) => {
+                const networks = args.networks.filter(
+                  (network) => network.coin === accountId.coin)
 
-                return partialRegistry
+                if (networks.length === 0) {
+                  return {}
+                }
+
+                const registryArray = await mapLimit(
+                  networks,
+                  3,
+                  async (
+                    network: Pick<
+                      BraveWallet.NetworkInfo,
+                      'coin' | 'chainId'
+                    >
+                  ) => {
+                    const partialRegistryQuery = dispatch(
+                      getTokenBalancesForChainId.initiate(
+                        network.coin === CoinTypes.SOL
+                          ? [
+                              {
+                                accountId,
+                                coin: CoinTypes.SOL,
+                                chainId: network.chainId
+                              }
+                            ]
+                          : coinTypesMapping[network.coin] ? [
+                              {
+                                accountId,
+                                coin: coinTypesMapping[network.coin],
+                                chainId: network.chainId,
+                                tokens:
+                                  getEntitiesListFromEntityState(
+                                    userTokens,
+                                    userTokens.idsByChainId[
+                                      networkEntityAdapter.selectId({
+                                        coin: network.coin,
+                                        chainId: network.chainId
+                                      })
+                                    ]
+                                  )
+                              }
+                            ]: [],
+                        {
+                          forceRefetch: true
+                        }
+                      )
+                    )
+
+                    try {
+                      const partialRegistry: TokenBalancesRegistry =
+                        await partialRegistryQuery.unwrap()
+                      return partialRegistry
+                    } catch (error) {
+                      console.error(error)
+                      return {}
+                    }
+                  }
+                )
+
+                return registryArray.reduce((acc, curr) => {
+                  for (const [uniqueKey, chainIds] of Object.entries(
+                    curr
+                  )) {
+                    if (!acc.hasOwnProperty(uniqueKey)) {
+                      acc[uniqueKey] = chainIds
+                    } else {
+                      acc[uniqueKey] = {
+                        ...acc[uniqueKey],
+                        ...chainIds
+                      }
+                    }
+                  }
+                  return acc
+                }, {})
               }
             )
 
             return {
-              data: registryArray.reduce((acc, curr) => {
-                for (const [uniqueKey, chainIds] of Object.entries(curr)) {
-                  if (!acc.hasOwnProperty(uniqueKey)) {
-                    acc[uniqueKey] = chainIds
-                  } else {
-                    acc[uniqueKey] = {
-                      ...acc[uniqueKey],
-                      ...chainIds
-                    }
-                  }
-                }
-                return acc
-              }, {})
+              data: tokenBalancesRegistryArray.reduce(
+                (acc, curr) => ({ ...acc, ...curr }),
+                {}
+              )
             }
           } catch (error) {
             return handleEndpointError(
@@ -1359,15 +1336,18 @@ export function createWalletApi () {
             )
           }
         },
-        providesTags: (result, err, args) =>
-          err
-            ? ['TokenBalances', 'UNKNOWN_ERROR']
-            : args.map((arg) => ({
+        providesTags: (result, err, args) => err
+          ? ['TokenBalances', 'UNKNOWN_ERROR']
+          : args.accounts.flatMap((accountId) => {
+              const networkKeys = args.networks
+                .filter((network) => accountId.coin === network.coin)
+                .map((network) => network.chainId)
+              const accountKey = getAccountBalancesKey(accountId)
+              return networkKeys.map((networkKey) => ({
                 type: 'TokenBalances',
-                id: `${getAccountBalancesKey(arg.accountId)}-${arg.coin}-${
-                  arg.chainId
-                }`
+                id: `${accountKey}-${networkKey}`
               }))
+            })
       }),
       getHardwareAccountDiscoveryBalance: query<
         string,
@@ -3095,7 +3075,6 @@ export const {
   useGetAutopinEnabledQuery,
   useGetBuyUrlQuery,
   useGetCoingeckoIdQuery,
-  useGetCombinedTokenBalanceForAllAccountsQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetEthTokenDecimalsQuery,
   useGetEthTokenSymbolQuery,
@@ -3141,7 +3120,6 @@ export const {
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,
   useLazyGetBuyUrlQuery,
-  useLazyGetCombinedTokenBalanceForAllAccountsQuery,
   useLazyGetDefaultFiatCurrencyQuery,
   useLazyGetERC721MetadataQuery,
   useLazyGetEVMTransactionSimulationQuery,
