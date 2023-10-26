@@ -81,6 +81,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   private var bookmarksSearchQuery = ""
   private lazy var noSearchResultOverlayView = EmptyStateOverlayView(
     overlayDetails: EmptyOverlayStateDetails(title: Strings.noSearchResultsfound))
+  
+  private var bookmarksExportSuccessful = false
 
   // MARK: Lifecycle
 
@@ -812,6 +814,17 @@ extension BookmarksViewController: UIDocumentPickerDelegate, UIDocumentInteracti
       try? FileManager.default.removeItem(at: url)
     }
     self.documentInteractionController = nil
+    
+    if bookmarksExportSuccessful {
+      bookmarksExportSuccessful = false
+      
+      let alert = UIAlertController(
+        title: Strings.Sync.bookmarksImportExportPopupTitle,
+        message: Strings.Sync.bookmarksExportPopupSuccessMessage,
+        preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+      self.present(alert, animated: true, completion: nil)
+    }
   }
 
   func documentInteractionControllerDidDismissOpenInMenu(_ controller: UIDocumentInteractionController) {
@@ -835,7 +848,7 @@ extension BookmarksViewController {
       self.isLoading = false
 
       let alert = UIAlertController(
-        title: Strings.Sync.bookmarksImportPopupErrorTitle,
+        title: Strings.Sync.bookmarksImportExportPopupTitle,
         message: success ? Strings.Sync.bookmarksImportPopupSuccessMessage : Strings.Sync.bookmarksImportPopupFailureMessage,
         preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
@@ -850,16 +863,27 @@ extension BookmarksViewController {
       guard let self = self else { return }
 
       self.isLoading = false
-
-      // Controller must be retained otherwise `AirDrop` and other sharing options will fail!
-      self.documentInteractionController = UIDocumentInteractionController(url: url)
-      guard let vc = self.documentInteractionController else { return }
-      vc.uti = UTType.html.identifier
-      vc.name = "Bookmarks.html"
-      vc.delegate = self
-
-      guard let importExportButton = self.importExportButton else { return }
-      vc.presentOptionsMenu(from: importExportButton, animated: true)
+      
+      if success {
+        self.bookmarksExportSuccessful = true
+        
+        // Controller must be retained otherwise `AirDrop` and other sharing options will fail!
+        self.documentInteractionController = UIDocumentInteractionController(url: url)
+        guard let vc = self.documentInteractionController else { return }
+        vc.uti = UTType.html.identifier
+        vc.name = "Bookmarks.html"
+        vc.delegate = self
+        
+        guard let importExportButton = self.importExportButton else { return }
+        vc.presentOptionsMenu(from: importExportButton, animated: true)
+      } else {
+        let alert = UIAlertController(
+          title: Strings.Sync.bookmarksImportExportPopupTitle,
+          message: Strings.Sync.bookmarksExportPopupFailureMessage,
+          preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+      }
     }
   }
 

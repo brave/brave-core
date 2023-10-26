@@ -3227,7 +3227,7 @@ extension Strings {
       NSLocalizedString("sync.syncV1DeprecationText", tableName: "BraveShared", bundle: .module,
         value: "A new Brave Sync is coming and will affect your setup. Get ready for the upgrade.",
         comment: "Text that informs a user about Brave Sync service deprecation.")
-    public static let bookmarksImportPopupErrorTitle =
+    public static let bookmarksImportExportPopupTitle =
       NSLocalizedString("sync.bookmarksImportPopupErrorTitle", tableName: "BraveShared", bundle: .module,
         value: "Bookmarks",
         comment: "Title of the bookmark import popup.")
@@ -3235,6 +3235,14 @@ extension Strings {
       NSLocalizedString("sync.bookmarksImportPopupSuccessMessage", tableName: "BraveShared", bundle: .module,
         value: "Bookmarks Imported Successfully",
         comment: "Message of the popup if bookmark import succeeds.")
+    public static let bookmarksExportPopupSuccessMessage =
+      NSLocalizedString("sync.bookmarksExportPopupSuccessMessage", tableName: "BraveShared", bundle: .module,
+        value: "Bookmarks Exported Successfully",
+        comment: "Message of the popup if bookmark export succeeds.")
+    public static let bookmarksExportPopupFailureMessage =
+      NSLocalizedString("sync.bookmarksIExportPopupFailureMessage", tableName: "BraveShared", bundle: .module,
+        value: "Bookmark Export Failed",
+        comment: "Message of the popup if bookmark export fails.")
     public static let bookmarksImportPopupFailureMessage =
       NSLocalizedString("sync.bookmarksImportPopupFailureMessage", tableName: "BraveShared", bundle: .module,
         value: "Bookmark Import Failed",
