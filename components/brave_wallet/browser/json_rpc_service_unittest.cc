@@ -6812,6 +6812,27 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenDecimals) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
+  // Ensure MethodNotFound error is returned if feature is disabled
+  base::RunLoop run_loop_1;
+  json_rpc_service_->AnkrGetAccountBalances(
+      "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+      {mojom::kPolygonMainnetChainId},
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::AnkrAssetBalancePtr> response,
+              mojom::ProviderError error, const std::string& error_string) {
+            EXPECT_EQ(response.size(), 0u);
+            EXPECT_EQ(error, mojom::ProviderError::kMethodNotFound);
+            EXPECT_EQ(error_string, l10n_util::GetStringUTF8(
+                                        IDS_WALLET_REQUEST_PROCESSING_ERROR));
+
+            run_loop_1.Quit();
+          }));
+  run_loop_1.Run();
+
+  // Enable feature
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kBraveWalletAnkrBalancesFeature);
+
   SetInterceptor(R"(
     {
       "jsonrpc": "2.0",
@@ -6890,7 +6911,7 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
   BlockchainRegistry::GetInstance()->UpdateCoingeckoIdsMap(
       std::move(*coingecko_ids_map));
 
-  base::RunLoop run_loop_1;
+  base::RunLoop run_loop_2;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
       {mojom::kPolygonMainnetChainId},
@@ -6944,9 +6965,9 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
 
             EXPECT_EQ(error, mojom::ProviderError::kSuccess);
             EXPECT_EQ(error_string, "");
-            run_loop_1.Quit();
+            run_loop_2.Quit();
           }));
-  run_loop_1.Run();
+  run_loop_2.Run();
 
   // Handle known provider errors
   SetInterceptor(R"(
@@ -6959,7 +6980,7 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
       }
     }
   )");
-  base::RunLoop run_loop_2;
+  base::RunLoop run_loop_3;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
       {mojom::kPolygonMainnetChainId},
@@ -6970,9 +6991,9 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
             EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
             EXPECT_EQ(error_string, "invalid argument 0: invalid params");
 
-            run_loop_2.Quit();
+            run_loop_3.Quit();
           }));
-  run_loop_2.Run();
+  run_loop_3.Run();
 
   // Invalid response yields parsing error
   SetInterceptor(R"(
@@ -6982,7 +7003,7 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
       "foo": "bar"
     }
   )");
-  base::RunLoop run_loop_3;
+  base::RunLoop run_loop_4;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
       {mojom::kPolygonMainnetChainId},
@@ -6994,9 +7015,9 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
             EXPECT_EQ(error_string,
                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
-            run_loop_3.Quit();
+            run_loop_4.Quit();
           }));
-  run_loop_3.Run();
+  run_loop_4.Run();
 }
 
 }  // namespace brave_wallet

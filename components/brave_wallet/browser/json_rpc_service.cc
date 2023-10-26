@@ -3433,6 +3433,13 @@ void JsonRpcService::AnkrGetAccountBalances(
     const std::string& account_address,
     const std::vector<std::string>& chain_ids,
     AnkrGetAccountBalancesCallback callback) {
+  if (!IsAnkrBalancesEnabled()) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kMethodNotFound,
+        l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnAnkrGetAccountBalances,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));

@@ -80,7 +80,7 @@ void AssetDiscoveryTask::DiscoverAssets(
                                   ? eth_it->second
                                   : std::vector<std::string>();
 
-  const auto ankr_blockchains = GetAnkrBlockchains();
+  const auto& ankr_blockchains = GetAnkrBlockchains();
   std::vector<std::string> ankr_evm_chain_ids;
   std::vector<std::string> non_ankr_evm_chain_ids;
   for (const auto& chain_id : eth_chain_ids) {
@@ -91,17 +91,20 @@ void AssetDiscoveryTask::DiscoverAssets(
     }
   }
 
+  bool use_ankr_discovery =
+      IsAnkrBalancesEnabled() && !ankr_evm_chain_ids.empty();
+
   // Concurrently discover ETH ERC20s on our registry, Solana tokens on our
   // Registry and NFTs on both platforms, then merge the results
   const auto barrier_callback =
       base::BarrierCallback<std::vector<mojom::BlockchainTokenPtr>>(
-          IsAnkrBalancesEnabled() ? 4 : 3,
+          use_ankr_discovery ? 4 : 3,
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAssets,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   // Currently SPL tokens are only discovered on Solana Mainnet.
   DiscoverSPLTokensFromRegistry(sol_account_addresses, barrier_callback);
 
-  if (IsAnkrBalancesEnabled()) {
+  if (use_ankr_discovery) {
     DiscoverAnkrTokens(ankr_evm_chain_ids, eth_account_addresses,
                        barrier_callback);
     DiscoverERC20sFromRegistry(non_ankr_evm_chain_ids, eth_account_addresses,
@@ -206,8 +209,7 @@ void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
       BlockchainRegistry::GetInstance()->GetEthTokenListMap(chain_ids);
 
   // Create set of all user assets per chain to use to ensure we don't
-  // include assets the user has already added in the call to the
-  // BalanceScanner
+  // include assets the user has already added in the call to the BalanceScanner
   base::flat_map<std::string, base::flat_set<std::string_view>>
       user_assets_per_chain;
   for (const auto& user_asset : user_assets) {
@@ -222,8 +224,8 @@ void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
                  base::flat_map<std::string, mojom::BlockchainTokenPtr>>
       chain_id_to_contract_address_to_token;
 
-  // Create a map of chain_id to a vector of contract addresses (strings,
-  // rather than BlockchainTokens) to pass to GetERC20TokenBalances
+  // Create a map of chain_id to a vector of contract addresses (strings, rather
+  // than BlockchainTokens) to pass to GetERC20TokenBalances
   base::flat_map<std::string, std::vector<std::string>>
       chain_id_to_contract_addresses;
 
@@ -515,8 +517,8 @@ void AssetDiscoveryTask::MergeDiscoveredNFTs(
 }
 
 // static
-// Parses the Account object for the `mint` field which is a 32 byte public
-// key. See
+// Parses the Account object for the `mint` field which is a 32 byte public key.
+// See
 // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L86-L105
 absl::optional<SolanaAddress> AssetDiscoveryTask::DecodeMintAddress(
     const std::vector<uint8_t>& data) {

@@ -108,6 +108,8 @@ const std::string GetAssetRatioBaseURL() {
   return ratios_url;
 }
 
+// See https://api-docs.ankr.com/reference/post_ankr-getaccountbalance-1
+// for full list.
 const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
   static base::NoDestructor<base::flat_map<std::string, std::string>>
       blockchains({{mojom::kArbitrumMainnetChainId, "arbitrum"},

@@ -158,8 +158,10 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
-    scoped_feature_list_.InitAndEnableFeature(
-        features::kNativeBraveWalletFeature);
+    scoped_feature_list_.InitWithFeatures(
+        {features::kNativeBraveWalletFeature,
+         features::kBraveWalletAnkrBalancesFeature},
+        {});
 
     TestingProfile::Builder builder;
     auto prefs =

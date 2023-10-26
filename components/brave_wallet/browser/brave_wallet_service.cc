@@ -2256,7 +2256,7 @@ void BraveWalletService::GetAnkrSupportedChainIds(
     chain_ids.push_back(entry.first);
   }
 
-  std::move(callback).Run(chain_ids);
+  std::move(callback).Run(std::move(chain_ids));
 }
 
 }  // namespace brave_wallet
