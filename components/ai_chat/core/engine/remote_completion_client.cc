@@ -94,14 +94,18 @@ std::string CreateJSONRequestBody(base::ValueView node) {
   return json;
 }
 
-const GURL GetEndpointBaseUrl(bool premium) {
+GURL GetEndpointUrl(bool premium, const std::string& path) {
+  DCHECK(!path.starts_with("/"));
+
   auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
   auto hostname = brave_domains::GetServicesDomain(prefix);
 
-  static base::NoDestructor<GURL> url{base::StrCat(
-      {url::kHttpsScheme, url::kStandardSchemeSeparator, hostname})};
+  GURL url{base::StrCat(
+      {url::kHttpsScheme, url::kStandardSchemeSeparator, hostname, "/", path})};
 
-  return *url;
+  DCHECK(url.is_valid()) << "Invalid API Url: " << url.spec();
+
+  return url;
 }
 
 }  // namespace
@@ -140,7 +144,7 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
     EngineConsumer::GenerationDataCallback data_received_callback,
     absl::optional<CredentialCacheEntry> credential) {
   bool premium_enabled = credential.has_value();
-  const GURL api_base_url = GetEndpointBaseUrl(premium_enabled);
+  const GURL api_url = GetEndpointUrl(premium_enabled, kAIChatCompletionPath);
   base::flat_map<std::string, std::string> headers;
   if (premium_enabled) {
     // Add Leo premium SKU credential as a Cookie header.
@@ -150,11 +154,6 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
   }
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
-
-  // Validate that the path is valid
-  GURL api_url = api_base_url.Resolve(kAIChatCompletionPath);
-  CHECK(api_url.is_valid())
-      << "Invalid API Url, check path: " << api_url.spec();
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
