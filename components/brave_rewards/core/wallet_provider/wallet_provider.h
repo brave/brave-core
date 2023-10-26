@@ -52,6 +52,8 @@ class WalletProvider {
                      const std::string& contribution_id,
                      LegacyResultCallback callback);
 
+  void BeginLogin(BeginExternalWalletLoginCallback callback);
+
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
                      ConnectExternalWalletCallback callback);
 

@@ -16,6 +16,9 @@ import { getLocale } from '../../../../common/locale'
 import {
   getRewardsProviderName
 } from '../../../utils/rewards_utils'
+import {
+  reconnectURL
+} from '../../../../brave_rewards/resources/shared/lib/rewards_urls'
 
 // Styled Components
 import {
@@ -35,7 +38,6 @@ export const RewardsLogin = (props: Props) => {
 
   // Computed
   const provider = externalRewardsInfo?.provider ?? ''
-  const providerReconnectUrl = externalRewardsInfo?.links.reconnect
   const providerName = getRewardsProviderName(provider)
   const loginDescription =
     getLocale('braveWalletBraveRewardsLoggedOutDescription')
@@ -43,12 +45,9 @@ export const RewardsLogin = (props: Props) => {
 
   // Methods
   const onClickLogin = () => {
-    if (!providerReconnectUrl) {
-      return
-    }
     chrome.tabs.create(
       {
-        url: providerReconnectUrl
+        url: reconnectURL
       }, () => {
         if (chrome.runtime.lastError) {
           console.error(

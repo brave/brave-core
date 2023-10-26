@@ -110,6 +110,13 @@ void WalletProvider::TransferFunds(double amount,
                                 std::move(callback)));
 }
 
+void WalletProvider::BeginLogin(BeginExternalWalletLoginCallback callback) {
+  CHECK(connect_wallet_);
+  auto params = mojom::ExternalWalletLoginParams::New();
+  params->url = connect_wallet_->GenerateLoginURL();
+  std::move(callback).Run(std::move(params));
+}
+
 void WalletProvider::ConnectWallet(
     const base::flat_map<std::string, std::string>& args,
     ConnectExternalWalletCallback callback) {

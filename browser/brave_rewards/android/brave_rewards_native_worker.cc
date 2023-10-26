@@ -946,7 +946,6 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     dict.Set("type", wallet->type);
     dict.Set("user_name", wallet->user_name);
     dict.Set("account_url", wallet->account_url);
-    dict.Set("login_url", wallet->login_url);
     base::JSONWriter::Write(dict, &json_wallet);
   }
   JNIEnv* env = base::android::AttachCurrentThread();

@@ -16,7 +16,6 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
-#include "brave/components/brave_rewards/core/common/random_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
@@ -89,16 +88,6 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
     wallet->address = *address;
   }
 
-  const auto* one_time_string = dict.FindString("one_time_string");
-  if (one_time_string) {
-    wallet->one_time_string = *one_time_string;
-  }
-
-  const auto* code_verifier = dict.FindString("code_verifier");
-  if (code_verifier) {
-    wallet->code_verifier = *code_verifier;
-  }
-
   auto status = dict.FindInt("status");
   if (status) {
     wallet->status = static_cast<mojom::WalletStatus>(*status);
@@ -117,11 +106,6 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
   const auto* account_url = dict.FindString("account_url");
   if (account_url) {
     wallet->account_url = *account_url;
-  }
-
-  auto* login_url = dict.FindString("login_url");
-  if (login_url) {
-    wallet->login_url = *login_url;
   }
 
   const auto* activity_url = dict.FindString("activity_url");
@@ -201,12 +185,9 @@ bool SetWallet(RewardsEngineImpl& engine, mojom::ExternalWalletPtr wallet) {
   new_wallet.Set("token", wallet->token);
   new_wallet.Set("address", wallet->address);
   new_wallet.Set("status", static_cast<int>(wallet->status));
-  new_wallet.Set("one_time_string", wallet->one_time_string);
-  new_wallet.Set("code_verifier", wallet->code_verifier);
   new_wallet.Set("user_name", wallet->user_name);
   new_wallet.Set("member_id", wallet->member_id);
   new_wallet.Set("account_url", wallet->account_url);
-  new_wallet.Set("login_url", wallet->login_url);
   new_wallet.Set("activity_url", wallet->activity_url);
   new_wallet.Set("fees", std::move(fees));
 
@@ -236,10 +217,6 @@ mojom::ExternalWalletPtr EnsureValidCreation(const std::string& wallet_type,
 
   auto wallet = mojom::ExternalWallet::New();
   wallet->type = wallet_type;
-
-  wallet->one_time_string = util::GenerateRandomHexString();
-  wallet->code_verifier = util::GeneratePKCECodeVerifier();
-
   wallet->status = to;
 
   return wallet;
@@ -305,9 +282,6 @@ mojom::ExternalWalletPtr EnsureValidTransition(mojom::ExternalWalletPtr wallet,
       // token.empty() && address.empty()
       wallet = mojom::ExternalWallet::New();
       wallet->type = wallet_type;
-
-      wallet->one_time_string = util::GenerateRandomHexString();
-      wallet->code_verifier = util::GeneratePKCECodeVerifier();
       break;
   }
 

@@ -2288,6 +2288,16 @@ void RewardsServiceImpl::GetExternalWallet(GetExternalWalletCallback callback) {
   engine_->GetExternalWallet(GetExternalWalletType(), std::move(callback));
 }
 
+void RewardsServiceImpl::BeginExternalWalletLogin(
+    const std::string& wallet_type,
+    BeginExternalWalletLoginCallback callback) {
+  if (!Connected() || !IsValidWalletType(wallet_type)) {
+    return DeferCallback(FROM_HERE, std::move(callback), nullptr);
+  }
+  profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
+  engine_->BeginExternalWalletLogin(wallet_type, std::move(callback));
+}
+
 void RewardsServiceImpl::ConnectExternalWallet(
     const std::string& path,
     const std::string& query,
@@ -2695,12 +2705,6 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
   }
 
   return internal::constant::kWalletUphold;
-}
-
-void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
-  if (IsValidWalletType(wallet_type)) {
-    profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
-  }
 }
 
 }  // namespace brave_rewards

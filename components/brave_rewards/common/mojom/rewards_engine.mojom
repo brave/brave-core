@@ -137,6 +137,9 @@ interface RewardsEngine {
 
   GetExternalWallet(string wallet_type) => (ExternalWallet? external_wallet);
 
+  BeginExternalWalletLogin(string wallet_type)
+      => (ExternalWalletLoginParams? params);
+
   ConnectExternalWallet(string wallet_type, map<string, string> args)
       => (ConnectExternalWalletResult result);
 

@@ -187,7 +187,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) override;
-  void SetExternalWalletType(const std::string& wallet_type) override;
 
   RewardsNotificationService* GetNotificationService() const override;
   void GetRewardsInternalsInfo(
@@ -273,6 +272,10 @@ class RewardsServiceImpl : public RewardsService,
   std::string GetExternalWalletType() const override;
 
   std::vector<std::string> GetExternalWalletProviders() const override;
+
+  void BeginExternalWalletLogin(
+      const std::string& wallet_type,
+      BeginExternalWalletLoginCallback callback) override;
 
   void ConnectExternalWallet(const std::string& path,
                              const std::string& query,

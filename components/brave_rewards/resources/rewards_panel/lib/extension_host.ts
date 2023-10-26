@@ -21,6 +21,7 @@ import { createLocalStorageScope } from '../../shared/lib/local_storage_scope'
 import { RewardsPanelProxy } from './rewards_panel_proxy'
 
 import * as apiAdapter from './extension_api_adapter'
+import * as urls from '../../shared/lib/rewards_urls'
 
 type LocalStorageKey = 'catcha-grant-id' | 'load-adaptive-captcha'
 
@@ -139,19 +140,17 @@ export function createHost (): Host {
   }
 
   function getExternalWalletActionURL (action: ExternalWalletAction) {
-    const verifyURL = 'chrome://rewards#verify'
-
     const { externalWallet } = stateManager.getState()
     if (!externalWallet) {
-      return verifyURL
+      return urls.connectURL
     }
 
     const { links } = externalWallet
     switch (action) {
       case 'reconnect':
-        return links.reconnect || ''
+        return urls.reconnectURL
       case 'verify':
-        return verifyURL
+        return urls.connectURL
       case 'view-account':
         return links.account || ''
     }

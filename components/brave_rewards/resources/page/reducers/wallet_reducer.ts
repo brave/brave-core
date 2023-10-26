@@ -75,8 +75,8 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       chrome.send('brave_rewards.getExternalWalletProviders')
       break
     }
-    case types.SET_EXTERNAL_WALLET_TYPE: {
-      chrome.send('brave_rewards.setExternalWalletType', [action.payload.provider])
+    case types.BEGIN_EXTERNAL_WALLET_LOGIN: {
+      chrome.send('brave_rewards.beginExternalWalletLogin', [action.payload.provider])
       break
     }
     case types.GET_EXTERNAL_WALLET: {

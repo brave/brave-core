@@ -260,7 +260,6 @@ export interface ExternalWallet {
   type: WalletType
   userName?: string
   accountUrl: string
-  loginUrl: string
   activityUrl: string
 }
 

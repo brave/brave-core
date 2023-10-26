@@ -67,13 +67,15 @@ public class BraveRewardsVerifyWalletActivity extends Activity {
 
     void SetVerifyWalletBtnClickHandler() {
         Button btnVerifyWallet = (Button)findViewById(R.id.verify_wallet_btn);
-        btnVerifyWallet.setOnClickListener((View v) -> {
-            String login_url = getIntent().getStringExtra(BraveRewardsExternalWallet.LOGIN_URL);
-            Intent intent = new Intent();
-            intent.putExtra(BraveActivity.OPEN_URL, login_url);
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        btnVerifyWallet.setOnClickListener(
+                (View v) -> {
+                    Intent intent = new Intent();
+                    intent.putExtra(
+                            BraveActivity.OPEN_URL,
+                            BraveActivity.BRAVE_REWARDS_WALLET_RECONNECT_URL);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                });
     }
 
     @SuppressLint("ClickableViewAccessibility")

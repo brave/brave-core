@@ -200,10 +200,13 @@ class RewardsDOMHandler
   void GetOnboardingStatus(const base::Value::List& args);
   void EnableRewards(const base::Value::List& args);
   void GetExternalWalletProviders(const base::Value::List& args);
-  void SetExternalWalletType(const base::Value::List& args);
 
-  void OnExternalWalletTypeUpdated(
-      brave_rewards::mojom::ExternalWalletPtr wallet);
+  void BeginExternalWalletLogin(const base::Value::List& args);
+  void OnBeginExternalWalletLogin(
+      brave_rewards::mojom::ExternalWalletLoginParamsPtr params);
+
+  void ReconnectExternalWallet(const base::Value::List& args);
+
   void GetIsUnsupportedRegion(const base::Value::List& args);
 
   void GetPluralString(const base::Value::List& args);
@@ -494,8 +497,12 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::GetExternalWalletProviders,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.setExternalWalletType",
-      base::BindRepeating(&RewardsDOMHandler::SetExternalWalletType,
+      "brave_rewards.beginExternalWalletLogin",
+      base::BindRepeating(&RewardsDOMHandler::BeginExternalWalletLogin,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.reconnectExternalWallet",
+      base::BindRepeating(&RewardsDOMHandler::ReconnectExternalWallet,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getIsUnsupportedRegion",
@@ -742,26 +749,38 @@ void RewardsDOMHandler::GetAutoContributeProperties(
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::SetExternalWalletType(const base::Value::List& args) {
+void RewardsDOMHandler::BeginExternalWalletLogin(
+    const base::Value::List& args) {
   CHECK_EQ(1U, args.size());
   if (!rewards_service_)
     return;
 
   AllowJavascript();
   const std::string wallet_type = args[0].GetString();
-  rewards_service_->SetExternalWalletType(wallet_type);
 
-  rewards_service_->GetExternalWallet(
-      base::BindOnce(&RewardsDOMHandler::OnExternalWalletTypeUpdated,
+  rewards_service_->BeginExternalWalletLogin(
+      wallet_type,
+      base::BindOnce(&RewardsDOMHandler::OnBeginExternalWalletLogin,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnExternalWalletTypeUpdated(
-    brave_rewards::mojom::ExternalWalletPtr wallet) {
+void RewardsDOMHandler::OnBeginExternalWalletLogin(
+    brave_rewards::mojom::ExternalWalletLoginParamsPtr params) {
   if (IsJavascriptAllowed()) {
     CallJavascriptFunction("brave_rewards.externalWalletLogin",
-                           base::Value(wallet ? wallet->login_url : ""));
+                           base::Value(params ? params->url : ""));
   }
+}
+
+void RewardsDOMHandler::ReconnectExternalWallet(const base::Value::List& args) {
+  if (!rewards_service_) {
+    return;
+  }
+  AllowJavascript();
+  rewards_service_->BeginExternalWalletLogin(
+      rewards_service_->GetExternalWalletType(),
+      base::BindOnce(&RewardsDOMHandler::OnBeginExternalWalletLogin,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnIsAutoContributeSupported(bool is_ac_supported) {
@@ -1665,7 +1684,6 @@ void RewardsDOMHandler::OnGetExternalWallet(
   wallet_dict.Set("status", static_cast<int>(wallet->status));
   wallet_dict.Set("userName", wallet->user_name);
   wallet_dict.Set("accountUrl", wallet->account_url);
-  wallet_dict.Set("loginUrl", wallet->login_url);
   wallet_dict.Set("activityUrl", wallet->activity_url);
 
   CallJavascriptFunction("brave_rewards.onGetExternalWallet", wallet_dict);
