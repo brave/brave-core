@@ -56,6 +56,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
     // page-specific actions.
     virtual void OnAPIRequestInProgress(bool in_progress) {}
     virtual void OnAPIResponseError(mojom::APIError error) {}
+    virtual void OnModelChanged(const std::string& model_key) {}
     virtual void OnSuggestedQuestionsChanged(
         std::vector<std::string> questions,
         bool has_generated,
@@ -128,6 +129,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
                                     std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();
   void OnPageHasContentChanged(bool page_contents_is_truncated);
+  void OnPremiumStatusReceived(
+      mojom::PageHandler::GetPremiumStatusCallback parent_callback,
+      mojom::PremiumStatus premium_status);
 
   // content::WebContentsObserver:
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
@@ -168,6 +172,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   int64_t current_navigation_id_;
   bool is_same_document_navigation_ = false;
   mojom::APIError current_error_ = mojom::APIError::None;
+  mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Inactive;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;

@@ -85,6 +85,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
   void OnAPIResponseError(mojom::APIError error) override;
+  void OnModelChanged(const std::string& model_key) override;
   void OnSuggestedQuestionsChanged(
       std::vector<std::string> questions,
       bool has_generated,

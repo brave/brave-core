@@ -85,6 +85,7 @@ AIChatTabHelper::AIChatTabHelper(
   if (!pref_service_->GetUserPrefValue(prefs::kDefaultModelKey)) {
     credential_manager_->GetPremiumStatus(base::BindOnce(
         [](AIChatTabHelper* instance, mojom::PremiumStatus status) {
+          instance->last_premium_status_ = status;
           if (status == mojom::PremiumStatus::Inactive) {
             // Not premium
             return;
@@ -116,7 +117,6 @@ AIChatTabHelper::AIChatTabHelper(
   // once whenever all credentials are expired.
   if (model_key_.empty()) {
     model_key_ = pref_service_->GetString(prefs::kDefaultModelKey);
-    InitEngine();
   }
   InitEngine();
   DCHECK(engine_);
@@ -177,7 +177,7 @@ void AIChatTabHelper::InitEngine() {
 
   // Engine enum on model to decide which one
   if (model.engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
-    VLOG(1) << "Started tab helper for AI engine: llama";
+    VLOG(1) << "Created conversation AI engine: llama";
     engine_ = std::make_unique<EngineConsumerLlamaRemote>(
         model,
         web_contents()
@@ -186,7 +186,7 @@ void AIChatTabHelper::InitEngine() {
             ->GetURLLoaderFactoryForBrowserProcess(),
         credential_manager_.get());
   } else {
-    VLOG(1) << "Started tab helper for AI engine: claude";
+    VLOG(1) << "Created conversation AI engine: claude";
     engine_ = std::make_unique<EngineConsumerClaudeRemote>(
         model,
         web_contents()
@@ -199,6 +199,7 @@ void AIChatTabHelper::InitEngine() {
   // Pending requests have been deleted along with the model engine
   is_request_in_progress_ = false;
   for (auto& obs : observers_) {
+    obs.OnModelChanged(model_key_);
     obs.OnAPIRequestInProgress(false);
   }
 
@@ -735,7 +736,21 @@ void AIChatTabHelper::WebContentsDestroyed() {
 
 void AIChatTabHelper::GetPremiumStatus(
     ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback) {
-  credential_manager_->GetPremiumStatus(std::move(callback));
+  credential_manager_->GetPremiumStatus(
+      base::BindOnce(&AIChatTabHelper::OnPremiumStatusReceived,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatTabHelper::OnPremiumStatusReceived(
+    mojom::PageHandler::GetPremiumStatusCallback parent_callback,
+    mojom::PremiumStatus premium_status) {
+  if (last_premium_status_ != premium_status &&
+      premium_status == mojom::PremiumStatus::Active) {
+    // Change model if we haven't already
+    ChangelModel(kModelsPremiumDefaultKey);
+  }
+  last_premium_status_ = premium_status;
+  std::move(parent_callback).Run(premium_status);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);
