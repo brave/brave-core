@@ -24,12 +24,15 @@ import XCTest
     checkValidURL("about:", afterFixup: "about:")
     checkValidURL("about:config", afterFixup: "about:config")
     checkValidURL("about: config", afterFixup: "about:%20config")
-    
+
     checkValidURL("file:///f/o/o", afterFixup: "file:///f/o/o")
     checkValidURL("ftp://ftp.mozilla.org", afterFixup: "ftp://ftp.mozilla.org/")
     checkValidURL("foo.bar", afterFixup: "http://foo.bar/")
     checkValidURL(" foo.bar ", afterFixup: "http://foo.bar/")
-    
+    checkValidURL("itms-apps://apps.apple.com/app/pulse-secure/id945832041", afterFixup: "itms-apps://apps.apple.com/app/pulse-secure/id945832041")
+      checkValidURL("itms-appss://apps.apple.com/app/pulse-secure/id945832041", afterFixup: "itms-appss://apps.apple.com/app/pulse-secure/id945832041")
+      checkValidURL("itmss://apps.apple.com/app/pulse-secure/id945832041", afterFixup: "itmss://apps.apple.com/app/pulse-secure/id945832041")
+
     checkValidURL("[::1]:80", afterFixup: "http://[::1]/")
     checkValidURL("[2a04:4e42:400::288]", afterFixup: "http://[2a04:4e42:400::288]/")
     checkValidURL("[2a04:4e42:600::288]:80", afterFixup: "http://[2a04:4e42:600::288]/")
