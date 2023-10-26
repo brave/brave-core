@@ -3191,10 +3191,8 @@ TEST_F(BraveWalletServiceUnitTest, GetAnkrSupportedChainIds) {
             mojom::kSyscoinMainnetChainId,
             mojom::kZkSyncEraChainId,
             mojom::kGoerliChainId};
-        EXPECT_EQ(chains.size(), expected_chains.size());
-        for (const auto& chain : chains) {
-          EXPECT_TRUE(base::Contains(expected_chains, chain));
-        }
+        EXPECT_THAT(chains,
+                    testing::UnorderedElementsAreArray(expected_chains));
       }));
 }
 
