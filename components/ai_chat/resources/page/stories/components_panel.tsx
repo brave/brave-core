@@ -50,7 +50,9 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: false
+    isPremium: false,
+    maxPageContentLength: 10000,
+    longConversationWarningCharacterLimit: 9700
   },
   {
     key: '2',
@@ -59,7 +61,9 @@ const MODELS: mojom.Model[] = [
     displayMaker: 'Company',
     engineType: mojom.ModelEngineType.LLAMA_REMOTE,
     category: mojom.ModelCategory.CHAT,
-    isPremium: true
+    isPremium: true,
+    maxPageContentLength: 10000,
+    longConversationWarningCharacterLimit: 9700
   }
 ]
 
@@ -71,12 +75,13 @@ const SAMPLE_QUESTIONS = [
 ]
 
 const SITE_INFO = {
-  title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass'
+  title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
+  isContentTruncated: false
 }
 
 interface StoryArgs {
   hasQuestions: boolean
-  hasSeenAgreement: boolean
+  hasAcceptedAgreement: boolean
   currentErrorState: mojom.APIError
 }
 
@@ -87,8 +92,11 @@ export default {
   },
   args: {
     hasQuestions: true,
-    hasChangedModel: false,
-    hasSeenAgreement: true,
+    hasChosenSuggestedQuestions: true,
+    showModelIntro: true,
+    hasAcceptedAgreement: true,
+    isPremiumUser: true,
+    isPremiumUserDisconnected: false,
     currentErrorState: select(
       'Current Status',
       mojom.APIError,
@@ -102,15 +110,14 @@ export default {
       const [suggestedQuestions] = React.useState<string[]>(SAMPLE_QUESTIONS)
       const [isGenerating] = React.useState(false)
       const [canGenerateQuestions] = React.useState(false)
-      const [userAutoGeneratePref] =
-        React.useState<mojom.AutoGenerateQuestionsPref>()
+      const userAutoGeneratePref: mojom.AutoGenerateQuestionsPref = options.args.hasChosenSuggestedQuestions ? mojom.AutoGenerateQuestionsPref.Enabled : mojom.AutoGenerateQuestionsPref.Unset
       const [siteInfo] = React.useState<mojom.SiteInfo | null>(SITE_INFO)
       const [favIconUrl] = React.useState<string>()
       const [currentError] = React.useState<mojom.APIError>(
         options.args.currentErrorState
       )
-      const [hasSeenAgreement] = React.useState(options.args.hasSeenAgreement)
-      const [isPremiumUser] = React.useState(options.args.isPremiumUser)
+      const [hasAcceptedAgreement] = React.useState(options.args.hasAcceptedAgreement)
+
 
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
@@ -118,7 +125,7 @@ export default {
       const store: AIChatContext = {
         // Don't error when new properties are added
         ...defaultContext,
-        hasChangedModel: options.args.hasChangedModel,
+        showModelIntro: options.args.showModelIntro,
         allModels: MODELS,
         currentModel: MODELS[0],
         conversationHistory,
@@ -129,10 +136,11 @@ export default {
         siteInfo,
         favIconUrl,
         currentError,
-        hasSeenAgreement,
+        hasAcceptedAgreement,
         apiHasError,
         shouldDisableUserInput,
-        isPremiumUser
+        isPremiumUser: options.args.isPremiumUser,
+        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected
       }
 
       return (

@@ -7,7 +7,11 @@ import * as React from 'react'
 import { loadTimeData } from '$web-common/loadTimeData'
 
 import getPageHandlerInstance, * as mojom from '../api/page_handler'
-import DataContext from './context'
+import DataContext, { AIChatContext } from './context'
+
+// TODO(petemill): Build account urls in the browser
+const URL_REFRESH_PREMIUM_SESSION = 'https://account.brave.com/?intent=recover&product=leo'
+const URL_GO_PREMIUM = 'https://account.brave.com/account/?intent=checkout&product=leo'
 
 function toBlobURL(data: number[] | null) {
   if (!data) return undefined
@@ -29,12 +33,17 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [isGenerating, setIsGenerating] = React.useState(false)
   const [canGenerateQuestions, setCanGenerateQuestions] = React.useState(false)
   const [userAutoGeneratePref, setUserAutoGeneratePref] = React.useState<mojom.AutoGenerateQuestionsPref>()
-  const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null>(null)
+  // undefined for nothing received yet
+  // null for no site info
+  // mojom.SiteInfo for valid site info
+  const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null | undefined>(undefined)
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
-  const [hasSeenAgreement, setHasSeenAgreement] = React.useState(loadTimeData.getBoolean("hasSeenAgreement"))
-  const [isPremiumUser] = React.useState(true)
-  const [hasUserDissmisedPremiumPrompt, setHasUserDissmisedPremiumPrompt] = React.useState(loadTimeData.getBoolean("hasUserDismissedPremiumPrompt"))
+  const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
+  const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus | undefined>(undefined)
+  const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
+  const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean>(false)
+  const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -45,8 +54,14 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.changeModel(model.key)
   }
 
+  const isPremiumUser = premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive
+
   const apiHasError = (currentError !== mojom.APIError.None)
-  const shouldDisableUserInput = apiHasError || isGenerating
+  const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.isPremium))
+
+  // Wait to show model intro until we've received SiteInfo information
+  // (valid or null) to avoid flash of content.
+  const showModelIntro = hasChangedModel || siteInfo === null
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -73,11 +88,21 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.generateQuestions()
   }
 
+  const handleSiteInfo = (isFetching: boolean, siteInfo: mojom.SiteInfo | null) => {
+    // null siteInfo for no content
+    // true isFetching for unknown yet
+    if (!isFetching) {
+      setSiteInfo(siteInfo)
+    } else {
+      setSiteInfo(undefined)
+    }
+  }
+
   const getSiteInfo = () => {
     getPageHandlerInstance()
       .pageHandler.getSiteInfo()
-      .then(({ siteInfo }) => {
-        setSiteInfo(siteInfo)
+      .then(({ isFetching, siteInfo }) => {
+        handleSiteInfo(isFetching, siteInfo)
       })
   }
 
@@ -98,31 +123,98 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   const handleAgreeClick = () => {
-    setHasSeenAgreement(true)
+    setHasAcceptedAgreement(true)
     getPageHandlerInstance().pageHandler.markAgreementAccepted()
   }
 
-  const getHasUserDismissedPremiumPrompt = () => {
-    getPageHandlerInstance().pageHandler.getHasUserDismissedPremiumPrompt()
-      .then(resp => setHasUserDissmisedPremiumPrompt(resp.hasDismissed))
+  const getCanShowPremiumPrompt = () => {
+    getPageHandlerInstance().pageHandler.getCanShowPremiumPrompt()
+      .then(resp => setCanShowPremiumPrompt(resp.canShow))
   }
 
   const dismissPremiumPrompt = () => {
-    getPageHandlerInstance().pageHandler.setHasUserDismissedPremiumPrompt(true)
-    setHasUserDissmisedPremiumPrompt(true)
+    getPageHandlerInstance().pageHandler.dismissPremiumPrompt()
+    setCanShowPremiumPrompt(false)
   }
 
-  const initialiseForTargetTab = () => {
+  const switchToDefaultModel = () => {
+    // Select the first non-premium model
+    const nonPremium = allModels.find(m => !m.isPremium)
+    if (!nonPremium) {
+      console.error('Could not find a non-premium model!')
+      return
+    }
+    setCurrentModel(nonPremium)
+  }
+
+  const updateCurrentPremiumStatus = async () => {
+    console.debug('Getting premium status...')
+    const premiumStatus = await getPageHandlerInstance().pageHandler.getPremiumStatus()
+    console.debug('got premium status: ', premiumStatus.result)
+    setPremiumStatus(premiumStatus.result)
+  }
+
+  const userRefreshPremiumSession = () => {
+    getPageHandlerInstance().pageHandler.openURL({ url: URL_REFRESH_PREMIUM_SESSION })
+  }
+
+  const shouldShowLongPageWarning = React.useMemo(() => {
+    if (
+      !hasDismissedLongPageWarning &&
+      conversationHistory.length >= 1 &&
+      siteInfo?.isContentTruncated
+    ) {
+      return true
+    }
+
+    return false
+  }, [conversationHistory, hasDismissedLongPageWarning, siteInfo?.isContentTruncated])
+
+  const shouldShowLongConversationInfo = React.useMemo(() => {
+    if (!currentModel) return false
+
+    const chatHistoryCharTotal = conversationHistory.reduce((charCount, curr) => charCount + curr.text.length, 0)
+
+    // TODO(nullhook): make this more accurately based on the actual page content length
+    let totalCharLimit = currentModel?.longConversationWarningCharacterLimit
+    if (!siteInfo) totalCharLimit += currentModel?.maxPageContentLength
+
+    if (
+      !hasDismissedLongConversationInfo &&
+      chatHistoryCharTotal >= totalCharLimit
+    ) {
+      return true
+    }
+
+    return false
+  }, [conversationHistory, currentModel, hasDismissedLongConversationInfo, siteInfo])
+
+  const dismissLongPageWarning = () => {
+    setHasDismissedLongPageWarning(true)
+  }
+
+  const dismissLongConversationInfo = () => {
+    setHasDismissedLongConversationInfo(true)
+  }
+
+  const goPremium = () => {
+    getPageHandlerInstance().pageHandler.openURL({
+      url: URL_GO_PREMIUM
+    })
+  }
+
+  const initialiseForTargetTab = async () => {
     // Replace state from backend
     // TODO(petemill): Perhaps we need a simple GetState mojom function
     // and OnStateChanged event so we
     // don't need to call multiple functions or handle multiple events.
+    updateCurrentPremiumStatus()
     getConversationHistory()
     getSuggestedQuestions()
     getSiteInfo()
     getFaviconData()
     getCurrentAPIError()
-    getHasUserDismissedPremiumPrompt()
+    getCanShowPremiumPrompt()
   }
 
   React.useEffect(() => {
@@ -134,6 +226,7 @@ function DataContextProvider (props: DataContextProviderProps) {
       setCurrentModelRaw(data.currentModel);
     })
 
+    // Setup data event handlers
     getPageHandlerInstance().callbackRouter.onConversationHistoryUpdate.addListener(() => {
       getConversationHistory()
       setCanGenerateQuestions(false)
@@ -146,34 +239,58 @@ function DataContextProvider (props: DataContextProviderProps) {
         setUserAutoGeneratePref(autoGenerate)
       }
     )
-
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
-    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener((siteInfo: mojom.SiteInfo) => setSiteInfo(siteInfo))
+    getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener(
+      handleSiteInfo
+    )
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
+
+    // Since there is no server-side event for premium status changing,
+    // we should check often. And since purchase or login is performed in
+    // a separate WebContents, we can check when focus is returned here.
+    window.addEventListener('focus', () => {
+      updateCurrentPremiumStatus()
+    })
+
+    document.addEventListener('visibilitychange', (e) => {
+      if (document.visibilityState === 'visible') {
+        updateCurrentPremiumStatus()
+      }
+    })
   }, [])
 
-  const store = {
+  const store: AIChatContext = {
     allModels,
     currentModel,
-    hasChangedModel,
+    showModelIntro,
     conversationHistory,
     isGenerating,
     suggestedQuestions,
     canGenerateQuestions,
     userAutoGeneratePref,
-    siteInfo,
+    siteInfo: siteInfo || null,
     favIconUrl,
     currentError,
-    hasSeenAgreement,
+    hasAcceptedAgreement,
     apiHasError,
     shouldDisableUserInput,
+    isPremiumStatusFetching: premiumStatus === undefined,
     isPremiumUser,
-    hasUserDissmisedPremiumPrompt,
+    isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
+    canShowPremiumPrompt,
+    shouldShowLongPageWarning,
+    shouldShowLongConversationInfo,
     setCurrentModel,
+    switchToDefaultModel,
+    goPremium,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,
-    dismissPremiumPrompt
+    dismissPremiumPrompt,
+    getCanShowPremiumPrompt,
+    userRefreshPremiumSession,
+    dismissLongPageWarning,
+    dismissLongConversationInfo,
   }
 
   return (

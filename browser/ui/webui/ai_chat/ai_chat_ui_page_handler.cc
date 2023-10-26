@@ -163,8 +163,11 @@ void AIChatUIPageHandler::SetAutoGenerateQuestions(bool value) {
 
 void AIChatUIPageHandler::GetSiteInfo(GetSiteInfoCallback callback) {
   auto site_info = BuildSiteInfo();
-  std::move(callback).Run(site_info.has_value() ? site_info.value().Clone()
-                                                : nullptr);
+  const bool is_fetching_content = active_chat_tab_helper_->HasPageContent() ==
+                                   PageContentAssociation::FETCHING_CONTENT;
+  std::move(callback).Run(is_fetching_content, site_info.has_value()
+                                                   ? site_info.value().Clone()
+                                                   : nullptr);
 }
 
 void AIChatUIPageHandler::OpenBraveLeoSettings() {
@@ -178,7 +181,7 @@ void AIChatUIPageHandler::OpenBraveLeoSettings() {
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
-  if (!url.SchemeIs(content::kChromeUIScheme) ||
+  if (!url.SchemeIs(content::kChromeUIScheme) &&
       !url.SchemeIs(url::kHttpsScheme)) {
     return;
   }
@@ -218,15 +221,33 @@ void AIChatUIPageHandler::GetAPIResponseError(
   std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
 }
 
-void AIChatUIPageHandler::GetHasUserDismissedPremiumPrompt(
-    GetHasUserDismissedPremiumPromptCallback callback) {
-  std::move(callback).Run(profile_->GetPrefs()->GetBoolean(
-      ai_chat::prefs::kUserDismissedPremiumPrompt));
+void AIChatUIPageHandler::GetCanShowPremiumPrompt(
+    GetCanShowPremiumPromptCallback callback) {
+  bool has_user_dismissed_prompt = profile_->GetPrefs()->GetBoolean(
+      ai_chat::prefs::kUserDismissedPremiumPrompt);
+
+  if (has_user_dismissed_prompt) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  base::Time last_accepted_disclaimer =
+      profile_->GetPrefs()->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
+  base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
+  bool is_more_than_24h_since_last_seen =
+      last_accepted_disclaimer < time_1_day_ago;
+
+  if (is_more_than_24h_since_last_seen && !has_user_dismissed_prompt) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  std::move(callback).Run(false);
 }
 
-void AIChatUIPageHandler::SetHasUserDismissedPremiumPrompt(bool has_dismissed) {
+void AIChatUIPageHandler::DismissPremiumPrompt() {
   profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kUserDismissedPremiumPrompt,
-                                   has_dismissed);
+                                   true);
 }
 
 void AIChatUIPageHandler::RateMessage(bool is_liked,
@@ -286,8 +307,8 @@ void AIChatUIPageHandler::SendFeedback(const std::string& category,
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
-  profile_->GetPrefs()->SetBoolean(ai_chat::prefs::kBraveChatHasSeenDisclaimer,
-                                   true);
+  profile_->GetPrefs()->SetTime(ai_chat::prefs::kLastAcceptedDisclaimer,
+                                base::Time::Now());
 }
 
 void AIChatUIPageHandler::OnHistoryUpdate() {
@@ -333,12 +354,22 @@ void AIChatUIPageHandler::OnFaviconImageDataChanged() {
   }
 }
 
-void AIChatUIPageHandler::OnPageHasContent() {
+void AIChatUIPageHandler::OnPageHasContent(bool page_contents_is_truncated) {
   if (page_.is_bound()) {
+    // TODO(petemill): Looking at the target webcontents'
+    // |IsDocumentOnLoadCompletedInPrimaryMainFrame| could be improved with
+    // a function on TabHelper / Conversation, e.g. IsContentLoading so that
+    // MaybeGeneratePageText and this function are looking at the same thing.
+    // This should be refactored with iOS support.
+    const bool is_fetching_content =
+        (active_chat_tab_helper_->HasPageContent() ==
+         PageContentAssociation::FETCHING_CONTENT) ||
+        !active_chat_tab_helper_->web_contents()
+             ->IsDocumentOnLoadCompletedInPrimaryMainFrame();
     auto site_info = BuildSiteInfo();
-
-    page_->OnSiteInfoChanged(site_info.has_value() ? site_info.value().Clone()
-                                                   : nullptr);
+    page_->OnSiteInfoChanged(
+        is_fetching_content,
+        site_info.has_value() ? site_info.value().Clone() : nullptr);
   }
 }
 
@@ -375,10 +406,13 @@ void AIChatUIPageHandler::GetFaviconImageData(
 }
 
 absl::optional<mojom::SiteInfo> AIChatUIPageHandler::BuildSiteInfo() {
-  if (active_chat_tab_helper_ && active_chat_tab_helper_->HasPageContent()) {
+  if (active_chat_tab_helper_ && active_chat_tab_helper_->HasPageContent() ==
+                                     PageContentAssociation::HAS_CONTENT) {
     mojom::SiteInfo site_info;
     site_info.title =
         base::UTF16ToUTF8(active_chat_tab_helper_->web_contents()->GetTitle());
+    site_info.is_content_truncated =
+        active_chat_tab_helper_->IsPageContentsTruncated();
 
     return site_info;
   }
@@ -393,6 +427,10 @@ void AIChatUIPageHandler::OnVisibilityChanged(content::Visibility visibility) {
   }
   bool is_visible = (visibility == content::Visibility::VISIBLE) ? true : false;
   active_chat_tab_helper_->OnConversationActiveChanged(is_visible);
+}
+
+void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
+  active_chat_tab_helper_->GetPremiumStatus(std::move(callback));
 }
 
 }  // namespace ai_chat

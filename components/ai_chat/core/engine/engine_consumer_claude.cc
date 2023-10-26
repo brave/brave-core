@@ -123,7 +123,8 @@ void CheckPrompt(std::string& prompt) {
 
 EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
     const mojom::Model& model,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    AIChatCredentialManager* credential_manager) {
   // Allow specific model name to be overriden by feature flag
   // TODO(petemill): verify premium status, or ensure server will verify even
   // when given a model name override via cli flag param.
@@ -134,8 +135,10 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
   DCHECK(!model_name.empty());
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());
-  api_ = std::make_unique<RemoteCompletionClient>(model_name, stop_sequences,
-                                                  url_loader_factory);
+  api_ = std::make_unique<RemoteCompletionClient>(
+      model_name, stop_sequences, url_loader_factory, credential_manager);
+
+  max_page_content_length_ = model.max_page_content_length;
 }
 
 EngineConsumerClaudeRemote::~EngineConsumerClaudeRemote() = default;
@@ -148,6 +151,8 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
     SuggestedQuestionsCallback callback) {
+  const std::string& truncated_page_content =
+      page_content.substr(0, max_page_content_length_);
   std::string prompt;
   std::vector<std::string> stop_sequences;
   prompt = base::StrCat(
@@ -156,7 +161,7 @@ void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
            l10n_util::GetStringUTF8(
                is_video ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
                         : IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT),
-           {page_content}, nullptr),
+           {truncated_page_content}, nullptr),
        "\n\n",
        l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_QUESTION_PROMPT_SEGMENT),
        kAIPromptSequence, "<response>"});
@@ -193,8 +198,10 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  std::string prompt = BuildClaudePrompt(human_input, page_content, is_video,
-                                         conversation_history);
+  const std::string& truncated_page_content =
+      page_content.substr(0, max_page_content_length_);
+  std::string prompt = BuildClaudePrompt(human_input, truncated_page_content,
+                                         is_video, conversation_history);
   CheckPrompt(prompt);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));

@@ -26,7 +26,8 @@ enum AutoGenerateQuestionsPref {
 enum APIError {
   None,
   ConnectionIssue,
-  RateLimitReached
+  RateLimitReached,
+  ContextLimitReached
 };
 
 enum ModelEngineType {
@@ -40,8 +41,15 @@ enum ModelCategory {
   CHAT,
 };
 
+enum PremiumStatus {
+  Inactive,
+  Active,
+  ActiveDisconnected,
+};
+
 struct SiteInfo {
   string title;
+  bool is_content_truncated;
 };
 
 // Represents a single turn in a conversation.
@@ -74,6 +82,10 @@ struct Model {
   // user-facing category
   ModelCategory category;
   bool is_premium;
+  // max limit to truncate page contents (measured in chars, not tokens)
+  uint32 max_page_content_length;
+  // max limit for overall conversation (measured in chars, not tokens)
+  uint32 long_conversation_warning_character_limit;
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -94,7 +106,10 @@ interface PageHandler {
   SubmitHumanConversationEntry(string input);
   MarkAgreementAccepted();
   SetAutoGenerateQuestions(bool can_auto_generate_questions);
-  GetSiteInfo() => (SiteInfo? site_info);
+  // Get associated page information. If there is none then |site_info| will be
+  // |null|. If the reason for that is it's still being fetched, then
+  // |is_fetching| will be |true|.
+  GetSiteInfo() => (bool is_fetching, SiteInfo? site_info);
   GetFaviconImageData() => (array<uint8>? favicon_image_data);
   OpenBraveLeoSettings();
   OpenURL(url.mojom.Url url);
@@ -102,14 +117,15 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
-  GetHasUserDismissedPremiumPrompt() => (bool has_dismissed);
-  SetHasUserDismissedPremiumPrompt(bool has_dismissed);
+  GetCanShowPremiumPrompt() => (bool can_show);
+  DismissPremiumPrompt();
 
-  // Send a user-rating for a chat 
+  // Send a user-rating for a chat
   // message. |turn_id| is the index of the message in the
   // current conversation.
   RateMessage(bool is_liked, uint32 turn_id) => (string? rating_id);
   SendFeedback(string category, string feedback, string rating_id) => (bool is_success);
+  GetPremiumStatus() => (PremiumStatus result);
 };
 
 interface ChatUIPage {
@@ -120,6 +136,9 @@ interface ChatUIPage {
   // Browser window.
   OnSuggestedQuestionsChanged(
       array<string> questions, bool has_generated, AutoGenerateQuestionsPref auto_generate);
-  OnSiteInfoChanged(SiteInfo? info);
+  // Associated page information has changed. If there is none then |site_info|
+  // will be |null|. If the reason for that is it's still being fetched, then
+  // |is_fetching| will be |true|.
+  OnSiteInfoChanged(bool is_fetching, SiteInfo? info);
   OnFaviconImageDataChanged(array<uint8> favicon_image_data);
 };

@@ -66,9 +66,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void ClearConversationHistory() override;
   void RetryAPIRequest() override;
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
-  void GetHasUserDismissedPremiumPrompt(
-      GetHasUserDismissedPremiumPromptCallback callback) override;
-  void SetHasUserDismissedPremiumPrompt(bool has_dismissed) override;
+  void GetCanShowPremiumPrompt(
+      GetCanShowPremiumPromptCallback callback) override;
+  void DismissPremiumPrompt() override;
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
                    RateMessageCallback callback) override;
@@ -76,9 +76,9 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                     const std::string& feedback,
                     const std::string& rating_id,
                     SendFeedbackCallback callback) override;
-
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
+  void GetPremiumStatus(GetPremiumStatusCallback callback) override;
 
  private:
   // AIChatTabHelper::Observer
@@ -90,7 +90,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       bool has_generated,
       mojom::AutoGenerateQuestionsPref auto_generate) override;
   void OnFaviconImageDataChanged() override;
-  void OnPageHasContent() override;
+  void OnPageHasContent(bool page_contents_is_truncated) override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
   absl::optional<mojom::SiteInfo> BuildSiteInfo();

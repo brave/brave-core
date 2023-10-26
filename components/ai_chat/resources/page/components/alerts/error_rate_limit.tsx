@@ -5,12 +5,11 @@
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
+import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
-
 import DataContext from '../../state/context'
-import styles from './style.module.scss'
 import PremiumSuggestion from '../premium_suggestion'
+import styles from './alerts.module.scss'
 
 interface ErrorRateLimit {
   onRetry?: () => void
@@ -34,18 +33,20 @@ function ErrorRateLimit(props: ErrorRateLimit) {
   }
 
   return (
-    <div className={styles.common}>
-      <div className={styles.box}>
-        <Icon name='warning-triangle-filled' className={styles.icon} />
-        <div>
-          <p>{getLocale('errorRateLimit')}</p>
-          <div className={styles.actionsBox}>
-            <Button onClick={props.onRetry}>
-              {getLocale('retryButtonLabel')}
-            </Button>
-          </div>
-        </div>
-      </div>
+    <div className={styles.alert}>
+      <Alert
+        mode='full'
+        type='warning'
+      >
+        {getLocale('errorRateLimit')}
+        <Button
+          slot='actions'
+          kind='filled'
+          onClick={props.onRetry}
+        >
+            {getLocale('retryButtonLabel')}
+        </Button>
+      </Alert>
     </div>
   )
 }

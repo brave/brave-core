@@ -168,6 +168,7 @@ test("brave_unit_tests") {
     "//brave/app:command_ids",
     "//brave/app:unit_tests",
     "//brave/base:base_unittests",
+    "//brave/brave_domains:unit_tests",
     "//brave/browser",
     "//brave/browser:unit_tests",
     "//brave/browser/brave_wallet",
@@ -353,8 +354,7 @@ test("brave_unit_tests") {
   }
 
   if (enable_ai_chat) {
-    sources += [ "//brave/components/ai_chat/core/ai_chat_metrics_unittest.cc" ]
-    deps += [ "//brave/components/ai_chat/core" ]
+    deps += [ "//brave/components/ai_chat/core:unit_tests" ]
   }
 
   data = [ "data/" ]

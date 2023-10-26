@@ -9,13 +9,19 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "brave/components/ai_chat/common/buildflags/buildflags.h"
 
 namespace ai_chat::features {
 
-BASE_FEATURE(kAIChat, "AIChat", base::FEATURE_DISABLED_BY_DEFAULT);
-const base::FeatureParam<std::string> kAIModelKey(&kAIChat,
-                                                  "ai_model_key",
-                                                  "chat-default");
+BASE_FEATURE(kAIChat,
+             "AIChat",
+// Enable the feature flag on Android dev and nightly channels
+#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_AI_CHAT_FEATURE_FLAG)
+             base::FEATURE_ENABLED_BY_DEFAULT
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+);
 const base::FeatureParam<std::string> kAIModelName{&kAIChat, "ai_model_name",
                                                    ""};
 const base::FeatureParam<bool> kAIChatSSE{&kAIChat, "ai_chat_sse", true};

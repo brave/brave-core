@@ -241,7 +241,8 @@ namespace ai_chat {
 
 EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
     const mojom::Model& model,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    AIChatCredentialManager* credential_manager) {
   // Allow specific model name to be overriden by feature flag
   // TODO(petemill): verify premium status, or ensure server will verify even
   // when given a model name override via cli flag param.
@@ -252,8 +253,10 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
   DCHECK(!model_name.empty());
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());
-  api_ = std::make_unique<RemoteCompletionClient>(model_name, stop_sequences,
-                                                  url_loader_factory);
+  api_ = std::make_unique<RemoteCompletionClient>(
+      model_name, stop_sequences, url_loader_factory, credential_manager);
+
+  max_page_content_length_ = model.max_page_content_length;
 }
 
 EngineConsumerLlamaRemote::~EngineConsumerLlamaRemote() = default;
@@ -266,9 +269,11 @@ void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
     SuggestedQuestionsCallback callback) {
+  const std::string& truncated_page_content =
+      page_content.substr(0, max_page_content_length_);
   std::string prompt;
   std::vector<std::string> stop_sequences;
-  prompt = BuildLlama2GenerateQuestionsPrompt(is_video, page_content);
+  prompt = BuildLlama2GenerateQuestionsPrompt(is_video, truncated_page_content);
   stop_sequences.push_back(kLlama2Eos);
   stop_sequences.push_back("</ul>");
   DCHECK(api_);
@@ -332,8 +337,10 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  std::string prompt = BuildLlama2Prompt(conversation_history, page_content,
-                                         is_video, human_input);
+  const std::string& truncated_page_content =
+      page_content.substr(0, max_page_content_length_);
+  std::string prompt = BuildLlama2Prompt(
+      conversation_history, truncated_page_content, is_video, human_input);
   DCHECK(api_);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));

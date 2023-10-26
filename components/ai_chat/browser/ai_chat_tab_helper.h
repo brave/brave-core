@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/engine/engine_consumer.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -35,6 +36,12 @@ namespace ai_chat {
 
 class AIChatMetrics;
 
+enum PageContentAssociation {
+  HAS_CONTENT,
+  NO_CONTENT,
+  FETCHING_CONTENT,
+};
+
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper>,
@@ -54,7 +61,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
         bool has_generated,
         mojom::AutoGenerateQuestionsPref auto_generate) {}
     virtual void OnFaviconImageDataChanged() {}
-    virtual void OnPageHasContent() {}
+    virtual void OnPageHasContent(bool page_contents_is_truncated) {}
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
@@ -83,16 +90,23 @@ class AIChatTabHelper : public content::WebContentsObserver,
   std::vector<std::string> GetSuggestedQuestions(
       bool& can_generate,
       mojom::AutoGenerateQuestionsPref& auto_generate);
-  bool HasPageContent();
+  PageContentAssociation HasPageContent();
   void DisconnectPageContents();
   void ClearConversationHistory();
   mojom::APIError GetCurrentAPIError();
+  void GetPremiumStatus(
+      ai_chat::mojom::PageHandler::GetPremiumStatusCallback callback);
+  bool IsPageContentsTruncated();
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
 
-  AIChatTabHelper(content::WebContents* web_contents,
-                  AIChatMetrics* ai_chat_metrics);
+  AIChatTabHelper(
+      content::WebContents* web_contents,
+      AIChatMetrics* ai_chat_metrics,
+      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+          skus_service_getter,
+      PrefService* local_state_prefs);
 
   void InitEngine();
   bool HasUserOptedIn();
@@ -113,7 +127,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnSuggestedQuestionsResponse(int64_t for_navigation_id,
                                     std::vector<std::string> result);
   void OnSuggestedQuestionsChanged();
-  void OnPageHasContentChanged();
+  void OnPageHasContentChanged(bool page_contents_is_truncated);
 
   // content::WebContentsObserver:
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
@@ -156,6 +170,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   mojom::APIError current_error_ = mojom::APIError::None;
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
   std::unique_ptr<mojom::ConversationTurn> pending_request_;
 

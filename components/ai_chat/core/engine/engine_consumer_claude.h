@@ -10,6 +10,7 @@
 #include <string>
 
 #include "brave/components/ai_chat/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/engine/remote_completion_client.h"
 
@@ -31,7 +32,8 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
  public:
   explicit EngineConsumerClaudeRemote(
       const mojom::Model& model,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      AIChatCredentialManager* credential_manager);
   EngineConsumerClaudeRemote(const EngineConsumerClaudeRemote&) = delete;
   EngineConsumerClaudeRemote& operator=(const EngineConsumerClaudeRemote&) =
       delete;
@@ -58,6 +60,8 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
       GenerationResult result);
 
   std::unique_ptr<RemoteCompletionClient> api_ = nullptr;
+
+  int max_page_content_length_ = 0;
 
   base::WeakPtrFactory<EngineConsumerClaudeRemote> weak_ptr_factory_{this};
 };

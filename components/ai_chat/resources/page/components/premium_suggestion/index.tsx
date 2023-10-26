@@ -8,7 +8,7 @@ import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import formatMessage from '$web-common/formatMessage'
-
+import DataContext from '../../state/context'
 import styles from './style.module.scss'
 
 interface PremiumSuggestionProps {
@@ -19,13 +19,13 @@ interface PremiumSuggestionProps {
 }
 
 function PremiumSuggestion(props: PremiumSuggestionProps) {
+  const context = React.useContext(DataContext)
+
   const pricingInfo = formatMessage(getLocale('premiumPricing'), {
     placeholders: {
       $1: <data>15</data>
     }
   })
-
-  const handlePremiumButtonClick = () => {}
 
   return (
     <div className={styles.boxPremium}>
@@ -56,7 +56,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
         </li>
       </ul>
       <div className={styles.actionsBox}>
-        <Button onClick={handlePremiumButtonClick}>
+        <Button onClick={context.goPremium}>
           {getLocale('premiumButtonLabel')}
         </Button>
         {props.secondaryActionButton}

@@ -10,8 +10,8 @@ class PrefRegistrySimple;
 
 namespace ai_chat::prefs {
 
-constexpr char kBraveChatHasSeenDisclaimer[] =
-    "brave.ai_chat.has_seen_disclaimer";
+constexpr char kLastAcceptedDisclaimer[] =
+    "brave.ai_chat.last_accepted_disclaimer";
 constexpr char kBraveChatAutoGenerateQuestions[] =
     "brave.ai_chat.auto_generate_questions";
 constexpr char kBraveChatAutocompleteProviderEnabled[] =
@@ -20,10 +20,17 @@ constexpr char kBraveChatP3AChatCountWeeklyStorage[] =
     "brave.ai_chat.p3a_chat_count";
 constexpr char kBraveChatP3APromptCountWeeklyStorage[] =
     "brave.ai_chat.p3a_prompt_count";
+// Stores Leo Premium credentials that have already been fetched from the
+// SKU SDK but were not used because the chat server was unavailable.
+constexpr char kBraveChatPremiumCredentialCache[] =
+    "brave.ai_chat.premium_credential_cache";
 constexpr char kUserDismissedPremiumPrompt[] =
     "brave.ai_chat.user_dismissed_premium_prompt";
+constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 }  // namespace ai_chat::prefs
 

@@ -73,13 +73,16 @@
     New chat
   </message>
   <message name="IDS_CHAT_UI_MENU_SUGGESTED_QUESTIONS" desc="Menu item for whether to enable suggested questions during chat conversations">
-    Suggest questions
+    Suggested questions
+  </message>
+  <message name="IDS_CHAT_UI_MENU_GO_PREMIUM" desc="Menu item for subscribing to premium">
+    Go Premium
   </message>
   <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
     Settings
   </message>
   <message name="IDS_CHAT_UI_MENU_TITLE_MODELS" desc="Menu section title for language models">
-    Available language models
+    Language models
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_BUTTON_LABEL" desc="A button label to subscribe for premium model">
      Go Premium
@@ -106,6 +109,9 @@
   <message name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
     Dismiss
   </message>
+  <message name="IDS_CHAT_UI_SWITCH_TO_DEFAULT_MODEL_BUTTON_LABEL" desc="A button label to switch to the free model">
+    Switch to the default model
+  </message>
   <message name="IDS_CHAT_UI_UNLOCK_PREMIUM_TITLE" desc="A heading on prompt premium suggestion UI">
     Unlock the full potential of Leo
   </message>
@@ -114,6 +120,12 @@
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2_DESC" desc="A premium feature that allows priority access">
     Priority access and increased response limits
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_DESCRIPTION" desc="Warning message when AI Chat Premium authentication is expired">
+    Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.
+  </message>
+  <message name="IDS_CHAT_UI_PREMIUM_REFRESH_WARNING_ACTION" desc="Action to take when AI Chat Premium authentication is expired">
+    Refresh
   </message>
   <message name="IDS_CHAT_UI_FEEDBACK_SENT" desc="Notification message for successful feedback submission">
     Feedback sent successfully
@@ -174,5 +186,32 @@
   </message>
   <message name="IDS_CHAT_UI_FEEDBACK_SUBMIT_ERROR" desc="An error message when the user's feedback could not be submitted">
     Your feedback could not be submitted, please check network connection and try again
+  </message>
+  <message name="IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING" desc="An error message when the user's chat history is reaching to maximum threshold">
+    This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it.
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_DEFAULT_SUBTITLE" desc="A description for default chat model">
+    General purpose chat
+  </message>
+  <message name="IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL" desc="An button label for clearing chat history">
+    Clear Chat
+  </message>
+  <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="An button label for sending a chat message">
+    Send message to Leo
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE" desc="A description for llama-2-70b model">
+    Advanced and accurate chat
+  </message>
+  <message name="IDS_CHAT_UI_GOT_IT_BUTTON_LABEL" desc="An button label for dismissing a warning">
+    Got it
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE" desc="A description for claude-instant-v1 model">
+    Strength in creative tasks
+  </message>
+  <message name="IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING" desc="A warning issued when the user is trying to summarize a long content page">
+    The page is too long for Leo. Some context could be missing from the conversation.
+  </message>
+  <message name="IDS_CHAT_UI_CONVERSATION_END_ERROR" desc="An error issued when the user cannot continue chatting">
+    This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.
   </message>
 </grit-part>

@@ -14,20 +14,24 @@ import ConversationList from '../conversation_list'
 import PrivacyMessage from '../privacy_message'
 import SiteTitle from '../site_title'
 import PromptAutoSuggestion from '../prompt_auto_suggestion'
-import ErrorConnection from '../error_connection'
-import ErrorRateLimit from '../error_rate_limit'
+import ErrorConnection from '../alerts/error_connection'
+import ErrorRateLimit from '../alerts/error_rate_limit'
 import InputBox from '../input_box'
 import FeatureButtonMenu from '../feature_button_menu'
-import styles from './style.module.scss'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
+import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
+import WarningLongPage from '../alerts/warning_long_page'
+import InfoLongConversation from '../alerts/info_long_conversation'
+import ErrorConversationEnd from '../alerts/error_conversation_end'
+import styles from './style.module.scss'
 
 function Main() {
   const context = React.useContext(DataContext)
   const {
     siteInfo,
     userAutoGeneratePref,
-    hasSeenAgreement,
+    hasAcceptedAgreement,
     currentError,
     apiHasError
   } = context
@@ -36,26 +40,34 @@ function Main() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
-  const shouldShowPremiumSuggestionForModel = !context.isPremiumUser && context.currentModel?.isPremium
+  const shouldPromptSuggestQuestions = hasAcceptedAgreement && userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset
 
-  const shouldShowPremiumSuggestionStandalone = !context.hasUserDissmisedPremiumPrompt && !siteInfo && !context.isPremiumUser
+  const shouldShowPremiumSuggestionForModel =
+    hasAcceptedAgreement &&
+    !context.isPremiumStatusFetching && // Avoid flash of content
+    !context.isPremiumUser &&
+    context.currentModel?.isPremium
+
+  const shouldShowPremiumSuggestionStandalone =
+    hasAcceptedAgreement &&
+    !context.isPremiumStatusFetching && // Avoid flash of content
+    !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
+    !shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
+    context.canShowPremiumPrompt &&
+    !siteInfo &&
+    !context.isPremiumUser
 
   const shouldDisplayEraseAction = context.conversationHistory.length >= 1
 
   let conversationListElement = <PrivacyMessage />
   let siteTitleElement = null
-  let promptAutoSuggestionElement = null
   let currentErrorElement = null
 
-  if (hasSeenAgreement) {
+  if (hasAcceptedAgreement) {
     conversationListElement = <ConversationList />
 
     if (siteInfo) {
       siteTitleElement = <SiteTitle />
-    }
-
-    if (userAutoGeneratePref === mojom.AutoGenerateQuestionsPref.Unset) {
-      promptAutoSuggestionElement = <PromptAutoSuggestion />
     }
 
     if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
@@ -73,6 +85,12 @@ function Main() {
         />
       )
     }
+
+    if (apiHasError && currentError === mojom.APIError.ContextLimitReached) {
+      currentErrorElement = (
+        <ErrorConversationEnd />
+      )
+    }
   }
 
   return (
@@ -86,7 +104,7 @@ function Main() {
           {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
         </div>
         <div className={styles.actions}>
-          {hasSeenAgreement && (
+          {hasAcceptedAgreement && (
             <>
             {shouldDisplayEraseAction && (
               <Button
@@ -108,7 +126,7 @@ function Main() {
         {siteTitleElement && (
           <div className={styles.siteTitleBox}>{siteTitleElement}</div>
         )}
-        {context.hasChangedModel && <ModelIntro />}
+        {context.showModelIntro && <ModelIntro />}
         {conversationListElement}
         {currentErrorElement && (
           <div className={styles.promptContainer}>{currentErrorElement}</div>
@@ -119,6 +137,14 @@ function Main() {
               <PremiumSuggestion
                 title={getLocale('unlockPremiumTitle')}
                 verbose={true}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => context.switchToDefaultModel()}
+                  >
+                    {getLocale('switchToDefaultModelButtonLabel')}
+                  </Button>
+                }
               />
             </div>
           )
@@ -141,9 +167,24 @@ function Main() {
             </div>
           )
         }
+        {context.isPremiumUserDisconnected &&
+        <div className={styles.promptContainer}>
+          <WarningPremiumDisconnected />
+        </div>
+        }
+        {context.shouldShowLongPageWarning &&
+        <div className={styles.promptContainer}>
+            <WarningLongPage />
+        </div>}
+        {context.shouldShowLongConversationInfo &&
+        <div className={styles.promptContainer}>
+            <InfoLongConversation />
+        </div>}
       </div>
       <div className={styles.inputBox}>
-        {promptAutoSuggestionElement}
+        {shouldPromptSuggestQuestions &&
+        <PromptAutoSuggestion />
+        }
         <InputBox />
       </div>
     </main>

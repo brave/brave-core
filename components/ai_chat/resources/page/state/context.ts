@@ -9,48 +9,68 @@ import * as mojom from '../api/page_handler'
 export interface AIChatContext {
   allModels: mojom.Model[]
   currentModel?: mojom.Model
-  hasChangedModel: boolean
+  showModelIntro: boolean
   conversationHistory: mojom.ConversationTurn[]
   suggestedQuestions: string[]
   isGenerating: boolean
   canGenerateQuestions: boolean
-  hasSeenAgreement: boolean
+  hasAcceptedAgreement: boolean
   userAutoGeneratePref: mojom.AutoGenerateQuestionsPref | undefined
   siteInfo: mojom.SiteInfo | null
   favIconUrl: string | undefined
   currentError: mojom.APIError | undefined
   apiHasError: boolean
   shouldDisableUserInput: boolean
+  isPremiumStatusFetching: boolean
   isPremiumUser: boolean
-  hasUserDissmisedPremiumPrompt: boolean
+  isPremiumUserDisconnected: boolean
+  canShowPremiumPrompt?: boolean
+  shouldShowLongPageWarning: boolean
+  shouldShowLongConversationInfo: boolean
   setCurrentModel: (model: mojom.Model) => void,
+  switchToDefaultModel: () => void,
   generateSuggestedQuestions: () => void
   setUserAllowsAutoGenerating: (value: boolean) => void
+  goPremium: () => void
   handleAgreeClick: () => void
   dismissPremiumPrompt: () => void
+  getCanShowPremiumPrompt: () => void
+  userRefreshPremiumSession: () => void
+  dismissLongPageWarning: () => void
+  dismissLongConversationInfo: () => void
 }
 
-export const defaultContext = {
+export const defaultContext: AIChatContext = {
   allModels: [],
-  hasChangedModel: false,
+  showModelIntro: false,
   conversationHistory: [],
   suggestedQuestions: [],
   isGenerating: false,
   canGenerateQuestions: false,
-  hasSeenAgreement: false,
+  hasAcceptedAgreement: false,
   apiHasError: false,
   shouldDisableUserInput: false,
-  isPremiumUser: true,
+  isPremiumStatusFetching: false,
+  isPremiumUser: false,
+  isPremiumUserDisconnected: false,
   userAutoGeneratePref: undefined,
   siteInfo: null,
   favIconUrl: undefined,
   currentError: mojom.APIError.None,
-  hasUserDissmisedPremiumPrompt: false,
+  canShowPremiumPrompt: undefined,
+  shouldShowLongPageWarning: false,
+  shouldShowLongConversationInfo: false,
   setCurrentModel: () => {},
+  switchToDefaultModel: () => {},
   generateSuggestedQuestions: () => {},
   setUserAllowsAutoGenerating: () => {},
+  goPremium: () => {},
   handleAgreeClick: () => {},
-  dismissPremiumPrompt: () => {}
+  dismissPremiumPrompt: () => {},
+  getCanShowPremiumPrompt: () => {},
+  userRefreshPremiumSession: () => {},
+  dismissLongPageWarning: () => {},
+  dismissLongConversationInfo: () => {},
 }
 
 export default React.createContext<AIChatContext>(defaultContext)

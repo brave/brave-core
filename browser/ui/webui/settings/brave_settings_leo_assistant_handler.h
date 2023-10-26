@@ -41,6 +41,7 @@ class BraveLeoAssistantHandler : public settings::SettingsPageUIHandler,
   void HandleToggleLeoIcon(const base::Value::List& args);
   void HandleGetLeoIconVisibility(const base::Value::List& args);
   void HandleResetLeoData(const base::Value::List& args);
+  void HandleGetModels(const base::Value::List& args);
 
   raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<sidebar::SidebarService,
