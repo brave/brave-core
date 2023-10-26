@@ -178,7 +178,7 @@ extension Strings {
       NSLocalizedString(
         "defaultBrowserCallout.introCancelButtonText",
         tableName: "BraveShared", bundle: .module,
-        value: "Not now",
+        value: "Not Now",
         comment: "Button text to close the default browser popup.")
     public static let notificationTitle =
       NSLocalizedString(
@@ -216,25 +216,25 @@ extension Strings {
       NSLocalizedString(
         "callout.defaultBrowserCalloutButtonDescription",
         tableName: "BraveShared", bundle: .module,
-        value: "Set Brave as default browser?",
+        value: "Set Brave as Default Browser?",
         comment: "Description - Description used for main button in Default Browser Full Screen Callout")
     public static let defaultBrowserCalloutPrimaryButtonTitle =
       NSLocalizedString(
         "callout.defaultBrowserCalloutPrimaryButtonTitle",
         tableName: "BraveShared", bundle: .module,
-        value: "Set default",
+        value: "Set Default",
         comment: "Title for main button in Default Browser Full Screen Callout")
     public static let defaultBrowserCalloutSecondaryButtonTitle =
       NSLocalizedString(
         "callout.defaultBrowserCalloutSecondaryButtonTitle",
         tableName: "BraveShared", bundle: .module,
-        value: "Skip this",
+        value: "Skip This",
         comment: "Title for secondary button in Default Browser Full Screen Callout")
     public static let defaultBrowserCalloutSecondaryButtonDescription =
       NSLocalizedString(
         "callout.defaultBrowserCalloutSecondaryButtonDescription",
         tableName: "BraveShared", bundle: .module,
-        value: "Already default?",
+        value: "Already Default?",
         comment: "Description for secondary button in Default Browser Full Screen Callout")
     public static let privacyEverywhereCalloutTitle =
       NSLocalizedString(
@@ -252,7 +252,7 @@ extension Strings {
       NSLocalizedString(
         "callout.privacyEverywhereCalloutPrimaryButtonTitle",
         tableName: "BraveShared", bundle: .module,
-        value: "Sync now",
+        value: "Sync Now",
         comment: "Title for button in Default Browser Full Screen Callout")
     public static let tabReceivedCalloutTitle =
       NSLocalizedString(
