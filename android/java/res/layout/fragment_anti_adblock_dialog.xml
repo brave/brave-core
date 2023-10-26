@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/anti_adblock_dialog_title"
+        android:textSize="20sp"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/shield_text_color"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/anti_adblock_dialog_text"
+        android:layout_marginBottom="32dp"
+        android:textColor="@color/shield_text_color"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@drawable/anti_adblock_dialog_banner"
+        android:contentDescription="@null"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_positive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@drawable/crypto_wallet_blue_button"
+        android:text="@string/anti_adblock_dialog_positive_button_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_negative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        android:text="@string/anti_adblock_dialog_negative_button_text"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</LinearLayout>

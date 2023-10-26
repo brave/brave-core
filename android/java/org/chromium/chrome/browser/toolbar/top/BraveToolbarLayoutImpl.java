@@ -64,6 +64,7 @@ import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.AntiAdblockDialogFragment;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -485,17 +486,28 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             showNotificationNotEarningDialog();
                         }
 
-                        String countryCode = Locale.getDefault().getCountry();
-                        if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
-                                && url.domainIs(BraveConstants.YOUTUBE_DOMAIN)
-                                && ChromeSharedPreferences.getInstance()
-                                        .readBoolean(
-                                                BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG,
-                                                true)) {
-                            ChromeSharedPreferences.getInstance()
-                                    .writeBoolean(BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
-                        }
-                    }
+                String countryCode = Locale.getDefault().getCountry();
+                if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
+                        && url.domainIs(YOUTUBE_DOMAIN)
+                        && SharedPreferencesManager.getInstance().readBoolean(
+                                BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, true)) {
+                    SharedPreferencesManager.getInstance().writeBoolean(
+                            BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
+                }
+                showAntiAdblockDialog();
+            }
+
+            private void showAntiAdblockDialog() {
+                try {
+                    AntiAdblockDialogFragment mAntiAdblockDialogFragment =
+                            new AntiAdblockDialogFragment();
+                    mAntiAdblockDialogFragment.show(
+                            BraveActivity.getBraveActivity().getSupportFragmentManager(),
+                            "AntiAdblockDialogFragment");
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
+                    Log.e(TAG, "showAntiAdblockDialog failed " + e);
+                }
+            }
 
                     private void showNotificationNotEarningDialog() {
                         try {

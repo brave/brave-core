@@ -4088,6 +4088,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ELLIPSIS_TEXT" desc="Generic ellipsis text" translateable="false">
       ...
     </message>
+    <message name="IDS_ANTI_ADBLOCK_DIALOG_TITLE" desc="anti adblock dialog title">
+      Adjust ad block settings for this site
+    </message>
+    <message name="IDS_ANTI_ADBLOCK_DIALOG_TEXT" desc="anti adblock dialog text">
+      This site has begun blocking some ad blockers, which means their site may not work as expected.\n\nTo address this issue, Brave can adjust your shields settings for you. Once adjusted, you can try watching this content in Brave Player instead.
+    </message>
+    <message name="IDS_ANTI_ADBLOCK_DIALOG_POSITIVE_BUTTON_TEXT" desc="anti adblock dialog positive button text">
+      Adjust Shields for me
+    </message>
+    <message name="IDS_ANTI_ADBLOCK_DIALOG_NEGATIVE_BUTTON_TEXT" desc="anti adblock dialog negative button text">
+      Keep current settings
+    </message>
   </messages>
   </release>
 </grit>
