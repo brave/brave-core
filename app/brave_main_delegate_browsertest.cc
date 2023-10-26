@@ -293,7 +293,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &privacy_sandbox::kPrivacySandboxProactiveTopicsBlocking,
     &privacy_sandbox::kPrivacySandboxSettings3,
     &privacy_sandbox::kPrivacySandboxSettings4,
-    &privacy_sandbox::kTrackingProtectionOnboardingForceEligibility,
     &promos_features::kIOSPromoPasswordBubble,
     &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
     &safe_browsing::kExtensionTelemetryTabsApiSignal,
