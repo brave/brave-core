@@ -197,20 +197,6 @@ export const ConfirmTransactionPanel = () => {
     <StyledWrapper>
       <TopRow>
         <NetworkText>{transactionsNetwork?.chainName ?? ''}</NetworkText>
-        {isERC20Approve && (
-          <AddressAndOrb>
-            <Tooltip
-              text={transactionDetails.recipient}
-              isAddress={true}
-              position={'right'}
-            >
-              <AddressText>
-                {reduceAddress(transactionDetails.recipient)}
-              </AddressText>
-            </Tooltip>
-            <AccountCircle orb={toOrb} />
-          </AddressAndOrb>
-        )}
 
         <TransactionQueueSteps
           queueNextTransaction={queueNextTransaction}
@@ -228,6 +214,18 @@ export const ConfirmTransactionPanel = () => {
               foundTokenInfoByContractAddress?.symbol ?? ''
             )}
           </PanelTitle>
+          <AddressAndOrb>
+            <Tooltip
+              text={transactionDetails.recipient}
+              isAddress={true}
+              position={'right'}
+            >
+              <AddressText>
+                {reduceAddress(transactionDetails.recipient)}
+              </AddressText>
+            </Tooltip>
+            <AccountCircle orb={toOrb} />
+          </AddressAndOrb>
           <Description>
             {getLocale('braveWalletAllowSpendDescription').replace(
               '$1',
@@ -362,7 +360,6 @@ export const ConfirmTransactionPanel = () => {
 
       <MessageBox
         isDetails={selectedTab === 'details'}
-        isApprove={isERC20Approve}
       >
         {selectedTab === 'transaction' ? (
           <>

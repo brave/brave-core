@@ -437,7 +437,7 @@ function Container () {
 
   if (selectedPendingTransaction) {
     return (
-      <PanelWrapper isLonger={true}>
+      <PanelWrapper width={390} height={650}>
         <LongWrapper>
           {isBitcoinTransaction(selectedPendingTransaction) && (
             <ConfirmBitcoinTransactionPanel />

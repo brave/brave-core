@@ -27,7 +27,6 @@ export const HeaderWrapper = styled.div<StyleProps>`
   justify-content: center;
   border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
   padding: 0px 12px;
-  max-width: 300px;
   margin-bottom: ${(p) => p.hasSearch ? '0px' : '8px'};
 `
 

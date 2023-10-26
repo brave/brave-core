@@ -70,7 +70,7 @@ export const ButtonRow = styled.div`
 `
 
 export const Description = styled.span`
-  width: 275px;
+  width: 100%;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
@@ -81,7 +81,7 @@ export const Description = styled.span`
 
 export const AllowanceOption = styled.div`
   display: block;
-  width: 239px;
+  width: 90%;
 `
 
 export const AllowanceTitle = styled.div`

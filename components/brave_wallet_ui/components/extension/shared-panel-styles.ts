@@ -86,7 +86,7 @@ export const PanelTitle = styled.span`
 `
 
 export const Description = styled.span`
-  width: 275px;
+  width: 90%;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
@@ -94,7 +94,6 @@ export const Description = styled.span`
   text-align: center;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 12px;
-  width: 60%;
 `
 
 export const TabRow = styled.div`
@@ -102,7 +101,7 @@ export const TabRow = styled.div`
   align-items: flex-end;
   justify-content: center;
   flex-direction: row;
-  width: 255px;
+  width: 90%;
   margin-bottom: 10px;
 `
 
@@ -152,7 +151,7 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
   flex-direction: column;
   box-sizing: border-box;
   border-radius: 4px;
-  width: 255px;
+  width: 90%;
   padding: 10px;
   margin-bottom: 14px;
   background-color: ${(p) =>

@@ -167,7 +167,6 @@ export const ConfirmZCashTransactionPanel = () => {
 
       <MessageBox
         isDetails={selectedTab === 'details'}
-        isApprove={false}
       >
 
         {selectedTab === 'transaction'
