@@ -121,8 +121,22 @@ extension Preferences {
     ///
     /// This is a useful setting because it take too long for filter lists to load during launch
     /// and therefore we can try to load them right away and have them ready on the first tab load
-    @MainActor public static let lastDefaultFilterListFolderPath =
+    @MainActor public static let lastLegacyDefaultFilterListFolderPath =
       Option<String?>(key: "caching.last-default-filter-list-folder-path", default: nil)
+    
+    /// A cached value for the last folder path we got for our ad-block resources
+    ///
+    /// This is a useful setting because it take too long for filter lists to load during launch
+    /// and therefore we can try to load them right away and have them ready on the first tab load
+    @MainActor public static let lastAdBlockResourcesFolderPath =
+      Option<String?>(key: "caching.last-ad-block-resources-folder-path", default: nil)
+    
+    /// A cached value for the last folder path we got our filter lists components
+    ///
+    /// This is a useful setting because it take too long for filter lists to load during launch
+    /// and therefore we can try to load them right away and have them ready on the first tab load
+    @MainActor public static let lastFilterListCatalogueComponentFolderPath =
+      Option<String?>(key: "caching.last-filter-list-catalogue-component-folder-path", default: nil)
   }
   
   public final class Chromium {

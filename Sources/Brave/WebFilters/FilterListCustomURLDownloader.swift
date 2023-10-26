@@ -53,7 +53,7 @@ actor FilterListCustomURLDownloader: ObservableObject {
   }
   
   /// Load any custom filter lists from cache so they are ready to use and start fetching updates.
-  func start() async {
+  func startIfNeeded() async {
     guard !startedService else { return }
     self.startedService = true
     await CustomFilterListStorage.shared.loadCachedFilterLists()
