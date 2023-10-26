@@ -100,7 +100,7 @@ export const TransactionFiatAmountBig = styled.span`
   margin-bottom: 10px;
 `
 
-export const MessageBox = styled.div<{ isApprove: boolean, isDetails: boolean }>`
+export const MessageBox = styled.div<{ isDetails: boolean }>`
   display: flex;
   align-items: flex-start;
   justify-content: 'flex-start';
@@ -108,10 +108,9 @@ export const MessageBox = styled.div<{ isApprove: boolean, isDetails: boolean }>
   border: 1px solid ${(p) => p.theme.color.divider01};
   box-sizing: border-box;
   border-radius: 4px;
-  width: 255px;
-  height: ${(p) => p.isApprove ? '120px' : '140px'};
+  width: 90%;
+  height: 140px;
   padding: ${(p) => p.isDetails ? '14px' : '4px 14px'};
-  margin-bottom: 14px;
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;

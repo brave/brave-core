@@ -203,7 +203,6 @@ export const ConfirmSolanaTransactionPanel = () => {
 
       <MessageBox
         isDetails={selectedTab === 'details'}
-        isApprove={false}
       >
 
         {selectedTab === 'transaction'
