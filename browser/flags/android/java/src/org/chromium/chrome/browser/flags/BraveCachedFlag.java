@@ -17,9 +17,7 @@ public class BraveCachedFlag extends CachedFlag {
         sFlags = new HashMap<String, Boolean>();
         sFlags.put(ChromeFeatureList.BASELINE_GM3_SURFACE_COLORS, false);
         sFlags.put(ChromeFeatureList.START_SURFACE_ANDROID, false);
-        // Disable until we sort out UI issues
-        // https://github.com/brave/brave-browser/issues/29688
-        sFlags.put(ChromeFeatureList.INCOGNITO_REAUTHENTICATION_FOR_ANDROID, false);
+        sFlags.put(ChromeFeatureList.INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
     }
 
     // Will be deleted in bytecode. Variable from the parent class will be used instead.

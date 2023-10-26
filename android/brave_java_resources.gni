@@ -378,6 +378,7 @@ brave_java_resources = [
   "java/res/drawable/brave_news_settings_search_bg.xml",
   "java/res/drawable/brave_news_settings_unfollow_bg.xml",
   "java/res/drawable/brave_notification_permission_rationale_dialog_header.xml",
+  "java/res/drawable/brave_privacy_tabs_unlock_image.xml",
   "java/res/drawable/brave_rating_emoji_bg.xml",
   "java/res/drawable/brave_rating_rate_now_bg.xml",
   "java/res/drawable/brave_rewards_ads_month_background.xml",

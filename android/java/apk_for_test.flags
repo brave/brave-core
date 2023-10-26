@@ -778,14 +778,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.incognito.reauth.BravePrivateTabReauthCoordinatorBase {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.incognito.reauth.IncognitoReauthCoordinatorBase {
-    *** mIncognitoReauthView;
-}
-
 -keep class org.chromium.chrome.browser.firstrun.BraveFreIntentCreator {
     public <init>(...);
 }
