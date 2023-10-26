@@ -65,6 +65,8 @@ static constexpr auto kSimpleQueryStringTrackers =
          "unicorn_click_id",
          // https://github.com/brave/brave-browser/issues/33188
          "_gl",
+         // https://github.com/brave/brave-browser/issues/33952
+         "irclickid",
          // https://github.com/brave/brave-browser/issues/26295
          "vgo_ee"});
 
