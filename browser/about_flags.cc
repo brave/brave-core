@@ -272,6 +272,15 @@
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletDappsSupportFeature),       \
+      },                                                                      \
+      {                                                                       \
+          "brave-wallet-enable-ankr-balances",                                \
+          "Enable Ankr balances",                                             \
+          "Enable usage of Ankr Advanced API for fetching balances in Brave " \
+          "Wallet",                                                           \
+          kOsDesktop | kOsAndroid,                                            \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletAnkrBalancesFeature),       \
       })
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                             \

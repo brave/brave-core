@@ -2247,4 +2247,16 @@ void BraveWalletService::DiscoverEthAllowances(
       std::move(callback));
 }
 
+void BraveWalletService::GetAnkrSupportedChainIds(
+    GetAnkrSupportedChainIdsCallback callback) {
+  const auto& blockchains = GetAnkrBlockchains();
+
+  std::vector<std::string> chain_ids;
+  for (const auto& entry : blockchains) {
+    chain_ids.push_back(entry.first);
+  }
+
+  std::move(callback).Run(std::move(chain_ids));
+}
+
 }  // namespace brave_wallet

@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/values.h"
@@ -44,6 +45,11 @@ void AddKeyIfNotEmpty(base::Value::Dict* dict,
 
 base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
     const std::string& json_payload);
+base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders();
+
+std::string EncodeAnkrGetAccountBalancesParams(
+    const std::string& address,
+    const std::vector<std::string>& blockchains);
 
 }  // namespace brave_wallet
 

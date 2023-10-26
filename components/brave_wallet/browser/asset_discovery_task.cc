@@ -13,9 +13,11 @@
 #include "base/environment.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -78,17 +80,40 @@ void AssetDiscoveryTask::DiscoverAssets(
                                   ? eth_it->second
                                   : std::vector<std::string>();
 
+  const auto& ankr_blockchains = GetAnkrBlockchains();
+  std::vector<std::string> ankr_evm_chain_ids;
+  std::vector<std::string> non_ankr_evm_chain_ids;
+  for (const auto& chain_id : eth_chain_ids) {
+    if (ankr_blockchains.contains(chain_id)) {
+      ankr_evm_chain_ids.push_back(chain_id);
+    } else {
+      non_ankr_evm_chain_ids.push_back(chain_id);
+    }
+  }
+
+  bool use_ankr_discovery =
+      IsAnkrBalancesEnabled() && !ankr_evm_chain_ids.empty();
+
   // Concurrently discover ETH ERC20s on our registry, Solana tokens on our
   // Registry and NFTs on both platforms, then merge the results
   const auto barrier_callback =
       base::BarrierCallback<std::vector<mojom::BlockchainTokenPtr>>(
-          3,
+          use_ankr_discovery ? 4 : 3,
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAssets,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   // Currently SPL tokens are only discovered on Solana Mainnet.
   DiscoverSPLTokensFromRegistry(sol_account_addresses, barrier_callback);
-  DiscoverERC20sFromRegistry(eth_chain_ids, eth_account_addresses,
-                             barrier_callback);
+
+  if (use_ankr_discovery) {
+    DiscoverAnkrTokens(ankr_evm_chain_ids, eth_account_addresses,
+                       barrier_callback);
+    DiscoverERC20sFromRegistry(non_ankr_evm_chain_ids, eth_account_addresses,
+                               barrier_callback);
+  } else {
+    DiscoverERC20sFromRegistry(eth_chain_ids, eth_account_addresses,
+                               barrier_callback);
+  }
+
   DiscoverNFTs(non_fungible_chain_ids, account_addresses, barrier_callback);
 }
 
@@ -105,6 +130,68 @@ void AssetDiscoveryTask::MergeDiscoveredAssets(
 
   wallet_service_->OnDiscoverAssetsCompleted(std::move(flattened_assets));
   std::move(callback).Run();
+}
+
+void AssetDiscoveryTask::DiscoverAnkrTokens(
+    const std::vector<std::string>& chain_ids,
+    const std::vector<std::string>& account_addresses,
+    DiscoverAssetsCompletedCallback callback) {
+  if (account_addresses.empty() || chain_ids.empty()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // Use a barrier callback to wait for all AnkrGetAccountBalances calls to
+  // complete (one for each account address).
+  const auto barrier_callback =
+      base::BarrierCallback<std::vector<mojom::AnkrAssetBalancePtr>>(
+          account_addresses.size(),
+          base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAnkrTokens,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+
+  // For each account address, call AnkrGetAccountBalances
+  for (const auto& account_address : account_addresses) {
+    auto internal_callback =
+        base::BindOnce(&AssetDiscoveryTask::OnAnkrGetAccountBalances,
+                       weak_ptr_factory_.GetWeakPtr(), barrier_callback);
+    json_rpc_service_->AnkrGetAccountBalances(account_address, chain_ids,
+                                              std::move(internal_callback));
+  }
+}
+
+void AssetDiscoveryTask::OnAnkrGetAccountBalances(
+    base::OnceCallback<void(std::vector<mojom::AnkrAssetBalancePtr>)>
+        barrier_callback,
+    std::vector<mojom::AnkrAssetBalancePtr> balances,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  // If the request failed, return an empty vector
+  if (error != mojom::ProviderError::kSuccess || !error_message.empty()) {
+    std::move(barrier_callback).Run({});
+    return;
+  }
+
+  std::move(barrier_callback).Run(std::move(balances));
+}
+
+void AssetDiscoveryTask::MergeDiscoveredAnkrTokens(
+    DiscoverAssetsCompletedCallback callback,
+    const std::vector<std::vector<mojom::AnkrAssetBalancePtr>>&
+        discovered_assets_results) {
+  // Create a vector of BlockchainTokenPtrs to return
+  std::vector<mojom::BlockchainTokenPtr> discovered_tokens;
+
+  for (const auto& discovered_assets_result : discovered_assets_results) {
+    for (const auto& balance : discovered_assets_result) {
+      if (!BraveWalletService::AddUserAsset(balance->asset.Clone(), true,
+                                            prefs_)) {
+        continue;
+      }
+      discovered_tokens.push_back(balance->asset.Clone());
+    }
+  }
+
+  std::move(callback).Run(std::move(discovered_tokens));
 }
 
 void AssetDiscoveryTask::DiscoverERC20sFromRegistry(

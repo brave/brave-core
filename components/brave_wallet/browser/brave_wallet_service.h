@@ -260,6 +260,9 @@ class BraveWalletService : public KeyedService,
   void GenerateReceiveAddress(mojom::AccountIdPtr account_id,
                               GenerateReceiveAddressCallback callback) override;
 
+  void GetAnkrSupportedChainIds(
+      GetAnkrSupportedChainIdsCallback callback) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
