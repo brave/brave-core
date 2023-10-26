@@ -62,8 +62,6 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
 
   void ShowReminder(brave_ads::mojom::ReminderType type) override;
 
-  void UpdateAdRewards() override;
-
   void CacheAdEventForInstanceId(const std::string& id,
                                  const std::string& ad_type,
                                  const std::string& confirmation_type,

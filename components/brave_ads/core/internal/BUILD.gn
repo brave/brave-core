@@ -247,6 +247,8 @@ static_library("internal") {
     "ads_feature.cc",
     "ads_impl.cc",
     "ads_impl.h",
+    "ads_notifier_manager.cc",
+    "ads_notifier_manager.h",
     "ads_util.cc",
     "analytics/p2a/opportunities/p2a_opportunity.cc",
     "analytics/p2a/opportunities/p2a_opportunity.h",

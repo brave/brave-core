@@ -27,6 +27,8 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/get_signed_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/ads_observer_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -49,6 +51,8 @@ class BraveAdsAccountTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
+    ads_observer_mock_ = AddAdsObserverMock();
+
     account_ = std::make_unique<Account>(&token_generator_mock_);
     account_->AddObserver(&observer_mock_);
   }
@@ -60,6 +64,8 @@ class BraveAdsAccountTest : public UnitTestBase {
   }
 
   TokenGeneratorMock token_generator_mock_;
+
+  raw_ptr<AdsObserverMock> ads_observer_mock_;
 
   std::unique_ptr<Account> account_;
   AccountObserverMock observer_mock_;
@@ -277,7 +283,7 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-  EXPECT_CALL(observer_mock_, OnStatementOfAccountsDidChange);
+  EXPECT_CALL(*ads_observer_mock_, OnBraveRewardsDidChange);
 
   account_->Deposit(creative_ad.creative_instance_id, creative_ad.segment,
                     AdType::kNotificationAd, ConfirmationType::kViewed);
@@ -292,7 +298,7 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
-  EXPECT_CALL(observer_mock_, OnStatementOfAccountsDidChange);
+  EXPECT_CALL(*ads_observer_mock_, OnBraveRewardsDidChange);
 
   account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
                     ConfirmationType::kClicked);
@@ -309,7 +315,7 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit).Times(0);
   EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit);
-  EXPECT_CALL(observer_mock_, OnStatementOfAccountsDidChange).Times(0);
+  EXPECT_CALL(*ads_observer_mock_, OnBraveRewardsDidChange).Times(0);
 
   account_->Deposit(kMissingCreativeInstanceId, kSegment,
                     AdType::kNotificationAd, ConfirmationType::kViewed);

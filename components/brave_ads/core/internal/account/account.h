@@ -125,8 +125,6 @@ class Account final : public AdsClientNotifierObserver,
       const AdType& ad_type,
       const ConfirmationType& confirmation_type) const;
 
-  void NotifyStatementOfAccountsDidChange() const;
-
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
   void OnNotifyPrefDidChange(const std::string& path) override;

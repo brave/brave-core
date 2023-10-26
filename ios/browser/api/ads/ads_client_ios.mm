@@ -146,10 +146,6 @@ void AdsClientIOS::RunDBTransaction(
                    callback:std::move(callback)];
 }
 
-void AdsClientIOS::UpdateAdRewards() {
-  [bridge_ updateAdRewards];
-}
-
 void AdsClientIOS::SetProfilePref(const std::string& path, base::Value value) {
   [bridge_ setProfilePref:path value:std::move(value)];
 }

@@ -196,9 +196,10 @@ class AdsServiceImpl : public AdsService,
   void Shutdown() override;
 
   // AdsService:
-  int64_t GetMaximumNotificationAdsPerHour() const override;
+  void AddBatAdsObserver(
+      mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) override;
 
-  bool NeedsBrowserUpgradeToServeAds() const override;
+  int64_t GetMaximumNotificationAdsPerHour() const override;
 
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
@@ -301,8 +302,6 @@ class AdsServiceImpl : public AdsService,
 
   void ShowReminder(mojom::ReminderType type) override;
 
-  void UpdateAdRewards() override;
-
   void CacheAdEventForInstanceId(const std::string& id,
                                  const std::string& type,
                                  const std::string& confirmation_type,
@@ -386,7 +385,6 @@ class AdsServiceImpl : public AdsService,
   void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
-  bool needs_browser_upgrade_to_serve_ads_ = false;
 
   // Brave Ads Service starts count is needed to avoid possible double Brave
   // Ads initialization.

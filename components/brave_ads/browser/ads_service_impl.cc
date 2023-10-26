@@ -57,6 +57,7 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
@@ -99,7 +100,6 @@ namespace {
 constexpr base::TimeDelta kRestartBatAdsServiceDelay = base::Seconds(10);
 
 constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
-constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
@@ -1033,14 +1033,6 @@ void AdsServiceImpl::URLRequestCallback(
     }
   }
 
-  if (response_code == kHttpUpgradeRequiredStatusResponseCode &&
-      !needs_browser_upgrade_to_serve_ads_) {
-    needs_browser_upgrade_to_serve_ads_ = true;
-    for (AdsServiceObserver& observer : observers_) {
-      observer.OnNeedsBrowserUpgradeToServeAds();
-    }
-  }
-
   mojom::UrlResponseInfoPtr url_response = mojom::UrlResponseInfo::New();
   url_response->url = url_loader->GetFinalURL();
   url_response->status_code = response_code;
@@ -1095,6 +1087,15 @@ void AdsServiceImpl::Shutdown() {
   is_bat_ads_initialized_ = false;
 }
 
+void AdsServiceImpl::AddBatAdsObserver(
+    mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) {
+  CHECK(observer.is_valid());
+
+  if (bat_ads_.is_bound()) {
+    bat_ads_->AddBatAdsObserver(std::move(observer));
+  }
+}
+
 int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   int64_t ads_per_hour =
       profile_->GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
@@ -1103,10 +1104,6 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   }
 
   return ads_per_hour;
-}
-
-bool AdsServiceImpl::NeedsBrowserUpgradeToServeAds() const {
-  return needs_browser_upgrade_to_serve_ads_;
 }
 
 void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
@@ -1525,12 +1522,6 @@ void AdsServiceImpl::ShowReminder(const mojom::ReminderType type) {
     ShowNotificationAd(BuildReminder(type));
   }
 #endif
-}
-
-void AdsServiceImpl::UpdateAdRewards() {
-  for (AdsServiceObserver& observer : observers_) {
-    observer.OnAdRewardsDidChange();
-  }
 }
 
 void AdsServiceImpl::CacheAdEventForInstanceId(

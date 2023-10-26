@@ -143,10 +143,6 @@ void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
   GetInstance()->RunDBTransaction(std::move(transaction), std::move(callback));
 }
 
-void UpdateAdRewards() {
-  GetInstance()->UpdateAdRewards();
-}
-
 void RecordP2AEvents(const std::vector<std::string>& events) {
   GetInstance()->RecordP2AEvents(events);
 }

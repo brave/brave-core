@@ -34,9 +34,6 @@ class AccountObserver : public base::CheckedObserver {
       const std::string& creative_instance_id,
       const AdType& ad_type,
       const ConfirmationType& confirmation_type) {}
-
-  // Invoked when the statement of accounts have changed.
-  virtual void OnStatementOfAccountsDidChange() {}
 };
 
 }  // namespace brave_ads
