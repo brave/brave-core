@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 90086b2fd3575155daa16c896c2be453313c33d7..afb83c5e51834c04c0b973a096f205d640904c1b 100644
+index 39a7138041acb7b31ea74a6bf34ec846c526859f..d24fb5d5763129d8d8fe4f1f72483f084b2e85b9 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -350,6 +350,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index 90086b2fd3575155daa16c896c2be453313c33d7..afb83c5e51834c04c0b973a096f205d6
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -553,6 +554,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -555,6 +556,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Preference related to feed.
    registry->RegisterTimePref(kActivityBucketLastReportedDateKey, base::Time());
    registry->RegisterBooleanPref(kSyncRequested, false);
@@ -18,7 +18,7 @@ index 90086b2fd3575155daa16c896c2be453313c33d7..afb83c5e51834c04c0b973a096f205d6
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -708,6 +710,7 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+@@ -710,6 +712,7 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
  
    // Added 10/2023.
    prefs->ClearPref(kSyncRequested);
