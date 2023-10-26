@@ -25,7 +25,7 @@ interface DataContextProviderProps {
 }
 
 function DataContextProvider (props: DataContextProviderProps) {
-  const [currentModel, setCurrentModelRaw] = React.useState<mojom.Model>();
+  const [currentModelKey, setCurrentModelKey] = React.useState<string>();
   const [allModels, setAllModels] = React.useState<mojom.Model[]>([])
   const [hasChangedModel, setHasChangedModel] = React.useState(false)
   const [conversationHistory, setConversationHistory] = React.useState<mojom.ConversationTurn[]>([])
@@ -50,9 +50,21 @@ function DataContextProvider (props: DataContextProviderProps) {
   // order to provide more information about the model.
   const setCurrentModel = (model: mojom.Model) => {
     setHasChangedModel(true)
-    setCurrentModelRaw(model)
+    setCurrentModelKey(model.key)
     getPageHandlerInstance().pageHandler.changeModel(model.key)
   }
+
+  const currentModel: mojom.Model | undefined = React.useMemo(() => {
+    if (!currentModelKey) {
+      return
+    }
+    const found = allModels.find(m => m.key === currentModelKey)
+    if (!found) {
+      console.error(`onModelChanged: could not find matching model for key: "${currentModelKey}" in list of model keys: ${allModels.map(m => m.key).join(', ')}`)
+      return
+    }
+    return found
+  }, [allModels, currentModelKey])
 
   const isPremiumUser = premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive
 
@@ -223,7 +235,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     // This never changes
     getPageHandlerInstance().pageHandler.getModels().then(data => {
       setAllModels(data.models)
-      setCurrentModelRaw(data.currentModel);
+      setCurrentModelKey(data.currentModelKey);
     })
 
     // Setup data event handlers
@@ -244,6 +256,10 @@ function DataContextProvider (props: DataContextProviderProps) {
       handleSiteInfo
     )
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
+
+    getPageHandlerInstance().callbackRouter.onModelChanged.addListener((modelKey: string) => {
+      setCurrentModelKey(modelKey)
+    })
 
     // Since there is no server-side event for premium status changing,
     // we should check often. And since purchase or login is performed in

@@ -98,7 +98,7 @@ void AIChatUIPageHandler::GetModels(GetModelsCallback callback) {
                    return model_match->second.Clone();
                  });
   std::move(callback).Run(std::move(models),
-                          active_chat_tab_helper_->GetCurrentModel().Clone());
+                          active_chat_tab_helper_->GetCurrentModel().key);
 }
 
 void AIChatUIPageHandler::ChangeModel(const std::string& model_key) {
@@ -326,6 +326,12 @@ void AIChatUIPageHandler::OnAPIRequestInProgress(bool in_progress) {
 void AIChatUIPageHandler::OnAPIResponseError(mojom::APIError error) {
   if (page_.is_bound()) {
     page_->OnAPIResponseError(error);
+  }
+}
+
+void AIChatUIPageHandler::OnModelChanged(const std::string& model_key) {
+  if (page_.is_bound()) {
+    page_->OnModelChanged(model_key);
   }
 }
 
