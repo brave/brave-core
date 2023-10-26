@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Fuse from 'fuse.js'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -35,18 +34,6 @@ export interface Props {
   onBack: () => void
 }
 
-const FUSE_CONFIG = {
-  shouldSort: true,
-  threshold: 0.45,
-  location: 0,
-  distance: 100,
-  minMatchCharLength: 1,
-  keys: [
-    { name: 'currencyName', weight: 0.5 },
-    { name: 'currencyCode', weight: 0.5 }
-  ]
-}
-
 export const SelectOnRampFiatCurrency = (props: Props) => {
   const { onSelectCurrency, onBack } = props
 
@@ -57,20 +44,16 @@ export const SelectOnRampFiatCurrency = (props: Props) => {
   const [search, setSearch] = React.useState('')
 
   // memos
-  const fuse = React.useMemo(
-    () => (currencies ? new Fuse(currencies, FUSE_CONFIG) : undefined),
-    [currencies]
-  )
-
   const filteredCurrencies = React.useMemo(() => {
-    return search && fuse
-      ? fuse
-          .search(search)
-          .map(
-            (result: Fuse.FuseResult<BraveWallet.OnRampCurrency>) => result.item
-          )
+    const trimmedSearch = search.trim().toLowerCase()
+    return currencies && trimmedSearch
+      ? currencies.filter(
+          (c) =>
+            c.currencyCode.toLowerCase().includes(trimmedSearch) ||
+            c.currencyName.toLowerCase().includes(trimmedSearch)
+        )
       : currencies || []
-  }, [search, currencies, fuse])
+  }, [search, currencies])
 
   return (
     <SelectCurrencyWrapper>
