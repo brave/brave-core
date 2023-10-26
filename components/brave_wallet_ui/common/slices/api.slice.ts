@@ -1303,7 +1303,7 @@ export function createWalletApi () {
                 let ankrAssetBalances: BraveWallet.AnkrAssetBalance[] = []
 
                 if (ankrSupportedAccountNetworks.length) {
-                  const { balances, errorMessage } =
+                  const { balances, error, errorMessage } =
                     await jsonRpcService.ankrGetAccountBalances(
                       accountId.address,
                       ankrSupportedAccountNetworks.map(
@@ -1311,9 +1311,13 @@ export function createWalletApi () {
                       )
                     )
 
-                  if (errorMessage) {
+                  if (
+                    error !== BraveWallet.ProviderError.kSuccess ||
+                    errorMessage
+                  ) {
                     console.log(
-                      `ankrGetAccountBalance error: ${errorMessage}`
+                      `ankrGetAccountBalance error: ${error}
+                      msg: ${errorMessage}`
                     )
                   }
 
