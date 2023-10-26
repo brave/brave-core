@@ -47,7 +47,11 @@ constexpr char kWsOpenScript[] = R"(
 )";
 
 constexpr char kWsCloseScript[] = R"(
-  sockets[$1].close();
+  new Promise(resolve => {
+    socket = sockets[$1];
+    socket.addEventListener('close', (ev) => resolve('close'));
+    socket.close();
+  });
 )";
 
 constexpr char kRegisterSwScript[] = R"(
@@ -73,7 +77,13 @@ constexpr char kWsOpenInSwScript[] = R"(
 constexpr char kWsCloseInSwScript[] = R"(
   (async () => {
     const registration = await navigator.serviceWorker.ready;
+    const result = new Promise(resolve => {
+      navigator.serviceWorker.onmessage = event => {
+        resolve(event.data);
+      };
+    });
     registration.active.postMessage({cmd: 'close_ws', idx: $1});
+    return await result;
   })();
 )";
 
@@ -166,7 +176,8 @@ class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
                        std::string_view script_template,
                        int count) {
     for (int i = 0; i < count; ++i) {
-      EXPECT_TRUE(content::ExecJs(rfh, content::JsReplace(script_template, i)));
+      EXPECT_EQ("close",
+                content::EvalJs(rfh, content::JsReplace(script_template, i)));
     }
   }
 
