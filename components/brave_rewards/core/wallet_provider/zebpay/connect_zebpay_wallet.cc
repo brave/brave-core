@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/zebpay/zebpay.h"
+#include "brave/components/brave_rewards/core/zebpay/zebpay_util.h"
 
 using brave_rewards::internal::endpoints::PostConnectZebPay;
 using brave_rewards::internal::endpoints::PostOAuthZebPay;
@@ -31,11 +32,14 @@ const char* ConnectZebPayWallet::WalletType() const {
   return constant::kWalletZebPay;
 }
 
-void ConnectZebPayWallet::Authorize(OAuthInfo&& oauth_info,
-                                    ConnectExternalWalletCallback callback) {
-  DCHECK(!oauth_info.code.empty());
+std::string ConnectZebPayWallet::GetOAuthLoginURL() const {
+  return GetLoginUrl(oauth_info_.one_time_string);
+}
 
-  RequestFor<PostOAuthZebPay>(*engine_, std::move(oauth_info.code))
+void ConnectZebPayWallet::Authorize(ConnectExternalWalletCallback callback) {
+  DCHECK(!oauth_info_.code.empty());
+
+  RequestFor<PostOAuthZebPay>(*engine_, oauth_info_.code)
       .Send(base::BindOnce(&ConnectZebPayWallet::OnAuthorize,
                            base::Unretained(this), std::move(callback)));
 }

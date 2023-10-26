@@ -37,59 +37,35 @@ ConnectExternalWallet::ConnectExternalWallet(RewardsEngineImpl& engine)
 
 ConnectExternalWallet::~ConnectExternalWallet() = default;
 
+std::string ConnectExternalWallet::GenerateLoginURL() {
+  oauth_info_.one_time_string = util::GenerateRandomHexString();
+  oauth_info_.code_verifier = util::GeneratePKCECodeVerifier();
+  return GetOAuthLoginURL();
+}
+
 void ConnectExternalWallet::Run(
     const base::flat_map<std::string, std::string>& query_parameters,
     ConnectExternalWalletCallback callback) {
-  auto wallet = GetWalletIf(
-      *engine_, WalletType(),
-      {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
-  if (!wallet) {
+  if (oauth_info_.one_time_string.empty()) {
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
-  auto oauth_info = ExchangeOAuthInfo(std::move(wallet));
-  if (!oauth_info) {
-    return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
-  }
-
-  auto code = GetCode(query_parameters, oauth_info->one_time_string);
+  auto code = GetCode(query_parameters, oauth_info_.one_time_string);
   if (!code.has_value()) {
     return std::move(callback).Run(code.error());
   }
 
-  oauth_info->code = std::move(code.value());
+  oauth_info_.code = std::move(code.value());
 
-  Authorize(std::move(*oauth_info), std::move(callback));
+  Authorize(std::move(callback));
 }
 
-absl::optional<ConnectExternalWallet::OAuthInfo>
-ConnectExternalWallet::ExchangeOAuthInfo(
-    mojom::ExternalWalletPtr wallet) const {
-  DCHECK(wallet);
-  if (!wallet) {
-    return absl::nullopt;
-  }
-
-  OAuthInfo oauth_info;
-  // We need to generate a new OTS (and code verifier for bitFlyer) as soon as
-  // external wallet connection is triggered.
-  oauth_info.one_time_string =
-      std::exchange(wallet->one_time_string, util::GenerateRandomHexString());
-  oauth_info.code_verifier =
-      std::exchange(wallet->code_verifier, util::GeneratePKCECodeVerifier());
-
-  wallet = wallet::GenerateLinks(std::move(wallet));
-  if (!wallet) {
-    BLOG(0, "Failed to generate links for " << WalletType() << " wallet!");
-    return absl::nullopt;
-  }
-
-  if (!wallet::SetWallet(*engine_, std::move(wallet))) {
-    BLOG(0, "Failed to save " << WalletType() << " wallet!");
-    return absl::nullopt;
-  }
-
-  return oauth_info;
+void ConnectExternalWallet::SetOAuthStateForTesting(
+    const std::string& one_time_string,
+    const std::string& code_verifier) {
+  oauth_info_ = OAuthInfo{.one_time_string = one_time_string,
+                          .code_verifier = code_verifier,
+                          .code = ""};
 }
 
 base::expected<std::string, ConnectExternalWalletResult>

@@ -55,7 +55,7 @@ class PostOAuthZebPay final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  PostOAuthZebPay(RewardsEngineImpl& engine, std::string&& code);
+  PostOAuthZebPay(RewardsEngineImpl& engine, const std::string& code);
   ~PostOAuthZebPay() override;
 
  private:

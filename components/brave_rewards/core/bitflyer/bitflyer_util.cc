@@ -27,6 +27,10 @@ std::string GetActivityUrl() {
   return GetUrl() + "/ja-jp/ex/tradehistory";
 }
 
+}  // namespace
+
+namespace bitflyer {
+
 std::string GetLoginUrl(const std::string& state,
                         const std::string& code_verifier) {
   return base::StringPrintf(
@@ -44,9 +48,6 @@ std::string GetLoginUrl(const std::string& state,
       GetUrl().c_str(), bitflyer::GetClientId().c_str(), state.c_str(),
       util::GeneratePKCECodeChallenge(code_verifier).c_str());
 }
-}  // namespace
-
-namespace bitflyer {
 
 std::string GetClientId() {
   return _environment == mojom::Environment::PRODUCTION
@@ -72,8 +73,6 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
     wallet->activity_url = wallet->status == mojom::WalletStatus::kConnected
                                ? GetActivityUrl()
                                : "";
-    wallet->login_url =
-        GetLoginUrl(wallet->one_time_string, wallet->code_verifier);
   }
 
   return wallet;

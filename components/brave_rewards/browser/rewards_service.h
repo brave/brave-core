@@ -293,6 +293,13 @@ class RewardsService : public KeyedService {
 
   virtual std::vector<std::string> GetExternalWalletProviders() const = 0;
 
+  using BeginExternalWalletLoginCallback =
+      base::OnceCallback<void(mojom::ExternalWalletLoginParamsPtr)>;
+
+  virtual void BeginExternalWalletLogin(
+      const std::string& wallet_type,
+      BeginExternalWalletLoginCallback callback) = 0;
+
   // Connects Rewards with a custodial wallet service (e.g. bitFlyer, Gemini,
   // Uphold).
   // |path| is the authorization URL's path
@@ -332,8 +339,6 @@ class RewardsService : public KeyedService {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
-
-  virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 
   virtual void GetEnvironment(GetEnvironmentCallback callback) = 0;
 

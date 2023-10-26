@@ -103,9 +103,6 @@ TEST_F(BitflyerUtilTest, GetWallet) {
           "account_url": "https://bitflyer.com/ex/Home?login=1",
           "address": "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
           "fees": {},
-          "login_url": "https://sandbox.bitflyer.com/authorize/4c2b665ca060d",
-          "one_time_string": "1F747AE0A708E47ED7E650BF1856B5A4EF7E36833BDB115",
-          "code_verifier": "1234567890",
           "status": 2,
           "token": "4c80232r219c30cdf112208890a32c7e00",
           "user_name": "test"
@@ -122,6 +119,25 @@ TEST_F(BitflyerUtilTest, GetWallet) {
   EXPECT_EQ(result->status, mojom::WalletStatus::kConnected);
 
   task_environment_.RunUntilIdle();
+}
+
+TEST_F(BitflyerUtilTest, GetLoginUrl) {
+  const auto login_url = base::StringPrintf(
+      "%s/ex/OAuth/authorize"
+      "?client_id=%s"
+      "&scope="
+      "assets "
+      "create_deposit_id "
+      "withdraw_to_deposit_id"
+      "&redirect_uri=rewards://bitflyer/authorization"
+      "&state=one_time_string"
+      "&response_type=code"
+      "&code_challenge_method=S256"
+      "&code_challenge=73oehA2tBul5grZPhXUGQwNAjxh69zNES8bu2bVD0EM",
+      BUILDFLAG(BITFLYER_SANDBOX_URL), BUILDFLAG(BITFLYER_SANDBOX_CLIENT_ID));
+
+  _environment = mojom::Environment::STAGING;
+  EXPECT_EQ(GetLoginUrl("one_time_string", "code_verifier"), login_url);
 }
 
 TEST_F(BitflyerUtilTest, GenerateRandomHexString) {
@@ -155,8 +171,6 @@ TEST_P(BitflyerUtilTest, Paths) {
   _environment = environment;
   auto wallet = mojom::ExternalWallet::New();
   wallet->status = wallet_status;
-  wallet->one_time_string = "one_time_string";
-  wallet->code_verifier = "code_verifier";
 
   const auto account_url =
       base::StrCat({environment == mojom::Environment::PRODUCTION
@@ -172,31 +186,11 @@ TEST_P(BitflyerUtilTest, Paths) {
                           "/ja-jp/ex/tradehistory"})
           : "";
 
-  const auto login_url = base::StringPrintf(
-      "%s/ex/OAuth/authorize"
-      "?client_id=%s"
-      "&scope="
-      "assets "
-      "create_deposit_id "
-      "withdraw_to_deposit_id"
-      "&redirect_uri=rewards://bitflyer/authorization"
-      "&state=one_time_string"
-      "&response_type=code"
-      "&code_challenge_method=S256"
-      "&code_challenge=73oehA2tBul5grZPhXUGQwNAjxh69zNES8bu2bVD0EM",
-      environment == mojom::Environment::PRODUCTION
-          ? BUILDFLAG(BITFLYER_PRODUCTION_URL)
-          : BUILDFLAG(BITFLYER_SANDBOX_URL),
-      environment == mojom::Environment::PRODUCTION
-          ? BUILDFLAG(BITFLYER_PRODUCTION_CLIENT_ID)
-          : BUILDFLAG(BITFLYER_SANDBOX_CLIENT_ID));
-
   EXPECT_FALSE(bitflyer::GenerateLinks(nullptr));
   const auto result = GenerateLinks(std::move(wallet));
   EXPECT_TRUE(result);
   EXPECT_EQ(result->account_url, account_url);
   EXPECT_EQ(result->activity_url, activity_url);
-  EXPECT_EQ(result->login_url, login_url);
 }
 
 }  // namespace brave_rewards::internal::bitflyer

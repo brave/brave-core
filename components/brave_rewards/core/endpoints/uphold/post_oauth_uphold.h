@@ -48,7 +48,7 @@ class PostOAuthUphold final : public RequestBuilder,
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
 
-  PostOAuthUphold(RewardsEngineImpl& engine, std::string&& code);
+  PostOAuthUphold(RewardsEngineImpl& engine, const std::string& code);
   ~PostOAuthUphold() override;
 
  private:

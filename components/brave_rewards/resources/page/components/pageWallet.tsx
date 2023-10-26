@@ -113,7 +113,7 @@ class PageWallet extends React.Component<Props, State> {
 
   isVerifyUrl = () => {
     if (this.urlHashIs('#verify')) {
-      this.toggleVerifyModal()
+      this.handleExternalWalletLink()
     }
   }
 
@@ -144,34 +144,20 @@ class PageWallet extends React.Component<Props, State> {
 
   handleExternalWalletLink = () => {
     const { externalWallet } = this.props.rewardsData
-
-    if (!externalWallet) {
-      return
+    if (externalWallet) {
+      switch (externalWallet.status) {
+        case mojom.WalletStatus.kConnected:
+          return
+        case mojom.WalletStatus.kLoggedOut:
+          this.actions.beginExternalWalletLogin(externalWallet.type)
+          return
+      }
     }
-
-    if (externalWallet.status === 0) {
-      this.toggleVerifyModal()
-      return
-    }
-
-    if (externalWallet.loginUrl) {
-      window.open(externalWallet.loginUrl, '_self', 'noreferrer')
-    }
+    this.toggleVerifyModal()
   }
 
   onConnectWalletContinue = (provider: string) => {
-    this.actions.setExternalWalletType(provider)
-  }
-
-  onVerifyClick = () => {
-    const { externalWallet } = this.props.rewardsData
-
-    if (!externalWallet || !externalWallet.loginUrl) {
-      this.actions.getExternalWallet()
-      return
-    }
-
-    this.handleExternalWalletLink()
+    this.actions.beginExternalWalletLogin(provider)
   }
 
   getExternalWalletStatus = (): mojom.WalletStatus | null => {
@@ -498,10 +484,8 @@ class PageWallet extends React.Component<Props, State> {
   onExternalWalletAction = (action: ExternalWalletAction) => {
     switch (action) {
       case 'reconnect':
-        this.handleExternalWalletLink()
-        break
       case 'verify':
-        this.onVerifyClick()
+        this.handleExternalWalletLink()
         break
       case 'view-account':
         this.goToExternalWallet()

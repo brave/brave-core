@@ -8,6 +8,7 @@ import { TipPanelProxy } from './tip_panel_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
 import { ExternalWalletProvider, externalWalletProviderFromString } from '../../shared/lib/external_wallet'
 import { optional } from '../../shared/lib/optional'
+import { reconnectURL } from '../../shared/lib/rewards_urls'
 
 import { PublisherStatus, WalletStatus } from 'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m'
 
@@ -60,10 +61,6 @@ export function createModel (): Model {
         : false
     }
 
-    function mapReconnectUrl () {
-      return externalWallet ? externalWallet.loginUrl : ''
-    }
-
     function mapBanner () {
       return banner || {
         name: '',
@@ -100,7 +97,7 @@ export function createModel (): Model {
         balance: mapBalance(),
         walletProvider: mapWalletProvider(),
         walletAuthorized: mapWalletAuthorized(),
-        reconnectUrl: mapReconnectUrl()
+        reconnectUrl: reconnectURL
       },
       rewardsParameters: {
         exchangeCurrency: 'USD',

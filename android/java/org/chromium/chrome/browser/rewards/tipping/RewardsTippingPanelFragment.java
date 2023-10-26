@@ -409,29 +409,32 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     }
 
     private void sendTipButtonClick(View view) {
-        mSendButton.setOnClickListener(v -> {
-            if (mIsLogoutState) {
-                if (mExternalWallet != null) {
-                    TabUtils.openUrlInNewTab(false, mExternalWallet.getLoginUrl());
-                    dismissRewardsPanel();
-                }
-            } else {
-                SwitchCompat isMonthly = view.findViewById(R.id.monthly_switch);
-                mAmountSelected = selectedAmount();
+        mSendButton.setOnClickListener(
+                v -> {
+                    if (mIsLogoutState) {
+                        TabUtils.openUrlInNewTab(
+                                false, BraveActivity.BRAVE_REWARDS_WALLET_RECONNECT_URL);
+                        dismissRewardsPanel();
+                    } else {
+                        SwitchCompat isMonthly = view.findViewById(R.id.monthly_switch);
+                        mAmountSelected = selectedAmount();
 
-                if (mSendButton.isEnabled()) {
-                    mBraveRewardsNativeWorker.Donate(
-                            mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId),
-                            mAmountSelected, isMonthly.isChecked());
-                    mSendButton.setEnabled(false);
-                    mSendButton.setBackground(
-                            ResourcesCompat.getDrawable(getActivity().getResources(),
-                                    R.drawable.tipping_send_button_background, /* theme= */ null));
-                    mSendButton.setText("");
-                    mTipProgressBar.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+                        if (mSendButton.isEnabled()) {
+                            mBraveRewardsNativeWorker.Donate(
+                                    mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId),
+                                    mAmountSelected,
+                                    isMonthly.isChecked());
+                            mSendButton.setEnabled(false);
+                            mSendButton.setBackground(
+                                    ResourcesCompat.getDrawable(
+                                            getActivity().getResources(),
+                                            R.drawable.tipping_send_button_background,
+                                            /* theme= */ null));
+                            mSendButton.setText("");
+                            mTipProgressBar.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
     }
 
     private void exchangeButtonClick(View view) {

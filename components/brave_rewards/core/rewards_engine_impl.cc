@@ -601,6 +601,31 @@ void RewardsEngineImpl::GetExternalWallet(const std::string& wallet_type,
   });
 }
 
+void RewardsEngineImpl::BeginExternalWalletLogin(
+    const std::string& wallet_type,
+    BeginExternalWalletLoginCallback callback) {
+  WhenReady([this, wallet_type, callback = std::move(callback)]() mutable {
+    if (wallet_type == constant::kWalletBitflyer) {
+      return bitflyer()->BeginLogin(std::move(callback));
+    }
+
+    if (wallet_type == constant::kWalletGemini) {
+      return gemini()->BeginLogin(std::move(callback));
+    }
+
+    if (wallet_type == constant::kWalletUphold) {
+      return uphold()->BeginLogin(std::move(callback));
+    }
+
+    if (wallet_type == constant::kWalletZebPay) {
+      return zebpay()->BeginLogin(std::move(callback));
+    }
+
+    NOTREACHED() << "Unknown external wallet type!";
+    std::move(callback).Run(nullptr);
+  });
+}
+
 void RewardsEngineImpl::ConnectExternalWallet(
     const std::string& wallet_type,
     const base::flat_map<std::string, std::string>& args,

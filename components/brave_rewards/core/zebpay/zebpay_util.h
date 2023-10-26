@@ -13,6 +13,8 @@
 
 namespace brave_rewards::internal::zebpay {
 
+std::string GetLoginUrl(const std::string& state);
+
 std::string GetClientId();
 
 std::string GetClientSecret();

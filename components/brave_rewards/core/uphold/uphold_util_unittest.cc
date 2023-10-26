@@ -101,8 +101,6 @@ TEST_F(UpholdUtilTest, GetWallet) {
           "account_url":"https://wallet-sandbox.uphold.com/dashboard",
           "address":"2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
           "fees":{},
-          "login_url":"https://wallet-sandbox.uphold.com/authorize/4c2b665ca060d",
-          "one_time_string":"1F747AE0A708E47ED7E650BF1856B5A4EF7E36833BDB115",
           "status":2,
           "token":"4c80232r219c30cdf112208890a32c7e00",
           "user_name":"test"
@@ -119,6 +117,24 @@ TEST_F(UpholdUtilTest, GetWallet) {
   EXPECT_EQ(result->status, mojom::WalletStatus::kConnected);
 
   task_environment_.RunUntilIdle();
+}
+
+TEST_F(UpholdUtilTest, GetLoginUrl) {
+  const auto login_url = base::StringPrintf(
+      "%s/authorize/%s"
+      "?scope="
+      "cards:read "
+      "cards:write "
+      "user:read "
+      "transactions:read "
+      "transactions:transfer:application "
+      "transactions:transfer:others"
+      "&intention=login&"
+      "state=one_time_string",
+      BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL), BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID));
+
+  _environment = mojom::Environment::STAGING;
+  EXPECT_EQ(GetLoginUrl("one_time_string"), login_url);
 }
 
 TEST_F(UpholdUtilTest, GenerateRandomHexString) {
@@ -153,7 +169,6 @@ TEST_P(UpholdUtilTest, Paths) {
   auto wallet = mojom::ExternalWallet::New();
   wallet->status = wallet_status;
   wallet->address = "address";
-  wallet->one_time_string = "one_time_string";
 
   const auto account_url =
       base::StrCat({environment == mojom::Environment::PRODUCTION
@@ -169,30 +184,11 @@ TEST_P(UpholdUtilTest, Paths) {
                           "/dashboard/cards/address/activity"})
           : "";
 
-  const auto login_url = base::StringPrintf(
-      "%s/authorize/%s"
-      "?scope="
-      "cards:read "
-      "cards:write "
-      "user:read "
-      "transactions:read "
-      "transactions:transfer:application "
-      "transactions:transfer:others"
-      "&intention=login&"
-      "state=one_time_string",
-      environment == mojom::Environment::PRODUCTION
-          ? BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)
-          : BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL),
-      environment == mojom::Environment::PRODUCTION
-          ? BUILDFLAG(UPHOLD_PRODUCTION_CLIENT_ID)
-          : BUILDFLAG(UPHOLD_SANDBOX_CLIENT_ID));
-
   EXPECT_FALSE(uphold::GenerateLinks(nullptr));
   const auto result = GenerateLinks(std::move(wallet));
   EXPECT_TRUE(result);
   EXPECT_EQ(result->account_url, account_url);
   EXPECT_EQ(result->activity_url, activity_url);
-  EXPECT_EQ(result->login_url, login_url);
 }
 
 }  // namespace brave_rewards::internal::uphold

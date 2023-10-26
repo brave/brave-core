@@ -13,6 +13,9 @@
 
 namespace brave_rewards::internal::bitflyer {
 
+std::string GetLoginUrl(const std::string& state,
+                        const std::string& code_verifier);
+
 std::string GetClientId();
 
 std::string GetClientSecret();

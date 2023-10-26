@@ -1270,9 +1270,6 @@
                   "accountUrl": {
                     "type": "any"
                   },
-                  "loginUrl": {
-                    "type": "string"
-                  },
                   "activityUrl": {
                     "type": "string"
                   }

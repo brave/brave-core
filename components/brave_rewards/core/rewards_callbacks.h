@@ -21,6 +21,9 @@ namespace brave_rewards::internal {
 
 using AttestPromotionCallback = mojom::RewardsEngine::AttestPromotionCallback;
 
+using BeginExternalWalletLoginCallback =
+    mojom::RewardsEngine::BeginExternalWalletLoginCallback;
+
 using ClaimPromotionCallback = mojom::RewardsEngine::ClaimPromotionCallback;
 
 using ConnectExternalWalletCallback =

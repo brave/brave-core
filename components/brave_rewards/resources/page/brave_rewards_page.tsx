@@ -32,6 +32,14 @@ const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
 setIconBasePath('chrome://resources/brave-icons')
 
 function initialize () {
+  // For `brave://rewards/reconnect`, automatically trigger reconnection on page
+  // load and send the user immediately to the external wallet login page. Do
+  // not show any additional UI while redirecting.
+  if (window.location.pathname === '/reconnect') {
+    chrome.send('brave_rewards.reconnectExternalWallet')
+    return
+  }
+
   initLocale(loadTimeData.data_)
 
   const platformInfo = {
@@ -242,7 +250,9 @@ function enabledInlineTippingPlatforms (list: string[]) {
 }
 
 function externalWalletLogin (url: string) {
-  window.open(url, '_self', 'noreferrer')
+  if (url) {
+    window.open(url, '_self', 'noreferrer')
+  }
 }
 
 function onPrefChanged (key: string) {

@@ -37,6 +37,10 @@ std::string GetActivityUrl() {
   return GetUrl(UrlType::kOAuth) + "/balances";
 }
 
+}  // namespace
+
+namespace gemini {
+
 std::string GetLoginUrl(const std::string& state) {
   return base::StringPrintf(
       "%s/auth"
@@ -54,9 +58,6 @@ std::string GetLoginUrl(const std::string& state) {
       GetUrl(UrlType::kOAuth).c_str(), gemini::GetClientId().c_str(),
       state.c_str());
 }
-}  // namespace
-
-namespace gemini {
 
 std::string GetClientId() {
   return _environment == mojom::Environment::PRODUCTION
@@ -82,7 +83,6 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
     wallet->activity_url = wallet->status == mojom::WalletStatus::kConnected
                                ? GetActivityUrl()
                                : "";
-    wallet->login_url = GetLoginUrl(wallet->one_time_string);
   }
 
   return wallet;
