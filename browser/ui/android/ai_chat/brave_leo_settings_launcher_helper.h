@@ -14,6 +14,8 @@ namespace ai_chat {
 
 // Opens the Brave Leo settings page.
 void ShowBraveLeoSettings(content::WebContents* web_contents);
+// Opens an OS subscription dialog.
+void GoPremium();
 
 }  // namespace ai_chat
 

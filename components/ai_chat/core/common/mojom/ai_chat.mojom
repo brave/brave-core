@@ -122,6 +122,8 @@ interface PageHandler {
   OpenURL(url.mojom.Url url);
   SetShouldSendPageContents(bool should_send);
   GetShouldSendPageContents() => (bool should_send);
+  GoPremium();
+  RefreshPremiumSession();
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
