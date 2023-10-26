@@ -1,0 +1,12 @@
+diff --git a/components/sync/base/user_selectable_type.h b/components/sync/base/user_selectable_type.h
+index 358716f8a2d987665abff1b6dc52e5aada4d298b..2d48d36e918ed4be3ff4602a9b8db57649694df6 100644
+--- a/components/sync/base/user_selectable_type.h
++++ b/components/sync/base/user_selectable_type.h
+@@ -36,6 +36,7 @@ enum class UserSelectableType {
+   kReadingList,
+   kTabs,
+   kSavedTabGroups,
++  kPlaylist,
+   kPayments,
+   kLastType = kPayments
+ };

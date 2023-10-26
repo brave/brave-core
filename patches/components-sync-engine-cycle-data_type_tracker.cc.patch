@@ -1,0 +1,20 @@
+diff --git a/components/sync/engine/cycle/data_type_tracker.cc b/components/sync/engine/cycle/data_type_tracker.cc
+index 56eccac69a08626660c6965f9d8f3799fb35283c..ff6c077d8e7974291b9ac00c8d535f80893ed245 100644
+--- a/components/sync/engine/cycle/data_type_tracker.cc
++++ b/components/sync/engine/cycle/data_type_tracker.cc
+@@ -111,6 +111,7 @@ base::TimeDelta GetDefaultLocalChangeNudgeDelay(ModelType model_type) {
+     case PROXY_TABS:
+     case POWER_BOOKMARK:
+     case WEBAUTHN_CREDENTIAL:
++    case PLAYLIST:
+       return kMediumLocalChangeNudgeDelay;
+     case UNSPECIFIED:
+       NOTREACHED();
+@@ -174,6 +175,7 @@ bool CanGetCommitsFromExtensions(ModelType model_type) {
+     case WEBAUTHN_CREDENTIAL:
+     case INCOMING_PASSWORD_SHARING_INVITATION:
+     case OUTGOING_PASSWORD_SHARING_INVITATION:
++    case PLAYLIST:
+       return false;
+     case UNSPECIFIED:
+       NOTREACHED();

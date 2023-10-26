@@ -1,0 +1,48 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto2";
+
+option java_multiple_files = true;
+option java_package = "org.chromium.components.sync.protocol";
+
+option optimize_for = LITE_RUNTIME;
+
+package sync_pb;
+
+message PlaylistSpecifics {
+  oneof details {
+    PlaylistOrderDetails order_list_details = 2;
+    PlaylistDetails list_details = 3;
+    PlaylistItemDetails item_details = 4;
+  }
+}
+
+message PlaylistOrderDetails {
+  repeated string playlist_ids = 1;
+}
+
+message PlaylistDetails {
+  optional string id = 1;
+  optional string name = 2;
+  repeated string playlist_item_ids = 3;
+}
+
+message PlaylistItemDetails {
+  optional string id = 1;
+  optional string name = 2;
+  optional string page_source = 3;
+  optional string page_redirected = 4;
+  optional string media_source = 5;
+  optional string thumbnail_source = 6;
+
+  optional string author = 7;
+
+  optional string duration = 8;
+
+  optional int32 last_played_position = 9;
+
+  repeated string playlist_ids = 10;
+}

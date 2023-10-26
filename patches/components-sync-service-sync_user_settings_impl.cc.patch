@@ -1,0 +1,13 @@
+diff --git a/components/sync/service/sync_user_settings_impl.cc b/components/sync/service/sync_user_settings_impl.cc
+index c30012b568f1e68acde7998614ef098af6ac2f7f..c7fbb0cfa49b15664ded898c46bfdf6f97ac0400 100644
+--- a/components/sync/service/sync_user_settings_impl.cc
++++ b/components/sync/service/sync_user_settings_impl.cc
+@@ -340,7 +340,7 @@ ModelTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+   // though they're technically not registered.
+   types.PutAll(ControlTypes());
+ 
+-  static_assert(48 == GetNumModelTypes(),
++  static_assert(49 == GetNumModelTypes(),
+                 "If adding a new sync data type, update the list below below if"
+                 " you want to disable the new data type for local sync.");
+   if (prefs_->IsLocalSyncEnabled()) {

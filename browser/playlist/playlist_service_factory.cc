@@ -26,10 +26,13 @@
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
+#include "chrome/browser/sync/model_type_store_service_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/sessions/content/session_tab_helper.h"
+#include "components/sync/model/model_type_store_service.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
@@ -222,6 +225,8 @@ PlaylistServiceFactory::PlaylistServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "PlaylistService",
           BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(SyncServiceFactory::GetInstance());
+  DependsOn(ModelTypeStoreServiceFactory::GetInstance());
   PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
@@ -231,9 +236,13 @@ PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   DCHECK(media_detector_component_manager_);
+  Profile* profile = Profile::FromBrowserContext(context);
   PrefService* local_state = g_browser_process->local_state();
+  auto model_type_store_factory = ModelTypeStoreServiceFactory::GetForProfile(profile)->GetStoreFactory();
+
   auto* service = new PlaylistService(
-      context, local_state, media_detector_component_manager_.get(),
+      context, local_state, model_type_store_factory,
+      media_detector_component_manager_.get(),
       std::make_unique<PlaylistServiceDelegateImpl>(
           Profile::FromBrowserContext(context)),
       brave_stats::GetFirstRunTime(local_state));

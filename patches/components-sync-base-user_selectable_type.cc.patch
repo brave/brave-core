@@ -1,0 +1,33 @@
+diff --git a/components/sync/base/user_selectable_type.cc b/components/sync/base/user_selectable_type.cc
+index a2710ed5e4b042535cbd220592b626495366f44b..b7801b253b9980a3375de408aa3911d98c10bbd7 100644
+--- a/components/sync/base/user_selectable_type.cc
++++ b/components/sync/base/user_selectable_type.cc
+@@ -10,6 +10,7 @@
+ #include "build/chromeos_buildflags.h"
+ #include "components/sync/base/features.h"
+ #include "components/sync/base/model_type.h"
++#include "model_type.h"
+ #include "third_party/abseil-cpp/absl/types/optional.h"
+ 
+ namespace syncer {
+@@ -37,9 +38,10 @@ constexpr char kReadingListTypeName[] = "readingList";
+ constexpr char kTabsTypeName[] = "tabs";
+ constexpr char kSavedTabGroupsTypeName[] = "savedTabGroups";
+ constexpr char kPaymentsTypeName[] = "payments";
++constexpr char kPlaylistTypeName[] = "playlist";
+ 
+ UserSelectableTypeInfo GetUserSelectableTypeInfo(UserSelectableType type) {
+-  static_assert(48 == syncer::GetNumModelTypes(),
++  static_assert(49 == syncer::GetNumModelTypes(),
+                 "Almost always when adding a new ModelType, you must tie it to "
+                 "a UserSelectableType below (new or existing) so the user can "
+                 "disable syncing of that data. Today you must also update the "
+@@ -89,6 +91,8 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(UserSelectableType type) {
+       return {kTabsTypeName, PROXY_TABS, {PROXY_TABS, SESSIONS}};
+     case UserSelectableType::kSavedTabGroups:
+       return {kSavedTabGroupsTypeName, SAVED_TAB_GROUP, {SAVED_TAB_GROUP}};
++    case UserSelectableType::kPlaylist:
++      return {kPlaylistTypeName, PLAYLIST, {PLAYLIST}};
+     case UserSelectableType::kPayments:
+       return {kPaymentsTypeName,
+               AUTOFILL_WALLET_DATA,

@@ -22,6 +22,7 @@
 #include "base/task/thread_pool.h"
 #include "base/token.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
+#include "brave/components/playlist/browser/playlist_sync_bridge.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
 #include "brave/components/playlist/common/features.h"
@@ -57,13 +58,15 @@ std::vector<base::FilePath> GetOrphanedPaths(
 
 PlaylistService::PlaylistService(content::BrowserContext* context,
                                  PrefService* local_state,
+                                 syncer::OnceModelTypeStoreFactory create_store_callback,
                                  MediaDetectorComponentManager* manager,
                                  std::unique_ptr<Delegate> delegate,
                                  base::Time browser_first_run_time)
     : delegate_(std::move(delegate)),
       base_dir_(context->GetPath().Append(kBaseDirName)),
       playlist_p3a_(local_state, browser_first_run_time),
-      prefs_(user_prefs::UserPrefs::Get(context)) {
+      prefs_(user_prefs::UserPrefs::Get(context)),
+      sync_bridge_(this, std::move(create_store_callback)) {
   media_file_download_manager_ =
       std::make_unique<PlaylistMediaFileDownloadManager>(context, this);
   thumbnail_downloader_ =
@@ -126,34 +129,43 @@ bool PlaylistService::AddItemsToPlaylist(
     const std::vector<std::string>& item_ids) {
   DCHECK(!playlist_id.empty());
 
-  ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
-  base::Value::Dict* target_playlist = playlists_update->FindDict(playlist_id);
-  if (!target_playlist) {
+  auto playlist = sync_bridge_.GetPlaylistDetails(playlist_id);
+  
+  // ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
+  // base::Value::Dict* target_playlist = playlists_update->FindDict(playlist_id);
+  if (!playlist) {
     LOG(ERROR) << __func__ << " Playlist " << playlist_id << " not found";
     return false;
   }
 
-  auto playlist = ConvertValueToPlaylist(*target_playlist,
-                                         prefs_->GetDict(kPlaylistItemsPref));
+  // auto playlist = ConvertValueToPlaylist(*target_playlist,
+  //                                        prefs_->GetDict(kPlaylistItemsPref));
   for (const auto& new_item_id : item_ids) {
     // We're considering adding item to which it was belong as success.
-    if (base::ranges::find_if(playlist->items,
-                              [&new_item_id](const auto& item) {
-                                return item->id == new_item_id;
-                              }) != playlist->items.end()) {
+    if (base::ranges::find_if(playlist->playlist_item_ids(),
+                              [&new_item_id](const auto& id) {
+                                return id == new_item_id;
+                              }) != playlist->playlist_item_ids().end()) {
       continue;
     }
 
     // Update the item's parent lists.
-    auto new_item = GetPlaylistItem(new_item_id);
-    new_item->parents.push_back(playlist_id);
-    UpdatePlaylistItemValue(new_item->id,
-                            base::Value(ConvertPlaylistItemToValue(new_item)));
+    auto new_item = sync_bridge_.GetItemDetails(new_item_id);
+    if (!new_item) {
+      // Ignore items that do not exist
+      continue;
+    }
+    new_item->add_playlist_ids(new_item->id());
+    // UpdatePlaylistItemValue(new_item->id,
+    //                         base::Value(ConvertPlaylistItemToValue(new_item)));
 
-    playlist->items.push_back(std::move(new_item));
+    playlist->add_playlist_item_ids(new_item->id());
+
+    sync_bridge_.SaveItemDetails(*new_item);
   }
 
-  playlists_update->Set(playlist_id, ConvertPlaylistToValue(playlist));
+  // playlists_update->Set(playlist_id, ConvertPlaylistToValue(playlist));
+  sync_bridge_.SavePlaylistDetails(*playlist);
 
   for (auto& observer : observers_) {
     for (const auto& item_id : item_ids) {
@@ -504,6 +516,10 @@ std::vector<mojom::PlaylistPtr> PlaylistService::GetAllPlaylists() {
 
 bool PlaylistService::HasPlaylistItem(const std::string& id) const {
   return prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
+}
+
+sync::PlaylistSyncBridge* PlaylistService::GetSyncBridge() {
+  return &sync_bridge_;
 }
 
 void PlaylistService::AddMediaFilesFromPageToPlaylist(
@@ -1271,6 +1287,10 @@ bool PlaylistService::GetMediaPath(const std::string& id,
     return false;
   }
   return true;
+}
+
+void PlaylistService::OnDataReady() {
+  // TODO: implement this  
 }
 
 base::SequencedTaskRunner* PlaylistService::GetTaskRunner() {

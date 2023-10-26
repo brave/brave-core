@@ -1,0 +1,20 @@
+diff --git a/components/sync/protocol/entity_specifics.proto b/components/sync/protocol/entity_specifics.proto
+index 1d843ae43bea71b819695155205904ab272c0dc9..251a828ab5b9d6a9640e627eccd5048bbaef3f4c 100644
+--- a/components/sync/protocol/entity_specifics.proto
++++ b/components/sync/protocol/entity_specifics.proto
+@@ -11,6 +11,7 @@ option optimize_for = LITE_RUNTIME;
+ 
+ package sync_pb;
+ 
++import "brave/components/sync/protocol/playlist_specifics.proto";
+ import "components/sync/protocol/encryption.proto";
+ import "components/sync/protocol/app_list_specifics.proto";
+ import "components/sync/protocol/app_setting_specifics.proto";
+@@ -149,6 +150,7 @@ message EntitySpecifics {
+     OutgoingPasswordSharingInvitationSpecifics
+         outgoing_password_sharing_invitation = 1142081;
+     AutofillWalletCredentialSpecifics autofill_wallet_credential = 1164238;
++    PlaylistSpecifics playlist = 1204232;
+ 
+     // No-longer-supported data types, in various stages of removal.
+     // TODO(crbug.com/1395003): Eventually, these should all become "reserved"

@@ -1,0 +1,21 @@
+diff --git a/components/sync/base/model_type.h b/components/sync/base/model_type.h
+index 822f69e3642439c0179675c672827c29843f9923..0619c7c9ae225aabc3be0e7c2e18d79240a2f40b 100644
+--- a/components/sync/base/model_type.h
++++ b/components/sync/base/model_type.h
+@@ -151,6 +151,8 @@ enum ModelType {
+   INCOMING_PASSWORD_SHARING_INVITATION,
+   OUTGOING_PASSWORD_SHARING_INVITATION,
+ 
++  PLAYLIST,
++
+   // Proxy types are excluded from the sync protocol, but are still considered
+   // real user types. By convention, we prefix them with 'PROXY_' to distinguish
+   // them from normal protocol types.
+@@ -307,6 +309,7 @@ constexpr ModelTypeSet ProtocolTypes() {
+           SAVED_TAB_GROUP,
+           POWER_BOOKMARK,
+           WEBAUTHN_CREDENTIAL,
++          PLAYLIST,
+           INCOMING_PASSWORD_SHARING_INVITATION,
+           OUTGOING_PASSWORD_SHARING_INVITATION};
+ }

@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.cc b/chrome/browser/sync/chrome_sync_client.cc
+index 8c056c2b9a8810972170fd90aca64e684c0270f0..65da54122ad55dc0ae26ef306f555dbc3dd5c332 100644
+--- a/chrome/browser/sync/chrome_sync_client.cc
++++ b/chrome/browser/sync/chrome_sync_client.cc
+@@ -13,6 +13,9 @@
+ #include "base/functional/bind.h"
+ #include "base/path_service.h"
+ #include "base/syslog_logging.h"
++#include "brave/browser/playlist/playlist_service_factory.h"
++#include "brave/components/playlist/browser/playlist_service.h"
++#include "brave/components/playlist/browser/playlist_sync_bridge.h"
+ #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
+ #include "chrome/browser/consent_auditor/consent_auditor_factory.h"
+@@ -648,6 +651,11 @@ ChromeSyncClient::GetControllerDelegateForModelType(syncer::ModelType type) {
+     case syncer::USER_EVENTS:
+       return browser_sync::UserEventServiceFactory::GetForProfile(profile_)
+           ->GetControllerDelegate();
++    case syncer::PLAYLIST:
++      return playlist::PlaylistServiceFactory::GetForBrowserContext(profile_)
++          ->GetSyncBridge()
++          ->change_processor()
++          ->GetControllerDelegate();
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+     case syncer::WEB_APPS: {
+       auto* provider = web_app::WebAppProvider::GetForWebApps(profile_);

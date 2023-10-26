@@ -21,6 +21,7 @@
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
+#include "brave/components/playlist/browser/playlist_sync_bridge.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -83,7 +84,8 @@ class MediaDetectorComponentManager;
 class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate,
-                        public mojom::PlaylistService {
+                        public mojom::PlaylistService,
+                        public sync::PlaylistSyncBridge::Delegate {
  public:
   class Delegate {
    public:
@@ -106,6 +108,7 @@ class PlaylistService : public KeyedService,
 
   PlaylistService(content::BrowserContext* context,
                   PrefService* local_state,
+                  syncer::OnceModelTypeStoreFactory create_store_callback,
                   MediaDetectorComponentManager* manager,
                   std::unique_ptr<Delegate> delegate,
                   base::Time browser_first_run_time);
@@ -211,6 +214,8 @@ class PlaylistService : public KeyedService,
   void OnMediaUpdatedFromContents(content::WebContents* contents);
 
   bool HasPlaylistItem(const std::string& id) const;
+
+  sync::PlaylistSyncBridge* GetSyncBridge();
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
@@ -363,6 +368,9 @@ class PlaylistService : public KeyedService,
   void OnThumbnailDownloaded(const std::string& id,
                              const base::FilePath& path) override;
 
+  // sync::PlaylistSyncBridge::Delegate:
+  void OnDataReady() override;
+
   std::unique_ptr<Delegate> delegate_;
 
   const base::FilePath base_dir_;
@@ -379,6 +387,8 @@ class PlaylistService : public KeyedService,
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
+
+  sync::PlaylistSyncBridge sync_bridge_;
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;

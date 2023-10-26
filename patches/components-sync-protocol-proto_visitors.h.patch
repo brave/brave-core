@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index 6d6e5208a51630b202e8ec9fb393d74ca08c1bc8..d01d613d9b2d2e6d5bad3aa62b083c0d0941ac6a 100644
+index 6d6e5208a51630b202e8ec9fb393d74ca08c1bc8..b95d7ef867d7432ffa76178126712aa4ce68e6b0 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
 @@ -510,6 +510,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
@@ -18,3 +18,64 @@ index 6d6e5208a51630b202e8ec9fb393d74ca08c1bc8..d01d613d9b2d2e6d5bad3aa62b083c0d
  VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
    VISIT(vapid_fcm_token);
    VISIT_BYTES(vapid_p256dh);
+@@ -577,7 +579,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntityMetadata& proto) {
+ }
+ 
+ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+-  static_assert(48 == GetNumModelTypes(),
++  static_assert(49 == GetNumModelTypes(),
+                 "When adding a new protocol type, you will likely need to add "
+                 "it here as well.");
+   VISIT(encrypted);
+@@ -606,6 +608,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+   VISIT(os_priority_preference);
+   VISIT(outgoing_password_sharing_invitation);
+   VISIT(password);
++  VISIT(playlist);
+   VISIT(power_bookmark);
+   VISIT(preference);
+   VISIT(printer);
+@@ -1691,6 +1694,43 @@ VISIT_PROTO_FIELDS(
+   VISIT(is_collapsed);
+ }
+ 
++VISIT_PROTO_FIELDS(
++    const sync_pb::PlaylistSpecifics& proto) {
++  VISIT(order_list_details);
++  VISIT(list_details);
++  VISIT(item_details);
++}
++
++VISIT_PROTO_FIELDS(
++    const sync_pb::PlaylistOrderDetails& proto) {
++  VISIT_REP(playlist_ids);
++}
++
++VISIT_PROTO_FIELDS(
++    const sync_pb::PlaylistDetails& proto) {
++  VISIT(id);
++  VISIT(name);
++  VISIT_REP(playlist_item_ids);
++}
++
++VISIT_PROTO_FIELDS(
++    const sync_pb::PlaylistItemDetails& proto) {
++  VISIT(id);
++  VISIT(name);
++  VISIT(page_source);
++  VISIT(page_redirected);
++  VISIT(media_source);
++  VISIT(thumbnail_source);
++
++  VISIT(author);
++
++  VISIT(duration);
++
++  VISIT(last_played_position);
++
++  VISIT_REP(playlist_ids);
++}
++
+ }  // namespace syncer
+ 
+ #undef VISIT_

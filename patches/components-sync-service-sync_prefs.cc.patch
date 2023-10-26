@@ -1,0 +1,21 @@
+diff --git a/components/sync/service/sync_prefs.cc b/components/sync/service/sync_prefs.cc
+index 5e3939d551d605fdcb92c223184102d1e94c6b0c..8391db439751fed9bc84fb116d754cfb4b14a049 100644
+--- a/components/sync/service/sync_prefs.cc
++++ b/components/sync/service/sync_prefs.cc
+@@ -552,6 +552,8 @@ const char* SyncPrefs::GetPrefNameForType(UserSelectableType type) {
+       return prefs::internal::kSyncTabs;
+     case UserSelectableType::kSavedTabGroups:
+       return prefs::internal::kSyncSavedTabGroups;
++    case UserSelectableType::kPlaylist:
++      return prefs::internal::kPlaylist;
+     case UserSelectableType::kPayments:
+       return prefs::internal::kSyncPayments;
+   }
+@@ -614,6 +616,7 @@ bool SyncPrefs::IsTypeSupportedInTransportMode(UserSelectableType type) {
+     case UserSelectableType::kExtensions:
+     case UserSelectableType::kThemes:
+     case UserSelectableType::kSavedTabGroups:
++    case UserSelectableType::kPlaylist:
+       // These types are not supported in transport mode yet.
+       return false;
+   }
