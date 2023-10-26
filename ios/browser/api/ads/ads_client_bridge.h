@@ -58,7 +58,6 @@
           callback:(brave_ads::UrlRequestCallback)callback;
 - (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
                 callback:(brave_ads::RunDBTransactionCallback)callback;
-- (void)updateAdRewards;
 - (void)setProfilePref:(const std::string&)path value:(base::Value)value;
 - (absl::optional<base::Value>)getProfilePref:(const std::string&)path;
 - (void)clearProfilePref:(const std::string&)path;

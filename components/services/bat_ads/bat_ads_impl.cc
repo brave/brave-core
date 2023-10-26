@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/ads.h"
+#include "brave/components/brave_ads/core/public/ads_observer_interface.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
 #include "brave/components/brave_ads/core/public/history/category_content_info.h"
@@ -25,6 +26,7 @@
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
+#include "brave/components/services/bat_ads/bat_ads_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace bat_ads {
@@ -64,6 +66,13 @@ BatAdsImpl::BatAdsImpl(
               base::SequencedTaskRunner::GetCurrentDefault()))) {}
 
 BatAdsImpl::~BatAdsImpl() = default;
+
+void BatAdsImpl::AddBatAdsObserver(
+    mojo::PendingRemote<mojom::BatAdsObserver> observer) {
+  std::unique_ptr<brave_ads::AdsObserverInterface> ads_observer =
+      std::make_unique<BatAdsObserver>(std::move(observer));
+  GetAds()->AddBatAdsObserver(std::move(ads_observer));
+}
 
 void BatAdsImpl::SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info) {
   GetAds()->SetSysInfo(std::move(sys_info));

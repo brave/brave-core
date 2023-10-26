@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
+#include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
@@ -49,12 +50,13 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
     : global_state_(ads_client),
       account_(&token_generator_),
       ad_handler_(account_),
-      user_reactions_(account_) {
-  account_.AddObserver(this);
-}
+      user_reactions_(account_) {}
 
-AdsImpl::~AdsImpl() {
-  account_.RemoveObserver(this);
+AdsImpl::~AdsImpl() = default;
+
+void AdsImpl::AddBatAdsObserver(
+    std::unique_ptr<AdsObserverInterface> observer) {
+  AdsNotifierManager::GetInstance().AddObserver(std::move(observer));
 }
 
 void AdsImpl::SetSysInfo(mojom::SysInfoPtr sys_info) {
@@ -414,11 +416,6 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
   NotifyPendingAdsClientObservers();
 
   std::move(callback).Run(/*success=*/true);
-}
-
-void AdsImpl::OnStatementOfAccountsDidChange() {
-  // TODO(https://github.com/brave/brave-browser/issues/28726): Decouple.
-  UpdateAdRewards();
 }
 
 }  // namespace brave_ads

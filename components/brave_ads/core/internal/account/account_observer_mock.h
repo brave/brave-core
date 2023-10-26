@@ -36,8 +36,6 @@ class AccountObserverMock : public AccountObserver {
               (const std::string& creative_instance_id,
                const AdType& ad_type,
                const ConfirmationType& confirmation_type));
-
-  MOCK_METHOD(void, OnStatementOfAccountsDidChange, ());
 };
 
 }  // namespace brave_ads

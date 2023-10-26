@@ -9,6 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder.h"
@@ -16,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
@@ -77,6 +79,12 @@ void CatalogUrlRequest::FetchCallback(
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   is_fetching_ = false;
+
+  if (url_response.status_code == net::kHttpUpgradeRequired) {
+    BLOG(1, "Failed to request catalog as a browser upgrade is required");
+    return AdsNotifierManager::GetInstance()
+        .NotifyBrowserUpgradeRequiredToServeAds();
+  }
 
   if (url_response.status_code == net::HTTP_NOT_MODIFIED) {
     BLOG(1, "Catalog is up to date");

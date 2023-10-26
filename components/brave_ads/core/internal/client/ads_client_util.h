@@ -71,8 +71,6 @@ void ShowScheduledCaptchaNotification(const std::string& payment_id,
 void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                       RunDBTransactionCallback callback);
 
-void UpdateAdRewards();
-
 void RecordP2AEvents(const std::vector<std::string>& events);
 
 void AddFederatedLearningPredictorTrainingSample(

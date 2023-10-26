@@ -10,6 +10,7 @@ source_set("headers") {
     "ads_callback.h",
     "ads_constants.h",
     "ads_feature.h",
+    "ads_observer_interface.h",
     "ads_util.h",
     "client/ads_client.h",
     "client/ads_client_callback.h",

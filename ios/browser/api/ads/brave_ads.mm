@@ -1407,11 +1407,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   // reminders.
 }
 
-- (void)updateAdRewards {
-  // TODO(https://github.com/brave/brave-browser/issues/33800): Unify Brave Ads
-  // update rewards.
-}
-
 - (void)cacheAdEventForInstanceId:(const std::string&)id
                            adType:(const std::string&)ad_type
                  confirmationType:(const std::string&)confirmation_type

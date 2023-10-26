@@ -277,12 +277,6 @@ void BatAdsClientMojoBridge::ShowScheduledCaptchaNotification(
   }
 }
 
-void BatAdsClientMojoBridge::UpdateAdRewards() {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->UpdateAdRewards();
-  }
-}
-
 void BatAdsClientMojoBridge::Log(const char* file,
                                  const int line,
                                  const int verbose_level,
