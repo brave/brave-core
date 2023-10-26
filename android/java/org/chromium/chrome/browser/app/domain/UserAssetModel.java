@@ -56,25 +56,34 @@ public class UserAssetModel {
             mSelectedNetwork = selectedNetwork;
             if (JavaUtils.anyNull(mBraveWalletService, mJsonRpcService, mSelectedNetwork)) return;
             NetworkModel.getAllNetworks(
-                    mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
+                    mJsonRpcService,
+                    mSharedData.getSupportedCryptoCoins(),
+                    allNetworks -> {
                         mCryptoNetworks = allNetworks;
                         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                             if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
                                 fetchAllNetworksAssets(nftsOnly);
                             } else {
-                                TokenUtils.getVisibleUserAssetsFiltered(mBraveWalletService,
-                                        mSelectedNetwork, mSelectedNetwork.coin,
+                                TokenUtils.getVisibleUserAssetsFiltered(
+                                        mBraveWalletService,
+                                        mSelectedNetwork,
+                                        mSelectedNetwork.coin,
                                         TokenUtils.TokenType.ALL,
-                                        userAssets
-                                        -> TokenUtils.getAllTokensFiltered(mBraveWalletService,
-                                                mBlockchainRegistry, mSelectedNetwork,
-                                                nftsOnly ? TokenUtils.TokenType.NFTS
-                                                         : TokenUtils.TokenType.NON_NFTS,
-                                                tokens -> {
-                                                    _mAssetsResult.postValue(
-                                                            new AssetsResult(Arrays.asList(tokens),
-                                                                    Arrays.asList(userAssets)));
-                                                }));
+                                        userAssets ->
+                                                TokenUtils.getAllTokensFiltered(
+                                                        mBraveWalletService,
+                                                        mBlockchainRegistry,
+                                                        mSelectedNetwork,
+                                                        nftsOnly
+                                                                ? TokenUtils.TokenType.NFTS
+                                                                : TokenUtils.TokenType.NON_NFTS,
+                                                        tokens -> {
+                                                            _mAssetsResult.postValue(
+                                                                    new AssetsResult(
+                                                                            Arrays.asList(tokens),
+                                                                            Arrays.asList(
+                                                                                    userAssets)));
+                                                        }));
                             }
                         }
                     });

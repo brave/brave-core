@@ -27,6 +27,23 @@ BraveApplicationContextImpl::BraveApplicationContextImpl(
 
 inline BraveApplicationContextImpl::~BraveApplicationContextImpl() = default;
 
+// MARK: - ApplicationContextImpl
+
+ukm::UkmRecorder* BraveApplicationContextImpl::GetUkmRecorder() {
+  return nullptr;
+}
+
+BrowserPolicyConnectorIOS*
+BraveApplicationContextImpl::GetBrowserPolicyConnector() {
+  return nullptr;
+}
+
+gcm::GCMDriver* BraveApplicationContextImpl::GetGCMDriver() {
+  return nullptr;
+}
+
+// MARK: - BraveApplicationContextImpl
+
 brave_component_updater::BraveComponent::Delegate*
 BraveApplicationContextImpl::brave_component_updater_delegate() {
   if (!brave_component_updater_delegate_) {

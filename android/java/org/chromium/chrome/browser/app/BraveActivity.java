@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,6 +75,7 @@ import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.BraveIntentHandler;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveSyncInformers;
@@ -81,6 +83,7 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
+import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -219,12 +222,11 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BRAVE_REWARDS_SETTINGS_MONTHLY_URL = "brave://rewards/#monthly";
     public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
     public static final String BRAVE_AI_CHAT_URL = "chrome-untrusted://chat";
-    public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
+    public static final String REWARDS_LEARN_MORE_URL =
+            "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";
     public static final String BRAVE_PRIVACY_POLICY = "https://brave.com/privacy/browser/#rewards";
-    private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
-    private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     public static final String OPEN_URL = "open_url";
 
     private static final int DAYS_1 = 1;
@@ -1511,11 +1513,13 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private boolean isNoRestoreState() {
-        return SharedPreferencesManager.getInstance().readBoolean(PREF_CLOSE_TABS_ON_EXIT, false);
+        return SharedPreferencesManager.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_CLOSE_TABS_ON_EXIT, false);
     }
 
     private boolean isClearBrowsingDataOnExit() {
-        return SharedPreferencesManager.getInstance().readBoolean(PREF_CLEAR_ON_EXIT, false);
+        return SharedPreferencesManager.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false);
     }
 
     public void onRewardsPanelDismiss() {
@@ -1717,7 +1721,8 @@ public abstract class BraveActivity extends ChromeActivity
     private void showCrossPromotionalDialog() {
         CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment =
                 new CrossPromotionalModalDialogFragment();
-        mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
+        mCrossPromotionalModalDialogFragment.show(
+                getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
     }
 
     public void showDormantUsersEngagementDialog(String notificationType) {
@@ -2092,5 +2097,37 @@ public abstract class BraveActivity extends ChromeActivity
                 sheetContainer.setLayoutParams(params);
             }
         }
+    }
+
+    /**
+     * Calls to {@link ChromeTabbedActivity#maybeHandleUrlIntent} will be redirected here via
+     * bytecode changes.
+     */
+    public boolean maybeHandleUrlIntent(Intent intent) {
+        // Redirect requests if necessary
+        String url = IntentHandler.getUrlFromIntent(intent);
+        if (url != null && url.equals(BraveIntentHandler.CONNECTION_INFO_HELP_URL)) {
+            intent.setData(Uri.parse(BraveIntentHandler.BRAVE_CONNECTION_INFO_HELP_URL));
+        }
+        String appLinkAction = intent.getAction();
+        Uri appLinkData = intent.getData();
+
+        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
+            String lastPathSegment = appLinkData.getLastPathSegment();
+            if (lastPathSegment != null
+                    && (lastPathSegment.equalsIgnoreCase(BraveConstants.DEEPLINK_ANDROID_PLAYLIST)
+                            || lastPathSegment.equalsIgnoreCase(
+                                    BraveConstants.DEEPLINK_ANDROID_VPN))) {
+                return false;
+            }
+        }
+        // Call ChromeTabbedActivity's version.
+        return (boolean)
+                BraveReflectionUtil.InvokeMethod(
+                        ChromeTabbedActivity.class,
+                        this,
+                        "maybeHandleUrlIntent",
+                        Intent.class,
+                        intent);
     }
 }

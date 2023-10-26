@@ -7,8 +7,8 @@
 
 #include <utility>
 
+#include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/engine/sync_scheduler.h"
-#include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
 

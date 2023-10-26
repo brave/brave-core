@@ -11,9 +11,13 @@ namespace privacy_sandbox {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kEnforcePrivacySandboxAttestations, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kOverridePrivacySandboxSettingsLocalTesting,
+     base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivacySandboxFirstPartySetsUI, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivacySandboxProactiveTopicsBlocking, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxSettings3, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxSettings4, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kOverridePrivacySandboxSettingsLocalTesting,
+    {kTrackingProtectionOnboardingForceEligibility,
      base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

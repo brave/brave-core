@@ -12,7 +12,6 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kEnableWebTransportDraft07, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kNoncedPartitionedCookies, base::FEATURE_DISABLED_BY_DEFAULT},
     // Enable NIK-partitioning by default.
     {kPartitionConnectionsByNetworkIsolationKey,
      base::FEATURE_ENABLED_BY_DEFAULT},
@@ -28,6 +27,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSupportPartitionedBlobUrl, base::FEATURE_DISABLED_BY_DEFAULT},
     {kThirdPartyPartitionedStorageAllowedByDefault,
      base::FEATURE_DISABLED_BY_DEFAULT},
+    {kThirdPartyStoragePartitioning, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kWaitForFirstPartySetsInit, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 BASE_FEATURE(kBraveEphemeralStorage,

@@ -1,8 +1,8 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index 5ba77bfb9ff1d4a110802df37fbf11185088c837..c2813b12669a65471cbc3a412577bb8e57c7296e 100644
+index 62efcab467a0048760068c28b7d0be1236311746..b578fbc2723cd38f6a514f5e8c4a42e9dff0c427 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
-@@ -50,6 +50,7 @@ grit("components_strings") {
+@@ -52,6 +52,7 @@ grit("components_strings") {
    if (is_android) {
      outputs += android_components_strings_java_resources
    }

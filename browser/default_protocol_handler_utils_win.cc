@@ -141,15 +141,11 @@ std::wstring FormatUserChoiceString(std::wstring_view ext,
       L"User Choice set via Windows User Experience "
       L"{D18B6DD5-6124-4341-9318-804003BAFA0B}";
 
-  const wchar_t* user_choice_fmt =
-      L"%ls%ls%ls"
-      L"%08lx"
-      L"%08lx"
-      L"%ls";
+  const std::wstring file_time_str = base::ASCIIToWide(base::StringPrintf(
+      "%08lx%08lx", file_time.dwHighDateTime, file_time.dwLowDateTime));
 
-  const std::wstring user_choice = base::StringPrintf(
-      user_choice_fmt, ext.data(), sid.data(), prog_id.data(),
-      file_time.dwHighDateTime, file_time.dwLowDateTime, user_experience);
+  const std::wstring user_choice =
+      base::StrCat({ext, sid, prog_id, file_time_str, user_experience});
   // For using CharLowerW instead of base::ToLowerASCII().
   // Otherwise, hash test with non-ascii inputs are failed.
   std::vector<wchar_t> buf(user_choice.begin(), user_choice.end());
@@ -202,18 +198,17 @@ bool CheckEqualMinutes(SYSTEMTIME system_time1, SYSTEMTIME system_time2) {
 }
 
 std::wstring GetAssociationKeyPath(std::wstring_view protocol) {
-  const wchar_t* key_path_fmt;
+  const wchar_t* key_path;
   if (protocol[0] == L'.') {
-    key_path_fmt =
-        L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\%"
-        L"ls";
+    key_path =
+        L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\";
   } else {
-    key_path_fmt =
+    key_path =
         L"SOFTWARE\\Microsoft\\Windows\\Shell\\Associations\\"
-        L"UrlAssociations\\%ls";
+        L"UrlAssociations\\";
   }
 
-  return base::StringPrintf(key_path_fmt, protocol.data());
+  return base::StrCat({key_path, protocol});
 }
 
 bool SetUserChoice(std::wstring_view ext,

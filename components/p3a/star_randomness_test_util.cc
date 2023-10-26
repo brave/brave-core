@@ -11,9 +11,9 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/i18n/time_formatting.h"
 #include "base/json/json_writer.h"
 #include "base/test/values_test_util.h"
-#include "base/time/time_to_iso8601.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 #include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/resource_request.h"

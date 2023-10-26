@@ -65,9 +65,9 @@
 #include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/public/commands/command_dispatcher.h"
-#include "ios/chrome/browser/sync/send_tab_to_self_sync_service_factory.h"
-#include "ios/chrome/browser/sync/session_sync_service_factory.h"
-#include "ios/chrome/browser/sync/sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/session_sync_service_factory.h"
+#include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/chrome/browser/ui/webui/chrome_web_ui_ios_controller_factory.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
@@ -356,15 +356,8 @@ static bool CustomLogHandler(int severity,
 
 - (BraveHistoryAPI*)historyAPI {
   if (!_historyAPI) {
-    history::HistoryService* history_service_ =
-        ios::HistoryServiceFactory::GetForBrowserState(
-            _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS);
-    history::WebHistoryService* web_history_service_ =
-        ios::WebHistoryServiceFactory::GetForBrowserState(_mainBrowserState);
-
     _historyAPI =
-        [[BraveHistoryAPI alloc] initWithHistoryService:history_service_
-                                      webHistoryService:web_history_service_];
+        [[BraveHistoryAPI alloc] initWithBrowserState:_mainBrowserState];
   }
   return _historyAPI;
 }

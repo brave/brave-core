@@ -1,5 +1,5 @@
 diff --git a/telemetry/telemetry/internal/actions/action_runner.py b/telemetry/telemetry/internal/actions/action_runner.py
-index 8d9e98ff1e546588f69935a688249b97fbb0992e..ca2912fa87beb576e35a0a5b453fd03b14d590fb 100644
+index 0e3a354bb417130f3efc654968634aac2b3fe944..415a52542216f0ce56b86089833f205b6867b16e 100644
 --- a/telemetry/telemetry/internal/actions/action_runner.py
 +++ b/telemetry/telemetry/internal/actions/action_runner.py
 @@ -41,7 +41,7 @@ import py_utils

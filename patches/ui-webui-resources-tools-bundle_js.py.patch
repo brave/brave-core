@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/tools/bundle_js.py b/ui/webui/resources/tools/bundle_js.py
-index 24a9ee401a97e1ce8ad1f20b6496dfcc80b1096c..639a282e2eb413a945c3ac0eec1c262bb1631b5d 100755
+index 4370434c4d968afdbca7c9d70d81cb00e5462ea2..c87400ab2c8bdc5b9a9afa2000a413d978d11138 100755
 --- a/ui/webui/resources/tools/bundle_js.py
 +++ b/ui/webui/resources/tools/bundle_js.py
-@@ -292,5 +292,6 @@ def main(argv):
+@@ -296,5 +296,6 @@ def main(argv):
      _update_dep_file(args.input, args, dep_file_header, manifest)
  
  

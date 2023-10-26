@@ -164,15 +164,13 @@ impl Engine {
     ) -> String {
         // The following strings are also UTF-8.
         self.engine
-            .get_csp_directives(
-                    &adblock::request::Request::preparsed(
-                        url.to_str().unwrap(),
-                        hostname.to_str().unwrap(),
-                        source_hostname.to_str().unwrap(),
-                        request_type.to_str().unwrap(),
-                        third_party_request,
-                    ),
-                )
+            .get_csp_directives(&adblock::request::Request::preparsed(
+                url.to_str().unwrap(),
+                hostname.to_str().unwrap(),
+                source_hostname.to_str().unwrap(),
+                request_type.to_str().unwrap(),
+                third_party_request,
+            ))
             .unwrap_or_default()
     }
 
@@ -193,7 +191,7 @@ impl Engine {
                 kind: ResourceType::Mime(MimeType::from(content_type.to_str()?)),
                 content: data.to_string(),
                 dependencies: vec![],
-                /// user-added resources require full permissions
+                // user-added resources require full permissions
                 permission: adblock::resources::PermissionMask::from_bits(0b11111111),
             };
             Ok(self.engine.add_resource(resource)?)

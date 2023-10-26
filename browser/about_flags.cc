@@ -855,28 +855,11 @@
           FEATURE_VALUE_TYPE(translate::kTranslate),                           \
       },                                                                       \
       {                                                                        \
-          "brave-sync-history-diagnostics",                                    \
-          "Enable Brave Sync History Diagnostics",                             \
-          "Brave Sync History Diagnostics flag displays additional sync "      \
-          "related information on History page",                               \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_sync::features::kBraveSyncHistoryDiagnostics),             \
-      },                                                                       \
-      {                                                                        \
           "restrict-event-source-pool",                                        \
           "Restrict Event Source Pool",                                        \
           "Limits simultaneous active WebSockets connections per eTLD+1",      \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(blink::features::kRestrictEventSourcePool),       \
-      },                                                                       \
-      {                                                                        \
-          "brave-sync-send-all-history",                                       \
-          "Send All History to Brave Sync",                                    \
-          "With Send All History flag all sync entries are sent to Sync "      \
-          "server including transitions of link, bookmark, reload, etc",       \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_sync::features::kBraveSyncSendAllHistory),  \
       },                                                                       \
       {                                                                        \
           "brave-copy-clean-link-by-default",                                  \

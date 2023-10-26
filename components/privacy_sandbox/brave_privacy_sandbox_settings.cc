@@ -17,10 +17,12 @@ BravePrivacySandboxSettings::BravePrivacySandboxSettings(
     std::unique_ptr<Delegate> delegate,
     HostContentSettingsMap* host_content_settings_map,
     content_settings::CookieSettings* cookie_settings,
+    privacy_sandbox::TrackingProtectionSettings* tracking_protection_settings,
     PrefService* pref_service)
     : privacy_sandbox::PrivacySandboxSettingsImpl(std::move(delegate),
                                                   host_content_settings_map,
                                                   cookie_settings,
+                                                  tracking_protection_settings,
                                                   pref_service),
       pref_service_(pref_service) {
   // Register observers for the Privacy Sandbox.

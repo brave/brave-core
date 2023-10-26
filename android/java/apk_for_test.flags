@@ -266,8 +266,13 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.preferences.ChromePreferenceKeyChecker {
-    *** getInstance(...);
+-keep class org.chromium.base.shared_preferences.StrictPreferenceKeyChecker {
+    <init>(...);
+    *** isKeyInUse(...);
+}
+
+-keep class org.chromium.base.shared_preferences.BraveStrictPreferenceKeyChecker {
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {
@@ -409,7 +414,6 @@
     <init>(...);
     *** mCoordinator;
     *** mSnapScrollHelper;
-    *** destroyPropertiesForStream(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceMediator {
@@ -525,6 +529,7 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mNativeInitialized;
     *** mDropdownViewInfoListManager;
+    *** mDropdownViewInfoListBuilder;
     public <init>(...);
 }
 
@@ -717,11 +722,6 @@
     *** mShouldShowLogo;
     public <init>(...);
     *** updateVisibility(...);
-}
-
-
--keep class org.chromium.chrome.browser.paint_preview.StartupPaintPreviewHelper {
-    *** isEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.document.ChromeLauncherActivity {

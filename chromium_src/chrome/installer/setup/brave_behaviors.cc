@@ -7,6 +7,10 @@
 
 #include <string_view>
 
+#include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
+#include "base/strings/utf_string_conversions.h"
+
 #define DoPostUninstallOperations DoPostUninstallOperations_UNUSED
 #include "src/chrome/installer/setup/google_chrome_behaviors.cc"
 #undef DoPostUninstallOperations
@@ -38,9 +42,9 @@ void DoPostUninstallOperations(const base::Version& version,
   // string before using it in a URL.
   const base::win::OSInfo* os_info = base::win::OSInfo::GetInstance();
   base::win::OSInfo::VersionNumber version_number = os_info->version_number();
-  std::wstring os_version =
-      base::StringPrintf(L"%d.%d.%d", version_number.major,
-                         version_number.minor, version_number.build);
+  const std::wstring os_version = base::ASCIIToWide(
+      base::StringPrintf("%d.%d.%d", version_number.major, version_number.minor,
+                         version_number.build));
 
   const std::wstring survey_url = std::wstring(kBraveUninstallSurveyUrl);
 #if DCHECK_IS_ON()
@@ -50,9 +54,9 @@ void DoPostUninstallOperations(const base::Version& version,
   DCHECK_EQ(survey_url.find(L'?', pos + 1), std::wstring::npos);
   DCHECK_NE(survey_url.back(), L'&');
 #endif
-  auto url = base::StringPrintf(L"%ls&crversion=%ls&os=%ls", survey_url.c_str(),
-                                base::ASCIIToWide(version.GetString()).c_str(),
-                                os_version.c_str());
+  auto url = base::StrCat({survey_url, L"&crversion=",
+                           base::ASCIIToWide(version.GetString()), L"&os=",
+                           os_version});
   if (os_info->version() < base::win::Version::WIN10 ||
       !NavigateToUrlWithEdge(url)) {
     NavigateToUrlWithIExplore(url);

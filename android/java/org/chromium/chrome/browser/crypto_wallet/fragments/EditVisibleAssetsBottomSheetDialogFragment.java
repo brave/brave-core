@@ -314,47 +314,54 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
         // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
         // https://github.com/brave/brave-browser/issues/31882
-        mAddAssetActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                ((BraveWalletBaseActivity) requireActivity()).getActivityResultRegistry(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent intent = result.getData();
-                        if (intent == null) {
-                            return;
-                        }
-                        final BlockchainToken token =
-                                WalletUtils.getBlockchainTokenFromIntent(intent);
-                        final NetworkInfo networkInfo =
-                                WalletUtils.getNetworkInfoFromIntent(intent);
-                        if (token == null || networkInfo == null) {
-                            return;
-                        }
+        mAddAssetActivityResultLauncher =
+                registerForActivityResult(
+                        new ActivityResultContracts.StartActivityForResult(),
+                        ((BraveWalletBaseActivity) requireActivity()).getActivityResultRegistry(),
+                        result -> {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                Intent intent = result.getData();
+                                if (intent == null) {
+                                    return;
+                                }
+                                final BlockchainToken token =
+                                        WalletUtils.getBlockchainTokenFromIntent(intent);
+                                final NetworkInfo networkInfo =
+                                        WalletUtils.getNetworkInfoFromIntent(intent);
+                                if (token == null || networkInfo == null) {
+                                    return;
+                                }
 
-                        boolean isDuplicateToken = false;
-                        for (WalletListItemModel item : mWalletCoinAdapter.getCheckedAssets()) {
-                            // We can have multiple ERC721 or Solana NFTs with the same name
-                            if (!item.isNft()
-                                    && (item.getTitle().equals(token.name)
-                                            || item.getSubTitle().equals(token.symbol))) {
-                                isDuplicateToken = true;
-                                break;
+                                boolean isDuplicateToken = false;
+                                for (WalletListItemModel item :
+                                        mWalletCoinAdapter.getCheckedAssets()) {
+                                    // We can have multiple ERC721 or Solana NFTs with the same name
+                                    if (!item.isNft()
+                                            && (item.getTitle().equals(token.name)
+                                                    || item.getSubTitle().equals(token.symbol))) {
+                                        isDuplicateToken = true;
+                                        break;
+                                    }
+                                }
+                                if (!isDuplicateToken) {
+                                    WalletListItemModel itemModel =
+                                            new WalletListItemModel(
+                                                    R.drawable.ic_eth,
+                                                    token.name,
+                                                    token.symbol,
+                                                    token.tokenId,
+                                                    "",
+                                                    "");
+                                    itemModel.setBlockchainToken(token);
+                                    itemModel.setIconPath(token.logo);
+                                    itemModel.setAssetNetwork(networkInfo);
+
+                                    itemModel.isVisible(true);
+                                    mWalletCoinAdapter.addItem(itemModel);
+                                    mIsAssetsListChanged = true;
+                                }
                             }
-                        }
-                        if (!isDuplicateToken) {
-                            WalletListItemModel itemModel =
-                                    new WalletListItemModel(R.drawable.ic_eth, token.name,
-                                            token.symbol, token.tokenId, "", "");
-                            itemModel.setBlockchainToken(token);
-                            itemModel.setIconPath(token.logo);
-                            itemModel.setAssetNetwork(networkInfo);
-
-                            itemModel.isVisible(true);
-                            mWalletCoinAdapter.addItem(itemModel);
-                            mIsAssetsListChanged = true;
-                        }
-                    }
-                });
+                        });
     }
 
     private void showAddAssetActivity() {
@@ -380,15 +387,20 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             NetworkInfo assetNetwork =
                     NetworkUtils.findNetwork(mCryptoNetworks, token.chainId, token.coin);
             if (assetNetwork == null) {
-                Log.e(TAG,
-                        String.format("Asset network for token with chain Id %s was null.",
+                Log.e(
+                        TAG,
+                        String.format(
+                                "Asset network for token with chain Id %s was null.",
                                 token.chainId));
                 continue;
             }
-            String subtitle = !isEditVisibleAssetType
-                    ? token.symbol
-                    : getString(R.string.brave_wallet_portfolio_asset_network_description,
-                            token.symbol, assetNetwork.chainName);
+            String subtitle =
+                    !isEditVisibleAssetType
+                            ? token.symbol
+                            : getString(
+                                    R.string.brave_wallet_portfolio_asset_network_description,
+                                    token.symbol,
+                                    assetNetwork.chainName);
 
             WalletListItemModel itemModel = new WalletListItemModel(
                     Utils.getCoinIcon(token.coin), token.name, subtitle, token.tokenId, "", "");
@@ -516,13 +528,18 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             return;
         }
 
-        TokenUtils.isCustomToken(blockchainRegistry, walletListItemModel.getAssetNetwork(),
-                walletListItemModel.getBlockchainToken().coin, thisToken, isCustom -> {
+        TokenUtils.isCustomToken(
+                blockchainRegistry,
+                walletListItemModel.getAssetNetwork(),
+                walletListItemModel.getBlockchainToken().coin,
+                thisToken,
+                isCustom -> {
                     // Only show add asset dialog on click when:
                     //    1. It is an ERC721 token
                     //    2. It is a token listed in Registry
                     //    3. It is not user added (i.e. doesn't have a token id)
-                    if (thisToken.isErc721 && !isCustom
+                    if (thisToken.isErc721
+                            && !isCustom
                             && (thisToken.tokenId == null || thisToken.tokenId.trim().isEmpty())) {
                         showAddAssetActivity();
                         walletListItemModel.isVisible(
@@ -531,23 +548,31 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     } else {
                         if (!isCustom) {
                             if (isChecked) {
-                                braveWalletService.addUserAsset(thisToken, (success) -> {
-                                    if (success) {
-                                        walletListItemModel.isVisible(true);
-                                    }
-                                    itemCheckboxConsistency(walletListItemModel, assetCheck, true);
-                                });
+                                braveWalletService.addUserAsset(
+                                        thisToken,
+                                        (success) -> {
+                                            if (success) {
+                                                walletListItemModel.isVisible(true);
+                                            }
+                                            itemCheckboxConsistency(
+                                                    walletListItemModel, assetCheck, true);
+                                        });
                             } else {
-                                braveWalletService.removeUserAsset(thisToken, (success) -> {
-                                    if (success) {
-                                        walletListItemModel.isVisible(false);
-                                    }
-                                    itemCheckboxConsistency(walletListItemModel, assetCheck, false);
-                                });
+                                braveWalletService.removeUserAsset(
+                                        thisToken,
+                                        (success) -> {
+                                            if (success) {
+                                                walletListItemModel.isVisible(false);
+                                            }
+                                            itemCheckboxConsistency(
+                                                    walletListItemModel, assetCheck, false);
+                                        });
                             }
                         } else {
                             braveWalletService.setUserAssetVisible(
-                                    thisToken, isChecked, success -> {
+                                    thisToken,
+                                    isChecked,
+                                    success -> {
                                         if (success) {
                                             walletListItemModel.isVisible(isChecked);
                                         }

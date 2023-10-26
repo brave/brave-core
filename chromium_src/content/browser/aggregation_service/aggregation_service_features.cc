@@ -11,6 +11,8 @@ namespace content {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPrivacySandboxAggregationService, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivacySandboxAggregationServiceReportPadding,
+     base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace content
