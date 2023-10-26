@@ -77,6 +77,10 @@ int BraveBrowserNonClientFrameViewMac::GetTopInset(bool restored) const {
     return BrowserNonClientFrameViewMac::GetTopInset(restored);
   }
 
+  if (!browser_view()->ShouldDrawTabStrip()) {
+    return 0;
+  }
+
   // The tab region view maintains its own padding, but insert a small gap to
   // give a bit more room for the frame resize handle.
   return 2;
