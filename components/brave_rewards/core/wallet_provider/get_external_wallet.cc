@@ -21,8 +21,7 @@ GetExternalWallet::~GetExternalWallet() = default;
 void GetExternalWallet::Run(GetExternalWalletCallback callback) const {
   auto wallet = wallet::MaybeCreateWallet(*engine_, WalletType());
   if (!wallet) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::GetExternalWalletError::kUnexpected));
+    return std::move(callback).Run(nullptr);
   }
 
   if (wallet->status == mojom::WalletStatus::kConnected ||
@@ -44,8 +43,7 @@ void GetExternalWallet::OnTransferTokens(GetExternalWalletCallback callback,
 
   auto wallet = wallet::GetWallet(*engine_, WalletType());
   if (!wallet) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::GetExternalWalletError::kUnexpected));
+    return std::move(callback).Run(nullptr);
   }
 
   std::move(callback).Run(std::move(wallet));

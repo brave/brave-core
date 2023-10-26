@@ -39,7 +39,9 @@ export function ProviderRedirectModal () {
       )
     case 'hide':
       return null
-    case mojom.ConnectExternalWalletError.kDeviceLimitReached:
+    case mojom.ConnectExternalWalletResult.kSuccess:
+      return null
+    case mojom.ConnectExternalWalletResult.kDeviceLimitReached:
       return (
         <ModalRedirect
           id={'redirect-modal-device-limit-reached'}
@@ -51,7 +53,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kFlaggedWallet:
+    case mojom.ConnectExternalWalletResult.kFlaggedWallet:
       return (
         <ModalRedirect
           id={'redirect-modal-flagged-wallet'}
@@ -67,7 +69,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kKYCRequired:
+    case mojom.ConnectExternalWalletResult.kKYCRequired:
       return (
         <ModalRedirect
           id={'redirect-modal-id-verification-required'}
@@ -78,7 +80,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kMismatchedCountries:
+    case mojom.ConnectExternalWalletResult.kMismatchedCountries:
       return (
         <ModalRedirect
           id={'redirect-modal-mismatched-countries'}
@@ -90,7 +92,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kMismatchedProviderAccounts:
+    case mojom.ConnectExternalWalletResult.kMismatchedProviderAccounts:
       return (
         <ModalRedirect
           id={'redirect-modal-mismatched-provider-accounts'}
@@ -102,7 +104,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kProviderUnavailable:
+    case mojom.ConnectExternalWalletResult.kProviderUnavailable:
       return (
         <ModalRedirect
           id={'redirect-modal-provider-unavailable'}
@@ -116,7 +118,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kRegionNotSupported:
+    case mojom.ConnectExternalWalletResult.kRegionNotSupported:
       return (
         <ModalRedirect
           id={'redirect-modal-region-not-supported'}
@@ -130,7 +132,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kRequestSignatureVerificationFailure:
+    case mojom.ConnectExternalWalletResult.kRequestSignatureVerificationFailure:
       return (
         <ModalRedirect
           id={'redirect-modal-wallet-ownership-verification-failure'}
@@ -142,7 +144,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kUpholdBATNotAllowed:
+    case mojom.ConnectExternalWalletResult.kUpholdBATNotAllowed:
       return (
         <ModalRedirect
           id={'redirect-modal-uphold-bat-not-allowed'}
@@ -154,7 +156,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kUpholdInsufficientCapabilities:
+    case mojom.ConnectExternalWalletResult.kUpholdInsufficientCapabilities:
       return (
         <ModalRedirect
           id={'redirect-modal-uphold-insufficient-capabilities'}
@@ -165,7 +167,7 @@ export function ProviderRedirectModal () {
           onClick={actions.hideRedirectModal}
         />
       )
-    case mojom.ConnectExternalWalletError.kUpholdTransactionVerificationFailure:
+    case mojom.ConnectExternalWalletResult.kUpholdTransactionVerificationFailure:
       return (
         <ModalRedirect
           id={'redirect-modal-wallet-ownership-verification-failure'}
@@ -178,7 +180,7 @@ export function ProviderRedirectModal () {
         />
       )
     default:
-      // on modalRedirect === 'error', or on an unhandled mojom.ConnectExternalWalletError
+      // on modalRedirect === 'error', or on an unhandled mojom.ConnectExternalWalletResult
       return (
         <ModalRedirect
           id={'redirect-modal-error'}

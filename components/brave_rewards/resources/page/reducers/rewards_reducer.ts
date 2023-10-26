@@ -8,6 +8,7 @@ import { Reducer } from 'redux'
 import { types } from '../actions/rewards_types'
 import { userTypeFromMojo } from '../../shared/lib/user_type'
 import * as Rewards from '../lib/types'
+import * as mojom from '../../shared/lib/mojom'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -424,14 +425,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getExternalWallet')
 
       const ui = state.ui
-      const { value, error } = action.payload.result
+      const { result } = action.payload
 
-      if (value) {
+      if (result === mojom.ConnectExternalWalletResult.kSuccess) {
         chrome.send('brave_rewards.getUserType')
         chrome.send('brave_rewards.fetchBalance')
         ui.modalRedirect = 'hide'
       } else {
-        ui.modalRedirect = error
+        ui.modalRedirect = result
       }
 
       state = { ...state, ui }

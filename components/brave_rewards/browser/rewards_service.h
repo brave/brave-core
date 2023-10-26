@@ -59,17 +59,11 @@ using GetPublisherInfoCallback =
 using SavePublisherInfoCallback = base::OnceCallback<void(const mojom::Result)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
-using ConnectExternalWalletResult =
-    base::expected<void, mojom::ConnectExternalWalletError>;
 using ConnectExternalWalletCallback =
-    base::OnceCallback<void(ConnectExternalWalletResult)>;
-using FetchBalanceResult =
-    base::expected<mojom::BalancePtr, mojom::FetchBalanceError>;
-using FetchBalanceCallback = base::OnceCallback<void(FetchBalanceResult)>;
-using GetExternalWalletResult =
-    base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>;
+    base::OnceCallback<void(mojom::ConnectExternalWalletResult)>;
+using FetchBalanceCallback = base::OnceCallback<void(mojom::BalancePtr)>;
 using GetExternalWalletCallback =
-    base::OnceCallback<void(GetExternalWalletResult)>;
+    base::OnceCallback<void(mojom::ExternalWalletPtr)>;
 using ClaimPromotionCallback = base::OnceCallback<void(const mojom::Result,
                                                        const std::string&,
                                                        const std::string&,
@@ -303,8 +297,6 @@ class RewardsService : public KeyedService {
   // Uphold).
   // |path| is the authorization URL's path
   // |query| is the authorization URL's query
-  // The callback is called with a ConnectExternalWalletError on failure,
-  // and with an empty result on success.
   virtual void ConnectExternalWallet(const std::string& path,
                                      const std::string& query,
                                      ConnectExternalWalletCallback) = 0;

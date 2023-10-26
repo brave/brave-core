@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
-#include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_rewards::internal {
@@ -33,7 +32,7 @@ struct ResultFor<PostConnect> {
 class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
  public:
   static Result ProcessResponse(const mojom::UrlResponse&);
-  static ConnectExternalWalletResult ToConnectExternalWalletResult(
+  static mojom::ConnectExternalWalletResult ToConnectExternalWalletResult(
       const Result&);
 
   explicit PostConnect(RewardsEngineImpl& engine);

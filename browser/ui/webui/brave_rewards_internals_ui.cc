@@ -29,9 +29,6 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-using brave_rewards::FetchBalanceResult;
-using brave_rewards::GetExternalWalletResult;
-
 namespace {
 
 constexpr int kPartialLogMaxLines = 5000;
@@ -57,7 +54,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetRewardsInternalsInfo(
       brave_rewards::mojom::RewardsInternalsInfoPtr info);
   void GetBalance(const base::Value::List& args);
-  void OnGetBalance(FetchBalanceResult result);
+  void OnGetBalance(brave_rewards::mojom::BalancePtr balance);
   void GetContributions(const base::Value::List& args);
   void OnGetContributions(
       std::vector<brave_rewards::mojom::ContributionInfoPtr> contributions);
@@ -70,7 +67,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void ClearLog(const base::Value::List& args);
   void OnClearLog(const bool success);
   void GetExternalWallet(const base::Value::List& args);
-  void OnGetExternalWallet(GetExternalWalletResult result);
+  void OnGetExternalWallet(brave_rewards::mojom::ExternalWalletPtr wallet);
   void GetEventLogs(const base::Value::List& args);
   void OnGetEventLogs(std::vector<brave_rewards::mojom::EventLogPtr> logs);
   void GetAdDiagnostics(const base::Value::List& args);
@@ -206,13 +203,14 @@ void RewardsInternalsDOMHandler::GetBalance(const base::Value::List& args) {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RewardsInternalsDOMHandler::OnGetBalance(FetchBalanceResult result) {
+void RewardsInternalsDOMHandler::OnGetBalance(
+    brave_rewards::mojom::BalancePtr balance) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
   base::Value::Dict data;
-  if (const auto balance = std::move(result).value_or(nullptr)) {
+  if (balance) {
     data.Set("total", balance->total);
     data.Set("wallets",
              base::Value::Dict(std::move_iterator(balance->wallets.begin()),
@@ -385,13 +383,13 @@ void RewardsInternalsDOMHandler::GetExternalWallet(
 }
 
 void RewardsInternalsDOMHandler::OnGetExternalWallet(
-    GetExternalWalletResult result) {
+    brave_rewards::mojom::ExternalWalletPtr wallet) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
   base::Value::Dict data;
-  if (auto wallet = std::move(result).value_or(nullptr)) {
+  if (wallet) {
     data.Set("address", wallet->address);
     data.Set("memberId", wallet->member_id);
     data.Set("status", static_cast<int>(wallet->status));

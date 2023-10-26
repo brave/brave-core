@@ -246,18 +246,15 @@ export const getExcludedSites = () => action(types.GET_EXCLUDED_SITES)
 
 export const getBalance = () => action(types.GET_BALANCE)
 
-export const onBalance = (result: mojom.FetchBalanceResult) =>
-  action(types.ON_BALANCE, {
-    result
-  })
+export const onBalance = (balance?: mojom.Balance) =>
+  action(types.ON_BALANCE, { balance })
 
 export const getExternalWalletProviders = () => action(types.GET_EXTERNAL_WALLET_PROVIDERS)
 
 export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
 
-export const onGetExternalWallet = (result: mojom.GetExternalWalletResult) => action(types.ON_GET_EXTERNAL_WALLET, {
-  result
-})
+export const onGetExternalWallet = (externalWallet?: mojom.ExternalWallet) =>
+  action(types.ON_GET_EXTERNAL_WALLET, { externalWallet })
 
 export const connectExternalWallet = (path: string, query: string) => action(types.CONNECT_EXTERNAL_WALLET, {
   path,

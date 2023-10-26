@@ -14,31 +14,6 @@ mojom("mojom") {
   ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
-
-  cpp_typemaps = [
-    {
-      types = [
-        {
-          mojom = "brave_rewards.mojom.ConnectExternalWalletResult"
-          cpp = "base::expected<void, mojom::ConnectExternalWalletError>"
-          move_only = true
-        },
-        {
-          mojom = "brave_rewards.mojom.FetchBalanceResult"
-          cpp = "base::expected<mojom::BalancePtr, mojom::FetchBalanceError>"
-          move_only = true
-        },
-        {
-          mojom = "brave_rewards.mojom.GetExternalWalletResult"
-          cpp = "base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>"
-          move_only = true
-        },
-      ]
-
-      traits_headers = [ "rewards_mojom_traits.h" ]
-      traits_sources = [ "rewards_mojom_traits.cc" ]
-    },
-  ]
 }
 
 mojom("engine") {

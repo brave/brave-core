@@ -133,9 +133,9 @@ interface RewardsEngine {
 
   GetShareURL(map<string, string> args) => (string url);
 
-  FetchBalance() => (FetchBalanceResult result);
+  FetchBalance() => (Balance? balance);
 
-  GetExternalWallet(string wallet_type) => (GetExternalWalletResult result);
+  GetExternalWallet(string wallet_type) => (ExternalWallet? external_wallet);
 
   ConnectExternalWallet(string wallet_type, map<string, string> args)
       => (ConnectExternalWalletResult result);
