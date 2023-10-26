@@ -1232,13 +1232,21 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
 
     if coordinator.proposal.operation == .move {
       guard let item = coordinator.items.first else { return }
+      _ = coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
 
+      guard let favouritesSection = sections.firstIndex(where: { $0 is FavoritesSectionProvider }) else {
+        return
+      }
+      
       Favorite.reorder(
         sourceIndexPath: sourceIndexPath,
         destinationIndexPath: destinationIndexPath,
         isInteractiveDragReorder: true
       )
-      _ = coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+      
+      UIView.performWithoutAnimation {
+        self.collectionView.reloadSections(IndexSet(integer: favouritesSection))
+      }
 
     }
   }
