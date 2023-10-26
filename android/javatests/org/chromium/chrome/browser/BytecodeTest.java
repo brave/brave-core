@@ -349,11 +349,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/incognito/reauth/IncognitoReauthCoordinatorBase"));
-        Assert.assertTrue(
-                classExists(
-                        "org/chromium/chrome/browser/incognito/reauth/BravePrivateTabReauthCoordinatorBase"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/firstrun/FreIntentCreator"));
@@ -1161,9 +1156,6 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/logo/LogoMediator", "mLogoModel"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/logo/LogoMediator", "mShouldShowLogo"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/incognito/reauth/IncognitoReauthCoordinatorBase",
-                "mIncognitoReauthView"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/app/bookmarks/BookmarkActivity",
                 "mBookmarkManagerCoordinator"));
         Assert.assertTrue(fieldExists(
@@ -1264,14 +1256,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName("org/chromium/chrome/browser/tracing/settings/DeveloperSettings",
                         "org/chromium/chrome/browser/settings/BravePreferenceFragment"));
-        Assert.assertTrue(
-                checkSuperName(
-                        "org/chromium/chrome/browser/incognito/reauth/TabSwitcherIncognitoReauthCoordinator",
-                        "org/chromium/chrome/browser/incognito/reauth/BravePrivateTabReauthCoordinatorBase"));
-        Assert.assertTrue(
-                checkSuperName(
-                        "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator",
-                        "org/chromium/chrome/browser/incognito/reauth/BravePrivateTabReauthCoordinatorBase"));
         Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/bookmarks/BookmarkModel",
                 "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge"));
         Assert.assertTrue(
