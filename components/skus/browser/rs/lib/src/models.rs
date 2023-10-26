@@ -127,7 +127,7 @@ pub struct UnredeemedToken {
     pub promotion_id: String,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub enum CredentialType {
     SingleUse,
@@ -205,7 +205,14 @@ impl Order {
     }
 
     pub fn is_paid(&self) -> bool {
-        self.status == "paid" || (self.status == "canceled" && self.expires_at.is_some())
+        self.status == "paid"
+    }
+
+    pub fn has_expired(&self, now: NaiveDateTime) -> bool {
+        if let Some(expires_at) = self.expires_at {
+            return expires_at <= now;
+        }
+        false
     }
 }
 
