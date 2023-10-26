@@ -28,6 +28,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -1057,6 +1059,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
                      "{\"jsonrpc\":\"2.0\",\"id\": \"0\",\"result\": "
                      "{\"gasLimit\":\"0x6691b8\"}}");
     }
+  }
+
+  void SetInterceptor(const std::string& content) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, content](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), content);
+        }));
   }
 
   bool SetNetwork(const std::string& chain_id,
@@ -6799,6 +6809,215 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenDecimals) {
                           mojom::kMainnetChainId, "",
                           mojom::ProviderError::kParsingError,
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
+  // Ensure MethodNotFound error is returned if feature is disabled
+  base::RunLoop run_loop_1;
+  json_rpc_service_->AnkrGetAccountBalances(
+      "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+      {mojom::kPolygonMainnetChainId},
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::AnkrAssetBalancePtr> response,
+              mojom::ProviderError error, const std::string& error_string) {
+            EXPECT_EQ(response.size(), 0u);
+            EXPECT_EQ(error, mojom::ProviderError::kMethodNotFound);
+            EXPECT_EQ(error_string, l10n_util::GetStringUTF8(
+                                        IDS_WALLET_REQUEST_PROCESSING_ERROR));
+
+            run_loop_1.Quit();
+          }));
+  run_loop_1.Run();
+
+  // Enable feature
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kBraveWalletAnkrBalancesFeature);
+
+  SetInterceptor(R"(
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "totalBalanceUsd": "4915134435857.581297310767673907",
+        "assets": [
+          {
+            "blockchain": "polygon",
+            "tokenName": "Matic",
+            "tokenSymbol": "MATIC",
+            "tokenDecimals": "18",
+            "tokenType": "NATIVE",
+            "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+            "balance": "120.275036899888325666",
+            "balanceRawInteger": "120275036899888325666",
+            "balanceUsd": "66.534394147826631446",
+            "tokenPrice": "0.553185397924316979",
+            "thumbnail": "polygon.svg"
+          },
+          {
+            "blockchain": "polygon",
+            "tokenName": "Malformed USDC",
+            "tokenSymbol": "USDC",
+            "tokenDecimals": "-6",
+            "tokenType": "ERC20",
+            "contractAddress": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+            "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+            "balance": "8.202765",
+            "balanceRawInteger": "8202765",
+            "balanceUsd": "8.202765",
+            "tokenPrice": "1",
+            "thumbnail": "usdc.png"
+          },
+          {
+            "blockchain": "polygon",
+            "tokenName": "USD Coin",
+            "tokenSymbol": "USDC",
+            "tokenDecimals": "6",
+            "tokenType": "ERC20",
+            "contractAddress": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+            "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+            "balance": "8.202765",
+            "balanceRawInteger": "8202765",
+            "balanceUsd": "8.202765",
+            "tokenPrice": "1",
+            "thumbnail": "usdc.png"
+          },
+          {
+            "blockchain": "polygon",
+            "tokenName": "Malformed USDC",
+            "tokenSymbol": "USDC",
+            "tokenDecimals": "6",
+            "tokenType": "ERC20",
+            "holderAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+            "balance": "8.202765",
+            "balanceRawInteger": "8202765",
+            "balanceUsd": "8.202765",
+            "tokenPrice": "1",
+            "thumbnail": "usdc.png"
+          }
+        ]
+      }
+    }
+  )");
+
+  // Setup tokens list to populate coingecko id
+  std::string coingecko_ids_json = R"({
+    "0x89": {
+      "0x2791bca1f2de4661ed88a30c99a7a9449aa84174": "usd-coin"
+    }
+  })";
+  absl::optional<CoingeckoIdsMap> coingecko_ids_map =
+      ParseCoingeckoIdsMap(coingecko_ids_json);
+  ASSERT_TRUE(coingecko_ids_map);
+  BlockchainRegistry::GetInstance()->UpdateCoingeckoIdsMap(
+      std::move(*coingecko_ids_map));
+
+  base::RunLoop run_loop_2;
+  json_rpc_service_->AnkrGetAccountBalances(
+      "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+      {mojom::kPolygonMainnetChainId},
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::AnkrAssetBalancePtr> response,
+              mojom::ProviderError error, const std::string& error_string) {
+            ASSERT_EQ(response.size(), 2u);
+            EXPECT_EQ(response.at(0)->asset->contract_address, "");
+            EXPECT_EQ(response.at(0)->asset->name, "Matic");
+            EXPECT_EQ(response.at(0)->asset->logo, "polygon.svg");
+            EXPECT_FALSE(response.at(0)->asset->is_erc20);
+            EXPECT_FALSE(response.at(0)->asset->is_erc721);
+            EXPECT_FALSE(response.at(0)->asset->is_erc1155);
+            EXPECT_FALSE(response.at(0)->asset->is_nft);
+            EXPECT_FALSE(response.at(0)->asset->is_spam);
+            EXPECT_EQ(response.at(0)->asset->symbol, "MATIC");
+            EXPECT_EQ(response.at(0)->asset->decimals, 18);
+            EXPECT_TRUE(response.at(0)->asset->visible);
+            EXPECT_EQ(response.at(0)->asset->token_id, "");
+            EXPECT_EQ(response.at(0)->asset->coingecko_id, "");
+            EXPECT_EQ(response.at(0)->asset->chain_id,
+                      mojom::kPolygonMainnetChainId);
+            EXPECT_EQ(response.at(0)->asset->coin, mojom::CoinType::ETH);
+            EXPECT_EQ(response.at(0)->balance, "120275036899888325666");
+            EXPECT_EQ(response.at(0)->formatted_balance,
+                      "120.275036899888325666");
+            EXPECT_EQ(response.at(0)->balance_usd, "66.534394147826631446");
+            EXPECT_EQ(response.at(0)->price_usd, "0.553185397924316979");
+
+            EXPECT_EQ(response.at(1)->asset->contract_address,
+                      "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");
+            EXPECT_EQ(response.at(1)->asset->name, "USD Coin");
+            EXPECT_EQ(response.at(1)->asset->logo, "usdc.png");
+            EXPECT_TRUE(response.at(1)->asset->is_erc20);
+            EXPECT_FALSE(response.at(1)->asset->is_erc721);
+            EXPECT_FALSE(response.at(1)->asset->is_erc1155);
+            EXPECT_FALSE(response.at(1)->asset->is_nft);
+            EXPECT_FALSE(response.at(1)->asset->is_spam);
+            EXPECT_EQ(response.at(1)->asset->symbol, "USDC");
+            EXPECT_EQ(response.at(1)->asset->decimals, 6);
+            EXPECT_TRUE(response.at(1)->asset->visible);
+            EXPECT_EQ(response.at(1)->asset->token_id, "");
+            EXPECT_EQ(response.at(1)->asset->coingecko_id, "usd-coin");
+            EXPECT_EQ(response.at(1)->asset->chain_id,
+                      mojom::kPolygonMainnetChainId);
+            EXPECT_EQ(response.at(1)->asset->coin, mojom::CoinType::ETH);
+            EXPECT_EQ(response.at(1)->balance, "8202765");
+            EXPECT_EQ(response.at(1)->formatted_balance, "8.202765");
+            EXPECT_EQ(response.at(1)->balance_usd, "8.202765");
+            EXPECT_EQ(response.at(1)->price_usd, "1");
+
+            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+            EXPECT_EQ(error_string, "");
+            run_loop_2.Quit();
+          }));
+  run_loop_2.Run();
+
+  // Handle known provider errors
+  SetInterceptor(R"(
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "error": {
+        "code": -32602,
+        "message": "invalid argument 0: invalid params"
+      }
+    }
+  )");
+  base::RunLoop run_loop_3;
+  json_rpc_service_->AnkrGetAccountBalances(
+      "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+      {mojom::kPolygonMainnetChainId},
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::AnkrAssetBalancePtr> response,
+              mojom::ProviderError error, const std::string& error_string) {
+            EXPECT_EQ(response.size(), 0u);
+            EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+            EXPECT_EQ(error_string, "invalid argument 0: invalid params");
+
+            run_loop_3.Quit();
+          }));
+  run_loop_3.Run();
+
+  // Invalid response yields parsing error
+  SetInterceptor(R"(
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "foo": "bar"
+    }
+  )");
+  base::RunLoop run_loop_4;
+  json_rpc_service_->AnkrGetAccountBalances(
+      "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+      {mojom::kPolygonMainnetChainId},
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::AnkrAssetBalancePtr> response,
+              mojom::ProviderError error, const std::string& error_string) {
+            EXPECT_EQ(response.size(), 0u);
+            EXPECT_EQ(error, mojom::ProviderError::kParsingError);
+            EXPECT_EQ(error_string,
+                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+            run_loop_4.Quit();
+          }));
+  run_loop_4.Run();
 }
 
 }  // namespace brave_wallet

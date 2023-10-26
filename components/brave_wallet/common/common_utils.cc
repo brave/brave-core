@@ -71,6 +71,11 @@ bool IsZCashEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletZCashFeature);
 }
 
+bool IsAnkrBalancesEnabled() {
+  return base::FeatureList::IsEnabled(
+      features::kBraveWalletAnkrBalancesFeature);
+}
+
 bool IsAllowed(PrefService* prefs) {
   return !IsDisabledByPolicy(prefs);
 }

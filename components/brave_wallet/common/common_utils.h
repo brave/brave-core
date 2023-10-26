@@ -31,6 +31,7 @@ bool ShouldCreateDefaultSolanaAccount();
 bool IsDappsSupportEnabled();
 bool IsBitcoinEnabled();
 bool IsZCashEnabled();
+bool IsAnkrBalancesEnabled();
 
 bool IsAllowed(PrefService* prefs);
 

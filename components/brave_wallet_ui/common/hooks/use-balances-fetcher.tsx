@@ -23,6 +23,8 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
+  const useAnkrBalancesFeature =
+    useSafeWalletSelector(WalletSelectors.isAnkrBalancesFeatureEnabled)
 
   return useGetTokenBalancesRegistryQuery(
     arg !== skipToken &&
@@ -32,9 +34,10 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
     arg.accounts.length &&
     arg.networks.length
       ? {
-          accounts: arg.accounts.map(account => account.accountId),
+          accountIds: arg.accounts.map(account => account.accountId),
           networks: arg.networks
-            .map(({ chainId, coin }) => ({ chainId, coin }))
+            .map(({ chainId, coin }) => ({ chainId, coin })),
+          useAnkrBalancesFeature
         }
       : skipToken,
     querySubscriptionOptions60s
