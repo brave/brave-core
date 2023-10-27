@@ -453,14 +453,17 @@ class AdsServiceImpl : public AdsService,
   const raw_ptr<brave_federated::AsyncDataStore>
       notification_ad_timing_data_store_ = nullptr;  // NOT OWNED
 
-  mojo::Receiver<bat_ads::mojom::BatAdsObserver> ads_observer_receiver_{this};
+  mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
+      this};
 
-  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
-  mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;
-  mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
-  mojo::Remote<bat_ads::mojom::BatAdsClientNotifier> bat_ads_client_notifier_;
+  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote_;
+  mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
+      bat_ads_client_associated_receiver_;
+  mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_associated_remote_;
+  mojo::Remote<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_remote_;
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
-      bat_ads_client_notifier_receiver_;
+      bat_ads_client_notifier_pending_receiver_;
 };
 
 }  // namespace brave_ads

@@ -312,14 +312,14 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
 
-  ads_observer_receiver_.reset();
+  bat_ads_observer_receiver_.reset();
   ads_service_->AddBatAdsObserver(
-      ads_observer_receiver_.BindNewPipeAndPassRemote());
+      bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
   pref_change_registrar_.RemoveAll();
-  ads_observer_receiver_.reset();
+  bat_ads_observer_receiver_.reset();
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 

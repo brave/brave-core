@@ -296,7 +296,8 @@ class RewardsDOMHandler
       rewards_service_observation_{this};
 
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
-  mojo::Receiver<bat_ads::mojom::BatAdsObserver> ads_observer_receiver_{this};
+  mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
+      this};
   bool browser_upgrade_required_to_serve_ads_ = false;
 
   PrefChangeRegistrar pref_change_registrar_;
@@ -633,15 +634,15 @@ void RewardsDOMHandler::OnJavascriptAllowed() {
     rewards_service_observation_.Observe(rewards_service_);
   }
 
-  ads_observer_receiver_.reset();
+  bat_ads_observer_receiver_.reset();
   ads_service_->AddBatAdsObserver(
-      ads_observer_receiver_.BindNewPipeAndPassRemote());
+      bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 void RewardsDOMHandler::OnJavascriptDisallowed() {
   rewards_service_observation_.Reset();
 
-  ads_observer_receiver_.reset();
+  bat_ads_observer_receiver_.reset();
 
   weak_factory_.InvalidateWeakPtrs();
 }

@@ -82,7 +82,8 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   raw_ptr<Profile> profile_ = nullptr;
 
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
-  mojo::Receiver<bat_ads::mojom::BatAdsObserver> ads_observer_receiver_{this};
+  mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
+      this};
   bool browser_upgrade_required_to_serve_ads_ = false;
 
   bool was_invisible_and_restored_ = false;
