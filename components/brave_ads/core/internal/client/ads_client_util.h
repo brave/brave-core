@@ -37,8 +37,6 @@ bool CanShowNotificationAdsWhileBrowserIsBackgrounded();
 void ShowNotificationAd(const NotificationAdInfo& ad);
 void CloseNotificationAd(const std::string& placement_id);
 
-void ShowReminder(mojom::ReminderType type);
-
 void CacheAdEventForInstanceId(const std::string& id,
                                const std::string& ad_type,
                                const std::string& confirmation_type,

@@ -279,6 +279,8 @@ AdsServiceImpl::AdsServiceImpl(
 AdsServiceImpl::~AdsServiceImpl() {
   g_brave_browser_process->resource_component()->RemoveObserver(this);
 
+  ads_observer_receiver_.reset();
+
   rewards_service_->RemoveObserver(this);
 }
 
@@ -394,6 +396,9 @@ void AdsServiceImpl::StartBatAdsService() {
 
   bat_ads_.reset_on_disconnect();
   bat_ads_client_notifier_.reset_on_disconnect();
+
+  ads_observer_receiver_.reset();
+  AddBatAdsObserver(ads_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
@@ -607,6 +612,16 @@ void AdsServiceImpl::MaybeShowOnboardingNotification() {
     SetProfilePref(prefs::kShouldShowOnboardingNotification,
                    base::Value(false));
   }
+}
+
+void AdsServiceImpl::ShowReminder(const mojom::ReminderType type) {
+#if !BUILDFLAG(IS_ANDROID)
+  if (UserHasOptedInToNotificationAds() && CheckIfCanShowNotificationAds()) {
+    // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple Brave
+    // Ads reminders from notification ads.
+    ShowNotificationAd(BuildReminder(type));
+  }
+#endif
 }
 
 void AdsServiceImpl::CloseAdaptiveCaptcha() {
@@ -1514,16 +1529,6 @@ void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
   }
 }
 
-void AdsServiceImpl::ShowReminder(const mojom::ReminderType type) {
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-  if (UserHasOptedInToNotificationAds() && CheckIfCanShowNotificationAds()) {
-    // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple Brave
-    // Ads reminders from notification ads.
-    ShowNotificationAd(BuildReminder(type));
-  }
-#endif
-}
-
 void AdsServiceImpl::CacheAdEventForInstanceId(
     const std::string& id,
     const std::string& ad_type,
@@ -1846,6 +1851,16 @@ void AdsServiceImpl::OnCompleteReset(const bool success) {
   if (success) {
     ShutdownAndResetState();
   }
+}
+
+void AdsServiceImpl::OnBraveRewardsDidChange() {}
+
+void AdsServiceImpl::OnBrowserUpgradeRequiredToServeAds() {}
+
+void AdsServiceImpl::OnIneligibleRewardsWalletToServeAds() {}
+
+void AdsServiceImpl::OnRemindUser(const brave_ads::mojom::ReminderType type) {
+  ShowReminder(type);
 }
 
 }  // namespace brave_ads

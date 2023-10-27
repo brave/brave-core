@@ -6,13 +6,14 @@
 #include "brave/components/brave_ads/core/internal/ads_observer_unittest_util.h"
 
 #include <memory>
+#include <utility>
 
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
 
 namespace brave_ads {
 
-AdsObserverMock* AddAdsObserver() {
+AdsObserverMock* AddAdsObserverMock() {
   std::unique_ptr<AdsObserverMock> ads_observer_mock =
       std::make_unique<AdsObserverMock>();
   AdsObserverMock* test = ads_observer_mock.get();

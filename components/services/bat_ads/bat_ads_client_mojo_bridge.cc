@@ -89,13 +89,6 @@ void BatAdsClientMojoBridge::ShowNotificationAd(
   }
 }
 
-void BatAdsClientMojoBridge::ShowReminder(
-    const brave_ads::mojom::ReminderType type) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ShowReminder(type);
-  }
-}
-
 bool BatAdsClientMojoBridge::CanShowNotificationAds() {
   if (!bat_ads_client_.is_bound()) {
     return false;

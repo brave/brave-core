@@ -32,6 +32,8 @@ class BatAdsObserver : public brave_ads::AdsObserverInterface {
 
   void OnIneligibleRewardsWalletToServeAds() override;
 
+  void OnRemindUser(brave_ads::mojom::ReminderType type) override;
+
  private:
   mojo::Remote<mojom::BatAdsObserver> observer_;
 };

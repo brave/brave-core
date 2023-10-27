@@ -570,3 +570,8 @@ void BraveNewTabMessageHandler::OnBrowserUpgradeRequiredToServeAds() {
 }
 
 void BraveNewTabMessageHandler::OnIneligibleRewardsWalletToServeAds() {}
+
+void BraveNewTabMessageHandler::OnRemindUser(
+    const brave_ads::mojom::ReminderType type) {
+  // Intentionally empty.
+}

@@ -23,6 +23,7 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
@@ -68,6 +69,7 @@ struct NewTabPageAdInfo;
 
 class AdsServiceImpl : public AdsService,
                        public bat_ads::mojom::BatAdsClient,
+                       public bat_ads::mojom::BatAdsObserver,
                        BackgroundHelper::Observer,
                        public ResourceComponentObserver,
                        public brave_rewards::RewardsServiceObserver,
@@ -141,6 +143,8 @@ class AdsServiceImpl : public AdsService,
 
   bool ShouldShowOnboardingNotification();
   void MaybeShowOnboardingNotification();
+
+  void ShowReminder(mojom::ReminderType type);
 
   void CloseAdaptiveCaptcha();
 
@@ -300,8 +304,6 @@ class AdsServiceImpl : public AdsService,
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void ShowReminder(mojom::ReminderType type) override;
-
   void CacheAdEventForInstanceId(const std::string& id,
                                  const std::string& type,
                                  const std::string& confirmation_type,
@@ -369,6 +371,12 @@ class AdsServiceImpl : public AdsService,
            int32_t line,
            int32_t verbose_level,
            const std::string& message) override;
+
+  // bat_ads::mojom::BatAdsObserver:
+  void OnBraveRewardsDidChange() override;
+  void OnBrowserUpgradeRequiredToServeAds() override;
+  void OnIneligibleRewardsWalletToServeAds() override;
+  void OnRemindUser(mojom::ReminderType type) override;
 
   // BackgroundHelper::Observer:
   void OnBrowserDidEnterForeground() override;
@@ -444,6 +452,8 @@ class AdsServiceImpl : public AdsService,
 
   const raw_ptr<brave_federated::AsyncDataStore>
       notification_ad_timing_data_store_ = nullptr;  // NOT OWNED
+
+  mojo::Receiver<bat_ads::mojom::BatAdsObserver> ads_observer_receiver_{this};
 
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;

@@ -44,4 +44,11 @@ void AdsNotifierManager::NotifyIneligibleRewardsWalletToServeAds() const {
   }
 }
 
+void AdsNotifierManager::NotifyRemindUser(
+    const mojom::ReminderType type) const {
+  for (const auto& observer : observers_) {
+    observer->OnRemindUser(type);
+  }
+}
+
 }  // namespace brave_ads

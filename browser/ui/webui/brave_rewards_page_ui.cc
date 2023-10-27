@@ -284,6 +284,7 @@ class RewardsDOMHandler
   void OnBraveRewardsDidChange() override;
   void OnBrowserUpgradeRequiredToServeAds() override;
   void OnIneligibleRewardsWalletToServeAds() override;
+  void OnRemindUser(brave_ads::mojom::ReminderType type) override;
 
   void InitPrefChangeRegistrar();
   void OnPrefChanged(const std::string& key);
@@ -1549,6 +1550,11 @@ void RewardsDOMHandler::OnBrowserUpgradeRequiredToServeAds() {
 void RewardsDOMHandler::OnIneligibleRewardsWalletToServeAds() {
   // TODO(https://github.com/brave/brave-browser/issues/32201): Add isEligible
   // UI.
+}
+
+void RewardsDOMHandler::OnRemindUser(
+    const brave_ads::mojom::ReminderType type) {
+  // Intentionally empty.
 }
 
 void RewardsDOMHandler::OnRecurringTipSaved(
