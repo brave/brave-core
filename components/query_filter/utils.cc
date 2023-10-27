@@ -69,6 +69,8 @@ static constexpr auto kSimpleQueryStringTrackers =
          "irclickid",
          // https://github.com/brave/brave-browser/issues/33216
          "ymclid", "ysclid",
+         // https://github.com/brave/brave-browser/issues/33984
+         "fb_action_ids", "fb_comment_id",
          // https://github.com/brave/brave-browser/issues/26295
          "vgo_ee"});
 
