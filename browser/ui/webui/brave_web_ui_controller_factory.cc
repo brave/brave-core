@@ -63,7 +63,6 @@
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "third_party/re2/src/re2/re2.h"
 #endif
 
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -111,7 +110,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWebcompatReporterHost) {
     return new webcompat_reporter::WebcompatReporterUI(web_ui, url.host());
-#endif
+#endif // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
   } else if (host == kIPFSWebUIHost &&
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
@@ -134,7 +133,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWalletPanelHost &&
              brave_wallet::IsAllowedForContext(profile)) {
     return new WalletPanelUI(web_ui);
-#endif  // BUILDFLAG(OS_ANDROID)
+#endif  // !BUILDFLAG(OS_ANDROID)
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
              // we want private windows to redirect to the regular profile.
@@ -160,8 +159,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
                  brave_news::features::kBraveNewsFeedUpdate) &&
              host == kBraveNewsInternalsHost) {
     return new BraveNewsInternalsUI(web_ui, url.host());
-#endif  // !BUILDFLAG(IS_ANDROID)
-#if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUISettingsHost) {
@@ -189,23 +186,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   } else if (url.is_valid() && url.host() == kWalletPageHost) {
     return new AndroidWalletPageUI(web_ui, url);
-#endif
+#endif // BUILDFLAG(IS_ANDROID)
   }
   return nullptr;
-}
-
-bool IsWalletPath(const std::string& path) {
-  for (const std::string& wallet_path : kWalletPagePaths) {
-    if (wallet_path == path) {
-      return true;
-    }
-  }
-  for (const char* regex : kWalletPatternPaths) {
-    if (RE2::FullMatch(path, regex)) {
-      return true;
-    }
-  }
-  return false;
 }
 
 // Returns a function that can be used to create the right type of WebUI for a
@@ -234,12 +217,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if BUILDFLAG(IS_ANDROID)
-      (url.is_valid() && url.host_piece() == kWalletPageHost &&
-       (url.path() == kWalletSwapPagePath ||
-        url.path() == kWalletSendPagePath ||
-        url.path().starts_with(kWalletBuyPagePath) ||
-        url.path().starts_with(kWalletDepositPagePath)) ||
-        IsWalletPath(url.path()))) ||
+      (url.is_valid() && url.host_piece() == kWalletPageHost) ||
 #else
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
@@ -314,7 +292,7 @@ bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,
   }
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(profile);
-  return keyring_service && keyring_service->IsLockedSync();
+  return keyring_service && !keyring_service->IsWalletCreatedSync();
 }
 #endif  // BUILDFLAG(IS_ANDROID)
 }  // namespace
