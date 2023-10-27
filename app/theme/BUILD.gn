@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_player/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
@@ -17,6 +18,7 @@ brave_grit("brave_theme_resources") {
     "enable_ai_chat=$enable_ai_chat",
     "enable_ipfs=$enable_ipfs",
     "enable_playlist_webui=$enable_playlist_webui",
+    "enable_brave_player=$enable_brave_player",
   ]
   outputs = [
     "grit/brave_theme_resources.h",

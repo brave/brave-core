@@ -716,15 +716,21 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
                                          const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  auto pick_color = [&](leo::Color color) {
+    if (!key.custom_theme) {
+      return leo::GetColor(color, leo::Theme::kLight);
+    }
+
+    return PickColorContrastingToOmniboxResultsBackground(
+        key, mixer, leo::GetColor(color, leo::Theme::kLight),
+        leo::GetColor(color, leo::Theme::kDark));
+  };
   mixer[kColorBraveOmniboxResultViewSeparator] = {
-      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
+      pick_color(leo::Color::kColorDividerSubtle)};
+  mixer[kColorBravePlayerActionViewBorder] = {
+      pick_color(leo::Color::kColorDividerSubtle)};
 
   if (key.custom_theme) {
-    mixer[kColorBraveOmniboxResultViewSeparator] = {
-        PickColorContrastingToOmniboxResultsBackground(
-            key, mixer,
-            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight),
-            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark))};
     return;
   }
 
@@ -756,15 +762,21 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
                                         const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  auto pick_color = [&](leo::Color color) {
+    if (!key.custom_theme) {
+      return leo::GetColor(color, leo::Theme::kDark);
+    }
+
+    return PickColorContrastingToOmniboxResultsBackground(
+        key, mixer, leo::GetColor(color, leo::Theme::kLight),
+        leo::GetColor(color, leo::Theme::kDark));
+  };
   mixer[kColorBraveOmniboxResultViewSeparator] = {
-      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
+      pick_color(leo::Color::kColorDividerSubtle)};
+  mixer[kColorBravePlayerActionViewBorder] = {
+      pick_color(leo::Color::kColorDividerSubtle)};
 
   if (key.custom_theme) {
-    mixer[kColorBraveOmniboxResultViewSeparator] = {
-        PickColorContrastingToOmniboxResultsBackground(
-            key, mixer,
-            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight),
-            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark))};
     return;
   }
 

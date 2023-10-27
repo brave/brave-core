@@ -20,6 +20,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_player/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -80,6 +81,10 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "sandbox/policy/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
+#include "brave/components/brave_player/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -405,6 +410,16 @@
       kOsWin | kOsLinux | kOsMac,                                           \
       FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),              \
   })
+
+#define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
+  IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
+               EXPAND_FEATURE_ENTRIES({                                      \
+                   "brave-player",                                           \
+                   "BravePlayer",                                            \
+                   "Enables Brave Player",                                   \
+                   kOsMac | kOsWin | kOsLinux,                               \
+                   FEATURE_VALUE_TYPE(brave_player::features::kBravePlayer), \
+               }))
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
@@ -910,6 +925,7 @@
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
+  BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

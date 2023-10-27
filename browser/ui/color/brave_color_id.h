@@ -120,7 +120,8 @@
     E_CPONLY(kColorBravePlaylistNewPlaylistDialogItemsLabel)
 
 #define BRAVE_OMNIBOX_COLOR_IDS \
-    E_CPONLY(kColorBraveOmniboxResultViewSeparator)
+    E_CPONLY(kColorBraveOmniboxResultViewSeparator) \
+    E_CPONLY(kColorBravePlayerActionViewBorder)
 
 #define BRAVE_COLOR_IDS               \
     BRAVE_COMMON_COLOR_IDS            \

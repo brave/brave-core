@@ -1,0 +1,21 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_player/buildflags/buildflags.gni")
+
+assert(enable_brave_player)
+
+component("brave_player") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  defines = [ "IS_BRAVE_PLAYER_IMPL" ]
+
+  public_deps = [ "//brave/components/brave_player/buildflags" ]
+
+  deps = [ "//base" ]
+}

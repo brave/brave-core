@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brave Player</title>
+<link rel="stylesheet" href="chrome://resources/brave/fonts/poppins.css">
+<link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
+<script src="/player.bundle.js"></script>
+<style>
+  #root { 
+    position: fixed;
+    width: 100%;
+    height: 100%; 
+  }
+
+  svg {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    filter: blur(150px);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--leo-color-primitive-primary-100);
+  }
+</style>
+</head>
+<body>
+  <svg fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g filter="url(#filter0_f_680_2398)">
+    <ellipse cx="365.806" cy="596.15" rx="365.806" ry="596.15" transform="matrix(0.281211 0.959646 -0.983603 0.180348 1014.52 -163.521)" fill="#2D2307">
+    </g>
+    <defs>
+    <filter id="filter0_f_680_2398" x="-364.419" y="-372.2" width="1790.86" height="1334.47" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+    <feGaussianBlur stdDeviation="150" result="effect1_foregroundBlur_680_2398"></feGaussianBlur>
+    </filter>
+    </defs>
+    <g filter="url(#filter0_f_680_2399)">
+    <ellipse cx="640.092" cy="789.494" rx="640.092" ry="789.494" transform="matrix(0.281211 0.959646 -0.983603 0.180348 1054.75 174.859)" fill="#5E0E36">
+    </g>
+    <defs>
+    <filter id="filter0_f_680_2399" x="-639.107" y="0.816284" width="2194.63" height="1861.38" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+    <feGaussianBlur stdDeviation="150" result="effect1_foregroundBlur_680_2399"></feGaussianBlur>
+    </filter>
+    </defs>
+    <g filter="url(#filter0_f_680_2400)">
+    <ellipse cx="732.504" cy="377.457" rx="732.504" ry="377.457" transform="matrix(0.281211 0.959646 -0.983603 0.180348 170.312 -419.238)" fill="#460A10">
+    </g>
+    <defs>
+    <filter id="filter0_f_680_2400" x="-719.628" y="-654.503" width="1449.32" height="2012.57" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+    <feGaussianBlur stdDeviation="150" result="effect1_foregroundBlur_680_2400"></feGaussianBlur>
+    </filter>
+    </defs>
+  </svg>
+
+  <div id="root"></div>
+</body>
+</html>
