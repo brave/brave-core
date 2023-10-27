@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/sync/bookmark_sync_service_factory.h"
+#include "chrome/browser/sync/local_or_syncable_bookmark_sync_service_factory.h"
 #include "build/build_config.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -16,7 +16,7 @@
   DependsOn(BookmarkPrefsServiceFactory::GetInstance()); \
   DependsOn
 #endif
-#include "src/chrome/browser/sync/bookmark_sync_service_factory.cc"
+#include "src/chrome/browser/sync/local_or_syncable_bookmark_sync_service_factory.cc"
 #if !BUILDFLAG(IS_ANDROID)
 #undef DependsOn
 #endif
