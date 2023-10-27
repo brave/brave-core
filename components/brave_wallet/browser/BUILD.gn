@@ -303,6 +303,7 @@ if (!is_ios) {
       "//base",
       "//brave/components/brave_wallet/common:mojom",
       "//components/permissions:permissions_common",
+      "//components/update_client",
       "//third_party/blink/public/common",
       "//third_party/re2",
       "//url",

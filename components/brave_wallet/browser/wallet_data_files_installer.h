@@ -12,16 +12,15 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/no_destructor.h"
+#include "base/scoped_observation.h"
 #include "base/version.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer_delegate.h"
+#include "components/component_updater/component_updater_service.h"
+#include "components/update_client/update_client.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class FilePath;
-}
-
-namespace component_updater {
-class ComponentUpdateService;
 }
 
 class PrefService;
@@ -31,8 +30,8 @@ namespace brave_wallet {
 absl::optional<base::Version> GetLastInstalledWalletVersion();
 void SetLastInstalledWalletVersionForTest(const base::Version& version);
 
-// TODO(jocelyn): observe for component events to clear callback when fail
-class WalletDataFilesInstaller {
+class WalletDataFilesInstaller
+    : public component_updater::ComponentUpdateService::Observer {
  public:
   WalletDataFilesInstaller(const WalletDataFilesInstaller&) = delete;
   WalletDataFilesInstaller& operator=(const WalletDataFilesInstaller&) = delete;
@@ -55,13 +54,21 @@ class WalletDataFilesInstaller {
 
   void OnComponentReady(const base::FilePath& path);
 
+  // component_updater::ComponentUpdateService::Observer:
+  void OnEvent(update_client::UpdateClient::Observer::Events event,
+               const std::string& id) override;
+
  private:
   friend base::NoDestructor<WalletDataFilesInstaller>;
   WalletDataFilesInstaller();
-  virtual ~WalletDataFilesInstaller();
+  ~WalletDataFilesInstaller() override;
 
   void RegisterWalletDataFilesComponentInternal(
       component_updater::ComponentUpdateService* cus);
+
+  base::ScopedObservation<component_updater::ComponentUpdateService,
+                          component_updater::ComponentUpdateService::Observer>
+      component_updater_observation_{this};
 
   std::unique_ptr<WalletDataFilesInstallerDelegate> delegate_;
   bool registered_ = false;

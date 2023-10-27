@@ -162,7 +162,11 @@ WalletDataFilesInstaller& WalletDataFilesInstaller::GetInstance() {
 void WalletDataFilesInstaller::SetDelegate(
     std::unique_ptr<WalletDataFilesInstallerDelegate> delegate) {
   CHECK(!delegate_);
+
   delegate_ = std::move(delegate);
+  if (auto* cus = delegate_->GetComponentUpdater()) {
+    component_updater_observation_.Observe(cus);
+  }
 }
 
 void WalletDataFilesInstaller::RegisterWalletDataFilesComponentInternal(
@@ -215,6 +219,21 @@ void WalletDataFilesInstaller::OnComponentReady(const base::FilePath& path) {
   auto callback =
       install_callback_ ? std::move(install_callback_) : base::DoNothing();
   BlockchainRegistry::GetInstance()->ParseLists(path, std::move(callback));
+}
+
+void WalletDataFilesInstaller::OnEvent(
+    update_client::UpdateClient::Observer::Events event,
+    const std::string& id) {
+  if (id != kComponentId) {
+    return;
+  }
+
+  if (event ==
+      update_client::UpdateClient::Observer::Events::COMPONENT_UPDATE_ERROR) {
+    if (install_callback_) {
+      std::move(install_callback_).Run();
+    }
+  }
 }
 
 }  // namespace brave_wallet
