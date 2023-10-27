@@ -124,6 +124,8 @@
 
     <!-- Incognito mode colors -->
     <color name="ntp_bg_incognito">@color/incognito_modern_primary_color</color>
+    <color name="brave_private_tabs_bg_color">#13052A</color>
+    <color name="brave_private_reauth_unlock_button_bg_color">#4B415D</color>
 
     <!-- Incognito background and branding colors -->
     <color name="incognito_modern_primary_color">#210950</color>
