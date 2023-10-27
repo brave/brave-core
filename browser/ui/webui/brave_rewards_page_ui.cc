@@ -281,10 +281,10 @@ class RewardsDOMHandler
           notifications_list) override;
 
   // bat_ads::mojom::BatAdsObserver implementation
-  void OnBraveRewardsDidChange() override;
+  void OnAdRewardsDidChange() override;
   void OnBrowserUpgradeRequiredToServeAds() override;
   void OnIneligibleRewardsWalletToServeAds() override;
-  void OnRemindUser(brave_ads::mojom::ReminderType type) override;
+  void OnRemindUser(brave_ads::mojom::ReminderType type) override {}
 
   void InitPrefChangeRegistrar();
   void OnPrefChanged(const std::string& key);
@@ -635,8 +635,10 @@ void RewardsDOMHandler::OnJavascriptAllowed() {
   }
 
   bat_ads_observer_receiver_.reset();
-  ads_service_->AddBatAdsObserver(
-      bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
+  if (ads_service_) {
+    ads_service_->AddBatAdsObserver(
+        bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
+  }
 }
 
 void RewardsDOMHandler::OnJavascriptDisallowed() {
@@ -1539,7 +1541,7 @@ void RewardsDOMHandler::OnStatementChanged(
   }
 }
 
-void RewardsDOMHandler::OnBraveRewardsDidChange() {
+void RewardsDOMHandler::OnAdRewardsDidChange() {
   GetStatementOfAccounts();
 }
 
@@ -1551,11 +1553,6 @@ void RewardsDOMHandler::OnBrowserUpgradeRequiredToServeAds() {
 void RewardsDOMHandler::OnIneligibleRewardsWalletToServeAds() {
   // TODO(https://github.com/brave/brave-browser/issues/32201): Add isEligible
   // UI.
-}
-
-void RewardsDOMHandler::OnRemindUser(
-    const brave_ads::mojom::ReminderType type) {
-  // Intentionally empty.
 }
 
 void RewardsDOMHandler::OnRecurringTipSaved(

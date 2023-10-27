@@ -373,9 +373,9 @@ class AdsServiceImpl : public AdsService,
            const std::string& message) override;
 
   // bat_ads::mojom::BatAdsObserver:
-  void OnBraveRewardsDidChange() override;
-  void OnBrowserUpgradeRequiredToServeAds() override;
-  void OnIneligibleRewardsWalletToServeAds() override;
+  void OnAdRewardsDidChange() override {}
+  void OnBrowserUpgradeRequiredToServeAds() override {}
+  void OnIneligibleRewardsWalletToServeAds() override {}
   void OnRemindUser(mojom::ReminderType type) override;
 
   // BackgroundHelper::Observer:

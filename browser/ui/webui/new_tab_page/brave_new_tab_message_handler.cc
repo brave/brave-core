@@ -313,8 +313,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
                           base::Unretained(this)));
 
   bat_ads_observer_receiver_.reset();
-  ads_service_->AddBatAdsObserver(
-      bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
+  if (ads_service_) {
+    ads_service_->AddBatAdsObserver(
+        bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
+  }
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
@@ -562,16 +564,7 @@ base::Value::Dict BraveNewTabMessageHandler::GetAdsDataDictionary() const {
   return ads_data;
 }
 
-void BraveNewTabMessageHandler::OnBraveRewardsDidChange() {}
-
 void BraveNewTabMessageHandler::OnBrowserUpgradeRequiredToServeAds() {
   browser_upgrade_required_to_serve_ads_ = true;
   FireWebUIListener("new-tab-ads-data-updated", GetAdsDataDictionary());
-}
-
-void BraveNewTabMessageHandler::OnIneligibleRewardsWalletToServeAds() {}
-
-void BraveNewTabMessageHandler::OnRemindUser(
-    const brave_ads::mojom::ReminderType type) {
-  // Intentionally empty.
 }

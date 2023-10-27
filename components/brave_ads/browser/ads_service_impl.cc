@@ -1812,6 +1812,10 @@ void AdsServiceImpl::Log(const std::string& file,
   }
 }
 
+void AdsServiceImpl::OnRemindUser(const brave_ads::mojom::ReminderType type) {
+  ShowReminder(type);
+}
+
 void AdsServiceImpl::OnBrowserDidEnterForeground() {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyBrowserDidEnterForeground();
@@ -1859,16 +1863,6 @@ void AdsServiceImpl::OnCompleteReset(const bool success) {
   if (success) {
     ShutdownAndResetState();
   }
-}
-
-void AdsServiceImpl::OnBraveRewardsDidChange() {}
-
-void AdsServiceImpl::OnBrowserUpgradeRequiredToServeAds() {}
-
-void AdsServiceImpl::OnIneligibleRewardsWalletToServeAds() {}
-
-void AdsServiceImpl::OnRemindUser(const brave_ads::mojom::ReminderType type) {
-  ShowReminder(type);
 }
 
 }  // namespace brave_ads

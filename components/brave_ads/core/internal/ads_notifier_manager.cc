@@ -26,9 +26,9 @@ void AdsNotifierManager::AddObserver(
   observers_.push_back(std::move(observer));
 }
 
-void AdsNotifierManager::NotifyBraveRewardsDidChange() const {
+void AdsNotifierManager::NotifyAdRewardsDidChange() const {
   for (const auto& observer : observers_) {
-    observer->OnBraveRewardsDidChange();
+    observer->OnAdRewardsDidChange();
   }
 }
 

@@ -72,10 +72,10 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   base::Value::Dict GetAdsDataDictionary() const;
 
   // bat_ads::mojom::BatAdsObserver:
-  void OnBraveRewardsDidChange() override;
+  void OnAdRewardsDidChange() override {}
   void OnBrowserUpgradeRequiredToServeAds() override;
-  void OnIneligibleRewardsWalletToServeAds() override;
-  void OnRemindUser(brave_ads::mojom::ReminderType type) override;
+  void OnIneligibleRewardsWalletToServeAds() override {}
+  void OnRemindUser(brave_ads::mojom::ReminderType type) override {}
 
   PrefChangeRegistrar pref_change_registrar_;
   // Weak pointer.

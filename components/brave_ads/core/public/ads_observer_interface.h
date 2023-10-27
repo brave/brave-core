@@ -14,8 +14,8 @@ class AdsObserverInterface {
  public:
   virtual ~AdsObserverInterface() = default;
 
-  // Invoked when Brave Rewards have changed.
-  virtual void OnBraveRewardsDidChange() = 0;
+  // Invoked when ad rewards have changed.
+  virtual void OnAdRewardsDidChange() = 0;
 
   // Invoked when a browser upgrade is required to serve ads.
   virtual void OnBrowserUpgradeRequiredToServeAds() = 0;
