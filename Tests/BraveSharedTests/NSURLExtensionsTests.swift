@@ -727,31 +727,6 @@ class NSURLExtensionsTests: XCTestCase {
       XCTAssertNil($0.bookmarkletCodeComponent)
     }
   }
-
-  func testTypedDisplayString() {
-    func checkDisplayURLString(testURL: URL?, displayString: String) {
-      if let actual = testURL?.typedDisplayString {
-        XCTAssertEqual(actual, displayString)
-      } else {
-        XCTFail("Actual url is nil")
-      }
-    }
-    
-    let urlMap = [
-      URL(string: "https://www.youtube.com"): "www.youtube.com",
-      URL(string: "http://google.com"): "google.com",
-      URL(string: "www.brave.com"): "www.brave.com",
-      URL(string: "http://brave.com/foo/"): "brave.com/foo",
-      URL(string: "http://brave.com/foo"): "brave.com/foo",
-      URL(string: "blob://http://brave.com/foo"): "http://brave.com/foo",
-      URL(string: "file:///Users/brave/documents/foo.txt"): "/Users/brave/documents/foo.txt",
-      URL(string: "file://http://brave.com/foo.txt"): "http://brave.com/foo.txt"
-    ]
-    
-    urlMap.forEach {
-      checkDisplayURLString(testURL: $0, displayString: $1)
-    }
-  }
   
   func testDisplayString() {
     func checkDisplayURLString(testURL: URL?, displayString: String) {

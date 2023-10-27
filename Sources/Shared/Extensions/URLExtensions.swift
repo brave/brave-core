@@ -129,19 +129,6 @@ extension URL {
     }
   }
 
-  /// String suitable to detect the URL navigation type
-  /// This will return URL as a string without the scheme or ending "/" suffix limitation
-  /// This will be used as a key while storing navigation type of url before it is added to history
-  public var typedDisplayString: String {
-    var urlString = self.schemelessAbsoluteString
-
-    if urlString.hasSuffix("/") {
-      urlString.removeLast()
-    }
-
-    return urlString
-  }
-
   public var displayURL: URL? {
     if self.absoluteString.starts(with: "blob:") {
       return self.havingRemovedAuthorisationComponents()

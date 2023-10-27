@@ -9,7 +9,7 @@ import os.log
 import BraveWallet
 
 protocol Web3NameServiceScriptHandlerDelegate: AnyObject {
-  func web3NameServiceDecisionHandler(_ proceed: Bool, web3Service: Web3Service, originalURL: URL, visitType: VisitType)
+  func web3NameServiceDecisionHandler(_ proceed: Bool, web3Service: Web3Service, originalURL: URL)
 }
 
 class Web3NameServiceScriptHandler: TabContentScript {
@@ -26,7 +26,6 @@ class Web3NameServiceScriptHandler: TabContentScript {
   
   weak var delegate: Web3NameServiceScriptHandlerDelegate?
   var originalURL: URL?
-  var visitType: VisitType = .unknown
   fileprivate weak var tab: Tab?
   
   required init(tab: Tab) {
@@ -49,11 +48,11 @@ class Web3NameServiceScriptHandler: TabContentScript {
     if params[ParamKey.buttonType.rawValue] == ParamValue.disable.rawValue,
        let serviceId = params[ParamKey.serviceId.rawValue],
        let service = Web3Service(rawValue: serviceId) {
-      delegate?.web3NameServiceDecisionHandler(false, web3Service: service, originalURL: originalURL, visitType: visitType)
+      delegate?.web3NameServiceDecisionHandler(false, web3Service: service, originalURL: originalURL)
     } else if params[ParamKey.buttonType.rawValue] == ParamValue.proceed.rawValue,
               let serviceId = params[ParamKey.serviceId.rawValue],
               let service = Web3Service(rawValue: serviceId) {
-      delegate?.web3NameServiceDecisionHandler(true, web3Service: service, originalURL: originalURL, visitType: visitType)
+      delegate?.web3NameServiceDecisionHandler(true, web3Service: service, originalURL: originalURL)
     } else {
       assertionFailure("Invalid message: \(message.body)")
     }

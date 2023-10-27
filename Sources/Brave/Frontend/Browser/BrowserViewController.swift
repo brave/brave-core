@@ -193,7 +193,6 @@ public class BrowserViewController: UIViewController {
   var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)?  // A boolean to determine If AddToListActivity should be added
   var openInPlaylistActivityItem: (enabled: Bool, item: PlaylistInfo?)?  // A boolean to determine if OpenInPlaylistActivity should be shown
 
-  var typedNavigation = [URL: VisitType]()
   var navigationToolbar: ToolbarProtocol {
     return toolbar ?? topToolbar
   }
@@ -262,8 +261,6 @@ public class BrowserViewController: UIViewController {
 
   /// The currently open WalletStore
   weak var walletStore: WalletStore?
-  
-  var lastEnteredURLVisitType: VisitType = .unknown
   
   var processAddressBarTask: Task<(), Never>?
   var topToolbarDidPressReloadTask: Task<(), Never>?
@@ -1579,7 +1576,7 @@ public class BrowserViewController: UIViewController {
     UIApplication.shared.shortcutItems = Preferences.Privacy.privateBrowsingOnly.value ? [privateTabItem, scanQRCodeItem] : [newTabItem, privateTabItem, scanQRCodeItem]
   }
 
-  func finishEditingAndSubmit(_ url: URL, visitType: VisitType) {
+  func finishEditingAndSubmit(_ url: URL) {
     if url.isBookmarklet {
       topToolbar.leaveOverlayMode()
 
@@ -1591,7 +1588,7 @@ public class BrowserViewController: UIViewController {
       // Disable any sort of privileged execution contexts
       // IE: The user must explicitly tap a bookmark they have saved.
       // Block all other contexts such as redirects, downloads, embed, linked, etc..
-      if visitType == .bookmark, let webView = tab.webView, let code = url.bookmarkletCodeComponent {
+      if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
         webView.evaluateSafeJavaScript(
           functionName: code,
           contentWorld: .bookmarkletSandbox,
@@ -1612,13 +1609,11 @@ public class BrowserViewController: UIViewController {
 
       tab.loadRequest(URLRequest(url: url))
 
-      // Recording the last Visit Type for the url submitted
-      lastEnteredURLVisitType = visitType
       updateWebViewPageZoom(tab: tab)
     }
   }
   
-  func showIPFSInterstitialPage(originalURL: URL, visitType: VisitType) {
+  func showIPFSInterstitialPage(originalURL: URL) {
     topToolbar.leaveOverlayMode()
 
     guard let tab = tabManager.selectedTab, let encodedURL = originalURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics), let internalUrl = URL(string: "\(InternalURL.baseUrl)/\(IPFSSchemeHandler.path)?url=\(encodedURL)") else {
@@ -1626,12 +1621,11 @@ public class BrowserViewController: UIViewController {
     }
     let scriptHandler = tab.getContentScript(name: Web3IPFSScriptHandler.scriptName) as? Web3IPFSScriptHandler
     scriptHandler?.originalURL = originalURL
-    scriptHandler?.visitType = visitType
 
     tab.webView?.load(PrivilegedRequest(url: internalUrl) as URLRequest)
   }
 
-  func showWeb3ServiceInterstitialPage(service: Web3Service, originalURL: URL, visitType: VisitType = .unknown) {
+  func showWeb3ServiceInterstitialPage(service: Web3Service, originalURL: URL) {
     topToolbar.leaveOverlayMode()
 
     guard let tab = tabManager.selectedTab,
@@ -1641,7 +1635,6 @@ public class BrowserViewController: UIViewController {
     }
     let scriptHandler = tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName) as? Web3NameServiceScriptHandler
     scriptHandler?.originalURL = originalURL
-    scriptHandler?.visitType = visitType
     
     tab.webView?.load(PrivilegedRequest(url: internalUrl) as URLRequest)
   }
@@ -1960,7 +1953,7 @@ public class BrowserViewController: UIViewController {
     if let url = url {
       // If only empty tab present, the url will open in existing tab
       if tabManager.isBrowserEmptyForCurrentMode {
-        finishEditingAndSubmit(url, visitType: .link)
+        finishEditingAndSubmit(url)
         return
       }
       request = isPrivileged ? PrivilegedRequest(url: url) as URLRequest : URLRequest(url: url)
@@ -2371,16 +2364,8 @@ public class BrowserViewController: UIViewController {
 
         // Only add history of a url which is not a localhost url
         if !url.isReaderModeURL {
-          // The visitType is checked If it is "typed" or not to determine the History object we are adding
-          // should be synced or not. This limitation exists on browser side so we are aligning with this
           if !tab.isPrivate {
-            if let visitType = typedNavigation.first(where: {
-              $0.key.typedDisplayString == url.typedDisplayString
-            })?.value, visitType == .typed {
-              braveCore.historyAPI.add(url: url, title: tab.title, dateAdded: Date())
-            } else {
-              braveCore.historyAPI.add(url: url, title: tab.title, dateAdded: Date(), isURLTyped: false)
-            }
+            braveCore.historyAPI.add(url: url, title: tab.title, dateAdded: Date())
           }
           
           // Saving Tab.
@@ -2823,7 +2808,7 @@ extension BrowserViewController: TabDelegate {
   }
   
   func reloadIPFSSchemeUrl(_ url: URL) {
-    handleIPFSSchemeURL(url, visitType: .unknown)
+    handleIPFSSchemeURL(url)
   }
 
   func didReloadTab(_ tab: Tab) {
@@ -2860,11 +2845,11 @@ extension BrowserViewController: TabDelegate {
 extension BrowserViewController: SearchViewControllerDelegate {
   func searchViewController(_ searchViewController: SearchViewController, didSubmit query: String, braveSearchPromotion: Bool) {
     topToolbar.leaveOverlayMode()
-    processAddressBar(text: query, visitType: .typed, isBraveSearchPromotion: braveSearchPromotion)
+    processAddressBar(text: query, isBraveSearchPromotion: braveSearchPromotion)
   }
 
   func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL) {
-    finishEditingAndSubmit(url, visitType: .typed)
+    finishEditingAndSubmit(url)
   }
 
   func searchViewController(_ searchViewController: SearchViewController, didSelectOpenTab tabInfo: (id: UUID?, url: URL)) {
@@ -2958,15 +2943,15 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
   func openInNewTab(_ url: URL, isPrivate: Bool) {
     topToolbar.leaveOverlayMode()
       
-    select(url, visitType: .unknown, action: .openInNewTab(isPrivate: isPrivate))
+    select(url, action: .openInNewTab(isPrivate: isPrivate))
   }
 
   func copy(_ url: URL) {
-    select(url, visitType: .unknown, action: .copy)
+    select(url, action: .copy)
   }
 
   func share(_ url: URL) {
-    select(url, visitType: .unknown, action: .share)
+    select(url, action: .share)
   }
 
   func batchOpen(_ urls: [URL]) {
@@ -2974,14 +2959,14 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
     self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
   }
 
-  func select(url: URL, visitType: VisitType) {
-    select(url, visitType: visitType, action: .openInCurrentTab)
+  func select(url: URL) {
+    select(url, action: .openInCurrentTab)
   }
 
-  private func select(_ url: URL, visitType: VisitType, action: ToolbarURLAction) {
+  private func select(_ url: URL, action: ToolbarURLAction) {
     switch action {
     case .openInCurrentTab:
-      finishEditingAndSubmit(url, visitType: visitType)
+      finishEditingAndSubmit(url)
       updateURLBarWalletButton()
     case .openInNewTab(let isPrivate):
       let tab = tabManager.addTab(PrivilegedRequest(url: url) as URLRequest, afterTab: tabManager.selectedTab, isPrivate: isPrivate)
@@ -3034,7 +3019,7 @@ extension BrowserViewController: NewTabPageDelegate {
     if inNewTab {
       tabManager.addTabAndSelect(isPrivate: isPrivate)
     }
-    processAddressBar(text: input, visitType: .bookmark)
+    processAddressBar(text: input)
   }
 
   func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {

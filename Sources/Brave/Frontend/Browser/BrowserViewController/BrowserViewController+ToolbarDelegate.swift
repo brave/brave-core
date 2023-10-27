@@ -123,7 +123,7 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
     if let url = topToolbar.currentURL {
       if url.isIPFSScheme {
-        if !handleIPFSSchemeURL(url, visitType: .unknown) {
+        if !handleIPFSSchemeURL(url) {
           tabManager.selectedTab?.reload()
         }
       } else if let decentralizedDNSHelper = decentralizedDNSHelperFor(url: topToolbar.currentURL) {
@@ -138,7 +138,7 @@ extension BrowserViewController: TopToolbarDelegate {
             showWeb3ServiceInterstitialPage(service: service, originalURL: url)
           case let .load(resolvedURL):
             if resolvedURL.isIPFSScheme {
-              handleIPFSSchemeURL(resolvedURL, visitType: .unknown)
+              handleIPFSSchemeURL(resolvedURL)
             } else {
               tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedURL))
             }
@@ -279,16 +279,13 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbar(_ topToolbar: TopToolbarView, didSubmitText text: String) {
-    // TopToolBar Submit Text is Typed URL Visit Type
-    // This visit type will be used while adding History
-    // And it will determine either to sync the data or not
-    processAddressBar(text: text, visitType: .typed)
+    processAddressBar(text: text)
   }
 
-  func processAddressBar(text: String, visitType: VisitType, isBraveSearchPromotion: Bool = false) {
+  func processAddressBar(text: String, isBraveSearchPromotion: Bool = false) {
     processAddressBarTask?.cancel()
     processAddressBarTask = Task { @MainActor in
-      if !isBraveSearchPromotion, await submitValidURL(text, visitType: visitType) {
+      if !isBraveSearchPromotion, await submitValidURL(text) {
         return
       } else {
         // We couldn't build a URL, so pass it on to the search engine.
@@ -302,7 +299,7 @@ extension BrowserViewController: TopToolbarDelegate {
   }
   
   @discardableResult
-  func handleIPFSSchemeURL(_ url: URL, visitType: VisitType) -> Bool {
+  func handleIPFSSchemeURL(_ url: URL) -> Bool {
     guard !privateBrowsingManager.isPrivateBrowsing else {
       topToolbar.leaveOverlayMode()
       if let errorPageHelper = tabManager.selectedTab?.getContentScript(name: ErrorPageHelper.scriptName) as? ErrorPageHelper, let webView = tabManager.selectedTab?.webView {
@@ -317,11 +314,11 @@ extension BrowserViewController: TopToolbarDelegate {
     
     switch ipfsPref {
     case .ask:
-      showIPFSInterstitialPage(originalURL: url, visitType: visitType)
+      showIPFSInterstitialPage(originalURL: url)
       return true
     case .enabled:
       if let resolvedUrl = braveCore.ipfsAPI.resolveGatewayUrl(for: url) {
-        finishEditingAndSubmit(resolvedUrl, visitType: visitType)
+        finishEditingAndSubmit(resolvedUrl)
         return true
       }
     case .disabled:
@@ -335,9 +332,9 @@ extension BrowserViewController: TopToolbarDelegate {
     return false
   }
   
-  @MainActor func submitValidURL(_ text: String, visitType: VisitType) async -> Bool {
+  @MainActor func submitValidURL(_ text: String) async -> Bool {
     if let url = URL(string: text), url.isIPFSScheme {
-      return handleIPFSSchemeURL(url, visitType: visitType)
+      return handleIPFSSchemeURL(url)
     } else if let fixupURL = URIFixup.getURL(text) {
       // Do not allow users to enter URLs with the following schemes.
       // Instead, submit them to the search engine like Chrome-iOS does.
@@ -352,13 +349,13 @@ extension BrowserViewController: TopToolbarDelegate {
           guard !Task.isCancelled else { return true } // user pressed stop, or typed new url
           switch result {
           case let .loadInterstitial(service):
-            showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL, visitType: visitType)
+            showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
             return true
           case let .load(resolvedURL):
             if resolvedURL.isIPFSScheme {
-              return handleIPFSSchemeURL(resolvedURL, visitType: visitType)
+              return handleIPFSSchemeURL(resolvedURL)
             } else {
-              finishEditingAndSubmit(resolvedURL, visitType: visitType)
+              finishEditingAndSubmit(resolvedURL)
               return true
             }
           case .none:
@@ -367,7 +364,7 @@ extension BrowserViewController: TopToolbarDelegate {
         }
         
         // The user entered a URL, so use it.
-        finishEditingAndSubmit(fixupURL, visitType: visitType)
+        finishEditingAndSubmit(fixupURL)
         return true
       }
     }
@@ -390,7 +387,7 @@ extension BrowserViewController: TopToolbarDelegate {
     
     if let searchURL = engine.searchURLForQuery(text, isBraveSearchPromotion: isBraveSearchPromotion) {
       // We couldn't find a matching search keyword, so do a search query.
-      finishEditingAndSubmit(searchURL, visitType: .typed)
+      finishEditingAndSubmit(searchURL)
     } else {
       // We still don't have a valid URL, so something is broken. Give up.
       print("Error handling URL entry: \"\(text)\".")
@@ -723,7 +720,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
           let submitSearch = { [weak self] (text: String) in
             if let fixupURL = URIFixup.getURL(text) {
-              self?.finishEditingAndSubmit(fixupURL, visitType: .unknown)
+              self?.finishEditingAndSubmit(fixupURL)
               return
             }
 

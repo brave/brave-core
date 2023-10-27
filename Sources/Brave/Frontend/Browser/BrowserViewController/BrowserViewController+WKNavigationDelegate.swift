@@ -204,7 +204,7 @@ extension BrowserViewController: WKNavigationDelegate {
     // handles IPFS URL schemes
     if requestURL.isIPFSScheme {
       if navigationAction.targetFrame?.isMainFrame == true {
-        handleIPFSSchemeURL(requestURL, visitType: .link)
+        handleIPFSSchemeURL(requestURL)
       }
       return (.cancel, preferences)
     }
@@ -220,11 +220,11 @@ extension BrowserViewController: WKNavigationDelegate {
       }
       switch result {
       case let .loadInterstitial(service):
-        showWeb3ServiceInterstitialPage(service: service, originalURL: requestURL, visitType: .link)
+        showWeb3ServiceInterstitialPage(service: service, originalURL: requestURL)
         return (.cancel, preferences)
       case let .load(resolvedURL):
         if resolvedURL.isIPFSScheme {
-          handleIPFSSchemeURL(resolvedURL, visitType: .link)
+          handleIPFSSchemeURL(resolvedURL)
           return (.cancel, preferences)
         } else { // non-ipfs, treat as normal url / link tapped
           requestURL = resolvedURL
@@ -513,13 +513,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
       tab.mimeType = response.mimeType
     }
-    
-    // Record the navigation visit type for the URL after navigation actions
-    // this is done in decidePolicyFor to handle all the cases like redirects etc.
-    if let url = responseURL, let tab = tab, !url.isReaderModeURL, !url.isFileURL, url.isWebPage(), !tab.isPrivate {
-      recordNavigationInTab(url, visitType: lastEnteredURLVisitType)
-    }
-    
+ 
     // If none of our helpers are responsible for handling this response,
     // just let the webview handle it as normal.
     return .allow

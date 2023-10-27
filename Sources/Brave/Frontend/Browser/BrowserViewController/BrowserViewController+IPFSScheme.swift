@@ -10,12 +10,12 @@ import BraveCore
 import Data
 
 extension BrowserViewController: Web3IPFSScriptHandlerDelegate {
-  func web3IPFSDecisionHandler(_ proceed: Bool, originalURL: URL, visitType: VisitType) {
+  func web3IPFSDecisionHandler(_ proceed: Bool, originalURL: URL) {
     if proceed {
       if let resolvedUrl = braveCore.ipfsAPI.resolveGatewayUrl(for: originalURL) {
-        finishEditingAndSubmit(resolvedUrl, visitType: visitType)
+        finishEditingAndSubmit(resolvedUrl)
       } else {
-        finishEditingAndSubmit(originalURL, visitType: visitType)
+        finishEditingAndSubmit(originalURL)
       }
       Preferences.Wallet.resolveIPFSResources.value = Preferences.Wallet.Web3IPFSOption.enabled.rawValue
     } else {

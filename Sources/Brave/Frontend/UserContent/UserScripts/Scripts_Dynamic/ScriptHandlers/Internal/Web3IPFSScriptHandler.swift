@@ -9,13 +9,12 @@ import WebKit
 import os.log
 
 protocol Web3IPFSScriptHandlerDelegate: AnyObject {
-  func web3IPFSDecisionHandler(_ proceed: Bool, originalURL: URL, visitType: VisitType)
+  func web3IPFSDecisionHandler(_ proceed: Bool, originalURL: URL)
 }
 
 class Web3IPFSScriptHandler: TabContentScript {
   weak var delegate: Web3IPFSScriptHandlerDelegate?
   var originalURL: URL?
-  var visitType: VisitType = .unknown
   fileprivate weak var tab: Tab?
   
   required init(tab: Tab) {
@@ -36,9 +35,9 @@ class Web3IPFSScriptHandler: TabContentScript {
     }
     
     if params["type"] == "IPFSDisable" {
-      delegate?.web3IPFSDecisionHandler(false, originalURL: originalURL, visitType: visitType)
+      delegate?.web3IPFSDecisionHandler(false, originalURL: originalURL)
     } else if params["type"] == "IPFSProceed" {
-      delegate?.web3IPFSDecisionHandler(true, originalURL: originalURL, visitType: visitType)
+      delegate?.web3IPFSDecisionHandler(true, originalURL: originalURL)
     } else {
       assertionFailure("Invalid message: \(message.body)")
     }

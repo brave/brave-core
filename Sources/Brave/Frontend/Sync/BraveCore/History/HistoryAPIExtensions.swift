@@ -15,9 +15,9 @@ extension BraveHistoryAPI {
 
   // MARK: Internal
 
-  func add(url: URL, title: String, dateAdded: Date, isURLTyped: Bool = true) {
+  func add(url: URL, title: String, dateAdded: Date) {
     let historyNode = HistoryNode(url: url, title: title, dateAdded: dateAdded)
-    addHistory(historyNode, isURLTyped: isURLTyped)
+    addHistory(historyNode)
   }
 
   func frc() -> HistoryV2FetchResultsController? {

@@ -108,7 +108,7 @@ extension BrowserViewController {
           guard let url = URL(string: "https://talk.brave.com/") else { return }
 
           self.popToBVC()
-          self.finishEditingAndSubmit(url, visitType: .typed)
+          self.finishEditingAndSubmit(url)
         }
       }
       

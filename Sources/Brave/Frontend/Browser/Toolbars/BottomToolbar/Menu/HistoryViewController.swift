@@ -188,8 +188,11 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       UIAlertAction(
         title: Strings.History.historyClearActionTitle, style: .destructive,
         handler: { [weak self] _ in
-          guard let self = self else { return }
-          
+          guard let self = self, let allHistoryItems = historyFRC?.fetchedObjects  else {
+            return
+          }
+
+          // Deleting Local History
           self.historyAPI.deleteAll {
             // Clearing Tab History with entire history entry
             self.tabManager.clearTabHistory() {
@@ -198,6 +201,11 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
             
             // Clearing History should clear Recently Closed
             RecentlyClosed.removeAll()
+          }
+          
+          // Asking Sync Engine To Remove Visits
+          for historyItems in allHistoryItems {
+            self.historyAPI.removeHistory(historyItems)
           }
         }))
     alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
@@ -266,7 +274,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       }
       
       dismiss(animated: true) {
-        self.toolbarUrlActionsDelegate?.select(url: url, visitType: .typed)
+        self.toolbarUrlActionsDelegate?.select(url: url)
       }
     }
 

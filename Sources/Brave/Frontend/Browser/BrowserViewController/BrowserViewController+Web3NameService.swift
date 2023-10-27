@@ -23,11 +23,11 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
     )
   }
 
-  func web3NameServiceDecisionHandler(_ proceed: Bool, web3Service: Web3Service, originalURL: URL, visitType: VisitType) {
+  func web3NameServiceDecisionHandler(_ proceed: Bool, web3Service: Web3Service, originalURL: URL) {
     let isPrivateMode = privateBrowsingManager.isPrivateBrowsing
     guard let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode),
           let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: originalURL) else {
-      finishEditingAndSubmit(originalURL, visitType: visitType)
+      finishEditingAndSubmit(originalURL)
       return
     }
     Task { @MainActor in
@@ -45,16 +45,16 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
       switch result {
       case let .load(resolvedURL):
         if resolvedURL.isIPFSScheme {
-          handleIPFSSchemeURL(resolvedURL, visitType: visitType)
+          handleIPFSSchemeURL(resolvedURL)
         } else {
-          finishEditingAndSubmit(resolvedURL, visitType: visitType)
+          finishEditingAndSubmit(resolvedURL)
         }
       case let .loadInterstitial(service):
         // ENS interstitial -> ENS Offchain interstitial possible
-        showWeb3ServiceInterstitialPage(service: service, originalURL: originalURL, visitType: visitType)
+        showWeb3ServiceInterstitialPage(service: service, originalURL: originalURL)
       case .none:
         // failed to resolve domain or disabled
-        finishEditingAndSubmit(originalURL, visitType: visitType)
+        finishEditingAndSubmit(originalURL)
       }
     }
   }
