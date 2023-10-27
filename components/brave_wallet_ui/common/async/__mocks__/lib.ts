@@ -6,11 +6,10 @@
 import {
   mockBasicAttentionToken //
 } from '../../../stories/mock-data/mock-asset-options'
-import { BraveWallet, GetBlockchainTokenInfoReturnInfo, GetChecksumEthAddressReturnInfo, GetEthAddrReturnInfo } from '../../../constants/types'
+import { BraveWallet, GetBlockchainTokenInfoReturnInfo } from '../../../constants/types'
 import { HardwareWalletConnectOpts } from '../../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 let mockedAllowance = '1000000000000000000' // 1 unit
-let mockedIsSwapSupported = true
 
 export const getERC20Allowance = (
   _fromAddress: string,
@@ -22,52 +21,6 @@ export const getERC20Allowance = (
 
 export const setERC20Allowance = (newAllowance: string) => {
   mockedAllowance = newAllowance
-}
-
-export const getIsSwapSupported = (network: BraveWallet.NetworkInfo) => new Promise<boolean>((resolve) => {
-  resolve(mockedIsSwapSupported)
-})
-
-const mockENSValues = [
-  {
-    address: 'mockAddress2',
-    name: 'brave.eth'
-  },
-  {
-    address: 'mockAddress3',
-    name: 'bravey.eth'
-  }
-]
-
-const mockUDValues = [
-  {
-    address: 'mockAddress2',
-    name: 'brave.crypto'
-  },
-  {
-    address: 'mockAddress3',
-    name: 'bravey.crypto'
-  }
-]
-
-export const findENSAddress = async (address: string) => {
-  const foundAddress = mockENSValues.find((value) => value.name === address)
-  if (foundAddress) {
-    return { address: foundAddress.address, error: 0, errorMessage: '' } as GetEthAddrReturnInfo
-  }
-  return { address: '', error: 1, errorMessage: '' } as GetEthAddrReturnInfo
-}
-
-export const findUnstoppableDomainAddress = async (address: string) => {
-  const foundAddress = mockUDValues.find((value) => value.name === address)
-  if (foundAddress) {
-    return { address: foundAddress.address, error: 0, errorMessage: '' } as GetEthAddrReturnInfo
-  }
-  return { address: '', error: 1, errorMessage: '' } as GetEthAddrReturnInfo
-}
-
-export const getChecksumEthAddress = async () => {
-  return {} as GetChecksumEthAddressReturnInfo
 }
 
 export const isStrongPassword = (value: string) => {

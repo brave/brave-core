@@ -108,39 +108,9 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
   })
 }
 
-export async function getChecksumEthAddress (value: string) {
-  const { keyringService } = getAPIProxy()
-  return (await keyringService.getChecksumEthAddress(value))
-}
-
-export async function isBase58EncodedSolanaPubkey (value: string) {
-  const { braveWalletService } = getAPIProxy()
-  return braveWalletService.isBase58EncodedSolanaPubkey(value)
-}
-
 export async function isStrongPassword (value: string) {
   const apiProxy = getAPIProxy()
   return (await apiProxy.keyringService.isStrongPassword(value)).result
-}
-
-export async function enableEnsOffchainLookup () {
-  const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.setEnsOffchainLookupResolveMethod(BraveWallet.ResolveMethod.kEnabled)
-}
-
-export async function findENSAddress (address: string) {
-  const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.ensGetEthAddr(address)
-}
-
-export async function findSNSAddress (address: string) {
-  const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.snsGetSolAddr(address)
-}
-
-export async function findUnstoppableDomainAddress (address: string, token: BraveWallet.BlockchainToken | null) {
-  const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.unstoppableDomainsGetWalletAddr(address, token)
 }
 
 export async function getBlockchainTokenInfo (contractAddress: string): Promise<GetBlockchainTokenInfoReturnInfo> {
@@ -172,18 +142,6 @@ export async function getSellAssetUrl (args: {
   }
 
   return url
-}
-
-export const getTokenList = async (
-  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-): Promise<{ tokens: BraveWallet.BlockchainToken[] }> => {
-  const { blockchainRegistry } = getAPIProxy()
-  return blockchainRegistry.getAllTokens(network.chainId, network.coin)
-}
-
-export async function getIsSwapSupported (network: BraveWallet.NetworkInfo): Promise<boolean> {
-  const { swapService } = getAPIProxy()
-  return (await swapService.isSwapSupported(network.chainId)).result
 }
 
 export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo) {
