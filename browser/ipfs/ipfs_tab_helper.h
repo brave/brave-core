@@ -63,6 +63,11 @@ class IPFSTabHelper : public content::WebContentsObserver,
       base::RepeatingCallback<void(const GURL&)> callback) {
     redirect_callback_for_testing_ = callback;
   }
+  void SetAutoRediretCallbackForTesting(
+      base::RepeatingCallback<content::NavigationHandle*(const GURL&)>
+          callback) {
+    auto_redirect_callback_for_testing_ = callback;
+  }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest, CanResolveURLTest);
@@ -113,14 +118,7 @@ class IPFSTabHelper : public content::WebContentsObserver,
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
                            DetectPageLoadingError_ShowInfobar);
   FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
-                           DetectPageLoadingError_Broken_Redirect_Chain);
-  FRIEND_TEST_ALL_PREFIXES(
-      IpfsTabHelperUnitTest,
-      DetectPageLoadingError_Broken_Redirect_Chain_Start_New);
-  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
-                           DetectPageLoadingError_IPFSCompanion_Enabled);
-  FRIEND_TEST_ALL_PREFIXES(IpfsTabHelperUnitTest,
-                           DetectPageLoadingError_NoRedirectAsNonIPFSLink);
+                           DetectPageLoadingError_NoInfobar_Redirect);
   friend class content::WebContentsUserData<IPFSTabHelper>;
   friend class BraveIPFSInfoBarDelegateObserverImpl;
   friend class BraveIPFSFallbackInfoBarDelegateObserverImpl;
@@ -173,6 +171,8 @@ class IPFSTabHelper : public content::WebContentsObserver,
   GURL ipfs_resolved_url_;
   GURL current_page_url_for_testing_;
   base::RepeatingCallback<void(const GURL&)> redirect_callback_for_testing_;
+  base::RepeatingCallback<content::NavigationHandle*(const GURL&)>
+      auto_redirect_callback_for_testing_;
   base::RepeatingCallback<void(const GURL&)>
       show_fallback_infobar_callback_for_testing_;
   std::unique_ptr<IPFSHostResolver> resolver_;

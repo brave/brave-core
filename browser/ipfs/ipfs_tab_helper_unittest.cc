@@ -89,22 +89,22 @@ class FakeTestWebContents : public content::TestWebContents {
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override {
     WebContentsImpl::DidFinishNavigation(navigation_handle);
-    if (!on_did_finish_navigation_completed.empty()) {
-      auto curr_callback = on_did_finish_navigation_completed.back();
-      on_did_finish_navigation_completed.pop_back();
+    if (!on_did_finish_navigation_completed_.empty()) {
+      auto curr_callback = on_did_finish_navigation_completed_.back();
+      on_did_finish_navigation_completed_.pop_back();
       curr_callback.Run(navigation_handle);
     }
   }
 
   void SetOnDidFinishNavigationCompleted(
       base::RepeatingCallback<void(content::NavigationHandle*)> callback) {
-    on_did_finish_navigation_completed.insert(
-        on_did_finish_navigation_completed.begin(), callback);
+    on_did_finish_navigation_completed_.insert(
+        on_did_finish_navigation_completed_.begin(), callback);
   }
 
  private:
   std::vector<base::RepeatingCallback<void(content::NavigationHandle*)>>
-      on_did_finish_navigation_completed;
+      on_did_finish_navigation_completed_;
 };
 
 class IpfsTabHelperUnitTest : public testing::Test {
@@ -127,7 +127,7 @@ class IpfsTabHelperUnitTest : public testing::Test {
         ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents_.get()));
 
     ipfs_tab_helper()->SetResolverForTesting(std::move(ipfs_host_resolver));
-    ipfs_tab_helper()->SetRediretCallbackForTesting(base::BindRepeating(
+    ipfs_tab_helper()->SetAutoRediretCallbackForTesting(base::BindRepeating(
         &IpfsTabHelperUnitTest::OnRedirect, base::Unretained(this)));
     SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
   }
@@ -173,7 +173,10 @@ class IpfsTabHelperUnitTest : public testing::Test {
   }
 
  private:
-  void OnRedirect(const GURL& gurl) { redirect_url_ = gurl; }
+  content::NavigationHandle* OnRedirect(const GURL& gurl) {
+    redirect_url_ = gurl;
+    return nullptr;
+  }
 
   GURL redirect_url_;
   content::BrowserTaskEnvironment task_environment_;
@@ -224,7 +227,7 @@ TEST_F(IpfsTabHelperUnitTest,
   headers->AddHeader("x-ipfs-path", "somevalue");
 
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
@@ -241,7 +244,7 @@ TEST_F(IpfsTabHelperUnitTest,
 
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 400 Nan");
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
@@ -258,7 +261,7 @@ TEST_F(IpfsTabHelperUnitTest,
   auto headers = net::HttpResponseHeaders::TryToCreate(
       "HTTP/1.1 500 Internal server error");
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
@@ -276,7 +279,7 @@ TEST_F(IpfsTabHelperUnitTest,
   auto headers = net::HttpResponseHeaders::TryToCreate(
       "HTTP/1.1 505 Version not supported");
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
@@ -294,7 +297,7 @@ TEST_F(IpfsTabHelperUnitTest,
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
 
   ipfs_host_resolver()->SetDNSLinkToRespond("");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_FALSE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
@@ -310,8 +313,8 @@ TEST_F(IpfsTabHelperUnitTest, DNSLinkRecordResolved_AutoRedirectDNSLink) {
   helper->SetPageURLForTesting(GURL("https://brantly.eth/page?query#ref"));
   helper->HostResolvedCallback(GURL("https://brantly.eth/page?query#ref"),
                                GURL("https://brantly.eth/page?query#ref"),
-                               false, absl::nullopt, false, false,
-                               "brantly.eth", "/ipns/brantly.eth/");
+                               false, absl::nullopt, false, "brantly.eth",
+                               "/ipns/brantly.eth/");
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
             helper->GetIPFSResolvedURL());
 }
@@ -330,7 +333,7 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPFS) {
   headers->AddHeader("x-ipfs-path", base::StringPrintf("/ipfs/%s", kCid1));
 
   ipfs_host_resolver()->SetDNSLinkToRespond("");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   GURL resolved_url = helper->GetIPFSResolvedURL();
@@ -353,7 +356,7 @@ TEST_F(IpfsTabHelperUnitTest, XIpfsPathHeaderUsed_IfNoDnsLinkRecord_IPNS) {
   headers->AddHeader("x-ipfs-path", "/ipns/brantly.eth/");
 
   ipfs_host_resolver()->SetDNSLinkToRespond("");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   GURL resolved_url = helper->GetIPFSResolvedURL();
@@ -399,7 +402,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
 
   GURL api_server = GetAPIServer(chrome::GetChannel());
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(GURL(), false, false, false);
+  helper->DNSLinkResolved(GURL(), false, false);
   ASSERT_FALSE(helper->GetIPFSResolvedURL().is_valid());
 
   scoped_refptr<net::HttpResponseHeaders> response_headers(
@@ -409,24 +412,24 @@ TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {
   response_headers->AddHeader("x-ipfs-path",
                               base::StringPrintf("/ipfs/%s", kCid1));
 
-  helper->MaybeCheckDNSLinkRecord(response_headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(response_headers.get(), false);
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   GURL test_url("ipns://brantly.eth/");
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(test_url, false, false, false);
+  helper->DNSLinkResolved(test_url, false, false);
 
-  helper->MaybeCheckDNSLinkRecord(response_headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(response_headers.get(), false);
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(test_url, false, false, false);
+  helper->DNSLinkResolved(test_url, false, false);
   helper->UpdateDnsLinkButtonState();
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 
   helper->SetPageURLForTesting(api_server);
-  helper->DNSLinkResolved(GURL(), false, false, false);
-  helper->MaybeCheckDNSLinkRecord(response_headers.get(), false, false);
+  helper->DNSLinkResolved(GURL(), false, false);
+  helper->MaybeCheckDNSLinkRecord(response_headers.get(), false);
   ASSERT_FALSE(helper->ipfs_resolved_url_.is_valid());
 }
 
@@ -697,7 +700,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_ResolveUrl) {
 
   ipfs_host_resolver()->SetDNSLinkToRespond("/ipns/brantly.eth/");
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"),
@@ -717,7 +720,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_Redirect) {
 
   ipfs_host_resolver()->SetDNSLinkToRespond("x");
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL("ipns://brantly.eth/page?query#ref"), redirect_url());
@@ -736,7 +739,7 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_No_Redirect_WhenNoDnsLink) {
 
   ipfs_host_resolver()->SetDNSLinkToRespond("");
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), redirect_url());
@@ -784,262 +787,66 @@ TEST_F(IpfsTabHelperUnitTest, GatewayIPNS_NoRedirect_WhenNoDnsLinkRecord) {
       GURL("https://ipfs.io/ipns/brantly.eth/page?query#ref"));
 
   auto headers = net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK");
-  helper->MaybeCheckDNSLinkRecord(headers.get(), false, false);
+  helper->MaybeCheckDNSLinkRecord(headers.get(), false);
 
   EXPECT_TRUE(ipfs_host_resolver()->resolve_called());
   ASSERT_EQ(GURL(), helper->GetIPFSResolvedURL());
 }
 
-// TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
-//   const GURL url(
-//       "https://ipfs.io/ipns/"
-//       "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
-//   const GURL redirected_to_url(
-//       "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_ShowInfobar) {
+  const GURL url(
+      "https://ipfs.io/ipns/"
+      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+  const GURL redirected_to_url(
+      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
 
-//   SetIpfsCompanionEnabledFlag(false);
+  SetIpfsCompanionEnabledFlag(false);
 
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             1);
-//         auto* nav_data_detected_original_url =
-//             IpfsFallbackRedirectNavigationData::
-//                 FindFallbackData(web_contents());
-//         EXPECT_NE(nav_data_detected_original_url, nullptr);
-//         EXPECT_EQ(nav_data_detected_original_url->GetOriginalUrl(), url);
-//         EXPECT_FALSE(nav_data_detected_original_url->IsAutoRedirectBlocked());
-//       }));
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             1);
-//         auto* nav_data_auto_redirected = IpfsFallbackRedirectNavigationData::
-//             FindFallbackData(web_contents());
-//         EXPECT_NE(nav_data_auto_redirected, nullptr);
-//         EXPECT_EQ(nav_data_auto_redirected->GetOriginalUrl(), url);
-//         EXPECT_EQ(nav_data_auto_redirected->GetRemoveFlag(), false);
-//         EXPECT_EQ(nav_data_auto_redirected->IsAutoRedirectBlocked(), false);
-//       }));
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             1);
-//         auto* nav_data_after_redirect = IpfsFallbackRedirectNavigationData::
-//             FindFallbackData(web_contents());
-//         EXPECT_EQ(nav_data_after_redirect, nullptr);
-//         EXPECT_EQ(ipfs_tab_helper()->GetWebContents().GetController().GetLastCommittedEntry()->GetURL(), url);
-//       }));
+  bool is_fallback_showed = false;
+  ipfs_tab_helper()->SetSetShowFallbackInfobarCallbackForTesting(
+      base::BindLambdaForTesting([&](const GURL& current_url) {
+        is_fallback_showed = true;
+        EXPECT_EQ(current_url, url);
+      }));
 
-//   NavigateAndComitFailedFailedPage(url, 500);
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        ipfs_tab_helper()->SetAutoRediretCallbackForTesting(
+            base::BindLambdaForTesting([&](const GURL& url_to_check) {
+              EXPECT_EQ(redirected_to_url, url_to_check);
+              return handler;
+            }));
+        ipfs_tab_helper()->LoadUrlForAutoRedirect(redirected_to_url);
+        ipfs_tab_helper()->DidFinishNavigation(handler);
+      }));
+  NavigateAndComitFailedFailedPage(url, 500);
 
-//   NavigateAndComitFailedFailedPage(redirected_to_url, 500);
+  EXPECT_TRUE(is_fallback_showed);
+}
 
-//   ipfs_tab_helper()->SetFallbackAddress(url);
+TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_NoInfobar_Redirect) {
+  const GURL url(
+      "https://ipfs.io/ipns/"
+      "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+  const GURL redirected_to_url(
+      "ipns://k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
 
-//   auto* nav_data_after_redirect =
-//       IpfsFallbackRedirectNavigationData::FindFallbackData(
-//           web_contents());
-//   EXPECT_NE(nav_data_after_redirect, nullptr);
-//   EXPECT_TRUE(nav_data_after_redirect->IsAutoRedirectBlocked());
-//   EXPECT_EQ(nav_data_after_redirect->GetOriginalUrl(), url);
+  SetIpfsCompanionEnabledFlag(false);
+  SetAutoRedirectToConfiguredGateway(true);
 
-//   NavigateAndComitFailedFailedPage(url, 500);
-  
-//   EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             1);
-//   EXPECT_EQ(IpfsFallbackRedirectNavigationData::FindFallbackData(
-//           web_contents()), nullptr);  
-// }
-
-// TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_Broken_Redirect_Chain) {
-//   const GURL url(
-//       "https://drweb.link/ipns/"
-//       "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
-//   const GURL redirected_to_url(
-//       "ipns://bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
-
-//   SetIpfsCompanionEnabledFlag(false);
-
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         auto* nav_data_detected_original_url =
-//             IpfsFallbackRedirectNavigationData::
-//                 FindFallbackData(web_contents());
-//         EXPECT_NE(nav_data_detected_original_url, nullptr);
-//         EXPECT_EQ(nav_data_detected_original_url->GetOriginalUrl(), url);
-//         EXPECT_FALSE(nav_data_detected_original_url->IsAutoRedirectBlocked());
-//       }));
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         auto* nav_data_auto_redirected = IpfsFallbackRedirectNavigationData::
-//             FindFallbackData(web_contents());
-//         EXPECT_EQ(nav_data_auto_redirected, nullptr);
-//       }));
-
-//   NavigateAndComitFailedFailedPage(url, 500);
-
-//   NavigateAndComitFailedFailedPage(redirected_to_url, 500);
-
-//   auto* nav_data_after_chain_break =
-//       IpfsFallbackRedirectNavigationData::FindFallbackData(
-//           web_contents());
-//   EXPECT_EQ(nav_data_after_chain_break, nullptr);
-// }
-
-// TEST_F(IpfsTabHelperUnitTest,
-//        DetectPageLoadingError_Broken_Redirect_Chain_Start_New) {
-//   const GURL url(
-//       "https://drweb.link/ipns/"
-//       "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
-//   const GURL breake_redirected_to_url(
-//       "ipns://bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
-//   const GURL new_redirect_chain_start_url(
-//       "https://ipfs.io/ipfs/"
-//       "bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
-//   const GURL new_chain_redirected_to_url(
-//       "ipfs://bafkreiedqfhqvarz2y4c2s3vrbrcq427sawhzbewzksegopavnmwbz4zyq");
-
-//   SetIpfsCompanionEnabledFlag(false);
-
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             1);
-//         auto* nav_data_detected_original_url =
-//             IpfsFallbackRedirectNavigationData::
-//                 FindFallbackData(web_contents());
-//         EXPECT_NE(nav_data_detected_original_url, nullptr);
-//         EXPECT_EQ(nav_data_detected_original_url->GetOriginalUrl(), url);
-//         EXPECT_FALSE(nav_data_detected_original_url->IsAutoRedirectBlocked());
-//       }));
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             2);
-//         auto* nav_data_chain_break = IpfsFallbackRedirectNavigationData::
-//             FindFallbackData(web_contents());
-//         EXPECT_EQ(nav_data_chain_break, nullptr);
-//       }));
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             3);
-//         auto* nav_data_detected_new_original_url =
-//             IpfsFallbackRedirectNavigationData::
-//                 FindFallbackData(web_contents());
-//         EXPECT_NE(nav_data_detected_new_original_url, nullptr);
-//         EXPECT_EQ(nav_data_detected_new_original_url->GetOriginalUrl(),
-//                   new_redirect_chain_start_url);
-//         EXPECT_FALSE(
-//             nav_data_detected_new_original_url->IsAutoRedirectBlocked());
-//       }));
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             3);
-//         auto* nav_data_new_chain_start = IpfsFallbackRedirectNavigationData::
-//             FindFallbackData(web_contents());
-//         EXPECT_NE(nav_data_new_chain_start, nullptr);
-//         EXPECT_EQ(nav_data_new_chain_start->GetOriginalUrl(),
-//                   new_redirect_chain_start_url);
-//         EXPECT_FALSE(
-//             nav_data_new_chain_start->IsAutoRedirectBlocked());        
-//       }));
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             3);
-//         auto* nav_data_after_redirect_new_chain =
-//             IpfsFallbackRedirectNavigationData::
-//                 FindFallbackData(web_contents());
-//         EXPECT_EQ(nav_data_after_redirect_new_chain, nullptr);
-//       }));
-
-//   NavigateAndComitFailedFailedPage(url, 500);
-
-//   NavigateAndComitFailedFailedPage(breake_redirected_to_url, 500);
-
-//   auto* nav_data_after_chain_break =
-//       IpfsFallbackRedirectNavigationData::FindFallbackData(
-//           web_contents());
-//   EXPECT_EQ(nav_data_after_chain_break, nullptr);
-
-//   NavigateAndComitFailedFailedPage(new_redirect_chain_start_url, 500);
-
-//   NavigateAndComitFailedFailedPage(new_chain_redirected_to_url, 500);
-
-//   ipfs_tab_helper()->SetFallbackAddress(new_redirect_chain_start_url);
-
-//   auto* nav_data_after_redirect_new_chain =
-//       IpfsFallbackRedirectNavigationData::FindFallbackData(
-//           web_contents());
-//   EXPECT_NE(nav_data_after_redirect_new_chain, nullptr);
-//         EXPECT_EQ(nav_data_after_redirect_new_chain->GetOriginalUrl(),
-//                   new_redirect_chain_start_url);
-//         EXPECT_TRUE(
-//             nav_data_after_redirect_new_chain->IsAutoRedirectBlocked());        
-
-//   NavigateAndComitFailedFailedPage(new_redirect_chain_start_url, 500);
-// }
-
-// TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_NoRedirectAsNonIPFSLink) {
-//   const GURL url("https://abcaddress.moc/");
-//   const GURL redirected_to_url("https://abcaddress.moc/");
-
-//   SetIpfsCompanionEnabledFlag(false);
-
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             1);
-//         auto* nav_data_detected_original_url =
-//             IpfsFallbackRedirectNavigationData::
-//                 FindFallbackData(web_contents());
-//         EXPECT_EQ(nav_data_detected_original_url, nullptr);
-//       }));
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             1);
-//         auto* nav_data_detected_original_url =
-//             IpfsFallbackRedirectNavigationData::
-//                 FindFallbackData(web_contents());
-//         EXPECT_EQ(nav_data_detected_original_url, nullptr);
-//       }));
-//   NavigateAndComitFailedFailedPage(url, 500);
-//   NavigateAndComitFailedFailedPage(redirected_to_url, 500);
-// }
-
-// TEST_F(IpfsTabHelperUnitTest, DetectPageLoadingError_IPFSCompanion_Enabled) {
-//   const GURL url(
-//       "https://drweb.link/ipns/"
-//       "k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4/");
-//   SetIpfsCompanionEnabledFlag(true);
-
-//   web_contents()->SetOnDidFinishNavigationCompleted(
-//       base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
-//         EXPECT_EQ(
-//             ipfs_tab_helper()->GetWebContents().GetController().GetEntryCount(),
-//             1);
-//         auto* nav_data_detected_original_url =
-//             IpfsFallbackRedirectNavigationData::
-//                 FindFallbackData(web_contents());
-//         EXPECT_EQ(nav_data_detected_original_url, nullptr);
-//       }));
-
-//   NavigateAndComitFailedFailedPage(url, 500);
-// }
+  bool is_redirected = false;
+  web_contents()->SetOnDidFinishNavigationCompleted(
+      base::BindLambdaForTesting([&](content::NavigationHandle* handler) {
+        ipfs_tab_helper()->SetAutoRediretCallbackForTesting(
+            base::BindLambdaForTesting([&](const GURL& url_to_check) {
+              EXPECT_EQ(redirected_to_url, url_to_check);
+              is_redirected = true;
+              return handler;
+            }));
+        ipfs_tab_helper()->DidFinishNavigation(handler);
+      }));
+  NavigateAndComitFailedFailedPage(url, 500);
+  EXPECT_TRUE(is_redirected);
+}
 
 }  // namespace ipfs
