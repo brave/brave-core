@@ -33,18 +33,21 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
     return;
   }
 
-  // Sets fixed heights for |button| regardless of non client top height.
   if (delegate_->GetFrameButtonStyle() ==
       OpaqueBrowserFrameViewLayoutDelegate::FrameButtonStyle::kMdButton) {
+    // Synchronize frame button's bounds with toolbar's bounds.
     gfx::Size size = button->GetPreferredSize();
     DCHECK_LT(0, size.width());
-    size.set_height(size.width());
+    auto* toolbar = view_->browser_view()->toolbar();
+    const auto toolbar_height = toolbar->GetPreferredSize().height();
+    size.set_height(toolbar_height);
     button->SetPreferredSize(size);
     button->SetSize(size);
-    const auto toolbar_height =
-        view_->browser_view()->toolbar()->GetPreferredSize().height();
-    button->SetY(view_->GetTopAreaHeight() +
-                 (toolbar_height - size.height()) / 2);
+    gfx::Point toolbar_origin;
+    views::View::ConvertPointToTarget(toolbar, button->parent(),
+                                      &toolbar_origin);
+    button->SetY(toolbar_origin.y());
+
     static_cast<views::FrameCaptionButton*>(button)->SetInkDropCornerRadius(
         views::kCaptionButtonInkDropDefaultCornerRadius);
   }
