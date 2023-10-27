@@ -26,6 +26,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/misc_metrics/extension_metrics_service_factory.h"
 #include "brave/browser/misc_metrics/page_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
@@ -209,6 +210,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
     SharedPinnedTabServiceFactory::GetInstance();
   }
+  misc_metrics::ExtensionMetricsServiceFactory::GetInstance();
 #endif
 
 #if defined(TOOLKIT_VIEWS)
