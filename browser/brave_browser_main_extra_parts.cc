@@ -83,6 +83,5 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   // The code below is not supported on android.
 #if !BUILDFLAG(IS_ANDROID)
   brave::BraveWindowTracker::CreateInstance(g_browser_process->local_state());
-  brave::BraveUptimeTracker::CreateInstance(g_browser_process->local_state());
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
