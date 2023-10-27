@@ -2583,6 +2583,7 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     absl::optional<uint32_t> next_change_index) {
   CHECK(account_id);
   CHECK(IsBitcoinAccount(*account_id));
+  CHECK(next_receive_index || next_change_index);
 
   ScopedDictPrefUpdate keyrings_update(profile_prefs_, kBraveWalletKeyrings);
   base::Value::List& account_metas = GetListPrefForKeyringUpdate(

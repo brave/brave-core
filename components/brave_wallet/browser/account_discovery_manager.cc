@@ -208,6 +208,8 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
 
   auto& acc = dicovered_account.value();
   if (acc.next_unused_receive_index == 0 && acc.next_unused_change_index == 0) {
+    // This account has no transacted addresses in blockchain. Don't add it and
+    // stop discovery.
     return;
   }
 
@@ -227,6 +229,8 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
 
   if (last_bitcoin_account &&
       last_bitcoin_account->bitcoin_account_index + 1 != acc.account_index) {
+    // We don't allow gaps in account indexes, so just return if discovered
+    // account would not be the next account.
     return;
   }
 
