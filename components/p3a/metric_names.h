@@ -72,6 +72,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Search.Promo.NewTabPage",
     "Brave.Search.QueriesBeforeChurn",
     "Brave.Search.SwitchEngine",
+    "Brave.Search.WebDiscoveryAndAds",
     "Brave.Search.WebDiscoveryEnabled",
     "Brave.Shields.AdBlockSetting",
     "Brave.Shields.CookieListEnabled",

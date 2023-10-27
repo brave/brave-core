@@ -10,6 +10,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -156,6 +157,13 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
 
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 1, 1);
 
+  histogram_tester_->ExpectUniqueSample(kWebDiscoveryAndAdsMetric, 0, 2);
+  prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
+  histogram_tester_->ExpectBucketCount(kWebDiscoveryAndAdsMetric, 1, 1);
+
   prefs->SetBoolean(kWebDiscoveryEnabled, false);
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 0, 2);
+
+  histogram_tester_->ExpectBucketCount(kWebDiscoveryAndAdsMetric, 0, 3);
+  histogram_tester_->ExpectTotalCount(kWebDiscoveryAndAdsMetric, 4);
 }
