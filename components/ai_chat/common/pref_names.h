@@ -27,6 +27,10 @@ constexpr char kBraveChatPremiumCredentialCache[] =
 constexpr char kUserDismissedPremiumPrompt[] =
     "brave.ai_chat.user_dismissed_premium_prompt";
 constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
+constexpr char kBraveChatP3AOmniboxOpenWeeklyStorage[] =
+    "brave.ai_chat.p3a_omnibox_open";
+constexpr char kBraveChatP3AOmniboxAutocompleteWeeklyStorage[] =
+    "brave.ai_chat.p3a_omnibox_autocomplete";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 

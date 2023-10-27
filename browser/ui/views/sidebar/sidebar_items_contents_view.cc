@@ -55,7 +55,10 @@
 #include "ui/views/layout/box_layout.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/ai_chat/common/features.h"
+#include "brave/components/ai_chat/core/ai_chat_metrics.h"
 #endif
 
 namespace {
@@ -523,6 +526,15 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
 
   const auto& item_model = controller->model()->GetAllSidebarItems()[*index];
   if (item_model.open_in_panel) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    if (item_model.built_in_item_type ==
+        sidebar::SidebarItem::BuiltInItemType::kChatUI) {
+      ai_chat::AIChatMetrics* metrics =
+          g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
+      CHECK(metrics);
+      metrics->HandleOpenViaSidebar();
+    }
+#endif
     controller->ActivatePanelItem(item_model.built_in_item_type);
     return;
   }
