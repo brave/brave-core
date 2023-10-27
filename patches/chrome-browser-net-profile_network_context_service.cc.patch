@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/net/profile_network_context_service.cc b/chrome/browser/net/profile_network_context_service.cc
-index 2d4683b149ed081d216d63727b88465797f36aaf..41c4099b2b52ee4752a5734164e0a1abc5202930 100644
+index 6271f349464b9afaf104d474099a9e31e702af43..2a7cd2dda2eb4eb42feb1e6dc404a8dc7bdbcf2f 100644
 --- a/chrome/browser/net/profile_network_context_service.cc
 +++ b/chrome/browser/net/profile_network_context_service.cc
 @@ -535,6 +535,7 @@ network::mojom::CTPolicyPtr ProfileNetworkContextService::GetCTPolicy() {
