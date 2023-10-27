@@ -466,6 +466,19 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
   }
 }
 
+std::vector<mojom::FeedItemV2Ptr> GenerateAd() {
+  DVLOG(1) << __FUNCTION__;
+  std::vector<mojom::FeedItemV2Ptr> result;
+  result.push_back(mojom::FeedItemV2::NewAdvert(mojom::PromotedArticle::New(
+      mojom::FeedItemMetadata::New(
+          "ad", base::Time::Now(), "Advert", "Some handy info",
+          GURL("https://example.com"), "foo",
+          mojom::Image::NewImageUrl(GURL("https://example.com/favicon.ico")),
+          "", "", 0.0, 0.0, "Now"),
+      "test")));
+  return result;
+}
+
 // Generates a "Special Block" this will be one of the following:
 // 1. An advert, if we have one
 // 2. A "Discover" entry, which suggests some more publishers for the user to
@@ -479,33 +492,26 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
   // 2. Fallback to a discover card.
   // Ads have not been integrated with this process yet, so this is being
   // mocked with another coin toss.
-  std::vector<mojom::FeedItemV2Ptr> result;
 
   if (TossCoin()) {
-    DVLOG(1) << "Generating advert";
-    auto metadata = mojom::FeedItemMetadata::New(
-        "ad", base::Time::Now(), "Advert", "Some handy info",
-        GURL("https://example.com"), "foo",
-        mojom::Image::NewImageUrl(GURL("https://example.com/favicon.ico")), "",
-        "", 0.0, 0.0, "Now");
-    result.push_back(mojom::FeedItemV2::NewAdvert(
-        mojom::PromotedArticle::New(std::move(metadata), "test")));
-  } else {
-    if (!suggested_publisher_ids.empty()) {
-      size_t preferred_count = 3;
-      auto count = std::min(preferred_count, suggested_publisher_ids.size());
-      std::vector<std::string> suggestions(
-          suggested_publisher_ids.begin(),
-          suggested_publisher_ids.begin() + count);
+    return GenerateAd();
+  }
 
-      // Remove the suggested publisher ids, so we don't suggest them again.
-      suggested_publisher_ids.erase(suggested_publisher_ids.begin(),
-                                    suggested_publisher_ids.begin() + count);
+  std::vector<mojom::FeedItemV2Ptr> result;
+  if (!suggested_publisher_ids.empty()) {
+    size_t preferred_count = 3;
+    auto count = std::min(preferred_count, suggested_publisher_ids.size());
+    std::vector<std::string> suggestions(
+        suggested_publisher_ids.begin(),
+        suggested_publisher_ids.begin() + count);
 
-      DVLOG(1) << "Generating publisher suggestions (discover)";
-      result.push_back(mojom::FeedItemV2::NewDiscover(
-          mojom::Discover::New(std::move(suggestions))));
-    }
+    // Remove the suggested publisher ids, so we don't suggest them again.
+    suggested_publisher_ids.erase(suggested_publisher_ids.begin(),
+                                  suggested_publisher_ids.begin() + count);
+
+    DVLOG(1) << "Generating publisher suggestions (discover)";
+    result.push_back(mojom::FeedItemV2::NewDiscover(
+        mojom::Discover::New(std::move(suggestions))));
   }
 
   return result;
@@ -753,6 +759,10 @@ void FeedV2Builder::BuildFeedFromArticles() {
   DVLOG(1) << "Step 1: Standard Block (" << initial_block.size()
            << " articles)";
   add_items(initial_block);
+
+  // We always ad an advertisment after the first block.
+  auto advert = GenerateAd();
+  add_items(advert);
 
   // Step 2: Generate a top news block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.7z05nb4b269d
