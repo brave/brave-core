@@ -217,4 +217,7 @@
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE" desc="A description for claude-instant-v1 model">
     Conversation and text generation
   </message>
+  <message name="IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL" desc="A label for leo settings tooltip">
+    Leo settings
+  </message>
 </grit-part>

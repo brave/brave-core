@@ -35,7 +35,7 @@ export default function FeatureMenu() {
 
   return (
     <ButtonMenu className={styles.featureMenu}>
-      <div slot='anchor-content'>
+      <div slot='anchor-content' title={getLocale('leoSettingsTooltipLabel')}>
         <Icon name='more-horizontal' />
       </div>
       <div className={styles.menuSectionTitle}>

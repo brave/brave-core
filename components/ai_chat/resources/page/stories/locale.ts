@@ -69,5 +69,6 @@ provideStrings({
   braveLeoChatLeoExpandedSubtitle: 'Advanced and accurate chat',
   braveLeoChatClaudeInstantSubtitle: 'Strength in creative tasks',
   pageContentTooLongWarning: 'The page you\'re trying to summarize is too long. Some context could be missing from the conversation.',
-  errorConversationEnd: 'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.'
+  errorConversationEnd: 'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.',
+  leoSettingsTooltipLabel: 'Leo settings',
 })
