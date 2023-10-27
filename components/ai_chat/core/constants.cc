@@ -86,7 +86,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"errorContextLimitReaching", IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING},
       {"gotItButtonLabel", IDS_CHAT_UI_GOT_IT_BUTTON_LABEL},
       {"pageContentTooLongWarning", IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING},
-      {"errorConversationEnd", IDS_CHAT_UI_CONVERSATION_END_ERROR}};
+      {"errorConversationEnd", IDS_CHAT_UI_CONVERSATION_END_ERROR},
+      {"leoSettingsTooltipLabel", IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL}};
 
   return kLocalizedStrings;
 }
