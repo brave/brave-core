@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """A inline part of result_dashboard.py"""
-import re
 import os
 import sys
 import subprocess
@@ -42,10 +41,5 @@ def SendResults(original_function, *args, **kwargs):
 
 
 @override_utils.override_function(globals())
-def _MakeBuildStatusUrl(original_function, project, buildbucket, buildername,
-                        buildnumber):
-    m = re.match('brave/refs/tags/(.+)', buildername)
-    if m:
-        URL = 'https://github.com/brave/brave-browser/releases/tag/%s'
-        return URL % m.group(1)
-    return original_function(project, buildbucket, buildername, buildnumber)
+def _MakeBuildStatusUrl(*args):
+    return os.environ.get('BUILD_URL')  # Jenkins env
