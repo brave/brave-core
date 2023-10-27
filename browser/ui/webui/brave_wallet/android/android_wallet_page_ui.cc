@@ -61,7 +61,7 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
   }
 
   // Add required resources.
-  if (url.path() == kWalletPagePath) {
+  if (url.path() == kWalletPagePath || url.path() == kWalletUnlockPagePath) {
     webui::SetupWebUIDataSource(source,
                                 base::make_span(kBraveWalletPageGenerated,
                                                 kBraveWalletPageGeneratedSize),
