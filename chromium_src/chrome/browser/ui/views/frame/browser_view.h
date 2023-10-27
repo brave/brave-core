@@ -24,6 +24,8 @@
   virtual MaybeShowReadingListInSidePanelIPH
 
 #define UpdateDevToolsForContents virtual UpdateDevToolsForContents
+#define FullscreenStateChanging virtual FullscreenStateChanging
+#define FullscreenStateChanged virtual FullscreenStateChanged
 #define GetTabStripVisible virtual GetTabStripVisible
 
 #define GetTabSearchBubbleHost     \
@@ -48,12 +50,14 @@
 #endif
 
 #undef GetTabSearchBubbleHost
-#undef BrowserViewLayout
-#undef UpdateDevToolsForContents
 #undef GetTabStripVisible
-#undef BrowserViewLayoutDelegateImpl
-#undef BrowserWindow
+#undef FullscreenStateChanged
+#undef FullscreenStateChanging
+#undef UpdateDevToolsForContents
 #undef MaybeShowReadingListInSidePanelIPH
 #undef SidePanel
+#undef BrowserViewLayout
+#undef BrowserWindow
+#undef BrowserViewLayoutDelegateImpl
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_
