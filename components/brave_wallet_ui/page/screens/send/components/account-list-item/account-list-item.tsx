@@ -58,6 +58,7 @@ export const AccountListItem = (props: Props) => {
             textColor='text02'
             textSize='12px'
             isBold={false}
+            textAlign='left'
           >
             {accountAlias}
           </ButtonText>
