@@ -800,3 +800,12 @@
 -keep class org.chromium.chrome.browser.tasks.tab_groups.BraveTabGroupModelFilter {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.identity_disc.IdentityDiscController {
+    public <init>(...);
+    *** calculateButtonData(...);
+}
+
+-keep class org.chromium.chrome.browser.identity_disc.BraveIdentityDiscController {
+    public <init>(...);
+}

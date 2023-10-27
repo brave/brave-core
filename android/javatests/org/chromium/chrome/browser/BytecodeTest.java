@@ -363,8 +363,14 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/tasks/tab_groups/BraveTabGroupModelFilter"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/tasks/tab_groups/BraveTabGroupModelFilter"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/identity_disc/IdentityDiscController"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController"));
     }
 
     @Test
@@ -535,6 +541,12 @@ public class BytecodeTest {
                         true,
                         boolean.class,
                         String.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/identity_disc/IdentityDiscController",
+                        "calculateButtonData",
+                        true,
+                        void.class));
     }
 
     @Test
@@ -965,6 +977,13 @@ public class BytecodeTest {
                         "org/chromium/base/shared_preferences/StrictPreferenceKeyChecker",
                         "org/chromium/base/shared_preferences/BraveStrictPreferenceKeyChecker",
                         PreferenceKeyRegistry.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/identity_disc/IdentityDiscController",
+                        "org/chromium/chrome/browser/identity_disc/BraveIdentityDiscController",
+                        Context.class,
+                        ActivityLifecycleDispatcher.class,
+                        ObservableSupplier.class));
     }
 
     @Test
