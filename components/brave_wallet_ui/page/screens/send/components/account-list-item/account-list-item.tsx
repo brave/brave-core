@@ -8,11 +8,13 @@ import * as React from 'react'
 import { BraveWallet } from '../../../../../constants/types'
 
 // Styled Components
-import { Button, AccountCircle } from './account-list-item.style'
-import { Text, Column } from '../../shared.styles'
+import { Button, ButtonText } from './account-list-item.style'
+import { Column } from '../../shared.styles'
 
 // Hooks
-import { useAccountOrb } from '../../../../../common/hooks/use-orb'
+import {
+  CreateAccountIcon
+} from '../../../../../components/shared/create-account-icon/create-account-icon'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -24,17 +26,41 @@ interface Props {
 export const AccountListItem = (props: Props) => {
   const { onClick, account, isSelected, accountAlias } = props
 
-  // hooks
-  const orb = useAccountOrb(account)
-
   return (
     <Button disabled={isSelected} onClick={() => onClick(account)}>
-      <AccountCircle orb={orb} />
-      <Column horizontalAlign='flex-start' verticalAlign='center'>
-        <Text textColor='text03' textSize='12px' isBold={false}>{account.name}</Text>
-        <Text textColor='text01' textSize='12px' isBold={false}>{account.address}</Text>
+      <CreateAccountIcon
+        size='medium'
+        account={account}
+        marginRight={16}
+      />
+      <Column
+        horizontalAlign='flex-start'
+        verticalAlign='center'
+      >
+        <ButtonText
+          textColor='text03'
+          textSize='12px'
+          isBold={false}
+          textAlign='left'
+        >
+          {account.name}
+        </ButtonText>
+        <ButtonText
+          textColor='text01'
+          textSize='12px'
+          isBold={false}
+          textAlign='left'
+        >
+          {account.address}
+        </ButtonText>
         {(accountAlias && accountAlias !== '') &&
-          <Text textColor='text02' textSize='12px' isBold={false}>{accountAlias}</Text>
+          <ButtonText
+            textColor='text02'
+            textSize='12px'
+            isBold={false}
+          >
+            {accountAlias}
+          </ButtonText>
         }
       </Column>
     </Button>
