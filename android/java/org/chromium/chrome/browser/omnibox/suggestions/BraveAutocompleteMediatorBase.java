@@ -18,8 +18,11 @@ import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.url.GURL;
 
 class BraveAutocompleteMediatorBase {
-    void loadUrlForOmniboxMatch(int matchIndex, @NonNull AutocompleteMatch suggestion,
-            @NonNull GURL url, long inputStart, boolean inVisibleSuggestionList,
+    void loadUrlForOmniboxMatch(
+            int matchIndex,
+            @NonNull AutocompleteMatch suggestion,
+            @NonNull GURL url,
+            long inputStart,
             boolean openInNewTab) {
         Context context =
                 (Context)
@@ -44,9 +47,19 @@ class BraveAutocompleteMediatorBase {
             }
         }
 
-        BraveReflectionUtil.InvokeMethod(AutocompleteMediator.class, this, "loadUrlForOmniboxMatch",
-                int.class, matchIndex, AutocompleteMatch.class, suggestion, GURL.class, url,
-                long.class, inputStart, boolean.class, inVisibleSuggestionList, boolean.class,
+        BraveReflectionUtil.InvokeMethod(
+                AutocompleteMediator.class,
+                this,
+                "loadUrlForOmniboxMatch",
+                int.class,
+                matchIndex,
+                AutocompleteMatch.class,
+                suggestion,
+                GURL.class,
+                url,
+                long.class,
+                inputStart,
+                boolean.class,
                 openInNewTab);
     }
 }
