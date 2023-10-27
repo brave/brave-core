@@ -14,6 +14,8 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout_delegate.h"
@@ -260,6 +262,10 @@ gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
     return {};
   }
 
+  if (IsFullscreenForTab()) {
+    return {};
+  }
+
   gfx::Insets margins(BraveContentsViewUtil::kMarginThickness);
 
   // If there is a visible view above the contents container, then there is no
@@ -276,6 +282,17 @@ gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
 
 bool BraveBrowserViewLayout::IsReaderModeToolbarVisible() const {
   return reader_mode_toolbar_ && reader_mode_toolbar_->GetVisible();
+}
+
+bool BraveBrowserViewLayout::IsFullscreenForTab() const {
+  auto* exclusive_access_manager = browser_view_->GetExclusiveAccessManager();
+  if (!exclusive_access_manager) {
+    return false;
+  }
+  auto* fullscreen_controller =
+      exclusive_access_manager->fullscreen_controller();
+  return fullscreen_controller &&
+         fullscreen_controller->IsWindowFullscreenForTabOrPending();
 }
 
 bool BraveBrowserViewLayout::ShouldPushBookmarkBarForVerticalTabs() {
