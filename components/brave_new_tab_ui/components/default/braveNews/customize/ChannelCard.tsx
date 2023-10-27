@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import styled from 'styled-components'
-import * as React from 'react'
 import Flex from '$web-common/Flex'
-import FollowButton from './FollowButton'
+import { getLocale } from '$web-common/locale'
+import * as React from 'react'
+import styled from 'styled-components'
 import { useChannelSubscribed } from '../../../../../brave_news/browser/resources/shared/Context'
 import { channelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
-import { getLocale } from '$web-common/locale'
+import FollowButton from './FollowButton'
 
 export const getTranslatedChannelName = (channelName: string) => {
   try {

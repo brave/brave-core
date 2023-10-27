@@ -5,10 +5,10 @@
 import { EntityCachingWrapper } from '$web-common/mojomCache'
 import {
   Command,
-  CommandsServiceRemote,
   CommandsListenerInterface,
   CommandsListenerReceiver,
-  CommandsService
+  CommandsService,
+  CommandsServiceRemote
 } from 'gen/brave/components/commands/common/commands.mojom.m.js'
 
 export const api = CommandsService.getRemote()
@@ -35,7 +35,7 @@ export class CommandsCache
     commandId: number,
     accelerator: { codes: string; keys: string }
   ) {
-    this.change({
+    this.notifyChanged({
       ...this.cache,
       [commandId]: {
         ...this.cache[commandId],
@@ -50,7 +50,7 @@ export class CommandsCache
     command.accelerators = command.accelerators.filter(
       (a) => a.codes !== accelerator
     )
-    this.change({
+    this.notifyChanged({
       ...this.cache,
       [commandId]: command
     })

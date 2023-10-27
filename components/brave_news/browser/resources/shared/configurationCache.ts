@@ -46,6 +46,6 @@ export class ConfigurationCachingWrapper
   }
 
   changed(newConfiguration: Configuration): void {
-    this.change(newConfiguration)
+    this.notifyChanged(newConfiguration)
   }
 }

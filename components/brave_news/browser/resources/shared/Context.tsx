@@ -4,13 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useCallback, useMemo, useState, useEffect } from 'react'
-import getBraveNewsController, { Channels, Publisher, Publishers, PublisherType, isPublisherEnabled, Configuration, FeedV2 } from './api'
-import { PublishersCachingWrapper } from './publishersCache'
-import { ChannelsCachingWrapper } from './channelsCache'
-import { ConfigurationCachingWrapper } from './configurationCache'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import usePromise from '../../../../common/usePromise'
 import { api } from '../context'
+import getBraveNewsController, { Channels, Configuration, FeedV2, Publisher, PublisherType, Publishers, isPublisherEnabled } from './api'
+import { ChannelsCachingWrapper } from './channelsCache'
+import { ConfigurationCachingWrapper } from './configurationCache'
+import { PublishersCachingWrapper } from './publishersCache'
 
 // Leave possibility for more pages open.
 type NewsPage = null

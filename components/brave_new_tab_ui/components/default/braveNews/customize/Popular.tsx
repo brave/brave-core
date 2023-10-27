@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
-import Flex from '$web-common/Flex'
-import Carousel from './Carousel'
 import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
+import Carousel from './Carousel'
 import CustomizeLink from './CustomizeLink'
 import CustomizePage from './CustomizePage'
 import DiscoverSection from './DiscoverSection'

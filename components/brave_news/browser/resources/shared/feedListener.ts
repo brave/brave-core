@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import getBraveNewsController from './api'
 import {
   BraveNewsControllerRemote,
   FeedListenerInterface,
   FeedListenerReceiver
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
+import getBraveNewsController from './api'
 
 export const addFeedListener = (listener: (feedHash: string) => void) =>
   new (class implements FeedListenerInterface {

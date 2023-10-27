@@ -25,7 +25,7 @@ export const validateScheme = (href: string | undefined, allowedSchemes: string[
  * to an allowed scheme. By default, allowed schemes are http: or https:,
  * but this can be overridden.
  */
-export default function Link({ href, allowedSchemes, ...rest }: Props) {
+export default function SecureLink({ href, allowedSchemes, ...rest }: Props) {
   validateScheme(href, allowedSchemes ?? defaultAllowedSchemes)
   return <a {...rest} />
 }

@@ -7,13 +7,14 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import * as BraveNews from '../../../../brave_news/browser/resources/shared/api'
 import * as TodayActions from '../../../actions/today_actions'
-import * as BraveNewsElement from './default'
-import CardOptIn from './cards/cardOptIn'
-import CardLoading from './cards/cardLoading'
 import { useNewTabPref } from '../../../hooks/usePref'
 import { defaultState } from '../../../storage/new_tab_storage'
-import { FeedV2 } from './FeedV2'
+import CardLoading from './cards/cardLoading'
+import CardOptIn from './cards/cardOptIn'
+import * as BraveNewsElement from './default'
+
 const Content = React.lazy(() => import('./content'))
+const FeedV2 = React.lazy(() => import('./FeedV2'))
 
 export type OnReadFeedItem = (args: TodayActions.ReadFeedItemPayload) => any
 export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
@@ -126,12 +127,11 @@ export default function BraveNewsSection(props: Props) {
           <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={() => setShowToday(false)} />
         </>
       }
-      {shouldDisplayContent && (defaultState.featureFlagBraveNewsFeedV2Enabled
-        ? <FeedV2 />
-        : <React.Suspense fallback={(<CardLoading />)}>
-          <Content {...props} />
-        </React.Suspense>)
-      }
+      {shouldDisplayContent && <React.Suspense fallback={(<CardLoading />)}>
+        {defaultState.featureFlagBraveNewsPromptEnabled
+          ? <FeedV2 />
+          : <Content {...props} />}
+      </React.Suspense>}
 
     </BraveNewsElement.Section>
   )

@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { useState } from 'react'
-import * as React from 'react'
-import styled from 'styled-components'
 import Flex from '$web-common/Flex'
+import * as React from 'react'
+import { useState } from 'react'
+import styled from 'styled-components'
+import { usePublisher, usePublisherFollowed } from '../../../../../brave_news/browser/resources/shared/Context'
+import getBraveNewsController from '../../../../../brave_news/browser/resources/shared/api'
+import { useLazyUnpaddedImageUrl } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
 import FollowButton from './FollowButton'
 import { getCardColor } from './colors'
-import { usePublisher, usePublisherFollowed } from '../../../../../brave_news/browser/resources/shared/Context'
-import { useLazyUnpaddedImageUrl } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
-import getBraveNewsController from '../../../../../brave_news/browser/resources/shared/api'
 
 interface CardProps {
   backgroundColor?: string

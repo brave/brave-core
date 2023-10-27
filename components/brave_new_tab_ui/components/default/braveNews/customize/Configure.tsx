@@ -3,22 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Flex from '$web-common/Flex'
+import { getLocale } from '$web-common/locale'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import Toggle from '@brave/leo/react/toggle'
+import { spacing } from '@brave/leo/tokens/css'
 import * as React from 'react'
 import styled from 'styled-components'
-import Flex from '$web-common/Flex'
-import Discover from './Discover'
-import { BackArrow } from '../../../../../brave_news/browser/resources/shared/Icons'
-import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
-import Toggle from '@brave/leo/react/toggle'
-import SourcesList from './SourcesList'
-import DisabledPlaceholder from './DisabledPlaceholder'
 import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
-import { getLocale } from '$web-common/locale'
+import { BackArrow } from '../../../../../brave_news/browser/resources/shared/Icons'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
-import { SuggestionsPage } from './Suggestions'
+import DisabledPlaceholder from './DisabledPlaceholder'
+import Discover from './Discover'
 import { PopularPage } from './Popular'
-import { spacing } from '@brave/leo/tokens/css'
+import SourcesList from './SourcesList'
+import { SuggestionsPage } from './Suggestions'
 
 const Grid = styled.div`
   width: 100%;

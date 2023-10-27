@@ -8,8 +8,8 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { useInspectContext } from './context';
 import Card from './feed/Card';
+import { FeedType, useBraveNews } from './shared/Context';
 import { isPublisherEnabled } from './shared/api';
-import { useBraveNews, FeedType } from './shared/Context';
 
 const DEFAULT_SHOW_COUNT = 4;
 

@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import SecureLink from '$web-common/SecureLink';
 import { HeroArticle as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -9,7 +10,6 @@ import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { openArticle } from './Article';
 import ArticleMetaRow from './ArticleMetaRow';
 import Card, { Title } from './Card';
-import Link from '$web-common/Link';
 
 interface Props {
   info: Info
@@ -35,7 +35,7 @@ export default function HeroArticle({ info }: Props) {
     <HeroImage src={url} />
     <ArticleMetaRow article={info.data} />
     <Title>
-      <Link href={info.data.url.url}>{info.data.title}</Link>
+      <SecureLink href={info.data.url.url}>{info.data.title}</SecureLink>
     </Title>
   </Card>
 }

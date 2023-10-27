@@ -3,17 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react';
-import { useInspectContext } from './context';
-import Card from './feed/Card';
-import Radio from '@brave/leo/react/radioButton'
-import Button from '@brave/leo/react/button'
+import Flex from '$web-common/Flex';
+import Button from '@brave/leo/react/button';
 import Dropdown from '@brave/leo/react/dropdown';
 import Input from '@brave/leo/react/input';
-import Flex from '$web-common/Flex'
+import Radio from '@brave/leo/react/radioButton';
 import { Channel, Publisher } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
+import * as React from 'react';
 import styled from 'styled-components';
 import FeedStats, { getFeedStats } from './FeedStats';
+import { useInspectContext } from './context';
+import Card from './feed/Card';
 import { useBraveNews } from './shared/Context';
 
 interface Props {

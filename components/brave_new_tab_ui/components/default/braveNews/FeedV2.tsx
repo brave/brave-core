@@ -2,15 +2,13 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import * as React from 'react'
-import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
-import CardLoading from './cards/cardLoading'
-import styled from 'styled-components'
 import { spacing } from '@brave/leo/tokens/css'
+import * as React from 'react'
+import styled from 'styled-components'
+import Feed from '../../../../brave_news/browser/resources/Feed'
+import Sidebar from '../../../../brave_news/browser/resources/Sidebar'
+import { useBraveNews } from '../../../../brave_news/browser/resources/shared/Context'
 import { CLASSNAME_PAGE_STUCK } from '../page'
-
-const FeedItems = React.lazy(() => import('../../../../brave_news/browser/resources/Feed'))
-const Sidebar = React.lazy(() => import('../../../../brave_news/browser/resources/Sidebar'))
 
 const Variables = styled.div`
   --bn-text-base: 0, 0, 0;
@@ -35,7 +33,7 @@ const SidebarContainer = styled.div`
   }
 `
 
-export const FeedV2 = () => {
+export default function FeedV2() {
   const { feedV2 } = useBraveNews()
 
   const ref = React.useRef<HTMLDivElement>()
@@ -51,12 +49,10 @@ export const FeedV2 = () => {
     ref.current?.scrollIntoView()
   }, [feedV2?.items])
 
-  return <React.Suspense fallback={<CardLoading />}>
-    <Variables ref={ref as any}>
-      <FeedItems feed={feedV2} />
-      <SidebarContainer>
-        <Sidebar />
-      </SidebarContainer>
-    </Variables>
-  </React.Suspense>
+  return <Variables ref={ref as any}>
+    <Feed feed={feedV2} />
+    <SidebarContainer>
+      <Sidebar />
+    </SidebarContainer>
+  </Variables>
 }

@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import LoadingComponent from '../../../loading'
 import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
+import LoadingComponent from '../../../loading'
 
 const Configure = React.lazy(() => import('./Configure'))
 

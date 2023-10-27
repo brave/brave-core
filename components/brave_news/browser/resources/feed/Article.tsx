@@ -2,12 +2,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import Flex from '$web-common/Flex';
+import SecureLink, { validateScheme } from '$web-common/SecureLink';
 import { spacing } from '@brave/leo/tokens/css';
 import { FeedItemMetadata, Article as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
-import Flex from '$web-common/Flex'
-import Link, { validateScheme } from '$web-common/Link'
 import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import ArticleMetaRow from './ArticleMetaRow';
 import Card, { Title } from './Card';
@@ -47,7 +47,7 @@ export default function Article({ info, hideChannel }: Props) {
     <ArticleMetaRow article={info.data} hideChannel={hideChannel} />
     <Flex direction='row' gap={spacing.m} justify='space-between'>
       <Title>
-        <Link href={url}>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</Link>
+        <SecureLink href={url}>{info.data.title}{('isDiscover' in info && info.isDiscover) && " (discovering)"}</SecureLink>
       </Title>
       <ArticleImage src={imageUrl} />
     </Flex>

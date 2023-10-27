@@ -10,6 +10,9 @@ export type CacheListener<T> = (
 
 /**
  * Allows consumers to subscribe to changes to an object.
+ * 
+ * This is useful for listening to changes to a remote mojom object and
+ * keeping track of the intermediate value.
  */
 export class CachingWrapper<T> {
   protected cache: T
@@ -19,16 +22,20 @@ export class CachingWrapper<T> {
     this.cache = defaultValue;
   }
 
-  addListener (listener: CacheListener<T>, init = true) {
+  addListener(listener: CacheListener<T>, init = true) {
     this.listeners.push(listener)
     if (init) listener(this.cache, {} as any)
   }
 
-  removeListener (listener: CacheListener<T>) {
+  removeListener(listener: CacheListener<T>) {
     this.listeners = this.listeners.filter((l) => l !== listener)
   }
 
-  change (newValue: T) {
+  /**
+   * Notifies all listeners that the latest value has been updated.
+   * @param newValue The new value
+   */
+  notifyChanged(newValue: T) {
     const oldValue = this.cache
     this.cache = newValue
 
@@ -49,17 +56,55 @@ export type ChangeEvent<Entity> = {
  * added/updated/remove.
  *
  * Manages partial updates and notifies listeners of the changes.
+ *
+ * Example:
+ *
+ * in example.mojom:
+ *
+ * struct ExampleEvent {
+ *   map<string, Entity> addedOrUpdated;
+ *   array<string> removed;
+ * };
+ *
+ * interface ExampleListener {
+ *   Changed(ExampleEvent event);
+ * };
+ *
+ * interface Controller {
+ *   AddListener(pending_remote<ExampleListener> listener);
+ * }
+ *
+ * in exampleCache.ts
+ *
+ * class ExampleCache
+ *  extends EntityCachingWrapper<Entity>
+ *  implements ExampleListenerInterface {
+ *   private receiver = new ExampleListenerReceiver(this)
+ *
+ *   constructor() {
+ *     super()
+ *
+ *     // where get controller gets you a bound instance of Controller
+ *     getController().addExampleListener(this.receiver.$.bindNewPipeAndPassRemove())
+ *   }
+ * }
+ *
+ * // and use the cache
+ * const cache = new ExampleCache()
+ * cache.addListener(console.log)
  */
 export class EntityCachingWrapper<Entity> extends CachingWrapper<Cache<Entity>> {
   constructor() {
     super({})
   }
 
-  changed (event: ChangeEvent<Entity>) {
+  // Note: This function is called via mojom - it should be defined on the
+  // listener interface.
+  changed(event: ChangeEvent<Entity>) {
     const copy: Cache<Entity> = { ...this.cache }
     for (const id in event.addedOrUpdated) copy[id] = event.addedOrUpdated[id]
     for (const id of event.removed) delete copy[id]
 
-    this.change(copy)
+    this.notifyChanged(copy)
   }
 }

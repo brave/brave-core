@@ -47,6 +47,6 @@ export class PublishersCachingWrapper
       copy[publisherId].userEnabledStatus = status
     }
 
-    this.change(copy)
+    this.notifyChanged(copy)
   }
 }
