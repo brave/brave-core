@@ -18,6 +18,7 @@ import BraveUI
 import BraveVPN
 import BraveNews
 import Growth
+import NetworkExtension
 
 extension TabBarVisibility: RepresentableOptionType {
   public var displayString: String {
@@ -95,6 +96,8 @@ class SettingsViewController: TableViewController {
   deinit {
     keyringStore?.tearDown()
     cryptoStore?.tearDown()
+    
+    NotificationCenter.default.removeObserver(self)
   }
 
   @available(*, unavailable)
@@ -114,6 +117,11 @@ class SettingsViewController: TableViewController {
     view.backgroundColor = .braveGroupedBackground
     view.tintColor = .braveBlurpleTint
     navigationController?.view.backgroundColor = .braveGroupedBackground
+    
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(vpnConfigChanged(notification:)),
+      name: .NEVPNStatusDidChange, object: nil)
   }
 
   private func displayRewardsDebugMenu() {
@@ -132,6 +140,17 @@ class SettingsViewController: TableViewController {
       UIHostingController(rootView: BraveSearchDebugMenu(logging: BraveSearchLogEntry.shared))
 
     navigationController?.pushViewController(hostingController, animated: true)
+  }
+  
+  /// The function for refreshing VPN status for menu
+  /// - Parameter notification: NEVPNStatusDidChange
+  @objc private func vpnConfigChanged(notification: NSNotification) {
+    guard let connection = notification.object as? NEVPNConnection else { return }
+
+    if connection.status == .connected || connection.status == .disconnected {
+      setUpSections()
+      tableView.reloadData()
+    }
   }
 
   // Do not use `sections` directly to access sections/rows. Use DataSource.sections instead.
