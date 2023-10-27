@@ -1402,11 +1402,6 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
       closeNotificationAd:base::SysUTF8ToNSString(placement_id)];
 }
 
-- (void)showReminder:(const brave_ads::mojom::ReminderType)type {
-  // TODO(https://github.com/brave/brave-browser/issues/33799): Unify Brave Ads
-  // reminders.
-}
-
 - (void)cacheAdEventForInstanceId:(const std::string&)id
                            adType:(const std::string&)ad_type
                  confirmationType:(const std::string&)confirmation_type

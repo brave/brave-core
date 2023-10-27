@@ -6,6 +6,7 @@
 #include "brave/components/services/bat_ads/bat_ads_observer.h"
 
 #include <utility>
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace bat_ads {
 
@@ -28,6 +29,10 @@ void BatAdsObserver::OnBrowserUpgradeRequiredToServeAds() {
 
 void BatAdsObserver::OnIneligibleRewardsWalletToServeAds() {
   observer_->OnIneligibleRewardsWalletToServeAds();
+}
+
+void BatAdsObserver::OnRemindUser(const brave_ads::mojom::ReminderType type) {
+  observer_->OnRemindUser(type);
 }
 
 }  // namespace bat_ads

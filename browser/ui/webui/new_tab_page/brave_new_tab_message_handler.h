@@ -75,6 +75,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void OnBraveRewardsDidChange() override;
   void OnBrowserUpgradeRequiredToServeAds() override;
   void OnIneligibleRewardsWalletToServeAds() override;
+  void OnRemindUser(brave_ads::mojom::ReminderType type) override;
 
   PrefChangeRegistrar pref_change_registrar_;
   // Weak pointer.

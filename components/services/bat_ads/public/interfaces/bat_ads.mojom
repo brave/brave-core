@@ -79,8 +79,6 @@ interface BatAdsClient {
   ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
   CloseNotificationAd(string placement_id);
 
-  ShowReminder(brave_ads.mojom.ReminderType type);
-
   CacheAdEventForInstanceId(string id,
                      string ad_type,
                      string confirmation_type,
@@ -138,6 +136,8 @@ interface BatAdsObserver {
   OnBrowserUpgradeRequiredToServeAds();
 
   OnIneligibleRewardsWalletToServeAds();
+
+  OnRemindUser(brave_ads.mojom.ReminderType type);
 };
 
 interface BatAds {

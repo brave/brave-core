@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_OBSERVER_UNITTEST_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_OBSERVER_UNITTEST_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_OBSERVER_UNITTEST_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_OBSERVER_UNITTEST_UTIL_H_
 
 namespace brave_ads {
 
 class AdsObserverMock;
 
-AdsObserverMock* AddAdsObserver();
+AdsObserverMock* AddAdsObserverMock();
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_OBSERVER_UNITTEST_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_OBSERVER_UNITTEST_UTIL_H_

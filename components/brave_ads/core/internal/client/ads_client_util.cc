@@ -74,10 +74,6 @@ void CloseNotificationAd(const std::string& placement_id) {
   GetInstance()->CloseNotificationAd(placement_id);
 }
 
-void ShowReminder(mojom::ReminderType type) {
-  GetInstance()->ShowReminder(type);
-}
-
 void CacheAdEventForInstanceId(const std::string& id,
                                const std::string& ad_type,
                                const std::string& confirmation_type,
