@@ -8,8 +8,15 @@
 namespace brave_ads {
 
 namespace {
+
+constexpr char kIsEligibleKey[] = "isEligible";
 constexpr char kNonceKey[] = "nonce";
+
 }  // namespace
+
+absl::optional<bool> ParseIsEligible(const base::Value::Dict& dict) {
+  return dict.FindBool(kIsEligibleKey);
+}
 
 absl::optional<std::string> ParseNonce(const base::Value::Dict& dict) {
   const std::string* const nonce = dict.FindString(kNonceKey);
