@@ -19,8 +19,8 @@ BatAdsObserver::BatAdsObserver(
 
 BatAdsObserver::~BatAdsObserver() = default;
 
-void BatAdsObserver::OnBraveRewardsDidChange() {
-  observer_->OnBraveRewardsDidChange();
+void BatAdsObserver::OnAdRewardsDidChange() {
+  observer_->OnAdRewardsDidChange();
 }
 
 void BatAdsObserver::OnBrowserUpgradeRequiredToServeAds() {

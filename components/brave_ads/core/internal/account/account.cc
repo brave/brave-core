@@ -182,7 +182,7 @@ void Account::SuccessfullyProcessedDeposit(
 
   NotifyDidProcessDeposit(transaction);
 
-  AdsNotifierManager::GetInstance().NotifyBraveRewardsDidChange();
+  AdsNotifierManager::GetInstance().NotifyAdRewardsDidChange();
 
   confirmations_->Confirm(transaction);
 }
@@ -204,7 +204,7 @@ void Account::Initialize() {
 
   MaybeRewardUser();
 
-  AdsNotifierManager::GetInstance().NotifyBraveRewardsDidChange();
+  AdsNotifierManager::GetInstance().NotifyAdRewardsDidChange();
 
   MaybeFetchIssuers();
 

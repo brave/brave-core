@@ -31,7 +31,7 @@ class AdsNotifierManager final {
 
   void AddObserver(std::unique_ptr<AdsObserverInterface> observer);
 
-  void NotifyBraveRewardsDidChange() const;
+  void NotifyAdRewardsDidChange() const;
 
   void NotifyBrowserUpgradeRequiredToServeAds() const;
 

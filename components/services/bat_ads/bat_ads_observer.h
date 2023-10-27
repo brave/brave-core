@@ -26,7 +26,7 @@ class BatAdsObserver : public brave_ads::AdsObserverInterface {
 
   ~BatAdsObserver() override;
 
-  void OnBraveRewardsDidChange() override;
+  void OnAdRewardsDidChange() override;
 
   void OnBrowserUpgradeRequiredToServeAds() override;
 

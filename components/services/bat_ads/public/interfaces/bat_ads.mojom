@@ -131,7 +131,7 @@ interface BatAdsClient {
 interface BatAdsObserver {
   // See AdsObserver for documentation.
 
-  OnBraveRewardsDidChange();
+  OnAdRewardsDidChange();
 
   OnBrowserUpgradeRequiredToServeAds();
 

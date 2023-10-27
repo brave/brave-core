@@ -23,7 +23,7 @@ class AdsObserverMock : public AdsObserverInterface {
 
   ~AdsObserverMock() override;
 
-  MOCK_METHOD(void, OnBraveRewardsDidChange, ());
+  MOCK_METHOD(void, OnAdRewardsDidChange, ());
 
   MOCK_METHOD(void, OnBrowserUpgradeRequiredToServeAds, ());
 
