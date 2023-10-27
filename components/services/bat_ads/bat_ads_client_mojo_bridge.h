@@ -119,7 +119,8 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
            const std::string& message) override;
 
  private:
-  mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_;
+  mojo::AssociatedRemote<mojom::BatAdsClient>
+      bat_ads_client_associated_receiver_;
   BatAdsClientNotifierImpl notifier_impl_;
 };
 
