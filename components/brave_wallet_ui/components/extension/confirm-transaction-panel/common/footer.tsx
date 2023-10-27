@@ -9,6 +9,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
 
 // Styled components
+import { TransactionText } from '../style'
 import {
   ButtonRow,
   ConfirmingButton,
@@ -16,6 +17,7 @@ import {
   ErrorText,
   FooterContainer,
   LoadIcon,
+  NetworkFeeRow,
   QueueStepButton
 } from './style'
 import { NavButton } from '../../buttons'
@@ -24,19 +26,22 @@ import { NavButton } from '../../buttons'
 import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
 
 interface Props {
-  onConfirm: () => Promise<void>
-  onReject: () => void
   rejectButtonType?: 'reject' | 'cancel'
+  showGasErrors?: boolean
 }
 
 export function Footer(props: Props) {
-  const { onReject, onConfirm, rejectButtonType } = props
+  const { rejectButtonType, showGasErrors } = props
 
   const {
     isConfirmButtonDisabled,
     rejectAllTransactions,
     transactionDetails,
-    transactionsQueueLength
+    transactionsQueueLength,
+    insufficientFundsForGasError,
+    insufficientFundsError,
+    onReject,
+    onConfirm
   } = usePendingTransactions()
 
   const [transactionConfirmed, setTranactionConfirmed] =
@@ -84,9 +89,27 @@ export function Footer(props: Props) {
           transactionDetails.contractAddressError,
           transactionDetails.sameAddressError,
           transactionDetails.missingGasLimitError
-        ].map((error, index) => (
-          <ErrorText key={`${index}-${error}`}>{error}</ErrorText>
-        ))}
+        ]
+          .filter(Boolean)
+          .map((error) => <ErrorText key={error}>{error}</ErrorText>)}
+
+      {showGasErrors && insufficientFundsForGasError && (
+        <NetworkFeeRow>
+          <TransactionText hasError={true}>
+            {getLocale('braveWalletSwapInsufficientFundsForGas')}
+          </TransactionText>
+        </NetworkFeeRow>
+      )}
+
+      {showGasErrors &&
+        !insufficientFundsForGasError &&
+        insufficientFundsError && (
+          <NetworkFeeRow>
+            <TransactionText hasError={true}>
+              {getLocale('braveWalletSwapInsufficientBalance')}
+            </TransactionText>
+          </NetworkFeeRow>
+        )}
 
       <ButtonRow>
         <NavButton
@@ -114,6 +137,52 @@ export function Footer(props: Props) {
             onSubmit={onClickConfirmTransaction}
             disabled={isConfirmButtonDisabled}
             minWidth='45%'
+          />
+        )}
+      </ButtonRow>
+    </FooterContainer>
+  )
+}
+
+export function SignTransactionFooter({
+  onReject,
+  onConfirm
+}: {
+  onConfirm: () => void | Promise<void>
+  onReject: () => void
+}) {
+  // state
+  const [isConfirming, setIsConfirming] = React.useState(false)
+
+  // methods
+  const onSign = async () => {
+    setIsConfirming(true)
+    await onConfirm()
+  }
+
+  // render
+  return (
+    <FooterContainer>
+      <ButtonRow>
+        <NavButton
+          buttonType={'reject'}
+          text={getLocale('braveWalletAllowSpendRejectButton')}
+          onSubmit={onReject}
+          disabled={isConfirming}
+        />
+        {isConfirming ? (
+          <ConfirmingButton>
+            <ConfirmingButtonText>
+              {getLocale('braveWalletAllowSpendConfirmButton')}
+            </ConfirmingButtonText>
+            <LoadIcon />
+          </ConfirmingButton>
+        ) : (
+          <NavButton
+            buttonType='confirm'
+            text={getLocale('braveWalletAllowSpendConfirmButton')}
+            onSubmit={onSign}
+            disabled={isConfirming}
           />
         )}
       </ButtonRow>

@@ -422,3 +422,104 @@ function getTransferTokenVerificationStatus(
       )
     : getLocale('braveWalletTokenIsVerified')
 }
+
+export function getComponentForEvmApproval(
+  approval: BraveWallet.BlowfishEVMStateChange,
+  network: ChainInfo
+) {
+  const { data } = approval.rawInfo
+
+  if (data.erc20ApprovalData) {
+    return (
+      <ErcTokenApproval
+        key={approval.humanReadableDiff}
+        approval={data.erc20ApprovalData}
+        network={network}
+        isERC20={true}
+      />
+    )
+  }
+
+  if (data.erc1155ApprovalForAllData) {
+    return (
+      <ErcTokenApproval
+        key={approval.humanReadableDiff}
+        approval={data.erc1155ApprovalForAllData}
+        network={network}
+        isApprovalForAll={true}
+      />
+    )
+  }
+
+  if (data.erc721ApprovalData) {
+    return (
+      <ErcTokenApproval
+        key={approval.humanReadableDiff}
+        approval={data.erc721ApprovalData}
+        network={network}
+      />
+    )
+  }
+
+  if (data.erc721ApprovalForAllData) {
+    return (
+      <ErcTokenApproval
+        key={approval.humanReadableDiff}
+        approval={data.erc721ApprovalForAllData}
+        network={network}
+        isApprovalForAll={true}
+      />
+    )
+  }
+
+  return null
+}
+
+export function getComponentForEvmTransfer(
+  transfer: BraveWallet.BlowfishEVMStateChange,
+  network: ChainInfo
+) {
+  const { data } = transfer.rawInfo
+
+  if (data.erc1155TransferData) {
+    return (
+      <NonFungibleErcTokenTransfer
+        key={transfer.humanReadableDiff}
+        transfer={data.erc1155TransferData}
+        network={network}
+      />
+    )
+  }
+
+  if (data.erc20TransferData) {
+    return (
+      <EvmNativeAssetOrErc20TokenTransfer
+        key={transfer.humanReadableDiff}
+        transfer={data.erc20TransferData}
+        network={network}
+      />
+    )
+  }
+
+  if (data.nativeAssetTransferData) {
+    return (
+      <EvmNativeAssetOrErc20TokenTransfer
+        key={transfer.humanReadableDiff}
+        transfer={data.nativeAssetTransferData}
+        network={network}
+      />
+    )
+  }
+
+  if (data.erc721TransferData) {
+    return (
+      <NonFungibleErcTokenTransfer
+        key={transfer.humanReadableDiff}
+        transfer={data.erc721TransferData}
+        network={network}
+      />
+    )
+  }
+
+  return null
+}

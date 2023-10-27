@@ -14,7 +14,11 @@ export const NetworkFeeAndSettingsContainer = styled.div`
   width: calc(100% - 8px);
 `
 
-export const NetworkFeeContainer = styled.div``
+export const NetworkFeeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+`
 
 export const NetworkFeeTitle = styled.div`
   font-family: 'Poppins';

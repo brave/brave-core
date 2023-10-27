@@ -2,7 +2,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-
 import styled from 'styled-components'
 import { ArrowRightIcon, LoaderIcon } from 'brave-ui/components/icons'
 import * as leo from '@brave/leo/tokens/css'
@@ -14,12 +13,14 @@ import { WarningBoxIcon } from '../shared-panel-styles'
 import {
   AssetIconProps,
   AssetIconFactory,
-  WalletButton
+  WalletButton,
+  styledScrollbarMixin,
+  Row,
+  Column
 } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
-  height: 100%;
   width: 100%;
   flex-direction: column;
   align-items: center;
@@ -118,6 +119,8 @@ export const MessageBox = styled.div<{ isDetails: boolean }>`
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
+  word-break: break-all;
+  ${styledScrollbarMixin}
 `
 
 export const TransactionTitle = styled.span`
@@ -239,6 +242,17 @@ export const ContractButton = styled(WalletButton)`
   padding: 0px;
 `
 
+export const InlineContractRow = styled(Row)`
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  gap: 4px;
+  text-align: left;
+  font-size: 11px;
+  vertical-align: center;
+`
+
 export const InlineAddressButton = styled(ContractButton)`
   display: inline-flex;
   flex-direction: row;
@@ -252,12 +266,12 @@ export const InlineAddressButton = styled(ContractButton)`
 `
 
 export const ExplorerIcon = styled.div`
-  -webkit-mask-image: url(${LinkIcon});
   mask-image: url(${LinkIcon});
   width: 12px;
   height: 12px;
   margin-left: 8px;
   mask-size: contain;
+  mask-repeat: no-repeat;
   background-color: ${(p) => p.theme.color.interactive05};
 `
 
@@ -265,4 +279,58 @@ export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
   --leo-icon-size: 14px;
   --leo-icon-color: ${leo.color.icon.interactive};
   margin-bottom: 1px;
+`
+export const WarningsList = styled.ul`
+  margin: 0;
+  max-height: 230px;
+  overflow-y: scroll;
+
+  ${styledScrollbarMixin}
+
+  & > li {
+    line-height: 18px;
+    margin-bottom: 14px;
+  }
+`
+
+export const LargeWarningCircleIcon = styled(Icon).attrs({
+  name: 'warning-circle-filled'
+})`
+  --leo-icon-size: 40px;
+  color: ${leo.color.systemfeedback.errorIcon};
+`
+
+export const FullWidthChildrenColumn = styled(Column)`
+  align-self: flex-end;
+  justify-self: flex-end;
+  & * {
+    width: 100%;
+  }
+`
+
+export const WarningInfoCircleIcon = styled(Icon).attrs({
+  name: 'warning-circle-outline'
+})`
+  --leo-icon-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: ${leo.color.systemfeedback.warningIcon};
+`
+
+export const WarningButtonText = styled.span`
+  color: ${leo.color.systemfeedback.errorIcon};
+`
+
+export const OriginIndicatorIconWrapper = styled.div`
+  position: absolute;
+  bottom: 4px;
+  right: 0px;
+`
+
+export const OriginWarningIndicator = styled.div`
+  width: 10px;
+  height: 10px;
+  border: 1.2px ${leo.color.container.background} solid;
+  border-radius: 100%;
+  background-color: ${leo.color.systemfeedback.errorIcon};
 `

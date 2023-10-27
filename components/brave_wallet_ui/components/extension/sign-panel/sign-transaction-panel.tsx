@@ -111,6 +111,7 @@ export const SignTransactionPanel = ({
       request: selectedQueueData
     })
 
+  // memos
   const txDatas = React.useMemo(() => {
     return selectedQueueData
       ? getTxDatasFromQueuedSolSignRequest(selectedQueueData)

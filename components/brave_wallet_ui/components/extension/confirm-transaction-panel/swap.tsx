@@ -11,11 +11,12 @@ import { getLocale } from '../../../../common/locale'
 
 // Styled components
 import { HeaderTitle } from './swap.style'
+import { VerticalSpace } from '../../shared/style'
 import { NetworkText, StyledWrapper, TopRow } from './style'
-import { Origin } from './common/origin'
-import { EditPendingTransactionGas } from './common/gas'
 
 // Components
+import { Origin } from './common/origin'
+import { EditPendingTransactionGas } from './common/gas'
 import { TransactionQueueSteps } from './common/queue'
 import { Footer } from './common/footer'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
@@ -23,6 +24,9 @@ import {
   PendingTransactionNetworkFeeAndSettings //
 } from '../pending-transaction-network-fee/pending-transaction-network-fee'
 import { SwapBase } from '../swap'
+import {
+  TxSimulationFailedWarning //
+} from './common/tx_simulation_failed_warning'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
@@ -30,7 +34,11 @@ import {
   useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
 
-export function ConfirmSwapTransaction() {
+interface Props {
+  retrySimulation?: () => void
+}
+
+export function ConfirmSwapTransaction ({ retrySimulation }: Props) {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
@@ -46,8 +54,6 @@ export function ConfirmSwapTransaction() {
     toOrb,
     updateUnapprovedTransactionNonce,
     selectedPendingTransaction,
-    onConfirm,
-    onReject,
     queueNextTransaction,
     transactionQueueNumber,
     transactionsQueueLength
@@ -118,11 +124,14 @@ export function ConfirmSwapTransaction() {
         onToggleEditGas={onToggleEditGas}
       />
 
-      <Footer
-        onConfirm={onConfirm}
-        onReject={onReject}
-        rejectButtonType={'cancel'}
-      />
+      {retrySimulation ? (
+        <>
+          <VerticalSpace space='16px' />
+          <TxSimulationFailedWarning retrySimulation={retrySimulation} />
+        </>
+      ) : null}
+
+      <Footer rejectButtonType={'cancel'} />
     </StyledWrapper>
   )
 }

@@ -213,6 +213,10 @@ export const Flex = styled.div`
   flex: 1;
 `
 
+export const FullWidth = styled.div`
+  min-width: 100%;
+`
+
 export const StatusBubble = styled.div<{
   status: BraveWallet.TransactionStatus
 }>`

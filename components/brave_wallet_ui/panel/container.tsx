@@ -70,6 +70,10 @@ import {
   return this.toString()
 }
 
+// TODO(petemill): If initial data or UI takes a noticeable amount of time to
+// arrive consider rendering a "loading" indicator when `hasInitialized ===
+// false`, and also using `React.lazy` to put all the main UI in a separate JS
+// bundle and display that loading indicator ASAP.
 function Container() {
   // wallet selectors (safe)
   const hasInitialized = useSafeWalletSelector(WalletSelectors.hasInitialized)
@@ -285,14 +289,9 @@ function Container() {
   }
 
   if (selectedPendingTransaction) {
-    const isSwap =
-      selectedPendingTransaction?.txType === BraveWallet.TransactionType.ETHSwap
     return (
-      <PanelWrapper
-        width={isSwap ? undefined : 390}
-        height={isSwap ? 540 : 650}
-      >
-        <LongWrapper>
+      <PanelWrapper isLonger={true}>
+        <LongWrapper padding='0px'>
           <PendingTransactionPanel
             selectedPendingTransaction={selectedPendingTransaction}
           />
@@ -308,7 +307,10 @@ function Container() {
       selectedPanel === 'signAllTransactions')
   ) {
     return (
-      <PanelWrapper isLonger={true}>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
         <LongWrapper>
           <PendingSignatureRequestsPanel
             signMode={

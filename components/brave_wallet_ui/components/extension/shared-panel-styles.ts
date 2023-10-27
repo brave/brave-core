@@ -224,7 +224,7 @@ export const Backdrop = styled.div`
   width: 100%;
   height: 100%;
   padding: 16px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.20);
 `
 
 export const FloatingCard = styled.div`

@@ -25,19 +25,30 @@ import {
 
 // Components
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
-import Tooltip from '../../shared/tooltip/index'
-import withPlaceholderIcon from '../../shared/create-placeholder-icon'
+import { Tooltip } from '../../shared/tooltip/index'
+import { withPlaceholderIcon } from '../../shared/create-placeholder-icon'
 import { PanelTab } from '../panel-tab/index'
 import { TransactionDetailBox } from '../transaction-box/index'
-import EditAllowance from '../edit-allowance'
-import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
-import AdvancedTransactionSettings from '../advanced-transaction-settings'
+import { EditAllowance } from '../edit-allowance/index'
+import {
+  AdvancedTransactionSettingsButton //
+} from '../advanced-transaction-settings/button/index'
+import {
+  AdvancedTransactionSettings //
+} from '../advanced-transaction-settings/index'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
-import { Footer } from './common/footer'
+import { SignTransactionFooter } from './common/footer'
 import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
+import {
+  TxSimulationFailedWarning //
+} from './common/tx_simulation_failed_warning'
+import { LoadingPanel } from '../loading_panel/loading_panel'
+import {
+  PendingTransactionNetworkFeeAndSettings //
+} from '../pending-transaction-network-fee/pending-transaction-network-fee'
 
 // Styled Components
 import {
@@ -56,9 +67,9 @@ import {
   EditButton,
   WarningIcon,
   ContractButton,
-  ExplorerIcon
+  ExplorerIcon,
+  WarningInfoCircleIcon
 } from './style'
-import { Skeleton } from '../../shared/loading-skeleton/styles'
 
 import {
   TabRow,
@@ -74,6 +85,7 @@ import {
   URLText
 } from '../shared-panel-styles'
 import { Column, Row } from '../../shared/style'
+import { NetworkFeeRow } from './common/style'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -81,6 +93,7 @@ const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
 const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 const onClickLearnMore = () => {
+  // TODO: link broken
   chrome.tabs.create(
     { url: 'https://support.brave.com/hc/en-us/articles/5546517853325' },
     () => {
@@ -91,7 +104,11 @@ const onClickLearnMore = () => {
   )
 }
 
-export const ConfirmTransactionPanel = () => {
+export const ConfirmTransactionPanel = ({
+  retrySimulation
+}: {
+  retrySimulation?: () => void
+}) => {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
@@ -129,16 +146,17 @@ export const ConfirmTransactionPanel = () => {
     isBitcoinTransaction,
     isZCashTransaction,
     hasFeeEstimatesError,
-    isLoadingGasFee
+    isLoadingGasFee,
+    isSolanaDappTransaction
   } = usePendingTransactions()
 
   // queries
   const { data: byteCode, isLoading } = useGetAddressByteCodeQuery(
     transactionDetails && isEthereumTransaction
       ? {
-          address: transactionDetails?.recipient ?? '',
-          coin: transactionDetails?.coinType ?? -1,
-          chainId: transactionDetails?.chainId ?? ''
+          address: transactionDetails.recipient ?? '',
+          coin: transactionDetails.coinType ?? -1,
+          chainId: transactionDetails.chainId ?? ''
         }
       : skipToken
   )
@@ -172,16 +190,13 @@ export const ConfirmTransactionPanel = () => {
   }
 
   // render
-  if (!transactionDetails || !selectedPendingTransaction || !fromAccount) {
-    return (
-      <StyledWrapper>
-        <Skeleton
-          width={'100%'}
-          height={'100%'}
-          enableAnimation
-        />
-      </StyledWrapper>
-    )
+  if (
+    !transactionDetails ||
+    !selectedPendingTransaction ||
+    !fromAccount ||
+    !transactionsQueueLength
+  ) {
+    return <LoadingPanel />
   }
 
   if (isEditing) {
@@ -343,36 +358,59 @@ export const ConfirmTransactionPanel = () => {
             />
           )}
 
-          <TransactionAmountBig>
-            {isERC721TransferFrom || isERC721SafeTransferFrom
-              ? transactionDetails.erc721BlockchainToken?.name +
-                ' ' +
-                transactionDetails.erc721TokenId
-              : new Amount(transactionDetails.valueExact).formatAsAsset(
-                  undefined,
-                  transactionDetails.symbol
+          {!isSolanaDappTransaction && (
+            <>
+              <Row
+                margin={
+                  isAssociatedTokenAccountCreation
+                    ? '0px 0px 0px 16px'
+                    : undefined
+                }
+                alignItems='center'
+                justifyContent='center'
+                gap={'4px'}
+              >
+                <TransactionAmountBig>
+                  {isERC721TransferFrom || isERC721SafeTransferFrom
+                    ? transactionDetails.erc721BlockchainToken?.name +
+                      ' ' +
+                      transactionDetails.erc721TokenId
+                    : new Amount(transactionDetails.valueExact).formatAsAsset(
+                        undefined,
+                        transactionDetails.symbol
+                      )}
+                </TransactionAmountBig>
+
+                {isAssociatedTokenAccountCreation && (
+                  <Tooltip
+                    maxWidth={'200px'}
+                    minWidth={'180px'}
+                    text={
+                      <>
+                        {getLocale(
+                          'braveWalletConfirmTransactionAccountCreationFee'
+                        )}{' '}
+                        <LearnMoreButton onClick={onClickLearnMore}>
+                          {getLocale(
+                            'braveWalletAllowAddNetworkLearnMoreButton'
+                          )}
+                        </LearnMoreButton>
+                      </>
+                    }
+                  >
+                    <WarningInfoCircleIcon />
+                  </Tooltip>
                 )}
-          </TransactionAmountBig>
+              </Row>
 
-          {!isERC721TransferFrom && !isERC721SafeTransferFrom && (
-            <TransactionFiatAmountBig>
-              {new Amount(transactionDetails.fiatValue).formatAsFiat(
-                defaultFiatCurrency
+              {!isERC721TransferFrom && !isERC721SafeTransferFrom && (
+                <TransactionFiatAmountBig>
+                  {new Amount(transactionDetails.fiatValue).formatAsFiat(
+                    defaultFiatCurrency
+                  )}
+                </TransactionFiatAmountBig>
               )}
-            </TransactionFiatAmountBig>
-          )}
-
-          {isAssociatedTokenAccountCreation && (
-            <WarningBox warningType={'warning'}>
-              <WarningBoxTitleRow>
-                <WarningTitle warningType={'warning'}>
-                  {getLocale('braveWalletConfirmTransactionAccountCreationFee')}
-                  <LearnMoreButton onClick={onClickLearnMore}>
-                    {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
-                  </LearnMoreButton>
-                </WarningTitle>
-              </WarningBoxTitleRow>
-            </WarningBox>
+            </>
           )}
         </>
       )}
@@ -426,7 +464,18 @@ export const ConfirmTransactionPanel = () => {
         )}
       </MessageBox>
 
-      <Footer
+      <NetworkFeeRow>
+        <PendingTransactionNetworkFeeAndSettings
+          onToggleEditGas={onToggleEditGas}
+          feeDisplayMode='fiat'
+        />
+      </NetworkFeeRow>
+
+      {retrySimulation && (
+        <TxSimulationFailedWarning retrySimulation={retrySimulation} />
+      )}
+
+      <SignTransactionFooter
         onConfirm={onConfirm}
         onReject={onReject}
       />

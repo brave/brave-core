@@ -4,9 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-
+import * as leo from '@brave/leo/tokens/css'
 import { LoaderIcon } from 'brave-ui/components/icons'
+
+// shared styles
 import { WalletButton } from '../../../shared/style'
+import { TabRow } from '../../shared-panel-styles'
 
 export const FooterContainer = styled.div`
   display: flex;
@@ -99,10 +102,21 @@ export const ButtonRow = styled.div`
   gap: 16px;
 `
 
-export const FavIcon = styled.img`
+export const FavIcon = styled.img<{ height?: string }>`
   width: auto;
-  height: 40px;
+  height: ${(p) => p?.height || '40px'};
   border-radius: 5px;
   background-color: ${(p) => p.theme.color.background01};
   margin-bottom: 7px;
 `
+
+export const OriginURLText = styled.span`
+  word-break: break-word;
+  text-align: left;
+  margin-bottom: 4px;
+  color: ${leo.color.gray[60]};
+  font-size: 12px;
+  margin-bottom: 0px;
+`
+
+export const NetworkFeeRow = styled(TabRow)``

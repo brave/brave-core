@@ -87,7 +87,6 @@ export const TermsText = styled.p`
   font-family: Poppins;
   line-height: 16px;
   color: ${leo.color.text.tertiary};
-
   & > strong {
     color: ${leo.color.text.secondary};
   }

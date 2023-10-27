@@ -58,14 +58,14 @@ export const SelectContainer = styled.div`
   background-color: ${(p) => p.theme.color.background01};
 `
 
-export const LongWrapper = styled.div`
+export const LongWrapper = styled.div<{ padding?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-  padding: 0px 12px 0px 12px;
+  padding: ${(p) => p?.padding ?? '0px 12px 0px 12px'};
   position: relative;
   box-sizing: border-box;
   background-color: ${(p) => p.theme.color.background01};
