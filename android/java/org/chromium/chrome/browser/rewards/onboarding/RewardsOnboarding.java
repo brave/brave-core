@@ -301,7 +301,8 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         if (BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(mAnchorView.getContext())
                 || mActivity.shouldShowRequestPermissionRationale(
                         Manifest.permission.POST_NOTIFICATIONS)
-                || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
+                || (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                        || !BuildInfo.targetsAtLeastT())) {
             // other than android 13 redirect to
             // setting page and for android 13 Last time don't allow selected in permission
             // dialog, then enable through setting, this done through this dialog

@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -207,7 +208,10 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
     private void updateNotificationView(View view) {
         ImageView btnDismiss = view.findViewById(R.id.button_dismiss);
-        btnDismiss.setOnClickListener(v -> { statsNotificationView.setVisibility(View.GONE); });
+        btnDismiss.setOnClickListener(
+                v -> {
+                    statsNotificationView.setVisibility(View.GONE);
+                });
         View notificationOnButton = view.findViewById(R.id.notification_on_button);
         notificationOnButton.setOnClickListener(
                 v -> {
@@ -215,7 +219,8 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                             || getActivity()
                                     .shouldShowRequestPermissionRationale(
                                             Manifest.permission.POST_NOTIFICATIONS)
-                            || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
+                            || (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                                    || !BuildInfo.targetsAtLeastT())) {
                         // other than android 13 redirect to
                         // setting page and for android 13 Last time don't allow selected in
                         // permission
