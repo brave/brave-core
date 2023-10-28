@@ -62,9 +62,6 @@
             "IF_BUILDFLAG_IMPL_1",
             "IF_BUILDFLAG_IMPL_CAT",
         ],
-        "chrome/browser/active_use_util.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
-        ],
         "chrome/browser/bookmarks/android/bookmark_bridge.cc": [
             "BraveBookmarkBridge",
         ],
@@ -110,9 +107,6 @@
             "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
         ],
         "chrome/installer/setup/install_worker.cc": [
-            "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
-        ],
-        "chrome/installer/setup/user_experiment.cc": [
             "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
         ],
         "components/permissions/permission_request_data.h": [
