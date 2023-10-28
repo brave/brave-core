@@ -244,11 +244,6 @@ CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
   return CookieBlockMode::BLOCKED;
 }
 
-bool BraveShieldsDataController::GetHTTPSEverywhereEnabled() {
-  return brave_shields::GetHTTPSEverywhereEnabled(
-      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
-}
-
 HttpsUpgradeMode BraveShieldsDataController::GetHttpsUpgradeMode() {
   ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
@@ -386,14 +381,6 @@ void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
 
   brave_shields::SetNoScriptControlType(
       GetHostContentSettingsMap(web_contents()), control_type,
-      GetCurrentSiteURL(), g_browser_process->local_state());
-
-  ReloadWebContents();
-}
-
-void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
-  brave_shields::SetHTTPSEverywhereEnabled(
-      GetHostContentSettingsMap(web_contents()), is_enabled,
       GetCurrentSiteURL(), g_browser_process->local_state());
 
   ReloadWebContents();
