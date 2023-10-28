@@ -250,27 +250,6 @@ JNI_BraveShieldsContentSettings_GetCosmeticFilteringControlType(
       env, brave_shields::ControlTypeToString(cosmetic_type));
 }
 
-void JNI_BraveShieldsContentSettings_SetHTTPSEverywhereEnabled(JNIEnv* env,
-    jboolean enabled,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
-  brave_shields::SetHTTPSEverywhereEnabled(
-      HostContentSettingsMapFactory::GetForProfile(
-          ProfileAndroid::FromProfileAndroid(j_profile)),
-      enabled,
-      GURL(base::android::ConvertJavaStringToUTF8(env, url)),
-      g_browser_process->local_state());
-}
-
-jboolean JNI_BraveShieldsContentSettings_GetHTTPSEverywhereEnabled(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
-  return brave_shields::GetHTTPSEverywhereEnabled(
-      HostContentSettingsMapFactory::GetForProfile(
-          ProfileAndroid::FromProfileAndroid(j_profile)),
-      GURL(base::android::ConvertJavaStringToUTF8(env, url)));
-}
-
 void JNI_BraveShieldsContentSettings_SetNoScriptControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type,
     const base::android::JavaParamRef<jstring>& url,

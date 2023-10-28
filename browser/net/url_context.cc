@@ -150,9 +150,6 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
       map ? brave_shields::GetCosmeticFilteringControlType(
                 map, ctx->tab_origin) == brave_shields::ControlType::BLOCK
           : false;
-  ctx->allow_http_upgradable_resource =
-      map ? !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin)
-          : false;
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should
   // use only tab_origin. Since we recreate BraveRequestInfo during consequent

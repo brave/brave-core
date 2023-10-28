@@ -33,7 +33,6 @@ class LocalDataFilesService;
 
 namespace brave_shields {
 class AdBlockService;
-class HTTPSEverywhereService;
 }  // namespace brave_shields
 
 namespace https_upgrade_exceptions {
@@ -126,7 +125,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;
-  brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
   brave_component_updater::LocalDataFilesService* local_data_files_service()
       override;
 #if BUILDFLAG(ENABLE_TOR)
@@ -199,9 +197,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   std::unique_ptr<brave::URLSanitizerComponentInstaller>
       url_sanitizer_component_installer_;
-  bool created_https_everywhere_service_ = false;
-  std::unique_ptr<brave_shields::HTTPSEverywhereService>
-      https_everywhere_service_;
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
 #if BUILDFLAG(ENABLE_TOR)

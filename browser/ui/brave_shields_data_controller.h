@@ -69,7 +69,6 @@ class BraveShieldsDataController
   CookieBlockMode GetCookieBlockMode();
   bool IsBraveShieldsManaged();
   bool IsForgetFirstPartyStorageFeatureEnabled() const;
-  bool GetHTTPSEverywhereEnabled();
   HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
   bool GetForgetFirstPartyStorageEnabled();
@@ -78,7 +77,6 @@ class BraveShieldsDataController
   void SetCookieBlockMode(CookieBlockMode mode);
   void SetHttpsUpgradeMode(HttpsUpgradeMode mode);
   void SetIsNoScriptEnabled(bool is_enabled);
-  void SetIsHTTPSEverywhereEnabled(bool is_enabled);
   void SetForgetFirstPartyStorageEnabled(bool is_enabled);
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);

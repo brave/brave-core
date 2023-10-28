@@ -197,10 +197,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     this.browserProxy_.setFingerprintingControlType(this.$.fingerprintingControlType.value)
   }
 
-  onHTTPSEverywhereControlChange_ () {
-    this.browserProxy_.setHTTPSEverywhereEnabled(this.$.httpsEverywhereControlType.checked)
-  }
-
   onHttpsUpgradeControlChange_ () {
     this.browserProxy_.setHttpsUpgradeControlType(
       this.$.httpsUpgradeControlType.value)

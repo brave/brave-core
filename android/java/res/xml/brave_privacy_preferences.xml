@@ -23,11 +23,6 @@
             app:dialog_default_index="1"
             />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-            android:key="httpse"
-            android:title="@string/brave_shields_https_everywhere_switch"
-            android:summary="@string/brave_shields_https_everywhere_switch_summary"
-            android:defaultValue="true" />
-        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="scripts_block"
             android:title="@string/brave_shields_blocks_scripts_switch"
             android:summary="@string/brave_shields_blocks_scripts_summary"

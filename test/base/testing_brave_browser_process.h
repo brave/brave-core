@@ -60,7 +60,6 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
 #endif
   brave::URLSanitizerComponentInstaller* URLSanitizerComponentInstaller()
       override;
-  brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() override;
   localhost_permission::LocalhostPermissionComponent*

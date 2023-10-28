@@ -47,11 +47,6 @@ export interface DefaultBraveShieldsBrowserProxy {
   setFingerprintingControlType(value)
 
   /**
-   * @param {string} value name.
-   */
-  setHTTPSEverywhereEnabled(value)
-
-  /**
    * @return {!Promise<string>}
    */
   getHttpsUpgradeControlType()
@@ -114,11 +109,6 @@ export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsB
   /** @override */
   setFingerprintingControlType(value) {
     chrome.send('setFingerprintingControlType', [value]);
-  }
-
-  /** @override */
-  setHTTPSEverywhereEnabled(value) {
-    chrome.send('setHTTPSEverywhereEnabled', [value]);
   }
 
   /** @override */
