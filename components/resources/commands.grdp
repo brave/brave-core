@@ -229,6 +229,9 @@
   <message name="IDS_IDC_SHOW_PASSWORD_MANAGER">
     Show password manager
   </message>
+  <message name="IDS_IDC_VIEW_PASSWORDS">
+    View Passwords
+  </message>
   <message name="IDS_IDC_SHOW_PAYMENT_METHODS">
     Show payment methods
   </message>
