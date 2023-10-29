@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import usePromise from '../../../../common/usePromise'
-import { api } from '../context'
 import getBraveNewsController, { Channels, Configuration, FeedV2, Publisher, PublisherType, Publishers, isPublisherEnabled } from './api'
 import { ChannelsCachingWrapper } from './channelsCache'
 import { ConfigurationCachingWrapper } from './configurationCache'
@@ -75,11 +74,11 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const { result: feedV2 } = usePromise<FeedV2 | undefined>(() => {
     let promise: Promise<{ feed: FeedV2 }> | undefined
     if (feedView.startsWith('publishers/')) {
-      promise = api.getPublisherFeed(feedView.split('/')[1]);
+      promise = getBraveNewsController().getPublisherFeed(feedView.split('/')[1]);
     } else if (feedView.startsWith('channels/')) {
-      promise = api.getChannelFeed(feedView.split('/')[1])
+      promise = getBraveNewsController().getChannelFeed(feedView.split('/')[1])
     } else {
-      promise = api.getFeedV2()
+      promise = getBraveNewsController().getFeedV2()
     }
     return promise?.then(f => f.feed)
   }, [feedView])

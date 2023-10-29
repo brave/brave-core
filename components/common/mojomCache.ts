@@ -10,7 +10,7 @@ export type CacheListener<T> = (
 
 /**
  * Allows consumers to subscribe to changes to an object.
- * 
+ *
  * This is useful for listening to changes to a remote mojom object and
  * keeping track of the intermediate value.
  */

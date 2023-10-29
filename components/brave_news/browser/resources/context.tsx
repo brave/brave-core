@@ -5,19 +5,17 @@
 
 import usePromise from '$web-common/usePromise';
 import {
-  BraveNewsController,
   Signal
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
 import { BraveNewsContextProvider } from './shared/Context';
+import getBraveNewsController from './shared/api';
 
 export interface InspectContext {
   signals: { [key: string]: Signal },
   truncate: number,
   setTruncate: (value: number) => void
 }
-
-export const api = BraveNewsController.getRemote();
 
 const Context = React.createContext<InspectContext>({
   signals: {},
@@ -30,7 +28,7 @@ export const useInspectContext = () => {
 }
 
 export default function InspectContext(props: React.PropsWithChildren<{}>) {
-  const { result: signals } = usePromise(() => api.getSignals().then(r => r.signals), []);
+  const { result: signals } = usePromise(() => getBraveNewsController().getSignals().then(r => r.signals), []);
   const [truncate, setTruncate] = React.useState(parseInt(localStorage.getItem('truncate') || '') || 250)
   const setAndSaveTruncate = React.useCallback((value: number) => {
     localStorage.setItem('truncate', value.toString())
