@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_MISC_METRICS_MISC_ANDROID_METRICS_H_
 
 #include "base/memory/raw_ptr.h"
+#include "base/time/time.h"
 #include "brave/components/misc_metrics/common/misc_metrics.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -33,6 +34,7 @@ class MiscAndroidMetrics : public KeyedService,
   void RecordPrivacyHubView() override;
   void RecordPrivacyHubEnabledStatus(bool is_enabled) override;
   void RecordLocationBarQuery() override;
+  void RecordBrowserUsageDuration(base::TimeDelta duration) override;
 
  private:
   raw_ptr<ProcessMiscMetrics> misc_metrics_;
