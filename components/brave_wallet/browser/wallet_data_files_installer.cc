@@ -20,14 +20,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/component_updater/component_installer.h"
-#include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
 #include "crypto/sha2.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_wallet/browser/wallet_data_files_installer_android_util.h"
-#endif
 
 namespace brave_wallet {
 
@@ -145,10 +140,6 @@ void SetLastInstalledWalletVersionForTest(const base::Version& version) {
   last_installed_wallet_version = version;
 }
 
-std::string GetWalletDataFilesComponentId() {
-  return kComponentId;
-}
-
 WalletDataFilesInstaller::WalletDataFilesInstaller() = default;
 
 WalletDataFilesInstaller::~WalletDataFilesInstaller() = default;
@@ -184,11 +175,7 @@ void WalletDataFilesInstaller::RegisterWalletDataFilesComponentInternal(
 void WalletDataFilesInstaller::MaybeRegisterWalletDataFilesComponent(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_state) {
-#if BUILDFLAG(IS_ANDROID)
-  if (!IsNativeWalletEnabled() || !IsBraveWalletConfiguredOnAndroid()) {
-#else
   if (!IsNativeWalletEnabled() || !HasCreatedWallets(local_state)) {
-#endif
     return;
   }
 

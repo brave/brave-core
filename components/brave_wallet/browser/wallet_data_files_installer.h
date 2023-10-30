@@ -44,10 +44,6 @@ class WalletDataFilesInstaller
       component_updater::ComponentUpdateService* cus,
       PrefService* local_state);
 
-  // TODO(jocelyn): remove this and make Android share the same path
-  //  void RegisterWalletDataFilesComponentOnDemand(
-  //      component_updater::ComponentUpdateService* cus);
-
   using InstallCallback = base::OnceClosure;
   void MaybeRegisterWalletDataFilesComponentOnDemand(
       InstallCallback install_callback);
