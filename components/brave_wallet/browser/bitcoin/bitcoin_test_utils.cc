@@ -121,13 +121,15 @@ void BitcoinTestRpcServer::RequestInterceptor(
       return;
     }
 
-    auto addresses = keyring_service_->GetBitcoinAddresses(account_id_);
-    for (const auto& item : *addresses) {
-      if (item->address_string == *address) {
-        url_loader_factory_.AddResponse(
-            request.url.spec(),
-            base::ToString(TransactedAddressStats(*address).ToValue()));
-        return;
+    if (account_id_) {
+      auto addresses = keyring_service_->GetBitcoinAddresses(account_id_);
+      for (const auto& item : *addresses) {
+        if (item->address_string == *address) {
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              base::ToString(TransactedAddressStats(*address).ToValue()));
+          return;
+        }
       }
     }
 
@@ -165,49 +167,57 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
   btc_testnet->rpc_endpoints[0] = GURL(testnet_rpc_url_);
   AddCustomNetwork(prefs_, *btc_testnet);
 
-  account_id_ = account_id->Clone();
+  address_0_.clear();
+  address_6_.clear();
+  address_stats_map_.clear();
+  utxos_map_.clear();
 
-  auto bitcoin_acc_info = keyring_service_->GetBitcoinAccountInfo(account_id);
-  ASSERT_TRUE(bitcoin_acc_info);
+  account_id_ = account_id.Clone();
 
-  address_0_ =
-      keyring_service_
-          ->GetBitcoinAddress(account_id, mojom::BitcoinKeyId::New(0, 0))
-          ->address_string;
-  auto& stats_0 = address_stats_map_[address_0_];
-  stats_0.address = address_0_;
-  stats_0.chain_stats.funded_txo_sum = "10000";
-  stats_0.chain_stats.spent_txo_sum = "5000";
-  stats_0.chain_stats.tx_count = "1";
-  stats_0.mempool_stats.funded_txo_sum = "8888";
-  stats_0.mempool_stats.spent_txo_sum = "2222";
-  stats_0.mempool_stats.tx_count = "1";
+  if (account_id_) {
+    auto bitcoin_acc_info =
+        keyring_service_->GetBitcoinAccountInfo(account_id_);
+    ASSERT_TRUE(bitcoin_acc_info);
 
-  address_6_ =
-      keyring_service_
-          ->GetBitcoinAddress(account_id, mojom::BitcoinKeyId::New(1, 0))
-          ->address_string;
-  auto& stats_6 = address_stats_map_[address_6_];
-  stats_6.address = address_6_;
-  stats_6.chain_stats.funded_txo_sum = "100000";
-  stats_6.chain_stats.spent_txo_sum = "50000";
-  stats_6.chain_stats.tx_count = "1";
-  stats_6.mempool_stats.funded_txo_sum = "88888";
-  stats_6.mempool_stats.spent_txo_sum = "22222";
-  stats_6.mempool_stats.tx_count = "1";
+    address_0_ =
+        keyring_service_
+            ->GetBitcoinAddress(account_id_, mojom::BitcoinKeyId::New(0, 0))
+            ->address_string;
+    auto& stats_0 = address_stats_map_[address_0_];
+    stats_0.address = address_0_;
+    stats_0.chain_stats.funded_txo_sum = "10000";
+    stats_0.chain_stats.spent_txo_sum = "5000";
+    stats_0.chain_stats.tx_count = "1";
+    stats_0.mempool_stats.funded_txo_sum = "8888";
+    stats_0.mempool_stats.spent_txo_sum = "2222";
+    stats_0.mempool_stats.tx_count = "1";
 
-  auto& utxos_0 = utxos_map_[address_0_];
-  utxos_0.emplace_back();
-  utxos_0.back().txid = kMockBtcTxid1;
-  utxos_0.back().vout = "1";
-  utxos_0.back().value = "5000";
-  utxos_0.back().status.confirmed = true;
-  auto& utxos_6 = utxos_map_[address_6_];
-  utxos_6.emplace_back();
-  utxos_6.back().txid = kMockBtcTxid2;
-  utxos_6.back().vout = "7";
-  utxos_6.back().value = "50000";
-  utxos_6.back().status.confirmed = true;
+    address_6_ =
+        keyring_service_
+            ->GetBitcoinAddress(account_id_, mojom::BitcoinKeyId::New(1, 0))
+            ->address_string;
+    auto& stats_6 = address_stats_map_[address_6_];
+    stats_6.address = address_6_;
+    stats_6.chain_stats.funded_txo_sum = "100000";
+    stats_6.chain_stats.spent_txo_sum = "50000";
+    stats_6.chain_stats.tx_count = "1";
+    stats_6.mempool_stats.funded_txo_sum = "88888";
+    stats_6.mempool_stats.spent_txo_sum = "22222";
+    stats_6.mempool_stats.tx_count = "1";
+
+    auto& utxos_0 = utxos_map_[address_0_];
+    utxos_0.emplace_back();
+    utxos_0.back().txid = kMockBtcTxid1;
+    utxos_0.back().vout = "1";
+    utxos_0.back().value = "5000";
+    utxos_0.back().status.confirmed = true;
+    auto& utxos_6 = utxos_map_[address_6_];
+    utxos_6.emplace_back();
+    utxos_6.back().txid = kMockBtcTxid2;
+    utxos_6.back().vout = "7";
+    utxos_6.back().value = "50000";
+    utxos_6.back().status.confirmed = true;
+  }
 
   fee_estimates_ = ParseJson(
       R"(
@@ -242,6 +252,10 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
           "1008": 1.93
         }
         )");
+}
+
+void BitcoinTestRpcServer::AddTransactedAddress(const std::string& address) {
+  address_stats_map()[address] = TransactedAddressStats(address);
 }
 
 }  // namespace brave_wallet
