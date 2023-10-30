@@ -43,7 +43,7 @@ const char kWalletPageHost[] = "wallet";
 const char kWalletBuyPagePath[] = "/fund-wallet";
 const char kWalletSendPagePath[] = "/send";
 const char kWalletSwapPagePath[] = "/swap";
-const char kWalletDepositPagePath[] = "/deposit-funds";
+const char kWalletDepositPagePath[] = "/crypto/deposit-funds";
 #endif  // BUILDFLAG(IS_ANDROID)
 const char kExtensionSettingsURL[] = "brave://settings/extensions";
 const char kWalletSettingsURL[] = "brave://settings/wallet";
