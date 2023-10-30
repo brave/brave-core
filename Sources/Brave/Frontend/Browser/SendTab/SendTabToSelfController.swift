@@ -12,7 +12,7 @@ class SendTabToSelfController: SendTabTransitioningController {
   
   struct UX {
     static let contentInset = 20.0
-    static let preferredSizePadding = 132.0
+    static let preferredSizePadding = 100.0
   }
   
   // MARK: Internal
@@ -66,14 +66,16 @@ class SendTabToSelfController: SendTabTransitioningController {
   }
   
   private func updateLayoutConstraints() {
+    let contentSize = CGSize(width: view.bounds.size.width, height: view.frame.height)
+    
     let preferredSize = sendTabContentController.view.systemLayoutSizeFitting(
-      CGSize(width: view.bounds.size.width, height: view.frame.height),
+      contentSize,
       withHorizontalFittingPriority: .required,
       verticalFittingPriority: .fittingSizeLevel
     ).with {
       $0.height += UX.preferredSizePadding
     }
-    
+
     contentNavigationController.view.snp.makeConstraints {
       if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
         $0.leading.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(UX.contentInset)
@@ -125,38 +127,26 @@ class SendTabToSelfContentController: UITableViewController {
     navigationItem.title = Strings.OpenTabs.sendWebpageScreenTitle
     navigationItem.leftBarButtonItem =
       UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(cancel))
-
+    navigationItem.rightBarButtonItem =
+      UIBarButtonItem(title: Strings.sendButtonTitle, style: .plain, target: self, action: #selector(send))
+    
     tableView.do {
       $0.tableHeaderView = UIView()
       $0.register(CenteredButtonCell.self)
       $0.register(TwoLineTableViewCell.self)
-      $0.registerHeaderFooter(SendTabToSelfContentHeaderFooterView.self)
-      $0.tableFooterView = SendTabToSelfContentHeaderFooterView().then {
-        $0.titleLabel.text = Strings.OpenTabs.sendDeviceButtonTitle
-        $0.titleLabel.isUserInteractionEnabled = true
-        $0.titleLabel.addGestureRecognizer(UITapGestureRecognizer(
-          target: self,
-          action: #selector(tappedSendLabel(_:))))
-      }
     }
-  }
-  
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
     
-    guard let footerView = tableView.tableFooterView else { return }
-    
-    let size = footerView.systemLayoutSizeFitting(
-      CGSize(width: tableView.bounds.size.width, height: UIView.layoutFittingCompressedSize.height))
-    
-    if footerView.frame.size.height != size.height {
-      footerView.frame.size.height = size.height
-      tableView.tableFooterView = footerView
-    }
+    tableView.flashScrollIndicators()
   }
   
   @objc func cancel() {
     dismiss(animated: true)
+  }
+  
+  @objc func send() {
+    guard let dataSource = dataSource else { return }
+    
+    sendWebSiteHandler?(dataSource)
   }
 }
 
@@ -193,6 +183,7 @@ extension SendTabToSelfContentController {
       }
       
       cell.do {
+        $0.separatorInset = UIEdgeInsets.zero
         $0.backgroundColor = .clear
         $0.accessoryType = indexPath.row == dataSource?.selectedIndex ? .checkmark : .none
         $0.setLines(device.fullName, detailText: device.lastUpdatedTime.formattedActivePeriodDate)

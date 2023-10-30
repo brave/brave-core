@@ -50,6 +50,9 @@ extension Strings {
     NSLocalizedString(
       "yearAbbreviation", tableName: "BraveShared",
       bundle: .module, value: "yr.", comment: "Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language")
+  public static let sendButtonTitle = NSLocalizedString(
+    "sendButtonTitle", tableName: "BraveShared",
+    bundle: .module, value: "Send", comment: "")
 }
 
 // MARK:-  UIAlertControllerExtensions.swift
