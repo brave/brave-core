@@ -12,6 +12,7 @@ import DataContext, { AIChatContext } from './context'
 // TODO(petemill): Build account urls in the browser
 const URL_REFRESH_PREMIUM_SESSION = 'https://account.brave.com/?intent=recover&product=leo'
 const URL_GO_PREMIUM = 'https://account.brave.com/account/?intent=checkout&product=leo'
+const URL_MANAGE_PREMIUM = 'https://account.brave.com/'
 
 function toBlobURL(data: number[] | null) {
   if (!data) return undefined
@@ -216,6 +217,12 @@ function DataContextProvider (props: DataContextProviderProps) {
     })
   }
 
+  const managePremium = () => {
+    getPageHandlerInstance().pageHandler.openURL({
+      url: URL_MANAGE_PREMIUM
+    })
+  }
+
   const initialiseForTargetTab = async () => {
     // Replace state from backend
     // TODO(petemill): Perhaps we need a simple GetState mojom function
@@ -300,6 +307,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     setCurrentModel,
     switchToDefaultModel,
     goPremium,
+    managePremium,
     generateSuggestedQuestions,
     setUserAllowsAutoGenerating,
     handleAgreeClick,
