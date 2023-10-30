@@ -281,14 +281,6 @@ static_library("browser") {
   }
 
   configs += [ ":sardine_config" ]
-
-  if (is_android) {
-    sources += [
-      "wallet_data_files_installer_android_util.cc",
-      "wallet_data_files_installer_android_util.h",
-    ]
-    deps += [ "//brave/build/android:jni_headers" ]
-  }
 }
 
 if (!is_ios) {

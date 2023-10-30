@@ -13,17 +13,12 @@ import org.chromium.base.annotations.NativeMethods;
  */
 @JNINamespace("chrome::android")
 public class WalletDataFilesInstaller {
-    public static void registerWalletDataFilesComponentOnDemand() {
-        WalletDataFilesInstallerJni.get().registerWalletDataFilesComponentOnDemand();
-    }
-
     public static String getWalletDataFilesComponentId() {
         return WalletDataFilesInstallerJni.get().getWalletDataFilesComponentId();
     }
 
     @NativeMethods
     interface Natives {
-        void registerWalletDataFilesComponentOnDemand();
         String getWalletDataFilesComponentId();
     }
 }

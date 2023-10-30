@@ -9,7 +9,6 @@
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/build/android/jni_headers/WalletDataFilesInstaller_jni.h"
-#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "components/component_updater/component_updater_service.h"
@@ -18,31 +17,6 @@ static_assert BUILDFLAG(IS_ANDROID);
 
 namespace chrome {
 namespace android {
-
-namespace {
-
-bool IsBraveWalletDataFilesComponentRegistered() {
-  std::vector<std::string> registered_ids =
-      g_browser_process->component_updater()->GetComponentIDs();
-  return base::Contains(
-      registered_ids,
-      std::string(brave_wallet::GetWalletDataFilesComponentId()));
-}
-
-}  // namespace
-
-static void
-JNI_WalletDataFilesInstaller_RegisterWalletDataFilesComponentOnDemand(
-    JNIEnv* env) {
-  if (IsBraveWalletDataFilesComponentRegistered()) {
-    return;
-  }
-
-  component_updater::ComponentUpdateService* cus =
-      g_browser_process->component_updater();
-
-  ::brave_wallet::RegisterWalletDataFilesComponentOnDemand(cus);
-}
 
 static base::android::ScopedJavaLocalRef<jstring>
 JNI_WalletDataFilesInstaller_GetWalletDataFilesComponentId(JNIEnv* env) {
