@@ -61,7 +61,8 @@ def ReportToDashboardImpl(
   build_properties['got_revision'] = git_hash
 
   # Encode and pass tags as v8/webrtc revisions.
-  # Sync there changes with dashboard chart-container.html (brave/catapult repo)
+  # Sync the format with the dashboard JavaScript code:
+  # chart-container.html (brave/catapult repo)
   build_properties['got_v8_revision'] = '0.' + f'{tag}'[1:]
   build_properties['got_webrtc_revision'] = chromium_version
 
