@@ -3,20 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Button from '@brave/leo/react/button'
+import Flex from '$web-common/Flex'
+import { getLocale } from '$web-common/locale'
 import TextInput from '$web-components/input'
+import Button from '@brave/leo/react/button'
 import * as React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { getLocale } from '$web-common/locale'
-import { useBraveNews, useChannels } from './Context'
-import Flex from '$web-common/Flex'
+import { useBraveNews, useChannels } from '../../../../../brave_news/browser/resources/shared/Context'
 import ChannelCard from './ChannelCard'
 import DiscoverSection from './DiscoverSection'
 import FeedCard, { DirectFeedCard } from './FeedCard'
-import useSearch from './useSearch'
-import { SuggestionsCarousel } from './Suggestions'
 import { PopularCarousel } from './Popular'
+import { SuggestionsCarousel } from './Suggestions'
+import useSearch from './useSearch'
 
 const Header = styled.span`
   font-size: 24px;

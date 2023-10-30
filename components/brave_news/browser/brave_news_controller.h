@@ -126,7 +126,12 @@ class BraveNewsController : public KeyedService,
   void ClearPrefs() override;
   void IsFeedUpdateAvailable(const std::string& displayed_feed_hash,
                              IsFeedUpdateAvailableCallback callback) override;
-  void AddFeedListener(mojo::PendingRemote<mojom::FeedListener>) override;
+  void AddFeedListener(
+      mojo::PendingRemote<mojom::FeedListener> listener) override;
+  void SetConfiguration(mojom::ConfigurationPtr configuration,
+                        SetConfigurationCallback callback) override;
+  void AddConfigurationListener(
+      mojo::PendingRemote<mojom::ConfigurationListener> listener) override;
   void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
   void OnSessionCardVisitsCountChanged(uint16_t total_count) override;
@@ -180,6 +185,7 @@ class BraveNewsController : public KeyedService,
       publishers_observation_;
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;
+  mojo::RemoteSet<mojom::ConfigurationListener> configuration_listeners_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;
 };
 

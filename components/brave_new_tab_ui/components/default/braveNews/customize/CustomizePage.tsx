@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Flex from '$web-common/Flex'
 import * as React from 'react'
 import styled from 'styled-components'
+import { useBraveNews } from '../../../../../brave_news/browser/resources/shared/Context'
+import { BackArrow } from '../../../../../brave_news/browser/resources/shared/Icons'
 import { getLocale } from '../../../../../common/locale'
 import Button from '../../../../../web-components/button'
-import Flex from '$web-common/Flex'
-import { useBraveNews } from './Context'
-import { BackArrow } from '../../../../../brave_news/browser/resources/shared/Icons'
 
 const BackButtonContainer = styled.div`
   all: unset;

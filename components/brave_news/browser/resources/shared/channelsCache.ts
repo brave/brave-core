@@ -3,22 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { EntityCachingWrapper } from '$web-common/mojomCache'
 import {
   BraveNewsControllerRemote,
   Channel,
   ChannelsListenerInterface,
   ChannelsListenerReceiver
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
-import getBraveNewsController from '../../../brave_news/browser/resources/shared/api'
-import { CachingWrapper } from '$web-common/mojomCache'
+import getBraveNewsController from './api'
 
 export class ChannelsCachingWrapper
-  extends CachingWrapper<Channel>
+  extends EntityCachingWrapper<Channel>
   implements ChannelsListenerInterface {
   private receiver = new ChannelsListenerReceiver(this)
   private controller: BraveNewsControllerRemote
 
-  constructor () {
+  constructor() {
     super()
 
     this.controller = getBraveNewsController()
@@ -31,7 +31,7 @@ export class ChannelsCachingWrapper
     }
   }
 
-  setChannelSubscribed (locale: string, channelId: string, subscribed: boolean) {
+  setChannelSubscribed(locale: string, channelId: string, subscribed: boolean) {
     // While we're waiting for the new channels to come back, speculatively
     // update them, so the UI has instant feedback.
     // This will be overwritten when the controller responds.
@@ -46,7 +46,7 @@ export class ChannelsCachingWrapper
       subscribedLocales.push(locale)
     }
 
-    this.change({
+    this.notifyChanged({
       ...this.cache,
       [channelId]: {
         ...this.cache[channelId],

@@ -2,11 +2,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import * as React from 'react';
 import { Discover as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
+import * as React from 'react';
 import styled from 'styled-components';
+import { useBraveNews } from '../shared/Context';
 import Card from './Card';
-import { useInspectContext } from '../context';
 
 const Row = styled.div`
   display: grid;
@@ -26,7 +26,7 @@ interface Props {
 }
 
 export default function Component({ info }: Props) {
-  const { publishers } = useInspectContext();
+  const { publishers } = useBraveNews();
   return <Card>
     Based on your interests, you might like these publishers:
     <Row>

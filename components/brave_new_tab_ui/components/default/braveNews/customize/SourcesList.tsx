@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Flex from '$web-common/Flex'
+import { getLocale } from '$web-common/locale'
+import usePromise from '$web-common/usePromise'
+import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 import * as React from 'react'
 import styled from 'styled-components'
-import { getLocale } from '$web-common/locale'
-import { useBraveNews, useChannels } from './Context'
-import Flex from '$web-common/Flex'
-import { FeedListEntry, ChannelListEntry } from './SourcesListEntry'
-import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
-import usePromise from '../../../../hooks/usePromise'
+import { useBraveNews, useChannels } from '../../../../../brave_news/browser/resources/shared/Context'
+import { ChannelListEntry, FeedListEntry } from './SourcesListEntry'
 
 const Title = styled.span`
   font-size: 18px;
