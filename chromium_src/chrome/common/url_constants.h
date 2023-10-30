@@ -298,6 +298,10 @@ inline constexpr char kPasswordSharingTroubleshootURL[] =
 // Help URL for the Payment methods page of the Google Pay site.
 inline constexpr char16_t kPaymentMethodsURL[] = u"https://support.brave.com";
 
+// Help URL for the newer GPay Web site instead of the legacy Payments Center.
+inline constexpr char16_t kPaymentMethodsURLForGPayWeb[] =
+    u"https://support.brave.com";
+
 // The URL for the "Fill out forms automatically" support page.
 inline constexpr char kAddressesAndPaymentMethodsLearnMoreURL[] =
     "https://support.brave.com";
