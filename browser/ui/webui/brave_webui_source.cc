@@ -613,10 +613,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveCreatorsPromoInfo1", IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1 },
         { "braveCreatorsPromoInfo2", IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_2 },
 
-        { "geminiPromoTitle", IDS_BRAVE_UI_GEMINI_PROMO_TITLE },
-        { "geminiPromoInfo1", IDS_BRAVE_UI_GEMINI_PROMO_INFO_1 },
-        { "geminiPromoInfo2", IDS_BRAVE_UI_GEMINI_PROMO_INFO_2 },
-
         { "tapNetworkTitle", IDS_BRAVE_UI_TAP_NETWORK_TITLE },
         { "tapNetworkInfo", IDS_BRAVE_UI_TAP_NETWORK_INFO },
         { "tapNetworkDisclaimer", IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER },
