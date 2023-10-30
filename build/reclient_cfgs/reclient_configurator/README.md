@@ -3,31 +3,27 @@ compilation on linux remotes.
 
 ### Configuration steps of `configure_reclient.py`
 
-1. Generate reproxy and rewrapper configs.
-2. Generate `python_remote_wrapper`.
-3. If a host machine is not linux, download linux toolchain and generate
+1. If a host machine is not linux, download linux toolchain and generate
    `clang_remote_wrapper`.
+2. Generate reproxy and rewrapper configs.
 
 ##### Reproxy config merge
 
 Reproxy config is based on the Chromium config template.
 1. Load and substitute
    `//buildtools/reclient_cfgs/reproxy_cfg_templates/reproxy.cfg.template` with
-   empty variables. This is done to detect new template variables in the config.
-2. Merge `//brave/build/reclient_cfgs/reproxy.cfg`.
+   empty variables.
+2. Merge `reproxy.cfg`.
 3. Set auth-specific vars from `RBE_*` environment variables if they are set.
 
 ##### Rewrapper configs merge
 
 Rewrapper configs are based on the Chromium linux config.
 1. Load `//buildtools/reclient_cfgs/linux/<tool>/rewrapper_linux.cfg`
-2. Merge `//brave/build/reclient_cfgs/<tool>/rewrapper_base.cfg`
-3. Merge `//brave/build/reclient_cfgs/<tool>/rewrapper_<host>.cfg`
+2. Merge `<tool>/rewrapper_base.cfg`
+3. Merge `<tool>/rewrapper_<host_os>.cfg`
 
 ##### Remote wrappers
-
-`python_remote_wrapper` adds `PYTHONPATH` into envrionment and runs the passed
-command as is.
 
 `clang_remote_wrapper` is required to run cross-compilation. It replaces default
 clang path with a linux clang path and runs the linux version of the clang
@@ -38,7 +34,7 @@ remotely.
 1. Parse a config item and merge it with the existing one or create a new one.
 2. If the value is a map, overwrite map items; if it's a list, append
    list items. Map-like and list-like items are hardcoded in
-   `from_reclient_cfg_value()`.
+   `ReclientCfg.from_cfg_value()`.
 3. If the value is empty, clear the item.
 
 This allows config merger to perform such modifications:
@@ -61,4 +57,53 @@ platform=
 platform=container-image=docker://...
 inputs=
 inputs=src/a_single_input
+```
+
+### Cusomization via external py script
+
+You can pass a custom python script via `--custom_py` that may alter reproxy and
+rewrapper configs. The script receives some global objects from the configurator
+to make config handling easier (see `ReclientConfigurator.load_custom_py()`). It
+should implement functions required to be called by the configurator.
+
+```(python)
+# Called before the configuration begin.
+def pre_configure():
+    pass
+
+# Called as a last step before writing reproxy.cfg.
+def merge_reproxy_cfg(reproxy_cfg):
+    reproxy_cfg = ReclientCfg.merge_cfg(
+        reproxy_cfg,
+        {
+            # Increase verbosity for rbe debugging.
+            'v': 2,
+        })
+
+    return reproxy_cfg
+
+
+# Called as a last step before writing <tool>/rewrapper_<host_os>.cfg.
+def merge_rewrapper_cfg(rewrapper_cfg, tool, host_os):
+    # Merge with an existing config:
+    rewrapper_cfg = ReclientCfg.merge_cfg(
+        rewrapper_cfg
+        {
+            # Do not canonicalize working dir.
+            'canonicalize_working_dir': false,
+        })
+
+    # Or rewrite it from scratch:
+    rewrapper_cfg = {
+        'platform' = {
+            'container-image': 'docker://gcr.io/...'
+            'OSFamily': 'linux',
+        }
+    }
+
+    return rewrapper_cfg
+
+# Called after the configuration has ended.
+def post_configure():
+    pass
 ```

@@ -65,7 +65,9 @@ hooks = [
   {
     'name': 'configure_reclient',
     'pattern': '.',
-    'action': ['python3', 'build/reclient_cfgs/configure_reclient.py'],
+    'action': ['python3', 'build/reclient_cfgs/reclient_configurator/configure_reclient.py',
+               '--src_dir=..', '--exec_root=../..',
+               '--custom_py=build/reclient_cfgs/brave_reclient_custom.py'],
   },
   {
     'name': 'download_sparkle',
