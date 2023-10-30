@@ -30,11 +30,11 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
   void SetUpMocks() override {
     MaybeMockDatabase();
 
-    GlobalState::GetInstance()->GetDatabaseManager().AddObserver(this);
+    DatabaseManager::GetInstance().AddObserver(this);
   }
 
   void TearDown() override {
-    GlobalState::GetInstance()->GetDatabaseManager().RemoveObserver(this);
+    DatabaseManager::GetInstance().RemoveObserver(this);
 
     UnitTestBase::TearDown();
   }
