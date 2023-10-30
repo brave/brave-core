@@ -120,6 +120,16 @@ import {
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
+const removedNFTsRouteOptions =
+  AccountDetailsOptions.filter((option) => option.id !== 'nfts')
+
+const noNFTsCoinTypes =
+  [
+    BraveWallet.CoinType.BTC,
+    BraveWallet.CoinType.ZEC,
+    BraveWallet.CoinType.FIL
+  ]
+
 export const Account = () => {
   // routing
   const { accountId: addressOrUniqueKey, selectedTab } =
@@ -248,9 +258,15 @@ export const Account = () => {
     querySubscriptionOptions60s
   )
 
+  const filteredRouteOptions =
+    selectedAccount &&
+      noNFTsCoinTypes.includes(selectedAccount.accountId.coin)
+      ? removedNFTsRouteOptions
+      : AccountDetailsOptions
+
   const routeOptions = React.useMemo(() => {
     if (!selectedAccount) return []
-    return AccountDetailsOptions.map((option) => {
+    return filteredRouteOptions.map((option) => {
       return {
         ...option,
         route: makeAccountRoute(
@@ -259,7 +275,10 @@ export const Account = () => {
         ) as WalletRoutes
       }
     })
-  }, [selectedAccount])
+  }, [
+    selectedAccount,
+    filteredRouteOptions
+  ])
 
   // Methods
   const onRemoveAccount = React.useCallback(() => {
