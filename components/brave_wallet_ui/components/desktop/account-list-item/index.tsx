@@ -119,14 +119,18 @@ interface Props {
   onClick: (account: BraveWallet.AccountInfo) => void
   account: BraveWallet.AccountInfo
   tokenBalancesRegistry: TokenBalancesRegistry | undefined
+  isLoadingBalances: boolean
   spotPriceRegistry: SpotPriceRegistry | undefined
+  isLoadingSpotPrices: boolean
 }
 
 export const AccountListItem = ({
   account,
   onClick,
   tokenBalancesRegistry,
-  spotPriceRegistry
+  spotPriceRegistry,
+  isLoadingBalances,
+  isLoadingSpotPrices
 }: Props) => {
   // redux
   const dispatch = useDispatch()
@@ -249,7 +253,9 @@ export const AccountListItem = ({
     // assets to display.
     if (
       accountsFungibleTokens
-        .length === 0
+        .length === 0 &&
+      !isLoadingBalances &&
+      !isLoadingSpotPrices
     ) {
       return new Amount(0)
     }
@@ -284,14 +290,16 @@ export const AccountListItem = ({
 
     return !reducedAmounts.isUndefined()
       ? reducedAmounts
-      : new Amount(0)
+      : Amount.empty()
   }, [
     account,
     userVisibleTokensInfo,
     accountsFungibleTokens,
     tokenBalancesRegistry,
     spotPriceRegistry,
-    rewardsBalance
+    rewardsBalance,
+    isLoadingBalances,
+    isLoadingSpotPrices
   ])
 
   const buttonOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
