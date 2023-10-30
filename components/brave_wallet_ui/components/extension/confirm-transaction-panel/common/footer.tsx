@@ -87,6 +87,7 @@ export function Footer (props: Props) {
           }
           onSubmit={onReject}
           disabled={transactionConfirmed}
+          minWidth='45%'
         />
         {transactionConfirmed ? (
           <ConfirmingButton>
@@ -101,6 +102,7 @@ export function Footer (props: Props) {
             text={getLocale('braveWalletAllowSpendConfirmButton')}
             onSubmit={onClickConfirmTransaction}
             disabled={isConfirmButtonDisabled}
+            minWidth='45%'
           />
         )}
       </ButtonRow>

@@ -90,7 +90,7 @@ export const ButtonRow = styled.div`
 `
 
 export const Description = styled.span`
-  width: 275px;
+  width: 100%;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;

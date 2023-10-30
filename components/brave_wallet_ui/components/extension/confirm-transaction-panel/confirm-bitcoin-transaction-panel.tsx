@@ -166,7 +166,6 @@ export const ConfirmBitcoinTransactionPanel = () => {
 
       <MessageBox
         isDetails={selectedTab === 'details'}
-        isApprove={false}
       >
 
         {selectedTab === 'transaction'
