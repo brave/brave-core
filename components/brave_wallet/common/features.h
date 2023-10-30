@@ -25,6 +25,7 @@ BASE_DECLARE_FEATURE(kBraveWalletENSL2Feature);
 BASE_DECLARE_FEATURE(kBraveWalletSnsFeature);
 BASE_DECLARE_FEATURE(kBraveWalletBitcoinFeature);
 extern const base::FeatureParam<int> kBitcoinRpcThrottle;
+extern const base::FeatureParam<bool> kBitcoinTestnetDiscovery;
 BASE_DECLARE_FEATURE(kBraveWalletZCashFeature);
 BASE_DECLARE_FEATURE(kBraveWalletAnkrBalancesFeature);
 

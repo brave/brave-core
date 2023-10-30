@@ -1619,7 +1619,8 @@ void BraveWalletService::OnActiveOriginChanged(
 
 void BraveWalletService::WalletRestored() {
   account_discovery_manager_ = std::make_unique<AccountDiscoveryManager>(
-      json_rpc_service_.get(), keyring_service_.get());
+      json_rpc_service_.get(), keyring_service_.get(),
+      bitcoin_wallet_service_.get());
   account_discovery_manager_->StartDiscovery();
 }
 
@@ -2220,6 +2221,9 @@ void BraveWalletService::Reset() {
   }
   if (json_rpc_service_) {
     json_rpc_service_->Reset();
+  }
+  if (bitcoin_wallet_service_) {
+    bitcoin_wallet_service_->Reset();
   }
 
   // Clear BraveWalletService

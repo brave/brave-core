@@ -302,6 +302,13 @@ TEST(CommonUtils, CoinSupportsDapps) {
   }
 }
 
+TEST(CommonUtils, GetNetworkForBitcoinKeyring) {
+  EXPECT_EQ(mojom::kBitcoinMainnet,
+            GetNetworkForBitcoinKeyring(mojom::KeyringId::kBitcoin84));
+  EXPECT_EQ(mojom::kBitcoinTestnet,
+            GetNetworkForBitcoinKeyring(mojom::KeyringId::kBitcoin84Testnet));
+}
+
 TEST(CommonUtils, GetNetworkForBitcoinAccount) {
   EXPECT_EQ(mojom::kBitcoinMainnet,
             GetNetworkForBitcoinAccount(MakeBitcoinAccountId(

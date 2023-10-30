@@ -5,14 +5,32 @@
 
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 
+#include "base/functional/bind.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 
 namespace brave_wallet {
+
 namespace {
 const int kDiscoveryAttempts = 20;
+
+std::string DiscoveredBitcoinAccountName(mojom::KeyringId keyring_id,
+                                         uint32_t account_index) {
+  if (IsBitcoinTestnetKeyring(keyring_id)) {
+    return base::StrCat(
+        {"Bitcoin Testnet Account ", base::NumberToString(account_index + 1)});
+  } else {
+    return base::StrCat(
+        {"Bitcoin Account ", base::NumberToString(account_index + 1)});
+  }
 }
+
+}  // namespace
 
 AccountDiscoveryManager::DiscoveryContext::DiscoveryContext(
     const mojom::CoinType& coin_type,
@@ -30,8 +48,11 @@ AccountDiscoveryManager::DiscoveryContext::~DiscoveryContext() = default;
 
 AccountDiscoveryManager::AccountDiscoveryManager(
     JsonRpcService* rpc_service,
-    KeyringService* keyring_service)
-    : json_rpc_service_(rpc_service), keyring_service_(keyring_service) {}
+    KeyringService* keyring_service,
+    BitcoinWalletService* bitcoin_wallet_service)
+    : json_rpc_service_(rpc_service),
+      keyring_service_(keyring_service),
+      bitcoin_wallet_service_(bitcoin_wallet_service) {}
 
 void AccountDiscoveryManager::StartDiscovery() {
   auto derived_count = GetDerivedAccountsCount();
@@ -49,6 +70,22 @@ void AccountDiscoveryManager::StartDiscovery() {
     AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
         mojom::CoinType::SOL, mojom::KeyringId::kSolana, mojom::kSolanaMainnet,
         derived_count[mojom::KeyringId::kSolana], kDiscoveryAttempts));
+  }
+  if (IsBitcoinEnabled()) {
+    CHECK(bitcoin_wallet_service_);
+
+    bitcoin_wallet_service_->DiscoverAccount(
+        mojom::KeyringId::kBitcoin84, 0,
+        base::BindOnce(&AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone,
+                       weak_ptr_factory_.GetWeakPtr()));
+
+    if (features::kBitcoinTestnetDiscovery.Get()) {
+      bitcoin_wallet_service_->DiscoverAccount(
+          mojom::KeyringId::kBitcoin84Testnet, 0,
+          base::BindOnce(
+              &AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone,
+              weak_ptr_factory_.GetWeakPtr()));
+    }
   }
 }
 
@@ -161,6 +198,57 @@ void AccountDiscoveryManager::ProcessDiscoveryResult(
     context->attempts_left--;
     AddDiscoveryAccount(std::move(context));
   }
+}
+
+void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
+    base::expected<DiscoveredBitcoinAccount, std::string> dicovered_account) {
+  if (!dicovered_account.has_value()) {
+    return;
+  }
+
+  auto& acc = dicovered_account.value();
+  if (acc.next_unused_receive_index == 0 && acc.next_unused_change_index == 0) {
+    // This account has no transacted addresses in blockchain. Don't add it and
+    // stop discovery.
+    return;
+  }
+
+  CHECK(IsBitcoinKeyring(acc.keyring_id));
+
+  mojom::AccountIdPtr last_bitcoin_account;
+  for (const auto& account : keyring_service_->GetAllAccountInfos()) {
+    const auto& account_id = account->account_id;
+    if (account_id->coin == mojom::CoinType::BTC &&
+        account_id->keyring_id == acc.keyring_id) {
+      if (!last_bitcoin_account || last_bitcoin_account->bitcoin_account_index <
+                                       account_id->bitcoin_account_index) {
+        last_bitcoin_account = account_id->Clone();
+      }
+    }
+  }
+
+  if (last_bitcoin_account &&
+      last_bitcoin_account->bitcoin_account_index + 1 != acc.account_index) {
+    // We don't allow gaps in account indexes, so just return if discovered
+    // account would not be the next account.
+    return;
+  }
+
+  auto created_account = keyring_service_->AddAccountSync(
+      mojom::CoinType::BTC, acc.keyring_id,
+      DiscoveredBitcoinAccountName(acc.keyring_id, acc.account_index));
+  if (!created_account) {
+    return;
+  }
+  keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
+      created_account->account_id, acc.next_unused_receive_index,
+      acc.next_unused_change_index);
+
+  auto next_account_index = acc.account_index + 1;
+  bitcoin_wallet_service_->DiscoverAccount(
+      acc.keyring_id, next_account_index,
+      base::BindOnce(&AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 }  // namespace brave_wallet

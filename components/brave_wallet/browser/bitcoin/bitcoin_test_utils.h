@@ -38,6 +38,7 @@ class BitcoinTestRpcServer {
   scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
 
   void SetUpBitcoinRpc(const mojom::AccountIdPtr& account_id);
+  void AddTransactedAddress(const std::string& address);
 
   const std::string& Address0() const { return address_0_; }
   const std::string& Address6() const { return address_6_; }
