@@ -76,6 +76,10 @@ BASE_FEATURE(kBraveExtensionNetworkBlocking,
 BASE_FEATURE(kBraveReduceLanguage,
              "BraveReduceLanguage",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.
+BASE_FEATURE(kBraveShowStrictFingerprintingMode,
+             "BraveShowStrictFingerprintingMode",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 // when enabled, brave will prompt for permission on sites which want to connect
 // to localhost.
 BASE_FEATURE(kBraveLocalhostAccessPermission,

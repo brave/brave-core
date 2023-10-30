@@ -77,8 +77,13 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleFingerprintModeChange = (value: string) => {
+  const handleFingerprintModeSelectionChange = (value: string) => {
     getPanelBrowserAPI().dataHandler.setFingerprintMode(parseInt(value))
+    if (getSiteSettings) getSiteSettings()
+  }
+
+  const handleFingerprintModeToggleChange = (isEnabled: boolean) => {
+    getPanelBrowserAPI().dataHandler.setFingerprintMode(isEnabled ? FingerprintMode.STANDARD : FingerprintMode.ALLOW)
     if (getSiteSettings) getSiteSettings()
   }
 
@@ -107,6 +112,7 @@ function AdvancedControlsContent () {
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
   const jsListCount = siteBlockInfo?.blockedJsList.length ?? 0
   const isHttpsByDefaultEnabled = loadTimeData.getBoolean('isHttpsByDefaultEnabled')
+  const showStrictFingerprintingMode = loadTimeData.getBoolean('showStrictFingerprintingMode')
   const isTorProfile = loadTimeData.getBoolean('isTorProfile')
   const isForgetFirstPartyStorageEnabled = loadTimeData.getBoolean(
     'isForgetFirstPartyStorageEnabled'
@@ -181,10 +187,10 @@ function AdvancedControlsContent () {
         </S.ControlGroup>
         <S.ControlGroup>
           <div className="col-2">
-            <Select
+            {showStrictFingerprintingMode ? <Select
               value={siteSettings?.fingerprintMode}
               ariaLabel={getLocale('braveShieldsFingerprintingBlocked')}
-              onChange={handleFingerprintModeChange}
+              onChange={handleFingerprintModeSelectionChange}
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
             {fingerprintModeOptions.map(entry => {
@@ -192,7 +198,17 @@ function AdvancedControlsContent () {
                   <option key={entry.value} value={entry.value}>{entry.text}</option>
                 )
               })}
-            </Select>
+            </Select> :
+            <label>
+            <span>{getLocale('braveShieldsFingerprintingBlockedStd')}</span>
+            <Toggle
+              onChange={handleFingerprintModeToggleChange}
+              isOn={siteSettings?.fingerprintMode !== FingerprintMode.ALLOW}
+              size='sm'
+              accessibleLabel={getLocale('braveShieldsFingerprintingBlockedStd')}
+              disabled={siteBlockInfo?.isBraveShieldsManaged}
+            />
+            </label>}
           </div>
         </S.ControlGroup>
         <S.ControlGroup>

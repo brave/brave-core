@@ -41,6 +41,11 @@
             app:dialog_subtitle="@string/block_fingerprinting_text"
             app:dialog_entries="@array/blockFingerprintingTexts"
             app:dialog_default_index="1" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="fingerprinting_protection2"
+            android:title="@string/block_fingerprinting"
+            android:summary="@string/fingerprinting_protection_summary"
+            android:defaultValue="true" />
         <org.chromium.chrome.browser.settings.BraveDialogPreference
             android:key="https_upgrade"
             android:title="@string/https_upgrade_title"

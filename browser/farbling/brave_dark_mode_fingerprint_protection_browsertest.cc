@@ -39,6 +39,11 @@ const char kMatchDarkModeFormatString[] =
 
 class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  public:
+  BraveDarkModeFingerprintProtectionTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_shields::features::kBraveShowStrictFingerprintingMode);
+  }
+
   class BraveContentBrowserClientWithWebTheme
       : public BraveContentBrowserClient {
    public:
@@ -163,6 +168,7 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
  private:
   GURL top_level_page_url_;
   GURL dark_mode_url_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveDarkModeFingerprintProtectionTest, DarkModeCheck) {

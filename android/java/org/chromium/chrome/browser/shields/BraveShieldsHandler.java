@@ -105,6 +105,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private OnCheckedChangeListener mBraveShieldsBlockingScriptsChangeListener;
     private SwitchCompat mBraveShieldsForgetFirstPartyStorageSwitch;
     private OnCheckedChangeListener mBraveShieldsForgetFirstPartyStorageChangeListener;
+    private SwitchCompat mFingerprintingSwitch;
+    private OnCheckedChangeListener mBraveShieldsFingerprintingChangeListener;
 
     private View mPopupView;
     private LinearLayout mMainLayout;
@@ -580,12 +582,18 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         ArrayList<String> detailsLayouts = new ArrayList<>();
         detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
-        detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
         detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
         if (ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT)) {
             detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
         } else {
             mPopupView.findViewById(R.id.brave_shields_secondary_https_upgrade_layout_id)
+                    .setVisibility(View.GONE);
+        }
+        if (ChromeFeatureList.isEnabled((BraveFeatureList.BRAVE_SHOW_STRICT_FINGERPRINTING_MODE))) {
+            detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
+        } else {
+            mPopupView
+                    .findViewById(R.id.brave_shields_fingerprinting_layout_id)
                     .setVisibility(View.GONE);
         }
 
@@ -764,6 +772,19 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             setupForgetFirstPartyStorageSwitchClick(mBraveShieldsForgetFirstPartyStorageSwitch);
         } else {
             forgetFirstPartyStorageLayout.setVisibility(View.GONE);
+        }
+
+        LinearLayout fingerprintingSwitchLayout =
+                mSecondaryLayout.findViewById(R.id.brave_shields_fingerprinting_switch_id);
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHOW_STRICT_FINGERPRINTING_MODE)) {
+            TextView fingerprintingSwitchText =
+                    fingerprintingSwitchLayout.findViewById(R.id.brave_shields_switch_text);
+            mFingerprintingSwitch =
+                    fingerprintingSwitchLayout.findViewById(R.id.brave_shields_switch);
+            setupFingerprintingSwitchClick(mFingerprintingSwitch);
+            fingerprintingSwitchText.setText(R.string.block_fingerprinting);
+        } else {
+            fingerprintingSwitchLayout.setVisibility(View.GONE);
         }
     }
 
@@ -980,6 +1001,67 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         if (fromTopSwitch) {
             braveShieldsForgetFirstPartyStorageSwitch.setOnCheckedChangeListener(
                     mBraveShieldsForgetFirstPartyStorageChangeListener);
+        }
+    }
+
+    private void setupFingerprintingSwitchClick(SwitchCompat fingerprintingSwitch) {
+        if (null == fingerprintingSwitch) {
+            return;
+        }
+        setupFingerprintingSwitch(fingerprintingSwitch, false);
+
+        mBraveShieldsFingerprintingChangeListener =
+                new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (0 != mHost.length()) {
+                            BraveShieldsContentSettings.setShieldsValue(
+                                    mProfile,
+                                    mHost,
+                                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                                    isChecked
+                                            ? BraveShieldsContentSettings.DEFAULT
+                                            : BraveShieldsContentSettings.ALLOW_RESOURCE,
+                                    false);
+                        }
+                    }
+                };
+
+        fingerprintingSwitch.setOnCheckedChangeListener(mBraveShieldsFingerprintingChangeListener);
+    }
+
+    private void setupFingerprintingSwitch(
+            SwitchCompat braveShieldsFingerprintingSwitch, boolean fromTopSwitch) {
+        if (null == braveShieldsFingerprintingSwitch) {
+            return;
+        }
+        if (fromTopSwitch) {
+            // Prevents to fire an event when top shields changed
+            braveShieldsFingerprintingSwitch.setOnCheckedChangeListener(null);
+        }
+        if (0 != mHost.length()) {
+            if (BraveShieldsContentSettings.getShields(
+                    mProfile,
+                    mHost,
+                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+                if (!BraveShieldsContentSettings.getShieldsValue(
+                                mProfile,
+                                mHost,
+                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)
+                        .equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
+                    braveShieldsFingerprintingSwitch.setChecked(true);
+                } else {
+                    braveShieldsFingerprintingSwitch.setChecked(false);
+                }
+                braveShieldsFingerprintingSwitch.setEnabled(true);
+            } else {
+                braveShieldsFingerprintingSwitch.setChecked(false);
+                braveShieldsFingerprintingSwitch.setEnabled(false);
+            }
+        }
+        if (fromTopSwitch) {
+            braveShieldsFingerprintingSwitch.setOnCheckedChangeListener(
+                    mBraveShieldsFingerprintingChangeListener);
         }
     }
 
