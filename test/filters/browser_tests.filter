@@ -663,6 +663,7 @@
 -OpenerHeuristicBrowserTest.*
 
 # These tests fail on CI but pass locally
+-All/MLPromotionInstallDialogBrowserTest.MlHandlesInvisible/PWA_Confirmation_Bubble
 -All/PermissionPromptBubbleBaseViewBrowserTest.InvokeUi_storage_access/*
 -AutoPictureInPictureTabHelperBrowserTest.ImmediatelyClosesAutopipIfTabIsAlreadyFocused
 -AutoPictureInPictureTabHelperBrowserTest.RespectsAutoPictureInPictureContentSetting
