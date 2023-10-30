@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 
+#include "brave/browser/misc_metrics/uptime_monitor.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -33,6 +34,7 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
   ai_chat_metrics_ = std::make_unique<ai_chat::AIChatMetrics>(local_state);
 #endif
   doh_metrics_ = std::make_unique<misc_metrics::DohMetrics>(local_state);
+  uptime_monitor_ = std::make_unique<misc_metrics::UptimeMonitor>(local_state);
 }
 
 ProcessMiscMetrics::~ProcessMiscMetrics() = default;
@@ -48,6 +50,10 @@ VerticalTabMetrics* ProcessMiscMetrics::vertical_tab_metrics() {
 #else
 PrivacyHubMetrics* ProcessMiscMetrics::privacy_hub_metrics() {
   return privacy_hub_metrics_.get();
+}
+
+UptimeMonitor* ProcessMiscMetrics::uptime_monitor() {
+  return uptime_monitor_.get();
 }
 #endif
 
@@ -68,6 +74,7 @@ void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
 #endif
   DohMetrics::RegisterPrefs(registry);
+  UptimeMonitor::RegisterPrefs(registry);
 }
 
 }  // namespace misc_metrics
