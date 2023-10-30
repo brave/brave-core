@@ -29,6 +29,7 @@ namespace brave_wallet {
 
 absl::optional<base::Version> GetLastInstalledWalletVersion();
 void SetLastInstalledWalletVersionForTest(const base::Version& version);
+std::string GetWalletDataFilesComponentId();
 
 class WalletDataFilesInstaller
     : public component_updater::ComponentUpdateService::Observer {

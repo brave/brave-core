@@ -9,6 +9,7 @@
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/build/android/jni_headers/WalletDataFilesInstaller_jni.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "components/component_updater/component_updater_service.h"
