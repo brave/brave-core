@@ -153,7 +153,8 @@ IN_PROC_BROWSER_TEST_F(IpfsNotConnectedPageBrowserTest,
   EXPECT_FALSE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
 
   // Send Proceed command and check if we fallback to gateway and pref is set.
-  ExecuteInterstitialScript(browser(), "$('primary-button').click();");
+  ExecuteInterstitialScript(
+      browser(), "document.querySelector('#primary-button').click();");
   EXPECT_EQ(gateway_url(), web_contents->GetURL());
   EXPECT_TRUE(GetPrefs()->GetBoolean(kIPFSAutoFallbackToGateway));
 

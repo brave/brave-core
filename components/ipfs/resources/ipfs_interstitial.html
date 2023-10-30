@@ -2,13 +2,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="theme-color" content="#fff">
+  <meta http-equiv="Content-Security-Policy"
+    content="require-trusted-types-for 'script'; trusted-types;">
   <title>$i18n{tabTitle}</title>
   <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_core.css">
   <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_common.css">
   <link rel="stylesheet" href="interstitial_ipfs.css">
-  <script src="../../../../ui/webui/resources/js/util_deprecated.js"></script>
-  <script src="../../../../components/security_interstitials/core/common/resources/interstitial_common.js"></script>
-  <script src="ipfs_interstitial.js"></script>
+  <script src="%ROOT_GEN_DIR%/brave/components/ipfs/resources/ipfs_interstitial/ipfs_interstitial.rollup.js"></script>
 </head>
 <body id="body">
   <div class="interstitial-wrapper">

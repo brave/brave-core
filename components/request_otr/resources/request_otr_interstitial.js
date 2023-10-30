@@ -3,15 +3,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { SecurityInterstitialCommandId, sendCommand } from 'chrome://interstitials/common/resources/interstitial_common.js';
+
 function setupEvents() {
-  $('primary-button').addEventListener('click', function() {
+  const primaryButton = document.querySelector('#primary-button');
+  primaryButton.addEventListener('click', function () {
     sendCommand(SecurityInterstitialCommandId.CMD_PROCEED);
   });
-  $('back-button').addEventListener('click', function() {
+
+  const backButton = document.querySelector('#back-button');
+  backButton.addEventListener('click', function() {
     sendCommand(SecurityInterstitialCommandId.CMD_DONT_PROCEED);
   });
-  $('dont-warn-again-checkbox').addEventListener('click', function() {
-    sendCommand($('dont-warn-again-checkbox').checked ?
+
+  const dontWarnAgainCheckbox =
+      document.querySelector('#never-ask-again-checkbox');
+  dontWarnAgainCheckbox.addEventListener('click', function() {
+    sendCommand(dontWarnAgainCheckbox.checked ?
                 SecurityInterstitialCommandId.CMD_DO_REPORT :
                 SecurityInterstitialCommandId.CMD_DONT_REPORT);
   });
