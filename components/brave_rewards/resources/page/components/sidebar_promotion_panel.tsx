@@ -31,12 +31,6 @@ function getPromotionMessages (
         text1: 'braveCreatorsPromoInfo1',
         text2: 'braveCreatorsPromoInfo2'
       }
-    case 'gemini':
-      return {
-        title: 'geminiPromoTitle',
-        text1: 'geminiPromoInfo1',
-        text2: 'geminiPromoInfo2',
-      }
     case 'tap-network':
       return {
         title: 'tapNetworkTitle',
