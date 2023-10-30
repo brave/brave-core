@@ -8,11 +8,8 @@ import DropDown from '@brave/leo/react/dropdown'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 import formatMessage from '$web-common/formatMessage'
-import { Url } from 'gen/url/mojom/url.mojom.m'
-
-import styles from './style.module.scss'
-import getPageHandlerInstance from '../../api/page_handler'
 import DataContext from '../../state/context'
+import styles from './style.module.scss'
 
 const CATEGORY_OPTIONS = new Map([
   ['not-helpful', getLocale('optionNotHelpful')],
@@ -20,8 +17,6 @@ const CATEGORY_OPTIONS = new Map([
   ['unsafe-harmful', getLocale('optionUnsafeHarmful')],
   ['other', getLocale('optionOther')]
 ])
-
-const ABOUT_LEO_PREMIUM_URL = 'https://brave.com/leo-roadmap/'
 
 interface FeedbackFormProps {
   onCancel?: () => void
@@ -53,28 +48,7 @@ function FeedbackForm(props: FeedbackFormProps) {
     setFeedbackText(e.target.value)
   }
 
-  const handleAnchorClick = (e: any) => {
-    e.preventDefault()
-
-    const mojomUrl = new Url()
-    mojomUrl.url = ABOUT_LEO_PREMIUM_URL
-
-    getPageHandlerInstance().pageHandler.openURL(mojomUrl)
-  }
-
-  const premiumNote = formatMessage(getLocale('feedbackPremiumNote'), {
-    tags: {
-      $1: (content) => (
-        <a href={ABOUT_LEO_PREMIUM_URL} onClick={handleAnchorClick}>
-          {content}
-        </a>
-      )
-    }
-  })
-
   React.useEffect(() => {
-    if (!ref) return
-
     ref.current?.scrollIntoView()
   }, [])
 
@@ -110,7 +84,17 @@ function FeedbackForm(props: FeedbackFormProps) {
           </label>
         </fieldset>
         {!context.isPremiumUser && (
-          <div className={styles.note}>{premiumNote}</div>
+          <div className={styles.premiumNote}>
+            {formatMessage(getLocale('feedbackPremiumNote'), {
+              tags: {
+                $1: (linkText) => (
+                  <Button kind='plain' size='medium' onClick={context.goPremium}>
+                    {linkText}
+                  </Button>
+                )
+              }
+            })}
+          </div>
         )}
         <fieldset className={styles.actions}>
           <Button onClick={handleCancelClick} kind='plain-faint'>
