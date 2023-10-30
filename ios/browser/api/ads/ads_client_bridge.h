@@ -30,8 +30,6 @@
                      callback:(brave_ads::LoadFileCallback)callback;
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(brave_ads::GetScheduledCaptchaCallback)callback;
-- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
-                               captchaId:(const std::string&)captcha_id;
 - (void)getBrowsingHistory:(const int)max_count
                    forDays:(const int)days_ago
                   callback:(brave_ads::GetBrowsingHistoryCallback)callback;

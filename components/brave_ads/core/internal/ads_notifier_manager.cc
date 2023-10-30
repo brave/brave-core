@@ -23,6 +23,7 @@ AdsNotifierManager& AdsNotifierManager::GetInstance() {
 
 void AdsNotifierManager::AddObserver(
     std::unique_ptr<AdsObserverInterface> observer) {
+  CHECK(observer);
   observers_.push_back(std::move(observer));
 }
 
@@ -41,6 +42,14 @@ void AdsNotifierManager::NotifyBrowserUpgradeRequiredToServeAds() const {
 void AdsNotifierManager::NotifyIneligibleRewardsWalletToServeAds() const {
   for (const auto& observer : observers_) {
     observer->OnIneligibleRewardsWalletToServeAds();
+  }
+}
+
+void AdsNotifierManager::NotifySolveCaptchaToServeAds(
+    const std::string& payment_id,
+    const std::string& captcha_id) const {
+  for (const auto& observer : observers_) {
+    observer->OnUserMustSolveCaptchaToServeAds(payment_id, captcha_id);
   }
 }
 

@@ -37,6 +37,9 @@ class AdsNotifierManager final {
 
   void NotifyIneligibleRewardsWalletToServeAds() const;
 
+  void NotifySolveCaptchaToServeAds(const std::string& payment_id,
+                                    const std::string& captcha_id) const;
+
   void NotifyRemindUser(mojom::ReminderType type) const;
 
  private:

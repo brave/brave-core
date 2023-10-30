@@ -75,6 +75,9 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void OnAdRewardsDidChange() override {}
   void OnBrowserUpgradeRequiredToServeAds() override;
   void OnIneligibleRewardsWalletToServeAds() override {}
+  void OnUserMustSolveCaptchaToServeAds(
+      const std::string& payment_id,
+      const std::string& captcha_id) override {}
   void OnRemindUser(brave_ads::mojom::ReminderType type) override {}
 
   PrefChangeRegistrar pref_change_registrar_;

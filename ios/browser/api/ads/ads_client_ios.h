@@ -59,8 +59,6 @@ class AdsClientIOS : public brave_ads::AdsClient {
   void GetScheduledCaptcha(
       const std::string& payment_id,
       brave_ads::GetScheduledCaptchaCallback callback) override;
-  void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                        const std::string& captcha_id) override;
   void Log(const char* file,
            const int line,
            const int verbose_level,

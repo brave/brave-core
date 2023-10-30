@@ -31,6 +31,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
@@ -1680,29 +1681,6 @@ void AdsServiceImpl::GetScheduledCaptcha(const std::string& payment_id,
                                                  std::move(callback));
 }
 
-void AdsServiceImpl::ShowScheduledCaptchaNotification(
-    const std::string& payment_id,
-    const std::string& captcha_id) {
-#if BUILDFLAG(IS_ANDROID)
-  ShowScheduledCaptcha(payment_id, captcha_id);
-#else   // BUILDFLAG(IS_ANDROID)
-  if (profile_->GetPrefs()->GetBoolean(
-          brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
-    return VLOG(1) << "Ads paused; support intervention required";
-  }
-
-  const int snooze_count = profile_->GetPrefs()->GetInteger(
-      brave_adaptive_captcha::prefs::kScheduledCaptchaSnoozeCount);
-
-  CHECK(ads_tooltips_delegate_);
-
-  ads_tooltips_delegate_->ShowCaptchaTooltip(
-      payment_id, captcha_id, snooze_count == 0,
-      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
-      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
-#endif  // !BUILDFLAG(IS_ANDROID)
-}
-
 void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                                       RunDBTransactionCallback callback) {
   CHECK(transaction);
@@ -1792,6 +1770,29 @@ void AdsServiceImpl::Log(const std::string& file,
     ::logging::LogMessage(file.c_str(), line, -verbose_level).stream()
         << message;
   }
+}
+
+void AdsServiceImpl::OnUserMustSolveCaptchaToServeAds(
+    const std::string& payment_id,
+    const std::string& captcha_id) {
+#if BUILDFLAG(IS_ANDROID)
+  ShowScheduledCaptcha(payment_id, captcha_id);
+#else   // BUILDFLAG(IS_ANDROID)
+  if (profile_->GetPrefs()->GetBoolean(
+          brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
+    return VLOG(1) << "Ads paused; support intervention required";
+  }
+
+  const int snooze_count = profile_->GetPrefs()->GetInteger(
+      brave_adaptive_captcha::prefs::kScheduledCaptchaSnoozeCount);
+
+  CHECK(ads_tooltips_delegate_);
+
+  ads_tooltips_delegate_->ShowCaptchaTooltip(
+      payment_id, captcha_id, snooze_count == 0,
+      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
+      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void AdsServiceImpl::OnRemindUser(const brave_ads::mojom::ReminderType type) {

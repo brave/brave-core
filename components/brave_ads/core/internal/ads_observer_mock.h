@@ -29,6 +29,10 @@ class AdsObserverMock : public AdsObserverInterface {
 
   MOCK_METHOD(void, OnIneligibleRewardsWalletToServeAds, ());
 
+  MOCK_METHOD(void,
+              OnUserMustSolveCaptchaToServeAds,
+              (const std::string& payment_id, const std::string& captcha_id));
+
   MOCK_METHOD(void, OnRemindUser, (mojom::ReminderType type));
 };
 

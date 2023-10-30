@@ -131,11 +131,6 @@ void GetScheduledCaptcha(const std::string& payment_id,
   GetInstance()->GetScheduledCaptcha(payment_id, std::move(callback));
 }
 
-void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                      const std::string& captcha_id) {
-  GetInstance()->ShowScheduledCaptchaNotification(payment_id, captcha_id);
-}
-
 void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                       RunDBTransactionCallback callback) {
   GetInstance()->RunDBTransaction(std::move(transaction), std::move(callback));

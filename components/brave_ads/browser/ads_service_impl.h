@@ -338,8 +338,6 @@ class AdsServiceImpl : public AdsService,
 
   void GetScheduledCaptcha(const std::string& payment_id,
                            GetScheduledCaptchaCallback callback) override;
-  void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                        const std::string& captcha_id) override;
 
   void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                         RunDBTransactionCallback callback) override;
@@ -375,6 +373,8 @@ class AdsServiceImpl : public AdsService,
   void OnAdRewardsDidChange() override {}
   void OnBrowserUpgradeRequiredToServeAds() override {}
   void OnIneligibleRewardsWalletToServeAds() override {}
+  void OnUserMustSolveCaptchaToServeAds(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
   void OnRemindUser(mojom::ReminderType type) override;
 
   // BackgroundHelper::Observer:

@@ -104,7 +104,6 @@ interface BatAdsClient {
   LoadDataResource(string name) => (mojo_base.mojom.BigString value);
 
   GetScheduledCaptcha(string payment_id) => (string captcha_id);
-  ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
 
   RunDBTransaction(brave_ads.mojom.DBTransactionInfo transaction) =>
       (brave_ads.mojom.DBCommandResponseInfo response);
@@ -139,6 +138,8 @@ interface BatAdsObserver {
   OnBrowserUpgradeRequiredToServeAds();
 
   OnIneligibleRewardsWalletToServeAds();
+
+  OnUserMustSolveCaptchaToServeAds(string payment_id, string captcha_id);
 
   OnRemindUser(brave_ads.mojom.ReminderType type);
 };

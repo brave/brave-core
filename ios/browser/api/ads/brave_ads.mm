@@ -246,6 +246,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   adsClientNotifier = new brave_ads::AdsClientNotifier();
   ads = brave_ads::Ads::CreateInstance(adsClient);
+  ads->AddBatAdsObserver(this);
 
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();

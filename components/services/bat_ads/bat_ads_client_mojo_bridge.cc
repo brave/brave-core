@@ -270,15 +270,6 @@ void BatAdsClientMojoBridge::GetScheduledCaptcha(
                                                            std::move(callback));
 }
 
-void BatAdsClientMojoBridge::ShowScheduledCaptchaNotification(
-    const std::string& payment_id,
-    const std::string& captcha_id) {
-  if (bat_ads_client_associated_receiver_.is_bound()) {
-    bat_ads_client_associated_receiver_->ShowScheduledCaptchaNotification(
-        payment_id, captcha_id);
-  }
-}
-
 void BatAdsClientMojoBridge::Log(const char* file,
                                  const int line,
                                  const int verbose_level,

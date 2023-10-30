@@ -32,6 +32,9 @@ class BatAdsObserver : public brave_ads::AdsObserverInterface {
 
   void OnIneligibleRewardsWalletToServeAds() override;
 
+  void OnUserMustSolveCaptchaToServeAds(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
+
   void OnRemindUser(brave_ads::mojom::ReminderType type) override;
 
  private:

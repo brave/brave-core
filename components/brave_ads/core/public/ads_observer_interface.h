@@ -23,6 +23,11 @@ class AdsObserverInterface {
   // Invoked when a Rewards wallet is deemed ineligible to serve ads.
   virtual void OnIneligibleRewardsWalletToServeAds() = 0;
 
+  // Invoked when a user must solve a captcha to serve ads.
+  virtual void OnUserMustSolveCaptchaToServeAds(
+      const std::string& payment_id,
+      const std::string& captcha_id) = 0;
+
   // Invoked to remind the user of what to do and what not to do.
   virtual void OnRemindUser(mojom::ReminderType type) = 0;
 };

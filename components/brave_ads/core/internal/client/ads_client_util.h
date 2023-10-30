@@ -67,8 +67,6 @@ std::string LoadDataResource(const std::string& name);
 
 void GetScheduledCaptcha(const std::string& payment_id,
                          GetScheduledCaptchaCallback callback);
-void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                      const std::string& captcha_id);
 
 void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                       RunDBTransactionCallback callback);
