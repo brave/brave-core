@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+
 import { WalletButton } from '../shared/style'
 import WarningTriangle from '../../assets/svg-icons/warning-triangle.svg'
 import IThemeProps from 'brave-ui/theme/theme-interface'
@@ -202,4 +204,37 @@ export const LearnMoreButton = styled(WalletButton)`
   border: none;
   margin: 0px;
   padding: 0px;
+`
+
+// Floating card panel styles
+export const Background = styled.div`
+  background-color: ${leo.color.container.background};
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`
+
+export const Backdrop = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+`
+
+export const FloatingCard = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: ${leo.color.container.background};
+  box-shadow: 0px 10px 48px 0px ${leo.effect.elevation['06']};
 `
