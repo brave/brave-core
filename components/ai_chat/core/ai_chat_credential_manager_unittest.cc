@@ -172,6 +172,24 @@ TEST_F(AIChatCredentialManagerUnitTest, FetchPremiumCredential) {
       prefs_service_.GetDict(ai_chat::prefs::kBraveChatPremiumCredentialCache);
   EXPECT_EQ(cached_creds_list4.size(), 1u);
   TestFetchPremiumCredential(entry);
+
+  // Add two invalid credentials to the cache, and one valid
+  EXPECT_EQ(cached_creds_list4.size(),
+            0u);  // Verify cache is empty before this test case.
+  CredentialCacheEntry entry3;
+  entry3.credential = "credential3";
+  entry3.expires_at = base::Time();
+  CredentialCacheEntry entry4;
+  entry4.credential = "credential4";
+  entry4.expires_at = base::Time();
+  CredentialCacheEntry entry5;
+  entry5.credential = "credential5";
+  entry5.expires_at = base::Time::Now() + base::Hours(2);
+  ai_chat_credential_manager_->PutCredentialInCache(entry3);
+  ai_chat_credential_manager_->PutCredentialInCache(entry4);
+  ai_chat_credential_manager_->PutCredentialInCache(entry5);
+  TestFetchPremiumCredential(entry5);
+  EXPECT_EQ(cached_creds_list4.size(), 0u);
 }
 
 }  // namespace ai_chat

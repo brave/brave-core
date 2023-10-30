@@ -132,11 +132,9 @@ void AIChatCredentialManager::FetchPremiumCredential(
   CredentialCacheEntry valid_credential;
   bool found_valid_credential = false;
   base::Time nearest_expiration = base::Time::Max();
-  auto valid_credential_iter =
-      dict.end();  // iterator to the nearest credential
 
-  // Collect iterators of credentials to be removed.
-  std::vector<base::Value::Dict::iterator> to_erase;
+  // Collect keys of credentials to be removed.
+  std::vector<std::string> keys_to_erase;
 
   for (auto it = dict.begin(); it != dict.end(); ++it) {
     base::Value& expires_at_value = it->second;
@@ -144,7 +142,7 @@ void AIChatCredentialManager::FetchPremiumCredential(
 
     // Remove expired credentials from the cache.
     if (!expires_at || *expires_at < now) {
-      to_erase.push_back(it);
+      keys_to_erase.push_back(it->first);
       continue;
     }
 
@@ -155,18 +153,16 @@ void AIChatCredentialManager::FetchPremiumCredential(
       valid_credential.credential = it->first;
       valid_credential.expires_at = *expires_at;
       found_valid_credential = true;
-      valid_credential_iter = it;
     }
   }
 
   if (found_valid_credential) {
-    to_erase.push_back(valid_credential_iter);
+    keys_to_erase.push_back(valid_credential.credential);
   }
 
-  // Erase invalid and nearest credentials in a separate loop to
-  // avoid iterator invalidation during iteration.
-  for (auto it : to_erase) {
-    dict.erase(it);
+  // Erase invalid and nearest credentials.
+  for (const auto& key : keys_to_erase) {
+    dict.Remove(key);
   }
 
   // Use credential from the cache if it existed.
