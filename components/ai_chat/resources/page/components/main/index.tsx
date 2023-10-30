@@ -55,7 +55,7 @@ function Main() {
     !shouldPromptSuggestQuestions && // Don't show premium prompt and question prompt
     !apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
     context.canShowPremiumPrompt &&
-    !siteInfo &&
+    siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !context.isPremiumUser
 
   const shouldDisplayEraseAction = context.conversationHistory.length >= 1
