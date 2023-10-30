@@ -257,12 +257,19 @@ bool ConversationDriver::MaybePopPendingRequests() {
     return false;
   }
 
-  if (!pending_request_) {
+  if (!pending_conversation_entry_) {
     return false;
   }
 
-  mojom::ConversationTurn request = std::move(*pending_request_);
-  pending_request_.reset();
+  // We don't discard requests related to summarization until we have the
+  // article text.
+  if (article_text_.empty() && pending_message_needs_page_content_) {
+    return false;
+  }
+
+  mojom::ConversationTurn request = std::move(*pending_conversation_entry_);
+  pending_conversation_entry_.reset();
+  pending_message_needs_page_content_ = false;
   MakeAPIRequestWithConversationHistoryUpdate(std::move(request));
   return true;
 }
@@ -270,9 +277,12 @@ bool ConversationDriver::MaybePopPendingRequests() {
 void ConversationDriver::MaybeGeneratePageText() {
   const GURL url = GetPageURL();
 
+  // Call this observer in-case we early return
+  // ex. a listener in the UI might expect siteInfo or its related property to
+  // change
+  OnPageHasContentChanged(false);
+
   if (!base::Contains(kAllowedSchemes, url.scheme())) {
-    // Final decision, convey to observers
-    OnPageHasContentChanged(false);
     return;
   }
 
@@ -347,13 +357,16 @@ void ConversationDriver::OnPageContentRetrieved(int64_t navigation_id,
   suggestion_generation_status_ =
       mojom::SuggestionGenerationStatus::CanGenerate;
   OnSuggestedQuestionsChanged();
+  // We check again to see if any page content related prompt is pending
+  MaybePopPendingRequests();
 }
 
 void ConversationDriver::CleanUp() {
   chat_history_.clear();
   article_text_.clear();
   suggestions_.clear();
-  pending_request_.reset();
+  pending_conversation_entry_.reset();
+  pending_message_needs_page_content_ = false;
   is_same_document_navigation_ = false;
   is_page_text_fetch_in_progress_ = false;
   is_request_in_progress_ = false;
@@ -492,8 +505,11 @@ void ConversationDriver::MakeAPIRequestWithConversationHistoryUpdate(
   if (!is_conversation_active_ || !HasUserOptedIn()) {
     // This function should not be presented in the UI if the user has not
     // opted-in yet.
-    pending_request_ =
+    pending_conversation_entry_ =
         std::make_unique<mojom::ConversationTurn>(std::move(turn));
+    // Invoking this before the creation of the page handler means the pending
+    // request will not be reported.
+    OnConversationEntryPending();
     return;
   }
 
@@ -646,6 +662,32 @@ bool ConversationDriver::IsPageContentsTruncated() {
           GetCurrentModel().max_page_content_length);
 }
 
+bool ConversationDriver::HasPendingConversationEntry() {
+  return pending_conversation_entry_ != nullptr;
+}
+
+bool ConversationDriver::IsPageContentsPresent() {
+  const GURL url = GetPageURL();
+
+  if (!base::Contains(kAllowedSchemes, url.scheme())) {
+    return false;
+  }
+
+  return true;
+}
+
+void ConversationDriver::SetPendingMessageNeedsPageContent(bool needs_content) {
+  pending_message_needs_page_content_ = needs_content;
+}
+
+void ConversationDriver::SubmitSummarizationRequest() {
+  mojom::ConversationTurn turn = {
+      CharacterType::HUMAN, ConversationTurnVisibility::VISIBLE,
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)};
+  MakeAPIRequestWithConversationHistoryUpdate(std::move(turn));
+  SetPendingMessageNeedsPageContent(/*needs_content=*/true);
+}
+
 void ConversationDriver::GetPremiumStatus(
     mojom::PageHandler::GetPremiumStatusCallback callback) {
   credential_manager_->GetPremiumStatus(
@@ -663,6 +705,12 @@ void ConversationDriver::OnPremiumStatusReceived(
   }
   last_premium_status_ = premium_status;
   std::move(parent_callback).Run(premium_status);
+}
+
+void ConversationDriver::OnConversationEntryPending() {
+  for (auto& obs : observers_) {
+    obs.OnConversationEntryPending();
+  }
 }
 
 }  // namespace ai_chat

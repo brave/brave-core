@@ -23,14 +23,6 @@ function InputBox () {
   const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
 
-  if (!context.hasAcceptedAgreement) {
-    return (
-      <div className={styles.container}>
-        <button className={styles.buttonAgree} onClick={context.handleAgreeClick}>{getLocale('acceptButtonLabel')}</button>
-      </div>
-    )
-  }
-
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value)
   }
