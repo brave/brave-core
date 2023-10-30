@@ -41,74 +41,70 @@
 
 namespace {
 
-// All BraveVpn services have support of "install" switch to make registration.
-constexpr char kBraveVpnServiceInstall[] = "install";
-
 base::FilePath GetBraveVPNHelperPath(const base::FilePath& target_path,
                                      const base::Version& version) {
   return target_path.AppendASCII(version.GetString())
       .Append(brave_vpn::kBraveVPNHelperExecutable);
 }
 
-bool InstallBraveVPNService(const base::FilePath& exe_path,
-                            const CallbackWorkItem&) {
+// delete `BraveVpnWireguardService` from services and remove the tray icon.
+bool UninstallBraveVPNWireguardService(const base::FilePath& exe_path,
+                                       const CallbackWorkItem&) {
   if (!base::PathExists(exe_path)) {
     return false;
   }
   base::CommandLine cmd(exe_path);
-  cmd.AppendSwitch(kBraveVpnServiceInstall);
+  cmd.AppendSwitch(brave_vpn::kBraveVpnWireguardServiceUninstallSwitchName);
   base::LaunchOptions options = base::LaunchOptions();
   options.wait = true;
-  return base::LaunchProcess(cmd, base::LaunchOptions()).IsValid();
+  return base::LaunchProcess(cmd, options).IsValid();
 }
 
-// Adds work items to register brave vpn helper service for Windows. Only for
-// system level installs.
-void AddBraveVPNHelperServiceWorkItems(const base::FilePath& vpn_service_path,
-                                       WorkItemList* list) {
+// Brave 1.50.114+ would register `BraveVpnService` for system level installs.
+//
+// This change removes the service if it exists. We'll be updating the browser
+// to install the services post-purchase (if possible) when the user has
+// purchased Brave VPN and has credentials or when VPN is used.
+//
+// See https://github.com/brave/brave-browser/issues/33726 for more info
+void AddUninstallVpnServiceWorkItems(const base::FilePath& vpn_service_path,
+                                     WorkItemList* list) {
   DCHECK(::IsUserAnAdmin());
-
-  if (vpn_service_path.empty()) {
-    VLOG(1) << "The path to brave_vpn_helper.exe is invalid.";
-    return;
+  // delete `BraveVpnService` from services
+  if (!installer::InstallServiceWorkItem::DeleteService(
+          brave_vpn::GetBraveVpnHelperServiceName(),
+          brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {})) {
+    LOG(WARNING) << "Failed to delete "
+                 << brave_vpn::GetBraveVpnHelperServiceName();
   }
-  WorkItem* install_service_work_item = new installer::InstallServiceWorkItem(
-      brave_vpn::GetBraveVpnHelperServiceName(),
-      brave_vpn::GetBraveVpnHelperServiceDisplayName(), SERVICE_DEMAND_START,
-      base::CommandLine(vpn_service_path),
-      base::CommandLine(base::CommandLine::NO_PROGRAM),
-      brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {});
-  install_service_work_item->set_best_effort(true);
-  list->AddWorkItem(install_service_work_item);
-  list->AddCallbackWorkItem(
-      base::BindOnce(&InstallBraveVPNService, vpn_service_path),
-      base::NullCallback());
 }
 
-// Adds work items to register brave vpn wireguard service for Windows. Only for
-// system level installs.
-void AddBraveVPNWireguardServiceWorkItems(
+// Brave 1.57.47+ would register `BraveVpnWireguardService` for system level
+// installs.
+//
+// This change removes the service if it exists. We'll be updating the browser
+// to install the services post-purchase (if possible) when the user has
+// purchased Brave VPN and has credentials or when VPN is used.
+//
+// See https://github.com/brave/brave-browser/issues/33726 for more info
+void AddUninstallWireguardServiceWorkItems(
     const base::FilePath& wireguard_service_path,
     WorkItemList* list) {
   DCHECK(::IsUserAnAdmin());
-  if (wireguard_service_path.empty()) {
-    VLOG(1) << "The path to brave_vpn_wireguard_service.exe is invalid.";
-    return;
-  }
-  list->AddCallbackWorkItem(
-      base::BindOnce(&InstallBraveVPNService, wireguard_service_path),
-      base::NullCallback());
+  list->AddCallbackWorkItem(base::BindOnce(&UninstallBraveVPNWireguardService,
+                                           wireguard_service_path),
+                            base::NullCallback());
 }
 
 }  // namespace
 
 #define GetElevationServicePath GetElevationServicePath(                   \
   target_path, new_version), install_list);                                \
-  AddBraveVPNWireguardServiceWorkItems(                                    \
+  AddUninstallWireguardServiceWorkItems(                                   \
       brave_vpn::GetBraveVPNWireguardServiceInstallationPath(target_path,  \
                                                              new_version), \
       install_list);                                                       \
-  AddBraveVPNHelperServiceWorkItems(GetBraveVPNHelperPath
+  AddUninstallVpnServiceWorkItems(GetBraveVPNHelperPath
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
