@@ -16,10 +16,15 @@ export const Header = styled.h2`
 `
 
 export const Title = styled.h3`
+  --leo-icon-color: ${color.icon.default};
+
+  display: flex;
+
   margin: 0;
 
   font: ${font.primary.default.regular};
   color: ${color.text.primary};
+
 
   &> a { all: unset; }
 `
