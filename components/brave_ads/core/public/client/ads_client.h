@@ -58,9 +58,6 @@ class ADS_EXPORT AdsClient {
   // Close the notification ad for the specified |placement_id|.
   virtual void CloseNotificationAd(const std::string& placement_id) = 0;
 
-  // Show reminder for the specified |type|.
-  virtual void ShowReminder(mojom::ReminderType type) = 0;
-
   // Cache an ad event for the specified instance |id|, |ad_type|,
   // |confirmation_type| and |time|.
   virtual void CacheAdEventForInstanceId(const std::string& id,
@@ -129,9 +126,6 @@ class ADS_EXPORT AdsClient {
   // |mojom::DBCommandResponseInfoPtr| containing the info of the transaction.
   virtual void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                                 RunDBTransactionCallback callback) = 0;
-
-  // Called to update brave://rewards.
-  virtual void UpdateAdRewards() = 0;
 
   // Record P2A (Private Advertising Analytics) |events|.
   virtual void RecordP2AEvents(const std::vector<std::string>& events) = 0;

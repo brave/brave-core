@@ -24,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
+#include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -135,6 +136,8 @@ base::expected<void, std::tuple<std::string, bool>>
 RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
     const mojom::UrlResponseInfo& url_response) {
   if (url_response.status_code == net::kHttpUpgradeRequired) {
+    AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
+
     return base::unexpected(std::make_tuple(
         "Failed to request signed tokens as a browser upgrade is required",
         /*should_retry=*/false));
@@ -151,6 +154,11 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
     return base::unexpected(std::make_tuple(
         base::StrCat({"Failed to parse response: ", url_response.body}),
         /*should_retry=*/false));
+  }
+
+  const bool is_eligible = ParseIsEligible(*dict).value_or(true);
+  if (!is_eligible) {
+    AdsNotifierManager::GetInstance().NotifyIneligibleRewardsWalletToServeAds();
   }
 
   nonce_ = ParseNonce(*dict);
@@ -201,6 +209,8 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
   CHECK(blinded_tokens_);
 
   if (url_response.status_code == net::kHttpUpgradeRequired) {
+    AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
+
     return base::unexpected(
         std::make_tuple("Failed to get signed tokens as a browser upgrade is "
                         "required", /*should_retry=*/

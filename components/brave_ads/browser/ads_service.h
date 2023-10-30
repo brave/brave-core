@@ -9,15 +9,15 @@
 #include <string>
 #include <vector>
 
-#include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
-#include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
@@ -36,14 +36,8 @@ class AdsService : public KeyedService {
 
   ~AdsService() override;
 
-  void AddObserver(AdsServiceObserver* observer);
-  void RemoveObserver(AdsServiceObserver* observer);
-
   // Returns the maximum number of notification ads that can be served per hour.
   virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;
-
-  // Called if a browser upgrade is required to serve ads.
-  virtual bool NeedsBrowserUpgradeToServeAds() const = 0;
 
   // Called to show a notification indicating that a scheduled captcha with the
   // given |captcha_id| must be solved for the given |payment_id| before the
@@ -64,6 +58,10 @@ class AdsService : public KeyedService {
 
   // Called when a notification ad with |placement_id| is clicked.
   virtual void OnNotificationAdClicked(const std::string& placement_id) = 0;
+
+  // Called to add an ads observer.
+  virtual void AddBatAdsObserver(
+      mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) = 0;
 
   // Called to get diagnostics to help identify issues. The callback takes one
   // argument - |base::Value::List| containing info of the obtained diagnostics.
@@ -248,9 +246,6 @@ class AdsService : public KeyedService {
 
   // Invoked when the user solves an adaptive captch.
   virtual void NotifyDidSolveAdaptiveCaptcha() = 0;
-
- protected:
-  base::ObserverList<AdsServiceObserver> observers_;
 };
 
 }  // namespace brave_ads

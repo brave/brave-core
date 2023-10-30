@@ -21,7 +21,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
@@ -38,6 +38,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
@@ -50,6 +51,8 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -87,7 +90,7 @@ brave_rewards::RewardsPanelCoordinator* GetPanelCoordinator(
 // The handler for Javascript messages for Brave about: pages
 class RewardsDOMHandler
     : public WebUIMessageHandler,
-      public brave_ads::AdsServiceObserver,
+      public bat_ads::mojom::BatAdsObserver,
       public brave_rewards::RewardsNotificationServiceObserver,
       public brave_rewards::RewardsServiceObserver {
  public:
@@ -151,7 +154,8 @@ class RewardsDOMHandler
   void OnAutoContributePropsReady(
       brave_rewards::mojom::AutoContributePropertiesPtr properties);
   void GetStatement(const base::Value::List& args);
-  void OnGetStatement(brave_ads::mojom::StatementInfoPtr statement);
+  void GetStatementOfAccounts();
+  void OnGetStatementOfAccounts(brave_ads::mojom::StatementInfoPtr statement);
   void GetExcludedSites(const base::Value::List& args);
 
   void OnGetRecurringTips(
@@ -276,22 +280,25 @@ class RewardsDOMHandler
       const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
           notifications_list) override;
 
-  // AdsServiceObserver implementation
+  // bat_ads::mojom::BatAdsObserver implementation
   void OnAdRewardsDidChange() override;
-  void OnNeedsBrowserUpgradeToServeAds() override;
+  void OnBrowserUpgradeRequiredToServeAds() override;
+  void OnIneligibleRewardsWalletToServeAds() override;
+  void OnRemindUser(brave_ads::mojom::ReminderType type) override {}
 
   void InitPrefChangeRegistrar();
   void OnPrefChanged(const std::string& key);
 
   raw_ptr<brave_rewards::RewardsService> rewards_service_ =
-      nullptr;                                            // NOT OWNED
-  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
-
+      nullptr;  // NOT OWNED
   base::ScopedObservation<brave_rewards::RewardsService,
                           brave_rewards::RewardsServiceObserver>
       rewards_service_observation_{this};
-  base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
-      ads_service_observation_{this};
+
+  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
+  mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
+      this};
+  bool browser_upgrade_required_to_serve_ads_ = false;
 
   PrefChangeRegistrar pref_change_registrar_;
 
@@ -627,15 +634,17 @@ void RewardsDOMHandler::OnJavascriptAllowed() {
     rewards_service_observation_.Observe(rewards_service_);
   }
 
+  bat_ads_observer_receiver_.reset();
   if (ads_service_) {
-    ads_service_observation_.Reset();
-    ads_service_observation_.Observe(ads_service_);
+    ads_service_->AddBatAdsObserver(
+        bat_ads_observer_receiver_.BindNewPipeAndPassRemote());
   }
 }
 
 void RewardsDOMHandler::OnJavascriptDisallowed() {
   rewards_service_observation_.Reset();
-  ads_service_observation_.Reset();
+
+  bat_ads_observer_receiver_.reset();
 
   weak_factory_.InvalidateWeakPtrs();
 }
@@ -1229,7 +1238,7 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
       prefs->GetBoolean(brave_ads::prefs::kShouldAllowSubdivisionTargeting));
   ads_data.Set("adsUIEnabled", true);
   ads_data.Set("needsBrowserUpgradeToServeAds",
-               ads_service_->NeedsBrowserUpgradeToServeAds());
+               browser_upgrade_required_to_serve_ads_);
 
   const std::string country_code = brave_l10n::GetCountryCode(GetLocalState());
   ads_data.Set("subdivisions",
@@ -1485,16 +1494,19 @@ void RewardsDOMHandler::OnPublisherListNormalized(
 }
 
 void RewardsDOMHandler::GetStatement(const base::Value::List& args) {
-  if (!ads_service_) {
-    return;
-  }
-
-  AllowJavascript();
-  ads_service_->GetStatementOfAccounts(base::BindOnce(
-      &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
+  GetStatementOfAccounts();
 }
 
-void RewardsDOMHandler::OnGetStatement(
+void RewardsDOMHandler::GetStatementOfAccounts() {
+  if (ads_service_) {
+    AllowJavascript();
+    ads_service_->GetStatementOfAccounts(
+        base::BindOnce(&RewardsDOMHandler::OnGetStatementOfAccounts,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void RewardsDOMHandler::OnGetStatementOfAccounts(
     brave_ads::mojom::StatementInfoPtr statement) {
   if (!statement) {
     return;
@@ -1530,16 +1542,17 @@ void RewardsDOMHandler::OnStatementChanged(
 }
 
 void RewardsDOMHandler::OnAdRewardsDidChange() {
-  if (!ads_service_) {
-    return;
-  }
-
-  ads_service_->GetStatementOfAccounts(base::BindOnce(
-      &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
+  GetStatementOfAccounts();
 }
 
-void RewardsDOMHandler::OnNeedsBrowserUpgradeToServeAds() {
+void RewardsDOMHandler::OnBrowserUpgradeRequiredToServeAds() {
+  browser_upgrade_required_to_serve_ads_ = true;
   GetAdsData(base::Value::List());
+}
+
+void RewardsDOMHandler::OnIneligibleRewardsWalletToServeAds() {
+  // TODO(https://github.com/brave/brave-browser/issues/32201): Add isEligible
+  // UI.
 }
 
 void RewardsDOMHandler::OnRecurringTipSaved(

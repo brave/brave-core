@@ -24,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
+#include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -181,7 +182,7 @@ void Account::SuccessfullyProcessedDeposit(
 
   NotifyDidProcessDeposit(transaction);
 
-  NotifyStatementOfAccountsDidChange();
+  AdsNotifierManager::GetInstance().NotifyAdRewardsDidChange();
 
   confirmations_->Confirm(transaction);
 }
@@ -203,7 +204,7 @@ void Account::Initialize() {
 
   MaybeRewardUser();
 
-  NotifyStatementOfAccountsDidChange();
+  AdsNotifierManager::GetInstance().NotifyAdRewardsDidChange();
 
   MaybeFetchIssuers();
 
@@ -367,12 +368,6 @@ void Account::NotifyFailedToProcessDeposit(
   for (AccountObserver& observer : observers_) {
     observer.OnFailedToProcessDeposit(creative_instance_id, ad_type,
                                       confirmation_type);
-  }
-}
-
-void Account::NotifyStatementOfAccountsDidChange() const {
-  for (AccountObserver& observer : observers_) {
-    observer.OnStatementOfAccountsDidChange();
   }
 }
 

@@ -21,8 +21,8 @@ BatAdsClientMojoBridge::BatAdsClientMojoBridge(
     mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
     mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
     : notifier_impl_(std::move(client_notifier)) {
-  bat_ads_client_.Bind(std::move(client_info));
-  bat_ads_client_.reset_on_disconnect();
+  bat_ads_client_associated_receiver_.Bind(std::move(client_info));
+  bat_ads_client_associated_receiver_.reset_on_disconnect();
 }
 
 BatAdsClientMojoBridge::~BatAdsClientMojoBridge() = default;
@@ -43,73 +43,70 @@ void BatAdsClientMojoBridge::NotifyPendingObservers() {
 
 bool BatAdsClientMojoBridge::CanShowNotificationAdsWhileBrowserIsBackgrounded()
     const {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return false;
   }
 
   bool can_show = false;
-  bat_ads_client_->CanShowNotificationAdsWhileBrowserIsBackgrounded(&can_show);
+  bat_ads_client_associated_receiver_
+      ->CanShowNotificationAdsWhileBrowserIsBackgrounded(&can_show);
   return can_show;
 }
 
 bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return false;
   }
 
   bool is_available = false;
-  bat_ads_client_->IsNetworkConnectionAvailable(&is_available);
+  bat_ads_client_associated_receiver_->IsNetworkConnectionAvailable(
+      &is_available);
   return is_available;
 }
 
 bool BatAdsClientMojoBridge::IsBrowserActive() const {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return false;
   }
 
   bool is_browser_active = false;
-  bat_ads_client_->IsBrowserActive(&is_browser_active);
+  bat_ads_client_associated_receiver_->IsBrowserActive(&is_browser_active);
   return is_browser_active;
 }
 
 bool BatAdsClientMojoBridge::IsBrowserInFullScreenMode() const {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return false;
   }
 
   bool is_browser_in_full_screen_mode = false;
-  bat_ads_client_->IsBrowserInFullScreenMode(&is_browser_in_full_screen_mode);
+  bat_ads_client_associated_receiver_->IsBrowserInFullScreenMode(
+      &is_browser_in_full_screen_mode);
   return is_browser_in_full_screen_mode;
 }
 
 void BatAdsClientMojoBridge::ShowNotificationAd(
     const brave_ads::NotificationAdInfo& ad) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ShowNotificationAd(brave_ads::NotificationAdToValue(ad));
-  }
-}
-
-void BatAdsClientMojoBridge::ShowReminder(
-    const brave_ads::mojom::ReminderType type) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ShowReminder(type);
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->ShowNotificationAd(
+        brave_ads::NotificationAdToValue(ad));
   }
 }
 
 bool BatAdsClientMojoBridge::CanShowNotificationAds() {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return false;
   }
 
   bool can_show = false;
-  bat_ads_client_->CanShowNotificationAds(&can_show);
+  bat_ads_client_associated_receiver_->CanShowNotificationAds(&can_show);
   return can_show;
 }
 
 void BatAdsClientMojoBridge::CloseNotificationAd(
     const std::string& placement_id) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->CloseNotificationAd(placement_id);
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->CloseNotificationAd(placement_id);
   }
 }
 
@@ -118,29 +115,29 @@ void BatAdsClientMojoBridge::CacheAdEventForInstanceId(
     const std::string& ad_type,
     const std::string& confirmation_type,
     const base::Time time) const {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->CacheAdEventForInstanceId(id, ad_type, confirmation_type,
-                                               time);
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->CacheAdEventForInstanceId(
+        id, ad_type, confirmation_type, time);
   }
 }
 
 std::vector<base::Time> BatAdsClientMojoBridge::GetCachedAdEvents(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return {};
   }
 
   std::vector<base::Time> ad_event_cache;
-  bat_ads_client_->GetCachedAdEvents(ad_type, confirmation_type,
-                                     &ad_event_cache);
+  bat_ads_client_associated_receiver_->GetCachedAdEvents(
+      ad_type, confirmation_type, &ad_event_cache);
   return ad_event_cache;
 }
 
 void BatAdsClientMojoBridge::ResetAdEventCacheForInstanceId(
     const std::string& id) const {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ResetAdEventCacheForInstanceId(id);
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->ResetAdEventCacheForInstanceId(id);
   }
 }
 
@@ -164,7 +161,7 @@ void OnUrlRequest(brave_ads::UrlRequestCallback callback,
 void BatAdsClientMojoBridge::UrlRequest(
     brave_ads::mojom::UrlRequestInfoPtr url_request,
     brave_ads::UrlRequestCallback callback) {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     brave_ads::mojom::UrlResponseInfo response;
     response.url = url_request->url;
     response.status_code = -1;
@@ -172,7 +169,7 @@ void BatAdsClientMojoBridge::UrlRequest(
     return;
   }
 
-  bat_ads_client_->UrlRequest(
+  bat_ads_client_associated_receiver_->UrlRequest(
       std::move(url_request),
       base::BindOnce(&OnUrlRequest, std::move(callback)));
 }
@@ -180,106 +177,105 @@ void BatAdsClientMojoBridge::UrlRequest(
 void BatAdsClientMojoBridge::Save(const std::string& name,
                                   const std::string& value,
                                   brave_ads::SaveCallback callback) {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     std::move(callback).Run(/*success*/ false);
     return;
   }
 
-  bat_ads_client_->Save(name, value, std::move(callback));
+  bat_ads_client_associated_receiver_->Save(name, value, std::move(callback));
 }
 
 void BatAdsClientMojoBridge::LoadFileResource(
     const std::string& id,
     const int version,
     brave_ads::LoadFileCallback callback) {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     std::move(callback).Run(base::File());
     return;
   }
 
-  bat_ads_client_->LoadFileResource(id, version, std::move(callback));
+  bat_ads_client_associated_receiver_->LoadFileResource(id, version,
+                                                        std::move(callback));
 }
 
 void BatAdsClientMojoBridge::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
     brave_ads::GetBrowsingHistoryCallback callback) {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     std::move(callback).Run({});
     return;
   }
 
-  bat_ads_client_->GetBrowsingHistory(max_count, days_ago, std::move(callback));
+  bat_ads_client_associated_receiver_->GetBrowsingHistory(max_count, days_ago,
+                                                          std::move(callback));
 }
 
 void BatAdsClientMojoBridge::RecordP2AEvents(
     const std::vector<std::string>& events) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->RecordP2AEvents(events);
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->RecordP2AEvents(events);
   }
 }
 
 void BatAdsClientMojoBridge::AddFederatedLearningPredictorTrainingSample(
     std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->AddFederatedLearningPredictorTrainingSample(
-        std::move(training_sample));
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_
+        ->AddFederatedLearningPredictorTrainingSample(
+            std::move(training_sample));
   }
 }
 
 void BatAdsClientMojoBridge::Load(const std::string& name,
                                   brave_ads::LoadCallback callback) {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     std::move(callback).Run(/*value*/ absl::nullopt);
     return;
   }
 
-  bat_ads_client_->Load(name, std::move(callback));
+  bat_ads_client_associated_receiver_->Load(name, std::move(callback));
 }
 
 std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return {};
   }
 
   std::string value;
-  bat_ads_client_->LoadDataResource(name, &value);
+  bat_ads_client_associated_receiver_->LoadDataResource(name, &value);
   return value;
 }
 
 void BatAdsClientMojoBridge::RunDBTransaction(
     brave_ads::mojom::DBTransactionInfoPtr transaction,
     brave_ads::RunDBTransactionCallback callback) {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     std::move(callback).Run(brave_ads::mojom::DBCommandResponseInfoPtr());
     return;
   }
 
-  bat_ads_client_->RunDBTransaction(std::move(transaction),
-                                    std::move(callback));
+  bat_ads_client_associated_receiver_->RunDBTransaction(std::move(transaction),
+                                                        std::move(callback));
 }
 
 void BatAdsClientMojoBridge::GetScheduledCaptcha(
     const std::string& payment_id,
     brave_ads::GetScheduledCaptchaCallback callback) {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return std::move(callback).Run({});
   }
 
-  bat_ads_client_->GetScheduledCaptcha(payment_id, std::move(callback));
+  bat_ads_client_associated_receiver_->GetScheduledCaptcha(payment_id,
+                                                           std::move(callback));
 }
 
 void BatAdsClientMojoBridge::ShowScheduledCaptchaNotification(
     const std::string& payment_id,
     const std::string& captcha_id) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ShowScheduledCaptchaNotification(payment_id, captcha_id);
-  }
-}
-
-void BatAdsClientMojoBridge::UpdateAdRewards() {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->UpdateAdRewards();
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->ShowScheduledCaptchaNotification(
+        payment_id, captcha_id);
   }
 }
 
@@ -287,77 +283,79 @@ void BatAdsClientMojoBridge::Log(const char* file,
                                  const int line,
                                  const int verbose_level,
                                  const std::string& message) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->Log(file, line, verbose_level, message);
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->Log(file, line, verbose_level,
+                                             message);
   }
 }
 
 absl::optional<base::Value> BatAdsClientMojoBridge::GetProfilePref(
     const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return absl::nullopt;
   }
 
   absl::optional<base::Value> value;
-  bat_ads_client_->GetProfilePref(path, &value);
+  bat_ads_client_associated_receiver_->GetProfilePref(path, &value);
   return value;
 }
 
 void BatAdsClientMojoBridge::SetProfilePref(const std::string& path,
                                             base::Value value) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetProfilePref(path, std::move(value));
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->SetProfilePref(path, std::move(value));
   }
 }
 
 void BatAdsClientMojoBridge::ClearProfilePref(const std::string& path) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ClearProfilePref(path);
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->ClearProfilePref(path);
   }
 }
 
 bool BatAdsClientMojoBridge::HasProfilePrefPath(const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return false;
   }
 
   bool value = false;
-  bat_ads_client_->HasProfilePrefPath(path, &value);
+  bat_ads_client_associated_receiver_->HasProfilePrefPath(path, &value);
   return value;
 }
 
 absl::optional<base::Value> BatAdsClientMojoBridge::GetLocalStatePref(
     const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return absl::nullopt;
   }
 
   absl::optional<base::Value> value;
-  bat_ads_client_->GetLocalStatePref(path, &value);
+  bat_ads_client_associated_receiver_->GetLocalStatePref(path, &value);
   return value;
 }
 
 void BatAdsClientMojoBridge::SetLocalStatePref(const std::string& path,
                                                base::Value value) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->SetLocalStatePref(path, std::move(value));
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->SetLocalStatePref(path,
+                                                           std::move(value));
   }
 }
 
 void BatAdsClientMojoBridge::ClearLocalStatePref(const std::string& path) {
-  if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ClearLocalStatePref(path);
+  if (bat_ads_client_associated_receiver_.is_bound()) {
+    bat_ads_client_associated_receiver_->ClearLocalStatePref(path);
   }
 }
 
 bool BatAdsClientMojoBridge::HasLocalStatePrefPath(
     const std::string& path) const {
-  if (!bat_ads_client_.is_bound()) {
+  if (!bat_ads_client_associated_receiver_.is_bound()) {
     return false;
   }
 
   bool value = false;
-  bat_ads_client_->HasLocalStatePrefPath(path, &value);
+  bat_ads_client_associated_receiver_->HasLocalStatePrefPath(path, &value);
   return value;
 }
 

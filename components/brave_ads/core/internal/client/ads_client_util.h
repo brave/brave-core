@@ -37,8 +37,6 @@ bool CanShowNotificationAdsWhileBrowserIsBackgrounded();
 void ShowNotificationAd(const NotificationAdInfo& ad);
 void CloseNotificationAd(const std::string& placement_id);
 
-void ShowReminder(mojom::ReminderType type);
-
 void CacheAdEventForInstanceId(const std::string& id,
                                const std::string& ad_type,
                                const std::string& confirmation_type,
@@ -70,8 +68,6 @@ void ShowScheduledCaptchaNotification(const std::string& payment_id,
 
 void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                       RunDBTransactionCallback callback);
-
-void UpdateAdRewards();
 
 void RecordP2AEvents(const std::vector<std::string>& events);
 

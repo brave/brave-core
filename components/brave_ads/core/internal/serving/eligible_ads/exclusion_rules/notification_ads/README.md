@@ -12,7 +12,7 @@ Exclusion rules frequency cap the number of times a user can see a notification 
 | dislike category  | Exclude the ad if the user disliked the category  |
 | dislike  | Exclude the ad if the user disliked the advertiser  |
 | dismissed  | Exclude the ad if the user dismissed the creative instance within the last 48 hours for the same campaign  |
-| dismissed  | Exclude the ad if ad embedding property is empty  |
+| embedding  | Exclude the ad if embedding property is empty  |
 | marked as inappropriate  | Exclude the ad if the user marked the creative set as inappropriate  |
 | per day  | Exclude the ad if it exceeds the per-day cap for the creative set  |
 | per month  | Exclude the ad if it exceeds the per-month cap for the creative set  |

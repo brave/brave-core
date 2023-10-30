@@ -41,6 +41,9 @@ class BatAdsImpl : public mojom::BatAds {
   ~BatAdsImpl() override;
 
   // mojom::BatAds:
+  void AddBatAdsObserver(
+      mojo::PendingRemote<mojom::BatAdsObserver> observer) override;
+
   void SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info) override;
   void SetBuildChannel(
       brave_ads::mojom::BuildChannelInfoPtr build_channel) override;

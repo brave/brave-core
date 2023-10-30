@@ -60,10 +60,6 @@ void AdsClientIOS::CloseNotificationAd(const std::string& placement_id) {
   [bridge_ closeNotificationAd:placement_id];
 }
 
-void AdsClientIOS::ShowReminder(const brave_ads::mojom::ReminderType type) {
-  [bridge_ showReminder:type];
-}
-
 void AdsClientIOS::CacheAdEventForInstanceId(
     const std::string& id,
     const std::string& ad_type,
@@ -144,10 +140,6 @@ void AdsClientIOS::RunDBTransaction(
     brave_ads::RunDBTransactionCallback callback) {
   [bridge_ runDBTransaction:std::move(transaction)
                    callback:std::move(callback)];
-}
-
-void AdsClientIOS::UpdateAdRewards() {
-  [bridge_ updateAdRewards];
 }
 
 void AdsClientIOS::SetProfilePref(const std::string& path, base::Value value) {

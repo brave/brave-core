@@ -74,10 +74,6 @@ void CloseNotificationAd(const std::string& placement_id) {
   GetInstance()->CloseNotificationAd(placement_id);
 }
 
-void ShowReminder(mojom::ReminderType type) {
-  GetInstance()->ShowReminder(type);
-}
-
 void CacheAdEventForInstanceId(const std::string& id,
                                const std::string& ad_type,
                                const std::string& confirmation_type,
@@ -141,10 +137,6 @@ void ShowScheduledCaptchaNotification(const std::string& payment_id,
 void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                       RunDBTransactionCallback callback) {
   GetInstance()->RunDBTransaction(std::move(transaction), std::move(callback));
-}
-
-void UpdateAdRewards() {
-  GetInstance()->UpdateAdRewards();
 }
 
 void RecordP2AEvents(const std::vector<std::string>& events) {

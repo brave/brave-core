@@ -45,10 +45,6 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, ShowNotificationAd, (const NotificationAdInfo& ad));
   MOCK_METHOD(void, CloseNotificationAd, (const std::string& placement_id));
 
-  MOCK_METHOD(void, ShowReminder, (const mojom::ReminderType type));
-
-  MOCK_METHOD(void, UpdateAdRewards, ());
-
   MOCK_METHOD(void,
               CacheAdEventForInstanceId,
               (const std::string& id,

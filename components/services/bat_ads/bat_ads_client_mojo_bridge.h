@@ -60,10 +60,6 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void ShowReminder(brave_ads::mojom::ReminderType type) override;
-
-  void UpdateAdRewards() override;
-
   void CacheAdEventForInstanceId(const std::string& id,
                                  const std::string& ad_type,
                                  const std::string& confirmation_type,
@@ -123,7 +119,8 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
            const std::string& message) override;
 
  private:
-  mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_;
+  mojo::AssociatedRemote<mojom::BatAdsClient>
+      bat_ads_client_associated_receiver_;
   BatAdsClientNotifierImpl notifier_impl_;
 };
 

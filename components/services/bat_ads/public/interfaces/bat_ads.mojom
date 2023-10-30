@@ -79,10 +79,6 @@ interface BatAdsClient {
   ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
   CloseNotificationAd(string placement_id);
 
-  ShowReminder(brave_ads.mojom.ReminderType type);
-
-  UpdateAdRewards();
-
   CacheAdEventForInstanceId(string id,
                      string ad_type,
                      string confirmation_type,
@@ -132,8 +128,22 @@ interface BatAdsClient {
   Log(string file, int32 line, int32 verbose_level, string message);
 };
 
+interface BatAdsObserver {
+  // See AdsObserver for documentation.
+
+  OnAdRewardsDidChange();
+
+  OnBrowserUpgradeRequiredToServeAds();
+
+  OnIneligibleRewardsWalletToServeAds();
+
+  OnRemindUser(brave_ads.mojom.ReminderType type);
+};
+
 interface BatAds {
   // See Ads for documentation.
+
+  AddBatAdsObserver(pending_remote<BatAdsObserver> observer);
 
   SetSysInfo(brave_ads.mojom.SysInfo sys_info);
 
@@ -186,12 +196,15 @@ interface BatAds {
       (mojo_base.mojom.DictionaryValue value);
   ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
+
   ToggleLikeCategory(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
   ToggleDislikeCategory(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
+
   ToggleSaveAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
+
   ToggleMarkAdAsInappropriate(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
 };

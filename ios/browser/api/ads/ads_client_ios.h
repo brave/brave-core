@@ -31,7 +31,6 @@ class AdsClientIOS : public brave_ads::AdsClient {
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   bool CanShowNotificationAds() override;
   void CloseNotificationAd(const std::string& placement_id) override;
-  void ShowReminder(const brave_ads::mojom::ReminderType type) override;
   void CacheAdEventForInstanceId(const std::string& id,
                                  const std::string& ad_type,
                                  const std::string& confirmation_type,
@@ -65,7 +64,6 @@ class AdsClientIOS : public brave_ads::AdsClient {
            const std::string& message) override;
   void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
                         brave_ads::RunDBTransactionCallback callback) override;
-  void UpdateAdRewards() override;
   void SetProfilePref(const std::string& path, base::Value value) override;
   absl::optional<base::Value> GetProfilePref(
       const std::string& path) const override;

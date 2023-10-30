@@ -23,6 +23,7 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
@@ -68,6 +69,7 @@ struct NewTabPageAdInfo;
 
 class AdsServiceImpl : public AdsService,
                        public bat_ads::mojom::BatAdsClient,
+                       public bat_ads::mojom::BatAdsObserver,
                        BackgroundHelper::Observer,
                        public ResourceComponentObserver,
                        public brave_rewards::RewardsServiceObserver,
@@ -142,6 +144,8 @@ class AdsServiceImpl : public AdsService,
   bool ShouldShowOnboardingNotification();
   void MaybeShowOnboardingNotification();
 
+  void ShowReminder(mojom::ReminderType type);
+
   void CloseAdaptiveCaptcha();
 
   void InitializeLocalStatePrefChangeRegistrar();
@@ -196,9 +200,10 @@ class AdsServiceImpl : public AdsService,
   void Shutdown() override;
 
   // AdsService:
-  int64_t GetMaximumNotificationAdsPerHour() const override;
+  void AddBatAdsObserver(
+      mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) override;
 
-  bool NeedsBrowserUpgradeToServeAds() const override;
+  int64_t GetMaximumNotificationAdsPerHour() const override;
 
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
@@ -299,10 +304,6 @@ class AdsServiceImpl : public AdsService,
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void ShowReminder(mojom::ReminderType type) override;
-
-  void UpdateAdRewards() override;
-
   void CacheAdEventForInstanceId(const std::string& id,
                                  const std::string& type,
                                  const std::string& confirmation_type,
@@ -371,6 +372,12 @@ class AdsServiceImpl : public AdsService,
            int32_t verbose_level,
            const std::string& message) override;
 
+  // bat_ads::mojom::BatAdsObserver:
+  void OnAdRewardsDidChange() override {}
+  void OnBrowserUpgradeRequiredToServeAds() override {}
+  void OnIneligibleRewardsWalletToServeAds() override {}
+  void OnRemindUser(mojom::ReminderType type) override;
+
   // BackgroundHelper::Observer:
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
@@ -386,7 +393,6 @@ class AdsServiceImpl : public AdsService,
   void OnCompleteReset(bool success) override;
 
   bool is_bat_ads_initialized_ = false;
-  bool needs_browser_upgrade_to_serve_ads_ = false;
 
   // Brave Ads Service starts count is needed to avoid possible double Brave
   // Ads initialization.
@@ -447,12 +453,17 @@ class AdsServiceImpl : public AdsService,
   const raw_ptr<brave_federated::AsyncDataStore>
       notification_ad_timing_data_store_ = nullptr;  // NOT OWNED
 
-  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
-  mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;
-  mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
-  mojo::Remote<bat_ads::mojom::BatAdsClientNotifier> bat_ads_client_notifier_;
+  mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
+      this};
+
+  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote_;
+  mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
+      bat_ads_client_associated_receiver_;
+  mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_associated_remote_;
+  mojo::Remote<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_remote_;
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
-      bat_ads_client_notifier_receiver_;
+      bat_ads_client_notifier_pending_receiver_;
 };
 
 }  // namespace brave_ads

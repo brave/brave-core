@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_
 
+#include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
-#include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder.h"
@@ -34,7 +34,7 @@ namespace brave_ads {
 
 struct NotificationAdInfo;
 
-class AdsImpl final : public Ads, public AccountObserver {
+class AdsImpl final : public Ads {
  public:
   explicit AdsImpl(AdsClient* ads_client);
 
@@ -47,6 +47,9 @@ class AdsImpl final : public Ads, public AccountObserver {
   ~AdsImpl() override;
 
   // Ads:
+  void AddBatAdsObserver(
+      std::unique_ptr<AdsObserverInterface> observer) override;
+
   void SetSysInfo(mojom::SysInfoPtr sys_info) override;
   void SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) override;
   void SetFlags(mojom::FlagsPtr flags) override;
@@ -137,9 +140,6 @@ class AdsImpl final : public Ads, public AccountObserver {
                                      bool success);
   void SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
                                InitializeCallback callback);
-
-  // AccountObserver:
-  void OnStatementOfAccountsDidChange() override;
 
   bool is_initialized_ = false;
 
