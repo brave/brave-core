@@ -75,7 +75,14 @@ const SAMPLE_QUESTIONS = [
 
 const SITE_INFO = {
   title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
-  isContentTruncated: false
+  isContentTruncated: false,
+  isContentPresent: true
+}
+
+const SITE_INFO_DEFAULT = {
+  title: undefined,
+  isContentTruncated: false,
+  isContentPresent: false
 }
 
 export default {
@@ -109,7 +116,8 @@ export default {
     isPremiumUserDisconnected: false,
     currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
     suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
-    model: MODELS[0].name
+    model: MODELS[0].name,
+    showAgreementModal: false,
   },
   decorators: [
     (Story: any, options: any) => {
@@ -117,7 +125,7 @@ export default {
       const [favIconUrl] = React.useState<string>()
       const hasAcceptedAgreement = options.args.hasAcceptedAgreement
 
-      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : null
+      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : SITE_INFO_DEFAULT
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
         : siteInfo
@@ -147,7 +155,9 @@ export default {
         apiHasError,
         shouldDisableUserInput,
         isPremiumUser: options.args.isPremiumUser,
-        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected
+        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
+        showAgreementModal: options.args.showAgreementModal,
+        shouldShowQuestions: options.args.shouldShowQuestions
       }
 
       return (

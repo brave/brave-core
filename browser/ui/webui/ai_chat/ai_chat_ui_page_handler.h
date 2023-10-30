@@ -54,6 +54,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetModels(GetModelsCallback callback) override;
   void ChangeModel(const std::string& model_key) override;
   void SubmitHumanConversationEntry(const std::string& input) override;
+  void SubmitSummarizationRequest() override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void MarkAgreementAccepted() override;
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
@@ -90,9 +91,10 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
       mojom::SuggestionGenerationStatus suggestion_generation_status) override;
   void OnFaviconImageDataChanged() override;
   void OnPageHasContent(bool page_contents_is_truncated) override;
+  void OnConversationEntryPending() override;
 
   void GetFaviconImageData(GetFaviconImageDataCallback callback) override;
-  absl::optional<mojom::SiteInfo> BuildSiteInfo();
+  mojom::SiteInfo BuildSiteInfo();
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
