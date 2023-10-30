@@ -23,7 +23,8 @@
 namespace brave_news {
 
 using Signal = mojom::SignalPtr;
-using Signals = base::flat_map<std::string, Signal>;
+using Signals =
+    base::flat_map</*channel name or publisher_id*/ std::string, Signal>;
 using SignalsCallback = base::OnceCallback<void(Signals)>;
 
 class SignalCalculator {
