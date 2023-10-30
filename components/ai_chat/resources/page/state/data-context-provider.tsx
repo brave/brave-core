@@ -33,10 +33,11 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
   const [suggestionStatus, setSuggestionStatus] = React.useState<mojom.SuggestionGenerationStatus>(mojom.SuggestionGenerationStatus.None)
-  // undefined for nothing received yet
-  // null for no site info
-  // mojom.SiteInfo for valid site info
-  const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo | null | undefined>(undefined)
+  const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo>({
+    title: undefined,
+    isContentPresent: false,
+    isContentTruncated: false,
+  })
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
@@ -44,6 +45,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
   const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean>(false)
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
+  const [showAgreementModal, setShowAgreementModal] = React.useState(false)
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -73,8 +75,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   // Wait to show model intro until we've received SiteInfo information
   // (valid or null) to avoid flash of content.
-  const showModelIntro =
-    hasAcceptedAgreement && (hasChangedModel || siteInfo === null)
+  const showModelIntro = hasAcceptedAgreement && (hasChangedModel || siteInfo?.isContentPresent)
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -95,22 +96,9 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.generateQuestions()
   }
 
-  const handleSiteInfo = (isFetching: boolean, siteInfo: mojom.SiteInfo | null) => {
-    // null siteInfo for no content
-    // true isFetching for unknown yet
-    if (!isFetching) {
-      setSiteInfo(siteInfo)
-    } else {
-      setSiteInfo(undefined)
-    }
-  }
-
   const getSiteInfo = () => {
     getPageHandlerInstance()
-      .pageHandler.getSiteInfo()
-      .then(({ isFetching, siteInfo }) => {
-        handleSiteInfo(isFetching, siteInfo)
-      })
+      .pageHandler.getSiteInfo().then(({ siteInfo }) => setSiteInfo(siteInfo))
   }
 
   const getFaviconData = () => {
@@ -131,6 +119,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const handleAgreeClick = () => {
     setHasAcceptedAgreement(true)
+    setShowAgreementModal(false)
     getPageHandlerInstance().pageHandler.markAgreementAccepted()
   }
 
@@ -184,7 +173,7 @@ function DataContextProvider (props: DataContextProviderProps) {
 
     // TODO(nullhook): make this more accurately based on the actual page content length
     let totalCharLimit = currentModel?.longConversationWarningCharacterLimit
-    if (!siteInfo) totalCharLimit += currentModel?.maxPageContentLength
+    if (!siteInfo.isContentPresent) totalCharLimit += currentModel?.maxPageContentLength
 
     if (
       !hasDismissedLongConversationInfo &&
@@ -252,12 +241,16 @@ function DataContextProvider (props: DataContextProviderProps) {
     )
     getPageHandlerInstance().callbackRouter.onFaviconImageDataChanged.addListener((faviconImageData: number[]) => setFavIconUrl(toBlobURL(faviconImageData)))
     getPageHandlerInstance().callbackRouter.onSiteInfoChanged.addListener(
-      handleSiteInfo
+      setSiteInfo
     )
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
 
     getPageHandlerInstance().callbackRouter.onModelChanged.addListener((modelKey: string) => {
       setCurrentModelKey(modelKey)
+    })
+
+    getPageHandlerInstance().callbackRouter.onConversationEntryPending.addListener(() => {
+      setShowAgreementModal(true)
     })
 
     // Since there is no server-side event for premium status changing,
@@ -282,7 +275,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     isGenerating,
     suggestedQuestions,
     suggestionStatus,
-    siteInfo: siteInfo,
+    siteInfo,
     favIconUrl,
     currentError,
     hasAcceptedAgreement,
@@ -294,6 +287,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     canShowPremiumPrompt,
     shouldShowLongPageWarning,
     shouldShowLongConversationInfo,
+    showAgreementModal,
     setCurrentModel,
     switchToDefaultModel,
     goPremium,

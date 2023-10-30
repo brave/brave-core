@@ -27,6 +27,13 @@
   padding-bottom: 16px;
 }
 
+.flushBottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 0;
+}
+
 .header {
   padding: 8px 16px;
   border-bottom: 1px solid var(--leo-color-divider-subtle);

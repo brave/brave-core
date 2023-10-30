@@ -15,7 +15,7 @@ export interface AIChatContext {
   isGenerating: boolean
   suggestionStatus: mojom.SuggestionGenerationStatus
   hasAcceptedAgreement: boolean
-  siteInfo?: mojom.SiteInfo | null
+  siteInfo: mojom.SiteInfo
   favIconUrl: string | undefined
   currentError: mojom.APIError | undefined
   apiHasError: boolean
@@ -26,6 +26,7 @@ export interface AIChatContext {
   canShowPremiumPrompt?: boolean
   shouldShowLongPageWarning: boolean
   shouldShowLongConversationInfo: boolean
+  showAgreementModal: boolean
   setCurrentModel: (model: mojom.Model) => void,
   switchToDefaultModel: () => void,
   generateSuggestedQuestions: () => void
@@ -52,12 +53,17 @@ export const defaultContext: AIChatContext = {
   isPremiumStatusFetching: false,
   isPremiumUser: false,
   isPremiumUserDisconnected: false,
-  siteInfo: undefined,
+  siteInfo: {
+    title: undefined,
+    isContentPresent: false,
+    isContentTruncated: false,
+  },
   favIconUrl: undefined,
   currentError: mojom.APIError.None,
   canShowPremiumPrompt: undefined,
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
+  showAgreementModal: false,
   setCurrentModel: () => {},
   switchToDefaultModel: () => {},
   generateSuggestedQuestions: () => {},

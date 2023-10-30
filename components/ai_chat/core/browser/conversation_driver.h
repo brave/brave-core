@@ -46,6 +46,7 @@ class ConversationDriver {
         mojom::SuggestionGenerationStatus suggestion_generation_status) {}
     virtual void OnFaviconImageDataChanged() {}
     virtual void OnPageHasContent(bool page_contents_is_truncated) {}
+    virtual void OnConversationEntryPending() {}
   };
 
   ConversationDriver(raw_ptr<PrefService> pref_service,
@@ -85,6 +86,10 @@ class ConversationDriver {
   void GetPremiumStatus(
       mojom::PageHandler::GetPremiumStatusCallback callback);
   bool IsPageContentsTruncated();
+  bool HasPendingConversationEntry();
+  bool IsPageContentsPresent();
+  void SetPendingMessageNeedsPageContent(bool needs_content);
+  void SubmitSummarizationRequest();
 
  protected:
   virtual GURL GetPageURL() const = 0;
@@ -125,6 +130,7 @@ class ConversationDriver {
   void OnPremiumStatusReceived(
       mojom::PageHandler::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status);
+  void OnConversationEntryPending();
 
   void SetAPIError(const mojom::APIError& error);
 
@@ -160,7 +166,8 @@ class ConversationDriver {
   mojom::APIError current_error_ = mojom::APIError::None;
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Inactive;
 
-  std::unique_ptr<mojom::ConversationTurn> pending_request_;
+  std::unique_ptr<mojom::ConversationTurn> pending_conversation_entry_;
+  bool pending_message_needs_page_content_ = false;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };

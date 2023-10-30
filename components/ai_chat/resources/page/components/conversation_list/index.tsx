@@ -28,14 +28,19 @@ function ConversationList() {
     isGenerating,
     conversationHistory,
     suggestedQuestions,
-    shouldDisableUserInput
+    shouldDisableUserInput,
+    hasAcceptedAgreement,
   } = context
 
   const portalRefs = React.useRef<Map<number, Element>>(new Map())
 
-  const showSuggestions: boolean =
+  let showSuggestions: boolean =
     suggestedQuestions.length > 0 ||
     SUGGESTION_STATUS_SHOW_BUTTON.includes(context.suggestionStatus)
+
+  if (hasAcceptedAgreement) {
+    showSuggestions = false
+  }
 
   React.useEffect(() => {
     if (!conversationHistory.length && !isGenerating) {
