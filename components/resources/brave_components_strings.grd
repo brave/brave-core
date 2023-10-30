@@ -781,10 +781,6 @@
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</message>
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_2" desc="">Brave supports YouTube, Twitch, Vimeo and more!</message>
 
-      <message name="IDS_BRAVE_UI_GEMINI_PROMO_TITLE" desc="">Sign up to Gemini to store your BAT securely</message>
-      <message name="IDS_BRAVE_UI_GEMINI_PROMO_INFO_1" desc="">Connect Brave Rewards to Gemini to receive your BAT earnings directly to your Gemini account. Gemini is a full reserve and highly regulated cryptocurrency exchange and custodian.</message>
-      <message name="IDS_BRAVE_UI_GEMINI_PROMO_INFO_2" desc="">Millions of customers in 70+ countries choose Gemini to buy, sell, store, and stake over 90+ cryptos with ease.</message>
-
       <message name="IDS_BRAVE_UI_TAP_NETWORK_TITLE" desc="">Redeem BAT for Gift Cards</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_INFO" desc="">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER" desc="">* Requires Uphold account.</message>
