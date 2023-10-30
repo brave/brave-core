@@ -89,6 +89,8 @@ export const TransactionAmountBig = styled.span`
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text01};
   font-weight: 600;
+  word-break: break-all;
+  text-align: center;
 `
 
 export const TransactionFiatAmountBig = styled.span`
@@ -98,6 +100,8 @@ export const TransactionFiatAmountBig = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   margin-bottom: 10px;
+  word-break: break-all;
+  text-align: center;
 `
 
 export const MessageBox = styled.div<{ isDetails: boolean }>`
@@ -132,6 +136,8 @@ export const TransactionTypeText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   font-weight: 600;
+  word-break: break-all;
+  text-align: left;
 `
 
 export const FromToRow = styled.div`
@@ -202,6 +208,7 @@ export const TransactionText = styled.span<{ hasError?: boolean }>`
   letter-spacing: 0.01em;
   color: ${(p) => p.hasError ? p.theme.color.errorText : p.theme.color.text03};
   text-align: left;
+  word-break: break-all;
 `
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
