@@ -7,11 +7,14 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import * as BraveNews from '../../../../brave_news/browser/resources/shared/api'
 import * as TodayActions from '../../../actions/today_actions'
-import * as BraveNewsElement from './default'
-import CardOptIn from './cards/cardOptIn'
-import CardLoading from './cards/cardLoading'
 import { useNewTabPref } from '../../../hooks/usePref'
+import { defaultState } from '../../../storage/new_tab_storage'
+import CardLoading from './cards/cardLoading'
+import CardOptIn from './cards/cardOptIn'
+import * as BraveNewsElement from './default'
+
 const Content = React.lazy(() => import('./content'))
+const FeedV2 = React.lazy(() => import('./FeedV2'))
 
 export type OnReadFeedItem = (args: TodayActions.ReadFeedItemPayload) => any
 export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
@@ -49,10 +52,10 @@ export const attributeNameCardCount = 'data-today-card-count'
 
 const intersectionOptions = { root: null, rootMargin: '0px', threshold: 0.25 }
 
-export default function BraveNewsSection (props: Props) {
+export default function BraveNewsSection(props: Props) {
   const dispatch = useDispatch()
   const [optedIn, setOptedIn] = useNewTabPref('isBraveNewsOptedIn')
-  const [,setShowToday] = useNewTabPref('showToday')
+  const [, setShowToday] = useNewTabPref('showToday')
 
   // Don't ask for initial data more than once
   const hasRequestedLoad = React.useRef(false)
@@ -93,9 +96,9 @@ export default function BraveNewsSection (props: Props) {
     // When we have an element to observe, set it as the target.
     // Don't do anything if we don't need data.
     if (!loadDataObserver ||
-          !loadDataTrigger.current ||
-          !optedIn ||
-          !!props.feed) {
+      !loadDataTrigger.current ||
+      !optedIn ||
+      !!props.feed) {
       return
     }
     loadDataObserver.observe(loadDataTrigger.current)
@@ -119,16 +122,16 @@ export default function BraveNewsSection (props: Props) {
         ref={loadDataTrigger}
         style={{ position: 'sticky', top: '100px' }}
       />
-      { !optedIn &&
-      <>
-        <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={() => setShowToday(false)} />
-      </>
+      {!optedIn &&
+        <>
+          <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={() => setShowToday(false)} />
+        </>
       }
-      { shouldDisplayContent &&
-      <React.Suspense fallback={(<CardLoading />)}>
-        <Content {...props} />
-      </React.Suspense>
-      }
+      {shouldDisplayContent && <React.Suspense fallback={(<CardLoading />)}>
+        {defaultState.featureFlagBraveNewsPromptEnabled
+          ? <FeedV2 />
+          : <Content {...props} />}
+      </React.Suspense>}
 
     </BraveNewsElement.Section>
   )

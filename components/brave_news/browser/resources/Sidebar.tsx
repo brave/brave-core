@@ -6,8 +6,9 @@ import Icon from '@brave/leo/react/icon';
 import { effect, font, radius, spacing } from '@brave/leo/tokens/css';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import { FeedType, useInspectContext } from './context';
+import { useInspectContext } from './context';
 import Card from './feed/Card';
+import { FeedType, useBraveNews } from './shared/Context';
 import { isPublisherEnabled } from './shared/api';
 
 const DEFAULT_SHOW_COUNT = 4;
@@ -100,15 +101,16 @@ const Section = styled.details`
 const Marker = <Icon name='arrow-small-right' className='marker' />
 
 export function Item(props: { id: FeedType, name: string }) {
-  const { currentFeed, setCurrentFeed } = useInspectContext()
+  const { feedView, setFeedView } = useBraveNews()
 
-  return <CustomButton selected={props.id === currentFeed} onClick={() => setCurrentFeed(props.id)} bold={props.id === 'all'}>
+  return <CustomButton selected={props.id === feedView} onClick={() => setFeedView(props.id)} bold={props.id === 'all'}>
     {props.name}
   </CustomButton>
 }
 
 export default function Sidebar() {
-  const { channels, publishers, signals } = useInspectContext()
+  const  {channels, publishers} = useBraveNews()
+  const { signals } = useInspectContext()
 
   const [showingMoreChannels, setShowingMoreChannels] = React.useState(false)
   const [showingMorePublishers, setShowingMorePublishers] = React.useState(false)

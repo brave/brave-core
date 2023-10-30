@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import SecureLink from '$web-common/SecureLink';
 import { HeroArticle as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -34,7 +35,7 @@ export default function HeroArticle({ info }: Props) {
     <HeroImage src={url} />
     <ArticleMetaRow article={info.data} />
     <Title>
-      <a href={info.data.url.url}>{info.data.title}</a>
+      <SecureLink href={info.data.url.url}>{info.data.title}</SecureLink>
     </Title>
   </Card>
 }

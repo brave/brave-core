@@ -3,17 +3,17 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { select, boolean, number, CHANGE } from '@storybook/addon-knobs'
+import { CHANGE, boolean, number, select } from '@storybook/addon-knobs'
 import { addons } from '@storybook/addons'
-import { defaultTopSitesData } from '../../../data/defaultTopSites'
-import { defaultState } from '../../../storage/new_tab_storage'
-import { initialGridSitesState } from '../../../storage/grid_sites_storage'
-import { TabType as SettingsTabType } from '../../../containers/newTab/settings'
-import dummyBrandedWallpaper from './brandedWallpaper'
-import * as Background from './backgroundWallpaper'
-import { newTabPrefManager } from '../../../hooks/usePref'
 import { useEffect } from 'react'
+import { TabType as SettingsTabType } from '../../../containers/newTab/settings'
+import { defaultTopSitesData } from '../../../data/defaultTopSites'
 import * as ColorUtil from '../../../helpers/colorUtil'
+import { newTabPrefManager } from '../../../hooks/usePref'
+import { initialGridSitesState } from '../../../storage/grid_sites_storage'
+import { defaultState } from '../../../storage/new_tab_storage'
+import * as Background from './backgroundWallpaper'
+import dummyBrandedWallpaper from './brandedWallpaper'
 
 const addonsChannel = addons.getChannel()
 
@@ -83,6 +83,7 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     featureFlagBraveNTPSponsoredImagesWallpaper: true,
     featureCustomBackgroundEnabled: true,
     featureFlagBraveNewsPromptEnabled: true,
+    featureFlagBraveNewsFeedV2Enabled: false,
     searchPromotionEnabled: false,
     forceSettingsTab: select('Open settings tab?', [undefined, ...Object.keys(SettingsTabType)], undefined),
     showBackgroundImage: boolean('Show background image?', true),

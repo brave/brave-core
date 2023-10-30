@@ -524,6 +524,24 @@ void BraveNewsController::AddFeedListener(
   feed_controller_.AddListener(std::move(listener));
 }
 
+void BraveNewsController::SetConfiguration(
+    mojom::ConfigurationPtr configuration,
+    SetConfigurationCallback callback) {
+  prefs_->SetBoolean(prefs::kBraveNewsOptedIn, configuration->isOptedIn);
+  prefs_->SetBoolean(prefs::kNewTabPageShowToday, configuration->showOnNTP);
+  std::move(callback).Run();
+}
+
+void BraveNewsController::AddConfigurationListener(
+    mojo::PendingRemote<mojom::ConfigurationListener> listener) {
+  auto id = configuration_listeners_.Add(std::move(listener));
+
+  auto event = mojom::Configuration::New();
+  event->isOptedIn = prefs_->GetBoolean(prefs::kBraveNewsOptedIn);
+  event->showOnNTP = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  configuration_listeners_.Get(id)->Changed(std::move(event));
+}
+
 void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
   // TODO(petemill): maybe we need to have a way to re-fetch ads_service,
   // since it may have been disabled at time of service creation and enabled
@@ -678,6 +696,13 @@ void BraveNewsController::OnOptInChange() {
       FROM_HERE, kP3AEnabledReportTimeDelay,
       base::BindOnce(&p3a::RecordFeatureEnabledChange, prefs_));
   ConditionallyStartOrStopTimer();
+
+  auto event = mojom::Configuration::New();
+  event->isOptedIn = prefs_->GetBoolean(prefs::kBraveNewsOptedIn);
+  event->showOnNTP = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
+  for (const auto& listener : configuration_listeners_) {
+    listener->Changed(event->Clone());
+  }
 }
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {

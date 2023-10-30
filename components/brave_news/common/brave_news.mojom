@@ -217,12 +217,21 @@ struct ChannelsEvent {
   array<string> removed;
 };
 
+struct Configuration {
+  bool isOptedIn;
+  bool showOnNTP;
+};
+
 interface ChannelsListener {
   Changed(ChannelsEvent event);
 };
 
 interface FeedListener {
   OnUpdateAvailable(string feed_hash);
+};
+
+interface ConfigurationListener {
+  Changed(Configuration new_configuration);
 };
 
 // Browser-side handler
@@ -269,6 +278,9 @@ interface BraveNewsController {
   IsFeedUpdateAvailable(string displayed_feed_hash)
     => (bool is_update_available);
   AddFeedListener(pending_remote<FeedListener> listener);
+
+  SetConfiguration(Configuration configuration) => ();
+  AddConfigurationListener(pending_remote<ConfigurationListener> listener);
 
   GetDisplayAd() => (DisplayAd? ad);
   // Lets the browser know when a user begins viewing or scrolling
