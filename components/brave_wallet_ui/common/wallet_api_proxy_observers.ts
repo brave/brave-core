@@ -184,9 +184,11 @@ export function makeJsonRpcServiceObserver (store: Store) {
           skipBalancesRefresh: true
         }))
       },
-      onDiscoverAssetsStarted: function () { },
-      onDiscoverAssetsCompleted: function (discoveredAssets) {
-        store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(discoveredAssets))
+      onDiscoverAssetsStarted: function () {
+        store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(false))
+      },
+      onDiscoverAssetsCompleted: function () {
+        store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(true))
       },
       onResetWallet: function () {
       }

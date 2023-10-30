@@ -107,7 +107,7 @@ const defaultState: WalletState = {
   solFeeEstimates: undefined,
   selectedDepositAssetId: undefined,
   passwordAttempts: 0,
-  assetAutoDiscoveryCompleted: false,
+  assetAutoDiscoveryCompleted: true,
   isNftPinningFeatureEnabled: false,
   isPanelV2FeatureEnabled: false,
   isAnkrBalancesFeatureEnabled: false,
@@ -309,9 +309,9 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setAssetAutoDiscoveryCompleted(
         state: WalletState,
-        { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
+        { payload }: PayloadAction<boolean>
       ) {
-        state.assetAutoDiscoveryCompleted = true
+        state.assetAutoDiscoveryCompleted = payload
       },
 
       setCoinMarkets: (
