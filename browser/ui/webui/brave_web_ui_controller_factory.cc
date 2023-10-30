@@ -220,7 +220,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost &&
        (url.path() == kWalletSwapPagePath ||
-        url.path() == kWalletSendPagePath || url.path() == kWalletBuyPagePath ||
+        url.path() == kWalletSendPagePath ||
+        url.path().starts_with(kWalletBuyPagePath) ||
         url.path().starts_with(kWalletDepositPagePath))) ||
 #else
       (base::FeatureList::IsEnabled(

@@ -213,7 +213,7 @@ public abstract class BraveActivity extends ChromeActivity
                    BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
                    MiscAndroidMetricsConnectionErrorHandler
                            .MiscAndroidMetricsConnectionErrorHandlerDelegate {
-    public static final String BRAVE_BUY_URL = "brave://wallet/fund-wallet";
+    public static final String BRAVE_BUY_URL = "brave://wallet/crypto/fund-wallet";
     public static final String BRAVE_SEND_URL = "brave://wallet/send";
     public static final String BRAVE_SWAP_URL = "brave://wallet/swap";
     public static final String BRAVE_DEPOSIT_URL = "brave://wallet/crypto/deposit-funds";
