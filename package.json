@@ -47,7 +47,8 @@
     "fuzzer": "node ./build/commands/scripts/commands.js run_fuzzer",
     "perf_tests": "node ./build/commands/scripts/commands.js run_perf_tests",
     "gen_env": "node ./build/commands/scripts/genEnv.js",
-    "gen_gradle": "node ./build/commands/scripts/commands.js gen_gradle"
+    "gen_gradle": "node ./build/commands/scripts/commands.js gen_gradle",
+    "allow-scripts": "node ./node_modules/@lavamoat/allow-scripts/src/cli.js --experimental-bins"
   },
   "repository": {
     "type": "git",
@@ -277,6 +278,7 @@
   "devDependencies": {
     "@babel/core": "7.16.0",
     "@babel/plugin-proposal-export-namespace-from": "7.16.0",
+    "@lavamoat/allow-scripts": "^3.0.0",
     "@storybook/addon-essentials": "6.4.13",
     "@storybook/addon-knobs": "6.4.0",
     "@storybook/addons": "6.4.13",
@@ -362,6 +364,7 @@
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "2.0.0-beta.12",
+    "@lavamoat/preinstall-always-fail": "^2.0.0",
     "@ledgerhq/hw-app-eth": "6.24.1",
     "@ledgerhq/hw-app-solana": "6.27.1",
     "@ledgerhq/hw-transport-webhid": "6.24.1",
@@ -395,5 +398,46 @@
     "json5": "2.2.3",
     "protobufjs": "7.2.4",
     "@babel/traverse": "7.23.2"
+  },
+  "lavamoat": {
+    "allowScripts": {
+      "@brave/leo>svelte-check>svelte-preprocess": false,
+      "@brave/leo>svelte-preprocess": false,
+      "@lavamoat/preinstall-always-fail": false,
+      "@solana/web3.js>bigint-buffer": false,
+      "@solana/web3.js>rpc-websockets>bufferutil": false,
+      "@solana/web3.js>rpc-websockets>utf-8-validate": false,
+      "@storybook/react>@pmmmwh/react-refresh-webpack-plugin>core-js-pure": false,
+      "core-js": false,
+      "ethereumjs-util>ethereum-cryptography>keccak": false,
+      "ethereumjs-util>ethereum-cryptography>secp256k1": false,
+      "trezor-connect>@trezor/transport>protobufjs": false,
+      "trezor-connect>@trezor/utxo-lib>blake-hash": false,
+      "trezor-connect>@trezor/utxo-lib>tiny-secp256k1": false,
+      "webpack>watchpack>watchpack-chokidar2>chokidar>fsevents": false,
+      "webtorrent>utp-native": false
+    },
+    "allowBins": {
+      "leo-check": "node_modules/@brave/leo/src/scripts/audit-tokens.js",
+      "mkdirp": "node_modules/mkdirp/bin/cmd.js",
+      "acorn": "node_modules/acorn/bin/acorn",
+      "allow-scripts": "node_modules/@lavamoat/allow-scripts/src/cli.js",
+      "terser": "node_modules/terser/bin/terser",
+      "prettier": "node_modules/prettier/bin-prettier.js",
+      "build-storybook": "node_modules/@storybook/react/bin/build.js",
+      "start-storybook": "node_modules/@storybook/react/bin/index.js",
+      "storybook-server": "node_modules/@storybook/react/bin/index.js",
+      "cross-env": "node_modules/cross-env/src/bin/cross-env.js",
+      "cross-env-shell": "node_modules/cross-env/src/bin/cross-env-shell.js",
+      "eslint": "node_modules/eslint/bin/eslint.js",
+      "eslint-config-prettier": "node_modules/eslint-config-prettier/bin/cli.js",
+      "jest": "node_modules/jest/bin/jest.js",
+      "lessc": "node_modules/less/bin/lessc",
+      "ts-jest": "node_modules/ts-jest/cli.js",
+      "tsc": "node_modules/typescript/bin/tsc",
+      "tsserver": "node_modules/typescript/bin/tsserver",
+      "webpack": "node_modules/webpack/bin/webpack.js",
+      "webpack-cli": "node_modules/webpack-cli/bin/cli.js"
+    }
   }
 }
