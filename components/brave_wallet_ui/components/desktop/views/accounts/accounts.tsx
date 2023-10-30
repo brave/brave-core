@@ -123,7 +123,8 @@ export const Accounts = () => {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const {
-    data: tokenBalancesRegistry
+    data: tokenBalancesRegistry,
+    isLoading: isLoadingBalances
   } = useBalancesFetcher({
     accounts,
     networks
@@ -136,7 +137,10 @@ export const Accounts = () => {
     [userVisibleTokensInfo]
   )
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+  const {
+    data: spotPriceRegistry,
+    isLoading: isLoadingSpotPrices
+  } = useGetTokenSpotPricesQuery(
     tokenPriceIds.length && defaultFiatCurrency
       ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
       : skipToken,
@@ -160,7 +164,9 @@ export const Accounts = () => {
             onClick={onSelectAccount}
             account={account}
             tokenBalancesRegistry={tokenBalancesRegistry}
+            isLoadingBalances={isLoadingBalances}
             spotPriceRegistry={spotPriceRegistry}
+            isLoadingSpotPrices={isLoadingSpotPrices}
           />
         )}
     </Column>
@@ -168,7 +174,11 @@ export const Accounts = () => {
   }, [
     trezorKeys,
     trezorAccounts,
-    onSelectAccount
+    onSelectAccount,
+    tokenBalancesRegistry,
+    spotPriceRegistry,
+    isLoadingBalances,
+    isLoadingSpotPrices
   ])
 
   const ledgerKeys = React.useMemo(() => {
@@ -188,7 +198,9 @@ export const Accounts = () => {
             onClick={onSelectAccount}
             account={account}
             tokenBalancesRegistry={tokenBalancesRegistry}
+            isLoadingBalances={isLoadingBalances}
             spotPriceRegistry={spotPriceRegistry}
+            isLoadingSpotPrices={isLoadingSpotPrices}
           />
         )}
     </Column>
@@ -196,7 +208,11 @@ export const Accounts = () => {
   }, [
     ledgerKeys,
     ledgerAccounts,
-    onSelectAccount
+    onSelectAccount,
+    tokenBalancesRegistry,
+    spotPriceRegistry,
+    isLoadingBalances,
+    isLoadingSpotPrices
   ])
 
 
@@ -232,7 +248,9 @@ export const Accounts = () => {
             onClick={onSelectAccount}
             account={account}
             tokenBalancesRegistry={tokenBalancesRegistry}
+            isLoadingBalances={isLoadingBalances}
             spotPriceRegistry={spotPriceRegistry}
+            isLoadingSpotPrices={isLoadingSpotPrices}
           />
         )}
       </Column>
@@ -258,7 +276,9 @@ export const Accounts = () => {
                 onClick={onSelectAccount}
                 account={account}
                 tokenBalancesRegistry={tokenBalancesRegistry}
+                isLoadingBalances={isLoadingBalances}
                 spotPriceRegistry={spotPriceRegistry}
+                isLoadingSpotPrices={isLoadingSpotPrices}
               />
             )}
           </Column>
@@ -306,7 +326,9 @@ export const Accounts = () => {
               onClick={onSelectAccount}
               account={externalRewardsAccount}
               tokenBalancesRegistry={tokenBalancesRegistry}
+              isLoadingBalances={isLoadingBalances}
               spotPriceRegistry={spotPriceRegistry}
+              isLoadingSpotPrices={isLoadingSpotPrices}
             />
           </Column>
         </>
