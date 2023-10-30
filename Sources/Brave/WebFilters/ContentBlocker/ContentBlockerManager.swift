@@ -9,6 +9,7 @@ import Data
 import Shared
 import Preferences
 import BraveShields
+import BraveCore
 import os.log
 
 /// A class that aids in the managment of rule lists on the rule store.
@@ -169,9 +170,11 @@ actor ContentBlockerManager {
     }
   }
   
-  /// Compile the given resource and store it in cache for the given blocklist type using all allowed modes
-  func compile(encodedContentRuleList: String, for type: BlocklistType, options: CompileOptions = []) async throws {
-    try await self.compile(encodedContentRuleList: encodedContentRuleList, for: type, modes: type.allowedModes)
+  /// Compile the rule list found in the given local URL using the specified modes
+  func compileRuleList(at localFileURL: URL, for type: BlocklistType, options: CompileOptions = [], modes: [BlockingMode]) async throws {
+    let filterSet = try String(contentsOf: localFileURL)
+    let result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+    try await compile(encodedContentRuleList: result.rulesJSON, for: type, options: options, modes: modes)
   }
   
   /// Compile the given resource and store it in cache for the given blocklist type and specified modes
@@ -255,6 +258,20 @@ actor ContentBlockerManager {
     }
     
     return ruleList
+  }
+  
+  /// Return all the modes that need to be compiled for the given type
+  func missingModes(for type: BlocklistType) async -> [BlockingMode] {
+    return await type.allowedModes.asyncFilter { mode in
+      // If the file wasn't modified, make sure we have something compiled.
+      // We should, but this can be false during upgrades if the identifier changed for some reason.
+      if await hasRuleList(for: type, mode: mode) {
+        ContentBlockerManager.log.debug("Rule list already compiled for `\(type.makeIdentifier(for: mode))`")
+        return false
+      } else {
+        return true
+      }
+    }
   }
   
   /// Check if a rule list is compiled for this type

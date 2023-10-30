@@ -35,8 +35,10 @@ class ContentBlockerManagerTests: XCTestCase {
       }
       
       do {
-        try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: .filterList(componentId: filterListUUID, isAlwaysAggressive: false))
-        try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: .customFilterList(uuid: filterListCustomUUID))
+        let filterListType = ContentBlockerManager.BlocklistType.filterList(componentId: filterListUUID, isAlwaysAggressive: false)
+        try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: filterListType, modes: filterListType.allowedModes)
+        let customListType = ContentBlockerManager.BlocklistType.customFilterList(uuid: filterListCustomUUID)
+        try await manager.compile(encodedContentRuleList: encodedContentRuleList, for: customListType, modes: customListType.allowedModes)
       } catch {
         XCTFail(error.localizedDescription)
       }

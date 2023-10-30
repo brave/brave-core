@@ -121,35 +121,26 @@ public actor AdblockResourceDownloader: Sendable {
     switch resource {
     case .adBlockRules:
       let blocklistType = ContentBlockerManager.BlocklistType.generic(.blockAds)
-      let modes = await blocklistType.allowedModes.asyncFilter { mode in
-        guard allowedModes.contains(mode) else { return false }
-        if downloadResult.isModified { return true }
-        
-        // If the file wasn't modified, make sure we have something compiled.
-        // We should, but this can be false during upgrades if the identifier changed for some reason.
-        if await ContentBlockerManager.shared.hasRuleList(for: blocklistType, mode: mode) {
-          ContentBlockerManager.log.debug("Rule list already compiled for `\(blocklistType.makeIdentifier(for: mode))`")
-          return false
-        } else {
-          return true
-        }
+      var modes = blocklistType.allowedModes
+      
+      if !downloadResult.isModified && !allowedModes.isEmpty {
+        // If the download is not modified, only compile the missing modes for performance reasons
+        let missingModes = await ContentBlockerManager.shared.missingModes(for: blocklistType)
+        modes = missingModes.filter({ allowedModes.contains($0) })
       }
 
       // No modes are needed to be compiled
       guard !modes.isEmpty else { return }
       
       do {
-        guard let filterSet = try resource.downloadedString() else {
+        guard let fileURL = resource.downloadedFileURL else {
           assertionFailure("This file was downloaded successfully so it should not be nil")
           return
         }
         
-        let result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
-        
         // try to compile
-        try await ContentBlockerManager.shared.compile(
-          encodedContentRuleList: result.rulesJSON, for: blocklistType,
-          modes: modes
+        try await ContentBlockerManager.shared.compileRuleList(
+          at: fileURL, for: blocklistType, modes: modes
         )
       } catch {
         ContentBlockerManager.log.error(

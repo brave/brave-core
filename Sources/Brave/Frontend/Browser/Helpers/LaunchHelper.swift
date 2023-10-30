@@ -88,7 +88,8 @@ public actor LaunchHelper {
     
     Task.detached(priority: .low) {
       // Let's disable filter lists if we have reached a maxumum amount
-      let enabledSources = await AdBlockStats.shared.enabledSources
+      let enabledSources = await AdBlockStats.shared.enabledPrioritizedSources
+      
       if enabledSources.count > AdBlockStats.maxNumberOfAllowedFilterLists {
         let toDisableSources = enabledSources[AdBlockStats.maxNumberOfAllowedFilterLists...]
         

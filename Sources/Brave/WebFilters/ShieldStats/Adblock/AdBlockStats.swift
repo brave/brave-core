@@ -25,7 +25,7 @@ public actor AdBlockStats {
   public static let shared = AdBlockStats()
   
   /// An object containing the basic information to allow us to compile an engine
-  struct LazyFilterListInfo {
+  public struct LazyFilterListInfo {
     let filterListInfo: CachedAdBlockEngine.FilterListInfo
     let isAlwaysAggressive: Bool
   }
@@ -56,6 +56,16 @@ public actor AdBlockStats {
     return enabledSources
   }
   
+  @MainActor var enabledPrioritizedSources: [CachedAdBlockEngine.Source] {
+    let criticalSources = Set(self.criticalSources)
+    var enabledSources: [CachedAdBlockEngine.Source] = [.adBlock]
+    enabledSources.append(contentsOf: FilterListStorage.shared.enabledSources.sorted { left, right in
+      return criticalSources.contains(left) && !criticalSources.contains(right)
+    })
+    enabledSources.append(contentsOf: CustomFilterListStorage.shared.enabledSources)
+    return enabledSources
+  }
+  
   /// Tells us if we reached the max limit of already compiled filter lists
   var reachedMaxLimit: Bool {
     return cachedEngines.count >= Self.maxNumberOfAllowedFilterLists
@@ -77,30 +87,42 @@ public actor AdBlockStats {
   ///
   /// - Note: This method will ensure syncronous compilation
   public func compile(
-    filterListInfo: CachedAdBlockEngine.FilterListInfo, resourcesInfo: CachedAdBlockEngine.ResourcesInfo, 
-    isAlwaysAggressive: Bool, ignoreMaximum: Bool = false
+    lazyInfo: LazyFilterListInfo, resourcesInfo: CachedAdBlockEngine.ResourcesInfo,
+    ignoreMaximum: Bool = false, compileContentBlockers: Bool
   ) async {
     await currentCompileTask?.value
     
-    guard needsCompilation(for: filterListInfo, resourcesInfo: resourcesInfo) else {
-      // Ensure we only compile if we need to. This prevents two lazy loads from recompiling
-      return
-    }
-    
     currentCompileTask = Task {
-      if !ignoreMaximum && reachedMaxLimit && cachedEngines[filterListInfo.source] == nil {
-        ContentBlockerManager.log.error("Failed to compile engine for \(filterListInfo.source.debugDescription): Reached maximum!")
+      if !ignoreMaximum && reachedMaxLimit && cachedEngines[lazyInfo.filterListInfo.source] == nil {
+        ContentBlockerManager.log.error("Failed to compile engine for \(lazyInfo.filterListInfo.source.debugDescription): Reached maximum!")
         return
       }
       
-      do {
-        let engine = try CachedAdBlockEngine.compile(
-          filterListInfo: filterListInfo, resourcesInfo: resourcesInfo, isAlwaysAggressive: isAlwaysAggressive
-        )
+      // Compile engine
+      if needsCompilation(for: lazyInfo.filterListInfo, resourcesInfo: resourcesInfo) {
+        do {
+          let engine = try CachedAdBlockEngine.compile(
+            filterListInfo: lazyInfo.filterListInfo, resourcesInfo: resourcesInfo, isAlwaysAggressive: lazyInfo.isAlwaysAggressive
+          )
+          
+          add(engine: engine)
+        } catch {
+          ContentBlockerManager.log.error("Failed to compile engine for \(lazyInfo.filterListInfo.source.debugDescription)")
+        }
+      }
+      
+      // Compile content blockers
+      if compileContentBlockers, let blocklistType = lazyInfo.blocklistType {
+        let modes = await ContentBlockerManager.shared.missingModes(for: blocklistType)
+        guard !modes.isEmpty else { return }
         
-        add(engine: engine)
-      } catch {
-        ContentBlockerManager.log.error("Failed to compile engine for \(filterListInfo.source.debugDescription)")
+        do {
+          try await ContentBlockerManager.shared.compileRuleList(
+            at: lazyInfo.filterListInfo.localFileURL, for: blocklistType, modes: modes
+          )
+        } catch {
+          ContentBlockerManager.log.error("Failed to compile rule list for \(lazyInfo.filterListInfo.source.debugDescription)")
+        }
       }
     }
     
@@ -133,15 +155,6 @@ public actor AdBlockStats {
     self.resourcesInfo = resourcesInfo
   }
   
-  /// Remove an engine for the given source.
-  func removeEngine(for source: CachedAdBlockEngine.Source) {
-    if let filterListInfo = cachedEngines[source]?.filterListInfo {
-      ContentBlockerManager.log.debug("Removed engine for \(filterListInfo.debugDescription)")
-    }
-    
-    cachedEngines.removeValue(forKey: source)
-  }
-  
   /// Remove all the engines
   func removeAllEngines() {
     cachedEngines.removeAll()
@@ -153,22 +166,35 @@ public actor AdBlockStats {
     
     for source in cachedEngines.keys {
       guard !sources.contains(source) else { continue }
-      removeEngine(for: source)
+      // Remove the engine
+      if let filterListInfo = cachedEngines[source]?.filterListInfo {
+        cachedEngines.removeValue(forKey: source)
+        ContentBlockerManager.log.debug("Removed engine for \(filterListInfo.debugDescription)")
+      }
+      
+      // Delete the Content blockers
+      if let lazyInfo = availableFilterLists[source], let blocklistType = lazyInfo.blocklistType {
+        do {
+          try await ContentBlockerManager.shared.removeRuleLists(for: blocklistType)
+        } catch {
+          ContentBlockerManager.log.error("Failed to remove rule lists for \(lazyInfo.filterListInfo.debugDescription)")
+        }
+      }
     }
   }
   
   /// Remove all engines that have disabled sources
   func ensureEnabledEngines() async {
     do {
-      for source in await enabledSources {
+      for source in await enabledPrioritizedSources {
         guard cachedEngines[source] == nil else { continue }
         guard let availableFilterList = availableFilterLists[source] else { continue }
         guard let resourcesInfo = self.resourcesInfo else { continue }
         
         await compile(
-          filterListInfo: availableFilterList.filterListInfo,
+          lazyInfo: availableFilterList,
           resourcesInfo: resourcesInfo,
-          isAlwaysAggressive: availableFilterList.isAlwaysAggressive
+          compileContentBlockers: true
         )
         
         // Sleep for 1ms. This drastically reduces memory usage without much impact to usability
@@ -335,6 +361,21 @@ private extension CachedAdBlockEngine.Source {
       // This engine source type is enabled only if shields are enabled
       // for the given domain
       return domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)
+    }
+  }
+}
+
+extension AdBlockStats.LazyFilterListInfo {
+  var blocklistType: ContentBlockerManager.BlocklistType? {
+    switch filterListInfo.source {
+    case .adBlock:
+      // Normally this should be .generic(.blockAds)
+      // but this content blocker is coming from slim-list
+      return nil
+    case .filterList(let componentId):
+      return .filterList(componentId: componentId, isAlwaysAggressive: isAlwaysAggressive)
+    case .filterListURL(let uuid):
+      return .customFilterList(uuid: uuid)
     }
   }
 }

@@ -87,50 +87,43 @@ actor FilterListCustomURLDownloader: ObservableObject {
   /// Handle the download results of a custom filter list. This will process the download by compiling iOS rule lists and adding the rule list to the `AdblockEngineManager`.
   private func handle(downloadResult: ResourceDownloader<DownloadResource>.DownloadResult, for filterListCustomURL: FilterListCustomURL) async {
     let uuid = await filterListCustomURL.setting.uuid
-    let blocklistType = ContentBlockerManager.BlocklistType.customFilterList(uuid: uuid)
-    
-    // Compile this rule list if we haven't already or if the file has been modified
-    if downloadResult.isModified {
-      do {
-        let filterSet = try String(contentsOf: downloadResult.fileURL, encoding: .utf8)
-        let result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
-        
-        try await ContentBlockerManager.shared.compile(
-          encodedContentRuleList: result.rulesJSON,
-          for: blocklistType,
-          options: .all
-        )
-      } catch {
-        ContentBlockerManager.log.error(
-          "Failed to compile rule lists for `\(blocklistType.debugDescription)`: \(error.localizedDescription)"
-        )
-      }
-    }
       
     // Add/remove the resource depending on if it is enabled/disabled
-    let source = CachedAdBlockEngine.Source.filterListURL(uuid: uuid)
     guard let resourcesInfo = await FilterListResourceDownloader.shared.resourcesInfo else {
       assertionFailure("This should not have been called if the resources are not ready")
       return
     }
     
+    let source = await filterListCustomURL.setting.engineSource
     let version = fileVersionDateFormatter.string(from: downloadResult.date)
     let filterListInfo = CachedAdBlockEngine.FilterListInfo(
       source: .filterListURL(uuid: uuid),
       localFileURL: downloadResult.fileURL,
       version: version, fileType: .text
     )
+    let lazyInfo = AdBlockStats.LazyFilterListInfo(
+      filterListInfo: filterListInfo, isAlwaysAggressive: true
+    )
     
     guard await AdBlockStats.shared.isEagerlyLoaded(source: source) else {
       // Don't compile unless eager
       await AdBlockStats.shared.updateIfNeeded(resourcesInfo: resourcesInfo)
       await AdBlockStats.shared.updateIfNeeded(filterListInfo: filterListInfo, isAlwaysAggressive: true)
+      
+      // To free some space, remove any rule lists that are not needed
+      if let blocklistType = lazyInfo.blocklistType {
+        do {
+          try await ContentBlockerManager.shared.removeRuleLists(for: blocklistType)
+        } catch {
+          ContentBlockerManager.log.error("Failed to remove rule lists for \(filterListInfo.debugDescription)")
+        }
+      }
       return
     }
     
     await AdBlockStats.shared.compile(
-      filterListInfo: filterListInfo, resourcesInfo: resourcesInfo,
-      isAlwaysAggressive: true
+      lazyInfo: lazyInfo, resourcesInfo: resourcesInfo,
+      compileContentBlockers: downloadResult.isModified
     )
   }
   
