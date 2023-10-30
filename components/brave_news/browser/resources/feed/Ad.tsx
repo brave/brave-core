@@ -2,15 +2,14 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import * as React from 'react';
-import Card, { Title } from './Card';
+import Label from '@brave/leo/react/label';
+import { color, font, spacing } from '@brave/leo/tokens/css';
 import { PromotedArticle } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
+import * as React from 'react';
 import styled from 'styled-components';
 import usePromise from '../../../../brave_new_tab_ui/hooks/usePromise';
 import { api } from '../context';
-import Label from '@brave/leo/react/label'
-import { color, font, spacing } from '@brave/leo/tokens/css';
-import { getLocale } from '$web-common/locale'
+import Card, { Title } from './Card';
 
 interface Props {
   info: PromotedArticle
@@ -70,7 +69,7 @@ export default function Advert(props: Props) {
   if (!result) return null
 
   return <Container>
-    <BatAdLabel href='brave://rewards'>{getLocale("ad")}</BatAdLabel>
+    <BatAdLabel href='brave://rewards'>Ad</BatAdLabel>
     <Title>{result?.title}<Label>Ad</Label></Title>
     {result?.description}
   </Container>
