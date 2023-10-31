@@ -1,0 +1,26 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { EmbedURL, getFrameSrc } from '../../brave_player/resources/playerEmbed'
+
+describe('playerEmbedTest', () => {
+  describe('getFrameSrc', () => {
+    it(`returns empty string if pathname doesn't have video id or isn't for youtube`, () => {
+      expect(
+        getFrameSrc(new URL('chrome-untrusted://player-embed/youtube'))
+      ).toBe('')
+      expect(getFrameSrc(new URL('chrome-untrusted://player-embed'))).toBe('')
+      expect(
+        getFrameSrc(new URL('chrome-untrusted://player-embed/vimeo'))
+      ).toBe('')
+    })
+
+    it('returns YouTube embed URL with given video id', () => {
+      expect(
+        getFrameSrc(new URL('chrome-untrusted://player/youtube/dQw4w9WgXcQ'))
+      ).toBe(EmbedURL('youtube', 'dQw4w9WgXcQ'))
+    })
+  })
+})

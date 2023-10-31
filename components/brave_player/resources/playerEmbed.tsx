@@ -7,6 +7,15 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import styled from 'styled-components'
 
+// For now we only supports youtube.
+// Usages: EmbedURL`youtube${videoId}`
+export function EmbedURL (source: string, videoId: string) {
+  if (source === 'youtube')
+    return `https://www.youtube-nocookie.com/embed/${videoId}?iv_load_policy=1&autoplay=1&rel=0&modestbranding=1`
+
+  return ''
+}
+
 const EmbedContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -21,27 +30,22 @@ const StyledFrame = styled.iframe`
   border: none;
 `
 
-function getFrameSrc () {
-  let paths = new URL(window.location.href).pathname.split('/')
+export function getFrameSrc (url: URL) {
+  let paths = url.pathname.split('/')
   if (paths.length < 3) {
     return ''
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, service, videoId] = paths
-
-  if (service === 'youtube') {
-    return `https://www.youtube-nocookie.com/embed/${videoId}?iv_load_policy=1&autoplay=1&rel=0&modestbranding=1`
-  }
-
-  return ''
+  return EmbedURL(service, videoId)
 }
 
 function PlayerEmbed () {
   return (
     <EmbedContainer>
       <StyledFrame
-        src={getFrameSrc()}
+        src={getFrameSrc(new URL(window.location.href))}
         allow='autoplay; encrypted-media; picture-in-picture;'
         sandbox='allow-popups allow-scripts allow-same-origin allow-presentation'
         allowFullScreen
