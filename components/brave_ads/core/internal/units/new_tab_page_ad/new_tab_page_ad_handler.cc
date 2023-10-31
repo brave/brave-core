@@ -86,6 +86,10 @@ void NewTabPageAdHandler::TriggerEvent(
     TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
+  if (creative_instance_id.empty()) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
   if (!UserHasOptedInToNewTabPageAds()) {
     return std::move(callback).Run(/*success*/ false);
   }
