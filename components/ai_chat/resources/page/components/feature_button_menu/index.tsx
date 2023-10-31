@@ -95,12 +95,23 @@ export default function FeatureMenu() {
         </div>
       </leo-menu-item>
 
+      {!context.isPremiumUser &&
       <leo-menu-item onClick={context.goPremium}>
         <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
           <Icon name='lock-open' />
           <span className={styles.menuText}>{getLocale('menuGoPremium')}</span>
         </div>
       </leo-menu-item>
+      }
+
+      {context.isPremiumUser &&
+      <leo-menu-item onClick={context.managePremium}>
+        <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
+          <Icon name='lock-open' />
+          <span className={styles.menuText}>{getLocale('menuManageSubscription')}</span>
+        </div>
+      </leo-menu-item>
+      }
 
       <leo-menu-item onClick={handleSettingsClick}>
         <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
