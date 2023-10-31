@@ -48,6 +48,8 @@
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -62,6 +64,7 @@
 #include "ui/base/accelerators/accelerator_manager.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
@@ -660,6 +663,19 @@ void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
 }
 
+void BraveBrowserView::FullscreenStateChanging() {
+  // On platforms that support transitioning into fullscreen with an animation,
+  // update rounded corners at the start of the transition to avoid any flash of
+  // the wrong border shape.
+  BrowserView::FullscreenStateChanging();
+  UpdateWebViewRoundedCorners();
+}
+
+void BraveBrowserView::FullscreenStateChanged() {
+  BrowserView::FullscreenStateChanged();
+  UpdateWebViewRoundedCorners();
+}
+
 void BraveBrowserView::UpdateDevToolsForContents(
     content::WebContents* web_contents,
     bool update_devtools_web_contents) {
@@ -729,12 +745,27 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
     return;
   }
 
+  gfx::RoundedCornersF corners(BraveContentsViewUtil::kBorderRadius);
+
+  // In fullscreen-for-tab mode (e.g. full-screen video), no corners should be
+  // rounded.
+  if (auto* exclusive_access_manager = GetExclusiveAccessManager()) {
+    if (auto* controller = exclusive_access_manager->fullscreen_controller()) {
+      if (controller->IsWindowFullscreenForTabOrPending()) {
+        corners = gfx::RoundedCornersF(0);
+      }
+    }
+  }
+
+  // Set the appropriate corner radius for the view that contains both the web
+  // contents and devtools.
+  contents_container_->layer()->SetRoundedCornerRadius(corners);
+
   // In addition to giving the contents container rounded corners, we also need
   // to round the corners of the native view holder that displays the web
   // contents.
 
   // Devtools lies underneath the contents webview. Round all four corners.
-  gfx::RoundedCornersF corners(BraveContentsViewUtil::kBorderRadius);
   if (devtools_web_view_->holder()) {
     devtools_web_view_->holder()->SetCornerRadii(corners);
   }
