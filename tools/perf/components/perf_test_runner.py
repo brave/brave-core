@@ -14,13 +14,15 @@ import components.path_util as path_util
 import components.perf_test_utils as perf_test_utils
 from components.common_options import CommonOptions
 from components.browser_binary_fetcher import BrowserBinary, PrepareBinary
-from components.browser_type import BrowserType
+from components.browser_type import BraveVersion, BrowserType
 from components.perf_config import BenchmarkConfig, ParseTarget, RunnerConfig
 
 
 def ReportToDashboardImpl(
-    browser_type: BrowserType, dashboard_bot_name: str, revision: str,
+    browser_type: BrowserType, dashboard_bot_name: str, tag: BraveVersion,
     output_dir: str, ci_mode: bool) -> Tuple[bool, List[str], Optional[str]]:
+  revision = f'refs/tags/{tag}'
+  chromium_version = tag.to_chromium_version(ci_mode).__str__()
 
   if browser_type.report_as_reference:
     # .reference suffix for benchmark folder is used in process_perf_results.py
@@ -48,20 +50,22 @@ def ReportToDashboardImpl(
   build_properties['bot_id'] = 'test_bot'
   build_properties['builder_group'] = 'brave.perf'
 
-  build_properties['parent_builder_group'] = 'chromium.linux'
-  build_properties['parent_buildername'] = 'Linux Builder'
   build_properties['recipe'] = 'chromium'
   build_properties['slavename'] = 'test_bot'
 
-  # keep in sync with _MakeBuildStatusUrl() to make correct build urls.
-  build_properties['buildername'] = browser_type.name + '/' + revision
-  build_properties['buildnumber'] = '001'
+  build_properties['buildername'] = os.environ.get('JOB_NAME')
+  build_properties['buildnumber'] = os.environ.get('BUILD_NUMBER')
 
   build_properties[
       'got_revision_cp'] = 'refs/heads/main@{#%s}' % revision_number
-  build_properties['got_v8_revision'] = revision_number
-  build_properties['got_webrtc_revision'] = revision_number
-  build_properties['git_revision'] = git_hash
+  build_properties['got_revision'] = git_hash
+
+  # Encode and pass tags as v8/webrtc revisions.
+  # Sync the format with the dashboard JavaScript code:
+  # chart-container.html (brave/catapult repo)
+  build_properties['got_v8_revision'] = '0.' + f'{tag}'[1:]
+  build_properties['got_webrtc_revision'] = chromium_version
+
   build_properties_serialized = json.dumps(build_properties)
   args.append('--build-properties=' + build_properties_serialized)
 
@@ -225,7 +229,7 @@ class RunableConfiguration:
     assert self.config.tag is not None
     report_success, report_failed_logs, revision_number = ReportToDashboardImpl(
         self.config.browser_type,
-        self.config.dashboard_bot_name, f'refs/tags/{self.config.tag}',
+        self.config.dashboard_bot_name, self.config.tag,
         os.path.join(self.out_dir, 'results'), self.common_options.ci_mode)
     spent_time = time.time() - start_time
     self.status_line += f'Report {spent_time:.2f}s '
