@@ -75,8 +75,9 @@ void BraveVPNStatusLabel::OnConnectionStateChanged(ConnectionState state) {
   UpdateState();
 }
 
-gfx::Size BraveVPNStatusLabel::CalculatePreferredSize() const {
-  auto size = views::Label::CalculatePreferredSize();
+gfx::Size BraveVPNStatusLabel::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
+  auto size = views::Label::CalculatePreferredSize(available_size);
   if (longest_state_string_id_ == -1)
     return size;
   auto text =
