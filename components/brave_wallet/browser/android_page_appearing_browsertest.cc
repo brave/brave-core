@@ -418,14 +418,14 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestDepositPageAppearing) {
-  GURL url = GURL("chrome://wallet/deposit-funds");
+  GURL url = GURL("chrome://wallet/crypto/deposit-funds");
   const std::vector<std::string> ignore_patterns = {
       "TypeError: Cannot read properties of undefined (reading 'forEach')"};
   VerifyPage(url, ignore_patterns);
 }
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestBuyPageAppearing) {
-  GURL url = GURL("chrome://wallet/fund-wallet");
+  GURL url = GURL("chrome://wallet/crypto/fund-wallet");
   const std::vector<std::string> ignore_patterns = {
       "TypeError: Cannot read properties of undefined (reading 'forEach')"};
   VerifyPage(url, ignore_patterns);

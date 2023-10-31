@@ -102,7 +102,11 @@ function getItemSize(index: number): number {
 const getItemKey = (i: number, data: BraveWallet.BlockchainToken[]) =>
   getAssetIdKey(data[i])
 
-export const DepositFundsScreen = () => {
+interface Props {
+  isAndroid?: boolean
+}
+
+export const DepositFundsScreen = ({ isAndroid }: Props) => {
   // routing
   const history = useHistory()
 
@@ -119,6 +123,8 @@ export const DepositFundsScreen = () => {
     <Switch>
       <Route path={WalletRoutes.DepositFundsAccountPage} exact>
         <WalletPageWrapper
+          hideNav={isAndroid}
+          hideHeader={isAndroid}
           wrapContentInBox={true}
           cardWidth={456}
           cardHeader={
@@ -138,6 +144,8 @@ export const DepositFundsScreen = () => {
 
       <Route>
         <WalletPageWrapper
+          hideNav={isAndroid}
+          hideHeader={isAndroid}
           wrapContentInBox={true}
           cardWidth={456}
           cardHeader={

@@ -41,7 +41,7 @@ export function AndroidDepositApp() {
         <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
           <ApiProxyContext.Provider value={walletPageApiProxy}>
             <LibContext.Provider value={Lib}>
-              <DepositFundsScreen />
+              <DepositFundsScreen isAndroid={true} />
             </LibContext.Provider>
           </ApiProxyContext.Provider>
         </BraveCoreThemeProvider>
