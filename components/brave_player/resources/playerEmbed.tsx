@@ -27,13 +27,11 @@ function getFrameSrc () {
     return ''
   }
 
-  if (!paths[0]) {
-    // could be empty. Drop it.
-    paths = paths.slice(1)
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, service, videoId] = paths
 
-  if (paths[0] === 'youtube') {
-    return `https://www.youtube-nocookie.com/embed/${paths[1]}?iv_load_policy=1&autoplay=1&rel=0&modestbranding=1`
+  if (service === 'youtube') {
+    return `https://www.youtube-nocookie.com/embed/${videoId}?iv_load_policy=1&autoplay=1&rel=0&modestbranding=1`
   }
 
   return ''

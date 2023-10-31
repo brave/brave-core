@@ -24,26 +24,17 @@ GURL GetPlayerURL(content::WebContents* web_contents) {
     return {};
   }
 
-  GURL url = web_contents->GetVisibleURL();
-  if (url.DomainIs("youtube.com")) {
-    if (url.has_path() && url.path() == "/watch" && url.has_query()) {
-      for (const auto& query_param :
-           base::SplitString(url.query(), "&", base::TRIM_WHITESPACE,
-                             base::SPLIT_WANT_NONEMPTY)) {
-        auto key_value = base::SplitString(
-            query_param, "=", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-        if (key_value.size() != 2) {
-          continue;
-        }
-
-        if (key_value[0] == "v") {
-          return GURL(
-              base::StrCat({kBravePlayerURL, "youtube/", key_value[1]}));
-        }
-      }
+  GURL url = web_contents->GetLastCommittedURL();
+  if (url.DomainIs("youtube.com") && url.has_path() && url.path() == "/watch" &&
+      url.has_query()) {
+    base::StringPairs key_value_pairs;
+    base::SplitStringIntoKeyValuePairs(url.query(), '=', '&', &key_value_pairs);
+    if (auto iter = base::ranges::find(key_value_pairs, "v",
+                                       &base::StringPairs::value_type::first);
+        iter != key_value_pairs.end()) {
+      return GURL(base::StrCat({kBravePlayerURL, "youtube/", iter->second}));
     }
   }
-
   return {};
 }
 
