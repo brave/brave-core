@@ -129,8 +129,9 @@ export default function BraveNewsSection(props: Props) {
       }
       {shouldDisplayContent && <React.Suspense fallback={(<CardLoading />)}>
         {defaultState.featureFlagBraveNewsPromptEnabled
-          ? <FeedV2 />
-          : <Content {...props} />}
+          && (defaultState.featureFlagBraveNewsFeedV2Enabled
+            ? <FeedV2 />
+            : <Content {...props} />)}
       </React.Suspense>}
 
     </BraveNewsElement.Section>
