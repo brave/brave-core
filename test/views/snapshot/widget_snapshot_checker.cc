@@ -18,7 +18,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/compositor/test/draw_waiter_for_test.h"
 #include "ui/gfx/image/image.h"
-#include "ui/snapshot/snapshot.h"
 #include "ui/views/widget/widget.h"
 
 #if defined(USE_AURA)
