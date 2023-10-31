@@ -29,27 +29,24 @@ interface ToolTipProps {
   labelTranslate: number
 }
 
-export const TooltipWrapper = styled.div.attrs<ToolTipProps>(
-  ({ labelPosition, labelTranslate }) => {
-    const labelStartTranslate = `calc(-${labelTranslate}px + 4px)`
-    const labelEndTranslate = `translateX(calc(-100% + ${labelTranslate}px))`
-    const labelMiddleEndCondition =
-      labelPosition === 'end' ? labelEndTranslate : 'translateX(-50%)'
-    return {
-      style: {
-        transform:
-          labelPosition === 'start'
-            ? labelStartTranslate
-            : labelMiddleEndCondition
-      }
-    }
-  }
-)<ToolTipProps>`
+export const TooltipWrapper = styled.div<ToolTipProps>`
+  --label-start-translate: translateX(
+    calc(-${(p) => p.labelTranslate}px + 4px)
+  );
+  --label-end-translate: translateX(calc(-100% + ${(p) => p.labelTranslate}px));
+  --label-middle-end-condition: ${(p) =>
+    p.labelPosition === 'end'
+      ? 'var(--label-end-translate)'
+      : 'translateX(-50%)'};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   position: absolute;
+  transform: ${(p) =>
+    p.labelPosition === 'start'
+      ? 'var(--label-start-translate)'
+      : 'var(--label-middle-end-condition)'};
   white-space: nowrap;
   background-color: ${leo.color.container.background};
   box-shadow: 0px 4px 16px -1px rgba(0, 0, 0, 0.07);

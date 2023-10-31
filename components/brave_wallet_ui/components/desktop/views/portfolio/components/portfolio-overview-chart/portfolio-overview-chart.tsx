@@ -41,22 +41,12 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
 
   // memos
   const encodedPriceData = React.useMemo(() => {
-    if (hasZeroBalance || !portfolioPriceHistory) {
-      return encodeURIComponent(
-        JSON.stringify({
-          defaultFiatCurrency,
-          hidePortfolioBalances,
-          priceData: []
-        })
-      )
-    }
-
     const iframeData: LineChartIframeData = {
       defaultFiatCurrency,
       hidePortfolioBalances,
-      priceData: portfolioPriceHistory
+      priceData:
+        hasZeroBalance || !portfolioPriceHistory ? [] : portfolioPriceHistory
     }
-
     return encodeURIComponent(JSON.stringify(iframeData))
   }, [
     portfolioPriceHistory,
@@ -78,7 +68,7 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
         src={`chrome-untrusted://line-chart-display${
           isLoading ? '' : `?${encodedPriceData}`
         }`}
-        sandbox='allow-scripts allow-same-origin'
+        sandbox='allow-scripts'
       />
     </Column>
   )

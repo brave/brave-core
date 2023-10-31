@@ -53,18 +53,11 @@ UntrustedLineChartUI::UntrustedLineChartUI(content::WebUI* web_ui)
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       std::string("font-src 'self' data: chrome-untrusted://resources;"));
-  untrusted_source->AddResourcePath("load_time_data.js",
-                                    IDR_WEBUI_JS_LOAD_TIME_DATA_JS);
-  untrusted_source->UseStringsJs();
   untrusted_source->AddString("braveWalletLineChartBridgeUrl",
                               kUntrustedLineChartURL);
-  untrusted_source->AddString("braveWalletTrezorBridgeUrl",
-                              kUntrustedTrezorURL);
-  untrusted_source->AddString("braveWalletLedgerBridgeUrl",
-                              kUntrustedLedgerURL);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      std::string("img-src 'self' https: data:;"));
+      std::string("img-src 'self' data:;"));
 }
 
 UntrustedLineChartUI::~UntrustedLineChartUI() = default;

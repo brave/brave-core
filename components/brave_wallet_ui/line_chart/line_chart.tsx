@@ -6,8 +6,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import { initLocale } from 'brave-ui'
-import { loadTimeData } from '../../common/loadTimeData'
 
 // css
 import 'emptykit.css'
@@ -20,10 +18,6 @@ import { LineChartIframeData } from '../constants/types'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
-
-// leo icons setup
-import { setIconBasePath } from '@brave/leo/react/icon'
-setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 // components
 import { LineChart } from './components/line_chart'
@@ -57,7 +51,6 @@ const App = () => {
 }
 
 function initialize() {
-  initLocale(loadTimeData.data_)
   render(<App />, document.getElementById('root'))
 }
 
