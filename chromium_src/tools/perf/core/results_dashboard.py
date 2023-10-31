@@ -41,5 +41,5 @@ def SendResults(original_function, *args, **kwargs):
 
 
 @override_utils.override_function(globals())
-def _MakeBuildStatusUrl(*args):
+def _MakeBuildStatusUrl(*_args):
     return os.environ.get('BUILD_URL')  # Jenkins env
