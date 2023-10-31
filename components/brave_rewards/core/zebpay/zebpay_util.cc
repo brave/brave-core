@@ -36,6 +36,10 @@ std::string GetActivityUrl() {
   return GetUrl(UrlType::kAPI) + "/activity";
 }
 
+}  // namespace
+
+namespace zebpay {
+
 std::string GetLoginUrl(const std::string& state) {
   return GetUrl(UrlType::kOAuth) + "/account/login?returnUrl=" +
          // ZebPay requires almost the entire URL to be escaped.
@@ -52,9 +56,6 @@ std::string GetLoginUrl(const std::string& state) {
                                 zebpay::GetClientId().c_str(), state.c_str()),
              false);
 }
-}  // namespace
-
-namespace zebpay {
 
 std::string GetClientId() {
   return _environment == mojom::Environment::PRODUCTION
@@ -74,7 +75,6 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
     wallet->activity_url = wallet->status == mojom::WalletStatus::kConnected
                                ? GetActivityUrl()
                                : "";
-    wallet->login_url = GetLoginUrl(wallet->one_time_string);
   }
 
   return wallet;

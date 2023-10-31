@@ -47,8 +47,9 @@ Result PostOAuthUphold::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-PostOAuthUphold::PostOAuthUphold(RewardsEngineImpl& engine, std::string&& code)
-    : RequestBuilder(engine), code_(std::move(code)) {}
+PostOAuthUphold::PostOAuthUphold(RewardsEngineImpl& engine,
+                                 const std::string& code)
+    : RequestBuilder(engine), code_(code) {}
 
 PostOAuthUphold::~PostOAuthUphold() = default;
 

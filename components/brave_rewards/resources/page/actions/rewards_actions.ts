@@ -112,7 +112,7 @@ export const onExternalWalletProviderList = (list: Rewards.ExternalWalletProvide
   list
 })
 
-export const setExternalWalletType = (provider: string) => action(types.SET_EXTERNAL_WALLET_TYPE, {
+export const beginExternalWalletLogin = (provider: string) => action(types.BEGIN_EXTERNAL_WALLET_LOGIN, {
   provider
 })
 

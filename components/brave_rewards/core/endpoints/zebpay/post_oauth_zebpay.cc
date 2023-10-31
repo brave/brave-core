@@ -100,8 +100,9 @@ Result PostOAuthZebPay::ProcessResponse(const mojom::UrlResponse& response) {
   }
 }
 
-PostOAuthZebPay::PostOAuthZebPay(RewardsEngineImpl& engine, std::string&& code)
-    : RequestBuilder(engine), code_(std::move(code)) {}
+PostOAuthZebPay::PostOAuthZebPay(RewardsEngineImpl& engine,
+                                 const std::string& code)
+    : RequestBuilder(engine), code_(code) {}
 
 PostOAuthZebPay::~PostOAuthZebPay() = default;
 

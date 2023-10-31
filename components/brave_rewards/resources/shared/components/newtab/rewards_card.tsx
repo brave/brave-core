@@ -104,9 +104,7 @@ export function RewardsCard (props: Props) {
     const { externalWallet } = props
     if (externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut) {
       const onClick = () => {
-        if (externalWallet.links.reconnect) {
-          window.open(externalWallet.links.reconnect, '_blank', 'noreferrer')
-        }
+        window.open(urls.reconnectURL, '_blank', 'noreferrer')
       }
       return (
         <style.disconnected onClick={onClick}>

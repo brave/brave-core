@@ -15,6 +15,8 @@ namespace brave_rewards::internal::gemini {
 
 inline constexpr char kGeminiRecipientIDLabel[] = "Brave Browser";
 
+std::string GetLoginUrl(const std::string& state);
+
 std::string GetClientId();
 
 std::string GetClientSecret();

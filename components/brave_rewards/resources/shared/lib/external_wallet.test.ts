@@ -20,8 +20,7 @@ describe('external_wallet', () => {
         status: mojom.WalletStatus.kConnected,
         username: '',
         links: {
-          account: '',
-          reconnect: ''
+          account: ''
         }
       })
     })
@@ -69,12 +68,6 @@ describe('external_wallet', () => {
       expect(convert({ ...basicObject, accountUrl: 'url' })).toMatchObject({
         links: {
           account: 'url'
-        }
-      })
-
-      expect(convert({ ...basicObject, loginUrl: 'url' })).toMatchObject({
-        links: {
-          reconnect: 'url'
         }
       })
     })

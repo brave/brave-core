@@ -117,8 +117,9 @@ public class BraveRewardsUserWalletActivity
                     }
                 } else if (walletStatus == WalletStatus.LOGGED_OUT) {
                     Intent intent = new Intent();
-                    intent.putExtra(BraveActivity.OPEN_URL,
-                            getIntent().getStringExtra(BraveRewardsExternalWallet.LOGIN_URL));
+                    intent.putExtra(
+                            BraveActivity.OPEN_URL,
+                            BraveActivity.BRAVE_REWARDS_WALLET_RECONNECT_URL);
                     setResult(RESULT_OK, intent);
                 }
                 finish();

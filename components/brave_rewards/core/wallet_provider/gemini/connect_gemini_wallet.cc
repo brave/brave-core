@@ -40,9 +40,12 @@ const char* ConnectGeminiWallet::WalletType() const {
   return constant::kWalletGemini;
 }
 
-void ConnectGeminiWallet::Authorize(OAuthInfo&& oauth_info,
-                                    ConnectExternalWalletCallback callback) {
-  DCHECK(!oauth_info.code.empty());
+std::string ConnectGeminiWallet::GetOAuthLoginURL() const {
+  return GetLoginUrl(oauth_info_.one_time_string);
+}
+
+void ConnectGeminiWallet::Authorize(ConnectExternalWalletCallback callback) {
+  DCHECK(!oauth_info_.code.empty());
 
   const auto rewards_wallet = engine_->wallet()->GetWallet();
   if (!rewards_wallet) {
@@ -56,7 +59,7 @@ void ConnectGeminiWallet::Authorize(OAuthInfo&& oauth_info,
       base::HexEncode(hashed_payment_id.data(), hashed_payment_id.size());
 
   gemini_server_.post_oauth().Request(
-      external_account_id, std::move(oauth_info.code),
+      external_account_id, oauth_info_.code,
       base::BindOnce(&ConnectGeminiWallet::OnAuthorize, base::Unretained(this),
                      std::move(callback)));
 }

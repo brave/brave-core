@@ -28,7 +28,9 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override;
 
-  void Authorize(OAuthInfo&&, ConnectExternalWalletCallback) override;
+  std::string GetOAuthLoginURL() const override;
+
+  void Authorize(ConnectExternalWalletCallback callback) override;
 
   void OnAuthorize(ConnectExternalWalletCallback,
                    endpoints::PostOAuthUphold::Result&&);

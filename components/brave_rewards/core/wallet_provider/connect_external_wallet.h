@@ -27,17 +27,26 @@ class ConnectExternalWallet {
 
   virtual ~ConnectExternalWallet();
 
+  std::string GenerateLoginURL();
+
   void Run(const base::flat_map<std::string, std::string>& query_parameters,
            ConnectExternalWalletCallback);
+
+  void SetOAuthStateForTesting(const std::string& one_time_string,
+                               const std::string& code_verifier);
 
  protected:
   virtual const char* WalletType() const = 0;
 
   struct OAuthInfo {
-    std::string one_time_string, code_verifier, code;
+    std::string one_time_string;
+    std::string code_verifier;
+    std::string code;
   };
 
-  virtual void Authorize(OAuthInfo&&, ConnectExternalWalletCallback) = 0;
+  virtual std::string GetOAuthLoginURL() const = 0;
+
+  virtual void Authorize(ConnectExternalWalletCallback) = 0;
 
   void OnConnect(ConnectExternalWalletCallback,
                  std::string&& token,
@@ -45,10 +54,9 @@ class ConnectExternalWallet {
                  endpoints::PostConnect::Result&&) const;
 
   const raw_ref<RewardsEngineImpl> engine_;
+  OAuthInfo oauth_info_;
 
  private:
-  absl::optional<OAuthInfo> ExchangeOAuthInfo(mojom::ExternalWalletPtr) const;
-
   base::expected<std::string, mojom::ConnectExternalWalletResult> GetCode(
       const base::flat_map<std::string, std::string>& query_parameters,
       const std::string& current_one_time_string) const;

@@ -40,11 +40,14 @@ const char* ConnectUpholdWallet::WalletType() const {
   return constant::kWalletUphold;
 }
 
-void ConnectUpholdWallet::Authorize(OAuthInfo&& oauth_info,
-                                    ConnectExternalWalletCallback callback) {
-  DCHECK(!oauth_info.code.empty());
+std::string ConnectUpholdWallet::GetOAuthLoginURL() const {
+  return GetLoginUrl(oauth_info_.one_time_string);
+}
 
-  RequestFor<PostOAuthUphold>(*engine_, std::move(oauth_info.code))
+void ConnectUpholdWallet::Authorize(ConnectExternalWalletCallback callback) {
+  DCHECK(!oauth_info_.code.empty());
+
+  RequestFor<PostOAuthUphold>(*engine_, oauth_info_.code)
       .Send(base::BindOnce(&ConnectUpholdWallet::OnAuthorize,
                            base::Unretained(this), std::move(callback)));
 }

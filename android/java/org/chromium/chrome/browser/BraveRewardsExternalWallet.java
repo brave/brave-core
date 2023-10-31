@@ -25,7 +25,6 @@ public class BraveRewardsExternalWallet {
     public static final String TOKEN = "token";
     public static final String TYPE = "type";
     public static final String USER_NAME = "user_name";
-    public static final String LOGIN_URL = "login_url";
 
     private String mAccountUrl;
     private String mAddress;
@@ -33,7 +32,6 @@ public class BraveRewardsExternalWallet {
     private String mToken;
     private String mType;
     private String mUserName;
-    private String mLoginUrl;
 
     public String getAccountUrl() {
         return mAccountUrl;
@@ -59,10 +57,6 @@ public class BraveRewardsExternalWallet {
         return mUserName;
     }
 
-    public String getLoginUrl() {
-        return mLoginUrl;
-    }
-
     public BraveRewardsExternalWallet(String json_external_wallet) throws JSONException {
         fromJson (json_external_wallet);
     }
@@ -75,16 +69,27 @@ public class BraveRewardsExternalWallet {
         mToken = jsonObj.getString(TOKEN);
         mType = jsonObj.getString(TYPE);
         mUserName = jsonObj.getString(USER_NAME);
-        mLoginUrl = jsonObj.getString(LOGIN_URL);
     }
 
     @VisibleForTesting
     @Override
     public String toString() {
         return "BraveRewardsExternalWallet{"
-                + "mAccountUrl='" + mAccountUrl + '\'' + ", mAddress='" + mAddress + '\''
-                + ", mStatus=" + mStatus + ", mToken='" + mToken + '\'' + ", mUserName='"
-                + mUserName + '\'' + ", mLoginUrl='" + mLoginUrl + '\'' + '}';
+                + "mAccountUrl='"
+                + mAccountUrl
+                + '\''
+                + ", mAddress='"
+                + mAddress
+                + '\''
+                + ", mStatus="
+                + mStatus
+                + ", mToken='"
+                + mToken
+                + '\''
+                + ", mUserName='"
+                + mUserName
+                + '\''
+                + '}';
     }
 
     public static String WalletStatusToString(int status) {

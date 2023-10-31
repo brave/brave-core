@@ -382,15 +382,15 @@ public class BraveRewardsPanel
         mBalanceDataViewGroups = mPopupView.findViewById(R.id.balance_display_group);
 
         setVisibilityForLoggedOutState();
-        loggedOutStateText.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mExternalWallet != null) {
-                    TabUtils.openUrlInNewTab(false, mExternalWallet.getLoginUrl());
-                }
-                dismiss();
-            }
-        }));
+        loggedOutStateText.setOnClickListener(
+                (new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TabUtils.openUrlInNewTab(
+                                false, BraveActivity.BRAVE_REWARDS_WALLET_RECONNECT_URL);
+                        dismiss();
+                    }
+                }));
 
         ImageView btnRewardsSettings = mPopupView.findViewById(R.id.btn_rewards_settings);
         btnRewardsSettings.setOnClickListener((new View.OnClickListener() {
@@ -880,17 +880,20 @@ public class BraveRewardsPanel
                 }
             });
         } else if (notificationClickAction == NotificationClickAction.RECONNECT) {
-            actionNotificationButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mBraveRewardsNativeWorker.DeleteNotification(mCurrentNotificationId);
-                    TabUtils.openUrlInNewTab(false,
-                            mExternalWallet != null
-                                    ? mExternalWallet.getLoginUrl()
-                                    : BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
-                    dismiss();
-                }
-            });
+            actionNotificationButton.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mBraveRewardsNativeWorker.DeleteNotification(mCurrentNotificationId);
+                            TabUtils.openUrlInNewTab(
+                                    false,
+                                    mExternalWallet != null
+                                            ? BraveActivity.BRAVE_REWARDS_WALLET_RECONNECT_URL
+                                            : BraveActivity
+                                                    .BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                            dismiss();
+                        }
+                    });
         } else if (notificationClickAction == NotificationClickAction.TURN_ON_ADS) {
             actionNotificationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2227,7 +2230,6 @@ public class BraveRewardsPanel
         Intent intent = new Intent(ContextUtils.getApplicationContext(), clazz);
         intent.putExtra(BraveRewardsExternalWallet.ACCOUNT_URL, mExternalWallet.getAccountUrl());
         intent.putExtra(BraveRewardsExternalWallet.ADDRESS, mExternalWallet.getAddress());
-        intent.putExtra(BraveRewardsExternalWallet.LOGIN_URL, mExternalWallet.getLoginUrl());
         intent.putExtra(BraveRewardsExternalWallet.STATUS, mExternalWallet.getStatus());
         intent.putExtra(BraveRewardsExternalWallet.TOKEN, mExternalWallet.getToken());
         intent.putExtra(BraveRewardsExternalWallet.USER_NAME, mExternalWallet.getUserName());

@@ -39,10 +39,13 @@ const char* ConnectBitFlyerWallet::WalletType() const {
   return constant::kWalletBitflyer;
 }
 
-void ConnectBitFlyerWallet::Authorize(OAuthInfo&& oauth_info,
-                                      ConnectExternalWalletCallback callback) {
-  DCHECK(!oauth_info.code.empty());
-  DCHECK(!oauth_info.code_verifier.empty());
+std::string ConnectBitFlyerWallet::GetOAuthLoginURL() const {
+  return GetLoginUrl(oauth_info_.one_time_string, oauth_info_.code_verifier);
+}
+
+void ConnectBitFlyerWallet::Authorize(ConnectExternalWalletCallback callback) {
+  DCHECK(!oauth_info_.code.empty());
+  DCHECK(!oauth_info_.code_verifier.empty());
 
   const auto rewards_wallet = engine_->wallet()->GetWallet();
   if (!rewards_wallet) {
@@ -56,8 +59,7 @@ void ConnectBitFlyerWallet::Authorize(OAuthInfo&& oauth_info,
       base::HexEncode(hashed_payment_id.data(), hashed_payment_id.size());
 
   bitflyer_server_.post_oauth().Request(
-      external_account_id, std::move(oauth_info.code),
-      std::move(oauth_info.code_verifier),
+      external_account_id, oauth_info_.code, oauth_info_.code_verifier,
       base::BindOnce(&ConnectBitFlyerWallet::OnAuthorize,
                      base::Unretained(this), std::move(callback)));
 }
