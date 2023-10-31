@@ -206,6 +206,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                                     .show();
                         }
                     });
+            onNextPage.gotoNextPage(false);
         }
     }
 
