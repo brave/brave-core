@@ -477,6 +477,7 @@
 <translation id="8327818101454798856">Vì vậy, nếu bạn đang tìm cách hỗ trợ các trang web yêu thích của mình, hãy truy cập các trang đó.</translation>
 <translation id="412480955826088549">Đang tải xuống Thành phần...</translation>
 <translation id="4894106830958548828">Tôi hiểu</translation>
+<translation id="326118736933420687">Bạn đang xem trang WebTorrent</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Bật hỗ trợ Unstoppable Domains trong Brave?</translation>
 <translation id="3647533686160055812">Brave sẽ sử dụng Infura để phân giải các tên miền .crypto (và cả .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) trên Unstoppable Domains. Brave ẩn địa chỉ IP của bạn. Nếu bạn kích hoạt tính năng này, Infura sẽ thấy rằng ai đó đang cố truy cập các miền này chứ không có gì khác. Xem <ph name="BEGIN_INFURA_TOU_LINK"/>điều khoản sử dụng<ph name="END_INFURA_TOU_LINK"/> và <ph name="BEGIN_INFURA_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_INFURA_PRIVACY_LINK"/> của Infura.</translation>
@@ -694,6 +695,7 @@
 <translation id="6621880242105464352">Brave thu <ph name="FEE_PCT"/> trong số tiền đã gửi như là phí xử lý.</translation>
 <translation id="1420756770787071946">Hỗ trợ nhà sáng tạo này</translation>
 <translation id="1483493594462132177">Gửi</translation>
+<translation id="6632987674051304487">Gửi bằng <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Dùng ví Web3</translation>
 <translation id="5399596220743521546">Người sáng tạo nội dung này đã đăng ký với Brave và có thể nhận đóng góp từ người dùng Brave Phần thưởng.</translation>
 <translation id="4529874892536380156">Hãy biến khoản này thành khoản đóng góp định kỳ hàng tháng. Bạn có thể hủy bỏ bất cứ lúc nào.</translation>
@@ -719,6 +721,10 @@
 <translation id="1950340257946519340">Đã xảy ra lỗi không mong muốn</translation>
 <translation id="2605703631071131439">Vui lòng mở lại bảng đóng góp để thử lại.</translation>
 <translation id="8855543392451028706">Chào mừng! Người dùng có thể hỗ trợ người sáng tạo nội dung này bằng cách gửi đóng góp cho họ. Đó là một cách để cảm ơn họ vì đã tạo ra nội dung tuyệt vời.</translation>
+<translation id="7090992647511817643">tài khoản</translation>
+<translation id="4822132585477111396">Chain ID</translation>
+<translation id="3269475789479462358">tên miền</translation>
+<translation id="1288078776976153868">mạng</translation>
 <translation id="1148827340205946630">Người dùng đã từ chối yêu cầu.</translation>
 <translation id="2403819048476450281">Thông số không hợp lệ.</translation>
 <translation id="3955144560853195652">Chuỗi <ph name="VALUE"/> chưa được thêm vào</translation>
@@ -991,6 +997,7 @@
 <translation id="5294062982587710720">Lưu ý rằng Brave không thể xác thực điều gì sẽ xảy ra nếu bạn ký. Một chữ ký có thể cho phép hầu như mọi thao tác trong tài khoản của bạn hoặc thay mặt bạn, bao gồm (nhưng không chỉ giới hạn ở) việc cấp toàn quyền kiểm soát tài khoản và tài sản kỹ thuật số của bạn cho trang web đưa ra yêu cầu. Chỉ ký nếu bạn chắc chắn rằng mình muốn thực hiện hành động này và tin tưởng trang web yêu cầu.</translation>
 <translation id="3474375934783434676">Tự chịu trách nhiệm khi ký</translation>
 <translation id="5488357322146334497">Tin nhắn</translation>
+<translation id="3586931643579894722">Ẩn chi tiết</translation>
 <translation id="7702907602086592255">Miền</translation>
 <translation id="3586752056660754651">Ký nhận</translation>
 <translation id="3484981968509595506">DApp đang yêu cầu khóa mã hóa công khai của bạn</translation>
@@ -1016,7 +1023,6 @@
 <translation id="5052727830821470769">URL mạng</translation>
 <translation id="427875364838253580">Xem tất cả chi tiết</translation>
 <translation id="8030852056903932865">Phê duyệt</translation>
-<translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Ký hiệu tiền tệ</translation>
 <translation id="4693057234255364395">URL trình khám phá khối</translation>
 <translation id="7982789257301363584">Mạng</translation>
@@ -1159,7 +1165,10 @@
 <translation id="5071303414930953888">Tài khoản <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Ví cần được mở khóa trước</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> không phải là địa chỉ hợp lệ</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> không phải là mạng hiện tại</translation>
+<translation id="5036882519065735613"><ph name="CHAIN_ID"/> không phải là mạng hiện tại</translation>
+<translation id="317252468455212145"><ph name="ADDRESS"/> không khớp với địa chỉ</translation>
+<translation id="8034449164954956172"><ph name="DOMAIN"/> không khớp với tên miền hiện tại</translation>
+<translation id="5444904139422068509">Chúng tôi đã từ chối yêu cầu này vì trang web này đang yêu cầu bạn sử dụng <ph name="NAME"/> khác (<ph name="VALUE"/>)</translation>
 <translation id="7340805872138998391">Không thể mở khóa thiết bị, hãy thử kết nối lại</translation>
 <translation id="1984410139271779110">Lỗi nội bộ, lược đồ không xác định</translation>
 <translation id="6989562355845156390">duyệt</translation>
@@ -1275,6 +1284,20 @@
 <translation id="5601436886921227795">Tương tác Dapp</translation>
 <translation id="9104177294757104789">Gửi <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Đổi <ph name="MAKER"/> sang <ph name="TAKER"/></translation>
+<translation id="8613144770663526433">Đăng nhập bằng Ví Brave</translation>
+<translation id="3696514931437952995">Bạn đang đăng nhập vào <ph name="ORIGIN"/>. Ví Brave sẽ chia sẻ địa chỉ ví của bạn với<ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Xem chi tiết</translation>
+<translation id="3950820424414687140">Đăng nhập</translation>
+<translation id="4530494379350999373">Origin</translation>
+<translation id="6736243959894955139">Địa chỉ</translation>
+<translation id="3095940652251934233">Tuyên bố</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="1313065465616456728">Đã phát hành lúc</translation>
+<translation id="7902225556763260253">Thời gian hết hạn</translation>
+<translation id="2471230424465522689">Không trước</translation>
+<translation id="4841860051609590575">Mã yêu cầu</translation>
+<translation id="6759710362319508545">Tài nguyên</translation>
+<translation id="1908159733454294871">Đã phát hiện rủi ro bảo mật</translation>
 <translation id="1965889974717516497">Mạng phụ</translation>
 <translation id="7691821949666755802">Mạng thử nghiệm</translation>
 <translation id="2816106784624007524">Giới hạn khí phải là một số nguyên lớn hơn 0</translation>
@@ -1690,8 +1713,14 @@
 <translation id="1536390784834419204">Dịch trang</translation>
 <translation id="5973664933364241128">Điều hướng phương tiện</translation>
 <translation id="1568067597247500137">Tắt tiếng trang</translation>
+<translation id="6674128381307353306">Tắt tiếng tất cả các tab</translation>
+<translation id="1815548596883953231">Tắt tiếng các tab khác</translation>
+<translation id="926046137238708033">Bật tiếng tất cả các tab</translation>
 <translation id="855081842937141170">Ghim tab</translation>
+<translation id="2805351816064694332">Đóng các tab đã bỏ ghim</translation>
 <translation id="8657641252283410630">Nhóm tab</translation>
+<translation id="8290333944535778783">Cuộn tab lên trên cùng</translation>
+<translation id="6141382045715907645">Cuộn tab xuống dưới cùng</translation>
 <translation id="923853139812360539">Trình tạo mã QR</translation>
 <translation id="8754922069999490293">Ưu đãi và phần thưởng cho trang</translation>
 <translation id="8620714260606376019">Trung tâm chia sẻ</translation>
@@ -1787,6 +1816,15 @@
 <translation id="6002210667729577411">Di chuyển nhóm đến cửa sổ mới</translation>
 <translation id="253980346046488815">Đóng các tab trùng lặp</translation>
 <translation id="9210143726807220086">Chuyển đổi các tab dọc được mở rộng</translation>
+<translation id="684629111155788563">Thêm tất cả các tab vào nhóm mới</translation>
+<translation id="9106013521852824634">Gửi tab cho chính mình</translation>
+<translation id="1926106318101432555">Mở dấu trang...</translation>
+<translation id="6118819645013156507">Chuyển sang cửa sổ...</translation>
+<translation id="1623204575967809688">Hợp nhất cửa sổ hiện tại vào...</translation>
+<translation id="7196533333647500853">Di chuyển tab sang cửa sổ...</translation>
+<translation id="2026671913373402445">Thêm tab vào nhóm hiện có...</translation>
+<translation id="8158903143594876176">Ghim tab...</translation>
+<translation id="1487981090845324947">Bỏ ghi tab...</translation>
 <translation id="5182394825813677917">Tìm kiếm lệnh hoặc lối tắt</translation>
 <translation id="4138119885026877702">Thiết lập lại tất cả về mặc định</translation>
 <translation id="8247915960543694908">Tạo lối tắt mới. Nhấn các phím mong muốn để tạo ràng buộc mới</translation>
@@ -1795,17 +1833,17 @@
 <translation id="3537006124004887164">Tổ hợp này đang được sử dụng cho <ph name="COMMAND"/> và không thể sửa đổi. Hãy thử sửa đổi thông qua `Phím tắt ứng dụng` trong Cài đặt hệ thống.</translation>
 <translation id="8591883849678260674">Xem bản gốc</translation>
 <translation id="1969654232209826429">phút đọc</translation>
-<translation id="906598168058463050">Tắt SpeedReader</translation>
-<translation id="8948558186299884715">Bật SpeedReader</translation>
-<translation id="1385842054306112120">Luôn sử dụng SpeedReader cho trang web này</translation>
-<translation id="8028940590935492959">Chuyển đổi để bật/tắt SpeedReader cho trang web này.</translation>
-<translation id="1022901542006152519">Luôn sử dụng SpeedReader cho tất cả các trang web</translation>
-<translation id="3460907549384263858">Chuyển đổi để bật/tắt SpeedReader cho tất cả các trang web.</translation>
-<translation id="8745592921916491483">Không phải tất cả các trang web đều cung cấp SpeedReader.</translation>
+<translation id="4101707289420716287">Tắt Speedreader</translation>
+<translation id="9089090017461255038">Bật Speedreader</translation>
+<translation id="3929926885379607283">Luôn sử dụng Speedreader cho trang này</translation>
+<translation id="4186588885948504942">Chuyển đổi để bật/tắt Speedreader cho trang web này.</translation>
+<translation id="1873585723672836337">Luôn sử dụng Speedreader cho tất cả các trang web</translation>
+<translation id="3138587343887871192">Chuyển đổi để bật/tắt SpeedReader cho tất cả các trang web.</translation>
+<translation id="5153147025131874069">Không phải tất cả các trang web đều cung cấp khả năng Speedreader.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1103345585203110275">Thoát SpeedReader</translation>
+<translation id="2104268045272817433">Thoát Speedreader</translation>
 <translation id="6315170314923504164">Giọng nói</translation>
-<translation id="57748525762025171">Điều chỉnh SpeedReader</translation>
+<translation id="864152735015641598">Điều chỉnh SpeedReader</translation>
 <translation id="251940709686581010">Cài đặt hiển thị</translation>
 <translation id="4809927044794281115">Chủ đề sáng</translation>
 <translation id="5595850093882577201">Chủ đề sepia</translation>
@@ -1822,7 +1860,70 @@
 <translation id="1199355487114804640">Phát/Dừng</translation>
 <translation id="1689210457482459023">Giảm tốc độ phát lại</translation>
 <translation id="5872363163901278000">Tăng tốc độ phát lại</translation>
-<translation id="3507699941492423127">Brave Leo</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8637805148029768813">Tính năng tóm tắt hiện chỉ khả dụng cho các bài được chọn và các trang web dạng dài khác.</translation>
+<translation id="2346991295632453064">Chấp nhận và bắt đầu</translation>
+<translation id="1223498995510244364">Tóm tắt</translation>
+<translation id="7491773233732232424">Về Leo</translation>
+<translation id="70442873931504163">Brave Leo là trợ lý thông minh AI có thể tóm tắt các trang web, chép lại video và trả lời các câu hỏi. Brave Leo Premium sử dụng <ph name="LINK_BEFORE"/>mô hình AI<ph name="LINK_AFTER"/> nâng cao để có được những câu trả lời có nhiều sắc thái hơn nữa và cung cấp quyền truy cập sớm vào các tính năng mới.</translation>
+<translation id="3055739528128372229">Độ chính xác của các câu trả lời không được đảm bảo và có thể bao gồm thông tin không chính xác, gây hiểu lầm hoặc sai lệch. Không gửi thông tin nhạy cảm hoặc riêng tư và hãy thận trọng với bất kỳ câu trả lời nào liên quan đến sức khỏe, tài chính, an toàn cá nhân hoặc các nội dung tương tự.</translation>
+<translation id="5030677498967794115">Leo không thu thập hoặc xử lý các thông tin nhận dạng như Địa chỉ IP có thể được liên kết với bạn. Không có dữ liệu cá nhân nào được mô hình AI hoặc bất kỳ nhà cung cấp mô hình bên thứ 3 nào lưu giữ.</translation>
+<translation id="7839853125981164613">Nhập lời nhắc ở đây</translation>
+<translation id="1171287413830401223">Bật đề xuất câu hỏi?</translation>
+<translation id="4567071417854988869">Tóm tắt video này</translation>
+<translation id="7921782882718083488">Tóm tắt trang này</translation>
+<translation id="8723991872343294222">AI dũng cảm có thể tự động đề xuất các câu hỏi dựa trên nội dung của trang web. Bạn có thể vô hiệu hóa chức năng này sau trong cài đặt.</translation>
+<translation id="3435896845095436175">Bật</translation>
+<translation id="7473891865547856676">Không, cảm ơn</translation>
+<translation id="7932221068776853847">Ngắt kết nối để ngừng gửi nội dung trang này cho Leo và bắt đầu cuộc trò chuyện mới</translation>
+<translation id="1167803637855350748">Đã xảy ra sự cố mạng khi kết nối với Leo. Hãy kiểm tra kết nối của bạn và thử lại.</translation>
+<translation id="5095201428204952524">Leo hiện đang rất bận. Vui lòng thử lại trong vài phút.</translation>
+<translation id="7144878232160441200">Thử lại</translation>
+<translation id="2505565639170795978">Xin chào, tôi là Leo. Tôi là trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama 13B, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng.</translation>
+<translation id="7202619923031933110">Xin chào, tôi là Leo. Tôi là trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama 70B, một mô hình do Meta tạo ra để xử lý các tác vụ nâng cao hơn 13B.</translation>
+<translation id="2489317965865266353">Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Instant, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.</translation>
+<translation id="6206029817087805290"><ph name="MODEL_NAME"/> bởi <ph name="COMPANY_NAME"/></translation>
+<translation id="6187065185557150870">Trò chuyện</translation>
+<translation id="2961040541145689181">Trò chuyện mới</translation>
+<translation id="97095589689466044">Câu hỏi gợi ý</translation>
+<translation id="7557539689487606886">Lên Premium</translation>
+<translation id="3037594989275592390">Mô hình ngôn ngữ</translation>
+<translation id="849535826888024304">Đã đạt đến giới hạn tốc độ phản hồi</translation>
+<translation id="3834321271158315162">Đạt được tỷ lệ phản hồi cao hơn bằng cách đăng ký Premium hoặc thử lại
+        sau</translation>
+<translation id="1239767708151339890">Tiếp cận LLM hàng đầu trong ngành</translation>
+<translation id="8021579987620496265">Giới hạn tỷ lệ cao hơn</translation>
+<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /tháng</translation>
+<translation id="9221988663340523352">Chuyển sang mô hình mặc định</translation>
+<translation id="377376641316998425">Mở khóa toàn bộ tiềm năng của Leo</translation>
+<translation id="8363148882096737034">Anthropic Claude + sắp ra mắt thêm</translation>
+<translation id="886527905046308697">Quyền truy cập ưu tiên và tăng giới hạn phản hồi</translation>
+<translation id="1068954060985569277">Phiên tài khoản Brave của bạn đã hết hạn. Vui lòng truy cập trang tài khoản của bạn để làm mới, sau đó quay lại để sử dụng các tính năng cao cấp.</translation>
+<translation id="94736968936709953">Phản hồi đã được gửi thành công</translation>
+<translation id="9109355817507033196">Câu trả lời không thích</translation>
+<translation id="4049425842478222936">Câu trả lời đã thích</translation>
+<translation id="6393149565874086128">Thêm phản hồi</translation>
+<translation id="3521125531016408657">Thích câu trả lời</translation>
+<translation id="8202517001427388906">Không thích câu trả lời</translation>
+<translation id="1379399209929302811">Cung cấp phản hồi Brave AI</translation>
+<translation id="2415950536410763575">Chọn chủ đề phản hồi của bạn</translation>
+<translation id="9018766373792005944">Phản hồi của bạn là gì?</translation>
+<translation id="7355096922131918313">Cung cấp phản hồi tại đây</translation>
+<translation id="3027575440738035995">Leo Premium cung cấp quyền truy cập vào bộ mô hình ngôn ngữ mở rộng để có được sắc thái câu trả lời thậm chí còn lớn hơn. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="2399439821649319175">Không hữu dụng</translation>
+<translation id="2976167228906046828">Không chính xác</translation>
+<translation id="1183055847065865059">Không an toàn/có hại</translation>
+<translation id="7138678301420049075">Khác</translation>
+<translation id="2313959174679245365">Không thể gửi xếp hạng của bạn, vui lòng kiểm tra kết nối mạng và thử lại</translation>
+<translation id="98413980871833152">Không thể gửi phản hồi của bạn, vui lòng kiểm tra kết nối mạng và thử lại</translation>
+<translation id="8742658901413346500">Cuộc trò chuyện này kéo dài và Leo có thể sẽ sớm quên đi mọi thứ. Bạn có thể có được cuộc trò chuyện dài hơn bằng cách chuyển sang mô hình premium hoặc bạn có thể xóa cuộc trò chuyện để thiết lập lại cuộc trò chuyện đó.</translation>
+<translation id="7550152963854770123">Xóa trò chuyện</translation>
+<translation id="7494736170250048402">Gửi tin nhắn cho Leo</translation>
+<translation id="4110772752544684964">Trang này quá dài đối với Leo. Một số bối cảnh có thể bị thiếu trong cuộc trò chuyện.</translation>
+<translation id="4370698775470316661">Cuộc trò chuyện này quá dài và không thể tiếp tục. Có thể có sẵn các mô hình khác mà Leo có khả năng duy trì độ chính xác cho các cuộc trò chuyện dài hơn.</translation>
+<translation id="6291843235651817590">Trò chuyện cho mục đích chung</translation>
+<translation id="8193130769524604031">Tác vụ trò chuyện nâng cao</translation>
+<translation id="3185367320601718531">Cuộc trò chuyện và tạo văn bản</translation>
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="8458987127502506209">Bật Lá chắn Brave</translation>
 <translation id="7509914170164691086">Khiên đã BẬT <ph name="LINK_BEFORE"/>cho<ph name="LINK_AFTER"/></translation>
@@ -1891,21 +1992,6 @@
 <translation id="546481172717459539">Khớp với cài đặt hệ thống</translation>
 <translation id="7799817062559422778">Chế độ sáng</translation>
 <translation id="4117637339509843559">Chế độ tối</translation>
-<translation id="8637805148029768813">Tính năng tóm tắt hiện chỉ khả dụng cho các bài được chọn và các trang web dạng dài khác.</translation>
-<translation id="2346991295632453064">Chấp nhận và bắt đầu</translation>
-<translation id="1223498995510244364">Tóm tắt</translation>
-<translation id="6966669506908435195">Về Brave Leo</translation>
-<translation id="1667863995484767951">Tính năng AI Trò chuyện cung cấp các bản tóm tắt về trang web bạn đang duyệt và bao gồm giao diện trò chuyện cho phép bạn gửi câu hỏi và nhận phản hồi về nội dung của trang đó. Độ chính xác của bản tóm tắt không được đảm bảo và có thể bao gồm thông tin không chính xác, gây hiểu lầm và sai lệch. Bạn không nên gửi thông tin nhạy cảm hoặc riêng tư và nên thận trọng với bất kỳ văn bản nào liên quan đến sức khỏe, tài chính hoặc an toàn cá nhân và các trường hợp tương tự.</translation>
-<translation id="7636915524386889836">Trò chuyện AI của Brave sử dụng <ph name="LINK_BEFORE"/>mô hình ngôn ngữ lớn <ph name="LINK_AFTER"/>tự lưu trữ Tính năng Trò chuyện AI không thu thập cũng như không xử lý các số nhận dạng như Địa chỉ IP có thể được liên kết với bạn. Không có dữ liệu cá nhân nào được mô hình AI giữ lại.</translation>
-<translation id="7839853125981164613">Nhập lời nhắc ở đây</translation>
-<translation id="1171287413830401223">Bật đề xuất câu hỏi?</translation>
-<translation id="8723991872343294222">AI dũng cảm có thể tự động đề xuất các câu hỏi dựa trên nội dung của trang web. Bạn có thể vô hiệu hóa chức năng này sau trong cài đặt.</translation>
-<translation id="3435896845095436175">Bật</translation>
-<translation id="7473891865547856676">Không, cảm ơn</translation>
-<translation id="7932221068776853847">Ngắt kết nối để ngừng gửi nội dung trang này cho Leo và bắt đầu cuộc trò chuyện mới</translation>
-<translation id="1167803637855350748">Đã xảy ra sự cố mạng khi kết nối với Leo. Hãy kiểm tra kết nối của bạn và thử lại.</translation>
-<translation id="5095201428204952524">Leo hiện đang rất bận. Vui lòng thử lại trong vài phút.</translation>
-<translation id="7144878232160441200">Thử lại</translation>
 <translation id="7821773512278295352">Brave Tường lửa + VPN: Đã kết nối</translation>
 <translation id="6019088868713395120">Brave Tường lửa + VPN: Đã ngắt kết nối</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
@@ -1944,7 +2030,6 @@
 <translation id="9184988385244077767">Không có internet khi kết nối</translation>
 <translation id="21570240866965662">Kết nối chậm</translation>
 <translation id="1219475260382643267">Trang web không hoạt động</translation>
-<translation id="7138678301420049075">Khác</translation>
 <translation id="1387340358507240698">Mô tả vấn đề của bạn</translation>
 <translation id="501818585183973587">Chọn thông tin bạn muốn chia sẻ với chúng tôi</translation>
 <translation id="3195618332367441234">Bạn càng chia sẻ nhiều thông tin, nhân viên hỗ trợ càng dễ trợ giúp.</translation>
@@ -1990,4 +2075,10 @@ Hãy kết nối!
 <translation id="8048263175525832621">Brave VPN - Đã ngắt kết nối</translation>
 <translation id="1498770726476841108">Quản lý tài khoản</translation>
 <translation id="6825718953004242472">Xóa biểu tượng</translation>
+<translation id="3287942014983548982">Mở tại đây</translation>
+<translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, đang mở,
+    nhấn Tab rồi Enter để chuyển sang tab đang mở,</translation>
+<translation id="1538335063514960365">Nút Mở tại đây nhấn Enter để mở url này trong tab hiện tại, thay vì chuyển sang
+    tab hiện có</translation>
+<translation id="451189393813405346">Hỏi Leo</translation>
 </translationbundle>

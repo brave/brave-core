@@ -477,6 +477,7 @@
 <translation id="8327818101454798856">Dlatego jeśli chcesz wesprzeć swoje ulubione witryny, przejdź tam.</translation>
 <translation id="412480955826088549">Pobieranie komponentu...</translation>
 <translation id="4894106830958548828">Rozumiem</translation>
+<translation id="326118736933420687">Przeglądasz stronę WebTorrent</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Włączyć obsługę Unstoppable Domains w Brave?</translation>
 <translation id="3647533686160055812">Brave będzie korzystać z usługi Infura na potrzeby obsługi nazw domen .crypto (oraz .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil), które są częścią domen Unstoppable Domains. Brave ukryje Twój adres IP. Po włączeniu tej opcji usługa Infura będzie rozpoznawała, że ktoś próbuje odwiedzić te domeny, ale nie będzie mogła podjąć innych działań. Zapoznaj się z <ph name="BEGIN_INFURA_TOU_LINK"/>Warunkami użytkowania<ph name="END_INFURA_TOU_LINK"/> i <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Polityką prywatności<ph name="END_INFURA_PRIVACY_LINK"/> usługi Infura.</translation>
@@ -696,6 +697,7 @@
 <translation id="6621880242105464352">Brave potrąca <ph name="FEE_PCT"/> wysyłanej sumy jako opłatę manipulacyjną.</translation>
 <translation id="1420756770787071946">Wspieraj tego twórcę</translation>
 <translation id="1483493594462132177">Wyślij</translation>
+<translation id="6632987674051304487">Wyślij za pomocą <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Użyj Portfela Web3</translation>
 <translation id="5399596220743521546">Ten twórca zarejestrował się w Brave i może otrzymywać datki od użytkowników Nagród Brave.</translation>
 <translation id="4529874892536380156">Ustaw jako comiesięczny cykliczny datek. Możesz go anulować w każdej chwili.</translation>
@@ -721,6 +723,10 @@
 <translation id="1950340257946519340">Wystąpił nieoczekiwany błąd</translation>
 <translation id="2605703631071131439">Otwórz ponownie panel datków, aby spróbować jeszcze raz.</translation>
 <translation id="8855543392451028706">Witaj! Użytkownicy mogą wspierać tego twórcę treści, wysyłając datek. To forma podziękowania za tworzenie świetnych treści.</translation>
+<translation id="7090992647511817643">konto</translation>
+<translation id="4822132585477111396">Identyfikator łańcucha</translation>
+<translation id="3269475789479462358">domena</translation>
+<translation id="1288078776976153868">sieć</translation>
 <translation id="1148827340205946630">Użytkownik odrzucił żądanie.</translation>
 <translation id="2403819048476450281">Nieprawidłowe parametry</translation>
 <translation id="3955144560853195652">Łańcuch <ph name="VALUE"/> nie został dodany</translation>
@@ -993,6 +999,7 @@
 <translation id="5294062982587710720">Pamiętaj, że Brave nie może zweryfikować, co się stanie, gdy złożysz podpis. Podpis może autoryzować niemal dowolną operację na Twoim koncie lub w Twoim imieniu, taką jak np. przekazanie całkowitej kontroli nad Twoim kontem i kryptoaktywami stronie, z której pochodzi żądanie. Składaj podpisy tylko wtedy, gdy masz pewność i ufasz stronie przesyłającej żądanie.</translation>
 <translation id="3474375934783434676">Podpisy składasz na własne ryzyko</translation>
 <translation id="5488357322146334497">Wiadomość</translation>
+<translation id="3586931643579894722">Ukryj szczegóły</translation>
 <translation id="7702907602086592255">Domena</translation>
 <translation id="3586752056660754651">Podpisz</translation>
 <translation id="3484981968509595506">DApp żąda Twojego publicznego klucza szyfrowania</translation>
@@ -1018,7 +1025,6 @@
 <translation id="5052727830821470769">Adres URL sieci</translation>
 <translation id="427875364838253580">Zobacz wszystkie szczegóły</translation>
 <translation id="8030852056903932865">Zatwierdź</translation>
-<translation id="4822132585477111396">Identyfikator łańcucha</translation>
 <translation id="7131971375297699539">Symbol waluty</translation>
 <translation id="4693057234255364395">Adres URL eksploratora bloków</translation>
 <translation id="7982789257301363584">Sieć</translation>
@@ -1161,7 +1167,10 @@
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Portfel musi zostać najpierw odblokowany</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> nie jest prawidłowym adresem.</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> nie jest bieżącą siecią</translation>
+<translation id="5036882519065735613"><ph name="CHAIN_ID"/> nie jest bieżącą siecią</translation>
+<translation id="317252468455212145"><ph name="ADDRESS"/> nie pasuje do adresu nadawcy</translation>
+<translation id="8034449164954956172"><ph name="DOMAIN"/> nie pasuje do bieżącej domeny</translation>
+<translation id="5444904139422068509">Odrzuciliśmy to żądanie, ponieważ ta witryna wymaga użycia innego <ph name="NAME"/> (<ph name="VALUE"/>)</translation>
 <translation id="7340805872138998391">Nie można odblokować urządzenia. Spróbuj podłączyć je ponownie.</translation>
 <translation id="1984410139271779110">Błąd wewnętrzny, nieznany schemat</translation>
 <translation id="6989562355845156390">zatwierdź</translation>
@@ -1277,6 +1286,20 @@
 <translation id="5601436886921227795">Interakcja aplikacji zdecentralizowanych</translation>
 <translation id="9104177294757104789">Wyślij <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Zmień <ph name="MAKER"/> na <ph name="TAKER"/></translation>
+<translation id="8613144770663526433">Zaloguj się za pomocą portfela Brave</translation>
+<translation id="3696514931437952995">Logujesz się do <ph name="ORIGIN"/>. Portfel Brave udostępni adres Twojego portfela <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Zobacz szczegóły</translation>
+<translation id="3950820424414687140">Zaloguj się</translation>
+<translation id="4530494379350999373">Pochodzenie</translation>
+<translation id="6736243959894955139">Adres</translation>
+<translation id="3095940652251934233">Wyciąg</translation>
+<translation id="308268297242056490">Identyfikator URI</translation>
+<translation id="1313065465616456728">Wystawiono</translation>
+<translation id="7902225556763260253">Wygaśnięcie</translation>
+<translation id="2471230424465522689">Najwcześniej</translation>
+<translation id="4841860051609590575">Identyfikator żądania</translation>
+<translation id="6759710362319508545">Zasoby</translation>
+<translation id="1908159733454294871">Wykryto zagrożenie bezpieczeństwa</translation>
 <translation id="1965889974717516497">Sieci pomocnicze</translation>
 <translation id="7691821949666755802">Sieci testowe</translation>
 <translation id="2816106784624007524">Limit paliwa musi być liczbą całkowitą większą od 0</translation>
@@ -1694,8 +1717,14 @@
 <translation id="1536390784834419204">Przetłumacz stronę</translation>
 <translation id="5973664933364241128">Przekieruj odtwarzanie multimediów</translation>
 <translation id="1568067597247500137">Wycisz stronę</translation>
+<translation id="6674128381307353306">Wycisz wszystkie karty</translation>
+<translation id="1815548596883953231">Wycisz inne karty</translation>
+<translation id="926046137238708033">Wyłącz wyciszenie wszystkich kart</translation>
 <translation id="855081842937141170">Przypnij kartę</translation>
+<translation id="2805351816064694332">Zamknij odpięte karty</translation>
 <translation id="8657641252283410630">Dodaj kartę do grupy</translation>
+<translation id="8290333944535778783">Przewiń kartę do góry</translation>
+<translation id="6141382045715907645">Przewiń kartę w dół</translation>
 <translation id="923853139812360539">Generator kodów QR</translation>
 <translation id="8754922069999490293">Oferty i nagrody w ramach strony</translation>
 <translation id="8620714260606376019">Hub udostępniania</translation>
@@ -1791,6 +1820,15 @@
 <translation id="6002210667729577411">Przenieś grupę do nowego okna</translation>
 <translation id="253980346046488815">Zamknij zduplikowane karty</translation>
 <translation id="9210143726807220086">Włącz rozwinięte karty pionowe</translation>
+<translation id="684629111155788563">Dodaj wszystkie karty do nowej grupy</translation>
+<translation id="9106013521852824634">Wyślij kartę do siebie</translation>
+<translation id="1926106318101432555">Otwórz zakładkę...</translation>
+<translation id="6118819645013156507">Przełącz do okna...</translation>
+<translation id="1623204575967809688">Scal bieżące okno z...</translation>
+<translation id="7196533333647500853">Przenieś karty do okna...</translation>
+<translation id="2026671913373402445">Dodaj kartę do istniejącej grupy...</translation>
+<translation id="8158903143594876176">Przypnij kartę...</translation>
+<translation id="1487981090845324947">Odepnij kartę...</translation>
 <translation id="5182394825813677917">Wyszukaj polecenia lub skróty</translation>
 <translation id="4138119885026877702">Zresetuj wszystko do ustawień domyślnych</translation>
 <translation id="8247915960543694908">Utwórz nowy skrót. Naciśnij klawisze, które chcesz dodać do nowej kombinacji</translation>
@@ -1799,17 +1837,17 @@
 <translation id="3537006124004887164">Kombinacja zostanie użyta do<ph name="COMMAND"/> i nie może zostać zmodyfikowana. Spróbuj zmodyfikować ją za pomocą skrótów aplikacji dostępnych w ustawieniach systemowych.</translation>
 <translation id="8591883849678260674">Zobacz stronę oryginalną</translation>
 <translation id="1969654232209826429">min. czytania</translation>
-<translation id="906598168058463050">Wyłącz Speedreader</translation>
-<translation id="8948558186299884715">Włącz Speedreader</translation>
-<translation id="1385842054306112120">Zawsze używaj Speedreader dla tej strony</translation>
-<translation id="8028940590935492959">Przełącz, aby włączyć/wyłączyć Speedreader tylko dla tej witryny.</translation>
-<translation id="1022901542006152519">Zawsze używaj Speedreader dla wszystkich stron</translation>
-<translation id="3460907549384263858">Przełącz, aby włączyć/wyłączyć Speedreader dla wszystkich witryn.</translation>
-<translation id="8745592921916491483">Nie wszystkie strony zapewniają funkcje Speedreader.</translation>
+<translation id="4101707289420716287">Wyłącz Speedreader</translation>
+<translation id="9089090017461255038">Włącz Speedreader</translation>
+<translation id="3929926885379607283">Zawsze używaj Speedreader w tej witrynie</translation>
+<translation id="4186588885948504942">Przełącz, aby włączyć/wyłączyć Speedreader w tej witrynie.</translation>
+<translation id="1873585723672836337">Zawsze używaj Speedreader we wszystkich witrynach</translation>
+<translation id="3138587343887871192">Przełącz, aby włączyć/wyłączyć Speedreader we wszystkich witrynach.</translation>
+<translation id="5153147025131874069">Nie wszystkie witryny zapewniają funkcje Speedreader.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1103345585203110275">Opuść Speedreader</translation>
+<translation id="2104268045272817433">Zakończ Speedreader</translation>
 <translation id="6315170314923504164">Głos</translation>
-<translation id="57748525762025171">Dostrój Speedreader</translation>
+<translation id="864152735015641598">Dostrój Speedreader</translation>
 <translation id="251940709686581010">Ustawienia wyglądau</translation>
 <translation id="4809927044794281115">Motyw jasny</translation>
 <translation id="5595850093882577201">Motyw sepia</translation>
@@ -1826,7 +1864,70 @@
 <translation id="1199355487114804640">Odtwórz/wstrzymaj</translation>
 <translation id="1689210457482459023">Zmniejsz szybkość odtwarzania</translation>
 <translation id="5872363163901278000">Zwiększ szybkość odtwarzania</translation>
-<translation id="3507699941492423127">Brave Leo</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8637805148029768813">Funkcja podsumowania jest obecnie dostępna tylko w przypadku wybranych artykułów i innych szczegółowych stron internetowych.</translation>
+<translation id="2346991295632453064">Zaakceptuj i rozpocznij</translation>
+<translation id="1223498995510244364">Podsumuj</translation>
+<translation id="7491773233732232424">Informacje o Leo</translation>
+<translation id="70442873931504163">Brave Leo to asystent oparty na sztucznej inteligencji, który może streszczać zawartość stron internetowych, wykonywać transkrypcję filmów i odpowiadać na pytania. Brave Leo Premium korzysta z zaawansowanych <ph name="LINK_BEFORE"/>modeli sztucznej inteligencji<ph name="LINK_AFTER"/>, aby udzielać jeszcze bardziej szczegółowych odpowiedzi, i zapewnia wczesny dostęp do nowych funkcji.</translation>
+<translation id="3055739528128372229">Dokładność odpowiedzi nie jest gwarantowana i mogą one zawierać nieprecyzyjne, wprowadzające w błąd lub fałszywe informacje. Nie przesyłaj poufnych ani prywatnych informacji i zachowaj ostrożność w przypadku odpowiedzi związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp.</translation>
+<translation id="5030677498967794115">Leo nie zbiera ani w żaden inny sposób nie przetwarza identyfikatorów, takich jak adres IP, które można powiązać z użytkownikiem. Żadne dane osobowe nie są przechowywane przez model sztucznej inteligencji ani jakichkolwiek zewnętrznych dostawców modeli.</translation>
+<translation id="7839853125981164613">Wprowadź komunikat tutaj</translation>
+<translation id="1171287413830401223">Włączyć sugerowane pytania?</translation>
+<translation id="4567071417854988869">Streść ten film</translation>
+<translation id="7921782882718083488">Streść tę stronę</translation>
+<translation id="8723991872343294222">Sztuczna inteligencja Brave może automatycznie sugerować pytania w oparciu o treść strony. Możesz ją później wyłączyć w ustawieniach.</translation>
+<translation id="3435896845095436175">Włącz</translation>
+<translation id="7473891865547856676">Nie, dziękuję</translation>
+<translation id="7932221068776853847">Rozłącz się, aby przestać przesyłać treści tej strony do Leo i rozpocząć nową konwersację</translation>
+<translation id="1167803637855350748">Wystąpił problem sieciowy przy łączeniu z Leo; sprawdź swoje połączenie i spróbuj ponownie.</translation>
+<translation id="5095201428204952524">Zbyt duże obciążenie Leo. Spróbuj ponownie za kilka minut.</translation>
+<translation id="7144878232160441200">Ponów próbę</translation>
+<translation id="2505565639170795978">Cześć, jestem Leo. Jestem w pełni hostowanym asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu Llama 13B opracowanego przez Meta, który jest wydajny i może być stosowany w wielu przypadkach użycia.</translation>
+<translation id="7202619923031933110">Cześć, jestem Leo. Jestem w pełni hostowanym asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu Llama 70B opracowanego przez Meta do obsługi bardziej zaawansowanych zadań niż model 13B.</translation>
+<translation id="2489317965865266353">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.</translation>
+<translation id="6206029817087805290"><ph name="MODEL_NAME"/> od <ph name="COMPANY_NAME"/></translation>
+<translation id="6187065185557150870">Czat</translation>
+<translation id="2961040541145689181">Nowy czat</translation>
+<translation id="97095589689466044">Sugerowane pytania</translation>
+<translation id="7557539689487606886">Przejdź do Premium</translation>
+<translation id="3037594989275592390">Model językowy</translation>
+<translation id="849535826888024304">Osiągnięto limit częstości odpowiedzi</translation>
+<translation id="3834321271158315162">Odblokuj wyższą częstość odpowiedzi, subskrybując wersję Premium, lub spróbuj ponownie
+        później</translation>
+<translation id="1239767708151339890">Dostęp do wiodących w branży modeli LLM</translation>
+<translation id="8021579987620496265">Wyższe limity częstości</translation>
+<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/miesiąc</translation>
+<translation id="9221988663340523352">Przełącz na model domyślny</translation>
+<translation id="377376641316998425">Odblokuj pełny potencjał Leo</translation>
+<translation id="8363148882096737034">Anthropic Claude + więcej wkrótce</translation>
+<translation id="886527905046308697">Priorytetowy dostęp i większe limity odpowiedzi</translation>
+<translation id="1068954060985569277">Sesja konta Brave wygasła. Odwiedź stronę konta, aby odświeżyć, a następnie wróć i skorzystaj z funkcji premium.</translation>
+<translation id="94736968936709953">Pomyślnie wysłano opinię</translation>
+<translation id="9109355817507033196">Odpowiedź nie podobała się</translation>
+<translation id="4049425842478222936">Odpowiedź podobała się</translation>
+<translation id="6393149565874086128">Dodaj opinię</translation>
+<translation id="3521125531016408657">Podoba mi się odpowiedź</translation>
+<translation id="8202517001427388906">Nie podoba mi się odpowiedź</translation>
+<translation id="1379399209929302811">Prześlij opinię dotyczącą sztucznej inteligencji Brave</translation>
+<translation id="2415950536410763575">Wybierz temat opinii</translation>
+<translation id="9018766373792005944">Czego dotyczy Twoja opinia?</translation>
+<translation id="7355096922131918313">Przekaż opinię tutaj</translation>
+<translation id="3027575440738035995">Leo Premium zapewnia dostęp do rozszerzonego zestawu modeli językowych zapewniających jeszcze większą szczegółowość odpowiedzi. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="2399439821649319175">Nieprzydatna</translation>
+<translation id="2976167228906046828">Niepoprawna</translation>
+<translation id="1183055847065865059">Niebezpieczna/szkodliwa</translation>
+<translation id="7138678301420049075">Inne</translation>
+<translation id="2313959174679245365">Nie można przesłać Twojej oceny. Sprawdź połączenie sieciowe i spróbuj ponownie.</translation>
+<translation id="98413980871833152">Nie można przesłać Twojej opinii. Sprawdź połączenie sieciowe i spróbuj ponownie.</translation>
+<translation id="8742658901413346500">Ta rozmowa jest długa i Leo może wkrótce zacząć coś zapominać. Aby rozmawiać dłużej, możesz przełączyć się na model premium lub wyczyścić czat w celu jego zresetowania.</translation>
+<translation id="7550152963854770123">Wyczyść czat</translation>
+<translation id="7494736170250048402">Wyślij wiadomość do Leo</translation>
+<translation id="4110772752544684964">Strona jest za długa dla Leo. W rozmowie może brakować pewnego kontekstu.</translation>
+<translation id="4370698775470316661">Ta rozmowa jest za długa i nie może być kontynuowana. Mogą być dostępne inne modele, z którymi Leo jest w stanie zapewnić dokładność przy dłuższych rozmowach.</translation>
+<translation id="6291843235651817590">Czat ogólny</translation>
+<translation id="8193130769524604031">Zaawansowane zadania czatu</translation>
+<translation id="3185367320601718531">Rozmowa i generowanie tekstu</translation>
 <translation id="6303294677342628402">Tarcze</translation>
 <translation id="8458987127502506209">Włącz Tarcze Brave</translation>
 <translation id="7509914170164691086">Tarcze są WŁĄCZONE <ph name="LINK_BEFORE"/> dla <ph name="LINK_AFTER"/></translation>
@@ -1895,21 +1996,6 @@
 <translation id="546481172717459539">Dopasuj do ustawienia systemowego</translation>
 <translation id="7799817062559422778">Tryb jasny</translation>
 <translation id="4117637339509843559">Tryb ciemny</translation>
-<translation id="8637805148029768813">Funkcja podsumowania jest obecnie dostępna tylko w przypadku wybranych artykułów i innych szczegółowych stron internetowych.</translation>
-<translation id="2346991295632453064">Zaakceptuj i rozpocznij</translation>
-<translation id="1223498995510244364">Podsumuj</translation>
-<translation id="6966669506908435195">O Brave Leo</translation>
-<translation id="1667863995484767951">Funkcja czatu sztucznej inteligencji zapewnia podsumowania przeglądanej przez Ciebie strony internetowej i zawiera interfejs czatu umożliwiający przesyłanie pytań i otrzymywanie odpowiedzi dotyczących treści na tej stronie. Nie gwarantujemy poprawności podsumowań. Mogą one zawierać niedokładne, mylące i błędne informacje. Nie należy przesyłać wrażliwych ani prywatnych danych i należy zachować ostrożność w przypadku wszelkich tekstów związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp.</translation>
-<translation id="7636915524386889836">Czat sztucznej inteligencji Brave wykorzystuje samodzielny <ph name="LINK_BEFORE"/>duży model językowy<ph name="LINK_AFTER"/>  Czat sztucznej inteligencji nie gromadzi ani nie przetwarza w żaden sposób identyfikatorów takich jak adres IP, które umożliwiałyby powiązanie z Tobą. Model sztucznej inteligencji nie zbiera żadnych danych osobowych.</translation>
-<translation id="7839853125981164613">Wprowadź komunikat tutaj</translation>
-<translation id="1171287413830401223">Włączyć sugerowane pytania?</translation>
-<translation id="8723991872343294222">Sztuczna inteligencja Brave może automatycznie sugerować pytania w oparciu o treść strony. Możesz ją później wyłączyć w ustawieniach.</translation>
-<translation id="3435896845095436175">Włącz</translation>
-<translation id="7473891865547856676">Nie, dziękuję</translation>
-<translation id="7932221068776853847">Rozłącz się, aby przestać przesyłać treści tej strony do Leo i rozpocząć nową konwersację</translation>
-<translation id="1167803637855350748">Wystąpił problem sieciowy przy łączeniu z Leo; sprawdź swoje połączenie i spróbuj ponownie.</translation>
-<translation id="5095201428204952524">Zbyt duże obciążenie Leo. Spróbuj ponownie za kilka minut.</translation>
-<translation id="7144878232160441200">Ponów próbę</translation>
 <translation id="7821773512278295352">Firewall Brave + VPN: połączone</translation>
 <translation id="6019088868713395120">Firewall Brave + VPN: rozłączone</translation>
 <translation id="3541307549916475335">Interfejs użytkownika panelu VPN Brave</translation>
@@ -1948,7 +2034,6 @@
 <translation id="9184988385244077767">Brak dostępu do Internetu po połączeniu</translation>
 <translation id="21570240866965662">Mała prędkość połączenia</translation>
 <translation id="1219475260382643267">Witryna internetowa nie działa</translation>
-<translation id="7138678301420049075">Inne</translation>
 <translation id="1387340358507240698">Opisz swój problem</translation>
 <translation id="501818585183973587">Wybierz dane, które chcesz nam udostępnić</translation>
 <translation id="3195618332367441234">Im więcej informacji udostępnisz, tym łatwiej będzie naszemu personelowi udzielić Ci wsparcia.</translation>
@@ -1993,4 +2078,10 @@ Zaraz Cię połączymy!
 <translation id="8048263175525832621">VPN Brave – rozłączono</translation>
 <translation id="1498770726476841108">Zarządzaj kontem</translation>
 <translation id="6825718953004242472">Usuń ikonę</translation>
+<translation id="3287942014983548982">Otwórz tutaj</translation>
+<translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, obecnie otwarta.
+    Naciśnij klawisz Tab, apotem Enter, by przełączyć się na otwartą kartę.</translation>
+<translation id="1538335063514960365">Przycisk Otwórz tutaj. Naciśnij klawisz Enter, aby otworzyć ten adres URL w bieżącej karcie, zamiast przełączać się do
+    istniejącej karty.</translation>
+<translation id="451189393813405346">Zapytaj Leo</translation>
 </translationbundle>
