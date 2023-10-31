@@ -827,7 +827,7 @@ export class MockedWalletApiProxy {
           isWalletLocked: false,
           isNftPinningFeatureEnabled: false,
           isPanelV2FeatureEnabled: false,
-          isAnkrBalancesFeatureEnabled: false,
+          isAnkrBalancesFeatureEnabled: false
         }
       }
     }

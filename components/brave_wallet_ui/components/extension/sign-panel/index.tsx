@@ -291,9 +291,7 @@ export const SignPanel = (props: Props) => {
 
           {solanaSignTypedData && (
             <MessageBox>
-              <MessageText>
-                {solanaSignTypedData.message}
-              </MessageText>
+              <MessageText>{solanaSignTypedData.message}</MessageText>
             </MessageBox>
           )}
         </>

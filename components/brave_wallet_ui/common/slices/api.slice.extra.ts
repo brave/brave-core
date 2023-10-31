@@ -81,8 +81,10 @@ export const useAccountFromAddressQuery = (
       error: res.error,
       account:
         res.data && !skip
-          ? findAccountByAccountId({ address: '', uniqueKey: uniqueKeyOrAddress }, res.data)
-            || findAccountByAddress(uniqueKeyOrAddress, res.data)
+          ? findAccountByAccountId(
+              { address: '', uniqueKey: uniqueKeyOrAddress },
+              res.data
+            ) || findAccountByAddress(uniqueKeyOrAddress, res.data)
           : undefined
     })
   })

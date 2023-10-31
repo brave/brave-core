@@ -210,9 +210,7 @@ export const ConfirmSolanaTransactionPanel = () => {
         />
       </TabRow>
 
-      <MessageBox
-        isDetails={selectedTab === 'details'}
-      >
+      <MessageBox isDetails={selectedTab === 'details'}>
         {selectedTab === 'transaction' ? (
           <TransactionInfo />
         ) : (

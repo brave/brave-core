@@ -42,7 +42,7 @@ import { getLocale } from '../../../common/locale'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { isHardwareAccount } from '../../utils/account-utils'
 import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
-import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys';
+import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 const handler = new AsyncActionHandler()
 
@@ -163,7 +163,7 @@ async function navigateToConnectHardwareWallet(store: Store) {
   )
 }
 
-function isPersistanceOfPanelProhibited (panelType: PanelTypes) {
+function isPersistanceOfPanelProhibited(panelType: PanelTypes) {
   return panelType === 'connectWithSite' || panelType === 'signData'
 }
 
@@ -200,10 +200,7 @@ handler.on(PanelActions.navigateToMain.type, async (store: Store) => {
 
 handler.on(PanelActions.navigateBack.type, async (store: Store) => {
   const { lastSelectedPanel, selectedPanel } = store.getState().panel || {}
-  storeCurrentAndPreviousPanel(
-    lastSelectedPanel || 'main',
-    selectedPanel
-  )
+  storeCurrentAndPreviousPanel(lastSelectedPanel || 'main', selectedPanel)
 })
 
 handler.on(

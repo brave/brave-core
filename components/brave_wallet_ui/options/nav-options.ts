@@ -37,7 +37,7 @@ const PANEL_TYPES: PanelTypes[] = [
   'switchEthereumChain',
   'transactionDetails',
   'activity', // Transactions
-  'transactionStatus',
+  'transactionStatus'
 ]
 
 export const isValidPanelNavigationOption = (

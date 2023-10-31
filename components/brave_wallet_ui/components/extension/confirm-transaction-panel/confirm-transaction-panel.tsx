@@ -379,9 +379,7 @@ export const ConfirmTransactionPanel = () => {
         )}
       </TabRow>
 
-      <MessageBox
-        isDetails={selectedTab === 'details'}
-      >
+      <MessageBox isDetails={selectedTab === 'details'}>
         {selectedTab === 'transaction' ? (
           <>
             {isERC20Approve && (

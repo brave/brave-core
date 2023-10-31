@@ -44,7 +44,7 @@ export function isValidSolanaAddress(value: string): boolean {
   return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value)
 }
 
-export function isValidZecAddress (value: string): boolean {
+export function isValidZecAddress(value: string): boolean {
   return /^t1[a-km-zA-HJ-NP-Z1-9]{33}$/.test(value)
 }
 
