@@ -43,7 +43,7 @@ constexpr bool kSupportsBravePlayerActionIconView = false;
   case brave::kBravePlayerPageActionIconType:                                 \
     if constexpr (kSupportsBravePlayerActionIconView) {                       \
       add_page_action_icon(type, std::make_unique<BravePlayerActionIconView>( \
-                                     params.command_updater, params.browser,  \
+                                     params.command_updater, *params.browser, \
                                      params.icon_label_bubble_delegate,       \
                                      params.page_action_icon_delegate));      \
     }                                                                         \

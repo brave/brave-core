@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/brave_player/brave_player_action_icon_view.h"
 
+#include <string>
+
 #include "base/strings/strcat.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -13,6 +15,7 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/url_util.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/vector_icon_types.h"
@@ -27,12 +30,8 @@ GURL GetPlayerURL(content::WebContents* web_contents) {
   GURL url = web_contents->GetLastCommittedURL();
   if (url.DomainIs("youtube.com") && url.has_path() && url.path() == "/watch" &&
       url.has_query()) {
-    base::StringPairs key_value_pairs;
-    base::SplitStringIntoKeyValuePairs(url.query(), '=', '&', &key_value_pairs);
-    if (auto iter = base::ranges::find(key_value_pairs, "v",
-                                       &base::StringPairs::value_type::first);
-        iter != key_value_pairs.end()) {
-      return GURL(base::StrCat({kBravePlayerURL, "youtube/", iter->second}));
+    if (std::string video_id; net::GetValueForKeyInQuery(url, "v", &video_id)) {
+      return GURL(base::StrCat({kBravePlayerURL, "youtube/", video_id}));
     }
   }
   return {};
@@ -42,7 +41,7 @@ GURL GetPlayerURL(content::WebContents* web_contents) {
 
 BravePlayerActionIconView::BravePlayerActionIconView(
     CommandUpdater* command_updater,
-    Browser* browser,
+    Browser& browser,
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
     PageActionIconView::Delegate* page_action_icon_delegate)
     : PageActionIconView(command_updater,
@@ -61,7 +60,7 @@ BravePlayerActionIconView::~BravePlayerActionIconView() = default;
 
 void BravePlayerActionIconView::OnExecuting(ExecuteSource execute_source) {
   CHECK(player_url_.is_valid());
-  chrome::AddTabAt(browser_, player_url_, /*index*/ -1,
+  chrome::AddTabAt(base::to_address(browser_), player_url_, /*index*/ -1,
                    /*foreground=*/true);
 }
 

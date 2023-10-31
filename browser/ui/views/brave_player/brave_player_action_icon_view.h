@@ -17,7 +17,7 @@ class BravePlayerActionIconView : public PageActionIconView {
 
   BravePlayerActionIconView(
       CommandUpdater* command_updater,
-      Browser* browser,
+      Browser& browser,
       IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
       PageActionIconView::Delegate* page_action_icon_delegate);
   BravePlayerActionIconView(const BravePlayerActionIconView&) = delete;
@@ -34,7 +34,7 @@ class BravePlayerActionIconView : public PageActionIconView {
   void UpdateBorder() override;
 
  private:
-  raw_ptr<Browser> browser_;
+  raw_ref<Browser> browser_;
 
   // A url to open brave player corresponding to the current tab.
   GURL player_url_;
