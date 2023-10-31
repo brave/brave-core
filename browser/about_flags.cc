@@ -417,7 +417,7 @@
                    "brave-player",                                           \
                    "BravePlayer",                                            \
                    "Enables Brave Player",                                   \
-                   kOsMac | kOsWin | kOsLinux,                               \
+                   kOsMac | kOsWin | kOsLinux | kOsAndroid,                  \
                    FEATURE_VALUE_TYPE(brave_player::features::kBravePlayer), \
                }))
 

@@ -1096,11 +1096,15 @@ source_set("ui") {
 
   if (enable_brave_player) {
     sources += [
-      "views/brave_player/brave_player_action_icon_view.cc",
-      "views/brave_player/brave_player_action_icon_view.h",
       "webui/brave_player_ui.cc",
       "webui/brave_player_ui.h",
     ]
+    if (toolkit_views) {
+      sources += [
+        "views/brave_player/brave_player_action_icon_view.cc",
+        "views/brave_player/brave_player_action_icon_view.h",
+      ]
+    }
     deps += [
       "//brave/components/brave_player",
       "//brave/components/brave_player/resources:generated_resources",
