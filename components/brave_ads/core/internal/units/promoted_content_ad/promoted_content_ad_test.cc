@@ -8,6 +8,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "net/http/http_status_code.h"
@@ -63,6 +64,25 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
                                 mojom::PromotedContentAdEventType::kClicked,
                                 /*should_fire_event=*/true);
+}
+
+TEST_F(BraveAdsPromotedContentAdIntegrationTest,
+       DoNotTriggerEventForInvalidCreativeInstanceId) {
+  // Act & Assert
+  TriggerPromotedContentAdEvent(kPlacementId, kInvalidCreativeInstanceId,
+                                mojom::PromotedContentAdEventType::kViewed,
+                                /*should_fire_event=*/false);
+}
+
+TEST_F(BraveAdsPromotedContentAdIntegrationTest,
+       DoNotTriggerEventIfUserHasNotOptedInToBraveNewsAds) {
+  // Arrange
+  test::OptOutOfBraveNewsAds();
+
+  // Act & Assert
+  TriggerPromotedContentAdEvent(kPlacementId, kInvalidCreativeInstanceId,
+                                mojom::PromotedContentAdEventType::kViewed,
+                                /*should_fire_event=*/false);
 }
 
 }  // namespace brave_ads
