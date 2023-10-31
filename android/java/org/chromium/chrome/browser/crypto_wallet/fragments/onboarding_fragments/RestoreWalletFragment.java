@@ -39,13 +39,13 @@ import java.util.concurrent.Executor;
 
 public class RestoreWalletFragment extends CryptoOnboardingFragment {
     private static final String IS_ONBOARDING = "is_onboarding";
-    private EditText recoveryPhraseText;
-    private EditText passwordEdittext;
-    private EditText retypePasswordEdittext;
-    private CheckBox showRecoveryPhraseCheckbox;
-    private CheckBox restoreLegacyWalletCheckbox;
-    private boolean isLegacyWalletRestoreEnable;
-    private boolean isOnboarding;
+    private EditText mRecoveryPhraseText;
+    private EditText mPasswordEdittext;
+    private EditText mRetypePasswordEdittext;
+    private CheckBox mShowRecoveryPhraseCheckbox;
+    private CheckBox mRestoreLegacyWalletCheckbox;
+    private boolean mIsLegacyWalletRestoreEnable;
+    private boolean mIsOnboarding;
 
     public static RestoreWalletFragment newInstance(boolean isOnboarding) {
         RestoreWalletFragment fragment = new RestoreWalletFragment();
@@ -67,76 +67,85 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        isOnboarding = getArguments().getBoolean(IS_ONBOARDING);
+        mIsOnboarding = getArguments().getBoolean(IS_ONBOARDING);
         return inflater.inflate(R.layout.fragment_restore_wallet, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recoveryPhraseText = view.findViewById(R.id.recovery_phrase_text);
-        passwordEdittext = view.findViewById(R.id.restore_wallet_password);
-        retypePasswordEdittext = view.findViewById(R.id.restore_wallet_retype_password);
-        showRecoveryPhraseCheckbox = view.findViewById(R.id.restore_wallet_checkbox);
-        restoreLegacyWalletCheckbox = view.findViewById(R.id.restore_legacy_wallet_checkbox);
+        mRecoveryPhraseText = view.findViewById(R.id.recovery_phrase_text);
+        mPasswordEdittext = view.findViewById(R.id.restore_wallet_password);
+        mRetypePasswordEdittext = view.findViewById(R.id.restore_wallet_retype_password);
+        mShowRecoveryPhraseCheckbox = view.findViewById(R.id.restore_wallet_checkbox);
+        mRestoreLegacyWalletCheckbox = view.findViewById(R.id.restore_legacy_wallet_checkbox);
 
         ImageView restoreWalletCopyImage = view.findViewById(R.id.restore_wallet_copy_image);
         assert getActivity() != null;
         restoreWalletCopyImage.setOnClickListener(
-                v -> recoveryPhraseText.setText(Utils.getTextFromClipboard(getActivity())));
+                v -> mRecoveryPhraseText.setText(Utils.getTextFromClipboard(getActivity())));
 
-        showRecoveryPhraseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int cursorPos = recoveryPhraseText.getSelectionStart();
-            if (isChecked) {
-                recoveryPhraseText.setTransformationMethod(
-                        HideReturnsTransformationMethod.getInstance());
-            } else {
-                recoveryPhraseText.setTransformationMethod(
-                        PasswordTransformationMethod.getInstance());
-            }
-            recoveryPhraseText.setSelection(cursorPos);
-        });
+        mShowRecoveryPhraseCheckbox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    int cursorPos = mRecoveryPhraseText.getSelectionStart();
+                    if (isChecked) {
+                        mRecoveryPhraseText.setTransformationMethod(
+                                HideReturnsTransformationMethod.getInstance());
+                    } else {
+                        mRecoveryPhraseText.setTransformationMethod(
+                                PasswordTransformationMethod.getInstance());
+                    }
+                    mRecoveryPhraseText.setSelection(cursorPos);
+                });
 
-        recoveryPhraseText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        mRecoveryPhraseText.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence charSequence, int i, int i1, int i2) {}
 
-            @Override
-            public void afterTextChanged(Editable editable) {}
+                    @Override
+                    public void afterTextChanged(Editable editable) {}
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String recoveryPhrase = charSequence.toString().trim();
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        String recoveryPhrase = charSequence.toString().trim();
 
-                // validate recoveryPhrase contains only string. not JSON and length is 24
-                if (recoveryPhrase.matches("[a-zA-Z\\s]+")
-                        && recoveryPhrase.split("\\s+").length == 24) {
-                    restoreLegacyWalletCheckbox.setVisibility(View.VISIBLE);
-                } else {
-                    restoreLegacyWalletCheckbox.setVisibility(View.GONE);
-                }
-            }
-        });
+                        // validate recoveryPhrase contains only string. not JSON and length is 24
+                        if (recoveryPhrase.matches("[a-zA-Z\\s]+")
+                                && recoveryPhrase.split("\\s+").length == 24) {
+                            mRestoreLegacyWalletCheckbox.setVisibility(View.VISIBLE);
+                        } else {
+                            mRestoreLegacyWalletCheckbox.setVisibility(View.GONE);
+                        }
+                    }
+                });
 
-        restoreLegacyWalletCheckbox.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> { isLegacyWalletRestoreEnable = isChecked; });
+        mRestoreLegacyWalletCheckbox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    mIsLegacyWalletRestoreEnable = isChecked;
+                });
 
         Button secureCryptoButton = view.findViewById(R.id.btn_restore_wallet);
-        secureCryptoButton.setOnClickListener(v -> {
-            String passwordInput = passwordEdittext.getText().toString();
+        secureCryptoButton.setOnClickListener(
+                v -> {
+                    String passwordInput = mPasswordEdittext.getText().toString();
 
-            KeyringService keyringService = getKeyringService();
-            assert keyringService != null;
-            keyringService.isStrongPassword(passwordInput, result -> {
-                if (!result) {
-                    passwordEdittext.setError(getResources().getString(R.string.password_text));
+                    KeyringService keyringService = getKeyringService();
+                    assert keyringService != null;
+                    keyringService.isStrongPassword(
+                            passwordInput,
+                            result -> {
+                                if (!result) {
+                                    mPasswordEdittext.setError(
+                                            getResources().getString(R.string.password_text));
 
-                    return;
-                }
+                                    return;
+                                }
 
-                proceedWithAStrongPassword(passwordInput, recoveryPhraseText);
-            });
-        });
+                                proceedWithAStrongPassword(passwordInput, mRecoveryPhraseText);
+                            });
+                });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -172,17 +181,20 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         showFingerprintDialog(authenticationCallback);
     }
 
-    private void proceedWithAStrongPassword(String passwordInput, EditText recoveryPhraseText) {
-        String retypePasswordInput = retypePasswordEdittext.getText().toString();
+    private void proceedWithAStrongPassword(String passwordInput, EditText mRecoveryPhraseText) {
+        String retypePasswordInput = mRetypePasswordEdittext.getText().toString();
 
         if (!passwordInput.equals(retypePasswordInput)) {
-            retypePasswordEdittext.setError(
+            mRetypePasswordEdittext.setError(
                     getResources().getString(R.string.retype_password_error));
         } else {
             KeyringService keyringService = getKeyringService();
             assert keyringService != null;
-            keyringService.restoreWallet(recoveryPhraseText.getText().toString().trim(),
-                    passwordInput, isLegacyWalletRestoreEnable, result -> {
+            keyringService.restoreWallet(
+                    mRecoveryPhraseText.getText().toString().trim(),
+                    passwordInput,
+                    mIsLegacyWalletRestoreEnable,
+                    result -> {
                         if (result) {
                             Utils.hideKeyboard(getActivity());
                             keyringService.notifyWalletBackupComplete();
@@ -195,14 +207,17 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                                 onNextPage.gotoNextPage(true);
                             }
                             Utils.setCryptoOnboarding(false);
-                            Utils.clearClipboard(recoveryPhraseText.getText().toString().trim(), 0);
+                            Utils.clearClipboard(
+                                    mRecoveryPhraseText.getText().toString().trim(), 0);
                             Utils.clearClipboard(passwordInput, 0);
                             Utils.clearClipboard(retypePasswordInput, 0);
 
                             cleanUp();
                         } else {
-                            Toast.makeText(getActivity(), R.string.account_recovery_failed,
-                                         Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                            getActivity(),
+                                            R.string.account_recovery_failed,
+                                            Toast.LENGTH_SHORT)
                                     .show();
                         }
                     });
@@ -211,11 +226,11 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
     }
 
     private void cleanUp() {
-        recoveryPhraseText.getText().clear();
-        passwordEdittext.getText().clear();
-        retypePasswordEdittext.getText().clear();
-        showRecoveryPhraseCheckbox.setChecked(false);
-        restoreLegacyWalletCheckbox.setChecked(false);
+        mRecoveryPhraseText.getText().clear();
+        mPasswordEdittext.getText().clear();
+        mRetypePasswordEdittext.getText().clear();
+        mShowRecoveryPhraseCheckbox.setChecked(false);
+        mRestoreLegacyWalletCheckbox.setChecked(false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
