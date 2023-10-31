@@ -69,7 +69,7 @@ export const DropDown = styled.div<
   position: absolute;
   top: 38px;
   z-index: 9;
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 1170px) {
     right: 0px;
   }
 `
