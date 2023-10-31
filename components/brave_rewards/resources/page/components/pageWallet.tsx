@@ -162,7 +162,7 @@ class PageWallet extends React.Component<Props, State> {
 
   getExternalWalletStatus = (): mojom.WalletStatus | null => {
     const { externalWallet } = this.props.rewardsData
-    if (!externalWallet || externalWallet.status === mojom.WalletStatus.kNotConnected) {
+    if (!externalWallet) {
       return null
     }
 

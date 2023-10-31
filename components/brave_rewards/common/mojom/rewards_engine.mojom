@@ -135,7 +135,7 @@ interface RewardsEngine {
 
   FetchBalance() => (Balance? balance);
 
-  GetExternalWallet(string wallet_type) => (ExternalWallet? external_wallet);
+  GetExternalWallet() => (ExternalWallet? external_wallet);
 
   BeginExternalWalletLogin(string wallet_type)
       => (ExternalWalletLoginParams? params);

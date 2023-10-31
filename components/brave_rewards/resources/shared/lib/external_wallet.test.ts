@@ -44,10 +44,6 @@ describe('external_wallet', () => {
       expect(convert({ ...basicObject, status: 6 })).toStrictEqual(null)
     })
 
-    it('returns null if property "status" is kNotConnected', () => {
-      expect(convert({ ...basicObject, status: 0 })).toStrictEqual(null)
-    })
-
     it('maps wallet status integers correctly', () => {
       expect(convert({ ...basicObject, status: 2 })).toMatchObject({
         status: mojom.WalletStatus.kConnected

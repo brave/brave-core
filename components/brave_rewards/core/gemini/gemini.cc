@@ -15,14 +15,12 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/connect_gemini_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/gemini_transfer.h"
-#include "brave/components/brave_rewards/core/wallet_provider/gemini/get_gemini_wallet.h"
 
 namespace brave_rewards::internal::gemini {
 
 Gemini::Gemini(RewardsEngineImpl& engine)
     : WalletProvider(engine), server_(engine) {
   connect_wallet_ = std::make_unique<ConnectGeminiWallet>(engine);
-  get_wallet_ = std::make_unique<GetGeminiWallet>(engine);
   transfer_ = std::make_unique<GeminiTransfer>(engine);
 }
 

@@ -120,13 +120,12 @@ void WalletProvider::BeginLogin(BeginExternalWalletLoginCallback callback) {
 void WalletProvider::ConnectWallet(
     const base::flat_map<std::string, std::string>& args,
     ConnectExternalWalletCallback callback) {
+  // The connect wallet flow currently requires an ExternalWallet structure.
+  // Create one now if necessary.
+  wallet::MaybeCreateWallet(*engine_, WalletType());
+
   CHECK(connect_wallet_);
   connect_wallet_->Run(args, std::move(callback));
-}
-
-void WalletProvider::GetWallet(GetExternalWalletCallback callback) {
-  CHECK(get_wallet_);
-  get_wallet_->Run(std::move(callback));
 }
 
 void WalletProvider::SaveTransferFee(const std::string& contribution_id,

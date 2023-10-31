@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/connect_uphold_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/uphold/get_uphold_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/uphold_transfer.h"
 
 namespace brave_rewards::internal::uphold {
@@ -22,7 +21,6 @@ namespace brave_rewards::internal::uphold {
 Uphold::Uphold(RewardsEngineImpl& engine)
     : WalletProvider(engine), server_(engine) {
   connect_wallet_ = std::make_unique<ConnectUpholdWallet>(engine);
-  get_wallet_ = std::make_unique<GetUpholdWallet>(engine);
   transfer_ = std::make_unique<UpholdTransfer>(engine);
 }
 

@@ -15,14 +15,12 @@
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/bitflyer_transfer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/connect_bitflyer_wallet.h"
-#include "brave/components/brave_rewards/core/wallet_provider/bitflyer/get_bitflyer_wallet.h"
 
 namespace brave_rewards::internal::bitflyer {
 
 Bitflyer::Bitflyer(RewardsEngineImpl& engine)
     : WalletProvider(engine), server_(engine) {
   connect_wallet_ = std::make_unique<ConnectBitFlyerWallet>(engine);
-  get_wallet_ = std::make_unique<GetBitFlyerWallet>(engine);
   transfer_ = std::make_unique<BitFlyerTransfer>(engine);
 }
 

@@ -1106,4 +1106,23 @@ IN_PROC_BROWSER_TEST_P_(V13, Paths) {
   }
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V14EmptyWalletType) {
+  profile_->GetPrefs()->SetInteger("brave.rewards.version", 13);
+  rewards_service_->SetEngineStateTargetVersionForTesting(14);
+
+  auto store_wallet = [&](const std::string& key, const std::string& json) {
+    auto encrypted_wallet =
+        test_util::EncryptPrefString(rewards_service_, json);
+    profile_->GetPrefs()->SetString(key, *encrypted_wallet);
+  };
+
+  store_wallet("brave.rewards.wallets.gemini", R"({ "status": 0 })");
+  store_wallet("brave.rewards.wallets.uphold", R"({ "status": 2 })");
+
+  test_util::StartProcess(rewards_service_);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetString("brave.rewards.external_wallet_type"),
+      "uphold");
+}
+
 }  // namespace brave_rewards
