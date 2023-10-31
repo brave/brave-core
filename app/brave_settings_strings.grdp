@@ -1448,10 +1448,10 @@ Leo. This action cannot be undone.
     Enable Playlist
   </message>
   <message name="IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_LABEL" desc="The text for setting to en/disable media cache behavior">
-    Automatically keep files for offline
+    Automatically add files for offline viewing
   </message>
   <message name="IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_SUB_LABEL" desc="A description for setting to en/disable media cache behavior">
-    This option will automatically cache media files for items so you can play them without an internet connection.
+    This option will automatically cache media files so you can play without an Internet connection.
   </message>
 
 <!-- Avatars. Generated via zsh and node:
