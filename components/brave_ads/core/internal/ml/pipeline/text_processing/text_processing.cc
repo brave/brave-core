@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_buffer_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_buffer_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_util.h"
@@ -83,6 +84,10 @@ bool TextProcessing::SetPipeline(std::string buffer) {
 
   absl::optional<PipelineInfo> pipeline =
       ParseNeuralPipelineBuffer(*pipeline_buffer_);
+  if (!pipeline) {
+    pipeline = ParseLinearPipelineBuffer(*pipeline_buffer_);
+  }
+
   if (pipeline) {
     SetPipeline(std::move(pipeline).value());
     is_initialized_ = true;

@@ -22,9 +22,10 @@ HashedNGramsTransformation::HashedNGramsTransformation()
 
 HashedNGramsTransformation::HashedNGramsTransformation(
     const int bucket_count,
-    const std::vector<int>& subgrams)
+    std::vector<uint32_t> subgrams)
     : Transformation(TransformationType::kHashedNGrams) {
-  hash_vectorizer_ = std::make_unique<HashVectorizer>(bucket_count, subgrams);
+  hash_vectorizer_ =
+      std::make_unique<HashVectorizer>(bucket_count, std::move(subgrams));
 }
 
 HashedNGramsTransformation::HashedNGramsTransformation(

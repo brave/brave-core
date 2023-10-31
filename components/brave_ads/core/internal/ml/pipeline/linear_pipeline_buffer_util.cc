@@ -3,18 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_buffer_util.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_buffer_util.h"
 
+#include <iterator>
 #include <memory>
 #include <utility>
 
 #include "base/check.h"
 #include "base/notreached.h"
-#include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_model_generated.h"
+#include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_model_generated.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_transformation_generated.h"
-#include "brave/components/brave_ads/core/internal/ml/model/neural/neural.h"
+#include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/distribution_transformation.h"
+#include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation.h"
 
@@ -22,6 +24,7 @@ namespace brave_ads::ml::pipeline {
 
 namespace {
 
+constexpr char kTransformationTypeHashedNGramsKey[] = "HASHED_NGRAMS";
 constexpr char kTransformationTypeMappedTokensKey[] = "MAPPED_TOKENS";
 constexpr char kTransformationTypeToDistributionKey[] = "TO_DISTRIBUTION";
 constexpr char kTransformationTypeToLowerKey[] = "TO_LOWER";
@@ -66,8 +69,33 @@ absl::optional<TransformationPtr> ParseMappedTokenTransformation(
       mapped_token_transformation);
 }
 
+absl::optional<TransformationPtr> ParseHashedNGramsTransformation(
+    const text_classification::flat::HashedNGramsTransformation*
+        hashed_ngram_transformation) {
+  if (!hashed_ngram_transformation ||
+      !hashed_ngram_transformation->transformation_type() ||
+      !hashed_ngram_transformation->ngrams_range()) {
+    return absl::nullopt;
+  }
+
+  const std::string transformation_type =
+      hashed_ngram_transformation->transformation_type()->str();
+
+  if (transformation_type != kTransformationTypeHashedNGramsKey) {
+    return absl::nullopt;
+  }
+
+  std::vector<uint32_t> subgrams;
+  subgrams.reserve(hashed_ngram_transformation->ngrams_range()->size());
+  std::ranges::copy(*hashed_ngram_transformation->ngrams_range(),
+                    std::back_inserter(subgrams));
+
+  return std::make_unique<HashedNGramsTransformation>(
+      hashed_ngram_transformation->num_buckets(), std::move(subgrams));
+}
+
 absl::optional<TransformationVector> ParseTransformations(
-    const text_classification::flat::NeuralModel* text_classification) {
+    const text_classification::flat::LinearModel* text_classification) {
   CHECK(text_classification);
 
   const auto* transformations = text_classification->transformations();
@@ -83,9 +111,7 @@ absl::optional<TransformationVector> ParseTransformations(
     absl::optional<TransformationPtr> transformation_ptr;
     switch (transformation_entry->transformation_type()) {
       case text_classification::flat::Transformation::
-          Transformation_SimpleTransformation:
-      case text_classification::flat::Transformation::
-          Transformation_HashedNGramsTransformation: {
+          Transformation_SimpleTransformation: {
         transformation_ptr = ParseSimpleTransformation(
             transformation_entry->transformation_as_SimpleTransformation());
         break;
@@ -95,6 +121,13 @@ absl::optional<TransformationVector> ParseTransformations(
         transformation_ptr = ParseMappedTokenTransformation(
             transformation_entry
                 ->transformation_as_MappedTokenTransformation());
+        break;
+      }
+      case text_classification::flat::Transformation::
+          Transformation_HashedNGramsTransformation: {
+        transformation_ptr = ParseHashedNGramsTransformation(
+            transformation_entry
+                ->transformation_as_HashedNGramsTransformation());
         break;
       }
       case text_classification::flat::Transformation::Transformation_NONE: {
@@ -112,15 +145,16 @@ absl::optional<TransformationVector> ParseTransformations(
 
 }  // namespace
 
-absl::optional<PipelineInfo> ParseNeuralPipelineBuffer(const std::string& buffer) {
+absl::optional<PipelineInfo> ParseLinearPipelineBuffer(
+    const std::string& buffer) {
   flatbuffers::Verifier verifier(
       reinterpret_cast<const uint8_t*>(buffer.data()), buffer.size());
-  if (!text_classification::flat::VerifyNeuralModelBuffer(verifier)) {
+  if (!text_classification::flat::VerifyLinearModelBuffer(verifier)) {
     return absl::nullopt;
   }
 
-  const text_classification::flat::NeuralModel* model =
-      text_classification::flat::GetNeuralModel(buffer.data());
+  const text_classification::flat::LinearModel* model =
+      text_classification::flat::GetLinearModel(buffer.data());
   if (!model) {
     return absl::nullopt;
   }
@@ -136,10 +170,10 @@ absl::optional<PipelineInfo> ParseNeuralPipelineBuffer(const std::string& buffer
     return absl::nullopt;
   }
 
-  NeuralModel neural_model(model);
+  LinearModel linear_model(model);
 
-  return PipelineInfo(locale->str(), std::move(*transformations), absl::nullopt,
-                      std::move(neural_model));
+  return PipelineInfo(locale->str(), std::move(*transformations),
+                      std::move(linear_model), absl::nullopt);
 }
 
 }  // namespace brave_ads::ml::pipeline

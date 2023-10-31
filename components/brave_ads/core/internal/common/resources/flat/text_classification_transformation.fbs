@@ -5,7 +5,7 @@ table SimpleTransformation {
 }
 
 table HashedNGramsTransformation {
-  ngrams_range: [uint8] (required);
+  ngrams_range: [uint32] (required);
   num_buckets: uint32;
   transformation_type: string (required);
 }

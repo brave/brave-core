@@ -2,16 +2,20 @@ include "brave/components/brave_ads/core/internal/common/resources/flat/text_cla
 
 namespace brave_ads.text_classification.flat;
 
-table StringToFloat32Entry {
-    key: string (key, required);
+table SegmentBias {
+    segment: string (key, required);
+    bias: float32;
+}
+
+table SegmentToWeightsVector {
+    segment: string (key, required);
     numbers: [float32] (required);
 }
 
 table LinearClassifier {
-  classes: [string] (required);
   classifier_type: string (required);
-  biases: [float32] (required);
-  class_weights: [StringToFloat32Entry] (required);
+  biases: [SegmentBias] (required);
+  segment_weights: [SegmentToWeightsVector] (required);
 }
 
 table LinearModel {

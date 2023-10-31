@@ -48,7 +48,6 @@ class NeuralModel final {
       const VectorData& data,
       size_t top_count) const;
 
-  std::string buffer_;
   raw_ptr<const text_classification::flat::NeuralModel> model_;
 };
 
