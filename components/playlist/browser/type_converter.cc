@@ -5,6 +5,7 @@
 
 #include "brave/components/playlist/browser/type_converter.h"
 
+#include <iterator>
 #include <limits>
 #include <string>
 #include <utility>
@@ -13,6 +14,8 @@
 #include "base/containers/contains.h"
 #include "base/json/values_util.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
+#include "brave/components/playlist/browser/pref_names.h"
+#include "brave/components/sync/protocol/playlist_specifics.pb.h"
 
 static_assert(
     std::numeric_limits<
@@ -142,6 +145,57 @@ base::Value::Dict ConvertPlaylistItemToValue(
   return playlist_value;
 }
 
+mojom::PlaylistItemPtr ConvertPBToPlaylistItem(
+    const sync_pb::PlaylistItemDetails& item_pb,
+    const base::Value::Dict& items_cache_dict) {
+  auto item = mojom::PlaylistItem::New();
+
+  auto* item_cache = items_cache_dict.FindDict(item_pb.id());
+  if (item_cache) {
+    auto* thumbnail_path = item_cache->FindString(kPlaylistCacheThumbnailPathKey);
+    item->thumbnail_path = GURL(thumbnail_path ? *thumbnail_path : "");
+    auto* media_path = item_cache->FindString(kPlaylistCacheMediaPathKey);
+    item->media_path = GURL(media_path ? *media_path : "");
+    auto media_file_bytes = item_cache->FindDouble(kPlaylistCacheMediaPathKey);
+    item->media_file_bytes = static_cast<uint64_t>(media_file_bytes.value_or(0));
+    item->cached = item_cache->FindBool(kPlaylistCacheCachedKey).value_or(false);
+  }  
+  item->id = item_pb.id();
+  item->name = item_pb.name();
+  item->page_source = GURL(item_pb.page_source());
+  item->thumbnail_source = GURL(item_pb.thumbnail_source());
+  item->media_source = GURL(item_pb.media_source());
+  item->duration = item_pb.duration();
+  item->author = item_pb.author();
+  item->last_played_position = item_pb.last_played_position();
+
+  const auto& parents = item_pb.playlist_ids();
+  std::copy(parents.cbegin(), parents.cend(), std::back_inserter(item->parents));
+
+  return item;
+}
+
+sync_pb::PlaylistItemDetails ConvertPlaylistItemToPB(
+    const mojom::PlaylistItemPtr& item) {
+  sync_pb::PlaylistItemDetails result;
+
+  result.set_id(item->id);
+  result.set_name(item->name);
+  result.set_page_source(item->page_source.spec());
+  result.set_media_source(item->media_source.spec());
+  result.set_thumbnail_source(item->thumbnail_source.spec());
+  result.set_author(item->author);
+  result.set_duration(item->duration);
+  result.set_last_played_position(item->last_played_position);
+  
+  auto* result_playlist_ids = result.mutable_playlist_ids();
+  for (const auto& parent : item->parents) {
+    result_playlist_ids->Add(std::string(parent));
+  }
+
+  return result;
+}
+
 mojom::PlaylistPtr ConvertValueToPlaylist(
     const base::Value::Dict& playlist_dict,
     const base::Value::Dict& items_dict) {
@@ -167,6 +221,36 @@ base::Value::Dict ConvertPlaylistToValue(const mojom::PlaylistPtr& playlist) {
   }
   value.Set(kPlaylistItemsKey, std::move(item_ids));
   return value;
+}
+
+mojom::PlaylistPtr ConvertPBToPlaylist(
+    const sync_pb::PlaylistDetails& playlist_pb,
+    const std::vector<sync_pb::PlaylistItemDetails>& items_pb,
+    const base::Value::Dict& items_cache_dict) {
+  mojom::PlaylistPtr playlist = mojom::Playlist::New();
+
+  playlist->id = playlist_pb.id();
+  playlist->name = playlist_pb.name();
+
+  std::transform(items_pb.cbegin(), items_pb.cend(), std::back_inserter(playlist->items), [&items_cache_dict](const auto& item_pb) {
+    return ConvertPBToPlaylistItem(item_pb, items_cache_dict);
+  });
+
+  return playlist;
+}
+
+sync_pb::PlaylistDetails ConvertPlaylistToPB(const mojom::PlaylistPtr& playlist) {
+  sync_pb::PlaylistDetails result;
+
+  result.set_id(playlist->id.value_or(std::string()));
+  result.set_name(playlist->name);
+
+  auto* result_item_ids = result.mutable_playlist_item_ids();
+  for (const auto& item : playlist->items) {
+    result_item_ids->Add(std::string(item->id));
+  }
+
+  return result;
 }
 
 }  // namespace playlist

@@ -286,11 +286,6 @@ class PlaylistService : public KeyedService,
   void NotifyMediaFilesUpdated(const GURL& url,
                                std::vector<mojom::PlaylistItemPtr> items);
 
-  void UpdatePlaylistItemValue(const std::string& id, base::Value value);
-  void RemovePlaylistItemValue(const std::string& id);
-
-  bool HasPrefStorePlaylistItem(const std::string& id) const;
-
   // Playlist creation can be ready to play two steps.
   // Step 1. When creation is requested, requested info is put to db and
   //         notification is delivered to user with basic infos like playlist
@@ -331,6 +326,13 @@ class PlaylistService : public KeyedService,
                                    bool update_media_src_and_retry_on_fail,
                                    RecoverLocalDataForItemCallback callback);
   void RemoveLocalDataForItemImpl(const mojom::PlaylistItemPtr& item);
+
+  void UpdateItemCache(const std::string& item_id,
+                       const absl::optional<std::string> thumbnail_path,
+                       const absl::optional<std::string> media_path,
+                       const absl::optional<bool> cached,
+                       const absl::optional<uint64_t> media_file_bytes);
+  void ClearItemCache(const std::string& item_id);
 
   void OnPlaylistItemDirCreated(
       mojom::PlaylistItemPtr item,

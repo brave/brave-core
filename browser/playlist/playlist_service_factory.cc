@@ -219,6 +219,7 @@ void PlaylistServiceFactory::RegisterProfilePrefs(
   registry->RegisterBooleanPref(kPlaylistCacheByDefault, true);
   registry->RegisterStringPref(kPlaylistDefaultSaveTargetListID,
                                kDefaultPlaylistID);
+  registry->RegisterDictionaryPref(kPlaylistCache);
 }
 
 PlaylistServiceFactory::PlaylistServiceFactory()

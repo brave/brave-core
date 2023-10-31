@@ -28,6 +28,9 @@ namespace sync {
 // - see if transport mode applies
 // - enable encryption
 // - for all the sync build assertions, replace the counts with CHROMIUM_MODEL_TYPE_COUNT + BRAVE_MODEL_TYPE_COUNT
+// - handle conflicts correctly when updating PlaylistDetails. merge them accordingly
+// - add multiple settings to global details
+// - ensure p3a still works
 class PlaylistSyncBridge : public syncer::ModelTypeSyncBridge {
  public:
   class Delegate {
@@ -58,19 +61,22 @@ class PlaylistSyncBridge : public syncer::ModelTypeSyncBridge {
   bool IsEntityDataValid(const syncer::EntityData& entity_data) const override;
 
   // Called by PlaylistService:
-  std::vector<sync_pb::PlaylistDetails> GetAllPlaylists() const;
   absl::optional<sync_pb::PlaylistDetails> GetPlaylistDetails(const std::string& id) const;
+  bool HasPlaylistDetails(const std::string& id) const;
   void SavePlaylistDetails(const sync_pb::PlaylistDetails& playlist);
   void DeletePlaylistDetails(const std::string& id);
 
-  absl::optional<sync_pb::PlaylistOrderDetails> GetOrderDetails() const;
-  void SaveOrderDetails(const sync_pb::PlaylistOrderDetails& playlist_order);
+  absl::optional<sync_pb::PlaylistGlobalDetails> GetGlobalDetails() const;
+  void SaveGlobalDetails(const sync_pb::PlaylistGlobalDetails& global_details);
 
   std::vector<sync_pb::PlaylistItemDetails> GetItemDetailsForPlaylist(const std::string& playlist_id) const;
   std::vector<sync_pb::PlaylistItemDetails> GetAllItemDetails() const;
   absl::optional<sync_pb::PlaylistItemDetails> GetItemDetails(const std::string& id) const;
+  bool HasItemDetails(const std::string& id) const;
   void SaveItemDetails(const sync_pb::PlaylistItemDetails& item);
   void DeleteItemDetails(const std::string& id);
+
+  void ResetAll();
 
  private:
   void OnStoreCreated(const absl::optional<syncer::ModelError>& error, std::unique_ptr<syncer::ModelTypeStore> store);
@@ -87,7 +93,7 @@ class PlaylistSyncBridge : public syncer::ModelTypeSyncBridge {
   std::vector<std::string> GetAllKeys() const;
   void CommitBatch(std::unique_ptr<syncer::ModelTypeStore::WriteBatch> batch);
 
-  absl::optional<sync_pb::PlaylistOrderDetails> playlist_order_;
+  absl::optional<sync_pb::PlaylistGlobalDetails> global_;
   base::flat_map<std::string, sync_pb::PlaylistDetails> playlists_;
   base::flat_map<std::string, sync_pb::PlaylistItemDetails> items_;
 

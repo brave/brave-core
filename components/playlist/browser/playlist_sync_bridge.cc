@@ -33,13 +33,7 @@ using syncer::MetadataChangeList;
 using syncer::ModelError;
 using syncer::ModelTypeStore;
 
-enum class DetailsType {
-  kOrder,
-  kList,
-  kItem
-};
-
-constexpr char kOrderStorageKey[] = "playlist-order";
+constexpr char kGlobalStorageKey[] = "playlist-global";
 
 std::unique_ptr<syncer::ClientTagBasedModelTypeProcessor> CreateProcessor() {
   return std::make_unique<syncer::ClientTagBasedModelTypeProcessor>(syncer::PLAYLIST,
@@ -114,8 +108,8 @@ void PlaylistSyncBridge::OnCommit(const absl::optional<ModelError>& error) {
 bool PlaylistSyncBridge::CacheSpecifics(const std::string& key, const sync_pb::PlaylistSpecifics& specifics) {
   data_lock_.AssertAcquired();
   switch (specifics.details_case()) {
-    case sync_pb::PlaylistSpecifics::DetailsCase::kOrderListDetails:
-      playlist_order_ = specifics.order_list_details();
+    case sync_pb::PlaylistSpecifics::DetailsCase::kGlobalDetails:
+      global_ = specifics.global_details();
       break;
     case sync_pb::PlaylistSpecifics::DetailsCase::kListDetails:
       playlists_[key] = specifics.list_details();
@@ -143,8 +137,8 @@ bool PlaylistSyncBridge::SaveSpecifics(const std::string& key, const sync_pb::Pl
 
 bool PlaylistSyncBridge::DeleteSpecifics(const std::string& key, ModelTypeStore::WriteBatch* batch) {
   data_lock_.AssertAcquired();
-  if (key == kOrderStorageKey) {
-    playlist_order_ = absl::nullopt;
+  if (key == kGlobalStorageKey) {
+    global_ = absl::nullopt;
   }
   playlists_.erase(key);
   items_.erase(key);
@@ -155,8 +149,8 @@ bool PlaylistSyncBridge::DeleteSpecifics(const std::string& key, ModelTypeStore:
 absl::optional<sync_pb::PlaylistSpecifics> PlaylistSyncBridge::GetStoredSpecifics(const std::string& key) const {
   data_lock_.AssertAcquired();
   sync_pb::PlaylistSpecifics specifics;
-  if (key == kOrderStorageKey && playlist_order_) {
-    *specifics.mutable_order_list_details() = *playlist_order_;
+  if (key == kGlobalStorageKey && global_) {
+    *specifics.mutable_global_details() = *global_;
   } else if (items_.contains(key)) {
     *specifics.mutable_item_details() = items_.at(key);
   } else if (playlists_.contains(key)) {
@@ -176,6 +170,7 @@ std::unique_ptr<EntityData> PlaylistSyncBridge::CreateEntityData(const sync_pb::
 std::vector<std::string> PlaylistSyncBridge::GetAllKeys() const {
   data_lock_.AssertAcquired();
   std::vector<std::string> keys;
+  keys.push_back(kGlobalStorageKey);
   std::transform(items_.cbegin(), items_.cend(), std::back_inserter(keys), [](const auto& entry) {
     return entry.first;
   });
@@ -301,8 +296,8 @@ std::string PlaylistSyncBridge::GetClientTag(const syncer::EntityData& entity_da
 std::string PlaylistSyncBridge::GetStorageKey(const syncer::EntityData& entity_data) {
   CHECK(entity_data.specifics.has_playlist());
   switch (entity_data.specifics.playlist().details_case()) {
-    case sync_pb::PlaylistSpecifics::DetailsCase::kOrderListDetails:
-      return kOrderStorageKey;
+    case sync_pb::PlaylistSpecifics::DetailsCase::kGlobalDetails:
+      return kGlobalStorageKey;
     case sync_pb::PlaylistSpecifics::DetailsCase::kListDetails:
       return entity_data.specifics.playlist().list_details().id();
     case sync_pb::PlaylistSpecifics::DetailsCase::kItemDetails:
@@ -318,20 +313,15 @@ bool PlaylistSyncBridge::IsEntityDataValid(const syncer::EntityData& entity_data
       entity_data.specifics.playlist().details_case() != sync_pb::PlaylistSpecifics::DetailsCase::DETAILS_NOT_SET;
 }
 
-std::vector<sync_pb::PlaylistDetails> PlaylistSyncBridge::GetAllPlaylists() const {
-  base::AutoLock lock(data_lock_);
-  std::vector<sync_pb::PlaylistDetails> result;
-
-  std::transform(playlists_.cbegin(), playlists_.cend(), std::back_inserter(result), [](const auto& entry) {
-    return entry.second;
-  });
-
-  return result;
-}
-
 absl::optional<sync_pb::PlaylistDetails> PlaylistSyncBridge::GetPlaylistDetails(const std::string& id) const {
   base::AutoLock lock(data_lock_);
   return playlists_.contains(id) ? absl::optional<sync_pb::PlaylistDetails>(playlists_.at(id)) : absl::nullopt;
+}
+
+
+bool PlaylistSyncBridge::HasPlaylistDetails(const std::string& id) const {
+  base::AutoLock lock(data_lock_);
+  return playlists_.contains(id);
 }
 
 void PlaylistSyncBridge::SavePlaylistDetails(const sync_pb::PlaylistDetails& playlist) {
@@ -359,21 +349,21 @@ void PlaylistSyncBridge::DeletePlaylistDetails(const std::string& id) {
   CommitBatch(std::move(batch));
 }
 
-absl::optional<sync_pb::PlaylistOrderDetails> PlaylistSyncBridge::GetOrderDetails() const {
+absl::optional<sync_pb::PlaylistGlobalDetails> PlaylistSyncBridge::GetGlobalDetails() const {
   base::AutoLock lock(data_lock_);
-  return playlist_order_;
+  return global_;
 }
 
-void PlaylistSyncBridge::SaveOrderDetails(const sync_pb::PlaylistOrderDetails& playlist_order) {
+void PlaylistSyncBridge::SaveGlobalDetails(const sync_pb::PlaylistGlobalDetails& global_details) {
   base::AutoLock lock(data_lock_);
 
   auto batch = store_->CreateWriteBatch();
 
   sync_pb::PlaylistSpecifics specifics;
-  *specifics.mutable_order_list_details() = playlist_order;
+  *specifics.mutable_global_details() = global_details;
 
-  SaveSpecifics(kOrderStorageKey, specifics, batch.get());
-  change_processor()->Put(kOrderStorageKey, CreateEntityData(specifics), batch->GetMetadataChangeList());
+  SaveSpecifics(kGlobalStorageKey, specifics, batch.get());
+  change_processor()->Put(kGlobalStorageKey, CreateEntityData(specifics), batch->GetMetadataChangeList());
 
   CommitBatch(std::move(batch));
 }
@@ -412,6 +402,11 @@ absl::optional<sync_pb::PlaylistItemDetails> PlaylistSyncBridge::GetItemDetails(
   return items_.contains(id) ? absl::optional<sync_pb::PlaylistItemDetails>(items_.at(id)) : absl::nullopt;
 }
 
+bool PlaylistSyncBridge::HasItemDetails(const std::string& id) const {
+  base::AutoLock lock(data_lock_);
+  return items_.contains(id);
+}
+
 void PlaylistSyncBridge::SaveItemDetails(const sync_pb::PlaylistItemDetails& item) {
   base::AutoLock lock(data_lock_);
 
@@ -433,6 +428,24 @@ void PlaylistSyncBridge::DeleteItemDetails(const std::string& id) {
 
   DeleteSpecifics(id, batch.get());
   change_processor()->Delete(id, batch->GetMetadataChangeList());
+
+  CommitBatch(std::move(batch));
+}
+
+void PlaylistSyncBridge::ResetAll() {
+  base::AutoLock lock(data_lock_);
+
+  auto batch = store_->CreateWriteBatch();
+
+  auto keys = GetAllKeys();
+  for (const auto& key : keys) {
+    batch->DeleteData(key);
+    change_processor()->Delete(key, batch->GetMetadataChangeList());
+  }
+
+  global_ = absl::nullopt;
+  playlists_.clear();
+  items_.clear();
 
   CommitBatch(std::move(batch));
 }

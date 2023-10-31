@@ -14,14 +14,14 @@ package sync_pb;
 
 message PlaylistSpecifics {
   oneof details {
-    PlaylistOrderDetails order_list_details = 2;
+    PlaylistGlobalDetails global_details = 2;
     PlaylistDetails list_details = 3;
     PlaylistItemDetails item_details = 4;
   }
 }
 
-message PlaylistOrderDetails {
-  repeated string playlist_ids = 1;
+message PlaylistGlobalDetails {
+  repeated string ordered_playlist_ids = 1;
 }
 
 message PlaylistDetails {

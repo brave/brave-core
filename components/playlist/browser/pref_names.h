@@ -49,6 +49,14 @@ constexpr char kPlaylistUsedSecondDay[] = "brave.playlist.used_second_day";
 constexpr char kPlaylistUsageWeeklyStorage[] =
     "brave.playlist.usage_weekly_storage";
 
+// Dict pref that contains thumbnail and media paths, cached boolean,
+// and media file bytes.
+constexpr char kPlaylistCache[] = "brave.playlist.item_cache";
+constexpr char kPlaylistCacheThumbnailPathKey[] = "thumbnail_path";
+constexpr char kPlaylistCacheMediaPathKey[] = "media_path";
+constexpr char kPlaylistCacheCachedKey[] = "cached";
+constexpr char kPlaylistCacheMediaFileBytesKey[] = "media_file_bytes";
+
 }  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PREF_NAMES_H_
