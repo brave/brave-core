@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import getBraveNewsController from '../shared/api';
 import { MetaInfoContainer } from './ArticleMetaRow';
 import Card, { LargeImage, Title } from './Card';
-import SecureLink from '../../../../common/SecureLink';
+import SecureLink, { validateScheme } from '../../../../common/SecureLink';
 import { useUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 
 interface Props {
@@ -40,6 +40,11 @@ const CtaButton = styled(Button)`
   align-self: flex-start;
 `
 
+const openLink = (link: string) => {
+  validateScheme(link)
+  window.location.href = link
+}
+
 export default function Advert(props: Props) {
   const { result } = usePromise(() => getBraveNewsController()
     .getDisplayAd().then(r => r.ad ?? {
@@ -55,7 +60,7 @@ export default function Advert(props: Props) {
     const imageUrl = useUnpaddedImageUrl(result?.image.paddedImageUrl?.url ?? result?.image.imageUrl?.url)
   if (!result) return null
 
-  return <Container>
+  return <Container onClick={() => openLink(result.targetUrl.url)}>
     <LargeImage src={imageUrl} />
     <MetaInfoContainer>
       <BatAdLabel onClick={e => e.stopPropagation()} href="brave://rewards">Ad</BatAdLabel>
