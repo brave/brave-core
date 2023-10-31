@@ -132,6 +132,8 @@ class BraveBrowserView : public BrowserView,
       Browser::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
+  void FullscreenStateChanging() override;
+  void FullscreenStateChanged() override;
   void UpdateDevToolsForContents(content::WebContents* web_contents,
                                  bool update_devtools_web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
