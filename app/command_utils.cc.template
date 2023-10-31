@@ -13,6 +13,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
+#include "base/strings/string_util.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -65,7 +66,15 @@ std::string GetCommandName(int command_id) {
          "commands (i.e. commands in |GetCommands()|). "
          "This command should probably be added.";
 
-  return l10n_util::GetStringUTF8(it->second);
+  // Remove and '&' characters which don't have a space before and after.
+  auto translation = l10n_util::GetStringUTF8(it->second);
+  auto amp_it = translation.find("&");
+  if (amp_it != std::string::npos) {
+    if (amp_it == 0 || translation.at(amp_it - 1) != ' ' || amp_it == translation.size() - 1 || translation.at(amp_it + 1) != ' ') {
+      base::RemoveChars(translation, "&", &translation); 
+    }
+  }
+  return translation;
 }
 
 }  // namespace commands
