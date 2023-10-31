@@ -402,7 +402,7 @@ struct Balance {
 };
 
 enum WalletStatus {
-  kNotConnected = 0,
+  kNotConnected = 0,  // For internal use by RewardsEngine
   kConnected = 2,
   kLoggedOut = 4
 };
