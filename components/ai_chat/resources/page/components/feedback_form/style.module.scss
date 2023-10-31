@@ -60,14 +60,9 @@
   }
 }
 
-.note {
+.premiumNote {
   margin: 0 16px 16px 16px;
   padding: 16px;
   border-radius: 8px;
   background: linear-gradient(91.61deg, rgba(248, 190, 218, 0.1) 18.42%, rgba(173, 153, 255, 0.1) 85.72%);
-
-  a {
-    color: var(--leo-color-text-interactive);
-    text-decoration: none;
-  }
 }
