@@ -22,7 +22,7 @@
     The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar.
   </message>
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_3" desc="Outlining the functioning of AIChat (paragraph 3 of 3)">
-    Leo does not collect or otherwise process identifiers such as IP Address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers.
+    Leo does not collect identifiers such as your IP Address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers.
   </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
     Enter a prompt here
@@ -37,7 +37,7 @@
     Summarize this page
   </message>
   <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_DESC" desc="Description about suggested questions">
-    Brave AI can automatically suggest questions based on the content of the site. You can disable it later in Settings.
+    Leo can automatically suggest questions based on the content of the site. To do this, the page contents of your navigations will be sent to Leo to generate these suggestions while Leo is open. You can disable it later in Settings.
   </message>
   <message name="IDS_CHAT_UI_ENABLE_QUESTIONS_BUTTON_LABEL" desc="A button label to enable suggested questions">
     Enable
@@ -80,6 +80,9 @@
   </message>
   <message name="IDS_CHAT_UI_MENU_GO_PREMIUM" desc="Menu item for subscribing to premium">
     Go Premium
+  </message>
+  <message name="IDS_CHAT_UI_MENU_MANAGE_SUBSCRIPTION" desc="Menu item for managing premium subscription">
+    Manage subscription
   </message>
   <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings">
     Settings
