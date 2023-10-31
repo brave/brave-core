@@ -7,12 +7,10 @@
 
 #include "brave/browser/ui/brave_ads/notification_ad_popup_handler.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
-#include "ui/gfx/geometry/rect.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 
