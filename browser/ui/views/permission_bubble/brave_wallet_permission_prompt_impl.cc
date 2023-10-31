@@ -51,3 +51,8 @@ absl::optional<gfx::Rect>
 BraveWalletPermissionPromptImpl::GetViewBoundsInScreen() const {
   return absl::nullopt;
 }
+
+bool BraveWalletPermissionPromptImpl::ShouldFinalizeRequestAfterDecided()
+    const {
+  return true;
+}

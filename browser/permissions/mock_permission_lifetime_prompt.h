@@ -23,6 +23,7 @@ class MockPermissionLifetimePrompt : public PermissionPrompt {
   TabSwitchingBehavior GetTabSwitchingBehavior() override;
   PermissionPromptDisposition GetPromptDisposition() const override;
   absl::optional<gfx::Rect> GetViewBoundsInScreen() const override;
+  bool ShouldFinalizeRequestAfterDecided() const override;
 
   Delegate* delegate() { return delegate_; }
   void ResetFactory();
