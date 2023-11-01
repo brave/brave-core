@@ -88,6 +88,10 @@ template("ios_objc_mojom_wrappers") {
     ]
   }
 
+  config("no_shadows") {
+    cflags = [ "-Wno-shadow" ]
+  }
+
   source_set(target_name) {
     forward_variables_from(invoker,
                            "*",
@@ -98,6 +102,7 @@ template("ios_objc_mojom_wrappers") {
     if (!defined(public_deps)) {
       public_deps = []
     }
+    configs += [ ":no_shadows" ]
     sources = generate_wrappers_output
     public_configs = [ ":$type_headers_target_name" ]
     public_deps += [

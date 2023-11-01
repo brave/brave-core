@@ -36,7 +36,8 @@
     );
   };
 {%- endif %}
-  _wrappedValue->{{method.name}}(
+  web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(^{
+    self->_wrappedValue->{{method.name}}(
 {%- for param in method.parameters -%}
 {{param|objc_to_cpp_assign}}
 {%- if not loop.last -%},{{" "}}{%- endif -%}
@@ -45,7 +46,8 @@
 {%- if method.parameters %}, {% endif -%}
 base::BindOnce(callback)
 {%- endif -%}
-  );
+    );
+  }));
 }
 {% endfor %}
 {%- endmacro %}
@@ -54,15 +56,22 @@ base::BindOnce(callback)
 @implementation {{class_prefix}}{{interface.name}}MojoImpl {
   mojo::Remote<{{cpp_namespace}}::{{interface.name}}> _wrappedValue;
 {%- for bridge in interface|interface_remote_sets %}
-  std::vector<std::unique_ptr<{{bridge}}>> _{{bridge|under_to_lower_camel}}Receivers;
+  std::vector<base::SequenceBound<std::unique_ptr<{{bridge}}>>> _{{bridge|under_to_lower_camel}}Receivers;
 {%- endfor %}
 }
 
 - (instancetype)initWith{{interface.name}}:(mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>)obj {
   if ((self = [super init])) {
-    _wrappedValue.Bind(std::move(obj));
+    _wrappedValue.Bind(std::move(obj), web::GetUIThreadTaskRunner({}));
   }
   return self;
+}
+
+- (void)dealloc {
+  web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(
+    ^(mojo::Remote<{{cpp_namespace}}::{{interface.name}}> remote){
+      remote.reset();
+    }, std::move(_wrappedValue)));
 }
 
 {{ objc_methods_impls(interface) }}
@@ -72,7 +81,7 @@ base::BindOnce(callback)
 @implementation {{class_prefix}}{{interface.name}}OwnedImpl {
   std::unique_ptr<{{cpp_namespace}}::{{interface.name}}> _wrappedValue;
 {%- for bridge in interface|interface_remote_sets %}
-  std::vector<std::unique_ptr<{{bridge}}>> _{{bridge|under_to_lower_camel}}Receivers;
+  std::vector<base::SequenceBound<std::unique_ptr<{{bridge}}>>> _{{bridge|under_to_lower_camel}}Receivers;
 {%- endfor %}
 }
 
@@ -81,6 +90,10 @@ base::BindOnce(callback)
     _wrappedValue = std::move(obj);
   }
   return self;
+}
+
+- (void)dealloc {
+  web::GetUIThreadTaskRunner({})->DeleteSoon(FROM_HERE, std::move(_wrappedValue));
 }
 
 {{ objc_methods_impls(interface) }}

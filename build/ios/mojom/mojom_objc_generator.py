@@ -354,7 +354,8 @@ class PendingRemoteMojoTypemap(MojoTypemap):
         return """^{
             auto bridge = std::make_unique<%s>(%s);
             auto bridgePtr = bridge.get();
-            self->_%sReceivers.push_back(std::move(bridge));
+            self->_%sReceivers.push_back(base::SequenceBound<decltype(bridge)>(
+                web::GetUIThreadTaskRunner({}), std::move(bridge)));
             return bridgePtr->GetRemote();
         }()""" % args
     def CppToObjC(self, accessor):
