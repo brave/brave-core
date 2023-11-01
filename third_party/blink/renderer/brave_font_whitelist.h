@@ -19,6 +19,8 @@ namespace brave {
 BLINK_EXPORT bool AllowFontByFamilyName(const AtomicString& family_name,
                                         WTF::String default_language);
 
+BLINK_EXPORT bool IsFontAllowedForFarbling(const AtomicString& family_name);
+
 // Public for testing but other callers should call
 // AllowFontByFamilyName instead.
 BLINK_EXPORT const base::flat_set<std::string_view>&
