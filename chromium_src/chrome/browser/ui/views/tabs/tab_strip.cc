@@ -7,7 +7,6 @@
 
 #include <cmath>
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
@@ -47,9 +46,6 @@
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS        \
   if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {        \
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_);   \
-  }                                                                           \
-  if (tabs::features::HorizontalTabsUpdateEnabled()) {                        \
-    return tabs::CalculateBoundsForHorizontalDraggedViews(views, tab_strip_); \
   }
 
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_PAINT_CHILDREN                      \
