@@ -1,12 +1,5 @@
 # Ignored files identified within .gitignore:
-.cache/clangd
 /vendor/*
-.DS_Store
-.brave_gclient_*
-.gclient_*
-.tags*
-.cipd
-/.idea/
 /components/brave_new_tab_ui/data/LICENSE
 /components/brave_webtorrent/extension/out/
 /components/brave_rewards/resources/extension/brave_rewards/out/
@@ -15,52 +8,25 @@
 /dist/
 /out/
 node_modules/
-patches/**/*.patchinfo
-/third_party/android_deps/libs/com_google_android_play_core/core-1.10.0.aar
-/third_party/android_deps/libs/com_google_android_play_core/core-1.10.3.aar
-/third_party/argon2/src
-/third_party/brave-vpn-wireguard-nt-dlls/
-/third_party/brave-vpn-wireguard-tunnel-dlls/
-/third_party/bip39wally-core-native/
-/third_party/ethash/src
-/third_party/bitcoin-core/src
-/third_party/playlist_component/src
-/third_party/rapidjson/src
-/third_party/rust/challenge_bypass_ristretto/v1/crate
-/third_party/rust/kuchiki/v0_8/crate
-/third_party/rust/futures_retry/v0_5/crate
-/third_party/rust/star_constellation/v0_2/crate
-/third_party/cryptography
-/third_party/macholib
-*.xcodeproj
-*.swp
-*.pyc
-*.VC.db
-*.VC.VC.opendb
+/third_party/
 .vs/
 .vscode/
-*.vcxproj
-*.vcxproj.user
-*.vcxproj.filters
-*.sln
-debug.log
-npm-debug.log
 .npmrc
 .env
-CMakeLists.txt
 cmake-build-debug/
 coverage/
 /build/rustup/
 venv/
-*.dmg
-*.pkg
-*.deb
-*.rpm
-*.exe
 .storybook-out
-test_get_pkgs
-build/config/gclient_args.gni
-third_party/rust/target
+
+# Ignore version control files
+**/.git
+**/.svn
+**/.hg
+
+# Ignore node_modules
+**/node_modules
+
 
 # Ignore HTML Files - incompatable with presubmit rules
 *.html
