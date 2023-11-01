@@ -774,8 +774,12 @@ void BraveVpnService::SetPurchasedState(
     obs->OnPurchasedStateChanged(state, description);
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (state == PurchasedState::PURCHASED)
+  if (state == PurchasedState::PURCHASED) {
     connection_api_->CheckConnection();
+
+    // Some platform needs to install services to run vpn.
+    connection_api_->InstallSystemServices();
+  }
 #endif
 }
 

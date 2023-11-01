@@ -58,6 +58,15 @@ void BraveVPNWireguardConnectionAPI::CheckConnection() {
   UpdateAndNotifyConnectionStateChange(state);
 }
 
+void BraveVPNWireguardConnectionAPI::InstallSystemServices() {
+  // This API could be called more than once because BraveVpnService is a
+  // per-profile service. If service install is in-progress now, just return.
+  //
+  //  if (install_in_progress_) {
+  //    return;
+  //  }
+}
+
 void BraveVPNWireguardConnectionAPI::PlatformConnectImpl(
     const wireguard::WireguardProfileCredentials& credentials) {
   auto vpn_server_hostname = GetHostname();

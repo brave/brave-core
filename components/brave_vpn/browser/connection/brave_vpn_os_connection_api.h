@@ -70,6 +70,7 @@ class BraveVPNOSConnectionAPI
       mojom::ConnectionState state);
   virtual void SetSelectedRegion(const std::string& name) = 0;
   virtual void FetchProfileCredentials() = 0;
+  virtual void InstallSystemServices();
 
  protected:
   explicit BraveVPNOSConnectionAPI(
