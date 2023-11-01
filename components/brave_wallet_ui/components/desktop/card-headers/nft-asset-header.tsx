@@ -10,12 +10,8 @@
 import * as React from 'react'
 
 // Selectors
-import {
-  useSafeUISelector
-} from '../../../common/hooks/use-safe-selector'
-import {
-  UISelectors
-} from '../../../common/selectors'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // utils
 import Amount from '../../../utils/amount'
@@ -38,7 +34,13 @@ interface Props {
   onSend: () => void
 }
 
-export const NftAssetHeader = ({ assetName, tokenId, showSendButton, onBack, onSend }: Props) => {
+export const NftAssetHeader = ({
+  assetName,
+  tokenId,
+  showSendButton,
+  onBack,
+  onSend
+}: Props) => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
@@ -62,13 +64,13 @@ export const NftAssetHeader = ({ assetName, tokenId, showSendButton, onBack, onS
             name='arrow-left'
           />
         </CircleButton>
-        <HeaderTitle
-          isPanel={isPanel}
-        >
+        <HeaderTitle isPanel={isPanel}>
           {assetName}&nbsp;{tokenId ? `#${new Amount(tokenId).toNumber()}` : ''}
         </HeaderTitle>
       </Row>
-      {showSendButton && <SendButton onClick={onSend}>{getLocale('braveWalletSend')}</SendButton>}
+      {showSendButton && (
+        <SendButton onClick={onSend}>{getLocale('braveWalletSend')}</SendButton>
+      )}
     </Row>
   )
 }

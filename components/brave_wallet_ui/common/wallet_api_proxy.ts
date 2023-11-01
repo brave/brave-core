@@ -25,32 +25,50 @@ export class WalletApiProxy {
   braveWalletAutoPinService = new BraveWallet.WalletAutoPinServiceRemote()
   braveWalletIpfsService = new BraveWallet.IpfsServiceRemote()
 
-  addJsonRpcServiceObserver (observer: BraveWallet.JsonRpcServiceObserverReceiver) {
+  addJsonRpcServiceObserver(
+    observer: BraveWallet.JsonRpcServiceObserverReceiver
+  ) {
     this.jsonRpcService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 
-  addKeyringServiceObserver (observer: BraveWallet.KeyringServiceObserverReceiver) {
+  addKeyringServiceObserver(
+    observer: BraveWallet.KeyringServiceObserverReceiver
+  ) {
     this.keyringService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 
-  addTxServiceObserver (observer: BraveWallet.TxServiceObserverReceiver) {
+  addTxServiceObserver(observer: BraveWallet.TxServiceObserverReceiver) {
     this.txService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 
-  addBraveWalletServiceObserver (observer: BraveWallet.BraveWalletServiceObserverReceiver) {
+  addBraveWalletServiceObserver(
+    observer: BraveWallet.BraveWalletServiceObserverReceiver
+  ) {
     this.braveWalletService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 
-  addBraveWalletServiceTokenObserver (observer: BraveWallet.BraveWalletServiceTokenObserverReceiver) {
-    this.braveWalletService.addTokenObserver(observer.$.bindNewPipeAndPassRemote())
+  addBraveWalletServiceTokenObserver(
+    observer: BraveWallet.BraveWalletServiceTokenObserverReceiver
+  ) {
+    this.braveWalletService.addTokenObserver(
+      observer.$.bindNewPipeAndPassRemote()
+    )
   }
 
-  addBraveWalletPinServiceObserver (observer: BraveWallet.BraveWalletPinServiceObserverReceiver) {
-    this.braveWalletPinService.addObserver(observer.$.bindNewPipeAndPassRemote())
+  addBraveWalletPinServiceObserver(
+    observer: BraveWallet.BraveWalletPinServiceObserverReceiver
+  ) {
+    this.braveWalletPinService.addObserver(
+      observer.$.bindNewPipeAndPassRemote()
+    )
   }
 
-  addBraveWalletAutoPinServiceObserver (observer: BraveWallet.WalletAutoPinServiceObserverReceiver) {
-    this.braveWalletAutoPinService.addObserver(observer.$.bindNewPipeAndPassRemote())
+  addBraveWalletAutoPinServiceObserver(
+    observer: BraveWallet.WalletAutoPinServiceObserverReceiver
+  ) {
+    this.braveWalletAutoPinService.addObserver(
+      observer.$.bindNewPipeAndPassRemote()
+    )
   }
 }
 

@@ -12,7 +12,7 @@ export const ErrorTextRow = styled.div<{
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: ${(p) => p.hasError ? 'auto' : '38px'};
+  height: ${(p) => (p.hasError ? 'auto' : '38px')};
   margin-top: 20px;
   padding-top: 10px;
   margin-bottom: 12px;

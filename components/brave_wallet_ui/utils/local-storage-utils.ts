@@ -8,12 +8,10 @@ import {
   SupportedCoinTypes,
   BraveWallet
 } from '../constants/types'
-import {
-  networkEntityAdapter
-} from '../common/slices/entities/network.entity'
+import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 
-export const parseJSONFromLocalStorage = <T = any> (
+export const parseJSONFromLocalStorage = <T = any>(
   storageString: keyof typeof LOCAL_STORAGE_KEYS,
   fallback: T
 ): T => {
@@ -28,41 +26,41 @@ export const parseJSONFromLocalStorage = <T = any> (
 
 export const makeInitialFilteredOutNetworkKeys = () => {
   const localHostNetworkKeys = SupportedCoinTypes.map((coin) => {
-    return networkEntityAdapter.selectId(
-      {
+    return networkEntityAdapter
+      .selectId({
         chainId: BraveWallet.LOCALHOST_CHAIN_ID,
         coin: coin
-      }
-    ).toString()
+      })
+      .toString()
   })
-  const testNetworkKeys = SupportedTestNetworks
-    .filter((chainId) => chainId !== BraveWallet.LOCALHOST_CHAIN_ID)
-    .map((chainId) => {
-      if (
-        chainId === BraveWallet.SOLANA_DEVNET ||
-        chainId === BraveWallet.SOLANA_TESTNET
-      ) {
-        return networkEntityAdapter.selectId(
-          {
-            chainId: chainId,
-            coin: BraveWallet.CoinType.SOL
-          }
-        ).toString()
-      }
-      if (chainId === BraveWallet.FILECOIN_TESTNET) {
-        return networkEntityAdapter.selectId(
-          {
-            chainId: chainId,
-            coin: BraveWallet.CoinType.FIL
-          }
-        ).toString()
-      }
-      return networkEntityAdapter.selectId(
-        {
+  const testNetworkKeys = SupportedTestNetworks.filter(
+    (chainId) => chainId !== BraveWallet.LOCALHOST_CHAIN_ID
+  ).map((chainId) => {
+    if (
+      chainId === BraveWallet.SOLANA_DEVNET ||
+      chainId === BraveWallet.SOLANA_TESTNET
+    ) {
+      return networkEntityAdapter
+        .selectId({
           chainId: chainId,
-          coin: BraveWallet.CoinType.ETH
-        }
-      ).toString()
-    })
+          coin: BraveWallet.CoinType.SOL
+        })
+        .toString()
+    }
+    if (chainId === BraveWallet.FILECOIN_TESTNET) {
+      return networkEntityAdapter
+        .selectId({
+          chainId: chainId,
+          coin: BraveWallet.CoinType.FIL
+        })
+        .toString()
+    }
+    return networkEntityAdapter
+      .selectId({
+        chainId: chainId,
+        coin: BraveWallet.CoinType.ETH
+      })
+      .toString()
+  })
   return [...testNetworkKeys, ...localHostNetworkKeys]
 }

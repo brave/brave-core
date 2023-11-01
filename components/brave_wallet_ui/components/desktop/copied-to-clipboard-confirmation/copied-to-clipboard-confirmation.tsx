@@ -13,10 +13,12 @@ import { GreenCheckmark } from '../../shared/style'
 import { CopiedToClipboardContainer } from './copied-to-clipboard-confirmation.style'
 
 export const CopiedToClipboardConfirmation: React.FC<{}> = () => {
-  return <CopiedToClipboardContainer>
-    <GreenCheckmark />
-    <p>{getLocale('braveWalletCopiedToClipboard')}</p>
-  </CopiedToClipboardContainer>
+  return (
+    <CopiedToClipboardContainer>
+      <GreenCheckmark />
+      <p>{getLocale('braveWalletCopiedToClipboard')}</p>
+    </CopiedToClipboardContainer>
+  )
 }
 
 export default CopiedToClipboardConfirmation

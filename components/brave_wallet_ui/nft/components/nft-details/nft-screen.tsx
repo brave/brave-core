@@ -8,10 +8,7 @@ import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 // types
-import {
-  BraveWallet,
-  AccountPageTabs
-} from '../../../constants/types'
+import { BraveWallet, AccountPageTabs } from '../../../constants/types'
 
 // hooks
 import useExplorer from '../../../common/hooks/explorer'
@@ -100,7 +97,10 @@ interface Props {
   ownerAccount?: BraveWallet.AccountInfo
 }
 
-const createSkeletonProps = (width?: string | number, height?: string | number) => {
+const createSkeletonProps = (
+  width?: string | number,
+  height?: string | number
+) => {
   return {
     width: width || '100%',
     height: height || '100%',
@@ -130,9 +130,11 @@ export const NftScreen = (props: Props) => {
   })
   const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
   const { data: currentNftPinningStatus } = useGetNftPinningStatusQuery(
-    selectedAsset, {
-    skip: !selectedAsset || !isAutoPinEnabled || !isNftPinnable
-  })
+    selectedAsset,
+    {
+      skip: !selectedAsset || !isAutoPinEnabled || !isNftPinnable
+    }
+  )
   const { data: ipfsImageUrl } = useGetIPFSUrlFromGatewayLikeUrlQuery(
     nftMetadata?.imageURL || skipToken
   )
@@ -140,11 +142,16 @@ export const NftScreen = (props: Props) => {
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
-  const onClickViewOnBlockExplorer = useExplorer(tokenNetwork || new BraveWallet.NetworkInfo())
+  const onClickViewOnBlockExplorer = useExplorer(
+    tokenNetwork || new BraveWallet.NetworkInfo()
+  )
 
   // memos
   const isNftPinned = React.useMemo(() => {
-    return currentNftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED
+    return (
+      currentNftPinningStatus?.code ===
+      BraveWallet.TokenPinStatusCode.STATUS_PINNED
+    )
   }, [currentNftPinningStatus?.code])
 
   const pinningStatusText = React.useMemo(() => {
@@ -158,10 +165,10 @@ export const NftScreen = (props: Props) => {
       case BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED:
         return getLocale('braveWalletNFTDetailsNotAvailable')
 
-        case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
+      case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
         return getLocale('braveWalletNFTDetailsPinningSuccessful')
 
-        case BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED:
+      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED:
         return getLocale('braveWalletNFTDetailsPinningFailed')
 
       default:
@@ -180,25 +187,26 @@ export const NftScreen = (props: Props) => {
     setNftIframeLoaded(true)
   }, [])
 
-  const onMessageEventListener = React.useCallback((event: MessageEvent<CommandMessage>) => {
-    // validate message origin
-    if (
-      event.origin === braveNftDisplayOrigin ||
-      event.origin === braveWalletPanelOrigin
-    ) {
-      const message = event.data
-      if (message.command === NftUiCommand.UpdateNftImageLoading) {
-        const { payload } = message as UpdateNftImageLoadingMessage
-        setNftImageLoading(payload)
+  const onMessageEventListener = React.useCallback(
+    (event: MessageEvent<CommandMessage>) => {
+      // validate message origin
+      if (
+        event.origin === braveNftDisplayOrigin ||
+        event.origin === braveWalletPanelOrigin
+      ) {
+        const message = event.data
+        if (message.command === NftUiCommand.UpdateNftImageLoading) {
+          const { payload } = message as UpdateNftImageLoadingMessage
+          setNftImageLoading(payload)
+        }
       }
-    }
-  }, [])
+    },
+    []
+  )
 
   const onClickContractAddress = React.useCallback(() => {
     onClickViewOnBlockExplorer(
-      selectedAsset.coin === BraveWallet.CoinType.ETH
-        ? 'nft'
-        : 'token',
+      selectedAsset.coin === BraveWallet.CoinType.ETH ? 'nft' : 'token',
       selectedAsset.contractAddress,
       selectedAsset.tokenId
     )()
@@ -268,8 +276,10 @@ export const NftScreen = (props: Props) => {
     let ignore = false
     if (nftMetadata?.imageURL) {
       areSupportedForPinning([nftMetadata?.imageURL])
-        .then((v) => { if (!ignore) setIsNftPinnable(v) })
-        .catch(err => console.error(err))
+        .then((v) => {
+          if (!ignore) setIsNftPinnable(v)
+        })
+        .catch((err) => console.error(err))
     }
     return () => {
       ignore = true
@@ -292,8 +302,13 @@ export const NftScreen = (props: Props) => {
   if (nftMetadataError)
     return (
       <StyledWrapper>
-        <Row alignItems='center' justifyContent='center'>
-          <ErrorMessage>{getLocale('braveWalletNftFetchingError')}</ErrorMessage>
+        <Row
+          alignItems='center'
+          justifyContent='center'
+        >
+          <ErrorMessage>
+            {getLocale('braveWalletNftFetchingError')}
+          </ErrorMessage>
         </Row>
       </StyledWrapper>
     )
@@ -341,7 +356,10 @@ export const NftScreen = (props: Props) => {
         <SectionWrapper>
           <InfoBox>
             <InfoTitle>{getLocale('braveWalletNFTDetailsOwnedBy')}</InfoTitle>
-            <Row justifyContent='flex-start' gap='4px'>
+            <Row
+              justifyContent='flex-start'
+              gap='4px'
+            >
               <AccountName>{ownerAccount.name}</AccountName>
               <AccountAddress>
                 {reduceAddress(ownerAccount.address, '...')}

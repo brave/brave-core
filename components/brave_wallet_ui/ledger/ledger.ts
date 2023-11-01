@@ -4,16 +4,23 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { BraveWallet } from '../constants/types'
-import { LedgerCommand, LEDGER_BRIDGE_URL } from '../common/hardware/ledgerjs/ledger-messages'
+import {
+  LedgerCommand,
+  LEDGER_BRIDGE_URL
+} from '../common/hardware/ledgerjs/ledger-messages'
 import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/ledger-untrusted-transport'
 import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
 import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil-ledger-untrusted-transport'
 
 const setUpAuthorizeButtonListener = (
-  targetUrl: string, coinType: BraveWallet.CoinType
+  targetUrl: string,
+  coinType: BraveWallet.CoinType
 ) => {
-  const untrustedMessagingTransport = getUntrustedMessagingTransport(coinType, targetUrl)
+  const untrustedMessagingTransport = getUntrustedMessagingTransport(
+    coinType,
+    targetUrl
+  )
   window.addEventListener('DOMContentLoaded', (event) => {
     const authorizeBtn = document.getElementById('authorize')
     if (authorizeBtn) {
@@ -36,11 +43,20 @@ const getUntrustedMessagingTransport = (
 ): LedgerUntrustedMessagingTransport => {
   switch (coinType) {
     case BraveWallet.CoinType.SOL:
-      return new SolanaLedgerUntrustedMessagingTransport(window.parent, targetUrl)
+      return new SolanaLedgerUntrustedMessagingTransport(
+        window.parent,
+        targetUrl
+      )
     case BraveWallet.CoinType.ETH:
-      return new EthereumLedgerUntrustedMessagingTransport(window.parent, targetUrl)
+      return new EthereumLedgerUntrustedMessagingTransport(
+        window.parent,
+        targetUrl
+      )
     case BraveWallet.CoinType.FIL:
-      return new FilecoinLedgerUntrustedMessagingTransport(window.parent, targetUrl)
+      return new FilecoinLedgerUntrustedMessagingTransport(
+        window.parent,
+        targetUrl
+      )
     default:
       throw new Error('Invalid coinType.')
   }

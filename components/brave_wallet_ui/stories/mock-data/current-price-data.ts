@@ -13,7 +13,6 @@ export const mockedCurrentPriceData = [
     btc: '1',
     usdTimeframeChange: '2.3',
     btcTimeframeChange: '-0.1'
-
   },
   {
     name: 'Binance Coin',
@@ -48,7 +47,7 @@ export const mockTransactionSpotPrices: SpotPriceRegistry = {
     price: '3300',
     assetTimeframeChange: ''
   },
-  "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
+  '0x0D8775F648430679A709E98d2b0Cb6250d2887EF': {
     fromAsset: 'BAT',
     toAsset: 'USD',
     price: '0.85',

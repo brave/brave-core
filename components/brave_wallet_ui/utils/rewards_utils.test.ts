@@ -35,12 +35,12 @@ describe('getIsRewardsAccount', () => {
 
 describe('getNormalizedExternalRewardsWallet', () => {
   it('Should return uphold as uniqueKey', () => {
-    expect(getNormalizedExternalRewardsWallet('uphold')?.accountId.uniqueKey)
-      .toEqual('uphold')
+    expect(
+      getNormalizedExternalRewardsWallet('uphold')?.accountId.uniqueKey
+    ).toEqual('uphold')
   })
   it('Should return undefined', () => {
-    expect(getNormalizedExternalRewardsWallet(undefined))
-      .toEqual(undefined)
+    expect(getNormalizedExternalRewardsWallet(undefined)).toEqual(undefined)
   })
 })
 
@@ -57,12 +57,12 @@ describe('getIsRewardsNetwork', () => {
 
 describe('getNormalizedExternalRewardsNetwork', () => {
   it('Should return uphold as chainId', () => {
-    expect(getNormalizedExternalRewardsNetwork('uphold')?.chainId)
-      .toEqual('uphold')
+    expect(getNormalizedExternalRewardsNetwork('uphold')?.chainId).toEqual(
+      'uphold'
+    )
   })
   it('Should return undefined', () => {
-    expect(getNormalizedExternalRewardsNetwork(undefined))
-      .toEqual(undefined)
+    expect(getNormalizedExternalRewardsNetwork(undefined)).toEqual(undefined)
   })
 })
 
@@ -79,62 +79,53 @@ describe('getIsRewardsToken', () => {
 
 describe('getRewardsBATToken', () => {
   it('Should return uphold as chainId', () => {
-    expect(getRewardsBATToken('uphold')?.chainId)
-      .toEqual('uphold')
+    expect(getRewardsBATToken('uphold')?.chainId).toEqual('uphold')
   })
   it('Should return undefined', () => {
-    expect(getRewardsBATToken(undefined))
-      .toEqual(undefined)
+    expect(getRewardsBATToken(undefined)).toEqual(undefined)
   })
 })
 
 describe('getRewardsAccountName', () => {
   it('Should return Uphold account as name', () => {
-    expect(getRewardsAccountName('uphold'))
-      .toEqual('braveWalletRewardsAccount')
+    expect(getRewardsAccountName('uphold')).toEqual('braveWalletRewardsAccount')
   })
   it('Should return empty string', () => {
-    expect(getRewardsAccountName(undefined))
-      .toEqual('')
+    expect(getRewardsAccountName(undefined)).toEqual('')
   })
 })
 
 describe('getRewardsProviderBackground', () => {
   it('Should return Uphold color', () => {
-    expect(getRewardsProviderBackground('uphold'))
-      .toEqual('rgb(73, 204, 104)')
+    expect(getRewardsProviderBackground('uphold')).toEqual('rgb(73, 204, 104)')
   })
   it('Should return empty string', () => {
-    expect(getRewardsProviderBackground(null))
-      .toEqual('')
+    expect(getRewardsProviderBackground(null)).toEqual('')
   })
 })
 
 describe('getRewardsProviderIcon', () => {
   it('Should return empty string', () => {
-    expect(getRewardsProviderIcon(null))
-      .toEqual('')
+    expect(getRewardsProviderIcon(null)).toEqual('')
   })
 })
 
 describe('getRewardsProviderName', () => {
   it('Should return uphold', () => {
-    expect(getRewardsProviderName('uphold'))
-      .toEqual('uphold')
+    expect(getRewardsProviderName('uphold')).toEqual('uphold')
   })
   it('Should return empty string', () => {
-    expect(getRewardsProviderName(''))
-      .toEqual('')
+    expect(getRewardsProviderName('')).toEqual('')
   })
 })
 
 describe('getRewardsTokenDescription', () => {
   it('Should return empty string', () => {
-    expect(getRewardsTokenDescription('uphold'))
-      .toEqual('braveWalletBraveRewardsDescription')
+    expect(getRewardsTokenDescription('uphold')).toEqual(
+      'braveWalletBraveRewardsDescription'
+    )
   })
   it('Should return empty string', () => {
-    expect(getRewardsProviderName(''))
-      .toEqual('')
+    expect(getRewardsProviderName('')).toEqual('')
   })
 })

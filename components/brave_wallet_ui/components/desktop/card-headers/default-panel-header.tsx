@@ -6,16 +6,12 @@
 import * as React from 'react'
 
 // Hooks
-import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Components
+import { DefaultPanelMenu } from '../wallet-menus/default-panel-menu'
 import {
-  DefaultPanelMenu
-} from '../wallet-menus/default-panel-menu'
-import {
-  DAppConnectionSettings
+  DAppConnectionSettings //
 } from '../../extension/dapp-connection-settings/dapp-connection-settings'
 
 // Styled Components
@@ -25,10 +21,7 @@ import {
   LeftRightContainer,
   ClickAwayArea
 } from './shared-panel-headers.style'
-import {
-  HeaderTitle,
-  MenuWrapper
-} from './shared-card-headers.style'
+import { HeaderTitle, MenuWrapper } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
 interface Props {
@@ -36,17 +29,13 @@ interface Props {
 }
 
 export const DefaultPanelHeader = (props: Props) => {
-  const {
-    title
-  } = props
+  const { title } = props
 
   // State
-  const [showSettingsMenu, setShowSettingsMenu] =
-    React.useState<boolean>(false)
+  const [showSettingsMenu, setShowSettingsMenu] = React.useState<boolean>(false)
 
   // Refs
-  const settingsMenuRef =
-    React.useRef<HTMLDivElement>(null)
+  const settingsMenuRef = React.useRef<HTMLDivElement>(null)
 
   // Hooks
   useOnClickOutside(
@@ -73,42 +62,24 @@ export const DefaultPanelHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-start'
       >
-        <Button
-          onClick={onClickExpand}
-        >
+        <Button onClick={onClickExpand}>
           <ButtonIcon name='expand' />
         </Button>
       </LeftRightContainer>
-      <HeaderTitle
-        isPanel={true}
-      >
-        {title}
-      </HeaderTitle>
+      <HeaderTitle isPanel={true}>{title}</HeaderTitle>
       <LeftRightContainer
         width='unset'
         justifyContent='flex-end'
       >
         <DAppConnectionSettings />
-        <MenuWrapper
-          ref={settingsMenuRef}
-        >
-          <Button
-            onClick={
-              () => setShowSettingsMenu(prev => !prev)
-            }
-          >
-            <ButtonIcon
-              name='more-horizontal'
-            />
+        <MenuWrapper ref={settingsMenuRef}>
+          <Button onClick={() => setShowSettingsMenu((prev) => !prev)}>
+            <ButtonIcon name='more-horizontal' />
           </Button>
-          {showSettingsMenu &&
-            <DefaultPanelMenu />
-          }
+          {showSettingsMenu && <DefaultPanelMenu />}
         </MenuWrapper>
       </LeftRightContainer>
-      {showSettingsMenu &&
-        <ClickAwayArea />
-      }
+      {showSettingsMenu && <ClickAwayArea />}
     </Row>
   )
 }

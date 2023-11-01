@@ -1,0 +1,83 @@
+# Ignored files identified within .gitignore:
+/vendor/*
+/components/brave_new_tab_ui/data/LICENSE
+/components/brave_webtorrent/extension/out/
+/components/brave_rewards/resources/extension/brave_rewards/out/
+/components/third_party/adblock/LICENSE
+/components/third_party/local_data/LICENSE
+/dist/
+/out/
+node_modules/
+/third_party/
+.vs/
+.vscode/
+.npmrc
+.env
+cmake-build-debug/
+coverage/
+/build/rustup/
+venv/
+.storybook-out
+
+# Ignore version control files
+**/.git
+**/.svn
+**/.hg
+
+# Ignore node_modules
+**/node_modules
+
+
+# Ignore HTML Files - incompatable with presubmit rules
+*.html
+
+# Ignore non-component top level folders (remove to opt-in):
+/android
+/app
+/base
+/brave_domains
+/browser
+/build
+/chromium_src
+/common
+/content
+/coverage
+/docs
+/extensions
+/fuzzers
+/installer
+/ios
+/mojo
+/mojo/brave_ast_patcher
+/net
+/node_modules
+/patches
+/renderer
+/resources
+/sandbox
+/script
+/services
+/test
+/third_party
+/tools
+/ui
+/utility
+/v8
+/vector_icons
+/vendor
+/win_build_output
+
+# Ignore github .yml files:
+.github/**/*.yml
+
+# Ignored markdown files:
+.github/PULL_REQUEST_TEMPLATE.md
+CONTRIBUTING.md
+README.md
+
+# Ignored top-level files:
+.clang-tidy
+chromium_presubmit_config.json5
+
+# Ignored minified javascript
+components/brave_wallet/resources/solana_web3_script.js

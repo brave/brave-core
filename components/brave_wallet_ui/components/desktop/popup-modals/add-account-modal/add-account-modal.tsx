@@ -7,7 +7,10 @@ import * as React from 'react'
 import { Redirect, Route, Switch, useHistory } from 'react-router'
 
 // types
-import { CreateAccountOptionsType, WalletRoutes } from '../../../../constants/types'
+import {
+  CreateAccountOptionsType,
+  WalletRoutes
+} from '../../../../constants/types'
 
 // components
 import { AddHardwareAccountModal } from './add-hardware-account-modal'
@@ -19,29 +22,42 @@ export const AddAccountModal = () => {
   const history = useHistory()
 
   // methods
-  const onSelectAccountType = React.useCallback((accountType: CreateAccountOptionsType) => () => {
-    history.push(WalletRoutes.AddHardwareAccountModal.replace(':accountTypeName?', accountType.name.toLowerCase()))
-  }, [])
+  const onSelectAccountType = React.useCallback(
+    (accountType: CreateAccountOptionsType) => () => {
+      history.push(
+        WalletRoutes.AddHardwareAccountModal.replace(
+          ':accountTypeName?',
+          accountType.name.toLowerCase()
+        )
+      )
+    },
+    []
+  )
 
   return (
     <Switch>
-
-      <Route path={WalletRoutes.AddHardwareAccountModal} exact>
-        <AddHardwareAccountModal
-          onSelectAccountType={onSelectAccountType}
-        />
+      <Route
+        path={WalletRoutes.AddHardwareAccountModal}
+        exact
+      >
+        <AddHardwareAccountModal onSelectAccountType={onSelectAccountType} />
       </Route>
 
-      <Route path={WalletRoutes.ImportAccountModal} exact>
+      <Route
+        path={WalletRoutes.ImportAccountModal}
+        exact
+      >
         <ImportAccountModal />
       </Route>
 
-      <Route path={WalletRoutes.CreateAccountModal} exact>
+      <Route
+        path={WalletRoutes.CreateAccountModal}
+        exact
+      >
         <CreateAccountModal />
       </Route>
 
       <Redirect to={WalletRoutes.CreateAccountModalStart} />
-
     </Switch>
   )
 }

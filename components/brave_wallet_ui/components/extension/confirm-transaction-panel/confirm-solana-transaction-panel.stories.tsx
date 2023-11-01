@@ -10,17 +10,19 @@ import { WalletPanelStory } from '../../../stories/wrappers/wallet-panel-story-w
 import { ConfirmSolanaTransactionPanel } from './confirm-solana-transaction-panel'
 
 export const _ConfirmSolanaTransactionPanel = () => {
-  return <WalletPanelStory
-    walletStateOverride={{
-      hasInitialized: true,
-      isWalletCreated: true
-    }}
-    panelStateOverride={{
-      hasInitialized: true
-    }}
-  >
-    <ConfirmSolanaTransactionPanel />
-  </WalletPanelStory>
+  return (
+    <WalletPanelStory
+      walletStateOverride={{
+        hasInitialized: true,
+        isWalletCreated: true
+      }}
+      panelStateOverride={{
+        hasInitialized: true
+      }}
+    >
+      <ConfirmSolanaTransactionPanel />
+    </WalletPanelStory>
+  )
 }
 
 _ConfirmSolanaTransactionPanel.story = {

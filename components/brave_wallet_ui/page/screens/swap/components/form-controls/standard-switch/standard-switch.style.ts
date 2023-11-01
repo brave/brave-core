@@ -6,7 +6,6 @@
 import styled from 'styled-components'
 import { StyledInput, StyledDiv, StyledLabel } from '../../shared-swap.styles'
 
-
 export const Label = styled(StyledLabel)`
   display: flex;
   align-items: center;

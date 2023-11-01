@@ -5,19 +5,18 @@
 import { mapLimit } from 'async'
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
 import WalletApiProxy from '../common/wallet_api_proxy'
-import { BraveWallet, SupportedCoinTypes, SupportedTestNetworks } from '../constants/types'
 import {
-  externalWalletProviders
-} from '../common/async/brave_rewards_api_proxy'
+  BraveWallet,
+  SupportedCoinTypes,
+  SupportedTestNetworks
+} from '../constants/types'
+import { externalWalletProviders } from '../common/async/brave_rewards_api_proxy'
 
 export const getPriceIdForToken = (
   token: Pick<
     BraveWallet.BlockchainToken,
-    | 'contractAddress'
-    | 'symbol'
-    | 'coingeckoId'
-    | 'chainId'
-    >
+    'contractAddress' | 'symbol' | 'coingeckoId' | 'chainId'
+  >
 ) => {
   if (token?.coingeckoId) {
     return token.coingeckoId.toLowerCase()
@@ -37,10 +36,7 @@ export const getPriceIdForToken = (
 
   const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
   if (
-    (isEthereumNetwork ||
-      externalWalletProviders
-        .includes(token.chainId)
-    ) &&
+    (isEthereumNetwork || externalWalletProviders.includes(token.chainId)) &&
     token.contractAddress
   ) {
     return token.contractAddress.toLowerCase()
@@ -64,7 +60,10 @@ export function handleEndpointError(
 
 export async function getEnabledCoinTypes(api: WalletApiProxy) {
   const {
-    isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled, isZCashEnabled
+    isFilecoinEnabled,
+    isSolanaEnabled,
+    isBitcoinEnabled,
+    isZCashEnabled
   } = (await api.walletHandler.getWalletInfo()).walletInfo
 
   // Get All Networks
@@ -88,12 +87,10 @@ export async function getAllNetworksList(api: WalletApiProxy) {
 
   // Get All Networks
   const networks = (
-    await mapLimit(
-      enabledCoinTypes, 10, (async (coin: number) => {
-        const { networks } = await jsonRpcService.getAllNetworks(coin)
-        return networks
-      })
-    )
+    await mapLimit(enabledCoinTypes, 10, async (coin: number) => {
+      const { networks } = await jsonRpcService.getAllNetworks(coin)
+      return networks
+    })
   ).flat(1)
 
   return networks
@@ -110,9 +107,7 @@ export async function getNetwork(
   )
 }
 
-export async function getVisibleNetworksList(
-  api: WalletApiProxy
-) {
+export async function getVisibleNetworksList(api: WalletApiProxy) {
   const { jsonRpcService } = api
 
   const enabledCoinTypes = await getEnabledCoinTypes(api)

@@ -101,7 +101,11 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     <BalanceSection>
       <h1>getBalance</h1>
       {loading ? (
-        <LoadingSkeleton useLightTheme={true} width={300} height={100} />
+        <LoadingSkeleton
+          useLightTheme={true}
+          width={300}
+          height={100}
+        />
       ) : (
         <>
           <button onClick={fetchBalance}>Reload</button>
@@ -127,7 +131,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   )
 }
 
-interface GetBitcoinAccountInfoSectionProps{
+interface GetBitcoinAccountInfoSectionProps {
   accountId: BraveWallet.AccountId
 }
 
@@ -159,10 +163,7 @@ const GetBitcoinAccountInfoSection: React.FC<
   }
 
   const onRunDiscoverClick = async (change: boolean) => {
-    await getAPIProxy().bitcoinWalletService.runDiscovery(
-      accountId,
-      change
-    )
+    await getAPIProxy().bitcoinWalletService.runDiscovery(accountId, change)
     fetchBitcoinAccountInfo()
   }
 
@@ -170,7 +171,11 @@ const GetBitcoinAccountInfoSection: React.FC<
     <BitcoinAccountInfoSection>
       <h1>getBitcoinAccountInfo</h1>
       {loading ? (
-        <LoadingSkeleton useLightTheme={true} width={300} height={100} />
+        <LoadingSkeleton
+          useLightTheme={true}
+          width={300}
+          height={100}
+        />
       ) : (
         <>
           <div>
@@ -206,7 +211,9 @@ interface AccountSectionProps {
 const AccountSection = (props: AccountSectionProps) => {
   return (
     <StyledWrapper>
-      <GetBitcoinAccountInfoSection accountId={props.accountId}></GetBitcoinAccountInfoSection>
+      <GetBitcoinAccountInfoSection
+        accountId={props.accountId}
+      ></GetBitcoinAccountInfoSection>
       <GetBalanceSection accountId={props.accountId}></GetBalanceSection>
     </StyledWrapper>
   )

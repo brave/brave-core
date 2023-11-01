@@ -59,7 +59,10 @@ export const PermissionDurationDropdown = (props: Props) => {
     <StyledWrapper>
       <DropDownButton onClick={() => setShowDropdown((prev) => !prev)}>
         {getLocale(selectedDurationInfo.name)}
-        <DropDownIcon name="carat-down" isOpen={showDropdown} />
+        <DropDownIcon
+          name='carat-down'
+          isOpen={showDropdown}
+        />
       </DropDownButton>
       {showDropdown && (
         <DropDown>

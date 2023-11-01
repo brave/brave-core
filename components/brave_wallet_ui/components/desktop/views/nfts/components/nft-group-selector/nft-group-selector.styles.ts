@@ -69,7 +69,7 @@ export const DropDown = styled.div<{ isOpen: boolean }>`
   align-items: flex-start;
   gap: ${leo.spacing.s};
   border-radius: ${leo.spacing.m};
-  border: 1px solid  ${leo.color.divider.subtle};
+  border: 1px solid ${leo.color.divider.subtle};
   background-color: ${leo.color.container.background};
   box-shadow: 0px 4px 16px -2px rgba(0, 0, 0, 0.08);
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};

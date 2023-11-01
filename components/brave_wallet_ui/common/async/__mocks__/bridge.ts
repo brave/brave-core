@@ -37,15 +37,18 @@ import {
   mockFilecoinMainnetNetwork,
   mockOnRampCurrencies,
   mockSolanaAccountInfo,
-  mockSolanaMainnetNetwork,
+  mockSolanaMainnetNetwork
 } from '../../constants/mocks'
-import { mockEthMainnet, mockNetworks } from '../../../stories/mock-data/mock-networks'
+import {
+  mockEthMainnet,
+  mockNetworks
+} from '../../../stories/mock-data/mock-networks'
 import {
   mockAccountAssetOptions,
   mockBasicAttentionToken,
   mockErc20TokensList,
   mockErc721Token,
-  mockSplNft,
+  mockSplNft
 } from '../../../stories/mock-data/mock-asset-options'
 import {
   mockFilSendTransaction,
@@ -58,9 +61,11 @@ import { CommonNftMetadata } from '../../slices/endpoints/nfts.endpoints'
 import { mockNFTMetadata } from '../../../stories/mock-data/mock-nft-metadata'
 
 export const makeMockedStoreWithSpy = () => {
-  const store = createStore(combineReducers({
-    wallet: createWalletReducer(mockWalletState)
-  }))
+  const store = createStore(
+    combineReducers({
+      wallet: createWalletReducer(mockWalletState)
+    })
+  )
 
   const areWeTestingWithJest = process.env.JEST_WORKER_ID !== undefined
 
@@ -90,10 +95,12 @@ export interface WalletApiDataOverrides {
   nativeBalanceRegistry?: NativeAssetBalanceRegistry
   tokenBalanceRegistry?: TokenBalanceRegistry
   simulationOptInStatus?: TxSimulationOptInStatus
-  evmSimulationResponse?: BraveWallet.EVMSimulationResponse
+  evmSimulationResponse?:
+    | BraveWallet.EVMSimulationResponse
     | SafeBlowfishEvmResponse
     | null
-  svmSimulationResponse?: BraveWallet.SolanaSimulationResponse
+  svmSimulationResponse?:
+    | BraveWallet.SolanaSimulationResponse
     | SafeBlowfishSolanaResponse
     | null
 }
@@ -362,7 +369,7 @@ export class MockedWalletApiProxy {
     ensureSelectedAccountForChain: async (coin, chainId) => {
       const foundAccount = findAccountByUniqueKey(
         this.accountInfos,
-        this.selectedAccountId.uniqueKey,
+        this.selectedAccountId.uniqueKey
       )
 
       return {
@@ -380,7 +387,7 @@ export class MockedWalletApiProxy {
         }
       }
 
-      const net = this.networks.find(n => n.chainId === chainId)
+      const net = this.networks.find((n) => n.chainId === chainId)
 
       if (net) {
         this.selectedNetwork = net
@@ -389,7 +396,7 @@ export class MockedWalletApiProxy {
       return {
         success: !!net
       }
-    },
+    }
   }
 
   swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> =
@@ -484,7 +491,7 @@ export class MockedWalletApiProxy {
       return {
         success: validId
       }
-    },
+    }
   }
 
   ethTxManagerProxy: Partial<
@@ -686,7 +693,7 @@ export class MockedWalletApiProxy {
       return {
         balances,
         error: 0,
-        errorMessage: '',
+        errorMessage: ''
       }
     },
     getERC20TokenBalances: async (contracts, address, chainId) => {
@@ -814,13 +821,13 @@ export class MockedWalletApiProxy {
           isSolanaEnabled: true,
           isFilecoinEnabled: true,
           isBitcoinEnabled: true,
-          isZCashEnabled:true,
+          isZCashEnabled: true,
           isWalletBackedUp: true,
           isWalletCreated: true,
           isWalletLocked: false,
           isNftPinningFeatureEnabled: false,
           isPanelV2FeatureEnabled: false,
-          isAnkrBalancesFeatureEnabled: false,
+          isAnkrBalancesFeatureEnabled: false
         }
       }
     }
@@ -932,7 +939,7 @@ export class MockedWalletApiProxy {
 
 let apiProxy: Partial<WalletApiProxy> | undefined
 
-export function getAPIProxy (): Partial<WalletApiProxy> {
+export function getAPIProxy(): Partial<WalletApiProxy> {
   if (!apiProxy) {
     apiProxy =
       new MockedWalletApiProxy() as unknown as Partial<WalletApiProxy> &
@@ -941,7 +948,7 @@ export function getAPIProxy (): Partial<WalletApiProxy> {
   return apiProxy
 }
 
-export function getMockedAPIProxy (): WalletApiProxy & MockedWalletApiProxy {
+export function getMockedAPIProxy(): WalletApiProxy & MockedWalletApiProxy {
   return getAPIProxy() as unknown as WalletApiProxy & MockedWalletApiProxy
 }
 

@@ -6,7 +6,6 @@
 import styled from 'styled-components'
 import { StyledDiv, StyledInput } from '../../shared-swap.styles'
 
-
 export const InputWrapper = styled(StyledDiv)`
   --focus-border: ${(p) => p.theme.color.interactive05};
   @media (prefers-color-scheme: dark) {

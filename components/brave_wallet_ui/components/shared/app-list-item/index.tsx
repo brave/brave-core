@@ -25,7 +25,7 @@ export interface Props {
 }
 
 export class AppListItem extends React.PureComponent<Props> {
-  getSrc (src?: string) {
+  getSrc(src?: string) {
     return src || ''
   }
 
@@ -33,7 +33,7 @@ export class AppListItem extends React.PureComponent<Props> {
     window.open(this.props.appInfo.url, '_blank', 'noreferrer')
   }
 
-  render () {
+  render() {
     const { appInfo, isStared, toggleFavorite } = this.props
     return (
       <StyledWrapper>
@@ -46,7 +46,11 @@ export class AppListItem extends React.PureComponent<Props> {
             <AppDesctription>{appInfo.description}</AppDesctription>
           </AppDescColumn>
         </IconAndInfo>
-        {isStared ? <SelectedIcon onClick={toggleFavorite} /> : <UnSelectedIcon onClick={toggleFavorite} />}
+        {isStared ? (
+          <SelectedIcon onClick={toggleFavorite} />
+        ) : (
+          <UnSelectedIcon onClick={toggleFavorite} />
+        )}
       </StyledWrapper>
     )
   }

@@ -5,7 +5,7 @@
 
 import { PageActions } from '../reducers/page_reducer'
 
- // We must re-export actions here until we remove all imports of this file
+// We must re-export actions here until we remove all imports of this file
 export const {
   addHardwareAccounts,
   agreeToWalletTerms,
@@ -32,5 +32,5 @@ export const {
   updateSelectedAsset,
   walletBackupComplete,
   walletCreated,
-  walletSetupComplete,
+  walletSetupComplete
 } = PageActions

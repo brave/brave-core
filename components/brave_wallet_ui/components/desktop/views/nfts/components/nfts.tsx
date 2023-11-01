@@ -7,10 +7,7 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 // types
-import {
-  BraveWallet,
-  WalletRoutes
-} from '../../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../../constants/types'
 
 // hooks
 import { useNftPin } from '../../../../../common/hooks/nft-pin'
@@ -21,10 +18,7 @@ import {
   useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../../../common/hooks/use-safe-selector'
-import {
-  UISelectors,
-  WalletSelectors
-} from '../../../../../common/selectors'
+import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
 
 // actions
 import { WalletActions } from '../../../../../common/actions'
@@ -34,7 +28,7 @@ import { WalletPageActions } from '../../../../../page/actions'
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../../utils/amount'
 import {
-  LOCAL_STORAGE_KEYS
+  LOCAL_STORAGE_KEYS //
 } from '../../../../../common/constants/local-storage-keys'
 import {
   useGetNftDiscoveryEnabledStatusQuery,
@@ -42,7 +36,10 @@ import {
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import { getBalance } from '../../../../../utils/balance-utils'
-import { AccountsGroupByOption, NetworksGroupByOption } from '../../../../../options/group-assets-by-options'
+import {
+  AccountsGroupByOption,
+  NetworksGroupByOption
+} from '../../../../../options/group-assets-by-options'
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 import { getAssetIdKey } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
@@ -55,9 +52,7 @@ import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-disco
 import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 
 // styles
-import {
-  NftGrid
-} from './nfts.styles'
+import { NftGrid } from './nfts.styles'
 import { Row, ScrollableColumn, VerticalSpace } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
@@ -71,20 +66,27 @@ import {
 import { AssetGroupContainer } from '../../../asset-group-container/asset-group-container'
 import { networkEntityAdapter } from '../../../../../common/slices/entities/network.entity'
 import {
-  TokenBalancesRegistry
+  TokenBalancesRegistry //
 } from '../../../../../common/slices/entities/token-balance.entity'
 import { NftGridViewItemSkeleton } from '../../portfolio/components/nft-grid-view/nft-grid-view-item-skeleton'
-import { NftDropdown, NftDropdownOption, NftDropdownOptionId } from './nft-group-selector/nft-group-selector'
+import {
+  NftDropdown,
+  NftDropdownOption,
+  NftDropdownOptionId
+} from './nft-group-selector/nft-group-selector'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
-  nftList: BraveWallet.BlockchainToken[],
+  nftList: BraveWallet.BlockchainToken[]
   accounts: BraveWallet.AccountInfo[]
   onShowPortfolioSettings?: () => void
   tokenBalancesRegistry: TokenBalancesRegistry | undefined
 }
 
-const compareFn = (a: BraveWallet.BlockchainToken, b: BraveWallet.BlockchainToken) => a.name.localeCompare(b.name)
+const compareFn = (
+  a: BraveWallet.BlockchainToken,
+  b: BraveWallet.BlockchainToken
+) => a.name.localeCompare(b.name)
 
 export const Nfts = (props: Props) => {
   const {
@@ -98,64 +100,94 @@ export const Nfts = (props: Props) => {
   const { braveWalletP3A } = useApiProxy()
 
   // redux
-  const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
-  const hiddenNfts = useUnsafeWalletSelector(WalletSelectors.removedNonFungibleTokens)
-  const selectedGroupAssetsByItem = useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
-  const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
-  const isRefreshingTokens = useSafeWalletSelector(WalletSelectors.isRefreshingNetworksAndTokens)
+  const isNftPinningFeatureEnabled = useSafeWalletSelector(
+    WalletSelectors.isNftPinningFeatureEnabled
+  )
+  const hiddenNfts = useUnsafeWalletSelector(
+    WalletSelectors.removedNonFungibleTokens
+  )
+  const selectedGroupAssetsByItem = useSafeWalletSelector(
+    WalletSelectors.selectedGroupAssetsByItem
+  )
+  const assetAutoDiscoveryCompleted = useSafeWalletSelector(
+    WalletSelectors.assetAutoDiscoveryCompleted
+  )
+  const isRefreshingTokens = useSafeWalletSelector(
+    WalletSelectors.isRefreshingNetworksAndTokens
+  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const deletedNonFungibleTokenIds = useUnsafeWalletSelector(WalletSelectors.deletedNonFungibleTokenIds)
+  const deletedNonFungibleTokenIds = useUnsafeWalletSelector(
+    WalletSelectors.deletedNonFungibleTokenIds
+  )
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
-  const [showNftDiscoveryModal, setShowNftDiscoveryModal] = React.useState<boolean>(
-    localStorage.getItem(LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN) === null
-  )
+  const [showNftDiscoveryModal, setShowNftDiscoveryModal] =
+    React.useState<boolean>(
+      localStorage.getItem(
+        LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN
+      ) === null
+    )
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
-  const { nonFungibleTokens, isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
+  const { nonFungibleTokens, isIpfsBannerVisible, onToggleShowIpfsBanner } =
+    useNftPin()
   const urlSearchParams = useQuery()
   const tab = urlSearchParams.get('tab')
-  const selectedTab: NftDropdownOptionId = tab === 'collected' || tab === 'hidden' ? tab : 'collected'
+  const selectedTab: NftDropdownOptionId =
+    tab === 'collected' || tab === 'hidden' ? tab : 'collected'
 
   // queries
-  const { data: isNftAutoDiscoveryEnabled } = useGetNftDiscoveryEnabledStatusQuery()
+  const { data: isNftAutoDiscoveryEnabled } =
+    useGetNftDiscoveryEnabledStatusQuery()
   const { data: simpleHashSpamNfts = [] } = useGetSimpleHashSpamNftsQuery()
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
 
   // methods
-  const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
-  }, [])
+  const onSearchValueChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value)
+    },
+    []
+  )
 
-  const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    history.push(
-      `${WalletRoutes.PortfolioNFTs //
-      }/${asset.chainId //
-      }/${asset.contractAddress //
-      }/${asset.tokenId}`
-    )
-    // reset nft metadata
-    dispatch(WalletPageActions.updateNFTMetadata(undefined))
-  }, [dispatch])
+  const onSelectAsset = React.useCallback(
+    (asset: BraveWallet.BlockchainToken) => {
+      history.push(
+        `${
+          WalletRoutes.PortfolioNFTs //
+        }/${
+          asset.chainId //
+        }/${
+          asset.contractAddress //
+        }/${asset.tokenId}`
+      )
+      // reset nft metadata
+      dispatch(WalletPageActions.updateNFTMetadata(undefined))
+    },
+    [dispatch]
+  )
 
   const onClickIpfsButton = React.useCallback(() => {
     onToggleShowIpfsBanner()
   }, [onToggleShowIpfsBanner])
 
   const toggleShowAddNftModal = React.useCallback(() => {
-    setShowAddNftModal(value => !value)
+    setShowAddNftModal((value) => !value)
   }, [])
 
   const hideNftDiscoveryModal = React.useCallback(() => {
-    setShowNftDiscoveryModal(current => {
-      localStorage.setItem(LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN, 'true')
+    setShowNftDiscoveryModal((current) => {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN,
+        'true'
+      )
       return !current
     })
   }, [])
@@ -169,25 +201,31 @@ export const Nfts = (props: Props) => {
     dispatch(WalletActions.refreshNetworksAndTokens({}))
   }, [])
 
-  const onSelectOption = React.useCallback((selectedOption: NftDropdownOption) => {
-    history.push({
-      pathname: WalletRoutes.PortfolioNFTs,
-      search: `?tab=${selectedOption.id}`
-    })
-  }, [])
+  const onSelectOption = React.useCallback(
+    (selectedOption: NftDropdownOption) => {
+      history.push({
+        pathname: WalletRoutes.PortfolioNFTs,
+        search: `?tab=${selectedOption.id}`
+      })
+    },
+    []
+  )
 
-  const searchNfts = React.useCallback((item: BraveWallet.BlockchainToken) => {
-    const tokenId = new Amount(item.tokenId).toNumber().toString()
+  const searchNfts = React.useCallback(
+    (item: BraveWallet.BlockchainToken) => {
+      const tokenId = new Amount(item.tokenId).toNumber().toString()
 
-    return (
-      item.name.toLowerCase() === searchValue.toLowerCase() ||
-      item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      item.symbol.toLocaleLowerCase() === searchValue.toLowerCase() ||
-      item.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
-      tokenId === searchValue.toLowerCase() ||
-      tokenId.includes(searchValue.toLowerCase())
-    )
-  }, [searchValue])
+      return (
+        item.name.toLowerCase() === searchValue.toLowerCase() ||
+        item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        item.symbol.toLocaleLowerCase() === searchValue.toLowerCase() ||
+        item.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
+        tokenId === searchValue.toLowerCase() ||
+        tokenId.includes(searchValue.toLowerCase())
+      )
+    },
+    [searchValue]
+  )
 
   const onCloseSearchBar = React.useCallback(() => {
     setShowSearchBar(false)
@@ -195,13 +233,16 @@ export const Nfts = (props: Props) => {
   }, [])
 
   React.useEffect(() => {
-    braveWalletP3A.recordNFTGalleryView(nftList.length);
-  }, [nftList]);
+    braveWalletP3A.recordNFTGalleryView(nftList.length)
+  }, [nftList])
 
   // memos
   const [userNonSpamNfts, userMarkedSpamNfts] = React.useMemo(() => {
     return nftList.reduce(
-      (result: [BraveWallet.BlockchainToken[], BraveWallet.BlockchainToken[]], nft: BraveWallet.BlockchainToken) => {
+      (
+        result: [BraveWallet.BlockchainToken[], BraveWallet.BlockchainToken[]],
+        nft: BraveWallet.BlockchainToken
+      ) => {
         if (!nft.isSpam) {
           result[0].push(nft)
         } else {
@@ -215,7 +256,7 @@ export const Nfts = (props: Props) => {
 
   const [hiddenNftsIds, userNonSpamNftIds] = React.useMemo(() => {
     return [
-      hiddenNfts.map(nft => getAssetIdKey(nft)),
+      hiddenNfts.map((nft) => getAssetIdKey(nft)),
       userNonSpamNfts.map((nft) => getAssetIdKey(nft))
     ]
   }, [hiddenNfts, userNonSpamNfts])
@@ -228,8 +269,7 @@ export const Nfts = (props: Props) => {
       .concat(hiddenNftsIds)
       .concat(deletedNonFungibleTokenIds)
     const simpleHashList = simpleHashSpamNfts.filter(
-      (nft) =>
-        !excludedNftIds.includes(getAssetIdKey(nft))
+      (nft) => !excludedNftIds.includes(getAssetIdKey(nft))
     )
     const simpleHashListIds = simpleHashList.map((nft) => getAssetIdKey(nft))
     // add NFTs user has marked as NFT if they are not in the list
@@ -241,11 +281,14 @@ export const Nfts = (props: Props) => {
       )
     ]
 
-    return [
-      fullSpamList,
-      fullSpamList.map((nft) => getAssetIdKey(nft))
-    ]
-  }, [userMarkedSpamNfts, simpleHashSpamNfts, hiddenNftsIds, userNonSpamNftIds, deletedNonFungibleTokenIds])
+    return [fullSpamList, fullSpamList.map((nft) => getAssetIdKey(nft))]
+  }, [
+    userMarkedSpamNfts,
+    simpleHashSpamNfts,
+    hiddenNftsIds,
+    userNonSpamNftIds,
+    deletedNonFungibleTokenIds
+  ])
 
   const [sortedNfts, sortedHiddenNfts, sortedSpamNfts] = React.useMemo(() => {
     if (searchValue === '') {
@@ -285,7 +328,7 @@ export const Nfts = (props: Props) => {
       case 'hidden':
         return sortedHiddenNfts.concat(sortedSpamNfts)
       default:
-        return sortedNfts;
+        return sortedNfts
     }
   }, [selectedTab, sortedNfts, sortedHiddenNfts, sortedSpamNfts])
 
@@ -306,19 +349,18 @@ export const Nfts = (props: Props) => {
   // Returns a list of assets based on provided network
   const getAssetsByNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
-      return renderedList
-        .filter(
-          (asset) =>
-            networkEntityAdapter
-              .selectId(
-                {
-                  chainId: asset.chainId,
-                  coin: asset.coin
-                }).toString() ===
-            networkEntityAdapter
-              .selectId(network).toString()
-        )
-    }, [renderedList])
+      return renderedList.filter(
+        (asset) =>
+          networkEntityAdapter
+            .selectId({
+              chainId: asset.chainId,
+              coin: asset.coin
+            })
+            .toString() === networkEntityAdapter.selectId(network).toString()
+      )
+    },
+    [renderedList]
+  )
 
   const renderGridViewItem = React.useCallback(
     (nft: BraveWallet.BlockchainToken) => {
@@ -329,7 +371,9 @@ export const Nfts = (props: Props) => {
           key={assetId}
           token={nft}
           onSelectAsset={() => onSelectAsset(nft)}
-          isTokenHidden={hiddenNftsIds.includes(assetId) || allSpamNftsIds.includes(assetId)}
+          isTokenHidden={
+            hiddenNftsIds.includes(assetId) || allSpamNftsIds.includes(assetId)
+          }
           isTokenSpam={allSpamNftsIds.includes(assetId)}
         />
       )
@@ -352,7 +396,7 @@ export const Nfts = (props: Props) => {
             isDisabled={getFilteredNftsByAccount(account).length === 0}
             hasBorder={false}
           >
-            <VerticalSpace space='16px'/>
+            <VerticalSpace space='16px' />
             <NftGrid>
               {getFilteredNftsByAccount(account).map(renderGridViewItem)}
               {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
@@ -364,7 +408,7 @@ export const Nfts = (props: Props) => {
   }, [accounts, getFilteredNftsByAccount, onSelectAsset])
 
   const listUiByNetworks = React.useMemo(() => {
-    return networks?.map((network) =>
+    return networks?.map((network) => (
       <Row
         width='100%'
         key={networkEntityAdapter.selectId(network).toString()}
@@ -377,7 +421,7 @@ export const Nfts = (props: Props) => {
             isDisabled={getAssetsByNetwork(network).length === 0}
             hasBorder={false}
           >
-            <VerticalSpace space='16px'/>
+            <VerticalSpace space='16px' />
             <NftGrid>
               {getAssetsByNetwork(network).map(renderGridViewItem)}
               {!assetAutoDiscoveryCompleted && <NftGridViewItemSkeleton />}
@@ -385,11 +429,8 @@ export const Nfts = (props: Props) => {
           </AssetGroupContainer>
         )}
       </Row>
-    )
-  }, [
-    getAssetsByNetwork,
-    networks
-  ])
+    ))
+  }, [getAssetsByNetwork, networks])
 
   const listUi = React.useMemo(() => {
     return selectedGroupAssetsByItem === NetworksGroupByOption.id ? (
@@ -424,7 +465,9 @@ export const Nfts = (props: Props) => {
       justifyContent='flex-start'
       isPanel={isPanel}
     >
-      {isNftPinningFeatureEnabled && isIpfsBannerVisible && nonFungibleTokens.length > 0 ? (
+      {isNftPinningFeatureEnabled &&
+      isIpfsBannerVisible &&
+      nonFungibleTokens.length > 0 ? (
         <Row
           justifyContent='center'
           alignItems='center'
@@ -476,11 +519,17 @@ export const Nfts = (props: Props) => {
                 <ButtonIcon name='search' />
               </CircleButton>
               {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 ? (
-                <CircleButton onClick={onClickIpfsButton} marginRight={12}>
+                <CircleButton
+                  onClick={onClickIpfsButton}
+                  marginRight={12}
+                >
                   <ButtonIcon name='product-ipfs-outline' />
                 </CircleButton>
               ) : null}
-              <CircleButton onClick={toggleShowAddNftModal} marginRight={12}>
+              <CircleButton
+                onClick={toggleShowAddNftModal}
+                marginRight={12}
+              >
                 <ButtonIcon name='plus-add' />
               </CircleButton>
               <CircleButton onClick={onShowPortfolioSettings}>

@@ -37,7 +37,7 @@ export const LoadIcon = styled(LoaderIcon)`
   color: ${leo.color.icon.interactive};
   height: 70px;
   width: 70px;
-  opacity: .4;
+  opacity: 0.4;
 `
 
 export const Divider = styled.div`

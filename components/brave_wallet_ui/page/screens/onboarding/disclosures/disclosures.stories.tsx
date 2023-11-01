@@ -10,11 +10,11 @@ import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrap
 import OnboardingDisclosures from './disclosures'
 
 export const _OnboardingDisclosures = () => {
-  return <WalletPageStory>
-    <OnboardingDisclosures
-      nextStep={WalletRoutes.OnboardingCreatePassword}
-    />
-  </WalletPageStory>
+  return (
+    <WalletPageStory>
+      <OnboardingDisclosures nextStep={WalletRoutes.OnboardingCreatePassword} />
+    </WalletPageStory>
+  )
 }
 
 _OnboardingDisclosures.story = {

@@ -5,9 +5,7 @@
 import * as React from 'react'
 
 // Styled Components
-import {
-  PlaceholderText
-} from './style'
+import { PlaceholderText } from './style'
 
 export interface Props {
   children?: React.ReactNode
@@ -15,17 +13,13 @@ export interface Props {
   size: 'big' | 'small'
 }
 
-export function WithHideBalancePlaceholder (props: Props) {
-  const {
-    children,
-    hideBalances,
-    size
-  } = props
+export function WithHideBalancePlaceholder(props: Props) {
+  const { children, hideBalances, size } = props
 
   return (
     <>
       {hideBalances ? (
-        <PlaceholderText isBig={size === 'big'} >******</PlaceholderText>
+        <PlaceholderText isBig={size === 'big'}>******</PlaceholderText>
       ) : (
         children
       )}

@@ -10,34 +10,28 @@ import { useDispatch } from 'react-redux'
 // Actions
 import { PanelActions } from '../../../panel/actions'
 
-import {
-  WalletActions
-} from '../../../common/actions'
+import { WalletActions } from '../../../common/actions'
 
 // Utils
-import {
-  reduceAddress
-} from '../../../utils/reduce-address'
+import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 
 // Components
 import {
-  CreateAccountIcon
+  CreateAccountIcon //
 } from '../../shared/create-account-icon/create-account-icon'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Selectors
 import {
-  useUnsafeWalletSelector
+  useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
-import {
-  WalletSelectors
-} from '../../../common/selectors'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Queries
 import {
-  useSelectedAccountQuery
+  useSelectedAccountQuery //
 } from '../../../common/slices/api.slice.extra'
 import {
   useGetDefaultFiatCurrencyQuery,
@@ -45,9 +39,7 @@ import {
 } from '../../../common/slices/api.slice'
 
 // Types
-import {
-  BraveWallet
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Styled Components
 import {
@@ -59,7 +51,7 @@ import {
   Row,
   Column,
   VerticalSpace,
-  HorizontalSpace
+  HorizontalSpace //
 } from '../../shared/style'
 
 interface Props {
@@ -68,10 +60,7 @@ interface Props {
 }
 
 export const ChangeAccountButton = (props: Props) => {
-  const {
-    account,
-    getAccountsFiatValue
-  } = props
+  const { account, getAccountsFiatValue } = props
 
   // Redux
   const dispatch = useDispatch()
@@ -84,8 +73,9 @@ export const ChangeAccountButton = (props: Props) => {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   // Selectors
-  const connectedAccounts =
-    useUnsafeWalletSelector(WalletSelectors.connectedAccounts)
+  const connectedAccounts = useUnsafeWalletSelector(
+    WalletSelectors.connectedAccounts
+  )
 
   // Constants
   const selectedCoin = selectedAccount?.accountId.coin
@@ -93,8 +83,7 @@ export const ChangeAccountButton = (props: Props) => {
   // Memos
   const hasPermission = React.useMemo((): boolean => {
     return connectedAccounts.some(
-      (accountId) =>
-        accountId.uniqueKey === account.accountId.uniqueKey
+      (accountId) => accountId.uniqueKey === account.accountId.uniqueKey
     )
   }, [connectedAccounts, account.accountId.uniqueKey])
 
@@ -116,16 +105,12 @@ export const ChangeAccountButton = (props: Props) => {
 
   const accountFiatValue = React.useMemo(() => {
     return getAccountsFiatValue(account)
-  }, [
-    getAccountsFiatValue,
-    account
-  ])
+  }, [getAccountsFiatValue, account])
 
   // Methods
   const onClickConnect = React.useCallback(() => {
     dispatch(
-      PanelActions
-        .requestSitePermission({ accountId: account.accountId })
+      PanelActions.requestSitePermission({ accountId: account.accountId })
     )
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)
@@ -134,8 +119,7 @@ export const ChangeAccountButton = (props: Props) => {
 
   const onClickDisconnect = React.useCallback(() => {
     dispatch(
-      WalletActions
-        .removeSitePermission({ accountId: account.accountId })
+      WalletActions.removeSitePermission({ accountId: account.accountId })
     )
     if (
       connectedAccounts.length !== 0 &&
@@ -149,37 +133,32 @@ export const ChangeAccountButton = (props: Props) => {
     setSelectedAccount(account.accountId)
   }, [account.accountId])
 
-  const onClickConnectDisconnectOrSwitch =
-    React.useCallback(() => {
-      return hasPermission
-        ? isActive
-          ? onClickDisconnect()
-          : onClickSwitchAccount()
-        : onClickConnect()
-    }, [
-      hasPermission,
-      isActive,
-      onClickDisconnect,
-      onClickConnect,
-      onClickSwitchAccount
-    ])
+  const onClickConnectDisconnectOrSwitch = React.useCallback(() => {
+    return hasPermission
+      ? isActive
+        ? onClickDisconnect()
+        : onClickSwitchAccount()
+      : onClickConnect()
+  }, [
+    hasPermission,
+    isActive,
+    onClickDisconnect,
+    onClickConnect,
+    onClickSwitchAccount
+  ])
 
   return (
     <Row
       justifyContent='space-between'
       padding='8px 0px'
     >
-      <Row
-        width='unset'
-      >
+      <Row width='unset'>
         <CreateAccountIcon
           size='medium'
           account={account}
           marginRight={16}
         />
-        <Column
-          alignItems='flex-start'
-        >
+        <Column alignItems='flex-start'>
           <NameText
             textSize='14px'
             isBold={true}
@@ -196,19 +175,22 @@ export const ChangeAccountButton = (props: Props) => {
             >
               {reduceAddress(account.accountId.address)}
             </DescriptionText>
-            {isActive &&
+            {isActive && (
               <>
                 <HorizontalSpace space='8px' />
                 <ActiveIndicator>
                   {getLocale('braveWalletActive')}
                 </ActiveIndicator>
               </>
-            }
+            )}
           </Row>
           {accountFiatValue.isUndefined() ? (
             <>
               <VerticalSpace space='3px' />
-              <LoadingSkeleton width={60} height={12} />
+              <LoadingSkeleton
+                width={60}
+                height={12}
+              />
               <VerticalSpace space='3px' />
             </>
           ) : (
@@ -221,9 +203,7 @@ export const ChangeAccountButton = (props: Props) => {
           )}
         </Column>
       </Row>
-      <Row
-        width='unset'
-      >
+      <Row width='unset'>
         <Button
           onClick={onClickConnectDisconnectOrSwitch}
           kind='outline'

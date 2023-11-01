@@ -7,16 +7,10 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Utils
-import {
-  getPriceIdForToken
-} from '../../../utils/api-utils'
+import { getPriceIdForToken } from '../../../utils/api-utils'
 import Amount from '../../../utils/amount'
-import {
-  getBalance
-} from '../../../utils/balance-utils'
-import {
-  computeFiatAmount
-} from '../../../utils/pricing-utils'
+import { getBalance } from '../../../utils/balance-utils'
+import { computeFiatAmount } from '../../../utils/pricing-utils'
 
 // Proxies
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
@@ -24,16 +18,12 @@ import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 
 // Selectors
 import {
-  useUnsafeWalletSelector
+  useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
-import {
-  WalletSelectors
-} from '../../../common/selectors'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Types
-import {
-  BraveWallet
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Queries
 import {
@@ -44,36 +34,22 @@ import {
   useGetDefaultFiatCurrencyQuery
 } from '../../../common/slices/api.slice'
 import {
-  useSelectedAccountQuery
+  useSelectedAccountQuery //
 } from '../../../common/slices/api.slice.extra'
 import {
-  selectAllAccountInfosFromQuery
+  selectAllAccountInfosFromQuery //
 } from '../../../common/slices/entities/account-info.entity'
-import {
-  querySubscriptionOptions60s
-} from '../../../common/slices/constants'
+import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
 // Hooks
-import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
-import {
-  useBalancesFetcher
-} from '../../../common/hooks/use-balances-fetcher'
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
+import { useBalancesFetcher } from '../../../common/hooks/use-balances-fetcher'
 
 // Components
-import {
-  DAppConnectionMain
-} from './dapp-connection-main'
-import {
-  DAppConnectionNetworks
-} from './dapp-connection-networks'
-import {
-  DAppConnectionAccounts
-} from './dapp-connection-accounts'
-import {
-  CreateNetworkIcon
-} from '../../shared/create-network-icon'
+import { DAppConnectionMain } from './dapp-connection-main'
+import { DAppConnectionNetworks } from './dapp-connection-networks'
+import { DAppConnectionAccounts } from './dapp-connection-accounts'
+import { CreateNetworkIcon } from '../../shared/create-network-icon'
 
 // Styled Components
 import {
@@ -89,17 +65,14 @@ import {
   OverlapForClick
 } from './dapp-connection-settings.style'
 
-export type DAppConnectionOptionsType =
-  'networks' | 'accounts' | 'main'
+export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
 
 export const DAppConnectionSettings = () => {
-
   // Selectors
   const connectedAccounts = useUnsafeWalletSelector(
     WalletSelectors.connectedAccounts
   )
-  const activeOrigin =
-    useUnsafeWalletSelector(WalletSelectors.activeOrigin)
+  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
@@ -114,8 +87,7 @@ export const DAppConnectionSettings = () => {
     React.useState<boolean>(false)
 
   // Refs
-  const settingsMenuRef =
-    React.useRef<HTMLDivElement>(null)
+  const settingsMenuRef = React.useRef<HTMLDivElement>(null)
 
   // Queries
   const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
@@ -123,27 +95,22 @@ export const DAppConnectionSettings = () => {
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: networks } = useGetVisibleNetworksQuery()
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  const { data: accounts } =
-    useGetAccountInfosRegistryQuery(undefined,
-      {
-        selectFromResult: (res) => ({
-          data: selectAllAccountInfosFromQuery(res)
-        })
-      })
+  const { data: accounts } = useGetAccountInfosRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      data: selectAllAccountInfosFromQuery(res)
+    })
+  })
 
-  const {
-    data: tokenBalancesRegistry
-  } = useBalancesFetcher({
+  const { data: tokenBalancesRegistry } = useBalancesFetcher({
     accounts,
     networks
   })
 
-  const tokenPriceIds = React.useMemo(() =>
-    userVisibleTokensInfo
-      .filter(
-        (token) => !token.isErc721 &&
-          !token.isErc1155 && !token.isNft)
-      .map(token => getPriceIdForToken(token)),
+  const tokenPriceIds = React.useMemo(
+    () =>
+      userVisibleTokensInfo
+        .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
+        .map((token) => getPriceIdForToken(token)),
     [userVisibleTokensInfo]
   )
 
@@ -158,11 +125,7 @@ export const DAppConnectionSettings = () => {
   const { braveWalletService } = useApiProxy()
 
   // Hooks
-  useOnClickOutside(
-    settingsMenuRef,
-    () => setShowSettings(false),
-    showSettings
-  )
+  useOnClickOutside(settingsMenuRef, () => setShowSettings(false), showSettings)
 
   // Memos
   const isChromeOrigin = React.useMemo(() => {
@@ -176,11 +139,9 @@ export const DAppConnectionSettings = () => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
       return isSolanaConnected
     }
-    return connectedAccounts
-      .some(
-        (accountId) => accountId.uniqueKey ===
-          selectedAccount.accountId.uniqueKey
-      )
+    return connectedAccounts.some(
+      (accountId) => accountId.uniqueKey === selectedAccount.accountId.uniqueKey
+    )
   }, [
     connectedAccounts,
     selectedAccount,
@@ -190,17 +151,19 @@ export const DAppConnectionSettings = () => {
   ])
 
   const fungibleTokensByChainId = React.useMemo(() => {
-    return userVisibleTokensInfo.filter((asset) => asset.visible)
+    return userVisibleTokensInfo
+      .filter((asset) => asset.visible)
       .filter((token) => token.chainId === selectedNetwork?.chainId)
-      .filter((token) =>
-        !token.isErc721 && !token.isErc1155 && !token.isNft)
+      .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
   }, [userVisibleTokensInfo, selectedNetwork?.chainId])
 
   // Methods
   const onSelectOption = React.useCallback(
     (option: DAppConnectionOptionsType) => {
       setSelectedOption(option)
-    }, [])
+    },
+    []
+  )
 
   const getAccountsFiatValue = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
@@ -211,58 +174,52 @@ export const DAppConnectionSettings = () => {
       }
       // Return a 0 balance if the account has no
       // assets to display.
-      if (
-        fungibleTokensByChainId
-          .length === 0
-      ) {
+      if (fungibleTokensByChainId.length === 0) {
         return new Amount(0)
       }
 
-      const amounts =
-        fungibleTokensByChainId
-          .map((asset) => {
-            const balance =
-              getBalance(account.accountId, asset, tokenBalancesRegistry)
-            return computeFiatAmount({
-              spotPriceRegistry,
-              value: balance,
-              token: asset
-            })
-          })
-
-      const reducedAmounts =
-        amounts.reduce(function (a, b) {
-          return a.plus(b)
+      const amounts = fungibleTokensByChainId.map((asset) => {
+        const balance = getBalance(
+          account.accountId,
+          asset,
+          tokenBalancesRegistry
+        )
+        return computeFiatAmount({
+          spotPriceRegistry,
+          value: balance,
+          token: asset
         })
+      })
 
-      return !reducedAmounts.isUndefined()
-        ? reducedAmounts
-        : Amount.empty()
-    }, [
-    userVisibleTokensInfo,
-    fungibleTokensByChainId,
-    tokenBalancesRegistry,
-    spotPriceRegistry
-  ])
+      const reducedAmounts = amounts.reduce(function (a, b) {
+        return a.plus(b)
+      })
+
+      return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
+    },
+    [
+      userVisibleTokensInfo,
+      fungibleTokensByChainId,
+      tokenBalancesRegistry,
+      spotPriceRegistry
+    ]
+  )
 
   // Effects
   React.useEffect(() => {
     let subscribed = true
 
-    if (
-      selectedAccount?.address &&
-      selectedCoin === BraveWallet.CoinType.SOL
-    ) {
-      (async () => {
+    if (selectedAccount?.address && selectedCoin === BraveWallet.CoinType.SOL) {
+      ;(async () => {
         const { panelHandler } = getWalletPanelApiProxy()
         await panelHandler
           .isSolanaAccountConnected(selectedAccount?.address)
-          .then(result => {
+          .then((result) => {
             if (subscribed) {
               setIsSolanaConnected(result.connected)
             }
           })
-          .catch(e => console.log(e))
+          .catch((e) => console.log(e))
       })()
     }
 
@@ -275,15 +232,15 @@ export const DAppConnectionSettings = () => {
     let subscribed = true
 
     if (selectedCoin) {
-      (async () => {
+      ;(async () => {
         await braveWalletService
           .isPermissionDenied(selectedCoin)
-          .then(result => {
+          .then((result) => {
             if (subscribed) {
               setIsPermissionDenied(result.denied)
             }
           })
-          .catch(e => console.log(e))
+          .catch((e) => console.log(e))
       })()
     }
 
@@ -295,46 +252,36 @@ export const DAppConnectionSettings = () => {
   return (
     <>
       <SettingsButton
-        onClick={() => setShowSettings(prev => !prev)}
+        onClick={() => setShowSettings((prev) => !prev)}
         data-test-id='dapp-settings-button'
         showConnectionStatus={!isChromeOrigin}
       >
-        {!isChromeOrigin &&
+        {!isChromeOrigin && (
           <ConnectedIcon
-            name={
-              isConnected
-                ? 'check-circle-filled'
-                : 'social-dribbble'
-            }
+            name={isConnected ? 'check-circle-filled' : 'social-dribbble'}
             dappConnected={isConnected}
             size='12px'
           />
-        }
+        )}
         <FavIcon
           size='20px'
-          src={
-            `chrome://favicon/size/64@1x/${activeOrigin.originSpec}`
-          }
+          src={`chrome://favicon/size/64@1x/${activeOrigin.originSpec}`}
         />
-        <NetworkIconWrapper
-          showConnectionStatus={!isChromeOrigin}
-        >
+        <NetworkIconWrapper showConnectionStatus={!isChromeOrigin}>
           <CreateNetworkIcon
             network={selectedNetwork}
             size='tiny'
           />
         </NetworkIconWrapper>
       </SettingsButton>
-      {showSettings &&
+      {showSettings && (
         <>
           <OverlapForClick />
           <SettingsBubbleWrapper>
             <Pointer />
             <PointerShadow />
-            <SettingsBubble
-              ref={settingsMenuRef}
-            >
-              {selectedOption === 'main' &&
+            <SettingsBubble ref={settingsMenuRef}>
+              {selectedOption === 'main' && (
                 <DAppConnectionMain
                   onSelectOption={onSelectOption}
                   isConnected={isConnected}
@@ -342,23 +289,21 @@ export const DAppConnectionSettings = () => {
                   getAccountsFiatValue={getAccountsFiatValue}
                   isChromeOrigin={isChromeOrigin}
                 />
-              }
-              {selectedOption === 'networks' &&
-                <DAppConnectionNetworks
-                  onSelectOption={onSelectOption}
-                />
-              }
-              {selectedOption === 'accounts' &&
+              )}
+              {selectedOption === 'networks' && (
+                <DAppConnectionNetworks onSelectOption={onSelectOption} />
+              )}
+              {selectedOption === 'accounts' && (
                 <DAppConnectionAccounts
                   onSelectOption={onSelectOption}
                   getAccountsFiatValue={getAccountsFiatValue}
                 />
-              }
+              )}
             </SettingsBubble>
           </SettingsBubbleWrapper>
           <BackgroundBlur />
         </>
-      }
+      )}
     </>
   )
 }

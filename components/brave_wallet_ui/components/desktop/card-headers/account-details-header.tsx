@@ -17,16 +17,12 @@ import {
 
 // Options
 import {
-  AccountDetailsMenuOptions
+  AccountDetailsMenuOptions //
 } from '../../../options/account-details-menu-options'
 
 // Selectors
-import {
-  useSafeUISelector
-} from '../../../common/hooks/use-safe-selector'
-import {
-  UISelectors
-} from '../../../common/selectors'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -44,28 +40,22 @@ import {
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
 import {
-  selectAllVisibleUserAssetsFromQueryResult
+  selectAllVisibleUserAssetsFromQueryResult //
 } from '../../../common/slices/entities/blockchain-token.entity'
 import {
-  TokenBalancesRegistry
+  TokenBalancesRegistry //
 } from '../../../common/slices/entities/token-balance.entity'
-import {
-  querySubscriptionOptions60s
-} from '../../../common/slices/constants'
+import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
 // Hooks
-import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Components
 import {
-  CreateAccountIcon
+  CreateAccountIcon //
 } from '../../shared/create-account-icon/create-account-icon'
 import CopyTooltip from '../../shared/copy-tooltip/copy-tooltip'
-import {
-  AccountDetailsMenu
-} from '../wallet-menus/account-details-menu'
+import { AccountDetailsMenu } from '../wallet-menus/account-details-menu'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Styled Components
@@ -82,11 +72,7 @@ import {
   MenuWrapper,
   HorizontalDivider
 } from './shared-card-headers.style'
-import {
-  Row,
-  Column,
-  HorizontalSpace
-} from '../../shared/style'
+import { Row, Column, HorizontalSpace } from '../../shared/style'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -95,11 +81,7 @@ interface Props {
 }
 
 export const AccountDetailsHeader = (props: Props) => {
-  const {
-    account,
-    onClickMenuOption,
-    tokenBalancesRegistry
-  } = props
+  const { account, onClickMenuOption, tokenBalancesRegistry } = props
 
   // routing
   const history = useHistory()
@@ -109,7 +91,7 @@ export const AccountDetailsHeader = (props: Props) => {
 
   // Queries
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
-    selectFromResult: result => ({
+    selectFromResult: (result) => ({
       userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
     })
   })
@@ -120,8 +102,7 @@ export const AccountDetailsHeader = (props: Props) => {
     React.useState<boolean>(false)
 
   // refs
-  const accountDetailsMenuRef =
-    React.useRef<HTMLDivElement>(null)
+  const accountDetailsMenuRef = React.useRef<HTMLDivElement>(null)
 
   // hooks
   useOnClickOutside(
@@ -132,16 +113,14 @@ export const AccountDetailsHeader = (props: Props) => {
 
   // Memos
   const accountsFungibleTokens = React.useMemo(() => {
-    return userVisibleTokensInfo.filter((asset) => asset.visible)
+    return userVisibleTokensInfo
+      .filter((asset) => asset.visible)
       .filter((token) => token.coin === account.accountId.coin)
-      .filter((token) =>
-        !token.isErc721 && !token.isErc1155 && !token.isNft)
+      .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
   }, [userVisibleTokensInfo, account])
 
-
-  const tokenPriceIds = React.useMemo(() =>
-    accountsFungibleTokens
-      .map(token => getPriceIdForToken(token)),
+  const tokenPriceIds = React.useMemo(
+    () => accountsFungibleTokens.map((token) => getPriceIdForToken(token)),
     [accountsFungibleTokens]
   )
 
@@ -160,33 +139,28 @@ export const AccountDetailsHeader = (props: Props) => {
     }
     // Return a 0 balance if the account has no
     // assets to display.
-    if (
-      accountsFungibleTokens
-        .length === 0
-    ) {
+    if (accountsFungibleTokens.length === 0) {
       return new Amount(0)
     }
 
-    const amounts =
-      accountsFungibleTokens
-        .map((asset) => {
-          const balance =
-            getBalance(account.accountId, asset, tokenBalancesRegistry)
-          return computeFiatAmount({
-            spotPriceRegistry,
-            value: balance,
-            token: asset
-          })
-        })
-
-    const reducedAmounts =
-      amounts.reduce(function (a, b) {
-        return a.plus(b)
+    const amounts = accountsFungibleTokens.map((asset) => {
+      const balance = getBalance(
+        account.accountId,
+        asset,
+        tokenBalancesRegistry
+      )
+      return computeFiatAmount({
+        spotPriceRegistry,
+        value: balance,
+        token: asset
       })
+    })
 
-    return !reducedAmounts.isUndefined()
-      ? reducedAmounts
-      : Amount.empty()
+    const reducedAmounts = amounts.reduce(function (a, b) {
+      return a.plus(b)
+    })
+
+    return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
   }, [
     account,
     userVisibleTokensInfo,
@@ -198,17 +172,16 @@ export const AccountDetailsHeader = (props: Props) => {
     // We are not able to remove a Derviced account
     // so we filter out this option.
     if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
-      return AccountDetailsMenuOptions
-        .filter(
-          (option: AccountButtonOptionsObjectType) =>
-            option.id !== 'remove')
+      return AccountDetailsMenuOptions.filter(
+        (option: AccountButtonOptionsObjectType) => option.id !== 'remove'
+      )
     }
     // We are not able to fetch Private Keys for
     // a Hardware account so we filter out this option.
     if (account.accountId.kind === BraveWallet.AccountKind.kHardware) {
       return AccountDetailsMenuOptions.filter(
-        (option: AccountButtonOptionsObjectType) =>
-          option.id !== 'privateKey')
+        (option: AccountButtonOptionsObjectType) => option.id !== 'privateKey'
+      )
     }
     return AccountDetailsMenuOptions
   }, [account])
@@ -222,9 +195,7 @@ export const AccountDetailsHeader = (props: Props) => {
       padding={isPanel ? '16px' : '24px 0px'}
       justifyContent='space-between'
     >
-      <Row
-        width='unset'
-      >
+      <Row width='unset'>
         <CircleButton
           size={28}
           marginRight={16}
@@ -232,16 +203,15 @@ export const AccountDetailsHeader = (props: Props) => {
         >
           <ButtonIcon
             size={16}
-            name='arrow-left' />
+            name='arrow-left'
+          />
         </CircleButton>
         <CreateAccountIcon
           account={account}
           size='big'
           marginRight={8}
         />
-        <Column
-          alignItems='flex-start'
-        >
+        <Column alignItems='flex-start'>
           <AccountNameText
             textSize='16px'
             isBold={true}
@@ -254,9 +224,7 @@ export const AccountDetailsHeader = (props: Props) => {
               alignItems='center'
               justifyContent='flex-start'
             >
-              <AddressText>
-                {reduceAddress(account.address)}
-              </AddressText>
+              <AddressText>{reduceAddress(account.address)}</AddressText>
               <CopyTooltip text={account.address}>
                 <CopyIcon />
               </CopyTooltip>
@@ -268,19 +236,18 @@ export const AccountDetailsHeader = (props: Props) => {
         </Column>
       </Row>
 
-      <Row
-        width='unset'
-      >
-        {!isPanel &&
+      <Row width='unset'>
+        {!isPanel && (
           <>
-            <Column
-              alignItems='flex-end'
-            >
+            <Column alignItems='flex-end'>
               <AccountsNetworkText>
                 {getLocale('braveWalletAccountBalance')}
               </AccountsNetworkText>
               {accountsFiatValue.isUndefined() ? (
-                <LoadingSkeleton width={120} height={32} />
+                <LoadingSkeleton
+                  width={120}
+                  height={32}
+                />
               ) : (
                 <AccountBalanceText>
                   {accountsFiatValue.formatAsFiat(defaultFiatCurrency)}
@@ -291,27 +258,22 @@ export const AccountDetailsHeader = (props: Props) => {
             <HorizontalDivider />
             <HorizontalSpace space='16px' />
           </>
-        }
-        <MenuWrapper
-          ref={accountDetailsMenuRef}
-        >
+        )}
+        <MenuWrapper ref={accountDetailsMenuRef}>
           <CircleButton
-            onClick={
-              () => setShowAccountDetailsMenu(prev => !prev)
-            }
+            onClick={() => setShowAccountDetailsMenu((prev) => !prev)}
           >
-            <ButtonIcon
-              name='more-vertical' />
+            <ButtonIcon name='more-vertical' />
           </CircleButton>
-          {showAccountDetailsMenu &&
+          {showAccountDetailsMenu && (
             <AccountDetailsMenu
               options={menuOptions}
               onClickMenuOption={onClickMenuOption}
             />
-          }
+          )}
         </MenuWrapper>
       </Row>
-    </Row >
+    </Row>
   )
 }
 

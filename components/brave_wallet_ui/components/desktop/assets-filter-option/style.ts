@@ -7,10 +7,9 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import { WalletButton } from '../../shared/style'
 
-export const Option = styled(WalletButton) <
-  {
-    selected?: boolean
-  }>`
+export const Option = styled(WalletButton)<{
+  selected?: boolean
+}>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -26,8 +25,8 @@ export const Option = styled(WalletButton) <
   &:hover {
     background-color: ${leo.color.divider.subtle};
   }
-  font-weight: ${(p) => p.selected ? 600 : 'normal'};
+  font-weight: ${(p) => (p.selected ? 600 : 'normal')};
   cursor: pointer;
   width: 100%;
-  color: ${leo.color.text.primary}
+  color: ${leo.color.text.primary};
 `

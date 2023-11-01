@@ -3,9 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { AccountPageTabs } from "../constants/types"
-import { mockBitcoinAccount, mockEthAccount } from "../stories/mock-data/mock-wallet-accounts"
-import { makeAccountRoute, makeAccountTransactionRoute } from "./routes-utils"
+import { AccountPageTabs } from '../constants/types'
+import {
+  mockBitcoinAccount,
+  mockEthAccount
+} from '../stories/mock-data/mock-wallet-accounts'
+import { makeAccountRoute, makeAccountTransactionRoute } from './routes-utils'
 
 describe('makeAccountRoute', () => {
   it('routes for eth account', () => {
@@ -17,7 +20,9 @@ describe('makeAccountRoute', () => {
     ).toBe('/crypto/accounts/0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14/nfts')
     expect(
       makeAccountRoute(mockEthAccount, AccountPageTabs.AccountTransactionsSub)
-    ).toBe('/crypto/accounts/0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14/transactions')
+    ).toBe(
+      '/crypto/accounts/0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14/transactions'
+    )
   })
 
   it('routes for bitcoin account', () => {
@@ -28,22 +33,27 @@ describe('makeAccountRoute', () => {
       makeAccountRoute(mockBitcoinAccount, AccountPageTabs.AccountNFTsSub)
     ).toBe('/crypto/accounts/mockBitcoinAccount_uniqueKey/nfts')
     expect(
-      makeAccountRoute(mockBitcoinAccount, AccountPageTabs.AccountTransactionsSub)
+      makeAccountRoute(
+        mockBitcoinAccount,
+        AccountPageTabs.AccountTransactionsSub
+      )
     ).toBe('/crypto/accounts/mockBitcoinAccount_uniqueKey/transactions')
   })
 })
 
 describe('makeAccountTransactionRoute', () => {
   it('transaction for eth account', () => {
-    expect(
-      makeAccountTransactionRoute(mockEthAccount, '#transactionId')
-    ).toBe('/crypto/accounts/0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14/transactions#transactionId')
+    expect(makeAccountTransactionRoute(mockEthAccount, '#transactionId')).toBe(
+      '/crypto/accounts/0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14/' +
+        'transactions#transactionId'
+    )
   })
 
   it('transaction for bitcoin account', () => {
     expect(
       makeAccountTransactionRoute(mockBitcoinAccount, '#transactionId')
-    ).toBe('/crypto/accounts/mockBitcoinAccount_uniqueKey/transactions#transactionId')
+    ).toBe(
+      '/crypto/accounts/mockBitcoinAccount_uniqueKey/transactions#transactionId'
+    )
   })
 })
-

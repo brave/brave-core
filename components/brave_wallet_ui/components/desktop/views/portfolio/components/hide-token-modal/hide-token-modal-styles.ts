@@ -24,7 +24,7 @@ export const TokenSymbol = styled.h6`
   margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   display: flex;
   align-self: center;
 `
@@ -38,7 +38,7 @@ export const Instructions = styled.p`
   margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   text-align: center;
 `
 
@@ -51,8 +51,8 @@ export const ButtonRow = styled.div`
 `
 
 export const OkButton = styled(WalletButton)`
-  background: ${p => p.theme.palette.blurple500};
-  border: 1px solid ${p => p.theme.palette.blurple500};
+  background: ${(p) => p.theme.palette.blurple500};
+  border: 1px solid ${(p) => p.theme.palette.blurple500};
   height: 40px;
   width: 125px;
   margin-top: 70px;
@@ -65,13 +65,13 @@ export const OkButton = styled(WalletButton)`
   align-self: center;
   justify-content: center;
   align-items: center;
-  color: ${p => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
   cursor: pointer;
 `
 
 export const CancelButton = styled(WalletButton)`
   background: none;
-  border: 1px solid ${p => p.theme.palette.blurple500};
+  border: 1px solid ${(p) => p.theme.palette.blurple500};
   height: 40px;
   width: 125px;
   margin-top: 70px;
@@ -84,7 +84,7 @@ export const CancelButton = styled(WalletButton)`
   align-self: center;
   justify-content: center;
   align-items: center;
-  color: ${p => p.theme.palette.blurple500};
+  color: ${(p) => p.theme.palette.blurple500};
   cursor: pointer;
 `
 

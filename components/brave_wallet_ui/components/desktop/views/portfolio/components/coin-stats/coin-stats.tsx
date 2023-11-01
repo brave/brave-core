@@ -30,7 +30,11 @@ interface Props {
 
 export const CoinStats = (props: Props) => {
   const { marketCapRank, marketCap, volume } = props
-  const formattedMarketCap = new Amount(marketCap).abbreviate(2, undefined, 'billion')
+  const formattedMarketCap = new Amount(marketCap).abbreviate(
+    2,
+    undefined,
+    'billion'
+  )
   const formattedVolume = new Amount(volume).abbreviate(2, undefined, 'billion')
 
   return (

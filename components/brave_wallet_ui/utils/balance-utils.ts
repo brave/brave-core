@@ -10,7 +10,12 @@ import { BraveWallet } from '../constants/types'
 // utils
 import Amount from './amount'
 
-export const formatTokenBalanceWithSymbol = (balance: string, decimals: number, symbol: string, decimalPlace?: number) => {
+export const formatTokenBalanceWithSymbol = (
+  balance: string,
+  decimals: number,
+  symbol: string,
+  decimalPlace?: number
+) => {
   return `${new Amount(balance)
     .divideByDecimals(decimals)
     .format(decimalPlace ?? 6, true)} ${symbol}`
@@ -28,7 +33,8 @@ export const getPercentAmount = (
   percent: number,
   tokenBalancesRegistry: TokenBalancesRegistry | undefined
 ): string => {
-  const assetBalance = getBalance(accountId, asset, tokenBalancesRegistry) || '0'
+  const assetBalance =
+    getBalance(accountId, asset, tokenBalancesRegistry) || '0'
   const amountWrapped = new Amount(assetBalance).times(percent)
 
   const formattedAmount =
@@ -55,8 +61,7 @@ export const getBalance = (
   }
 
   const chainIdBalances =
-    accountBalances[asset.chainId] ??
-    accountBalances[asset.chainId.toString()]
+    accountBalances[asset.chainId] ?? accountBalances[asset.chainId.toString()]
   if (!chainIdBalances) {
     return '0'
   }

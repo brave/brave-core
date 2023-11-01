@@ -14,22 +14,15 @@ export const sizeCssValue = (size: string | number) => {
 export const makeSizeMixin = (defaultSize: number | string) => css<{
   size?: number | string
 }>`
-  width: ${(p) => p?.size
-    ? sizeCssValue(p.size)
-    : sizeCssValue(defaultSize)
-  };
+  width: ${(p) => (p?.size ? sizeCssValue(p.size) : sizeCssValue(defaultSize))};
 
-  height: ${(p) => p?.size
-    ? sizeCssValue(p.size)
-    : sizeCssValue(defaultSize)
-  };
+  height: ${(p) =>
+    p?.size ? sizeCssValue(p.size) : sizeCssValue(defaultSize)};
 `
 
 export const makePaddingMixin = (defaultPadding: number | string) => css<{
   padding?: number | string
 }>`
-  padding: ${(p) => p?.padding
-    ? sizeCssValue(p.padding)
-    : sizeCssValue(defaultPadding)
-  };
+  padding: ${(p) =>
+    p?.padding ? sizeCssValue(p.padding) : sizeCssValue(defaultPadding)};
 `

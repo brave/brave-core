@@ -24,11 +24,7 @@ import {
   VerticalSpace,
   Text
 } from '../../../shared/style'
-import {
-  AddIcon,
-  AddButtonText,
-  VirtualListStyle
-} from './style'
+import { AddIcon, AddButtonText, VirtualListStyle } from './style'
 import { PaddedColumn } from '../style'
 import { assetWatchListItemHeight } from '../../asset-watchlist-item/style'
 
@@ -52,9 +48,18 @@ interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
   isLastIndex: boolean
 }
 
-const getListItemKey = (index: number, tokenList: BraveWallet.BlockchainToken[]) => {
+const getListItemKey = (
+  index: number,
+  tokenList: BraveWallet.BlockchainToken[]
+) => {
   const token = tokenList[index]
-  return `${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`
+  return `${
+    token.contractAddress //
+  }-${
+    token.symbol //
+  }-${
+    token.chainId //
+  }-${token.tokenId}`
 }
 
 const checkIsLastIndex = (
@@ -78,11 +83,14 @@ const ListItem = (props: ListItemProps) => {
     setSize
   } = props
 
-  const handleSetSize = React.useCallback((ref: HTMLDivElement | null) => {
-    if (ref) {
-      setSize(index, ref.getBoundingClientRect().height)
-    }
-  }, [index, setSize])
+  const handleSetSize = React.useCallback(
+    (ref: HTMLDivElement | null) => {
+      if (ref) {
+        setSize(index, ref.getBoundingClientRect().height)
+      }
+    },
+    [index, setSize]
+  )
 
   return (
     <div style={style}>
@@ -94,10 +102,8 @@ const ListItem = (props: ListItemProps) => {
         isSelected={isAssetSelected(data)}
         onSelectAsset={onCheckWatchlistItem}
       />
-      {isLastIndex &&
-        <PaddedColumn
-          margin='8px 0px'
-        >
+      {isLastIndex && (
+        <PaddedColumn margin='8px 0px'>
           <VerticalDivider />
           <VerticalSpace space='14px' />
           <Text
@@ -119,12 +125,14 @@ const ListItem = (props: ListItemProps) => {
             </Row>
           </Button>
         </PaddedColumn>
-      }
+      )}
     </div>
   )
 }
 
-export const VirtualizedVisibleAssetsList = (props: VirtualizedTokensListProps) => {
+export const VirtualizedVisibleAssetsList = (
+  props: VirtualizedTokensListProps
+) => {
   const {
     tokenList,
     isRemovable,
@@ -137,10 +145,13 @@ export const VirtualizedVisibleAssetsList = (props: VirtualizedTokensListProps) 
   const { hash } = useLocation()
 
   const listRef = React.useRef<List | null>(null)
-  const itemSizes = React.useRef<number[]>(new Array(tokenList.length).fill(assetWatchListItemHeight))
+  const itemSizes = React.useRef<number[]>(
+    new Array(tokenList.length).fill(assetWatchListItemHeight)
+  )
 
   const setSize = React.useCallback((index: number, size: number) => {
-    // Performance: Only update the sizeMap and reset cache if an actual value changed
+    // Performance: Only update the sizeMap and reset cache if an actual value
+    // changed
     if (itemSizes.current[index] !== size && size > -1) {
       itemSizes.current[index] = size
       if (listRef.current) {
@@ -155,9 +166,7 @@ export const VirtualizedVisibleAssetsList = (props: VirtualizedTokensListProps) 
   }, [])
 
   return (
-    <AutoSizer
-      style={VirtualListStyle}
-    >
+    <AutoSizer style={VirtualListStyle}>
       {function ({ width, height }) {
         return (
           <List

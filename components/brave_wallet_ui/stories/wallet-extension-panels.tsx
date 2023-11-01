@@ -21,12 +21,10 @@ import { filterAppList } from '../utils/filter-app-list'
 // Components
 import {
   ConnectWithSite //
-} from
-'../components/extension/connect-with-site-panel/connect-with-site-panel'
+} from '../components/extension/connect-with-site-panel/connect-with-site-panel'
 import {
   ConfirmTransactionPanel //
-} from //
-'../components/extension/confirm-transaction-panel/confirm-transaction-panel'
+} from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
 import { ConnectedPanel } from '../components/extension/connected-panel/index'
 import { Panel } from '../components/extension/panel/index'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
@@ -77,10 +75,16 @@ import WalletPanelStory from './wrappers/wallet-panel-story-wrapper'
 import * as MockedLib from '../common/async/__mocks__/lib'
 import {
   mockTransactionInfo,
-  mockedErc20ApprovalTransaction,
+  mockedErc20ApprovalTransaction
 } from './mock-data/mock-transaction-info'
-import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet-accounts'
-import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
+import {
+  mockAccounts,
+  mockedTransactionAccounts
+} from './mock-data/mock-wallet-accounts'
+import {
+  mockEncryptionKeyRequest,
+  mockDecryptRequest
+} from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { createMockStore } from '../utils/test-utils'
@@ -140,14 +144,15 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
         solanaTxData: undefined,
         filTxData: undefined
       },
-      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 3,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 * 1000 },
-      submittedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
-      confirmedTime: { microseconds: (Date.now() * 1000) - 1000 * 60 * 5 },
+      createdTime: { microseconds: Date.now() * 1000 - 1000 * 60 * 5 * 1000 },
+      submittedTime: { microseconds: Date.now() * 1000 - 1000 * 60 * 5 },
+      confirmedTime: { microseconds: Date.now() * 1000 - 1000 * 60 * 5 },
       originInfo: mockOriginInfo,
       effectiveRecipient: ''
     },
@@ -176,7 +181,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
         solanaTxData: undefined,
         filTxData: undefined
       },
-      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 3,
       txArgs: [],
       txParams: [],
@@ -212,7 +218,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
         solanaTxData: undefined,
         filTxData: undefined
       },
-      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 4,
       txArgs: [],
       txParams: [],
@@ -248,7 +255,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
         solanaTxData: undefined,
         filTxData: undefined
       },
-      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 2,
       txArgs: [],
       txParams: [],
@@ -284,7 +292,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
         solanaTxData: undefined,
         filTxData: undefined
       },
-      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 1,
       txArgs: [],
       txParams: [],
@@ -322,7 +331,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
         solanaTxData: undefined,
         filTxData: undefined
       },
-      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 0,
       txArgs: [],
       txParams: [],
@@ -358,7 +368,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
         solanaTxData: undefined,
         filTxData: undefined
       },
-      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 5,
       txArgs: [],
       txParams: [],
@@ -374,17 +385,20 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
 
 const originInfo = mockOriginInfo
 
-const store = createMockStore({
-  walletStateOverride: {},
-  uiStateOverride: {
-    selectedPendingTransactionId: mockTransactionInfo.id
+const store = createMockStore(
+  {
+    walletStateOverride: {},
+    uiStateOverride: {
+      selectedPendingTransactionId: mockTransactionInfo.id
+    }
+  },
+  {
+    transactionInfos: [
+      ...transactionDummyData[0].map((tx) => deserializeTransaction(tx)),
+      ...transactionDummyData[1].map((tx) => deserializeTransaction(tx))
+    ]
   }
-}, {
-  transactionInfos: [
-    ...transactionDummyData[0].map(tx => deserializeTransaction(tx)),
-    ...transactionDummyData[1].map(tx => deserializeTransaction(tx)),
-  ]
-})
+)
 
 const transactionList = [
   mockTransactionInfo,
@@ -395,7 +409,7 @@ const transactionList = [
 const mockCustomStoreState: Partial<WalletState> = {
   defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
   fullTokenList: mockNewAssetOptions,
-  activeOrigin: originInfo,
+  activeOrigin: originInfo
 }
 
 const mockCustomUiState: Partial<UIState> = {
@@ -512,25 +526,28 @@ export const _SignData = () => {
     alert('Canceled Signing Data')
   }
 
-  const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [{
-    id: 0,
-    accountId: mockEthAccountId('0x3f29A1da97149722eB09c526E4eAd698895b426').fromAccountId,
-    originInfo: mockOriginInfo,
-    coin: BraveWallet.CoinType.ETH,
-    chainId: BraveWallet.MAINNET_CHAIN_ID,
-    signData: {
-      ethStandardSignData: undefined,
-      ethSignTypedData: {
-        message: 'Sign below to authenticate with CryptoKitties.',
-        domain: '',
-        domainHash: undefined,
-        primaryHash: undefined,
-        meta: undefined
-      },
-      ethSiweData: undefined,
-      solanaSignData: undefined
+  const signMessageDataPayload: BraveWallet.SignMessageRequest[] = [
+    {
+      id: 0,
+      accountId: mockEthAccountId('0x3f29A1da97149722eB09c526E4eAd698895b426')
+        .fromAccountId,
+      originInfo: mockOriginInfo,
+      coin: BraveWallet.CoinType.ETH,
+      chainId: BraveWallet.MAINNET_CHAIN_ID,
+      signData: {
+        ethStandardSignData: undefined,
+        ethSignTypedData: {
+          message: 'Sign below to authenticate with CryptoKitties.',
+          domain: '',
+          domainHash: undefined,
+          primaryHash: undefined,
+          meta: undefined
+        },
+        ethSiweData: undefined,
+        solanaSignData: undefined
+      }
     }
-  }]
+  ]
 
   return (
     <StyledExtensionWrapperLonger>
@@ -619,9 +636,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [panelTitle, setPanelTitle] = React.useState<string>('main')
   const [selectedAccount, setSelectedAccount] =
     React.useState<BraveWallet.AccountInfo>(mockAccounts[0])
-  const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>([
-    AppsList()[0].appList[0]
-  ])
+  const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>(
+    [AppsList()[0].appList[0]]
+  )
   const [filteredAppsList, setFilteredAppsList] = React.useState<
     AppsListType[]
   >(AppsList())
@@ -664,9 +681,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     setFavoriteApps(newList)
   }
   const removeFromFavorites = (app: BraveWallet.AppItem) => {
-    const newList = favoriteApps.filter(
-      (fav) => fav.name !== app.name
-    )
+    const newList = favoriteApps.filter((fav) => fav.name !== app.name)
     setFavoriteApps(newList)
   }
 
@@ -702,7 +717,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     <WalletPanelStory>
       <StyledExtensionWrapper>
         {walletLocked ? (
-          <LockPanel onSubmit={unlockWallet} onClickRestore={onRestore} />
+          <LockPanel
+            onSubmit={unlockWallet}
+            onClickRestore={onRestore}
+          />
         ) : (
           <>
             {selectedPanel === 'main' ? (
@@ -825,7 +843,11 @@ export const _ConnectHardwareWallet = () => {
 
   const onClickInstructions = () => {
     // Open support link in new tab
-    window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank', 'noreferrer')
+    window.open(
+      'https://support.brave.com/hc/en-us/articles/4409309138701',
+      '_blank',
+      'noreferrer'
+    )
   }
 
   return (
@@ -893,7 +915,6 @@ _TransactionDetail.story = {
 }
 
 export const _RecentTransaction = () => {
-
   const navigateTo = () => {
     // Doesn't do anything in storybook
   }

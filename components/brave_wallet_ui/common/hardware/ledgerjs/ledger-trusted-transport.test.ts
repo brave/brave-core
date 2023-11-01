@@ -4,22 +4,21 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LedgerTrustedMessagingTransport } from './ledger-trusted-transport'
-import {
-  LedgerCommand,
-  AuthorizationSuccessCommand
-} from './ledger-messages'
+import { LedgerCommand, AuthorizationSuccessCommand } from './ledger-messages'
 
 // We must read and write to protected class attributes in the tests.
-// That yields a typescript error unless we use bracket notation, e.g. `transport['handlers']`
-// instead of `transport.handlers`. As a result we silence the dot-notation
-// tslint rule for the file.
+// That yields a typescript error unless we use bracket notation, e.g.
+// `transport['handlers']` instead of `transport.handlers`. As a result we
+// silence the dot-notation tslint rule for the file.
 //
 /* eslint-disable @typescript-eslint/dot-notation */
 
 const createWindow = (): Window => {
   let iframe = document.createElement('iframe')
   document.body.appendChild(iframe)
-  if (!iframe.contentWindow) { fail('transport should be defined') }
+  if (!iframe.contentWindow) {
+    fail('transport should be defined')
+  }
   // Use Object.defineProperty in order to assign to
   // window.crypto because standard assignment results in
   // assignment error because window.origin is read-only
@@ -35,7 +34,9 @@ test('handleAuthorizationSuccess calls onAuthorize callback', async () => {
   const trustedTransport = new LedgerTrustedMessagingTransport(
     targetWindow,
     targetWindow.origin,
-    () => { callbackCalled = true }
+    () => {
+      callbackCalled = true
+    }
   )
 
   const command: AuthorizationSuccessCommand = {

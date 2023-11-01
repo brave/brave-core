@@ -8,14 +8,10 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 
 // Utils
-import {
-  getRewardsProviderBackground
-} from '../../../utils/rewards_utils'
+import { getRewardsProviderBackground } from '../../../utils/rewards_utils'
 
 // Types
-import {
-  ExternalWalletProvider
-} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+import { ExternalWalletProvider } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 export const AccountBox = styled.div<{
   orb?: string
@@ -30,38 +26,16 @@ export const AccountBox = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  width: ${(p) =>
-    p.size
-      ? `var(--box-${p.size})`
-      : 'var(--box-medium)'
-  };
-  min-width: ${(p) =>
-    p.size
-      ? `var(--box-${p.size})`
-      : 'var(--box-medium)'
-  };
-  height: ${(p) =>
-    p.size
-      ? `var(--box-${p.size})`
-      : 'var(--box-medium)'
-  };
-  border-radius: ${(p) =>
-    p.round
-      ? '50%'
-      : p.size === 'big'
-        ? '8px'
-        : '4px'
-  };
+  width: ${(p) => (p.size ? `var(--box-${p.size})` : 'var(--box-medium)')};
+  min-width: ${(p) => (p.size ? `var(--box-${p.size})` : 'var(--box-medium)')};
+  height: ${(p) => (p.size ? `var(--box-${p.size})` : 'var(--box-medium)')};
+  border-radius: ${(p) => (p.round ? '50%' : p.size === 'big' ? '8px' : '4px')};
   background-image: url(${(p) => p.orb});
   background-size: cover;
-  margin-right: ${(p) =>
-    p.marginRight !== undefined
-      ? p.marginRight
-      : 0
-  }px;
+  margin-right: ${(p) => (p.marginRight !== undefined ? p.marginRight : 0)}px;
 `
 
-export const AccountIcon = styled(Icon) <{
+export const AccountIcon = styled(Icon)<{
   size?: 'big' | 'medium' | 'small' | 'tiny'
 }>`
   --icon-big: 24px;
@@ -69,20 +43,15 @@ export const AccountIcon = styled(Icon) <{
   --icon-small: 16px;
   --icon-tiny: 14px;
   --leo-icon-size: ${(p) =>
-    p.size
-      ? `var(--icon-${p.size})`
-      : 'var(--icon-medium)'
-  };
+    p.size ? `var(--icon-${p.size})` : 'var(--icon-medium)'};
   color: ${leo.color.white};
 `
 
-export const ExternalAccountBox = styled(AccountBox) <{
+export const ExternalAccountBox = styled(AccountBox)<{
   provider: ExternalWalletProvider | null
 }>`
-  background-color: ${(p) => p.provider
-    ? getRewardsProviderBackground(p.provider)
-    : 'none'
-  };
+  background-color: ${(p) =>
+    p.provider ? getRewardsProviderBackground(p.provider) : 'none'};
   background-image: unset;
   background-size: unset;
 `
@@ -94,14 +63,6 @@ export const ExternalAccountIcon = styled.img<{
   --icon-medium: 24px;
   --icon-small: 18px;
   --icon-tiny: 14px;
-  width: ${(p) =>
-    p.size
-      ? `var(--icon-${p.size})`
-      : 'var(--icon-medium)'
-  };
-  height: ${(p) =>
-    p.size
-      ? `var(--icon-${p.size})`
-      : 'var(--icon-medium)'
-  };
+  width: ${(p) => (p.size ? `var(--icon-${p.size})` : 'var(--icon-medium)')};
+  height: ${(p) => (p.size ? `var(--icon-${p.size})` : 'var(--icon-medium)')};
 `

@@ -38,7 +38,9 @@ export const SolanaTransactionDetailBox = ({
     return (
       <CodeSnippet>
         <code>
-          <CodeSnippetText>{getLocale('braveWalletConfirmTransactionNoData')}</CodeSnippetText>
+          <CodeSnippetText>
+            {getLocale('braveWalletConfirmTransactionNoData')}
+          </CodeSnippetText>
         </code>
       </CodeSnippet>
     )
@@ -47,16 +49,20 @@ export const SolanaTransactionDetailBox = ({
   return (
     <>
       <DetailColumn>
-        <TransactionText>{getLocale('braveWalletTransactionDetailBoxFunction')}:</TransactionText>
+        <TransactionText>
+          {getLocale('braveWalletTransactionDetailBoxFunction')}:
+        </TransactionText>
         <DetailText>{txKeys[txType]}</DetailText>
       </DetailColumn>
 
       <DetailColumn>
         {instructions?.map((instruction, index) => {
-          return <SolanaTransactionInstruction
-            key={index}
-            typedInstructionWithParams={instruction}
-          />
+          return (
+            <SolanaTransactionInstruction
+              key={index}
+              typedInstructionWithParams={instruction}
+            />
+          )
         })}
       </DetailColumn>
     </>

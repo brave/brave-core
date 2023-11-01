@@ -22,7 +22,7 @@ export const NetworkFeeTitle = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const NetworkFeeValue = styled.div`
@@ -34,7 +34,7 @@ export const NetworkFeeValue = styled.div`
   display: flex;
   align-items: center;
   letter-spacing: 0.01em;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   gap: 6px;
 `
 
@@ -49,5 +49,5 @@ export const Settings = styled(WalletButton)`
 
 export const SettingsIcon = styled(SettingsAdvancedIcon)`
   width: 14px;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `

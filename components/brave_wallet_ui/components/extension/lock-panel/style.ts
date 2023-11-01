@@ -14,7 +14,8 @@ export const StyledWrapper = styled.div<{ hideBackground?: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.hideBackground ? 'transparent' : p.theme.color.background01};
+  background-color: ${(p) =>
+    p.hideBackground ? 'transparent' : p.theme.color.background01};
 `
 
 export const Title = styled.span`

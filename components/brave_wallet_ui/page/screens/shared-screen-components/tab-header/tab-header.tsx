@@ -10,9 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 
 // Types
-import {
-  WalletRoutes
-} from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // Styled Components
 import {
@@ -26,7 +24,7 @@ import { Row } from '../../send/shared.styles'
 
 // Components
 import {
-  WalletSettingsMenu
+  WalletSettingsMenu //
 } from '../../../../components/desktop/wallet-menus/wallet-settings-menu'
 
 export interface Props {
@@ -60,25 +58,26 @@ export const TabHeader = (props: Props) => {
   // render
   return (
     <HeaderWrapper>
-      <Row rowHeight='full' verticalAlign='center'>
+      <Row
+        rowHeight='full'
+        verticalAlign='center'
+      >
         <BraveLogo />
       </Row>
-      {!hideHeaderMenu &&
-        <SettingsWrapper
-          ref={settingsModalRef}
-        >
-          <SettingsButton onClick={() => setShowSettings(prev => !prev)}>
+      {!hideHeaderMenu && (
+        <SettingsWrapper ref={settingsModalRef}>
+          <SettingsButton onClick={() => setShowSettings((prev) => !prev)}>
             <SettingsIcon name='more-horizontal' />
           </SettingsButton>
-          {showSettings &&
+          {showSettings && (
             <WalletSettingsMenu
               onClickBackup={onShowBackup}
               onClosePopup={() => setShowSettings(false)}
               yPosition={50}
             />
-          }
+          )}
         </SettingsWrapper>
-      }
+      )}
     </HeaderWrapper>
   )
 }

@@ -9,9 +9,11 @@ import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-
 import { OnboardingSuccess } from './onboarding-success'
 
 export const _OnboardingSuccess = () => {
-  return <WalletPageStory>
-    <OnboardingSuccess />
-  </WalletPageStory>
+  return (
+    <WalletPageStory>
+      <OnboardingSuccess />
+    </WalletPageStory>
+  )
 }
 
 _OnboardingSuccess.story = {

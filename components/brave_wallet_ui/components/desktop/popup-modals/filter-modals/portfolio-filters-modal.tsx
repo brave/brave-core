@@ -12,11 +12,9 @@ import { useLocation } from 'react-router'
 import { WalletRoutes } from '../../../../constants/types'
 
 // Options
+import { AssetFilterOptions } from '../../../../options/asset-filter-options'
 import {
-  AssetFilterOptions
-} from '../../../../options/asset-filter-options'
-import {
-  GroupAssetsByOptions
+  GroupAssetsByOptions //
 } from '../../../../options/group-assets-by-options'
 
 // Selectors
@@ -24,21 +22,17 @@ import {
   useUnsafeWalletSelector,
   useSafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
-import {
-  WalletSelectors
-} from '../../../../common/selectors'
+import { WalletSelectors } from '../../../../common/selectors'
 
 // Actions
-import {
-  WalletActions
-} from '../../../../common/actions'
+import { WalletActions } from '../../../../common/actions'
 
 // Constants
 import {
-  LOCAL_STORAGE_KEYS
+  LOCAL_STORAGE_KEYS //
 } from '../../../../common/constants/local-storage-keys'
 import {
-  HIDE_SMALL_BALANCES_FIAT_THRESHOLD
+  HIDE_SMALL_BALANCES_FIAT_THRESHOLD //
 } from '../../../../common/constants/magics'
 
 // Utils
@@ -48,16 +42,14 @@ import Amount from '../../../../utils/amount'
 // Components
 import { PopupModal } from '../../popup-modals/index'
 import {
-  FilterNetworksSection
+  FilterNetworksSection //
 } from './filter-components/filter-networks-section'
 import {
-  FilterAccountsSection
+  FilterAccountsSection //
 } from './filter-components/filter-accounts-section'
+import { FilterToggleSection } from './filter-components/filter-toggle-section'
 import {
-  FilterToggleSection
-} from './filter-components/filter-toggle-section'
-import {
-  FilterDropdownSection
+  FilterDropdownSection //
 } from './filter-components/filter-dropdown-section'
 
 // Styles
@@ -67,10 +59,7 @@ import {
   ScrollableColumn,
   HorizontalSpace
 } from '../../../shared/style'
-import {
-  ContentWrapper,
-  ButtonRow
-} from './portfolio-filters-modal.style'
+import { ContentWrapper, ButtonRow } from './portfolio-filters-modal.style'
 
 interface Props {
   onClose: () => void
@@ -86,36 +75,47 @@ export const PortfolioFiltersModal = (props: Props) => {
   const dispatch = useDispatch()
 
   // Selectors
-  const filteredOutPortfolioNetworkKeys =
-    useUnsafeWalletSelector(WalletSelectors.filteredOutPortfolioNetworkKeys)
-  const filteredOutPortfolioAccountAddresses =
-    useUnsafeWalletSelector(
-      WalletSelectors.filteredOutPortfolioAccountAddresses
-    )
-  const selectedAssetFilter =
-    useSafeWalletSelector(WalletSelectors.selectedAssetFilter)
-  const selectedGroupAssetsByItem =
-    useSafeWalletSelector(WalletSelectors.selectedGroupAssetsByItem)
-  const hidePortfolioSmallBalances =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioSmallBalances)
-  const defaultCurrencies =
-    useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
-  const selectedPortfolioTimeline =
-    useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
-  const showNetworkLogoOnNfts = useSafeWalletSelector(WalletSelectors.showNetworkLogoOnNfts)
+  const filteredOutPortfolioNetworkKeys = useUnsafeWalletSelector(
+    WalletSelectors.filteredOutPortfolioNetworkKeys
+  )
+  const filteredOutPortfolioAccountAddresses = useUnsafeWalletSelector(
+    WalletSelectors.filteredOutPortfolioAccountAddresses
+  )
+  const selectedAssetFilter = useSafeWalletSelector(
+    WalletSelectors.selectedAssetFilter
+  )
+  const selectedGroupAssetsByItem = useSafeWalletSelector(
+    WalletSelectors.selectedGroupAssetsByItem
+  )
+  const hidePortfolioSmallBalances = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioSmallBalances
+  )
+  const defaultCurrencies = useUnsafeWalletSelector(
+    WalletSelectors.defaultCurrencies
+  )
+  const selectedPortfolioTimeline = useSafeWalletSelector(
+    WalletSelectors.selectedPortfolioTimeline
+  )
+  const showNetworkLogoOnNfts = useSafeWalletSelector(
+    WalletSelectors.showNetworkLogoOnNfts
+  )
 
   // State
-  const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] =
-    React.useState<string[]>(filteredOutPortfolioNetworkKeys)
+  const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] = React.useState<
+    string[]
+  >(filteredOutPortfolioNetworkKeys)
   const [filteredOutAccountAddresses, setFilteredOutAccountAddresses] =
     React.useState<string[]>(filteredOutPortfolioAccountAddresses)
-  const [hideSmallBalances, setHideSmallBalances] =
-    React.useState<boolean>(hidePortfolioSmallBalances)
+  const [hideSmallBalances, setHideSmallBalances] = React.useState<boolean>(
+    hidePortfolioSmallBalances
+  )
   const [selectedAssetFilterOption, setSelectedAssetFilterOption] =
     React.useState<string>(selectedAssetFilter)
   const [selectedGroupAssetsByOption, setSelectedGroupAssetsByOption] =
     React.useState<string>(selectedGroupAssetsByItem)
-  const [showNetworkLogo, setShowNetworkLogo] = React.useState(showNetworkLogoOnNfts)
+  const [showNetworkLogo, setShowNetworkLogo] = React.useState(
+    showNetworkLogoOnNfts
+  )
 
   const onUpdateSelectedGroupAssetsByOption = React.useCallback(() => {
     // Update Selected Group Assets By Option in Local Storage
@@ -125,8 +125,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     )
     // Update Selected Group Assets By Option in Redux
     dispatch(
-      WalletActions
-        .setSelectedGroupAssetsByItem(selectedGroupAssetsByOption)
+      WalletActions.setSelectedGroupAssetsByItem(selectedGroupAssetsByOption)
     )
   }, [selectedGroupAssetsByOption])
 
@@ -138,8 +137,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     )
     // Update Selected Asset Filter Option in Redux
     dispatch(
-      WalletActions
-        .setSelectedAssetFilterItem(selectedAssetFilterOption)
+      WalletActions.setSelectedAssetFilterItem(selectedAssetFilterOption)
     )
   }, [selectedAssetFilterOption])
 
@@ -152,12 +150,9 @@ export const PortfolioFiltersModal = (props: Props) => {
 
     // Update Filtered Out Network Keys in Redux
     dispatch(
-      WalletActions
-        .setFilteredOutPortfolioNetworkKeys(
-          filteredOutNetworkKeys
-        ))
+      WalletActions.setFilteredOutPortfolioNetworkKeys(filteredOutNetworkKeys)
+    )
   }, [filteredOutNetworkKeys])
-
 
   const onUpdateFilteredOutAccountAddresses = React.useCallback(() => {
     // Update Filtered Out Account Addresses in Local Storage
@@ -168,12 +163,11 @@ export const PortfolioFiltersModal = (props: Props) => {
 
     // Update Filtered Out Account Addresses in Redux
     dispatch(
-      WalletActions
-        .setFilteredOutPortfolioAccountAddresses(
-          filteredOutAccountAddresses
-        ))
+      WalletActions.setFilteredOutPortfolioAccountAddresses(
+        filteredOutAccountAddresses
+      )
+    )
   }, [filteredOutAccountAddresses])
-
 
   const onUpdateHidePortfolioSmallBalances = React.useCallback(() => {
     // Update Hide Small Portfolio Balances in Local Storage
@@ -183,20 +177,17 @@ export const PortfolioFiltersModal = (props: Props) => {
     )
 
     // Update Hide Small Portfolio Balances in Redux
-    dispatch(
-      WalletActions
-        .setHidePortfolioSmallBalances(
-          hideSmallBalances
-        ))
+    dispatch(WalletActions.setHidePortfolioSmallBalances(hideSmallBalances))
   }, [hideSmallBalances])
 
   const hideSmallBalancesDescription = React.useMemo(() => {
-    const minAmount =
-      new Amount(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
-        .formatAsFiat(defaultCurrencies.fiat)
-        .split('.')[0]
-    return getLocale('braveWalletHideSmallBalancesDescription')
-      .replace('$1', minAmount)
+    const minAmount = new Amount(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
+      .formatAsFiat(defaultCurrencies.fiat)
+      .split('.')[0]
+    return getLocale('braveWalletHideSmallBalancesDescription').replace(
+      '$1',
+      minAmount
+    )
   }, [defaultCurrencies.fiat])
 
   const showNftFilters = React.useMemo(() => {
@@ -211,11 +202,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     )
 
     // Update Show Network Logo on NFTs in Redux
-    dispatch(
-      WalletActions
-        .setShowNetworkLogoOnNfts(
-          showNetworkLogo
-        ))
+    dispatch(WalletActions.setShowNetworkLogoOnNfts(showNetworkLogo))
   }, [showNetworkLogo])
 
   // Methods
@@ -241,7 +228,11 @@ export const PortfolioFiltersModal = (props: Props) => {
   return (
     <PopupModal
       onClose={onClose}
-      title={showNftFilters ? getLocale('braveWalletPortfolioNftsFiltersTitle') : getLocale('braveWalletPortfolioFiltersTitle')}
+      title={
+        showNftFilters
+          ? getLocale('braveWalletPortfolioNftsFiltersTitle')
+          : getLocale('braveWalletPortfolioFiltersTitle')
+      }
       width='500px'
       borderRadius={16}
     >
@@ -250,19 +241,19 @@ export const PortfolioFiltersModal = (props: Props) => {
           fullWidth={true}
           alignItems='flex-start'
         >
-          {showNftFilters &&
+          {showNftFilters && (
             <>
               <FilterToggleSection
                 title={getLocale('braveWalletShowNetworkLogoOnNftsTitle')}
-                description={getLocale('braveWalletShowNetworkLogoOnNftsDescription')}
+                description={getLocale(
+                  'braveWalletShowNetworkLogoOnNftsDescription'
+                )}
                 icon='web3'
                 isSelected={showNetworkLogo}
-                setIsSelected={
-                  () => setShowNetworkLogo(prev => !prev)
-                }
+                setIsSelected={() => setShowNetworkLogo((prev) => !prev)}
               />
 
-              {/* This is commented out until Spam NFTs feature is implemented in core */}
+              {/* Disabled until Spam NFTs feature is implemented in core */}
               {/* <FilterToggleSection
                 title={getLocale('braveWalletShowSpamNftsTitle')}
                 description={getLocale('braveWalletShowSpamNftsDescription')}
@@ -273,7 +264,7 @@ export const PortfolioFiltersModal = (props: Props) => {
                 }
               /> */}
             </>
-          }
+          )}
 
           <FilterDropdownSection
             title={getLocale('braveWalletPortfolioGroupByTitle')}
@@ -284,7 +275,7 @@ export const PortfolioFiltersModal = (props: Props) => {
             onSelectOption={setSelectedGroupAssetsByOption}
           />
 
-          {!showNftFilters &&
+          {!showNftFilters && (
             <>
               <FilterDropdownSection
                 title={getLocale('braveWalletSortAssets')}
@@ -300,12 +291,10 @@ export const PortfolioFiltersModal = (props: Props) => {
                 description={hideSmallBalancesDescription}
                 icon='eye-on'
                 isSelected={hideSmallBalances}
-                setIsSelected={
-                  () => setHideSmallBalances(prev => !prev)
-                }
+                setIsSelected={() => setHideSmallBalances((prev) => !prev)}
               />
             </>
-          }
+          )}
 
           <VerticalDivider />
           <VerticalSpacer space={16} />
@@ -322,7 +311,6 @@ export const PortfolioFiltersModal = (props: Props) => {
             filteredOutAccountAddresses={filteredOutAccountAddresses}
             setFilteredOutAccountAddresses={setFilteredOutAccountAddresses}
           />
-
         </ContentWrapper>
       </ScrollableColumn>
 
@@ -334,13 +322,10 @@ export const PortfolioFiltersModal = (props: Props) => {
           {getLocale('braveWalletButtonCancel')}
         </Button>
         <HorizontalSpace space='16px' />
-        <Button
-          onClick={onSaveChanges}
-        >
+        <Button onClick={onSaveChanges}>
           {getLocale('braveWalletButtonSaveChanges')}
         </Button>
       </ButtonRow>
-
     </PopupModal>
   )
 }

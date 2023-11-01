@@ -12,9 +12,7 @@ import {
   AssetIconFactory,
   WalletButton
 } from '../../shared/style'
-import {
-  layoutPanelWidth
-} from '../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const assetWatchListItemHeight = 58
 

@@ -9,9 +9,7 @@ import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
 
 // Styled Components
-import {
-  AccountCircle
-} from './account-filter-selector.style'
+import { AccountCircle } from './account-filter-selector.style'
 
 import {
   NetworkItemButton,

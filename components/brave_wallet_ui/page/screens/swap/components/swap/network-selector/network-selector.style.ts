@@ -6,43 +6,42 @@
 import styled from 'styled-components'
 import { StyledDiv, Row } from '../../shared-swap.styles'
 
-
-export const SelectorBox = styled(StyledDiv) <{
+export const SelectorBox = styled(StyledDiv)<{
   isHeader?: boolean
 }>`
   justify-content: flex-start;
-  background-color: ${p => p.theme.color.background01};
+  background-color: ${(p) => p.theme.color.background01};
   min-width: 222px;
   position: absolute;
   padding-bottom: 4px;
   z-index: 10;
-  top: ${p => (p.isHeader ? 42 : 40)}px;
+  top: ${(p) => (p.isHeader ? 42 : 40)}px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
-  right: ${p => (p.isHeader ? 'unset' : '-10px')};
-  border-radius: ${p => (p.isHeader ? 16 : 4)}px;
+  right: ${(p) => (p.isHeader ? 'unset' : '-10px')};
+  border-radius: ${(p) => (p.isHeader ? 16 : 4)}px;
   @media (prefers-color-scheme: dark) {
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
   }
   @media screen and (max-width: 800px) {
-    right: ${p => (p.isHeader ? '0px' : 'unset')};
+    right: ${(p) => (p.isHeader ? '0px' : 'unset')};
   }
   @media screen and (max-width: 570px) {
-    position: ${p => (p.isHeader ? 'fixed' : 'absolute')};
-    right: ${p => (p.isHeader ? '0px' : '-20px')};
-    left: ${p => (p.isHeader ? '0px' : 'unset')};
-    top: ${p => (p.isHeader ? '72px' : '40px')};
-    bottom: ${p => (p.isHeader ? '0px' : 'unset')};
-    width: ${p => (p.isHeader ? 'auto' : '90vw')};
-    border-radius: ${p => (p.isHeader ? '16px 16px 0px 0px' : '4px')};
+    position: ${(p) => (p.isHeader ? 'fixed' : 'absolute')};
+    right: ${(p) => (p.isHeader ? '0px' : '-20px')};
+    left: ${(p) => (p.isHeader ? '0px' : 'unset')};
+    top: ${(p) => (p.isHeader ? '72px' : '40px')};
+    bottom: ${(p) => (p.isHeader ? '0px' : 'unset')};
+    width: ${(p) => (p.isHeader ? 'auto' : '90vw')};
+    border-radius: ${(p) => (p.isHeader ? '16px 16px 0px 0px' : '4px')};
   }
 `
 
-export const HeaderRow = styled(Row) <{
+export const HeaderRow = styled(Row)<{
   isHeader?: boolean
 }>`
   display: none;
   padding-top: 24px;
   @media screen and (max-width: 570px) {
-    display: ${p => (p.isHeader ? 'flex' : 'none')};
+    display: ${(p) => (p.isHeader ? 'flex' : 'none')};
   }
 `

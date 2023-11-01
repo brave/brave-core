@@ -13,7 +13,7 @@ import { Column } from '../../shared.styles'
 
 // Hooks
 import {
-  CreateAccountIcon
+  CreateAccountIcon //
 } from '../../../../../components/shared/create-account-icon/create-account-icon'
 
 interface Props {
@@ -27,7 +27,10 @@ export const AccountListItem = (props: Props) => {
   const { onClick, account, isSelected, accountAlias } = props
 
   return (
-    <Button disabled={isSelected} onClick={() => onClick(account)}>
+    <Button
+      disabled={isSelected}
+      onClick={() => onClick(account)}
+    >
       <CreateAccountIcon
         size='medium'
         account={account}
@@ -53,7 +56,7 @@ export const AccountListItem = (props: Props) => {
         >
           {account.address}
         </ButtonText>
-        {(accountAlias && accountAlias !== '') &&
+        {accountAlias && accountAlias !== '' && (
           <ButtonText
             textColor='text02'
             textSize='12px'
@@ -62,7 +65,7 @@ export const AccountListItem = (props: Props) => {
           >
             {accountAlias}
           </ButtonText>
-        }
+        )}
       </Column>
     </Button>
   )

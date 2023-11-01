@@ -15,9 +15,7 @@ import {
   Tooltip
 } from 'recharts'
 
-import {
-  mojoTimeDeltaToJSDate
-} from '../../../../common/mojomUtils'
+import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import {
   makeSerializableTimeDelta,
   deserializeTimeDelta
@@ -26,12 +24,7 @@ import { TokenPriceHistory } from '../../../constants/types'
 import CustomTooltip from './custom-tooltip'
 
 // Styled Components
-import {
-  StyledWrapper,
-  LoadingOverlay,
-  LoadIcon,
-  AreaWrapper
-} from './style'
+import { StyledWrapper, LoadingOverlay, LoadIcon, AreaWrapper } from './style'
 import { CustomReferenceDot } from './custom-reference-dot'
 
 interface Props {
@@ -63,7 +56,7 @@ const EmptyChartData = [
   }
 ]
 
-export function LineChart ({
+export function LineChart({
   priceData,
   isLoading,
   isDisabled,
@@ -77,11 +70,12 @@ export function LineChart ({
 
   // memos / computed
   const chartData = React.useMemo(() => {
-    const priceHistory = !priceData || priceData.length <= 0 || isDisabled
-      ? EmptyChartData
-      : priceData
+    const priceHistory =
+      !priceData || priceData.length <= 0 || isDisabled
+        ? EmptyChartData
+        : priceData
 
-    return priceHistory.map(price => ({
+    return priceHistory.map((price) => ({
       date: mojoTimeDeltaToJSDate(deserializeTimeDelta(price.date)),
       close: price.close
     }))
@@ -89,78 +83,87 @@ export function LineChart ({
 
   const viewBoxHeightHalf = viewBoxHeight / 2
   const toolTipYPosition =
-    activeYPosition < viewBoxHeightHalf
-      ? activeYPosition
-      : activeYPosition - 58
+    activeYPosition < viewBoxHeightHalf ? activeYPosition : activeYPosition - 58
 
   // render
   return (
     <StyledWrapper style={customStyle}>
       <AreaWrapper>
-      <ResponsiveContainer width='100%' height='99%'>
-        <AreaChart
-          data={chartData}
-          margin={{ top: 5, left: 0, right: 0, bottom: 0 }}
+        <ResponsiveContainer
+          width='100%'
+          height='99%'
         >
-          <defs>
-            <linearGradient
-              id='portfolioGradient'
-              x1='0'
-              y1='0'
-              x2='0'
-              y2='1'
-            >
-              <stop
-                offset='0%'
-                stopColor={leo.color.icon.interactive}
-                stopOpacity={0.2}
-              />
-              <stop
-                offset='110%'
-                stopColor={leo.color.icon.interactive}
-                stopOpacity={0}
-              />
-            </linearGradient>
-          </defs>
-          <YAxis hide={true} domain={['auto', 'auto']} />
-          <XAxis hide={true} dataKey='date' />
-          {priceData && priceData.length > 0 && !isDisabled && showTooltip &&
-            <Tooltip
+          <AreaChart
+            data={chartData}
+            margin={{ top: 5, left: 0, right: 0, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient
+                id='portfolioGradient'
+                x1='0'
+                y1='0'
+                x2='0'
+                y2='1'
+              >
+                <stop
+                  offset='0%'
+                  stopColor={leo.color.icon.interactive}
+                  stopOpacity={0.2}
+                />
+                <stop
+                  offset='110%'
+                  stopColor={leo.color.icon.interactive}
+                  stopOpacity={0}
+                />
+              </linearGradient>
+            </defs>
+            <YAxis
+              hide={true}
+              domain={['auto', 'auto']}
+            />
+            <XAxis
+              hide={true}
+              dataKey='date'
+            />
+            {priceData &&
+              priceData.length > 0 &&
+              !isDisabled &&
+              showTooltip && (
+                <Tooltip
+                  isAnimationActive={false}
+                  position={{
+                    x: activeXPosition,
+                    y: toolTipYPosition
+                  }}
+                  cursor={{
+                    stroke: leo.color.icon.interactive,
+                    strokeWidth: 2
+                  }}
+                  content={
+                    <CustomTooltip onUpdateViewBoxHeight={setViewBoxHeight} />
+                  }
+                />
+              )}
+            <Area
               isAnimationActive={false}
-              position={{
-                x: activeXPosition,
-                y: toolTipYPosition
-              }}
-              cursor={{
-                stroke: leo.color.icon.interactive,
-                strokeWidth: 2
-              }}
-              content={
-                <CustomTooltip
-                  onUpdateViewBoxHeight={setViewBoxHeight}
+              type='monotone'
+              dataKey='close'
+              strokeWidth={2}
+              stroke={leo.color.icon.interactive}
+              fill={
+                !priceData || priceData.length <= 0
+                  ? 'none'
+                  : 'url(#portfolioGradient)'
+              }
+              activeDot={
+                <CustomReferenceDot
+                  onUpdateYPosition={setActiveYPosition}
+                  onUpdateXPosition={setActiveXPosition}
                 />
               }
             />
-          }
-          <Area
-            isAnimationActive={false}
-            type='monotone'
-            dataKey='close'
-            strokeWidth={2}
-            stroke={leo.color.icon.interactive}
-            fill={
-              !priceData || priceData.length <= 0
-                ? 'none'
-                : 'url(#portfolioGradient)'}
-            activeDot={
-              <CustomReferenceDot
-                onUpdateYPosition={setActiveYPosition}
-                onUpdateXPosition={setActiveXPosition}
-              />
-            }
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+          </AreaChart>
+        </ResponsiveContainer>
       </AreaWrapper>
       <LoadingOverlay isLoading={isLoading}>
         <LoadIcon />

@@ -42,7 +42,16 @@ export const Text = styled.span<{
   --text01: ${(p) => p.theme.color.text01};
   --text02: ${(p) => p.theme.color.text02};
   --text03: ${(p) => p.theme.color.text03};
-  --line-height: ${(p) => (p.textSize === '12px' ? '18px' : p.textSize === '14px' ? '24px' : p.textSize === '22px' ? '32px' : p.textSize === '32px' ? '48px' : '20px')}
+  --line-height: ${(p) =>
+    p.textSize === '12px'
+      ? '18px'
+      : p.textSize === '14px'
+      ? '24px'
+      : p.textSize === '22px'
+      ? '32px'
+      : p.textSize === '32px'
+      ? '48px'
+      : '20px'}
   font-family: 'Poppins';
   color: ${(p) =>
     p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
@@ -53,7 +62,7 @@ export const Text = styled.span<{
   letter-spacing: 0.02em;
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   word-wrap: wrap;
-  margin-right: ${(p) => p.marginRight ? p.marginRight : 0}px;
+  margin-right: ${(p) => (p.marginRight ? p.marginRight : 0)}px;
 `
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
@@ -82,14 +91,14 @@ export const AmountInput = styled.input`
 
 export const PresetButton = styled.button<{ marginRight?: number }>`
   /* #F4F6F8 does not exist in the design system */
-  --button-background: #F4F6F8;
+  --button-background: #f4f6f8;
   /* rgba(218, 220, 232, 0.4) does not exist in the design system */
   --button-background-hover: rgba(218, 220, 232, 0.4);
   @media (prefers-color-scheme: dark) {
-      /* rgb(18, 19, 22) does not exist in the design system */
+    /* rgb(18, 19, 22) does not exist in the design system */
     --button-background: rgb(18, 19, 22);
     --button-background-hover: ${(p) => p.theme.color.background01};
-    }
+  }
   display: flex;
   font-family: 'Poppins';
   cursor: pointer;
@@ -102,7 +111,7 @@ export const PresetButton = styled.button<{ marginRight?: number }>`
   font-weight: 600;
   line-height: 16px;
   color: ${(p) => p.theme.color.text02};
-  margin-right: ${(p) => p.marginRight ? p.marginRight : 0}px;
+  margin-right: ${(p) => (p.marginRight ? p.marginRight : 0)}px;
   padding: 4px 8px;
   &:hover {
     background-color: var(--button-background-hover);

@@ -11,7 +11,7 @@ export interface AccountsTabState {
   showAccountModal: boolean
   accountModalType: AccountModalTypes
   accountToRemove:
-                   | {
+    | {
         accountId: BraveWallet.AccountId
         name: string
       }
@@ -56,38 +56,43 @@ export const createAccountsTabReducer = (initialState: AccountsTabState) => {
     }
   )
 
-  reducer.on(AccountsTabActions.setShowAccountModal, (
-    state: AccountsTabState,
-    payload: boolean
-  ): AccountsTabState => {
-    return {
-      ...state,
-      showAccountModal: payload
+  reducer.on(
+    AccountsTabActions.setShowAccountModal,
+    (state: AccountsTabState, payload: boolean): AccountsTabState => {
+      return {
+        ...state,
+        showAccountModal: payload
+      }
     }
-  })
+  )
 
-  reducer.on(AccountsTabActions.setAccountModalType, (
-    state: AccountsTabState,
-    payload: AccountModalTypes
-  ): AccountsTabState => {
-    return {
-      ...state,
-      accountModalType: payload
+  reducer.on(
+    AccountsTabActions.setAccountModalType,
+    (state: AccountsTabState, payload: AccountModalTypes): AccountsTabState => {
+      return {
+        ...state,
+        accountModalType: payload
+      }
     }
-  })
+  )
 
-  reducer.on(AccountsTabActions.setAccountToRemove, (
-    state: AccountsTabState,
-    payload: {
-      accountId: BraveWallet.AccountId,
-      name: string
-    } | undefined
-  ): AccountsTabState => {
-    return {
-      ...state,
-      accountToRemove: payload
+  reducer.on(
+    AccountsTabActions.setAccountToRemove,
+    (
+      state: AccountsTabState,
+      payload:
+        | {
+            accountId: BraveWallet.AccountId
+            name: string
+          }
+        | undefined
+    ): AccountsTabState => {
+      return {
+        ...state,
+        accountToRemove: payload
+      }
     }
-  })
+  )
 
   return reducer
 }

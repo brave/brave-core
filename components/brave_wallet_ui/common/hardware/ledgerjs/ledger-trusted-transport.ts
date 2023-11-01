@@ -18,17 +18,31 @@ import {
 export class LedgerTrustedMessagingTransport extends LedgerMessagingTransport {
   private onAuthorized?: () => void
 
-  constructor (targetWindow: Window, targetUrl: string, onAuthorized?: () => void) {
+  constructor(
+    targetWindow: Window,
+    targetUrl: string,
+    onAuthorized?: () => void
+  ) {
     super(targetWindow, targetUrl)
     this.onAuthorized = onAuthorized
-    this.addCommandHandler(LedgerCommand.AuthorizationSuccess, this.handleAuthorizationSuccess)
+    this.addCommandHandler(
+      LedgerCommand.AuthorizationSuccess,
+      this.handleAuthorizationSuccess
+    )
   }
 
-  private handleAuthorizationSuccess = async (command: AuthorizationSuccessCommand): Promise<AuthorizationSuccessResponsePayload> => {
+  private handleAuthorizationSuccess = async (
+    command: AuthorizationSuccessCommand
+  ): Promise<AuthorizationSuccessResponsePayload> => {
     if (this.onAuthorized) {
       this.onAuthorized()
     }
 
-    return { id: command.id, command: command.command, payload: { success: true }, origin: command.origin }
+    return {
+      id: command.id,
+      command: command.command,
+      payload: { success: true },
+      origin: command.origin
+    }
   }
 }

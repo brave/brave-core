@@ -12,12 +12,12 @@ import { MarketGridHeader } from '../constants/types'
 export const marketGridHeaders: MarketGridHeader[] = [
   {
     id: 'assets',
-    label: getLocale('braveWalletMarketDataAssetsColumn'),
+    label: getLocale('braveWalletMarketDataAssetsColumn')
   },
   {
     id: 'currentPrice',
     label: getLocale('braveWalletMarketDataPriceColumn'),
-    sortable: true,
+    sortable: true
   },
   {
     id: 'priceChangePercentage24h',

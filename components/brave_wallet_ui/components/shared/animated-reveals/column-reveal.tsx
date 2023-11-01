@@ -4,7 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { RevealableContentContainer, RevealableContentColumn } from './column-reveal.styles'
+import {
+  RevealableContentContainer,
+  RevealableContentColumn
+} from './column-reveal.styles'
 
 interface Props {
   hideContent?: boolean
@@ -16,9 +19,7 @@ export const ColumnReveal: React.FC<React.PropsWithChildren<Props>> = ({
 }) => {
   return (
     <RevealableContentContainer hideContent={hideContent}>
-      <RevealableContentColumn>
-        {children}
-      </RevealableContentColumn>
+      <RevealableContentColumn>{children}</RevealableContentColumn>
     </RevealableContentContainer>
   )
 }

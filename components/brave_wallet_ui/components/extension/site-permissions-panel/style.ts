@@ -20,7 +20,7 @@ export const HeaderRow = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  padding: 4px 12px 12px ;
+  padding: 4px 12px 12px;
 `
 
 export const HeaderColumn = styled.div`

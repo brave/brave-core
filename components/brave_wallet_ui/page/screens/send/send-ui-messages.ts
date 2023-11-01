@@ -20,5 +20,5 @@ export const FEVMAddressConvertionMessage: AddressMessageInfo = {
   title: 'braveWalletFEVMAddressTranslationTitle',
   description: 'braveWalletFEVMAddressTranslationDescription',
   url: 'https://docs.filecoin.io/smart-contracts/filecoin-evm-runtime/address-types/',
-  type: 'warning',
+  type: 'warning'
 }

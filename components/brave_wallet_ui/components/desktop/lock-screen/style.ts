@@ -13,10 +13,7 @@ import {
 } from '../../../assets/svg-icons/unlock-wallet-icons'
 
 // Shared Styles
-import {
-  Text,
-  Column
-} from '../../shared/style'
+import { Text, Column } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;

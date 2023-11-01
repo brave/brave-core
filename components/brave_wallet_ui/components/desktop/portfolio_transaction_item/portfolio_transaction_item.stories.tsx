@@ -8,7 +8,7 @@ import styled from 'styled-components'
 
 // components
 import {
-  WalletPageStory
+  WalletPageStory //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import WalletPageLayout from '../wallet-page-layout'
 import WalletSubViewLayout from '../wallet-sub-view-layout'
@@ -16,7 +16,7 @@ import { PortfolioTransactionItem } from './portfolio_transaction_item'
 
 // mocks
 import {
-  mockTransactionInfo
+  mockTransactionInfo //
 } from '../../../stories/mock-data/mock-transaction-info'
 
 export const CryptoViewWrapper = styled.div`
@@ -44,9 +44,7 @@ export const _PortfolioTransactionItem: React.FC = () => {
         <WalletSubViewLayout>
           <CryptoViewWrapper>
             <PortfolioWrapper>
-              <PortfolioTransactionItem
-                transaction={mockTransactionInfo}
-              />
+              <PortfolioTransactionItem transaction={mockTransactionInfo} />
             </PortfolioWrapper>
           </CryptoViewWrapper>
         </WalletSubViewLayout>

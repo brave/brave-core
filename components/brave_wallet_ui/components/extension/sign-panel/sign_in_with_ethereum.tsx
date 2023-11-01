@@ -8,25 +8,19 @@ import Button from '@brave/leo/react/button'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import {
-  BraveWallet
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Queries
-import {
-  useAccountQuery
-} from '../../../common/slices/api.slice.extra'
+import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 
 // Components
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
 import {
-  CreateAccountIcon
+  CreateAccountIcon //
 } from '../../shared/create-account-icon/create-account-icon'
 
 // Utils
-import {
-  reduceAddress
-} from '../../../utils/reduce-address'
+import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 
 // Styles
@@ -63,39 +57,38 @@ export const getKeyLocale = (key: string) => {
     : getLocale(localeString)
 }
 
-const getFormattedKeyValue =
-  (key: string, data?: BraveWallet.SIWEMessage) => {
-    if (!data) {
-      return ''
-    }
-    if (key === 'origin') {
-      return <CodeBlock>
-        {
-          JSON.stringify(
-            Object.fromEntries(
-              Object.entries(data[key])
-                .filter(([k]) => !k.includes('nonceIfOpaque'))
+const getFormattedKeyValue = (key: string, data?: BraveWallet.SIWEMessage) => {
+  if (!data) {
+    return ''
+  }
+  if (key === 'origin') {
+    return (
+      <CodeBlock>
+        {JSON.stringify(
+          Object.fromEntries(
+            Object.entries(data[key]).filter(
+              ([k]) => !k.includes('nonceIfOpaque')
             )
           )
-        }
+        )}
       </CodeBlock>
-    }
-    if (key === 'uri') {
-      return data[key].url
-    }
-    if (key === 'resources') {
-      return data[key]?.map(
-        (resource) => {
-          return <React.Fragment
-            key={resource.url}
-          >
-            <span>{resource.url}</span>
-            <VerticalSpace space='4px' />
-          </React.Fragment>
-        })
-    }
-    return data[key].toString()
+    )
   }
+  if (key === 'uri') {
+    return data[key].url
+  }
+  if (key === 'resources') {
+    return data[key]?.map((resource) => {
+      return (
+        <React.Fragment key={resource.url}>
+          <span>{resource.url}</span>
+          <VerticalSpace space='4px' />
+        </React.Fragment>
+      )
+    })
+  }
+  return data[key].toString()
+}
 
 interface Props {
   data: BraveWallet.SignMessageRequest
@@ -104,33 +97,23 @@ interface Props {
 }
 
 export const SignInWithEthereum = (props: Props) => {
-  const {
-    data,
-    onSignIn,
-    onCancel
-  } = props
+  const { data, onSignIn, onCancel } = props
 
   // State
   const [showDetails, setShowDetails] = React.useState<boolean>(false)
 
   // Queries
-  const { account } = useAccountQuery(
-    data.accountId || skipToken
-  )
+  const { account } = useAccountQuery(data.accountId || skipToken)
 
   // Computed
-  const dataKeys =
-    !data.signData.ethSiweData
-      ? []
-      : Object.keys(data.signData.ethSiweData)
-        .filter(
-          (key) =>
-            data.signData?.ethSiweData?.[key] !== null
-        )
+  const dataKeys = !data.signData.ethSiweData
+    ? []
+    : Object.keys(data.signData.ethSiweData).filter(
+        (key) => data.signData?.ethSiweData?.[key] !== null
+      )
 
   const hasMessageAndResource =
-    data.signData.ethSiweData?.statement &&
-    data.signData.ethSiweData?.resources
+    data.signData.ethSiweData?.statement && data.signData.ethSiweData?.resources
 
   if (showDetails) {
     return (
@@ -146,9 +129,7 @@ export const SignInWithEthereum = (props: Props) => {
             >
               {getLocale('braveWalletSeeDetails')}
             </Title>
-            <IconButton
-              onClick={() => setShowDetails(false)}
-            >
+            <IconButton onClick={() => setShowDetails(false)}>
               <CloseIcon />
             </IconButton>
           </Row>
@@ -159,10 +140,8 @@ export const SignInWithEthereum = (props: Props) => {
           fullHeight={true}
           padding='0px 16px'
         >
-          {dataKeys.map((objectKey: string, key: number) =>
-            <React.Fragment
-              key={objectKey}
-            >
+          {dataKeys.map((objectKey: string, key: number) => (
+            <React.Fragment key={objectKey}>
               <Row
                 justifyContent='flex-start'
                 padding='8px 0px'
@@ -177,21 +156,16 @@ export const SignInWithEthereum = (props: Props) => {
                   textSize='12px'
                   isBold={false}
                 >
-                  {
-                    getFormattedKeyValue(
-                      objectKey,
-                      data.signData.ethSiweData
-                    )
-                  }
+                  {getFormattedKeyValue(objectKey, data.signData.ethSiweData)}
                 </DetailsInfoText>
               </Row>
-              {dataKeys.length - 1 !== key &&
+              {dataKeys.length - 1 !== key && (
                 <Row>
                   <VerticalDivider />
                 </Row>
-              }
+              )}
             </React.Fragment>
-          )}
+          ))}
         </ScrollableColumn>
       </StyledWrapper>
     )
@@ -200,9 +174,7 @@ export const SignInWithEthereum = (props: Props) => {
   return (
     <StyledWrapper>
       <>
-        <Row
-          padding='16px 16px 11px 16px'
-        >
+        <Row padding='16px 16px 11px 16px'>
           <Title
             isBold={true}
             textSize='18px'
@@ -238,7 +210,7 @@ export const SignInWithEthereum = (props: Props) => {
         <VerticalDivider />
         <VerticalSpace space='8px' />
         <MessageBox>
-          {account &&
+          {account && (
             <Row
               padding='8px 9px 12px 9px'
               justifyContent='flex-start'
@@ -248,9 +220,7 @@ export const SignInWithEthereum = (props: Props) => {
                 account={account}
                 marginRight={18}
               />
-              <Column
-                alignItems='flex-start'
-              >
+              <Column alignItems='flex-start'>
                 <Title
                   isBold={true}
                   textSize='14px'
@@ -265,7 +235,7 @@ export const SignInWithEthereum = (props: Props) => {
                 </Description>
               </Column>
             </Row>
-          }
+          )}
           <Column
             fullWidth={true}
             padding='0px 16px 16px 16px'
@@ -274,17 +244,13 @@ export const SignInWithEthereum = (props: Props) => {
               textSize='14px'
               isBold={false}
             >
-              {
-                getLocale('braveWalletSignInWithBraveWalletMessage')
-                  .replaceAll('$1', data.originInfo.eTldPlusOne)
-              }
+              {getLocale('braveWalletSignInWithBraveWalletMessage').replaceAll(
+                '$1',
+                data.originInfo.eTldPlusOne
+              )}
             </MessageText>
-            <Row
-              justifyContent='flex-start'
-            >
-              <Row
-                width='unset'
-              >
+            <Row justifyContent='flex-start'>
+              <Row width='unset'>
                 <Button
                   kind='plain'
                   onClick={() => setShowDetails(true)}
@@ -294,7 +260,7 @@ export const SignInWithEthereum = (props: Props) => {
               </Row>
             </Row>
           </Column>
-          {hasMessageAndResource &&
+          {hasMessageAndResource && (
             <Column
               fullWidth={true}
               padding='0px 16px 8px 16px'
@@ -323,10 +289,8 @@ export const SignInWithEthereum = (props: Props) => {
                 {getLocale('braveWalletResources')}:
               </Title>
               <VerticalSpace space='4px' />
-              {data.signData.ethSiweData?.resources?.map((resource) =>
-                <React.Fragment
-                  key={resource.url}
-                >
+              {data.signData.ethSiweData?.resources?.map((resource) => (
+                <React.Fragment key={resource.url}>
                   <URLText
                     textSize='14px'
                     isBold={false}
@@ -335,14 +299,12 @@ export const SignInWithEthereum = (props: Props) => {
                   </URLText>
                   <VerticalSpace space='4px' />
                 </React.Fragment>
-              )}
+              ))}
             </Column>
-          }
+          )}
         </MessageBox>
       </Column>
-      <Row
-        padding='16px'
-      >
+      <Row padding='16px'>
         <Button
           kind='outline'
           onClick={onCancel}
@@ -350,11 +312,7 @@ export const SignInWithEthereum = (props: Props) => {
           {getLocale('braveWalletButtonCancel')}
         </Button>
         <HorizontalSpace space='16px' />
-        <Button
-          onClick={onSignIn}
-        >
-          {getLocale('braveWalletSignIn')}
-        </Button>
+        <Button onClick={onSignIn}>{getLocale('braveWalletSignIn')}</Button>
       </Row>
     </StyledWrapper>
   )

@@ -14,9 +14,18 @@ export interface Props {
 
 export const AuthorizeHardwareDeviceIFrame = (props: Props) => {
   const { coinType } = props
-  const src = LEDGER_BRIDGE_URL + `?targetUrl=${encodeURIComponent(window.origin)}` + '&coinType=' + coinType
+  const src =
+    LEDGER_BRIDGE_URL +
+    `?targetUrl=${encodeURIComponent(window.origin)}` +
+    '&coinType=' +
+    coinType
   return (
-    <StyledIFrame src={src} allow="hid" frameBorder="0" sandbox="allow-scripts allow-same-origin"/>
+    <StyledIFrame
+      src={src}
+      allow='hid'
+      frameBorder='0'
+      sandbox='allow-scripts allow-same-origin'
+    />
   )
 }
 

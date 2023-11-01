@@ -13,7 +13,6 @@ import {
 import { getMockedAPIProxy } from './__mocks__/bridge'
 
 describe('BaseQueryCache', () => {
-
   beforeAll(() => {
     setApiProxyFetcher(getMockedAPIProxy)
   })
@@ -55,8 +54,8 @@ describe('BaseQueryCache', () => {
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(2)
 
     // reset spy
-    getWalletInfoSpy.mockReset();
-    getWalletInfoSpy.mockRestore();
+    getWalletInfoSpy.mockReset()
+    getWalletInfoSpy.mockRestore()
   })
 
   it('should cache accounts after fetching', async () => {
@@ -88,8 +87,8 @@ describe('BaseQueryCache', () => {
     expect(getAllAcountsSpy).toHaveBeenCalledTimes(2)
 
     // reset spy
-    getAllAcountsSpy.mockReset();
-    getAllAcountsSpy.mockRestore();
+    getAllAcountsSpy.mockReset()
+    getAllAcountsSpy.mockRestore()
   })
 
   it('should cache networks after fetching', async () => {
@@ -140,11 +139,11 @@ describe('BaseQueryCache', () => {
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
 
     // reset spies
-    getWalletInfoSpy.mockReset();
-    getWalletInfoSpy.mockRestore();
-    getAllNetworksSpy.mockReset();
-    getAllNetworksSpy.mockRestore();
-    getHiddenNetworksSpy.mockReset();
-    getHiddenNetworksSpy.mockRestore();
+    getWalletInfoSpy.mockReset()
+    getWalletInfoSpy.mockRestore()
+    getAllNetworksSpy.mockReset()
+    getAllNetworksSpy.mockRestore()
+    getHiddenNetworksSpy.mockReset()
+    getHiddenNetworksSpy.mockRestore()
   })
 })

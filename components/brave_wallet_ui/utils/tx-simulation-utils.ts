@@ -58,7 +58,7 @@ export const decodeSimulatedSVMStateChanges = (
   const changes: GroupedSVMStateChanges = {
     solStakeAuthorityChanges: [],
     splApprovals: [],
-    svmTransfers: [],
+    svmTransfers: []
   }
 
   for (const stateChange of stateChanges) {

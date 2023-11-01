@@ -15,8 +15,18 @@ import { AddressMessageInfo } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
 
 // Styled Components
-import { LearnMoreLink, HowToSolveButton, ErrorIcon } from './address-message.style'
-import { Column, Row, Text, VerticalDivider, VerticalSpacer } from '../../shared.styles'
+import {
+  LearnMoreLink,
+  HowToSolveButton,
+  ErrorIcon
+} from './address-message.style'
+import {
+  Column,
+  Row,
+  Text,
+  VerticalDivider,
+  VerticalSpacer
+} from '../../shared.styles'
 
 interface Props {
   addressMessageInfo: AddressMessageInfo
@@ -34,9 +44,13 @@ export const AddressMessage = (props: Props) => {
     >
       <VerticalDivider marginBottom={16} />
       <Row>
-        {addressMessageInfo.type &&
-          <ErrorIcon icon={WarningIcon} size={15} type={addressMessageInfo.type} />
-        }
+        {addressMessageInfo.type && (
+          <ErrorIcon
+            icon={WarningIcon}
+            size={15}
+            type={addressMessageInfo.type}
+          />
+        )}
         <Text
           textSize='14px'
           textColor='text01'
@@ -46,13 +60,10 @@ export const AddressMessage = (props: Props) => {
           {getLocale(addressMessageInfo.title)}
         </Text>
       </Row>
-      {
-        addressMessageInfo.description &&
+      {addressMessageInfo.description && (
         <>
           <VerticalSpacer size={8} />
-          <Row
-            rowWidth='full'
-          >
+          <Row rowWidth='full'>
             <Text
               textSize='12px'
               textColor='text03'
@@ -60,25 +71,29 @@ export const AddressMessage = (props: Props) => {
               textAlign='left'
             >
               {getLocale(addressMessageInfo.description).replace(
-                '$1', addressMessageInfo.placeholder || '')} {addressMessageInfo.url &&
-                  <LearnMoreLink
-                    href={addressMessageInfo.url}
-                    target='_blank'
-                    rel='noopener noreferrer'>
-                    {getLocale('braveWalletLearnMore')}
-                  </LearnMoreLink>
-              }
-              {onClickHowToSolve &&
+                '$1',
+                addressMessageInfo.placeholder || ''
+              )}{' '}
+              {addressMessageInfo.url && (
+                <LearnMoreLink
+                  href={addressMessageInfo.url}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  {getLocale('braveWalletLearnMore')}
+                </LearnMoreLink>
+              )}
+              {onClickHowToSolve && (
                 <HowToSolveButton onClick={onClickHowToSolve}>
                   {getLocale('braveWalletHowToSolve')}
                 </HowToSolveButton>
-              }
+              )}
             </Text>
           </Row>
         </>
-      }
+      )}
       <VerticalSpacer size={16} />
-    </Column >
+    </Column>
   )
 }
 

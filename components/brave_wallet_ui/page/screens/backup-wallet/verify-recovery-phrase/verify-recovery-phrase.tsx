@@ -35,9 +35,7 @@ import {
   PhraseCard,
   PhraseCardBody
 } from '../../onboarding/onboarding.style'
-import {
-  ErrorTextRow
-} from './verify-backup-recovery-phrase.style'
+import { ErrorTextRow } from './verify-backup-recovery-phrase.style'
 
 // components
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
@@ -66,13 +64,18 @@ export const VerifyRecoveryPhrase = () => {
   const isOnboarding = pathname.includes(WalletRoutes.Onboarding)
 
   // methods
-  const onSelectedWordsUpdated = React.useCallback((words: any[], doesWordOrderMatch: boolean) => {
-    setHasSelectedWords(words.length === 3)
-    setNextStepEnabled(doesWordOrderMatch)
-  }, [])
+  const onSelectedWordsUpdated = React.useCallback(
+    (words: any[], doesWordOrderMatch: boolean) => {
+      setHasSelectedWords(words.length === 3)
+      setNextStepEnabled(doesWordOrderMatch)
+    },
+    []
+  )
 
   const onSkip = React.useCallback(() => {
-    braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.CompleteRecoverySkipped);
+    braveWalletP3A.reportOnboardingAction(
+      BraveWallet.OnboardingAction.CompleteRecoverySkipped
+    )
     dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.OnboardingComplete)
   }, [braveWalletP3A])
@@ -83,13 +86,16 @@ export const VerifyRecoveryPhrase = () => {
 
   const onNextStep = React.useCallback(() => {
     if (isOnboarding) {
-      braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.Complete);
+      braveWalletP3A.reportOnboardingAction(
+        BraveWallet.OnboardingAction.Complete
+      )
       dispatch(WalletPageActions.walletSetupComplete(true))
     }
     dispatch(WalletPageActions.walletBackupComplete())
-    history.push(isOnboarding
-      ? WalletRoutes.OnboardingComplete
-      : WalletRoutes.PortfolioAssets
+    history.push(
+      isOnboarding
+        ? WalletRoutes.OnboardingComplete
+        : WalletRoutes.PortfolioAssets
     )
   }, [isOnboarding])
 
@@ -109,43 +115,54 @@ export const VerifyRecoveryPhrase = () => {
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-
-          {isOnboarding &&
+          {isOnboarding && (
             <OnboardingNewWalletStepsNavigation
               goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
               currentStep={WalletRoutes.OnboardingVerifyRecoveryPhrase}
               onSkip={onSkip}
             />
-          }
-          {!isOnboarding &&
+          )}
+          {!isOnboarding && (
             <StepsNavigation
               steps={WALLET_BACKUP_STEPS}
               goBackUrl={WalletRoutes.BackupRecoveryPhrase}
               currentStep={WalletRoutes.BackupVerifyRecoveryPhrase}
               onSkip={onSkipBackup}
             />
-          }
+          )}
 
           <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletVerifyRecoveryPhraseTitle')}</Title>
             <Description>
               <span>
-                {getLocaleWithTags('braveWalletVerifyRecoveryPhraseInstructions', 3).map((text, i) => {
-                  return <span key={text.duringTag || i}>
-                    {text.beforeTag}
-                    <strong>
-                      {
-                        text.duringTag
+                {getLocaleWithTags(
+                  'braveWalletVerifyRecoveryPhraseInstructions',
+                  3
+                ).map((text, i) => {
+                  return (
+                    <span key={text.duringTag || i}>
+                      {text.beforeTag}
+                      <strong>
+                        {text.duringTag
                           ?.replace('$7', ORDINALS[verificationIndices[0]])
-                          ?.replace('$8', formatOrdinals(verificationIndices[0] + 1))
+                          ?.replace(
+                            '$8',
+                            formatOrdinals(verificationIndices[0] + 1)
+                          )
                           ?.replace('$9', ORDINALS[verificationIndices[1]])
-                          ?.replace('$10', formatOrdinals(verificationIndices[1] + 1))
+                          ?.replace(
+                            '$10',
+                            formatOrdinals(verificationIndices[1] + 1)
+                          )
                           ?.replace('$11', ORDINALS[verificationIndices[2]])
-                          ?.replace('$12', formatOrdinals(verificationIndices[2] + 1))
-                      }
-                    </strong>
-                    {text.afterTag}
-                  </span>
+                          ?.replace(
+                            '$12',
+                            formatOrdinals(verificationIndices[2] + 1)
+                          )}
+                      </strong>
+                      {text.afterTag}
+                    </span>
+                  )
                 })}
               </span>
             </Description>
@@ -164,14 +181,14 @@ export const VerifyRecoveryPhrase = () => {
           </PhraseCard>
 
           <ErrorTextRow hasError={!nextStepEnabled && hasSelectedWords}>
-            {!nextStepEnabled && hasSelectedWords &&
+            {!nextStepEnabled && hasSelectedWords && (
               <>
                 <ErrorXIcon />
                 <ErrorText>
                   {getLocale('braveWalletVerifyPhraseError')}
                 </ErrorText>
               </>
-            }
+            )}
           </ErrorTextRow>
 
           <NextButtonRow>
@@ -182,7 +199,6 @@ export const VerifyRecoveryPhrase = () => {
               onSubmit={onNextStep}
             />
           </NextButtonRow>
-
         </StyledWrapper>
       </MainWrapper>
     </CenteredPageLayout>

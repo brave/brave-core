@@ -23,15 +23,20 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 
 // Components
 import { store } from '../../../store'
-import BraveCoreThemeProvider
-  from '../../../../../common/BraveCoreThemeProvider'
+import {
+  // eslint-disable-next-line import/no-named-default
+  default as BraveCoreThemeProvider
+} from '../../../../../common/BraveCoreThemeProvider'
 import { Swap } from '../swap'
 import { LibContext } from '../../../../common/context/lib.context'
 
 export function AndroidSwapApp() {
   return (
     <Provider store={store}>
-      <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+      <BraveCoreThemeProvider
+        dark={walletDarkTheme}
+        light={walletLightTheme}
+      >
         <LibContext.Provider value={Lib}>
           <Swap />
         </LibContext.Provider>
@@ -40,7 +45,7 @@ export function AndroidSwapApp() {
   )
 }
 
-function initialize () {
+function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
   render(AndroidSwapApp(), document.getElementById('root'))

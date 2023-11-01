@@ -8,25 +8,29 @@ import * as React from 'react'
 import { PasswordStrengthTooltip } from './password-strength-tooltip'
 
 export const _PasswordStrengthTooltip = () => {
-  return <PasswordStrengthTooltip
-    isVisible
-    passwordStrength={{ isLongEnough: true }}
-  >
-    Hover
-  </PasswordStrengthTooltip>
-}
-
-_PasswordStrengthTooltip.storyName = 'Password strength Tooltip'
-
-export const _PasswordStrengthTooltipMini = () => {
-  return <div style={{ width: 30 }}>
+  return (
     <PasswordStrengthTooltip
       isVisible
       passwordStrength={{ isLongEnough: true }}
     >
       Hover
     </PasswordStrengthTooltip>
-  </div>
+  )
+}
+
+_PasswordStrengthTooltip.storyName = 'Password strength Tooltip'
+
+export const _PasswordStrengthTooltipMini = () => {
+  return (
+    <div style={{ width: 30 }}>
+      <PasswordStrengthTooltip
+        isVisible
+        passwordStrength={{ isLongEnough: true }}
+      >
+        Hover
+      </PasswordStrengthTooltip>
+    </div>
+  )
 }
 
 _PasswordStrengthTooltipMini.storyName = 'Password strength Tooltip Small'

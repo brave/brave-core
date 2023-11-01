@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-export function useIsMounted () {
+export function useIsMounted() {
   const isMounted = React.useRef(true)
   React.useEffect(() => {
     // cleanup mechanism for useEffect

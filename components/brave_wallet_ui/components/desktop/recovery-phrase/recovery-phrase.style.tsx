@@ -24,7 +24,7 @@ export const RecoveryBubble = styled.div<{
   verificationModeEnabled?: boolean
   selected?: boolean
 }>`
-  position: ${(p) => p.verificationModeEnabled ? 'relative' : 'unset'};
+  position: ${(p) => (p.verificationModeEnabled ? 'relative' : 'unset')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,38 +32,24 @@ export const RecoveryBubble = styled.div<{
   padding: 5px 0px;
   border-radius: 4px;
   flex-basis: 100px;
-  margin-bottom: ${(p) => p.verificationModeEnabled
-    ? 24
-    : 16
-  }px;
-  cursor: ${(p) => p.verificationModeEnabled
-    ? 'pointer'
-    : 'unset'
-  };
+  margin-bottom: ${(p) => (p.verificationModeEnabled ? 24 : 16)}px;
+  cursor: ${(p) => (p.verificationModeEnabled ? 'pointer' : 'unset')};
 
   font-family: Poppins;
   font-size: 14px;
   line-height: 22px;
   font-weight: 600;
 
-
   color: ${(p) => p.theme.color.text01};
-  background-color: ${(p) => p.selected
-    ? p.theme.palette.blurple200
-    : p.theme.color.background01
-  };
-  
-  @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.selected
-      ? p.theme.palette.black
-      : p.theme.color.text01
-    };
-    background-color: ${(p) => p.selected
-    ? p.theme.palette.blurple200
-    : p.theme.color.background01
-  };
-  }
+  background-color: ${(p) =>
+    p.selected ? p.theme.palette.blurple200 : p.theme.color.background01};
 
+  @media (prefers-color-scheme: dark) {
+    color: ${(p) =>
+      p.selected ? p.theme.palette.black : p.theme.color.text01};
+    background-color: ${(p) =>
+      p.selected ? p.theme.palette.blurple200 : p.theme.color.background01};
+  }
 `
 
 export const RecoveryBubbleBadge = styled.p`
@@ -88,7 +74,7 @@ export const RecoveryBubbleBadge = styled.p`
 export const FrostedGlass = styled.div`
   position: absolute;
   top: 0;
-  bottom: 0; 
+  bottom: 0;
   left: 0;
   right: 0;
   background-image: url(${FrostedGlassRecoveryPhrase});

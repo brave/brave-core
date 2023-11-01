@@ -16,18 +16,26 @@ const findBlockchainTokenInfo = async (address: string) => {
 
 describe('useTokenInfo hook', () => {
   it('Should return DOG token info from tokens list', () => {
-    const { result } = renderHook(() => useTokenInfo(
-      findBlockchainTokenInfo, [mockERC20Token], mockNetwork
-    ))
-    act(() => result.current.onFindTokenInfoByContractAddress('mockContractAddress'))
-    expect(result.current.foundTokenInfoByContractAddress?.name).toEqual('Dog Coin')
+    const { result } = renderHook(() =>
+      useTokenInfo(findBlockchainTokenInfo, [mockERC20Token], mockNetwork)
+    )
+    act(() =>
+      result.current.onFindTokenInfoByContractAddress('mockContractAddress')
+    )
+    expect(result.current.foundTokenInfoByContractAddress?.name).toEqual(
+      'Dog Coin'
+    )
   })
 
   it('Should not find info and return undefined', () => {
-    const { result } = renderHook(() => useTokenInfo(
-      findBlockchainTokenInfo, [mockERC20Token], mockNetwork
-    ))
-    act(() => result.current.onFindTokenInfoByContractAddress('testContractAddress'))
-    expect(result.current.foundTokenInfoByContractAddress?.name).toEqual(undefined)
+    const { result } = renderHook(() =>
+      useTokenInfo(findBlockchainTokenInfo, [mockERC20Token], mockNetwork)
+    )
+    act(() =>
+      result.current.onFindTokenInfoByContractAddress('testContractAddress')
+    )
+    expect(result.current.foundTokenInfoByContractAddress?.name).toEqual(
+      undefined
+    )
   })
 })

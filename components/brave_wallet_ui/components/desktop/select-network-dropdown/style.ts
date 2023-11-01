@@ -9,7 +9,7 @@ import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 
 export const StyledWrapper = styled.div<{ useWithSearch?: boolean }>`
   display: flex;
-  width: ${(p) => p.useWithSearch ? 'unset' : '100%'};
+  width: ${(p) => (p.useWithSearch ? 'unset' : '100%')};
   min-width: fit-content;
   flex-direction: row;
   align-items: center;
@@ -17,34 +17,35 @@ export const StyledWrapper = styled.div<{ useWithSearch?: boolean }>`
   position: relative;
 `
 
-export const NetworkButton = styled(WalletButton) <{ useWithSearch?: boolean }>`
+export const NetworkButton = styled(WalletButton)<{ useWithSearch?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   background-color: ${(p) => p.theme.color.background02};
-  min-width: ${(p) => p.useWithSearch ? 'fit-content' : '265px'};
-  width: ${(p) => p.useWithSearch ? 'unset' : '100%'};
+  min-width: ${(p) => (p.useWithSearch ? 'fit-content' : '265px')};
+  width: ${(p) => (p.useWithSearch ? 'unset' : '100%')};
   height: 40px;
   cursor: pointer;
   outline: none;
   background: none;
-  border: ${(p) => p.useWithSearch ? 'none' : `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) =>
+    p.useWithSearch ? 'none' : `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
   padding: 10px;
   padding-left: 12px;
-  margin-bottom: ${(p) => p.useWithSearch ? '0px' : '8px'};
+  margin-bottom: ${(p) => (p.useWithSearch ? '0px' : '8px')};
 `
 
-export const DropDownIcon = styled(CaratStrongDownIcon) <{ isOpen: boolean }>`
+export const DropDownIcon = styled(CaratStrongDownIcon)<{ isOpen: boolean }>`
   width: 18px;
   height: 18px;
   color: ${(p) => p.theme.color.interactive07};
   transition-duration: 0.3s;
-  transform: ${(p) => p.isOpen ? 'rotate(180deg)' : 'unset'};
+  transform: ${(p) => (p.isOpen ? 'rotate(180deg)' : 'unset')};
 `
 
-export const DropDown = styled.div <{ useWithSearch?: boolean }>`
+export const DropDown = styled.div<{ useWithSearch?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,12 +61,12 @@ export const DropDown = styled.div <{ useWithSearch?: boolean }>`
   }
   position: absolute;
   top: 44px;
-  left: ${(p) => p.useWithSearch ? 'unset' : '0px'};
-  right: ${(p) => p.useWithSearch ? '0px' : 'unset'};
+  left: ${(p) => (p.useWithSearch ? 'unset' : '0px')};
+  right: ${(p) => (p.useWithSearch ? '0px' : 'unset')};
   z-index: 12;
   overflow-y: scroll;
   overflow-x: hidden;
- `
+`
 
 export const LeftSide = styled.div`
   display: flex;

@@ -110,13 +110,19 @@ export function AddSuggestedTokenPanel() {
           {!isFetching && tokenNetwork?.chainName ? (
             <NetworkText>{tokenNetwork.chainName}</NetworkText>
           ) : (
-            <LoadingSkeleton height={12} width={'50px'} />
+            <LoadingSkeleton
+              height={12}
+              width={'50px'}
+            />
           )}
         </TopRow>
         <Title>{getLocale('braveWalletAddSuggestedTokenTitle')}</Title>
         <URLText>
           {isFetching ? (
-            <LoadingSkeleton height={12} width={'50px'} />
+            <LoadingSkeleton
+              height={12}
+              width={'50px'}
+            />
           ) : (
             <CreateSiteOrigin
               originSpec={origin.originSpec}
@@ -130,14 +136,20 @@ export function AddSuggestedTokenPanel() {
         {isFetching ? (
           <LoadingRing size={'40px'} />
         ) : (
-          <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
+          <AssetIconWithPlaceholder
+            asset={token}
+            network={tokenNetwork}
+          />
         )}
         {!isFetching && token ? (
           <TokenName>
             {token.name ?? ''} ({token.symbol ?? ''})
           </TokenName>
         ) : (
-          <LoadingSkeleton height={12} width={'50px'} />
+          <LoadingSkeleton
+            height={12}
+            width={'50px'}
+          />
         )}
         <Tooltip text={getLocale('braveWalletTransactionExplorer')}>
           <ContractAddress

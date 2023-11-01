@@ -5,9 +5,7 @@
 
 import { mockSolDappSignAndSendTransactionRequest } from '../common/constants/mocks'
 
-import {
-  getSolanaTransactionInstructionParamsAndType
-} from './solana-instruction-utils'
+import { getSolanaTransactionInstructionParamsAndType } from './solana-instruction-utils'
 
 describe('getSolanaSystemInstructionParamsAndType', () => {
   it('converts a brave wallet instruction to a solana instruction', () => {
@@ -24,17 +22,12 @@ describe('getSolanaSystemInstructionParamsAndType', () => {
     const fromAccountParamIndex = accountParamNames.indexOf('from_account')
     const toAccountParamIndex = accountParamNames.indexOf('to_account')
     const hasFromAddrTableLookupIndex =
-      mockSolDappSignAndSendTransactionRequest
-        .txDataUnion.solanaTxData
-        ?.instructions[0]
-        .accountMetas[fromAccountParamIndex]
+      mockSolDappSignAndSendTransactionRequest.txDataUnion.solanaTxData
+        ?.instructions[0].accountMetas[fromAccountParamIndex]
         .addrTableLookupIndex?.val !== undefined
     const hasToAddrTableLookupIndex =
-      mockSolDappSignAndSendTransactionRequest
-        .txDataUnion.solanaTxData
-        ?.instructions[0]
-        .accountMetas[toAccountParamIndex]
-        .addrTableLookupIndex
+      mockSolDappSignAndSendTransactionRequest.txDataUnion.solanaTxData
+        ?.instructions[0].accountMetas[toAccountParamIndex].addrTableLookupIndex
         ?.val !== undefined
 
     expect(typedInstruction.params).toBeDefined()

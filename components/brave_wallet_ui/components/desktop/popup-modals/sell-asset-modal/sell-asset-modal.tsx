@@ -10,14 +10,17 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { BraveWallet } from '../../../../constants/types'
 
 // Utils
-import { formatTokenBalanceWithSymbol, getPercentAmount } from '../../../../utils/balance-utils'
+import {
+  formatTokenBalanceWithSymbol,
+  getPercentAmount
+} from '../../../../utils/balance-utils'
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 
 // Hooks
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import {
-  useScopedBalanceUpdater
+  useScopedBalanceUpdater //
 } from '../../../../common/hooks/use-scoped-balance-updater'
 
 // Components
@@ -39,11 +42,7 @@ import {
   ErrorIcon
 } from './sell-asset-modal.style'
 
-import {
-  VerticalSpacer,
-  Row,
-  Column
-} from '../../../shared/style'
+import { VerticalSpacer, Row, Column } from '../../../shared/style'
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
@@ -75,15 +74,26 @@ export const SellAssetModal = (props: Props) => {
 
   // Memos
   const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(AssetIcon, { size: 'medium', marginLeft: 4, marginRight: 8 })
+    return withPlaceholderIcon(AssetIcon, {
+      size: 'medium',
+      marginLeft: 4,
+      marginRight: 8
+    })
   }, [])
 
   // Computed
-  const insufficientBalance = new Amount(sellAmount).multiplyByDecimals(selectedAsset.decimals).gt(sellAssetBalance)
-  const isInvalidAmount = sellAmount.startsWith('0') && !sellAmount.includes('.')
+  const insufficientBalance = new Amount(sellAmount)
+    .multiplyByDecimals(selectedAsset.decimals)
+    .gt(sellAssetBalance)
+  const isInvalidAmount =
+    sellAmount.startsWith('0') && !sellAmount.includes('.')
   const isNotNumeric = new Amount(sellAmount).isNaN()
-  const isSellButtonDisabled = isInvalidAmount || isNotNumeric || sellAmount === '' || Number(sellAmount) <= 0 || insufficientBalance
-
+  const isSellButtonDisabled =
+    isInvalidAmount ||
+    isNotNumeric ||
+    sellAmount === '' ||
+    Number(sellAmount) <= 0 ||
+    insufficientBalance
 
   // Methods
   const handleInputAmountChange = React.useCallback(
@@ -93,9 +103,7 @@ export const SellAssetModal = (props: Props) => {
     [setSellAmount]
   )
 
-  const {
-    data: tokenBalancesRegistry,
-  } = useScopedBalanceUpdater(
+  const { data: tokenBalancesRegistry } = useScopedBalanceUpdater(
     account && selectedAsset
       ? {
           network: {
@@ -106,22 +114,25 @@ export const SellAssetModal = (props: Props) => {
           tokens: [selectedAsset]
         }
       : skipToken
-    )
+  )
 
-  const setPresetAmountValue = React.useCallback((percent: number) => {
-    if (!selectedAsset || !account) {
-      return
-    }
+  const setPresetAmountValue = React.useCallback(
+    (percent: number) => {
+      if (!selectedAsset || !account) {
+        return
+      }
 
-    setSellAmount(
-      getPercentAmount(
-        selectedAsset,
-        account.accountId,
-        percent,
-        tokenBalancesRegistry
+      setSellAmount(
+        getPercentAmount(
+          selectedAsset,
+          account.accountId,
+          percent,
+          tokenBalancesRegistry
+        )
       )
-    )
-  }, [setSellAmount, selectedAsset, account, tokenBalancesRegistry])
+    },
+    [setSellAmount, selectedAsset, account, tokenBalancesRegistry]
+  )
 
   const onCloseSellModal = React.useCallback(() => {
     setSellAmount('')
@@ -129,11 +140,7 @@ export const SellAssetModal = (props: Props) => {
   }, [setSellAmount, onClose])
 
   // Hooks
-  useOnClickOutside(
-    sellAssetModalRef,
-    onCloseSellModal,
-    showSellModal
-  )
+  useOnClickOutside(sellAssetModalRef, onCloseSellModal, showSellModal)
 
   return (
     <PopupModal
@@ -146,18 +153,14 @@ export const SellAssetModal = (props: Props) => {
       headerPaddingHorizontal={32}
     >
       <StyledWrapper>
-        <Column
-          fullWidth={true}
-        >
+        <Column fullWidth={true}>
           <InputSection>
             <Row
               marginBottom={19}
               justifyContent='space-between'
               width='100%'
             >
-              <Row
-                width='unset'
-              >
+              <Row width='unset'>
                 <Text
                   textSize='12px'
                   isBold={false}
@@ -178,18 +181,14 @@ export const SellAssetModal = (props: Props) => {
                   )}
                 </Text>
               </Row>
-              <Row
-                width='unset'
-              >
+              <Row width='unset'>
                 <PresetButton
                   onClick={() => setPresetAmountValue(0.5)}
                   marginRight={4}
                 >
                   {getLocale('braveWalletSendHalf')}
                 </PresetButton>
-                <PresetButton
-                  onClick={() => setPresetAmountValue(1)}
-                >
+                <PresetButton onClick={() => setPresetAmountValue(1)}>
                   {getLocale('braveWalletSendMax')}
                 </PresetButton>
               </Row>
@@ -199,18 +198,14 @@ export const SellAssetModal = (props: Props) => {
               width='100%'
               justifyContent='space-between'
             >
-              <Row
-                width='unset'
-              >
+              <Row width='unset'>
                 <AmountInput
                   placeholder='0.00'
                   value={sellAmount}
                   onChange={handleInputAmountChange}
                 />
               </Row>
-              <Row
-                width='unset'
-              >
+              <Row width='unset'>
                 <AssetIconWithPlaceholder
                   asset={selectedAsset}
                   network={selectedAssetsNetwork}
@@ -225,7 +220,7 @@ export const SellAssetModal = (props: Props) => {
               </Row>
             </Row>
           </InputSection>
-          {insufficientBalance && !isInvalidAmount &&
+          {insufficientBalance && !isInvalidAmount && (
             <ErrorBox>
               <ErrorIcon />
               <Text
@@ -234,13 +229,13 @@ export const SellAssetModal = (props: Props) => {
                 textColor='text01'
                 textAlign='left'
               >
-                {
-                  getLocale('braveWalletNotEnoughBalance')
-                    .replace('$1', selectedAsset.symbol)
-                }
+                {getLocale('braveWalletNotEnoughBalance').replace(
+                  '$1',
+                  selectedAsset.symbol
+                )}
               </Text>
             </ErrorBox>
-          }
+          )}
         </Column>
         <VerticalSpacer space={8} />
         <NavButton
@@ -248,8 +243,8 @@ export const SellAssetModal = (props: Props) => {
           buttonType='primary'
           minHeight='52px'
           text={
-            // Ramp is hardcoded for now, but we can update with selectedProvider.name
-            // once we add more offramp providers.
+            // Ramp is hardcoded for now, but we can update with
+            // selectedProvider.name once we add more offramp providers.
             getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')
           }
           onSubmit={openSellAssetLink}

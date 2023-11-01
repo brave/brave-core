@@ -13,10 +13,10 @@ export const ButtonIcon = styled(Icon)`
   margin-right: 8px;
 `
 
-export const ArrowIcon = styled(Icon) <{ isOpen: boolean }>`
+export const ArrowIcon = styled(Icon)<{ isOpen: boolean }>`
   background-color: ${(p) => p.theme.color.text02};
   transition-duration: 0.3s;
-  transform: ${(p) => p.isOpen ? 'rotate(180deg)' : 'unset'};
+  transform: ${(p) => (p.isOpen ? 'rotate(180deg)' : 'unset')};
 `
 
 export const DropDown = styled(StyledDiv)`

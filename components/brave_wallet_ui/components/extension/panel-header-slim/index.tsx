@@ -4,6 +4,4 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { PanelHeaderSlim } from './panel-header-slim'
 
-export {
-  PanelHeaderSlim
-}
+export { PanelHeaderSlim }

@@ -25,7 +25,7 @@ export const TabWrapper = styled(WalletButton)`
   cursor: pointer;
 `
 
-export const Tab = styled.div<{ isActive: boolean}>`
+export const Tab = styled.div<{ isActive: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -36,14 +36,16 @@ export const Tab = styled.div<{ isActive: boolean}>`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.02em;
-  color: ${p => p.isActive ? leo.color.text.interactive : leo.color.text.tertiary};
+  color: ${(p) =>
+    p.isActive ? leo.color.text.interactive : leo.color.text.tertiary};
   margin-bottom: 12px;
 `
 
 export const Indicator = styled.div<{ isActive: boolean }>`
   width: 100%;
   height: 4px;
-  background-color: ${p => p.isActive ? leo.color.button.background : 'transparent' };
+  background-color: ${(p) =>
+    p.isActive ? leo.color.button.background : 'transparent'};
   border-radius: 2px 2px 0px 0px;
 `
 
@@ -66,7 +68,9 @@ export const LabelSummary = styled.span<{ isActive: boolean }>`
   align-items: center;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: ${p => p.isActive ? leo.color.text.interactive : leo.color.gray['50']};
+  color: ${(p) =>
+    p.isActive ? leo.color.text.interactive : leo.color.gray['50']};
   text-align: center;
-  border: 1px solid ${p => p.isActive ? leo.color.primary['40'] : leo.color.gray['50'] }
+  border: 1px solid
+    ${(p) => (p.isActive ? leo.color.primary['40'] : leo.color.gray['50'])};
 `

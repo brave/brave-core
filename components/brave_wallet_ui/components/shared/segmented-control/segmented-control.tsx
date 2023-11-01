@@ -13,10 +13,7 @@ import { NavOption } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
-import {
-  ButtonsContainer,
-  Button
-} from './segmented-control.style'
+import { ButtonsContainer, Button } from './segmented-control.style'
 
 interface Props {
   navOptions: NavOption[]
@@ -39,20 +36,19 @@ export const SegmentedControl = (props: Props) => {
     (navOption: NavOption) => {
       return navOption.route.startsWith('#')
         ? !hash
-          // Since hashes are not necessary
-          // we default the first option as selected,
-          // if there is no hash in the route location.
-          ? navOptions[0].id === navOption.id
+          ? // Since hashes are not necessary
+            // we default the first option as selected,
+            // if there is no hash in the route location.
+            navOptions[0].id === navOption.id
           : hash === navOption.route
         : walletLocation.includes(navOption.route)
-
-    }, [walletLocation, navOptions, hash])
+    },
+    [walletLocation, navOptions, hash]
+  )
 
   return (
-    <ButtonsContainer
-      width={width}
-    >
-      {navOptions.map((navOption: NavOption) =>
+    <ButtonsContainer width={width}>
+      {navOptions.map((navOption: NavOption) => (
         <Button
           key={navOption.id}
           isSelected={isSelected(navOption)}
@@ -60,7 +56,7 @@ export const SegmentedControl = (props: Props) => {
         >
           {getLocale(navOption.name)}
         </Button>
-      )}
+      ))}
     </ButtonsContainer>
   )
 }

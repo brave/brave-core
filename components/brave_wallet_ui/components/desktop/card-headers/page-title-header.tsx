@@ -5,23 +5,21 @@
 import * as React from 'react'
 
 // Selectors
-import {
-  UISelectors
-} from '../../../common/selectors'
+import { UISelectors } from '../../../common/selectors'
 
 // Hooks
-import {
-  useSafeUISelector
-} from '../../../common/hooks/use-safe-selector'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 
 // Components
-import {
-  DefaultPanelHeader
-} from './default-panel-header'
+import { DefaultPanelHeader } from './default-panel-header'
 
 // styles
 import { Row } from '../../shared/style'
-import { ButtonIcon, CircleButton, HeaderTitle } from './shared-card-headers.style'
+import {
+  ButtonIcon,
+  CircleButton,
+  HeaderTitle
+} from './shared-card-headers.style'
 
 interface Props {
   title: string
@@ -30,36 +28,29 @@ interface Props {
 }
 
 export const PageTitleHeader = ({ title, showBackButton, onBack }: Props) => {
-
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
-  return (
-    isPanel && !showBackButton
-      ? <DefaultPanelHeader
-        title={title}
-      />
-      : <Row
-        padding={isPanel ? '17px 20px' : '24px 0px'}
-        justifyContent='flex-start'
-      >
-        {showBackButton &&
-          <CircleButton
-            size={28}
-            marginRight={16}
-            onClick={onBack}
-          >
-            <ButtonIcon
-              size={16}
-              name='arrow-left'
-            />
-          </CircleButton>
-        }
-        <HeaderTitle
-          isPanel={isPanel}
+  return isPanel && !showBackButton ? (
+    <DefaultPanelHeader title={title} />
+  ) : (
+    <Row
+      padding={isPanel ? '17px 20px' : '24px 0px'}
+      justifyContent='flex-start'
+    >
+      {showBackButton && (
+        <CircleButton
+          size={28}
+          marginRight={16}
+          onClick={onBack}
         >
-          {title}
-        </HeaderTitle>
-      </Row>
+          <ButtonIcon
+            size={16}
+            name='arrow-left'
+          />
+        </CircleButton>
+      )}
+      <HeaderTitle isPanel={isPanel}>{title}</HeaderTitle>
+    </Row>
   )
 }

@@ -30,9 +30,7 @@ import { HardwareWalletConnect } from './hardware-wallet-connect'
 import { SelectAccountType } from './select-account-type/select-account-type'
 
 // style
-import {
-  StyledWrapper
-} from './style'
+import { StyledWrapper } from './style'
 
 // hooks
 import { WalletSelectors } from '../../../../common/selectors'
@@ -55,7 +53,9 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
 
   // redux
   const dispatch = useDispatch()
-  const isFilecoinEnabled = useSafeWalletSelector(WalletSelectors.isFilecoinEnabled)
+  const isFilecoinEnabled = useSafeWalletSelector(
+    WalletSelectors.isFilecoinEnabled
+  )
   const isSolanaEnabled = useSafeWalletSelector(WalletSelectors.isSolanaEnabled)
 
   // memos
@@ -68,16 +68,20 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
     })
   }, [isFilecoinEnabled, isSolanaEnabled])
 
-  const selectedAccountType: CreateAccountOptionsType | undefined = React.useMemo(() => {
-    return createAccountOptions.find((option) => {
-      return option.name.toLowerCase() === accountTypeName?.toLowerCase()
-    })
-  }, [createAccountOptions, accountTypeName])
+  const selectedAccountType: CreateAccountOptionsType | undefined =
+    React.useMemo(() => {
+      return createAccountOptions.find((option) => {
+        return option.name.toLowerCase() === accountTypeName?.toLowerCase()
+      })
+    }, [createAccountOptions, accountTypeName])
 
   // methods
-  const setImportError = React.useCallback((hasError: ImportAccountErrorType) => {
-    dispatch(WalletActions.setImportAccountError(hasError))
-  }, [])
+  const setImportError = React.useCallback(
+    (hasError: ImportAccountErrorType) => {
+      dispatch(WalletActions.setImportAccountError(hasError))
+    },
+    []
+  )
 
   const closeModal = React.useCallback(() => {
     setImportError(undefined)
@@ -90,25 +94,24 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
       title={getLocale('braveWalletAddAccountImportHardware')}
       onClose={closeModal}
     >
-
       <DividerLine />
 
-      {selectedAccountType &&
+      {selectedAccountType && (
         <StyledWrapper>
           <HardwareWalletConnect
             selectedAccountType={selectedAccountType}
             onSuccess={closeModal}
           />
         </StyledWrapper>
-      }
+      )}
 
-      {!selectedAccountType &&
+      {!selectedAccountType && (
         <SelectAccountType
           createAccountOptions={createAccountOptions}
           onSelectAccountType={onSelectAccountType}
           buttonText={getLocale('braveWalletAddAccountConnect')}
         />
-      }
+      )}
     </PopupModal>
   )
 }

@@ -15,7 +15,7 @@ export const StyledWrapper = styled.div`
   position: relative;
   min-width: 134px;
   box-sizing: border-box;
-  `
+`
 
 export const Button = styled(WalletButton)`
   display: flex;

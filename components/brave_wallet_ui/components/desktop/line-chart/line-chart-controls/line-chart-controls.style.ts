@@ -36,17 +36,12 @@ export const SelectTimelinButton = styled(WalletButton)`
   color: ${leo.color.text.interactive};
 `
 
-export const SelectTimelinButtonIcon = styled(Icon) <
-  {
-    isOpen: boolean
-  }>`
+export const SelectTimelinButtonIcon = styled(Icon)<{
+  isOpen: boolean
+}>`
   --leo-icon-size: 16px;
   color: ${leo.color.icon.interactive};
   margin-left: 8px;
   transition-duration: 0.3s;
-  transform: ${(p) =>
-    p.isOpen
-      ? 'rotate(180deg)'
-      : 'unset'
-  };
+  transform: ${(p) => (p.isOpen ? 'rotate(180deg)' : 'unset')};
 `

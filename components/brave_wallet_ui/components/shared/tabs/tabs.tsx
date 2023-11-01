@@ -16,8 +16,8 @@ import {
 
 export interface TabOption {
   id: string
-  label: string;
-  labelSummary?: string | number;
+  label: string
+  labelSummary?: string | number
 }
 
 export type NftTabOptionId = 'nfts' | 'hidden' | 'spam'
@@ -34,11 +34,14 @@ interface Props {
 export const Tabs = ({ options, onSelect }: Props) => {
   const [activeTab, setActiveTab] = React.useState<TabOption>(options[0])
 
-  const onSelectTab = React.useCallback((option: TabOption) => {
-    if(activeTab.id === option.id) return
-    setActiveTab(option)
-    onSelect(option)
-  }, [activeTab, onSelect])
+  const onSelectTab = React.useCallback(
+    (option: TabOption) => {
+      if (activeTab.id === option.id) return
+      setActiveTab(option)
+      onSelect(option)
+    },
+    [activeTab, onSelect]
+  )
 
   return (
     <StyledWrapper>
@@ -47,9 +50,7 @@ export const Tabs = ({ options, onSelect }: Props) => {
           key={option.id}
           onClick={() => onSelectTab(option)}
         >
-          <Tab
-            isActive={option.id === activeTab.id}
-          >
+          <Tab isActive={option.id === activeTab.id}>
             {option.label}
             {option.labelSummary && (
               <LabelSummary isActive={activeTab.id === option.id}>

@@ -56,41 +56,50 @@ export const Tooltip: React.FC<ToolTipProps> = ({
   }, [disableHoverEvents])
 
   // memos
-  const toolTipPointer = React.useMemo(() => (
-    <Pointer
-      position={pointerPosition ?? 'center'}
-      verticalPosition={verticalPosition ?? 'below'}
-    />
-  ), [position, verticalPosition, pointerPosition])
+  const toolTipPointer = React.useMemo(
+    () => (
+      <Pointer
+        position={pointerPosition ?? 'center'}
+        verticalPosition={verticalPosition ?? 'below'}
+      />
+    ),
+    [position, verticalPosition, pointerPosition]
+  )
 
-  const toolTip = React.useMemo(() => active && isVisible && (
-    <TipWrapper
-      position={position ?? 'center'}
-      verticalPosition={verticalPosition ?? 'below'}
-    >
+  const toolTip = React.useMemo(
+    () =>
+      active &&
+      isVisible && (
+        <TipWrapper
+          position={position ?? 'center'}
+          verticalPosition={verticalPosition ?? 'below'}
+        >
+          {!isActionVisible && verticalPosition === 'below' && toolTipPointer}
 
-      {!isActionVisible && verticalPosition === 'below' && toolTipPointer}
-
-      {isActionVisible
-        ? <ActionNotification>
-            {actionText}
-          </ActionNotification>
-
-        : <Tip maxWidth={maxWidth} minWidth={minWidth} isAddress={isAddress}>
-            {text}
-          </Tip>
-      }
-      {!isActionVisible && verticalPosition === 'above' && toolTipPointer}
-    </TipWrapper>
-  ), [
-    active,
-    isVisible,
-    position,
-    verticalPosition,
-    isAddress,
-    text,
-    isActionVisible
-  ])
+          {isActionVisible ? (
+            <ActionNotification>{actionText}</ActionNotification>
+          ) : (
+            <Tip
+              maxWidth={maxWidth}
+              minWidth={minWidth}
+              isAddress={isAddress}
+            >
+              {text}
+            </Tip>
+          )}
+          {!isActionVisible && verticalPosition === 'above' && toolTipPointer}
+        </TipWrapper>
+      ),
+    [
+      active,
+      isVisible,
+      position,
+      verticalPosition,
+      isAddress,
+      text,
+      isActionVisible
+    ]
+  )
 
   // render
   return (

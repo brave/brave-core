@@ -33,16 +33,20 @@ export const HardwareButtonRow = styled.div`
   margin-bottom: 35px;
 `
 
-export const HardwareButton = styled(WalletButton) <Partial<StyleProps>>`
+export const HardwareButton = styled(WalletButton)<Partial<StyleProps>>`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  cursor: ${(p) => p.disabled ? 'not-allowed' : 'pointer'};
+  cursor: ${(p) => (p.disabled ? 'not-allowed' : 'pointer')};
   outline: none;
   background: none;
-  border: ${(p) => (p.isSelected ? `2px solid ${p.theme.color.infoBorder}` : `1px solid ${p.theme.color.disabled}`)};
-  background-color: ${(p) => (p.isSelected ? p.theme.color.infoBackground : p.theme.color.background02)};
+  border: ${(p) =>
+    p.isSelected
+      ? `2px solid ${p.theme.color.infoBorder}`
+      : `1px solid ${p.theme.color.disabled}`};
+  background-color: ${(p) =>
+    p.isSelected ? p.theme.color.infoBackground : p.theme.color.background02};
   border-radius: 10px;
   width: 125px;
   height: 55px;
@@ -217,11 +221,11 @@ export const LoadingWrapper = styled.div`
   height: 100%;
 `
 
-export const LoadIcon = styled(LoaderIcon) <Partial<StyleProps>>`
-  color: ${p => p.theme.color.interactive08};
-  height: ${(p) => p.size === 'small' ? '25px' : '70px'};
-  width: ${(p) => p.size === 'small' ? '25px' : '70px'};
-  opacity: .4;
+export const LoadIcon = styled(LoaderIcon)<Partial<StyleProps>>`
+  color: ${(p) => p.theme.color.interactive08};
+  height: ${(p) => (p.size === 'small' ? '25px' : '70px')};
+  width: ${(p) => (p.size === 'small' ? '25px' : '70px')};
+  opacity: 0.4;
 `
 
 export const NoSearchResultText = styled.div`

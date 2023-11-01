@@ -121,7 +121,10 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
   // render
   return (
     <Switch>
-      <Route path={WalletRoutes.DepositFundsAccountPage} exact>
+      <Route
+        path={WalletRoutes.DepositFundsAccountPage}
+        exact
+      >
         <WalletPageWrapper
           hideNav={isAndroid}
           hideHeader={isAndroid}
@@ -179,10 +182,7 @@ function AssetSelection() {
   )
 
   // refs
-  const listItemRefs = React.useRef<Map<
-    string,
-    HTMLButtonElement
-  > | null>(null)
+  const listItemRefs = React.useRef<Map<string, HTMLButtonElement> | null>(null)
 
   const getRefsMap = React.useCallback(
     function () {
@@ -257,7 +257,8 @@ function AssetSelection() {
     }, [combinedTokensList])
 
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    // separate BAT from other tokens in the list so they can be placed higher in the list
+    // separate BAT from other tokens in the list so they can be placed higher
+    // in the list
     const { bat, nonBat } = getBatTokensFromList(combinedTokensList)
     return [
       ...mainnetNetworkAssetsList,
@@ -365,8 +366,15 @@ function AssetSelection() {
   return (
     <>
       <SelectAssetWrapper>
-        <FilterTokenRow horizontalPadding={0} isV2={false}>
-          <Column flex={1} style={{ minWidth: '25%' }} alignItems='flex-start'>
+        <FilterTokenRow
+          horizontalPadding={0}
+          isV2={false}
+        >
+          <Column
+            flex={1}
+            style={{ minWidth: '25%' }}
+            alignItems='flex-start'
+          >
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
               action={onSearchValueChange}
@@ -391,7 +399,11 @@ function AssetSelection() {
           />
         ) : (
           <Column>
-            <LoadingIcon opacity={1} size={'100px'} color={'interactive05'} />
+            <LoadingIcon
+              opacity={1}
+              size={'100px'}
+              color={'interactive05'}
+            />
           </Column>
         )}
 

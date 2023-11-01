@@ -27,7 +27,7 @@ export const NavOutline = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  border: 1px solid rgba(255,255,255,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 12px;
   margin-bottom: 15px;
   max-width: 300px;
@@ -37,7 +37,7 @@ export const NavDivider = styled.div`
   display: flex;
   width: 1px;
   height: 100%;
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255, 255, 255, 0.5);
 `
 
 export const NavButton = styled(WalletButton)<{
@@ -49,11 +49,11 @@ export const NavButton = styled(WalletButton)<{
   height: 100%;
   align-items: center;
   justify-content: center;
-  cursor: ${(p) => p.disabled ? 'default' : 'pointer'};
+  cursor: ${(p) => (p.disabled ? 'default' : 'pointer')};
   outline: none;
   border: none;
   background: none;
-  pointer-events: ${(p) => p.disabled ? 'none' : 'auto'};
+  pointer-events: ${(p) => (p.disabled ? 'none' : 'auto')};
 `
 
 export const NavButtonText = styled.span<{
@@ -65,7 +65,7 @@ export const NavButtonText = styled.span<{
   font-weight: 600;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
-  opacity: ${(p) => p.disabled ? '0.6' : '1'};
+  opacity: ${(p) => (p.disabled ? '0.6' : '1')};
 `
 
 export const TransactionsButton = styled(WalletButton)`

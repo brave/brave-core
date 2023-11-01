@@ -22,9 +22,7 @@ import {
 } from '../../../common/slices/api.slice'
 
 // Styled Components
-import {
-  SelectScrollSearchContainer
-} from '../shared-styles'
+import { SelectScrollSearchContainer } from '../shared-styles'
 import { SelectCurrencyWrapper } from './select-currency.style'
 import { VerticalSpace } from '../../shared/style'
 import { LoadingRing } from '../../extension/add-suggested-token-panel/style'

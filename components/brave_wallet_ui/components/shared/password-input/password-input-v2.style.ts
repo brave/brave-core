@@ -8,10 +8,7 @@ import * as leo from '@brave/leo/tokens/css'
 import LeoIcon from '@brave/leo/react/icon'
 
 // Shared Styles
-import {
-  WalletButton,
-  Text
-} from '../../shared/style'
+import { WalletButton, Text } from '../../shared/style'
 
 export const Input = styled.input<{ hasError: boolean }>`
   box-sizing: border-box;
@@ -19,10 +16,8 @@ export const Input = styled.input<{ hasError: boolean }>`
   background-image: none;
   box-shadow: none;
   background-color: ${leo.color.container.highlight};
-  border: ${(p) => p.hasError
-    ? `1px solid ${leo.color.systemfeedback.errorIcon}`
-    : 'none'
-  };
+  border: ${(p) =>
+    p.hasError ? `1px solid ${leo.color.systemfeedback.errorIcon}` : 'none'};
   padding: 10px 8px 10px 16px;
   border-radius: 8px;
   font-family: Poppins;

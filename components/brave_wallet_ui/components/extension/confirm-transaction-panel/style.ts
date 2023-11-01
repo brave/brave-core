@@ -114,7 +114,7 @@ export const MessageBox = styled.div<{ isDetails: boolean }>`
   border-radius: 4px;
   width: 90%;
   height: 140px;
-  padding: ${(p) => p.isDetails ? '14px' : '4px 14px'};
+  padding: ${(p) => (p.isDetails ? '14px' : '4px 14px')};
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
@@ -206,7 +206,8 @@ export const TransactionText = styled.span<{ hasError?: boolean }>`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.hasError ? p.theme.color.errorText : p.theme.color.text03};
+  color: ${(p) =>
+    p.hasError ? p.theme.color.errorText : p.theme.color.text03};
   text-align: left;
   word-break: break-all;
 `
@@ -223,10 +224,10 @@ export const WarningIcon = styled(WarningBoxIcon)`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
+  color: ${(p) => p.theme.color.interactive08};
   height: 25px;
   width: 24px;
-  opacity: .4;
+  opacity: 0.4;
 `
 
 export const ContractButton = styled(WalletButton)`
@@ -261,13 +262,13 @@ export const InlineAddressButton = styled(ContractButton)`
 `
 
 export const ExplorerIcon = styled.div`
- -webkit-mask-image: url(${LinkIcon});
- mask-image: url(${LinkIcon});
- width: 12px;
- height: 12px;
- margin-left: 8px;
- mask-size: contain;
- background-color: ${(p) => p.theme.color.interactive05};
+  -webkit-mask-image: url(${LinkIcon});
+  mask-image: url(${LinkIcon});
+  width: 12px;
+  height: 12px;
+  margin-left: 8px;
+  mask-size: contain;
+  background-color: ${(p) => p.theme.color.interactive05};
 `
 
 export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`

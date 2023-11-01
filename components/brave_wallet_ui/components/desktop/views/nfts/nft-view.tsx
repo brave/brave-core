@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
 import {
-  TokenBalancesRegistry
+  TokenBalancesRegistry //
 } from '../../../../common/slices/entities/token-balance.entity'
 
 // types

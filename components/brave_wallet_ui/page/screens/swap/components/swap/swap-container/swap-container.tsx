@@ -6,12 +6,11 @@
 import * as React from 'react'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 
+// Queries
 import {
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery //
 } from '../../../../../../common/slices/api.slice'
 
 // Components

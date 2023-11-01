@@ -6,10 +6,7 @@
 import * as React from 'react'
 
 // Styled Components
-import {
-  CustomSlippageInput,
-  InputWrapper
-} from './slippage-input.style'
+import { CustomSlippageInput, InputWrapper } from './slippage-input.style'
 import { Text } from '../../shared-swap.styles'
 
 interface Props {
@@ -36,7 +33,11 @@ export const SlippageInput = (props: Props) => {
         onChange={onInputChange}
         placeholder='0'
       />
-      <Text textSize='14px' textColor='text03' isBold={true}>
+      <Text
+        textSize='14px'
+        textColor='text03'
+        isBold={true}
+      >
         %
       </Text>
     </InputWrapper>

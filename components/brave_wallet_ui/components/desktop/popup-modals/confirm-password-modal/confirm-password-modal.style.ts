@@ -4,9 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import {
-  layoutPanelWidth
-} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const modalWidth = '442px'
 

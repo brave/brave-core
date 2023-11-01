@@ -9,9 +9,11 @@ import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrap
 import OnboardingCreatePassword from './onboarding-create-password'
 
 export const _OnboardingCreatePassword = () => {
-  return <WalletPageStory>
-    <OnboardingCreatePassword onWalletCreated={() => {}} />
-  </WalletPageStory>
+  return (
+    <WalletPageStory>
+      <OnboardingCreatePassword onWalletCreated={() => {}} />
+    </WalletPageStory>
+  )
 }
 
 _OnboardingCreatePassword.story = {

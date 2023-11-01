@@ -9,10 +9,7 @@ import { SelectAccount } from '../../shared/select-account/index'
 import Header from '../../buy-send-swap/select-header'
 import { getLocale } from '../../../../common/locale'
 // Styled Components
-import {
-  SelectWrapper,
-  SelectScrollSearchContainer
-} from '../shared-styles'
+import { SelectWrapper, SelectScrollSearchContainer } from '../shared-styles'
 
 export interface Props {
   accounts: BraveWallet.AccountInfo[]
@@ -23,7 +20,7 @@ export interface Props {
   onBack?: () => void
 }
 
-export function SelectAccountWithHeader (props: Props) {
+export function SelectAccountWithHeader(props: Props) {
   const {
     accounts,
     selectedAccount,
@@ -58,7 +55,10 @@ export function SelectAccountWithHeader (props: Props) {
         onClickAdd={onAddAccount}
         hasAddButton={hasAddButton}
       />
-      <SearchBar placeholder={getLocale('braveWalletSearchAccount')} action={filterAccountList} />
+      <SearchBar
+        placeholder={getLocale('braveWalletSearchAccount')}
+        action={filterAccountList}
+      />
       <SelectScrollSearchContainer>
         <SelectAccount
           accounts={filteredAccountList}

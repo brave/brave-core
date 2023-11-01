@@ -15,24 +15,15 @@ export const StyledButton = styled(WalletButton)<{ isSelected?: boolean }>`
     --button-background-hover: ${leo.color.primitive.gray[80]};
   }
   --icon-color: ${(p) =>
-    p.isSelected
-      ? leo.color.icon.interactive
-      : leo.color.gray[30]
-  };
+    p.isSelected ? leo.color.icon.interactive : leo.color.gray[30]};
   --text-color: ${(p) =>
-    p.isSelected
-      ? leo.color.text.interactive
-      : leo.color.text.secondary
-  };
+    p.isSelected ? leo.color.text.interactive : leo.color.text.secondary};
   --indicator-color: ${(p) =>
-    p.isSelected
-      ? leo.color.icon.interactive
-      : 'none'
-  };
+    p.isSelected ? leo.color.icon.interactive : 'none'};
   &:hover {
     --icon-color: ${leo.color.icon.interactive};
     --text-color: ${leo.color.text.interactive};
-    }
+  }
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -53,9 +44,8 @@ export const StyledButton = styled(WalletButton)<{ isSelected?: boolean }>`
     flex-direction: column;
     margin-bottom: 0px;
     margin-right: 8px;
-    background-color: ${(p) => p.isSelected
-    ? 'var(--button-background-hover)'
-    : 'none'};
+    background-color: ${(p) =>
+      p.isSelected ? 'var(--button-background-hover)' : 'none'};
     &:hover {
       background-color: var(--button-background-hover);
     }

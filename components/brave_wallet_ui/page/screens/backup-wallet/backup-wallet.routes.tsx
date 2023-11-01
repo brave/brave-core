@@ -4,11 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  Redirect,
-  Route,
-  Switch
-} from 'react-router'
+import { Redirect, Route, Switch } from 'react-router'
 import { useSafePageSelector } from '../../../common/hooks/use-safe-selector'
 
 // types
@@ -35,25 +31,41 @@ export const BackupWalletRoutes = () => {
   // render
   return (
     <Switch>
-
-      <Route path={WalletRoutes.Backup} exact>
+      <Route
+        path={WalletRoutes.Backup}
+        exact
+      >
         <BackupEnterPassword />
       </Route>
 
-      {hasMnemonic && <Route path={WalletRoutes.BackupExplainRecoveryPhrase} exact>
-        <RecoveryPhraseExplainer />
-      </Route>}
+      {hasMnemonic && (
+        <Route
+          path={WalletRoutes.BackupExplainRecoveryPhrase}
+          exact
+        >
+          <RecoveryPhraseExplainer />
+        </Route>
+      )}
 
-      {hasMnemonic && <Route path={WalletRoutes.BackupRecoveryPhrase} exact>
-        <BackupRecoveryPhrase />
-      </Route>}
+      {hasMnemonic && (
+        <Route
+          path={WalletRoutes.BackupRecoveryPhrase}
+          exact
+        >
+          <BackupRecoveryPhrase />
+        </Route>
+      )}
 
-      {hasMnemonic && <Route path={WalletRoutes.BackupVerifyRecoveryPhrase} exact>
-        <VerifyRecoveryPhrase />
-      </Route>}
+      {hasMnemonic && (
+        <Route
+          path={WalletRoutes.BackupVerifyRecoveryPhrase}
+          exact
+        >
+          <VerifyRecoveryPhrase />
+        </Route>
+      )}
 
       <Redirect to={WalletRoutes.Backup} />
-
     </Switch>
   )
 }

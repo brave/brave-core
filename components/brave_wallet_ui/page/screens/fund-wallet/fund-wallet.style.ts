@@ -83,7 +83,6 @@ export const Divider = styled.div`
   border-bottom: 1px solid ${leo.color.divider.subtle};
 `
 
-
 export const Alert = styled.div`
   display: flex;
   flex-direction: row;
@@ -97,7 +96,7 @@ export const Alert = styled.div`
 
 export const InfoIcon = styled(Icon)`
   --leo-icon-size: 20px;
-  color: ${leo.color.systemfeedback.infoIcon}
+  color: ${leo.color.systemfeedback.infoIcon};
 `
 
 export const AlertText = styled.p`

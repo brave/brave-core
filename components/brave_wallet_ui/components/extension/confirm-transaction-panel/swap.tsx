@@ -10,9 +10,7 @@ import { WalletSelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
 
 // Styled components
-import {
-  HeaderTitle,
-} from './swap.style'
+import { HeaderTitle } from './swap.style'
 import { NetworkText, StyledWrapper, TopRow } from './style'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
@@ -32,7 +30,7 @@ import {
   useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
 
-export function ConfirmSwapTransaction () {
+export function ConfirmSwapTransaction() {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
@@ -109,7 +107,6 @@ export function ConfirmSwapTransaction () {
         senderOrb={fromOrb}
         recipientOrb={toOrb}
         recipientLabel={transactionDetails?.recipientLabel}
-
         // set to true once Swap+Send is supported
         expectRecipientAddress={false}
       />

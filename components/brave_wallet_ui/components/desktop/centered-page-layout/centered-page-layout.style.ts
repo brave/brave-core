@@ -16,14 +16,14 @@ export const StyledWrapper = styled('div')`
   justify-content: center;
   background-color: ${(p) => p.theme.color.background01};
   overflow-y: auto;
- `
+`
 
-export const StyledContent = styled('div') <{ isTabView?: boolean }>`
+export const StyledContent = styled('div')<{ isTabView?: boolean }>`
   width: 456px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding-top: ${(p) => p.isTabView ? 0 : 32}px;
+  padding-top: ${(p) => (p.isTabView ? 0 : 32)}px;
   padding-bottom: 0px;
- `
+`

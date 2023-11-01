@@ -64,7 +64,7 @@ export const {
   selectById: selectNetworkByIdFromQueryResult,
   selectEntities: selectNetworkEntitiesFromQueryResult,
   selectIds: selectNetworkIdsFromQueryResult,
-  selectTotal: selectTotalNetworksFromQueryResult,
+  selectTotal: selectTotalNetworksFromQueryResult
 } = networkEntityAdapter.getSelectors(selectNetworksRegistryFromQueryResult)
 
 export const selectSwapSupportedNetworksFromQueryResult =

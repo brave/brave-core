@@ -1,12 +1,6 @@
 {
-  "extends": [
-    "local>brave/renovate-config"
-  ],
-  "labels": [
-    "CI/skip",
-    "dependencies",
-    "renovate"
-  ],
+  "extends": ["local>brave/renovate-config"],
+  "labels": ["CI/skip", "dependencies", "renovate"],
   "draftPR": true,
   "prConcurrentLimit": 4,
   "reviewersFromCodeOwners": true

@@ -21,12 +21,9 @@ import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
-  ButtonIcon,
+  ButtonIcon
 } from './wellet-menus.style'
-import {
-  VerticalDivider,
-  VerticalSpace,
-} from '../../shared/style'
+import { VerticalDivider, VerticalSpace } from '../../shared/style'
 
 export interface Props {
   onClickViewOnBlockExplorer?: () => void
@@ -36,12 +33,8 @@ export interface Props {
 }
 
 export const WalletSettingsMenu = (props: Props) => {
-  const {
-    onClickViewOnBlockExplorer,
-    onClickBackup,
-    onClosePopup,
-    yPosition
-  } = props
+  const { onClickViewOnBlockExplorer, onClickBackup, onClosePopup, yPosition } =
+    props
 
   // redux
   const dispatch = useDispatch()
@@ -59,16 +52,12 @@ export const WalletSettingsMenu = (props: Props) => {
       return
     }
 
-    const route = selectedNetwork.coin === BraveWallet.CoinType.ETH
-      ? 'ethereum'
-      : 'solana'
+    const route =
+      selectedNetwork.coin === BraveWallet.CoinType.ETH ? 'ethereum' : 'solana'
 
     chrome.tabs.create({ url: `brave://settings/content/${route}` }, () => {
       if (chrome.runtime.lastError) {
-        console.error(
-          'tabs.create failed: ' +
-          chrome.runtime.lastError.message
-        )
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
     if (onClosePopup) {
@@ -80,14 +69,15 @@ export const WalletSettingsMenu = (props: Props) => {
     chrome.tabs.create(
       {
         url: 'https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
-      }, () => {
+      },
+      () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: '
-            + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message
           )
         }
-      })
+      }
+    )
     if (onClosePopup) {
       onClosePopup()
     }
@@ -96,10 +86,7 @@ export const WalletSettingsMenu = (props: Props) => {
   const onClickSettings = React.useCallback(() => {
     chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
       if (chrome.runtime.lastError) {
-        console.error(
-          'tabs.create failed: ' +
-          chrome.runtime.lastError.message
-        )
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
     if (onClosePopup) {
@@ -108,10 +95,7 @@ export const WalletSettingsMenu = (props: Props) => {
   }, [onClosePopup])
 
   return (
-    <StyledWrapper
-      yPosition={yPosition}
-    >
-
+    <StyledWrapper yPosition={yPosition}>
       <PopupButton onClick={lockWallet}>
         <ButtonIcon name='lock' />
         <PopupButtonText>
@@ -119,25 +103,23 @@ export const WalletSettingsMenu = (props: Props) => {
         </PopupButtonText>
       </PopupButton>
 
-      {onClickBackup &&
+      {onClickBackup && (
         <PopupButton onClick={onClickBackup}>
           <ButtonIcon name='safe' />
           <PopupButtonText>
             {getLocale('braveWalletBackupButton')}
           </PopupButtonText>
         </PopupButton>
-      }
+      )}
 
-      {
-        selectedNetwork &&
-        selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
+      {selectedNetwork && selectedNetwork.coin !== BraveWallet.CoinType.FIL && (
         <PopupButton onClick={onClickConnectedSites}>
           <ButtonIcon name='link-normal' />
           <PopupButtonText>
             {getLocale('braveWalletWalletPopupConnectedSites')}
           </PopupButtonText>
         </PopupButton>
-      }
+      )}
 
       <PopupButton onClick={onClickSettings}>
         <ButtonIcon name='settings' />
@@ -146,25 +128,22 @@ export const WalletSettingsMenu = (props: Props) => {
         </PopupButtonText>
       </PopupButton>
 
-      {onClickViewOnBlockExplorer &&
+      {onClickViewOnBlockExplorer && (
         <PopupButton onClick={onClickViewOnBlockExplorer}>
           <ButtonIcon name='launch' />
           <PopupButtonText>
             {getLocale('braveWalletTransactionExplorer')}
           </PopupButtonText>
         </PopupButton>
-      }
+      )}
 
       <VerticalDivider />
       <VerticalSpace space='8px' />
 
       <PopupButton onClick={onClickHelpCenter}>
         <ButtonIcon name='help-outline' />
-        <PopupButtonText>
-          {getLocale('braveWalletHelpCenter')}
-        </PopupButtonText>
+        <PopupButtonText>{getLocale('braveWalletHelpCenter')}</PopupButtonText>
       </PopupButton>
-
     </StyledWrapper>
   )
 }

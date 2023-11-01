@@ -9,12 +9,8 @@ import { useDispatch } from 'react-redux'
 import Toggle from '@brave/leo/react/toggle'
 
 // Selectors
-import {
-  useSafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
-import {
-  WalletSelectors
-} from '../../../common/selectors'
+import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Types
 import {
@@ -25,16 +21,14 @@ import {
 
 // Constants
 import {
-  LOCAL_STORAGE_KEYS
+  LOCAL_STORAGE_KEYS //
 } from '../../../common/constants/local-storage-keys'
 
 // actions
 import { WalletActions } from '../../../common/actions'
 
 // Options
-import {
-  CreateAccountOptions
-} from '../../../options/nav-options'
+import { CreateAccountOptions } from '../../../options/nav-options'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -48,11 +42,7 @@ import {
   ButtonIcon,
   ToggleRow
 } from './wellet-menus.style'
-import {
-  VerticalDivider,
-  VerticalSpace,
-  Row
-} from '../../shared/style'
+import { VerticalDivider, VerticalSpace, Row } from '../../shared/style'
 
 export interface Props {
   onClosePopup?: () => void
@@ -60,10 +50,7 @@ export interface Props {
 }
 
 export const DefaultPanelMenu = (props: Props) => {
-  const {
-    onClosePopup,
-    yPosition
-  } = props
+  const { onClosePopup, yPosition } = props
 
   // Routing
   const history = useHistory()
@@ -73,12 +60,15 @@ export const DefaultPanelMenu = (props: Props) => {
   const dispatch = useDispatch()
 
   // selectors
-  const hidePortfolioGraph =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioGraph)
-  const hidePortfolioBalances =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioBalances)
-  const hidePortfolioNFTsTab =
-    useSafeWalletSelector(WalletSelectors.hidePortfolioNFTsTab)
+  const hidePortfolioGraph = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioGraph
+  )
+  const hidePortfolioBalances = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioBalances
+  )
+  const hidePortfolioNFTsTab = useSafeWalletSelector(
+    WalletSelectors.hidePortfolioNFTsTab
+  )
 
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
@@ -93,16 +83,12 @@ export const DefaultPanelMenu = (props: Props) => {
       return
     }
 
-    const route = selectedNetwork.coin === BraveWallet.CoinType.ETH
-      ? 'ethereum'
-      : 'solana'
+    const route =
+      selectedNetwork.coin === BraveWallet.CoinType.ETH ? 'ethereum' : 'solana'
 
     chrome.tabs.create({ url: `brave://settings/content/${route}` }, () => {
       if (chrome.runtime.lastError) {
-        console.error(
-          'tabs.create failed: ' +
-          chrome.runtime.lastError.message
-        )
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
     if (onClosePopup) {
@@ -114,14 +100,15 @@ export const DefaultPanelMenu = (props: Props) => {
     chrome.tabs.create(
       {
         url: 'https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
-      }, () => {
+      },
+      () => {
         if (chrome.runtime.lastError) {
           console.error(
-            'tabs.create failed: '
-            + chrome.runtime.lastError.message
+            'tabs.create failed: ' + chrome.runtime.lastError.message
           )
         }
-      })
+      }
+    )
     if (onClosePopup) {
       onClosePopup()
     }
@@ -130,10 +117,7 @@ export const DefaultPanelMenu = (props: Props) => {
   const onClickSettings = React.useCallback(() => {
     chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
       if (chrome.runtime.lastError) {
-        console.error(
-          'tabs.create failed: ' +
-          chrome.runtime.lastError.message
-        )
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
     if (onClosePopup) {
@@ -145,29 +129,17 @@ export const DefaultPanelMenu = (props: Props) => {
   const onToggleHideGraph = React.useCallback(() => {
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
-      hidePortfolioGraph
-        ? 'false'
-        : 'true'
+      hidePortfolioGraph ? 'false' : 'true'
     )
-    dispatch(
-      WalletActions
-        .setHidePortfolioGraph(
-          !hidePortfolioGraph
-        ))
+    dispatch(WalletActions.setHidePortfolioGraph(!hidePortfolioGraph))
   }, [hidePortfolioGraph])
 
   const onToggleHideBalances = React.useCallback(() => {
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-      hidePortfolioBalances
-        ? 'false'
-        : 'true'
+      hidePortfolioBalances ? 'false' : 'true'
     )
-    dispatch(
-      WalletActions
-        .setHidePortfolioBalances(
-          !hidePortfolioBalances
-        ))
+    dispatch(WalletActions.setHidePortfolioBalances(!hidePortfolioBalances))
   }, [hidePortfolioBalances])
 
   const onToggleHideNFTsTab = React.useCallback(() => {
@@ -176,60 +148,46 @@ export const DefaultPanelMenu = (props: Props) => {
     }
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
-      hidePortfolioNFTsTab
-        ? 'false'
-        : 'true'
+      hidePortfolioNFTsTab ? 'false' : 'true'
     )
-    dispatch(
-      WalletActions
-        .setHidePortfolioNFTsTab(
-          !hidePortfolioNFTsTab
-        ))
+    dispatch(WalletActions.setHidePortfolioNFTsTab(!hidePortfolioNFTsTab))
   }, [hidePortfolioNFTsTab, walletLocation])
 
-  const onClickRoute =
-    (route: WalletRoutes | AccountPageTabs) => {
-      if (
-        route === WalletRoutes.AddHardwareAccountModalStart
-      ) {
-        chrome.tabs.create(
-          { url: `chrome://wallet${route}` },
-          () => {
-            if (chrome.runtime.lastError) {
-              console.error(
-                'tabs.create failed: '
-                + chrome.runtime.lastError.message
-              )
-            }
-          })
-        return
-      }
-      history.push(route)
+  const onClickRoute = (route: WalletRoutes | AccountPageTabs) => {
+    if (route === WalletRoutes.AddHardwareAccountModalStart) {
+      chrome.tabs.create({ url: `chrome://wallet${route}` }, () => {
+        if (chrome.runtime.lastError) {
+          console.error(
+            'tabs.create failed: ' + chrome.runtime.lastError.message
+          )
+        }
+      })
+      return
     }
+    history.push(route)
+  }
 
-    const onClickBackup = () => {
-      chrome.tabs.create(
-        {
-          url: `chrome://wallet${WalletRoutes.Backup}`
-        }, () => {
-          if (chrome.runtime.lastError) {
-            console.error(
-              'tabs.create failed: '
-              + chrome.runtime.lastError.message
-            )
-          }
-        })
-    }
+  const onClickBackup = () => {
+    chrome.tabs.create(
+      {
+        url: `chrome://wallet${WalletRoutes.Backup}`
+      },
+      () => {
+        if (chrome.runtime.lastError) {
+          console.error(
+            'tabs.create failed: ' + chrome.runtime.lastError.message
+          )
+        }
+      }
+    )
+  }
 
   const showPortfolioSettings =
     walletLocation === WalletRoutes.PortfolioNFTs ||
     walletLocation === WalletRoutes.PortfolioAssets
 
   return (
-    <StyledWrapper
-      yPosition={yPosition}
-    >
-
+    <StyledWrapper yPosition={yPosition}>
       <PopupButton onClick={lockWallet}>
         <ButtonIcon name='lock' />
         <PopupButtonText>
@@ -238,22 +196,20 @@ export const DefaultPanelMenu = (props: Props) => {
       </PopupButton>
 
       <PopupButton onClick={onClickBackup}>
-          <ButtonIcon name='safe' />
-          <PopupButtonText>
-            {getLocale('braveWalletBackupButton')}
-          </PopupButtonText>
-        </PopupButton>
+        <ButtonIcon name='safe' />
+        <PopupButtonText>
+          {getLocale('braveWalletBackupButton')}
+        </PopupButtonText>
+      </PopupButton>
 
-      {
-        selectedNetwork &&
-        selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
+      {selectedNetwork && selectedNetwork.coin !== BraveWallet.CoinType.FIL && (
         <PopupButton onClick={onClickConnectedSites}>
           <ButtonIcon name='link-normal' />
           <PopupButtonText>
             {getLocale('braveWalletWalletPopupConnectedSites')}
           </PopupButtonText>
         </PopupButton>
-      }
+      )}
 
       <PopupButton onClick={onClickSettings}>
         <ButtonIcon name='settings' />
@@ -265,7 +221,7 @@ export const DefaultPanelMenu = (props: Props) => {
       <VerticalDivider />
       <VerticalSpace space='8px' />
 
-      {showPortfolioSettings &&
+      {showPortfolioSettings && (
         <>
           <ToggleRow onClick={onToggleHideBalances}>
             <Row>
@@ -312,36 +268,29 @@ export const DefaultPanelMenu = (props: Props) => {
           <VerticalDivider />
           <VerticalSpace space='8px' />
         </>
-      }
+      )}
 
-      {walletLocation === WalletRoutes.Accounts &&
+      {walletLocation === WalletRoutes.Accounts && (
         <>
-          {CreateAccountOptions.map((option) =>
+          {CreateAccountOptions.map((option) => (
             <PopupButton
               key={option.name}
-              onClick={
-                () => onClickRoute(option.route)
-              }
+              onClick={() => onClickRoute(option.route)}
               minWidth={240}
             >
               <ButtonIcon name={option.icon} />
-              <PopupButtonText>
-                {getLocale(option.name)}
-              </PopupButtonText>
+              <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
             </PopupButton>
-          )}
+          ))}
           <VerticalDivider />
           <VerticalSpace space='8px' />
         </>
-      }
+      )}
 
       <PopupButton onClick={onClickHelpCenter}>
         <ButtonIcon name='help-outline' />
-        <PopupButtonText>
-          {getLocale('braveWalletHelpCenter')}
-        </PopupButtonText>
+        <PopupButtonText>{getLocale('braveWalletHelpCenter')}</PopupButtonText>
       </PopupButton>
-
     </StyledWrapper>
   )
 }

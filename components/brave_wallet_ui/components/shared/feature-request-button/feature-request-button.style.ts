@@ -20,7 +20,7 @@ export const Button = styled(WalletButton)`
   position: fixed;
   bottom: 32px;
   right: 32px;
-  background-color: ${p => p.theme.palette.blurple500};
+  background-color: ${(p) => p.theme.palette.blurple500};
   border: none;
   outline: none;
   border-radius: 40px;
@@ -34,15 +34,15 @@ export const ButtonText = styled.span`
   font-weight: 600;
   font-size: 14px;
   line-height: 21px;
-  color: ${p => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
 `
 
 export const IdeaButtonIcon = styled.span`
- width: 24px;
- height: 24px;
- background-color: ${(p) => p.theme.palette.white};
- -webkit-mask-image: url(${IdeaIcon});
- mask-image: url(${IdeaIcon});
- mask-size: cover;
- margin-right: 8px;
+  width: 24px;
+  height: 24px;
+  background-color: ${(p) => p.theme.palette.white};
+  -webkit-mask-image: url(${IdeaIcon});
+  mask-image: url(${IdeaIcon});
+  mask-size: cover;
+  margin-right: 8px;
 `

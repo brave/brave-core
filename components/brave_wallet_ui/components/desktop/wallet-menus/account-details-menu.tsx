@@ -21,10 +21,7 @@ import {
   PopupButtonText,
   ButtonIcon
 } from './wellet-menus.style'
-import {
-  VerticalDivider,
-  VerticalSpace
-} from '../../shared/style'
+import { VerticalDivider, VerticalSpace } from '../../shared/style'
 
 interface Props {
   options: AccountButtonOptionsObjectType[]
@@ -32,22 +29,15 @@ interface Props {
 }
 
 export const AccountDetailsMenu = (props: Props) => {
-  const {
-    options,
-    onClickMenuOption
-  } = props
+  const { options, onClickMenuOption } = props
 
   return (
     <StyledWrapper yPosition={42}>
-      {options.map((option) =>
+      {options.map((option) => (
         <React.Fragment key={option.id}>
-          <PopupButton
-            onClick={() => onClickMenuOption(option.id)}
-          >
+          <PopupButton onClick={() => onClickMenuOption(option.id)}>
             <ButtonIcon name={option.icon} />
-            <PopupButtonText>
-              {getLocale(option.name)}
-            </PopupButtonText>
+            <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
           </PopupButton>
           {option.id === 'deposit' && (
             <>
@@ -56,7 +46,7 @@ export const AccountDetailsMenu = (props: Props) => {
             </>
           )}
         </React.Fragment>
-      )}
+      ))}
     </StyledWrapper>
   )
 }

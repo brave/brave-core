@@ -21,7 +21,7 @@ export const NavOutline = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  border: 1px solid rgba(255,255,255,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 12px;
   margin-bottom: 15px;
   max-width: 300px;

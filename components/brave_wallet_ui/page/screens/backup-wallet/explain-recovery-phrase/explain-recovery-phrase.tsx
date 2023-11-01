@@ -42,14 +42,18 @@ import {
   CenteredRow
 } from './explain-recovery-phrase.style'
 
-const importantTextParts = splitStringForTag(getLocale('braveWalletRecoveryPhraseBackupWarningImportant'))
+const importantTextParts = splitStringForTag(
+  getLocale('braveWalletRecoveryPhraseBackupWarningImportant')
+)
 
 const ImportantTextSegments = () => {
-  return <BannerText>
-    {importantTextParts.beforeTag}
-    <ImportantText>{importantTextParts.duringTag}</ImportantText>
-    {importantTextParts.afterTag}
-  </BannerText>
+  return (
+    <BannerText>
+      {importantTextParts.beforeTag}
+      <ImportantText>{importantTextParts.duringTag}</ImportantText>
+      {importantTextParts.afterTag}
+    </BannerText>
+  )
 }
 
 export const RecoveryPhraseExplainer = () => {
@@ -63,7 +67,9 @@ export const RecoveryPhraseExplainer = () => {
 
   // methods
   const skipToOnboardingSuccess = () => {
-    braveWalletP3A.reportOnboardingAction(BraveWallet.OnboardingAction.CompleteRecoverySkipped);
+    braveWalletP3A.reportOnboardingAction(
+      BraveWallet.OnboardingAction.CompleteRecoverySkipped
+    )
     history.push(WalletRoutes.OnboardingComplete)
   }
 
@@ -76,15 +82,14 @@ export const RecoveryPhraseExplainer = () => {
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-
-          {isOnboarding &&
+          {isOnboarding && (
             <OnboardingNewWalletStepsNavigation
               preventGoBack
               currentStep={WalletRoutes.OnboardingExplainRecoveryPhrase}
               onSkip={skipToOnboardingSuccess}
             />
-          }
-          {!isOnboarding &&
+          )}
+          {!isOnboarding && (
             <StepsNavigation
               steps={WALLET_BACKUP_STEPS}
               preventGoBack
@@ -92,11 +97,17 @@ export const RecoveryPhraseExplainer = () => {
               preventSkipAhead
               onSkip={skipBackup}
             />
-          }
+          )}
 
           <div>
-            <Title>{getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}</Title>
-            <Description>{getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroDescription')}</Description>
+            <Title>
+              {getLocale('braveWalletOnboardingRecoveryPhraseBackupIntroTitle')}
+            </Title>
+            <Description>
+              {getLocale(
+                'braveWalletOnboardingRecoveryPhraseBackupIntroDescription'
+              )}
+            </Description>
             <CenteredRow>
               <ArticleLinkBubble
                 icon='key'
@@ -107,7 +118,11 @@ export const RecoveryPhraseExplainer = () => {
             </CenteredRow>
           </div>
 
-          <img width='376px' height='118px' src={ExamplePhrase} />
+          <img
+            width='376px'
+            height='118px'
+            src={ExamplePhrase}
+          />
 
           <BannerCard>
             <WarningCircle />
@@ -118,13 +133,13 @@ export const RecoveryPhraseExplainer = () => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonGotIt')}
-              url={isOnboarding
-                ? WalletRoutes.OnboardingBackupRecoveryPhrase
-                : WalletRoutes.BackupRecoveryPhrase
+              url={
+                isOnboarding
+                  ? WalletRoutes.OnboardingBackupRecoveryPhrase
+                  : WalletRoutes.BackupRecoveryPhrase
               }
             />
           </NextButtonRow>
-
         </StyledWrapper>
       </MainWrapper>
     </CenteredPageLayout>

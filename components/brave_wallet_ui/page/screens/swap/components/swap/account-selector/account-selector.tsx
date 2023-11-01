@@ -10,23 +10,21 @@ import { getLocale } from '../../../../../../../common/locale'
 
 // Hooks
 import {
-  useOnClickOutside
+  useOnClickOutside //
 } from '../../../../../../common/hooks/useOnClickOutside'
 import {
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery //
 } from '../../../../../../common/slices/api.slice'
 import {
   useAccountsQuery //
 } from '../../../../../../common/slices/api.slice.extra'
 
 // Types
-import {
-  BraveWallet
-} from '../../../../../../constants/types'
+import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
 import {
-  AccountListButton
+  AccountListButton //
 } from '../../buttons/account-list-button/account-list-button'
 
 // Styled Components
@@ -64,8 +62,9 @@ export const AccountSelector = (props: Props) => {
 
   // Memos
   const networkAccounts = React.useMemo(() => {
-    return accounts.filter(account =>
-      account.accountId.coin === selectedNetwork?.coin)
+    return accounts.filter(
+      (account) => account.accountId.coin === selectedNetwork?.coin
+    )
   }, [accounts, selectedNetwork])
 
   // Methods
@@ -94,19 +93,23 @@ export const AccountSelector = (props: Props) => {
         onClick={onToggleShowAccountSelector}
         disabled={disabled}
       >
-        <Text textSize='12px' textColor='text02'>
-          {
-            selectedAccount
-              ? selectedAccount.name
-              : getLocale('braveSwapSelectAccount')
-          }
+        <Text
+          textSize='12px'
+          textColor='text02'
+        >
+          {selectedAccount
+            ? selectedAccount.name
+            : getLocale('braveSwapSelectAccount')}
         </Text>
         <HorizontalSpacer size={8} />
-        <StyledCaratDownIcon size={20} name='carat-down' />
+        <StyledCaratDownIcon
+          size={20}
+          name='carat-down'
+        />
       </SelectButton>
       {showAccountSelector && (
         <SelectorBox>
-          {networkAccounts.map(account => (
+          {networkAccounts.map((account) => (
             <AccountListButton
               account={account}
               onClick={onClickSelectAccount}

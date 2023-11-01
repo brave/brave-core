@@ -7,10 +7,7 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 
 // Types
-import {
-  BraveWallet,
-  SupportedTestNetworks,
-} from '../../../constants/types'
+import { BraveWallet, SupportedTestNetworks } from '../../../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Components
@@ -30,7 +27,7 @@ import {
   SupportedTopLevelChainIds
 } from '../../../options/network-filter-options'
 import {
-  AllAccountsOptionUniqueKey
+  AllAccountsOptionUniqueKey //
 } from '../../../options/account-filter-options'
 
 // Styled Components
@@ -47,10 +44,9 @@ import {
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
   selectedNetwork?: BraveWallet.NetworkInfo
-  selectedAccount?: Pick<BraveWallet.AccountInfo,
-    | 'accountId'
-    | 'address'
-    | 'name'
+  selectedAccount?: Pick<
+    BraveWallet.AccountInfo,
+    'accountId' | 'address' | 'name'
   >
   isV2?: boolean
   onSelectNetwork?: (network: BraveWallet.NetworkInfo) => void
@@ -64,7 +60,8 @@ export const NetworkFilterSelector = ({
   selectedAccount
 }: Props) => {
   // state
-  const [showNetworkFilter, setShowNetworkFilter] = React.useState<boolean>(false)
+  const [showNetworkFilter, setShowNetworkFilter] =
+    React.useState<boolean>(false)
 
   // redux
   const dispatch = useDispatch()
@@ -89,71 +86,77 @@ export const NetworkFilterSelector = ({
       : networks
   }, [networks, selectedAccount])
 
-  const {
-    primaryNetworks,
-    secondaryNetworks,
-    testNetworks
-  } = React.useMemo(() => {
-    const primaryNetworks: BraveWallet.NetworkInfo[] = [AllNetworksOption]
-    const secondaryNetworks: BraveWallet.NetworkInfo[] = []
-    const testNetworks: BraveWallet.NetworkInfo[] = []
+  const { primaryNetworks, secondaryNetworks, testNetworks } =
+    React.useMemo(() => {
+      const primaryNetworks: BraveWallet.NetworkInfo[] = [AllNetworksOption]
+      const secondaryNetworks: BraveWallet.NetworkInfo[] = []
+      const testNetworks: BraveWallet.NetworkInfo[] = []
 
-    for (const network of filteredNetworks) {
-      switch (true) {
-        case SupportedTopLevelChainIds.includes(network.chainId): {
-          primaryNetworks.push(network)
-          break
-        }
+      for (const network of filteredNetworks) {
+        switch (true) {
+          case SupportedTopLevelChainIds.includes(network.chainId): {
+            primaryNetworks.push(network)
+            break
+          }
 
-        case SupportedTestNetworks.includes(network.chainId): {
-          testNetworks.push(network)
-          break
-        }
+          case SupportedTestNetworks.includes(network.chainId): {
+            testNetworks.push(network)
+            break
+          }
 
-        case network.chainId === AllNetworksOption.chainId:
-          break // pre-sorted
+          case network.chainId === AllNetworksOption.chainId:
+            break // pre-sorted
 
-        default: {
-          secondaryNetworks.push(network)
-          break
+          default: {
+            secondaryNetworks.push(network)
+            break
+          }
         }
       }
-    }
 
-    return {
-      primaryNetworks,
-      secondaryNetworks,
-      testNetworks
-    }
-  }, [filteredNetworks])
+      return {
+        primaryNetworks,
+        secondaryNetworks,
+        testNetworks
+      }
+    }, [filteredNetworks])
 
   const toggleShowNetworkFilter = React.useCallback(() => {
-    setShowNetworkFilter(prev => !prev)
+    setShowNetworkFilter((prev) => !prev)
   }, [])
 
   const hideNetworkFilter = React.useCallback(() => {
     setShowNetworkFilter(false)
   }, [])
 
-  const onSelectAndClose = React.useCallback((network: BraveWallet.NetworkInfo) => {
-    if (onSelectNetwork) {
-      onSelectNetwork(network)
-    } else {
-      const networkFilter = {
-        chainId: network.chainId,
-        coin: network.coin
+  const onSelectAndClose = React.useCallback(
+    (network: BraveWallet.NetworkInfo) => {
+      if (onSelectNetwork) {
+        onSelectNetwork(network)
+      } else {
+        const networkFilter = {
+          chainId: network.chainId,
+          coin: network.coin
+        }
+        window.localStorage.setItem(
+          LOCAL_STORAGE_KEYS.PORTFOLIO_NETWORK_FILTER_OPTION,
+          JSON.stringify(networkFilter)
+        )
+        dispatch(WalletActions.setSelectedNetworkFilter(networkFilter))
       }
-      window.localStorage.setItem(LOCAL_STORAGE_KEYS.PORTFOLIO_NETWORK_FILTER_OPTION, JSON.stringify(networkFilter))
-      dispatch(WalletActions.setSelectedNetworkFilter(networkFilter))
-    }
 
-    hideNetworkFilter()
-  }, [onSelectNetwork, hideNetworkFilter])
+      hideNetworkFilter()
+    },
+    [onSelectNetwork, hideNetworkFilter]
+  )
 
   // render
   return (
     <StyledWrapper>
-      <DropDownButton isV2={isV2} onClick={toggleShowNetworkFilter}>
+      <DropDownButton
+        isV2={isV2}
+        onClick={toggleShowNetworkFilter}
+      >
         <SelectorLeftSide>
           {selectedNetwork.chainId !== AllNetworksOption.chainId && (
             <CreateNetworkIcon

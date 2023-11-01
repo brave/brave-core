@@ -15,15 +15,19 @@ import { BraveWallet } from '../../../constants/types'
 
 // Hooks
 import {
-  useUnsafeWalletSelector
+  useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { useSetSelectedAccountMutation } from '../../../common/slices/api.slice'
-import { useSelectedAccountQuery } from '../../../common/slices/api.slice.extra'
+import {
+  useSetSelectedAccountMutation //
+} from '../../../common/slices/api.slice'
+import {
+  useSelectedAccountQuery //
+} from '../../../common/slices/api.slice.extra'
 import { WalletSelectors } from '../../../common/selectors'
 
 // Hooks
@@ -41,18 +45,17 @@ import {
   RightSide
 } from './style'
 
-
 export interface Props {
   account: BraveWallet.AccountInfo
 }
 
 export const ConnectedAccountItem = (props: Props) => {
-  const {
-    account
-  } = props
+  const { account } = props
 
   const dispatch = useDispatch()
-  const connectedAccounts = useUnsafeWalletSelector(WalletSelectors.connectedAccounts)
+  const connectedAccounts = useUnsafeWalletSelector(
+    WalletSelectors.connectedAccounts
+  )
 
   // api
   const { data: selectedAccount } = useSelectedAccountQuery()
@@ -62,12 +65,14 @@ export const ConnectedAccountItem = (props: Props) => {
   // memos
   const orb = useAccountOrb(account)
 
-  const isActive = account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
+  const isActive =
+    account.accountId.uniqueKey === selectedAccount?.accountId.uniqueKey
 
   const hasPermission = React.useMemo((): boolean => {
     return connectedAccounts.some(
       (accountId) => accountId.uniqueKey === account.accountId.uniqueKey
-    )  }, [connectedAccounts, account])
+    )
+  }, [connectedAccounts, account])
 
   const buttonText = React.useMemo((): string => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
@@ -84,16 +89,22 @@ export const ConnectedAccountItem = (props: Props) => {
 
   // methods
   const onClickConnect = React.useCallback(() => {
-    dispatch(PanelActions
-      .requestSitePermission({ accountId: account.accountId }))
+    dispatch(
+      PanelActions.requestSitePermission({ accountId: account.accountId })
+    )
     if (selectedCoin !== BraveWallet.CoinType.SOL) {
       setSelectedAccount(account.accountId)
     }
   }, [account, selectedCoin])
 
   const onClickDisconnect = React.useCallback(() => {
-    dispatch(WalletActions.removeSitePermission({ accountId: account.accountId }))
-    if (connectedAccounts.length !== 0 && selectedCoin !== BraveWallet.CoinType.SOL) {
+    dispatch(
+      WalletActions.removeSitePermission({ accountId: account.accountId })
+    )
+    if (
+      connectedAccounts.length !== 0 &&
+      selectedCoin !== BraveWallet.CoinType.SOL
+    ) {
       setSelectedAccount(account.accountId)
     }
   }, [connectedAccounts, account, selectedCoin])
@@ -104,32 +115,37 @@ export const ConnectedAccountItem = (props: Props) => {
 
   const onClickConnectDisconnectOrSwitch = React.useCallback(() => {
     if (selectedCoin === BraveWallet.CoinType.SOL) {
-      return hasPermission
-        ? onClickDisconnect()
-        : onClickConnect()
+      return hasPermission ? onClickDisconnect() : onClickConnect()
     }
     return hasPermission
       ? isActive
         ? onClickDisconnect()
         : onClickSwitchAccount()
       : onClickConnect()
-  }, [selectedCoin, hasPermission, isActive, onClickDisconnect, onClickConnect, onClickSwitchAccount])
+  }, [
+    selectedCoin,
+    hasPermission,
+    isActive,
+    onClickDisconnect,
+    onClickConnect,
+    onClickSwitchAccount
+  ])
 
   return (
     <StyledWrapper>
       <LeftSide>
         <AccountCircle orb={orb} />
         <NameAndAddressColumn>
-          <AccountNameText>{reduceAccountDisplayName(account.name, 22)}</AccountNameText>
+          <AccountNameText>
+            {reduceAccountDisplayName(account.name, 22)}
+          </AccountNameText>
           <AccountAddressText>
             {reduceAddress(account.address)}
           </AccountAddressText>
         </NameAndAddressColumn>
       </LeftSide>
       <RightSide>
-        <PrimaryButton
-          onClick={onClickConnectDisconnectOrSwitch}
-        >
+        <PrimaryButton onClick={onClickConnectDisconnectOrSwitch}>
           {buttonText}
         </PrimaryButton>
       </RightSide>

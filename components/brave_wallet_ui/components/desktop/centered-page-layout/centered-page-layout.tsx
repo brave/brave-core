@@ -6,15 +6,12 @@
 import * as React from 'react'
 import { StyledWrapper, StyledContent } from './centered-page-layout.style'
 
-export const CenteredPageLayout = React.memo<React.PropsWithChildren<{ isTabView?: boolean }>>(({
-  children,
-  isTabView
-}) => {
+export const CenteredPageLayout = React.memo<
+  React.PropsWithChildren<{ isTabView?: boolean }>
+>(({ children, isTabView }) => {
   return (
     <StyledWrapper>
-      <StyledContent isTabView={isTabView}>
-        {children}
-      </StyledContent>
+      <StyledContent isTabView={isTabView}>{children}</StyledContent>
     </StyledWrapper>
   )
 })
