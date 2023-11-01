@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Fechar todos os separadores fecha o Brave</translation>
 <translation id="8308305244351876417">Permite que o áudio seja reproduzido quando acede a outro separador no Brave, quando muda para outra aplicação ou quando o ecrã do seu dispositivo está desligado.</translation>
 <translation id="4150201353443180367">Exibição</translation>
+<translation id="4275663329226226506">Multimédia</translation>
+<translation id="5950428831347558278">DRM de Widevine</translation>
+<translation id="6716942308303275900">Utilize o componente de gestão de direitos digitais (DRM) Widevine para a visualização de conteúdos multimédia protegidos no navegador.</translation>
+<translation id="255204363133978824">Permitir conteúdo protegido</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Saiba mais sobre o Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Permitir (reiniciar agora)</translation>
 <translation id="2433507940547922241">Aspeto</translation>
 <translation id="9040069796107003510">Ícone das Recompensas Brave</translation>
 <translation id="6333347122924254968">Apresentar ícone das Recompensas Brave na barra de endereço</translation>
@@ -583,6 +589,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas pré-definidas</translation>
 <translation id="5825943197137337319">Apenas pré-definida interface pública</translation>
 <translation id="1689062823386843231">Desativar UDP não-proxy</translation>
+<translation id="6915830896450988084">Enviar através de <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Trocar</translation>
 <translation id="1366855498335432549">Depositar</translation>
@@ -899,6 +906,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="3897092660631435901">Menu</translation>
 <translation id="42981349822642051">Expandir</translation>
 <translation id="3586752056660754651">Assinar</translation>
+<translation id="3950820424414687140">Iniciar sessão</translation>
 <translation id="6592721981110586529">Ligar à Carteira Brave</translation>
 <translation id="329813193938846695">Selecionar conta(s)</translation>
 <translation id="291375746846291973">Ligue-se apenas a sites em que confia.</translation>
@@ -945,7 +953,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="6044189892950611565">Canal de notificações do Navegador Brave</translation>
 <translation id="1173919438868967364">Selecionar conta</translation>
 <translation id="8922793255489232731">Não foi possível obter um fuso horário correspondente para: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">A transferir ficheiro de dados da carteira \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">A transferir o ficheiro de dados da carteira \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Ligada a <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Versão de avaliação</translation>
 <translation id="7733890291091968191">Exibir notificações Web3</translation>
@@ -1047,6 +1055,14 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="5802752138057422257">Caracteres não ASCII detetados.</translation>
 <translation id="442709594176931966">Ver mensagem original</translation>
 <translation id="2239252396088484499">Ver mensagem em codificação ASCII</translation>
+<translation id="4530494379350999373">Origem</translation>
+<translation id="6736243959894955139">Endereço</translation>
+<translation id="3095940652251934233">Extrato</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versão</translation>
+<translation id="1313065465616456728">Emitido às</translation>
+<translation id="7902225556763260253">Prazo de validade</translation>
+<translation id="1908159733454294871">Risco de segurança detetado</translation>
 <translation id="4220693114674044366">Endereço do token</translation>
 <translation id="5658257029899993935">Associar compra à minha conta Brave</translation>
 <translation id="1187061015547219282">Associe a sua compra na Play Store à sua conta Brave para usar a VPN Brave noutros dispositivos.</translation>
@@ -1179,4 +1195,11 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="5494920125229734069">Selecionar tudo</translation>
 <translation id="5972844218283131174">Desmarcar tudo</translation>
 <translation id="6322030314101903925">Nenhum ativo disponível</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Iniciar sessão com a Carteira Brave</translation>
+<translation id="3696514931437952995">Está a iniciar sessão em <ph name="ORIGIN"/>. A carteira Brave irá partilhar o endereço da carteira com <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Consultar detalhes</translation>
+<translation id="6759710362319508545">Recursos</translation>
+<translation id="2471230424465522689">Não antes de</translation>
+<translation id="4841860051609590575">ID de pedido</translation>
 </translationbundle>

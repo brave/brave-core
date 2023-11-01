@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">如關閉所有分頁，Brave 也會隨之關閉</translation>
 <translation id="8308305244351876417">當您切換到 Brave 或其他應用程式中的另一個分頁或您的裝置螢幕關閉時，允許播放音訊。</translation>
 <translation id="4150201353443180367">顯示設定</translation>
+<translation id="4275663329226226506">媒體</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">使用 Widevine 數位版權管理 (DRM) 以在瀏覽器中檢視受保護的媒體內容。</translation>
+<translation id="255204363133978824">允許受保護內容</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>深入瞭解 Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">允許（立刻重新啟動）</translation>
 <translation id="2433507940547922241">外觀</translation>
 <translation id="9040069796107003510">Brave Rewards 圖示</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
@@ -583,6 +589,7 @@
 <translation id="1822560017823072927">預設公共和隱私介面</translation>
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
+<translation id="6915830896450988084">透過 <ph name="CUSTODIAN"/> 傳送</translation>
 <translation id="1483493594462132177">發送</translation>
 <translation id="538450413584738399">交換貨幣</translation>
 <translation id="1366855498335432549">存款</translation>
@@ -899,6 +906,7 @@
 <translation id="3897092660631435901">選單</translation>
 <translation id="42981349822642051">展开</translation>
 <translation id="3586752056660754651">簽署</translation>
+<translation id="3950820424414687140">登入</translation>
 <translation id="6592721981110586529">與 Brave 錢包連結</translation>
 <translation id="329813193938846695">選取帳戶</translation>
 <translation id="291375746846291973">只與您信任的網站建立連結。</translation>
@@ -1047,6 +1055,14 @@
 <translation id="5802752138057422257">偵測到 NON-ASCII 字元！</translation>
 <translation id="442709594176931966">檢視原始訊息</translation>
 <translation id="2239252396088484499">在 ASCII 編碼中檢視訊息</translation>
+<translation id="4530494379350999373">來源</translation>
+<translation id="6736243959894955139">帳戶位址</translation>
+<translation id="3095940652251934233">聲明</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">版本</translation>
+<translation id="1313065465616456728">發出日期</translation>
+<translation id="7902225556763260253">到期時間</translation>
+<translation id="1908159733454294871">偵測到安全性風險</translation>
 <translation id="4220693114674044366">代幣位址</translation>
 <translation id="5658257029899993935">將購買交易連結至您的 Brave 帳戶</translation>
 <translation id="1187061015547219282">將 Play 商店的購買項目連結至您的 Brave 帳戶，即可在其他裝置上使用 Brave VPN。</translation>
@@ -1179,4 +1195,11 @@
 <translation id="5494920125229734069">全選</translation>
 <translation id="5972844218283131174">取消選取所有項目</translation>
 <translation id="6322030314101903925">無可用的資產</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">用 Brave 錢包登入</translation>
+<translation id="3696514931437952995">您正在登入 <ph name="ORIGIN"/>。Brave 錢包將與 <ph name="ORIGIN"/> 分享您的錢包位址。</translation>
+<translation id="1028781062521375153">檢視詳細資料</translation>
+<translation id="6759710362319508545">資源</translation>
+<translation id="2471230424465522689">不早於</translation>
+<translation id="4841860051609590575">請求 ID</translation>
 </translationbundle>

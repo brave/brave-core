@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="4900351245762303149">安裝 Google Widevine</translation>
 <translation id="2313383941300459392">重新啟動瀏覽器以啟用 Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> 想要播放受保護的 Google Widevine 內容，這需要您允許 Android 系統支援 Widevine。允許即表示您同意 Google 的使用條款。</translation>
 <translation id="2200626478572277092">有時需有 Widevine 才能在網頁上播放媒體。這是從 Google 伺服器載入的 Google 擴充功能，Brave 無法檢查。安裝即代表您同意 Google 的使用條款。</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>。
 或稍後在 <ph name="SETTINGS_EXTENIONS_LINK"/> 變更。</translation>
@@ -166,6 +167,9 @@
 <translation id="6959315322491671328">右鍵點擊以移除</translation>
 <translation id="495046168593986294">向上捲動</translation>
 <translation id="4021716437419160885">向下捲動</translation>
+<translation id="2702801445560668637">閱讀清單</translation>
+<translation id="2533715613366623756">書籤管理器</translation>
+<translation id="3405021928725149239">書籤管理器</translation>
 <translation id="6284218950354553099">自動傳送每日使用 ping 到 Brave</translation>
 <translation id="5288333155754958121">這種匿名且私人的 ping 讓 Brave 可以估計活躍使用者。</translation>
 <translation id="1872784258300710671">Brave 使用完全私密的產品分析來評估特定功能的整體使用量</translation>
@@ -237,7 +241,6 @@
 <translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>
 <translation id="8487693399751278191">正在匯入書籤……</translation>
 <translation id="2557899542277210112">為了快速存取，請將您的書籤置於書籤列上。</translation>
-<translation id="2702801445560668637">閱讀清單</translation>
 <translation id="1968543937259008435">準備好迎接最佳網路隱私防護了嗎？</translation>
 <translation id="6817415381278637662">快將 Brave 設為預設瀏覽器，在開啟每個網頁時享有 Brave 提供的隱私防護。</translation>
 <translation id="8722651357687610395">將 Brave 設為預設值</translation>
@@ -284,6 +287,8 @@
 <translation id="7765158879357617694">移動</translation>
 <translation id="6648536728577053364">移除離線資料</translation>
 <translation id="5181358966317519720">從播放清單中移除</translation>
+<translation id="2377705456080309463">檢視原始頁面</translation>
+<translation id="158894735649719362">當您有可播放的內容時，樂趣就開始了。加入您喜愛的媒體，隨時隨地播放，即使離線也沒問題。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -296,9 +301,12 @@
 <translation id="1360441190790440400">與 Linux 相同</translation>
 <translation id="1336940801687497203">與 Windows 相同</translation>
 <translation id="8721331068159819483">與 macOS 相同</translation>
+<translation id="4171684937791228083">總是在全螢幕中顯示工具列</translation>
 <translation id="1692470335103807198">取得更多主題</translation>
 <translation id="2906510232093002459">Brave 預設圖像</translation>
+<translation id="8000020256436988724">工具列</translation>
 <translation id="8076492880354921740">分頁</translation>
+<translation id="8168435359814927499">內容</translation>
 <translation id="5860254591544742609">顯示標題列</translation>
 <translation id="5371926069408837914">收合時將滑鼠游標停留於上方，垂直分頁面板就會展開。</translation>
 <translation id="3367129510799209147">索引標籤懸停模式</translation>
@@ -311,7 +319,8 @@
 <translation id="2858138569776157458">熱門網站</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
 <translation id="8820817407110198400">書籤列</translation>
-<translation id="2245286910966863912">在網址列顯示 Brave 新聞按鈕</translation>
+<translation id="7310387888625228830">Leo 人工智慧助理</translation>
+<translation id="5222974844674487962">顯示 Brave News 按鈕</translation>
 <translation id="383007806262310953">顯示書籤列</translation>
 <translation id="4054323497808446566">書籤列在所有頁面上都可見</translation>
 <translation id="8693858092251192712">書籤列在除索引標籤頁面之外的所有頁面上都為隱藏</translation>
@@ -419,7 +428,6 @@
 <translation id="7050661313034564003">顯示此網站的所有 Cookie 和儲存於本機的資料</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> 儲存在本機的資料</translation>
 <translation id="1963227389609234879">全部移除</translation>
-<translation id="8168435359814927499">內容</translation>
 <translation id="7702907602086592255">網域</translation>
 <translation id="3202131003361292969">路徑</translation>
 <translation id="5390743329570580756">傳送連線類型</translation>
@@ -591,7 +599,7 @@
 <translation id="702381242110464396">擴充功能 (Brave 錢包後援)</translation>
 <translation id="4718664830805652430">預設基礎貨幣</translation>
 <translation id="7992507032049865603">預設基礎加密貨幣</translation>
-<translation id="1834467296210148203">在工具列上顯示 Brave Wallet 圖示</translation>
+<translation id="3044369626313583722">顯示 Brave 錢包按鈕</translation>
 <translation id="7568430944629653319">啟用 NFT 探索</translation>
 <translation id="970496996377628529">使用第三方 API 將您擁有的 NFT 自動新增至「錢包」。</translation>
 <translation id="8239147115686034860">自動鎖定 Brave 錢包</translation>
@@ -700,6 +708,12 @@
 <translation id="2751872555001636931">在側邊欄顯示 Leo 圖示</translation>
 <translation id="8172263161008556851">在對話中顯示建議的提示語</translation>
 <translation id="1014480593522400586">清除 Leo 資料</translation>
+<translation id="8681157601856387010">重設 Leo 助理將要求您選擇將來使用 Brave Leo，
+並且還會清除您的聊天記錄。
+清除聊天記錄將會刪除您之前的所有 Brave Leo 工作階段。
+此操作無法撤銷。</translation>
+<translation id="8157373421434119674">資料和聊天歷史記錄</translation>
+<translation id="614530507403667291">新對話的預設模式</translation>
 <translation id="6624718837376802990">俐落獎勵化身</translation>
 <translation id="6617313057407561765">俐落 Brave 化身</translation>
 <translation id="6754445808455578019">俐落海洋化身</translation>

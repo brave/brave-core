@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">Не питај ме поново</translation>
 <translation id="4900351245762303149">Instaliraj Google Widevine</translation>
 <translation id="2313383941300459392">Ponovo pokrenite pregledač da biste aktivirali Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> želi da reprodukuje zaštićeni Google Widevine sadržaj, što zahteva da dozvolite podršku Android sistemu za "idevine. Ako dozvolite, prihvatate Google-ove uslove korišćenja.</translation>
 <translation id="2200626478572277092">Widevine je ponekad potreban da bi se na veb-stranici reprodukovao medijski sadržaj. To je dodatak kompanije Google koji se učitava sa Google servera, koje Brave ne može da ispita. Instaliranjem ovog dodatka prihvatate uslove korišćenja kompanije Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
@@ -166,6 +167,9 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6959315322491671328">Kliknite desnim tasterom miša da uklonite</translation>
 <translation id="495046168593986294">Pomeranje na gore</translation>
 <translation id="4021716437419160885">Pomeranje na dole</translation>
+<translation id="2702801445560668637">Lista za čitanje</translation>
+<translation id="2533715613366623756">Menadžer obeleživača</translation>
+<translation id="3405021928725149239">Menadžer obeleživača</translation>
 <translation id="6284218950354553099">Automatski šalji dnevni signal provere odziva Brave-u</translation>
 <translation id="5288333155754958121">Ova anonimna, privatna provera odziva omogućava Brave-u da proceni broj aktivnih korisnika.</translation>
 <translation id="1872784258300710671">Brave koristi potpuno privatnu analitiku proizvoda da bi procenio ukupno korišćenje određenih karakteristika</translation>
@@ -237,7 +241,6 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="796831669370432378">Da biste dodali obeleživač, kliknite dugne za obeleživanje koje se nalazi pored trake adresa</translation>
 <translation id="8487693399751278191">Uvezi obeleživače sada...</translation>
 <translation id="2557899542277210112">Za brzi pristup, stavite obeleživače ovde na traku sa obeleživačima.</translation>
-<translation id="2702801445560668637">Lista za čitanje</translation>
 <translation id="1968543937259008435">Da li ste spremni za najbolju onlajn privatnost?</translation>
 <translation id="6817415381278637662">Podesite Brave kao podrazumevani pretraživač kako biste dobili Brave zaštite privatnosti na svakoj veb-stranici koju otvorite.</translation>
 <translation id="8722651357687610395">Postavite Brave kao podrazumevani</translation>
@@ -284,6 +287,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7765158879357617694">Премести</translation>
 <translation id="6648536728577053364">Ukloniti oflajn podatke</translation>
 <translation id="5181358966317519720">Ukloniti iz plejliste</translation>
+<translation id="2377705456080309463">Prikaži originalnu stranicu</translation>
+<translation id="158894735649719362">Zabava počinje kada imate nešto da igrate. Dodajte svoje omiljene medije i reprodukujte bilo kada i bilo gde. Čak i van mreže.</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="4472575034687746823">Започнимо</translation>
@@ -296,9 +301,12 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1360441190790440400">Isto kao Linux</translation>
 <translation id="1336940801687497203">Isto kao Windows</translation>
 <translation id="8721331068159819483">Isto kao macOS</translation>
+<translation id="4171684937791228083">Uvek prikaži traku sa alatkama na celom ekranu</translation>
 <translation id="1692470335103807198">Dobijte više tema</translation>
 <translation id="2906510232093002459">Brave podrazumevane slike</translation>
+<translation id="8000020256436988724">Traka sa alatima</translation>
 <translation id="8076492880354921740">Картице</translation>
+<translation id="8168435359814927499">Садржај</translation>
 <translation id="5860254591544742609">Prikaži naslovnu traku</translation>
 <translation id="5371926069408837914">Proširite ploču sa vertikalnim karticama kada pređete mišem kada je skupljena</translation>
 <translation id="3367129510799209147">Režim prelaska pokazivača preko kartice</translation>
@@ -311,7 +319,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2858138569776157458">Најбољи сајтови</translation>
 <translation id="7859704718976024901">Istorije pretrage</translation>
 <translation id="8820817407110198400">Трака са обележивачима</translation>
-<translation id="2245286910966863912">Prikaži dugme za Brave vesti na traci sa adresama</translation>
+<translation id="7310387888625228830">Leo, asistent veštačke inteligencije</translation>
+<translation id="5222974844674487962">Prikaži dugme Brave News</translation>
 <translation id="383007806262310953">Прикажи траку са обележивачима</translation>
 <translation id="4054323497808446566">Traka sa obeleživačima je vidljiva na svim stranicama</translation>
 <translation id="8693858092251192712">Traka sa obeleživačima je sakrivena na svim stranicama osim na stranici nove kartice</translation>
@@ -419,7 +428,6 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7050661313034564003">Prikaži sve kolačiće i lokalno skladištene podatke za ovu veb lokaciju</translation>
 <translation id="8339059274628563283">Локално сачувани подаци са сајта <ph name="SITE"/></translation>
 <translation id="1963227389609234879">Уклони све</translation>
-<translation id="8168435359814927499">Садржај</translation>
 <translation id="7702907602086592255">Домен</translation>
 <translation id="3202131003361292969">Путања</translation>
 <translation id="5390743329570580756">Пошаљи за:</translation>
@@ -590,7 +598,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="702381242110464396">Proširenja (rezervna kopija Brave novčanika)</translation>
 <translation id="4718664830805652430">Podrazumevana osnovna valuta</translation>
 <translation id="7992507032049865603">Podrazumevana osnovna kriptovaluta</translation>
-<translation id="1834467296210148203">Prikazati ikonicu Brave novčanika na traci sa alatkama</translation>
+<translation id="3044369626313583722">Prikaži dugme Brave Wallet</translation>
 <translation id="7568430944629653319">Omogući otkrivanje NFT podataka</translation>
 <translation id="970496996377628529">Automatski dodaje vaše NFT podatke u novčanik koristeći API-je treće strane.</translation>
 <translation id="8239147115686034860">Automatsko zaključavanje za Brave novčanik</translation>
@@ -699,6 +707,12 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="2751872555001636931">Prikaži ikonu lava u bočnoj traci</translation>
 <translation id="8172263161008556851">Prikaži predložene upite u konverzaciji</translation>
 <translation id="1014480593522400586">Obriši podatke Lava</translation>
+<translation id="8681157601856387010">Resetovanje asistenta Lea će zahtevati od vas da se odlučite za korišćenje Brave
+Leo u budućnosti i takođe će obrisati istoriju ćaskanja. Brisanjem
+istorije ćaskanja izbrisaćete sve vaše prethodne razgovore sa Brave
+Leom. Ova radnja se ne može opozvati.</translation>
+<translation id="8157373421434119674">Podaci i istorija ćaskanja</translation>
+<translation id="614530507403667291">Podrazumevani model za nove razgovore</translation>
 <translation id="6624718837376802990">Avatar nervozne nagrade</translation>
 <translation id="6617313057407561765">Avatar nervozni Brave</translation>
 <translation id="6754445808455578019">Avatar nervozni okean</translation>

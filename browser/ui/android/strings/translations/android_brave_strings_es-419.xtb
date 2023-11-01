@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Cerrar todas las pestañas cierra Brave</translation>
 <translation id="8308305244351876417">Permite que el audio se reproduzca al cambiar de pestaña en Brave, al cambiar de aplicación o al apagarse la pantalla del dispositivo.</translation>
 <translation id="4150201353443180367">Pantalla</translation>
+<translation id="4275663329226226506">Multimedia</translation>
+<translation id="5950428831347558278">DRM Widevine</translation>
+<translation id="6716942308303275900">Usa el componente de gestión de derechos digitales (DRM) Widevine para ver contenido audiovisual protegido en el navegador.</translation>
+<translation id="255204363133978824">Permitir contenido protegido</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Más información sobre Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Permitir (volver a ejecutar ahora)</translation>
 <translation id="2433507940547922241">Diseño</translation>
 <translation id="9040069796107003510">Ícono de Recompensas de Brave</translation>
 <translation id="6333347122924254968">Mostrar ícono de Recompensas Brave en la barra de direcciones</translation>
@@ -583,6 +589,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="1822560017823072927">Interfaces públicas y privadas predeterminadas</translation>
 <translation id="5825943197137337319">Solo la interfaz pública predeterminada</translation>
 <translation id="1689062823386843231">Desactivar UDP sin proxy</translation>
+<translation id="6915830896450988084">Enviar con <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Intercambio</translation>
 <translation id="1366855498335432549">Depósito</translation>
@@ -899,6 +906,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="3897092660631435901">Menú</translation>
 <translation id="42981349822642051">Expandir</translation>
 <translation id="3586752056660754651">Firmar</translation>
+<translation id="3950820424414687140">Acceder</translation>
 <translation id="6592721981110586529">Conectar con Cartera de Brave</translation>
 <translation id="329813193938846695">Seleccione la(s) cuenta(s)</translation>
 <translation id="291375746846291973">Sólo conecta con sitios en los que confíes.</translation>
@@ -945,7 +953,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="6044189892950611565">Canal de notificación del navegador de Brave</translation>
 <translation id="1173919438868967364">Seleccionar cuenta</translation>
 <translation id="8922793255489232731">No se ha encontrado la zona horaria correspondiente a: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Descargando el archivo de datos de la billetera \u2022 <ph name="PERCENTAGE"/> \u0025\u0025</translation>
+<translation id="8901748741234750758">Descargando el archivo de datos de la billetera \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Conexión establecida con <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prueba</translation>
 <translation id="7733890291091968191">Mostrar notificaciones de Web3</translation>
@@ -1047,6 +1055,14 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="5802752138057422257">¡Se han detectado caracteres no ASCII!</translation>
 <translation id="442709594176931966">Ver mensajes original</translation>
 <translation id="2239252396088484499">Ver mensaje en codificación ASCII</translation>
+<translation id="4530494379350999373">Origen</translation>
+<translation id="6736243959894955139">Dirección</translation>
+<translation id="3095940652251934233">Declaración</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versión</translation>
+<translation id="1313065465616456728">Emisión</translation>
+<translation id="7902225556763260253">Vencimiento</translation>
+<translation id="1908159733454294871">Riesgo de seguridad detectado</translation>
 <translation id="4220693114674044366">Dirección del token</translation>
 <translation id="5658257029899993935">Vincular la compra con tu cuenta de Brave</translation>
 <translation id="1187061015547219282">Vincula la compra que has hecho en Play Store con tu cuenta de Brave para usar la VPN de Brave en otros dispositivos.</translation>
@@ -1179,4 +1195,11 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="5494920125229734069">Seleccionar todo</translation>
 <translation id="5972844218283131174">Anular toda la selección</translation>
 <translation id="6322030314101903925">No hay activos disponibles</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Iniciar sesión con Billetera de Brave</translation>
+<translation id="3696514931437952995">Estás iniciando sesión en <ph name="ORIGIN"/>. Billetera de Brave compartirá la dirección de tu cartera con <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Ver detalles</translation>
+<translation id="6759710362319508545">Recursos</translation>
+<translation id="2471230424465522689">No antes de</translation>
+<translation id="4841860051609590575">ID de solicitud</translation>
 </translationbundle>

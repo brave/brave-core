@@ -719,6 +719,7 @@
 <translation id="1950340257946519340">Der opstod en uventet fejl</translation>
 <translation id="2605703631071131439">Genåbn bidragspanelet for at prøve igen.</translation>
 <translation id="8855543392451028706">Velkommen! Brugere kan støtte denne indholdsskaber ved at sende dem bidrag. Det er en måde at sige tak for, at de laver fedt indhold.</translation>
+<translation id="4822132585477111396">Kæde-ID</translation>
 <translation id="1148827340205946630">Brugeren afviste anmodningen.</translation>
 <translation id="2403819048476450281">Ugyldige parametre.</translation>
 <translation id="3955144560853195652">Kæden <ph name="VALUE"/> er ikke tilføjet</translation>
@@ -991,6 +992,7 @@
 <translation id="5294062982587710720">Vær opmærksom på, at Brave ikke kan garantere, hvad der vil ske, hvis du skriver under. En signatur kan godkende næsten enhver form for handling i din konto eller på dine vegne, blandt andet at give fuld kontrol over din konto og crypto-aktiver til siden, der anmoder dig. Skriv kun under, hvis du er sikker på, du vil udføre denne handling og stoler på siden.</translation>
 <translation id="3474375934783434676">Skriv under på eget ansvar</translation>
 <translation id="5488357322146334497">Besked</translation>
+<translation id="3586931643579894722">Skjul oplysninger</translation>
 <translation id="7702907602086592255">Domæne</translation>
 <translation id="3586752056660754651">Underskriv</translation>
 <translation id="3484981968509595506">En DApp anmoder om din offentlige krypteringsnøgle</translation>
@@ -1016,7 +1018,6 @@
 <translation id="5052727830821470769">Netværks-url</translation>
 <translation id="427875364838253580">Se alle detaljer</translation>
 <translation id="8030852056903932865">Godkend</translation>
-<translation id="4822132585477111396">Kæde-ID</translation>
 <translation id="7131971375297699539">Valutasymbol</translation>
 <translation id="4693057234255364395">Blokér Explorer-url</translation>
 <translation id="7982789257301363584">Netværk</translation>
@@ -1159,7 +1160,6 @@
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Wallet skal låses op først</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> er ikke en gyldig adresse</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> er ikke det aktive netværk</translation>
 <translation id="7340805872138998391">Kunne ikke låse op for enhed. Prøv at oprette forbindelse igen</translation>
 <translation id="1984410139271779110">Intern fejl. Ukendt grund.</translation>
 <translation id="6989562355845156390">godkend</translation>
@@ -1275,6 +1275,10 @@
 <translation id="5601436886921227795">Dapp-interaktioner</translation>
 <translation id="9104177294757104789">Send <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Byt <ph name="MAKER"/> til <ph name="TAKER"/></translation>
+<translation id="3950820424414687140">Log ind</translation>
+<translation id="4530494379350999373">Origin</translation>
+<translation id="6736243959894955139">Adresse</translation>
+<translation id="308268297242056490">URI</translation>
 <translation id="1965889974717516497">Sekundære netværker</translation>
 <translation id="7691821949666755802">Test netværker</translation>
 <translation id="2816106784624007524">Gasgrænse skal være et helt tal højere end 0</translation>
@@ -1795,17 +1799,9 @@
 <translation id="3537006124004887164">Denne kombination bliver brugt til <ph name="COMMAND"/> og kan ikke ændres. Prøv at ændre den gennem 'App genveje' i Systemindstillinger.</translation>
 <translation id="8591883849678260674">Se originalen</translation>
 <translation id="1969654232209826429">min. læsning</translation>
-<translation id="906598168058463050">Sluk for speedreader</translation>
-<translation id="8948558186299884715">Tænd for speedreader</translation>
-<translation id="1385842054306112120">Brug altid speedreader til denne side</translation>
-<translation id="8028940590935492959">Slå til/fra for at tænde/slukke speedreader for denne hjemmeside.</translation>
-<translation id="1022901542006152519">Brug altid speedreader på alle sider</translation>
-<translation id="3460907549384263858">Slå til/fra for at tænde/slukke speedreader for alle hjemmesider.</translation>
-<translation id="8745592921916491483">Ikke alle sider understøtter speedreader.</translation>
+<translation id="9089090017461255038">Tænd for speedreader</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1103345585203110275">Forlad speedreader</translation>
 <translation id="6315170314923504164">Stemme</translation>
-<translation id="57748525762025171">Fintun speedreader</translation>
 <translation id="251940709686581010">Indstillinger for udseende</translation>
 <translation id="4809927044794281115">Lyst tema</translation>
 <translation id="5595850093882577201">Sepia-tema</translation>
@@ -1822,7 +1818,21 @@
 <translation id="1199355487114804640">Afspil/Pause</translation>
 <translation id="1689210457482459023">Sænk afspilningshastigheden</translation>
 <translation id="5872363163901278000">Hæv afspilningshastigheden</translation>
-<translation id="3507699941492423127">Brave Leo</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8637805148029768813">Opsummering er kun tilgængelig for udvalgte artikler og længere hjemmesider.</translation>
+<translation id="2346991295632453064">Acceptér og start</translation>
+<translation id="1223498995510244364">Opsummér</translation>
+<translation id="7839853125981164613">Skriv noget her</translation>
+<translation id="1171287413830401223">Aktivér anbefalede spørgsmål?</translation>
+<translation id="8723991872343294222">Brave AI kan automatisk foreslå spørgsmål baseret på indholdet på siden. Du kan deaktivere den senere i Indstillinger.</translation>
+<translation id="3435896845095436175">Aktivér</translation>
+<translation id="7473891865547856676">Nej tak</translation>
+<translation id="7932221068776853847">Afbryd for at holde op med at sende denne sides indhold til Leo, og start en ny samtale</translation>
+<translation id="1167803637855350748">Kunne ikke forbinde til Leo på grund af netværksproblemer. Tjek din forbindelse, og prøv igen.</translation>
+<translation id="5095201428204952524">Leo har for travlt lige nu. Prøv igen om et par minutter.</translation>
+<translation id="7144878232160441200">Prøv igen</translation>
+<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /måned</translation>
+<translation id="7138678301420049075">Andet</translation>
 <translation id="6303294677342628402">Afskærmning</translation>
 <translation id="8458987127502506209">Aktivér Brave-skjolde</translation>
 <translation id="7509914170164691086">Skjolde er OPPE <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
@@ -1891,21 +1901,6 @@
 <translation id="546481172717459539">Tilpas systemindstillinger</translation>
 <translation id="7799817062559422778">Lys tilstand</translation>
 <translation id="4117637339509843559">Mørk tilstand</translation>
-<translation id="8637805148029768813">Opsummering er kun tilgængelig for udvalgte artikler og længere hjemmesider.</translation>
-<translation id="2346991295632453064">Acceptér og start</translation>
-<translation id="1223498995510244364">Opsummér</translation>
-<translation id="6966669506908435195">Om Brave Leo</translation>
-<translation id="1667863995484767951">Denne AI chatfunktion opsummerer hjemmesider, du besøger og inkluderer et chatinterface, der lader dig spørge og få svar omkring indholdet af siden. Nøjagtigheden af opsummeringen er ikke garanteret og kan inkludere unøjagtig, misvisende eller falsk information. Du bør ikke give følsomme eller private oplysninger ud og bør udvise forsigtighed med tekster, der omhandler helbred, finans, personlig sikkerhed og lignende emner.</translation>
-<translation id="7636915524386889836">Braves AI Chat bruger en <ph name="LINK_BEFORE"/>stor sprogmodel<ph name="LINK_AFTER"/>, der hostes på egne servere.  AI chatfunktionen indsamler og behandler ikke identifikatorer, såsom IP-adresse, der kan linkes til dig. Ingen personlige oplysninger bliver beholdt af AI-modellen.</translation>
-<translation id="7839853125981164613">Skriv noget her</translation>
-<translation id="1171287413830401223">Aktivér anbefalede spørgsmål?</translation>
-<translation id="8723991872343294222">Brave AI kan automatisk foreslå spørgsmål baseret på indholdet på siden. Du kan deaktivere den senere i Indstillinger.</translation>
-<translation id="3435896845095436175">Aktivér</translation>
-<translation id="7473891865547856676">Nej tak</translation>
-<translation id="7932221068776853847">Afbryd for at holde op med at sende denne sides indhold til Leo, og start en ny samtale</translation>
-<translation id="1167803637855350748">Kunne ikke forbinde til Leo på grund af netværksproblemer. Tjek din forbindelse, og prøv igen.</translation>
-<translation id="5095201428204952524">Leo har for travlt lige nu. Prøv igen om et par minutter.</translation>
-<translation id="7144878232160441200">Prøv igen</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Tilsluttet</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Afbrudt</translation>
 <translation id="3541307549916475335">Panel-interface for Brave VPN</translation>
@@ -1944,7 +1939,6 @@
 <translation id="9184988385244077767">Intet internet, når der er forbindelse</translation>
 <translation id="21570240866965662">Langsom forbindelse</translation>
 <translation id="1219475260382643267">Hjemmesiden virker ikke</translation>
-<translation id="7138678301420049075">Andet</translation>
 <translation id="1387340358507240698">Beskriv dit problem</translation>
 <translation id="501818585183973587">Vælg de oplysninger, du gerne vil dele med os</translation>
 <translation id="3195618332367441234">Jo flere oplysninger du deler, desto nemmere bliver det for supportmedarbejderne at hjælpe dig.</translation>
