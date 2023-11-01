@@ -300,22 +300,21 @@ void BraveLocationBarView::RefreshBackground() {
     return;
   }
 
-  const bool is_caret_visible = omnibox_view_->model()->is_caret_visible();
-  if (IsMouseHovered() && !is_caret_visible) {
+  if (!shadow_) {
     const int radius = GetBorderRadius();
-    if (!shadow_) {
-      ViewShadow::ShadowParameters shadow{
-          .offset_x = 0,
-          .offset_y = 1,
-          .blur_radius = radius,
-          .shadow_color =
-              color_provider->GetColor(kColorLocationBarHoveredShadow)};
+    ViewShadow::ShadowParameters shadow{
+        .offset_x = 0,
+        .offset_y = 1,
+        .blur_radius = radius,
+        .shadow_color =
+            color_provider->GetColor(kColorLocationBarHoveredShadow)};
 
-      shadow_ = std::make_unique<ViewShadow>(this, radius, shadow);
-    }
-  } else {
-    shadow_.reset();
+    shadow_ = std::make_unique<ViewShadow>(this, radius, shadow);
   }
+
+  const bool show_shadow =
+      IsMouseHovered() && !omnibox_view_->model()->is_caret_visible();
+  shadow_->SetVisible(show_shadow);
 }
 
 gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
@@ -357,7 +356,7 @@ void BraveLocationBarView::OnThemeChanged() {
   }
 
   Update(nullptr);
-  RefreshBackground();
+  shadow_.reset();
 }
 
 void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {

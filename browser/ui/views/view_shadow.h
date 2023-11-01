@@ -57,6 +57,8 @@ class ViewShadow : public ui::LayerDelegate, public views::ViewObserver {
   void SetInsets(const gfx::Insets& insets);
   const gfx::Insets& insets() const { return insets_; }
 
+  void SetVisible(bool visible);
+
  protected:
   ui::Layer* shadow_layer() { return layer_owner_.layer(); }
   const ui::Layer* shadow_layer() const { return layer_owner_.layer(); }
