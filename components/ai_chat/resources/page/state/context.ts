@@ -16,7 +16,7 @@ export interface AIChatContext {
   canGenerateQuestions: boolean
   hasAcceptedAgreement: boolean
   userAutoGeneratePref: mojom.AutoGenerateQuestionsPref | undefined
-  siteInfo: mojom.SiteInfo | null
+  siteInfo?: mojom.SiteInfo | null
   favIconUrl: string | undefined
   currentError: mojom.APIError | undefined
   apiHasError: boolean
@@ -55,7 +55,7 @@ export const defaultContext: AIChatContext = {
   isPremiumUser: false,
   isPremiumUserDisconnected: false,
   userAutoGeneratePref: undefined,
-  siteInfo: null,
+  siteInfo: undefined,
   favIconUrl: undefined,
   currentError: mojom.APIError.None,
   canShowPremiumPrompt: undefined,

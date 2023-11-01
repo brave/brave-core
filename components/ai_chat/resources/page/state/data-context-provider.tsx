@@ -292,7 +292,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     suggestedQuestions,
     canGenerateQuestions,
     userAutoGeneratePref,
-    siteInfo: siteInfo || null,
+    siteInfo: siteInfo,
     favIconUrl,
     currentError,
     hasAcceptedAgreement,
