@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 1302fdfadd00f95ff1664fa112ba3b206b489d51..801078855f2e4b27ac636d4f1948764f3f892297 100644
+index 93b06a39228e7f4e3066f644254e712efe9cc2bf..62ae73d4192662438d77223844ff14c4aba48325 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -427,6 +427,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -430,6 +430,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterIntegerPref(kAppStoreRatingTotalDaysOnChromeKey, 0);
    registry->RegisterListPref(kAppStoreRatingActiveDaysInPastWeekKey);
    registry->RegisterTimePref(kAppStoreRatingLastShownPromoDayKey, base::Time());
@@ -10,10 +10,10 @@ index 1302fdfadd00f95ff1664fa112ba3b206b489d51..801078855f2e4b27ac636d4f1948764f
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -653,6 +654,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterListPref(kActivityBucketLastReportedDateArrayKey);
- 
+@@ -662,6 +663,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(kSyncRequested, false);
+ 
+   registry->RegisterBooleanPref(prefs::kDetectUnitsEnabled, true);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

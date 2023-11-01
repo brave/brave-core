@@ -1,12 +1,12 @@
 diff --git a/third_party/rust/rand/v0_8/BUILD.gn b/third_party/rust/rand/v0_8/BUILD.gn
-index 8a863fb66fc0dea0fdcce5a486c8ab18509f830b..717a635e3e42744a0bf721080765ad028243c89f 100644
+index 065851643f57930d45ce9e69983994e5eb84f0fd..6f8b5ab77d5cd3feeb8a940a876394bf9bac0f00 100644
 --- a/third_party/rust/rand/v0_8/BUILD.gn
 +++ b/third_party/rust/rand/v0_8/BUILD.gn
-@@ -76,6 +76,7 @@ cargo_crate("lib") {
+@@ -70,5 +70,5 @@ cargo_crate("lib") {
      "std",
      "std_rng",
    ]
 +  features += [ "small_rng" ]
- }
- group("test_support") {
-   public_deps = [ ":lib" ]
+ 
+   # Only for usage from third-party crates. Add the crate to
+   # third_party.toml to use it from first-party code.

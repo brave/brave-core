@@ -18,7 +18,7 @@ index e61d70856282ffbef8abc4398c8c98cab4122688..ee8e5a04f488736a70e70f2bb1b01847
    }
  
    android_library("app_hooks_java") {
-@@ -665,6 +667,7 @@ if (current_toolchain == default_toolchain) {
+@@ -663,6 +665,7 @@ if (current_toolchain == default_toolchain) {
      ]
  
      deps += feed_deps
@@ -26,15 +26,15 @@ index e61d70856282ffbef8abc4398c8c98cab4122688..ee8e5a04f488736a70e70f2bb1b01847
  
      srcjar_deps = [
        ":chrome_android_java_enums_srcjar",
-@@ -683,6 +686,7 @@ if (current_toolchain == default_toolchain) {
-       "//components/supervised_user/core/browser:supervised_user_url_filter_enum_javagen",
+@@ -681,6 +684,7 @@ if (current_toolchain == default_toolchain) {
+       "//components/supervised_user/core/common:supervised_user_utils_enum_javagen",
        "//net:effective_connection_type_java",
      ]
 +    srcjar_deps += brave_chrome_java_srcjar_deps
  
      # From java_sources.gni.
      sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -824,6 +828,7 @@ if (current_toolchain == default_toolchain) {
+@@ -822,6 +826,7 @@ if (current_toolchain == default_toolchain) {
        "//components/messages/android/internal:java",
        "//components/segmentation_platform/internal:internal_java",
      ]

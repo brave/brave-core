@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 226720a6d80fef873dd78acef84d0905c94ec422..0af999981980ee5271d0772a6c027e64987c5bb6 100644
+index 2aae4c8e6a05ae221a032218bdb9ee1898c560b4..bdcc2e6cc0de7b46eb2ced36712c7531f70e74b0 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -335,6 +335,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
-   prefs_->ClearPref(kObsoletePpapiBrokerDefaultPref);
+@@ -339,6 +339,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
  #endif  // !BUILDFLAG(IS_ANDROID)
  #endif  // !BUILDFLAG(IS_IOS)
+   prefs_->ClearPref(kObsoleteFederatedIdentityDefaultPref);
 +BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
  }
  

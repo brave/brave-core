@@ -10,8 +10,8 @@ index e9d31053cb2eae737463004be9cb66e44bcd1058..5fc988331d4abf8eca9d0f84e713ecef
  
  class PolicyDetails:
    """Parses a policy template and caches all its details."""
-@@ -356,6 +357,7 @@ def main():
-     chrome_major_version = ParseVersionFile(version_path)
+@@ -342,6 +343,7 @@ def main():
+     chrome_major_version = args.chrome_version_major
  
    template_file_contents = _LoadJSONFile(template_file_name)
 +  AddBravePolicies(template_file_contents)

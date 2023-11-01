@@ -2,9 +2,9 @@ diff --git a/BUILD.gn b/BUILD.gn
 index 01159bc491a4a97bc0d8dd280f5871e9dc8d3dcd..08c1a9688b6a58ad0953413c7918eea4a1e9f30e 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -737,6 +737,7 @@ config("internal_config_base") {
+@@ -739,6 +739,7 @@ config("internal_config_base") {
+     "include",
      "$target_gen_dir",
-     "$target_gen_dir/include",
    ]
 +  _include_dirs = include_dirs include_dirs = [] include_dirs = [ "//brave/chromium_src/v8" ] + _include_dirs
  }
