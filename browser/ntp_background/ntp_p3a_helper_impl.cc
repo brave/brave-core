@@ -236,27 +236,22 @@ void NTPP3AHelperImpl::UpdateMetricCount(
     ScopedDictPrefUpdate update(local_state_, dict_pref);
     base::Value::Dict& update_dict = update.Get();
 
-    base::Value* creative_instance_value =
-        update_dict.Find(creative_instance_id);
-    if (creative_instance_value == nullptr ||
-        !creative_instance_value->is_dict()) {
-      creative_instance_value =
-          update_dict.Set(creative_instance_id, base::Value::Dict());
-      creative_instance_value->GetDict().Set(kInflightDictKey,
-                                             base::Value::Dict());
+    base::Value::Dict* creative_instance_dict =
+        update_dict.FindDict(creative_instance_id);
+    if (creative_instance_dict == nullptr) {
+      creative_instance_dict = update_dict.EnsureDict(creative_instance_id);
+      creative_instance_dict->EnsureDict(kInflightDictKey);
     }
-    base::Value::Dict& creative_instance_dict =
-        creative_instance_value->GetDict();
 
     const absl::optional<int> current_value =
-        creative_instance_dict.FindInt(event_type);
+        creative_instance_dict->FindInt(event_type);
 
     const int count = current_value.value_or(0) + 1;
 
-    creative_instance_dict.Set(event_type, count);
+    creative_instance_dict->Set(event_type, count);
     const base::Time new_expiry_time = base::Time::Now() + kCountExpiryTime;
-    creative_instance_dict.Set(kExpireTimeKey,
-                               base::TimeToValue(new_expiry_time).GetString());
+    creative_instance_dict->Set(kExpireTimeKey,
+                                base::TimeToValue(new_expiry_time).GetString());
   }
 }
 

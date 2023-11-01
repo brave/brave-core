@@ -16,6 +16,7 @@
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/switches.h"
+#include "url/url_constants.h"
 
 namespace p3a {
 
@@ -92,8 +93,8 @@ inline void CheckURL(const GURL& url) {
 }
 
 std::string GetDefaultHost(const char* host_prefix) {
-  return base::StrCat(
-      {"https://", brave_domains::GetServicesDomain(host_prefix)});
+  return base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                       brave_domains::GetServicesDomain(host_prefix)});
 }
 
 GURL GetDefaultURL(const char* host_prefix, const char* path) {
