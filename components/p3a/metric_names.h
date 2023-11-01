@@ -44,6 +44,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Core.WindowCount.2",
     "Brave.DNS.AutoSecureRequests",
     "Brave.DNS.SecureSetting",
+    "Brave.Extensions.AdBlock",
     "Brave.Importer.ImporterSource.2",
     "Brave.NTP.CustomizeUsageStatus",
     "Brave.NTP.NewTabsCreated.2",

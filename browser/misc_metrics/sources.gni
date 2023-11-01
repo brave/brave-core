@@ -20,6 +20,10 @@ brave_browser_misc_metrics_sources = [
 
 if (!is_android) {
   brave_browser_misc_metrics_sources += [
+    "//brave/browser/misc_metrics/extension_metrics_service.cc",
+    "//brave/browser/misc_metrics/extension_metrics_service.h",
+    "//brave/browser/misc_metrics/extension_metrics_service_factory.cc",
+    "//brave/browser/misc_metrics/extension_metrics_service_factory.h",
     "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
     "//brave/browser/misc_metrics/vertical_tab_metrics.h",
   ]
