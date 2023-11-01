@@ -273,12 +273,6 @@ class TabLocationView: UIView {
     contentView.snp.makeConstraints { make in
       make.leading.trailing.top.bottom.equalTo(self)
     }
-
-    // Setup UIDragInteraction to handle dragging the location
-    // bar for dropping its URL into other apps.
-    let dragInteraction = UIDragInteraction(delegate: self)
-    dragInteraction.allowsSimultaneousRecognitionDuringLift = true
-    self.addInteraction(dragInteraction)
     
     privateModeCancellable = privateBrowsingManager.$isPrivateBrowsing
       .removeDuplicates()
@@ -411,26 +405,6 @@ class TabLocationView: UIView {
   
   @objc func didTapWalletButton() {
     delegate?.tabLocationViewDidTapWalletButton(self)
-  }
-}
-
-// MARK: - UIDragInteractionDelegate
-
-extension TabLocationView: UIDragInteractionDelegate {
-  func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
-    // Ensure we actually have a URL in the location bar and that the URL is not local.
-    guard let url = self.url, !InternalURL.isValid(url: url), let itemProvider = NSItemProvider(contentsOf: url),
-      !reloadButton.isHighlighted
-    else {
-      return []
-    }
-
-    let dragItem = UIDragItem(itemProvider: itemProvider)
-    return [dragItem]
-  }
-
-  func dragInteraction(_ interaction: UIDragInteraction, sessionWillBegin session: UIDragSession) {
-    delegate?.tabLocationViewDidBeginDragInteraction(self)
   }
 }
 

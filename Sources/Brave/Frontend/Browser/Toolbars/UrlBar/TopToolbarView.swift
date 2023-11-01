@@ -307,6 +307,10 @@ class TopToolbarView: UIView, ToolbarProtocol {
     swipeGestureRecognizer.isEnabled = false
     locationView.addGestureRecognizer(swipeGestureRecognizer)
     
+    let dragInteraction = UIDragInteraction(delegate: self)
+    dragInteraction.allowsSimultaneousRecognitionDuringLift = true
+    locationView.addInteraction(dragInteraction)
+    
     self.displayTabTraySwipeGestureRecognizer = swipeGestureRecognizer
     
     qrCodeButton.addTarget(self, action: #selector(topToolbarDidPressQrCodeButton), for: .touchUpInside)
@@ -412,11 +416,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
       $0.attributedPlaceholder = self.locationView.makePlaceholder(colors: .standard)
       $0.clearButtonMode = .whileEditing
       $0.rightViewMode = .never
+      if let dropInteraction = $0.textDropInteraction {
+        $0.removeInteraction(dropInteraction)
+      }
     }
     
-    let dragInteraction = UIDragInteraction(delegate: self)
-    locationTextField.addInteraction(dragInteraction)
-
     if RecentSearchQRCodeScannerController.hasCameraSupport {
       locationBarOptionsStackView.addArrangedSubview(qrCodeButton)
     }
@@ -807,12 +811,19 @@ extension TopToolbarView: AutocompleteTextFieldDelegate {
 
 extension TopToolbarView: UIDragInteractionDelegate {
   func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
-    guard let text = locationTextField?.text else {
+    // Ensure we actually have a URL in the location bar and that the URL is not local.
+    guard let url = self.locationView.url, !InternalURL.isValid(url: url), let itemProvider = NSItemProvider(contentsOf: url),
+          !locationView.reloadButton.isHighlighted, !inOverlayMode
+    else {
       return []
     }
-    
-    let dragItem = UIDragItem(itemProvider: NSItemProvider(object: text as NSString))
+
+    let dragItem = UIDragItem(itemProvider: itemProvider)
     dragItem.localObject = locationTextField
     return [dragItem]
+  }
+  
+  func dragInteraction(_ interaction: UIDragInteraction, sessionWillBegin session: UIDragSession) {
+    delegate?.topToolbarDidBeginDragInteraction(self)
   }
 }
