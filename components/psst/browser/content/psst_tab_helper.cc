@@ -59,7 +59,6 @@ void PsstTabHelper::OnTestScriptResult(
 void PsstTabHelper::InsertTestScript(
     const content::GlobalRenderFrameHostId render_frame_host_id,
     MatchedRule rule) {
-  CHECK(render_frame_host_id);
   InsertScriptInPage(render_frame_host_id, rule.test_script,
                      base::BindOnce(&PsstTabHelper::OnTestScriptResult,
                                     weak_factory_.GetWeakPtr(),
