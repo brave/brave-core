@@ -6,7 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_TESTING_PROFILE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_TESTING_PROFILE_H_
 
+#define InitializeProfileType                                                \
+  RegisterBraveUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry); \
+  void InitializeProfileType
+
 #include "src/chrome/test/base/testing_profile.h"  // IWYU pragma: export
+#undef InitializeProfileType
 
 #include "brave/test/base/brave_testing_profile.h"
 

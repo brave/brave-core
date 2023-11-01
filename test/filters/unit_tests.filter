@@ -5,108 +5,30 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
-# These tests crash due to TestingBraveBrowserProcess::greaselion_download_service()
+# These test crashes due to TestingBraveBrowserProcess::process_misc_metrics()
 # having NOTREACHED which causes an immediate crash
-# https://github.com/brave/brave-browser/issues/25726
--All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Disabled
--All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Enabled
--All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_SaveStateToDB
--All/CookieControlsBubbleViewControllerTest.ThirdPartyCookiesAllowedPermanent/*
--All/CookieControlsBubbleViewControllerTest.ThirdPartyCookiesAllowedTemporary/*
--All/CookieControlsBubbleViewControllerTest.ThirdPartyCookiesBlocked/*
--All/CookieControlsUserBypassTest.*
--All/DiceWebSigninInterceptorWithManagedDisclaimerForSyncPromoTest.*
--All/ExtensionContextMenuModelWithUserHostControlsAndPermittedSitesTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
--All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
--All/ExtensionContextMenuModelWithUserHostControlsTest.PageAccessItemsVisibility_PolicyInstalled/*
--All/ExtensionContextMenuModelWithUserHostControlsTest.TestClickingPageAccessPermissionsPage/*
--All/HighEfficiencyBubbleViewMemorySavingsImprovementsTest.ShowsCorrectLabelsForDifferentSavings/*
--All/PageInfoCookiesContentViewTest.*
--All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
--All/PrintContentAnalysisUtilsTest.*/*
--ApcScrimManagerImplTest.DisabledScrimCannotBeShown
--ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
--ApcScrimManagerImplTest.HideFocusOnTheWebContent
--ApcScrimManagerImplTest.RestoresTheOriginalHiddenStateOnWebcontentsVisibibleTransition
--ApcScrimManagerImplTest.ShutDownDisablesAndHidesScrim
--ApcScrimManagerImplTest.UpdatesVisibilityOnWebcontentsVisibilityChanged
--BatterySaverButtonNoExperimentsAvailableTest.*
--BatterySaverButtonTest.*
--BookmarkBubbleViewShoppingCollectionTest.*
--BookmarkBubbleViewTest.*
--BrowserFeaturePromoControllerViewsTest.*
--BrowserFinderTest.ScheduledForDeletion
--BrowserViewPipTest.CanFullscreenPolicyDoesNotEnableFullscreen
--BrowserViewTestWithStopLoadingAnimationForHiddenWindow.LoadingAnimationNotRenderedWhenWindowHidden
--ChromeBrowsingDataRemoverDelegateOriginTrialsTest.PersistentOriginTrialsAreDeleted
--ChromeTailoredSecurityServiceRetryForSyncUsersDisabledTest.*
--ChromeTailoredSecurityServiceTest.*
--CookieControlsBubbleCoordinatorTest.ShowBubbleTest
--CookieControlsBubbleViewImplTest.BubbleWidth
--CookieControlsContentViewUnitTest.FeedbackSection
--CookieControlsContentViewUnitTest.ToggleButton_Initial
--CookieControlsContentViewUnitTest.ToggleButton_UpdatedSites
--CookieControlsIconViewUnitTest.*
--CookieControlsUserBypassTest.SiteCounts
--CoreTabHelperWindowUnitTest.SearchWithLens_LensPingEnabled_TriggersLensPing
--CustomizeChromeFeaturePromoHelperTest.*
 -DeleteAddressProfileDialogControllerImplTest.*
 -DoesFirstPartyPrecedeThirdPartyTest.*
--DownloadBubbleRowListViewTest.AddRow
--DownloadBubbleRowListViewTest.RemoveRow
--DownloadBubbleRowViewTest.*
--DownloadToolbarButtonViewTest.*
 -EditAddressProfileDialogControllerImplTest.*
--ExpsRegistrationSuccessObserverTest.IPHNotShownForChromeUrls
--ExtensionActionViewControllerFeatureUnitTest.*
--ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
--ExtensionActionViewControllerGrayscaleTest.*
--ExtensionActionViewControllerUnitTest.*
--ExtensionActionViewControllerWithSidePanelUnitTest.*
--ExtensionMenuItemViewTest.*
--ExtensionsSitePermissionsPageViewUnitTest.*
--ExtensionsToolbarControlsWithPermittedSitesUnitTest.RequestAccessButtonVisibilityOnPermittedSites
 -FileSystemAccessRestorePermissionBubbleViewTest.*
--FirstShowAndReshow/MandatoryReauthBubbleControllerImplMetricsTest.*
--FirstShowAndReshow/MandatoryReauthBubbleControllerOptInBubbleMetricsTest.*
--HighEfficiencyBubbleViewMemorySavingsImprovementsTest.*
--HighEfficiencyBubbleViewTest.*
--HighEfficiencyChipViewDiscardedTabTreatmentDisabledTest.ShouldNotExpandWhenFeatureIsDisabled
--HighEfficiencyChipViewMemorySavingsImprovementsTest.*
--HighEfficiencyChipViewTest.*
--IbanBubbleControllerImplTest.*
--IsolatedWebAppChromeBrowsingDataRemoverDelegateTest.ControlledFramesIgnoreFilter
--ManagePasswordsUIControllerWithBrowserTest.OnAutofillingSharedPasswordNotNotifiedYet
--ManagePasswordsUIControllerWithBrowserTest.OnAutofillingSharedPasswordNotifiedAlready
--MandatoryReauthBubbleControllerImplTest.Metrics_OptInConfirmationBubble_Shown
--MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesAcceptCallback
--MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCancelCallback
--MandatoryReauthBubbleControllerImplTest.SuccessfullyInvokesCloseCallback
--OverscrollPrefManagerTest.PrefChange
--PageLiveStateDecoratorHelperTabsTest.IsActiveTab
--PageLiveStateDecoratorHelperTabsTest.IsPinnedTab
--PeopleHandlerSignoutTest.RevokeSyncNotAllowed
--PeopleHandlerSignoutTest.SignoutNotAllowedSyncOff
--PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
--PeopleHandlerSignoutTest.SignoutWithSyncOff
--PeopleHandlerSignoutTest.SignoutWithSyncOn
--ProfileManagementNavigationThrottleRedirectTest.*
--ProfileManagementNavigationThrottleTest.*
--ProfileTokenNavigationThrottleTest.*
--ProfileTokenWebSigninInterceptorTest.*
 -ReadAnythingCoordinatorScreen2xDataCollectionModeTest.OnBrowserSetLastActive_SidePanelIsVisible
--SaveCvcBubbleLoggingTest.Metrics_*
--SavedTabGroupModelListenerTest.CreatesRemovesBrowserListener
--SavedTabGroupModelListenerTest.GetTabStripModelWithTabGroupId
--SaveIbanBubbleControllerImplTest.LocalIbanSavedSuccessfully
+
+# This test crashes in SidebarContainerView::UpdateToolbarButtonVisibility
+# because browser_view->toolbar()->GetSidePanelButton() returns nullptr
 -SidePanelPinningCoordinatorTest.SidePanelTitleUpdates
--SidePanelToolbarContainerTest.*
--TabHelperUnitTest.ClearsExtensionOnUnload
--TabHelperUnitTest.ReloadRequired_BlockAllExtensions
--TabHelperUnitTest.ReloadRequired_CustomizeByExtension
--TabHoverCardPreviewsEnabledPrefTest.DefaultState
--UserNotesPageHandlerTest.CurrentTabUrlChangedWithNavigation
--UserNotesPageHandlerTest.CurrentTabUrlChangedWithTabStripModelChanged
+
+
+# These tests DCHECK because they pass their own pref service to the testing
+# profile so our prefs in pref_service_builder_utils.cc aren't initialized.
+-All/ExtensionContextMenuModelWithUserHostControlsAndPermittedSitesTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
+-All/ExtensionContextMenuModelWithUserHostControlsTest.*
+-TabHelperUnitTest.*
+
+# These tests DCHECK in CookieControlsBubbleCoordinator::ShowBubble
+# because we circumvent creation of CookieControlsIconView
+# in PageActionIconController
+-CookieControlsBubbleCoordinatorTest.ShowBubbleTest
+-CookieControlsBubbleViewImplTest.BubbleWidth
 
 # These tests crash due to TestingBraveBrowserProcess::extension_whitelist_service()
 # having NOTREACHED which causes an immediate crash
@@ -312,6 +234,8 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
+-PeopleHandlerSignoutTest.SignoutWithSyncOn
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed
 -SignoutAllowed/SigninManagerTest.*
@@ -323,6 +247,26 @@
 
 # These tests crash because we disable 
 # enterprise_connectors::kLocalContentAnalysisEnabled feature
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforePreview/0
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforePreview/1
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforeSystemDialog/0
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforeSystemDialog/1
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforeSystemDialog/2
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforeSystemDialog/3
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_NormalPrintAfterPreview/2
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_NormalPrintAfterPreview/3
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_SystemPrintBeforePrintDocument/2
+-All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_SystemPrintBeforePrintDocument/3
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyAllowed/2
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyAllowed/3
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyBlocked/2
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyBlocked/3
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyReportOnly/2
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyReportOnly/3
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnThenCancel/2
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnThenCancel/3
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnedThenBypass/2
+-All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnedThenBypass/3
 -FilesRequestHandlerTest.FileIsEncrypted_LocalAnalysis
 -FilesRequestHandlerTest.FileIsLarge_LocalAnalysis
 -FilesRequestHandlerTest.MultipleFilesUpload_LocalAnalysis
@@ -419,6 +363,12 @@
 # Page Info cookies view.
 -PageInfoBubbleViewCookiesSubpageTest.TextsOnButtonsAreCorrect
 
+-ChromeTailoredSecurityServiceTest.EpAlreadyEnabledDoesNotShowDialog
+-ChromeTailoredSecurityServiceTest.EpAlreadyEnabledLeavesEpEnabled
+-ChromeTailoredSecurityServiceTest.EpEnabledByTsAndTsNowDisabledDisablesEp
+-ChromeTailoredSecurityServiceTest.EpEnabledByUserTsDisabledDoesNotChangeSb
+-ChromeTailoredSecurityServiceTest.EpWasEnabledByTsAndTsNowDisabledShowsDialog
+-ChromeTailoredSecurityServiceTest.TsEnabledEnablesEp
 # This test times out because we Disable "Use a prediction service to load
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref)
 -NavigationPredictorUserInteractionsTest.ProcessPointerEventUsingMLModel
@@ -450,6 +400,7 @@
 -ActivityLogTestWithoutSwitch.*
 -All/ActionTrackerTest.*
 -All/ChromeLabs*Test.*
+-All/CookieControlsUserBypassTest.Incognito/*
 -All/ContentAnalysisPrintPreviewHandlerTest.LocalScanBeforePrinting/*
 -All/EnterpriseProfileWelcomeHandleProceedTest.HandleProceed/*
 -All/ExtensionActionAPIUnitTest.*
@@ -478,6 +429,7 @@
 -BlocklistStatesInteractionUnitTest.*
 -BookmarkBarViewInWidgetTest.*
 -BookmarkBarViewTest.*
+-BookmarkBubbleViewTest.SyncPromoNotSignedIn
 -BookmarkManagerPrivateApiUnitTest.*
 -BookmarkMenuDelegateTest.*
 -BookmarkTest.*
@@ -763,6 +715,7 @@
 -SidePanelCoordinatorLoadingContentTest.*
 -SidePanelCoordinatorTest.*
 -SidePanelToolbarButtonTest.*
+-SidePanelToolbarContainerTest.*
 -SigninErrorHandlerTest.*
 -SigninManagerTest.*
 -SigninUiUtilTest.*

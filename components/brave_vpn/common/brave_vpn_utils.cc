@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
@@ -54,6 +55,10 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 
 bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
   DCHECK(IsBraveVPNFeatureEnabled());
+  if (!local_state) {
+    CHECK_IS_TEST();
+    return false;
+  }
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   auto enabled = local_state->GetBoolean(prefs::kBraveVPNWireguardEnabled);
 #if BUILDFLAG(IS_MAC)

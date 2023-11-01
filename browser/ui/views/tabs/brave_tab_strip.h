@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 class Tab;
@@ -48,6 +49,8 @@ class BraveTabStrip : public TabStrip {
 
   // Exposed for testing.
   static constexpr float kBraveMinimumContrastRatioForOutlines = 1.2797f;
+
+  base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_STRIP_H_

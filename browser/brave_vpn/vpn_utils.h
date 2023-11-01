@@ -14,6 +14,7 @@ namespace brave_vpn {
 
 bool IsBraveVPNEnabled(content::BrowserContext* context);
 bool IsAllowedForContext(content::BrowserContext* context);
+bool HasOSConnectionAPI();
 
 }  // namespace brave_vpn
 

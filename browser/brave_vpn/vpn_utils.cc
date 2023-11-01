@@ -5,9 +5,11 @@
 
 #include "brave/browser/brave_vpn/vpn_utils.h"
 
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/user_prefs/user_prefs.h"
 
 namespace brave_vpn {
@@ -27,6 +29,15 @@ bool IsBraveVPNEnabled(content::BrowserContext* context) {
 #else
   return brave::IsRegularProfile(context);
 #endif
+}
+
+bool HasOSConnectionAPI() {
+#if !BUILDFLAG(IS_ANDROID)
+  if (!g_brave_browser_process->brave_vpn_os_connection_api()) {
+    return false;
+  }
+#endif
+  return true;
 }
 
 }  // namespace brave_vpn

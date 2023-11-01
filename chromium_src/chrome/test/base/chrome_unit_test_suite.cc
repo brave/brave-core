@@ -3,6 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/test/base/chrome_unit_test_suite.h"
+
+#include "brave/common/resource_bundle_helper.h"
 #include "brave/test/base/testing_brave_browser_process.h"
+#include "chrome/browser/profiles/profile_shortcut_manager.h"
+
+#define DisableForUnitTests \
+  DisableForUnitTests();    \
+  brave::InitializeResourceBundle
 
 #include "src/chrome/test/base/chrome_unit_test_suite.cc"
+#undef DisableForUnitTests

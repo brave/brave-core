@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -208,18 +209,22 @@ void BraveToolbarView::Init() {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(profile)) {
-    brave_vpn_ = container_view->AddChildViewAt(
-        std::make_unique<BraveVPNButton>(browser()),
-        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
-    show_brave_vpn_button_.Init(
-        brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
-        base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
-                            base::Unretained(this)));
-    hide_brave_vpn_button_by_policy_.Init(
-        brave_vpn::prefs::kManagedBraveVPNDisabled, profile->GetPrefs(),
-        base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
-                            base::Unretained(this)));
-    brave_vpn_->SetVisible(IsBraveVPNButtonVisible());
+    if (brave_vpn::HasOSConnectionAPI()) {
+      brave_vpn_ = container_view->AddChildViewAt(
+          std::make_unique<BraveVPNButton>(browser()),
+          *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+      show_brave_vpn_button_.Init(
+          brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
+          base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
+                              base::Unretained(this)));
+      hide_brave_vpn_button_by_policy_.Init(
+          brave_vpn::prefs::kManagedBraveVPNDisabled, profile->GetPrefs(),
+          base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
+                              base::Unretained(this)));
+      brave_vpn_->SetVisible(IsBraveVPNButtonVisible());
+    } else {
+      CHECK_IS_TEST();
+    }
   }
 #endif
 

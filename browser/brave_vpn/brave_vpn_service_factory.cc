@@ -41,11 +41,9 @@ std::unique_ptr<KeyedService> BuildVpnService(
     return nullptr;
   }
 
-#if !BUILDFLAG(IS_ANDROID)
-  if (!g_brave_browser_process->brave_vpn_os_connection_api()) {
+  if (!brave_vpn::HasOSConnectionAPI()) {
     return nullptr;
   }
-#endif
 
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =

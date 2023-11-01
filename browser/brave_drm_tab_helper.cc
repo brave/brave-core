@@ -54,8 +54,10 @@ BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
 #if !BUILDFLAG(IS_ANDROID)
   auto* updater = g_browser_process->component_updater();
   // We don't need to observe if widevine is already registered.
-  if (!IsAlreadyRegistered(updater))
+  // component_updater() can return nullptr in unit tests.
+  if (updater && !IsAlreadyRegistered(updater)) {
     observer_.Observe(updater);
+  }
 #endif
 }
 

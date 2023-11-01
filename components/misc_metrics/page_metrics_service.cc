@@ -37,8 +37,8 @@ constexpr base::TimeDelta kDomainsLoadedInitReportDelay = base::Seconds(30);
 PageMetricsService::PageMetricsService(PrefService* local_state,
                                        history::HistoryService* history_service)
     : local_state_(local_state), history_service_(history_service) {
+  // history_service_ can be nulltpr in unit tests.
   DCHECK(local_state);
-  DCHECK(history_service);
 
   pages_loaded_report_timer_.Start(FROM_HERE, kPagesLoadedReportInterval, this,
                                    &PageMetricsService::ReportPagesLoaded);
@@ -70,6 +70,10 @@ void PageMetricsService::IncrementPagesLoadedCount() {
 }
 
 void PageMetricsService::ReportDomainsLoaded() {
+  // history_service_ can be nulltpr in unit tests.
+  if (!history_service_) {
+    return;
+  }
   // Derived from current profile history.
   // Mutiple profiles will result in metric overwrites which is okay.
   history_service_->GetDomainDiversity(
