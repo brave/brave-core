@@ -268,6 +268,7 @@
 <translation id="4522570452068850558">விவரங்கள்</translation>
 <translation id="9220525904950070496">கணக்கை நீக்கு</translation>
 <translation id="1366855498335432549">வைப்பு</translation>
+<translation id="3586931643579894722">விவரங்களை மறை</translation>
 <translation id="7702907602086592255">டொமைன்</translation>
 <translation id="714506544401754321">தகவலை மறைநீக்கு</translation>
 <translation id="5039804452771397117">அனுமதி</translation>
@@ -288,6 +289,10 @@
 <translation id="4289540628985791613">மேலோட்டம்</translation>
 <translation id="4430019312045809116">அளவு</translation>
 <translation id="5494920125229734069">எல்லாவற்றையும் தேர்ந்தெடு</translation>
+<translation id="3950820424414687140">உள்நுழைக</translation>
+<translation id="4530494379350999373">அசல்</translation>
+<translation id="6736243959894955139">முகவரி</translation>
+<translation id="308268297242056490">URI</translation>
 <translation id="6129953537138746214">இடைவெளி</translation>
 <translation id="2687968143695057804">புதிய கணக்கு</translation>
 <translation id="4412698727486357573">உதவி மையம்</translation>
@@ -318,6 +323,10 @@
 <translation id="2345974803401546682">பிரேவ் VPN பற்றி</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">மோனோஸ்பேஸ்</translation>
+<translation id="3435896845095436175">இயக்கு</translation>
+<translation id="7473891865547856676">வேண்டாம் நன்றி</translation>
+<translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
+<translation id="7138678301420049075">மற்றவை</translation>
 <translation id="6303294677342628402">கவசங்கள்</translation>
 <translation id="7053983685419859001">தடு</translation>
 <translation id="5716230673298034837">அனைத்தையும் அனுமதி</translation>
@@ -332,12 +341,8 @@
 <translation id="5046271170844958713">அனுமதிக்கப்பட்ட சிறுநிரல்கள்</translation>
 <translation id="2453860139492968684">முடி</translation>
 <translation id="2273851479262317744">இயல்புநிலை உலாவியாக பிரேவை அமை</translation>
-<translation id="3435896845095436175">இயக்கு</translation>
-<translation id="7473891865547856676">வேண்டாம் நன்றி</translation>
-<translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
 <translation id="3960619311638643872">பிரேவ் VPN</translation>
 <translation id="5747552184818312860">காலாவதியாகும் தேதி</translation>
 <translation id="1116694919640316211">அறிமுகம்</translation>
-<translation id="7138678301420049075">மற்றவை</translation>
 <translation id="2740531572673183784">சரி</translation>
 </translationbundle>

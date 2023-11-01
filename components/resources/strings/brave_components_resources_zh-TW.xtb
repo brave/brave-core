@@ -477,6 +477,7 @@
 <translation id="8327818101454798856">所以如果您想支持您最愛的網站，請到那裡。</translation>
 <translation id="412480955826088549">正在下載元件……</translation>
 <translation id="4894106830958548828">我了解</translation>
+<translation id="326118736933420687">您正在查看 WebTorrent 頁面</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">在 Brave 中啟用支援 Unstoppable Domains？</translation>
 <translation id="3647533686160055812">Brave 會使用 Infura 解析 Unstoppable Domains 的 .crypto (以及 .x、.nft、.dao、.wallet、.blockchain、.bitcoin、.zil) 網域名稱。Brave 會隱藏您的 IP 位址。如果您啟用此功能，Infura 只會看到有人正在嘗試造訪這些網域，不會看到其他資料。請參閱 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用條款<ph name="END_INFURA_TOU_LINK"/>和<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隱私權政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
@@ -694,6 +695,7 @@
 <translation id="6621880242105464352">Brave 會從捐款金額中收取 <ph name="FEE_PCT"/> 的手續費。</translation>
 <translation id="1420756770787071946">支援此創作者</translation>
 <translation id="1483493594462132177">發送</translation>
+<translation id="6632987674051304487">使用 <ph name="PROVIDER"/> 傳送</translation>
 <translation id="4319632089378796037">使用 Web3 錢包</translation>
 <translation id="5399596220743521546">這位創作者已註冊 Brave，並且可以收到 Brave Rewards 使用者的捐款。</translation>
 <translation id="4529874892536380156">將此設為每月定期捐款。此設定可隨時取消。</translation>
@@ -719,6 +721,10 @@
 <translation id="1950340257946519340">發生未預期的錯誤</translation>
 <translation id="2605703631071131439">請重新開啟捐款面板，然後再試一次。</translation>
 <translation id="8855543392451028706">歡迎！使用者可以透過捐款支持這位內容創作者，感謝對方提供優質內容。</translation>
+<translation id="7090992647511817643">帳戶</translation>
+<translation id="4822132585477111396">鏈 ID</translation>
+<translation id="3269475789479462358">網域</translation>
+<translation id="1288078776976153868">網路</translation>
 <translation id="1148827340205946630">使用者回絕了要求</translation>
 <translation id="2403819048476450281">無效的參數。</translation>
 <translation id="3955144560853195652">鏈 <ph name="VALUE"/> 尚未新增</translation>
@@ -991,6 +997,7 @@
 <translation id="5294062982587710720">請注意，Brave 無法驗證您簽名後會發生什麼。簽名可以授權別人進行帳戶的幾乎任何操作，包括（但不限於）將您的帳戶和加密資產的完全控制權交給提出請求的網站。因此只有在您確定要採取此操作並信任請求的網站時才簽名。</translation>
 <translation id="3474375934783434676">簽名風險自擔</translation>
 <translation id="5488357322146334497">訊息</translation>
+<translation id="3586931643579894722">隱藏詳細資訊</translation>
 <translation id="7702907602086592255">網域</translation>
 <translation id="3586752056660754651">簽署</translation>
 <translation id="3484981968509595506">DApp 要求取得您的公共加密金鑰</translation>
@@ -1016,7 +1023,6 @@
 <translation id="5052727830821470769">網路 URL</translation>
 <translation id="427875364838253580">檢視所有詳情</translation>
 <translation id="8030852056903932865">批准</translation>
-<translation id="4822132585477111396">鏈 ID</translation>
 <translation id="7131971375297699539">貨幣符號</translation>
 <translation id="4693057234255364395">區塊瀏覽器 URL</translation>
 <translation id="7982789257301363584">網路</translation>
@@ -1159,7 +1165,10 @@
 <translation id="5071303414930953888">帳戶 <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">需要先解鎖錢包</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> 不是有效的位址</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> 不是目前的網路</translation>
+<translation id="5036882519065735613"><ph name="CHAIN_ID"/> 不是目前的網路</translation>
+<translation id="317252468455212145"><ph name="ADDRESS"/>不符合寄件地址</translation>
+<translation id="8034449164954956172"><ph name="DOMAIN"/> 不符合目前網域</translation>
+<translation id="5444904139422068509">我們已拒絕此請求，因為網站要求您使用不同的<ph name="NAME"/> (<ph name="VALUE"/>)</translation>
 <translation id="7340805872138998391">無法解鎖裝置，請嘗試重新連線</translation>
 <translation id="1984410139271779110">內部錯誤，不明架構</translation>
 <translation id="6989562355845156390">核准</translation>
@@ -1275,6 +1284,20 @@
 <translation id="5601436886921227795">Dapp 互動</translation>
 <translation id="9104177294757104789">發送 <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">交換 <ph name="MAKER"/> 到 <ph name="TAKER"/></translation>
+<translation id="8613144770663526433">使用 Brave 錢包登入</translation>
+<translation id="3696514931437952995">您正在登入 <ph name="ORIGIN"/>。Brave 錢包將與 <ph name="ORIGIN"/> 分享您的錢包位址。</translation>
+<translation id="1028781062521375153">查看詳細資料</translation>
+<translation id="3950820424414687140">登入</translation>
+<translation id="4530494379350999373">來源</translation>
+<translation id="6736243959894955139">帳戶位址</translation>
+<translation id="3095940652251934233">聲明</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="1313065465616456728">發行時間</translation>
+<translation id="7902225556763260253">失效時間</translation>
+<translation id="2471230424465522689">不早於</translation>
+<translation id="4841860051609590575">請求 ID</translation>
+<translation id="6759710362319508545">資源</translation>
+<translation id="1908159733454294871">偵測到安全性風險</translation>
 <translation id="1965889974717516497">次要網路</translation>
 <translation id="7691821949666755802">測試網路</translation>
 <translation id="2816106784624007524">Gas 上限必須為大於 0 的整數</translation>
@@ -1690,8 +1713,14 @@
 <translation id="1536390784834419204">翻譯頁面</translation>
 <translation id="5973664933364241128">路由媒體</translation>
 <translation id="1568067597247500137">關閉網站音訊</translation>
+<translation id="6674128381307353306">將所有分頁設為靜音</translation>
+<translation id="1815548596883953231">將其他分頁設為靜音</translation>
+<translation id="926046137238708033">將所有分頁取消靜音</translation>
 <translation id="855081842937141170">固定分頁</translation>
+<translation id="2805351816064694332">關閉未釘選的分頁</translation>
 <translation id="8657641252283410630">將分頁加入群組</translation>
+<translation id="8290333944535778783">將分頁捲動到最上方</translation>
+<translation id="6141382045715907645">將分頁捲動到最下方</translation>
 <translation id="923853139812360539">QR 碼產生器</translation>
 <translation id="8754922069999490293">頁面的優惠和獎勵</translation>
 <translation id="8620714260606376019">共享中心</translation>
@@ -1787,6 +1816,15 @@
 <translation id="6002210667729577411">將群組移到新視窗</translation>
 <translation id="253980346046488815">關閉重複的分頁</translation>
 <translation id="9210143726807220086">展開或關閉垂直分頁</translation>
+<translation id="684629111155788563">將所有分頁新增至新群組</translation>
+<translation id="9106013521852824634">將分頁傳送給自己</translation>
+<translation id="1926106318101432555">開啟書籤……</translation>
+<translation id="6118819645013156507">切換至視窗……</translation>
+<translation id="1623204575967809688">將目前視窗合併為……</translation>
+<translation id="7196533333647500853">將分頁移動到視窗……</translation>
+<translation id="2026671913373402445">將分頁新增至現有群組...…</translation>
+<translation id="8158903143594876176">固定分頁……</translation>
+<translation id="1487981090845324947">取消固定分頁……</translation>
 <translation id="5182394825813677917">搜尋命令或快速鍵</translation>
 <translation id="4138119885026877702">全部重設為預設值</translation>
 <translation id="8247915960543694908">建立新快速鍵。按下所需的按鍵以建立新繫結</translation>
@@ -1795,17 +1833,17 @@
 <translation id="3537006124004887164">此組合用於<ph name="COMMAND"/> 並且無法變更。請嘗試由系統設定中的「應用程式捷徑」變更。</translation>
 <translation id="8591883849678260674">查看原始頁面</translation>
 <translation id="1969654232209826429">分鐘的閱讀時間</translation>
-<translation id="906598168058463050">關閉 Speedreader</translation>
-<translation id="8948558186299884715">開啟 speedreader</translation>
-<translation id="1385842054306112120">永遠在這個網站使用 speedreader</translation>
-<translation id="8028940590935492959">切換是否要在這個網站使用 speedreader。</translation>
-<translation id="1022901542006152519">永遠在所有網站使用 speedreader</translation>
-<translation id="3460907549384263858">切換是否要在所有網站使用 speedreader。</translation>
-<translation id="8745592921916491483">並非所有網站都提供 speedreader 功能。</translation>
+<translation id="4101707289420716287">關閉 Speedreader</translation>
+<translation id="9089090017461255038">開啟 Speedreader</translation>
+<translation id="3929926885379607283">永遠在這個網站使用 Speedreader</translation>
+<translation id="4186588885948504942">切換是否要在此網站使用 Speedreader。</translation>
+<translation id="1873585723672836337">永遠在所有網站使用  Speedreader</translation>
+<translation id="3138587343887871192">切換是否要在所有網站使用  Speedreader。</translation>
+<translation id="5153147025131874069">並非所有網站都提供  Speedreader 功能。</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1103345585203110275">退出 speedreader</translation>
+<translation id="2104268045272817433">退出  Speedreader</translation>
 <translation id="6315170314923504164">聲音</translation>
-<translation id="57748525762025171">調整 speedreader</translation>
+<translation id="864152735015641598">調整  Speedreader</translation>
 <translation id="251940709686581010">外觀設定</translation>
 <translation id="4809927044794281115">淺色主題</translation>
 <translation id="5595850093882577201">褐色主題</translation>
@@ -1822,7 +1860,70 @@
 <translation id="1199355487114804640">播放/暫停</translation>
 <translation id="1689210457482459023">降低播放速度</translation>
 <translation id="5872363163901278000">提高播放速度</translation>
-<translation id="3507699941492423127">Brave Leo</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8637805148029768813">摘要工具功能目前僅適用於特定文章和其他完整格式網頁。</translation>
+<translation id="2346991295632453064">接受並開始</translation>
+<translation id="1223498995510244364">摘要</translation>
+<translation id="7491773233732232424">關於 Leo</translation>
+<translation id="70442873931504163">Brave Leo 是可以總結網頁、轉錄影片、回答問題的人工智慧助理。 Brave Leo Premium 使用進階的 <ph name="LINK_BEFORE"/>人工智慧模式<ph name="LINK_AFTER"/>，以獲得更具深度的回覆，並提供搶先使用新功能的機會。</translation>
+<translation id="3055739528128372229">回覆無法保證準確性，並可能包含不正確、誤導或虛假的資訊。切勿提交敏感或私人資訊，與健康、財務、個人安全或類似問題有關的任何答案都應謹慎使用。</translation>
+<translation id="5030677498967794115">Leo 不會蒐集或以其他方式處理可連結到您的 IP 位址等識別碼。人工智慧模型或任何第三方模型提供者皆不會保留任何個人資料。</translation>
+<translation id="7839853125981164613">在此處輸入提示</translation>
+<translation id="1171287413830401223">是否要啟用建議問題？</translation>
+<translation id="4567071417854988869">總結此影片</translation>
+<translation id="7921782882718083488">總結此頁面</translation>
+<translation id="8723991872343294222">Brave AI 能夠自動根據網站內容建議問題。你可以在設定關閉此功能。</translation>
+<translation id="3435896845095436175">啟用</translation>
+<translation id="7473891865547856676">不用了，謝謝</translation>
+<translation id="7932221068776853847">中斷連線以停止傳送此頁面內容給 Leo，並開始新的對話</translation>
+<translation id="1167803637855350748">連線至 Leo 時發生網路問題，請檢查連線狀態並再試一次。</translation>
+<translation id="5095201428204952524">Leo 目前忙碌中，請稍候片刻再試。</translation>
+<translation id="7144878232160441200">重試</translation>
+<translation id="2505565639170795978">您好，我是Leo。我是 Brave 的完全託管人工智慧助理。我由 Llama 13B──由 Meta 建立的模型提供，具有高效能且適用於許多使用案例。</translation>
+<translation id="7202619923031933110">您好，我是Leo。我是 Brave 的完全託管人工智慧助理。我由 Llama 70B 提供──由 Meta 建立的模型提供，用於處理比 13B 更進階的任務。</translation>
+<translation id="2489317965865266353">您好，我是Leo。我由 Brave 代理並由 Claude Instant 提供，Claude Instant 是 Anthropic 建立的模型，用於為會話和文字處理任務提供技術支援。</translation>
+<translation id="6206029817087805290"><ph name="COMPANY_NAME"/> 的 <ph name="MODEL_NAME"/></translation>
+<translation id="6187065185557150870">聊天</translation>
+<translation id="2961040541145689181">新聊天</translation>
+<translation id="97095589689466044">建議的問題</translation>
+<translation id="7557539689487606886">訂閱 Premium</translation>
+<translation id="3037594989275592390">語言模型</translation>
+<translation id="849535826888024304">已達到回應率上限</translation>
+<translation id="3834321271158315162">訂閱 Premium 解鎖更高回應率，或稍後
+        重試</translation>
+<translation id="1239767708151339890">獲得業界領先的大型語言模型 (LLM) 存取權限</translation>
+<translation id="8021579987620496265">更高的回應率上限</translation>
+<translation id="8556044455877152001">美金 <ph name="PRICE_VALUE"/> /月</translation>
+<translation id="9221988663340523352">切換至預設模型</translation>
+<translation id="377376641316998425">釋放 Leo 的所有潛力</translation>
+<translation id="8363148882096737034">即將推出 Anthropic Claude + 及更多模型</translation>
+<translation id="886527905046308697">優先使用權以及更高的回應率上限</translation>
+<translation id="1068954060985569277">您的 Brave 帳戶工作階段已過期。請前往您的帳戶頁面，重新整理頁面，再回來使用進階功能。</translation>
+<translation id="94736968936709953">已成功傳送意見反應</translation>
+<translation id="9109355817507033196">已不喜歡回答</translation>
+<translation id="4049425842478222936">已喜歡回答</translation>
+<translation id="6393149565874086128">加入意見反應</translation>
+<translation id="3521125531016408657">喜歡回答</translation>
+<translation id="8202517001427388906">不喜歡回答</translation>
+<translation id="1379399209929302811">提供 Brave 人工智慧意見反應</translation>
+<translation id="2415950536410763575">選擇您的意見反應主題</translation>
+<translation id="9018766373792005944">您的意見反應是關於什麼內容？</translation>
+<translation id="7355096922131918313">在此處提供意見反應</translation>
+<translation id="3027575440738035995">Leo Premium 提供了擴充的語言模型，以提供更具深度的答案。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
+<translation id="2399439821649319175">沒有幫助</translation>
+<translation id="2976167228906046828">錯誤</translation>
+<translation id="1183055847065865059">不安全/有害</translation>
+<translation id="7138678301420049075">其他</translation>
+<translation id="2313959174679245365">無法提交您的評分，請檢查網路連線並重試</translation>
+<translation id="98413980871833152">無法提交您的意見反應，請檢查網路連線並重試</translation>
+<translation id="8742658901413346500">此對話很長，Leo 可能很快就會開始忘記事情。您可以透過切換到進階模式以進行更長的對話，或清除聊天歷史以重設對話。</translation>
+<translation id="7550152963854770123">清除聊天歷史</translation>
+<translation id="7494736170250048402">傳送訊息給 Leo</translation>
+<translation id="4110772752544684964">此頁面對 Leo 而言太長了。對話可能會缺少一些內容。</translation>
+<translation id="4370698775470316661">此對話太長，無法繼續。 Leo 可能還可以使用其他模型，以維持更長時間對話的準確性。</translation>
+<translation id="6291843235651817590">一般目的聊天</translation>
+<translation id="8193130769524604031">進階聊天任務</translation>
+<translation id="3185367320601718531">對話和文字生成</translation>
 <translation id="6303294677342628402">屏蔽</translation>
 <translation id="8458987127502506209">啟用 Brave 防護</translation>
 <translation id="7509914170164691086">Shields 已<ph name="LINK_BEFORE"/>啟用<ph name="LINK_AFTER"/>：</translation>
@@ -1891,21 +1992,6 @@
 <translation id="546481172717459539">比對系統設定</translation>
 <translation id="7799817062559422778">淺色模式</translation>
 <translation id="4117637339509843559">深色模式</translation>
-<translation id="8637805148029768813">摘要工具功能目前僅適用於特定文章和其他完整格式網頁。</translation>
-<translation id="2346991295632453064">接受並開始</translation>
-<translation id="1223498995510244364">摘要</translation>
-<translation id="6966669506908435195">關於 Brave Leo</translation>
-<translation id="1667863995484767951">AI 聊天功能會摘要您瀏覽的網頁內容並提供聊天介面，讓您對該頁面的內容提交問題並接收回應。不保證摘要的準確性，且可能包含不準確、有誤導可能或錯誤的資訊。請勿提交敏感或私人資訊，並且應謹慎對待與健康、財務或個人安全以及類似情況相關的任何文字。</translation>
-<translation id="7636915524386889836">Brave 的 AI 聊天使用自我託管的<ph name="LINK_BEFORE"/>大型語言模型<ph name="LINK_AFTER"/>。AI 聊天功能不會收集或以其他方式處理可連結到您的識別資料，例如 IP 位址。AI 模型不會保留任何個人資料。</translation>
-<translation id="7839853125981164613">在此處輸入提示</translation>
-<translation id="1171287413830401223">是否要啟用建議問題？</translation>
-<translation id="8723991872343294222">Brave AI 能夠自動根據網站內容建議問題。你可以在設定關閉此功能。</translation>
-<translation id="3435896845095436175">啟用</translation>
-<translation id="7473891865547856676">不用了，謝謝</translation>
-<translation id="7932221068776853847">中斷連線以停止傳送此頁面內容給 Leo，並開始新的對話</translation>
-<translation id="1167803637855350748">連線至 Leo 時發生網路問題，請檢查連線狀態並再試一次。</translation>
-<translation id="5095201428204952524">Leo 目前忙碌中，請稍候片刻再試。</translation>
-<translation id="7144878232160441200">重試</translation>
 <translation id="7821773512278295352">Brave 防火牆 + VPN：已連線</translation>
 <translation id="6019088868713395120">Brave 防火牆 + VPN：已中斷連線</translation>
 <translation id="3541307549916475335">Brave VPN 面板 UI</translation>
@@ -1944,7 +2030,6 @@
 <translation id="9184988385244077767">連線時無網際網路</translation>
 <translation id="21570240866965662">連線緩慢</translation>
 <translation id="1219475260382643267">網站無法運作</translation>
-<translation id="7138678301420049075">其他</translation>
 <translation id="1387340358507240698">請說明問題</translation>
 <translation id="501818585183973587">請選取您願意與我們分享的資訊</translation>
 <translation id="3195618332367441234">您分享的資訊越多，支援人員越能為您提供協助。</translation>
@@ -1990,4 +2075,10 @@ Brave 的協助程式服務可過濾對您 VPN 連線執行 DNS 查詢的方式�
 <translation id="8048263175525832621">Brave VPN - 已中斷連線</translation>
 <translation id="1498770726476841108">管理帳戶</translation>
 <translation id="6825718953004242472">移除圖示</translation>
+<translation id="3287942014983548982">在此開啟</translation>
+<translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>，目前開啟，
+按 Tab，然後按 Enter 以切換到開啟的分頁</translation>
+<translation id="1538335063514960365">在此開啟按鈕，按 Enter 以在目前分頁中開啟此網址，而非切換到
+現有分頁</translation>
+<translation id="451189393813405346">詢問 Leo</translation>
 </translationbundle>
