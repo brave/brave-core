@@ -6,15 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_RENDERER_HOST_MIXED_CONTENT_CHECKER_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_RENDERER_HOST_MIXED_CONTENT_CHECKER_H_
 
-#define MaybeSendBlinkFeatureUsageReport                                       \
+#define InWhichFrameIsContentMixed                                             \
   NotUsed();                                                                   \
                                                                                \
   static bool DoesOriginSchemeRestrictMixedContent(const url::Origin& origin); \
                                                                                \
-  void MaybeSendBlinkFeatureUsageReport
+  RenderFrameHostImpl* InWhichFrameIsContentMixed
 
 #include "src/content/browser/renderer_host/mixed_content_checker.h"  // IWYU pragma: export
 
-#undef MaybeSendBlinkFeatureUsageReport
+#undef InWhichFrameIsContentMixed
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_RENDERER_HOST_MIXED_CONTENT_CHECKER_H_
