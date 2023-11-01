@@ -48,7 +48,8 @@ import {
   selectAllNetworksFromQueryResult,
   selectOffRampNetworksFromQueryResult,
   selectOnRampNetworksFromQueryResult,
-  selectVisibleNetworksFromQueryResult
+  selectVisibleNetworksFromQueryResult,
+  selectTestNetworksFromQueryResult
 } from './entities/network.entity'
 import { AccountInfoEntityState } from './entities/account-info.entity'
 import {
@@ -3634,6 +3635,19 @@ export const useGetNetworksQuery = (opts?: { skip?: boolean }) => {
       isLoading: res.isLoading,
       error: res.error,
       data: selectAllNetworksFromQueryResult(res)
+    }),
+    skip: opts?.skip
+  })
+
+  return queryResults
+}
+
+export const useGetTestnetsQuery = (opts?: { skip?: boolean }) => {
+  const queryResults = useGetNetworksRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      error: res.error,
+      data: selectTestNetworksFromQueryResult(res)
     }),
     skip: opts?.skip
   })

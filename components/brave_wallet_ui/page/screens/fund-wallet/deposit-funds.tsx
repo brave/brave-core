@@ -20,6 +20,7 @@ import { makeDepositFundsRoute } from '../../../utils/routes-utils'
 import {
   BraveWallet,
   NetworkFilterType,
+  SupportedTestNetworks,
   WalletRoutes
 } from '../../../constants/types'
 
@@ -29,9 +30,9 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import {
-  useGetMainnetsQuery,
   useGetNetworkQuery,
-  useGetQrCodeImageQuery
+  useGetQrCodeImageQuery,
+  useGetVisibleNetworksQuery
 } from '../../../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -222,15 +223,27 @@ function AssetSelection() {
     (token) => getAssetIdKey(token) === selectedDepositAssetId
   )
 
-  const { data: mainnetsList = [] } = useGetMainnetsQuery()
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
 
   // computed
   const isNextStepEnabled = !!selectedAsset
 
   // memos
-  const mainnetNetworkAssetsList = React.useMemo(() => {
-    return (mainnetsList || []).map(makeNetworkAsset)
-  }, [mainnetsList])
+  const { mainnetNetworkAssetsList, testnetAssetsList } = React.useMemo(() => {
+    const mainnetNetworkAssetsList = []
+    const testnetAssetsList = []
+    for (const net of visibleNetworks) {
+      if (SupportedTestNetworks.includes(net.chainId)) {
+        testnetAssetsList.push(net)
+      } else {
+        mainnetNetworkAssetsList.push(net)
+      }
+    }
+    return {
+      mainnetNetworkAssetsList: mainnetNetworkAssetsList.map(makeNetworkAsset),
+      testnetAssetsList: testnetAssetsList.map(makeNetworkAsset)
+    }
+  }, [visibleNetworks])
 
   // Combine all NFTs from each collection
   // into a single "asset" for depositing purposes.
@@ -256,17 +269,48 @@ function AssetSelection() {
       return nftContractTokens
     }, [combinedTokensList])
 
+  // removes pre-categorized assets from combined list
+  const tokensList = React.useMemo(() => {
+    const mainnetNetworkAssetsListIds = mainnetNetworkAssetsList.map((t) =>
+      getAssetIdKey(t)
+    )
+    const testnetAssetsListIds = testnetAssetsList.map((t) => getAssetIdKey(t))
+    const nftCollectionAssetsIds = nftCollectionAssets.map((t) =>
+      getAssetIdKey(t)
+    )
+
+    return combinedTokensList.filter((t) => {
+      const id = getAssetIdKey(t)
+      return (
+        !mainnetNetworkAssetsListIds.includes(id) &&
+        !testnetAssetsListIds.includes(id) &&
+        !nftCollectionAssetsIds.includes(id)
+      )
+    })
+  }, [
+    combinedTokensList,
+    nftCollectionAssets,
+    mainnetNetworkAssetsList,
+    testnetAssetsList
+  ])
+
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     // separate BAT from other tokens in the list so they can be placed higher
     // in the list
-    const { bat, nonBat } = getBatTokensFromList(combinedTokensList)
+    const { bat, nonBat } = getBatTokensFromList(tokensList)
     return [
       ...mainnetNetworkAssetsList,
       ...bat,
       ...nonBat.filter((token) => token.contractAddress && !token.tokenId),
-      ...nftCollectionAssets
+      ...testnetAssetsList,
+      ...nftCollectionAssets,
     ]
-  }, [mainnetNetworkAssetsList, combinedTokensList, nftCollectionAssets])
+  }, [
+    mainnetNetworkAssetsList,
+    tokensList,
+    nftCollectionAssets,
+    testnetAssetsList
+  ])
 
   const assetsForFilteredNetwork = React.useMemo(() => {
     const assets =
@@ -286,8 +330,8 @@ function AssetSelection() {
     return assetsForFilteredNetwork.filter((asset) => {
       const searchValueLower = searchValue.toLowerCase()
       return (
-        asset.name.toLowerCase().startsWith(searchValueLower) ||
-        asset.symbol.toLowerCase().startsWith(searchValueLower)
+        asset.name.toLowerCase().includes(searchValueLower) ||
+        asset.symbol.toLowerCase().includes(searchValueLower)
       )
     })
   }, [searchValue, assetsForFilteredNetwork])
@@ -447,9 +491,16 @@ function DepositAccount() {
   )
   const accountsForSelectedAssetCoinType = React.useMemo(() => {
     return selectedAsset
-      ? accounts.filter((a) => a.accountId.coin === selectedAsset.coin)
+      ? selectedAsset.coin === BraveWallet.CoinType.FIL
+        ? accounts.filter((a) =>
+            a.accountId.coin === selectedAsset.coin &&
+            selectedAsset.chainId === BraveWallet.FILECOIN_TESTNET
+              ? a.accountId.address.startsWith('t')
+              : !a.accountId.address.startsWith('t')
+          )
+        : accounts.filter((a) => a.accountId.coin === selectedAsset.coin)
       : []
-  }, [selectedAssetNetwork, accounts])
+  }, [selectedAsset, selectedAssetNetwork, accounts])
 
   // search
   const [showAccountSearch, setShowAccountSearch] =
@@ -477,7 +528,7 @@ function DepositAccount() {
     }
 
     return accountsForSelectedAssetCoinType.filter((item) => {
-      return item.name.toLowerCase().startsWith(accountSearchText.toLowerCase())
+      return item.name.toLowerCase().includes(accountSearchText.toLowerCase())
     })
   }, [accountSearchText, accountsForSelectedAssetCoinType])
 
