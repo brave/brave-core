@@ -11,7 +11,7 @@ export interface VisibleOptions {
   threshold?: number
 }
 
-export function useVisible (options: VisibleOptions) {
+export function useVisible(options: VisibleOptions) {
   const [visible, setVisible] = React.useState(false)
   const [elementRef, setElementRef] = React.useState<HTMLElement | null>(null)
 
@@ -29,7 +29,7 @@ export function useVisible (options: VisibleOptions) {
       threshold: options.threshold
     })
 
-  observer.observe(elementRef)
+    observer.observe(elementRef)
     return () => {
       observer.disconnect()
     }
@@ -37,6 +37,24 @@ export function useVisible (options: VisibleOptions) {
 
   return {
     visible,
+    setElementRef
+  }
+}
+
+export function useOnVisibleCallback(action: () => void, options: VisibleOptions) {
+  // Store the action in a ref, so we always call the most recent callback
+  // passed in to us.
+  const actionRef = React.useRef<() => void>()
+  actionRef.current = action
+
+  const { visible, setElementRef } = useVisible(options)
+
+  React.useEffect(() => {
+    if (!visible) return
+    actionRef.current?.()
+  }, [visible])
+
+  return {
     setElementRef
   }
 }
