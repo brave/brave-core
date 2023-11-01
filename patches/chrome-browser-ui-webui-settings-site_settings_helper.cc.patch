@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index c0cc4dbb11a40639c7ad700672ae195d573aafae..ff5456d313cb60b415ea6527873d82e7d0cde133 100644
+index 128c372d2465bc4b7ccea984b40ac58e7f183a7c..4872489087f3bf04d861aeea2ecdf4eca9b9b7eb 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -204,6 +204,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     // for the integration with Safety Hub.
+@@ -206,6 +206,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::FILE_SYSTEM_ACCESS_EXTENDED_PERMISSION, nullptr},
      {ContentSettingsType::TPCD_HEURISTICS_GRANTS, nullptr},
+     {ContentSettingsType::FILE_SYSTEM_ACCESS_RESTORE_PERMISSION, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -469,6 +470,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -471,6 +472,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

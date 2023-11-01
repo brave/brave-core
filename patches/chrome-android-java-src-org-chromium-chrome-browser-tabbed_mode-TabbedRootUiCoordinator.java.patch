@@ -6,8 +6,8 @@ index 8de071f8a47673e5857fdc9c9d6197c99917171e..3cbb9178011b6933d5427ba8a1bc2aa4
              NotificationPermissionController.attach(
                      mWindowAndroid, mNotificationPermissionController);
  
--            didTriggerPromo = mNotificationPermissionController.requestPermissionIfNeeded(
-+            if(false) didTriggerPromo = mNotificationPermissionController.requestPermissionIfNeeded(
-                     false /* contextual */);
+-            didTriggerPromo =
++            if(false) didTriggerPromo =
+                     mNotificationPermissionController.requestPermissionIfNeeded(
+                             /* contextual= */ false);
          }
- 
