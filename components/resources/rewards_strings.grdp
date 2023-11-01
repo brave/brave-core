@@ -255,9 +255,6 @@
   </message>
 
   <!-- Rewards panel notifications -->
-  <message name="IDS_REWARDS_NOTIFICATION_RECONNECT" desc="">
-    Reconnect
-  </message>
   <message name="IDS_REWARDS_NOTIFICATION_CLAIM_REWARDS" desc="">
     Claim Rewards
   </message>
@@ -274,7 +271,7 @@
     You are logged out
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_TEXT" desc="">
-    This can happen to keep your account secure. Click below to reconnect now.
+    This happens from time to time to keep your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account secure. While logged out, you will continue to receive payouts, but won't be able to see your balance or send contributions from your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account.
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">
     Error: BAT unavailable
@@ -289,7 +286,7 @@
     According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION" desc="">
-    Reconnect
+    Log in again
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_TOKEN_GRANT_TITLE" desc="">
     A token grant is available!
