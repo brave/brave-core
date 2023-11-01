@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
@@ -32,8 +34,16 @@ void OnFetchOrderCredentials(
     skus::FetchOrderCredentialsCallbackState* callback_state,
     skus::SkusResult result) {
   if (callback_state->cb) {
-    std::move(callback_state->cb).Run("");
+    const int error_code = static_cast<int>(result);
+    if (error_code != 0) {
+      std::string error_message =
+          base::StrCat({"Error: ", base::NumberToString(error_code)});
+      std::move(callback_state->cb).Run(error_message);
+    } else {
+      std::move(callback_state->cb).Run("");
+    }
   }
+
   delete callback_state;
 }
 
