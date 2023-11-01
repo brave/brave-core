@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <locale>
 #include <numeric>
 #include <string>
 #include <tuple>
@@ -18,6 +19,7 @@
 #include "base/containers/flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -29,6 +31,7 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
@@ -541,16 +544,10 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
     return;
   }
 
-  Build(
-      /*recalculate_signals=*/true,
+  GenerateFeed(
+      {.signals = true},
       base::BindOnce(
-          [](base::WeakPtr<FeedV2Builder> builder, const std::string& channel,
-             BuildFeedCallback callback, mojom::FeedV2Ptr _) {
-            if (!builder) {
-              std::move(callback).Run(mojom::FeedV2::New());
-              return;
-            }
-
+          [](FeedV2Builder* builder, const std::string& channel) {
             auto result = mojom::FeedV2::New();
             result->type = mojom::FeedV2Type::NewChannel(
                 mojom::FeedV2ChannelType::New(channel));
@@ -591,10 +588,10 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
                      GetPopRecency(a->get_article()->data);
             });
 
-            builder->last_feed_ = result->Clone();
-            std::move(callback).Run(std::move(result));
+            return result;
           },
-          weak_ptr_factory_.GetWeakPtr(), channel, std::move(callback)));
+          base::Unretained(this), channel),
+      std::move(callback));
 }
 
 void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
@@ -604,17 +601,10 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
     std::move(callback).Run(last_feed_->Clone());
     return;
   }
-  Build(
-      /*recalculate_signals=*/true,
+  GenerateFeed(
+      {.signals = true},
       base::BindOnce(
-          [](base::WeakPtr<FeedV2Builder> builder,
-             const std::string& publisher_id, BuildFeedCallback callback,
-             mojom::FeedV2Ptr _) {
-            if (!builder) {
-              std::move(callback).Run(mojom::FeedV2::New());
-              return;
-            }
-
+          [](FeedV2Builder* builder, const std::string& publisher_id) {
             auto result = mojom::FeedV2::New();
             result->type = mojom::FeedV2Type::NewPublisher(
                 mojom::FeedV2PublisherType::New(publisher_id));
@@ -636,59 +626,83 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
                      a->get_article()->data->publish_time;
             });
 
-            builder->last_feed_ = result->Clone();
-            std::move(callback).Run(std::move(result));
+            return result;
           },
-          weak_ptr_factory_.GetWeakPtr(), publisher_id, std::move(callback)));
+          base::Unretained(this), publisher_id),
+      std::move(callback));
 }
 
-void FeedV2Builder::Build(bool recalculate_signals,
-                          BuildFeedCallback callback) {
+void FeedV2Builder::BuildAllFeed(BuildFeedCallback callback) {
   if (last_feed_ && last_feed_->type->is_all()) {
     std::move(callback).Run(last_feed_->Clone());
     return;
   }
+
+  GenerateFeed(
+      {.signals = true, .suggested_publishers = true},
+      base::BindOnce(&FeedV2Builder::GenerateAllFeed, base::Unretained(this)),
+      std::move(callback));
+}
+
+void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
+  UpdateData({.signals = true},
+             base::BindOnce(
+                 [](base::WeakPtr<FeedV2Builder> builder,
+                    GetSignalsCallback callback) {
+                   if (builder) {
+                     std::move(callback).Run({});
+                     return;
+                   }
+                   base::flat_map<std::string, Signal> signals;
+                   for (const auto& [key, value] : builder->signals_) {
+                     signals[key] = value->Clone();
+                   }
+                   std::move(callback).Run(std::move(signals));
+                 },
+                 weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void FeedV2Builder::UpdateData(UpdateSettings settings,
+                               base::OnceCallback<void()> callback) {
   pending_callbacks_.push_back(std::move(callback));
 
-  if (is_building_) {
+  if (is_updating_) {
     return;
   }
 
-  is_building_ = true;
+  is_updating_ = true;
 
-  if (raw_feed_items_.size()) {
-    if (recalculate_signals) {
-      signals_.clear();
-      CalculateSignals();
-    } else {
-      BuildFeedFromArticles();
-    }
-    return;
+  if (settings.signals) {
+    signals_.clear();
+  }
+
+  if (settings.feed) {
+    raw_feed_items_.clear();
+  }
+
+  if (settings.suggested_publishers) {
+    suggested_publisher_ids_.clear();
+  }
+
+  if (settings.topics) {
+    topics_.clear();
   }
 
   FetchFeed();
 }
 
-void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
-  auto cb = base::BindOnce(
-      [](FeedV2Builder* builder, GetSignalsCallback callback,
-         mojom::FeedV2Ptr _) {
-        base::flat_map<std::string, Signal> signals;
-        for (const auto& [key, value] : builder->signals_) {
-          signals[key] = value->Clone();
-        }
-        std::move(callback).Run(std::move(signals));
-      },
-      this, std::move(callback));
-  if (signals_.empty()) {
-    Build(/*recalculate_signals=*/true, std::move(cb));
-  } else {
-    std::move(cb).Run(/*feed=*/nullptr);
-  }
-}
-
 void FeedV2Builder::FetchFeed() {
   DVLOG(1) << __FUNCTION__;
+
+  // Don't refetch the feed if we have items (clearing the items will trigger a
+  // refresh).
+  if (!raw_feed_items_.empty()) {
+    // Note: This isn't ideal because we double move the raw_feed_items and
+    // etags, but it makes the algorithm easier to follow.
+    OnFetchedFeed(std::move(raw_feed_items_), std::move(feed_etags_));
+    return;
+  }
+
   fetcher_.FetchFeed(
       base::BindOnce(&FeedV2Builder::OnFetchedFeed,
                      // Unretained is safe here because the FeedFetcher is owned
@@ -700,11 +714,21 @@ void FeedV2Builder::OnFetchedFeed(FeedItems items, ETags tags) {
   DVLOG(1) << __FUNCTION__;
 
   raw_feed_items_ = std::move(items);
+  feed_etags_ = std::move(tags);
+
   CalculateSignals();
 }
 
 void FeedV2Builder::CalculateSignals() {
   DVLOG(1) << __FUNCTION__;
+
+  // Don't recalculate the signals unless they've been cleared.
+  if (!signals_.empty()) {
+    // Note: We double move signals here because it makes the algorithm easier
+    // to follow.
+    OnCalculatedSignals(std::move(signals_));
+    return;
+  }
 
   signal_calculator_.GetSignals(
       raw_feed_items_,
@@ -724,6 +748,13 @@ void FeedV2Builder::OnCalculatedSignals(Signals signals) {
 
 void FeedV2Builder::GetSuggestedPublisherIds() {
   DVLOG(1) << __FUNCTION__;
+
+  // Don't get suggested publisher ids unless they're empty - clearing indicates
+  // we should refetch.
+  if (!suggested_publisher_ids_.empty()) {
+    OnGotSuggestedPublisherIds(std::move(suggested_publisher_ids_));
+    return;
+  }
   suggestions_controller_->GetSuggestedPublisherIds(
       base::BindOnce(&FeedV2Builder::OnGotSuggestedPublisherIds,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -739,6 +770,13 @@ void FeedV2Builder::OnGotSuggestedPublisherIds(
 
 void FeedV2Builder::GetTopics() {
   DVLOG(1) << __FUNCTION__;
+
+  // Don't refetch topics, unless we need to.
+  if (!topics_.empty()) {
+    OnGotTopics(std::move(topics_));
+    return;
+  }
+
   topics_fetcher_.GetTopics(publishers_controller_->GetLastLocale(),
                             base::BindOnce(&FeedV2Builder::OnGotTopics,
                                            weak_ptr_factory_.GetWeakPtr()));
@@ -748,10 +786,41 @@ void FeedV2Builder::OnGotTopics(TopicsResult topics) {
   DVLOG(1) << __FUNCTION__ << " (topic count: " << topics.size() << ")";
   topics_ = std::move(topics);
 
-  BuildFeedFromArticles();
+  NotifyUpdateCompleted();
 }
 
-void FeedV2Builder::BuildFeedFromArticles() {
+void FeedV2Builder::NotifyUpdateCompleted() {
+  // Fire all the pending callbacks.
+  for (auto& callback : pending_callbacks_) {
+    std::move(callback).Run();
+  }
+
+  pending_callbacks_.clear();
+  is_updating_ = false;
+}
+
+void FeedV2Builder::GenerateFeed(
+    UpdateSettings settings,
+    base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
+    BuildFeedCallback callback) {
+  UpdateData(std::move(settings),
+             base::BindOnce(
+                 [](base::WeakPtr<FeedV2Builder> builder,
+                    base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
+                    BuildFeedCallback callback) {
+                   if (!builder) {
+                     std::move(callback).Run(mojom::FeedV2::New());
+                     return;
+                   }
+
+                   builder->last_feed_ = std::move(build_feed).Run();
+                   std::move(callback).Run(builder->last_feed_->Clone());
+                 },
+                 weak_ptr_factory_.GetWeakPtr(), std::move(build_feed),
+                 std::move(callback)));
+}
+
+mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed() {
   DVLOG(1) << __FUNCTION__;
   const auto& publishers = publishers_controller_->GetLastPublishers();
   const auto& locale = publishers_controller_->GetLastLocale();
@@ -849,15 +918,7 @@ void FeedV2Builder::BuildFeedFromArticles() {
     ++iteration;
   }
 
-  // Fire all the pending callbacks.
-  for (auto& callback : pending_callbacks_) {
-    std::move(callback).Run(feed->Clone());
-  }
-
-  last_feed_ = std::move(feed);
-
-  pending_callbacks_.clear();
-  is_building_ = false;
+  return feed;
 }
 
 }  // namespace brave_news

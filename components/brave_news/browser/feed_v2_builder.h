@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
@@ -42,14 +44,23 @@ class FeedV2Builder {
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
   ~FeedV2Builder();
 
-  void Build(bool recalculate_signals, BuildFeedCallback callback);
   void BuildChannelFeed(const std::string& channel, BuildFeedCallback callback);
   void BuildPublisherFeed(const std::string& publisher_id,
                           BuildFeedCallback callback);
+  void BuildAllFeed(BuildFeedCallback callback);
 
   void GetSignals(GetSignalsCallback callback);
 
  private:
+  using UpdateCallback = base::OnceCallback<void()>;
+  struct UpdateSettings {
+    bool signals = false;
+    bool suggested_publishers = false;
+    bool feed = false;
+    bool topics = false;
+  };
+  void UpdateData(UpdateSettings settings, UpdateCallback callback);
+
   void FetchFeed();
   void OnFetchedFeed(FeedItems items, ETags etags);
 
@@ -63,9 +74,13 @@ class FeedV2Builder {
   void GetTopics();
   void OnGotTopics(TopicsResult topics);
 
-  void BuildFeedFromArticles();
+  void NotifyUpdateCompleted();
 
-  void NotifyBuildCompleted(BuildFeedCallback callback);
+  void GenerateFeed(UpdateSettings settings,
+                    base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
+                    BuildFeedCallback callback);
+
+  mojom::FeedV2Ptr GenerateAllFeed();
 
   raw_ref<PublishersController> publishers_controller_;
   raw_ref<ChannelsController> channels_controller_;
@@ -77,13 +92,15 @@ class FeedV2Builder {
   SignalCalculator signal_calculator_;
 
   FeedItems raw_feed_items_;
+  ETags feed_etags_;
+
   Signals signals_;
   std::vector<std::string> suggested_publisher_ids_;
   TopicsResult topics_;
   mojom::FeedV2Ptr last_feed_;
 
-  bool is_building_ = false;
-  std::vector<BuildFeedCallback> pending_callbacks_;
+  bool is_updating_ = false;
+  std::vector<UpdateCallback> pending_callbacks_;
 
   base::WeakPtrFactory<FeedV2Builder> weak_ptr_factory_{this};
 };
