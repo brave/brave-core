@@ -108,7 +108,7 @@ TEST_F(WidevinePermissionAndroidTest, BraveDrmTabHelperTest) {
   EXPECT_TRUE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
   EXPECT_TRUE(manager->has_pending_requests());
-  EXPECT_EQ(GetPendingRequestQueue()->Count(), size_t(1));
+  EXPECT_EQ(GetPendingRequestQueue()->size(), size_t(1));
 
   // After navigation
   SimulateNavigation();
@@ -148,7 +148,7 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(manager->has_pending_requests() &&
-              GetPendingRequestQueue()->Count() == 1);
+              GetPendingRequestQueue()->size() == 1);
   GetPendingRequestQueue()->Pop()->PermissionGranted(false /* is_one_time */);
   EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
 
@@ -159,7 +159,7 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(manager->has_pending_requests() &&
-              GetPendingRequestQueue()->Count() == 1);
+              GetPendingRequestQueue()->size() == 1);
   GetPendingRequestQueue()->Pop()->PermissionDenied();
   EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 
@@ -169,7 +169,7 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(manager->has_pending_requests() &&
-              GetPendingRequestQueue()->Count() == 1);
+              GetPendingRequestQueue()->size() == 1);
   GetPendingRequestQueue()->Pop()->Cancelled();
   EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 }
