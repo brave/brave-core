@@ -54,6 +54,12 @@ void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
   brave_wallet::MigrateObsoleteProfilePrefs(prefs);
 }
 
+void BraveMigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+  p3a::StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(prefs);
+#endif
+}
+
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS \
   BraveRegisterBrowserStatePrefs(registry);
 
@@ -62,7 +68,11 @@ void BraveMigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
 #define BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS \
   BraveMigrateObsoleteBrowserStatePrefs(prefs);
 
+#define BRAVE_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS \
+  BraveMigrateObsoleteLocalStatePrefs(prefs);
+
 #include "src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm"
+#undef BRAVE_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 #undef BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
 #undef BRAVE_REGISTER_LOCAL_STATE_PREFS
 #undef BRAVE_REGISTER_BROWSER_STATE_PREFS
