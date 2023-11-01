@@ -535,12 +535,25 @@ FeedV2Builder::~FeedV2Builder() = default;
 
 void FeedV2Builder::BuildChannelFeed(const std::string& channel,
                                      BuildFeedCallback callback) {
+  if (last_feed_ && last_feed_->type->is_channel() &&
+      last_feed_->type->get_channel()->channel == channel) {
+    std::move(callback).Run(last_feed_->Clone());
+    return;
+  }
+
   Build(
       /*recalculate_signals=*/true,
       base::BindOnce(
           [](base::WeakPtr<FeedV2Builder> builder, const std::string& channel,
              BuildFeedCallback callback, mojom::FeedV2Ptr _) {
+            if (!builder) {
+              std::move(callback).Run(mojom::FeedV2::New());
+              return;
+            }
+
             auto result = mojom::FeedV2::New();
+            result->type = mojom::FeedV2Type::NewChannel(
+                mojom::FeedV2ChannelType::New(channel));
             auto& publishers =
                 builder->publishers_controller_->GetLastPublishers();
             auto& locale = builder->publishers_controller_->GetLastLocale();
@@ -578,6 +591,7 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
                      GetPopRecency(a->get_article()->data);
             });
 
+            builder->last_feed_ = result->Clone();
             std::move(callback).Run(std::move(result));
           },
           weak_ptr_factory_.GetWeakPtr(), channel, std::move(callback)));
@@ -585,13 +599,25 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
 
 void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
                                        BuildFeedCallback callback) {
+  if (last_feed_ && last_feed_->type->is_publisher() &&
+      last_feed_->type->get_publisher()->publisher_id == publisher_id) {
+    std::move(callback).Run(last_feed_->Clone());
+    return;
+  }
   Build(
       /*recalculate_signals=*/true,
       base::BindOnce(
           [](base::WeakPtr<FeedV2Builder> builder,
              const std::string& publisher_id, BuildFeedCallback callback,
              mojom::FeedV2Ptr _) {
+            if (!builder) {
+              std::move(callback).Run(mojom::FeedV2::New());
+              return;
+            }
+
             auto result = mojom::FeedV2::New();
+            result->type = mojom::FeedV2Type::NewPublisher(
+                mojom::FeedV2PublisherType::New(publisher_id));
 
             for (const auto& item : builder->raw_feed_items_) {
               if (!item->is_article()) {
@@ -610,6 +636,7 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
                      a->get_article()->data->publish_time;
             });
 
+            builder->last_feed_ = result->Clone();
             std::move(callback).Run(std::move(result));
           },
           weak_ptr_factory_.GetWeakPtr(), publisher_id, std::move(callback)));
@@ -617,6 +644,10 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
 
 void FeedV2Builder::Build(bool recalculate_signals,
                           BuildFeedCallback callback) {
+  if (last_feed_ && last_feed_->type->is_all()) {
+    std::move(callback).Run(last_feed_->Clone());
+    return;
+  }
   pending_callbacks_.push_back(std::move(callback));
 
   if (is_building_) {
@@ -741,6 +772,8 @@ void FeedV2Builder::BuildFeedFromArticles() {
   auto articles =
       GetArticleInfos(locale, raw_feed_items_, publishers, signals_);
   auto feed = mojom::FeedV2::New();
+  feed->type = mojom::FeedV2Type::NewAll(mojom::FeedV2AllType::New());
+
   base::span<const TopicAndArticles> topics = base::make_span(topics_);
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
@@ -820,6 +853,8 @@ void FeedV2Builder::BuildFeedFromArticles() {
   for (auto& callback : pending_callbacks_) {
     std::move(callback).Run(feed->Clone());
   }
+
+  last_feed_ = std::move(feed);
 
   pending_callbacks_.clear();
   is_building_ = false;

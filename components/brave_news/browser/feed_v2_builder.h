@@ -18,6 +18,7 @@
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
@@ -79,6 +80,7 @@ class FeedV2Builder {
   Signals signals_;
   std::vector<std::string> suggested_publisher_ids_;
   TopicsResult topics_;
+  mojom::FeedV2Ptr last_feed_;
 
   bool is_building_ = false;
   std::vector<BuildFeedCallback> pending_callbacks_;
