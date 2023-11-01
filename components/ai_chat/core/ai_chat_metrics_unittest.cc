@@ -55,6 +55,7 @@ TEST_F(AIChatMetricsUnitTest, Enabled) {
 }
 
 TEST_F(AIChatMetricsUnitTest, ChatCount) {
+  ai_chat_metrics_->RecordEnabled(false);
   histogram_tester_.ExpectTotalCount(kChatCountHistogramName, 0);
 
   RecordPrompts(true, 1);
@@ -83,6 +84,7 @@ TEST_F(AIChatMetricsUnitTest, ChatCount) {
 }
 
 TEST_F(AIChatMetricsUnitTest, AvgPromptsPerChat) {
+  ai_chat_metrics_->RecordEnabled(false);
   histogram_tester_.ExpectTotalCount(kAvgPromptCountHistogramName, 0);
 
   RecordPrompts(true, 1);
@@ -113,6 +115,7 @@ TEST_F(AIChatMetricsUnitTest, AvgPromptsPerChat) {
 }
 
 TEST_F(AIChatMetricsUnitTest, UsageDaily) {
+  ai_chat_metrics_->RecordEnabled(false);
   histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 0);
 
   RecordPrompts(true, 1);
@@ -172,6 +175,7 @@ TEST_F(AIChatMetricsUnitTest, OmniboxOpens) {
 }
 
 TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
+  ai_chat_metrics_->RecordEnabled(false);
   histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 0);
 
   for (size_t i = 0; i < 10; i++) {
