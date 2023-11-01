@@ -166,6 +166,7 @@ public class WalletUtils {
             Log.e(TAG, "Error while opening wallet tab.", e);
         }
     }
+
     public static void openWalletHelpCenter(Context context) {
         if (context == null) return;
         TabUtils.openUrlInCustomTab(context, WalletConstants.WALLET_HELP_CENTER);

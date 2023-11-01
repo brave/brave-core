@@ -110,7 +110,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWebcompatReporterHost) {
     return new webcompat_reporter::WebcompatReporterUI(web_ui, url.host());
-#endif // !BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
   } else if (host == kIPFSWebUIHost &&
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
@@ -186,7 +186,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   } else if (url.is_valid() && url.host() == kWalletPageHost) {
     return new AndroidWalletPageUI(web_ui, url);
-#endif // BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID)
   }
   return nullptr;
 }
