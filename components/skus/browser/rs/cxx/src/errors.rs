@@ -133,3 +133,7 @@ impl From<ffi::SkusResult> for skus::errors::InternalError {
         }
     }
 }
+
+pub fn result_to_string(result: &ffi::SkusResult) -> String {
+    <ffi::SkusResult as Into<skus::errors::InternalError>>::into(*result).to_string()
+}
