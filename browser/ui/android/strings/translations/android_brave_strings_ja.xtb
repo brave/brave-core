@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">すべてのタブが閉じられた際に、Braveも閉じる</translation>
 <translation id="8308305244351876417">Braveの他のタブや他のアプリに切り替えたり、デバイスの画面がオフの状態でもオーディオを再生できるようにします。</translation>
 <translation id="4150201353443180367">表示</translation>
+<translation id="4275663329226226506">メディア</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Widevineデジタル著作権管理 (DRM) を使用して、保護されたメディアコンテンツをブラウザで表示します。</translation>
+<translation id="255204363133978824">保護されたコンテンツを許可</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Widevineについてさらに詳しく<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">許可 (今すぐ再起動)</translation>
 <translation id="2433507940547922241">デザイン</translation>
 <translation id="9040069796107003510">Braveリワードアイコン</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
@@ -583,6 +589,7 @@
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
+<translation id="6915830896450988084"><ph name="CUSTODIAN"/>で送信</translation>
 <translation id="1483493594462132177">送信</translation>
 <translation id="538450413584738399">スワップ</translation>
 <translation id="1366855498335432549">振込</translation>
@@ -899,6 +906,7 @@
 <translation id="3897092660631435901">メニュー</translation>
 <translation id="42981349822642051">展開</translation>
 <translation id="3586752056660754651">Sign</translation>
+<translation id="3950820424414687140">ログイン</translation>
 <translation id="6592721981110586529">Braveウォレットに接続</translation>
 <translation id="329813193938846695">アカウントを選択</translation>
 <translation id="291375746846291973">信頼できるサイトにのみ接続してください。</translation>
@@ -1047,6 +1055,14 @@
 <translation id="5802752138057422257">ASCII以外の文字を検出しました！</translation>
 <translation id="442709594176931966">元のメッセージを表示</translation>
 <translation id="2239252396088484499">ASCIIエンコードでメッセージを表示</translation>
+<translation id="4530494379350999373">Origin</translation>
+<translation id="6736243959894955139">Address</translation>
+<translation id="3095940652251934233">ステートメント</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">バージョン</translation>
+<translation id="1313065465616456728">発行日</translation>
+<translation id="7902225556763260253">有効期限</translation>
+<translation id="1908159733454294871">セキュリティリスクを検知しました</translation>
 <translation id="4220693114674044366">トークンアドレス</translation>
 <translation id="5658257029899993935">Braveアカウントに購入情報をリンク</translation>
 <translation id="1187061015547219282">Play Storeで購入した商品をBraveアカウントに紐付け、他のデバイスでBrave VPNを利用することができます。</translation>
@@ -1179,4 +1195,11 @@
 <translation id="5494920125229734069">すべて選択する</translation>
 <translation id="5972844218283131174">すべて選択解除</translation>
 <translation id="6322030314101903925">利用可能なアセットはありません</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Braveウォレットにサインイン</translation>
+<translation id="3696514931437952995"><ph name="ORIGIN"/>にサインインしています。Braveウォレットはあなたのウォレットのアドレスを<ph name="ORIGIN"/>に共有します。</translation>
+<translation id="1028781062521375153">詳細を表示</translation>
+<translation id="6759710362319508545">リソース</translation>
+<translation id="2471230424465522689">利用開始日時</translation>
+<translation id="4841860051609590575">リクエストID</translation>
 </translationbundle>

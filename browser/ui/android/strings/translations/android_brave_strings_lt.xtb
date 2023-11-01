@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Užveriant visus skirtukus užveriama „Brave“</translation>
 <translation id="8308305244351876417">Leidžia toliau atkurti garsą perjungus kitą „Brave“ skirtuką, atvėrus kitą programą arba esant išjungtam ekranui.</translation>
 <translation id="4150201353443180367">Pateiktis</translation>
+<translation id="4275663329226226506">Medija</translation>
+<translation id="5950428831347558278">„Widevine“ DRM</translation>
+<translation id="6716942308303275900">Naudokite „Widevine“ skaitmeninio teisių valdymo (DRM) funkciją, jei norite naršyklėje peržiūrėti apsaugotą medijos turinį.</translation>
+<translation id="255204363133978824">Leisti apsaugotą turinį</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Sužinokite daugiau apie „Widevine“<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Leisti (paleisti iš naujo dabar)</translation>
 <translation id="2433507940547922241">Išvaizda</translation>
 <translation id="9040069796107003510">„Brave Rewards“ piktograma</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
@@ -587,6 +593,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="1822560017823072927">Numatytosios viešos ir privačios sąsajos</translation>
 <translation id="5825943197137337319">Tik numatytoji vieša sąsaja</translation>
 <translation id="1689062823386843231">Išjungti neįgaliotąjį UDP</translation>
+<translation id="6915830896450988084">Siųsti naudojant <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Siųsti</translation>
 <translation id="538450413584738399">„Swap“</translation>
 <translation id="1366855498335432549">Depozitas</translation>
@@ -903,6 +910,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="3897092660631435901">Meniu</translation>
 <translation id="42981349822642051">Išplėsti</translation>
 <translation id="3586752056660754651">Prisijunkite</translation>
+<translation id="3950820424414687140">Prisijungti</translation>
 <translation id="6592721981110586529">Prisijunkite naudodami „Brave“ piniginę</translation>
 <translation id="329813193938846695">Pasirinkite paskyrą (-as)</translation>
 <translation id="291375746846291973">Susisiekite tik su patikimomis svetainėmis.</translation>
@@ -949,7 +957,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6044189892950611565">„Brave“ naršyklės pranešimų kanalas</translation>
 <translation id="1173919438868967364">Pasirinkti sąskaitą</translation>
 <translation id="8922793255489232731">Nepavyko gauti laiko zonos, sutampančios su: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Atsiunčiamas piniginės duomenų failas \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Atsisiunčiamas piniginės duomenų failas \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Prisijungta prie <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Bandomoji versija</translation>
 <translation id="7733890291091968191">Rodyti „Web3“ pranešimus</translation>
@@ -1051,6 +1059,14 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="5802752138057422257">Aptikti NE ASCII ženklai!</translation>
 <translation id="442709594176931966">Rodyti pirminį pranešimą</translation>
 <translation id="2239252396088484499">Rodyti pranešimą, koduotą ASCII formatu</translation>
+<translation id="4530494379350999373">Kilmė</translation>
+<translation id="6736243959894955139">Adresas</translation>
+<translation id="3095940652251934233">Išrašas</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versija</translation>
+<translation id="1313065465616456728">Išduotas</translation>
+<translation id="7902225556763260253">Galiojimo laikas</translation>
+<translation id="1908159733454294871">Aptiktas saugumo pavojus</translation>
 <translation id="4220693114674044366">Žetono adresas</translation>
 <translation id="5658257029899993935">Susiekite pirkimą su savo „Brave“ paskyra</translation>
 <translation id="1187061015547219282">Susiekite pirkimą „Play Store“ su savo „Brave“ paskyra ir naudokite „Brave VPN“ kituose įrenginiuose.</translation>
@@ -1183,4 +1199,11 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="5494920125229734069">Pasirinkti viską</translation>
 <translation id="5972844218283131174">Atžymėti viską</translation>
 <translation id="6322030314101903925">Nėra turto</translation>
+<translation id="6129027151000961048">„Leo“</translation>
+<translation id="8613144770663526433">Prisijunkite naudodami „Brave“ piniginę</translation>
+<translation id="3696514931437952995">Jungiatės prie <ph name="ORIGIN"/>. „Brave“ piniginė pasidalins jūsų piniginės adresu su<ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Peržiūrėti išsamią informaciją</translation>
+<translation id="6759710362319508545">Resursai</translation>
+<translation id="2471230424465522689">Ne anksčiau nei</translation>
+<translation id="4841860051609590575">Užklausos ID</translation>
 </translationbundle>

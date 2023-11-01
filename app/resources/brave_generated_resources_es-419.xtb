@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">No volver a preguntar</translation>
 <translation id="4900351245762303149">Instalar Google Widevine</translation>
 <translation id="2313383941300459392">Reiniciar el navegador para habilitar Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> desea reproducir contenido protegido con Google Widevine. Para ello, es necesario permitir la compatibilidad del sistema Android con Widevine. Si lo haces, aceptarás las condiciones de uso de Google.</translation>
 <translation id="2200626478572277092">A veces se necesita Widevine para reproducir contenido multimedia en una página web. Como es una extensión que se carga de los servidores de Google, Brave no puede analizarla. Si la instalas, aceptas las condiciones de uso de Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>
 .
@@ -167,6 +168,9 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="6959315322491671328">Haz clic derecho para eliminar</translation>
 <translation id="495046168593986294">Desplazarse hacia arriba</translation>
 <translation id="4021716437419160885">Desplazarse hacia abajo</translation>
+<translation id="2702801445560668637">Lista de lectura</translation>
+<translation id="2533715613366623756">Administrador de marcadores</translation>
+<translation id="3405021928725149239">Administrador de marcadores</translation>
 <translation id="6284218950354553099">Envía a Brave pings de uso diario automáticamente</translation>
 <translation id="5288333155754958121">Estos pings privados y anónimos le permiten a Brave calcular los usuarios activos.</translation>
 <translation id="1872784258300710671">Brave usa análisis del producto totalmente privados para calcular el uso general de determinadas funciones</translation>
@@ -238,7 +242,6 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="796831669370432378">Para agregar a favoritos, haz clic en el botón de favoritos junto a la barra de direcciones.</translation>
 <translation id="8487693399751278191">Importar marcadores ahora...</translation>
 <translation id="2557899542277210112">Para lograr un acceso rápido, coloca tus marcadores aquí en la barra de marcadores.</translation>
-<translation id="2702801445560668637">Lista de lectura</translation>
 <translation id="1968543937259008435">¿Quieres disfrutar de la máxima privacidad en Internet?</translation>
 <translation id="6817415381278637662">Establece Brave como tu navegador predeterminado para beneficiarte de la protección de privacidad de Brave en todas las páginas que abras.</translation>
 <translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
@@ -285,6 +288,8 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="7765158879357617694">Mover</translation>
 <translation id="6648536728577053364">Eliminar los datos sin conexión</translation>
 <translation id="5181358966317519720">Eliminar de la lista de reproducción</translation>
+<translation id="2377705456080309463">Ver página original</translation>
+<translation id="158894735649719362">La diversión comienza al presionar el botón de reproducción. Añade tus contenidos multimedia favoritos y disfruta de ellos en cualquier momento y lugar independientemente de si tienes o no conexión a internet.</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
 <translation id="7179921470347911571">Reiniciar ahora</translation>
 <translation id="4472575034687746823">Comenzar</translation>
@@ -297,9 +302,12 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="1360441190790440400">Igual a Linux</translation>
 <translation id="1336940801687497203">Igual a Windows</translation>
 <translation id="8721331068159819483">Igual a macOS</translation>
+<translation id="4171684937791228083">Mostrar siempre la barra de herramientas en el modo de pantalla completa</translation>
 <translation id="1692470335103807198">Obtener más temas</translation>
 <translation id="2906510232093002459">Imágenes predeterminadas de Brave</translation>
+<translation id="8000020256436988724">Barra de herramientas</translation>
 <translation id="8076492880354921740">Pestañas</translation>
+<translation id="8168435359814927499">Contenido</translation>
 <translation id="5860254591544742609">Mostrar barra de título</translation>
 <translation id="5371926069408837914">Ampliar el panel de pestañas verticales al pasar el mouse por encima cuando está contraído</translation>
 <translation id="3367129510799209147">Modo de desplazamiento sobre pestañas</translation>
@@ -312,7 +320,8 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="2858138569776157458">Populares</translation>
 <translation id="7859704718976024901">Historial de navegación</translation>
 <translation id="8820817407110198400">Favoritos</translation>
-<translation id="2245286910966863912">Mostrar el botón Noticias de Brave en la barra de direcciones</translation>
+<translation id="7310387888625228830">Asistente de IA (Leo)</translation>
+<translation id="5222974844674487962">Mostrar botón de Noticias de Brave</translation>
 <translation id="383007806262310953">Mostrar barra de favoritos</translation>
 <translation id="4054323497808446566">La barra de marcadores está visible en todas las páginas</translation>
 <translation id="8693858092251192712">La barra de marcadores está oculta en todas las páginas salvo en la página de la nueva pestaña</translation>
@@ -420,7 +429,6 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="7050661313034564003">Mostrar todas las cookies y datos almacenados de forma local para este sitio</translation>
 <translation id="8339059274628563283">El sitio <ph name="SITE"/> almacenó datos de forma local</translation>
 <translation id="1963227389609234879">Eliminar todo</translation>
-<translation id="8168435359814927499">Contenido</translation>
 <translation id="7702907602086592255">Dominio</translation>
 <translation id="3202131003361292969">Ruta</translation>
 <translation id="5390743329570580756">Enviar para</translation>
@@ -591,7 +599,7 @@ volver a usar Sync de nuevo, deberás crear otra cuenta y volver a agregar cada 
 <translation id="702381242110464396">Extensiones (copia de seguridad de billetera de Brave)</translation>
 <translation id="4718664830805652430">Divisa base por defecto</translation>
 <translation id="7992507032049865603">Criptomoneda base por defecto</translation>
-<translation id="1834467296210148203">Mostrar el ícono de la billetera de Brave en la barra de herramientas</translation>
+<translation id="3044369626313583722">Mostrar botón de Billetera de Brave</translation>
 <translation id="7568430944629653319">Activar la detección de NFT</translation>
 <translation id="970496996377628529">Añade automáticamente NFT de tu propiedad a la billetera utilizando API de terceros.</translation>
 <translation id="8239147115686034860">Bloquear automáticamente la billetera Brave</translation>
@@ -700,6 +708,12 @@ En este momento tienes <ph name="NFT_COUNT"/> NFT anclados.</translation>
 <translation id="2751872555001636931">Mostrar el ícono de Leo en la barra lateral</translation>
 <translation id="8172263161008556851">Mostrar sugerencias en la conversación</translation>
 <translation id="1014480593522400586">Borrar datos de Leo</translation>
+<translation id="8681157601856387010">Si restableces el asistente de IA (Leo), será necesario que habilites Leo de Brave
+para poder usarlo en el futuro. El historial de chats se borrará al llevar a cabo dicha acción.
+Esto significa que se eliminarán todas las conversaciones que hayas mantenido con Leo
+de forma irreversible.</translation>
+<translation id="8157373421434119674">Historial de datos y chats</translation>
+<translation id="614530507403667291">Modelo predeterminado para conversaciones nuevas</translation>
 <translation id="6624718837376802990">Avatar Moderno recompensas</translation>
 <translation id="6617313057407561765">Avatar Moderno Brave</translation>
 <translation id="6754445808455578019">Avatar Moderno océano</translation>

@@ -119,13 +119,13 @@
 <translation id="1336940801687497203">விண்டோஸ் போன்றே</translation>
 <translation id="8721331068159819483">macOS போன்றே</translation>
 <translation id="8076492880354921740">தாவல்கள்</translation>
+<translation id="8168435359814927499">உள்ளடக்கம்</translation>
 <translation id="2396127686705429331">நூற்குறிகள் பொத்தானைக் காட்டு</translation>
 <translation id="2814998458708016836">அகன்ற முகவரி பட்டையை பயன்படுத்து</translation>
 <translation id="4109670531935487117">முகவரிப்பட்டையில் தன்னிரப்புப் பரிந்துரைகளைக் காட்டு</translation>
 <translation id="2858138569776157458">பிரபலமானவை</translation>
 <translation id="7859704718976024901">உலாவல் வரலாறு</translation>
 <translation id="8820817407110198400">புத்தகக்குறிகள்</translation>
-<translation id="2245286910966863912">முகவரிப்பட்டையில் பிரேவ் செய்திகள் பொத்தானைக் காட்டு</translation>
 <translation id="383007806262310953">புக்மார்க்ஸ் பட்டியைக் காட்டு</translation>
 <translation id="3416468988018290825">எப்போதும் முழு உரலிகளைக் காட்டு</translation>
 <translation id="5529693968082667490">தாவல் தேடல் பொத்தானைக் காட்டு</translation>
@@ -168,7 +168,6 @@
 <translation id="2808630562319398131">பிரேவ் வெகுமதிகள் தரவை அகரமாக்கு...</translation>
 <translation id="8339059274628563283">சாதனத்தில் சேமிக்கப்பட்ட <ph name="SITE"/> தரவு</translation>
 <translation id="1963227389609234879">எல்லாம் நீக்கு</translation>
-<translation id="8168435359814927499">உள்ளடக்கம்</translation>
 <translation id="7702907602086592255">டொமைன்</translation>
 <translation id="3202131003361292969">தடம்</translation>
 <translation id="5390743329570580756">இதற்காக அனுப்பு:</translation>
@@ -223,7 +222,6 @@
 <translation id="7013485839273047434">மேலும் நீட்டிப்புகளை பெறு</translation>
 <translation id="5840822070878669614">Brave இணைய அங்காடியைத் திற</translation>
 <translation id="8488282162676695335">பிரேவ் பணப்பை</translation>
-<translation id="1834467296210148203">கருவிப்பட்டையில் பிரேவ் பணப்பை படவுருவை காட்டு</translation>
 <translation id="8239147115686034860">தானாக பிரேவ் பணப்பையைப் பூட்டு</translation>
 <translation id="414639769490080648">பிரேவ் பணப்பை தானாக பூட்டப்படும் வரை காத்திருக்க வேண்டிய நிமிடங்கள்</translation>
 <translation id="1426410128494586442">ஆம்</translation>

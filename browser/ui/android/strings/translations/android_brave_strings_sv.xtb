@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Att stänga alla flikar stänger Brave</translation>
 <translation id="8308305244351876417">Tillåter att ljud spelas upp när du växlar till en annan flik i Brave, en annan app eller enhetens skärm är avstängd.</translation>
 <translation id="4150201353443180367">Skärm</translation>
+<translation id="4275663329226226506">Media</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Använd Widevine digital rights management (DRM) för att se skyddat medieinnehåll i webbläsaren.</translation>
+<translation id="255204363133978824">Tillåt skyddat innehåll</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Läs mer om Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Tillåt (Starta om nu)</translation>
 <translation id="2433507940547922241">Utseende</translation>
 <translation id="9040069796107003510">Brave Rewards-ikon</translation>
 <translation id="6333347122924254968">Visa ikonen Brave-belöningar i adressfältet</translation>
@@ -583,6 +589,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1822560017823072927">Offentliga och privata standardgränssnitt</translation>
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
+<translation id="6915830896450988084">Skicka med <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Skicka</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Deposition</translation>
@@ -899,6 +906,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="3897092660631435901">Meny</translation>
 <translation id="42981349822642051">Expandera</translation>
 <translation id="3586752056660754651">Signera</translation>
+<translation id="3950820424414687140">Logga in</translation>
 <translation id="6592721981110586529">Anslut till Brave Wallet</translation>
 <translation id="329813193938846695">Välj konto(n)</translation>
 <translation id="291375746846291973">Anslut endast till webbplatser som du litar på.</translation>
@@ -1047,6 +1055,14 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5802752138057422257">Icke-ASCII-tecken upptäckta!</translation>
 <translation id="442709594176931966">Visa originalmeddelande</translation>
 <translation id="2239252396088484499">Visa meddelande i ASCII-kodning</translation>
+<translation id="4530494379350999373">Ursprung</translation>
+<translation id="6736243959894955139">Adress</translation>
+<translation id="3095940652251934233">Kontoutdrag</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Version</translation>
+<translation id="1313065465616456728">Utfärdat</translation>
+<translation id="7902225556763260253">Utgångstid</translation>
+<translation id="1908159733454294871">Säkerhetsrisk identifierad</translation>
 <translation id="4220693114674044366">Tokenadress</translation>
 <translation id="5658257029899993935">Länka köp till ditt Brave-konto</translation>
 <translation id="1187061015547219282">Länka Play Store-köp till ditt Brave-konto för att använda Brave VPN på andra enheter.</translation>
@@ -1179,4 +1195,11 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5494920125229734069">Markera alla</translation>
 <translation id="5972844218283131174">Avmarkera alla</translation>
 <translation id="6322030314101903925">Inga tillgängliga tillgångar</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Logga in med Brave Wallet</translation>
+<translation id="3696514931437952995">Du loggar in på <ph name="ORIGIN"/>. Brave wallet kommer att dela din plånboksadress med <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Visa information</translation>
+<translation id="6759710362319508545">Resurser</translation>
+<translation id="2471230424465522689">Inte tidigare</translation>
+<translation id="4841860051609590575">Begäran-ID</translation>
 </translationbundle>

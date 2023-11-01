@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">Nie pytaj ponownie</translation>
 <translation id="4900351245762303149">Zainstaluj Google Widevine</translation>
 <translation id="2313383941300459392">Uruchom ponownie przeglądarkę, aby włączyć Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> chce odtwarzać treści chronione Google Widevine, co wymaga zezwolenia na obsługę Widevine w systemie Android. Zezwalając, akceptujesz warunki użytkowania firmy Google.</translation>
 <translation id="2200626478572277092">Widevine jest czasami potrzebne, aby odtworzyć multimedia na stronie internetowej. To rozszerzenie Google do pobrania z serwerów Google, których Brave nie może sprawdzić. Instalując je, wyrażasz zgodę na warunki korzystania firmy Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>
 lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
@@ -166,6 +167,9 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6959315322491671328">Kliknij prawym przyciskiem myszy, aby usunąć.</translation>
 <translation id="495046168593986294">Przewiń górę</translation>
 <translation id="4021716437419160885">Przewiń w dół</translation>
+<translation id="2702801445560668637">Lista rzeczy do przeczytania</translation>
+<translation id="2533715613366623756">Menedżer zakładek</translation>
+<translation id="3405021928725149239">Menedżer zakładek</translation>
 <translation id="6284218950354553099">Automatycznie wysyłaj pingi dziennego użycia do Brave</translation>
 <translation id="5288333155754958121">Ten anonimowy, prywatny ping pozwala Brave oszacować liczbę aktywnych użytkowników</translation>
 <translation id="1872784258300710671">Brave wykorzystuje całkowicie prywatne analizy dotyczące produktu w celu oszacowania ogólnego poziomu korzystania z określonych funkcji.</translation>
@@ -236,7 +240,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="796831669370432378">Aby dodać zakładkę, kliknij przycisk zakładki obok paska adresu</translation>
 <translation id="8487693399751278191">Importuj zakładki...</translation>
 <translation id="2557899542277210112">Aby uzyskać szybki dostęp, umieść zakładki tutaj na pasku zakładek.</translation>
-<translation id="2702801445560668637">Lista rzeczy do przeczytania</translation>
 <translation id="1968543937259008435">Gotów na korzystanie z najlepszej ochrony prywatności online?</translation>
 <translation id="6817415381278637662">Ustaw Brave jako przeglądarkę domyślną, aby skorzystać z ochrony prywatności Brave na każdej stronie sieci Web, którą otworzysz.</translation>
 <translation id="8722651357687610395">Ustaw Brave jako domyślną</translation>
@@ -283,6 +286,8 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7765158879357617694">Przenieś</translation>
 <translation id="6648536728577053364">Usuń dane trybu offline</translation>
 <translation id="5181358966317519720">Usuń z listy odtwarzania</translation>
+<translation id="2377705456080309463">Wyświetl oryginalną stronę</translation>
+<translation id="158894735649719362">Zabawa zaczyna się, gdy masz coś do odtworzenia. Dodaj swoje ulubione multimedia i odtwarzaj je w dowolnym miejscu i czasie. Nawet w trybie offline.</translation>
 <translation id="9156965752763025780">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave.</translation>
 <translation id="7179921470347911571">Uruchom ponownie teraz</translation>
 <translation id="4472575034687746823">Podstawowe</translation>
@@ -295,9 +300,12 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1360441190790440400">Takie same jak w systemie Linux</translation>
 <translation id="1336940801687497203">Takie same jak w systemie Windows</translation>
 <translation id="8721331068159819483">Takie same jak w systemie MacOS</translation>
+<translation id="4171684937791228083">Zawsze wyświetlaj pasek narzędzi na pełnym ekranie</translation>
 <translation id="1692470335103807198">Pobierz więcej motywów</translation>
 <translation id="2906510232093002459">Obrazy domyślne Brave</translation>
+<translation id="8000020256436988724">Pasek narzędzi</translation>
 <translation id="8076492880354921740">Karty</translation>
+<translation id="8168435359814927499">Treści</translation>
 <translation id="5860254591544742609">Pokaż pasek tytułu</translation>
 <translation id="5371926069408837914">Gdy pionowy panel zakładek jest zwinięty, możesz go rozwinąć po najechaniu myszką</translation>
 <translation id="3367129510799209147">Tryb najechania myszką na kartę</translation>
@@ -310,7 +318,8 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2858138569776157458">Popularne</translation>
 <translation id="7859704718976024901">Historia przeglądania</translation>
 <translation id="8820817407110198400">Zakładki</translation>
-<translation id="2245286910966863912">Pokaż przycisk Brave News na pasku adresu</translation>
+<translation id="7310387888625228830">Asystent SI Leo</translation>
+<translation id="5222974844674487962">Pokaż przycisk Aktualności Brave</translation>
 <translation id="383007806262310953">Pokaż pasek zakładek</translation>
 <translation id="4054323497808446566">Pasek zakładek jest widoczny na wszystkich stronach</translation>
 <translation id="8693858092251192712">Pasek zakładek jest ukryty na wszystkich stronach poza stroną nowej karty</translation>
@@ -418,7 +427,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7050661313034564003">Pokaż wszystkie ciasteczka i lokalnie przechowywane pliki dla tej strony</translation>
 <translation id="8339059274628563283">Lokalnie zapisane dane z <ph name="SITE"/></translation>
 <translation id="1963227389609234879">Usuń wszystko</translation>
-<translation id="8168435359814927499">Treści</translation>
 <translation id="7702907602086592255">Domena</translation>
 <translation id="3202131003361292969">Ścieżka</translation>
 <translation id="5390743329570580756">Wyślij do:</translation>
@@ -589,7 +597,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="702381242110464396">Rozszerzenia (kopia zapasowa Portfela Brave)</translation>
 <translation id="4718664830805652430">Domyślna podstawowa waluta</translation>
 <translation id="7992507032049865603">Domyślna podstawowa kryptowaluta</translation>
-<translation id="1834467296210148203">Pokaż ikonę Brave Wallet na pasku narzędzi</translation>
+<translation id="3044369626313583722">Pokaż przycisk Portfela Brave</translation>
 <translation id="7568430944629653319">Włącz odkrywanie NFT</translation>
 <translation id="970496996377628529">Automatycznie dodawaj posiadane przez siebie NFT do portfela za pomocą API innych firm.</translation>
 <translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
@@ -698,6 +706,12 @@ Uwaga: Jeśli wybrano węzeł lokalny, dostęp do zasobu będzie wymagany bezpo�
 <translation id="2751872555001636931">Pokaż ikonę Leo w pasku bocznym</translation>
 <translation id="8172263161008556851">Pokaż sugerowane podpowiedzi w rozmowie</translation>
 <translation id="1014480593522400586">Wyczyść dane Leo</translation>
+<translation id="8681157601856387010">Zresetowanie asystenta Leo będzie wymagało wyrażenia zgody na
+korzystanie z Brave Leo w przyszłości, a także spowoduje wyczyszczenie
+historii czatu. Wyczyszczenie historii czatu oznacza usunięcie wszystkich
+poprzednich rozmów z Brave Leo. Tej czynności nie można cofnąć.</translation>
+<translation id="8157373421434119674">Dane i historia czatu</translation>
+<translation id="614530507403667291">Domyślny model dla nowych rozmów</translation>
 <translation id="6624718837376802990">Awatar konturowe nagrody</translation>
 <translation id="6617313057407561765">Awatar konturowy Brave</translation>
 <translation id="6754445808455578019">Awatar konturowy ocean</translation>

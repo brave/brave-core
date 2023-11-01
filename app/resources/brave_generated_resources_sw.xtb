@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">Nisiulizwe tena</translation>
 <translation id="4900351245762303149">Sakinisha Google Widevine</translation>
 <translation id="2313383941300459392">Fungua kivinjari upya ili kuwezesha Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> inataka kucheza maudhui yanayolindwa ya Google Widevine, ambayo yanakuhitaji kuruhusu matumizi ya mfumo wa Android kwa ajili ya Widevine. Kwa kuruhusu, utakubali masharti ya matumizi ya Google.</translation>
 <translation id="2200626478572277092">Wakati mwingine Widevine uhitajika ili kucheza midia kwenye ukurasa wa wavuti. Ni kiendelezi cha Google kinachopakiwa kutoka kwa seva za Google, ambacho Brave haiwezi kuchunguza. Kwa kusakinisha, utakubali masharti ya matumizi ya Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
@@ -166,6 +167,9 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6959315322491671328">Bofya-kulia ili kutoa</translation>
 <translation id="495046168593986294">Sogeza juu</translation>
 <translation id="4021716437419160885">Sogeza chini</translation>
+<translation id="2702801445560668637">Orodha ya Kusoma</translation>
+<translation id="2533715613366623756">Kidhibiti cha maalamisho</translation>
+<translation id="3405021928725149239">Kidhibiti cha Maalamisho</translation>
 <translation id="6284218950354553099">Tuma kiotomatiki mlio wa matumizi ya kila siku kwa Brave</translation>
 <translation id="5288333155754958121">Mlio huu wa faragha usiotambulisha huruhusu Brave kukadiria watumiaji hai.</translation>
 <translation id="1872784258300710671">Brave hutumia uchanganuzi wa bidhaa wa faragha kabisa kukadiria matumizi ya jumla ya vipengele fulani</translation>
@@ -237,7 +241,6 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="796831669370432378">Ili kuongeza alamisho, bofya kitufe cha alamisho karibu na sehemu ya anwani</translation>
 <translation id="8487693399751278191">Leta vialamisho sasa...</translation>
 <translation id="2557899542277210112">Kwa ufikiaji wa haraka, weka vialmaisho vyako hapa kwenye upau wa vialamisho.</translation>
-<translation id="2702801445560668637">Orodha ya Kusoma</translation>
 <translation id="1968543937259008435">Je, uko tayari kupata faragha bora zaidi mtandaoni?</translation>
 <translation id="6817415381278637662">Weka Brave kama kivinjari chako chaguomsingi ili kupata ulinzi wa faragha wa Brave kwenye kila ukurasa wa wavuti unaofungua.</translation>
 <translation id="8722651357687610395">Weka Brave kuwa chaguomsingi</translation>
@@ -284,6 +287,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7765158879357617694">Sogeza</translation>
 <translation id="6648536728577053364">Ondoa data ya nje ya mtandao</translation>
 <translation id="5181358966317519720">Ondoa kwenye orodha ya kucheza</translation>
+<translation id="2377705456080309463">Tazama ukurasa asili</translation>
+<translation id="158894735649719362">Burudani huanza wakati una kitu cha kucheza. Ongeza maudhui unayopenda na uyacheze tena wakati wowote, mahali popote. Hata nje ya mtandao.</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
 <translation id="7179921470347911571">Zindua Sasa</translation>
 <translation id="4472575034687746823">Anza</translation>
@@ -296,9 +301,12 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1360441190790440400">Sawa na Linux</translation>
 <translation id="1336940801687497203">Sawa na Windows</translation>
 <translation id="8721331068159819483">Sawa na MacOS</translation>
+<translation id="4171684937791228083">Onyesha upau wa zana kwenye skrini nzima kila wakati</translation>
 <translation id="1692470335103807198">Pata mandhari zaidi</translation>
 <translation id="2906510232093002459">Picha chaguomsingi za Brave</translation>
+<translation id="8000020256436988724">Upau wa zana</translation>
 <translation id="8076492880354921740">Vichupo</translation>
+<translation id="8168435359814927499">Maudhui</translation>
 <translation id="5860254591544742609">Onyesha upau wa majina</translation>
 <translation id="5371926069408837914">Panua kidirisha cha vichupo wima kwa kusogezasogeza kipanya kwenye kidirisha kilichokunjwa</translation>
 <translation id="3367129510799209147">Hali ya kuelea kichupo</translation>
@@ -311,7 +319,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2858138569776157458">Tovuti maarufu</translation>
 <translation id="7859704718976024901">Historia ya Kuvinjari</translation>
 <translation id="8820817407110198400">Sehemu ya Alamisho</translation>
-<translation id="2245286910966863912">Onyesha kitufe cha Habari za Brave kwenye upau wa anwani</translation>
+<translation id="7310387888625228830">Mratibu wa AI Leo</translation>
+<translation id="5222974844674487962">Onyesha kitufe cha Habari za Brave</translation>
 <translation id="383007806262310953">Onyesha sehemu ya alamisho</translation>
 <translation id="4054323497808446566">Upau wa maalamisho unaonekana kwenye kurasa zote</translation>
 <translation id="8693858092251192712">Upau wa maalamisho unafichwa kwenye kurasa zote isipokuwa kwenye ukurasa mpya wa kichupo</translation>
@@ -419,7 +428,6 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7050661313034564003">Onyesha vidakuzi vyote na data ya tovuti hii iliyohifadhiwa kwenye kifaa</translation>
 <translation id="8339059274628563283">Data ya <ph name="SITE"/> iliyohifadhiwa kwenye kifaa</translation>
 <translation id="1963227389609234879">Ondoa Yote</translation>
-<translation id="8168435359814927499">Maudhui</translation>
 <translation id="7702907602086592255">Kikoa</translation>
 <translation id="3202131003361292969">Njia</translation>
 <translation id="5390743329570580756">Tuma kwa</translation>
@@ -590,7 +598,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="702381242110464396">Viendelezi (mbadala wa Pochi ya Brave)</translation>
 <translation id="4718664830805652430">Sarafu chaguomsingi</translation>
 <translation id="7992507032049865603">Sarafuya dijitali chaguomsingi</translation>
-<translation id="1834467296210148203">Onyesha ikoni ya Brave Wallet kwenye upau zana</translation>
+<translation id="3044369626313583722">Onyesha kitufe cha Pochi ya Brave</translation>
 <translation id="7568430944629653319">Wezesha ugunduzi wa NFT</translation>
 <translation id="970496996377628529">Ongeza NFT unazomiliki kiotomatiki kwenye Pochi ukitumia API za wahusika wengine.</translation>
 <translation id="8239147115686034860">Funga Brave Wallet kiotomatiki</translation>
@@ -701,6 +709,12 @@ kuhusu nodi ya IPFS ya Jasiri ya eneo lako na masuala ya faragha ya lango.</tran
 <translation id="2751872555001636931">Onyesha ikoni ya Leo kwenye upau wa pembeni</translation>
 <translation id="8172263161008556851">Onyesha visituo vilivyopendekezwa kwenye mazungumzo</translation>
 <translation id="1014480593522400586">Futa data ya Leo</translation>
+<translation id="8681157601856387010">Kuweka upya mratibu wa Leo kutakuhitaji ujisajili kutumia Brave
+Leo katika siku zijazo na pia kutafuta historia yako ya gumzo. Kufuta
+historia yako ya gumzo kutafuta mazungumzo yako yote ya awali na Brave
+Leo. Kitendo hiki hakiwezi kutenduliwa.</translation>
+<translation id="8157373421434119674">Historia ya data na gumzo</translation>
+<translation id="614530507403667291">Muundo chaguomsingi wa mazungumzo mapya</translation>
 <translation id="6624718837376802990">Zawadi za Avatar</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

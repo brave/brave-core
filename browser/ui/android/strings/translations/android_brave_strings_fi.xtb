@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Kun kaikki välilehdet suljetaan, myös Brave sulkeutuu</translation>
 <translation id="8308305244351876417">Sallii äänen toistaa, kun vaihdat toiseen välilehteen Bravessa tai toiseen sovellukseen tai laitteen näyttö ei ole päällä.</translation>
 <translation id="4150201353443180367">Näyttö</translation>
+<translation id="4275663329226226506">Media</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Käytä Widevinen digitaalisten oikeuksien hallintaa (DRM) katsoaksesi suojattua mediasisältöä selaimessa.</translation>
+<translation id="255204363133978824">Salli suojattu sisältö</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Lue lisää Widevinestä<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Salli (Käynnistä uudelleen nyt)</translation>
 <translation id="2433507940547922241">Ulkonäkö</translation>
 <translation id="9040069796107003510">Brave-palkinnot-kuvake</translation>
 <translation id="6333347122924254968">Näytä Brave-palkinnot-kuvake osoiterivillä</translation>
@@ -583,6 +589,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1822560017823072927">Julkinen ja yksityinen oletuskäyttöliittymä</translation>
 <translation id="5825943197137337319">Vain julkinen oletuskäyttöliittymä</translation>
 <translation id="1689062823386843231">Estä yhteydetön UDP</translation>
+<translation id="6915830896450988084">Lähetä valvojalla <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Lähetä</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Talleta</translation>
@@ -899,6 +906,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="3897092660631435901">Valikko</translation>
 <translation id="42981349822642051">Laajenna</translation>
 <translation id="3586752056660754651">Allekirjoita</translation>
+<translation id="3950820424414687140">Kirjaudu sisään</translation>
 <translation id="6592721981110586529">Muodosta yhteys Brave-lompakkoon</translation>
 <translation id="329813193938846695">Valitse tili(t)</translation>
 <translation id="291375746846291973">Muodosta yhteys vain luotettaviin sivustoihin.</translation>
@@ -1047,6 +1055,14 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5802752138057422257">Muita kuin ASCII-merkkejä havaittu!</translation>
 <translation id="442709594176931966">Näytä alkuperäinen viesti</translation>
 <translation id="2239252396088484499">Näytä viestit ASCII-koodattuina</translation>
+<translation id="4530494379350999373">Alkuperä</translation>
+<translation id="6736243959894955139">Osoite</translation>
+<translation id="3095940652251934233">Selitys</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versio</translation>
+<translation id="1313065465616456728">Myönnetty</translation>
+<translation id="7902225556763260253">Vanhentumisaika</translation>
+<translation id="1908159733454294871">Turvallisuusriski havaittu</translation>
 <translation id="4220693114674044366">Tokenin osoite</translation>
 <translation id="5658257029899993935">Linkitä ostos Brave-tiliisi</translation>
 <translation id="1187061015547219282">Linkitä Play Storen ostos Brave-tiliisi käyttääksesi Brave VPN:ää muissa laitteissa.</translation>
@@ -1179,4 +1195,11 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5494920125229734069">Valitse kaikki</translation>
 <translation id="5972844218283131174">Poista kaikki valinnat</translation>
 <translation id="6322030314101903925">Ei käytettäviä varoja</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Kirjaudu sisään Brave-lompakon kautta</translation>
+<translation id="3696514931437952995">Olet kirjautumassa sisään kohteeseen <ph name="ORIGIN"/>. Brave-lompakko jakaa lompakkosi osoitteen kohteen <ph name="ORIGIN"/> kanssa.</translation>
+<translation id="1028781062521375153">Katso tiedot</translation>
+<translation id="6759710362319508545">Resurssit</translation>
+<translation id="2471230424465522689">Ei ennen</translation>
+<translation id="4841860051609590575">Pyynnön tunnus</translation>
 </translationbundle>

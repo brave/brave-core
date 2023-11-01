@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">Не запитувати знову</translation>
 <translation id="4900351245762303149">Установити Google Widevine</translation>
 <translation id="2313383941300459392">Перезапустіть браузер, щоб увімкнути Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> хоче відтворити захищений уміст Google Widevine. Надайте системі Android дозвіл на підтримку Widevine. Дозволяючи, ви приймаєте умови використання Google.</translation>
 <translation id="2200626478572277092">Додаток Widevine іноді потрібен для відтворення медіавмісту на вебсторінці. Це розширення Google, завантажене із серверів Google, які Brave не може перевірити. Установлюючи його, ви погоджуєтеся з умовами використання Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Або змініть пізніше на вебсайті <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
@@ -166,6 +167,9 @@
 <translation id="6959315322491671328">Клацніть правою кнопкою, щоб вилучити</translation>
 <translation id="495046168593986294">Прокручування вгору</translation>
 <translation id="4021716437419160885">Прокручування вниз</translation>
+<translation id="2702801445560668637">Список для читання</translation>
+<translation id="2533715613366623756">Диспетчер закладок</translation>
+<translation id="3405021928725149239">Диспетчер закладок</translation>
 <translation id="6284218950354553099">Автоматично надсилайте щоденний пінг використання в Brave</translation>
 <translation id="5288333155754958121">Цей анонімний, приватний пінг дає можливість Brave оцінити активних користувачів.</translation>
 <translation id="1872784258300710671">Brave використовує повністю конфіденційну аналітику продуктів для оцінки загального об'єму користування певними функціями</translation>
@@ -237,7 +241,6 @@
 <translation id="796831669370432378">Щоб додати закладку, натисніть кнопку закладки поруч з адресним рядком</translation>
 <translation id="8487693399751278191">Імпортувати закладки зараз...</translation>
 <translation id="2557899542277210112">Для швидкого доступу розмістіть свої закладки тут – на панелі закладок.</translation>
-<translation id="2702801445560668637">Список для читання</translation>
 <translation id="1968543937259008435">Готові до найкращої приватності онлайн?</translation>
 <translation id="6817415381278637662">Установіть браузер Brave за замовчуванням, щоб отримати захист конфіденційності Brave на кожній вебсторінці, яку ви відкриваєте.</translation>
 <translation id="8722651357687610395">Встановіть Brave  за замовчуванням</translation>
@@ -284,6 +287,8 @@
 <translation id="7765158879357617694">Перемістити</translation>
 <translation id="6648536728577053364">Видалити офлайн-дані</translation>
 <translation id="5181358966317519720">Видалити зі списку відтворення</translation>
+<translation id="2377705456080309463">Переглянути оригінальну сторінку</translation>
+<translation id="158894735649719362">Найцікавіше почнеться, коли буде що відтворювати. Додайте улюблені медіафайли й відтворюйте їх будь-коли й будь-де. Навіть без підключення до мережі.</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
@@ -296,9 +301,12 @@
 <translation id="1360441190790440400">Така ж, як Linux</translation>
 <translation id="1336940801687497203">Такаж як Windows</translation>
 <translation id="8721331068159819483">Як і в macOS</translation>
+<translation id="4171684937791228083">Завжди показувати панель інструментів у повноекранному режимі</translation>
 <translation id="1692470335103807198">Отримати більше тем</translation>
 <translation id="2906510232093002459">Типові зображення Brave</translation>
+<translation id="8000020256436988724">Панель інструментів</translation>
 <translation id="8076492880354921740">Вкладки</translation>
+<translation id="8168435359814927499">Вміст</translation>
 <translation id="5860254591544742609">Показати панель заголовку</translation>
 <translation id="5371926069408837914">Розгортати вертикальну панель вкладок за наведення курсора, якщо вона згорнута</translation>
 <translation id="3367129510799209147">Режим наведення на вкладку</translation>
@@ -311,7 +319,8 @@
 <translation id="2858138569776157458">Популярні сайти</translation>
 <translation id="7859704718976024901">Історія перегляду</translation>
 <translation id="8820817407110198400">Закладки</translation>
-<translation id="2245286910966863912">Відображати кнопку Brave News в адресному рядку</translation>
+<translation id="7310387888625228830">Leo, помічник на базі ШІ</translation>
+<translation id="5222974844674487962">Показати кнопку новин Brave</translation>
 <translation id="383007806262310953">Показати панель закладок</translation>
 <translation id="4054323497808446566">Панель закладок відображається на всіх сторінках</translation>
 <translation id="8693858092251192712">Панель закладок прихована на всіх сторінках, крім сторінки нової вкладки</translation>
@@ -419,7 +428,6 @@
 <translation id="7050661313034564003">Показати всі файли cookie й локально збережені дані для цього сайту</translation>
 <translation id="8339059274628563283">Локально збережені дані сайту <ph name="SITE"/></translation>
 <translation id="1963227389609234879">Видалити всі</translation>
-<translation id="8168435359814927499">Вміст</translation>
 <translation id="7702907602086592255">Домен</translation>
 <translation id="3202131003361292969">Шлях</translation>
 <translation id="5390743329570580756">Надіслати</translation>
@@ -590,7 +598,7 @@
 <translation id="702381242110464396">Розширення (бекап гаманця Brave)</translation>
 <translation id="4718664830805652430">Базова валюта за замовчуванням</translation>
 <translation id="7992507032049865603">Базова криптовалюта за замовчуванням</translation>
-<translation id="1834467296210148203">Показувати значок Brave Wallet на панелі інструментів</translation>
+<translation id="3044369626313583722">Показати кнопку гаманця Brave</translation>
 <translation id="7568430944629653319">Увімкнути знаходження NFT</translation>
 <translation id="970496996377628529">Автоматично додає NFT, якими ви володієте, в гаманець, використовуючи сторонні API.</translation>
 <translation id="8239147115686034860">Автоматично блокувати гаманець Brave</translation>
@@ -699,6 +707,12 @@
 <translation id="2751872555001636931">Показувати значок Leo на бічній панелі</translation>
 <translation id="8172263161008556851">Показувати запропоновані підказки під час розмови</translation>
 <translation id="1014480593522400586">Очистити дані Leo</translation>
+<translation id="8681157601856387010">Скинувши параметри помічника Leo, вам потрібно буде ще раз погодитися з умовами використання Brave
+у майбутньому. Історію також буде очищено. Очищення
+історії чата призведе до видалення попередніх розмов із Leo від Brave
+Цю дію неможливо скасувати.</translation>
+<translation id="8157373421434119674">Дані та історія чата</translation>
+<translation id="614530507403667291">Модель за замовчуванням для нової розмови</translation>
 <translation id="6624718837376802990">Avatar Edgy Rewards</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

@@ -27,6 +27,7 @@
 <translation id="8026334261755873520">બ્રાઉઝિંગ ડેટા સાફ કરો</translation>
 <translation id="6332924730165919598">તમામ ટૅબ્સ બંધ કરવાથી Brave બંધ થાય છે</translation>
 <translation id="4150201353443180367">ડિસ્પ્લે</translation>
+<translation id="4275663329226226506">મીડિયા</translation>
 <translation id="2433507940547922241">દેખાવ</translation>
 <translation id="8495235435594442882">નીચેના ટૂલબારને સક્ષમ કરો</translation>
 <translation id="6587448235155023666">આગલા વખતે જ્યારે તમે Brave ને ફરીથી લોન્ચ કરો ત્યારે તમારા ફેરફારો પ્રભાવમાં આવશે</translation>
@@ -163,6 +164,7 @@
 <translation id="2653659639078652383">સબમિટ કરો</translation>
 <translation id="5233638681132016545">નવું ટૅબ</translation>
 <translation id="2391762656119864333">રદબાતલ કરો</translation>
+<translation id="3950820424414687140">સાઇન ઇન</translation>
 <translation id="385051799172605136">પાછળ</translation>
 <translation id="3355936511340229503">કનેક્શન ભૂલ</translation>
 <translation id="4804818685124855865">ડિસ્કનેક્ટ કરો</translation>
@@ -171,6 +173,10 @@
 <translation id="583281660410589416">અજ્ઞાત</translation>
 <translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
 <translation id="6040143037577758943">બંધ કરો</translation>
+<translation id="4530494379350999373">મૂળ</translation>
+<translation id="6736243959894955139">સરનામું</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">વર્ઝન</translation>
 <translation id="4850886885716139402">જુઓ</translation>
 <translation id="5939518447894949180">રીસેટ કરો</translation>
 <translation id="5916664084637901428">ચાલુ</translation>

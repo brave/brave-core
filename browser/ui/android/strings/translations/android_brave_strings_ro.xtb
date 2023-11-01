@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Închiderea tuturor paginilor închide și Brave</translation>
 <translation id="8308305244351876417">Permite ca redarea audio să se facă atunci când treceți la o altă filă în Brave, când treceți la o altă aplicație sau când ecranul dispozitivului este oprit.</translation>
 <translation id="4150201353443180367">Ecran</translation>
+<translation id="4275663329226226506">Media</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Folosiți componenta de management a drepturilor de autor digitrale (DRM) Widevine pentru a vizualiza conținut media protejat în browser.</translation>
+<translation id="255204363133978824">Permiteți conținutul protejat</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Aflați mai multe despre Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Permiteți (Relansați acum)</translation>
 <translation id="2433507940547922241">Aspect</translation>
 <translation id="9040069796107003510">Pictograma de Recompense Brave</translation>
 <translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
@@ -583,6 +589,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1822560017823072927">Interfețe implicite publice și private</translation>
 <translation id="5825943197137337319">Doar interfața publică implicită</translation>
 <translation id="1689062823386843231">Dezactivează UDP fără proxy</translation>
+<translation id="6915830896450988084">Trimiteți cu <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Trimite</translation>
 <translation id="538450413584738399">Schimbați</translation>
 <translation id="1366855498335432549">Depune</translation>
@@ -899,6 +906,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="3897092660631435901">Meniu</translation>
 <translation id="42981349822642051">Extindeți</translation>
 <translation id="3586752056660754651">Semnați</translation>
+<translation id="3950820424414687140">Conectează-te</translation>
 <translation id="6592721981110586529">Conectați cu portofelul Brave</translation>
 <translation id="329813193938846695">Selectați contul(rile)</translation>
 <translation id="291375746846291973">Conectați-vă numai la site-uri de încredere.</translation>
@@ -945,7 +953,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6044189892950611565">Canal de notificare pentru browserul Brave</translation>
 <translation id="1173919438868967364">Selectați contul</translation>
 <translation id="8922793255489232731">Nu s-a putut obține fusul orar corespunzător pentru : <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Se descarcă fișierul cu datele portofelului \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Se descarcă fișierul de date referitoare la portofel \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Conectat la <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Versiune de încercare</translation>
 <translation id="7733890291091968191">Afișați notificările Web3</translation>
@@ -1048,6 +1056,14 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5802752138057422257">Caractere NON-ASCII detectate!</translation>
 <translation id="442709594176931966">Vizualizați mesajul original</translation>
 <translation id="2239252396088484499">Vizualizați mesajul în cod ASCII</translation>
+<translation id="4530494379350999373">Origine</translation>
+<translation id="6736243959894955139">Adresă</translation>
+<translation id="3095940652251934233">Declarație</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versiune</translation>
+<translation id="1313065465616456728">Emis la</translation>
+<translation id="7902225556763260253">Ora expirării</translation>
+<translation id="1908159733454294871">Risc de securitate detectat</translation>
 <translation id="4220693114674044366">Adresă Token</translation>
 <translation id="5658257029899993935">Conectați achiziția la contul dumneavoastră Brave</translation>
 <translation id="1187061015547219282">Conectați achiziția din Play Store la contul dumneavoastră Brave pentru a utiliza Brave VPN pe alte dispozitive.</translation>
@@ -1180,4 +1196,11 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5494920125229734069">Selectează-le pe toate</translation>
 <translation id="5972844218283131174">Deselectați toate</translation>
 <translation id="6322030314101903925">Nu există active disponibile</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Conectați-vă cu Brave Wallet</translation>
+<translation id="3696514931437952995">Vă conectați la <ph name="ORIGIN"/>. Brave Wallet va partaja adresa portofelului dvs. cu <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Vedeți detaliile</translation>
+<translation id="6759710362319508545">Resurse</translation>
+<translation id="2471230424465522689">Nu înainte de</translation>
+<translation id="4841860051609590575">Solicitați ID</translation>
 </translationbundle>

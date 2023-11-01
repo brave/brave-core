@@ -477,6 +477,7 @@
 <translation id="8327818101454798856">Takže namiesto chcenia podporiť svoje obľúbené stránky, si to tam namierte.</translation>
 <translation id="412480955826088549">Sťahovanie komponentu...</translation>
 <translation id="4894106830958548828">Rozumiem</translation>
+<translation id="326118736933420687">Prezeráte si stránku WebTorrent</translation>
 <translation id="7534079972563542000">Nezastaviteľné domény</translation>
 <translation id="4492298165410552103">Povoliť podporu nezastaviteľných domén v prehliadači Brave?</translation>
 <translation id="3647533686160055812">Brave využije službu Infura na riešenie názvov domén .crypto (a tiež .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) z Unstoppable Domains. Brave skrýva vašu IP adresu. Povolením tejto možnosti Infura uvidí len to, že sa niekto pokúša tieto domény navštíviť. Prečítajte si <ph name="BEGIN_INFURA_TOU_LINK"/> podmienky používania <ph name="END_INFURA_TOU_LINK"/> a<ph name="BEGIN_INFURA_PRIVACY_LINK"/> zásady ochrany osobných údajov<ph name="END_INFURA_PRIVACY_LINK"/>spoločnosti Infura.</translation>
@@ -694,6 +695,7 @@
 <translation id="6621880242105464352">Spoločnosť Brave si účtuje <ph name="FEE_PCT"/> z odoslanej sumy ako poplatok za spracovanie.</translation>
 <translation id="1420756770787071946">Podporovať tohto tvorcu</translation>
 <translation id="1483493594462132177">Odoslať</translation>
+<translation id="6632987674051304487">Odoslať s <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Použiť peňaženku Web3</translation>
 <translation id="5399596220743521546">Tento tvorca sa zaregistroval v službe Brave a môže prijímať príspevky od používateľov služby Odmeny Brave.</translation>
 <translation id="4529874892536380156">Zmeňte tento príspevok na mesačný opakovaný príspevok. Môžete ho kedykoľvek zrušiť.</translation>
@@ -719,6 +721,10 @@
 <translation id="1950340257946519340">Vyskytla sa neočakávaná chyba</translation>
 <translation id="2605703631071131439">Znovu otvorte panel príspevkov a skúste to znova.</translation>
 <translation id="8855543392451028706">Vitajte! Používatelia môžu podporiť tohto tvorcu obsahu zasielaním príspevkov. Je to spôsob, ako mu poďakovať za tvorbu skvelého obsahu.</translation>
+<translation id="7090992647511817643">účet</translation>
+<translation id="4822132585477111396">ID reťazca</translation>
+<translation id="3269475789479462358">doména</translation>
+<translation id="1288078776976153868">sieť</translation>
 <translation id="1148827340205946630">Používateľ zamietol žiadosť.</translation>
 <translation id="2403819048476450281">Neplatné parametre.</translation>
 <translation id="3955144560853195652">Reťazec <ph name="VALUE"/> nebol pridaný</translation>
@@ -991,6 +997,7 @@
 <translation id="5294062982587710720">Upozorňujeme, že Brave nedokáže overiť, čo sa stane, ak sa prihlásite. Podpisom sa dá schváliť takmer každá operácia na vašom účte alebo vo vašom mene, vrátane (okrem iného) poskytnutia úplnej kontroly nad vaším účtom a kryptoaktívami v prospech stránky vytvárajúcej žiadosť.  Podpíšte sa len vtedy, ak ste si istí, že chcete túto akciu vykonať a že dôverujete žiadajúcej stránke.</translation>
 <translation id="3474375934783434676">Zaregistrujte sa na vlastné riziko</translation>
 <translation id="5488357322146334497">Zpráva</translation>
+<translation id="3586931643579894722">Skryť podrobnosti</translation>
 <translation id="7702907602086592255">Doména</translation>
 <translation id="3586752056660754651">Podepsat</translation>
 <translation id="3484981968509595506">Aplikácia DApp požaduje váš verejný šifrovací kľúč</translation>
@@ -1016,7 +1023,6 @@
 <translation id="5052727830821470769">Adresa URL siete</translation>
 <translation id="427875364838253580">Zobraziť všetky podrobnosti</translation>
 <translation id="8030852056903932865">Schválit</translation>
-<translation id="4822132585477111396">ID reťazca</translation>
 <translation id="7131971375297699539">Symbol meny</translation>
 <translation id="4693057234255364395">Zablokovať adresu URL prieskumníka</translation>
 <translation id="7982789257301363584">Sieť</translation>
@@ -1159,7 +1165,10 @@
 <translation id="5071303414930953888">Účet <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Najskôr treba odomknúť peňaženku</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> nie je platná adresa</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> nie je aktuálna sieť</translation>
+<translation id="5036882519065735613"><ph name="CHAIN_ID"/> nie je aktuálna sieť</translation>
+<translation id="317252468455212145"><ph name="ADDRESS"/> sa nezhoduje z adresy</translation>
+<translation id="8034449164954956172"><ph name="DOMAIN"/> sa nezhoduje s aktuálnou doménou</translation>
+<translation id="5444904139422068509">Túto žiadosť sme zamietli, pretože táto stránka požaduje, aby ste použili inú<ph name="NAME"/> (<ph name="VALUE"/>)</translation>
 <translation id="7340805872138998391">Nepodarilo sa odomknúť zariadenie, skúste sa pripojiť znova</translation>
 <translation id="1984410139271779110">Interná chyba, neznáma schéma</translation>
 <translation id="6989562355845156390">schváliť</translation>
@@ -1275,6 +1284,20 @@
 <translation id="5601436886921227795">Interakcia Dapp</translation>
 <translation id="9104177294757104789">Poslať <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Zmeniť <ph name="MAKER"/> na <ph name="TAKER"/></translation>
+<translation id="8613144770663526433">Prihláste sa pomocou peňaženky Brave</translation>
+<translation id="3696514931437952995">Prihlasujete sa do <ph name="ORIGIN"/>. Peňaženka Brave bude zdieľať adresu vašej peňaženky s <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Zobraziť podrobnosti</translation>
+<translation id="3950820424414687140">Prihlásiť sa</translation>
+<translation id="4530494379350999373">Pôvod</translation>
+<translation id="6736243959894955139">Adresa</translation>
+<translation id="3095940652251934233">Výpis</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="1313065465616456728">Vydané o</translation>
+<translation id="7902225556763260253">Čas vypršania platnosti</translation>
+<translation id="2471230424465522689">Nie pred</translation>
+<translation id="4841860051609590575">ID žiadosti</translation>
+<translation id="6759710362319508545">Zdroje</translation>
+<translation id="1908159733454294871">Zistené bezpečnostné riziko</translation>
 <translation id="1965889974717516497">Sekundárne siete</translation>
 <translation id="7691821949666755802">Testovacie siete</translation>
 <translation id="2816106784624007524">Limit paliva musí byť celé číslo väčšie ako 0</translation>
@@ -1691,8 +1714,14 @@
 <translation id="1536390784834419204">Preložiť stránku</translation>
 <translation id="5973664933364241128">Nasmerovať médiá</translation>
 <translation id="1568067597247500137">Stlmiť stránku</translation>
+<translation id="6674128381307353306">Stlmiť všetky karty</translation>
+<translation id="1815548596883953231">Stlmiť ostatné karty</translation>
+<translation id="926046137238708033">Obnoviť zvuk všetkých kariet</translation>
 <translation id="855081842937141170">Pripnúť kartu</translation>
+<translation id="2805351816064694332">Zatvoriť nepripnuté karty</translation>
 <translation id="8657641252283410630">Pridať kartu do skupiny</translation>
+<translation id="8290333944535778783">Posunúť kartu nahor</translation>
+<translation id="6141382045715907645">Posunúť kartu nadol</translation>
 <translation id="923853139812360539">Generátor kódov QR</translation>
 <translation id="8754922069999490293">Ponuky a odmeny pre stránku</translation>
 <translation id="8620714260606376019">Centrum zdieľania</translation>
@@ -1788,6 +1817,15 @@
 <translation id="6002210667729577411">Presunúť skupinu do nového okna</translation>
 <translation id="253980346046488815">Zatvoriť duplicitné karty</translation>
 <translation id="9210143726807220086">Zapnúť/vypnúť rozbalené vertikálne karty</translation>
+<translation id="684629111155788563">Pridať všetky karty do novej skupiny</translation>
+<translation id="9106013521852824634">Odoslať kartu sebe</translation>
+<translation id="1926106318101432555">Otvoriť záložku...</translation>
+<translation id="6118819645013156507">Prepnúť na okno...</translation>
+<translation id="1623204575967809688">Zlúčiť aktuálne okno do...</translation>
+<translation id="7196533333647500853">Presunúť karty do okna...</translation>
+<translation id="2026671913373402445">Pridať kartu do existujúcej skupiny...</translation>
+<translation id="8158903143594876176">Pripnúť kartu...</translation>
+<translation id="1487981090845324947">Odopnúť kartu...</translation>
 <translation id="5182394825813677917">Vyhľadať príkaz alebo skratku</translation>
 <translation id="4138119885026877702">Obnoviť všetky predvolené nastavenia</translation>
 <translation id="8247915960543694908">Vytvorte novú skratku. Stlačením požadovaných klávesov vytvorte novú väzbu</translation>
@@ -1796,17 +1834,17 @@
 <translation id="3537006124004887164">Táto kombinácia sa používa pre <ph name="COMMAND"/>  a nie je možné upraviť. Skúste ho upraviť pomocou ,,Skratky aplikácie" v Nastaveniach Systému.</translation>
 <translation id="8591883849678260674">Zobraziť originál</translation>
 <translation id="1969654232209826429">min čítanie</translation>
-<translation id="906598168058463050">Vypnúť rýchlu čítačku</translation>
-<translation id="8948558186299884715">Zapnúť rýchlu čítačku</translation>
-<translation id="1385842054306112120">Vždy použiť rýchlu čítačku pre túto stránku</translation>
-<translation id="8028940590935492959">Prepínačom zapnete/vypnete rýchlu čítačku iba pre túto webovú stránku.</translation>
-<translation id="1022901542006152519">Vždy použiť rýchlu čítačku pre všetky stránky</translation>
-<translation id="3460907549384263858">Prepínačom zapnete/vypnete rýchlu čítačku pre všetky webové stránky.</translation>
-<translation id="8745592921916491483">Nie všetky stránky umožňujú použiť rýchlu čítačku.</translation>
+<translation id="4101707289420716287">Vypnúť Speedreader</translation>
+<translation id="9089090017461255038">Zapnúť Speedreader</translation>
+<translation id="3929926885379607283">Vždy použiť Speedreader pre túto lokalitu</translation>
+<translation id="4186588885948504942">Prepínačom zapnete/vypnete Speedreader iba pre túto webovú lokalitu.</translation>
+<translation id="1873585723672836337">Vždy použiť Speedreader pre všetky lokality</translation>
+<translation id="3138587343887871192">Prepínačom zapnete/vypnete Speedreader pre všetky webové lokality.</translation>
+<translation id="5153147025131874069">Nie všetky lokality umožňujú použiť Speedreader.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1103345585203110275">Ukončiť rýchlu čítačku</translation>
+<translation id="2104268045272817433">Ukončiť Speedreader</translation>
 <translation id="6315170314923504164">Hlas</translation>
-<translation id="57748525762025171">Vyladenie rýchlej čítačky</translation>
+<translation id="864152735015641598">Vyladenie Speedreader</translation>
 <translation id="251940709686581010">Nastavenia vzhľadu</translation>
 <translation id="4809927044794281115">Svetlý motív</translation>
 <translation id="5595850093882577201">Sépiový motív</translation>
@@ -1823,7 +1861,70 @@
 <translation id="1199355487114804640">Prehrať/pozastaviť</translation>
 <translation id="1689210457482459023">Znížiť rýchlosť prehrávania</translation>
 <translation id="5872363163901278000">Zvýšiť rýchlosť prehrávania</translation>
-<translation id="3507699941492423127">Brave Leo</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8637805148029768813">Funkcia nástroja na vytváranie súhrnu je v súčasnosti k dispozícii len pre vybrané články a ďalšie dlhé webové stránky.</translation>
+<translation id="2346991295632453064">Prijať a začať</translation>
+<translation id="1223498995510244364">Vytvoriť súhrn</translation>
+<translation id="7491773233732232424">Informácie o Leo</translation>
+<translation id="70442873931504163">Brave Leo je inteligentný asistent AI, ktorý dokáže sumarizovať webové lokality, prepisovať videá a odpovedať na otázky. Brave Leo Premium používa modely s pokročilou <ph name="LINK_BEFORE"/> umelou inteligenciou <ph name="LINK_AFTER"/> pre ešte presnejšie odpovede a poskytuje skorý prístup k novým funkciám.</translation>
+<translation id="3055739528128372229">Presnosť odpovedí nie je zaručená a odpovede môžu obsahovať nepresné, zavádzajúce alebo nepravdivé informácie. Neodosielajte citlivé ani súkromné informácie a buďte opatrní pri akýchkoľvek odpovediach súvisiacich so zdravotným stavom, financiami, osobnou bezpečnosťou a podobne.</translation>
+<translation id="5030677498967794115">Leo nezhromažďuje ani iným spôsobom nespracúva identifikátory, ako je napríklad IP adresa, ktoré môžu byť s vami prepojené. Model AI ani poskytovatelia modelov tretích strán neuchovávajú žiadne osobné údaje.</translation>
+<translation id="7839853125981164613">Tu zadajte pokyn</translation>
+<translation id="1171287413830401223">Zapnúť navrhované otázky?</translation>
+<translation id="4567071417854988869">Zosumarizovať toto video</translation>
+<translation id="7921782882718083488">Zosumarizovať túto stránku</translation>
+<translation id="8723991872343294222">Umelá inteligencia Brave dokáže automaticky navrhovať otázky na základe obsahu stránky. Neskôr ju môžete vypnúť v Nastaveniach.</translation>
+<translation id="3435896845095436175">Aktivovať</translation>
+<translation id="7473891865547856676">Nie, ďakujem</translation>
+<translation id="7932221068776853847">Odpojením zastavíte odosielanie obsahu tejto stránky Leovi a začnete novú konverzáciu.</translation>
+<translation id="1167803637855350748">Pri pripájaní k Leovi došlo k sieťovému problému, skontrolujte pripojenie a skúste to znova.</translation>
+<translation id="5095201428204952524">Leo je teraz príliš zaneprázdnený. Skúste to znova o niekoľko minút.</translation>
+<translation id="7144878232160441200">Skúsiť znova</translation>
+<translation id="2505565639170795978">Ahoj, ja som Leo, asistent AI plne prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 13B vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch použitia.</translation>
+<translation id="7202619923031933110">Ahoj, ja som Leo, asistent AI plne prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 70B vytvoreným spoločnosťou Meta, aby som zvládol náročnejšie úlohy ako 13B.</translation>
+<translation id="2489317965865266353">Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňa ma model Claude Instant vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.</translation>
+<translation id="6206029817087805290"><ph name="MODEL_NAME"/> spoločnosťou <ph name="COMPANY_NAME"/></translation>
+<translation id="6187065185557150870">Chat</translation>
+<translation id="2961040541145689181">Nový chat</translation>
+<translation id="97095589689466044">Navrhované otázky</translation>
+<translation id="7557539689487606886">Prejsť na Premium</translation>
+<translation id="3037594989275592390">Jazykové modely</translation>
+<translation id="849535826888024304">Bol dosiahnutý limit miery odozvy</translation>
+<translation id="3834321271158315162">Odomknite vyššiu mieru odozvy predplatením Premium alebo to skúste znovu
+        neskôr</translation>
+<translation id="1239767708151339890">Prístup k popredným LLM v tomto odvetví</translation>
+<translation id="8021579987620496265">Vyššia miera kontroly</translation>
+<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /mesiac</translation>
+<translation id="9221988663340523352">Prepnúť na predvolený model</translation>
+<translation id="377376641316998425">Odomknúť plný potenciál Leo</translation>
+<translation id="8363148882096737034">Anthropic Claude + viac už čoskoro</translation>
+<translation id="886527905046308697">Prednostný prístup a zvýšené limity odozvy</translation>
+<translation id="1068954060985569277">Platnosť relácie vášho účtu Brave vypršala. Navštívte stránku svojho účtu, aby ste ju obnovili a potom sa vráťte, aby ste mohli využívať prémiové funkcie.</translation>
+<translation id="94736968936709953">Spätná väzba bola úspešne odoslaná</translation>
+<translation id="9109355817507033196">Nepáči sa mi odpoveď</translation>
+<translation id="4049425842478222936">Páči sa mi odpoveď</translation>
+<translation id="6393149565874086128">Pridať spätnú väzbu</translation>
+<translation id="3521125531016408657">Páči sa mi odpoveď</translation>
+<translation id="8202517001427388906">Nepáči sa mi odpoveď</translation>
+<translation id="1379399209929302811">Poskytnúť spätnú väzbu k umelej inteligencii prehliadača Brave</translation>
+<translation id="2415950536410763575">Zvoľte tému spätnej väzby</translation>
+<translation id="9018766373792005944">Čoho sa týka vaša spätná väzba?</translation>
+<translation id="7355096922131918313">Uviesť spätnú väzbu sem</translation>
+<translation id="3027575440738035995">Leo Premium poskytuje prístup k rozšírenej súprave jazykových modelov pre ešte presnejšie odpovede. <ph name="LINK_BEFORE"/>Zistite viac na<ph name="LINK_AFTER"/></translation>
+<translation id="2399439821649319175">Nepomohlo</translation>
+<translation id="2976167228906046828">Nesprávne</translation>
+<translation id="1183055847065865059">Nebezpečné/škodlivé</translation>
+<translation id="7138678301420049075">Ostatné</translation>
+<translation id="2313959174679245365">Vaše hodnotenie nebolo možné odoslať, skontrolujte sieťové pripojenie a skúste to znova</translation>
+<translation id="98413980871833152">Vašu spätnú väzbu nebolo možné odoslať, skontrolujte sieťové pripojenie a skúste to znova</translation>
+<translation id="8742658901413346500">Táto konverzácia je dlhá a Leo môže čoskoro začať zabúdať. Prepnutím na prémiový model môžete získať dlhšie konverzácie alebo vymazať chat a obnoviť ho.</translation>
+<translation id="7550152963854770123">Vymazať chat</translation>
+<translation id="7494736170250048402">Poslať správu do asistenta Leo</translation>
+<translation id="4110772752544684964">Stránka je pre Lea príliš dlhá. V konverzácii môže chýbať nejaký kontext.</translation>
+<translation id="4370698775470316661">Táto konverzácia je príliš dlhá a nemôže pokračovať. Dostupné môžu byť aj iné modely, s ktorými je Leo schopný zachovať presnosť pri dlhších konverzáciách.</translation>
+<translation id="6291843235651817590">Všeobecný chat</translation>
+<translation id="8193130769524604031">Rozšírené úlohy chatu</translation>
+<translation id="3185367320601718531">Konverzácia a generovanie textu</translation>
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="8458987127502506209">Zapnúť štíty Brave</translation>
 <translation id="7509914170164691086">Štíty sú aktívne <ph name="LINK_BEFORE"/>pre<ph name="LINK_AFTER"/></translation>
@@ -1892,21 +1993,6 @@
 <translation id="546481172717459539">Zosúladiť nastavenie systému</translation>
 <translation id="7799817062559422778">Svetlý režim</translation>
 <translation id="4117637339509843559">Tmavý režim</translation>
-<translation id="8637805148029768813">Funkcia nástroja na vytváranie súhrnu je v súčasnosti k dispozícii len pre vybrané články a ďalšie dlhé webové stránky.</translation>
-<translation id="2346991295632453064">Prijať a začať</translation>
-<translation id="1223498995510244364">Vytvoriť súhrn</translation>
-<translation id="6966669506908435195">Informácie o Brave Leo</translation>
-<translation id="1667863995484767951">Funkcia Chat s umelou inteligenciou poskytuje súhrny prezeranej webovej stránky a obsahuje rozhranie chatu, ktoré umožňuje zadávať otázky a prijímať odpovede o obsahu danej stránky. Presnosť súhrnov nie je zaručená a môže obsahovať nepresné, zavádzajúce a nepravdivé informácie. Nemali by ste odosielať citlivé alebo súkromné informácie a mali by ste byť opatrní s akýmkoľvek textom týkajúcim sa zdravia, financií alebo osobnej bezpečnosti a podobných záležitostí.</translation>
-<translation id="7636915524386889836">Chat s umelou inteligenciou od spoločnosti Brave využíva samostatný <ph name="LINK_BEFORE"/>veľký jazykový model<ph name="LINK_AFTER"/> Funkcia Chat s umelou inteligenciou nezhromažďuje ani inak nespracúva identifikátory, ako je napríklad IP adresa, ktoré by sa dali spojiť s vami. Model umelej inteligencie neuchováva žiadne osobné údaje.</translation>
-<translation id="7839853125981164613">Tu zadajte pokyn</translation>
-<translation id="1171287413830401223">Zapnúť navrhované otázky?</translation>
-<translation id="8723991872343294222">Umelá inteligencia Brave dokáže automaticky navrhovať otázky na základe obsahu stránky. Neskôr ju môžete vypnúť v Nastaveniach.</translation>
-<translation id="3435896845095436175">Aktivovať</translation>
-<translation id="7473891865547856676">Nie, ďakujem</translation>
-<translation id="7932221068776853847">Odpojením zastavíte odosielanie obsahu tejto stránky Leovi a začnete novú konverzáciu.</translation>
-<translation id="1167803637855350748">Pri pripájaní k Leovi došlo k sieťovému problému, skontrolujte pripojenie a skúste to znova.</translation>
-<translation id="5095201428204952524">Leo je teraz príliš zaneprázdnený. Skúste to znova o niekoľko minút.</translation>
-<translation id="7144878232160441200">Skúsiť znova</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: pripojené</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: odpojené</translation>
 <translation id="3541307549916475335">Používateľské rozhranie panela Brave VPN</translation>
@@ -1945,7 +2031,6 @@
 <translation id="9184988385244077767">Pri pripojení nebol žiadny internet</translation>
 <translation id="21570240866965662">Pomalé pripojenie</translation>
 <translation id="1219475260382643267">Webová stránka nefunguje</translation>
-<translation id="7138678301420049075">Ostatné</translation>
 <translation id="1387340358507240698">Popíšte váš problém</translation>
 <translation id="501818585183973587">Zvoľte informácie, ktoré chcete s nami zdieľať</translation>
 <translation id="3195618332367441234">Čím viac informácií zdieľate, tým ľahšie vám dokážu pracovníci podpory pomôcť.</translation>
@@ -1991,4 +2076,10 @@ Zaistíme vaše pripojenie!
 <translation id="8048263175525832621">Brave VPN –⁠ odpojené</translation>
 <translation id="1498770726476841108">Spravovať účet</translation>
 <translation id="6825718953004242472">Odstrániť ikonu</translation>
+<translation id="3287942014983548982">Otvoriť tu</translation>
+<translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/> je aktuálne otvorená,
+    stlačením klávesu Tab a potom klávesu Enter prepnite na otvorenú kartu</translation>
+<translation id="1538335063514960365">Tlačidlo Otvoriť tu, stlačením klávesu Enter otvorte túto URL adresu na aktuálnej karte namiesto prepnutia na
+    existujúcu kartu</translation>
+<translation id="451189393813405346">Opýtajte sa Lea</translation>
 </translationbundle>

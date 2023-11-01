@@ -9,12 +9,12 @@
 <translation id="2862978891748913252">Atlasīt valsti</translation>
 <translation id="3970520675790340955">Atlasiet savu valsti, lai mēs varētu parādīt jūsu reģionam atbilstošas iespējas un reklāmas.</translation>
 <translation id="7301741773883122509">Tagad jūs varat saņemt atlīdzību par reklāmu skatīšanos. Jūs palīdzat padarīt tīmekli par labāku vietu ikvienam. Un tas ir lieliski!</translation>
-<translation id="6439128034594289376">Hei, jūs esat gatavs!</translation>
+<translation id="6439128034594289376">Lieliski! Jūs esat gatavs!</translation>
 <translation id="370665806235115550">Notiek ielāde...</translation>
 <translation id="7931127789630755251">Pelniet žetonus par privātām reklāmām, ko redzat, izmantojot Brave</translation>
 <translation id="7859066142771796818">Izmantojiet žetonus, lai iegādātos dāvanu kartes, mainītu pret citām valūtām, atbalstītu satura veidotājus un izmantotu citas iespējas.</translation>
 <translation id="3863981251715594911">Kā tas darbojas?</translation>
-<translation id="5547108999862247665">Kā Brave balvas darbojas?</translation>
+<translation id="5547108999862247665">Kā darbojas Brave balvas?</translation>
 <translation id="2965798296974325760">Sākt izmantot balvas</translation>
 <translation id="8220484609979012449">\n\nJūs joprojām varat nosūtīt kriptoziedojumus šim satura veidotājam, izmantojot savu Web3 maku.</translation>
 <translation id="6385969012847057348">Šis satura veidotājs nevar saņemt ziedojumus no <ph name="CUSTODIAN"/>.</translation>
@@ -123,7 +123,7 @@
 <translation id="5086877031935002480">Pievienot pielāgotu filtru sarakstu</translation>
 <translation id="4180818901996404761">Pielāgoto filtru saraksta URL</translation>
 <translation id="7558501402160423480">Ievadīt filtru saraksta URL šeit</translation>
-<translation id="8775144690796719618">Nederīgs URL</translation>
+<translation id="8775144690796719618">Nederīgs URL</translation>
 <translation id="1841059687646820793">Rediģēt pielāgoto filtru sarakstu</translation>
 <translation id="5075097652958438037">Pievienojiet papildu sarakstus, kurus ir veidojuši un uztur kopienas, kurām uzticaties.\n\nAbonējiet tikai tādu vienību sarakstus, kurām uzticaties. Jūsu pārlūkprogramma, atklājot jūsu IP adresi to serverim, periodiski pārbaudīs, vai jūsu ievadītajā URL nav atjauninātu sarakstu.</translation>
 <translation id="3365863382631355729">Pēdējoreiz atjaunināts <ph name="TIME"/></translation>
@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Aizverot visas cilnes, tiek aizvērta programma Brave</translation>
 <translation id="8308305244351876417">Ļauj atskaņot audio arī pēc pārslēgšanās uz citu Brave cilni vai uz citu lietotni, vai – kad ierīces ekrāns ir izslēgts.</translation>
 <translation id="4150201353443180367">Displejs</translation>
+<translation id="4275663329226226506">Multivide</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Izmantojiet Widevine digitālo tiesību pārvaldību (DRM), lai apskatītu aizsargātu mediju saturu pārlūkā.</translation>
+<translation id="255204363133978824">Atļaut aizsargātu saturu</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Uzzināt vairāk par Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Atļaut (palaist vēlreiz tagad)</translation>
 <translation id="2433507940547922241">Izskats</translation>
 <translation id="9040069796107003510">Brave balvu ikona</translation>
 <translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
@@ -583,6 +589,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1822560017823072927">Noklusējuma publiskie un privātie interfeisi</translation>
 <translation id="5825943197137337319">Tikai noklusējuma publiskais interfeiss</translation>
 <translation id="1689062823386843231">Atspējot UDP protokolu, kam netiek izmantots starpniekserveris</translation>
+<translation id="6915830896450988084">Nosūtīt ar <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Sūtīt</translation>
 <translation id="538450413584738399">Mijmaiņa</translation>
 <translation id="1366855498335432549">Iemaksa</translation>
@@ -784,7 +791,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1736419249208073774">Izpētīt</translation>
 <translation id="4576965889365503638">INFORMĀCIJA</translation>
 <translation id="152455748535966757">Rangs</translation>
-<translation id="4958716607782044952">24 h Skaļums</translation>
+<translation id="4958716607782044952">24 h skaļums</translation>
 <translation id="128834189395075789">Tirgus limits</translation>
 <translation id="750843150060816463">Gas cena (Gwei)</translation>
 <translation id="1426320910664514906">Gas robežvērtība</translation>
@@ -899,6 +906,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="3897092660631435901">Izvēlne</translation>
 <translation id="42981349822642051">Izvērst</translation>
 <translation id="3586752056660754651">Parakstīt</translation>
+<translation id="3950820424414687140">Pierakstīties</translation>
 <translation id="6592721981110586529">Savienot ar Brave maku</translation>
 <translation id="329813193938846695">Atlasīt kontu(-us)</translation>
 <translation id="291375746846291973">Sazinieties tikai ar vietnēm, kurām uzticaties.</translation>
@@ -945,7 +953,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="6044189892950611565">Brave pārlūkprogrammas paziņojumu kanāls</translation>
 <translation id="1173919438868967364">Atlasīt kontu</translation>
 <translation id="8922793255489232731">Nevarēja atrast atbilstošu laika joslu: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Notiek maka datu faila \u2022 lejupielāde <ph name="PERCENTAGE"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Lejupielādē maka datu failu \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Savienots ar <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Izmēģinājums</translation>
 <translation id="7733890291091968191">Parādīt Web3 paziņojumus</translation>
@@ -1047,6 +1055,14 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="5802752138057422257">Pamanīti ne-ASCII simboli!</translation>
 <translation id="442709594176931966">Aplūkot ziņojuma oriģinālu</translation>
 <translation id="2239252396088484499">Aplūkot ziņojumu ASCII kodā</translation>
+<translation id="4530494379350999373">Avots</translation>
+<translation id="6736243959894955139">Adrese</translation>
+<translation id="3095940652251934233">Pārskats</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versija</translation>
+<translation id="1313065465616456728">Izdots</translation>
+<translation id="7902225556763260253">Derīguma termiņš</translation>
+<translation id="1908159733454294871">Konstatēts drošības risks</translation>
 <translation id="4220693114674044366">Žetona adrese</translation>
 <translation id="5658257029899993935">Piesaisti pirkumu savam Brave kontam</translation>
 <translation id="1187061015547219282">Piesaisti Play Store pirkumu savam Brave kontam, lai lietotu Brave VPN citās ierīcēs.</translation>
@@ -1179,4 +1195,11 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="5494920125229734069">Atlasīt visu</translation>
 <translation id="5972844218283131174">Atcelt visu atlasi</translation>
 <translation id="6322030314101903925">Nav pieejamu aktīvu</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Pierakstīties ar Brave maku</translation>
+<translation id="3696514931437952995">Jūs pierakstāties <ph name="ORIGIN"/>. Brave maks kopīgos jūsu maka adresi ar <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Skatīt informāciju</translation>
+<translation id="6759710362319508545">Resursi</translation>
+<translation id="2471230424465522689">Ne pirms</translation>
+<translation id="4841860051609590575">Pieprasījuma ID</translation>
 </translationbundle>

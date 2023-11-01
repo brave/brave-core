@@ -208,6 +208,7 @@
 <translation id="6332924730165919598">Lukning af alle faner lukker Brave</translation>
 <translation id="8308305244351876417">Tillad afspilning af lyd, når du skifter til en anden fane i Brave eller til en anden app, eller din enheds skærm er slukket.</translation>
 <translation id="4150201353443180367">Skærm</translation>
+<translation id="4275663329226226506">Medier</translation>
 <translation id="2433507940547922241">Udseende</translation>
 <translation id="9040069796107003510">Brave Rewards-ikon</translation>
 <translation id="6333347122924254968">Vis ikonet for Brave Belønninger i adresselinjen</translation>
@@ -899,6 +900,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="3897092660631435901">Menu</translation>
 <translation id="42981349822642051">Udvid</translation>
 <translation id="3586752056660754651">Underskriv</translation>
+<translation id="3950820424414687140">Log ind</translation>
 <translation id="6592721981110586529">Forbind til Brave Wallet</translation>
 <translation id="329813193938846695">Vælg beløb</translation>
 <translation id="291375746846291973">Forbind kun med websteder, du stoler på.</translation>
@@ -906,7 +908,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1060221736464994328">Tillad denne side at skifte netværk?</translation>
 <translation id="2478788592457735063">Dette vil skifte netværket til et tidligere tilføjet netværk.</translation>
 <translation id="8756686998207163764">Skift netværk</translation>
-<translation id="5324095733417835490">Åben kun links i nuværende fanegruppe</translation>
+<translation id="5324095733417835490">Åbn kun links i nuværende fanegruppe</translation>
 <translation id="2620277345862119868">Åbner automatisk alle links i nuværende gruppefane</translation>
 <translation id="5242300593039211344">Lås tegnebog</translation>
 <translation id="1108298724135935307">Forbundne websteder</translation>
@@ -945,7 +947,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="6044189892950611565">Notifikationskanal for Brave Browser</translation>
 <translation id="1173919438868967364">Vælg konto</translation>
 <translation id="8922793255489232731">Kunne ikke lokalisere en matchende tidszone til : <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Henter wallet-datafil \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Forbundet til <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prøveperiode</translation>
 <translation id="7733890291091968191">Vis Web3-notifikationer</translation>
@@ -1047,6 +1048,10 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="5802752138057422257">NON-ASCII-tegn registreret!</translation>
 <translation id="442709594176931966">Se oprindelige besked</translation>
 <translation id="2239252396088484499">Se besked i ASCII-kode</translation>
+<translation id="4530494379350999373">Origin</translation>
+<translation id="6736243959894955139">Adresse</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Version</translation>
 <translation id="4220693114674044366">Token-adresse</translation>
 <translation id="5658257029899993935">Forbind købet med din Brave-konto</translation>
 <translation id="1187061015547219282">Du kan forbinde køb på Play Store til med din Brave-konto, så du kan bruge Brave-VPN på andre enheder.</translation>
@@ -1179,4 +1184,5 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="5494920125229734069">Vælg alle</translation>
 <translation id="5972844218283131174">Fravælg alle</translation>
 <translation id="6322030314101903925">Ingen tilgængelige aktiver</translation>
+<translation id="6129027151000961048">Leo</translation>
 </translationbundle>

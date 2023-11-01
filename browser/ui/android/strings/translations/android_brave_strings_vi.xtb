@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Việc đóng tất cả các tab sẽ đóng Brave</translation>
 <translation id="8308305244351876417">Cho phép phát âm thanh khi bạn chuyển sang tab khác trong Brave hoặc ứng dụng khác hoặc khi màn hình thiết bị của bạn tắt.</translation>
 <translation id="4150201353443180367">Hiển thị</translation>
+<translation id="4275663329226226506">Truyền thông</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Sử dụng quản lý bản quyền kỹ thuật số Widevine (DRM) để xem nội dung phương tiện được bảo vệ trong trình duyệt.</translation>
+<translation id="255204363133978824">Cho phép nội dung được bảo vệ</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Tìm hiểu thêm về Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Cho phép (Khởi chạy lại ngay)</translation>
 <translation id="2433507940547922241">Hình thức</translation>
 <translation id="9040069796107003510">Biểu tượng Brave Phần thưởng</translation>
 <translation id="6333347122924254968">Hiển thị biểu tượng Brave Phần thưởng trên thanh địa chỉ</translation>
@@ -583,6 +589,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1822560017823072927">Các giao diện công khai và riêng tư mặc định</translation>
 <translation id="5825943197137337319">Chỉ giao diện công khai mặc định</translation>
 <translation id="1689062823386843231">Cho phép UDP không proxy</translation>
+<translation id="6915830896450988084">Gửi bằng <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Gửi</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Ký quỹ</translation>
@@ -899,6 +906,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="3897092660631435901">Menu</translation>
 <translation id="42981349822642051">Mở rộng</translation>
 <translation id="3586752056660754651">Ký nhận</translation>
+<translation id="3950820424414687140">Đăng nhập</translation>
 <translation id="6592721981110586529">Kết nối với Ví Brave</translation>
 <translation id="329813193938846695">Chọn (các) tài khoản</translation>
 <translation id="291375746846291973">Chỉ kết nối với các website mà bạn tin tưởng.</translation>
@@ -1047,6 +1055,14 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="5802752138057422257">Đã phát hiện các ký tự không phải ASCII!</translation>
 <translation id="442709594176931966">Xem tin nhắn gốc</translation>
 <translation id="2239252396088484499">Xem tin nhắn ở dạng mã hóa ASCII</translation>
+<translation id="4530494379350999373">Origin</translation>
+<translation id="6736243959894955139">Địa chỉ</translation>
+<translation id="3095940652251934233">Tuyên bố</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Phiên bản</translation>
+<translation id="1313065465616456728">Đã phát hành lúc</translation>
+<translation id="7902225556763260253">Thời gian hết hạn</translation>
+<translation id="1908159733454294871">Đã phát hiện rủi ro bảo mật</translation>
 <translation id="4220693114674044366">Địa chỉ mã thông báo</translation>
 <translation id="5658257029899993935">Liên kết mua hàng với tài khoản Brave của bạn</translation>
 <translation id="1187061015547219282">Liên kết giao dịch mua trên Cửa hàng Play với tài khoản Brave của bạn để sử dụng Brave VPN trên các thiết bị khác.</translation>
@@ -1179,4 +1195,11 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="5494920125229734069">Chọn tất cả</translation>
 <translation id="5972844218283131174">Bỏ chọn tất cả</translation>
 <translation id="6322030314101903925">Không có tài sản có sẵn</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Đăng nhập bằng Ví Brave</translation>
+<translation id="3696514931437952995">Bạn đang đăng nhập vào<ph name="ORIGIN"/>. Ví Brave sẽ chia sẻ địa chỉ ví của bạn với <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Xem chi tiết</translation>
+<translation id="6759710362319508545">Tài nguyên</translation>
+<translation id="2471230424465522689">Không trước</translation>
+<translation id="4841860051609590575">Mã yêu cầu</translation>
 </translationbundle>

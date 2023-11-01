@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Закрытие всех вкладок закроет и Brave</translation>
 <translation id="8308305244351876417">Продолжать воспроизводить звук при выключении экрана, переходе на другую вкладку Brave или в другое приложение.</translation>
 <translation id="4150201353443180367">Экран</translation>
+<translation id="4275663329226226506">Камера и микрофон</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Использовать систему управления цифровыми правами (DRM) Widevine для просмотра защищенного контента в браузере.</translation>
+<translation id="255204363133978824">Разрешите воспроизводить защищенный контент</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Подробнее о Widevine…<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Разрешить (перезапустить браузер)</translation>
 <translation id="2433507940547922241">Внешний вид</translation>
 <translation id="9040069796107003510">Значок Brave Наград</translation>
 <translation id="6333347122924254968">Показывать значок сервиса «Brave Награды» в адресной строке</translation>
@@ -583,6 +589,7 @@
 <translation id="1822560017823072927">Публичные и приватные интерфейсы по умолчанию</translation>
 <translation id="5825943197137337319">Только открытый интерфейс по умолчанию</translation>
 <translation id="1689062823386843231">Отключить непроксируемый протокол UDP</translation>
+<translation id="6915830896450988084">Отправить через <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Отправить</translation>
 <translation id="538450413584738399">Своп</translation>
 <translation id="1366855498335432549">Пополнить</translation>
@@ -899,6 +906,7 @@
 <translation id="3897092660631435901">Menu</translation>
 <translation id="42981349822642051">Развернуть</translation>
 <translation id="3586752056660754651">Подпись</translation>
+<translation id="3950820424414687140">Вход</translation>
 <translation id="6592721981110586529">Подключение к Brave Кошельку</translation>
 <translation id="329813193938846695">Выберите аккаунт(-ы)</translation>
 <translation id="291375746846291973">Подключайте аккаунты только к сайтам, которым доверяете.</translation>
@@ -945,7 +953,7 @@
 <translation id="6044189892950611565">Канал уведомлений для браузера Brave</translation>
 <translation id="1173919438868967364">Выберите счет</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/>: не удалось найти подходящий часовой пояс.</translation>
-<translation id="8901748741234750758">Файл с данными кошелька скачивается… \u2022 <ph name="PERCENTAGE"/> \u0025\u0025</translation>
+<translation id="8901748741234750758">Скачивание файла с данными кошелька \u2022 <ph name="PERCENTAGE"/> \u0025\u0025</translation>
 <translation id="6471216025161697462">Подключено к <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">(пробная версия)</translation>
 <translation id="7733890291091968191">Показать уведомления Web3</translation>
@@ -1047,6 +1055,14 @@
 <translation id="5802752138057422257">Обнаружены символы, не относящиеся к кодировке ASCII</translation>
 <translation id="442709594176931966">Посмотреть исходное сообщение</translation>
 <translation id="2239252396088484499">Посмотреть сообщение в кодировке ASCII</translation>
+<translation id="4530494379350999373">Происхождение</translation>
+<translation id="6736243959894955139">Address</translation>
+<translation id="3095940652251934233">Команда</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Версия</translation>
+<translation id="1313065465616456728">Дата получения</translation>
+<translation id="7902225556763260253">Срок действия</translation>
+<translation id="1908159733454294871">Обнаружена угроза безопасности</translation>
 <translation id="4220693114674044366">Адрес токена</translation>
 <translation id="5658257029899993935">Привязать покупку к аккаунту Brave</translation>
 <translation id="1187061015547219282">Привяжите покупку в Google Play к аккаунту Brave и используйте Brave VPN на других устройствах.</translation>
@@ -1179,4 +1195,11 @@
 <translation id="5494920125229734069">Выделить все</translation>
 <translation id="5972844218283131174">Отменить выбор</translation>
 <translation id="6322030314101903925">Активов нет</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Войдите с помощью Brave Кошелька</translation>
+<translation id="3696514931437952995">Выполняется вход в аккаунт <ph name="ORIGIN"/>. Сайту <ph name="ORIGIN"/> будет предоставлен адрес вашего Brave Кошелька.</translation>
+<translation id="1028781062521375153">Подробнее</translation>
+<translation id="6759710362319508545">Ресурсы</translation>
+<translation id="2471230424465522689">Не ранее</translation>
+<translation id="4841860051609590575">ID запроса</translation>
 </translationbundle>

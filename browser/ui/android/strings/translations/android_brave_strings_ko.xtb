@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">모든 탭을 닫으면 Brave를 닫습니다</translation>
 <translation id="8308305244351876417">Brave 내 다른 탭 또는 다른 앱으로 전환하거나 디바이스 화면이 꺼져도 오디오가 재생됩니다.</translation>
 <translation id="4150201353443180367">디스플레이</translation>
+<translation id="4275663329226226506">미디어</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">Widevine 디지털 권리 관리(DRM)를 사용하여 브라우저에서 보호된 미디어 콘텐츠를 볼 수 있습니다.</translation>
+<translation id="255204363133978824">보호된 콘텐츠 허용</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Widevine 자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">허용(지금 다시 실행)</translation>
 <translation id="2433507940547922241">모양</translation>
 <translation id="9040069796107003510">Brave Rewards 아이콘</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
@@ -583,6 +589,7 @@
 <translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
+<translation id="6915830896450988084"><ph name="CUSTODIAN"/>(으)로 보내기</translation>
 <translation id="1483493594462132177">전송</translation>
 <translation id="538450413584738399">스왑(Swap)</translation>
 <translation id="1366855498335432549">입금</translation>
@@ -899,6 +906,7 @@
 <translation id="3897092660631435901">메뉴</translation>
 <translation id="42981349822642051">펼치기</translation>
 <translation id="3586752056660754651">서명</translation>
+<translation id="3950820424414687140">로그인</translation>
 <translation id="6592721981110586529">Brave 월렛과 연결</translation>
 <translation id="329813193938846695">계정 선택</translation>
 <translation id="291375746846291973">신뢰할 수 있는 사이트에만 연결하십시오.</translation>
@@ -1047,6 +1055,14 @@
 <translation id="5802752138057422257">비ASCII 문자가 감지되었습니다!</translation>
 <translation id="442709594176931966">원본 메시지 보기</translation>
 <translation id="2239252396088484499">메시지를 ASCII 인코딩으로 보기</translation>
+<translation id="4530494379350999373">오리진</translation>
+<translation id="6736243959894955139">주소</translation>
+<translation id="3095940652251934233">문구</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">버전</translation>
+<translation id="1313065465616456728">발급 시각</translation>
+<translation id="7902225556763260253">만료 시간</translation>
+<translation id="1908159733454294871">보안 위험 감지됨</translation>
 <translation id="4220693114674044366">토큰 주소</translation>
 <translation id="5658257029899993935">구매한 항목을 Brave 계정에 연결</translation>
 <translation id="1187061015547219282">다른 기기에서도 Brave VPN을 사용하려면 Play 스토어 구매 항목을 Brave 계정에 연결하세요.</translation>
@@ -1179,4 +1195,11 @@
 <translation id="5494920125229734069">모두 선택</translation>
 <translation id="5972844218283131174">모두 선택 취소</translation>
 <translation id="6322030314101903925">가능한 자산 없음</translation>
+<translation id="6129027151000961048">레오</translation>
+<translation id="8613144770663526433">Brave 월렛으로 로그인</translation>
+<translation id="3696514931437952995"><ph name="ORIGIN"/>에 로그인합니다. Brave 월렛이 귀하의 월렛 주소를 <ph name="ORIGIN"/>에 공유합니다.</translation>
+<translation id="1028781062521375153">세부정보 보기</translation>
+<translation id="6759710362319508545">리소스</translation>
+<translation id="2471230424465522689">시작 날짜 미도래</translation>
+<translation id="4841860051609590575">요청 ID</translation>
 </translationbundle>
