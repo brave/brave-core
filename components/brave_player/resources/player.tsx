@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import styled from 'styled-components'
-import { setIconBasePath } from '@brave/leo/react/icon'
 
 const PlayerContainer = styled.div`
   display: flex;
@@ -29,9 +28,7 @@ function Player () {
   return (
     <PlayerContainer>
       <StyledFrame
-        src={`chrome-untrusted://player-embed${
-          new URL(location.href).pathname
-        }`}
+        src={`chrome-untrusted://player-embed${location.pathname}`}
       />
     </PlayerContainer>
   )
@@ -40,7 +37,5 @@ function Player () {
 function initialize () {
   render(<Player />, document.getElementById('root'))
 }
-
-setIconBasePath('chrome://resources/brave-icons')
 
 document.addEventListener('DOMContentLoaded', initialize)

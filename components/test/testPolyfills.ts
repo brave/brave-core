@@ -14,7 +14,7 @@ window.location = {
   search: '?testTorrentId'
 } as any
 
-global.decodeURIComponent = () => 'test'
+global.decodeURIComponent = (url) => url
 
 window.requestAnimationFrame = function (cb: FrameRequestCallback) {
   return window.setTimeout(cb, 0)

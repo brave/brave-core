@@ -29,14 +29,13 @@ const StyledFrame = styled.iframe`
   border: none;
 `
 
-export function getFrameSrc (url: URL) {
-  let paths = url.pathname.split('/')
+export function getFrameSrc (pathname: string) {
+  const paths = pathname.split('/')
   if (paths.length < 3) {
     return ''
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, service, videoId] = paths
+  const [, service, videoId] = paths
 
   return EmbedURL(service, decodeURIComponent(videoId))
 }
@@ -45,7 +44,7 @@ function PlayerEmbed () {
   return (
     <EmbedContainer>
       <StyledFrame
-        src={getFrameSrc(new URL(window.location.href))}
+        src={getFrameSrc(window.location.pathname)}
         allow='autoplay; encrypted-media; picture-in-picture;'
         sandbox='allow-popups allow-scripts allow-same-origin allow-presentation'
         allowFullScreen

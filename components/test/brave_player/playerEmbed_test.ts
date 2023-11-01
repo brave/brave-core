@@ -9,18 +9,25 @@ describe('playerEmbedTest', () => {
   describe('getFrameSrc', () => {
     it(`returns empty string if pathname doesn't have video id or isn't for youtube`, () => {
       expect(
-        getFrameSrc(new URL('chrome-untrusted://player-embed/youtube'))
+        getFrameSrc(new URL('chrome-untrusted://player-embed/youtube').pathname)
       ).toBe('')
-      expect(getFrameSrc(new URL('chrome-untrusted://player-embed'))).toBe('')
       expect(
-        getFrameSrc(new URL('chrome-untrusted://player-embed/vimeo'))
+        getFrameSrc(new URL('chrome-untrusted://player-embed').pathname)
+      ).toBe('')
+      expect(
+        getFrameSrc(new URL('chrome-untrusted://player-embed/vimeo').pathname)
       ).toBe('')
     })
 
     it('returns YouTube embed URL with given video id', () => {
+      const videoId = 'dQw4w9WgXcQ'
       expect(
-        getFrameSrc(new URL('chrome-untrusted://player/youtube/dQw4w9WgXcQ'))
-      ).toBe(EmbedURL('youtube', 'dQw4w9WgXcQ'))
+        getFrameSrc(
+          new URL(
+            `chrome-untrusted://player/youtube/${encodeURIComponent(videoId)}`
+          ).pathname
+        )
+      ).toBe(EmbedURL('youtube', videoId))
     })
   })
 })
