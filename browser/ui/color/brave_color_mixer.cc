@@ -50,6 +50,15 @@ SkColor GetToolbarInkDropColor(const ui::ColorMixer& mixer) {
                      0xFF * kToolbarInkDropHighlightVisibleOpacity);
 }
 
+SkColor PickColorContrastingToOmniboxResultsBackground(
+    const ui::ColorProviderKey& key,
+    const ui::ColorMixer& mixer,
+    SkColor color1,
+    SkColor color2) {
+  auto bg_color = mixer.GetResultColor(kColorOmniboxResultsBackground);
+  return color_utils::PickContrastingColor(color1, color2, bg_color);
+}
+
 SkColor PickColorContrastingToToolbar(const ui::ColorProviderKey& key,
                                       const ui::ColorMixer& mixer,
                                       SkColor color1,
@@ -633,6 +642,19 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
                                          const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  mixer[kColorBraveOmniboxResultViewSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
+
+  if (key.custom_theme) {
+    mixer[kColorBraveOmniboxResultViewSeparator] = {
+        PickColorContrastingToOmniboxResultsBackground(
+            key, mixer,
+            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight),
+            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark))};
+    return;
+  }
+
+  // Apply bravified color when there is no custom theme.
   mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
       /*dark*/ false, /*private*/ false, /*hover*/ false)};
   mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
@@ -648,15 +670,25 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ false)};
-
-  mixer[kColorBraveOmniboxResultViewSeparator] = {
-      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
 }
 
 void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
                                         const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  mixer[kColorBraveOmniboxResultViewSeparator] = {
+      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
+
+  if (key.custom_theme) {
+    mixer[kColorBraveOmniboxResultViewSeparator] = {
+        PickColorContrastingToOmniboxResultsBackground(
+            key, mixer,
+            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight),
+            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark))};
+    return;
+  }
+
+  // Apply bravified color when there is no custom theme.
   mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
       /*dark*/ true, /*private*/ false, /*hover*/ false)};
   mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
@@ -672,9 +704,6 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ true, /*incognito*/ false)};
-
-  mixer[kColorBraveOmniboxResultViewSeparator] = {
-      leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
 }
 
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
