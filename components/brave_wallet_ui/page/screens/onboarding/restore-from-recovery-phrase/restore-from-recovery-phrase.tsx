@@ -4,8 +4,15 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
+
+// selectors
+import {
+  useSafePageSelector,
+  useUnsafePageSelector
+} from '../../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../selectors'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -14,11 +21,7 @@ import { getLocale } from '../../../../../common/locale'
 import { WalletPageActions } from '../../../actions'
 
 // types
-import {
-  PageState,
-  WalletRoutes,
-  WalletState
-} from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // styles
 import {
@@ -52,6 +55,7 @@ import { CenteredPageLayout } from '../../../../components/desktop/centered-page
 import { StepsNavigation } from '../../../../components/desktop/steps-navigation/steps-navigation'
 import { RecoveryInput } from './recovery-input'
 import { Checkbox } from '../../../../components/shared/checkbox/checkbox'
+import { CreatingWallet } from '../creating_wallet/creating_wallet'
 
 enum RestoreFromOtherWalletSteps {
   phrase = 'phrase',
@@ -84,21 +88,17 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
 
   // redux
   const dispatch = useDispatch()
-  const invalidMnemonic = useSelector(
-    ({ page }: { page: PageState }) => page.invalidMnemonic
+  const invalidMnemonic = useSafePageSelector(PageSelectors.invalidMnemonic)
+  const isImportWalletsCheckComplete = useSafePageSelector(
+    PageSelectors.isImportWalletsCheckComplete
   )
-  const isImportWalletsCheckComplete = useSelector(
-    ({ page }: { page: PageState }) => page.isImportWalletsCheckComplete
+  const importWalletError = useUnsafePageSelector(
+    PageSelectors.importWalletError
   )
-  const importWalletError = useSelector(
-    ({ page }: { page: PageState }) => page.importWalletError
+  const importWalletAttempts = useSafePageSelector(
+    PageSelectors.importWalletAttempts
   )
-  const importWalletAttempts = useSelector(
-    ({ page }: { page: PageState }) => page.importWalletAttempts
-  )
-  const isWalletCreated = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated
-  )
+  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
 
   // computed
   const isImportingFromMetaMaskExtension = restoreFrom === 'metamask'
@@ -365,13 +365,6 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
   }, [isCheckingExtensions])
 
   React.useEffect(() => {
-    // go to onboarding success screen when wallet restoration completes
-    if (isWalletCreated) {
-      history.push(WalletRoutes.OnboardingComplete)
-    }
-  }, [isWalletCreated])
-
-  React.useEffect(() => {
     // clear other errors on step change
     if (
       currentStep === RestoreFromOtherWalletSteps.newPassword &&
@@ -405,6 +398,10 @@ export const OnboardingRestoreFromRecoveryPhrase = ({
     currentImportAttempt,
     importWalletError?.hasError
   ])
+
+  if (isCreatingWallet) {
+    return <CreatingWallet />
+  }
 
   // render
   return (

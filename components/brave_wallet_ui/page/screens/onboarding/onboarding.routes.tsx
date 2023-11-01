@@ -4,8 +4,15 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router'
+
+// selectors
+import {
+  useSafePageSelector, //
+  useSafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../selectors'
+import { WalletSelectors } from '../../../common/selectors'
 
 // utils
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
@@ -20,12 +27,7 @@ import { OnboardingImportOrRestoreWallet } from './import-or-restore-wallet/impo
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 
 // types
-import {
-  BraveWallet,
-  PageState,
-  WalletRoutes,
-  WalletState
-} from '../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../constants/types'
 import { OnboardingSuccess } from './onboarding-success/onboarding-success'
 import { OnboardingConnectHardwareWallet } from './connect-hardware/onboarding-connect-hardware-wallet'
 
@@ -38,12 +40,11 @@ export const OnboardingRoutes = () => {
   const { braveWalletP3A } = useApiProxy()
 
   // redux
-  const isWalletCreated = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated
+  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const termsAcknowledged = useSafePageSelector(
+    PageSelectors.walletTermsAcknowledged
   )
-  const termsAcknowledged = useSelector(
-    ({ page }: { page: PageState }) => page.walletTermsAcknowledged
-  )
+  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
 
   // methods
   const goToConnectHardware = React.useCallback(() => {
@@ -74,6 +75,9 @@ export const OnboardingRoutes = () => {
       braveWalletP3A.reportOnboardingAction(action)
     }
   }, [location])
+
+  // computed
+  const showOnboardingRestore = !isWalletCreated || isCreatingWallet
 
   // render
   return (
@@ -126,7 +130,7 @@ export const OnboardingRoutes = () => {
         </Route>
       )}
 
-      {!isWalletCreated && (
+      {showOnboardingRestore && (
         <Route
           path={WalletRoutes.OnboardingRestoreWallet}
           exact
@@ -138,7 +142,7 @@ export const OnboardingRoutes = () => {
         </Route>
       )}
 
-      {!isWalletCreated && (
+      {showOnboardingRestore && (
         <Route
           path={WalletRoutes.OnboardingImportMetaMask}
           exact
@@ -150,7 +154,7 @@ export const OnboardingRoutes = () => {
         </Route>
       )}
 
-      {!isWalletCreated && (
+      {showOnboardingRestore && (
         <Route
           path={WalletRoutes.OnboardingImportMetaMaskSeed}
           exact
@@ -162,7 +166,7 @@ export const OnboardingRoutes = () => {
         </Route>
       )}
 
-      {!isWalletCreated && (
+      {showOnboardingRestore && (
         <Route
           path={WalletRoutes.OnboardingImportCryptoWallets}
           exact
@@ -174,7 +178,7 @@ export const OnboardingRoutes = () => {
         </Route>
       )}
 
-      {!isWalletCreated && (
+      {showOnboardingRestore && (
         <Route
           path={WalletRoutes.OnboardingImportCryptoWalletsSeed}
           exact

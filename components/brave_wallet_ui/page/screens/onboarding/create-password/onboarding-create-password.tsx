@@ -4,13 +4,21 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+
+// selectors
+import {
+  useSafePageSelector,
+  useSafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../selectors'
+import { WalletSelectors } from '../../../../common/selectors'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
 
 // routes
-import { WalletRoutes, WalletState } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -25,6 +33,7 @@ import {
 } from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
+import { CreatingWallet } from '../creating_wallet/creating_wallet'
 
 // styles
 import {
@@ -48,9 +57,8 @@ export const OnboardingCreatePassword = (
 
   // redux
   const dispatch = useDispatch()
-  const isWalletCreated = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated
-  )
+  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const isCreatingWallet = useSafePageSelector(PageSelectors.isCreatingWallet)
 
   // state
   const [isValid, setIsValid] = React.useState(false)
@@ -73,10 +81,14 @@ export const OnboardingCreatePassword = (
 
   // effects
   React.useEffect(() => {
-    if (isWalletCreated) {
+    if (!isCreatingWallet && isWalletCreated) {
       onWalletCreated()
     }
-  }, [isWalletCreated, onWalletCreated])
+  }, [isWalletCreated, onWalletCreated, isCreatingWallet])
+
+  if (isCreatingWallet) {
+    return <CreatingWallet />
+  }
 
   // render
   return (

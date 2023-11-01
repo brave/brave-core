@@ -300,6 +300,9 @@ provideStrings({
   braveWalletPasswordIsMediumStrength: 'Medium',
   braveWalletPasswordIsWeak: 'Weak',
 
+  // Creating Wallet
+  braveWalletCreatingWallet: 'Creating Wallet...',
+
   // Create Password - Stength Tooltip
   braveWalletPasswordStrengthTooltipHeading: 'At least:',
   braveWalletPasswordStrengthTooltipIsLongEnough: '8 characters',

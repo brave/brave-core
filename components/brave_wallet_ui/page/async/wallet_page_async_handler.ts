@@ -67,8 +67,10 @@ async function importFromExternalWallet(
 handler.on(
   WalletPageActions.createWallet.type,
   async (store: Store, payload: CreateWalletPayloadType) => {
+    store.dispatch(WalletPageActions.setIsCreatingWallet(true))
     const keyringService = getWalletPageApiProxy().keyringService
     const result = await keyringService.createWallet(payload.password)
+    store.dispatch(WalletPageActions.setIsCreatingWallet(false))
     store.dispatch(
       WalletPageActions.walletCreated({ mnemonic: result.mnemonic })
     )
@@ -78,12 +80,14 @@ handler.on(
 handler.on(
   WalletPageActions.restoreWallet.type,
   async (store: Store, payload: RestoreWalletPayloadType) => {
+    store.dispatch(WalletPageActions.setIsCreatingWallet(true))
     const keyringService = getWalletPageApiProxy().keyringService
     const result = await keyringService.restoreWallet(
       payload.mnemonic,
       payload.password,
       payload.isLegacy
     )
+    store.dispatch(WalletPageActions.setIsCreatingWallet(false))
     if (!result.isValidMnemonic) {
       store.dispatch(
         WalletPageActions.hasMnemonicError(!result.isValidMnemonic)
@@ -159,11 +163,13 @@ handler.on(WalletPageActions.checkWalletsToImport.type, async (store) => {
 handler.on(
   WalletPageActions.importFromCryptoWallets.type,
   async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
+    store.dispatch(WalletPageActions.setIsCreatingWallet(true))
     const results: ImportWalletErrorPayloadType =
       await importFromExternalWallet(
         BraveWallet.ExternalWalletType.CryptoWallets,
         payload
       )
+    store.dispatch(WalletPageActions.setIsCreatingWallet(false))
     store.dispatch(WalletPageActions.setImportWalletError(results))
   }
 )
@@ -171,11 +177,13 @@ handler.on(
 handler.on(
   WalletPageActions.importFromMetaMask.type,
   async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
+    store.dispatch(WalletPageActions.setIsCreatingWallet(true))
     const results: ImportWalletErrorPayloadType =
       await importFromExternalWallet(
         BraveWallet.ExternalWalletType.MetaMask,
         payload
       )
+    store.dispatch(WalletPageActions.setIsCreatingWallet(false))
     store.dispatch(WalletPageActions.setImportWalletError(results))
   }
 )

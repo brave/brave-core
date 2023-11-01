@@ -29,6 +29,7 @@ export const showIsRestoring = ({ page }: State) => page.showIsRestoring
 export const showRecoveryPhrase = ({ page }: State) => page.showRecoveryPhrase
 export const walletTermsAcknowledged = ({ page }: State) =>
   page.walletTermsAcknowledged
+export const isCreatingWallet = ({ page }: State) => page.isCreatingWallet
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)

@@ -42,7 +42,8 @@ const defaultState: PageState = {
   isImportWalletsCheckComplete: false,
   importWalletAttempts: 0,
   walletTermsAcknowledged: false,
-  selectedCoinMarket: undefined
+  selectedCoinMarket: undefined,
+  isCreatingWallet: false
 }
 
 export const WalletPageAsyncActions = {
@@ -196,6 +197,10 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       updateAutoPinEnabled(state, { payload }: PayloadAction<boolean>) {
         state.isAutoPinEnabled = payload
+      },
+
+      setIsCreatingWallet(state, { payload }: PayloadAction<boolean>) {
+        state.isCreatingWallet = payload
       }
     }
   })
