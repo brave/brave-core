@@ -338,7 +338,7 @@ inline constexpr char16_t kSafeBrowsingInChromeHelpCenterURL[] =
     u"https://support.brave.com/";
 
 // The URL of Safe Browsing p-tour.
-inline constexpr char16_t kSafeBrowsingPTourURL[] =
+inline constexpr char16_t kSafeBrowsingUseInChromeURL[] =
     u"https://support.brave.com/";
 
 // "Learn more" URL for safety tip bubble.
