@@ -87,7 +87,6 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TEXT},
     {"notificationMonthlyTipCompletedTitle",
      IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TITLE},
-    {"notificationReconnect", IDS_REWARDS_NOTIFICATION_RECONNECT},
     {"notificationWalletDisconnectedAction",
      IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION},
     {"notificationWalletDisconnectedText",
