@@ -19,6 +19,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/vector_icon_types.h"
+#include "url/url_canon.h"
+#include "url/url_util.h"
 
 namespace {
 
@@ -31,7 +33,18 @@ GURL GetPlayerURL(content::WebContents* web_contents) {
   if (url.DomainIs("youtube.com") && url.has_path() && url.path() == "/watch" &&
       url.has_query()) {
     if (std::string video_id; net::GetValueForKeyInQuery(url, "v", &video_id)) {
-      return GURL(base::StrCat({kBravePlayerURL, "youtube/", video_id}));
+      url::RawCanonOutputT<char> encoded_video_id;
+      // TODO(sko) In the latest upstream code, these are refactored to use
+      // std::string_view directly. So the following code should be
+      //
+      // url::EncodeURIComponent(video_id, &encoded_video_id);
+      // return GURL(base::StrCat({kBravePlayerURL, "youtube/",
+      //   encoded_video_id.view()}));
+      url::EncodeURIComponent(video_id.data(), video_id.size(),
+                              &encoded_video_id);
+      return GURL(base::StrCat({kBravePlayerURL, "youtube/",
+                                std::string_view(encoded_video_id.data(),
+                                                 encoded_video_id.length())}));
     }
   }
   return {};

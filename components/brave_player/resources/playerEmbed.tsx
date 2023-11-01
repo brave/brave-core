@@ -24,7 +24,6 @@ const EmbedContainer = styled.div`
 `
 
 const StyledFrame = styled.iframe`
-  max-width: 1000px;
   width: 80%;
   height: 80%;
   border: none;
@@ -38,7 +37,8 @@ export function getFrameSrc (url: URL) {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, service, videoId] = paths
-  return EmbedURL(service, videoId)
+
+  return EmbedURL(service, decodeURIComponent(videoId))
 }
 
 function PlayerEmbed () {
