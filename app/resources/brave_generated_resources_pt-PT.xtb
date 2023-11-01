@@ -19,6 +19,7 @@
 <translation id="8926389886865778422">Não voltar a perguntar</translation>
 <translation id="4900351245762303149">Instalar Google Widevine</translation>
 <translation id="2313383941300459392">Reiniciar o navegador para ativar Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> pretende reproduzir conteúdo protegido do Google Widevine, Isto requer que o utilizador permita o suporte de sistema Android para Widevine. Ao permitir, aceita os termos de utilização da Google.</translation>
 <translation id="2200626478572277092">Por vezes, é necessário o Widevine para reproduzir multimédia numa página Web. É uma extensão do Google carregada dos servidores da Google, que não é possível ser verificada pelo Brave. Ao instalar, concordará com os termos de utilização da Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
@@ -166,6 +167,9 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6959315322491671328">Clique com o botão direito para remover</translation>
 <translation id="495046168593986294">Deslocar para cima</translation>
 <translation id="4021716437419160885">Deslocar para baixo</translation>
+<translation id="2702801445560668637">Lista de leitura</translation>
+<translation id="2533715613366623756">Gestor de marcadores</translation>
+<translation id="3405021928725149239">Gestor de marcadores</translation>
 <translation id="6284218950354553099">Enviar automaticamente ping de utilização diária para a Brave</translation>
 <translation id="5288333155754958121">Este ping anónimo e privado permite que o Brave estime os utilizadores ativos.</translation>
 <translation id="1872784258300710671">O Brave usa análises de produtos totalmente confidenciais para estimar a utilização geral de certas funcionalidades</translation>
@@ -237,7 +241,6 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="796831669370432378">Para adicionar um marcador, clique no botão Marcadores ao lado da barra de endereço</translation>
 <translation id="8487693399751278191">Importar marcadores agora...</translation>
 <translation id="2557899542277210112">Para acesso rápido, coloque os seus marcadores aqui na barra de marcadores.</translation>
-<translation id="2702801445560668637">Lista de leitura</translation>
 <translation id="1968543937259008435">Quer a melhor privacidade online?</translation>
 <translation id="6817415381278637662">Defina o Brave como navegador predefinido para ter acesso às proteções de privacidade Brave em todas as páginas web que abrir.</translation>
 <translation id="8722651357687610395">Definir o Brave como padrão</translation>
@@ -284,6 +287,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7765158879357617694">Mover</translation>
 <translation id="6648536728577053364">Remover dados offline</translation>
 <translation id="5181358966317519720">Remover da lista de reprodução</translation>
+<translation id="2377705456080309463">Ver página original</translation>
+<translation id="158894735649719362">A diversão começa quando tiver algo para reproduzir. Adicione os seus conteúdos multimédia favoritos e reproduza-os em qualquer altura e em qualquer lugar, mesmo quando está offline.</translation>
 <translation id="9156965752763025780">As alterações serão aplicadas da próxima vez que reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Relançar Agora</translation>
 <translation id="4472575034687746823">Começar</translation>
@@ -296,9 +301,12 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1360441190790440400">Igual ao Linux</translation>
 <translation id="1336940801687497203">Igual ao Windows</translation>
 <translation id="8721331068159819483">O mesmo do que em MacOS</translation>
+<translation id="4171684937791228083">Mostrar sempre a barra de ferramentas no ecrã inteiro</translation>
 <translation id="1692470335103807198">Obtenha mais temas</translation>
 <translation id="2906510232093002459">Imagens padrão Brave</translation>
+<translation id="8000020256436988724">Barra de ferramentas</translation>
 <translation id="8076492880354921740">Separadores</translation>
+<translation id="8168435359814927499">Conteúdo</translation>
 <translation id="5860254591544742609">Mostrar barra de título</translation>
 <translation id="5371926069408837914">Expandir o painel de separadores verticais ao passar o rato quando fechado</translation>
 <translation id="3367129510799209147">Modo de pairar sobre um separador</translation>
@@ -311,7 +319,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2858138569776157458">Princ. sites</translation>
 <translation id="7859704718976024901">Histórico de navegação</translation>
 <translation id="8820817407110198400">Barra de marcadores</translation>
-<translation id="2245286910966863912">Mostrar as Notícias Brave na barra de endereço</translation>
+<translation id="7310387888625228830">Assistente de IA Leo</translation>
+<translation id="5222974844674487962">Mostrar botão do Brave News</translation>
 <translation id="383007806262310953">Mostrar barra de marcadores</translation>
 <translation id="4054323497808446566">A barra de marcadores está visível em todas as páginas</translation>
 <translation id="8693858092251192712">A barra de marcadores está oculta em todas as páginas, exceto na página do novo separador</translation>
@@ -419,7 +428,6 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7050661313034564003">Mostrar todos os cookies e os dados armazenados localmente para este site</translation>
 <translation id="8339059274628563283">Dados de <ph name="SITE"/> armazenados localmente</translation>
 <translation id="1963227389609234879">Remover tudo</translation>
-<translation id="8168435359814927499">Conteúdo</translation>
 <translation id="7702907602086592255">Domínio</translation>
 <translation id="3202131003361292969">Caminho</translation>
 <translation id="5390743329570580756">Enviar para</translation>
@@ -589,7 +597,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="702381242110464396">Extensões (cópia de segurança da Carteira do Brave)</translation>
 <translation id="4718664830805652430">Moeda base predefinida</translation>
 <translation id="7992507032049865603">Criptomoeda base predefinida</translation>
-<translation id="1834467296210148203">Mostrar ícone da carteira do Brave na barra de ferramentas</translation>
+<translation id="3044369626313583722">Mostrar botão da Carteira Brave</translation>
 <translation id="7568430944629653319">Ativar deteção de NFT</translation>
 <translation id="970496996377628529">Adicione automaticamente um ou mais dos seus NFTs à Carteira utilizando APIs de terceiros.</translation>
 <translation id="8239147115686034860">Bloquear automaticamente a carteira Brave</translation>
@@ -698,6 +706,12 @@ Nota: se for selecionado um nó local, o recurso será solicitado diretamente do
 <translation id="2751872555001636931">Mostrar o ícone Leo na barra lateral</translation>
 <translation id="8172263161008556851">Mostrar sugestões na conversa</translation>
 <translation id="1014480593522400586">Eliminar dados Leo</translation>
+<translation id="8681157601856387010">A reposição do assistente Leo irá requerer que opte por utilizar o Brave
+Leo no futuro. Também irá limpar o histórico de chat. A limpeza do 
+histórico de chat irá eliminar todas as conversas anteriores com o Brave
+Leo. Não é possível anular esta ação.</translation>
+<translation id="8157373421434119674">Histórico de dados e chat</translation>
+<translation id="614530507403667291">Modelo predefinido para novas conversas</translation>
 <translation id="6624718837376802990">Avatar Recompensas Afiado</translation>
 <translation id="6617313057407561765">Avatar Brave Afiado</translation>
 <translation id="6754445808455578019">Avatar Oceano Afiado</translation>

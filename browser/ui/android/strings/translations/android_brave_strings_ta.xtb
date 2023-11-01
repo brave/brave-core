@@ -45,6 +45,7 @@
 <translation id="1690924763769415936">பின்னணி இயக்கம்</translation>
 <translation id="6332924730165919598">எல்லா தாவல்களையும் மூடல் பிரேவை மூடும்</translation>
 <translation id="4150201353443180367">காட்சியமைவு</translation>
+<translation id="4275663329226226506">ஊடகம்</translation>
 <translation id="2433507940547922241">தோற்றம்</translation>
 <translation id="8495235435594442882">அடிப்புற கருவிப்பட்டையை இயக்கு</translation>
 <translation id="6587448235155023666">அடுத்த முறை நீங்கள் பிரேவை மறுஏவும்போது உங்கள் மாற்றங்கள் செயல்படும்.</translation>
@@ -252,6 +253,7 @@
 <translation id="2653659639078652383">சமர்ப்பி</translation>
 <translation id="5233638681132016545">புதிய தாவல்</translation>
 <translation id="2391762656119864333">திரும்பப்பெறு</translation>
+<translation id="3950820424414687140">உள்நுழைக</translation>
 <translation id="385051799172605136">முந்தைய பக்கம்</translation>
 <translation id="3355936511340229503">இணைப்புப் பிழை</translation>
 <translation id="4804818685124855865">தொடர்பைத் துண்டி</translation>
@@ -266,6 +268,10 @@
 <translation id="6040143037577758943">மூடு</translation>
 <translation id="5456039738087398178">முகப்புத்திரை நிரல் பலகை</translation>
 <translation id="703185154752046151">நிரல் பலகை முகப்புத்திரையில் சேர்க்கப்பட்டது</translation>
+<translation id="4530494379350999373">அசல்</translation>
+<translation id="6736243959894955139">முகவரி</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">பதிப்பு</translation>
 <translation id="4850886885716139402">காட்சி</translation>
 <translation id="5939518447894949180">மீட்டமை</translation>
 <translation id="5916664084637901428">இயக்கு</translation>

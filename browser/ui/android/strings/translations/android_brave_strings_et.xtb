@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">Kõikide kaartide sulgemine sulgeb Brave'i</translation>
 <translation id="8308305244351876417">Võimaldab heli taasesitust, kui liigute teisele Brave'i vahelehele, hakkate kasutama muud rakendust või seadme ekraan on välja lülitatud.</translation>
 <translation id="4150201353443180367">Kuva</translation>
+<translation id="4275663329226226506">Meedia</translation>
+<translation id="5950428831347558278">Widevine’i DRM</translation>
+<translation id="6716942308303275900">Kasutage brauseris kaitstud meediasisu vaatamiseks Widevine’i digitaalõiguste halduse (DRM) komponenti.</translation>
+<translation id="255204363133978824">Kaitstud sisu lubamine</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>Lisateave Widevine’i kohta<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">Luba (taaskäivita kohe)</translation>
 <translation id="2433507940547922241">Välimus</translation>
 <translation id="9040069796107003510">Brave'i Preemiate ikoon</translation>
 <translation id="6333347122924254968">Kuva aadressiribal Brave'i preemiate ikoon</translation>
@@ -583,6 +589,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="1822560017823072927">Vaikimisi määratud avalikud ja privaatsed liidesed</translation>
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
+<translation id="6915830896450988084">Saada valdajaga <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Saada</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Deposiit</translation>
@@ -899,6 +906,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="3897092660631435901">Menüü</translation>
 <translation id="42981349822642051">Laienda</translation>
 <translation id="3586752056660754651">Allkirjasta</translation>
+<translation id="3950820424414687140">Sisselogimine</translation>
 <translation id="6592721981110586529">Ühendamine Brave'i rahakotiga</translation>
 <translation id="329813193938846695">Valige konto (d)</translation>
 <translation id="291375746846291973">Ühendage ainult saitidega, mida usaldate.</translation>
@@ -945,7 +953,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="6044189892950611565">Brave'i brauseri teavituskanal</translation>
 <translation id="1173919438868967364">Konto valimine</translation>
 <translation id="8922793255489232731">Ei õnnestunud saada sobivat ajavööndit: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">Rahakoti faili allalaadimine \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">Rahakotiandmefaili allalaadimine \u2022<ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">Ühendatud võrguga <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Proov</translation>
 <translation id="7733890291091968191">Kuva Web3 märguanded</translation>
@@ -1047,6 +1055,14 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="5802752138057422257">Tuvastati mitte-ASCII-märgid!</translation>
 <translation id="442709594176931966">Kuva algne sõnum</translation>
 <translation id="2239252396088484499">Kuva sõnum ASCII-kodeeringus</translation>
+<translation id="4530494379350999373">Päritolu</translation>
+<translation id="6736243959894955139">Aadress</translation>
+<translation id="3095940652251934233">Avaldus</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versioon</translation>
+<translation id="1313065465616456728">Väljastatud</translation>
+<translation id="7902225556763260253">Aegumisaeg</translation>
+<translation id="1908159733454294871">Tuvastati turvarisk</translation>
 <translation id="4220693114674044366">Tokeni aadress</translation>
 <translation id="5658257029899993935">Ühendage ost oma Brave'i kontoga</translation>
 <translation id="1187061015547219282">Ühendage oma Play Store'i ost oma Brave'i kontoga, et kasutada Brave'i VPN-i teistes seadmetes.</translation>
@@ -1179,4 +1195,11 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="5494920125229734069">Valige kõik</translation>
 <translation id="5972844218283131174">Tühista kogu valik</translation>
 <translation id="6322030314101903925">Varasid ei ole saadaval</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">Logi sisse Brave’i rahakotiga</translation>
+<translation id="3696514931437952995">Logite sisse kohta <ph name="ORIGIN"/>. Brave’i rahakott jagab teie rahakotiaadressi ressursiga <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Kuva üksikasjad</translation>
+<translation id="6759710362319508545">Ressursid</translation>
+<translation id="2471230424465522689">Mitte enne</translation>
+<translation id="4841860051609590575">Päringu ID</translation>
 </translationbundle>

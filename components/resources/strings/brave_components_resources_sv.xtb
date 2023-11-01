@@ -477,6 +477,7 @@
 <translation id="8327818101454798856">Så om du tänkte stödja dina favoritsajter går du dit istället.</translation>
 <translation id="412480955826088549">Laddar ned komponent ...</translation>
 <translation id="4894106830958548828">Jag förstår</translation>
+<translation id="326118736933420687">Du visar en WebTorrent-sida</translation>
 <translation id="7534079972563542000">Ostoppbara domäner</translation>
 <translation id="4492298165410552103">Aktivera stöd för ostoppbara domäner i Brave?</translation>
 <translation id="3647533686160055812">Brave kommer att använda Infura för uppslag av .crypto-domännamn (och även .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) som finns på Unstoppable Domains. Brave döljer din IP-adress. Om du aktiverar detta kommer Infura att se att någon försöker besöka dessa domäner men inget annat. Se Infuras<ph name="BEGIN_INFURA_TOU_LINK"/>användningsvillkor<ph name="END_INFURA_TOU_LINK"/> och<ph name="BEGIN_INFURA_PRIVACY_LINK"/>sekretesspolicy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
@@ -694,6 +695,7 @@
 <translation id="6621880242105464352">Brave samlar in <ph name="FEE_PCT"/> av det skickade beloppet som en behandlingsavgift.</translation>
 <translation id="1420756770787071946">Stöd den här skaparen</translation>
 <translation id="1483493594462132177">Skicka</translation>
+<translation id="6632987674051304487">Skicka med <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Använd Web3-plånbok</translation>
 <translation id="5399596220743521546">Den här kreatören har registrerat sig hos Brave och kan ta emot bidrag från Brave Rewards-användare.</translation>
 <translation id="4529874892536380156">Gör det här till ett månatligt återkommande bidrag. Du kan avbryta det när som helst.</translation>
@@ -719,6 +721,10 @@
 <translation id="1950340257946519340">Ett oväntat fel har inträffat</translation>
 <translation id="2605703631071131439">Öppna bidragspanelen igen och försök på nytt.</translation>
 <translation id="8855543392451028706">Välkommen! Användare kan stödja den här innehållskreatören genom att skicka bidrag till hen. Det är ett sätt att tacka för bra innehåll.</translation>
+<translation id="7090992647511817643">konto</translation>
+<translation id="4822132585477111396">Chain ID</translation>
+<translation id="3269475789479462358">domän</translation>
+<translation id="1288078776976153868">nätverk</translation>
 <translation id="1148827340205946630">Användaren avvisade begäran.</translation>
 <translation id="2403819048476450281">Ogiltiga parametrar</translation>
 <translation id="3955144560853195652">Kedja <ph name="VALUE"/> har inte lagts till</translation>
@@ -991,6 +997,7 @@
 <translation id="5294062982587710720">Uppmärksamma att Brave inte kan’ verifiera vad som händer om du signerar. En signatur kan godkänna nästan alla operationer på ditt konto eller för dina räkning, inklusive (men inte begränsat till) att ge fullständig kontroll över ditt konto och kryptotillgångar till webbplatsen som gör begäran. Skriv bara om du’är säker på att du vill vidta denna åtgärden och lita på den begärande webbplatsen.</translation>
 <translation id="3474375934783434676">Registrera på egen risk</translation>
 <translation id="5488357322146334497">Meddelande</translation>
+<translation id="3586931643579894722">Dölj detaljerad information</translation>
 <translation id="7702907602086592255">Domän</translation>
 <translation id="3586752056660754651">Signera</translation>
 <translation id="3484981968509595506">En DApp begär att få din offentliga krypteringsnyckel</translation>
@@ -1016,7 +1023,6 @@
 <translation id="5052727830821470769">Nätverk URL</translation>
 <translation id="427875364838253580">Se alla detaljer</translation>
 <translation id="8030852056903932865">Godkänn</translation>
-<translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Valutasymbol</translation>
 <translation id="4693057234255364395">Blockera explorer URL</translation>
 <translation id="7982789257301363584">Nätverk</translation>
@@ -1159,7 +1165,10 @@
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Plånboken måste låsas upp först</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> är inte en giltig adress</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> är inte det aktuella nätverket</translation>
+<translation id="5036882519065735613"><ph name="CHAIN_ID"/> är inte det aktuella nätverket</translation>
+<translation id="317252468455212145"><ph name="ADDRESS"/> matchar inte från-adressen</translation>
+<translation id="8034449164954956172"><ph name="DOMAIN"/> matchar inte den aktuella domänen</translation>
+<translation id="5444904139422068509">Vi har avvisat begäran eftersom den här webbplatsen kräver att du använder en annan <ph name="NAME"/> (<ph name="VALUE"/>)</translation>
 <translation id="7340805872138998391">Det gick inte att låsa upp enheten, försök att ansluta igen</translation>
 <translation id="1984410139271779110">Internt fel, okänt schema</translation>
 <translation id="6989562355845156390">godkänn</translation>
@@ -1275,6 +1284,20 @@
 <translation id="5601436886921227795">Dapp-interaktion</translation>
 <translation id="9104177294757104789">Skicka <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Växla <ph name="MAKER"/> till <ph name="TAKER"/></translation>
+<translation id="8613144770663526433">Logga in med Brave Wallet</translation>
+<translation id="3696514931437952995">Du loggar in på <ph name="ORIGIN"/>. Brave Wallet kommer att dela din plånboksadress med <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Visa information</translation>
+<translation id="3950820424414687140">Logga in</translation>
+<translation id="4530494379350999373">Ursprung</translation>
+<translation id="6736243959894955139">Adress</translation>
+<translation id="3095940652251934233">Kontoutdrag</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="1313065465616456728">Utfärdat</translation>
+<translation id="7902225556763260253">Utgångstid</translation>
+<translation id="2471230424465522689">Inte tidigare</translation>
+<translation id="4841860051609590575">Begäran-ID</translation>
+<translation id="6759710362319508545">Resurser</translation>
+<translation id="1908159733454294871">Säkerhetsrisk identifierad</translation>
 <translation id="1965889974717516497">Sekundära nätverk</translation>
 <translation id="7691821949666755802">Testnätverk</translation>
 <translation id="2816106784624007524">Gasgränsen måste vara ett heltal som är större än 0</translation>
@@ -1690,8 +1713,14 @@
 <translation id="1536390784834419204">Översätt sida</translation>
 <translation id="5973664933364241128">Dirigera media</translation>
 <translation id="1568067597247500137">Stäng av ljud på webbplats</translation>
+<translation id="6674128381307353306">Stäng av ljud på alla flikar</translation>
+<translation id="1815548596883953231">Stäng av ljud på andra flikar</translation>
+<translation id="926046137238708033">Slå på ljud på alla flikar</translation>
 <translation id="855081842937141170">Fäst flik</translation>
+<translation id="2805351816064694332">Stäng ej fästa flikar</translation>
 <translation id="8657641252283410630">Gruppera flik</translation>
+<translation id="8290333944535778783">Bläddra flik till överst</translation>
+<translation id="6141382045715907645">Bläddra flik till underst</translation>
 <translation id="923853139812360539">QR-kodgenerator</translation>
 <translation id="8754922069999490293">Erbjudanden och belöningar för sidan</translation>
 <translation id="8620714260606376019">Delningshubb</translation>
@@ -1787,6 +1816,15 @@
 <translation id="6002210667729577411">Flytta grupp till nytt fönster</translation>
 <translation id="253980346046488815">Stäng dubblettflikar</translation>
 <translation id="9210143726807220086">Växla lodräta flikar expanderade</translation>
+<translation id="684629111155788563">Lägg till alla flikar i ny grupp</translation>
+<translation id="9106013521852824634">Skicka flik till dig själv</translation>
+<translation id="1926106318101432555">Öppna bokmärke ...</translation>
+<translation id="6118819645013156507">Växla till fönster ...</translation>
+<translation id="1623204575967809688">Sammanfoga aktuellt fönster med ...</translation>
+<translation id="7196533333647500853">Flytta flikar till fönster ...</translation>
+<translation id="2026671913373402445">Lägg till flik i befintlig grupp ...</translation>
+<translation id="8158903143594876176">Fäst flik ...</translation>
+<translation id="1487981090845324947">Lossa flik ...</translation>
 <translation id="5182394825813677917">Sök efter kommando eller genväg</translation>
 <translation id="4138119885026877702">Återställ till standard</translation>
 <translation id="8247915960543694908">Skapa ny genväg. Tryck på önskade tangenter och skapa en ny koppling</translation>
@@ -1795,17 +1833,17 @@
 <translation id="3537006124004887164">Den här kombinationen används för <ph name="COMMAND"/> och kan inte ändras. Testa att ändra den via Appgenvägar i systeminställningarna.</translation>
 <translation id="8591883849678260674">Se original</translation>
 <translation id="1969654232209826429">min. läsning</translation>
-<translation id="906598168058463050">Inaktivera Speedreader</translation>
-<translation id="8948558186299884715">Aktivera Speedreader</translation>
-<translation id="1385842054306112120">Använd alltid Speedreader för den här webbplatsen</translation>
-<translation id="8028940590935492959">Växla för att slå på/av Speedreader för den här webbplatsen.</translation>
-<translation id="1022901542006152519">Använd alltid Speedreader för alla webbplatser</translation>
-<translation id="3460907549384263858">Aktivera för att slå på/av Speedreader för alla webbplatser.</translation>
-<translation id="8745592921916491483">Alla webbplatser stöder inte Speedreader.</translation>
+<translation id="4101707289420716287">Inaktivera Speedreader</translation>
+<translation id="9089090017461255038">Aktivera snabbläsaren</translation>
+<translation id="3929926885379607283">Använd alltid Speedreader för den här webbplatsen</translation>
+<translation id="4186588885948504942">Växla Speedreader på/av för den här webbplatsen.</translation>
+<translation id="1873585723672836337">Använd alltid Speedreader för alla webbplatser</translation>
+<translation id="3138587343887871192">Växla Speedreader på/av för alla webbplatser.</translation>
+<translation id="5153147025131874069">Alla webbplatser stöder inte Speedreader.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1103345585203110275">Stäng Speedreader</translation>
+<translation id="2104268045272817433">Stäng Speedreader</translation>
 <translation id="6315170314923504164">Röst</translation>
-<translation id="57748525762025171">Justera Speedreader</translation>
+<translation id="864152735015641598">Justera Speedreader</translation>
 <translation id="251940709686581010">Inställningar för utseende</translation>
 <translation id="4809927044794281115">Ljust tema</translation>
 <translation id="5595850093882577201">Sepiafärgat tema</translation>
@@ -1822,7 +1860,69 @@
 <translation id="1199355487114804640">Spela upp/Pausa</translation>
 <translation id="1689210457482459023">Sänk uppspelningshastigheten</translation>
 <translation id="5872363163901278000">Öka uppspelningshastigheten</translation>
-<translation id="3507699941492423127">Brave Leo</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8637805148029768813">Sammanfattningsfunktionen är för närvarande endast tillgänglig för utvalda artiklar och andra webbsidor i långt format.</translation>
+<translation id="2346991295632453064">Godkänn och börja</translation>
+<translation id="1223498995510244364">Sammanfatta</translation>
+<translation id="7491773233732232424">Om Leo</translation>
+<translation id="70442873931504163">Brave Leo är en smart AI-assistent som kan sammanfatta webbsidor, transkribera videor och svara på frågor. Brave Leo Premium använder avancerade <ph name="LINK_BEFORE"/>AI-modeller<ph name="LINK_AFTER"/> för att ge ännu mer nyanserade svar och ger tidigare tillgång till nya funktioner.</translation>
+<translation id="3055739528128372229">Riktigheten i svaren kan inte garanteras och de kan innehålla felaktig, vilseledande eller falsk information. Skicka inte in känslig eller privat information och var försiktig med svar som rör hälsa, ekonomi, personlig säkerhet eller liknande.</translation>
+<translation id="5030677498967794115">Leo samlar inte in eller på annat sätt behandlar identifierare som IP-adress som kan kopplas till dig. Inga personuppgifter lagras av AI-modellen eller någon leverantör av tredjepartsmodell.</translation>
+<translation id="7839853125981164613">Ange en uppmaning här</translation>
+<translation id="1171287413830401223">Aktivera förslag på frågor?</translation>
+<translation id="4567071417854988869">Sammanfatta den här videon</translation>
+<translation id="7921782882718083488">Sammanfatta den här sidan</translation>
+<translation id="8723991872343294222">Brave AI kan automatiskt föreslå frågor baserat på innehållet på webbplatsen. Du kan inaktivera det senare i Inställningar.</translation>
+<translation id="3435896845095436175">Aktivera</translation>
+<translation id="7473891865547856676">Nej tack</translation>
+<translation id="7932221068776853847">Koppla från för att sluta skicka sidinnehåll till Leo och starta en ny konversation</translation>
+<translation id="1167803637855350748">Det uppstod ett nätverksproblem vid anslutning till Leo, kontrollera anslutningen och försök igen.</translation>
+<translation id="5095201428204952524">Leo är för upptagen just nu. Försök igen om några minuter.</translation>
+<translation id="7144878232160441200">Försök igen</translation>
+<translation id="2505565639170795978">Hej! Jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av Llama 13B, en modell som skapats av Meta för att vara högpresterande och kunna användas på många olika sätt.</translation>
+<translation id="7202619923031933110">Hej! Jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av Llama 70B, en modell som skapats av Meta för att hantera mer avancerade uppgifter än 13B.</translation>
+<translation id="2489317965865266353">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Instant, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter.</translation>
+<translation id="6206029817087805290"><ph name="MODEL_NAME"/> av <ph name="COMPANY_NAME"/></translation>
+<translation id="6187065185557150870">Chatt</translation>
+<translation id="2961040541145689181">Ny chatt</translation>
+<translation id="97095589689466044">Föreslagna frågor</translation>
+<translation id="7557539689487606886">Välj Premium</translation>
+<translation id="3037594989275592390">Språkmodeller</translation>
+<translation id="849535826888024304">Gränsen för svarsfrekvens har nåtts</translation>
+<translation id="3834321271158315162">Få en högre svarsfrekvens genom att prenumerera på Premium eller försök igen senare</translation>
+<translation id="1239767708151339890">Tillgång till branschledande LLM:er</translation>
+<translation id="8021579987620496265">Högre frekvensgränser</translation>
+<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /månad</translation>
+<translation id="9221988663340523352">Byt till standardmodellen</translation>
+<translation id="377376641316998425">Frigör Leos fulla potential</translation>
+<translation id="8363148882096737034">Anthropic Claude + mer kommer snart</translation>
+<translation id="886527905046308697">Prioriterad åtkomst och högre svarsgränser</translation>
+<translation id="1068954060985569277">Din Brave-kontosession har löpt ut. Besök din kontosida för att uppdatera och kom sedan tillbaka för att använda premiumfunktioner.</translation>
+<translation id="94736968936709953">Feedback har skickats</translation>
+<translation id="9109355817507033196">Svaret gillades inte</translation>
+<translation id="4049425842478222936">Svaret gillades</translation>
+<translation id="6393149565874086128">Ge feedback</translation>
+<translation id="3521125531016408657">Gilla svaret</translation>
+<translation id="8202517001427388906">Gilla inte svaret</translation>
+<translation id="1379399209929302811">Ge feedback på Brave AI</translation>
+<translation id="2415950536410763575">Välj ämne för din feedback</translation>
+<translation id="9018766373792005944">Vad handlar din feedback om?</translation>
+<translation id="7355096922131918313">Ge feedback här</translation>
+<translation id="3027575440738035995">Leo Premium ger tillgång till en utökad uppsättning språkmodeller för ännu mer nyanserade svar. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="2399439821649319175">Inte till hjälp</translation>
+<translation id="2976167228906046828">Felaktigt</translation>
+<translation id="1183055847065865059">Osäkert/Skadligt</translation>
+<translation id="7138678301420049075">Övrigt</translation>
+<translation id="2313959174679245365">Ditt betyg kunde inte skickas, kontrollera nätverksanslutningen och försök igen</translation>
+<translation id="98413980871833152">Din feedback kunde inte skickas, kontrollera nätverksanslutningen och försök igen</translation>
+<translation id="8742658901413346500">Den här konversationen är lång och det finns en risk att Leo börjar glömma saker snart. Du kan få längre konversationer genom att byta till en premiummodell, eller så kan du rensa chatten och börja om.</translation>
+<translation id="7550152963854770123">Rensa chatten</translation>
+<translation id="7494736170250048402">Skicka meddelande till Leo</translation>
+<translation id="4110772752544684964">Sidan är för lång för Leo. Viss kontext kan saknas i konversationen.</translation>
+<translation id="4370698775470316661">Den här konversationen är för lång och kan inte fortsätta. Det kan finnas andra modeller som Leo kan använda för att klara längre konversationer.</translation>
+<translation id="6291843235651817590">Allmän chatt</translation>
+<translation id="8193130769524604031">Avancerade chattuppgifter</translation>
+<translation id="3185367320601718531">Konversation och textgenerering</translation>
 <translation id="6303294677342628402">Sköldar</translation>
 <translation id="8458987127502506209">Aktivera Brave Sköld</translation>
 <translation id="7509914170164691086">Shields är UPP <ph name="LINK_BEFORE"/> för <ph name="LINK_AFTER"/></translation>
@@ -1891,21 +1991,6 @@
 <translation id="546481172717459539">Matcha systeminställning</translation>
 <translation id="7799817062559422778">Ljust läge</translation>
 <translation id="4117637339509843559">Mörkt läge</translation>
-<translation id="8637805148029768813">Sammanfattningsfunktionen är för närvarande endast tillgänglig för utvalda artiklar och andra webbsidor i långt format.</translation>
-<translation id="2346991295632453064">Godkänn och börja</translation>
-<translation id="1223498995510244364">Sammanfatta</translation>
-<translation id="6966669506908435195">Om Brave Leo</translation>
-<translation id="1667863995484767951">AI Chat-funktionen ger sammanfattningar av webbsidan du surfar på och innehåller ett chattgränssnitt som låter dig ställa frågor och få svar om innehållet på den aktuella sidan. Sammanfattningarnas riktighet garanteras inte och kan innehålla felaktig, vilseledande och falsk information. Du bör inte skicka känslig eller privat information och bör vara försiktig med text som rör hälsa, ekonomi eller personlig säkerhet och liknande uppgifter.</translation>
-<translation id="7636915524386889836">Braves AI-chatt använder en egenhostad <ph name="LINK_BEFORE"/>stor språkmodell<ph name="LINK_AFTER"/> AI-chattfunktionen samlar inte in eller behandlar på annat sätt identifierare, exempelvis en IP-adress som kan kopplas till dig. Inga personuppgifter lagras av AI-modellen.</translation>
-<translation id="7839853125981164613">Ange en uppmaning här</translation>
-<translation id="1171287413830401223">Aktivera förslag på frågor?</translation>
-<translation id="8723991872343294222">Brave AI kan automatiskt föreslå frågor baserat på innehållet på webbplatsen. Du kan inaktivera det senare i Inställningar.</translation>
-<translation id="3435896845095436175">Aktivera</translation>
-<translation id="7473891865547856676">Nej tack</translation>
-<translation id="7932221068776853847">Koppla från för att sluta skicka sidinnehåll till Leo och starta en ny konversation</translation>
-<translation id="1167803637855350748">Det uppstod ett nätverksproblem vid anslutning till Leo, kontrollera anslutningen och försök igen.</translation>
-<translation id="5095201428204952524">Leo är för upptagen just nu. Försök igen om några minuter.</translation>
-<translation id="7144878232160441200">Försök igen</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Ansluten</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Frånkopplad</translation>
 <translation id="3541307549916475335">Användargränssnitt för Brave VPN-panel</translation>
@@ -1944,7 +2029,6 @@
 <translation id="9184988385244077767">Inget internet när det är anslutet</translation>
 <translation id="21570240866965662">Långsam uppkoppling</translation>
 <translation id="1219475260382643267">Webbplatsen fungerar inte</translation>
-<translation id="7138678301420049075">Övrigt</translation>
 <translation id="1387340358507240698">Beskriv ditt problem</translation>
 <translation id="501818585183973587">Välj den information du är villig att dela med oss</translation>
 <translation id="3195618332367441234">Ju mer information du delar, desto enklare blir det för supportpersonalen att hjälpa dig</translation>
@@ -1990,4 +2074,9 @@ Låt oss få dig ansluten!
 <translation id="8048263175525832621">Brave VPN – frånkopplad</translation>
 <translation id="1498770726476841108">Hantera konto</translation>
 <translation id="6825718953004242472">Ta bort ikon</translation>
+<translation id="3287942014983548982">Öppna här</translation>
+<translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, är för närvarande öppen,
+tryck på Tab och sedan på Retur för att växla till den öppna fliken</translation>
+<translation id="1538335063514960365">Öppna här-knapp. tryck på Retur för att öppna den här webbadressen på den aktuella fliken, i stället för att växla till den befintliga fliken</translation>
+<translation id="451189393813405346">Fråga Leo</translation>
 </translationbundle>
