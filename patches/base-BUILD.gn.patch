@@ -1,8 +1,16 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 55479f4187323ad0f26dbbda555c0ff3093cc8d5..3ce31b4526993c440c3bee3766e8350d1cada5e4 100644
+index 55479f4187323ad0f26dbbda555c0ff3093cc8d5..48a54900fa61d43e28c78b91fce7fcf4757466d6 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4461,6 +4461,7 @@ if (is_android) {
+@@ -4214,6 +4214,7 @@ if (is_android || is_robolectric) {
+       ":android_runtime_jni_headers",
+       ":android_runtime_unchecked_jni_headers",
+     ]
++    import("//brave/android/brave_java_sources.gni") sources += brave_java_base_jni_sources
+   }
+ 
+   generate_jar_jni("android_runtime_jni_headers") {
+@@ -4461,6 +4462,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/task/ThreadPoolTaskExecutor.java",
        "android/java/src/org/chromium/base/task/UiThreadTaskExecutor.java",
      ]
@@ -10,7 +18,7 @@ index 55479f4187323ad0f26dbbda555c0ff3093cc8d5..3ce31b4526993c440c3bee3766e8350d
  
      if (use_clang_profiling) {
        sources += [
-@@ -4500,6 +4501,7 @@ if (is_android) {
+@@ -4500,6 +4502,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
        "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
      ]
