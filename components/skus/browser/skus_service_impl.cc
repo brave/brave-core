@@ -9,8 +9,6 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
