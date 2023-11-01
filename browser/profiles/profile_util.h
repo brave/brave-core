@@ -50,6 +50,10 @@ void SetDefaultThirdPartyCookieBlockValue(Profile* profile);
 // set the HttpsUpgrade default setting to strict.
 void MigrateHttpsUpgradeSettings(Profile* profile);
 
+// Checks if the user previously had fingerprinting mode disabled.
+// If so, set the new fingerprinting toggle to disabled.
+void MigrateFingerprintingSettings(Profile* profile);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_PROFILES_PROFILE_UTIL_H_

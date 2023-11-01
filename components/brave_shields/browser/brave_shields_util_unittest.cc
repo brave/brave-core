@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -656,6 +657,10 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_ForOrigin) {
 
 /* FINGERPRINTING CONTROL */
 TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_Default) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      brave_shields::features::kBraveShowStrictFingerprintingMode);
+
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   // setting should be default to start with
   auto type = brave_shields::GetFingerprintingControlType(map, GURL());
@@ -713,6 +718,10 @@ TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_Default) {
 }
 
 TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_ForOrigin) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      brave_shields::features::kBraveShowStrictFingerprintingMode);
+
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
 
   brave_shields::SetFingerprintingControlType(map, ControlType::ALLOW,

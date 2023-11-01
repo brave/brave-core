@@ -903,6 +903,15 @@
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
       },                                                                       \
       {                                                                        \
+          "brave-show-strict-fingerprinting-mode",                             \
+          "Show Strict Fingerprinting Mode",                                   \
+          "Show Strict (aggressive) option for Fingerprinting Mode in "        \
+          "Brave Shields ",                                                    \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveShowStrictFingerprintingMode),    \
+      },                                                                       \
+      {                                                                        \
           "brave-override-download-danger-level",                              \
           "Override download danger level",                                    \
           "Disables download warnings for files which are considered "         \

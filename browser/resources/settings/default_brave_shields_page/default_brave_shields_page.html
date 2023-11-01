@@ -74,10 +74,10 @@
       label="$i18n{noScriptControlLabel}"
       on-settings-boolean-control-change="onNoScriptControlChange_">
   </settings-toggle-button>
-  <div class="settings-box">
+  <div hidden="[[!showStrictFingerprintingMode_]]" class="settings-box">
     <div class="start">$i18n{fingerprintingControlLabel}</div>
-    <select id="fingerprintingControlType" class="md-select"
-        on-change="onFingerprintingControlChange_">
+    <select id="fingerprintingSelectControlType" class="md-select"
+        on-change="onFingerprintingSelectControlChange_">
       <template is="dom-repeat" items="[[fingerprintingControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, fingerprintingControlType_)]]">
@@ -86,6 +86,13 @@
       </template>
     </select>
   </div>
+  <settings-toggle-button id="fingerprintingToggleControlType"
+    hidden="[[showStrictFingerprintingMode_]]"
+    class="cr-row"
+    pref="[[isFingerprintingEnabled_]]"
+    label="$i18n{fingerprintingControlLabel}"
+    on-settings-boolean-control-change="onFingerprintingToggleControlChange_">
+  </settings-toggle-button>
   <div class="settings-box">
     <div class="start">$i18n{cookieControlLabel}</div>
     <select id="cookieControlType" class="md-select"

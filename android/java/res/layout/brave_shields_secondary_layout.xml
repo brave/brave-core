@@ -54,5 +54,8 @@
 		android:id="@+id/brave_shields_fingerprinting_layout_id"
 		layout="@layout/brave_shields_toggle_layout"/>
 
+	<include
+		android:id="@+id/brave_shields_fingerprinting_switch_id"
+		layout="@layout/brave_shields_switcher"/>
 
 </LinearLayout>

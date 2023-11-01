@@ -117,7 +117,6 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
                           base::Unretained(this)));
 
   MigrateShieldsSettings(off_the_record_);
-  MigrateFingerprintingSettings();
   MigrateFingerprintingSetingsToOriginScoped();
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);

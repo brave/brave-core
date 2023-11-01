@@ -47,6 +47,15 @@ export interface DefaultBraveShieldsBrowserProxy {
   setFingerprintingControlType(value)
 
   /**
+   * @return {!Promise<boolean>}
+   */
+  getFingerprintingBlockEnabled()
+  /**
+   * @param {boolean} value name.
+   */
+  setFingerprintingBlockEnabled(value)
+
+  /**
    * @return {!Promise<string>}
    */
   getHttpsUpgradeControlType()
@@ -109,6 +118,16 @@ export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsB
   /** @override */
   setFingerprintingControlType(value) {
     chrome.send('setFingerprintingControlType', [value]);
+  }
+
+  /** @override */
+  getFingerprintingBlockEnabled() {
+    return sendWithPromise('getFingerprintingBlockEnabled');
+  }
+
+  /** @override */
+  setFingerprintingBlockEnabled(value) {
+    chrome.send('setFingerprintingBlockEnabled', [value]);
   }
 
   /** @override */

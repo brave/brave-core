@@ -14,6 +14,7 @@
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/chrome_content_browser_client.h"
@@ -85,6 +86,11 @@ void CheckUserAgentMetadataVersionsList(
 
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  public:
+  BraveNavigatorUserAgentFarblingBrowserTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_shields::features::kBraveShowStrictFingerprintingMode);
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -176,6 +182,7 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
   std::vector<std::string> user_agents_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
 // Tests results of farbling user agent
