@@ -384,7 +384,7 @@
     *** getModel(...);
 }
 
--keep class org.chromium.components.permissions.PermissionDialogModel {
+-keep class org.chromium.components.permissions.PermissionDialogModelFactory {
     *** getModel(...);
 }
 
