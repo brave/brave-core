@@ -35,13 +35,12 @@ void OnFetchOrderCredentials(
     skus::SkusResult result) {
   if (callback_state->cb) {
     const int error_code = static_cast<int>(result);
+    std::string error_message;
     if (error_code != 0) {
-      std::string error_message =
-          base::StrCat({"Error: ", base::NumberToString(error_code)});
-      std::move(callback_state->cb).Run(error_message);
-    } else {
-      std::move(callback_state->cb).Run("");
+      error_message = static_cast<std::string>(skus::result_to_string(result));
     }
+
+    std::move(callback_state->cb).Run(error_message);
   }
 
   delete callback_state;
