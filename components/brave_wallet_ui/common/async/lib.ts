@@ -33,7 +33,9 @@ import { Dispatch, State } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
 import {
   GetAccountsHardwareOperationResult,
-  SolDerivationPaths
+  LedgerDerivationPaths,
+  SolDerivationPaths,
+  TrezorDerivationPaths
 } from '../hardware/types'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
@@ -87,13 +89,22 @@ export const onConnectHardwareWallet = (
       opts.coin,
       opts.onAuthorized
     )
-    if (
-      (keyring instanceof EthereumLedgerBridgeKeyring ||
-        keyring instanceof TrezorBridgeKeyring) &&
-      opts.scheme
-    ) {
-      keyring
-        .getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
+    const isLedger = keyring instanceof EthereumLedgerBridgeKeyring
+    const isTrezor = keyring instanceof TrezorBridgeKeyring
+    if ((isLedger || isTrezor) && opts.scheme) {
+      const promise = isLedger
+        ? keyring.getAccounts(
+            opts.startIndex,
+            opts.stopIndex,
+            opts.scheme as LedgerDerivationPaths
+          )
+        : keyring.getAccounts(
+            opts.startIndex,
+            opts.stopIndex,
+            opts.scheme as TrezorDerivationPaths
+          )
+
+      promise
         .then((result: GetAccountsHardwareOperationResult) => {
           if (result.payload) {
             return resolve(result.payload)
