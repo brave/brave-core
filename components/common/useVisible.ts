@@ -41,10 +41,10 @@ export function useVisible(options: VisibleOptions) {
   }
 }
 
-export function useOnVisibleCallback(action: () => void, options: VisibleOptions) {
+export function useOnVisibleCallback(action: () => any, options: VisibleOptions) {
   // Store the action in a ref, so we always call the most recent callback
   // passed in to us.
-  const actionRef = React.useRef<() => void>()
+  const actionRef = React.useRef<() => any>()
   actionRef.current = action
 
   const { visible, setElementRef } = useVisible(options)
