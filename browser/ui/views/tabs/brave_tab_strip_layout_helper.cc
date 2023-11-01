@@ -40,11 +40,12 @@ void CalculatePinnedTabsBoundsInGrid(
   }
 
   auto* tab_style = TabStyle::Get();
+  auto [tab_height, next_tab_offset] = GetVerticalTabMeasurements();
 
   gfx::Rect rect(/* x= */ kMarginForVerticalTabContainers,
-                 /* y= */ kMarginForVerticalTabContainers,
+                 /* y= */ 0,
                  /* width= */ kVerticalTabMinWidth,
-                 /* height= */ kVerticalTabHeight);
+                 /* height= */ tab_height);
   for (const auto& tab : tabs) {
     if (tab.state().pinned() != TabPinned::kPinned) {
       break;
@@ -63,7 +64,7 @@ void CalculatePinnedTabsBoundsInGrid(
     } else {
       // New line
       rect.set_x(kMarginForVerticalTabContainers);
-      rect.set_y(result->back().bottom() + kVerticalTabsSpacing);
+      rect.set_y(result->back().bottom() + next_tab_offset);
     }
   }
 }
@@ -90,26 +91,38 @@ void CalculateVerticalLayout(const TabLayoutConstants& layout_constants,
     return;
   }
 
+  auto [tab_height, next_tab_offset] = GetVerticalTabMeasurements();
+
   gfx::Rect rect;
-  rect.set_y(kMarginForVerticalTabContainers);
   for (auto iter = tabs.begin() + result->size(); iter != tabs.end(); iter++) {
     auto& tab = *iter;
     rect.set_x(
         kMarginForVerticalTabContainers +
         (tab.is_tab_in_group() ? BraveTabGroupHeader::kPaddingForGroup : 0));
     rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x() * 2);
-    rect.set_height(tab.state().open() == TabOpen::kOpen ? kVerticalTabHeight
-                                                         : 0);
+    rect.set_height(tab.state().open() == TabOpen::kOpen ? tab_height : 0);
     result->push_back(rect);
 
     // Update rect for the next tab.
     if (tab.state().open() == TabOpen::kOpen) {
-      rect.set_y(rect.bottom() + kVerticalTabsSpacing);
+      rect.set_y(rect.bottom() + next_tab_offset);
     }
   }
 }
 
 }  // namespace
+
+VerticalTabMeasurements GetVerticalTabMeasurements() {
+  if (!features::HorizontalTabsUpdateEnabled()) {
+    return {.tab_height = kVerticalTabHeight,
+            .next_tab_offset = kVerticalTabsSpacing};
+  }
+  int tab_height = GetLayoutConstant(TAB_HEIGHT);
+  DCHECK(tab_height >= kVerticalTabHeight);
+  int tab_view_padding = tab_height - kVerticalTabHeight;
+  return {.tab_height = tab_height,
+          .next_tab_offset = kVerticalTabsSpacing - tab_view_padding};
+}
 
 int GetTabCornerRadius(const Tab& tab) {
   if (!tabs::features::HorizontalTabsUpdateEnabled()) {
@@ -137,27 +150,13 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
   return bounds;
 }
 
-std::vector<gfx::Rect> CalculateBoundsForHorizontalDraggedViews(
-    const std::vector<TabSlotView*>& views,
-    TabStrip* tab_strip) {
-  // Chromium aligns the dragged tabs to the bottom of the tab strip, whereas we
-  // need to keep the tabs aligned to the top.
-  std::vector<gfx::Rect> bounds;
-  const int overlap = TabStyle::Get()->GetTabOverlap();
-  int x = 0;
-  for (const TabSlotView* view : views) {
-    const int width = view->width();
-    bounds.emplace_back(x, 0, width, view->height());
-    x += width - overlap;
-  }
-  return bounds;
-}
-
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     const std::vector<TabSlotView*>& views,
     TabStrip* tab_strip) {
   const bool is_vertical_tabs_floating =
       static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();
+
+  auto [tab_height, next_tab_offset] = GetVerticalTabMeasurements();
 
   std::vector<gfx::Rect> bounds;
   int x = 0;
@@ -183,7 +182,7 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     }
     bounds.emplace_back(x, y, width, height);
     // unpinned dragged tabs are laid out vertically
-    y += height + kVerticalTabsSpacing;
+    y += height + next_tab_offset;
   }
   return bounds;
 }

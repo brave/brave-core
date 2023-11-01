@@ -188,11 +188,12 @@ void BraveTab::UpdateShadowForActiveTab() {
       layer()->SetFillsBoundsOpaquely(false);
     }
 
-    gfx::Insets shadow_insets;
+    gfx::Insets shadow_insets =
+        gfx::Insets::VH(brave_tabs::kHorizontalTabVerticalSpacing, 0);
     if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
       // For horizontal tabs, inset the shadow layer to match the visual rounded
       // rectangle of the tab, which is inset from the tab view.
-      shadow_insets = gfx::Insets::VH(0, brave_tabs::kHorizontalTabInset);
+      shadow_insets += gfx::Insets::VH(0, brave_tabs::kHorizontalTabInset);
     }
     view_shadow_->SetInsets(shadow_insets);
   } else if (view_shadow_) {

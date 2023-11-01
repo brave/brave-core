@@ -69,17 +69,8 @@ gfx::Rect BraveTabGroupUnderline::CalculateTabGroupUnderlineBounds(
     const views::View* const leading_view,
     const views::View* const trailing_view) const {
   if (!ShouldShowVerticalTabs()) {
-    auto bounds = TabGroupUnderline::CalculateTabGroupUnderlineBounds(
+    return TabGroupUnderline::CalculateTabGroupUnderlineBounds(
         underline_view, leading_view, trailing_view);
-
-    if (tabs::features::HorizontalTabsUpdateEnabled()) {
-      // Upstream places the underline at the bottom tab border. Push the
-      // underline down to the bottom of the tab strip, so that it will appear
-      // below the tabs.
-      bounds.Offset(0, brave_tabs::kHorizontalTabStripVerticalSpacing);
-    }
-
-    return bounds;
   }
 
   // override bounds for vertical tabs mode.
@@ -99,6 +90,8 @@ gfx::Rect BraveTabGroupUnderline::CalculateTabGroupUnderlineBounds(
 
   gfx::Rect group_bounds = ToEnclosingRect(leading_bounds);
   group_bounds.Union(ToEnclosingRect(trailing_bounds));
+  // TODO(zenparsing): Only if using updated horizontal tabs.
+  group_bounds.Inset(gfx::Insets::VH(4, 0));
   return group_bounds;
 }
 
