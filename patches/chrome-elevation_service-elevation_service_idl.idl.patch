@@ -1,0 +1,84 @@
+diff --git a/chrome/elevation_service/elevation_service_idl.idl b/chrome/elevation_service/elevation_service_idl.idl
+index e28845867a46534a0f462814d70a03634db28155..dc3d0e700a2428e9d3d4d8da6e09addcece571d2 100644
+--- a/chrome/elevation_service/elevation_service_idl.idl
++++ b/chrome/elevation_service/elevation_service_idl.idl
+@@ -18,7 +18,7 @@ typedef enum ProtectionLevel {
+ [
+   object,
+   oleautomation,
+-  uuid(A949CB4E-C4F9-44C4-B213-6BF8AA9AC69C),
++  uuid(5A9A9462-2FA1-4FEB-B7F2-DF3D19134463),
+   helpstring("IElevator Interface"),
+   pointer_default(unique)
+ ]
+@@ -83,7 +83,7 @@ interface IElevator : IUnknown
+ [
+   object,
+   oleautomation,
+-  uuid(B88C45B9-8825-4629-B83E-77CC67D9CEED),
++  uuid(3218DA17-49C2-479A-8290-311DBFB86490),
+   helpstring("IElevatorChromium Interface"),
+   pointer_default(unique)
+ ]
+@@ -94,7 +94,7 @@ interface IElevatorChromium : IElevator
+ [
+   object,
+   oleautomation,
+-  uuid(463ABECF-410D-407F-8AF5-0DF35A005CC8),
++  uuid(F396861E-0C8E-4C71-8256-2FAE6D759CE9),
+   helpstring("IElevatorChrome Interface"),
+   pointer_default(unique)
+ ]
+@@ -105,7 +105,7 @@ interface IElevatorChrome : IElevator
+ [
+   object,
+   oleautomation,
+-  uuid(A2721D66-376E-4D2F-9F0F-9070E9A42B5F),
++  uuid(9EBAD7AC-6E1E-4A1C-AA85-1A70CADA8D82),
+   helpstring("IElevatorChromeBeta Interface"),
+   pointer_default(unique)
+ ]
+@@ -116,7 +116,7 @@ interface IElevatorChromeBeta : IElevator
+ [
+   object,
+   oleautomation,
+-  uuid(BB2AA26B-343A-4072-8B6F-80557B8CE571),
++  uuid(1E43C77B-48E6-4A4C-9DB2-C2971706C255),
+   helpstring("IElevatorChromeDev Interface"),
+   pointer_default(unique)
+ ]
+@@ -127,7 +127,7 @@ interface IElevatorChromeDev : IElevator
+ [
+   object,
+   oleautomation,
+-  uuid(4F7CE041-28E9-484F-9DD0-61A8CACEFEE4),
++  uuid(1DB2116F-71B7-49F0-8970-33B1DACFB072),
+   helpstring("IElevatorChromeCanary Interface"),
+   pointer_default(unique)
+ ]
+@@ -136,7 +136,18 @@ interface IElevatorChromeCanary : IElevator
+ };
+ 
+ [
+-  uuid(0014D784-7012-4A79-8AB6-ADDB8193A06E),
++  object,
++  oleautomation,
++  uuid(17239BF1-A1DC-4642-846C-1BAC85F96A10),
++  helpstring("IElevatorDevelopment Interface"),
++  pointer_default(unique)
++]
++interface IElevatorDevelopment : IElevator
++{
++};
++
++[
++  uuid(C3B01C4D-FBD4-4E65-88AD-0972D75808C2),
+   version(1.0),
+   helpstring("Elevator 1.0 Type Library")
+ ]
+@@ -149,4 +160,5 @@ library ElevatorLib {
+   interface IElevatorChromeBeta;
+   interface IElevatorChromeDev;
+   interface IElevatorChromeCanary;
++  interface IElevatorDevelopment;
+ };

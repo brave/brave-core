@@ -1,0 +1,14 @@
+diff --git a/chrome/elevation_service/elevator.h b/chrome/elevation_service/elevator.h
+index 2fd72264861f6a61d7fd0ea5a34865d798009ff9..5670d07c077edbfd2c6ffbd6c4fe81920c0772a7 100644
+--- a/chrome/elevation_service/elevator.h
++++ b/chrome/elevation_service/elevator.h
+@@ -37,7 +37,8 @@ class Elevator
+           IElevatorChrome,
+           IElevatorChromeBeta,
+           IElevatorChromeDev,
+-          IElevatorChromeCanary> {
++          IElevatorChromeCanary,
++          IElevatorDevelopment> {
+  public:
+   static constexpr HRESULT kErrorCouldNotObtainCallingProcess =
+       MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0xA001);
