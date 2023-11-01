@@ -44,9 +44,7 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
       omnibox_autocomplete_storage_(
           local_state,
           prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage,
-          14) {
-  ReportAllMetrics();
-}
+          14) {}
 
 AIChatMetrics::~AIChatMetrics() = default;
 
@@ -66,8 +64,8 @@ void AIChatMetrics::RecordEnabled(bool is_new_user) {
       UMA_HISTOGRAM_ENUMERATION(kAcquisitionSourceHistogramName,
                                 *acquisition_source_);
     }
-    ReportAllMetrics();
   }
+  ReportAllMetrics();
 }
 
 void AIChatMetrics::RecordNewChat() {
