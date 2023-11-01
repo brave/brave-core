@@ -31,8 +31,6 @@ const base::FeatureParam<double> kBraveNewsPopScoreFallback{
 const base::FeatureParam<double> kBraveNewsInlineDiscoveryRatio{
     &kBraveNewsFeedUpdate, "inline-discovery-ratio", 0.25};
 
-const base::FeatureParam<double> kBraveNewsSourceSubscribedMin{
-    &kBraveNewsFeedUpdate, "source-subscribed-min", 1e-5};
 const base::FeatureParam<double> kBraveNewsSourceSubscribedBoost{
     &kBraveNewsFeedUpdate, "source-subscribed-boost", 1};
 const base::FeatureParam<double> kBraveNewsChannelSubscribedBoost{

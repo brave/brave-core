@@ -149,11 +149,17 @@ struct Publisher {
 
 // Used to display information about why an article was displayed.
 struct Signal {
-  // The subscription weight of this item. Note: This is normally a small
-  // non-zero number even if the user is not subscribed to a channel/source for
-  // this item. It will only be zero if the user has explicitly opted out.
+  // Indicates that articles from this source should never be shown.
+  bool disabled;
+
+  // The weight to be shared among all articles within this Signal.
   double subscribed_weight;
+
+  // The normalized weighting of the users visits to this source.
   double visit_weight;
+
+  // The number of articles encompassed by this signal.
+  uint32 article_count;
 };
 
 struct HeroArticle {
