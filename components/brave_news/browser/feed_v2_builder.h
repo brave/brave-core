@@ -77,6 +77,7 @@ class FeedV2Builder {
   void NotifyUpdateCompleted();
 
   void GenerateFeed(UpdateSettings settings,
+                    mojom::FeedV2TypePtr type,
                     base::OnceCallback<mojom::FeedV2Ptr()> build_feed,
                     BuildFeedCallback callback);
 
