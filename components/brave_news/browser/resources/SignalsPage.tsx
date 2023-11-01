@@ -50,6 +50,8 @@ function SignalCards<T>({ items, sort, filter, getName, getKey, stats }: { items
       <b>Visit Weighting:</b> {signals[getKey(a)]?.visitWeight}
       <br />
       <b>Shown count:</b> {stats[getKey(a)] ?? 0}
+      <br />
+      <b>Total articles:</b> {signals[getKey(a)]?.articleCount ?? 0}
     </Card>)}
   </>
 }

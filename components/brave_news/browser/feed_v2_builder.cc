@@ -5,10 +5,9 @@
 
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
 
-#include <stddef.h>
 #include <algorithm>
-#include <cmath>
 #include <iterator>
+#include <numeric>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -39,18 +38,61 @@ namespace brave_news {
 
 namespace {
 
-// An ArticleInfo is a tuple of (item, signal, weighting). They're stored like
-// this for performance, so we only need to calculate things once.
-using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, Signal, double>;
+// An ArticleWeight has a few different components
+struct ArticleWeight {
+  // The pop_recency of the article. This is used for discover cards, where we
+  // don't consider the subscription status or visit_weighting.
+  double pop_recency = 0;
+
+  // The complete weighting of the article, combining the pop_score,
+  // visit_weighting & subscribed_weighting.
+  double weighting = 0;
+
+  // Whether the source which this article comes from has been visited. This
+  // only considers Publishers, not Channels.
+  bool visited = false;
+
+  // Whether any sources/channels that could cause this article to be shown are
+  // subscribed. At this point, disabled sources have already been filtered out.
+  bool subscribed = false;
+};
+
+using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
 
-Signal GetSignal(const mojom::FeedItemMetadataPtr& article,
-                 const Signals& signals) {
+// Gets all relevant signals for an article.
+// **Note:** Importantly, this function returns the Signal from the publisher
+// first, and |GetArticleWeight| depends on this to determine whether the
+// Publisher has been visited.
+std::vector<mojom::Signal*> GetSignals(
+    const std::string& locale,
+    const mojom::FeedItemMetadataPtr& article,
+    const Publishers& publishers,
+    const Signals& signals) {
+  std::vector<mojom::Signal*> result;
   auto it = signals.find(article->publisher_id);
-  if (it == signals.end()) {
-    return nullptr;
+  if (it != signals.end()) {
+    result.push_back(it->second.get());
   }
-  return it->second->Clone();
+
+  auto publisher_it = publishers.find(article->publisher_id);
+  if (publisher_it == publishers.end()) {
+    return result;
+  }
+
+  for (const auto& locale_info : publisher_it->second->locales) {
+    if (locale_info->locale != locale) {
+      continue;
+    }
+    for (const auto& channel : locale_info->channels) {
+      auto signal_it = signals.find(channel);
+      if (signal_it == signals.end()) {
+        continue;
+      }
+      result.push_back(signal_it->second.get());
+    }
+  }
+  return result;
 }
 
 double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
@@ -69,13 +111,32 @@ double GetPopRecency(const mojom::FeedItemMetadataPtr& article) {
          pow(0.5, dt.InHours() / pop_recency_half_life_in_hours);
 }
 
-double GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
-                        const Signal& signal) {
+double GetSubscribedWeight(const mojom::FeedItemMetadataPtr& article,
+                           const std::vector<mojom::Signal*>& signals) {
+  return std::reduce(
+      signals.begin(), signals.end(), 0.0, [](double prev, const auto* signal) {
+        return prev + signal->subscribed_weight / signal->article_count;
+      });
+}
+
+ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
+                               const std::vector<mojom::Signal*>& signals) {
+  // We should have at least one |Signal| from the |Publisher| for this source.
+  CHECK(!signals.empty());
+
+  const auto subscribed_weight = GetSubscribedWeight(article, signals);
   const double source_visits_min = features::kBraveNewsSourceVisitsMin.Get();
-  double source_visits_projected =
-      source_visits_min + signal->visit_weight * (1 - source_visits_min);
-  return source_visits_projected * signal->subscribed_weight *
-         GetPopRecency(article);
+  const double source_visits_projected =
+      source_visits_min + signals.at(0)->visit_weight * (1 - source_visits_min);
+  const auto pop_recency = GetPopRecency(article);
+  return {
+      .pop_recency = pop_recency,
+      .weighting = source_visits_projected * subscribed_weight * pop_recency,
+      // Note: GetArticleWeight returns the Signal for the Publisher first, and
+      // we use that to determine whether this Publisher has ever been visited.
+      .visited = signals.at(0)->visit_weight != 0,
+      .subscribed = subscribed_weight != 0,
+  };
 }
 
 std::string PickRandom(const std::vector<std::string>& items) {
@@ -84,7 +145,9 @@ std::string PickRandom(const std::vector<std::string>& items) {
   return items[base::RandInt(0, items.size() - 1)];
 }
 
-ArticleInfos GetArticleInfos(const FeedItems& feed_items,
+ArticleInfos GetArticleInfos(const std::string& locale,
+                             const FeedItems& feed_items,
+                             const Publishers& publishers,
                              const Signals& signals) {
   ArticleInfos articles;
   base::flat_set<GURL> seen_articles;
@@ -102,16 +165,21 @@ ArticleInfos GetArticleInfos(const FeedItems& feed_items,
 
       seen_articles.insert(article->data->url);
 
-      auto signal = GetSignal(article->data, signals);
+      auto article_signals =
+          GetSignals(locale, article->data, publishers, signals);
 
-      // If we don't have a signal for this article, filter it out.
-      if (!signal) {
+      // If we don't have any signals for this article, or the source this
+      // article comes from has been disabled then filter it out.
+      if (article_signals.empty() ||
+          base::ranges::any_of(article_signals, [](const auto* signal) {
+            return signal->disabled;
+          })) {
         continue;
       }
 
-      std::tuple<mojom::FeedItemMetadataPtr, Signal, double> pair =
-          std::tuple(article->data->Clone(), std::move(signal),
-                     GetArticleWeight(article->data, signal));
+      ArticleInfo pair =
+          std::tuple(article->data->Clone(),
+                     GetArticleWeight(article->data, article_signals));
       articles.push_back(std::move(pair));
     }
   }
@@ -154,20 +222,17 @@ int GetNormal(int min, int max) {
   return min + floor((max - min) * GetNormal());
 }
 
-using ShouldConsiderPredicate = bool(const Signal& signal);
+using GetWeighting = double(const ArticleWeight& weight);
 
 // Picks an article with a probability article_weight/sum(article_weights).
 mojom::FeedItemMetadataPtr PickRouletteAndRemove(
     ArticleInfos& articles,
-    ShouldConsiderPredicate should_consider = [](const auto& signal) {
-      return true;
+    GetWeighting get_weighting = [](const auto& weight) {
+      return weight.weighting;
     }) {
   double total_weight = 0;
-  for (const auto& [article, signal, weight] : articles) {
-    if (!should_consider(signal)) {
-      continue;
-    }
-    total_weight += weight;
+  for (const auto& [article, weight] : articles) {
+    total_weight += get_weighting(weight);
   }
 
   // None of the items are eligible to be picked.
@@ -180,18 +245,14 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 
   uint64_t i;
   for (i = 0; i < articles.size(); ++i) {
-    auto& [article, signal, weight] = articles[i];
-    if (!should_consider(signal)) {
-      continue;
-    }
-
-    current_weight += weight;
+    auto& [article, weight] = articles[i];
+    current_weight += get_weighting(weight);
     if (current_weight > picked_value) {
       break;
     }
   }
 
-  auto [article, signal, weight] = std::move(articles[i]);
+  auto [article, weight] = std::move(articles[i]);
   articles.erase(articles.begin() + i);
 
   return std::move(article);
@@ -203,8 +264,11 @@ mojom::FeedItemMetadataPtr PickRouletteAndRemove(
 // 2. **AND** The user hasn't visited.
 mojom::FeedItemMetadataPtr PickDiscoveryArticleAndRemove(
     ArticleInfos& articles) {
-  return PickRouletteAndRemove(articles, [](const auto& signal) {
-    return signal->subscribed_weight != 0 && signal->visit_weight == 0;
+  return PickRouletteAndRemove(articles, [](const auto& weight) {
+    if (weight.subscribed || weight.visited) {
+      return 0.;
+    }
+    return weight.pop_recency;
   });
 }
 
@@ -674,7 +738,8 @@ void FeedV2Builder::BuildFeedFromArticles() {
 
   // Make a copy of these - we're going to edit the copy to prevent duplicates.
   auto suggested_publisher_ids = suggested_publisher_ids_;
-  auto articles = GetArticleInfos(raw_feed_items_, signals_);
+  auto articles =
+      GetArticleInfos(locale, raw_feed_items_, publishers, signals_);
   auto feed = mojom::FeedV2::New();
   base::span<const TopicAndArticles> topics = base::make_span(topics_);
 
