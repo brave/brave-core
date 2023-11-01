@@ -84,6 +84,10 @@ void InlineContentAdHandler::TriggerEvent(
       << "Should not be called with kServed as this event is handled when "
          "calling MaybeServe";
 
+  if (creative_instance_id.empty()) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
   if (!UserHasOptedInToBraveNewsAds()) {
     return std::move(callback).Run(/*success*/ false);
   }
