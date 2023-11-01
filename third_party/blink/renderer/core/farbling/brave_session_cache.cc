@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "build/build_config.h"
@@ -212,7 +213,14 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
   if (blink::WebContentSettingsClient* settings =
           GetContentSettingsClientFor(&context, true)) {
-    farbling_level_ = settings->GetBraveFarblingLevel();
+    auto raw_farbling_level = settings->GetBraveFarblingLevel();
+    farbling_level_ =
+        base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveShowStrictFingerprintingMode)
+            ? raw_farbling_level
+            : (raw_farbling_level == BraveFarblingLevel::OFF
+                   ? BraveFarblingLevel::OFF
+                   : BraveFarblingLevel::BALANCED);
   }
   if (farbling_level_ != BraveFarblingLevel::OFF) {
     audio_farbling_helper_.emplace(

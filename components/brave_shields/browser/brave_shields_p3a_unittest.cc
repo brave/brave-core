@@ -6,8 +6,10 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
@@ -133,6 +135,10 @@ TEST_F(BraveShieldsP3ATest, RecordDomainAdBlockCounts) {
 }
 
 TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      brave_shields::features::kBraveShowStrictFingerprintingMode);
+
   auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
   auto* prefs = GetProfile()->GetPrefs();
 

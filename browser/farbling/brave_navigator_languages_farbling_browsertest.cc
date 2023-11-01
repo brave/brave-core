@@ -41,6 +41,7 @@
 
 using brave_shields::ControlType;
 using brave_shields::features::kBraveReduceLanguage;
+using brave_shields::features::kBraveShowStrictFingerprintingMode;
 using content::TitleWatcher;
 
 namespace {
@@ -52,7 +53,8 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorLanguagesFarblingBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(kBraveReduceLanguage);
+    feature_list_.InitWithFeatures(
+        {kBraveReduceLanguage, kBraveShowStrictFingerprintingMode}, {});
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);

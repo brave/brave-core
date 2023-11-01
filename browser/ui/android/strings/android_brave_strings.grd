@@ -693,7 +693,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Choose content sources
       </message>
       <message name="IDS_FINGERPRINTING_PROTECTION_SUMMARY" desc="Summary for fingerprinting protection.">
-        Prevents browser from fingerprinting
+        Prevents websites from fingerprinting me
       </message>
       <message name="IDS_CLOSE_TABS_ON_EXIT_TITLE" desc="Title for closing tabs on exit.">
         Close tabs on exit
@@ -1639,7 +1639,7 @@ Are you sure you want to do this?
         Reduces how much websites can learn about you based on your browser's language settings.
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
-        Prevents browser from recognizing your device
+        Prevents websites from recognizing your device
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_OPTION_1" desc="Title for shields option.">
         Fingerprinting blocked (strict, may break sites)
