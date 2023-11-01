@@ -45,9 +45,11 @@ MessageManager::MessageManager(PrefService& local_state,
 
   // Init log stores.
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    json_log_stores_[log_type] =
-        std::make_unique<MetricLogStore>(*this, *local_state_, false, log_type);
-    json_log_stores_[log_type]->LoadPersistedUnsentLogs();
+    if (!features::IsJSONDeprecated(log_type)) {
+      json_log_stores_[log_type] = std::make_unique<MetricLogStore>(
+          *this, *local_state_, false, log_type);
+      json_log_stores_[log_type]->LoadPersistedUnsentLogs();
+    }
     if (features::IsConstellationEnabled()) {
       constellation_prep_log_stores_[log_type] =
           std::make_unique<MetricLogStore>(*this, *local_state_, true,
@@ -86,11 +88,13 @@ void MessageManager::Init(
       config_.get());
 
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    json_upload_schedulers_[log_type] = std::make_unique<Scheduler>(
-        base::BindRepeating(&MessageManager::StartScheduledUpload,
-                            base::Unretained(this), false, log_type),
-        config_->randomize_upload_interval, config_->average_upload_interval);
-    json_upload_schedulers_[log_type]->Start();
+    if (!features::IsJSONDeprecated(log_type)) {
+      json_upload_schedulers_[log_type] = std::make_unique<Scheduler>(
+          base::BindRepeating(&MessageManager::StartScheduledUpload,
+                              base::Unretained(this), false, log_type),
+          config_->randomize_upload_interval, config_->average_upload_interval);
+      json_upload_schedulers_[log_type]->Start();
+    }
   }
 
   rotation_scheduler_ = std::make_unique<RotationScheduler>(
@@ -128,9 +132,9 @@ void MessageManager::UpdateMetricValue(
     constellation_prep_log_stores_[log_type]->UpdateValue(
         std::string(histogram_name), bucket);
   }
-  if (update_for_all || !*only_update_for_constellation) {
-    json_log_stores_[log_type].get()->UpdateValue(std::string(histogram_name),
-                                                  bucket);
+  auto* json_log_store = json_log_stores_[log_type].get();
+  if ((update_for_all || !*only_update_for_constellation) && json_log_store) {
+    json_log_store->UpdateValue(std::string(histogram_name), bucket);
   }
 }
 
@@ -139,9 +143,9 @@ void MessageManager::RemoveMetricValue(
     absl::optional<bool> only_update_for_constellation) {
   bool update_for_all = !only_update_for_constellation.has_value();
   for (MetricLogType log_type : kAllMetricLogTypes) {
-    if (update_for_all || !*only_update_for_constellation) {
-      json_log_stores_[log_type]->RemoveValueIfExists(
-          std::string(histogram_name));
+    auto* json_log_store = json_log_stores_[log_type].get();
+    if ((update_for_all || !*only_update_for_constellation) && json_log_store) {
+      json_log_store->RemoveValueIfExists(std::string(histogram_name));
     }
     if (features::IsConstellationEnabled() &&
         (update_for_all || *only_update_for_constellation)) {
@@ -153,7 +157,10 @@ void MessageManager::RemoveMetricValue(
 
 void MessageManager::DoJsonRotation(MetricLogType log_type) {
   VLOG(2) << "MessageManager doing json rotation at " << base::Time::Now();
-  json_log_stores_[log_type]->ResetUploadStamps();
+  auto* log_store = json_log_stores_[log_type].get();
+  if (log_store) {
+    log_store->ResetUploadStamps();
+  }
   delegate_->OnRotation(log_type, false);
 }
 
@@ -185,11 +192,13 @@ void MessageManager::OnLogUploadComplete(bool is_ok,
   } else {
     log_store = (metrics::LogStore*)json_log_stores_[log_type].get();
     scheduler = json_upload_schedulers_[log_type].get();
+    CHECK(log_store);
     if (is_ok) {
       delegate_->OnMetricCycled(json_log_stores_[log_type]->staged_log_key(),
                                 false);
     }
   }
+  CHECK(scheduler);
   if (is_ok) {
     log_store->MarkStagedLogAsSent();
     log_store->DiscardStagedLog();
@@ -257,6 +266,8 @@ void MessageManager::StartScheduledUpload(bool is_constellation,
     log_store = json_log_stores_[log_type].get();
     scheduler = json_upload_schedulers_[log_type].get();
   }
+  CHECK(log_store);
+  CHECK(scheduler);
 
   if (!is_constellation &&
       base::Time::Now() -

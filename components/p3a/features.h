@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "brave/components/p3a/metric_log_type.h"
 
 namespace p3a {
 namespace features {
@@ -16,8 +17,15 @@ BASE_DECLARE_FEATURE(kConstellation);
 // See https://github.com/brave/brave-browser/issues/31718 for more info.
 BASE_DECLARE_FEATURE(kConstellationEnclaveAttestation);
 
+// See https://github.com/brave/brave-browser/issues/34003 for more info.
+// Disables JSON measurements for "typical" cadence.
+BASE_DECLARE_FEATURE(kTypicalJSONDeprecation);
+// Disables JSON measurements for all other cadences.
+BASE_DECLARE_FEATURE(kOtherJSONDeprecation);
+
 bool IsConstellationEnabled();
 bool IsConstellationEnclaveAttestationEnabled();
+bool IsJSONDeprecated(MetricLogType log_type);
 
 }  // namespace features
 }  // namespace p3a
