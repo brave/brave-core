@@ -89,7 +89,7 @@ void PsstRuleService::LoadRules(const base::FilePath& path) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.AppendASCII(kJsonFile)),
-      base::BindOnce(&PsstRuleService::OnFileDataReady,
+      base::BindOnce(&PsstRuleService::OnLoadRules,
                      weak_factory_.GetWeakPtr()));
 }
 
@@ -97,7 +97,7 @@ void PsstRuleService::SetComponentPathForTest(const base::FilePath& path) {
   component_path_ = path;
 }
 
-void PsstRuleService::OnFileDataReady(const std::string& contents) {
+void PsstRuleService::OnLoadRules(const std::string& contents) {
   auto parsed_rules = PsstRule::ParseRules(contents);
   if (!parsed_rules) {
     return;

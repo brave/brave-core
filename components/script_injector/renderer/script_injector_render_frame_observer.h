@@ -35,19 +35,18 @@ class COMPONENT_EXPORT(SCRIPT_INJECTOR) ScriptInjectorRenderFrameObserver
       const ScriptInjectorRenderFrameObserver&) = delete;
   ~ScriptInjectorRenderFrameObserver() override;
 
-  // RenderFrameObserver implementation:
-  void OnDestruct() override;
-
   // Implement the RequestAsyncExecuteScript method.
-  COMPONENT_EXPORT(SCRIPT_INJECTOR)
   void RequestAsyncExecuteScript(
       int32_t world_id,
       const std::u16string& script,
-      bool user_activation,
-      bool await_promise,
+      blink::mojom::UserActivationOption user_activation,
+      blink::mojom::PromiseResultOption await_promise,
       RequestAsyncExecuteScriptCallback callback) override;
 
  private:
+  // RenderFrameObserver implementation:
+  void OnDestruct() override;
+
   void BindToReceiver(
       mojo::PendingAssociatedReceiver<script_injector::mojom::ScriptInjector>
           pending_receiver);

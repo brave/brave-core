@@ -41,8 +41,8 @@ ScriptInjectorRenderFrameObserver::~ScriptInjectorRenderFrameObserver() =
 void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
     int32_t world_id,
     const std::u16string& script,
-    bool user_activation,
-    bool await_promise,
+    blink::mojom::UserActivationOption user_activation,
+    blink::mojom::PromiseResultOption await_promise,
     RequestAsyncExecuteScriptCallback callback) {
   blink::WebScriptSource web_script_source =
       blink::WebScriptSource(blink::WebString::FromUTF16(script));
@@ -52,9 +52,7 @@ void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
                          : blink::mojom::WantResultOption::kWantResult;
 
   render_frame()->GetWebFrame()->RequestExecuteScript(
-      world_id, base::make_span(&web_script_source, 1u),
-      user_activation ? blink::mojom::UserActivationOption::kActivate
-                      : blink::mojom::UserActivationOption::kDoNotActivate,
+      world_id, base::make_span(&web_script_source, 1u), user_activation,
       blink::mojom::EvaluationTiming::kAsynchronous,
       blink::mojom::LoadEventBlockingOption::kDoNotBlock,
       base::BindOnce(
@@ -67,9 +65,7 @@ void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
             }
           },
           std::move(callback), want_result),
-      blink::BackForwardCacheAware::kAllow, want_result,
-      await_promise ? blink::mojom::PromiseResultOption::kAwait
-                    : blink::mojom::PromiseResultOption::kDoNotWait);
+      blink::BackForwardCacheAware::kAllow, want_result, await_promise);
 }
 
 }  // namespace script_injector

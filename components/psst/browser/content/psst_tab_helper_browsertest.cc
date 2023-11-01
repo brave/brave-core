@@ -9,7 +9,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/psst/browser/core/psst_rule_service.h"
 #include "brave/components/psst/common/features.h"
-#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -93,7 +92,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue) {
         }
       ]
       )";
-  psst::PsstRuleService::GetInstance()->OnFileDataReady(rules);
+  psst::PsstRuleService::GetInstance()->OnLoadRules(rules);
 
   std::u16string expected_title(u"testpolicy");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -119,7 +118,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse) {
         }
       ]
       )";
-  psst::PsstRuleService::GetInstance()->OnFileDataReady(rules);
+  psst::PsstRuleService::GetInstance()->OnLoadRules(rules);
 
   std::u16string expected_title(u"test");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -145,7 +144,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, NoMatch) {
         }
       ]
       )";
-  psst::PsstRuleService::GetInstance()->OnFileDataReady(rules);
+  psst::PsstRuleService::GetInstance()->OnLoadRules(rules);
 
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);

@@ -30,7 +30,7 @@ class COMPONENT_EXPORT(PSST) PsstRuleService {
                     base::OnceCallback<void(MatchedRule)> cb) const;
   static PsstRuleService* GetInstance();  // singleton
   void LoadRules(const base::FilePath& path);
-  void OnFileDataReady(const std::string& data);
+  void OnLoadRules(const std::string& data);
   void SetComponentPathForTest(const base::FilePath& path);
 
  private:

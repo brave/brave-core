@@ -37,7 +37,7 @@ class COMPONENT_EXPORT(PSST) PsstTabHelper
  private:
   PsstTabHelper(content::WebContents*, const int32_t world_id);
   void InsertScriptInPage(
-      const content::GlobalRenderFrameHostId render_frame_host_id,
+      const content::GlobalRenderFrameHostId& render_frame_host_id,
       const std::string& script,
       content::RenderFrameHost::JavaScriptResultCallback cb);
   void InsertTestScript(

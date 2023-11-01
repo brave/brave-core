@@ -66,7 +66,7 @@ void PsstTabHelper::InsertTestScript(
 }
 
 void PsstTabHelper::InsertScriptInPage(
-    const content::GlobalRenderFrameHostId render_frame_host_id,
+    const content::GlobalRenderFrameHostId& render_frame_host_id,
     const std::string& script,
     content::RenderFrameHost::JavaScriptResultCallback cb) {
   content::RenderFrameHost* render_frame_host =
@@ -77,8 +77,10 @@ void PsstTabHelper::InsertScriptInPage(
       render_frame_host_id ==
           web_contents()->GetPrimaryMainFrame()->GetGlobalId()) {
     GetRemote(render_frame_host)
-        ->RequestAsyncExecuteScript(world_id_, base::UTF8ToUTF16(script), false,
-                                    true, std::move(cb));
+        ->RequestAsyncExecuteScript(
+            world_id_, base::UTF8ToUTF16(script),
+            blink::mojom::UserActivationOption::kDoNotActivate,
+            blink::mojom::PromiseResultOption::kAwait, std::move(cb));
   } else {
     VLOG(2) << "render_frame_host is invalid.";
     return;
