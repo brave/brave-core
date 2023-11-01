@@ -16,11 +16,11 @@ export const StyledWrapper = styled.div<{ status: BannerStatus }>`
   align-items: center;
   width: 100%;
   justify-content: flex-start;
-  --success-background: #E8F9EB;
-  --uploading-background: #F0F7FC;
+  --success-background: #e8f9eb;
+  --uploading-background: #f0f7fc;
   @media (prefers-color-scheme: dark) {
-      --success-background: #15371B;
-      --uploading-background: #063256;
+    --success-background: #15371b;
+    --uploading-background: #063256;
   }
   background: ${(p) =>
     p.status === 'start'
@@ -42,11 +42,12 @@ export const Text = styled.p<{ status: BannerStatus }>`
   font-size: 14px;
   line-height: 20px;
   align-items: center;
-  --text-color: #1D1F25;
+  --text-color: #1d1f25;
   @media (prefers-color-scheme: dark) {
-    --text-color: #ECEFF2;
+    --text-color: #eceff2;
   }
-  color: ${(p) => p.status === 'start' ? p.theme.palette.white : 'var(--text-color)'};
+  color: ${(p) =>
+    p.status === 'start' ? p.theme.palette.white : 'var(--text-color)'};
   padding: 0;
   margin: 0;
   max-width: 70%;
@@ -66,7 +67,7 @@ export const LearnMore = styled(WalletButton)`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: #AAA8F7; /* Leo theme value: Dark/Text/Interactive */
+  color: #aaa8f7; /* Leo theme value: Dark/Text/Interactive */
   outline: none;
   border: none;
   background: transparent;
@@ -80,9 +81,9 @@ export const CloseButton = styled(WalletButton)`
   cursor: pointer;
   width: 16px;
   height: 16px;
-  background-color: #6B7084;
+  background-color: #6b7084;
   @media (prefers-color-scheme: dark) {
-    background-color: #8C90A1; /* Leo theme value: Icon/Default */
+    background-color: #8c90a1; /* Leo theme value: Icon/Default */
   }
   -webkit-mask-image: url(${CloseIcon});
   mask-image: url(${CloseIcon});

@@ -11,8 +11,8 @@ export const StyledWrapper = styled.div<{ size: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: ${p => p.size};
-  height: ${p => p.size};
+  width: ${(p) => p.size};
+  height: ${(p) => p.size};
 `
 
 export const GifWrapper = styled.div`
@@ -43,8 +43,8 @@ export const Ipfs = styled(BannerLeftIcon)<{ size?: string }>`
   -webkit-mask-image: url(${IpfsIcon});
   mask-image: url(${IpfsIcon});
   mask-repeat: no-repeat;
-  width: ${p => p.size};
-  height: ${p => p.size};
+  width: ${(p) => p.size};
+  height: ${(p) => p.size};
 `
 
 export const IpfsUploading = styled(BannerLeftIcon)`

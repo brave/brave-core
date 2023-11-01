@@ -11,9 +11,7 @@ import { LockPanel } from './index'
 export const _LockPanel: React.FC = () => {
   return (
     <WalletPanelStory>
-      <LockPanel
-        onSubmit={() => alert('submit')}
-      />
+      <LockPanel onSubmit={() => alert('submit')} />
     </WalletPanelStory>
   )
 }

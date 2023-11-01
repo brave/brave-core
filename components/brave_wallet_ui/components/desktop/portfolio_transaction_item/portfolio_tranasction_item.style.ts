@@ -28,10 +28,8 @@ export const PortfolioTransactionItemWrapper = styled.div<{
   width: 100%;
   margin-bottom: 16px;
   position: relative;
-  background-color: ${(p) => p.isFocused
-    ? `${leo.color.container.highlight}`
-    : 'none'
-  };
+  background-color: ${(p) =>
+    p.isFocused ? `${leo.color.container.highlight}` : 'none'};
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid ${leo.color.divider.subtle};
@@ -90,7 +88,7 @@ export const SellIconPlaceholder = styled.div`
 
 export const BuyIconPlaceholder = styled(SellIconPlaceholder)`
   background-color: ${leo.color.gray[20]};
-  color: ${leo.color.icon.default}
+  color: ${leo.color.icon.default};
 `
 
 export const SwapPlaceholderIcon = styled(Icon).attrs({
@@ -178,10 +176,9 @@ export const NetworkIconWrapper = styled.div`
   border-radius: 100%;
 `
 
-export const StatusBubble = styled.div<
-  {
-    status: BraveWallet.TransactionStatus
-  }>`
+export const StatusBubble = styled.div<{
+  status: BraveWallet.TransactionStatus
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,12 +191,11 @@ export const StatusBubble = styled.div<
   left: -2px;
   background-color: ${(p) =>
     p.status === BraveWallet.TransactionStatus.Error ||
-      p.status === BraveWallet.TransactionStatus.Dropped
+    p.status === BraveWallet.TransactionStatus.Dropped
       ? leo.color.systemfeedback.errorIcon
       : p.status === BraveWallet.TransactionStatus.Unapproved
-        ? leo.color.gray[20]
-        : leo.color.systemfeedback.infoIcon
-  };
+      ? leo.color.gray[20]
+      : leo.color.systemfeedback.infoIcon};
 `
 
 export const LoadingIcon = styled(ProgressRing)`

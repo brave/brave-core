@@ -48,18 +48,22 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
       : getLocale('braveWalletTransactionSignedTitle')
   const description =
     transaction.txStatus === BraveWallet.TransactionStatus.Submitted
-     ? getLocale('braveWalletTransactionSubmittedDescription')
-     : getLocale('braveWalletTransactionSignedDescription')
+      ? getLocale('braveWalletTransactionSubmittedDescription')
+      : getLocale('braveWalletTransactionSignedDescription')
 
   return (
-    <Panel navAction={onClose} title={headerTitle} headerStyle='slim'>
+    <Panel
+      navAction={onClose}
+      title={headerTitle}
+      headerStyle='slim'
+    >
       <SubmittedOrSignedIcon />
       <Title>{title}</Title>
-      <TransactionStatusDescription>
-        {description}
-      </TransactionStatusDescription>
+      <TransactionStatusDescription>{description}</TransactionStatusDescription>
       <ButtonRow>
-        <DetailButton onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}>
+        <DetailButton
+          onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}
+        >
           {getLocale('braveWalletTransactionExplorer')}
         </DetailButton>
         <LinkIcon />

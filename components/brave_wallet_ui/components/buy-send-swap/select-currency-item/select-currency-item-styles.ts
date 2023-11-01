@@ -5,7 +5,11 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
+import {
+  AssetIconProps,
+  AssetIconFactory,
+  WalletButton
+} from '../../shared/style'
 
 export const StyledWrapper = styled(WalletButton)`
   display: flex;

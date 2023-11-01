@@ -8,7 +8,10 @@ import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
+import {
+  BraveWallet,
+  SerializableTransactionInfo
+} from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -22,7 +25,12 @@ import { TransactionsListItem } from '../transaction-list-item/index'
 
 // Styled Components
 import { ScrollContainer } from '../../../stories/style'
-import { CircleIconWrapper, Column, Row, VerticalSpace } from '../../shared/style'
+import {
+  CircleIconWrapper,
+  Column,
+  Row,
+  VerticalSpace
+} from '../../shared/style'
 import {
   FillerDescriptionText,
   FillerTitleText,
@@ -39,7 +47,7 @@ export interface Props {
 
 export const TransactionsPanel = ({
   selectedNetwork,
-  selectedAccount,
+  selectedAccount
 }: Props) => {
   // redux
   const dispatch = useDispatch()
@@ -68,29 +76,30 @@ export const TransactionsPanel = ({
   if (sortedNonRejectedTransactionList.length === 0) {
     return (
       <StyledWrapper hideScrollbar>
-        <Column fullHeight padding='22px'>
+        <Column
+          fullHeight
+          padding='22px'
+        >
           <Column>
-
             {/* Graphic */}
             <Row>
               <CircleIconWrapper>
-
-                <TransactionsIcon
-                  size={24}
-                />
+                <TransactionsIcon size={24} />
 
                 <FloatAboveBottomRightCorner>
                   <CircleIconWrapper padding={2}>
                     <InfoCircleIcon />
                   </CircleIconWrapper>
                 </FloatAboveBottomRightCorner>
-
               </CircleIconWrapper>
             </Row>
 
             <VerticalSpace space='16px' />
 
-            <Column justifyContent='flex-start' gap='8px'>
+            <Column
+              justifyContent='flex-start'
+              gap='8px'
+            >
               <FillerTitleText>
                 {getLocale('braveWalletNoTransactionsYet')}
               </FillerTitleText>
@@ -99,7 +108,6 @@ export const TransactionsPanel = ({
                 {getLocale('braveWalletNoTransactionsYetDescription')}
               </FillerDescriptionText>
             </Column>
-
           </Column>
         </Column>
       </StyledWrapper>
@@ -109,13 +117,13 @@ export const TransactionsPanel = ({
   return (
     <ScrollContainer>
       <StyledWrapper>
-        {sortedNonRejectedTransactionList.map((transaction) =>
+        {sortedNonRejectedTransactionList.map((transaction) => (
           <TransactionsListItem
             key={transaction.id}
             onSelectTransaction={viewTransactionDetail}
             transaction={transaction}
           />
-        )}
+        ))}
       </StyledWrapper>
     </ScrollContainer>
   )

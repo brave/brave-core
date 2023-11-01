@@ -35,7 +35,10 @@ export const mockGoerli: BraveWallet.NetworkInfo = {
   decimals: 18,
   iconUrls: [ETHIconUrl],
   isEip1559: true,
-  rpcEndpoints: [{ url: 'https://goerli.infura.io/v3/' }, { url: 'wss://goerli.infura.io/ws/v3/' }],
+  rpcEndpoints: [
+    { url: 'https://goerli.infura.io/v3/' },
+    { url: 'wss://goerli.infura.io/ws/v3/' }
+  ],
   symbol: 'ETH',
   symbolName: 'Ethereum'
 }

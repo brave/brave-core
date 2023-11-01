@@ -18,22 +18,28 @@ import {
   SignAllTransactionsHardwarePayload,
   SignMessageHardwarePayload
 } from '../constants/action_types'
-import {
-  BraveWallet,
-  PanelTypes
-} from '../../constants/types'
+import { BraveWallet, PanelTypes } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
-export const connectToSite = createAction<ConnectWithSitePayloadType>('connectToSite')
+export const connectToSite =
+  createAction<ConnectWithSitePayloadType>('connectToSite')
 export const cancelConnectToSite = createAction('cancelConnectToSite')
-export const requestSitePermission
-  = createAction<RequestSitePermissionPayloadType>('requestSitePermission')
+export const requestSitePermission =
+  createAction<RequestSitePermissionPayloadType>('requestSitePermission')
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
-export const showConnectToSite = createAction<ShowConnectToSitePayload>('showConnectToSite')
-export const addEthereumChain = createAction<BraveWallet.AddChainRequest>('addEthereumChain')
-export const addEthereumChainRequestCompleted = createAction<EthereumChainRequestPayload>('addEthereumChainRequestCompleted')
-export const switchEthereumChain = createAction<BraveWallet.SwitchChainRequest>('switchEthereumChain')
-export const switchEthereumChainProcessed = createAction<SwitchEthereumChainProcessedPayload>('switchEthereumChainProcessed')
+export const showConnectToSite =
+  createAction<ShowConnectToSitePayload>('showConnectToSite')
+export const addEthereumChain =
+  createAction<BraveWallet.AddChainRequest>('addEthereumChain')
+export const addEthereumChainRequestCompleted =
+  createAction<EthereumChainRequestPayload>('addEthereumChainRequestCompleted')
+export const switchEthereumChain = createAction<BraveWallet.SwitchChainRequest>(
+  'switchEthereumChain'
+)
+export const switchEthereumChainProcessed =
+  createAction<SwitchEthereumChainProcessedPayload>(
+    'switchEthereumChainProcessed'
+  )
 export const showUnlock = createAction('showUnlock')
 export const setupWallet = createAction('setupWallet')
 export const expandWallet = createAction('expandWallet')
@@ -45,29 +51,57 @@ export const expandWalletAddAsset = createAction('expandWalletAddAsset')
 export const navigateTo = createAction<PanelTypes>('navigateTo')
 export const navigateToMain = createAction('navigateToMain')
 export const navigateBack = createAction('navigateBack')
-export const signMessage = createAction<BraveWallet.SignMessageRequest[]>('signMessage')
-export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
-export const signMessageHardware =
-  createAction<SignMessageHardwarePayload>('signMessageHardware')
-export const signMessageHardwareProcessed = createAction<SignMessageProcessedPayload>('signMessageHardwareProcessed')
-export const setHardwareWalletInteractionError = createAction<HardwareWalletResponseCodeType | undefined>('setHardwareWalletInteractionError')
-export const cancelConnectHardwareWallet = createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')
-export const getEncryptionPublicKey = createAction<BraveWallet.GetEncryptionPublicKeyRequest>('getEncryptionPublicKey')
-export const getEncryptionPublicKeyProcessed = createAction<GetEncryptionPublicKeyProcessedPayload>('getEncryptionPublicKeyProcessed')
+export const signMessage =
+  createAction<BraveWallet.SignMessageRequest[]>('signMessage')
+export const signMessageProcessed = createAction<SignMessageProcessedPayload>(
+  'signMessageProcessed'
+)
+export const signMessageHardware = createAction<SignMessageHardwarePayload>(
+  'signMessageHardware'
+)
+export const signMessageHardwareProcessed =
+  createAction<SignMessageProcessedPayload>('signMessageHardwareProcessed')
+export const setHardwareWalletInteractionError = createAction<
+  HardwareWalletResponseCodeType | undefined
+>('setHardwareWalletInteractionError')
+export const cancelConnectHardwareWallet =
+  createAction<BraveWallet.AccountInfo>('cancelConnectHardwareWallet')
+export const getEncryptionPublicKey =
+  createAction<BraveWallet.GetEncryptionPublicKeyRequest>(
+    'getEncryptionPublicKey'
+  )
+export const getEncryptionPublicKeyProcessed =
+  createAction<GetEncryptionPublicKeyProcessedPayload>(
+    'getEncryptionPublicKeyProcessed'
+  )
 export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
-export const decryptProcessed = createAction<DecryptProcessedPayload>('decryptProcessed')
+export const decryptProcessed =
+  createAction<DecryptProcessedPayload>('decryptProcessed')
 export const setSelectedTransactionId = createAction<string | undefined>(
   'setSelectedTransactionId'
 )
-export const signTransaction = createAction<BraveWallet.SignTransactionRequest[]>('signTransaction')
-export const signTransactionHardware = createAction<SignTransactionHardwarePayload>('signTransactionHardware')
-export const signTransactionProcessed = createAction<SignMessageProcessedPayload>('signTransactionProcessed')
-export const signAllTransactions = createAction<BraveWallet.SignAllTransactionsRequest[]>('signAllTransactions')
-export const signAllTransactionsHardware = createAction<SignAllTransactionsHardwarePayload>('signAllTransactionsHardware')
-export const signAllTransactionsProcessed = createAction<SignAllTransactionsProcessedPayload>('signAllTransactionsProcessed')
-export const setCloseOnDeactivate
-  = createAction<boolean>('setCloseOnDeactivate')
+export const signTransaction =
+  createAction<BraveWallet.SignTransactionRequest[]>('signTransaction')
+export const signTransactionHardware =
+  createAction<SignTransactionHardwarePayload>('signTransactionHardware')
+export const signTransactionProcessed =
+  createAction<SignMessageProcessedPayload>('signTransactionProcessed')
+export const signAllTransactions = createAction<
+  BraveWallet.SignAllTransactionsRequest[]
+>('signAllTransactions')
+export const signAllTransactionsHardware =
+  createAction<SignAllTransactionsHardwarePayload>(
+    'signAllTransactionsHardware'
+  )
+export const signAllTransactionsProcessed =
+  createAction<SignAllTransactionsProcessedPayload>(
+    'signAllTransactionsProcessed'
+  )
+export const setCloseOnDeactivate = createAction<boolean>(
+  'setCloseOnDeactivate'
+)
 export const signMessageError =
   createAction<BraveWallet.SignMessageError[]>('signMessageError')
-export const signMessageErrorProcessed =
-  createAction<string>('signMessageErrorProcessed')
+export const signMessageErrorProcessed = createAction<string>(
+  'signMessageErrorProcessed'
+)

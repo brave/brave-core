@@ -9,9 +9,14 @@ import * as React from 'react'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
-import { Button, ButtonText, IdeaButtonIcon } from './feature-request-button.style'
+import {
+  Button,
+  ButtonText,
+  IdeaButtonIcon
+} from './feature-request-button.style'
 
-const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
+const featureRequestUrl =
+  'https://community.brave.com/tags/c/wallet/131/feature-request'
 
 export const FeatureRequestButton = () => {
   const onClickFeatureRequestButton = React.useCallback(() => {
@@ -25,7 +30,9 @@ export const FeatureRequestButton = () => {
   return (
     <Button onClick={onClickFeatureRequestButton}>
       <IdeaButtonIcon />
-      <ButtonText>{getLocale('braveWalletRequestFeatureButtonText')}</ButtonText>
+      <ButtonText>
+        {getLocale('braveWalletRequestFeatureButtonText')}
+      </ButtonText>
     </Button>
   )
 }

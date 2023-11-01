@@ -4,8 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { StyledInput, Icon, StyledDiv, StyledLabel } from '../../shared-swap.styles'
-
+import {
+  StyledInput,
+  Icon,
+  StyledDiv,
+  StyledLabel
+} from '../../shared-swap.styles'
 
 export const HiddenCheckBox = styled(StyledInput)`
   border: 0;
@@ -23,13 +27,11 @@ export const StyledIcon = styled(Icon)`
   color: ${(p) => p.theme.palette.white};
 `
 
-export const StyledCheckbox = styled(StyledDiv) <{ isChecked: boolean }>`
+export const StyledCheckbox = styled(StyledDiv)<{ isChecked: boolean }>`
   width: 20px;
   height: 20px;
   background: ${(p) =>
-    p.isChecked
-      ? p.theme.color.interactive05
-      : p.theme.color.background01};
+    p.isChecked ? p.theme.color.interactive05 : p.theme.color.background01};
   border-radius: 4px;
   box-shadow: ${(p) =>
     p.isChecked
@@ -37,7 +39,7 @@ export const StyledCheckbox = styled(StyledDiv) <{ isChecked: boolean }>`
       : `inset 0px 0px 0px 1px ${p.theme.color.interactive08}`};
 `
 
-export const Label = styled(StyledLabel) <{
+export const Label = styled(StyledLabel)<{
   isChecked: boolean
   labelSize?: '12px' | '14px'
   isBold?: boolean

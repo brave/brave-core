@@ -9,9 +9,7 @@ import Button from '@brave/leo/react/button'
 import { getLocale } from '../../../../common/locale'
 
 // Components
-import {
-  PasswordInput
-} from '../../shared/password-input/password-input-v2'
+import { PasswordInput } from '../../shared/password-input/password-input-v2'
 
 // Styled Components
 import {
@@ -24,10 +22,7 @@ import {
   InputLabel
 } from './style'
 
-import {
-  VerticalSpace,
-  Row
-} from '../../shared/style'
+import { VerticalSpace, Row } from '../../shared/style'
 
 interface Props {
   value?: string
@@ -57,17 +52,11 @@ export const LockScreen = (props: Props) => {
   return (
     <StyledWrapper>
       <PageIcon />
-      <Title>
-        {getLocale('braveWalletUnlockWallet')}
-      </Title>
-      <Description
-        textSize='16px'
-      >
+      <Title>{getLocale('braveWalletUnlockWallet')}</Title>
+      <Description textSize='16px'>
         {getLocale('braveWalletLockScreenTitle')}
       </Description>
-      <InputColumn
-        fullWidth={true}
-      >
+      <InputColumn fullWidth={true}>
         <Row
           justifyContent='flex-start'
           padding='0px 4px'
@@ -81,14 +70,10 @@ export const LockScreen = (props: Props) => {
           </InputLabel>
         </Row>
         <PasswordInput
-          placeholder={
-            getLocale('braveWalletEnterYourPassword')
-          }
+          placeholder={getLocale('braveWalletEnterYourPassword')}
           onChange={onPasswordChanged}
           onKeyDown={handleKeyDown}
-          error={
-            getLocale('braveWalletLockScreenError')
-          }
+          error={getLocale('braveWalletLockScreenError')}
           hasError={hasPasswordError}
           autoFocus={true}
           value={value}

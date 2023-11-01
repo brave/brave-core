@@ -41,12 +41,19 @@ export const ConnectWalletButton = (props: Props) => {
   const accountOrb = useAccountOrb(selectedAccount)
 
   return (
-    <Button onClick={onClick} isConnected={selectedAccount !== undefined}>
+    <Button
+      onClick={onClick}
+      isConnected={selectedAccount !== undefined}
+    >
       {selectedAccount ? (
         <>
           {accountOrb && <AccountCircle orb={accountOrb} />}{' '}
           <HiddenResponsiveRow>
-            <Text textSize='14px' textColor='text01' isBold={true}>
+            <Text
+              textSize='14px'
+              textColor='text01'
+              isBold={true}
+            >
               {selectedAccount.name}
             </Text>
             <HorizontalSpacer size={4} />
@@ -57,10 +64,15 @@ export const ConnectWalletButton = (props: Props) => {
             isBold={true}
             responsiveTextSize='12px'
           >
-            {selectedAccount.address ? reduceAddress(selectedAccount.address) : ' '}
+            {selectedAccount.address
+              ? reduceAddress(selectedAccount.address)
+              : ' '}
           </Text>
           <HorizontalSpacer size={7} />
-          <ButtonIcon name='carat-down' size={16} />
+          <ButtonIcon
+            name='carat-down'
+            size={16}
+          />
         </>
       ) : (
         getLocale('braveSwapConnectWallet')

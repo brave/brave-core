@@ -27,7 +27,7 @@ export const CryptoBalance = styled.p`
   line-height: 45px;
   margin: 0;
   padding: 0 16px 0 0;
-  color: ${p => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const FiatBalance = styled.h6`
@@ -38,7 +38,7 @@ export const FiatBalance = styled.h6`
   margin: 0;
   padding-top: 20px;
   padding-bottom: 4px;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const DetailColumn = styled.div`
@@ -55,7 +55,7 @@ export const TokenDetailLabel = styled.h6`
   font-weight: 600;
   margin: 0;
   padding: 0;
-  color: ${p => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const TokenDetailValue = styled.h6`
@@ -65,7 +65,7 @@ export const TokenDetailValue = styled.h6`
   font-weight: 400;
   margin: 8px 0 0 0;
   padding: 0;
-  color: ${p => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const ContractAddress = styled(TokenDetailValue)`
@@ -74,7 +74,7 @@ export const ContractAddress = styled(TokenDetailValue)`
 
 export const HideTokenButton = styled(WalletButton)`
   background: none;
-  border: 1px solid ${p => p.theme.palette.blurple500};
+  border: 1px solid ${(p) => p.theme.palette.blurple500};
   height: 40px;
   margin-top: 70px;
   border-radius: 100px;
@@ -87,6 +87,6 @@ export const HideTokenButton = styled(WalletButton)`
   align-self: center;
   justify-content: center;
   align-items: center;
-  color: ${p => p.theme.palette.blurple500};
+  color: ${(p) => p.theme.palette.blurple500};
   cursor: pointer;
 `

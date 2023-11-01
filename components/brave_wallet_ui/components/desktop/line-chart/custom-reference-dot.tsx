@@ -4,10 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import * as leo from '@brave/leo/tokens/css'
-import {
-  Dot,
-  DotProps
-} from 'recharts'
+import { Dot, DotProps } from 'recharts'
 
 type Props = DotProps & {
   onUpdateYPosition: (value: number) => void
@@ -18,9 +15,8 @@ export const CustomReferenceDot = ({
   cx,
   cy,
   onUpdateYPosition,
-  onUpdateXPosition,
+  onUpdateXPosition
 }: Props) => {
-
   // Effects
   React.useLayoutEffect(() => {
     if (cy !== undefined && cx !== undefined) {

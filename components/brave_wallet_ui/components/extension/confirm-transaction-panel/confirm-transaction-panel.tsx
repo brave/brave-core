@@ -14,9 +14,7 @@ import { WalletSelectors } from '../../../common/selectors'
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useExplorer } from '../../../common/hooks/explorer'
-import {
-  useGetAddressByteCodeQuery
-} from '../../../common/slices/api.slice'
+import { useGetAddressByteCodeQuery } from '../../../common/slices/api.slice'
 import {
   useSafeWalletSelector,
   useUnsafeWalletSelector
@@ -81,11 +79,14 @@ const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
 const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 const onClickLearnMore = () => {
-  chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/5546517853325' }, () => {
-    if (chrome.runtime.lastError) {
-      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+  chrome.tabs.create(
+    { url: 'https://support.brave.com/hc/en-us/articles/5546517853325' },
+    () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
     }
-  })
+  )
 }
 
 export const ConfirmTransactionPanel = () => {
@@ -125,11 +126,14 @@ export const ConfirmTransactionPanel = () => {
   } = usePendingTransactions()
 
   // queries
-  const { data: byteCode, isLoading } = useGetAddressByteCodeQuery({
-    address: transactionDetails?.recipient ?? '',
-    coin: transactionDetails?.coinType ?? -1,
-    chainId: transactionDetails?.chainId ?? ''
-  }, { skip: !transactionDetails })
+  const { data: byteCode, isLoading } = useGetAddressByteCodeQuery(
+    {
+      address: transactionDetails?.recipient ?? '',
+      coin: transactionDetails?.coinType ?? -1,
+      chainId: transactionDetails?.chainId ?? ''
+    },
+    { skip: !transactionDetails }
+  )
 
   // computed
   const isContract = !isLoading && byteCode !== '0x'
@@ -139,33 +143,40 @@ export const ConfirmTransactionPanel = () => {
   const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
 
   // state
-  const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
+  const [selectedTab, setSelectedTab] =
+    React.useState<confirmPanelTabs>('transaction')
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
-  const [isEditingAllowance, setIsEditingAllowance] = React.useState<boolean>(false)
-  const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] = React.useState<boolean>(false)
+  const [isEditingAllowance, setIsEditingAllowance] =
+    React.useState<boolean>(false)
+  const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
+    React.useState<boolean>(false)
 
   // methods
   const onSelectTab = (tab: confirmPanelTabs) => () => setSelectedTab(tab)
 
-  const onToggleEditGas = () => setIsEditing(prev => !prev)
+  const onToggleEditGas = () => setIsEditing((prev) => !prev)
 
-  const onToggleEditAllowance = () => setIsEditingAllowance(prev => !prev)
+  const onToggleEditAllowance = () => setIsEditingAllowance((prev) => !prev)
 
   const onToggleAdvancedTransactionSettings = () => {
-    setShowAdvancedTransactionSettings(prev => !prev)
+    setShowAdvancedTransactionSettings((prev) => !prev)
   }
 
   // render
   if (!transactionDetails || !selectedPendingTransaction || !fromAccount) {
-    return <StyledWrapper>
-      <Skeleton width={'100%'} height={'100%'} enableAnimation />
-    </StyledWrapper>
+    return (
+      <StyledWrapper>
+        <Skeleton
+          width={'100%'}
+          height={'100%'}
+          enableAnimation
+        />
+      </StyledWrapper>
+    )
   }
 
   if (isEditing) {
-    return (
-      <EditPendingTransactionGas onCancel={onToggleEditGas} />
-    )
+    return <EditPendingTransactionGas onCancel={onToggleEditGas} />
   }
 
   if (isEditingAllowance) {
@@ -265,14 +276,24 @@ export const ConfirmTransactionPanel = () => {
             maxWidth={isContract ? '90%' : 'unset'}
             width={'unset'}
           >
-            <Row maxWidth={isContract ? '70px' : 'unset'} width={'unset'}>
-              <Tooltip text={fromAccount.address} isAddress={true} position={'left'}>
+            <Row
+              maxWidth={isContract ? '70px' : 'unset'}
+              width={'unset'}
+            >
+              <Tooltip
+                text={fromAccount.address}
+                isAddress={true}
+                position={'left'}
+              >
                 <AccountNameText>{fromAccount.name}</AccountNameText>
               </Tooltip>
             </Row>
             <ArrowIcon />
             {isContract ? (
-              <Column alignItems={'flex-start'} justifyContent={'flex-start'}>
+              <Column
+                alignItems={'flex-start'}
+                justifyContent={'flex-start'}
+              >
                 <NetworkText>
                   {getLocale('braveWalletNFTDetailContractAddress')}
                 </NetworkText>
@@ -289,7 +310,7 @@ export const ConfirmTransactionPanel = () => {
               <Tooltip
                 text={transactionDetails.recipient}
                 isAddress={true}
-                position="right"
+                position='right'
               >
                 <AccountNameText>
                   {reduceAddress(transactionDetails.recipient)}
@@ -358,9 +379,7 @@ export const ConfirmTransactionPanel = () => {
         )}
       </TabRow>
 
-      <MessageBox
-        isDetails={selectedTab === 'details'}
-      >
+      <MessageBox isDetails={selectedTab === 'details'}>
         {selectedTab === 'transaction' ? (
           <>
             {isERC20Approve && (
@@ -384,7 +403,10 @@ export const ConfirmTransactionPanel = () => {
         )}
       </MessageBox>
 
-      <Footer onConfirm={onConfirm} onReject={onReject} />
+      <Footer
+        onConfirm={onConfirm}
+        onReject={onReject}
+      />
     </StyledWrapper>
   )
 }

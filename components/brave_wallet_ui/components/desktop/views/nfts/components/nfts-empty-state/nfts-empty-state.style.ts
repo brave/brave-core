@@ -27,7 +27,7 @@ export const Heading = styled.h2`
   font-size: 16px;
   line-height: 28px;
   text-align: center;
-  color: ${p => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin: 0 0 8px 0;
 `
 
@@ -39,7 +39,7 @@ export const SubHeading = styled.p`
   line-height: 24px;
   align-items: center;
   text-align: center;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   margin: 0 0 16px 0;
 `
 
@@ -50,7 +50,7 @@ export const ImportButton = styled(WalletButton)`
   align-items: center;
   padding: 10px 22px;
   gap: 7px;
-  background-color: ${p => p.theme.color.interactive05};
+  background-color: ${(p) => p.theme.color.interactive05};
   border-radius: 48px;
   font-family: 'Poppins';
   font-style: normal;
@@ -58,7 +58,7 @@ export const ImportButton = styled(WalletButton)`
   font-size: 13px;
   line-height: 20px;
   text-align: center;
-  color: ${p => p.theme.color.background01};
+  color: ${(p) => p.theme.color.background01};
   margin-bottom: 24px;
   border: none;
   cursor: pointer;
@@ -73,7 +73,6 @@ export const DisclaimerText = styled.p`
   display: flex;
   align-items: center;
   text-align: center;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   margin: 0;
 `
-

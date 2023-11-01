@@ -15,10 +15,7 @@ import { PanelNavOptionsOld } from '../../../options/nav-options'
 import { PanelBottomNavButton } from './panel-bottom-nav-button/panel-bottom-nav-button'
 
 // Styled Components
-import {
-  StyledWrapper,
-  NavOutline
-} from './panel-bottom-nav.style'
+import { StyledWrapper, NavOutline } from './panel-bottom-nav.style'
 
 interface Props {
   onNavigate: (path: PanelTypes) => void
@@ -27,29 +24,34 @@ interface Props {
 export const PanelBottomNav = (props: Props) => {
   const { onNavigate } = props
 
-  const handleOnClick = React.useCallback((option: NavOption) => {
-    if (option.id === 'activity') {
-      onNavigate('activity')
-      return
-    }
-    const url = `brave://wallet${option.route}`
-    chrome.tabs.create({ url: url }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+  const handleOnClick = React.useCallback(
+    (option: NavOption) => {
+      if (option.id === 'activity') {
+        onNavigate('activity')
+        return
       }
-    })
-  }, [onNavigate])
+      const url = `brave://wallet${option.route}`
+      chrome.tabs.create({ url: url }, () => {
+        if (chrome.runtime.lastError) {
+          console.error(
+            'tabs.create failed: ' + chrome.runtime.lastError.message
+          )
+        }
+      })
+    },
+    [onNavigate]
+  )
 
   return (
     <StyledWrapper>
       <NavOutline>
-        {PanelNavOptionsOld.map((option) =>
+        {PanelNavOptionsOld.map((option) => (
           <PanelBottomNavButton
             key={option.id}
             onClick={() => handleOnClick(option)}
             option={option}
           />
-        )}
+        ))}
       </NavOutline>
     </StyledWrapper>
   )

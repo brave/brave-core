@@ -25,7 +25,7 @@ export const Star = styled.button<StyleProps>`
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
-  background-image: url(${p => p.active ? StarActiveIcon : StarIcon});
+  background-image: url(${(p) => (p.active ? StarActiveIcon : StarIcon)});
   background-color: transparent;
   border: none;
   box-shadow: none;

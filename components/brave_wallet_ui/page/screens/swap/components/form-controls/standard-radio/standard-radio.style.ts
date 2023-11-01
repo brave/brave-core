@@ -40,8 +40,7 @@ export const Wrapper = styled(StyledDiv)`
   gap: 12px;
 `
 
-export const Label = styled(StyledLabel) <{ isChecked: boolean }>`
+export const Label = styled(StyledLabel)<{ isChecked: boolean }>`
   cursor: pointer;
-  color: ${(p) =>
-    p.isChecked ? p.theme.color.text01 : p.theme.color.text03};
+  color: ${(p) => (p.isChecked ? p.theme.color.text01 : p.theme.color.text03)};
 `

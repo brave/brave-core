@@ -39,13 +39,10 @@ export const store = configureStore({
     ui: uiReducer,
     [walletApi.reducerPath]: walletApi.reducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-    serializableCheck: false
-  }).concat(
-    walletAsyncHandler,
-    walletPageAsyncHandler,
-    walletApi.middleware
-  )
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false
+    }).concat(walletAsyncHandler, walletPageAsyncHandler, walletApi.middleware)
 })
 
 export type WalletPageRootStore = typeof store
@@ -56,9 +53,13 @@ proxy.addJsonRpcServiceObserver(makeJsonRpcServiceObserver(store))
 proxy.addKeyringServiceObserver(makeKeyringServiceObserver(store))
 proxy.addTxServiceObserver(makeTxServiceObserver(store))
 proxy.addBraveWalletServiceObserver(makeBraveWalletServiceObserver(store))
-proxy.addBraveWalletServiceTokenObserver(makeBraveWalletServiceTokenObserver(store))
+proxy.addBraveWalletServiceTokenObserver(
+  makeBraveWalletServiceTokenObserver(store)
+)
 proxy.addBraveWalletPinServiceObserver(makeBraveWalletPinServiceObserver(store))
-proxy.addBraveWalletAutoPinServiceObserver(makeBraveWalletAutoPinServiceObserver(store))
+proxy.addBraveWalletAutoPinServiceObserver(
+  makeBraveWalletAutoPinServiceObserver(store)
+)
 
 setApiProxyFetcher(getWalletPageApiProxy)
 

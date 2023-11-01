@@ -5,7 +5,10 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import { layoutSmallWidth, layoutTopPosition } from '../wallet-page-wrapper/wallet-page-wrapper.style'
+import {
+  layoutSmallWidth,
+  layoutTopPosition
+} from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Wrapper = styled.div<{
   isPanel: boolean
@@ -14,10 +17,7 @@ export const Wrapper = styled.div<{
   @media (prefers-color-scheme: dark) {
     /* #1C2026 does not exist in design system */
     --nav-background: ${(p) =>
-    p.isPanel
-      ? '#1C2026'
-      : leo.color.container.background
-  };
+      p.isPanel ? '#1C2026' : leo.color.container.background};
   }
   display: flex;
   align-items: center;
@@ -54,16 +54,14 @@ export const Section = styled.div<{ showBorder?: boolean }>`
   flex-direction: column;
   width: 100%;
   padding: 12px 0px;
-  border-bottom: ${(p) => p.showBorder
-    ? `1px solid ${leo.color.container.highlight}`
-    : 'none'};
+  border-bottom: ${(p) =>
+    p.showBorder ? `1px solid ${leo.color.container.highlight}` : 'none'};
   @media screen and (max-width: ${layoutSmallWidth}px) {
     flex-direction: row;
     padding: 0px 8px;
     border-bottom: none;
-    border-right: ${(p) => p.showBorder
-    ? `1px solid ${leo.color.container.highlight}`
-    : 'none'};
+    border-right: ${(p) =>
+      p.showBorder ? `1px solid ${leo.color.container.highlight}` : 'none'};
   }
 `
 

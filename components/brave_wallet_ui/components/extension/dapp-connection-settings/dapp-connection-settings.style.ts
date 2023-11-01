@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton, Text } from '../../shared/style'
 
-export const SettingsButton = styled(WalletButton) <{
+export const SettingsButton = styled(WalletButton)<{
   showConnectionStatus: boolean
 }>`
   display: flex;
@@ -19,11 +19,7 @@ export const SettingsButton = styled(WalletButton) <{
   outline: none;
   border: 1px solid ${leo.color.divider.subtle};
   background: none;
-  padding: ${(p) =>
-    p.showConnectionStatus
-      ? '8px 16px 8px 12px'
-      : '8px'
-  };
+  padding: ${(p) => (p.showConnectionStatus ? '8px 16px 8px 12px' : '8px')};
   gap: 8px;
   margin-right: 16px;
   background-color: transparent;
@@ -31,7 +27,7 @@ export const SettingsButton = styled(WalletButton) <{
   z-index: 10;
 `
 
-export const ConnectedIcon = styled(Icon) <{
+export const ConnectedIcon = styled(Icon)<{
   size: string
   dappConnected?: boolean
 }>`
@@ -39,18 +35,16 @@ export const ConnectedIcon = styled(Icon) <{
   color: ${(p) =>
     p.dappConnected
       ? leo.color.systemfeedback.successIcon
-      : leo.color.icon.default
-  };
+      : leo.color.icon.default};
 `
 
-export const ConnectedText = styled(Text) <{
+export const ConnectedText = styled(Text)<{
   dappConnected?: boolean
 }>`
   color: ${(p) =>
     p.dappConnected
       ? leo.color.systemfeedback.successIcon
-      : leo.color.icon.default
-  };
+      : leo.color.icon.default};
   line-height: 24px;
 `
 
@@ -112,8 +106,8 @@ export const Pointer = styled.div`
   height: 0;
   border-style: solid;
   border-width: 0 7px 8px 7px;
-  border-color:
-    transparent transparent ${leo.color.container.background} transparent;
+  border-color: transparent transparent ${leo.color.container.background}
+    transparent;
   margin-right: 85px;
   z-index: 22;
 `
@@ -250,7 +244,7 @@ export const NetworkIconWrapper = styled.div<{
   showConnectionStatus: boolean
 }>`
   position: absolute;
-  right: ${(p) => p.showConnectionStatus ? 12 : 2}px;
+  right: ${(p) => (p.showConnectionStatus ? 12 : 2)}px;
   bottom: 4px;
   border: 2px solid ${leo.color.container.background};
   border-radius: 100%;

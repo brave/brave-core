@@ -21,14 +21,12 @@ import {
   getRewardsTokenDescription
 } from '../../../utils/rewards_utils'
 import {
-  externalWalletProviderFromString
+  externalWalletProviderFromString //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // Hooks
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
-import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Components
 import {
@@ -40,9 +38,7 @@ import {
   WithHideBalancePlaceholder //
 } from '../with-hide-balance-placeholder/index'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
-import {
-  AssetItemMenu
-} from '../wallet-menus/asset-item-menu'
+import { AssetItemMenu } from '../wallet-menus/asset-item-menu'
 import { RewardsMenu } from '../wallet-menus/rewards_menu'
 
 // Styled Components
@@ -62,10 +58,7 @@ import {
   AssetMenuButton,
   AssetMenuButtonIcon
 } from './style'
-import {
-  IconsWrapper,
-  NetworkIconWrapper
-} from '../../shared/style'
+import { IconsWrapper, NetworkIconWrapper } from '../../shared/style'
 
 interface Props {
   action?: () => void
@@ -91,36 +84,33 @@ export const PortfolioAssetItem = ({
   account
 }: Props) => {
   // redux
-  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
+  const defaultCurrencies = useSelector(
+    ({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies
+  )
 
   // queries
   const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   // state
   const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
-  const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] = React.useState(0)
+  const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] =
+    React.useState(0)
   const [showAssetMenu, setShowAssetMenu] = React.useState<boolean>(false)
 
   // refs
   const assetMenuRef = React.useRef<HTMLDivElement>(null)
 
   // hooks
-  useOnClickOutside(
-    assetMenuRef,
-    () => setShowAssetMenu(false),
-    showAssetMenu
-  )
+  useOnClickOutside(assetMenuRef, () => setShowAssetMenu(false), showAssetMenu)
 
   // memos & computed
   const isNonFungibleToken = token.isNft
 
   const formattedAssetBalance = isNonFungibleToken
-    ? new Amount(assetBalance)
-      .divideByDecimals(token.decimals)
-      .format()
+    ? new Amount(assetBalance).divideByDecimals(token.decimals).format()
     : new Amount(assetBalance)
-      .divideByDecimals(token.decimals)
-      .formatAsAsset(6, token.symbol)
+        .divideByDecimals(token.decimals)
+        .formatAsAsset(6, token.symbol)
 
   const fiatBalance = React.useMemo(() => {
     if (!spotPrice) {
@@ -140,10 +130,9 @@ export const PortfolioAssetItem = ({
 
   const isRewardsToken = getIsRewardsToken(token)
 
-  const externalProvider =
-    isRewardsToken
-      ? externalWalletProviderFromString(token.chainId)
-      : null
+  const externalProvider = isRewardsToken
+    ? externalWalletProviderFromString(token.chainId)
+    : null
 
   const NetworkDescription = React.useMemo(() => {
     if (isRewardsToken) {
@@ -152,23 +141,17 @@ export const PortfolioAssetItem = ({
 
     if (tokensNetwork && !isPanel) {
       return token.symbol !== ''
-      ? getLocale('braveWalletPortfolioAssetNetworkDescription')
-        .replace('$1', token.symbol)
-        .replace('$2', tokensNetwork.chainName ?? '')
-      : tokensNetwork.chainName
+        ? getLocale('braveWalletPortfolioAssetNetworkDescription')
+            .replace('$1', token.symbol)
+            .replace('$2', tokensNetwork.chainName ?? '')
+        : tokensNetwork.chainName
     }
     return token.symbol
-  }, [
-    tokensNetwork,
-    token,
-    isRewardsToken,
-    externalProvider
-  ])
+  }, [tokensNetwork, token, isRewardsToken, externalProvider])
 
-  const network =
-    isRewardsToken
-      ? getNormalizedExternalRewardsNetwork(externalProvider)
-      : tokensNetwork
+  const network = isRewardsToken
+    ? getNormalizedExternalRewardsNetwork(externalProvider)
+    : tokensNetwork
 
   // effects
   React.useEffect(() => {
@@ -186,7 +169,7 @@ export const PortfolioAssetItem = ({
   // render
   return (
     <>
-      {token.visible &&
+      {token.visible && (
         <StyledWrapper isPanel={isPanel}>
           <ButtonArea
             disabled={isLoading}
@@ -195,59 +178,67 @@ export const PortfolioAssetItem = ({
           >
             <NameAndIcon>
               <IconsWrapper>
-                {!token.logo
-                  ? <LoadingSkeleton
+                {!token.logo ? (
+                  <LoadingSkeleton
                     circle={true}
                     width={40}
                     height={40}
                   />
-                  : <>
-                    {
-                      isNonFungibleToken
-                        ? <NftIconWithPlaceholder
-                            asset={token}
-                            network={network}
-                          />
-                        : <AssetIconWithPlaceholder
-                            asset={token}
-                            network={network}
-                          />
-                    }
-                    {
-                      !isPanel &&
+                ) : (
+                  <>
+                    {isNonFungibleToken ? (
+                      <NftIconWithPlaceholder
+                        asset={token}
+                        network={network}
+                      />
+                    ) : (
+                      <AssetIconWithPlaceholder
+                        asset={token}
+                        network={network}
+                      />
+                    )}
+                    {!isPanel &&
                       network &&
                       checkIfTokenNeedsNetworkIcon(
                         network,
                         token.contractAddress
-                      ) &&
-                      <NetworkIconWrapper>
-                        <CreateNetworkIcon
-                          network={network}
-                          marginRight={0}
-                        />
-                      </NetworkIconWrapper>
-                    }
+                      ) && (
+                        <NetworkIconWrapper>
+                          <CreateNetworkIcon
+                            network={network}
+                            marginRight={0}
+                          />
+                        </NetworkIconWrapper>
+                      )}
                   </>
-                }
+                )}
               </IconsWrapper>
               <NameColumn>
-                {!token.name && !token.symbol
-                  ? <>
-                    <LoadingSkeleton width={assetNameSkeletonWidth} height={18} />
+                {!token.name && !token.symbol ? (
+                  <>
+                    <LoadingSkeleton
+                      width={assetNameSkeletonWidth}
+                      height={18}
+                    />
                     <Spacer />
-                    <LoadingSkeleton width={assetNetworkSkeletonWidth} height={18} />
+                    <LoadingSkeleton
+                      width={assetNetworkSkeletonWidth}
+                      height={18}
+                    />
                   </>
-                  : <>
+                ) : (
+                  <>
                     <AssetName>
-                      {token.name} {
-                        token.isErc721 && token.tokenId
-                          ? '#' + new Amount(token.tokenId).toNumber()
-                          : ''
-                      }
+                      {token.name}{' '}
+                      {token.isErc721 && token.tokenId
+                        ? '#' + new Amount(token.tokenId).toNumber()
+                        : ''}
                     </AssetName>
-                    <NetworkDescriptionText>{NetworkDescription}</NetworkDescriptionText>
+                    <NetworkDescriptionText>
+                      {NetworkDescription}
+                    </NetworkDescriptionText>
                   </>
-                }
+                )}
               </NameColumn>
             </NameAndIcon>
             <BalanceColumn>
@@ -255,36 +246,37 @@ export const PortfolioAssetItem = ({
                 size='small'
                 hideBalances={hideBalances ?? false}
               >
-
-                {!isNonFungibleToken &&
+                {!isNonFungibleToken && (
                   <>
                     {formattedFiatBalance ? (
                       <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>
                     ) : (
                       <>
-                        <LoadingSkeleton width={60} height={18} />
+                        <LoadingSkeleton
+                          width={60}
+                          height={18}
+                        />
                         <Spacer />
                       </>
                     )}
                   </>
-                }
+                )}
                 {formattedAssetBalance ? (
                   <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
                 ) : (
-                  <LoadingSkeleton width={60} height={18} />
+                  <LoadingSkeleton
+                    width={60}
+                    height={18}
+                  />
                 )}
               </WithHideBalancePlaceholder>
             </BalanceColumn>
           </ButtonArea>
-          <AssetMenuWrapper
-            ref={assetMenuRef}
-          >
-            <AssetMenuButton
-              onClick={() => setShowAssetMenu(prev => !prev)}
-            >
+          <AssetMenuWrapper ref={assetMenuRef}>
+            <AssetMenuButton onClick={() => setShowAssetMenu((prev) => !prev)}>
               <AssetMenuButtonIcon />
             </AssetMenuButton>
-            {showAssetMenu &&
+            {showAssetMenu && (
               <>
                 {isRewardsToken ? (
                   <RewardsMenu />
@@ -296,10 +288,10 @@ export const PortfolioAssetItem = ({
                   />
                 )}
               </>
-            }
+            )}
           </AssetMenuWrapper>
         </StyledWrapper>
-      }
+      )}
     </>
   )
 }

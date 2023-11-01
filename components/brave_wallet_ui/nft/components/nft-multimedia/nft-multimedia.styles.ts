@@ -13,11 +13,11 @@ export const MultiMediaWrapper = styled.div`
 `
 
 export const NftMediaIframe = styled.iframe<{ visible: boolean }>`
-  width: ${p => p.visible ? '100%' : '0'};
-  min-width: ${p => p.visible ? '100%' : '0'};
+  width: ${(p) => (p.visible ? '100%' : '0')};
+  min-width: ${(p) => (p.visible ? '100%' : '0')};
   min-height: 100vh;
   border: none;
-  visibility: ${p => p.visible ? 'visible' : 'hidden'};
+  visibility: ${(p) => (p.visible ? 'visible' : 'hidden')};
   border-radius: 12px;
 `
 

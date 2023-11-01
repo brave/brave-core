@@ -16,7 +16,7 @@ export const NftListWrapper = styled.div`
 export const List = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap:16px;
+  grid-gap: 16px;
   box-sizing: border-box;
   width: 100%;
 `
@@ -37,7 +37,7 @@ export const NftItemOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${p => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
   z-index: 3;
 `

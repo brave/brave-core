@@ -19,7 +19,7 @@ export interface StandardButtonStyleProps {
   hasError?: boolean
 }
 
-export const Button = styled(StyledButton) <StandardButtonStyleProps>`
+export const Button = styled(StyledButton)<StandardButtonStyleProps>`
   --disabled-text-color: ${(p) => p.theme.palette.white};
   --button-background-primary: ${(p) => p.theme.color.interactive05};
   @media (prefers-color-scheme: dark) {
@@ -49,31 +49,27 @@ export const Button = styled(StyledButton) <StandardButtonStyleProps>`
     p.buttonWidth === 'dynamic'
       ? 'unset'
       : p.buttonWidth === 'full'
-        ? '100%'
-        : `${p.buttonWidth}px`};
+      ? '100%'
+      : `${p.buttonWidth}px`};
   &:hover:not([disabled]) {
     background-color: ${(p) =>
-    p.buttonType === 'secondary'
-      ? p.theme.color.background01
-      : 'var(--button-background-hover)'};
+      p.buttonType === 'secondary'
+        ? p.theme.color.background01
+        : 'var(--button-background-hover)'};
     border: ${(p) =>
-    p.buttonType === 'secondary'
-      ? `1px solid ${p.theme.color.interactive05}`
-      : 'none'};
+      p.buttonType === 'secondary'
+        ? `1px solid ${p.theme.color.interactive05}`
+        : 'none'};
     color: ${(p) =>
-    p.buttonType === 'secondary'
-      ? p.theme.color.text03
-      : p.theme.palette.white};
+      p.buttonType === 'secondary'
+        ? p.theme.color.text03
+        : p.theme.palette.white};
   }
   :disabled {
     background-color: ${(p) =>
-    p.hasError
-      ? p.theme.color.errorBackground
-      : p.theme.color.disabled};
+      p.hasError ? p.theme.color.errorBackground : p.theme.color.disabled};
     color: ${(p) =>
-    p.hasError
-      ? p.theme.color.errorBorder
-      : 'var(--disabled-text-color)'};
+      p.hasError ? p.theme.color.errorBorder : 'var(--disabled-text-color)'};
   }
 `
 
@@ -83,9 +79,9 @@ export const ErrorIcon = styled(Icon)`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.white};
+  color: ${(p) => p.theme.color.white};
   height: 25px;
   width: 25px;
-  opacity: .4;
+  opacity: 0.4;
   margin-right: 10px;
 `

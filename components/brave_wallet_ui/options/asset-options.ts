@@ -23,7 +23,7 @@ import {
   BNBIconUrl,
   BTCIconUrl,
   ZECIconUrl,
-  FILECOINIconUrl,
+  FILECOINIconUrl
 } from '../stories/mock-data/asset-icons'
 
 const isStorybook = isComponentInStorybook()
@@ -70,9 +70,7 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
 
 export const makeNativeAssetLogo = (symbol: string, chainId: string) => {
   return getNetworkLogo(
-    symbol.toUpperCase() === 'ETH'
-      ? BraveWallet.MAINNET_CHAIN_ID
-      : chainId,
+    symbol.toUpperCase() === 'ETH' ? BraveWallet.MAINNET_CHAIN_ID : chainId,
     symbol
   )
 }

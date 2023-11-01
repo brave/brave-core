@@ -1,8 +1,5 @@
 {
   "extends": "./tsconfig",
-  "include": [
-    "./components/**/*"
-  ],
-  "exclude": [
-  ]
+  "include": ["./components/**/*"],
+  "exclude": []
 }

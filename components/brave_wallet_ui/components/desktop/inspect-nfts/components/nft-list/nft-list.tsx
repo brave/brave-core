@@ -13,7 +13,13 @@ import { DecoratedNftIcon } from '../../../../shared/nft-icon/decorated-nft-icon
 import { NftCountHeading } from '../../inspects-nfts.styles'
 
 // styles
-import { NftListWrapper, List, NftItem, NftItemOverlay, PiningMessage } from './nft-list.styles'
+import {
+  NftListWrapper,
+  List,
+  NftItem,
+  NftItemOverlay,
+  PiningMessage
+} from './nft-list.styles'
 
 export const NftList = () => {
   // hooks
@@ -29,15 +35,15 @@ export const NftList = () => {
 
   return (
     <NftListWrapper>
-      <NftCountHeading>
-        {heading}
-      </NftCountHeading>
+      <NftCountHeading>{heading}</NftCountHeading>
       <List>
         {nonFungibleTokens.map(({ canBePinned, token }) => (
           <NftItem key={`nft-item-${token.contractAddress}-${token.tokenId}`}>
             {!canBePinned && (
               <NftItemOverlay>
-                <PiningMessage>{getLocale('braveWalletNftPinningUnableToPin')}</PiningMessage>
+                <PiningMessage>
+                  {getLocale('braveWalletNftPinningUnableToPin')}
+                </PiningMessage>
               </NftItemOverlay>
             )}
             <DecoratedNftIcon

@@ -11,9 +11,9 @@ export const Button = styled(StyledButton)`
   --background-color: rgba(255, 255, 255, 0.6);
   --background-color-hover: rgba(218, 220, 232, 0.4);
   @media (prefers-color-scheme: dark) {
-  /* These RGBA values do not exist in the design system */
-  --background-color: rgba(52, 58, 64, 0.6);
-  --background-color-hover: rgba(66, 69, 82, 0.8);
+    /* These RGBA values do not exist in the design system */
+    --background-color: rgba(52, 58, 64, 0.6);
+    --background-color-hover: rgba(66, 69, 82, 0.8);
   }
   background-color: var(--background-color);
   border-radius: 4px;

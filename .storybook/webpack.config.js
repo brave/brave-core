@@ -9,15 +9,19 @@ const extraArchitectures = ['arm64', 'x86']
 // https://github.com/webpack/webpack/issues/13572
 // https://github.com/webpack/webpack/issues/14532
 // TODO(petemill): Remove this patching when webpack > 5.54.0 is being used.
-const crypto = require("crypto");
-const crypto_orig_createHash = crypto.createHash;
-crypto.createHash = algorithm => crypto_orig_createHash(algorithm == "md4" ? "sha256" : algorithm);
+const crypto = require('crypto')
+const crypto_orig_createHash = crypto.createHash
+crypto.createHash = (algorithm) =>
+  crypto_orig_createHash(algorithm == 'md4' ? 'sha256' : algorithm)
 
 function getBuildOuptutPathList(buildOutputRelativePath) {
-  return buildConfigs.flatMap(config => [
+  return buildConfigs.flatMap((config) => [
     path.resolve(__dirname, `../../out/${config}/${buildOutputRelativePath}`),
-    ...extraArchitectures.map(arch =>
-      path.resolve(__dirname, `../../out/${config}_${arch}/${buildOutputRelativePath}`)
+    ...extraArchitectures.map((arch) =>
+      path.resolve(
+        __dirname,
+        `../../out/${config}_${arch}/${buildOutputRelativePath}`
+      )
     )
   ])
 }
@@ -30,30 +34,27 @@ module.exports = async ({ config, mode }) => {
     {
       test: /\.scss$/,
       include: [/\.global\./],
-      use: [
-        { loader: "style-loader" },
-        { loader: "css-loader" },
-      ],
+      use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
     },
     {
       test: /\.scss$/,
       exclude: [/\.global\./, /node_modules/],
       use: [
-        { loader: "style-loader" },
+        { loader: 'style-loader' },
         {
-          loader: "css-loader",
+          loader: 'css-loader',
           options: {
             importLoaders: 3,
             sourceMap: false,
             modules: {
               localIdentName: isDevMode
-                ? "[path][name]__[local]--[hash:base64:5]"
-                : "[hash:base64]",
-            },
-          },
+                ? '[path][name]__[local]--[hash:base64:5]'
+                : '[hash:base64]'
+            }
+          }
         },
-        { loader: "sass-loader" },
-      ],
+        { loader: 'sass-loader' }
+      ]
     },
     {
       test: /\.(ts|tsx)$/,
@@ -64,7 +65,10 @@ module.exports = async ({ config, mode }) => {
         // options, use a cli arg or environment variable to obtain the correct
         // build target.
         configFile: path.resolve(__dirname, '..', 'tsconfig-storybook.json'),
-        getCustomTransformers: path.join(__dirname, '../components/webpack/webpack-ts-transformers.js'),
+        getCustomTransformers: path.join(
+          __dirname,
+          '../components/webpack/webpack-ts-transformers.js'
+        )
       }
     }
   )
@@ -77,16 +81,17 @@ module.exports = async ({ config, mode }) => {
   config.resolve.plugins = [
     ...config.resolve.plugins,
     new AliasPlugin(
-      'described-resolve', [
+      'described-resolve',
+      [
         {
           name: 'brave-ui',
-          alias: path.resolve(__dirname, '../node_modules/@brave/brave-ui'),
+          alias: path.resolve(__dirname, '../node_modules/@brave/brave-ui')
         },
         {
           // Force same styled-components module for brave-core and brave-ui
           // which ensure both repos code use the same singletons, e.g. ThemeContext.
           name: 'styled-components',
-          alias: path.resolve(__dirname, '../node_modules/styled-components'),
+          alias: path.resolve(__dirname, '../node_modules/styled-components')
         },
         {
           name: 'chrome://resources',
@@ -120,7 +125,8 @@ module.exports = async ({ config, mode }) => {
           name: '$web-components',
           alias: [path.resolve(__dirname, '../components/web-components')]
         }
-      ], 'resolve'
+      ],
+      'resolve'
     )
   ]
   config.resolve.extensions.push('.ts', '.tsx', '.scss')

@@ -60,10 +60,7 @@ export const BackupRecoveryPhrase = () => {
   const [isPhraseShown, setIsPhraseShown] = React.useState(false)
 
   // custom hooks
-  const {
-    isCopied,
-    temporaryCopyToClipboard
-  } = useTemporaryCopyToClipboard()
+  const { isCopied, temporaryCopyToClipboard } = useTemporaryCopyToClipboard()
 
   // methods
   const revealPhrase = React.useCallback(() => {
@@ -71,7 +68,7 @@ export const BackupRecoveryPhrase = () => {
   }, [])
 
   const toggleShowPhrase = () => {
-    setIsPhraseShown(prev => !prev)
+    setIsPhraseShown((prev) => !prev)
   }
 
   const onCopyPhrase = async () => {
@@ -88,20 +85,19 @@ export const BackupRecoveryPhrase = () => {
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-
-          {isOnboarding &&
+          {isOnboarding && (
             <OnboardingNewWalletStepsNavigation
               goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
               currentStep={WalletRoutes.OnboardingBackupRecoveryPhrase}
             />
-          }
-          {!isOnboarding &&
+          )}
+          {!isOnboarding && (
             <StepsNavigation
               steps={WALLET_BACKUP_STEPS}
               goBackUrl={WalletRoutes.OnboardingExplainRecoveryPhrase}
               currentStep={WalletRoutes.BackupRecoveryPhrase}
             />
-          }
+          )}
 
           <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletRecoveryPhraseBackupTitle')}</Title>
@@ -135,16 +131,14 @@ export const BackupRecoveryPhrase = () => {
             </PhraseCardBody>
 
             <PhraseCardBottomRow>
-
               <CopyButton onClick={onCopyPhrase} />
 
-              {isCopied &&
+              {isCopied && (
                 <>
                   <CopiedToClipboardConfirmation />
                   <HorizontalSpace space='52px' />
                 </>
-              }
-
+              )}
             </PhraseCardBottomRow>
           </PhraseCard>
 
@@ -152,13 +146,13 @@ export const BackupRecoveryPhrase = () => {
             <NavButton
               buttonType='primary'
               text={getLocale('braveWalletButtonNext')}
-              url={isOnboarding
-                ? WalletRoutes.OnboardingVerifyRecoveryPhrase
-                : WalletRoutes.BackupVerifyRecoveryPhrase
+              url={
+                isOnboarding
+                  ? WalletRoutes.OnboardingVerifyRecoveryPhrase
+                  : WalletRoutes.BackupVerifyRecoveryPhrase
               }
             />
           </NextButtonRow>
-
         </StyledWrapper>
       </MainWrapper>
     </CenteredPageLayout>

@@ -76,7 +76,8 @@ export const Indicator = styled.div<StyleProps>`
   width: 15px;
   height: 15px;
   border-radius: 100%;
-  background-color: ${(p) => p.isConnected ? p.theme.color.successBorder : p.theme.color.errorBorder};
+  background-color: ${(p) =>
+    p.isConnected ? p.theme.color.successBorder : p.theme.color.errorBorder};
   margin-right: 8px;
 `
 

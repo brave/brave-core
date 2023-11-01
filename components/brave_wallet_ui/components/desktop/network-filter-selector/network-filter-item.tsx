@@ -14,7 +14,13 @@ import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 import { AllNetworksOption } from '../../../options/network-filter-options'
 
 // Styled Components
-import { NetworkItemButton, NetworkName, LeftSide, NetworkItemWrapper, BigCheckMark } from './style'
+import {
+  NetworkItemButton,
+  NetworkName,
+  LeftSide,
+  NetworkItemWrapper,
+  BigCheckMark
+} from './style'
 
 export interface Props {
   isSelected: boolean
@@ -22,7 +28,7 @@ export interface Props {
   onSelectNetwork: (network?: BraveWallet.NetworkInfo) => void
 }
 
-function NetworkFilterItem (props: Props) {
+function NetworkFilterItem(props: Props) {
   const { network, onSelectNetwork, isSelected } = props
 
   const onClickSelectNetwork = () => {
@@ -34,7 +40,11 @@ function NetworkFilterItem (props: Props) {
       <NetworkItemButton onClick={onClickSelectNetwork}>
         <LeftSide>
           {network.chainId !== AllNetworksOption.chainId && (
-            <CreateNetworkIcon network={network} marginRight={14} size='big' />
+            <CreateNetworkIcon
+              network={network}
+              marginRight={14}
+              size='big'
+            />
           )}
           <NetworkName>{network.chainName}</NetworkName>
         </LeftSide>

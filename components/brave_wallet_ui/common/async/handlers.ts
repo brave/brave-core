@@ -36,16 +36,14 @@ import {
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
-import {
-  walletApi
-} from '../slices/api.slice'
+import { walletApi } from '../slices/api.slice'
 import { getVisibleNetworksList } from '../../utils/api-utils'
 
 const handler = new AsyncActionHandler()
 
 const interactionNotifier = new InteractionNotifier()
 
-function getWalletState (store: Store): WalletState {
+function getWalletState(store: Store): WalletState {
   return store.getState().wallet
 }
 
@@ -53,7 +51,7 @@ async function refreshBalancesPricesAndHistory(store: Store) {
   await store.dispatch(refreshVisibleTokenInfo())
 }
 
-async function refreshWalletInfo (store: Store, payload: RefreshOpts = {}) {
+async function refreshWalletInfo(store: Store, payload: RefreshOpts = {}) {
   const apiProxy = getAPIProxy()
 
   const { walletInfo } = await apiProxy.walletHandler.getWalletInfo()
@@ -62,22 +60,29 @@ async function refreshWalletInfo (store: Store, payload: RefreshOpts = {}) {
   store.dispatch(WalletActions.refreshAll(payload))
 
   // refresh networks registry & selected network
-  await store.dispatch(
-    walletApi.endpoints.refreshNetworkInfo.initiate()
-  ).unwrap()
+  await store
+    .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
+    .unwrap()
 
   // Populate tokens from blockchain registry.
   store.dispatch(WalletActions.getAllTokensList())
 
   const braveWalletService = apiProxy.braveWalletService
-  const defaultEthereumResult = await braveWalletService.getDefaultEthereumWallet()
-  store.dispatch(WalletActions.defaultEthereumWalletUpdated(defaultEthereumResult.defaultWallet))
+  const defaultEthereumResult =
+    await braveWalletService.getDefaultEthereumWallet()
+  store.dispatch(
+    WalletActions.defaultEthereumWalletUpdated(
+      defaultEthereumResult.defaultWallet
+    )
+  )
   const defaultSolanaResult = await braveWalletService.getDefaultSolanaWallet()
-  store.dispatch(WalletActions.defaultSolanaWalletUpdated(defaultSolanaResult.defaultWallet))
+  store.dispatch(
+    WalletActions.defaultSolanaWalletUpdated(defaultSolanaResult.defaultWallet)
+  )
 
-  const mmResult =
-    await braveWalletService.isExternalWalletInstalled(
-      BraveWallet.ExternalWalletType.MetaMask)
+  const mmResult = await braveWalletService.isExternalWalletInstalled(
+    BraveWallet.ExternalWalletType.MetaMask
+  )
   store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
 
   await store.dispatch(refreshSitePermissions())
@@ -85,28 +90,28 @@ async function refreshWalletInfo (store: Store, payload: RefreshOpts = {}) {
 
 handler.on(
   WalletActions.refreshNetworksAndTokens.type,
-  async (store: Store, payload: RefreshOpts
-) => {
-  // refresh networks registry & selected network
-  store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(true))
-  await store
-    .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
-    .unwrap()
-  await store.dispatch(refreshVisibleTokenInfo())
-  await store.dispatch(refreshPortfolioFilterOptions())
-  store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(false))
-})
+  async (store: Store, payload: RefreshOpts) => {
+    // refresh networks registry & selected network
+    store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(true))
+    await store
+      .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
+      .unwrap()
+    await store.dispatch(refreshVisibleTokenInfo())
+    await store.dispatch(refreshPortfolioFilterOptions())
+    store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(false))
+  }
+)
 
 handler.on(
   WalletActions.initialize.type,
-  async (store, payload: RefreshOpts
-) => {
-  // Initialize active origin state.
-  const braveWalletService = getAPIProxy().braveWalletService
-  const { originInfo } = await braveWalletService.getActiveOrigin()
-  store.dispatch(WalletActions.activeOriginChanged(originInfo))
-  await refreshWalletInfo(store, payload)
-})
+  async (store, payload: RefreshOpts) => {
+    // Initialize active origin state.
+    const braveWalletService = getAPIProxy().braveWalletService
+    const { originInfo } = await braveWalletService.getActiveOrigin()
+    store.dispatch(WalletActions.activeOriginChanged(originInfo))
+    await refreshWalletInfo(store, payload)
+  }
+)
 
 handler.on(WalletActions.walletCreated.type, async (store) => {
   await refreshWalletInfo(store)
@@ -147,61 +152,78 @@ handler.on(WalletActions.defaultBaseCurrencyChanged.type, async (store) => {
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.defaultBaseCryptocurrencyChanged.type, async (store) => {
-  await refreshWalletInfo(store)
-})
+handler.on(
+  WalletActions.defaultBaseCryptocurrencyChanged.type,
+  async (store) => {
+    await refreshWalletInfo(store)
+  }
+)
 
 handler.on(WalletActions.lockWallet.type, async (store) => {
   const keyringService = getAPIProxy().keyringService
   keyringService.lock()
 })
 
-handler.on(WalletActions.unlockWallet.type, async (store: Store, payload: UnlockWalletPayloadType) => {
-  const keyringService = getAPIProxy().keyringService
-  const result = await keyringService.unlock(payload.password)
-  store.dispatch(WalletActions.hasIncorrectPassword(!result.success))
-})
+handler.on(
+  WalletActions.unlockWallet.type,
+  async (store: Store, payload: UnlockWalletPayloadType) => {
+    const keyringService = getAPIProxy().keyringService
+    const result = await keyringService.unlock(payload.password)
+    store.dispatch(WalletActions.hasIncorrectPassword(!result.success))
+  }
+)
 
 // TODO(apaymyshev): remove apps ui
-handler.on(WalletActions.addFavoriteApp.type, async (store: Store, appItem: BraveWallet.AppItem) => {
-  await refreshWalletInfo(store)
-})
+handler.on(
+  WalletActions.addFavoriteApp.type,
+  async (store: Store, appItem: BraveWallet.AppItem) => {
+    await refreshWalletInfo(store)
+  }
+)
 
-handler.on(WalletActions.removeFavoriteApp.type, async (store: Store, appItem: BraveWallet.AppItem) => {
-  await refreshWalletInfo(store)
-})
+handler.on(
+  WalletActions.removeFavoriteApp.type,
+  async (store: Store, appItem: BraveWallet.AppItem) => {
+    await refreshWalletInfo(store)
+  }
+)
 
 handler.on(
   WalletActions.refreshAll.type,
-  async (store: Store, payload: RefreshOpts
-) => {
-  const keyringService = getAPIProxy().keyringService
-  const state = getWalletState(store)
-  if (!state.isWalletLocked) {
-    keyringService.notifyUserInteraction()
+  async (store: Store, payload: RefreshOpts) => {
+    const keyringService = getAPIProxy().keyringService
+    const state = getWalletState(store)
+    if (!state.isWalletLocked) {
+      keyringService.notifyUserInteraction()
+    }
+    interactionNotifier.beginWatchingForInteraction(
+      50000,
+      state.isWalletLocked,
+      async () => {
+        keyringService.notifyUserInteraction()
+      }
+    )
+    const braveWalletService = getAPIProxy().braveWalletService
+    const defaultFiat = await braveWalletService.getDefaultBaseCurrency()
+    const defaultCrypto =
+      await braveWalletService.getDefaultBaseCryptocurrency()
+    const defaultCurrencies = {
+      fiat: defaultFiat.currency,
+      crypto: defaultCrypto.cryptocurrency
+    }
+    store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
+    // Fetch Balances and Prices
+    if (!state.isWalletLocked && state.isWalletCreated) {
+      // refresh networks registry & selected network
+      await store
+        .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
+        .unwrap()
+      await store.dispatch(refreshVisibleTokenInfo())
+      await store.dispatch(refreshPortfolioFilterOptions())
+      await braveWalletService.discoverAssetsOnAllSupportedChains()
+    }
   }
-  interactionNotifier.beginWatchingForInteraction(50000, state.isWalletLocked, async () => {
-    keyringService.notifyUserInteraction()
-  })
-  const braveWalletService = getAPIProxy().braveWalletService
-  const defaultFiat = await braveWalletService.getDefaultBaseCurrency()
-  const defaultCrypto = await braveWalletService.getDefaultBaseCryptocurrency()
-  const defaultCurrencies = {
-    fiat: defaultFiat.currency,
-    crypto: defaultCrypto.cryptocurrency
-  }
-  store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
-  // Fetch Balances and Prices
-  if (!state.isWalletLocked && state.isWalletCreated) {
-    // refresh networks registry & selected network
-    await store.dispatch(
-      walletApi.endpoints.refreshNetworkInfo.initiate()
-    ).unwrap()
-    await store.dispatch(refreshVisibleTokenInfo())
-    await store.dispatch(refreshPortfolioFilterOptions())
-    await braveWalletService.discoverAssetsOnAllSupportedChains()
-  }
-})
+)
 
 handler.on(WalletActions.getAllTokensList.type, async (store) => {
   const api = getAPIProxy()
@@ -228,61 +250,80 @@ handler.on(WalletActions.getAllTokensList.type, async (store) => {
   store.dispatch(WalletActions.setAllTokensList(allTokensList))
 })
 
-handler.on(WalletActions.addUserAsset.type, async (store: Store, payload: BraveWallet.BlockchainToken) => {
-  const { braveWalletService } = getAPIProxy()
+handler.on(
+  WalletActions.addUserAsset.type,
+  async (store: Store, payload: BraveWallet.BlockchainToken) => {
+    const { braveWalletService } = getAPIProxy()
 
-  if (payload.isErc721 || payload.isNft) {
-    const result = await getNFTMetadata(payload)
-    if (!result?.error) {
-      const response = result?.response && JSON.parse(result.response)
-      payload.logo = response.image || payload.logo
+    if (payload.isErc721 || payload.isNft) {
+      const result = await getNFTMetadata(payload)
+      if (!result?.error) {
+        const response = result?.response && JSON.parse(result.response)
+        payload.logo = response.image || payload.logo
+      }
     }
+
+    const result = await braveWalletService.addUserAsset(payload)
+
+    // Refresh balances here for adding ERC721 tokens if result is successful
+    if ((payload.isErc721 || payload.isNft) && result.success) {
+      refreshBalancesPricesAndHistory(store)
+    }
+    store.dispatch(WalletActions.addUserAssetError(!result.success))
   }
+)
 
-  const result = await braveWalletService.addUserAsset(payload)
+handler.on(
+  WalletActions.updateUserAsset.type,
+  async (store: Store, payload: UpdateUsetAssetType) => {
+    const { braveWalletService } = getAPIProxy()
+    const { existing, updated } = payload
+    // fetch NFT metadata if tokenId or contract address has changed
+    if (
+      (updated.isNft || updated.isErc721) &&
+      (updated.tokenId !== existing.tokenId ||
+        updated.contractAddress !== existing.contractAddress)
+    ) {
+      const result = await getNFTMetadata(updated)
+      if (!result?.error) {
+        try {
+          const nftMetadata = result?.response && JSON.parse(result.response)
+          updated.logo = nftMetadata?.image || ''
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    }
 
-  // Refresh balances here for adding ERC721 tokens if result is successful
-  if ((payload.isErc721 || payload.isNft) && result.success) {
-    refreshBalancesPricesAndHistory(store)
-  }
-  store.dispatch(WalletActions.addUserAssetError(!result.success))
-})
-
-handler.on(WalletActions.updateUserAsset.type, async (store: Store, payload: UpdateUsetAssetType) => {
-  const { braveWalletService } = getAPIProxy()
-  const { existing, updated } = payload
-  // fetch NFT metadata if tokenId or contract address has changed
-  if ((updated.isNft || updated.isErc721) && (updated.tokenId !== existing.tokenId || updated.contractAddress !== existing.contractAddress)) {
-    const result = await getNFTMetadata(updated)
-    if (!result?.error) {
-      try {
-        const nftMetadata = result?.response && JSON.parse(result.response)
-        updated.logo = nftMetadata?.image || ''
-      } catch (error) {
-        console.error(error)
+    const deleteResult = await braveWalletService.removeUserAsset(existing)
+    if (deleteResult.success) {
+      const addResult = await braveWalletService.addUserAsset(updated)
+      if (addResult.success) {
+        refreshBalancesPricesAndHistory(store)
+        await store.dispatch(refreshVisibleTokenInfo())
       }
     }
   }
+)
 
-  const deleteResult = await braveWalletService.removeUserAsset(existing)
-  if (deleteResult.success) {
-    const addResult = await braveWalletService.addUserAsset(updated)
-    if (addResult.success) {
-      refreshBalancesPricesAndHistory(store)
-      await store.dispatch(refreshVisibleTokenInfo())
-    }
+handler.on(
+  WalletActions.removeUserAsset.type,
+  async (store: Store, payload: BraveWallet.BlockchainToken) => {
+    const { braveWalletService } = getAPIProxy()
+    await braveWalletService.removeUserAsset(payload)
   }
-})
+)
 
-handler.on(WalletActions.removeUserAsset.type, async (store: Store, payload: BraveWallet.BlockchainToken) => {
-  const { braveWalletService } = getAPIProxy()
-  await braveWalletService.removeUserAsset(payload)
-})
-
-handler.on(WalletActions.setUserAssetVisible.type, async (store: Store, payload: SetUserAssetVisiblePayloadType) => {
-  const { braveWalletService } = getAPIProxy()
-  await braveWalletService.setUserAssetVisible(payload.token, payload.isVisible)
-})
+handler.on(
+  WalletActions.setUserAssetVisible.type,
+  async (store: Store, payload: SetUserAssetVisiblePayloadType) => {
+    const { braveWalletService } = getAPIProxy()
+    await braveWalletService.setUserAssetVisible(
+      payload.token,
+      payload.isVisible
+    )
+  }
+)
 
 handler.on(
   WalletActions.refreshBalancesAndPriceHistory.type,
@@ -291,15 +332,21 @@ handler.on(
   }
 )
 
-handler.on(WalletActions.selectPortfolioTimeline.type, async (store: Store, payload: BraveWallet.AssetPriceTimeframe) => {
-  store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
-})
+handler.on(
+  WalletActions.selectPortfolioTimeline.type,
+  async (store: Store, payload: BraveWallet.AssetPriceTimeframe) => {
+    store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
+  }
+)
 
-handler.on(WalletActions.removeSitePermission.type, async (store: Store, payload: RemoveSitePermissionPayloadType) => {
-  const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.resetPermission(payload.accountId)
-  await refreshWalletInfo(store)
-})
+handler.on(
+  WalletActions.removeSitePermission.type,
+  async (store: Store, payload: RemoveSitePermissionPayloadType) => {
+    const braveWalletService = getAPIProxy().braveWalletService
+    await braveWalletService.resetPermission(payload.accountId)
+    await refreshWalletInfo(store)
+  }
+)
 
 handler.on(WalletActions.expandWalletNetworks.type, async (store) => {
   chrome.tabs.create({ url: 'chrome://settings/wallet/networks' }, () => {
@@ -309,29 +356,35 @@ handler.on(WalletActions.expandWalletNetworks.type, async (store) => {
   })
 })
 
-handler.on(WalletActions.getCoinMarkets.type, async (store: Store, payload: GetCoinMarketPayload) => {
-  const assetRatioService = getAPIProxy().assetRatioService
-  const result = await assetRatioService.getCoinMarkets(payload.vsAsset, payload.limit)
-  store.dispatch(WalletActions.setCoinMarkets(result))
-})
+handler.on(
+  WalletActions.getCoinMarkets.type,
+  async (store: Store, payload: GetCoinMarketPayload) => {
+    const assetRatioService = getAPIProxy().assetRatioService
+    const result = await assetRatioService.getCoinMarkets(
+      payload.vsAsset,
+      payload.limit
+    )
+    store.dispatch(WalletActions.setCoinMarkets(result))
+  }
+)
 
 handler.on(
   WalletActions.updateAccountName.type,
   async (_store: Store, payload: UpdateAccountNamePayloadType) => {
     const { keyringService } = getAPIProxy()
-    const result =
-      await keyringService.setAccountName(payload.accountId, payload.name)
+    const result = await keyringService.setAccountName(
+      payload.accountId,
+      payload.name
+    )
     return result.success
-  })
+  }
+)
 
 handler.on(
   WalletActions.removeAccount.type,
   async (_store: Store, payload: RemoveAccountPayloadType) => {
     const { keyringService } = getAPIProxy()
-    await keyringService.removeAccount(
-      payload.accountId,
-      payload.password
-    )
+    await keyringService.removeAccount(payload.accountId, payload.password)
   }
 )
 
@@ -340,16 +393,13 @@ handler.on(
   async (store: Store, payload: ImportAccountPayloadType) => {
     const { keyringService } = getAPIProxy()
     const result =
-      payload.coin === BraveWallet.CoinType.FIL &&
-        payload.network
-        ? await keyringService
-          .importFilecoinAccount(
+      payload.coin === BraveWallet.CoinType.FIL && payload.network
+        ? await keyringService.importFilecoinAccount(
             payload.accountName,
             payload.privateKey,
             payload.network
           )
-        : await keyringService
-          .importAccount(
+        : await keyringService.importAccount(
             payload.accountName,
             payload.privateKey,
             payload.coin
@@ -359,23 +409,24 @@ handler.on(
     } else {
       store.dispatch(WalletActions.setImportAccountError(true))
     }
-  })
+  }
+)
 
-handler.on(WalletActions.importAccountFromJson.type,
+handler.on(
+  WalletActions.importAccountFromJson.type,
   async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
     const { keyringService } = getAPIProxy()
-    const result =
-      await keyringService
-        .importAccountFromJson(
-          payload.accountName,
-          payload.password,
-          payload.json
-        )
+    const result = await keyringService.importAccountFromJson(
+      payload.accountName,
+      payload.password,
+      payload.json
+    )
     if (result.account) {
       store.dispatch(WalletActions.setImportAccountError(false))
     } else {
       store.dispatch(WalletActions.setImportAccountError(true))
     }
-  })
+  }
+)
 
 export default handler.middleware

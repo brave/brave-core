@@ -6,29 +6,19 @@
 import * as React from 'react'
 
 // Selectors
-import {
-  UISelectors
-} from '../../../common/selectors'
+import { UISelectors } from '../../../common/selectors'
 
 // Components
-import {
-  DefaultPanelHeader
-} from './default-panel-header'
+import { DefaultPanelHeader } from './default-panel-header'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 
 // Hooks
-import {
-  useOnClickOutside
-} from '../../../common/hooks/useOnClickOutside'
-import {
-  useSafeUISelector
-} from '../../../common/hooks/use-safe-selector'
+import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 
-import {
-  PortfolioOverviewMenu
-} from '../wallet-menus/portfolio-overview-menu'
+import { PortfolioOverviewMenu } from '../wallet-menus/portfolio-overview-menu'
 
 // Styled Components
 import {
@@ -48,8 +38,7 @@ export const PortfolioOverviewHeader = () => {
     React.useState<boolean>(false)
 
   // Refs
-  const portfolioOverviewMenuRef =
-    React.useRef<HTMLDivElement>(null)
+  const portfolioOverviewMenuRef = React.useRef<HTMLDivElement>(null)
 
   // Hooks
   useOnClickOutside(
@@ -58,35 +47,23 @@ export const PortfolioOverviewHeader = () => {
     showPortfolioOverviewMenu
   )
 
-  return (
-    isPanel
-      ? <DefaultPanelHeader
-        title={getLocale('braveWalletTopNavPortfolio')}
-      />
-      : <Row
-        padding='24px 0px'
-        justifyContent='space-between'
-      >
-        <HeaderTitle>
-          {getLocale('braveWalletTopNavPortfolio')}
-        </HeaderTitle>
-        <MenuWrapper
-          ref={portfolioOverviewMenuRef}
+  return isPanel ? (
+    <DefaultPanelHeader title={getLocale('braveWalletTopNavPortfolio')} />
+  ) : (
+    <Row
+      padding='24px 0px'
+      justifyContent='space-between'
+    >
+      <HeaderTitle>{getLocale('braveWalletTopNavPortfolio')}</HeaderTitle>
+      <MenuWrapper ref={portfolioOverviewMenuRef}>
+        <CircleButton
+          onClick={() => setShowPortfolioOverviewMenu((prev) => !prev)}
         >
-          <CircleButton
-            onClick={
-              () => setShowPortfolioOverviewMenu(prev => !prev)
-            }
-          >
-            <ButtonIcon
-              name='tune'
-            />
-          </CircleButton>
-          {showPortfolioOverviewMenu &&
-            <PortfolioOverviewMenu />
-          }
-        </MenuWrapper>
-      </Row>
+          <ButtonIcon name='tune' />
+        </CircleButton>
+        {showPortfolioOverviewMenu && <PortfolioOverviewMenu />}
+      </MenuWrapper>
+    </Row>
   )
 }
 

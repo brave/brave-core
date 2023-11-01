@@ -119,8 +119,9 @@ it('should detect Date differences', () => {
 })
 
 it('should always treat function as incomparable', () => {
-  // no two different function is equal really, they capture their context variables
-  // so even if they have same toString(), they won't have same functionality
+  // no two different function is equal really, they capture their context
+  // variables so even if they have same toString(), they won't have same
+  // functionality
   const func = function (x: any) {
     return true
   }

@@ -30,9 +30,7 @@ interface Props {
 const TransactionPopup = (props: Props) => {
   return (
     <>
-      <StyledWrapper>
-        {props.children}
-      </StyledWrapper>
+      <StyledWrapper>{props.children}</StyledWrapper>
       <ClickAwayContainer />
     </>
   )

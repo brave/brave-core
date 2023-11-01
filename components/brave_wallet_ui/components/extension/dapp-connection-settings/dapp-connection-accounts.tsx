@@ -11,11 +11,9 @@ import Amount from '../../../utils/amount'
 
 // Selectors
 import {
-  useUnsafeWalletSelector
+  useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
-import {
-  WalletSelectors
-} from '../../../common/selectors'
+import { WalletSelectors } from '../../../common/selectors'
 
 // Queries
 import {
@@ -24,17 +22,11 @@ import {
 } from '../../../common/slices/api.slice.extra'
 
 // Types
-import {
-  BraveWallet
-} from '../../../constants/types'
-import {
-  DAppConnectionOptionsType
-} from './dapp-connection-settings'
+import { BraveWallet } from '../../../constants/types'
+import { DAppConnectionOptionsType } from './dapp-connection-settings'
 
 // Components
-import {
-  ChangeAccountButton
-} from './change-account-button'
+import { ChangeAccountButton } from './change-account-button'
 
 // Styled Components
 import {
@@ -56,10 +48,7 @@ interface Props {
 }
 
 export const DAppConnectionAccounts = (props: Props) => {
-  const {
-    onSelectOption,
-    getAccountsFiatValue
-  } = props
+  const { onSelectOption, getAccountsFiatValue } = props
 
   // Queries
   const { accounts } = useAccountsQuery()
@@ -69,38 +58,31 @@ export const DAppConnectionAccounts = (props: Props) => {
   const selectedCoin = selectedAccount?.accountId.coin
 
   // Selectors
-  const connectedAccountsIds =
-    useUnsafeWalletSelector(WalletSelectors.connectedAccounts)
+  const connectedAccountsIds = useUnsafeWalletSelector(
+    WalletSelectors.connectedAccounts
+  )
 
   // Memos
   const accountByCoinType = React.useMemo(() => {
-    return accounts
-      .filter((account) => account.accountId.coin === selectedCoin)
+    return accounts.filter((account) => account.accountId.coin === selectedCoin)
   }, [accounts, selectedCoin])
 
   const connectedAccounts = React.useMemo(() => {
-    return accountByCoinType.filter(
-      (account) =>
-        connectedAccountsIds
-          .some((accountId) =>
-            accountId.uniqueKey === account.accountId.uniqueKey)
+    return accountByCoinType.filter((account) =>
+      connectedAccountsIds.some(
+        (accountId) => accountId.uniqueKey === account.accountId.uniqueKey
+      )
     )
-  }, [
-    accountByCoinType,
-    connectedAccountsIds
-  ])
+  }, [accountByCoinType, connectedAccountsIds])
 
   const availableAccounts = React.useMemo(() => {
     return accountByCoinType.filter(
       (account) =>
-        !connectedAccountsIds
-          .some((accountId) =>
-            accountId.uniqueKey === account.accountId.uniqueKey)
+        !connectedAccountsIds.some(
+          (accountId) => accountId.uniqueKey === account.accountId.uniqueKey
+        )
     )
-  }, [
-    accountByCoinType,
-    connectedAccountsIds
-  ])
+  }, [accountByCoinType, connectedAccountsIds])
 
   // Methods
   const onClickBack = React.useCallback(() => {
@@ -113,24 +95,18 @@ export const DAppConnectionAccounts = (props: Props) => {
         marginBottom={22}
         justifyContent='flex-start'
       >
-        <BackButton
-          onClick={onClickBack}
-        >
+        <BackButton onClick={onClickBack}>
           <BackIcon />
         </BackButton>
-        <TitleText
-          textSize='22px'
-        >
+        <TitleText textSize='22px'>
           {getLocale('braveWalletChangeAccount')}
         </TitleText>
       </Row>
 
       <ScrollableColumn>
-        {connectedAccounts.length !== 0 &&
+        {connectedAccounts.length !== 0 && (
           <>
-            <Row
-              justifyContent='flex-start'
-            >
+            <Row justifyContent='flex-start'>
               <DescriptionText
                 textSize='14px'
                 isBold={true}
@@ -139,31 +115,27 @@ export const DAppConnectionAccounts = (props: Props) => {
               </DescriptionText>
             </Row>
 
-            {connectedAccounts.map(
-              (account: BraveWallet.AccountInfo) =>
-                <ChangeAccountButton
-                  key={account.accountId.uniqueKey}
-                  account={account}
-                  getAccountsFiatValue={getAccountsFiatValue}
-                />
-            )}
+            {connectedAccounts.map((account: BraveWallet.AccountInfo) => (
+              <ChangeAccountButton
+                key={account.accountId.uniqueKey}
+                account={account}
+                getAccountsFiatValue={getAccountsFiatValue}
+              />
+            ))}
           </>
-        }
+        )}
 
-        {connectedAccounts.length !== 0 &&
-          availableAccounts.length !== 0 &&
+        {connectedAccounts.length !== 0 && availableAccounts.length !== 0 && (
           <>
             <VerticalSpace space='8px' />
             <VerticalDivider />
             <VerticalSpace space='16px' />
           </>
-        }
+        )}
 
-        {availableAccounts.length !== 0 &&
+        {availableAccounts.length !== 0 && (
           <>
-            <Row
-              justifyContent='flex-start'
-            >
+            <Row justifyContent='flex-start'>
               <DescriptionText
                 textSize='14px'
                 isBold={true}
@@ -172,16 +144,15 @@ export const DAppConnectionAccounts = (props: Props) => {
               </DescriptionText>
             </Row>
 
-            {availableAccounts.map(
-              (account: BraveWallet.AccountInfo) =>
-                <ChangeAccountButton
-                  key={account.accountId.uniqueKey}
-                  account={account}
-                  getAccountsFiatValue={getAccountsFiatValue}
-                />
-            )}
+            {availableAccounts.map((account: BraveWallet.AccountInfo) => (
+              <ChangeAccountButton
+                key={account.accountId.uniqueKey}
+                account={account}
+                getAccountsFiatValue={getAccountsFiatValue}
+              />
+            ))}
           </>
-        }
+        )}
       </ScrollableColumn>
     </>
   )

@@ -24,10 +24,7 @@ import { Footer } from './common/footer'
 
 // Styles
 import { Skeleton } from '../../shared/loading-skeleton/styles'
-import {
-  TabRow,
-  URLText,
-} from '../shared-panel-styles'
+import { TabRow, URLText } from '../shared-panel-styles'
 import {
   StyledWrapper,
   FromCircle,
@@ -41,11 +38,10 @@ import {
   TransactionTypeText,
   AccountCircleWrapper,
   ArrowIcon,
-  FromToRow,
+  FromToRow
 } from './style'
 import { ZCashTransactionInfo } from './zcash_transaction_info'
 import { ZCashTransactionDetailBox } from '../transaction-box/zcash_transaction_detail_box'
-
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -74,12 +70,14 @@ export const ConfirmZCashTransactionPanel = () => {
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // state
-  const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
+  const [selectedTab, setSelectedTab] =
+    React.useState<confirmPanelTabs>('transaction')
 
   // methods
   const onSelectTab = React.useCallback(
     (tab: confirmPanelTabs) => () => setSelectedTab(tab),
-  [])
+    []
+  )
 
   // render
   if (
@@ -90,14 +88,17 @@ export const ConfirmZCashTransactionPanel = () => {
   ) {
     return (
       <StyledWrapper>
-        <Skeleton width={'100%'} height={'100%'} enableAnimation />
+        <Skeleton
+          width={'100%'}
+          height={'100%'}
+          enableAnimation
+        />
       </StyledWrapper>
     )
   }
 
   return (
     <StyledWrapper>
-
       <TopRow>
         <NetworkText>{transactionsNetwork.chainName}</NetworkText>
         <TransactionQueueSteps
@@ -126,30 +127,34 @@ export const ConfirmZCashTransactionPanel = () => {
           <AccountNameText>{fromAccount.name}</AccountNameText>
         </Tooltip>
 
-        {transactionDetails.recipient && transactionDetails.recipient !== fromAccount.address &&
-          <>
-            <ArrowIcon />
-            <Tooltip
-              text={transactionDetails.recipient}
-              isAddress={true}
-              position='right'
-            >
-              <AccountNameText>{transactionDetails.recipientLabel}</AccountNameText>
-            </Tooltip>
-          </>
-        }
+        {transactionDetails.recipient &&
+          transactionDetails.recipient !== fromAccount.address && (
+            <>
+              <ArrowIcon />
+              <Tooltip
+                text={transactionDetails.recipient}
+                isAddress={true}
+                position='right'
+              >
+                <AccountNameText>
+                  {transactionDetails.recipientLabel}
+                </AccountNameText>
+              </Tooltip>
+            </>
+          )}
       </FromToRow>
 
       <TransactionTypeText>{transactionTitle}</TransactionTypeText>
       <TransactionAmountBig>
-        {new Amount(transactionDetails.valueExact)
-            .formatAsAsset(undefined, transactionDetails.symbol)
-        }
+        {new Amount(transactionDetails.valueExact).formatAsAsset(
+          undefined,
+          transactionDetails.symbol
+        )}
       </TransactionAmountBig>
       <TransactionFiatAmountBig>
-        {
-          new Amount(transactionDetails.fiatValue).formatAsFiat(defaultCurrencies.fiat)
-        }
+        {new Amount(transactionDetails.fiatValue).formatAsFiat(
+          defaultCurrencies.fiat
+        )}
       </TransactionFiatAmountBig>
 
       <TabRow>
@@ -165,18 +170,19 @@ export const ConfirmZCashTransactionPanel = () => {
         />
       </TabRow>
 
-      <MessageBox
-        isDetails={selectedTab === 'details'}
-      >
-
-        {selectedTab === 'transaction'
-          ? <ZCashTransactionInfo />
-          : <ZCashTransactionDetailBox
-              data={selectedPendingTransaction.txDataUnion?.zecTxData}
-            />
-        }
+      <MessageBox isDetails={selectedTab === 'details'}>
+        {selectedTab === 'transaction' ? (
+          <ZCashTransactionInfo />
+        ) : (
+          <ZCashTransactionDetailBox
+            data={selectedPendingTransaction.txDataUnion?.zecTxData}
+          />
+        )}
       </MessageBox>
-      <Footer onConfirm={onConfirm} onReject={onReject} />
+      <Footer
+        onConfirm={onConfirm}
+        onReject={onReject}
+      />
     </StyledWrapper>
   )
 }

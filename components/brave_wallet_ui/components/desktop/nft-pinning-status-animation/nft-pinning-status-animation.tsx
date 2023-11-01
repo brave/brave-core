@@ -8,7 +8,13 @@ import * as React from 'react'
 import { OverallPinningStatus, useNftPin } from '../../../common/hooks/nft-pin'
 
 // styles
-import { GifWrapper, Ipfs, IpfsUploading, StatusGif, StyledWrapper } from './nft-pinning-status-animation.style'
+import {
+  GifWrapper,
+  Ipfs,
+  IpfsUploading,
+  StatusGif,
+  StyledWrapper
+} from './nft-pinning-status-animation.style'
 import UploadingDarkGif from '../../../assets/svg-icons/nft-ipfs/uploading-dark.gif'
 import UploadingLightGif from '../../../assets/svg-icons/nft-ipfs/uploading-light.gif'
 import SuccessDarkGif from '../../../assets/svg-icons/nft-ipfs/success-dark.gif'
@@ -20,13 +26,18 @@ interface Props {
   isAutopinEnabled?: boolean
 }
 
-export const NftPinningStatusAnimation = ({ size, status, isAutopinEnabled }: Props) => {
+export const NftPinningStatusAnimation = ({
+  size,
+  status,
+  isAutopinEnabled
+}: Props) => {
   const { pinnableNftsCount } = useNftPin()
 
   return (
     <StyledWrapper
       size={
-        status === OverallPinningStatus.PINNING_IN_PROGRESS || status === OverallPinningStatus.PINNING_FINISHED
+        status === OverallPinningStatus.PINNING_IN_PROGRESS ||
+        status === OverallPinningStatus.PINNING_FINISHED
           ? '30px'
           : size || '14px'
       }

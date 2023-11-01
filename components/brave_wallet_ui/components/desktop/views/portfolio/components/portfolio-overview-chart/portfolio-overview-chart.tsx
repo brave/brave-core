@@ -15,7 +15,7 @@ import LineChart from '../../../../line-chart'
 import { Column } from '../../../../../shared/style'
 
 interface Props {
-  hasZeroBalance: boolean,
+  hasZeroBalance: boolean
   portfolioPriceHistory: TokenPriceHistory[] | undefined
   isLoading: boolean
 }
@@ -35,7 +35,10 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
 
   // render
   return (
-    <Column alignItems='center' fullWidth>
+    <Column
+      alignItems='center'
+      fullWidth
+    >
       <LineChart
         priceData={priceHistory}
         isLoading={hasZeroBalance ? false : isLoading}

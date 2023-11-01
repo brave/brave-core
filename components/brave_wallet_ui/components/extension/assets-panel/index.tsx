@@ -6,10 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
-import {
-  BraveWallet,
-  WalletRoutes
-} from '../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../constants/types'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -29,16 +26,14 @@ import {
   useGetTokenSpotPricesQuery,
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
+import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 import {
-  querySubscriptionOptions60s
-} from '../../../common/slices/constants'
-import {
-  makeSelectAllUserAssetsForChainFromQueryResult
+  makeSelectAllUserAssetsForChainFromQueryResult //
 } from '../../../common/slices/entities/blockchain-token.entity'
 
 // Hooks
 import {
-  useScopedBalanceUpdater
+  useScopedBalanceUpdater //
 } from '../../../common/hooks/use-scoped-balance-updater'
 
 // Components
@@ -143,29 +138,40 @@ export const AssetsPanel = (props: Props) => {
     [routeToAssetDetails]
   )
 
-  const tokenPriceIds = React.useMemo(() =>
-    selectedAccount && userTokens && tokenBalancesRegistry
-      ? userTokens
-          .filter(token => new Amount(
-            getBalance(selectedAccount.accountId, token, tokenBalancesRegistry)).gt(0))
-          .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
-          .map(getPriceIdForToken)
-      : [],
+  const tokenPriceIds = React.useMemo(
+    () =>
+      selectedAccount && userTokens && tokenBalancesRegistry
+        ? userTokens
+            .filter((token) =>
+              new Amount(
+                getBalance(
+                  selectedAccount.accountId,
+                  token,
+                  tokenBalancesRegistry
+                )
+              ).gt(0)
+            )
+            .filter(
+              (token) => !token.isErc721 && !token.isErc1155 && !token.isNft
+            )
+            .map(getPriceIdForToken)
+        : [],
     [selectedAccount, userTokens, tokenBalancesRegistry]
   )
 
-  const {
-    data: spotPriceRegistry,
-    isLoading: isLoadingSpotPrices
-  } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length &&
-      !isLoadingBalances && !isFetchingBalances && defaultFiatCurrency
+  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+    useGetTokenSpotPricesQuery(
+      tokenPriceIds.length &&
+        !isLoadingBalances &&
+        !isFetchingBalances &&
+        defaultFiatCurrency
         ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
         : skipToken,
-    querySubscriptionOptions60s
-  )
+      querySubscriptionOptions60s
+    )
 
-  const areTokenBalancesLoaded = selectedAccount &&
+  const areTokenBalancesLoaded =
+    selectedAccount &&
     tokenBalancesRegistry &&
     !isLoadingBalances &&
     !isFetchingBalances
@@ -186,14 +192,20 @@ export const AssetsPanel = (props: Props) => {
           key={getAssetIdKey(token)}
           assetBalance={
             areTokenBalancesLoaded
-              ? getBalance(selectedAccount.accountId, token, tokenBalancesRegistry)
+              ? getBalance(
+                  selectedAccount.accountId,
+                  token,
+                  tokenBalancesRegistry
+                )
               : ''
           }
           token={token}
           spotPrice={
             spotPriceRegistry && !isLoadingSpotPrices
-              ? getTokenPriceAmountFromRegistry(spotPriceRegistry, token)
-                .format()
+              ? getTokenPriceAmountFromRegistry(
+                  spotPriceRegistry,
+                  token
+                ).format()
               : ''
           }
           isPanel={true}

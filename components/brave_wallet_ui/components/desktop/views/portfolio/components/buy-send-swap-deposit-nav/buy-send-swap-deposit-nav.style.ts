@@ -6,14 +6,8 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Icon from '@brave/leo/react/icon'
-import {
-  WalletButton,
-  Column,
-  Row
-} from '../../../../../shared/style'
-import {
-  layoutSmallWidth
-} from '../../../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { WalletButton, Column, Row } from '../../../../../shared/style'
+import { layoutSmallWidth } from '../../../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const ButtonsRow = styled(Row)`
   display: none;
@@ -25,14 +19,13 @@ export const ButtonsRow = styled(Row)`
 export const ButtonWrapper = styled(Column)`
   margin-right: 28px;
   &:last-child {
-      margin-right: 0px;
-    }
+    margin-right: 0px;
+  }
 `
 
-export const Button = styled(WalletButton) <
-  {
-    minWidth?: number
-  }>`
+export const Button = styled(WalletButton)<{
+  minWidth?: number
+}>`
   display: flex;
   align-items: center;
   justify-content: center;

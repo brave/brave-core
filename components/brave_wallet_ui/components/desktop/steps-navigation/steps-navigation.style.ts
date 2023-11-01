@@ -42,7 +42,7 @@ export const BackButton = styled(WalletButton)<{
   line-height: 20px;
   letter-spacing: 0.01em;
   border: none;
-  text-decoration: ${(p) => p.to ? 'none' : 'unset'};
+  text-decoration: ${(p) => (p.to ? 'none' : 'unset')};
 
   & > span {
     margin-left: 8px;
@@ -56,7 +56,7 @@ export const DotsWrapper = styled.div`
   align-items: center;
   justify-content: center;
   align-self: center;
-  
+
   & > * {
     display: inline;
     width: 10px;

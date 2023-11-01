@@ -7,8 +7,8 @@ import styled from 'styled-components'
 
 export const NftImageIframe = styled.iframe`
   border: none;
-  width: ${p => p.width ? p.width : '40px'};
-  height: ${p => p.height ? p.height : '40px'};
+  width: ${(p) => (p.width ? p.width : '40px')};
+  height: ${(p) => (p.height ? p.height : '40px')};
 `
 
 export const NftImageResponsiveIframe = styled.iframe`
@@ -32,5 +32,5 @@ export const IconWrapper = styled.div<{ disabled?: boolean }>`
   width: 100%;
   height: 100%;
   z-index: 3;
-  filter: ${(p) => p.disabled ? 'grayscale(100%)' : 'none'};
+  filter: ${(p) => (p.disabled ? 'grayscale(100%)' : 'none')};
 `

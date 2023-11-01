@@ -55,8 +55,8 @@ export const PanelTitle = styled.span`
 
 export const MessageBox = styled.div<Partial<StyleProps>>`
   display: flex;
-  align-items: ${(p) => p.needsCenterAlignment ? 'center' : 'flex-start'};
-  justify-content: ${(p) => p.needsCenterAlignment ? 'center' : 'flex-start'};
+  align-items: ${(p) => (p.needsCenterAlignment ? 'center' : 'flex-start')};
+  justify-content: ${(p) => (p.needsCenterAlignment ? 'center' : 'flex-start')};
   flex-direction: column;
   border: 1px solid ${(p) => p.theme.color.divider01};
   box-sizing: border-box;

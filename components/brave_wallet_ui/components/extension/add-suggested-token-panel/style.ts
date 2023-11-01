@@ -5,7 +5,11 @@
 import styled from 'styled-components'
 import ProgressRing from '@brave/leo/react/progressRing'
 
-import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
+import {
+  AssetIconProps,
+  AssetIconFactory,
+  WalletButton
+} from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;

@@ -15,7 +15,7 @@ export const Button = styled(StyledButton)`
   @media (prefers-color-scheme: dark) {
     --button-background: ${(p) => p.theme.color.background02};
     --button-background-hover: ${(p) => p.theme.color.background01};
-    }
+  }
   background-color: var(--button-background);
   border-radius: 4px;
   font-size: 14px;

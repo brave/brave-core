@@ -62,7 +62,8 @@ export type GasEstimate = {
 }
 
 export type AmountValidationErrorType =
-  'fromAmountDecimalsOverflow' | 'toAmountDecimalsOverflow'
+  | 'fromAmountDecimalsOverflow'
+  | 'toAmountDecimalsOverflow'
 
 export type SwapValidationErrorType =
   | AmountValidationErrorType

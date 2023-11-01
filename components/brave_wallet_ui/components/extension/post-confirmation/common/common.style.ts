@@ -32,7 +32,7 @@ export const TransactionStatusDescription = styled.div`
   font-size: 12px;
   line-height: 20px;
   text-align: center;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
 
   padding: 8px 16px;
   flex-grow: 1;
@@ -45,7 +45,7 @@ export const PendingTransactionsRow = styled.div`
   font-size: 12px;
   line-height: 20px;
   text-align: center;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   padding: 8px 16px;
   flex-grow: 1;
 `
@@ -73,7 +73,7 @@ export const DetailButton = styled(WalletButton)`
   font-size: 12px;
   line-height: 20px;
   text-align: center;
-  color: ${p => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

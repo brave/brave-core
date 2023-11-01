@@ -11,8 +11,14 @@ export const Tip = styled.div<{
   orientation: 'top' | 'bottom' | 'right'
   distance: number
 }>`
-  --y-tip-translation: ${(p) => p.orientation === 'top' ? `-${p.distance + 22}px` : p.orientation === 'bottom' ? `${p.distance + 22}px` : '0px'};
-  --x-tip-translation: ${(p) => p.orientation === 'right' ? `${p.distance + 10}px` : '0px'};
+  --y-tip-translation: ${(p) =>
+    p.orientation === 'top'
+      ? `-${p.distance + 22}px`
+      : p.orientation === 'bottom'
+      ? `${p.distance + 22}px`
+      : '0px'};
+  --x-tip-translation: ${(p) =>
+    p.orientation === 'right' ? `${p.distance + 10}px` : '0px'};
   /* #1E2029 does not exist in design system */
   --nav-tool-tip-background: #1e2029;
   @media (prefers-color-scheme: dark) {
@@ -21,12 +27,14 @@ export const Tip = styled.div<{
   }
   position: absolute;
   border-radius: 4px;
-  left: ${(p) => p.horizontalAlign === 'left' ? '0px' : 'unset'};
-  right: ${(p) => p.horizontalAlign === 'right' ? '0px' : 'unset'};
-  transform: translateY(var(--y-tip-translation)) translateX(var(--x-tip-translation));
+  left: ${(p) => (p.horizontalAlign === 'left' ? '0px' : 'unset')};
+  right: ${(p) => (p.horizontalAlign === 'right' ? '0px' : 'unset')};
+  transform: translateY(var(--y-tip-translation))
+    translateX(var(--x-tip-translation));
   padding: 8px 16px;
   color: ${(p) => p.theme.palette.white};
-  background: ${(p) => p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.palette.black};
+  background: ${(p) =>
+    p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.palette.black};
   z-index: 10;
   font-family: Poppins;
   font-size: 14px;
@@ -43,15 +51,25 @@ export const Pointer = styled.div<{
   --top-rotation: 180deg;
   --bottom-rotation: 0deg;
   --right-rotation: 270deg;
-  --y-translation: ${(p) => p.orientation === 'top' ? `-${p.distance}px` : p.orientation === 'bottom' ? `${p.distance}px` : '0px'};
-  --x-translation: ${(p) => p.orientation === 'right' ? `${p.distance}px` : '0px'};
+  --y-translation: ${(p) =>
+    p.orientation === 'top'
+      ? `-${p.distance}px`
+      : p.orientation === 'bottom'
+      ? `${p.distance}px`
+      : '0px'};
+  --x-translation: ${(p) =>
+    p.orientation === 'right' ? `${p.distance}px` : '0px'};
   width: 0;
   height: 0;
   border-style: solid;
   position: absolute;
-  transform: translateY(var(--y-translation)) translateX(var(--x-translation)) rotate(var(--${(p) => p.orientation}-rotation));
+  transform: translateY(var(--y-translation)) translateX(var(--x-translation))
+    rotate(var(--${(p) => p.orientation}-rotation));
   border-width: 0 7px 8px 7px;
   z-index: 10;
   /* --nav-tool-tip-background is closer aligned with swap design theme */
-  border-color: transparent transparent ${(p) => p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.palette.black} transparent;
+  border-color: transparent transparent
+    ${(p) =>
+      p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.palette.black}
+    transparent;
 `

@@ -20,7 +20,7 @@ interface Props {
   customNetwork?: BraveWallet.NetworkInfo
 }
 
-export function SelectNetwork ({
+export function SelectNetwork({
   onSelectCustomNetwork,
   selectedNetwork,
   customNetwork
@@ -39,14 +39,14 @@ export function SelectNetwork ({
   // render
   return (
     <>
-      {networksList.map((network) =>
+      {networksList.map((network) => (
         <SelectNetworkItem
           selectedNetwork={selectedNetwork}
           key={`${network.chainId}-${network.coin}`}
           network={network}
           onSelectCustomNetwork={onSelectCustomNetwork}
         />
-      )}
+      ))}
     </>
   )
 }

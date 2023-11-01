@@ -19,7 +19,10 @@ import { WalletPageActions } from '../../../actions'
 import {
   NavButton //
 } from '../../../../components/extension/buttons/nav-button/index'
-import { NewPasswordInput, NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
+import {
+  NewPasswordInput,
+  NewPasswordValues
+} from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingNewWalletStepsNavigation } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'
 import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
 
@@ -38,12 +41,16 @@ interface OnboardingCreatePasswordProps {
   onWalletCreated: () => void
 }
 
-export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) => {
+export const OnboardingCreatePassword = (
+  props: OnboardingCreatePasswordProps
+) => {
   const { isHardwareOnboarding, onWalletCreated } = props
 
   // redux
   const dispatch = useDispatch()
-  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
+  const isWalletCreated = useSelector(
+    ({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated
+  )
 
   // state
   const [isValid, setIsValid] = React.useState(false)
@@ -56,10 +63,13 @@ export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) =
     }
   }, [password, isValid])
 
-  const handlePasswordChange = React.useCallback(({ isValid, password }: NewPasswordValues) => {
-    setPassword(password)
-    setIsValid(isValid)
-  }, [])
+  const handlePasswordChange = React.useCallback(
+    ({ isValid, password }: NewPasswordValues) => {
+      setPassword(password)
+      setIsValid(isValid)
+    },
+    []
+  )
 
   // effects
   React.useEffect(() => {
@@ -73,7 +83,6 @@ export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) =
     <CenteredPageLayout>
       <MainWrapper>
         <StyledWrapper>
-
           <OnboardingNewWalletStepsNavigation
             goBackUrl={WalletRoutes.OnboardingWelcome}
             currentStep={WalletRoutes.OnboardingCreatePassword}
@@ -83,7 +92,9 @@ export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) =
 
           <TitleAndDescriptionContainer>
             <Title>{getLocale('braveWalletCreatePasswordTitle')}</Title>
-            <Description>{getLocale('braveWalletCreatePasswordDescription')}</Description>
+            <Description>
+              {getLocale('braveWalletCreatePasswordDescription')}
+            </Description>
           </TitleAndDescriptionContainer>
 
           <NewPasswordInput
@@ -100,7 +111,6 @@ export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) =
               disabled={!isValid}
             />
           </NextButtonRow>
-
         </StyledWrapper>
       </MainWrapper>
     </CenteredPageLayout>

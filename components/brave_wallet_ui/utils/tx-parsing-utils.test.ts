@@ -4,10 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import {
-  BraveWallet,
-  SerializableTransactionInfo,
-} from '../constants/types'
+import { BraveWallet, SerializableTransactionInfo } from '../constants/types'
 import { SwapExchangeProxy } from '../common/constants/registry'
 
 // utils
@@ -16,7 +13,7 @@ import Amount from './amount'
 // mocks
 import {
   getMockedTransactionInfo,
-  mockEthAccountInfo,
+  mockEthAccountInfo
 } from '../common/constants/mocks'
 import { mockWalletState } from '../stories/mock-data/mock-wallet-state'
 import {
@@ -136,7 +133,10 @@ describe('Transaction Parsing utils', () => {
               ...mockTransactionInfo.txDataUnion.ethTxData1559,
               baseData: {
                 ...mockTransactionInfo.txDataUnion.ethTxData1559.baseData,
-                to: name === '0x Swap' ? SwapExchangeProxy : mockEthAccountInfo.address
+                to:
+                  name === '0x Swap'
+                    ? SwapExchangeProxy
+                    : mockEthAccountInfo.address
               }
             }
           }

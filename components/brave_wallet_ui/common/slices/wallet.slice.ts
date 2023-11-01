@@ -42,9 +42,7 @@ import {
 
 // Options
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
-import {
-  NoneGroupByOption
-} from '../../options/group-assets-by-options'
+import { NoneGroupByOption } from '../../options/group-assets-by-options'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -77,7 +75,7 @@ const defaultState: WalletState = {
   defaultSolanaWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: {
     eTldPlusOne: '',
-    originSpec: '',
+    originSpec: ''
   },
   gasEstimates: undefined,
   connectedAccounts: [],
@@ -97,11 +95,7 @@ const defaultState: WalletState = {
       LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION
     ) || HighToLowAssetsFilterOption.id,
   selectedGroupAssetsByItem:
-    window
-      .localStorage
-      .getItem(
-        LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY
-      ) ||
+    window.localStorage.getItem(LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY) ||
     NoneGroupByOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
   solFeeEstimates: undefined,
@@ -127,9 +121,11 @@ const defaultState: WalletState = {
       LOCAL_STORAGE_KEYS.USER_REMOVED_NON_FUNGIBLE_TOKEN_IDS
     ) || '[]'
   ),
-  deletedNonFungibleTokenIds: JSON.parse(localStorage.getItem(
-    LOCAL_STORAGE_KEYS.USER_DELETED_NON_FUNGIBLE_TOKEN_IDS
-  ) || '[]'),
+  deletedNonFungibleTokenIds: JSON.parse(
+    localStorage.getItem(
+      LOCAL_STORAGE_KEYS.USER_DELETED_NON_FUNGIBLE_TOKEN_IDS
+    ) || '[]'
+  ),
   hidePortfolioNFTsTab:
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB) ===
     'true',
@@ -152,7 +148,7 @@ const defaultState: WalletState = {
       LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS
     ) === 'true',
   isRefreshingNetworksAndTokens: false,
-  importAccountError: undefined,
+  importAccountError: undefined
 }
 
 // async actions
@@ -197,8 +193,9 @@ export const WalletAsyncActions = {
   removeSitePermission: createAction<RemoveSitePermissionPayloadType>(
     'removeSitePermission'
   ),
-  refreshNetworksAndTokens:
-    createAction<RefreshOpts>('refreshNetworksAndTokens'),
+  refreshNetworksAndTokens: createAction<RefreshOpts>(
+    'refreshNetworksAndTokens'
+  ),
   expandWalletNetworks: createAction('expandWalletNetworks'), // replace with chrome.tabs.create helper
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory'
@@ -211,15 +208,10 @@ export const WalletAsyncActions = {
     'setSelectedAccountFilterItem'
   ),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
-  updateAccountName: createAction<UpdateAccountNamePayloadType>(
-    'updateAccountName'
-  ),
-  removeAccount: createAction<RemoveAccountPayloadType>(
-    'removeAccount'
-  ),
-  importAccount: createAction<ImportAccountPayloadType>(
-    'importAccount'
-  ),
+  updateAccountName:
+    createAction<UpdateAccountNamePayloadType>('updateAccountName'),
+  removeAccount: createAction<RemoveAccountPayloadType>('removeAccount'),
+  importAccount: createAction<ImportAccountPayloadType>('importAccount'),
   importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>(
     'importAccountFromJson'
   )
@@ -351,7 +343,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       ) {
         state.isMetaMaskInstalled = payload
       },
-
 
       setPasswordAttempts(
         state: WalletState,
@@ -493,12 +484,12 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       ) => {
         state.isRefreshingNetworksAndTokens = payload
       },
-      setImportAccountError (
+      setImportAccountError(
         state: WalletState,
         { payload }: PayloadAction<ImportAccountErrorType>
       ) {
         state.importAccountError = payload
-      },
+      }
     },
     extraReducers: (builder) => {
       builder.addCase(WalletAsyncActions.locked.type, (state) => {

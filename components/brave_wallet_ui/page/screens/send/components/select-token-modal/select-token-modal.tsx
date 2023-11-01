@@ -30,9 +30,7 @@ import {
   getTokenPriceAmountFromRegistry
 } from '../../../../../utils/pricing-utils'
 import Amount from '../../../../../utils/amount'
-import {
-  getBalance
-} from '../../../../../utils/balance-utils'
+import { getBalance } from '../../../../../utils/balance-utils'
 import { getAssetIdKey } from '../../../../../utils/asset-utils'
 
 // Queries
@@ -43,19 +41,21 @@ import {
   useGetTokenSpotPricesQuery,
   useSetSelectedAccountMutation,
   useGetUserTokensRegistryQuery,
-  useGetAccountInfosRegistryQuery,
+  useGetAccountInfosRegistryQuery
 } from '../../../../../common/slices/api.slice'
 import {
-  querySubscriptionOptions60s
+  querySubscriptionOptions60s //
 } from '../../../../../common/slices/constants'
 
 // hooks
 import {
-  useBalancesFetcher
+  useBalancesFetcher //
 } from '../../../../../common/hooks/use-balances-fetcher'
 
 // Options
-import { AllNetworksOption } from '../../../../../options/network-filter-options'
+import {
+  AllNetworksOption //
+} from '../../../../../options/network-filter-options'
 
 // Assets
 import CloseIcon from '../../../../../assets/svg-icons/close.svg'
@@ -63,16 +63,30 @@ import CloseIcon from '../../../../../assets/svg-icons/close.svg'
 // Components
 import { TokenListItem } from '../token-list-item/token-list-item'
 import {
-  TokenListItemSkeleton
+  TokenListItemSkeleton //
 } from '../token-list-item/token_list_item_skeleton'
 import {
-  LoadingSkeleton
+  LoadingSkeleton //
 } from '../../../../../components/shared/loading-skeleton/index'
-import { NetworkFilterWithSearch } from '../../../../../components/desktop/network-filter-with-search'
+import {
+  NetworkFilterWithSearch //
+} from '../../../../../components/desktop/network-filter-with-search'
 
 // Styled Components
-import { Row, Column, Text, VerticalDivider, IconButton, VerticalSpacer } from '../../shared.styles'
-import { Wrapper, Modal, ScrollContainer, AccountSection } from './select-tokenmodal.style'
+import {
+  Row,
+  Column,
+  Text,
+  VerticalDivider,
+  IconButton,
+  VerticalSpacer
+} from '../../shared.styles'
+import {
+  Wrapper,
+  Modal,
+  ScrollContainer,
+  AccountSection
+} from './select-tokenmodal.style'
 
 interface Props {
   onClose: () => void
@@ -86,8 +100,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // State
     const [searchValue, setSearchValue] = React.useState<string>('')
-    const [showNetworkDropDown, setShowNetworkDropDown] = React.useState<boolean>(false)
-    const [selectedNetworkFilter, setSelectedNetworkFilter] = React.useState<BraveWallet.NetworkInfo>(AllNetworksOption)
+    const [showNetworkDropDown, setShowNetworkDropDown] =
+      React.useState<boolean>(false)
+    const [selectedNetworkFilter, setSelectedNetworkFilter] =
+      React.useState<BraveWallet.NetworkInfo>(AllNetworksOption)
 
     // Queries & Mutations
     const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -101,7 +117,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     })
 
     const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
-      selectFromResult: result => ({
+      selectFromResult: (result) => ({
         userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
       })
     })
@@ -116,14 +132,17 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         // this check will make sure we are returning the correct
         // LOCALHOST asset for each account.
         const coinName = CoinTypesMap[account.accountId.coin]
-        const localHostCoins = userVisibleTokensInfo.filter((token) =>
-          token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
-        const accountsLocalHost = localHostCoins.find((token) =>
-          token.symbol.toUpperCase() === coinName)
+        const localHostCoins = userVisibleTokensInfo.filter(
+          (token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID
+        )
+        const accountsLocalHost = localHostCoins.find(
+          (token) => token.symbol.toUpperCase() === coinName
+        )
 
-      const chainList = filterNetworksForAccount(networks, account.accountId).map(
-        (network) => network.chainId
-      )
+        const chainList = filterNetworksForAccount(
+          networks,
+          account.accountId
+        ).map((network) => network.chainId)
 
         const list = userVisibleTokensInfo.filter(
           (token) =>
@@ -133,7 +152,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
         if (
           accountsLocalHost &&
-          (account.accountId.keyringId !== BraveWallet.KeyringId.kFilecoin)
+          account.accountId.keyringId !== BraveWallet.KeyringId.kFilecoin
         ) {
           list.push(accountsLocalHost)
           return list
@@ -144,19 +163,19 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       [userVisibleTokensInfo, networks]
     )
 
-    const {
-      data: tokenBalancesRegistry,
-      isLoading: isLoadingBalances
-    } = useBalancesFetcher({
-      accounts,
-      networks
-    })
+    const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
+      useBalancesFetcher({
+        accounts,
+        networks
+      })
 
     const getTokenListWithBalances = React.useCallback(
       (account: BraveWallet.AccountInfo) => {
-        return getTokenListByAccount(account)
-          .filter(token => new Amount(
-            getBalance(account.accountId, token, tokenBalancesRegistry)).gt(0))
+        return getTokenListByAccount(account).filter((token) =>
+          new Amount(
+            getBalance(account.accountId, token, tokenBalancesRegistry)
+          ).gt(0)
+        )
       },
       [getTokenListByAccount, tokenBalancesRegistry]
     )
@@ -164,25 +183,28 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const getTokensBySelectedSendOption = React.useCallback(
       (account: BraveWallet.AccountInfo) => {
         if (selectedSendOption === SendPageTabHashes.nft) {
-          return getTokenListWithBalances(account).filter(token =>
-            token.isErc721 || token.isNft || token.isErc1155)
+          return getTokenListWithBalances(account).filter(
+            (token) => token.isErc721 || token.isNft || token.isErc1155
+          )
         }
-        return getTokenListWithBalances(account).filter(token =>
-          !token.isErc721 && !token.isErc1155 && !token.isNft)
+        return getTokenListWithBalances(account).filter(
+          (token) => !token.isErc721 && !token.isErc1155 && !token.isNft
+        )
       },
       [getTokenListWithBalances, selectedSendOption]
     )
 
-    const tokenPriceIds = React.useMemo(() =>
-      accounts
-        .flatMap(getTokensBySelectedSendOption)
-        .filter(token => !token.isErc721 && !token.isErc1155 && !token.isNft)
-        .map(getPriceIdForToken),
+    const tokenPriceIds = React.useMemo(
+      () =>
+        accounts
+          .flatMap(getTokensBySelectedSendOption)
+          .filter(
+            (token) => !token.isErc721 && !token.isErc1155 && !token.isNft
+          )
+          .map(getPriceIdForToken),
       [accounts, getTokensBySelectedSendOption]
     )
-    const {
-      data: spotPriceRegistry
-    } = useGetTokenSpotPricesQuery(
+    const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
       !isLoadingBalances && tokenPriceIds.length && defaultFiatCurrency
         ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
         : skipToken,
@@ -194,9 +216,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
           return getTokensBySelectedSendOption(account)
         }
-        return getTokensBySelectedSendOption(account).filter((token) =>
-          token.chainId === selectedNetworkFilter.chainId &&
-          token.coin === selectedNetworkFilter.coin
+        return getTokensBySelectedSendOption(account).filter(
+          (token) =>
+            token.chainId === selectedNetworkFilter.chainId &&
+            token.coin === selectedNetworkFilter.coin
         )
       },
       [
@@ -211,13 +234,14 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         if (searchValue === '') {
           return getTokensByNetwork(account)
         }
-        return getTokensByNetwork(account).filter((token) =>
-          token.name.toLowerCase() === searchValue.toLowerCase() ||
-          token.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
-          token.symbol.toLocaleLowerCase() === searchValue.toLowerCase() ||
-          token.symbol.toLowerCase().startsWith(searchValue.toLowerCase()) ||
-          token.contractAddress.toLocaleLowerCase() ===
-            searchValue.toLowerCase()
+        return getTokensByNetwork(account).filter(
+          (token) =>
+            token.name.toLowerCase() === searchValue.toLowerCase() ||
+            token.name.toLowerCase().startsWith(searchValue.toLowerCase()) ||
+            token.symbol.toLocaleLowerCase() === searchValue.toLowerCase() ||
+            token.symbol.toLowerCase().startsWith(searchValue.toLowerCase()) ||
+            token.contractAddress.toLocaleLowerCase() ===
+              searchValue.toLowerCase()
         )
       },
       [getTokensByNetwork, searchValue]
@@ -240,9 +264,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         })
 
         const reducedAmounts = amounts.reduce(function (a, b) {
-          return a !== '' && b !== ''
-            ? new Amount(a).plus(b).format()
-            : ''
+          return a !== '' && b !== '' ? new Amount(a).plus(b).format() : ''
         })
         return new Amount(reducedAmounts).formatAsFiat(defaultFiatCurrency)
       },
@@ -270,26 +292,32 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       [selectSendAsset, onClose, setNetwork]
     )
 
-    const onSearch = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchValue(event.target.value)
-    }, [])
+    const onSearch = React.useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value)
+      },
+      []
+    )
 
     const onToggleShowNetworkDropdown = React.useCallback(() => {
       setShowNetworkDropDown((prev) => !prev)
     }, [])
 
-    const onSelectAssetsNetwork = React.useCallback((network: BraveWallet.NetworkInfo) => {
-      setSelectedNetworkFilter(network)
-      setShowNetworkDropDown(false)
-    }, [])
+    const onSelectAssetsNetwork = React.useCallback(
+      (network: BraveWallet.NetworkInfo) => {
+        setSelectedNetworkFilter(network)
+        setShowNetworkDropDown(false)
+      },
+      []
+    )
 
     // Memos
     const emptyTokensList = React.useMemo(() => {
-      return !isLoadingBalances &&
-        accounts.map(
-          (account) =>
-            getTokensBySearchValue(account)
-        ).flat(1).length === 0
+      return (
+        !isLoadingBalances &&
+        accounts.map((account) => getTokensBySearchValue(account)).flat(1)
+          .length === 0
+      )
     }, [accounts, getTokensBySearchValue, isLoadingBalances])
 
     const tokensByAccount = React.useMemo(() => {
@@ -301,11 +329,15 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               verticalPadding={9}
               horizontalPadding={16}
             >
-              <LoadingSkeleton width={80} height={14} />
+              <LoadingSkeleton
+                width={80}
+                height={14}
+              />
             </AccountSection>
             <Column
               columnWidth='full'
-              horizontalPadding={8}>
+              horizontalPadding={8}
+            >
               <TokenListItemSkeleton
                 isNFT={selectedSendOption === SendPageTabHashes.nft}
               />
@@ -314,29 +346,49 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         )
       }
       if (emptyTokensList) {
-        return <Text textSize='14px' isBold={false} textColor='text03'>
-          {getLocale('braveWalletNoAvailableTokens')}
-        </Text>
+        return (
+          <Text
+            textSize='14px'
+            isBold={false}
+            textColor='text03'
+          >
+            {getLocale('braveWalletNoAvailableTokens')}
+          </Text>
+        )
       }
 
       return accounts.map((account) =>
         getTokensBySearchValue(account).length > 0 ? (
-          <Column columnWidth='full' key={account.name}>
+          <Column
+            columnWidth='full'
+            key={account.name}
+          >
             <AccountSection
               rowWidth='full'
               verticalPadding={6}
               horizontalPadding={16}
             >
-              <Text textColor='text02' textSize='14px' isBold={true}>
+              <Text
+                textColor='text02'
+                textSize='14px'
+                isBold={true}
+              >
                 {account.name}
               </Text>
               {selectedSendOption === SendPageTabHashes.token && (
-                <Text textColor='text03' textSize='14px' isBold={false}>
+                <Text
+                  textColor='text03'
+                  textSize='14px'
+                  isBold={false}
+                >
                   {getAccountFiatValue(account)}
                 </Text>
               )}
             </AccountSection>
-            <Column columnWidth='full' horizontalPadding={8}>
+            <Column
+              columnWidth='full'
+              horizontalPadding={8}
+            >
               <VerticalSpacer size={8} />
               {getTokensBySearchValue(account).map((token) => (
                 <TokenListItem
@@ -384,13 +436,28 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     return (
       <Wrapper>
         <Modal ref={forwardedRef}>
-          <Row rowWidth='full' horizontalPadding={24} verticalPadding={20}>
-            <Text textSize='18px' isBold={true}>
+          <Row
+            rowWidth='full'
+            horizontalPadding={24}
+            verticalPadding={20}
+          >
+            <Text
+              textSize='18px'
+              isBold={true}
+            >
               {modalTitle}
             </Text>
-            <IconButton icon={CloseIcon} onClick={onClose} size={20} />
+            <IconButton
+              icon={CloseIcon}
+              onClick={onClose}
+              size={20}
+            />
           </Row>
-          <Row rowWidth='full' horizontalPadding={16} marginBottom={16}>
+          <Row
+            rowWidth='full'
+            horizontalPadding={16}
+            marginBottom={16}
+          >
             <NetworkFilterWithSearch
               searchValue={searchValue}
               searchPlaceholder={

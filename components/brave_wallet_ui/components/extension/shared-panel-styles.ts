@@ -157,8 +157,7 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
   background-color: ${(p) =>
     p.warningType === 'danger'
       ? p.theme.color.errorBackground
-      : p.theme.color.warningBackground
-  };
+      : p.theme.color.warningBackground};
 `
 
 export const WarningTitle = styled.span<Partial<StyleProps>>`
@@ -170,8 +169,7 @@ export const WarningTitle = styled.span<Partial<StyleProps>>`
   color: ${(p) =>
     p.warningType === 'danger'
       ? p.theme.color.errorText
-      : p.theme.color.text01
-  };
+      : p.theme.color.text01};
 `
 
 export const WarningBoxTitleRow = styled.div`
@@ -195,10 +193,8 @@ export const WarningBoxIcon = styled.div<{
   color?: keyof IThemeProps['color']
 }>`
   mask-size: 100%;
-  background-color: ${(p) => p?.color
-    ? p.theme.color[p.color]
-    : p.theme.color.errorIcon
-  };
+  background-color: ${(p) =>
+    p?.color ? p.theme.color[p.color] : p.theme.color.errorIcon};
   -webkit-mask-image: url(${WarningTriangle});
   mask-image: url(${WarningTriangle});
 `

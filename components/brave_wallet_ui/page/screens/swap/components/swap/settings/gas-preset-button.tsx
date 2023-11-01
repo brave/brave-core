@@ -6,18 +6,13 @@
 import * as React from 'react'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 
 // Types
-import {
-  GasFeeOption,
-  GasEstimate
-} from '../../../../../../constants/types'
+import { GasFeeOption, GasEstimate } from '../../../../../../constants/types'
 
 import {
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery //
 } from '../../../../../../common/slices/api.slice'
 
 // Styled Components
@@ -38,25 +33,53 @@ export const GasPresetButton = (props: Props) => {
   const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   return (
-    <Button onClick={onClick} isSelected={isSelected}>
+    <Button
+      onClick={onClick}
+      isSelected={isSelected}
+    >
       <Row>
         <IconWrapper>
-          <ButtonIcon size={20} name={option.icon} />
+          <ButtonIcon
+            size={20}
+            name={option.icon}
+          />
         </IconWrapper>
-        <Column horizontalAlign='flex-start' columnHeight='full'>
-          <Text textColor='text02' textSize='14px' isBold={true}>
+        <Column
+          horizontalAlign='flex-start'
+          columnHeight='full'
+        >
+          <Text
+            textColor='text02'
+            textSize='14px'
+            isBold={true}
+          >
             {getLocale(option.name)}
           </Text>
-          <Text textColor='text03' textSize='12px' isBold={false}>
+          <Text
+            textColor='text03'
+            textSize='12px'
+            isBold={false}
+          >
             {'<'} {gasEstimates.time}
           </Text>
         </Column>
       </Row>
-      <Column horizontalAlign='flex-end' columnHeight='full'>
-        <Text textColor='text02' textSize='14px' isBold={true}>
+      <Column
+        horizontalAlign='flex-end'
+        columnHeight='full'
+      >
+        <Text
+          textColor='text02'
+          textSize='14px'
+          isBold={true}
+        >
           {gasEstimates.gasFeeGwei} {getLocale('braveSwapGwei')}
         </Text>
-        <Text textColor='text03' textSize='12px' isBold={false}>
+        <Text
+          textColor='text03'
+          textSize='12px'
+          isBold={false}
+        >
           {gasEstimates.gasFee} {selectedNetwork?.symbol}
         </Text>
       </Column>

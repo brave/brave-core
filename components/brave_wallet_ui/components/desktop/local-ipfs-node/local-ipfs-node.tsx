@@ -7,7 +7,10 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // api
-import { useGetAutopinEnabledQuery, useSetAutopinEnabledMutation } from '../../../common/slices/api.slice'
+import {
+  useGetAutopinEnabledQuery,
+  useSetAutopinEnabledMutation
+} from '../../../common/slices/api.slice'
 
 // types
 import { WalletRoutes } from '../../../constants/types'
@@ -48,11 +51,13 @@ export const LocalIpfsNodeScreen = (props: Props) => {
   const history = useHistory()
 
   // redux
-  const { beforeTag, afterTag } = splitStringForTag(getLocale('braveWalletNftPinningRunNodeDescription'))
-  
+  const { beforeTag, afterTag } = splitStringForTag(
+    getLocale('braveWalletNftPinningRunNodeDescription')
+  )
+
   // queries
   const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
-  
+
   // mutations
   const [setAutoPinStatus] = useSetAutopinEnabledMutation()
 
@@ -83,7 +88,9 @@ export const LocalIpfsNodeScreen = (props: Props) => {
         </HeadingWrapper>
         <Section>
           <LeftWrapper>
-            <SectionText>{getLocale('braveWalletNftPinningRunNodeHeading')}</SectionText>
+            <SectionText>
+              {getLocale('braveWalletNftPinningRunNodeHeading')}
+            </SectionText>
           </LeftWrapper>
           <RightWrapper>
             <Description>
@@ -96,10 +103,19 @@ export const LocalIpfsNodeScreen = (props: Props) => {
         </Section>
         <Section>
           <LeftWrapper>
-            <Row gap='16px' alignItems='center' justifyContent='flex-start' margin='0 0 0 8px'>
-              <ActionButton onClick={onClickRunNode}>{getLocale('braveWalletNftPinningPinNftsButton')}</ActionButton>
+            <Row
+              gap='16px'
+              alignItems='center'
+              justifyContent='flex-start'
+              margin='0 0 0 8px'
+            >
+              <ActionButton onClick={onClickRunNode}>
+                {getLocale('braveWalletNftPinningPinNftsButton')}
+              </ActionButton>
             </Row>
-            <CheckNftsButton onClick={onClickCheckNfts}>{getLocale('braveWalletNftPinningCheckNftsButton')}</CheckNftsButton>
+            <CheckNftsButton onClick={onClickCheckNfts}>
+              {getLocale('braveWalletNftPinningCheckNftsButton')}
+            </CheckNftsButton>
           </LeftWrapper>
         </Section>
       </MainContent>

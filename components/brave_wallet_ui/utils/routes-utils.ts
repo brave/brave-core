@@ -57,7 +57,9 @@ export const makeAccountTransactionRoute = (
     WalletRoutes.Account.replace(':accountId', id).replace(
       ':selectedTab?',
       AccountPageTabs.AccountTransactionsSub
-    ) + '#' + transactionId.replace('#', '')
+    ) +
+    '#' +
+    transactionId.replace('#', '')
   )
 }
 

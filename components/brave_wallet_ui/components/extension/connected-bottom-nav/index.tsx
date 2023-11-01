@@ -32,7 +32,7 @@ export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
 }
 
-function ConnectedBottomNav (props: Props) {
+function ConnectedBottomNav(props: Props) {
   const { onNavigate, isSwapDisabled, isBuyDisabled, selectedNetwork } = props
 
   const navigate = (path: PanelTypes) => () => {
@@ -49,19 +49,26 @@ function ConnectedBottomNav (props: Props) {
           maxWidth='150px'
           text={
             selectedNetwork
-              ? getLocale('braveWalletBuyNotSupportedTooltip').replace('$1', selectedNetwork.chainName)
+              ? getLocale('braveWalletBuyNotSupportedTooltip').replace(
+                  '$1',
+                  selectedNetwork.chainName
+                )
               : ''
           }
         >
-          <NavButton disabled={isBuyDisabled} onClick={navigate('buy')}>
-            <NavButtonText disabled={isBuyDisabled}>{getLocale('braveWalletBuy')}</NavButtonText>
+          <NavButton
+            disabled={isBuyDisabled}
+            onClick={navigate('buy')}
+          >
+            <NavButtonText disabled={isBuyDisabled}>
+              {getLocale('braveWalletBuy')}
+            </NavButtonText>
           </NavButton>
         </Tooltip>
 
         <NavDivider />
 
         <NavButton onClick={navigate('send')}>
-
           <NavButtonText>{getLocale('braveWalletSend')}</NavButtonText>
         </NavButton>
 
@@ -73,13 +80,21 @@ function ConnectedBottomNav (props: Props) {
           verticalPosition='above'
           text={
             selectedNetwork
-              ? getLocale('braveWalletSwapNotSupportedTooltip').replace('$1', selectedNetwork.chainName)
+              ? getLocale('braveWalletSwapNotSupportedTooltip').replace(
+                  '$1',
+                  selectedNetwork.chainName
+                )
               : ''
           }
           maxWidth='150px'
         >
-          <NavButton disabled={isSwapDisabled} onClick={navigate('swap')}>
-            <NavButtonText disabled={isSwapDisabled}>{getLocale('braveWalletSwap')}</NavButtonText>
+          <NavButton
+            disabled={isSwapDisabled}
+            onClick={navigate('swap')}
+          >
+            <NavButtonText disabled={isSwapDisabled}>
+              {getLocale('braveWalletSwap')}
+            </NavButtonText>
           </NavButton>
         </Tooltip>
 
@@ -88,7 +103,6 @@ function ConnectedBottomNav (props: Props) {
         <TransactionsButton onClick={navigate('activity')}>
           <TransactionsIcon />
         </TransactionsButton>
-
       </NavOutline>
     </StyledWrapper>
   )

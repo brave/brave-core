@@ -17,42 +17,42 @@ export const StyledWrapper = styled.div`
   position: relative;
 `
 
-export const DropDownButton = styled(WalletButton)<
-  {
-    isV2?: boolean
-  }>`
+export const DropDownButton = styled(WalletButton)<{
+  isV2?: boolean
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  background-color: ${(p) => p.isV2 ? leo.color.container.highlight : 'transparent'};
+  background-color: ${(p) =>
+    p.isV2 ? leo.color.container.highlight : 'transparent'};
   cursor: pointer;
   outline: none;
-  border: ${(p) => p.isV2 ? 'none' : `1px solid ${p.theme.color.interactive08}`};
-  border-radius: ${(p) => p.isV2 ? '8px' : '4px'};
+  border: ${(p) =>
+    p.isV2 ? 'none' : `1px solid ${p.theme.color.interactive08}`};
+  border-radius: ${(p) => (p.isV2 ? '8px' : '4px')};
   font-family: Poppins;
   font-style: normal;
-  font-size: ${(p) => p.isV2 ? '14px' : '13px'};
-  line-height: ${(p) => p.isV2 ? '24px' : '20px'};
+  font-size: ${(p) => (p.isV2 ? '14px' : '13px')};
+  line-height: ${(p) => (p.isV2 ? '24px' : '20px')};
   letter-spacing: 0.01em;
-  padding: ${p => p.isV2 ? '10px 8px' : '8px 12px'};
-  margin-bottom: ${(p) => p.isV2 ? 0 : '8px'};
-  color: ${(p) => p.isV2 ? leo.color.text.secondary : p.theme.color.text01};
+  padding: ${(p) => (p.isV2 ? '10px 8px' : '8px 12px')};
+  margin-bottom: ${(p) => (p.isV2 ? 0 : '8px')};
+  color: ${(p) => (p.isV2 ? leo.color.text.secondary : p.theme.color.text01)};
 `
 
-export const DropDownIcon = styled(CaratStrongDownIcon)<
-  {
-    isV2?: boolean
-  }>`
+export const DropDownIcon = styled(CaratStrongDownIcon)<{
+  isV2?: boolean
+}>`
   width: 18px;
   height: 18px;
-  color: ${(p) => p.isV2 ? leo.color.text.secondary : p.theme.color.interactive07};
+  color: ${(p) =>
+    p.isV2 ? leo.color.text.secondary : p.theme.color.interactive07};
 `
 
-export const DropDown = styled.div<
-  {
-    isV2?: boolean
-  }>`
+export const DropDown = styled.div<{
+  isV2?: boolean
+}>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

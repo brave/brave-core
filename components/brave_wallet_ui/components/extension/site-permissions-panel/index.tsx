@@ -68,7 +68,9 @@ export const SitePermissions = () => {
   return (
     <StyledWrapper>
       <HeaderRow>
-        <FavIcon src={`chrome://favicon/size/64@1x/${activeOrigin.originSpec}`} />
+        <FavIcon
+          src={`chrome://favicon/size/64@1x/${activeOrigin.originSpec}`}
+        />
         <HeaderColumn>
           <SiteOriginTitle>
             <CreateSiteOrigin
@@ -76,11 +78,18 @@ export const SitePermissions = () => {
               eTldPlusOne={activeOrigin.eTldPlusOne}
             />
           </SiteOriginTitle>
-          <AccountsTitle>{getLocale('braveWalletSitePermissionsAccounts').replace('$1', connectedAccounts.length.toString())}</AccountsTitle>
+          <AccountsTitle>
+            {getLocale('braveWalletSitePermissionsAccounts').replace(
+              '$1',
+              connectedAccounts.length.toString()
+            )}
+          </AccountsTitle>
         </HeaderColumn>
       </HeaderRow>
       <AddressContainer>
-        <NewAccountButton onClick={onAddAccount}>{getLocale('braveWalletSitePermissionsNewAccount')}</NewAccountButton>
+        <NewAccountButton onClick={onAddAccount}>
+          {getLocale('braveWalletSitePermissionsNewAccount')}
+        </NewAccountButton>
         <DividerLine />
         <AddressScrollContainer>
           {accountByCoinType.map((account) => (

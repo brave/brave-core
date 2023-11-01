@@ -21,7 +21,7 @@ import {
   ConfirmButton,
   Description,
   Header,
-  StyledWrapper,
+  StyledWrapper
 } from './remove-nft-modal.styles'
 
 interface Props {
@@ -33,15 +33,24 @@ export const RemoveNftModal = ({ onConfirm, onCancel }: Props) => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   return (
-    <PopupModal title='' width='456px' hideHeader={isPanel} onClose={onCancel}>
+    <PopupModal
+      title=''
+      width='456px'
+      hideHeader={isPanel}
+      onClose={onCancel}
+    >
       <StyledWrapper>
         <Header>{getLocale('braveWalletRemoveNftModalHeader')}</Header>
         <Description>
           {getLocale('braveWalletRemoveNftModalDescription')}
         </Description>
         <ButtonRow>
-          <CancelButton onClick={onCancel}>{getLocale('braveWalletRemoveNftModalCancel')}</CancelButton>
-          <ConfirmButton onClick={onConfirm}>{getLocale('braveWalletRemoveNftModalConfirm')}</ConfirmButton>
+          <CancelButton onClick={onCancel}>
+            {getLocale('braveWalletRemoveNftModalCancel')}
+          </CancelButton>
+          <ConfirmButton onClick={onConfirm}>
+            {getLocale('braveWalletRemoveNftModalConfirm')}
+          </ConfirmButton>
         </ButtonRow>
       </StyledWrapper>
     </PopupModal>

@@ -25,7 +25,7 @@ const coinTypesMapping = {
   [BraveWallet.CoinType.ETH]: CoinTypes.ETH,
   [BraveWallet.CoinType.FIL]: CoinTypes.FIL,
   [BraveWallet.CoinType.BTC]: CoinTypes.BTC,
-  [BraveWallet.CoinType.ZEC]: CoinTypes.ZEC,
+  [BraveWallet.CoinType.ZEC]: CoinTypes.ZEC
 }
 
 export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
@@ -39,33 +39,33 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
       return []
     }
 
-    const nonSolArgs = arg.accounts
-      .flatMap((account) => account.accountId.coin !== CoinTypes.SOL &&
-        arg.tokens && coinTypesMapping[account.accountId.coin] !== undefined
-          ? [
-              {
-                accountId: account.accountId,
-                chainId: arg.network.chainId,
-                coin: coinTypesMapping[account.accountId.coin],
-                tokens: arg.tokens
-              }
-            ]
-          : []
-      )
+    const nonSolArgs = arg.accounts.flatMap((account) =>
+      account.accountId.coin !== CoinTypes.SOL &&
+      arg.tokens &&
+      coinTypesMapping[account.accountId.coin] !== undefined
+        ? [
+            {
+              accountId: account.accountId,
+              chainId: arg.network.chainId,
+              coin: coinTypesMapping[account.accountId.coin],
+              tokens: arg.tokens
+            }
+          ]
+        : []
+    )
 
-    const solArgs = arg.accounts
-      .flatMap((account) =>
-        account.accountId.coin === CoinTypes.SOL
-          ? [
-              {
-                accountId: account.accountId,
-                chainId: arg.network.chainId,
-                coin: CoinTypes.SOL,
-                tokens: arg.tokens
-              }
-            ]
-          : []
-      )
+    const solArgs = arg.accounts.flatMap((account) =>
+      account.accountId.coin === CoinTypes.SOL
+        ? [
+            {
+              accountId: account.accountId,
+              chainId: arg.network.chainId,
+              coin: CoinTypes.SOL,
+              tokens: arg.tokens
+            }
+          ]
+        : []
+    )
 
     return [...nonSolArgs, ...solArgs]
   }, [arg])

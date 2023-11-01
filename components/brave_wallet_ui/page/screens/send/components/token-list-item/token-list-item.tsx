@@ -56,15 +56,15 @@ export const TokenListItem = (props: Props) => {
   const { onClick, token, balance, spotPrice } = props
 
   // Wallet Selectors
-  const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+  const defaultCurrencies = useUnsafeWalletSelector(
+    WalletSelectors.defaultCurrencies
+  )
 
   // Queries
   const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
   const fiatBalance = React.useMemo(() => {
-    return new Amount(balance)
-      .divideByDecimals(token.decimals)
-      .times(spotPrice)
+    return new Amount(balance).divideByDecimals(token.decimals).times(spotPrice)
   }, [
     spotPrice,
     balance,
@@ -82,8 +82,8 @@ export const TokenListItem = (props: Props) => {
     if (tokensNetwork) {
       return token.symbol !== ''
         ? getLocale('braveWalletPortfolioAssetNetworkDescription')
-          .replace('$1', token.symbol)
-          .replace('$2', tokensNetwork.chainName ?? '')
+            .replace('$1', token.symbol)
+            .replace('$2', tokensNetwork.chainName ?? '')
         : tokensNetwork.chainName
     }
     return token.symbol
@@ -103,9 +103,15 @@ export const TokenListItem = (props: Props) => {
         <IconAndName horizontalAlign='flex-start'>
           <IconsWrapper>
             {token.isErc721 || token.isNft ? (
-              <NftIconWithPlaceholder asset={token} network={tokensNetwork} />
+              <NftIconWithPlaceholder
+                asset={token}
+                network={tokensNetwork}
+              />
             ) : (
-              <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+              <AssetIconWithPlaceholder
+                asset={token}
+                network={tokensNetwork}
+              />
             )}
             {tokensNetwork &&
               checkIfTokenNeedsNetworkIcon(
@@ -113,7 +119,10 @@ export const TokenListItem = (props: Props) => {
                 token.contractAddress
               ) && (
                 <NetworkIconWrapper>
-                  <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
+                  <CreateNetworkIcon
+                    network={tokensNetwork}
+                    marginRight={0}
+                  />
                 </NetworkIconWrapper>
               )}
           </IconsWrapper>
@@ -138,21 +147,32 @@ export const TokenListItem = (props: Props) => {
         </IconAndName>
         {!token.isErc721 && !token.isNft && (
           <Column horizontalAlign='flex-end'>
-            <Text textColor='text01' textSize='14px' isBold={true}>
+            <Text
+              textColor='text01'
+              textSize='14px'
+              isBold={true}
+            >
               {formatTokenBalanceWithSymbol(
                 balance,
                 token.decimals,
                 token.symbol
               )}
             </Text>
-            <Text textColor='text03' textSize='12px' isBold={false}>
+            <Text
+              textColor='text03'
+              textSize='12px'
+              isBold={false}
+            >
               {formattedFiatBalance}
             </Text>
           </Column>
         )}
       </Button>
       {(token.isErc721 || token.isNft) && (
-        <NFTInfoTooltip network={tokensNetwork} token={token} />
+        <NFTInfoTooltip
+          network={tokensNetwork}
+          token={token}
+        />
       )}
     </ButtonWrapper>
   )

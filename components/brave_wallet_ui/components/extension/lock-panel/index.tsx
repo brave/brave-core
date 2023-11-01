@@ -20,13 +20,7 @@ import { PasswordInput } from '../../shared/password-input/index'
 import { NavButton } from '../buttons/nav-button/index'
 
 // style
-import {
-  StyledWrapper,
-  Title,
-  Column,
-  PanelIcon,
-  RestoreButton
-} from './style'
+import { StyledWrapper, Title, Column, PanelIcon, RestoreButton } from './style'
 
 export interface Props {
   onSubmit: (password: string) => void
@@ -35,7 +29,7 @@ export interface Props {
   hideBackground?: boolean
 }
 
-export function LockPanel ({
+export function LockPanel({
   onSubmit,
   onClickRestore,
   disabled,
@@ -43,26 +37,32 @@ export function LockPanel ({
 }: Props) {
   // redux
   const dispatch = useDispatch()
-  const hasIncorrectPassword = useSelector(({
-    wallet
-  }: { wallet: WalletState }) => wallet.hasIncorrectPassword)
+  const hasIncorrectPassword = useSelector(
+    ({ wallet }: { wallet: WalletState }) => wallet.hasIncorrectPassword
+  )
 
   // state
   const [inputValue, setInputValue] = React.useState<string>('')
 
   // methods
-  const handlePasswordChanged = React.useCallback((value: string) => {
-    setInputValue(value)
-    if (hasIncorrectPassword) {
-      dispatch(WalletActions.hasIncorrectPassword(false))
-    }
-  }, [hasIncorrectPassword])
+  const handlePasswordChanged = React.useCallback(
+    (value: string) => {
+      setInputValue(value)
+      if (hasIncorrectPassword) {
+        dispatch(WalletActions.hasIncorrectPassword(false))
+      }
+    },
+    [hasIncorrectPassword]
+  )
 
-  const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && !disabled) {
-      onSubmit(inputValue)
-    }
-  }, [disabled, onSubmit, inputValue])
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter' && !disabled) {
+        onSubmit(inputValue)
+      }
+    },
+    [disabled, onSubmit, inputValue]
+  )
 
   const onClickUnlockButton = React.useCallback(() => {
     onSubmit(inputValue)
@@ -91,9 +91,11 @@ export function LockPanel ({
         onSubmit={onClickUnlockButton}
         disabled={disabled || inputValue === ''}
       />
-      {onClickRestore && <RestoreButton onClick={onClickRestore}>
-        {getLocale('braveWalletWelcomeRestoreButton')}
-      </RestoreButton>}
+      {onClickRestore && (
+        <RestoreButton onClick={onClickRestore}>
+          {getLocale('braveWalletWelcomeRestoreButton')}
+        </RestoreButton>
+      )}
     </StyledWrapper>
   )
 }

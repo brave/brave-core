@@ -6,20 +6,13 @@
 import * as React from 'react'
 
 // Utils
-import {
-  getLocale
-} from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../../common/locale'
 
 // Components
-import {
-  StandardModal
-} from '../../modals/standard-modal/standard-modal'
+import { StandardModal } from '../../modals/standard-modal/standard-modal'
 
 // Styled Components
-import {
-  Link,
-  Section
-} from './privacy-modal.style'
+import { Link, Section } from './privacy-modal.style'
 import {
   Row,
   Column,
@@ -43,12 +36,22 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
         modalHeight='dynamic'
         modalBackground='background02'
       >
-        <Row rowWidth='full' horizontalPadding={24} verticalPadding={20}>
-          <Text textSize='18px' isBold={true}>
+        <Row
+          rowWidth='full'
+          horizontalPadding={24}
+          verticalPadding={20}
+        >
+          <Text
+            textSize='18px'
+            isBold={true}
+          >
             {getLocale('braveSwapPrivacyPolicy')}
           </Text>
           <IconButton onClick={onClose}>
-            <Icon size={24} name='close' />
+            <Icon
+              size={24}
+              name='close'
+            />
           </IconButton>
         </Row>
         <Column
@@ -85,22 +88,17 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
               textAlign='left'
               isBold={true}
             >
-              {
-                getLocale('braveSwapV2Disclaimer')
-                  .replaceAll('$1', '0x')
-                  .replace('$2', 'EVM')
-                  .replace('$3', 'Ethereum')
-              }
+              {getLocale('braveSwapV2Disclaimer')
+                .replaceAll('$1', '0x')
+                .replace('$2', 'EVM')
+                .replace('$3', 'Ethereum')}
             </Text>
             <Link
               rel='noopener noreferrer'
               target='_blank'
               href='https://www.0x.org/privacy'
             >
-              {
-                getLocale('braveSwapV2Privacy')
-                  .replace('$1', '0x')
-              }
+              {getLocale('braveSwapV2Privacy').replace('$1', '0x')}
             </Link>
           </Section>
           <VerticalSpacer size={20} />
@@ -123,22 +121,17 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
               textAlign='left'
               isBold={true}
             >
-              {
-                getLocale('braveSwapV2Disclaimer')
-                  .replaceAll('$1', 'Jupiter')
-                  .replace('$2', 'Solana')
-                  .replace('$3', 'Solana')
-              }
+              {getLocale('braveSwapV2Disclaimer')
+                .replaceAll('$1', 'Jupiter')
+                .replace('$2', 'Solana')
+                .replace('$3', 'Solana')}
             </Text>
             <Link
               rel='noopener noreferrer'
               target='_blank'
               href='https://docs.jup.ag/legal/privacy-policy'
             >
-              {
-                getLocale('braveSwapV2Privacy')
-                  .replace('$1', 'Jupiter')
-              }
+              {getLocale('braveSwapV2Privacy').replace('$1', 'Jupiter')}
             </Link>
           </Section>
           <VerticalSpacer size={20} />

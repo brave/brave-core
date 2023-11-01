@@ -22,8 +22,8 @@ interface PasswordInputState {
   value?: string
 }
 
-export interface Props extends
-  Pick<React.DOMAttributes<HTMLInputElement>, 'onFocus' | 'onBlur'> {
+export interface Props
+  extends Pick<React.DOMAttributes<HTMLInputElement>, 'onFocus' | 'onBlur'> {
   onChange: (value: string) => void
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
   autoFocus?: boolean
@@ -33,9 +33,9 @@ export interface Props extends
   error: string
   showToggleButton?: boolean
   name?: string
-  children?: React.ReactChild | (
-    (state: PasswordInputState) => React.ReactElement
-  )
+  children?:
+    | React.ReactChild
+    | ((state: PasswordInputState) => React.ReactElement)
   revealValue?: boolean
 }
 
@@ -63,7 +63,9 @@ export const PasswordInput = (props: Props) => {
   const inputPassword = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event.target.value)
-    }, [onChange])
+    },
+    [onChange]
+  )
 
   // render
   return (
@@ -80,7 +82,7 @@ export const PasswordInput = (props: Props) => {
           name={name}
           hasError={hasError}
           type={
-            (revealValue || (showToggleButton && showPassword))
+            revealValue || (showToggleButton && showPassword)
               ? 'text'
               : 'password'
           }
@@ -93,17 +95,15 @@ export const PasswordInput = (props: Props) => {
           onBlur={onBlur}
           onFocus={onFocus}
         />
-        {showToggleButton &&
+        {showToggleButton && (
           <ToggleVisibilityButton
-            onClick={() => setShowPassword(prev => !prev)}
+            onClick={() => setShowPassword((prev) => !prev)}
           >
-            <ToggleVisibilityIcon
-              name={showPassword ? 'eye-off' : 'eye-on'}
-            />
+            <ToggleVisibilityIcon name={showPassword ? 'eye-off' : 'eye-on'} />
           </ToggleVisibilityButton>
-        }
+        )}
       </Row>
-      {hasError && error &&
+      {hasError && error && (
         <Row
           justifyContent='flex-start'
           alignItems='center'
@@ -111,24 +111,18 @@ export const PasswordInput = (props: Props) => {
           padding='2px 6px'
         >
           <ErrorIcon />
-          <ErrorText
-            textSize='12px'
-          >
-            {error}
-          </ErrorText>
+          <ErrorText textSize='12px'>{error}</ErrorText>
         </Row>
-      }
+      )}
       {/* Allow custom child elements */}
-      {children &&
-        typeof children === 'function'
+      {children && typeof children === 'function'
         ? children({
-          error,
-          hasError,
-          showPassword,
-          value
-        })
-        : children
-      }
+            error,
+            hasError,
+            showPassword,
+            value
+          })
+        : children}
     </Column>
   )
 }

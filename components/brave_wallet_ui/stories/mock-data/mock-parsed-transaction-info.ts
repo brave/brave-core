@@ -9,7 +9,10 @@ import { parseTransactionWithPrices } from '../../utils/tx-utils'
 
 // mocks
 import { mockWalletState } from './mock-wallet-state'
-import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
+import {
+  mockedErc20ApprovalTransaction,
+  mockTransactionInfo
+} from './mock-transaction-info'
 import { mockNetworks } from './mock-networks'
 
 export const mockParsedTransactionInfo = parseTransactionWithPrices({

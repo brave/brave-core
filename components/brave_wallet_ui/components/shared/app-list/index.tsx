@@ -8,12 +8,7 @@ import { NavButton } from '../../extension/buttons/nav-button/index'
 import { AppListItem } from '../app-list-item/index'
 import { getLocale } from '../../../../common/locale'
 // Styled Components
-import {
-  StyledWrapper,
-  CategoryRow,
-  CategoryTitle,
-  ButtonRow
-} from './style'
+import { StyledWrapper, CategoryRow, CategoryTitle, ButtonRow } from './style'
 
 export interface Props {
   list: AppsListType[]
@@ -36,7 +31,7 @@ export class AppList extends React.PureComponent<Props> {
     }
   }
 
-  render () {
+  render() {
     const { list, action } = this.props
     return (
       <StyledWrapper>
@@ -45,28 +40,26 @@ export class AppList extends React.PureComponent<Props> {
             <CategoryRow>
               <CategoryTitle>{option.category}</CategoryTitle>
             </CategoryRow>
-            {option.appList.map((item) =>
+            {option.appList.map((item) => (
               <AppListItem
                 key={item.name}
                 appInfo={item}
                 isStared={this.checkIsSelected(item)}
                 toggleFavorite={this.toggleFavorite(item)}
               />
-            )}
-            {option.category !== getLocale('braveWalletSearchCategory') &&
+            ))}
+            {option.category !== getLocale('braveWalletSearchCategory') && (
               <ButtonRow>
                 <NavButton
                   disabled={false}
                   text={option.categoryButtonText}
                   onSubmit={action}
                   buttonType='secondary'
-
                 />
               </ButtonRow>
-            }
+            )}
           </StyledWrapper>
-        )
-        )}
+        ))}
       </StyledWrapper>
     )
   }

@@ -6,11 +6,7 @@
 import * as React from 'react'
 
 // Styled Components
-import {
-  StyledWrapper,
-  SearchInput,
-  SearchIcon
-} from './style'
+import { StyledWrapper, SearchInput, SearchIcon } from './style'
 
 interface Props {
   placeholder: string

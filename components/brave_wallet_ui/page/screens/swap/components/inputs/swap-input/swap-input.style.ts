@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import { StyledInput } from '../../shared-swap.styles'
 
-export const Input = styled(StyledInput) <{
+export const Input = styled(StyledInput)<{
   hasError: boolean
 }>`
   color: ${(p) => (p.hasError ? leo.color.red[40] : 'inherit')};

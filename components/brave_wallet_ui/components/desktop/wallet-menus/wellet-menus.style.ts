@@ -12,11 +12,10 @@ import {
   layoutSmallWidth
 } from '../wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const StyledWrapper = styled.div<
-  {
-    yPosition?: number,
-    right?: number
-  }>`
+export const StyledWrapper = styled.div<{
+  yPosition?: number
+  right?: number
+}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,25 +26,20 @@ export const StyledWrapper = styled.div<
   border: 1px solid ${leo.color.divider.subtle};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
-  top: ${(p) => p.yPosition !== undefined ? p.yPosition : 35}px;
-  right: ${(p) => p.right !== undefined ? p.right : 0}px;
+  top: ${(p) => (p.yPosition !== undefined ? p.yPosition : 35)}px;
+  right: ${(p) => (p.right !== undefined ? p.right : 0)}px;
   z-index: 20;
- `
+`
 
-export const PopupButton = styled(WalletButton) <
-  {
-    minWidth?: number
-  }>`
+export const PopupButton = styled(WalletButton)<{
+  minWidth?: number
+}>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   text-align: left;
   cursor: pointer;
-  min-width: ${(p) =>
-    p.minWidth !== undefined
-      ? p.minWidth
-      : 220
-  }px;
+  min-width: ${(p) => (p.minWidth !== undefined ? p.minWidth : 220)}px;
   border-radius: 8px;
   outline: none;
   border: none;

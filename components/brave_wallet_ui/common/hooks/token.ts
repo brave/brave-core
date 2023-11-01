@@ -9,13 +9,17 @@ import {
   GetBlockchainTokenInfoReturnInfo
 } from '../../constants/types'
 
-export default function useTokenInfo (
-  getBlockchainTokenInfo: (address: string) => Promise<GetBlockchainTokenInfoReturnInfo>,
+export default function useTokenInfo(
+  getBlockchainTokenInfo: (
+    address: string
+  ) => Promise<GetBlockchainTokenInfoReturnInfo>,
   tokensList: BraveWallet.BlockchainToken[],
   selectedNetwork?: BraveWallet.NetworkInfo | null
 ) {
-  const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
-  const [foundTokenInfoByContractAddress, setFoundTokenInfoByContractAddress] = React.useState<BraveWallet.BlockchainToken | undefined>()
+  const [tokenContractAddress, setTokenContractAddress] =
+    React.useState<string>('')
+  const [foundTokenInfoByContractAddress, setFoundTokenInfoByContractAddress] =
+    React.useState<BraveWallet.BlockchainToken | undefined>()
 
   // Instead of having this be a useCallback hook here we are using useEffect to
   // handle the asynchronous getBlockchainTokenInfo fallback method.
@@ -28,23 +32,29 @@ export default function useTokenInfo (
       return
     }
 
-    const checkedLists = tokensList
-      .find(token =>
-        token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
+    const checkedLists = tokensList.find(
+      (token) =>
+        token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+    )
 
     if (checkedLists) {
       setFoundTokenInfoByContractAddress(checkedLists)
       return
     }
 
-    if (!checkedLists && selectedNetwork?.chainId === BraveWallet.MAINNET_CHAIN_ID) {
-      getBlockchainTokenInfo(contractAddress).then((value: GetBlockchainTokenInfoReturnInfo) => {
-        if (value.token) {
-          setFoundTokenInfoByContractAddress(value.token)
-          return
-        }
-        setFoundTokenInfoByContractAddress(undefined)
-      }).catch(e => console.log(e))
+    if (
+      !checkedLists &&
+      selectedNetwork?.chainId === BraveWallet.MAINNET_CHAIN_ID
+    ) {
+      getBlockchainTokenInfo(contractAddress)
+        .then((value: GetBlockchainTokenInfoReturnInfo) => {
+          if (value.token) {
+            setFoundTokenInfoByContractAddress(value.token)
+            return
+          }
+          setFoundTokenInfoByContractAddress(undefined)
+        })
+        .catch((e) => console.log(e))
     }
     setFoundTokenInfoByContractAddress(undefined)
   }, [tokenContractAddress, tokensList, selectedNetwork?.chainId])

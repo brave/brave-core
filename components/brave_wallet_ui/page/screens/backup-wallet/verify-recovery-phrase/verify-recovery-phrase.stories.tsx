@@ -9,9 +9,11 @@ import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrap
 import { VerifyRecoveryPhrase } from './verify-recovery-phrase'
 
 export const _VerifyRecoveryPhrase = () => {
-  return <WalletPageStory>
-    <VerifyRecoveryPhrase />
-  </WalletPageStory>
+  return (
+    <WalletPageStory>
+      <VerifyRecoveryPhrase />
+    </WalletPageStory>
+  )
 }
 
 export default _VerifyRecoveryPhrase

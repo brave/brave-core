@@ -6,7 +6,6 @@
 import styled from 'styled-components'
 import { StyledInput, Icon } from '../../shared-swap.styles'
 
-
 export const Input = styled(StyledInput)`
   flex: 1;
   ::placeholder {

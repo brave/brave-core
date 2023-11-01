@@ -38,14 +38,21 @@ export const DecoratedNftIcon = (props: Props) => {
 
   return (
     <>
-      <NftIcon {...props} onLoad={onLoad} />
-      {!hideNetworkIcon &&
+      <NftIcon
+        {...props}
+        onLoad={onLoad}
+      />
+      {!hideNetworkIcon && (
         <IconWrapper disabled={disabled}>
           <NetworkIconWrapper>
-            <CreateNetworkIcon network={network} marginRight={0} size='big' />
+            <CreateNetworkIcon
+              network={network}
+              marginRight={0}
+              size='big'
+            />
           </NetworkIconWrapper>
         </IconWrapper>
-      }
+      )}
     </>
   )
 }

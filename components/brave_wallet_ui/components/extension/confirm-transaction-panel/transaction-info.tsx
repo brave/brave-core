@@ -19,7 +19,8 @@ import {
 import {
   TransactionTitle,
   TransactionTypeText,
-  TransactionText, Divider,
+  TransactionText,
+  Divider,
   SectionRow,
   SectionColumn,
   EditButton
@@ -31,9 +32,7 @@ import { Column } from '../../shared/style'
 interface TransactionInfoProps {
   onToggleEditGas?: () => void
 }
-export const TransactionInfo = ({
-  onToggleEditGas
-}: TransactionInfoProps) => {
+export const TransactionInfo = ({ onToggleEditGas }: TransactionInfoProps) => {
   const {
     transactionDetails,
     isERC721SafeTransferFrom,
@@ -65,25 +64,27 @@ export const TransactionInfo = ({
   /**
    * This will need updating if we ever switch to using per-locale formatting,
    * since `.` isn't always the decimal separator
-  */
+   */
   const transactionValueParts = (
-    (!isERC721SafeTransferFrom && !isERC721TransferFrom)
-      ? new Amount(transactionDetails.valueExact)
-        .format(undefined, true)
+    !isERC721SafeTransferFrom && !isERC721TransferFrom
+      ? new Amount(transactionDetails.valueExact).format(undefined, true)
       : transactionDetails.valueExact
   ).split('.')
 
   /**
-   * Inserts a <wbr /> tag between the integer and decimal portions of the value for wrapping
+   * Inserts a <wbr /> tag between the integer and decimal portions of the value
+   * for wrapping
    * This will need updating if we ever switch to using per-locale formatting
    */
-  const transactionValueText = <span>
-    {transactionValueParts.map((part, i, { length }) => [
-      part,
-      ...(i < (length - 1) ? ['.'] : []),
-      <wbr key={part} />
-    ])}
-  </span>
+  const transactionValueText = (
+    <span>
+      {transactionValueParts.map((part, i, { length }) => [
+        part,
+        ...(i < length - 1 ? ['.'] : []),
+        <wbr key={part} />
+      ])}
+    </span>
+  )
 
   // render
   return (
@@ -108,7 +109,9 @@ export const TransactionInfo = ({
         <>
           {transactionDetails.gasPremium && (
             <SectionColumn>
-              <TransactionTitle>{getLocale('braveWalletTransactionGasPremium')}</TransactionTitle>
+              <TransactionTitle>
+                {getLocale('braveWalletTransactionGasPremium')}
+              </TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasPremium)
@@ -120,7 +123,9 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasLimit && (
             <SectionColumn>
-              <TransactionTitle>{getLocale('braveWalletTransactionGasLimit')}</TransactionTitle>
+              <TransactionTitle>
+                {getLocale('braveWalletTransactionGasLimit')}
+              </TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasLimit)
@@ -132,7 +137,9 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasFeeCap && (
             <SectionColumn>
-              <TransactionTitle>{getLocale('braveWalletTransactionGasFeeCap')}</TransactionTitle>
+              <TransactionTitle>
+                {getLocale('braveWalletTransactionGasFeeCap')}
+              </TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasFeeCap)
@@ -155,7 +162,11 @@ export const TransactionInfo = ({
           alignItems={'flex-start'}
           justifyContent='flex-start'
         >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
+          <Skeleton
+            width={'40px'}
+            height={'12px'}
+            enableAnimation
+          />
         </Column>
       ) : (
         <TransactionTypeText>
@@ -174,7 +185,11 @@ export const TransactionInfo = ({
           alignItems={'flex-start'}
           justifyContent='flex-start'
         >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
+          <Skeleton
+            width={'40px'}
+            height={'12px'}
+            enableAnimation
+          />
         </Column>
       ) : (
         <TransactionText>
@@ -211,7 +226,11 @@ export const TransactionInfo = ({
             alignItems={'flex-start'}
             justifyContent='flex-start'
           >
-            <Skeleton width={'40px'} height={'12px'} enableAnimation />
+            <Skeleton
+              width={'40px'}
+              height={'12px'}
+              enableAnimation
+            />
           </Column>
         ) : (
           <TransactionTypeText>
@@ -230,7 +249,11 @@ export const TransactionInfo = ({
           alignItems={'flex-start'}
           justifyContent='flex-start'
         >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
+          <Skeleton
+            width={'40px'}
+            height={'12px'}
+            enableAnimation
+          />
         </Column>
       ) : (
         <TransactionText hasError={false}>
@@ -245,12 +268,11 @@ export const TransactionInfo = ({
           {getLocale('braveWalletSwapInsufficientFundsForGas')}
         </TransactionText>
       )}
-      {!insufficientFundsForGasError &&
-        insufficientFundsError && (
-          <TransactionText hasError={true}>
-            {getLocale('braveWalletSwapInsufficientBalance')}
-          </TransactionText>
-        )}
+      {!insufficientFundsForGasError && insufficientFundsError && (
+        <TransactionText hasError={true}>
+          {getLocale('braveWalletSwapInsufficientBalance')}
+        </TransactionText>
+      )}
       {solanaSendOptions && <Divider />}
       {!!Number(solanaSendOptions?.maxRetries?.maxRetries) && (
         <>

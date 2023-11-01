@@ -64,26 +64,21 @@ export const FiatChange = styled.span<{ isDown?: boolean }>`
   color: ${(p) =>
     p.isDown
       ? leo.color.systemfeedback.errorIcon
-      : leo.color.systemfeedback.successIcon
-  };
+      : leo.color.systemfeedback.successIcon};
 `
 
-export const ButtonRow = styled.div<
-  {
-    noMargin?: boolean,
-    horizontalPadding?: number
-  }>`
+export const ButtonRow = styled.div<{
+  noMargin?: boolean
+  horizontalPadding?: number
+}>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  margin: ${(p) => p.noMargin ? '0px' : '20px 0px'};
-  padding: 0px ${(p) =>
-    p.horizontalPadding !== undefined
-      ? p.horizontalPadding
-      : 0
-  }px;
+  margin: ${(p) => (p.noMargin ? '0px' : '20px 0px')};
+  padding: 0px
+    ${(p) => (p.horizontalPadding !== undefined ? p.horizontalPadding : 0)}px;
 `
 
 export const BalanceRow = styled.div<{ gap?: string }>`
@@ -93,7 +88,7 @@ export const BalanceRow = styled.div<{ gap?: string }>`
   justify-content: center;
   height: 36px;
   vertical-align: middle;
-  gap: ${p => p.gap || 0};
+  gap: ${(p) => p.gap || 0};
 `
 
 // Construct styled-component using JS object instead of string, for editor
@@ -127,20 +122,13 @@ export const PercentBubble = styled.div<{ isDown?: boolean }>`
   padding: 4px 8px;
   border-radius: 4px;
   background-color: ${(p) =>
-    p.isDown
-      ? leo.color.red[10]
-      : leo.color.green[10]
-  };
+    p.isDown ? leo.color.red[10] : leo.color.green[10]};
   font-family: Poppins;
   font-size: 11px;
   line-height: 16px;
   letter-spacing: 0.02em;
   font-weight: 500;
-  color: ${(p) =>
-    p.isDown
-      ? leo.color.red[50]
-      : leo.color.green[50]
-  };
+  color: ${(p) => (p.isDown ? leo.color.red[50] : leo.color.green[50])};
 `
 
 export const Spacer = styled.div`
@@ -158,28 +146,23 @@ export const CoinGeckoText = styled.span`
   margin: 15px 0px;
 `
 
-export const FilterTokenRow = styled.div<
-  {
-    horizontalPadding?: number
-    isV2?: boolean
-  }>`
+export const FilterTokenRow = styled.div<{
+  horizontalPadding?: number
+  isV2?: boolean
+}>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
   gap: 14px;
-  padding: 0px ${(p) =>
-    p.horizontalPadding !== undefined
-      ? p.horizontalPadding
-      : 0
-  }px;
-  margin-bottom: ${p => p.isV2 ? '16px' : 0 };
+  padding: 0px
+    ${(p) => (p.horizontalPadding !== undefined ? p.horizontalPadding : 0)}px;
+  margin-bottom: ${(p) => (p.isV2 ? '16px' : 0)};
 `
 
-export const BridgeToAuroraButton = styled(WalletButton) <
-  {
-    noBottomMargin?: boolean
-  }>`
+export const BridgeToAuroraButton = styled(WalletButton)<{
+  noBottomMargin?: boolean
+}>`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -197,7 +180,7 @@ export const BridgeToAuroraButton = styled(WalletButton) <
   background-color: ${(p) => p.theme.palette.blurple500};
   color: ${(p) => p.theme.palette.white};
   border: none;
-  margin-bottom: ${(p) => p.noBottomMargin ? 0 : 32}px;
+  margin-bottom: ${(p) => (p.noBottomMargin ? 0 : 32)}px;
   margin-right: 10px;
 `
 
@@ -246,7 +229,7 @@ export const BalanceAndChangeWrapper = styled(Column)`
   }
 `
 
-export const CircleButton = styled(WalletButton) <{
+export const CircleButton = styled(WalletButton)<{
   marginRight?: number
 }>`
   --button-border-color: ${leo.color.divider.interactive};
@@ -261,11 +244,7 @@ export const CircleButton = styled(WalletButton) <{
   border: 1px solid var(--button-border-color);
   height: 36px;
   width: 36px;
-  margin-right: ${(p) =>
-    p.marginRight !== undefined
-      ? p.marginRight
-      : 0
-  }px;
+  margin-right: ${(p) => (p.marginRight !== undefined ? p.marginRight : 0)}px;
 `
 
 export const ButtonIcon = styled(Icon)`
@@ -273,29 +252,26 @@ export const ButtonIcon = styled(Icon)`
   color: ${leo.color.icon.interactive};
 `
 
-export const SearchBarWrapper = styled(Row) <{
+export const SearchBarWrapper = styled(Row)<{
   showSearchBar: boolean
 }>`
   width: 230px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    display: ${(p) => p.showSearchBar ? 'flex' : 'none'};
+    display: ${(p) => (p.showSearchBar ? 'flex' : 'none')};
     width: 100%;
   }
 `
 
-export const ControlBarWrapper = styled(Row) <{
+export const ControlBarWrapper = styled(Row)<{
   showSearchBar: boolean
   isNFTView?: boolean
 }>`
   padding: 0px 32px;
   margin-bottom: 16px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: ${(p) => p.showSearchBar
-    ? p.isNFTView
-      ? '2px'
-      : '0px'
-    : '4px'} 24px 0px 24px;
-    margin-bottom: ${(p) => p.showSearchBar ? 12 : 16}px;
+    padding: ${(p) => (p.showSearchBar ? (p.isNFTView ? '2px' : '0px') : '4px')}
+      24px 0px 24px;
+    margin-bottom: ${(p) => (p.showSearchBar ? 12 : 16)}px;
   }
 `
 
@@ -345,12 +321,9 @@ export const EyeIcon = styled(Icon)`
   color: ${leo.color.icon.default};
 `
 
-export const ContentWrapper = styled(Column) <{
+export const ContentWrapper = styled(Column)<{
   isPanel: boolean
 }>`
   background-color: ${(p) =>
-    p.isPanel
-      ? leo.color.container.background
-      : 'transparent'
-  };
+    p.isPanel ? leo.color.container.background : 'transparent'};
 `

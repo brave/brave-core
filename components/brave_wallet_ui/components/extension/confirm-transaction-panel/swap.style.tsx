@@ -14,6 +14,6 @@ export const HeaderTitle = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  color: ${p => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin: 4px 0 8px 0;
 `

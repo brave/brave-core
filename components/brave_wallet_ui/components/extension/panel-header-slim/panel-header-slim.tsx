@@ -23,16 +23,17 @@ interface Props {
 export const PanelHeaderSlim = React.memo(function (props: Props) {
   const { title, action } = props
 
-  const navigate = React.useCallback((path: PanelTypes) => () => {
-    action(path)
-  }, [action])
+  const navigate = React.useCallback(
+    (path: PanelTypes) => () => {
+      action(path)
+    },
+    [action]
+  )
 
   return (
     <HeaderWrapper>
       <TopRow>
-        <HeaderTitle>
-          {title}
-        </HeaderTitle>
+        <HeaderTitle>{title}</HeaderTitle>
         <CloseButton onClick={navigate('main')} />
       </TopRow>
     </HeaderWrapper>

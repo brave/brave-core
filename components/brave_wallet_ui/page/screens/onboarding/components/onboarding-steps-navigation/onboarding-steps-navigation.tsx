@@ -9,7 +9,10 @@ import * as React from 'react'
 import { WalletRoutes } from '../../../../../constants/types'
 
 // components
-import { StepsNavigation, StepsNavigationProps } from '../../../../../components/desktop/steps-navigation/steps-navigation'
+import {
+  StepsNavigation,
+  StepsNavigationProps
+} from '../../../../../components/desktop/steps-navigation/steps-navigation'
 
 //
 // New wallet Steps
@@ -46,7 +49,8 @@ const CONNECT_HARDWARE_WALLET_STEPS: OnboardingConnectHardwareWalletSteps[] = [
   WalletRoutes.OnboardingComplete
 ]
 
-interface OnboardingNewWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingNewWalletSteps>, 'steps'> {
+interface OnboardingNewWalletStepsNavigationProps
+  extends Omit<StepsNavigationProps<OnboardingNewWalletSteps>, 'steps'> {
   isHardwareOnboarding?: boolean
 }
 
@@ -55,8 +59,12 @@ export const OnboardingNewWalletStepsNavigation = (
 ) => {
   const { isHardwareOnboarding } = props
 
-  return <StepsNavigation
-    {...props}
-    steps={isHardwareOnboarding ? CONNECT_HARDWARE_WALLET_STEPS : NEW_WALLET_STEPS}
-  />
+  return (
+    <StepsNavigation
+      {...props}
+      steps={
+        isHardwareOnboarding ? CONNECT_HARDWARE_WALLET_STEPS : NEW_WALLET_STEPS
+      }
+    />
+  )
 }

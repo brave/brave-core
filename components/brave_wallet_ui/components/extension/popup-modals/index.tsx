@@ -4,6 +4,4 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { PopupModal } from './popup-modals'
 
-export {
-  PopupModal
-}
+export { PopupModal }

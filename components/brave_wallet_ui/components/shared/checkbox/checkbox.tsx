@@ -8,11 +8,7 @@ import { CSSProperties } from 'styled-components'
 
 // style
 import { CheckIcon } from '../style'
-import {
-  StyledLabel,
-  StyledBox,
-  StyledText
-} from './checkbox.style'
+import { StyledLabel, StyledBox, StyledText } from './checkbox.style'
 
 export type Size = 'big' | 'small'
 
@@ -43,12 +39,15 @@ export const Checkbox: React.FC<Props> = ({
     }
   }, [onChange, !isChecked])
 
-  const onKeyPress = React.useCallback((event: React.KeyboardEvent) => {
-    // Invoke for space or enter, just like a regular input or button
-    if ([' ', 'Enter'].includes(event.key)) {
-      onClick()
-    }
-  }, [onClick])
+  const onKeyPress = React.useCallback(
+    (event: React.KeyboardEvent) => {
+      // Invoke for space or enter, just like a regular input or button
+      if ([' ', 'Enter'].includes(event.key)) {
+        onClick()
+      }
+    },
+    [onClick]
+  )
 
   // render
   return (
@@ -64,12 +63,8 @@ export const Checkbox: React.FC<Props> = ({
       selected={isChecked}
       alignItems={alignItems}
     >
-      <StyledBox>
-        {isChecked ? <CheckIcon /> : null}
-      </StyledBox>
-      <StyledText size={size}>
-        {children}
-      </StyledText>
+      <StyledBox>{isChecked ? <CheckIcon /> : null}</StyledBox>
+      <StyledText size={size}>{children}</StyledText>
     </StyledLabel>
   )
 }

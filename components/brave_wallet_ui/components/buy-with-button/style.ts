@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  `
+`
 
 export const Button = styled(WalletButton)`
   display: flex;
@@ -33,7 +33,7 @@ export const Button = styled(WalletButton)`
   border: ${(p) => `1px solid ${p.theme.color.divider01}`};
   padding: 9px 12px;
   border-radius: 12px;
-  cursor: ${p => p.disabled ? 'auto' : 'pointer'};
+  cursor: ${(p) => (p.disabled ? 'auto' : 'pointer')};
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
@@ -74,6 +74,6 @@ export const Option = styled.li<Partial<OptionProps>>`
   line-height: 20px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
-  font-weight: ${(p) => p.selected ? 600 : 400};
+  font-weight: ${(p) => (p.selected ? 600 : 400)};
   cursor: pointer;
 `

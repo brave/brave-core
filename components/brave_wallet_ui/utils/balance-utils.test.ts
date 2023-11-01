@@ -7,8 +7,11 @@ import { getBalance, getPercentAmount } from './balance-utils'
 
 // mocks
 import { mockAccount } from '../common/constants/mocks'
-import { mockBasicAttentionToken, mockBinanceCoinErc20Token, mockERC20Token } from '../stories/mock-data/mock-asset-options'
-
+import {
+  mockBasicAttentionToken,
+  mockBinanceCoinErc20Token,
+  mockERC20Token
+} from '../stories/mock-data/mock-asset-options'
 
 describe('getBalance', () => {
   it('gets a balance of a token for a given account', () => {
@@ -49,17 +52,13 @@ describe('getBalance', () => {
 
   it('returns zero balance if token contract is unknown', () => {
     expect(
-      getBalance(
-        mockAccount.accountId,
-        mockBinanceCoinErc20Token,
-        {
-          [mockAccount.accountId.uniqueKey]: {
-            [mockBinanceCoinErc20Token.chainId]: {
-              '0xdeadbeef': '123'
-            }
+      getBalance(mockAccount.accountId, mockBinanceCoinErc20Token, {
+        [mockAccount.accountId.uniqueKey]: {
+          [mockBinanceCoinErc20Token.chainId]: {
+            '0xdeadbeef': '123'
           }
         }
-      )
+      })
     ).toBe('0')
   })
 

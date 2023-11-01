@@ -8,7 +8,7 @@ import { VariableSizeList as List } from 'react-window'
 import AutoSizer from '@brave/react-virtualized-auto-sizer'
 
 import {
-  useGetSelectedChainQuery
+  useGetSelectedChainQuery //
 } from '../../../../../../common/slices/api.slice'
 
 // Types
@@ -16,7 +16,7 @@ import { BraveWallet } from '../../../../../../constants/types'
 
 // Components
 import {
-  TokenListButton
+  TokenListButton //
 } from '../../buttons/token-list-button/token-list-button'
 import Amount from '../../../../../../utils/amount'
 
@@ -24,7 +24,9 @@ interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
   onSelectToken: (token: BraveWallet.BlockchainToken) => void
   getCachedAssetBalance: (token: BraveWallet.BlockchainToken) => Amount
-  disabledToken: Pick<BraveWallet.BlockchainToken, 'contractAddress'> | undefined
+  disabledToken:
+    | Pick<BraveWallet.BlockchainToken, 'contractAddress'>
+    | undefined
 }
 
 interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
@@ -75,12 +77,8 @@ const ListItem = (props: ListItemProps) => {
 }
 
 export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
-  const {
-    tokenList,
-    disabledToken,
-    getCachedAssetBalance,
-    onSelectToken
-  } = props
+  const { tokenList, disabledToken, getCachedAssetBalance, onSelectToken } =
+    props
 
   return (
     <AutoSizer

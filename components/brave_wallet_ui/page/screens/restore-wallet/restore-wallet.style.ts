@@ -34,7 +34,7 @@ export const Description = styled.span<StyleProps>`
   font-weight: 300;
   color: ${(p) => p.theme.color.text02};
   max-width: 520px;
-  text-align: ${(p) => p.textAlign ? p.textAlign : 'center'};
+  text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   margin-bottom: 25px;
 `
 

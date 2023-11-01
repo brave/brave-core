@@ -8,23 +8,15 @@ import { useDispatch } from 'react-redux'
 import Button from '@brave/leo/react/button'
 
 // Types
-import {
-  BraveWallet
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Utils
-import {
-  reduceAddress
-} from '../../../utils/reduce-address'
+import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 
 // Selectors
-import {
-  useUnsafePanelSelector
-} from '../../../common/hooks/use-safe-selector'
-import {
-  PanelSelectors
-} from '../../../panel/selectors'
+import { useUnsafePanelSelector } from '../../../common/hooks/use-safe-selector'
+import { PanelSelectors } from '../../../panel/selectors'
 
 // Components
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
@@ -39,12 +31,7 @@ import {
   LaunchButton,
   LaunchIcon
 } from './sign_in_with_ethereum.style'
-import {
-  Row,
-  Column,
-  VerticalDivider,
-  VerticalSpace
-} from '../../shared/style'
+import { Row, Column, VerticalDivider, VerticalSpace } from '../../shared/style'
 import { PanelActions } from '../../../panel/actions'
 
 export const SignInWithEthereumError = () => {
@@ -52,29 +39,26 @@ export const SignInWithEthereumError = () => {
   const dispatch = useDispatch()
 
   // Selectors
-  const signMessageErrorData =
-    useUnsafePanelSelector(PanelSelectors.signMessageErrorData)
+  const signMessageErrorData = useUnsafePanelSelector(
+    PanelSelectors.signMessageErrorData
+  )
 
   // Computed
   const errorData =
-    signMessageErrorData.length === 0
-      ? undefined
-      : signMessageErrorData[0]
+    signMessageErrorData.length === 0 ? undefined : signMessageErrorData[0]
 
   const message = errorData?.localizedErrMsg ?? ''
-  const address =
-    message.substring(
-      message.indexOf('(') + 1,
-      message.indexOf(')')
-    )
+  const address = message.substring(
+    message.indexOf('(') + 1,
+    message.indexOf(')')
+  )
 
   const errorMessage =
     !errorData?.localizedErrMsg && !errorData?.type
       ? ''
-      : errorData.type ===
-        BraveWallet.SignMessageErrorType.kAccountMismatched
-        ? message.replace(address, reduceAddress(address))
-        : errorData.localizedErrMsg
+      : errorData.type === BraveWallet.SignMessageErrorType.kAccountMismatched
+      ? message.replace(address, reduceAddress(address))
+      : errorData.localizedErrMsg
 
   // Methods
   const onClickViewOnChainList = () => {
@@ -89,7 +73,8 @@ export const SignInWithEthereumError = () => {
             'tabs.create failed: ' + chrome.runtime.lastError.message
           )
         }
-      })
+      }
+    )
   }
 
   const onClickClose = () => {
@@ -102,9 +87,7 @@ export const SignInWithEthereumError = () => {
   return (
     <StyledWrapper>
       <>
-        <Row
-          padding='16px 16px 11px 16px'
-        >
+        <Row padding='16px 16px 11px 16px'>
           <Title
             isBold={true}
             textSize='18px'
@@ -129,9 +112,7 @@ export const SignInWithEthereumError = () => {
             {errorData?.originInfo.eTldPlusOne ?? ''}
           </ErrorDescriptionText>
           <VerticalSpace space='8px' />
-          <OriginErrorText
-            textSize='12px'
-          >
+          <OriginErrorText textSize='12px'>
             <CreateSiteOrigin
               originSpec={errorData?.originInfo.originSpec ?? ''}
               eTldPlusOne={errorData?.originInfo.eTldPlusOne ?? ''}
@@ -143,19 +124,15 @@ export const SignInWithEthereumError = () => {
             isBold={false}
           >
             {errorMessage}
-            {errorData?.chainId &&
-              <LaunchButton
-                onClick={onClickViewOnChainList}
-              >
+            {errorData?.chainId && (
+              <LaunchButton onClick={onClickViewOnChainList}>
                 <LaunchIcon />
               </LaunchButton>
-            }
+            )}
           </ErrorDescriptionText>
         </ErrorBox>
         <Row>
-          <Button
-            onClick={onClickClose}
-          >
+          <Button onClick={onClickClose}>
             {getLocale('braveWalletButtonClose')}
           </Button>
         </Row>

@@ -29,34 +29,39 @@ export const usePasswordAttempts = () => {
   })
 
   // methods
-  const attemptPasswordEntry = React.useCallback(async (password: string): Promise<boolean> => {
-    if (!password) { // require password to view key
-      return false
-    }
-
-    // entered password must be correct
-    const {
-      result: isPasswordValid
-    } = await keyringService.validatePassword(password)
-
-    if (!isPasswordValid) {
-      const newAttempts = attempts + 1
-      if (newAttempts >= MAX_ATTEMPTS) {
-        // lock wallet
-        keyringService.lock()
-        dispatch(WalletActions.setPasswordAttempts(0)) // reset attempts now that the wallet is locked
+  const attemptPasswordEntry = React.useCallback(
+    async (password: string): Promise<boolean> => {
+      if (!password) {
+        // require password to view key
         return false
       }
 
-      // increase attempts count
-      dispatch(WalletActions.setPasswordAttempts(newAttempts))
-      return false
-    }
+      // entered password must be correct
+      const { result: isPasswordValid } = await keyringService.validatePassword(
+        password
+      )
 
-    // correct password entered, reset attempts
-    dispatch(WalletActions.setPasswordAttempts(0))
-    return isPasswordValid
-  }, [keyringService, attempts])
+      if (!isPasswordValid) {
+        const newAttempts = attempts + 1
+        if (newAttempts >= MAX_ATTEMPTS) {
+          // lock wallet
+          keyringService.lock()
+          // reset attempts now that the wallet is locked
+          dispatch(WalletActions.setPasswordAttempts(0))
+          return false
+        }
+
+        // increase attempts count
+        dispatch(WalletActions.setPasswordAttempts(newAttempts))
+        return false
+      }
+
+      // correct password entered, reset attempts
+      dispatch(WalletActions.setPasswordAttempts(0))
+      return isPasswordValid
+    },
+    [keyringService, attempts]
+  )
 
   return {
     attemptPasswordEntry,

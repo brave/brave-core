@@ -28,11 +28,7 @@ import { suggestNewAccountName } from '../../../utils/address-utils'
 import { keyringIdForNewAccount } from '../../../utils/account-utils'
 
 // Styled Components
-import {
-  StyledWrapper,
-  Description,
-  ButtonRow
-} from './style'
+import { StyledWrapper, Description, ButtonRow } from './style'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 export interface Props {
@@ -44,7 +40,7 @@ export interface Props {
 export const CreateAccountTab = ({
   network: accountNetwork,
   onCreated,
-  onCancel,
+  onCancel
 }: Props) => {
   // redux
   const dispatch = useDispatch()
@@ -94,7 +90,7 @@ export const CreateAccountTab = ({
     showUnlock,
     accountNetwork,
     suggestedAccountName,
-    onCreated,
+    onCreated
   ])
 
   const handleUnlockAttempt = React.useCallback((password: string): void => {
@@ -111,15 +107,17 @@ export const CreateAccountTab = ({
 
   // render
   if (isWalletLocked && showUnlock) {
-    return <StyledWrapper>
-      <Description style={{ fontSize: 16 }}>
-        {getLocale('braveWalletUnlockNeededToCreateAccount')}
-      </Description>
-      <LockPanel
-        hideBackground
-        onSubmit={handleUnlockAttempt}
-      />
-    </StyledWrapper>
+    return (
+      <StyledWrapper>
+        <Description style={{ fontSize: 16 }}>
+          {getLocale('braveWalletUnlockNeededToCreateAccount')}
+        </Description>
+        <LockPanel
+          hideBackground
+          onSubmit={handleUnlockAttempt}
+        />
+      </StyledWrapper>
+    )
   }
 
   return (

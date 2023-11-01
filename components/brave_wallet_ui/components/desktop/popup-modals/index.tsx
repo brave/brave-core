@@ -66,7 +66,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
           height={height}
           ref={forwardedRef}
         >
-          {!hideHeader &&
+          {!hideHeader && (
             <Header
               headerPaddingHorizontal={headerPaddingHorizontal}
               headerPaddingVertical={headerPaddingVertical}
@@ -74,7 +74,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
               <Title>{title}</Title>
               <CloseButton onClick={onClose} />
             </Header>
-          }
+          )}
           {showDivider && <Divider />}
           {children}
         </Modal>

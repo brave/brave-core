@@ -50,7 +50,7 @@ const mockHardwareAccounts: BraveWallet.AccountInfo[] = [
 
 const mockAccounts: AccountInfoEntity[] = [
   {
-    ...mockAccount,
+    ...mockAccount
   },
   {
     ...mockAccount,
@@ -58,7 +58,7 @@ const mockAccounts: AccountInfoEntity[] = [
       ...mockAccount.accountId,
       address: 'mockAccount2'
     },
-    address: 'mockAccount2',
+    address: 'mockAccount2'
   }
 ]
 
@@ -90,19 +90,23 @@ describe('Account Utils', () => {
 
 describe('Test getAccountTypeDescription', () => {
   test('CoinType ETH Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.ETH))
-      .toEqual('braveWalletETHAccountDescrption')
+    expect(getAccountTypeDescription(BraveWallet.CoinType.ETH)).toEqual(
+      'braveWalletETHAccountDescrption'
+    )
   })
   test('CoinType SOL Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.SOL))
-      .toEqual('braveWalletSOLAccountDescrption')
+    expect(getAccountTypeDescription(BraveWallet.CoinType.SOL)).toEqual(
+      'braveWalletSOLAccountDescrption'
+    )
   })
   test('CoinType FIL Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.FIL))
-      .toEqual('braveWalletFILAccountDescrption')
+    expect(getAccountTypeDescription(BraveWallet.CoinType.FIL)).toEqual(
+      'braveWalletFILAccountDescrption'
+    )
   })
   test('CoinType BTC Address Description', () => {
-    expect(getAccountTypeDescription(BraveWallet.CoinType.BTC))
-      .toEqual('braveWalletBTCAccountDescrption')
+    expect(getAccountTypeDescription(BraveWallet.CoinType.BTC)).toEqual(
+      'braveWalletBTCAccountDescrption'
+    )
   })
 })

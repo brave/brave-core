@@ -3,9 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet, MarketAssetFilterOption, MarketGridColumnTypes, SortOrder } from '../constants/types'
+import {
+  BraveWallet,
+  MarketAssetFilterOption,
+  MarketGridColumnTypes,
+  SortOrder
+} from '../constants/types'
 
-export const sortCoinMarkets = (marketData: BraveWallet.CoinMarket[], sortOrder: SortOrder, columnId: MarketGridColumnTypes) => {
+export const sortCoinMarkets = (
+  marketData: BraveWallet.CoinMarket[],
+  sortOrder: SortOrder,
+  columnId: MarketGridColumnTypes
+) => {
   if (sortOrder === 'asc') {
     return marketData.sort((a, b) => a[columnId] - b[columnId])
   } else {
@@ -13,7 +22,10 @@ export const sortCoinMarkets = (marketData: BraveWallet.CoinMarket[], sortOrder:
   }
 }
 
-export const searchCoinMarkets = (searchList: BraveWallet.CoinMarket[], searchTerm: string): BraveWallet.CoinMarket[] => {
+export const searchCoinMarkets = (
+  searchList: BraveWallet.CoinMarket[],
+  searchTerm: string
+): BraveWallet.CoinMarket[] => {
   const trimmedSearch = searchTerm.trim().toLowerCase()
   if (!trimmedSearch) {
     return searchList
@@ -26,13 +38,21 @@ export const searchCoinMarkets = (searchList: BraveWallet.CoinMarket[], searchTe
   )
 }
 
-export const filterCoinMarkets = (coins: BraveWallet.CoinMarket[], tradableAssets: BraveWallet.BlockchainToken[], filter: MarketAssetFilterOption) => {
-  const tradableAssetsSymbols = tradableAssets.map(asset => asset.symbol.toLowerCase())
+export const filterCoinMarkets = (
+  coins: BraveWallet.CoinMarket[],
+  tradableAssets: BraveWallet.BlockchainToken[],
+  filter: MarketAssetFilterOption
+) => {
+  const tradableAssetsSymbols = tradableAssets.map((asset) =>
+    asset.symbol.toLowerCase()
+  )
 
   if (filter === 'all') {
     return coins
   } else if (filter === 'tradable') {
-    return coins.filter(asset => tradableAssetsSymbols.includes(asset.symbol.toLowerCase()))
+    return coins.filter((asset) =>
+      tradableAssetsSymbols.includes(asset.symbol.toLowerCase())
+    )
   }
 
   return []

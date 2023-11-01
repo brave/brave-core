@@ -18,13 +18,12 @@ import { PanelWrapper } from '../../../panel/style'
 import { ConfirmSwapTransaction } from './swap'
 
 export const _ConfirmSwapTransaction = () => {
-
   return (
     <WalletPanelStory
       walletStateOverride={{
         fullTokenList: [mockBasicAttentionToken, mockBinanceCoinErc20Token],
         hasInitialized: true,
-        isWalletCreated: true,
+        isWalletCreated: true
       }}
       panelStateOverride={{
         hasInitialized: true

@@ -8,7 +8,7 @@ import * as React from 'react'
 import { StyledWrapper } from './style'
 
 export class DividerLine extends React.PureComponent {
-  render () {
+  render() {
     return <StyledWrapper />
   }
 }

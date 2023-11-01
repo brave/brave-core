@@ -13,10 +13,7 @@ import {
 } from '../../../../../../assets/svg-icons/empty-state-icons'
 
 // Shared Styles
-import {
-  Column,
-  Text
-} from '../../../../../shared/style'
+import { Column, Text } from '../../../../../shared/style'
 
 export const StyledWrapper = styled(Column)`
   max-width: 620px;

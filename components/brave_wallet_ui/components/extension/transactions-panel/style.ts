@@ -20,10 +20,7 @@ export const StyledWrapper = styled.div<{ hideScrollbar?: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  overflow: ${(p) => p?.hideScrollbar
-    ? 'hidden'
-    : 'unset'
-  };
+  overflow: ${(p) => (p?.hideScrollbar ? 'hidden' : 'unset')};
 `
 
 export const FloatAboveBottomRightCorner = styled.div`
@@ -66,7 +63,7 @@ export const TransactionsIcon = styled.div<{
   mask-repeat: no-repeat;
   background-color: #656565; /* Not a theme color */
   @media (prefers-color-scheme: dark) {
-    background-color: #C2C4CF; /* Not a theme color */
+    background-color: #c2c4cf; /* Not a theme color */
   }
 `
 

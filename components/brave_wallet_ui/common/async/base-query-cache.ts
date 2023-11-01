@@ -50,9 +50,9 @@ import { getEnabledCoinTypes } from '../../utils/api-utils'
  * @returns function that returns an ApiProxy instance
  */
 export let apiProxyFetcher = () =>
-  (getAPIProxy() as WalletApiProxy &
+  getAPIProxy() as WalletApiProxy &
     Partial<WalletPanelApiProxy> &
-    Partial<WalletPageApiProxy>)
+    Partial<WalletPageApiProxy>
 
 /**
  * Assigns a function to use for fetching the walletApiProxy
@@ -126,8 +126,12 @@ export class BaseQueryCache {
       const { jsonRpcService } = apiProxyFetcher()
 
       // network type flags
-      const { isFilecoinEnabled, isSolanaEnabled, isBitcoinEnabled, isZCashEnabled } =
-        await this.getWalletInfo()
+      const {
+        isFilecoinEnabled,
+        isSolanaEnabled,
+        isBitcoinEnabled,
+        isZCashEnabled
+      } = await this.getWalletInfo()
 
       // Get all networks
       const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {

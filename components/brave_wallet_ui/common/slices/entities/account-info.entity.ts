@@ -3,11 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  createEntityAdapter,
-  EntityAdapter,
-  EntityId
-} from '@reduxjs/toolkit'
+import { createEntityAdapter, EntityAdapter, EntityId } from '@reduxjs/toolkit'
 
 import { BraveWallet } from '../../../constants/types'
 import { walletApi, WalletApiSliceStateFromRoot } from '../api.slice'
@@ -38,7 +34,8 @@ export const accountInfoEntityAdaptor: AccountInfoEntityAdaptor = {
   selectIdByAccountId: entityIdFromAccountId
 }
 
-export const accountInfoEntityAdaptorInitialState = accountInfoEntityAdaptor.getInitialState()
+export const accountInfoEntityAdaptorInitialState =
+  accountInfoEntityAdaptor.getInitialState()
 export type AccountInfoEntityState = typeof accountInfoEntityAdaptorInitialState
 
 // Selectors from Root State
@@ -48,12 +45,14 @@ export const {
   selectEntities: selectAccountInfoEntities,
   selectIds: selectAccountInfoIds,
   selectTotal: selectTotalAccountInfos
-} = accountInfoEntityAdaptor.getSelectors((state: WalletApiSliceStateFromRoot) => {
-  return (
-    walletApi.endpoints.getAccountInfosRegistry.select()(state)?.data ??
-    accountInfoEntityAdaptor.getInitialState()
-  )
-})
+} = accountInfoEntityAdaptor.getSelectors(
+  (state: WalletApiSliceStateFromRoot) => {
+    return (
+      walletApi.endpoints.getAccountInfosRegistry.select()(state)?.data ??
+      accountInfoEntityAdaptor.getInitialState()
+    )
+  }
+)
 
 // Selectors from Query Results
 export const selectAccountInfosRegistryFromQuery = (result: {
@@ -68,9 +67,7 @@ export const {
   selectEntities: selectAccountInfoEntitiesFromQuery,
   selectIds: selectAccountInfoIdsFromQuery,
   selectTotal: selectTotalAccountInfosFromQuery
-} = accountInfoEntityAdaptor.getSelectors(
-  selectAccountInfosRegistryFromQuery
-)
+} = accountInfoEntityAdaptor.getSelectors(selectAccountInfosRegistryFromQuery)
 
 type MakeSelectNetworkByIdFromQuery =
   EntityByIdFromRegistryResultSelectorFactory<BraveWallet.NetworkInfo>

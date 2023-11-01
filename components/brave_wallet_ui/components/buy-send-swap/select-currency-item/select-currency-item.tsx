@@ -14,7 +14,10 @@ import {
   CurrencyName,
   CurrencyNameAndCode
 } from './select-currency-item-styles'
-import { IconWrapper, PlaceholderText } from '../../shared/create-placeholder-icon/style'
+import {
+  IconWrapper,
+  PlaceholderText
+} from '../../shared/create-placeholder-icon/style'
 
 // utils
 import { background } from 'ethereum-blockies'
@@ -35,11 +38,17 @@ export const SelectCurrencyItem = (props: Props) => {
 
   // memos
   const bg = React.useMemo(() => {
-    return background({ seed: window.btoa(encodeURIComponent(currency.currencyName + currency.currencyCode)) })
+    return background({
+      seed: window.btoa(
+        encodeURIComponent(currency.currencyName + currency.currencyCode)
+      )
+    })
   }, [currency])
 
   const currencySymbol = React.useMemo(() => {
-    return CurrencySymbols[currency.currencyCode] ? CurrencySymbols[currency.currencyCode] : currency.currencyCode.charAt(0)
+    return CurrencySymbols[currency.currencyCode]
+      ? CurrencySymbols[currency.currencyCode]
+      : currency.currencyCode.charAt(0)
   }, [currency.currencyCode])
 
   return (

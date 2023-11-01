@@ -10,7 +10,9 @@ import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 
 // hooks
-import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
+import {
+  usePendingTransactions //
+} from '../../../common/hooks/use-pending-transaction'
 import {
   useGetDefaultFiatCurrencyQuery //
 } from '../../../common/slices/api.slice'
@@ -19,7 +21,8 @@ import {
 import {
   TransactionTitle,
   TransactionTypeText,
-  TransactionText, Divider,
+  TransactionText,
+  Divider,
   SectionRow,
   EditButton
 } from './style'
@@ -59,39 +62,42 @@ export const ZCashTransactionInfo = ({
   /**
    * This will need updating if we ever switch to using per-locale formatting,
    * since `.` isn't always the decimal separator
-  */
-  const transactionValueParts = (
-    (new Amount(transactionDetails.valueExact).format(undefined, true))
-  ).split('.')
+   */
+  const transactionValueParts = new Amount(transactionDetails.valueExact)
+    .format(undefined, true)
+    .split('.')
 
   /**
-   * Inserts a <wbr /> tag between the integer and decimal portions of the value for wrapping
+   * Inserts a <wbr /> tag between the integer and decimal portions of the value
+   * for wrapping
    * This will need updating if we ever switch to using per-locale formatting
    */
-  const transactionValueText = <span>
-    {transactionValueParts.map((part, i, { length }) => [
-      part,
-      ...(i < (length - 1) ? ['.'] : []),
-      <wbr key={part} />
-    ])}
-  </span>
+  const transactionValueText = (
+    <span>
+      {transactionValueParts.map((part, i, { length }) => [
+        part,
+        ...(i < length - 1 ? ['.'] : []),
+        <wbr key={part} />
+      ])}
+    </span>
+  )
 
   // render
   return (
     <>
-      {(
+      {
         <SectionRow>
           <TransactionTitle>
             {getLocale('braveWalletConfirmTransactionTransactionFee')}
           </TransactionTitle>
 
-          { onToggleEditGas && (
+          {onToggleEditGas && (
             <EditButton onClick={onToggleEditGas}>
               {getLocale('braveWalletAllowSpendEditButton')}
             </EditButton>
           )}
         </SectionRow>
-      )}
+      }
 
       {hasFeeEstimatesError ? (
         <TransactionText hasError={true}>
@@ -104,7 +110,11 @@ export const ZCashTransactionInfo = ({
           alignItems={'flex-start'}
           justifyContent='flex-start'
         >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
+          <Skeleton
+            width={'40px'}
+            height={'12px'}
+            enableAnimation
+          />
         </Column>
       ) : (
         <TransactionTypeText>
@@ -123,7 +133,11 @@ export const ZCashTransactionInfo = ({
           alignItems={'flex-start'}
           justifyContent='flex-start'
         >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
+          <Skeleton
+            width={'40px'}
+            height={'12px'}
+            enableAnimation
+          />
         </Column>
       ) : (
         <TransactionText>
@@ -142,28 +156,32 @@ export const ZCashTransactionInfo = ({
       <TransactionTypeText>
         {transactionValueText} {transactionDetails.symbol}
       </TransactionTypeText>
-      {(hasFeeEstimatesError ? (
-          <TransactionText hasError={true}>
-            {getLocale('braveWalletTransactionHasFeeEstimatesError')}
-          </TransactionText>
-        ) : isLoadingGasFee ? (
-          <Column
-            fullHeight
-            fullWidth
-            alignItems={'flex-start'}
-            justifyContent='flex-start'
-          >
-            <Skeleton width={'40px'} height={'12px'} enableAnimation />
-          </Column>
-        ) : (
-          <TransactionTypeText>
-            +{' '}
-            {transactionsNetwork &&
-              new Amount(gasFee)
-                .divideByDecimals(transactionsNetwork.decimals)
-                .formatAsAsset(6, transactionsNetwork.symbol)}
-          </TransactionTypeText>
-        ))}
+      {hasFeeEstimatesError ? (
+        <TransactionText hasError={true}>
+          {getLocale('braveWalletTransactionHasFeeEstimatesError')}
+        </TransactionText>
+      ) : isLoadingGasFee ? (
+        <Column
+          fullHeight
+          fullWidth
+          alignItems={'flex-start'}
+          justifyContent='flex-start'
+        >
+          <Skeleton
+            width={'40px'}
+            height={'12px'}
+            enableAnimation
+          />
+        </Column>
+      ) : (
+        <TransactionTypeText>
+          +{' '}
+          {transactionsNetwork &&
+            new Amount(gasFee)
+              .divideByDecimals(transactionsNetwork.decimals)
+              .formatAsAsset(6, transactionsNetwork.symbol)}
+        </TransactionTypeText>
+      )}
 
       {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
         <Column
@@ -172,7 +190,11 @@ export const ZCashTransactionInfo = ({
           alignItems={'flex-start'}
           justifyContent='flex-start'
         >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
+          <Skeleton
+            width={'40px'}
+            height={'12px'}
+            enableAnimation
+          />
         </Column>
       ) : (
         <TransactionText hasError={false}>

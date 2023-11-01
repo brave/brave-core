@@ -6,10 +6,9 @@
 import styled from 'styled-components'
 import { StyledDiv, StyledButton, Icon } from '../../shared-swap.styles'
 
-
 export const SelectButton = styled(StyledButton)`
-  background-color: ${p => p.theme.color.background01};
-  border: 1px solid ${p => p.theme.color.interactive08};
+  background-color: ${(p) => p.theme.color.background01};
+  border: 1px solid ${(p) => p.theme.color.interactive08};
   border-radius: 4px;
   box-sizing: border-box;
   flex-direction: row;
@@ -26,7 +25,7 @@ export const SelectorWrapper = styled(StyledDiv)`
 `
 
 export const SelectorBox = styled(StyledDiv)`
-  background-color: ${p => p.theme.color.background01};
+  background-color: ${(p) => p.theme.color.background01};
   min-width: 200px;
   position: absolute;
   z-index: 10;
@@ -42,5 +41,5 @@ export const SelectorBox = styled(StyledDiv)`
 `
 
 export const StyledCaratDownIcon = styled(Icon)`
-  color: ${p => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `

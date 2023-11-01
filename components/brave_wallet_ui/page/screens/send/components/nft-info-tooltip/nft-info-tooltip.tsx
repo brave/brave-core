@@ -21,12 +21,7 @@ import { getNFTTokenStandard } from '../../../../../utils/string-utils'
 import Amount from '../../../../../utils/amount'
 
 // Styled Components
-import {
-  Wrapper,
-  Tip,
-  TipIcon,
-  AddressLink
-} from './nft-info-tooltip.style'
+import { Wrapper, Tip, TipIcon, AddressLink } from './nft-info-tooltip.style'
 import { Text, Column, VerticalSpacer } from '../../shared.styles'
 
 export interface Props {
@@ -38,7 +33,9 @@ export const NFTInfoTooltip = (props: Props) => {
   const { token, network } = props
 
   // Hooks
-  const onClickViewOnBlockExplorer = useExplorer(network || new BraveWallet.NetworkInfo())
+  const onClickViewOnBlockExplorer = useExplorer(
+    network || new BraveWallet.NetworkInfo()
+  )
 
   // State
   const [active, setActive] = React.useState(false)
@@ -57,10 +54,17 @@ export const NFTInfoTooltip = (props: Props) => {
       onMouseEnter={showTip}
       onMouseLeave={hideTip}
     >
-      <TipIcon icon={InfoIcon} size={14} />
-      {active &&
+      <TipIcon
+        icon={InfoIcon}
+        size={14}
+      />
+      {active && (
         <Tip>
-          <Column marginBottom={18} columnWidth='full' horizontalAlign='flex-start'>
+          <Column
+            marginBottom={18}
+            columnWidth='full'
+            horizontalAlign='flex-start'
+          >
             <Text
               textAlign='left'
               textSize='14px'
@@ -71,13 +75,20 @@ export const NFTInfoTooltip = (props: Props) => {
             </Text>
             <VerticalSpacer size={8} />
             <AddressLink
-              onClick={onClickViewOnBlockExplorer('address', token.contractAddress)}
+              onClick={onClickViewOnBlockExplorer(
+                'address',
+                token.contractAddress
+              )}
             >
               {reduceAddress(token.contractAddress)}
             </AddressLink>
           </Column>
-          {token.coin !== BraveWallet.CoinType.SOL &&
-            <Column marginBottom={18} columnWidth='full' horizontalAlign='flex-start'>
+          {token.coin !== BraveWallet.CoinType.SOL && (
+            <Column
+              marginBottom={18}
+              columnWidth='full'
+              horizontalAlign='flex-start'
+            >
               <Text
                 textAlign='left'
                 textSize='14px'
@@ -88,13 +99,21 @@ export const NFTInfoTooltip = (props: Props) => {
               </Text>
               <VerticalSpacer size={8} />
               <AddressLink
-                onClick={onClickViewOnBlockExplorer('nft', token.contractAddress, token.tokenId)}
+                onClick={onClickViewOnBlockExplorer(
+                  'nft',
+                  token.contractAddress,
+                  token.tokenId
+                )}
               >
                 {'#' + new Amount(token.tokenId).toNumber()}
               </AddressLink>
             </Column>
-          }
-          <Column marginBottom={18} columnWidth='full' horizontalAlign='flex-start'>
+          )}
+          <Column
+            marginBottom={18}
+            columnWidth='full'
+            horizontalAlign='flex-start'
+          >
             <Text
               textAlign='left'
               textSize='14px'
@@ -104,11 +123,18 @@ export const NFTInfoTooltip = (props: Props) => {
               {getLocale('braveWalletNFTDetailBlockchain')}
             </Text>
             <VerticalSpacer size={8} />
-            <Text textAlign='left' textSize='14px' textColor='text02'>
+            <Text
+              textAlign='left'
+              textSize='14px'
+              textColor='text02'
+            >
               {network?.chainName}
             </Text>
           </Column>
-          <Column columnWidth='full' horizontalAlign='flex-start'>
+          <Column
+            columnWidth='full'
+            horizontalAlign='flex-start'
+          >
             <Text
               textAlign='left'
               textSize='14px'
@@ -118,12 +144,16 @@ export const NFTInfoTooltip = (props: Props) => {
               {getLocale('braveWalletNFTDetailTokenStandard')}
             </Text>
             <VerticalSpacer size={8} />
-            <Text textAlign='left' textSize='14px' textColor='text02'>
+            <Text
+              textAlign='left'
+              textSize='14px'
+              textColor='text02'
+            >
               {getNFTTokenStandard(token)}
             </Text>
           </Column>
         </Tip>
-      }
+      )}
     </Wrapper>
   )
 }

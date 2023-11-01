@@ -24,12 +24,12 @@ export const ExchangeRate = styled.div`
   display: flex;
   align-items: center;
   text-align: right;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const SwapDetails = styled.div`
   position: relative;
-  border: 1px solid ${p => p.theme.color.divider01};
+  border: 1px solid ${(p) => p.theme.color.divider01};
   box-shadow: 0 0 90px rgba(99, 105, 110, 0.08);
   border-radius: 8px;
   height: 220px;
@@ -40,7 +40,7 @@ export const SwapDetails = styled.div`
 export const SwapDetailsDivider = styled.div`
   position: absolute;
   top: 50%;
-  border: 0.5px solid ${p => p.theme.color.divider01};
+  border: 0.5px solid ${(p) => p.theme.color.divider01};
   width: 100%;
 `
 
@@ -48,8 +48,8 @@ export const SwapDetailsArrowContainer = styled.div`
   top: calc(50% - 16px); // 16px = half of 32px (height)
   left: calc(50% - 16px); // 16px = half of 32px (width)
   position: absolute;
-  border: 1px solid ${p => p.theme.color.divider01};
-  background-color: ${p => p.theme.color.background01};
+  border: 1px solid ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.color.background01};
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -62,15 +62,15 @@ export const SwapDetailsArrowContainer = styled.div`
 export const SwapDetailsArrow = styled.div`
   -webkit-mask-image: url(${ArrowDown2Icon});
   mask-image: url(${ArrowDown2Icon});
-  background-color: ${p => p.theme.color.interactive08};
+  background-color: ${(p) => p.theme.color.interactive08};
   width: 12px;
   height: 16px;
 `
 
 export const SwapAssetContainer = styled.div<{ top: boolean }>`
   width: 100%;
-  position: ${p => (p.top ? undefined : 'absolute')};
-  top: ${p => (p.top ? undefined : '50%')};
+  position: ${(p) => (p.top ? undefined : 'absolute')};
+  top: ${(p) => (p.top ? undefined : '50%')};
 `
 
 export const SwapAssetHeader = styled.div`
@@ -85,11 +85,11 @@ export const SwapAssetTitle = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 18px;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const SwapAssetAddress = styled.div`
-  border: 1px solid ${p => p.theme.color.divider01};
+  border: 1px solid ${(p) => p.theme.color.divider01};
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -101,7 +101,7 @@ export const AddressOrb = styled.div<{ orb: string }>`
   width: 12px;
   height: 12px;
   border-radius: 100%;
-  background-image: url(${p => p.orb});
+  background-image: url(${(p) => p.orb});
   background-size: cover;
   margin: 3px;
 `
@@ -117,7 +117,7 @@ export const AccountNameText = styled.span`
   align-items: center;
   text-align: right;
   letter-spacing: 0.01em;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   margin-right: 3px;
 `
 
@@ -153,7 +153,7 @@ export const SwapAssetAmountSymbol = styled.span`
   font-size: 22px;
   display: flex;
   align-items: center;
-  color: ${p => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const NetworkDescriptionText = styled.span`
@@ -163,7 +163,7 @@ export const NetworkDescriptionText = styled.span`
   font-size: 12px;
   display: flex;
   align-items: center;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const LaunchButton = styled(WalletButton)`

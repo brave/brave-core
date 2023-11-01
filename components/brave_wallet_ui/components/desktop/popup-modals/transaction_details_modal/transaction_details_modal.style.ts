@@ -15,9 +15,7 @@ import Lines from '../../../../assets/svg-icons/tx_details_lines.svg'
 import { BraveWallet } from '../../../../constants/types'
 
 // Constants
-import {
-  layoutPanelWidth
-} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 // Shared Styles
 import {
@@ -139,15 +137,13 @@ const assetIconProps = {
   width: '40px',
   height: 'auto'
 }
-export const AssetIcon =
-  AssetIconFactory<AssetIconProps>(assetIconProps)
+export const AssetIcon = AssetIconFactory<AssetIconProps>(assetIconProps)
 
 const swapIconProps = {
   width: '24px',
   height: 'auto'
 }
-export const SwapIcon =
-  AssetIconFactory<AssetIconProps>(swapIconProps)
+export const SwapIcon = AssetIconFactory<AssetIconProps>(swapIconProps)
 
 export const StatusBoxWrapper = styled(Column)`
   align-items: flex-end;
@@ -156,10 +152,9 @@ export const StatusBoxWrapper = styled(Column)`
   }
 `
 
-export const StatusBox = styled.div<
-  {
-    status: BraveWallet.TransactionStatus
-  }>`
+export const StatusBox = styled.div<{
+  status: BraveWallet.TransactionStatus
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,49 +164,44 @@ export const StatusBox = styled.div<
   margin-bottom: 8px;
   background-color: ${(p) =>
     p.status === BraveWallet.TransactionStatus.Confirmed ||
-      p.status === BraveWallet.TransactionStatus.Approved
+    p.status === BraveWallet.TransactionStatus.Approved
       ? leo.color.systemfeedback.successBackground
       : p.status === BraveWallet.TransactionStatus.Error ||
         p.status === BraveWallet.TransactionStatus.Dropped
-        ? leo.color.systemfeedback.errorBackground
-        : p.status === BraveWallet.TransactionStatus.Unapproved
-          ? leo.color.divider.strong
-          : leo.color.systemfeedback.infoBackground
-  };
+      ? leo.color.systemfeedback.errorBackground
+      : p.status === BraveWallet.TransactionStatus.Unapproved
+      ? leo.color.divider.strong
+      : leo.color.systemfeedback.infoBackground};
 `
 
-export const StatusText = styled(Text) <
-  {
-    status: BraveWallet.TransactionStatus
-  }>`
+export const StatusText = styled(Text)<{
+  status: BraveWallet.TransactionStatus
+}>`
   color: ${(p) =>
     p.status === BraveWallet.TransactionStatus.Confirmed ||
-      p.status === BraveWallet.TransactionStatus.Approved
+    p.status === BraveWallet.TransactionStatus.Approved
       ? leo.color.systemfeedback.successText
       : p.status === BraveWallet.TransactionStatus.Error ||
         p.status === BraveWallet.TransactionStatus.Dropped
-        ? leo.color.systemfeedback.errorText
-        : p.status === BraveWallet.TransactionStatus.Unapproved
-          ? leo.color.text.secondary
-          : leo.color.systemfeedback.infoText
-  };
+      ? leo.color.systemfeedback.errorText
+      : p.status === BraveWallet.TransactionStatus.Unapproved
+      ? leo.color.text.secondary
+      : leo.color.systemfeedback.infoText};
   line-height: normal;
   letter-spacing: 0.4px;
   text-transform: uppercase;
   font-size: 10px;
 `
 
-export const LoadingIcon = styled(ProgressRing) <
-  {
-    status: BraveWallet.TransactionStatus
-  }>`
+export const LoadingIcon = styled(ProgressRing)<{
+  status: BraveWallet.TransactionStatus
+}>`
   --leo-progressring-size: 14px;
   --leo-progressring-background-color: rgba(255, 255, 255, 0.4);
   --leo-progressring-color: ${(p) =>
     p.status === BraveWallet.TransactionStatus.Unapproved
       ? leo.color.text.secondary
-      : leo.color.systemfeedback.infoText
-  };
+      : leo.color.systemfeedback.infoText};
   margin-right: 4px;
 `
 

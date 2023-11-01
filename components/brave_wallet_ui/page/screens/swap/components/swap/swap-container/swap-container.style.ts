@@ -18,16 +18,16 @@ export const Wrapper = styled(StyledDiv)`
   bottom: 0;
   overflow-y: auto;
   position: absolute;
-  background-color: ${p => p.theme.color.background01};
+  background-color: ${(p) => p.theme.color.background01};
   @media (prefers-color-scheme: dark) {
-    background-color: ${p => p.theme.color.background02};
+    background-color: ${(p) => p.theme.color.background02};
   }
   @media screen and (max-width: 570px) {
     padding: 68px 0px;
   }
 `
 
-export const Background = styled(StyledDiv) <{
+export const Background = styled(StyledDiv)<{
   height: number
   network: string
   backgroundOpacity: number
@@ -85,21 +85,21 @@ export const Background = styled(StyledDiv) <{
   );
   filter: blur(150px);
   width: 512px;
-  height: ${p => p.height}px;
-  opacity: ${p => p.backgroundOpacity};
+  height: ${(p) => p.height}px;
+  opacity: ${(p) => p.backgroundOpacity};
   transition-delay: 0s;
   transition-duration: 1s;
   transition-timing-function: ease;
   position: absolute;
   z-index: 8;
-  background-image: var(--${p => p.network});
+  background-image: var(--${(p) => p.network});
   @media screen and (max-width: 570px) {
     width: 100%;
   }
 `
 
 export const Container = styled(StyledDiv)`
-  background-color: ${p => p.theme.color.background01};
+  background-color: ${(p) => p.theme.color.background01};
   border-radius: 24px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;

@@ -84,7 +84,10 @@ export const NftIcon = (props: NftIconProps) => {
         }
       }
       sendMessageToNftUiFrame(nftImageIframeRef.current.contentWindow, command)
-      sendMessageToNftUiFrame(nftImageIframeRef.current.contentWindow, loadingCommand)
+      sendMessageToNftUiFrame(
+        nftImageIframeRef.current.contentWindow,
+        loadingCommand
+      )
     }
   }, [loaded, remoteImage, nftImageIframeRef, remoteCid])
 
@@ -93,22 +96,22 @@ export const NftIcon = (props: NftIconProps) => {
     return <StorybookNftIcon {...props} />
   }
 
-  return (
-    responsive
-      ? <NftImageResponsiveIframe
-        style={iconStyles}
-        onLoad={onIframeLoaded}
-        ref={nftImageIframeRef}
-        src="chrome-untrusted://nft-display"
-        sandbox="allow-scripts allow-same-origin"
-      />
-      : <NftImageIframe
-        style={iconStyles}
-        onLoad={onIframeLoaded}
-        ref={nftImageIframeRef}
-        src="chrome-untrusted://nft-display"
-        sandbox="allow-scripts allow-same-origin"
-      />
+  return responsive ? (
+    <NftImageResponsiveIframe
+      style={iconStyles}
+      onLoad={onIframeLoaded}
+      ref={nftImageIframeRef}
+      src='chrome-untrusted://nft-display'
+      sandbox='allow-scripts allow-same-origin'
+    />
+  ) : (
+    <NftImageIframe
+      style={iconStyles}
+      onLoad={onIframeLoaded}
+      ref={nftImageIframeRef}
+      src='chrome-untrusted://nft-display'
+      sandbox='allow-scripts allow-same-origin'
+    />
   )
 }
 
@@ -123,6 +126,10 @@ export const StorybookNftIcon = (props: NftIconProps) => {
       src={tokenImageURL}
     />
   ) : (
-    <NftImageIframe as={'img'} style={iconStyles} src={tokenImageURL} />
+    <NftImageIframe
+      as={'img'}
+      style={iconStyles}
+      src={tokenImageURL}
+    />
   )
 }

@@ -23,10 +23,21 @@ export const FullPanelPopup: React.FC<Props> = ({
 }) => {
   return (
     <FullScreenPanelPopupWrapper kind={kind}>
-      <Column fullHeight fullWidth justifyContent='flex-start'>
-        <Row justifyContent='flex-end' alignItems='center' padding={'16px'}>
+      <Column
+        fullHeight
+        fullWidth
+        justifyContent='flex-start'
+      >
+        <Row
+          justifyContent='flex-end'
+          alignItems='center'
+          padding={'16px'}
+        >
           <Column width='20px'>
-            <IconButton kind='plain' onClick={onClose}>
+            <IconButton
+              kind='plain'
+              onClick={onClose}
+            >
               <CloseIcon />
             </IconButton>
           </Column>

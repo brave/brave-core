@@ -32,7 +32,13 @@ export const ImageLoader = ({
 
   return (
     <>
-      {loaded && <Image src={src} customWidth={width} customHeight={height} />}
+      {loaded && (
+        <Image
+          src={src}
+          customWidth={width}
+          customHeight={height}
+        />
+      )}
       <img
         src={src}
         style={{ display: 'none' }}

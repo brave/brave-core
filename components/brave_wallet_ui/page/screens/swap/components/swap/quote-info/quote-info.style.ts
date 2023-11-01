@@ -5,15 +5,21 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
-import { Icon, Row, StyledDiv, Text, IconButton } from '../../shared-swap.styles'
+import {
+  Icon,
+  Row,
+  StyledDiv,
+  Text,
+  IconButton
+} from '../../shared-swap.styles'
 
 export const HorizontalArrows = styled(Icon)`
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   margin-left: 8px;
 `
 
 export const FuelTank = styled(Icon)`
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   margin-right: 6px;
 `
 
@@ -27,13 +33,13 @@ export const Bubble = styled(Row)`
   }
 `
 
-export const LPIcon = styled(StyledDiv) <{ icon: string, size: number }>`
-  background-image: url(${p => p.icon});
+export const LPIcon = styled(StyledDiv)<{ icon: string; size: number }>`
+  background-image: url(${(p) => p.icon});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: ${p => p.size}px;
-  width: ${p => p.size}px;
+  height: ${(p) => p.size}px;
+  width: ${(p) => p.size}px;
   margin-left: 6px;
   border-radius: 50px;
 `
@@ -50,10 +56,10 @@ export const BraveFeeDiscounted = styled(Text)`
   text-decoration: line-through;
 `
 
-export const ExpandButton = styled(IconButton) <{
+export const ExpandButton = styled(IconButton)<{
   isExpanded: boolean
 }>`
-  transform: ${(p) => p.isExpanded ? 'rotate(180deg)' : 'unset'};
+  transform: ${(p) => (p.isExpanded ? 'rotate(180deg)' : 'unset')};
   transition: transform 300ms ease;
 `
 

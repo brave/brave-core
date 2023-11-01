@@ -9,28 +9,23 @@ import { LocaleRestricted } from './locale-restricted'
 
 const currentLocale = Intl.NumberFormat().resolvedOptions().locale
 
-
 describe('<LocaleRestricted />', () => {
-  it('renders children when user\'s locale is allowed', () => {
+  it("renders children when user's locale is allowed", () => {
     expect(currentLocale.length).toBeGreaterThanOrEqual(1)
-    const wrapper = shallow((
-      <LocaleRestricted
-        allowedLocales={[currentLocale]}
-      >
-        <div className="unique" />
+    const wrapper = shallow(
+      <LocaleRestricted allowedLocales={[currentLocale]}>
+        <div className='unique' />
       </LocaleRestricted>
-    ))
-    expect(wrapper.contains(<div className="unique" />)).toEqual(true)
+    )
+    expect(wrapper.contains(<div className='unique' />)).toEqual(true)
   })
 
-  it('does not render children when user\'s locale is not allowed', () => {
-    const wrapper = shallow((
-      <LocaleRestricted
-        allowedLocales={['fr']}
-      >
-        <div className="unique" />
+  it("does not render children when user's locale is not allowed", () => {
+    const wrapper = shallow(
+      <LocaleRestricted allowedLocales={['fr']}>
+        <div className='unique' />
       </LocaleRestricted>
-    ))
-    expect(wrapper.contains(<div className="unique" />)).toEqual(false)
+    )
+    expect(wrapper.contains(<div className='unique' />)).toEqual(false)
   })
 })

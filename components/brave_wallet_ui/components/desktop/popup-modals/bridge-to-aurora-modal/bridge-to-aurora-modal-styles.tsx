@@ -21,7 +21,7 @@ export const Title = styled.h4`
   font-weight: 600;
   font-size: 18px;
   line-height: 26px;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   text-align: center;
   margin: 0 0 7px;
   align-self: center;
@@ -33,7 +33,7 @@ export const Description = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   margin: 0;
 `
 
@@ -43,7 +43,7 @@ export const LearnMoreLink = styled.a`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: ${p => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   text-decoration: none;
   display: block;
   margin-top: 6px;

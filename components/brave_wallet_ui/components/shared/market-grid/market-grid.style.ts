@@ -53,8 +53,8 @@ export const HeaderItem = styled.div<{
 }>`
   display: flex;
   align-items: center;
-  gap: ${({ sortable }) => sortable ? '5px': '0px'};
-  cursor: ${({ sortable }) => sortable ? 'pointer' : 'auto'};
+  gap: ${({ sortable }) => (sortable ? '5px' : '0px')};
+  cursor: ${({ sortable }) => (sortable ? 'pointer' : 'auto')};
   font-family: Poppins;
   font-size: 12px;
   font-style: normal;
@@ -71,8 +71,11 @@ export const HeaderItem = styled.div<{
   ${({ hideOnSmall }) =>
     hideOnSmall &&
     css`
-      @media (min-width: ${breakpoints.panel}) and
-      (max-width: ${breakpoints.small}) {
+      @media (min-width: ${
+          breakpoints.panel //
+        }) and (max-width: ${
+          breakpoints.small //
+        }) {
         display: none;
       }
     `}
@@ -116,8 +119,11 @@ export const Cell = styled.div<{
   ${({ hideOnSmall }) =>
     hideOnSmall &&
     css`
-      @media (min-width: ${breakpoints.panel}) and
-      (max-width: ${breakpoints.small}) {
+      @media (min-width: ${
+          breakpoints.panel //
+        }) and (max-width: ${
+          breakpoints.small //
+        }) {
         display: none;
       }
     `}

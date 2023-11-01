@@ -5,14 +5,12 @@
 import * as React from 'react'
 
 // Utils
-import {
-  getRewardsProviderIcon
-} from '../../../utils/rewards_utils'
+import { getRewardsProviderIcon } from '../../../utils/rewards_utils'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
 import {
-  ExternalWalletProvider
+  ExternalWalletProvider //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 
 // styles
@@ -33,13 +31,7 @@ interface Props {
 }
 
 export const CreateAccountIcon = (props: Props) => {
-  const {
-    account,
-    size,
-    marginRight,
-    round,
-    externalProvider
-  } = props
+  const { account, size, marginRight, round, externalProvider } = props
 
   // Memos
   const orb = useAccountOrb(account)
@@ -67,12 +59,12 @@ export const CreateAccountIcon = (props: Props) => {
       marginRight={marginRight}
       round={round}
     >
-      {account?.accountId.kind === BraveWallet.AccountKind.kHardware &&
+      {account?.accountId.kind === BraveWallet.AccountKind.kHardware && (
         <AccountIcon
           name='flashdrive'
           size={size}
         />
-      }
+      )}
     </AccountBox>
   )
 }

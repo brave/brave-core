@@ -12,12 +12,7 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 import { CreateNetworkIcon } from '../create-network-icon/index'
 
 // Styled Components
-import {
-  StyledWrapper,
-  NetworkName,
-  LeftSide,
-  BigCheckMark
-} from './style'
+import { StyledWrapper, NetworkName, LeftSide, BigCheckMark } from './style'
 
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo | null
@@ -25,7 +20,7 @@ export interface Props {
   onSelectCustomNetwork: (network: BraveWallet.NetworkInfo) => void
 }
 
-export function SelectNetworkItem (props: Props) {
+export function SelectNetworkItem(props: Props) {
   const { network, selectedNetwork, onSelectCustomNetwork } = props
 
   // methods
@@ -35,18 +30,21 @@ export function SelectNetworkItem (props: Props) {
 
   // render
   return (
-    <StyledWrapper onClick={onSelectNetwork} data-test-chain-id={'chain-' + network.chainId}>
+    <StyledWrapper
+      onClick={onSelectNetwork}
+      data-test-chain-id={'chain-' + network.chainId}
+    >
       <LeftSide>
-        {network.chainId !== AllNetworksOption.chainId &&
-          <CreateNetworkIcon network={network} marginRight={14} />
-        }
+        {network.chainId !== AllNetworksOption.chainId && (
+          <CreateNetworkIcon
+            network={network}
+            marginRight={14}
+          />
+        )}
         <NetworkName>{network.chainName}</NetworkName>
       </LeftSide>
-      {
-        selectedNetwork?.chainId === network.chainId &&
-        selectedNetwork?.coin === network.coin &&
-        <BigCheckMark />
-      }
+      {selectedNetwork?.chainId === network.chainId &&
+        selectedNetwork?.coin === network.coin && <BigCheckMark />}
     </StyledWrapper>
   )
 }

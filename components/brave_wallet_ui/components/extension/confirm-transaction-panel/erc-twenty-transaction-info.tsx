@@ -19,7 +19,8 @@ import type { BraveWallet } from '../../../constants/types'
 import {
   TransactionTitle,
   TransactionTypeText,
-  TransactionText, Divider,
+  TransactionText,
+  Divider,
   SectionRow,
   EditButton
 } from './style'
@@ -86,12 +87,11 @@ export const Erc20ApproveTransactionInfo = ({
         </TransactionText>
       )}
 
-      {!!insufficientFundsForGasError &&
-       insufficientFundsError && (
-          <TransactionText hasError={true}>
-            {getLocale('braveWalletSwapInsufficientBalance')}
-          </TransactionText>
-        )}
+      {!!insufficientFundsForGasError && insufficientFundsError && (
+        <TransactionText hasError={true}>
+          {getLocale('braveWalletSwapInsufficientBalance')}
+        </TransactionText>
+      )}
 
       <Divider />
 

@@ -19,7 +19,7 @@ import {
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType,
   RestoreWalletPayloadType,
-  UpdateSelectedAssetType,
+  UpdateSelectedAssetType
 } from '../constants/action_types'
 
 const defaultState: PageState = {
@@ -46,15 +46,22 @@ const defaultState: PageState = {
 }
 
 export const WalletPageAsyncActions = {
-  addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>('addHardwareAccounts'),
+  addHardwareAccounts: createAction<BraveWallet.HardwareWalletAccount[]>(
+    'addHardwareAccounts'
+  ),
   checkWalletsToImport: createAction('checkWalletsToImport'),
   createWallet: createAction<CreateWalletPayloadType>('createWallet'),
-  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>('importAccountFromJson'),
-  importFromCryptoWallets: createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets'),
-  importFromMetaMask: createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask'),
+  importAccountFromJson: createAction<ImportAccountFromJsonPayloadType>(
+    'importAccountFromJson'
+  ),
+  importFromCryptoWallets: createAction<ImportFromExternalWalletPayloadType>(
+    'importFromCryptoWallets'
+  ),
+  importFromMetaMask:
+    createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask'),
   openWalletSettings: createAction('openWalletSettings'),
   restoreWallet: createAction<RestoreWalletPayloadType>('restoreWallet'),
-  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset'),
+  selectAsset: createAction<UpdateSelectedAssetType>('selectAsset')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {

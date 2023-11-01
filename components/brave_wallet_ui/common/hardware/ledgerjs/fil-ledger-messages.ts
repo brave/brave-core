@@ -43,8 +43,8 @@ export interface FilLotusMessage {
 export interface FilSignedLotusMessage {
   Message: FilLotusMessage
   Signature: {
-      Type: number
-      Data: string
+    Type: number
+    Data: string
   }
 }
 
@@ -52,7 +52,8 @@ export interface FilSignedLotusMessage {
 export type FilSignedTx = {
   lotusMessage: FilSignedLotusMessage
 }
-export type FilSignTransactionResponsePayload = LedgerResponsePayload & FilSignedTx
+export type FilSignTransactionResponsePayload = LedgerResponsePayload &
+  FilSignedTx
 
 export type FilSignTransactionResponse = CommandMessage & {
   payload: FilSignTransactionResponsePayload | LedgerError
@@ -63,5 +64,9 @@ export type FilSignTransactionCommand = CommandMessage & {
   message: string
 }
 
-export type FilLedgerFrameCommand = FilGetAccountCommand | FilSignTransactionCommand
-export type FilLedgerFrameResponse = FilGetAccountResponse | FilSignTransactionResponse
+export type FilLedgerFrameCommand =
+  | FilGetAccountCommand
+  | FilSignTransactionCommand
+export type FilLedgerFrameResponse =
+  | FilGetAccountResponse
+  | FilSignTransactionResponse

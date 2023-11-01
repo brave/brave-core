@@ -14,7 +14,9 @@ interface OrbOptions {
   scale: number
 }
 
-const applyDefaults = (options: Partial<OrbOptions> | undefined): OrbOptions => {
+const applyDefaults = (
+  options: Partial<OrbOptions> | undefined
+): OrbOptions => {
   return { size: options?.size || 8, scale: options?.scale || 16 }
 }
 
@@ -29,7 +31,8 @@ export const useAccountOrb = (
       return ''
     }
 
-    // Using hash of uniqueKey so similar unique keys don't produce similar colors.
+    // Using hash of uniqueKey so similar unique keys don't produce similar
+    // colors.
     const seed =
       accountInfo.address?.toLowerCase() ||
       crypto
@@ -43,7 +46,12 @@ export const useAccountOrb = (
         ...applyDefaults(options)
       }) as HTMLCanvasElement
     ).toDataURL()
-  }, [accountInfo?.address, accountInfo?.accountId.uniqueKey, options?.size, options?.scale])
+  }, [
+    accountInfo?.address,
+    accountInfo?.accountId.uniqueKey,
+    options?.size,
+    options?.scale
+  ])
 }
 
 export const useAddressOrb = (

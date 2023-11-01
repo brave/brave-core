@@ -23,14 +23,14 @@ export const HeaderWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0px 10px;
   max-width: 300px;
   position: relative;
 `
 
 export const ExpandIcon = styled(WalletButton)`
-  display: flex;;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -42,7 +42,7 @@ export const ExpandIcon = styled(WalletButton)`
 `
 
 export const ActionIcon = styled(WalletButton)`
-  display: flex;;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;

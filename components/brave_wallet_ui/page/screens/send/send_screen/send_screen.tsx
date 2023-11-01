@@ -57,7 +57,7 @@ import {
 
 // Hooks
 import {
-  useScopedBalanceUpdater
+  useScopedBalanceUpdater //
 } from '../../../../common/hooks/use-scoped-balance-updater'
 import { useModal } from '../../../../common/hooks/useOnClickOutside'
 import {
@@ -76,7 +76,7 @@ import {
   useSendERC20TransferMutation,
   useSendERC721TransferFromMutation,
   useSendETHFilForwarderTransferMutation,
-  useGetAddressFromNameServiceUrlQuery,
+  useGetAddressFromNameServiceUrlQuery
 } from '../../../../common/slices/api.slice'
 import {
   useAccountFromAddressQuery,
@@ -194,7 +194,7 @@ export const SendScreen = React.memo((props: Props) => {
   const { data: fullTokenList } = useGetCombinedTokensListQuery()
 
   const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
-    selectFromResult: result => ({
+    selectFromResult: (result) => ({
       userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
     })
   })
@@ -427,15 +427,15 @@ export const SendScreen = React.memo((props: Props) => {
     : trimmedToAddressOrUrl.includes('.')
     ? domainErrorLocaleKey
     : selectedAccount
-    ? addressWarningLocaleKey !==
-        'braveWalletAddressMissingChecksumInfoWarning' ?
-      processAddressOrUrl({
-        addressOrUrl: trimmedToAddressOrUrl,
-        ethAddressChecksum,
-        isBase58,
-        coinType: selectedAccount.accountId.coin ?? BraveWallet.CoinType.ETH,
-        selectedSendAsset
-      }) : undefined
+    ? addressWarningLocaleKey !== 'braveWalletAddressMissingChecksumInfoWarning'
+      ? processAddressOrUrl({
+          addressOrUrl: trimmedToAddressOrUrl,
+          ethAddressChecksum,
+          isBase58,
+          coinType: selectedAccount.accountId.coin ?? BraveWallet.CoinType.ETH,
+          selectedSendAsset
+        })
+      : undefined
     : undefined
 
   const addressError = addressErrorLocaleKey
@@ -478,7 +478,7 @@ export const SendScreen = React.memo((props: Props) => {
         toAddressOrUrl,
         showEnsOffchainWarning,
         addressErrorKey: addressErrorLocaleKey,
-        addressWarningKey: addressWarningLocaleKey,
+        addressWarningKey: addressWarningLocaleKey
       }),
       [
         showFilecoinFEVMWarning,
@@ -750,13 +750,19 @@ export const SendScreen = React.memo((props: Props) => {
         cardHeader={<SendPageHeader />}
       >
         <SendContainer>
-          <Row rowWidth='full' marginBottom={16}>
+          <Row
+            rowWidth='full'
+            marginBottom={16}
+          >
             <SelectSendOptionButton
               selectedSendOption={selectedSendOption}
               onClick={onSelectSendOption}
             />
           </Row>
-          <SectionBox minHeight={150} hasError={insufficientFundsError}>
+          <SectionBox
+            minHeight={150}
+            hasError={insufficientFundsError}
+          >
             {selectedSendOption === SendPageTabHashes.token && (
               <Column
                 columnHeight='full'
@@ -764,7 +770,10 @@ export const SendScreen = React.memo((props: Props) => {
                 verticalAlign='space-between'
                 horizontalAlign='space-between'
               >
-                <Row rowWidth='full' horizontalAlign='flex-end'>
+                <Row
+                  rowWidth='full'
+                  horizontalAlign='flex-end'
+                >
                   {isLoadingSelectedAccount || isLoadingBalances ? (
                     <SmallLoadingRing />
                   ) : (
@@ -814,7 +823,10 @@ export const SendScreen = React.memo((props: Props) => {
                     />
                   )}
                 </Row>
-                <Row rowWidth='full' horizontalAlign='flex-end'>
+                <Row
+                  rowWidth='full'
+                  horizontalAlign='flex-end'
+                >
                   {isLoadingSpotPrices || isLoadingBalances ? (
                     <SmallLoadingRing />
                   ) : (
@@ -835,7 +847,7 @@ export const SendScreen = React.memo((props: Props) => {
                 columnWidth='full'
                 columnHeight='full'
               >
-                {accountNameAndBalance &&
+                {accountNameAndBalance && (
                   <Row
                     horizontalAlign='flex-end'
                     rowWidth='full'
@@ -851,7 +863,7 @@ export const SendScreen = React.memo((props: Props) => {
                       {accountNameAndBalance}
                     </Text>
                   </Row>
-                }
+                )}
                 <Row
                   rowHeight='full'
                   rowWidth='full'
@@ -862,7 +874,8 @@ export const SendScreen = React.memo((props: Props) => {
                   <SelectTokenButton
                     onClick={openSelectTokenModal}
                     token={selectedSendAsset}
-                    selectedSendOption={selectedSendOption} />
+                    selectedSendOption={selectedSendOption}
+                  />
                 </Row>
               </Column>
             )}
@@ -1072,7 +1085,7 @@ const processDomainLookupResponseWarning = (
   resolvedAddress: string | undefined,
   hasDomainLookupError: boolean,
   requireOffchainConsent: boolean,
-  selectedAccountAddress?: string,
+  selectedAccountAddress?: string
 ) => {
   if (requireOffchainConsent) {
     // handled separately
@@ -1083,10 +1096,7 @@ const processDomainLookupResponseWarning = (
     return 'braveWalletInvalidRecipientAddress'
   }
 
-  if (
-    hasDomainLookupError ||
-    !resolvedAddress
-  ) {
+  if (hasDomainLookupError || !resolvedAddress) {
     return 'braveWalletNotDomain'
   }
 
@@ -1144,15 +1154,12 @@ const processEthereumAddress = (
 
 const processZCashAddress = (addressOrUrl: string) => {
   if (!isValidZecAddress(addressOrUrl)) {
-    return 'braveWalletInvalidRecipientAddress';
+    return 'braveWalletInvalidRecipientAddress'
   }
   return undefined
 }
 
-const processFilecoinAddress = (
-  addressOrUrl: string,
-  checksum: string
-) => {
+const processFilecoinAddress = (addressOrUrl: string, checksum: string) => {
   const valueToLowerCase = addressOrUrl.toLowerCase()
 
   // If value starts with 0x, will check if it's a valid address
@@ -1193,7 +1200,7 @@ function processAddressOrUrl({
   ethAddressChecksum,
   isBase58,
   coinType,
-  selectedSendAsset,
+  selectedSendAsset
 }: {
   addressOrUrl: string
   coinType: BraveWallet.CoinType | undefined
@@ -1207,7 +1214,8 @@ function processAddressOrUrl({
   }
 
   switch (coinType) {
-    case undefined: return undefined
+    case undefined:
+      return undefined
     case BraveWallet.CoinType.ETH: {
       return processEthereumAddress(
         addressOrUrl,

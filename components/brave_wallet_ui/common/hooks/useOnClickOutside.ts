@@ -10,8 +10,7 @@ type Event = MouseEvent | TouchEvent
 export const useModal = () => {
   const modalRef = React.useRef<HTMLDivElement>(null)
 
-  const [isModalShown, setShowModal] =
-    React.useState<boolean>(false)
+  const [isModalShown, setShowModal] = React.useState<boolean>(false)
 
   const openModal = React.useCallback(() => {
     setShowModal(true)
@@ -21,11 +20,7 @@ export const useModal = () => {
     setShowModal(false)
   }, [])
 
-  useOnClickOutside(
-    modalRef,
-    closeModal,
-    isModalShown
-  )
+  useOnClickOutside(modalRef, closeModal, isModalShown)
 
   return {
     openModal,
@@ -35,7 +30,7 @@ export const useModal = () => {
   }
 }
 
-export const useOnClickOutside = <T extends HTMLElement = HTMLElement> (
+export const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
   ref: React.RefObject<T>,
   handler: (event: Event) => void,
   startListening: boolean,
@@ -45,8 +40,10 @@ export const useOnClickOutside = <T extends HTMLElement = HTMLElement> (
 ) => {
   React.useEffect(() => {
     const listener = (event: Event) => {
-      if ((!ref.current || ref.current.contains((event?.target as Node) || null) ||
-        (buttonId === (event.target as HTMLButtonElement).id))
+      if (
+        !ref.current ||
+        ref.current.contains((event?.target as Node) || null) ||
+        buttonId === (event.target as HTMLButtonElement).id
       ) {
         return
       }
