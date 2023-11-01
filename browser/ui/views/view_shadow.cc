@@ -73,6 +73,10 @@ void ViewShadow::SetInsets(const gfx::Insets& insets) {
   UpdateBounds();
 }
 
+void ViewShadow::SetVisible(bool visible) {
+  shadow_layer()->SetVisible(visible);
+}
+
 void ViewShadow::OnViewLayerBoundsSet(views::View* view) {
   DCHECK(view->layer());
   DCHECK_EQ(view, view_.get());
