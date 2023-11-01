@@ -469,13 +469,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
 std::vector<mojom::FeedItemV2Ptr> GenerateAd() {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
-  result.push_back(mojom::FeedItemV2::NewAdvert(mojom::PromotedArticle::New(
-      mojom::FeedItemMetadata::New(
-          "ad", base::Time::Now(), "Advert", "Some handy info",
-          GURL("https://example.com"), "foo",
-          mojom::Image::NewImageUrl(GURL("https://example.com/favicon.ico")),
-          "", "", 0.0, 0.0, "Now"),
-      "test")));
+  result.push_back(mojom::FeedItemV2::NewAdvert(mojom::FeedV2Ad::New()));
   return result;
 }
 

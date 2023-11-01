@@ -7,7 +7,7 @@ import { useOnVisibleCallback } from '$web-common/useVisible';
 import VisibilityTimer from '$web-common/visibilityTimer';
 import Button from '@brave/leo/react/button';
 import { font, spacing } from '@brave/leo/tokens/css';
-import { DisplayAd, PromotedArticle } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
+import { DisplayAd, FeedV2Ad } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
 import getBraveNewsController from '../shared/api';
@@ -16,7 +16,7 @@ import { MetaInfoContainer } from './ArticleMetaRow';
 import Card, { LargeImage, Title } from './Card';
 
 interface Props {
-  info: PromotedArticle
+  info: FeedV2Ad
 }
 
 const Container = styled(Card)`
