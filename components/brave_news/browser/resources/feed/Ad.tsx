@@ -4,12 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import SecureLink, { validateScheme } from '$web-common/SecureLink';
 import { useOnVisibleCallback } from '$web-common/useVisible';
+import VisibilityTimer from '$web-common/visibilityTimer';
 import Button from '@brave/leo/react/button';
 import { font, spacing } from '@brave/leo/tokens/css';
 import { DisplayAd, PromotedArticle } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
-import VisibilityTimer from '../../../../brave_new_tab_ui/helpers/visibilityTimer';
 import getBraveNewsController from '../shared/api';
 import { useUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { MetaInfoContainer } from './ArticleMetaRow';

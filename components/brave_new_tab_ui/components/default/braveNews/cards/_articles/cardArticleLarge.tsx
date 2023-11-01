@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { getLocale } from '$web-common/locale'
+import VisibilityTimer from '$web-common/visibilityTimer'
 import * as React from 'react'
-import * as BraveNews from '../../../../../../brave_news/browser/resources/shared/api'
-import VisibilityTimer from '../../../../../helpers/visibilityTimer'
-import { getLocale } from '../../../../../../common/locale'
-import * as Card from '../../cardSizes'
-import useScrollIntoView from '../../useScrollIntoView'
-import useReadArticleClickHandler from '../../useReadArticleClickHandler'
 import { OnPromotedItemViewed, OnReadFeedItem, OnSetPublisherPref } from '../../'
+import * as BraveNews from '../../../../../../brave_news/browser/resources/shared/api'
+import * as Card from '../../cardSizes'
+import useReadArticleClickHandler from '../../useReadArticleClickHandler'
+import useScrollIntoView from '../../useScrollIntoView'
 import { CardImageFromFeedItem } from '../CardImage'
 import PublisherMeta from '../PublisherMeta'
 // TODO(petemill): Large and Medium article should be combined to 1 component.
