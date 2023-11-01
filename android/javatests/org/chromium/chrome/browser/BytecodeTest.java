@@ -256,7 +256,8 @@ public class BytecodeTest {
                 classExists("org/chromium/components/permissions/PermissionDialogDelegate"));
         Assert.assertTrue(
                 classExists("org/chromium/components/permissions/BravePermissionDialogModel"));
-        Assert.assertTrue(classExists("org/chromium/components/permissions/PermissionDialogModel"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/permissions/PermissionDialogModelFactory"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/status/StatusMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/omnibox/status/BraveStatusMediator"));
@@ -439,13 +440,24 @@ public class BytecodeTest {
                 "addOrEditBookmark", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils",
                 "showBookmarkManagerOnPhone", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkUtils",
-                "showBookmarkManagerOnPhone", false, null));
         Assert.assertTrue(
-                methodExists("org/chromium/components/permissions/BravePermissionDialogModel",
-                        "getModel", false, null));
-        Assert.assertTrue(methodExists("org/chromium/components/permissions/PermissionDialogModel",
-                "getModel", false, null));
+                methodExists(
+                        "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
+                        "showBookmarkManagerOnPhone",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/permissions/BravePermissionDialogModel",
+                        "getModel",
+                        false,
+                        null));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/permissions/PermissionDialogModelFactory",
+                        "getModel",
+                        false,
+                        null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "createAdapterIfNecessary", false, null));
