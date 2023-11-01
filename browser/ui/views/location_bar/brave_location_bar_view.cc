@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
-#include <memory>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -37,6 +36,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
@@ -89,6 +89,19 @@ absl::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
 }
 
 }  // namespace
+
+BraveLocationBarView::BraveLocationBarView(Browser* browser,
+                                           Profile* profile,
+                                           CommandUpdater* command_updater,
+                                           Delegate* delegate,
+                                           bool is_popup_mode)
+    : LocationBarView(browser,
+                      profile,
+                      command_updater,
+                      delegate,
+                      is_popup_mode) {}
+
+BraveLocationBarView::~BraveLocationBarView() = default;
 
 void BraveLocationBarView::Init() {
   // base method calls Update and Layout
@@ -279,6 +292,31 @@ std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
   return views;
 }
 
+void BraveLocationBarView::RefreshBackground() {
+  LocationBarView::RefreshBackground();
+
+  const auto* const color_provider = GetColorProvider();
+  if (!color_provider) {
+    return;
+  }
+
+  if (!shadow_) {
+    const int radius = GetBorderRadius();
+    ViewShadow::ShadowParameters shadow{
+        .offset_x = 0,
+        .offset_y = 1,
+        .blur_radius = radius,
+        .shadow_color =
+            color_provider->GetColor(kColorLocationBarHoveredShadow)};
+
+    shadow_ = std::make_unique<ViewShadow>(this, radius, shadow);
+  }
+
+  const bool show_shadow =
+      IsMouseHovered() && !omnibox_view_->model()->is_caret_visible();
+  shadow_->SetVisible(show_shadow);
+}
+
 gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   gfx::Size min_size = LocationBarView::CalculatePreferredSize();
   if (brave_actions_ && brave_actions_->GetVisible()) {
@@ -318,7 +356,7 @@ void BraveLocationBarView::OnThemeChanged() {
   }
 
   Update(nullptr);
-  RefreshBackground();
+  shadow_.reset();
 }
 
 void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
@@ -335,7 +373,7 @@ void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
 
 int BraveLocationBarView::GetBorderRadius() const {
   return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-      views::Emphasis::kHigh, size());
+      views::Emphasis::kMaximum, size());
 }
 
 SkPath BraveLocationBarView::GetFocusRingHighlightPath() const {

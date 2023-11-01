@@ -86,6 +86,7 @@ class OnionLocationButtonView : public views::LabelButton {
                   ui::ImageModel::FromImageSkia(image));
     // Set style specifics
     SetEnabledTextColors(kTextColor);
+    SetTextColor(views::Button::STATE_DISABLED, kTextColor);
     SetHorizontalAlignment(gfx::ALIGN_RIGHT);
     SetImageLabelSpacing(6);
 

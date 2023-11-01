@@ -6,12 +6,41 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_
 
+#include "ui/views/animation/ink_drop_observer.h"
+
+#define ToolbarButton ToolbarButton_ChromiumImpl
 #define SetHighlight                                  \
   SetMenuModel(std::unique_ptr<ui::MenuModel> model); \
+  bool HasVectorIcons() const;                        \
+  const gfx::VectorIcon& GetVectorIcon() const;       \
+  const gfx::VectorIcon& GetVectorTouchIcon() const;  \
   virtual void SetHighlight
+
 #define UpdateColorsAndInsets virtual UpdateColorsAndInsets
 #include "src/chrome/browser/ui/views/toolbar/toolbar_button.h"  // IWYU pragma: export
-#undef SetHighlight
 #undef UpdateColorsAndInsets
+#undef SetHighlight
+#undef ToolbarButton
+
+class ToolbarButton : public ToolbarButton_ChromiumImpl,
+                      public views::InkDropObserver {
+ public:
+  METADATA_HEADER(ToolbarButton);
+
+  using ToolbarButton_ChromiumImpl::ToolbarButton_ChromiumImpl;
+  ~ToolbarButton() override;
+
+  // ToolbarButton_ChromiumImpl overrides:
+  void OnThemeChanged() override;
+
+  virtual void OnInkDropStateChanged(views::InkDropState state);
+
+ private:
+  // InkDropObserverImpl overrides:
+  void InkDropAnimationStarted() override {}
+  void InkDropRippleAnimationEnded(views::InkDropState state) override;
+
+  bool activated_ = false;
+};
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_

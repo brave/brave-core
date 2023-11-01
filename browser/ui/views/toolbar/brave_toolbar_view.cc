@@ -223,6 +223,14 @@ void BraveToolbarView::Init() {
   }
 #endif
 
+  // Locate avatar button right next to location bar in private/tor window.
+  auto location_bar_index = container_view->GetIndexOf(location_bar_);
+  auto* avatar_button = GetAvatarToolbarButton();
+  if (avatar_button && location_bar_index &&
+      browser_->profile()->IsIncognitoProfile()) {
+    container_view->ReorderChildView(avatar_button, *location_bar_index + 1);
+  }
+
   brave_initialized_ = true;
   UpdateHorizontalPadding();
 }

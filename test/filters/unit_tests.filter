@@ -175,6 +175,9 @@
 -SearchProviderRequestTest.SendRequestWithoutURL
 -SearchProviderRequestTest.SendRequestWithoutURL/*
 
+# Test below are disabled as we have our own ink drop configs.
+-ChromeRefresh2023OnOff/ToolbarInkDropUtilTest.ConfigureInkDropForToolbarTest/*
+
 # The following tests are disabled for BraveRenderViewContextMenu::InitMenu
 # attempting to check Tor statuses, which dereferences an uninitialised
 # g_browser_process->local_state().

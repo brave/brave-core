@@ -24,6 +24,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -193,14 +194,6 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
                           base::Unretained(this)),
       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this)));
 
-  views::HighlightPathGenerator::Install(
-      this, std::make_unique<ButtonHighlightPathGenerator>());
-
-  // The highlight opacity set by |ToolbarButton| is different that the default
-  // highlight opacity used by the other buttons in the actions container. Unset
-  // the highlight opacity to match.
-  views::InkDrop::Get(this)->SetHighlightOpacity({});
-
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   SetLayoutInsets(gfx::Insets(0));
   SetAccessibleName(
@@ -280,6 +273,26 @@ BraveRewardsActionView::CreateDefaultBorder() const {
   auto border = ToolbarButton::CreateDefaultBorder();
   border->set_insets(gfx::Insets::TLBR(0, 0, 0, 0));
   return border;
+}
+
+void BraveRewardsActionView::OnThemeChanged() {
+  ToolbarButton::OnThemeChanged();
+
+  // Replace toolbar button's ink drop effect as this button is not in toolbar.
+  const auto* const color_provider = GetColorProvider();
+  if (!color_provider) {
+    return;
+  }
+
+  // Apply same ink drop effect with location bar's other icon views.
+  auto* ink_drop = views::InkDrop::Get(this);
+  ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
+  ink_drop->SetVisibleOpacity(kOmniboxOpacitySelected);
+  ink_drop->SetHighlightOpacity(kOmniboxOpacityHovered);
+  ink_drop->SetBaseColor(color_provider->GetColor(kColorOmniboxText));
+
+  views::HighlightPathGenerator::Install(
+      this, std::make_unique<ButtonHighlightPathGenerator>());
 }
 
 void BraveRewardsActionView::OnWidgetDestroying(views::Widget* widget) {

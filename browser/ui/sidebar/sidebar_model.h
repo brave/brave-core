@@ -86,6 +86,8 @@ class SidebarModel : public SidebarService::Observer,
   absl::optional<size_t> GetIndexOf(const SidebarItem& item) const;
   absl::optional<size_t> GetIndexOf(SidebarItem::BuiltInItemType type) const;
 
+  void FetchFavicon(const sidebar::SidebarItem& item);
+
   // Don't cache item list. list can be changed during the runtime.
   const std::vector<SidebarItem>& GetAllSidebarItems() const;
 
@@ -116,7 +118,6 @@ class SidebarModel : public SidebarService::Observer,
 
   // TODO(simonhong): Use separated class for fetching favicon from this model
   // class.
-  void FetchFavicon(const sidebar::SidebarItem& item);
   void OnGetLocalFaviconImage(
       const sidebar::SidebarItem& item,
       const favicon_base::FaviconRawBitmapResult& bitmapt_result);
