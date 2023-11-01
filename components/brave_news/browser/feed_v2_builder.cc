@@ -445,7 +445,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
     ArticleInfos& articles) {
   // If we have no channels, and no topics there's nothing we can do here.
   if (channels.empty() && topics.empty()) {
-    DVLOG(1) << "Step 4: Nothing (no subscribed channels or unshown topics)";
+    DVLOG(1) << "Nothing (no subscribed channels or unshown topics)";
     return {};
   }
 
@@ -457,11 +457,11 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
 
   if (generate_channel) {
     auto channel = PickRandom(channels);
-    DVLOG(1) << "Step 4: Cluster Block (channel: " << channel << ")";
+    DVLOG(1) << "Cluster Block (channel: " << channel << ")";
     return GenerateChannelBlock(locale, publishers, PickRandom(channels),
                                 articles);
   } else {
-    DVLOG(1) << "Step: Cluster Block (topic)";
+    DVLOG(1) << "Cluster Block (topic)";
     return GenerateTopicBlock(publishers, topics);
   }
 }
@@ -754,18 +754,20 @@ void FeedV2Builder::BuildFeedFromArticles() {
            << " articles)";
   add_items(initial_block);
 
-  // We always ad an advertisment after the first block.
+  // Step 2: We always add an advertisment after the first block.
+  // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.82154jsxm16
   auto advert = GenerateAd();
+  DVLOG(1) << "Step 2: Advertisement";
   add_items(advert);
 
-  // Step 2: Generate a top news block
+  // Step 3: Generate a top news block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.7z05nb4b269d
   auto top_news_block =
       GenerateChannelBlock(locale, publishers, kTopNewsChannel, articles);
-  DVLOG(1) << "Step 2: Top News Block";
+  DVLOG(1) << "Step 3: Top News Block";
   add_items(top_news_block);
 
-  // Repeat step 3 - 5 until we don't have any more articles to add to the feed.
+  // Repeat step 4 - 6 until we don't have any more articles to add to the feed.
   constexpr uint8_t kIterationTypes = 3;
   uint32_t iteration = 0;
   while (true) {
@@ -773,30 +775,30 @@ void FeedV2Builder::BuildFeedFromArticles() {
 
     auto iteration_type = iteration % kIterationTypes;
 
-    // Step 3: Block Generation
+    // Step 4: Block Generation
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.os2ze8cesd8v
     if (iteration_type == 0) {
-      DVLOG(1) << "Step 3: Standard Block";
+      DVLOG(1) << "Step 4: Standard Block";
       items = GenerateBlock(articles);
     } else if (iteration_type == 1) {
-      // Step 4: Block or Cluster Generation
+      // Step 5: Block or Cluster Generation
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.tpvsjkq0lzmy
       // Half the time, a normal block
       if (TossCoin()) {
-        DVLOG(1) << "Step 4: Standard Block";
+        DVLOG(1) << "Step 5: Standard Block";
         items = GenerateBlock(articles);
       } else {
         items = GenerateClusterBlock(locale, publishers, subscribed_channels,
                                      topics, articles);
       }
     } else if (iteration_type == 2) {
-      // Step 5: Optional special card
+      // Step 6: Optional special card
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.n1ipt86esc34
       if (TossCoin()) {
-        DVLOG(1) << "Step 5: Special Block";
+        DVLOG(1) << "Step 6: Special Block";
         items = GenerateSpecialBlock(suggested_publisher_ids);
       } else {
-        DVLOG(1) << "Step 5: None (approximately half the time)";
+        DVLOG(1) << "Step 6: None (approximately half the time)";
       }
     } else {
       NOTREACHED();
