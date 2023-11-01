@@ -30,6 +30,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/common/content_paths.h"
@@ -102,6 +103,22 @@ std::unique_ptr<HttpResponse> HandleFileRequestWithCustomHeaders(
   }
   return http_response;
 }
+
+class BrowsingDataRemoverObserver
+    : public content::BrowsingDataRemover::Observer {
+ public:
+  BrowsingDataRemoverObserver() = default;
+  ~BrowsingDataRemoverObserver() override = default;
+
+  void OnBrowsingDataRemoverDone(uint64_t failed_data_types) override {
+    run_loop_.Quit();
+  }
+
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  base::RunLoop run_loop_;
+};
 
 }  // namespace
 
@@ -293,9 +310,27 @@ content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(
 }
 
 size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(Browser* b) {
-  return EphemeralStorageServiceFactory::GetInstance()
-      ->GetForContext((b ? b : browser())->profile())
-      ->FireCleanupTimersForTesting();
+  if (!b) {
+    b = browser();
+  }
+  const size_t fired_cnt = EphemeralStorageServiceFactory::GetInstance()
+                               ->GetForContext(b->profile())
+                               ->FireCleanupTimersForTesting();
+
+  // NetworkService closes existing connections when a data removal action
+  // linked to these connections is performed. This leads to rare page open
+  // failures when the timing is "just right". Do a no-op removal here to make
+  // sure the queued Ephemeral Storage cleanup was complete.
+  BrowsingDataRemoverObserver data_remover_observer;
+  content::BrowsingDataRemover* remover =
+      b->profile()->GetBrowsingDataRemover();
+  remover->AddObserver(&data_remover_observer);
+  remover->RemoveAndReply(base::Time(), base::Time::Max(), 0, 0,
+                          &data_remover_observer);
+  data_remover_observer.Wait();
+  remover->RemoveObserver(&data_remover_observer);
+
+  return fired_cnt;
 }
 
 void EphemeralStorageBrowserTest::ExpectValuesFromFramesAreEmpty(
