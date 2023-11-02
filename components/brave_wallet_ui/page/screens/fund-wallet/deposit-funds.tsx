@@ -500,7 +500,7 @@ function DepositAccount() {
           )
         : accounts.filter((a) => a.accountId.coin === selectedAsset.coin)
       : []
-  }, [selectedAsset, selectedAssetNetwork, accounts])
+  }, [selectedAsset, accounts])
 
   // search
   const [showAccountSearch, setShowAccountSearch] =
@@ -601,6 +601,12 @@ function DepositAccount() {
     [copyAddressToClipboard]
   )
 
+  // effects
+  React.useEffect(() => {
+    // force selected account option state
+    setSelectedAccount(accountsForSelectedAssetCoinType[0])
+  }, [accountsForSelectedAssetCoinType[0]])
+
   // render
   if (!selectedDepositAssetId) {
     return <Redirect to={WalletRoutes.DepositFundsPageStart} />
@@ -621,7 +627,7 @@ function DepositAccount() {
     )
   }
 
-  if (showAccountSearch) {
+  if (!selectedAccount || showAccountSearch) {
     return (
       <SearchWrapper>
         <SelectHeader
@@ -680,7 +686,7 @@ function DepositAccount() {
         <AddressTextLabel>Address:</AddressTextLabel>
 
         <Row gap={'12px'}>
-          <AddressText>{selectedAccount?.address}</AddressText>
+          <AddressText>{selectedAccount.address}</AddressText>
           <CopyButton
             iconColor={'interactive05'}
             onKeyPress={onCopyKeyPress}
