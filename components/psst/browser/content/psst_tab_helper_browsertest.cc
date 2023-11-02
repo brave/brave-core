@@ -105,7 +105,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue) {
 
   std::u16string expected_title(u"testpolicy");
   content::TitleWatcher watcher(web_contents(), expected_title);
-  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
@@ -131,7 +132,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse) {
 
   std::u16string expected_title(u"test");
   content::TitleWatcher watcher(web_contents(), expected_title);
-  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
@@ -157,7 +159,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, NoMatch) {
 
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
-  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
@@ -175,7 +178,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTestDisabled, DoesNotInjectScript) {
 
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
-  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
+                                                      true);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
