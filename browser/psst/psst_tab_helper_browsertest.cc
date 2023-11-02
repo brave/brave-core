@@ -102,7 +102,7 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
 
-  class TestContentBrowserClient : public ChromeContentBrowserClient {
+  class TestContentBrowserClient : public BraveContentBrowserClient {
    public:
     TestContentBrowserClient() = default;
     TestContentBrowserClient(const TestContentBrowserClient&) = delete;
@@ -113,7 +113,7 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
     void RegisterBrowserInterfaceBindersForFrame(
         content::RenderFrameHost* render_frame_host,
         mojo::BinderMapWithContext<content::RenderFrameHost*>* map) override {
-      ChromeContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
+      BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
           render_frame_host, map);
       map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
           base::BindRepeating(&BindCosmeticFiltersResources));
