@@ -723,7 +723,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Don't upgrade connections to HTTPS (disabled)
       </message>
       <message name="IDS_BRAVE_FORGET_FIRST_PARTY_STORAGE_SWITCH" desc="Text for First Party Storage cleanup shields setting.">
-        Forget me when I close this site
+        Clear session data when a site is closed
       </message>
       <message name="IDS_BRAVE_FORGET_FIRST_PARTY_STORAGE_SUMMARY" desc="Extended text for First Party Storage cleanup shields setting.">
         Clears cookies and other site data when you close a site

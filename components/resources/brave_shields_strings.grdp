@@ -110,7 +110,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL" desc="Shields panel toggle label that would forget first party website storage when enabled.">
-    Forget me when I close this site
+    Clear session data when a site is closed
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_SUBLABEL" desc="Shields panel toggle sublabel that would forget first party website storage when enabled.">
