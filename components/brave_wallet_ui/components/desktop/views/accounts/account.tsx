@@ -35,7 +35,8 @@ import {
 
 import Amount from '../../../../utils/amount'
 import {
-  getTokenPriceAmountFromRegistry //
+  getTokenPriceAmountFromRegistry,
+  computeFiatAmount
 } from '../../../../utils/pricing-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
@@ -277,6 +278,46 @@ export const Account = () => {
     })
   }, [selectedAccount, filteredRouteOptions])
 
+  const fungibleTokensSortedByValue = React.useMemo(() => {
+    if (!selectedAccount || isLoadingSpotPrices || isLoadingBalances) {
+      return fungibleTokens
+    }
+    return [...fungibleTokens].sort(function (a, b) {
+      const aBalance = getBalance(
+        selectedAccount.accountId,
+        a,
+        tokenBalancesRegistry
+      )
+
+      const bBalance = getBalance(
+        selectedAccount.accountId,
+        b,
+        tokenBalancesRegistry
+      )
+
+      const aFiatBalance = computeFiatAmount({
+        spotPriceRegistry,
+        value: aBalance,
+        token: a
+      })
+
+      const bFiatBalance = computeFiatAmount({
+        spotPriceRegistry,
+        value: bBalance,
+        token: b
+      })
+
+      return bFiatBalance.minus(aFiatBalance).toNumber()
+    })
+  }, [
+    selectedAccount,
+    spotPriceRegistry,
+    isLoadingSpotPrices,
+    fungibleTokens,
+    tokenBalancesRegistry,
+    isLoadingBalances
+  ])
+
   // Methods
   const onRemoveAccount = React.useCallback(() => {
     if (selectedAccount) {
@@ -389,7 +430,7 @@ export const Account = () => {
 
       {selectedTab === AccountPageTabs.AccountAssetsSub && (
         <AssetsWrapper fullWidth={true}>
-          {fungibleTokens.map((asset) => (
+          {fungibleTokensSortedByValue.map((asset) => (
             <PortfolioAssetItem
               key={getAssetIdKey(asset)}
               action={() => onSelectAsset(asset)}
