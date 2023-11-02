@@ -48,7 +48,7 @@ provideStrings({
   likeAnswerButtonLabel: 'Like answer',
   dislikeAnswerButtonLabel: 'Dislike answer',
   provideFeedbackTitle: 'Provide Brave AI Feedback',
-  selectFeedbackTopic: 'Select the topic of your feedback?',
+  selectFeedbackTopic: 'Select your feedback topic',
   feedbackCategoryLabel: 'Whats your feedback about?',
   feedbackDescriptionLabel: 'Provide feedback here',
   feedbackPremiumNote: 'Leo Premium provides access to an expanded set of language models for even greater answer nuance. $1Learn more$2',

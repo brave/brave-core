@@ -106,7 +106,10 @@ function FeedbackForm(props: FeedbackFormProps) {
         <fieldset>
           <label>
             {getLocale('feedbackDescriptionLabel')}
-            <textarea onChange={handleInputChange} />
+            <textarea
+              onChange={handleInputChange}
+              placeholder={getLocale('feedbackDescriptionLabel')}
+            />
           </label>
         </fieldset>
         {!context.isPremiumUser && (

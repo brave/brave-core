@@ -155,7 +155,7 @@
     Provide Brave AI Feedback
   </message>
   <message name="IDS_CHAT_UI_SELECT_FEEDBACK_TOPIC" desc="Prompt to select feedback topic">
-    Select the topic of your feedback
+    Select your feedback topic
   </message>
   <message name="IDS_CHAT_UI_FEEDBACK_CATEGORY_LABEL" desc="Label asking for the category of feedback">
     What's your feedback about?

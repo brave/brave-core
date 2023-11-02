@@ -67,7 +67,9 @@ function SiteTitle () {
         { context.favIconUrl && <img src={context.favIconUrl} /> }
       </div>
       <div className={styles.titleBox}>
-        <p className={styles.title}>{context.siteInfo?.title}</p>
+        <p className={styles.title} title={context.siteInfo?.title}>
+          {context.siteInfo?.title}
+        </p>
       </div>
       <div
         aria-describedby='page-content-warning-tooltip'
