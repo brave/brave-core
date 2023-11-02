@@ -23,8 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
-import com.brave.playlist.PlaylistDownloadUtils;
 import com.brave.playlist.enums.DownloadStatus;
 import com.brave.playlist.local_database.PlaylistRepository;
 import com.brave.playlist.model.DownloadProgressModel;
@@ -34,7 +34,6 @@ import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.HLSParsingUtil;
 import com.brave.playlist.util.MediaUtils;
 import com.brave.playlist.util.PlaylistUtils;
-import com.google.android.exoplayer2.source.hls.playlist.HlsMediaPlaylist.Segment;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
@@ -141,7 +140,7 @@ public class DownloadServiceImpl extends DownloadService.Impl implements Connect
                                                                                                         true,
                                                                                                         total,
                                                                                                         downloadedSofar);
-                                                                                                PlaylistDownloadUtils
+                                                                                                PlaylistUtils
                                                                                                         .updateDownloadProgress(new DownloadProgressModel(
                                                                                                                 playlistItem
                                                                                                                         .id,

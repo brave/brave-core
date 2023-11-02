@@ -14,13 +14,14 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import androidx.media3.common.util.UriUtil;
+import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
+
 import com.brave.playlist.enums.DownloadStatus;
 import com.brave.playlist.model.DownloadQueueModel;
 import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.util.HLSParsingUtil;
 import com.brave.playlist.util.MediaUtils;
-import com.google.android.exoplayer2.source.hls.playlist.HlsMediaPlaylist.Segment;
-import com.google.android.exoplayer2.util.UriUtil;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;

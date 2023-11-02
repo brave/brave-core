@@ -242,8 +242,19 @@
     android:launchMode="singleTask"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen" />
 
-<service android:name="com.brave.playlist.PlaylistVideoService"
-    android:exported="false"/>
+<service
+    android:name="com.brave.playlist.playback_service.VideoPlaybackService"
+    android:foregroundServiceType="mediaPlayback"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="androidx.media3.session.MediaSessionService"/>
+        <action android:name="android.media.browse.MediaBrowserService"/>
+    </intent-filter>
+</service>
+
+<!-- <service android:name="com.brave.playlist.PlaylistVideoService"
+    android:foregroundServiceType="dataSync"
+    android:exported="false"/> -->
 
 <!-- This activity is used for search provider widget -->
 <activity android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"
