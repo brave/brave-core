@@ -7,11 +7,14 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
@@ -80,6 +83,43 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
     return TorProfileManager::SwitchToTorProfile(browser()->profile());
   }
 
+  void SubresourceRequest_testCases(bool only_in_tor_windows) {
+    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+    tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
+    auto* tor_browser = OpenTorWindow();
+    ASSERT_TRUE(tor_browser);
+    const GURL& url = https_server_->GetURL("example.com", "/favicon.ico");
+    const GURL& onion_url =
+        https_server_->GetURL("example.onion", "/favicon.ico");
+
+    browser()->profile()->GetPrefs()->SetBoolean(
+        tor::prefs::kOnionOnlyInTorWindows, only_in_tor_windows);
+    struct {
+      raw_ptr<Browser> browser;
+      std::string src;
+      bool result;
+    } cases[] = {
+        {browser(), onion_url.spec(), !only_in_tor_windows},
+        {browser(), url.spec(), true},
+        {tor_browser, onion_url.spec(), true},
+        {tor_browser, url.spec(), true},
+    };
+    for (const auto& test_case : cases) {
+      SCOPED_TRACE(testing::Message()
+                   << test_case.src
+                   << (test_case.browser == tor_browser ? "->Tor Window"
+                                                        : "->Normal Window"));
+      ASSERT_TRUE(ui_test_utils::NavigateToURL(
+          test_case.browser,
+          https_server_->GetURL("brave.com", "/simple.html")));
+      content::WebContents* contents =
+          test_case.browser->tab_strip_model()->GetActiveWebContents();
+      auto loaded = EvalJs(contents, image_script(test_case.src));
+      ASSERT_TRUE(loaded.error.empty());
+      EXPECT_EQ(base::Value(test_case.result), loaded.value);
+    }
+  }
+
  protected:
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 
@@ -87,35 +127,12 @@ class OnionDomainThrottleBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
-IN_PROC_BROWSER_TEST_F(OnionDomainThrottleBrowserTest, SubresourceRequests) {
-  net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
-  tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
-  auto* tor_browser = OpenTorWindow();
-  ASSERT_TRUE(tor_browser);
-  const GURL& url = https_server_->GetURL("example.com", "/favicon.ico");
-  const GURL& onion_url =
-      https_server_->GetURL("example.onion", "/favicon.ico");
-  struct {
-    raw_ptr<Browser> browser;
-    std::string src;
-    bool result;
-  } cases[] = {
-      {browser(), onion_url.spec(), false},
-      {browser(), url.spec(), true},
-      {tor_browser, onion_url.spec(), true},
-      {tor_browser, url.spec(), true},
-  };
-  for (const auto& test_case : cases) {
-    SCOPED_TRACE(testing::Message()
-                 << test_case.src
-                 << (test_case.browser == tor_browser ? "->Tor Window"
-                                                      : "->Normal Window"));
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(
-        test_case.browser, https_server_->GetURL("brave.com", "/simple.html")));
-    content::WebContents* contents =
-        test_case.browser->tab_strip_model()->GetActiveWebContents();
-    auto loaded = EvalJs(contents, image_script(test_case.src));
-    ASSERT_TRUE(loaded.error.empty());
-    EXPECT_EQ(base::Value(test_case.result), loaded.value);
-  }
+IN_PROC_BROWSER_TEST_F(OnionDomainThrottleBrowserTest,
+                       SubresourceRequestsBlocked) {
+  SubresourceRequest_testCases(true);
+}
+
+IN_PROC_BROWSER_TEST_F(OnionDomainThrottleBrowserTest,
+                       SubresourceRequestsAllowed) {
+  SubresourceRequest_testCases(false);
 }

@@ -236,6 +236,6 @@ BraveContentRendererClient::CreateURLLoaderThrottleProvider(
       browser_interface_broker_.get(), provider_type, this);
 }
 
-bool BraveContentRendererClient::IsTorProcess() const {
-  return brave_observer_->is_tor_process();
+bool BraveContentRendererClient::IsOnionAllowed() const {
+  return brave_observer_->IsOnionAllowed();
 }
