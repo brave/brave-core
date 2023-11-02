@@ -11,14 +11,14 @@
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_transformation_generated.h"
+#include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_transformation_generated.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
 namespace brave_ads::ml {
 
 MappedTokensTransformation::MappedTokensTransformation(
-    const text_classification::flat::MappedTokenTransformation*
+    const neural_text_classification::flat::MappedTokenTransformation*
         mapped_token_transformation)
     : Transformation(TransformationType::kMappedTokens),
       mapped_token_transformation_(mapped_token_transformation) {
@@ -63,13 +63,13 @@ MappedTokensTransformation::GetCategoryFrequencies(
       token_candidate += token_candidate_addition;
 
       const auto* iter = token_categories->LookupByKey(token_candidate.c_str());
-      if (!iter || !iter->numbers()) {
+      if (!iter || !iter->segment_indices()) {
         continue;
       }
 
       BLOG(9, token_candidate << " - token found in category mapping");
-      for (const uint8_t category_index : *iter->numbers()) {
-        ++frequencies[static_cast<uint32_t>(category_index)];
+      for (const uint16_t index : *iter->segment_indices()) {
+        ++frequencies[static_cast<uint32_t>(index)];
       }
     }
   }

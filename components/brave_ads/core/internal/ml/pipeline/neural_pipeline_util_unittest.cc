@@ -1,14 +1,13 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_util.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_util.h"
 
 #include <string>
 #include <utility>
 
-#include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
@@ -24,16 +23,14 @@ constexpr char kValidSpamClassificationPipeline[] =
 
 class BraveAdsPipelineUtilTest : public UnitTestBase {};
 
-TEST_F(BraveAdsPipelineUtilTest, ParsePipelineValueTest) {
+TEST_F(BraveAdsPipelineUtilTest, ParsePipelineBufferTest) {
   // Arrange
-  const absl::optional<std::string> json =
+  absl::optional<std::string> buffer =
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
-  ASSERT_TRUE(json);
-
-  base::Value::Dict dict = base::test::ParseJsonDict(*json);
+  ASSERT_TRUE(buffer);
 
   // Act & Assert
-  EXPECT_TRUE(pipeline::ParsePipelineValue(std::move(dict)));
+  EXPECT_TRUE(pipeline::LoadNeuralPipeline(std::move(*buffer)));
 }
 
 }  // namespace brave_ads::ml

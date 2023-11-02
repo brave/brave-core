@@ -36,7 +36,7 @@ base::expected<T, std::string> ReadFlatBuffersResourceOnBackgroundThread(
 }
 
 template <typename T>
-void LoadFileFlatBuffersResourceCallback(
+void LoadFlatBuffersFileResourceCallback(
     LoadFlatBuffersResourceCallback<T> callback,
     base::File file) {
   base::ThreadPool::PostTaskAndReplyWithResult(
@@ -51,7 +51,7 @@ void LoadFlatBuffersResource(const std::string& id,
                              const int version,
                              LoadFlatBuffersResourceCallback<T> callback) {
   LoadFileResource(id, version,
-                   base::BindOnce(&LoadFileFlatBuffersResourceCallback<T>,
+                   base::BindOnce(&LoadFlatBuffersFileResourceCallback<T>,
                                   std::move(callback)));
 }
 

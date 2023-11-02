@@ -11,20 +11,20 @@
 #include <string>
 #include <vector>
 
-#include "base/allocator/partition_allocator/pointers/raw_ptr.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::text_classification::flat {
+namespace brave_ads::neural_text_classification::flat {
 struct MappedTokenTransformation;
-}  // namespace brave_ads::text_classification::flat
+}  // namespace brave_ads::neural_text_classification::flat
 
 namespace brave_ads::ml {
 
 class MappedTokensTransformation final : public Transformation {
  public:
   explicit MappedTokensTransformation(
-      const text_classification::flat::MappedTokenTransformation*
+      const neural_text_classification::flat::MappedTokenTransformation*
           mapped_token_transformation);
 
   MappedTokensTransformation(
@@ -46,7 +46,7 @@ class MappedTokensTransformation final : public Transformation {
       const std::unique_ptr<Data>& input_data) const override;
 
  private:
-  raw_ptr<const text_classification::flat::MappedTokenTransformation>
+  raw_ptr<const neural_text_classification::flat::MappedTokenTransformation>
       mapped_token_transformation_;
 };
 

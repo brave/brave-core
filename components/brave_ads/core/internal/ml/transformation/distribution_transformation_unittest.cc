@@ -29,14 +29,14 @@ TEST_F(BraveAdsDistributionTransformationTest, ToDistribution) {
 
   // // Act
   data = to_distribution.Apply(data);
+  ASSERT_EQ(DataType::kVector, data->GetType());
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
   const std::vector<float> transformed_vector_values =
       transformed_vector_data->GetData();
+  ASSERT_EQ(transformed_vector_values.size(), 5U);
 
   // Assert
-  ASSERT_EQ(DataType::kVector, data->GetType());
-  ASSERT_EQ(transformed_vector_values.size(), 5U);
   EXPECT_TRUE(
       (std::fabs(0.14224751 - transformed_vector_values.at(0)) < kTolerance) &&
       (std::fabs(0.28449502 - transformed_vector_values.at(1)) < kTolerance) &&
@@ -56,14 +56,14 @@ TEST_F(BraveAdsDistributionTransformationTest, ZeroVector) {
 
   // // Act
   data = to_distribution.Apply(data);
+  ASSERT_EQ(DataType::kVector, data->GetType());
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
   const std::vector<float> transformed_vector_values =
       transformed_vector_data->GetData();
+  ASSERT_EQ(transformed_vector_values.size(), 5U);
 
   // Assert
-  ASSERT_EQ(DataType::kVector, data->GetType());
-  ASSERT_EQ(transformed_vector_values.size(), 5U);
   EXPECT_TRUE((std::fabs(0 - transformed_vector_values.at(0)) < kTolerance) &&
               (std::fabs(0 - transformed_vector_values.at(1)) < kTolerance) &&
               (std::fabs(0 - transformed_vector_values.at(2)) < kTolerance) &&
@@ -80,13 +80,13 @@ TEST_F(BraveAdsDistributionTransformationTest, EmptyVector) {
 
   // // Act
   data = to_distribution.Apply(data);
+  ASSERT_EQ(DataType::kVector, data->GetType());
   const VectorData* const transformed_vector_data =
       static_cast<VectorData*>(data.get());
   const std::vector<float> transformed_vector_values =
       transformed_vector_data->GetData();
 
   // Assert
-  ASSERT_EQ(DataType::kVector, data->GetType());
   EXPECT_TRUE(transformed_vector_values.empty());
 }
 
@@ -101,7 +101,7 @@ TEST_F(BraveAdsDistributionTransformationTest, NonVectorData) {
   data = to_distribution.Apply(data);
 
   // Assert
-  EXPECT_TRUE(data == nullptr);
+  EXPECT_FALSE(data);
 }
 
 }  // namespace brave_ads::ml

@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/types/expected.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
@@ -24,8 +23,6 @@ class TextProcessing final {
  public:
   static base::expected<TextProcessing, std::string> CreateFromFlatBuffers(
       std::string buffer);
-  static base::expected<TextProcessing, std::string> CreateFromValue(
-      base::Value::Dict dict);
   static PredictionMap FilterPredictions(const PredictionMap& predictions);
 
   TextProcessing();
@@ -43,7 +40,6 @@ class TextProcessing final {
   bool IsInitialized() const { return is_initialized_; }
 
   void SetPipeline(PipelineInfo pipeline);
-  bool SetPipeline(base::Value::Dict dict);
   bool SetPipeline(std::string buffer);
 
   absl::optional<PredictionMap> Predict(VectorData* vector_data) const;

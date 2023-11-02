@@ -183,13 +183,13 @@ void VectorData::DivideByScalar(const float scalar) {
 float VectorData::GetSum() const {
   return static_cast<float>(std::accumulate(
       storage_->values().cbegin(), storage_->values().cend(), 0.0,
-      [](const float& lhs, const float rhs) -> float { return lhs + rhs; }));
+      [](const float lhs, const float rhs) -> float { return lhs + rhs; }));
 }
 
 float VectorData::GetNorm() const {
   return static_cast<float>(sqrt(
       std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
-                      0.0, [](const float& lhs, const float rhs) -> float {
+                      0.0, [](const float lhs, const float rhs) -> float {
                         return lhs + rhs * rhs;
                       })));
 }
@@ -210,8 +210,7 @@ void VectorData::Softmax() {
   }
   float sum_exp = 0.0;
   for (float& value : storage_->values()) {
-    const float value_exp = std::exp(value - maximum);
-    sum_exp += value_exp;
+    sum_exp += std::exp(value - maximum);
   }
   for (float& value : storage_->values()) {
     value = std::exp(value - maximum) / sum_exp;

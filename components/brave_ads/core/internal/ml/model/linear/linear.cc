@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
 
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -17,20 +18,10 @@ namespace brave_ads::ml {
 
 LinearModel::LinearModel() = default;
 
-LinearModel::LinearModel(const text_classification::flat::LinearModel* model)
+LinearModel::LinearModel(const linear_text_classification::flat::Model* model)
     : model_(model) {
   CHECK(model_);
 }
-
-// LinearModel::LinearModel(std::map<std::string, VectorData> weights,
-//                          std::map<std::string, double> biases) {
-//   weights_ = std::move(weights);
-//   biases_ = std::move(biases);
-// }
-
-LinearModel::LinearModel(const LinearModel& other) = default;
-
-LinearModel& LinearModel::operator=(const LinearModel& other) = default;
 
 LinearModel::LinearModel(LinearModel&& other) noexcept = default;
 
@@ -42,21 +33,21 @@ absl::optional<PredictionMap> LinearModel::Predict(
     const VectorData& data) const {
   PredictionMap predictions;
   const auto* classifier = model_->classifier();
-  if (!classifier || !classifier->biases() || !classifier->segment_weights()) {
+  if (!classifier || !classifier->biases() ||
+      !classifier->segment_weight_vectors()) {
     return absl::nullopt;
   }
 
-  for (const auto* segment_weight : *classifier->segment_weights()) {
-    if (!segment_weight->segment() || !segment_weight->numbers()) {
+  for (const auto* segment_weight : *classifier->segment_weight_vectors()) {
+    if (!segment_weight->segment() || !segment_weight->weights()) {
       return absl::nullopt;
     }
     const std::string segment = segment_weight->segment()->str();
 
-    std::vector<float> weights_numbers;
-    weights_numbers.reserve(segment_weight->numbers()->size());
-    base::ranges::copy(*segment_weight->numbers(),
-                       std::back_inserter(weights_numbers));
-    VectorData weight_vector(std::move(weights_numbers));
+    std::vector<float> weights;
+    weights.reserve(segment_weight->weights()->size());
+    base::ranges::copy(*segment_weight->weights(), std::back_inserter(weights));
+    VectorData weight_vector(std::move(weights));
     double prediction = weight_vector * data;
     const auto* iter = classifier->biases()->LookupByKey(segment.c_str());
     if (iter) {

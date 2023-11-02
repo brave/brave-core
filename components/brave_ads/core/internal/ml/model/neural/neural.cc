@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ml/model/neural/neural.h"
 
 #include <iterator>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -23,7 +24,7 @@ constexpr char kPostMatrixFunctionTypeSoftmax[] = "softmax";
 
 }  // namespace
 
-NeuralModel::NeuralModel(const text_classification::flat::NeuralModel* model)
+NeuralModel::NeuralModel(const neural_text_classification::flat::Model* model)
     : model_(model) {
   CHECK(model_);
 }
@@ -38,33 +39,32 @@ absl::optional<PredictionMap> NeuralModel::Predict(
     const VectorData& data) const {
   PredictionMap predictions;
 
-  const text_classification::flat::Classifier* classifier =
+  const neural_text_classification::flat::Classifier* classifier =
       model_->classifier();
   if (!classifier) {
     return absl::nullopt;
   }
 
-  const auto* matricies_data = classifier->neural_matricies_data();
-  if (!matricies_data) {
+  const auto* matrices = classifier->matrices();
+  if (!matrices) {
     return absl::nullopt;
   }
 
-  const auto* post_matrix_functions =
-      classifier->neural_post_matrix_functions();
-  if (!post_matrix_functions ||
-      matricies_data->size() != post_matrix_functions->size()) {
+  const auto* activation_functions = classifier->activation_functions();
+  if (!activation_functions ||
+      matrices->size() != activation_functions->size()) {
     return absl::nullopt;
   }
 
   VectorData layer_input = data;
-  for (size_t i = 0; i < matricies_data->size(); i++) {
+  for (size_t i = 0; i < matrices->size(); i++) {
     std::vector<float> next_layer_input;
-    const auto* matrix_data = matricies_data->Get(i);
-    if (!matrix_data || !matrix_data->weights_rows()) {
+    const auto* matrix = matrices->Get(i);
+    if (!matrix || !matrix->weights_rows()) {
       return absl::nullopt;
     }
 
-    for (const auto* matrix_row : *matrix_data->weights_rows()) {
+    for (const auto* matrix_row : *matrix->weights_rows()) {
       if (!matrix_row || !matrix_row->row()) {
         return absl::nullopt;
       }
@@ -78,13 +78,13 @@ absl::optional<PredictionMap> NeuralModel::Predict(
     }
     layer_input = VectorData(std::move(next_layer_input));
 
-    const auto* post_matrix_function = post_matrix_functions->Get(i);
-    if (!post_matrix_function) {
+    const auto* activation_function = activation_functions->Get(i);
+    if (!activation_function) {
       return absl::nullopt;
     }
-    if (post_matrix_function->str() == kPostMatrixFunctionTypeTanh) {
+    if (activation_function->str() == kPostMatrixFunctionTypeTanh) {
       layer_input.Tanh();
-    } else if (post_matrix_function->str() == kPostMatrixFunctionTypeSoftmax) {
+    } else if (activation_function->str() == kPostMatrixFunctionTypeSoftmax) {
       layer_input.Softmax();
     }
   }
@@ -92,17 +92,17 @@ absl::optional<PredictionMap> NeuralModel::Predict(
   std::vector<float> output_layer;
   output_layer = layer_input.GetData(output_layer);
 
-  const auto* classes = classifier->classes();
-  if (!classes || classes->size() != output_layer.size()) {
+  const auto* segments = classifier->segments();
+  if (!segments || segments->size() != output_layer.size()) {
     return absl::nullopt;
   }
 
-  for (size_t i = 0; i < classes->size(); i++) {
-    const auto* classes_entry = classes->Get(i);
-    if (!classes_entry) {
+  for (size_t i = 0; i < segments->size(); i++) {
+    const auto* segment = segments->Get(i);
+    if (!segment) {
       return absl::nullopt;
     }
-    const std::string class_value = classes_entry->str();
+    const std::string class_value = segment->str();
     predictions[class_value] = output_layer[i];
   }
 

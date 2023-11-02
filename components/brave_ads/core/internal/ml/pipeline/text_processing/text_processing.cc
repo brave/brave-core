@@ -8,14 +8,12 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_buffer_util.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_buffer_util.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_util.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_util.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::ml::pipeline {
@@ -26,18 +24,7 @@ TextProcessing::CreateFromFlatBuffers(std::string buffer) {
   TextProcessing text_processing;
   if (!text_processing.SetPipeline(std::move(buffer))) {
     return base::unexpected(
-        "Failed to parse flatbuffers text classification pipeline");
-  }
-  return text_processing;
-}
-
-// static
-base::expected<TextProcessing, std::string> TextProcessing::CreateFromValue(
-    base::Value::Dict dict) {
-  TextProcessing text_processing;
-  if (!text_processing.SetPipeline(std::move(dict))) {
-    return base::unexpected(
-        "Failed to parse text classification pipeline JSON");
+        "Failed to load flatbuffers text classification pipeline");
   }
   return text_processing;
 }
@@ -65,27 +52,12 @@ void TextProcessing::SetPipeline(PipelineInfo pipeline) {
   transformations_ = std::move(pipeline.transformations);
 }
 
-bool TextProcessing::SetPipeline(base::Value::Dict dict) {
-  absl::optional<PipelineInfo> pipeline = ParsePipelineValue(std::move(dict));
-
-  if (pipeline) {
-    SetPipeline(std::move(pipeline).value());
-    is_initialized_ = true;
-  } else {
-    SetPipeline(PipelineInfo{});
-    is_initialized_ = false;
-  }
-
-  return is_initialized_;
-}
-
 bool TextProcessing::SetPipeline(std::string buffer) {
   pipeline_buffer_ = std::move(buffer);
 
-  absl::optional<PipelineInfo> pipeline =
-      ParseNeuralPipelineBuffer(*pipeline_buffer_);
+  absl::optional<PipelineInfo> pipeline = LoadNeuralPipeline(*pipeline_buffer_);
   if (!pipeline) {
-    pipeline = ParseLinearPipelineBuffer(*pipeline_buffer_);
+    pipeline = LoadLinearPipeline(*pipeline_buffer_);
   }
 
   if (pipeline) {
@@ -162,8 +134,7 @@ absl::optional<PredictionMap> TextProcessing::GetTopPredictions(
   if (!predictions) {
     return absl::nullopt;
   }
-  PredictionMap top_predictions = FilterPredictions(*predictions);
-  return top_predictions;
+  return FilterPredictions(*predictions);
 }
 
 absl::optional<PredictionMap> TextProcessing::ClassifyPage(

@@ -61,7 +61,7 @@ void TextClassificationResource::Load() {
       kFlatBuffersTextClassificationResourceId,
       kFlatBuffersTextClassificationResourceVersion.Get(),
       base::BindOnce(&TextClassificationResource::LoadCallback,
-                      weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TextClassificationResource::LoadCallback(

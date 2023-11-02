@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/hash_vectorizer.h"
 
+#include <utility>
+
 #include "third_party/zlib/zlib.h"
 
 namespace brave_ads::ml {

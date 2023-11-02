@@ -1,26 +1,26 @@
-include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_transformation.fbs";
+include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_transformation.fbs";
 
-namespace brave_ads.text_classification.flat;
+namespace brave_ads.neural_text_classification.flat;
 
 table WeightsRow {
   row: [float32] (required);
 }
 
-table NeuralMatrixData {
+table Matrix {
   weights_rows: [WeightsRow] (required);
 }
 
 table Classifier {
-  classes: [string] (required);
-  classifier_type: string (required);
-  neural_matricies_data: [NeuralMatrixData] (required);
-  neural_post_matrix_functions: [string] (required);
+  type: string (required);
+  segments: [string] (required);
+  matrices: [Matrix] (required);
+  activation_functions: [string] (required);
 }
 
-table NeuralModel {
-  classifier: Classifier (required);
+table Model {
   locale: string (required);
-  transformations: [TransformationEntry] (required);
+  classifier: Classifier (required);
+  transformations: [Transformation] (required);
 }
 
-root_type NeuralModel;
+root_type Model;

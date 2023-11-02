@@ -6,33 +6,30 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_NEURAL_NEURAL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_NEURAL_NEURAL_H_
 
-#include <map>
-#include <string>
-
-#include "base/allocator/partition_allocator/pointers/raw_ptr.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace brave_ads::text_classification::flat {
-struct NeuralModel;
-}  // namespace brave_ads::text_classification::flat
+namespace brave_ads::neural_text_classification::flat {
+struct Model;
+}  // namespace brave_ads::neural_text_classification::flat
 
 namespace brave_ads::ml {
 
 class NeuralModel final {
  public:
-  explicit NeuralModel(const text_classification::flat::NeuralModel* model);
+  explicit NeuralModel(const neural_text_classification::flat::Model* model);
 
-  NeuralModel(const NeuralModel&);
-  NeuralModel& operator=(const NeuralModel&);
+  NeuralModel(const NeuralModel&) = delete;
+  NeuralModel& operator=(const NeuralModel&) = delete;
 
   NeuralModel(NeuralModel&&) noexcept;
   NeuralModel& operator=(NeuralModel&&) noexcept;
 
   ~NeuralModel();
 
-  const text_classification::flat::NeuralModel* model() const {
+  const neural_text_classification::flat::Model* model() const {
     return model_.get();
   }
 
@@ -48,7 +45,7 @@ class NeuralModel final {
       const VectorData& data,
       size_t top_count) const;
 
-  raw_ptr<const text_classification::flat::NeuralModel> model_;
+  raw_ptr<const neural_text_classification::flat::Model> model_;
 };
 
 }  // namespace brave_ads::ml

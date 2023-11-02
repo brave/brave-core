@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 
 #include <map>
+#include <utility>
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"

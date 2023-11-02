@@ -43,7 +43,7 @@ TEST_F(BraveAdsNormalizationTransformationTest, NormalizationTest) {
 
   const HashedNGramsTransformation hashed_ngrams(
       /*bucket_count=*/10,
-      /*subgrams=*/std::vector<int>{3, 4});
+      /*subgrams=*/std::vector<uint32_t>{3, 4});
   const NormalizationTransformation normalization;
 
   // Act

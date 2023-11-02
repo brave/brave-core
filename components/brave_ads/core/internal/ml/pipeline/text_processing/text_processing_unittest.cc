@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
@@ -57,7 +56,7 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
   TransformationVector transformations;
   transformations.push_back(std::make_unique<LowercaseTransformation>());
   transformations.push_back(std::make_unique<HashedNGramsTransformation>(
-      3, std::vector<int>{1, 2, 3}));
+      3, std::vector<uint32_t>{1, 2, 3}));
 
   const std::vector<float> data_1 = {1.0, 2.0, 3.0};
   const std::vector<float> data_2 = {3.0, 2.0, 1.0};
@@ -73,10 +72,11 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
   const std::vector<float> data_4 = {1.0, 0.0, 0.0};
   const VectorData data_point_3(data_4);
 
-  LinearModel linear_model(weights, biases);
-  const PredictionMap data_point_3_predictions =
+  LinearModel linear_model(nullptr);
+  const absl::optional<PredictionMap> data_point_3_predictions =
       linear_model.Predict(data_point_3);
-  ASSERT_EQ(3U, data_point_3_predictions.size());
+  ASSERT_TRUE(data_point_3_predictions);
+  ASSERT_EQ(3U, data_point_3_predictions->size());
 
   const pipeline::TextProcessing pipeline = pipeline::TextProcessing(
       std::move(transformations), std::move(linear_model));
@@ -104,15 +104,13 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
   const std::vector<std::string> train_labels = {"spam", "spam", "ham", "ham",
                                                  "junk"};
 
-  const absl::optional<std::string> json =
+  absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
   ASSERT_TRUE(json);
 
-  base::Value::Dict dict = base::test::ParseJsonDict(*json);
-
   // Act
   pipeline::TextProcessing text_processing_pipeline;
-  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
+  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(*json)));
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
   for (size_t i = 0; i < train_texts.size(); ++i) {
@@ -136,43 +134,38 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
 
 TEST_F(BraveAdsTextProcessingTest, InitValidModelTest) {
   // Arrange
-  const absl::optional<std::string> json =
+  absl::optional<std::string> buffer =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
-  ASSERT_TRUE(json);
-
-  base::Value::Dict dict = base::test::ParseJsonDict(*json);
+  ASSERT_TRUE(buffer);
 
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
 }
 
 TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
   // Arrange
-  const absl::optional<std::string> json =
+  absl::optional<std::string> buffer =
       ReadFileFromTestPathToString(kEmptySegmentClassificationPipeline);
-  ASSERT_TRUE(json);
-
-  base::Value::Dict dict = base::test::ParseJsonDict(*json);
+  ASSERT_TRUE(buffer);
 
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(dict)));
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
 }
 
 TEST_F(BraveAdsTextProcessingTest, EmptyTransformationsModelTest) {
   // Arrange
   const std::string input_text = "This is a spam email.";
 
-  const absl::optional<std::string> json =
+  absl::optional<std::string> buffer =
       ReadFileFromTestPathToString(kEmptyTransformationsPipeline);
-  ASSERT_TRUE(json);
+  ASSERT_TRUE(buffer);
 
-  base::Value::Dict dict = base::test::ParseJsonDict(*json);
   pipeline::TextProcessing text_processing_pipeline;
-  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
 
   // Act
   std::unique_ptr<Data> text_data = std::make_unique<TextData>(input_text);
@@ -190,13 +183,12 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
       "Message from mom with no real subject",
       "Another messase from mom with no real subject", "Yadayada"};
 
-  const absl::optional<std::string> json =
+  absl::optional<std::string> buffer =
       ReadFileFromTestPathToString(kWrongTransformationOrderPipeline);
-  ASSERT_TRUE(json);
+  ASSERT_TRUE(buffer);
 
-  base::Value::Dict dict = base::test::ParseJsonDict(*json);
   pipeline::TextProcessing text_processing_pipeline;
-  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
+  EXPECT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
 
   // Act & Assert
   for (const auto& text : input_texts) {
@@ -212,7 +204,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptyModelTest) {
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act & Assert
-  EXPECT_FALSE(text_processing_pipeline.SetPipeline(base::Value::Dict()));
+  EXPECT_FALSE(text_processing_pipeline.SetPipeline(""));
 }
 
 TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
@@ -220,14 +212,12 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   constexpr size_t kMaxPredictionsSize = 100;
   constexpr char kTestPage[] = "ethereum bitcoin bat zcash crypto tokens!";
 
-  const absl::optional<std::string> json =
+  absl::optional<std::string> buffer =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
-  ASSERT_TRUE(json);
-
-  base::Value::Dict dict = base::test::ParseJsonDict(*json);
+  ASSERT_TRUE(buffer);
 
   pipeline::TextProcessing text_processing_pipeline;
-  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
+  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
 
   // Act
   const absl::optional<PredictionMap> predictions =
@@ -248,14 +238,12 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   constexpr size_t kMinPredictionsSize = 2;
   constexpr size_t kMaxPredictionsSize = 100;
 
-  const absl::optional<std::string> json =
+  absl::optional<std::string> buffer =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
-  ASSERT_TRUE(json);
-
-  base::Value::Dict dict = base::test::ParseJsonDict(*json);
+  ASSERT_TRUE(buffer);
 
   pipeline::TextProcessing text_processing_pipeline;
-  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(dict)));
+  ASSERT_TRUE(text_processing_pipeline.SetPipeline(std::move(*buffer)));
 
   const absl::optional<std::string> text =
       ReadFileFromTestPathToString(kTextCMCCrash);
