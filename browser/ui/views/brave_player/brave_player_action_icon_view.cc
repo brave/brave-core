@@ -9,7 +9,8 @@
 
 #include "base/strings/strcat.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_player/common/buildflags/buildflags.h"
+#include "brave/components/brave_player/common/url_constants.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -42,7 +43,7 @@ GURL GetPlayerURL(content::WebContents* web_contents) {
       //   encoded_video_id.view()}));
       url::EncodeURIComponent(video_id.data(), video_id.size(),
                               &encoded_video_id);
-      return GURL(base::StrCat({kBravePlayerURL, "youtube/",
+      return GURL(base::StrCat({brave_player::kBravePlayerURL, "youtube/",
                                 std::string_view(encoded_video_id.data(),
                                                  encoded_video_id.length())}));
     }

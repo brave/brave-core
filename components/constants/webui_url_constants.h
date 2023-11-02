@@ -77,9 +77,5 @@ extern const char kSpeedreaderPanelHost[];
 extern const char kShortcutsURL[];
 extern const char kChatUIURL[];
 extern const char kChatUIHost[];
-extern const char kBravePlayerHost[];
-extern const char kBravePlayerURL[];
-extern const char kBravePlayerEmbedHost[];
-extern const char kBravePlayerEmbedURL[];
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_

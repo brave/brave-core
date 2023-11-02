@@ -90,6 +90,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
 #include "brave/browser/ui/webui/brave_player_ui.h"
 #include "brave/components/brave_player/common/features.h"
+#include "brave/components/brave_player/common/url_constants.h"
 #endif
 
 using content::WebUI;
@@ -195,7 +196,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new AndroidWalletPageUI(web_ui, url);
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-  } else if (host == kBravePlayerHost) {
+  } else if (host == brave_player::kBravePlayerHost) {
     return new BravePlayerUI(web_ui);
 #endif
   }
@@ -261,7 +262,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
       (base::FeatureList::IsEnabled(brave_player::features::kBravePlayer) &&
-       url.host_piece() == kBravePlayerHost) ||
+       url.host_piece() == brave_player::kBravePlayerHost) ||
 #endif
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost) {

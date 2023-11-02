@@ -76,7 +76,3 @@ const char kSpeedreaderPanelHost[] = "brave-speedreader.top-chrome";
 const char kShortcutsURL[] = "chrome://settings/system/shortcuts";
 const char kChatUIURL[] = "chrome-untrusted://chat/";
 const char kChatUIHost[] = "chat";
-const char kBravePlayerHost[] = "player";
-const char kBravePlayerURL[] = "chrome://player/";
-const char kBravePlayerEmbedHost[] = "player-embed";
-const char kBravePlayerEmbedURL[] = "chrome-untrusted://player-embed/";

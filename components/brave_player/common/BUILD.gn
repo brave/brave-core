@@ -11,6 +11,8 @@ component("common") {
   sources = [
     "features.cc",
     "features.h",
+    "url_constants.cc",
+    "url_constants.h",
   ]
 
   defines = [ "IS_BRAVE_PLAYER_COMMON_IMPL" ]
