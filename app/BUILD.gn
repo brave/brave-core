@@ -56,13 +56,13 @@ source_set("command_ids") {
 
 brave_grit("brave_generated_resources_grit") {
   defines = [
+    "enable_brave_player=$enable_brave_player",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_pin_shortcut=$enable_pin_shortcut",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_request_otr=$enable_request_otr",
     "enable_speedreader=$enable_speedreader",
     "enable_text_recognition=$enable_text_recognition",
-    "enable_brave_player=$enable_brave_player",
   ]
   source = "brave_generated_resources.grd"
   output_dir = "$root_gen_dir/brave"

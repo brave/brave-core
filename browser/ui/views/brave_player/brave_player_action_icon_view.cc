@@ -29,8 +29,8 @@ GURL GetPlayerURL(content::WebContents* web_contents) {
     return {};
   }
 
-  GURL url = web_contents->GetLastCommittedURL();
-  if (url.DomainIs("youtube.com") && url.path() == "/watch" &&
+  const GURL url = web_contents->GetLastCommittedURL();
+  if (url.DomainIs("youtube.com") && url.path_piece() == "/watch" &&
       url.has_query()) {
     if (std::string video_id; net::GetValueForKeyInQuery(url, "v", &video_id)) {
       url::RawCanonOutputT<char> encoded_video_id;
