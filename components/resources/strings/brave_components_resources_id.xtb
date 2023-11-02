@@ -477,6 +477,7 @@
 <translation id="8327818101454798856">Jadi jika Anda ingin mendukung situs favorit, berkunjunglah ke sana.</translation>
 <translation id="412480955826088549">Mengunduh Komponen...</translation>
 <translation id="4894106830958548828">Saya paham</translation>
+<translation id="326118736933420687">You're viewing a WebTorrent page</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Aktifkan dukungan Unstoppable Domains di Brave?</translation>
 <translation id="3647533686160055812">Brave akan menggunakan Infura untuk menyelesaikan nama domain .crypto (and also .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) yang berada di Unstoppable Domains. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Infura akan melihat bahwa seseorang mencoba mengunjungi domain-domain ini, namun hanya itu. Lihat <ph name="BEGIN_INFURA_TOU_LINK"/>syarat penggunaan<ph name="END_INFURA_TOU_LINK"/> dan <ph name="BEGIN_INFURA_PRIVACY_LINK"/>kebijakan privasi<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
@@ -694,6 +695,7 @@
 <translation id="6621880242105464352">Brave mengambil <ph name="FEE_PCT"/> dari jumlah yang dikirimkan sebagai biaya pemrosesan.</translation>
 <translation id="1420756770787071946">Dukung kreator ini</translation>
 <translation id="1483493594462132177">Kirim</translation>
+<translation id="6632987674051304487">Kirimkan dengan <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Gunakan Dompet Web3</translation>
 <translation id="5399596220743521546">Kreator ini telah didaftarkan di Brave dan dapat menerima kontribusi dari pengguna Imbalan Brave.</translation>
 <translation id="4529874892536380156">Jadikan ini kontribusi bulanan yang berulang. Anda dapat membatalkannya kapan saja.</translation>
@@ -719,6 +721,10 @@
 <translation id="1950340257946519340">Kesalahan yang tidak diharapkan telah terjadi</translation>
 <translation id="2605703631071131439">Silakan buka kembali panel kontribusi untuk mencobanya lagi.</translation>
 <translation id="8855543392451028706">Selamat datang! Pengguna dapat mendukung kreator konten ini dengan mengirimi mereka kontribusi. Ini merupakan cara sangat baik untuk berterima kasih kepada mereka karena telah membuat konten yang bagus.</translation>
+<translation id="7090992647511817643">akun</translation>
+<translation id="4822132585477111396">ID Rantai</translation>
+<translation id="3269475789479462358">domain</translation>
+<translation id="1288078776976153868">jaringan</translation>
 <translation id="1148827340205946630">Pengguna menolak permintaan ini.</translation>
 <translation id="2403819048476450281">Parameternya tidak valid.</translation>
 <translation id="3955144560853195652">Rantai <ph name="VALUE"/> belum ditambahkan</translation>
@@ -991,6 +997,7 @@
 <translation id="5294062982587710720">Perhatikan bahwa Brave tidak dapat memverifikasi hal yang akan terjadi jika Anda menandatangani. Tanda tangan dapat mengotorisasi hampir semua operasi di akun Anda atau atas nama Anda, termasuk (namun tidak terbatas pada) memberikan kendali penuh atas akun dan aset kripto Anda kepada situs yang mengajukan permintaan. Tanda tangani hanya jika Anda yakin ingin melakukan tindakan ini, dan Anda mempercayai situs yang meminta.</translation>
 <translation id="3474375934783434676">Tanda tangani dengan menanggung risiko Anda sendiri</translation>
 <translation id="5488357322146334497">Pesan</translation>
+<translation id="3586931643579894722">Sembunyikan detail</translation>
 <translation id="7702907602086592255">Domain</translation>
 <translation id="3586752056660754651">Tanda tangani</translation>
 <translation id="3484981968509595506">Ada DApp yang meminta kunci enkripsi publik Anda</translation>
@@ -1016,7 +1023,6 @@
 <translation id="5052727830821470769">URL jaringan</translation>
 <translation id="427875364838253580">Tampilkan seluruh perincian</translation>
 <translation id="8030852056903932865">Setujui</translation>
-<translation id="4822132585477111396">ID Rantai</translation>
 <translation id="7131971375297699539">Simbol mata uang</translation>
 <translation id="4693057234255364395">Blokir URL penjelajah</translation>
 <translation id="7982789257301363584">Jaringan</translation>
@@ -1159,7 +1165,10 @@
 <translation id="5071303414930953888">Akun <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Wallet perlu dibuka kuncinya terlebih dahulu</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/> bukan alamat yang valid</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> bukanlah jaringan kerja saat ini</translation>
+<translation id="5036882519065735613"><ph name="CHAIN_ID"/> bukanlah jaringan saat ini</translation>
+<translation id="317252468455212145"><ph name="ADDRESS"/> tidak sesuai dengan alamat pengirim</translation>
+<translation id="8034449164954956172"><ph name="DOMAIN"/> tidak sesuai dengan domain saat ini</translation>
+<translation id="5444904139422068509">Kami telah menolak permintaan ini karena situs tersebut mengharuskan Anda menggunakan <ph name="NAME"/>(<ph name="VALUE"/>) yang berbeda</translation>
 <translation id="7340805872138998391">Tidak dapat membuka kunci perangkat, cobalah untuk menyambungkan kembali</translation>
 <translation id="1984410139271779110">Kesalahan internal, skema tidak dikenal</translation>
 <translation id="6989562355845156390">setujui</translation>
@@ -1275,6 +1284,20 @@
 <translation id="5601436886921227795">Interaksi Dapp</translation>
 <translation id="9104177294757104789">Kirimkan <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Tukar <ph name="MAKER"/> menjadi <ph name="TAKER"/></translation>
+<translation id="8613144770663526433">Masuk dengan Dompet Brave</translation>
+<translation id="3696514931437952995">Anda masuk ke <ph name="ORIGIN"/>. Dompet Brave akan membagikan alamat dompet Anda dengan <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Lihat detail</translation>
+<translation id="3950820424414687140">Masuk</translation>
+<translation id="4530494379350999373">Asal</translation>
+<translation id="6736243959894955139">Alamat</translation>
+<translation id="3095940652251934233">Laporan</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="1313065465616456728">Diterbitkan pada</translation>
+<translation id="7902225556763260253">Waktu kedaluwarsa</translation>
+<translation id="2471230424465522689">Tidak berlaku sebelum</translation>
+<translation id="4841860051609590575">ID Permintaan</translation>
+<translation id="6759710362319508545">Referensi</translation>
+<translation id="1908159733454294871">Risiko keamanan terdeteksi</translation>
 <translation id="1965889974717516497">Jaringan sekunder</translation>
 <translation id="7691821949666755802">Jaringan pengujian</translation>
 <translation id="2816106784624007524">Batas bensin harus berupa integer yang lebih besar dari 0</translation>
@@ -1690,8 +1713,14 @@
 <translation id="1536390784834419204">Terjemahkan halaman</translation>
 <translation id="5973664933364241128">Rutekan media</translation>
 <translation id="1568067597247500137">Bisukan situs</translation>
+<translation id="6674128381307353306">Bisukan semua tab</translation>
+<translation id="1815548596883953231">Bisukan tab lain</translation>
+<translation id="926046137238708033">Bunyikan semua tab</translation>
 <translation id="855081842937141170">Sematkan tab</translation>
+<translation id="2805351816064694332">Tutup tab yang tidak disemat</translation>
 <translation id="8657641252283410630">Kelompokkan tab</translation>
+<translation id="8290333944535778783">Gulirkan tab ke posisi teratas</translation>
+<translation id="6141382045715907645">Gulirkan tab ke posisi terbawah</translation>
 <translation id="923853139812360539">Penghasil kode QR</translation>
 <translation id="8754922069999490293">Penawaran dan imbalan untuk halaman</translation>
 <translation id="8620714260606376019">Hub berbagi</translation>
@@ -1787,6 +1816,15 @@
 <translation id="6002210667729577411">Pindahkan grup ke jendela baru</translation>
 <translation id="253980346046488815">Tutup tab duplikasi</translation>
 <translation id="9210143726807220086">Pilihan tab vertikal diperluas</translation>
+<translation id="684629111155788563">Tambahkan semua tab ke kelompok baru</translation>
+<translation id="9106013521852824634">Kirimkan tab ke rak</translation>
+<translation id="1926106318101432555">Buka markah...</translation>
+<translation id="6118819645013156507">Beralih ke jendela...</translation>
+<translation id="1623204575967809688">Gabungkan jendela saat ini ke dalam...</translation>
+<translation id="7196533333647500853">Pindahkan tab ke jendela...</translation>
+<translation id="2026671913373402445">Tambahkan tab ke kelompok yang sudah ada...</translation>
+<translation id="8158903143594876176">Sematkan tab...</translation>
+<translation id="1487981090845324947">Lepas sematan tab...</translation>
 <translation id="5182394825813677917">Cari perintah atau jalan pintas</translation>
 <translation id="4138119885026877702">Atur ulang semua ke bawaan</translation>
 <translation id="8247915960543694908">Buat jalan pintas baru. Tekan tombol yang diinginkan untuk membuat ikatan baru.</translation>
@@ -1795,17 +1833,17 @@
 <translation id="3537006124004887164">Kombinasi ini digunakan untuk <ph name="COMMAND"/> dan tidak dapat dimodifikasi. Cobalah untuk memodifikasi melalui 'Jalan Pintas Aplikasi' di Pengaturan Sistem.</translation>
 <translation id="8591883849678260674">Lihat halaman asli</translation>
 <translation id="1969654232209826429">menit membaca</translation>
-<translation id="906598168058463050">Nonaktifkan pembaca cepat</translation>
-<translation id="8948558186299884715">Aktifkan pembaca cepat</translation>
-<translation id="1385842054306112120">Selalu gunakan pembaca cepat untuk situs ini</translation>
-<translation id="8028940590935492959">Pilihan untuk mengaktifkan/menonaktifkan pembaca cepat untuk situs web ini.</translation>
-<translation id="1022901542006152519">Selalu gunakan pembaca cepat untuk semua situs</translation>
-<translation id="3460907549384263858">Pilihan untuk mengaktifkan/menonaktifkan pembaca cepat untuk semua situs web.</translation>
-<translation id="8745592921916491483">Tidak semua situs menyediakan kemampuan pembaca cepat,</translation>
+<translation id="4101707289420716287">Nonaktifkan Pembaca Cepat</translation>
+<translation id="9089090017461255038">Aktifkan Pembaca Kecepatan</translation>
+<translation id="3929926885379607283">Selalu gunakan Pembaca Cepat untuk situs ini</translation>
+<translation id="4186588885948504942">Pilihan untuk mengaktifkan/menonaktifkan Pembaca Cepat untuk situs web ini.</translation>
+<translation id="1873585723672836337">Selalu gunakan Pembaca Cepat untuk semua situs</translation>
+<translation id="3138587343887871192">Pilihan untuk mengaktifkan/menonaktifkan Pembaca Cepat untuk semua situs web.</translation>
+<translation id="5153147025131874069">Tidak semua situs menyediakan kemampuan Pembaca Cepat.</translation>
 <translation id="1013121820689882118">Pembaca Kecepatan</translation>
-<translation id="1103345585203110275">Keluar dari pembaca cepat</translation>
+<translation id="2104268045272817433">Keluar dari Pembaca Cepat</translation>
 <translation id="6315170314923504164">Suara</translation>
-<translation id="57748525762025171">Setel pembaca cepat</translation>
+<translation id="864152735015641598">Setel Pembaca Cepat</translation>
 <translation id="251940709686581010">Pengaturan tampilan</translation>
 <translation id="4809927044794281115">Tema terang</translation>
 <translation id="5595850093882577201">Tema sepia</translation>
@@ -1822,7 +1860,69 @@
 <translation id="1199355487114804640">Putar/Jedakan</translation>
 <translation id="1689210457482459023">Kurangi kecepatan pemutaran ulang</translation>
 <translation id="5872363163901278000">Tingkatkan kecepatan pemutaran ulang</translation>
-<translation id="3507699941492423127">Brave Leo</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8637805148029768813">Fitur peringkas saat ini hanya tersedia untuk artikel tertentu dan halaman web berbentuk panjang lainnya.</translation>
+<translation id="2346991295632453064">Terima dan mulai</translation>
+<translation id="1223498995510244364">Ringkas</translation>
+<translation id="7491773233732232424">Tentang Leo</translation>
+<translation id="70442873931504163">Brave Leo adalah asisten pintar AI yang dapat meringkas halaman web, membuat transkrip video, dan menjawab pertanyaan. Brave Leo Premium menggunakan<ph name="LINK_BEFORE"/>model AI<ph name="LINK_AFTER"/> unggulan untuk dapat memberikan balasan yang lebih beragam, dan memberikan akses awal ke fitur-fitur baru.</translation>
+<translation id="3055739528128372229">Akurasi jawaban tidak dijamin, dan mungkin mengandung informasi yang tidak akurat, menyesatkan, atau keliru. Jangan mengirimkan informasi sensitif atau privat, serta berhati-hatilah terhadap jawaban teks yang berkaitan dengan kesehatan, keuangan, keselamatan pribadi, atau hal yang serupa.</translation>
+<translation id="5030677498967794115">Leo tidak mengumpulkan atau memproses pengidentifikasi seperti Alamat IP yang dapat dikaitkan kepada Anda. Data pribadi Anda tidak akan disimpan oleh model AI atau penyedia model pihak ketiga.</translation>
+<translation id="7839853125981164613">Masukkan petunjuk di sini</translation>
+<translation id="1171287413830401223">Aktifkan pertanyaan yang disarankan?</translation>
+<translation id="4567071417854988869">Ringkas video ini</translation>
+<translation id="7921782882718083488">Ringkas halaman ini</translation>
+<translation id="8723991872343294222">AI Brave secara otomatis mengusulkan pertanyaan berdasarkan konten situs. Anda dapat menonaktifkannya nanti di Pengaturan.</translation>
+<translation id="3435896845095436175">Aktifkan</translation>
+<translation id="7473891865547856676">Lain Kali</translation>
+<translation id="7932221068776853847">Putuskan koneksi untuk menghentikan pengiriman konten halaman ini ke Leo, dan mulai percakapan baru</translation>
+<translation id="1167803637855350748">Terdapat masalah jaringan untuk terhubung dengan Leo, periksa kembali koneksi Anda dan coba lagi.</translation>
+<translation id="5095201428204952524">Leo sedang sibuk sekali sekarang. Silakan coba lagi dalam beberapa menit.</translation>
+<translation id="7144878232160441200">Coba Lagi</translation>
+<translation id="2505565639170795978">Hai, saya Leo. Saya asisten AI yang sepenuhnya dihosting oleh Brave. Saya dipersembahkan oleh Llama 13B, model yang diciptakan oleh Meta untuk berkinerja dan sesuai dengan banyak kasus penggunaan.</translation>
+<translation id="7202619923031933110">Hai, saya Leo. Saya asisten AI yang sepenuhnya dihosting oleh Brave. Saya dipersembahkan oleh Llama 70B, model yang diciptakan oleh Meta untuk manangani tugas yang lebih rumit daripada yang ditangani 13B.</translation>
+<translation id="2489317965865266353">Hai, saya Leo. Saya diproksikan oleh Brave dan dipersembahkan oleh Claude Instant, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks.</translation>
+<translation id="6206029817087805290"><ph name="MODEL_NAME"/> oleh <ph name="COMPANY_NAME"/></translation>
+<translation id="6187065185557150870">Obrolan</translation>
+<translation id="2961040541145689181">Obrolan baru</translation>
+<translation id="97095589689466044">Pertanyaan yang disarankan</translation>
+<translation id="7557539689487606886">Jadilah Premium</translation>
+<translation id="3037594989275592390">Model bahasa</translation>
+<translation id="849535826888024304">Batas tingkat respons telah tercapai</translation>
+<translation id="3834321271158315162">Dapatkan tingkat respons lebih tinggi dengan berlangganan paket Premium, atau coba lagi nanti</translation>
+<translation id="1239767708151339890">Akses ke LLM yang memimpin industri</translation>
+<translation id="8021579987620496265">Batas tingkat respons yang lebih tinggi</translation>
+<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /bulan</translation>
+<translation id="9221988663340523352">Beralih ke mode bawaan</translation>
+<translation id="377376641316998425">Buka potensi Leo yang seutuhnya</translation>
+<translation id="8363148882096737034">Anthropic Claude + banyak lagi akan segera datang</translation>
+<translation id="886527905046308697">Akses prioritas dan batas respons yang ditingkatkan</translation>
+<translation id="1068954060985569277">Sesi akun Brave Anda telah berakhir. Silakan kunjungi halaman akun Anda untuk menyegarkannya, lalu kembali menggunakan fitur-fitur premium.</translation>
+<translation id="94736968936709953">Umpan balik telah berhasil dikirim</translation>
+<translation id="9109355817507033196">Jawaban tidak disukai</translation>
+<translation id="4049425842478222936">Jawaban disukai</translation>
+<translation id="6393149565874086128">Tambahkan umpan balik</translation>
+<translation id="3521125531016408657">Suka jawaban</translation>
+<translation id="8202517001427388906">Tidak suka jawaban</translation>
+<translation id="1379399209929302811">Berikan Umpan Balik untuk AI Brave</translation>
+<translation id="2415950536410763575">Pilih topik untuk umpan balik Anda</translation>
+<translation id="9018766373792005944">Umpan balik Anda adalah tentang apa?</translation>
+<translation id="7355096922131918313">Berikan umpan balik di sini</translation>
+<translation id="3027575440738035995">Leo Premium menyediakan akses ke set model bahasa yang diperluas untuk jawaban yang bahkan lebih bernuansa. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="2399439821649319175">Tidak membantu</translation>
+<translation id="2976167228906046828">Tidak tepat</translation>
+<translation id="1183055847065865059">Tidak aman/berbahaya</translation>
+<translation id="7138678301420049075">Lainnya</translation>
+<translation id="2313959174679245365">Peringkat yang Anda berikan tidak dapat dikirimkan, silakan periksa koneksi jaringan dan coba lagi</translation>
+<translation id="98413980871833152">Umpan balik Anda tidak dapat dikirimkan, silakan periksa koneksi jaringan dan coba lagi</translation>
+<translation id="8742658901413346500">Percakapan ini terlalu panjang dan Leo mungkin akan segera mulai melupakan satu dua hal. Anda bisa melakukan percakapan yang lebih panjang dengan beralih ke model premium, atau Anda dapat menghapus obrolan untuk memulainya kembali.</translation>
+<translation id="7550152963854770123">Hapus obrolan</translation>
+<translation id="7494736170250048402">Kirim pesan ke Leo</translation>
+<translation id="4110772752544684964">Halaman ini terlalu panjang untuk Leo. Beberapa konteks mungkin akan hilang dari percakapan.</translation>
+<translation id="4370698775470316661">Percakapan ini terlalu panjang dan tidak dapat dilanjutkan. Mungkin ada model lain yang tersedia yang memungkinkan Leo untuk menjaga akurasi percakapan yang lebih panjang.</translation>
+<translation id="6291843235651817590">Obrolan umum</translation>
+<translation id="8193130769524604031">Tugas obrolan lanjutan</translation>
+<translation id="3185367320601718531">Penghasil percakapan dan teks</translation>
 <translation id="6303294677342628402">Pelindung</translation>
 <translation id="8458987127502506209">Aktifkan Brave Shield</translation>
 <translation id="7509914170164691086">Perisai sedang AKTIF <ph name="LINK_BEFORE"/>untuk<ph name="LINK_AFTER"/></translation>
@@ -1891,21 +1991,6 @@
 <translation id="546481172717459539">Sesuaikan pengaturan sistem</translation>
 <translation id="7799817062559422778">Mode terang</translation>
 <translation id="4117637339509843559">Mode gelap</translation>
-<translation id="8637805148029768813">Fitur peringkas saat ini hanya tersedia untuk artikel tertentu dan halaman web berbentuk panjang lainnya.</translation>
-<translation id="2346991295632453064">Terima dan mulai</translation>
-<translation id="1223498995510244364">Ringkas</translation>
-<translation id="6966669506908435195">Tentang Brave Leo</translation>
-<translation id="1667863995484767951">Fitur Obrolan AI menyediakan ringkasan halaman web yang Anda jelajahi dan mencakup antarmuka obrolan yang memungkinkan Anda untuk mengumpulkan pertanyaan dan menerima jawaban tentang konten halaman tersebut. Akurasi ringkasan tidak dijamin dan mungkin mencakup informasi yang tidak akurat, menyesatkan, dan keliru. Anda dilarang mengumpulkan informasi sensitif atau privat serta harus menerapkan kehati-hatian untuk teks terkait kesehatan, keuangan, atau keselamatan pribadi dan kasus serupa.</translation>
-<translation id="7636915524386889836">Obrolan AI Brave menggunakan <ph name="LINK_BEFORE"/>model bahasa besar<ph name="LINK_AFTER"/> yang dihosting mandiri. Fitur Obrolan AI tidak mengumpulkan atau memproses pengidentifikasi seperti Alamat IP yang dapat dikaitkan dengan Anda. Tidak ada data pribadi yang disimpan oleh model AI.</translation>
-<translation id="7839853125981164613">Masukkan petunjuk di sini</translation>
-<translation id="1171287413830401223">Aktifkan pertanyaan yang disarankan?</translation>
-<translation id="8723991872343294222">AI Brave secara otomatis mengusulkan pertanyaan berdasarkan konten situs. Anda dapat menonaktifkannya nanti di Pengaturan.</translation>
-<translation id="3435896845095436175">Aktifkan</translation>
-<translation id="7473891865547856676">Lain Kali</translation>
-<translation id="7932221068776853847">Putuskan koneksi untuk menghentikan pengiriman konten halaman ini ke Leo, dan mulai percakapan baru</translation>
-<translation id="1167803637855350748">Terdapat masalah jaringan untuk terhubung dengan Leo, periksa kembali koneksi Anda dan coba lagi.</translation>
-<translation id="5095201428204952524">Leo sedang sibuk sekali sekarang. Silakan coba lagi dalam beberapa menit.</translation>
-<translation id="7144878232160441200">Coba Lagi</translation>
 <translation id="7821773512278295352">Dinding Api + VPN Brave: Terhubung</translation>
 <translation id="6019088868713395120">Dinding Api + VPN Brave: Terputus</translation>
 <translation id="3541307549916475335">UI Panel VPN Brave</translation>
@@ -1944,7 +2029,6 @@
 <translation id="9184988385244077767">Tidak ada internet ketika tersambung</translation>
 <translation id="21570240866965662">Sambungan yang lambat</translation>
 <translation id="1219475260382643267">Situs web tidak berfungsi</translation>
-<translation id="7138678301420049075">Lainnya</translation>
 <translation id="1387340358507240698">Jelaskan masalah Anda</translation>
 <translation id="501818585183973587">Pilih info yang bersedia Anda bagikan kepada kami</translation>
 <translation id="3195618332367441234">Semakin banyak info yang Anda bagikan, semakin mudah bagi staf pendukung untuk membantu.</translation>
@@ -1990,4 +2074,10 @@ Mari sambungkan koneksi Anda!
 <translation id="8048263175525832621">VPN Brave - Terputus</translation>
 <translation id="1498770726476841108">Kelola Akun</translation>
 <translation id="6825718953004242472">Hapus ikon</translation>
+<translation id="3287942014983548982">Buka di sini</translation>
+<translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, saat ini terbuka,
+    tekan Tab, kemudian Enter untuk beralih ke tab yang terbuka</translation>
+<translation id="1538335063514960365">Tombol buka di sini, tekan Enter untuk membuka URL ini pada tab saat ini, daripada beralih ke
+    tab yang sudah ada</translation>
+<translation id="451189393813405346">Tanyakan pada Leo</translation>
 </translationbundle>

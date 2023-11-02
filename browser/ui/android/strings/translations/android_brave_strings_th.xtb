@@ -208,6 +208,12 @@
 <translation id="6332924730165919598">การปิดแท็บทั้งหมดจะเป็นการปิด Brave</translation>
 <translation id="8308305244351876417">อนุญาตให้เปิดเสียงเมื่อคุณเปลี่ยนเป็นแท็บอื่นใน Brave หรือเปลี่ยนเป็นแอปอื่น หรือเมื่อปิดหน้าจออุปกรณ์</translation>
 <translation id="4150201353443180367">การแสดงผล</translation>
+<translation id="4275663329226226506">สื่อ</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">ใช้การจัดการสิทธิ์ทางดิจิทัล Widevine (DRM) เพื่อดูเนื้อหาสื่อที่มีการป้องกันในเบราว์เซอร์</translation>
+<translation id="255204363133978824">อนุญาตเนื้อหาที่มีการป้องกัน</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติมเกี่ยวกับ Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">อนุญาต (เปิดใหม่อีกครั้ง)</translation>
 <translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
 <translation id="9040069796107003510">ไอคอน Brave Rewards</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
@@ -583,6 +589,7 @@
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
 <translation id="5825943197137337319">เฉพาะหน้าอินเตอร์เฟซสาธารณะค่าเดิมเท่านั้น</translation>
 <translation id="1689062823386843231">ปิดการใช้งาน UDP ที่ไม่ใช่พร็อกซี่</translation>
+<translation id="6915830896450988084">ส่งด้วย <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">ส่ง</translation>
 <translation id="538450413584738399">สวอป</translation>
 <translation id="1366855498335432549">ฝาก</translation>
@@ -899,6 +906,7 @@
 <translation id="3897092660631435901">Menu</translation>
 <translation id="42981349822642051">ขยาย</translation>
 <translation id="3586752056660754651">เซ็นชื่อ</translation>
+<translation id="3950820424414687140">ลงชื่อเข้าใช้</translation>
 <translation id="6592721981110586529">เชื่อมต่อกับ Brave Wallet</translation>
 <translation id="329813193938846695">เลือกบัญชี</translation>
 <translation id="291375746846291973">เชื่อมต่อไซต์ที่คุณเชื่อถือเท่านั้น</translation>
@@ -945,7 +953,7 @@
 <translation id="6044189892950611565">ช่องทางการแจ้งเตือนสำหรับเบราว์เซอร์ Brave</translation>
 <translation id="1173919438868967364">เลือกบัญชี</translation>
 <translation id="8922793255489232731">ไม่พบเขตเวลาที่ตรงกันสำหรับ: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">กำลังดาวน์โหลดไฟล์ข้อมูลวอลเล็ท \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">กำลังดาวน์โหลดไฟล์ข้อมูล Wallet  \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">เชื่อมต่อกับ <ph name="VALUE"/> แล้ว</translation>
 <translation id="1968852757206592413">ทดลองใช้งาน</translation>
 <translation id="7733890291091968191">แสดงการแจ้งเตือนของ Web3</translation>
@@ -1047,6 +1055,14 @@
 <translation id="5802752138057422257">พบอักขระที่ไม่ใช่ ASCII!</translation>
 <translation id="442709594176931966">ดูข้อความดั้งเดิม</translation>
 <translation id="2239252396088484499">ดูข้อความแบบเข้ารหัส ASCII</translation>
+<translation id="4530494379350999373">Origin</translation>
+<translation id="6736243959894955139">แอดเดรส</translation>
+<translation id="3095940652251934233">รายการชําระ</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">รุ่น</translation>
+<translation id="1313065465616456728">ออกเมื่อ</translation>
+<translation id="7902225556763260253">เวลาหมดอายุ</translation>
+<translation id="1908159733454294871">ตรวจพบความเสี่ยงด้านการรักษาความปลอดภัย</translation>
 <translation id="4220693114674044366">ที่อยู่โทเค็น</translation>
 <translation id="5658257029899993935">ลิงก์การซื้อกับบัญชี Brave ของคุณ</translation>
 <translation id="1187061015547219282">ลิงก์การซื้อใน Play Store กับบัญชี Brave เพื่อใช้ Brave VPN บนอุปกรณ์อื่นๆ</translation>
@@ -1179,4 +1195,11 @@
 <translation id="5494920125229734069">เลือกทั้งหมด</translation>
 <translation id="5972844218283131174">ยกเลิกการเลือกทั้งหมด</translation>
 <translation id="6322030314101903925">ไม่มีสินทรัพย์ที่พร้อมใช้งาน</translation>
+<translation id="6129027151000961048">ลีโอ</translation>
+<translation id="8613144770663526433">ลงชื่อเข้าใช้ด้วย Brave Wallet</translation>
+<translation id="3696514931437952995">คุณกำลังลงชื่อเข้าใช้ <ph name="ORIGIN"/> Brave Wallet จะแบ่งปันที่อยู่ Wallet ของคุณกับ <ph name="ORIGIN"/></translation>
+<translation id="1028781062521375153">ดูรายละเอียด</translation>
+<translation id="6759710362319508545">ทรัพยากร</translation>
+<translation id="2471230424465522689">ไม่ใช่ก่อน</translation>
+<translation id="4841860051609590575">ขอ ID</translation>
 </translationbundle>

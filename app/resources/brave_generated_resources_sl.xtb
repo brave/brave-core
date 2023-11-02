@@ -19,6 +19,8 @@
 <translation id="8926389886865778422">Ne sprašuj več</translation>
 <translation id="4900351245762303149">Namesti Google Widevine</translation>
 <translation id="2313383941300459392">Znova zaženite brskalnik, da omogočite Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/>
+želi predvajati zaščiteno vsebino Google Widevine, kar zahteva, da dovolite podporo sistema Android za Widevine. Če dovolite, se strinjate z Googlovimi pogoji uporabe.</translation>
 <translation id="2200626478572277092">Widevine je včasih potreben za predvajanje medijev na spletni strani. To je Googlova razširitev, naložena iz Googlovih strežnikov, ki jih Brave ne more pregledati. Z namestitvijo se strinjate z Googlovimi pogoji uporabe.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
@@ -167,6 +169,9 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="6959315322491671328">Za odstranitev kliknite desno miškino tipko</translation>
 <translation id="495046168593986294">Pomaknite se navzgor</translation>
 <translation id="4021716437419160885">Pomaknite se navzdol</translation>
+<translation id="2702801445560668637">Bralni seznam</translation>
+<translation id="2533715613366623756">Upravitelj zaznamkov</translation>
+<translation id="3405021928725149239">Upravitelj zaznamkov</translation>
 <translation id="6284218950354553099">Samodejno pošlji ping o dnevni uporabi Braveu</translation>
 <translation id="5288333155754958121">Zaradi tega anonimnega, zasebnega pinga lahko Brave oceni število aktivnih uporabnikov.</translation>
 <translation id="1872784258300710671">Brave uporablja popolnoma zasebno analizo izdelkov za oceno splošne uporabe nekaterih funkcij</translation>
@@ -238,7 +243,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="796831669370432378">Če želite strani dodati med zaznamke, kliknite gumb za zaznamke v naslovni vrstici</translation>
 <translation id="8487693399751278191">Uvozi zaznamke zdaj ...</translation>
 <translation id="2557899542277210112">Za hitrejši dostop zaznamke shranite tukaj, v vrstici za zaznamke.</translation>
-<translation id="2702801445560668637">Bralni seznam</translation>
 <translation id="1968543937259008435">Ste pripravljeni na najboljšo zasebnost na spletu?</translation>
 <translation id="6817415381278637662">Brave nastavite kot privzeti brskalnik, da se na vsaki odprti spletni strani prikaže Brave zaščita zasebnosti.</translation>
 <translation id="8722651357687610395">Privzeto nastavite Brave</translation>
@@ -285,6 +289,8 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="7765158879357617694">Premakni</translation>
 <translation id="6648536728577053364">Odstrani podatke brez povezave</translation>
 <translation id="5181358966317519720">Odstrani s seznama predvajanja</translation>
+<translation id="2377705456080309463">Poglej izvirno stran</translation>
+<translation id="158894735649719362">Zabava se začne, ko imate kaj igrati. Dodajte svojo najljubšo predstavnost in predvajajte kadarkoli in kjer koli. Tudi brez povezave.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="4472575034687746823">Kako začeti</translation>
@@ -297,9 +303,12 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="1360441190790440400">Enako kot Linux</translation>
 <translation id="1336940801687497203">Enako kot Windows</translation>
 <translation id="8721331068159819483">Enako kot MacOs</translation>
+<translation id="4171684937791228083">Orodno vrstico vedno pokaži na celotnem zaslonu</translation>
 <translation id="1692470335103807198">Pridobi več tem</translation>
 <translation id="2906510232093002459">Privzete slike brskalnika Brave</translation>
+<translation id="8000020256436988724">Orodna vrstica</translation>
 <translation id="8076492880354921740">Zavihki</translation>
+<translation id="8168435359814927499">Vsebina</translation>
 <translation id="5860254591544742609">Pokaži naslovno vrstico</translation>
 <translation id="5371926069408837914">Razširi ploščo z navpičnimi zavihki, ko premaknete miško, ko je strnjena</translation>
 <translation id="3367129510799209147">Način izbiranja na zavihku</translation>
@@ -312,7 +321,8 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2858138569776157458">Najb. prilj.</translation>
 <translation id="7859704718976024901">Zgodovina iskanja</translation>
 <translation id="8820817407110198400">Zaznamki</translation>
-<translation id="2245286910966863912">Prikaži gumb Novosti na Brave v naslovni vrstici</translation>
+<translation id="7310387888625228830">Leo AI pomočnik</translation>
+<translation id="5222974844674487962">Prikaži gumb Brave News</translation>
 <translation id="383007806262310953">Pokaži vrstico z zaznamki</translation>
 <translation id="4054323497808446566">Vrstica z zaznamki je prikazana na vseh straneh</translation>
 <translation id="8693858092251192712">Vrstica z zaznamki je skrita na vseh straneh, razen na strani novega zavihka</translation>
@@ -420,7 +430,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="7050661313034564003">Pokaži vse piškotke in lokalno shranjene podatke za to spletno mesto</translation>
 <translation id="8339059274628563283">Lokalno shranjeni podatki za <ph name="SITE"/></translation>
 <translation id="1963227389609234879">Odstrani vse</translation>
-<translation id="8168435359814927499">Vsebina</translation>
 <translation id="7702907602086592255">Domena</translation>
 <translation id="3202131003361292969">Pot</translation>
 <translation id="5390743329570580756">Pošlji po</translation>
@@ -591,7 +600,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="702381242110464396">Razširitve (nadomestna možnost za Brave Wallet)</translation>
 <translation id="4718664830805652430">Privzeta osnovna valuta</translation>
 <translation id="7992507032049865603">Privzeta osnovna kriptovaluta</translation>
-<translation id="1834467296210148203">Pokaži ikono Brave Wallet v orodni vrstici</translation>
+<translation id="3044369626313583722">Prikaži gumb denarnice Brave</translation>
 <translation id="7568430944629653319">Omogoči odkrivanje NFT</translation>
 <translation id="970496996377628529">Samodejno dodajte NFT-je, ki jih imate, v denarnico z uporabo API-jev tretjih oseb.</translation>
 <translation id="8239147115686034860">Samodejno zakleni Brave denarnice</translation>
@@ -700,6 +709,12 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="2751872555001636931">Pokaži ikono Leo v stranski vrstici</translation>
 <translation id="8172263161008556851">Pokaži predlagane pozive v pogovoru</translation>
 <translation id="1014480593522400586">Počisti podatke Leo</translation>
+<translation id="8681157601856387010">Če ponastavite pomočnika Leo, se boste morali prijaviti za uporabo Brave
+Leo v prihodnosti in bo počistil tudi vašo zgodovino klepetov. Čiščenje vašega
+zgodovina klepetov bo izbrisala vse vaše prejšnje pogovore z Brave
+Leo. Tega dejanja ni mogoče razveljaviti.</translation>
+<translation id="8157373421434119674">Podatki in zgodovina klepeta</translation>
+<translation id="614530507403667291">Privzeti model za nove pogovore</translation>
 <translation id="6624718837376802990">Avatar nagrade Edgy</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

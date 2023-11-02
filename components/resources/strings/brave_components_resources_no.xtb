@@ -477,6 +477,7 @@
 <translation id="8327818101454798856">Så hvis du er ute etter å støtte dine favorittnettsteder, kan du ta turen dit i stedet.</translation>
 <translation id="412480955826088549">Laster ned komponent...</translation>
 <translation id="4894106830958548828">Jeg forstår</translation>
+<translation id="326118736933420687">Du ser på en WebTorrent-side</translation>
 <translation id="7534079972563542000">Ustoppelige domener</translation>
 <translation id="4492298165410552103">Vil du slå på støtte for ustoppelige domener i Brave?</translation>
 <translation id="3647533686160055812">Brave vil bruke Infura til å resolve .crypto (pluss .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil)-domenenavn som er på Unstoppable Domains. Brave skjuler IP-adressen din. Hvis du slår på dette, vil Infura se at noen prøver å besøke disse domenene, men ikke noe annet. Les Infuras <ph name="BEGIN_INFURA_TOU_LINK"/>brukervilkår<ph name="END_INFURA_TOU_LINK"/> og <ph name="BEGIN_INFURA_PRIVACY_LINK"/>personvernerklæring<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
@@ -694,6 +695,7 @@
 <translation id="6621880242105464352">Brave belaster et gebyr på <ph name="FEE_PCT"/> av det sendte beløpet.</translation>
 <translation id="1420756770787071946">Støtt denne skaperen</translation>
 <translation id="1483493594462132177">Send</translation>
+<translation id="6632987674051304487">Send med <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Bruk Web3 Wallet</translation>
 <translation id="5399596220743521546">Denne innholdsskaperen er registrert hos Brave og kan motta bidrag fra Brave Rewards-brukere.</translation>
 <translation id="4529874892536380156">Gjør dette til et fast månedlig bidrag. Du kan kansellere det når som helst.</translation>
@@ -719,6 +721,10 @@
 <translation id="1950340257946519340">Det har oppstått en uventet feil</translation>
 <translation id="2605703631071131439">Gjenåpne bidragspanelet for å prøve på nytt.</translation>
 <translation id="8855543392451028706">Velkommen! Brukere kan støtte denne innholdsskaperen ved å sende bidrag. Det er en måte å takke dem på for at de lager bra innhold.</translation>
+<translation id="7090992647511817643">konto</translation>
+<translation id="4822132585477111396">Blokkjede</translation>
+<translation id="3269475789479462358">domene</translation>
+<translation id="1288078776976153868">nettverk</translation>
 <translation id="1148827340205946630">Brukeren avslo forespørselen</translation>
 <translation id="2403819048476450281">Ugyldige parametere.</translation>
 <translation id="3955144560853195652">Kjeden <ph name="VALUE"/> har ikke blitt lagt til</translation>
@@ -991,6 +997,7 @@
 <translation id="5294062982587710720">Vær oppmerksom på at Brave ikke kan gå god for hva som skjer hvis du signerer. En signatur kan autorisere nesten en hvilken som helst operasjon i kontoen din eller på dine vegne, herunder blant annet å gi full kontroll over kontoen og kryptoressursene dine til siden som kommer med forespørselen, Signer bare hvis du er sikker på at du stoler på den aktuelle siden og vil gjøre denne handlingen.</translation>
 <translation id="3474375934783434676">Signer på egen risiko</translation>
 <translation id="5488357322146334497">Melding</translation>
+<translation id="3586931643579894722">Skjul detaljer</translation>
 <translation id="7702907602086592255">Domene</translation>
 <translation id="3586752056660754651">Undertegn</translation>
 <translation id="3484981968509595506">En DApp ber om din offentlige krypteringsnøkkel</translation>
@@ -1016,7 +1023,6 @@
 <translation id="5052727830821470769">Nettverks-URL</translation>
 <translation id="427875364838253580">Vis alle detaljer</translation>
 <translation id="8030852056903932865">Godkjenn</translation>
-<translation id="4822132585477111396">Blokkjede</translation>
 <translation id="7131971375297699539">Valutasymbol</translation>
 <translation id="4693057234255364395">Blokker explorer-nettadressen</translation>
 <translation id="7982789257301363584">Nettverk</translation>
@@ -1159,7 +1165,10 @@
 <translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="2330177808960134000">Lommeboken må låses opp først</translation>
 <translation id="7930338223819368854"><ph name="ADDRESS"/>er ikke en gyldig adresse</translation>
-<translation id="1470129769517088397"><ph name="ADDRESS"/> er ikke det gjeldende nettverket</translation>
+<translation id="5036882519065735613"><ph name="CHAIN_ID"/> er ikke gjeldende nettverk</translation>
+<translation id="317252468455212145"><ph name="ADDRESS"/> samsvarer ikke med adressen</translation>
+<translation id="8034449164954956172"><ph name="DOMAIN"/> samsvarer ikke med gjeldende domene</translation>
+<translation id="5444904139422068509">Vi har avvist denne forespørselen, fordi dette nettstedet ber om at du bruker et annet <ph name="NAME"/> (<ph name="VALUE"/>)</translation>
 <translation id="7340805872138998391">Kunne ikke låse opp enheten, prøv å koble til på nytt</translation>
 <translation id="1984410139271779110">Intern feil, ukjent skjema</translation>
 <translation id="6989562355845156390">godkjenn</translation>
@@ -1275,6 +1284,20 @@
 <translation id="5601436886921227795">Dapp-interaksjon</translation>
 <translation id="9104177294757104789">Send <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Bytt <ph name="MAKER"/> til <ph name="TAKER"/></translation>
+<translation id="8613144770663526433">Logg på med Brave-lommeboken</translation>
+<translation id="3696514931437952995">Du logger på <ph name="ORIGIN"/>. Brave-lommeboken deler lommebok-adressen din med <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">Vis detaljer</translation>
+<translation id="3950820424414687140">Logg på</translation>
+<translation id="4530494379350999373">Opprinnelse</translation>
+<translation id="6736243959894955139">Adresse</translation>
+<translation id="3095940652251934233">Oversikt</translation>
+<translation id="308268297242056490">URI</translation>
+<translation id="1313065465616456728">Utstedt</translation>
+<translation id="7902225556763260253">Utløper</translation>
+<translation id="2471230424465522689">Ikke før</translation>
+<translation id="4841860051609590575">Forespørsels-ID</translation>
+<translation id="6759710362319508545">Ressurser</translation>
+<translation id="1908159733454294871">En sikkerhetsrisiko er oppdaget</translation>
 <translation id="1965889974717516497">Sekundære nettverk</translation>
 <translation id="7691821949666755802">Testnettverk</translation>
 <translation id="2816106784624007524">«Gas»-grensen må være et heltall større enn 0</translation>
@@ -1690,8 +1713,14 @@
 <translation id="1536390784834419204">Oversett side</translation>
 <translation id="5973664933364241128">Ruting av media</translation>
 <translation id="1568067597247500137">Demp siden</translation>
+<translation id="6674128381307353306">Demp alle faner</translation>
+<translation id="1815548596883953231">Demp andre faner</translation>
+<translation id="926046137238708033">Opphev demping av alle faner</translation>
 <translation id="855081842937141170">Fest fanen</translation>
+<translation id="2805351816064694332">Lukk faner som ikke er festet</translation>
 <translation id="8657641252283410630">Grupper fanen</translation>
+<translation id="8290333944535778783">Rull til toppen</translation>
+<translation id="6141382045715907645">Rull til nederst</translation>
 <translation id="923853139812360539">QR-kode-generator</translation>
 <translation id="8754922069999490293">Tilbud og belønninger for siden</translation>
 <translation id="8620714260606376019">Delingshub</translation>
@@ -1787,6 +1816,15 @@
 <translation id="6002210667729577411">Flytt gruppen til et nytt vindu</translation>
 <translation id="253980346046488815">Lukk dupliserte faner</translation>
 <translation id="9210143726807220086">Aktiver/deaktiver utvidede vertikale faner</translation>
+<translation id="684629111155788563">Legg til alle faner i en ny gruppe</translation>
+<translation id="9106013521852824634">Send fanen til deg selv</translation>
+<translation id="1926106318101432555">Åpne bokmerke …</translation>
+<translation id="6118819645013156507">Bytt til vindu …</translation>
+<translation id="1623204575967809688">Slå gjeldende vindu sammen med …</translation>
+<translation id="7196533333647500853">Flytt faner til vinduet …</translation>
+<translation id="2026671913373402445">Legg til fane i eksisterende gruppe …</translation>
+<translation id="8158903143594876176">Fest fane …</translation>
+<translation id="1487981090845324947">Løsne fane …</translation>
 <translation id="5182394825813677917">Søk etter en kommando eller snarvei</translation>
 <translation id="4138119885026877702">Tlbakestill alle til standardoppsettet</translation>
 <translation id="8247915960543694908">Opprett en ny snarvei. Trykk på tastene du vil bruke for snarveiene.</translation>
@@ -1795,17 +1833,17 @@
 <translation id="3537006124004887164">Denne kombinasjonen brukes allerede for <ph name="COMMAND"/>, og kan ikke endres. Prøv å endre den via App-snarveier i Systeminnstillinger.</translation>
 <translation id="8591883849678260674">Vis original</translation>
 <translation id="1969654232209826429">min. lest</translation>
-<translation id="906598168058463050">Slå av Speedreader</translation>
-<translation id="8948558186299884715">Slå på hurtigleseren</translation>
-<translation id="1385842054306112120">Bruk alltid hurtigleseren for denne nettsiden</translation>
-<translation id="8028940590935492959">Aktiver/deaktiver for å slå på/av hurtigleseren for dette nettstedet.</translation>
-<translation id="1022901542006152519">Bruk alltid hurtigleseren for alle nettsteder</translation>
-<translation id="3460907549384263858">Aktiver/deaktiver for å slå på/av hurtiglesen for alle nettsteder.</translation>
-<translation id="8745592921916491483">Ikke alle nettsteder tilbyr funksjoner for hurtigleseren.</translation>
+<translation id="4101707289420716287">Slå av Speedreader</translation>
+<translation id="9089090017461255038">Slå på Speedreader</translation>
+<translation id="3929926885379607283">Bruk alltid Speedreader på dette nettstedet</translation>
+<translation id="4186588885948504942">Slå på/av Speedreader for dette nettstedet.</translation>
+<translation id="1873585723672836337">Bruk alltid Speedreader på alle nettsteder</translation>
+<translation id="3138587343887871192">Slå på/av Speedreader for alle nettsteder</translation>
+<translation id="5153147025131874069">Ikke alle nettsteder er Speedreader-kompatible.</translation>
 <translation id="1013121820689882118">Hurtigleser</translation>
-<translation id="1103345585203110275">Gå ut av hurtigleseren</translation>
+<translation id="2104268045272817433">Gå ut av Speedreader</translation>
 <translation id="6315170314923504164">Tale</translation>
-<translation id="57748525762025171">Still inn hurtigleseren</translation>
+<translation id="864152735015641598">Juster Speedreader</translation>
 <translation id="251940709686581010">Utseendeinnstillinger</translation>
 <translation id="4809927044794281115">Lyst tema</translation>
 <translation id="5595850093882577201">Sepia-tema</translation>
@@ -1822,7 +1860,69 @@
 <translation id="1199355487114804640">Spill av/sett på pause</translation>
 <translation id="1689210457482459023">Reduser avspillingshastigheten</translation>
 <translation id="5872363163901278000">Øk avspillingshastigheten</translation>
-<translation id="3507699941492423127">Brave Leo</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8637805148029768813">Oppsummeringsfunksjonen er inntil videre bare tilgjengelig for utvalgte artikler og andre nettsteder med mye tekst.</translation>
+<translation id="2346991295632453064">Godta og start</translation>
+<translation id="1223498995510244364">Oppsummer</translation>
+<translation id="7491773233732232424">Om Leo</translation>
+<translation id="70442873931504163">Brave Leo er en smart KI-assistent som kan gi en oppsummering av nettsider, transkribere videoer og svare på spørsmål. Brave Leo Premium bruker avanserte <ph name="LINK_BEFORE"/>KI-modeller<ph name="LINK_AFTER"/> til å gi enda mer nyanserte svar, med tidlig tilgang til nye funksjoner.</translation>
+<translation id="3055739528128372229">Vi gir ingen garantier for nøyaktigheten eller korrektheten av svarene du får. Svarene kan inneholde upresis, villedende eller falsk informasjon. Ikke send inn sensitiv eller privat informasjon, og ikke baser deg på svarene for ting som har med helse, økonomi, personlig sikkerhet eller lignende å gjøre.</translation>
+<translation id="5030677498967794115">Leo samler ikke inn eller behandler identifikatorer som IP-adresser og annet som kan knyttes til deg. Verken KI-modellen eller eventuelle tredjeparter knyttet til modellen lagrer personopplysninger.</translation>
+<translation id="7839853125981164613">Skriv inn spørsmål her</translation>
+<translation id="1171287413830401223">Vil du aktivere foreslåtte spørsmål?</translation>
+<translation id="4567071417854988869">Oppsummer denne videoen</translation>
+<translation id="7921782882718083488">Oppsummer denne siden</translation>
+<translation id="8723991872343294222">Brave AI kan automatisk foreslå spørsmål basert på nettstedets innhold. Du kan deaktivere dette senere i Innstillinger.</translation>
+<translation id="3435896845095436175">Slå på</translation>
+<translation id="7473891865547856676">Nei takk</translation>
+<translation id="7932221068776853847">Koble fra for å slutte å sende innholdet på denne siden til Leo, og begynn en ny samtale</translation>
+<translation id="1167803637855350748">Det oppstod et nettverksproblem under tilkoblingen til Leo. Kontroller forbindelsen og prøv på nytt.</translation>
+<translation id="5095201428204952524">Leo har for mye å gjøre akkurat nå. Prøv på nytt om noen minutter.</translation>
+<translation id="7144878232160441200">Prøv på nytt</translation>
+<translation id="2505565639170795978">Hei, jeg er Leo! Jeg er en KI-assistent som Brave er vert for i sin helhet. Jeg er basert på Llama 13B, som er en modell Meta har laget for en rekke bruksområder.</translation>
+<translation id="7202619923031933110">Hei, jeg er Leo! Jeg er en KI-assistent som Brave er vert for i sin helhet. Jeg er basert på Llama 70B, som er en modell Meta har laget for å håndtere mer avanserte oppgaver enn 13B.</translation>
+<translation id="2489317965865266353">Hei, jeg er Leo! Jeg brukes i proxyversjon av Brave og er basert på Claude Instant, en modell som er utviklet av Anthropic for å håndtere oppgaver knyttet til behandling av tekst og samtaler.</translation>
+<translation id="6206029817087805290"><ph name="MODEL_NAME"/> etter <ph name="COMPANY_NAME"/></translation>
+<translation id="6187065185557150870">Chat</translation>
+<translation id="2961040541145689181">Ny chat</translation>
+<translation id="97095589689466044">Spørsmålsforslag</translation>
+<translation id="7557539689487606886">Oppgrader til Premium</translation>
+<translation id="3037594989275592390">Språåkmodeller</translation>
+<translation id="849535826888024304">Grensen for svar er nådd</translation>
+<translation id="3834321271158315162">Lås opp flere svar ved å oppgradere til Premium, eller prøv på nytt senere.</translation>
+<translation id="1239767708151339890">Tilgang til bransjeledende språkmodeller</translation>
+<translation id="8021579987620496265">Still flere spørsmål</translation>
+<translation id="8556044455877152001">USD <ph name="PRICE_VALUE"/> per mnd.</translation>
+<translation id="9221988663340523352">Bytt til standardmodellen</translation>
+<translation id="377376641316998425">Lås opp Leos fulle potensial</translation>
+<translation id="8363148882096737034">Anthropic Claude + mer kommer snart</translation>
+<translation id="886527905046308697">Prioritert tilgang og mulighet til å stille flere spørsmål</translation>
+<translation id="1068954060985569277">Brave-kontoøkten har utløpt. Gå til kontosiden din for å oppdatere, og kom tilbake hit igjen etterpå for å bruke premiumfunksjonene.</translation>
+<translation id="94736968936709953">Tilbakemeldingen er sendt</translation>
+<translation id="9109355817507033196">Svar: Mislikt</translation>
+<translation id="4049425842478222936">Svar: Likt</translation>
+<translation id="6393149565874086128">Gi tilbakemelding</translation>
+<translation id="3521125531016408657">Lik svaret</translation>
+<translation id="8202517001427388906">Mislik svaret</translation>
+<translation id="1379399209929302811">Send tilbakemelding om Brave AI</translation>
+<translation id="2415950536410763575">Velg emne for tilbakemeldingen</translation>
+<translation id="9018766373792005944">Hva handler tilbakemeldingen om?</translation>
+<translation id="7355096922131918313">Gi tilbakemelding her</translation>
+<translation id="3027575440738035995">Leo Premium gir tilgang til et utvidet sett språkmodeller for enda mer nyanserte svar. <ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
+<translation id="2399439821649319175">Ikke nyttig</translation>
+<translation id="2976167228906046828">Feil</translation>
+<translation id="1183055847065865059">Utrygg/skadelig</translation>
+<translation id="7138678301420049075">Annet</translation>
+<translation id="2313959174679245365">Vurderingen din kunne ikke sendes inn. Sjekk nettverkstilkoblingen og prøv på nytt</translation>
+<translation id="98413980871833152">Vurderingen din kunne ikke sendes inn. Sjekk nettverkstilkoblingen og prøv på nytt</translation>
+<translation id="8742658901413346500">Denne samtalen er lang, og Leo begynner kanskje å begynne ting snart. Du kan få lengre samtaler ved å bytte til en premiummodell, eller så kan du tømme chatten for å tilbakestille den.</translation>
+<translation id="7550152963854770123">Tøm chatten</translation>
+<translation id="7494736170250048402">Send en melding til Leo</translation>
+<translation id="4110772752544684964">Denne siden er for lang for Leo. Det kan hende at litt kontekst mangler for samtalen.</translation>
+<translation id="4370698775470316661">Denne samtalen er for lang, og kan ikke fortsette. Det kan finnes andre tilgjengelige modeller med Leo der samtalen kan holde høy kvalitet over lengre tid.</translation>
+<translation id="6291843235651817590">Generell chat</translation>
+<translation id="8193130769524604031">Avansert chat</translation>
+<translation id="3185367320601718531">Samtale og tekstgenerering</translation>
 <translation id="6303294677342628402">Skjold</translation>
 <translation id="8458987127502506209">Aktiver Brave Shields</translation>
 <translation id="7509914170164691086">Skjoldene er OPPE <ph name="LINK_BEFORE"/>for<ph name="LINK_AFTER"/></translation>
@@ -1891,21 +1991,6 @@
 <translation id="546481172717459539">Match systeminnstillingene</translation>
 <translation id="7799817062559422778">Lys modus</translation>
 <translation id="4117637339509843559">Mørk modus</translation>
-<translation id="8637805148029768813">Oppsummeringsfunksjonen er inntil videre bare tilgjengelig for utvalgte artikler og andre nettsteder med mye tekst.</translation>
-<translation id="2346991295632453064">Godta og start</translation>
-<translation id="1223498995510244364">Oppsummer</translation>
-<translation id="6966669506908435195">Om Brave Leo</translation>
-<translation id="1667863995484767951">AI Chat-funksjonen gir deg en oppsummering av nettsidene du er på, og har et chattevindu der du kan sende inn spørsmål og få svar om innholdet på siden. Vi garanterer ikke for at oppsummeringene er korrekte – de kan inneholde feil, villedende og upresis informasjon. Du må ikke oppgi sensitiv eller privat informasjon, og bør utvise aktsomhet ved tekster knyttet til helse, økonomi, personlig sikkerhet og lignende.</translation>
-<translation id="7636915524386889836">Braves AI-chat bruker en egenhostet <ph name="LINK_BEFORE"/>storspråksmodell<ph name="LINK_AFTER"/>. AI-chaten samler ikke inn eller behandler identifikatorer som f.eks. IP-adresser som kan knyttes til deg. AI-modellen lagrer ingen personlig informasjon.</translation>
-<translation id="7839853125981164613">Skriv inn spørsmål her</translation>
-<translation id="1171287413830401223">Vil du aktivere foreslåtte spørsmål?</translation>
-<translation id="8723991872343294222">Brave AI kan automatisk foreslå spørsmål basert på nettstedets innhold. Du kan deaktivere dette senere i Innstillinger.</translation>
-<translation id="3435896845095436175">Slå på</translation>
-<translation id="7473891865547856676">Nei takk</translation>
-<translation id="7932221068776853847">Koble fra for å slutte å sende innholdet på denne siden til Leo, og begynn en ny samtale</translation>
-<translation id="1167803637855350748">Det oppstod et nettverksproblem under tilkoblingen til Leo. Kontroller forbindelsen og prøv på nytt.</translation>
-<translation id="5095201428204952524">Leo har for mye å gjøre akkurat nå. Prøv på nytt om noen minutter.</translation>
-<translation id="7144878232160441200">Prøv på nytt</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: Tilkoblet</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: Frakoblet</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
@@ -1944,7 +2029,6 @@
 <translation id="9184988385244077767">Ikke internett når tilkoblet</translation>
 <translation id="21570240866965662">Treg tilkobling</translation>
 <translation id="1219475260382643267">Nettsiden virker ikke</translation>
-<translation id="7138678301420049075">Annet</translation>
 <translation id="1387340358507240698">Beskriv problemet</translation>
 <translation id="501818585183973587">Velg hvilken informasjon du er villig til å dele med oss</translation>
 <translation id="3195618332367441234">Jo mer informasjon du deler, jo enklere blir det for brukerstøtten å hjelpe deg.</translation>
@@ -1990,4 +2074,10 @@ La oss koble deg til!
 <translation id="8048263175525832621">Brave VPN: Frakoblet</translation>
 <translation id="1498770726476841108">Administrer konto</translation>
 <translation id="6825718953004242472">Fjern ikon</translation>
+<translation id="3287942014983548982">Åpne her</translation>
+<translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/> er åpen.
+Trykk på Tab, og deretter på Enter for å bytte til den åpne fanen.</translation>
+<translation id="1538335063514960365">Åpne her-knapp. Trykk på Enter for å åpne denne nettadressen i eksisterende fane, i stedet for å bytte til den
+eksisterende fanen</translation>
+<translation id="451189393813405346">Spør Leo</translation>
 </translationbundle>

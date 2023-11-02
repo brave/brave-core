@@ -209,6 +209,12 @@
 <translation id="6332924730165919598">يؤدي إغلاق جميع علامات التبويب إلى إغلاق Brave</translation>
 <translation id="8308305244351876417">يسمح بتشغيل الصوت عند التبديل إلى علامة تبويب أخرى في Brave أو تطبيق آخر أو عند إيقاف تشغيل شاشة جهازك.</translation>
 <translation id="4150201353443180367">عرض</translation>
+<translation id="4275663329226226506">الوسائط</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">استخدم إدارة الحقوق الرقمية (DRM) من Widevine لعرض محتوى الوسائط المحمي في المتصفح.</translation>
+<translation id="255204363133978824">السماح بالمحتوى المحمي</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>لمعرفة المزيد عن Widevine <ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">السماح (إعادة التشغيل الآن)</translation>
 <translation id="2433507940547922241">المظهر</translation>
 <translation id="9040069796107003510">أيقونة المكافآت الخاصة بموقع (Brave (Brave Rewards</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
@@ -580,6 +586,7 @@
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
+<translation id="6915830896450988084">الإرسال عبر <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">إرسال</translation>
 <translation id="538450413584738399">تبديل</translation>
 <translation id="1366855498335432549">إيداع</translation>
@@ -896,6 +903,7 @@
 <translation id="3897092660631435901">القائمة</translation>
 <translation id="42981349822642051">تكبير</translation>
 <translation id="3586752056660754651">توقيع</translation>
+<translation id="3950820424414687140">تسجيل الدخول</translation>
 <translation id="6592721981110586529">الاتصال بمحفظة Brave</translation>
 <translation id="329813193938846695">حدد الحساب (الحسابات)</translation>
 <translation id="291375746846291973">تواصل فقط مع المواقع التي تثق بها.</translation>
@@ -942,7 +950,7 @@
 <translation id="6044189892950611565">قناة الإشعار لمتصفح Brave</translation>
 <translation id="1173919438868967364">تحديد حساب</translation>
 <translation id="8922793255489232731">تعذّر الحصول على المنطقة الزمنية المطابقة لـ: <ph name="VALUE"/></translation>
-<translation id="8901748741234750758">جارٍ تنزيل ملف بيانات المحفظة \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
+<translation id="8901748741234750758">تحميل ملف بيانات المحفظة \u2022 <ph name="PERCENTAGE"/>\u0025\u0025</translation>
 <translation id="6471216025161697462">متصل بـ <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">إصدار تجريبي</translation>
 <translation id="7733890291091968191">عرض إشعارات Web3</translation>
@@ -1044,6 +1052,14 @@
 <translation id="5802752138057422257">تم اكتشاف أحرف بخلاف ASCII!</translation>
 <translation id="442709594176931966">عرض الرسالة الأصلية</translation>
 <translation id="2239252396088484499">عرض الرسالة بترميز ASCII</translation>
+<translation id="4530494379350999373">الأصل</translation>
+<translation id="6736243959894955139">العنوان</translation>
+<translation id="3095940652251934233">البيان</translation>
+<translation id="308268297242056490">‏معرف موارد منتظم (URI)</translation>
+<translation id="3798449238516105146">الإصدار</translation>
+<translation id="1313065465616456728">تم الإصدار في</translation>
+<translation id="7902225556763260253">وقت انتهاء الصلاحية</translation>
+<translation id="1908159733454294871">تم اكتشاف المخاطر الأمنية</translation>
 <translation id="4220693114674044366">عنوان الرمز المميز</translation>
 <translation id="5658257029899993935">ربط عملية الشراء بحسابك على Brave</translation>
 <translation id="1187061015547219282">ربط عمليات الشراء من متجر Play Store بحسابك على Brave لاستخدام Brave VPN على أجهزة أخرى.</translation>
@@ -1176,4 +1192,11 @@
 <translation id="5494920125229734069">تحديد الكل</translation>
 <translation id="5972844218283131174">إلغاء تحديد الكل</translation>
 <translation id="6322030314101903925">لا توجد أصول متاحة</translation>
+<translation id="6129027151000961048">Leo</translation>
+<translation id="8613144770663526433">تسجيل الدخول إلى Brave Wallet</translation>
+<translation id="3696514931437952995">أنت الآن تقوم بتسجيل الدخول في <ph name="ORIGIN"/>. سوف تشارك Brave wallet عنوان محفظتك مع <ph name="ORIGIN"/>.</translation>
+<translation id="1028781062521375153">عرض التفاصيل</translation>
+<translation id="6759710362319508545">المصادر</translation>
+<translation id="2471230424465522689">ليس قبل</translation>
+<translation id="4841860051609590575">طلب الرقم التعريفي</translation>
 </translationbundle>
