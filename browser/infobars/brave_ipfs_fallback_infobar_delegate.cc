@@ -7,11 +7,11 @@
 
 #include <utility>
 
-#include "base/memory/ptr_util.h"
-#include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
+#include "brave/browser/infobars/brave_confirm_infobar_creator.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "ui/views/vector_icons.h"
+#include "components/infobars/core/infobar.h"
 
 // BraveIPFSFallbackInfoBarDelegateObserver
 BraveIPFSFallbackInfoBarDelegateObserver::
@@ -25,13 +25,11 @@ void BraveIPFSFallbackInfoBarDelegate::Create(
     infobars::ContentInfoBarManager* infobar_manager,
     std::unique_ptr<BraveIPFSFallbackInfoBarDelegateObserver> observer,
     PrefService* local_state) {
-  std::unique_ptr<infobars::InfoBar> infobar(
-      std::make_unique<BraveConfirmInfoBar>(
-          base::WrapUnique<BraveConfirmInfoBarDelegate>(
-              new BraveIPFSFallbackInfoBarDelegate(std::move(observer),
-                                                   local_state))));
-
-  infobar_manager->AddInfoBar(std::move(infobar), true);
+  infobar_manager->AddInfoBar(
+      CreateBraveConfirmInfoBar(std::unique_ptr<BraveConfirmInfoBarDelegate>(
+          new BraveIPFSFallbackInfoBarDelegate(std::move(observer),
+                                               local_state))),
+      true);
 }
 
 BraveIPFSFallbackInfoBarDelegate::BraveIPFSFallbackInfoBarDelegate(
@@ -65,7 +63,7 @@ BraveIPFSFallbackInfoBarDelegate::GetIdentifier() const {
 }
 
 const gfx::VectorIcon& BraveIPFSFallbackInfoBarDelegate::GetVectorIcon() const {
-  return views::kInfoIcon;
+  return kLeoInfoOutlineIcon;
 }
 
 bool BraveIPFSFallbackInfoBarDelegate::ShouldExpire(

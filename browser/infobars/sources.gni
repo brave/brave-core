@@ -61,6 +61,7 @@ if (!is_android) {
       brave_browser_infobar_deps += [
         "//brave/browser/ui/views/infobars:infobars",
         "//brave/components/infobars/core:core",
+        "//brave/components/vector_icons",
       ]
     }
   }

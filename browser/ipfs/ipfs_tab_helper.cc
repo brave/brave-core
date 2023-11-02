@@ -74,9 +74,9 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
       ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
 }
 
-struct IpfsFallbackOrigUrlData : public base::SupportsUserData::Data {
-  explicit IpfsFallbackOrigUrlData(const GURL& url) : original_url(url) {}
-  ~IpfsFallbackOrigUrlData() override = default;
+struct IpfsFallbackOriginalUrlData : public base::SupportsUserData::Data {
+  explicit IpfsFallbackOriginalUrlData(const GURL& url) : original_url(url) {}
+  ~IpfsFallbackOriginalUrlData() override = default;
 
   GURL original_url;
 };
@@ -90,9 +90,7 @@ struct IpfsFallbackBlockRedirectData : public base::SupportsUserData::Data {
 
 bool IsClientOrServerHttpError(content::NavigationHandle* handle) {
   auto const* headers = handle->GetResponseHeaders();
-  const auto end_of_error_codes_range = 600;
-  return headers && headers->response_code() >= net::HTTP_BAD_REQUEST &&
-         headers->response_code() < end_of_error_codes_range;
+  return headers && headers->response_code() >= net::HTTP_BAD_REQUEST;
 }
 
 }  // namespace
@@ -108,8 +106,7 @@ class BraveIPFSInfoBarDelegateObserverImpl
       : ipfs_tab_helper_(ipfs_tab_helper) {}
 
   void OnRedirectToIPFS(bool enable_gateway_autoredirect) override {
-    if (ipfs_tab_helper_.get() &&
-        ipfs_tab_helper_->ipfs_resolved_url_.is_valid()) {
+    if (ipfs_tab_helper_ && ipfs_tab_helper_->ipfs_resolved_url_.is_valid()) {
       if (enable_gateway_autoredirect) {
         ipfs_tab_helper_->pref_service_->SetBoolean(
             kIPFSAutoRedirectToConfiguredGateway, true);
@@ -133,7 +130,7 @@ class BraveIPFSFallbackInfoBarDelegateObserverImpl
       : original_url_(original_url), ipfs_tab_helper_(ipfs_tab_helper) {}
 
   void OnRedirectToOriginalAddress() override {
-    if (ipfs_tab_helper_.get()) {
+    if (ipfs_tab_helper_) {
       ipfs_tab_helper_->LoadUrlForFallback(original_url_);
     }
   }
@@ -240,7 +237,7 @@ void IPFSTabHelper::LoadUrlForAutoRedirect(const GURL& gurl) {
 
     handle->SetUserData(
         kIpfsFallbackOriginalUrlKey,
-        std::make_unique<IpfsFallbackOrigUrlData>(GetCurrentPageURL()));
+        std::make_unique<IpfsFallbackOriginalUrlData>(GetCurrentPageURL()));
   };
 
   if (auto_redirect_callback_for_testing_) {
@@ -253,8 +250,7 @@ void IPFSTabHelper::LoadUrlForAutoRedirect(const GURL& gurl) {
       ui::PAGE_TRANSITION_LINK, false));
   params.should_replace_current_entry = true;
   if (auto new_handle =
-          web_contents()->GetController().LoadURLWithParams(params);
-      new_handle) {
+          web_contents()->GetController().LoadURLWithParams(params)) {
     set_user_data(new_handle.get());
   }
 }
@@ -471,9 +467,8 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
   auto is_ipfs_companion_enabled(
       pref_service_->GetBoolean(kIPFSCompanionEnabled));
   if (!is_ipfs_companion_enabled &&
-      ((handle->IsErrorPage() && handle->GetNetErrorCode() != net::OK) ||
-       (IsClientOrServerHttpError(handle)))) {
-    auto* orig_url_nav_data = static_cast<IpfsFallbackOrigUrlData*>(
+      (handle->IsErrorPage() || IsClientOrServerHttpError(handle))) {
+    auto* orig_url_nav_data = static_cast<IpfsFallbackOriginalUrlData*>(
         handle->GetUserData(kIpfsFallbackOriginalUrlKey));
     if (orig_url_nav_data && !orig_url_nav_data->original_url.is_empty()) {
       ShowBraveIPFSFallbackInfoBar(orig_url_nav_data->original_url);
