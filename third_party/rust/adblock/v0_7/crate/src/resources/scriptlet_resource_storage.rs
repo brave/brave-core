@@ -39,7 +39,7 @@ impl ScriptletResource {
         let mut scriptlet = self.scriptlet.to_owned();
         // `regex` treats `$` as a special character. Instead, `$$` is interpreted as a literal `$`
         // character.
-        args.iter().enumerate().for_each(|(i, arg)| {
+        args.iter().take(TEMPLATE_ARGUMENT_RE.len()).enumerate().for_each(|(i, arg)| {
             scriptlet = TEMPLATE_ARGUMENT_RE[i]
                 .replace(&scriptlet, arg.as_ref().replace('$', "$$"))
                 .to_string();
@@ -215,6 +215,27 @@ mod tests {
         );
     }
 
+    /// Currently, only 9 template arguments are supported - but reaching that limit should not
+    /// cause a panic.
+    #[test]
+    fn patch_argslist_many_args() {
+        let resources = ScriptletResourceStorage::from_resources(&[
+            Resource {
+                name: "abort-current-script.js".into(),
+                aliases: vec!["acs.js".into()],
+                kind: ResourceType::Mime(MimeType::ApplicationJavascript),
+                content: base64::encode("{{1}} {{2}} {{3}} {{4}} {{5}} {{6}} {{7}} {{8}} {{9}} {{10}} {{11}} {{12}}"),
+            },
+        ]);
+
+        let args = parse_scriptlet_args("acs, this, probably, is, going, to, break, brave, and, crash, it, instead, of, ignoring, it");
+        assert_eq!(args, vec!["acs", "this", "probably", "is", "going", "to", "break", "brave", "and", "crash", "it", "instead", "of", "ignoring", "it"]);
+
+        assert_eq!(
+            resources.get_scriptlet("acs, this, probably, is, going, to, break, brave, and, crash, it, instead, of, ignoring, it"),
+            Ok("this probably is going to break brave and crash {{10}} {{11}} {{12}}".to_string()),
+        );
+    }
 
     #[test]
     fn get_patched_scriptlets() {
