@@ -126,7 +126,6 @@ SUPPORTED_CHROMIUM_COMMANDS = [
     "IDC_SHOW_AVATAR_MENU",
     "IDC_SHOW_BOOKMARK_BAR",
     "IDC_SHOW_BOOKMARK_MANAGER",
-    "IDC_SHOW_BOOKMARK_SIDE_PANEL",
     "IDC_SHOW_DOWNLOADS",
     "IDC_SHOW_FULL_URLS",
     "IDC_SHOW_HISTORY",
@@ -238,8 +237,48 @@ EXISTING_TRANSLATIONS = {
     "IDC_SHOW_BRAVE_SYNC": "IDS_SHOW_BRAVE_SYNC",
     "IDC_SHOW_BRAVE_WALLET": "IDS_SHOW_BRAVE_WALLET",
     "IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER": "IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER",
-    "IDC_COPY_CLEAN_LINK": "IDS_COPY_CLEAN_LINK",
-    "IDC_WINDOW_CLOSE_TABS_TO_LEFT": "IDS_TAB_CXMENU_CLOSETABSTOLEFT"
+    "IDC_WINDOW_CLOSE_TABS_TO_LEFT": "IDS_TAB_CXMENU_CLOSETABSTOLEFT",
+    "IDC_DEV_TOOLS_DEVICES": "IDS_DEV_TOOLS_DEVICES", # &amp;Inspect devices
+    "IDC_DEV_TOOLS": "IDS_DEV_TOOLS", # &amp;Developer tools
+    "IDC_EXIT": "IDS_EXIT", # E&amp;xit
+    "IDC_FIND": "IDS_FIND", # &amp;Find...
+    "IDC_COPY_CLEAN_LINK": "IDS_COPY_CLEAN_LINK", # Copy Clean Link
+    "IDC_FULLSCREEN": "IDS_FULLSCREEN", # &amp;Full screen
+    "IDC_NAME_WINDOW": "IDS_NAME_WINDOW", # Name &amp;window...
+    "IDC_NEW_INCOGNITO_WINDOW": \
+        "IDS_NEW_INCOGNITO_WINDOW", # New &amp;Private window
+    "IDC_OPEN_GUEST_PROFILE": \
+        "IDS_OPEN_GUEST_PROFILE", # &amp;Open Guest profile
+    "IDC_OPEN_IN_CHROME": "IDS_OPEN_IN_CHROME", # &amp;Open in Brave
+    "IDC_OPTIONS": "IDS_OPTIONS", # &amp;Options
+    "IDC_PASTE_AND_GO": \
+         # Pa&amp;ste and go to
+         # <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
+        "IDS_PASTE_AND_GO",
+    "IDC_PASTE": "IDS_PASTE", # &amp;Paste
+    "IDC_RESTORE_TAB": "IDS_RESTORE_TAB", # R&amp;eopen closed tab
+    "IDC_SAVE_PAGE": "IDS_SAVE_PAGE", # Save page &amp;as...
+    "IDC_SHOW_AS_TAB": "IDS_SHOW_AS_TAB", # &amp;Show as tab
+    "IDC_SHOW_BOOKMARK_BAR": "IDS_SHOW_BOOKMARK_BAR", # &amp;Show bookmarks
+    "IDC_TASK_MANAGER": "IDS_TASK_MANAGER", # &amp;Task manager
+    "IDC_SHOW_TRANSLATE": "IDS_SHOW_TRANSLATE", # T&amp;ranslate...
+    "IDC_VIEW_SOURCE": "IDS_VIEW_SOURCE", # View s&amp;ource
+    "IDC_TAKE_SCREENSHOT": "IDS_TAKE_SCREENSHOT", # T&amp;ake screenshot
+    "IDC_NEW_TAB": "IDS_NEW_TAB", # New &amp;tab
+    "IDC_DEV_TOOLS_CONSOLE": "IDS_DEV_TOOLS_CONSOLE", # &amp;JavaScript console
+    "IDC_CUT": "IDS_CUT", # Cu&amp;t
+    "IDC_COPY": "IDS_COPY", # &amp;Copy
+    "IDC_BOOKMARK_THIS_TAB": "IDS_BOOKMARK_THIS_TAB", # Bookmark this tab...
+    "IDC_BOOKMARK_MANAGER": "IDS_BOOKMARK_MANAGER", # &amp;Bookmark manager
+    "IDC_COPY_URL": "IDS_COPY_URL", # Copy &amp;URL
+    "IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT": \
+        "IDS_BOOKMARK_BAR_SHOW_APPS_SHORTCUT", # Show apps shortcut
+    "IDC_BOOKMARK_BAR_OPEN_INCOGNITO": \
+        "IDS_BOOKMARK_BAR_OPEN_INCOGNITO", # Open in &amp;Private window
+    "IDC_BOOKMARK_BAR_OPEN_ALL": \
+        "IDS_BOOKMARK_BAR_OPEN_ALL", # &amp;Open all bookmarks
+    "IDC_BOOKMARK_ALL_TABS": "IDS_BOOKMARK_ALL_TABS", # Bookmark all tabs...
+    "IDC_ADD_NEW_PROFILE": "IDS_ADD_NEW_PROFILE", # &amp;Add new profile
 }
 
 
