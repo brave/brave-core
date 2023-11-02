@@ -288,6 +288,15 @@ RegisterPolymerTemplateModifications({
     )
     leoAssistantEl.insertAdjacentElement('afterend', syncEl)
 
+    // Add Playlist item
+    const playlistEl = createMenuElement(
+      loadTimeData.getString('playlist'),
+      '/playlist',
+      'product-playlist',
+      'playlist',
+    )
+    leoAssistantEl.insertAdjacentElement('afterend', playlistEl)
+
     // Add search item
     const searchEl = getMenuElement(templateContent, '/search')
     syncEl.insertAdjacentElement('afterend', searchEl)

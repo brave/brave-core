@@ -144,6 +144,8 @@ interface PlaylistNativeUI {
   ShowRemovePlaylistUI(string playlist_id);
 
   ShowMoveItemsUI(string playlist_id, array<string> item_id);
+
+  OpenSettingsPage();
 };
 
 // UI-side handler for response from the service.

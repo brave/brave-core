@@ -23,6 +23,7 @@
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -98,6 +99,8 @@ class PlaylistService : public KeyedService,
             callback) = 0;
 
     virtual content::WebContents* GetActiveWebContents() = 0;
+
+    virtual void EnabledStateChanged(bool enabled) = 0;
   };
 
   using PlaylistId = base::StrongAlias<class PlaylistIdTag, std::string>;
@@ -345,6 +348,8 @@ class PlaylistService : public KeyedService,
           PlaylistMediaFileDownloadManager::DownloadResult,
           PlaylistMediaFileDownloadManager::DownloadFailureReason>& result);
 
+  void OnEnabledPrefChanged();
+
   // KeyedService overrides:
   void Shutdown() override;
 
@@ -379,6 +384,8 @@ class PlaylistService : public KeyedService,
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
+
+  BooleanPrefMember enabled_pref_;
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;

@@ -1443,6 +1443,17 @@ Leo. This action cannot be undone.
     Default model for new conversations
   </message>
 
+  <!-- Settings / Playlist -->
+  <message name="IDS_SETTINGS_PLAYLIST_ENABLE_PLAYLIST_LABEL" desc="The text for setting to en/disable Playlist feature">
+    Enable Playlist
+  </message>
+  <message name="IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_LABEL" desc="The text for setting to en/disable media cache behavior">
+    Automatically add files for offline viewing
+  </message>
+  <message name="IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_SUB_LABEL" desc="A description for setting to en/disable media cache behavior">
+    This option will automatically cache media files so you can play them without an Internet connection.
+  </message>
+
 <!-- Avatars. Generated via zsh and node:
         declare -i a=56
         for file in $(cat < avatarlist); do node -e "console.log(\`<message name=\"IDS_BRAVE_AVATAR_LABEL_$a\" desc=\"The label for the $file avatar.\">

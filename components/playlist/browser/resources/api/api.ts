@@ -111,6 +111,10 @@ class API {
     this.#nativeUI.showRemovePlaylistUI(playlistId)
   }
 
+  openSettingsPage () {
+    this.#nativeUI.openSettingsPage()
+  }
+
   reorderItemFromPlaylist (
     playlistId: string,
     itemId: string,

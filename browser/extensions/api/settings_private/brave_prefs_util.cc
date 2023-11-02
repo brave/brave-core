@@ -23,6 +23,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -65,6 +66,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/browser/pref_names.h"
 #endif
 
 namespace extensions {
@@ -341,6 +346,14 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowTitleOnWindow] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  (*s_brave_allowlist)[playlist::kPlaylistEnabledPref] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[playlist::kPlaylistCacheByDefault] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
+
   return *s_brave_allowlist;
 }
 

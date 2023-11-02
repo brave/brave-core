@@ -282,7 +282,7 @@ function SettingButton () {
       size='large'
       kind='plain'
       title={getLocalizedString('bravePlaylistA11YOpenPlaylistSettings')}
-      onClick={() => {}}
+      onClick={() => getPlaylistAPI().openSettingsPage()}
     >
       <ColoredIcon name='settings' color={color.icon.default} />
     </StyledButton>

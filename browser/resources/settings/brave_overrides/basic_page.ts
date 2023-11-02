@@ -24,6 +24,7 @@ import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
+import '../brave_playlist_page/brave_playlist_page.js'
 
 import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 
@@ -323,6 +324,18 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+
+      const sectionPlaylist = document.createElement('template')
+      sectionPlaylist.setAttribute('is', 'dom-if')
+      sectionPlaylist.setAttribute('restamp', true)
+      sectionPlaylist.setAttribute('if', '[[showPage_(pageVisibility.playlist)]]')
+      sectionPlaylist.content.appendChild(
+        createSectionElement('playlist', 'playlist', 'settings-brave-playlist-page', {
+          prefs: '{{prefs}}'
+        })
+      )
+
+
       const sectionNewTab = document.createElement('template')
       sectionNewTab.setAttribute('is', 'dom-if')
       sectionNewTab.setAttribute('restamp', true)
@@ -395,6 +408,8 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionTor)
       // Insert Leo Assistant
       last = last.insertAdjacentElement('afterend', sectionLeoAssist)
+      // Insert Playlist
+      last = last.insertAdjacentElement('afterend', sectionPlaylist)
 
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
