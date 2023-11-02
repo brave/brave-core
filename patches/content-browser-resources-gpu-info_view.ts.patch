@@ -6,7 +6,7 @@ index 68b8b8e9c946cbe2eadb5b5bc89c8655ad4ffb89..066822fcafa7c43fd52270ce680f7845
            value: clientInfo.graphics_backend,
          },
          {description: 'Command Line', value: clientInfo.command_line},
-+        {description: 'Executable path', value: clientInfo.executable_path},
++        {description: 'Executable path', value: clientInfo.executable_path || ''},
        ]);
      } else {
        sections.clientInfo.list.textContent = '... loading ...';
