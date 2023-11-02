@@ -7,15 +7,19 @@
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
+#define TabGroupUnderline BraveTabGroupUnderline
 #define TabGroupStyle TabGroupStyle_ChromiumImpl
 #define ChromeRefresh2023TabGroupStyle \
   ChromeRefresh2023TabGroupStyle_ChromiumImpl
 
 #include "src/chrome/browser/ui/views/tabs/tab_group_style.cc"
+
 #undef ChromeRefresh2023TabGroupStyle
 #undef TabGroupStyle
+#undef TabGroupUnderline
 
 const int TabGroupStyle::kStrokeThicknessForVerticalTabs = 4;
 
@@ -58,7 +62,8 @@ gfx::Insets TabGroupStyle::GetInsetsForHeaderChip(
     return insets;
   }
   if (!ShouldShowVerticalTabs()) {
-    insets += gfx::Insets::VH(0, brave_tabs::kHorizontalTabInset);
+    insets.set_top(brave_tabs::kTabGroupTitleVerticalInset)
+        .set_bottom(brave_tabs::kTabGroupTitleVerticalInset);
   }
   return insets;
 }
@@ -72,6 +77,13 @@ float TabGroupStyle::GetEmptyChipSize() const {
     return TabGroupStyle_ChromiumImpl::GetEmptyChipSize();
   }
   return brave_tabs::kEmptyGroupTitleSize;
+}
+
+int TabGroupStyle::GetChipCornerRadius() const {
+  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    return TabGroupStyle_ChromiumImpl::GetChipCornerRadius();
+  }
+  return brave_tabs::kTabBorderRadius;
 }
 
 int ChromeRefresh2023TabGroupStyle::GetTabGroupOverlapAdjustment() {
