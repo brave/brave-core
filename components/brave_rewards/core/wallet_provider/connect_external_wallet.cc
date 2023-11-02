@@ -177,6 +177,9 @@ void ConnectExternalWallet::OnConnect(
     return std::move(callback).Run(ConnectExternalWalletResult::kUnexpected);
   }
 
+  // Set the "active" wallet type.
+  engine_->SetState(state::kExternalWalletType, std::string(WalletType()));
+
   from_status == mojom::WalletStatus::kNotConnected
       ? engine_->client()->ExternalWalletConnected()
       : engine_->client()->ExternalWalletReconnected();

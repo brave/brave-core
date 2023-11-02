@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
+#include "brave/components/brave_rewards/core/state/state_keys.h"
 
 using std::placeholders::_1;
 
@@ -577,27 +578,33 @@ void RewardsEngineImpl::FetchBalance(FetchBalanceCallback callback) {
   });
 }
 
-void RewardsEngineImpl::GetExternalWallet(const std::string& wallet_type,
-                                          GetExternalWalletCallback callback) {
-  WhenReady([this, wallet_type, callback = std::move(callback)]() mutable {
+void RewardsEngineImpl::GetExternalWallet(GetExternalWalletCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    auto wallet_type = GetState<std::string>(state::kExternalWalletType);
+    if (wallet_type.empty()) {
+      std::move(callback).Run(nullptr);
+      return;
+    }
+
+    mojom::ExternalWalletPtr wallet;
+
     if (wallet_type == constant::kWalletBitflyer) {
-      return bitflyer()->GetWallet(std::move(callback));
+      wallet = bitflyer()->GetWallet();
+    } else if (wallet_type == constant::kWalletGemini) {
+      wallet = gemini()->GetWallet();
+    } else if (wallet_type == constant::kWalletUphold) {
+      wallet = uphold()->GetWallet();
+    } else if (wallet_type == constant::kWalletZebPay) {
+      wallet = zebpay()->GetWallet();
+    } else {
+      NOTREACHED() << "Unknown external wallet type!";
     }
 
-    if (wallet_type == constant::kWalletGemini) {
-      return gemini()->GetWallet(std::move(callback));
+    if (wallet && wallet->status == mojom::WalletStatus::kNotConnected) {
+      wallet = nullptr;
     }
 
-    if (wallet_type == constant::kWalletUphold) {
-      return uphold()->GetWallet(std::move(callback));
-    }
-
-    if (wallet_type == constant::kWalletZebPay) {
-      return zebpay()->GetWallet(std::move(callback));
-    }
-
-    NOTREACHED() << "Unknown external wallet type!";
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::move(wallet));
   });
 }
 

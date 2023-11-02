@@ -126,17 +126,7 @@ void TipPanelHandler::GetMonthlyContributionSet(
 
 void TipPanelHandler::GetExternalWallet(GetExternalWalletCallback callback) {
   DCHECK(rewards_service_);
-
-  auto fn = [](GetExternalWalletCallback callback,
-               mojom::ExternalWalletPtr external_wallet) {
-    if (!external_wallet ||
-        external_wallet->status == mojom::WalletStatus::kNotConnected) {
-      return std::move(callback).Run(nullptr);
-    }
-    std::move(callback).Run(std::move(external_wallet));
-  };
-
-  rewards_service_->GetExternalWallet(base::BindOnce(fn, std::move(callback)));
+  rewards_service_->GetExternalWallet(std::move(callback));
 }
 
 void TipPanelHandler::SendContribution(double amount,

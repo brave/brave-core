@@ -579,7 +579,7 @@ void RewardsServiceImpl::GetUserType(
       return;
     }
 
-    if (!wallet || wallet->status != mojom::WalletStatus::kNotConnected) {
+    if (wallet) {
       std::move(callback).Run(UserType::kConnected);
       return;
     }
@@ -624,7 +624,7 @@ void RewardsServiceImpl::GetAvailableCountries(
                                mojom::ExternalWalletPtr wallet) {
     // If the user is not currently connected to any wallet provider, then all
     // ISO country codes are available.
-    if (!wallet || wallet->status == mojom::WalletStatus::kNotConnected) {
+    if (!wallet) {
       return std::move(callback).Run(kISOCountries);
     }
 
@@ -651,7 +651,6 @@ void RewardsServiceImpl::GetAvailableCountries(
   };
 
   engine_->GetExternalWallet(
-      GetExternalWalletType(),
       base::BindOnce(on_external_wallet, std::move(callback)));
 }
 
@@ -2285,7 +2284,7 @@ void RewardsServiceImpl::GetExternalWallet(GetExternalWalletCallback callback) {
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  engine_->GetExternalWallet(GetExternalWalletType(), std::move(callback));
+  engine_->GetExternalWallet(std::move(callback));
 }
 
 void RewardsServiceImpl::BeginExternalWalletLogin(
@@ -2294,7 +2293,6 @@ void RewardsServiceImpl::BeginExternalWalletLogin(
   if (!Connected() || !IsValidWalletType(wallet_type)) {
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
-  profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
   engine_->BeginExternalWalletLogin(wallet_type, std::move(callback));
 }
 

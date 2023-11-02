@@ -211,8 +211,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
-  void GetExternalWallet(const std::string& wallet_type,
-                         GetExternalWalletCallback) override;
+  void GetExternalWallet(GetExternalWalletCallback) override;
 
   void BeginExternalWalletLogin(
       const std::string& wallet_type,
