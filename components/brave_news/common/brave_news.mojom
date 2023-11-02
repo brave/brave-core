@@ -207,6 +207,7 @@ union FeedV2Type {
 };
 
 struct FeedV2 {
+  string hash;
   FeedV2Type type;
   array<FeedItemV2> items;
 };

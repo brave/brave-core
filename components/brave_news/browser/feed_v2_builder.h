@@ -24,6 +24,8 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
@@ -43,6 +45,8 @@ class FeedV2Builder {
   FeedV2Builder(const FeedV2Builder&) = delete;
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
   ~FeedV2Builder();
+
+  void AddListener(mojo::PendingRemote<mojom::FeedListener> listener);
 
   void BuildChannelFeed(const std::string& channel, BuildFeedCallback callback);
   void BuildPublisherFeed(const std::string& publisher_id,
@@ -102,6 +106,8 @@ class FeedV2Builder {
 
   bool is_updating_ = false;
   std::vector<UpdateCallback> pending_callbacks_;
+
+  mojo::RemoteSet<mojom::FeedListener> listeners_;
 
   base::WeakPtrFactory<FeedV2Builder> weak_ptr_factory_{this};
 };

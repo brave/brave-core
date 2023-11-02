@@ -25,6 +25,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -35,6 +36,7 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_news {
@@ -62,6 +64,36 @@ struct ArticleWeight {
 
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
+
+std::string GetFeedHash(const mojom::FeedV2Ptr& feed) {
+  std::hash<std::string> hasher;
+  std::string hash;
+
+  for (const auto& item : feed->items) {
+    std::string hash_item_prop;
+    if (item->is_advert()) {
+      hash_item_prop = "ad";
+    } else if (item->is_article()) {
+      hash_item_prop = item->get_article()->data->url.spec();
+    } else if (item->is_hero()) {
+      hash_item_prop = item->get_hero()->data->url.spec();
+    } else if (item->is_discover()) {
+      hash_item_prop = "discover";
+    } else if (item->is_cluster()) {
+      hash_item_prop += item->get_cluster()->id;
+      for (const auto& cluster_item : item->get_cluster()->articles) {
+        if (cluster_item->is_hero()) {
+          hash_item_prop += cluster_item->get_hero()->data->url.spec();
+        } else if (cluster_item->is_article()) {
+          hash_item_prop += cluster_item->get_article()->data->url.spec();
+        }
+      }
+    }
+    hash = base::NumberToString(hasher(hash + hash_item_prop));
+  }
+
+  return hash;
+}
 
 // Gets all relevant signals for an article.
 // **Note:** Importantly, this function returns the Signal from the publisher
@@ -532,9 +564,19 @@ FeedV2Builder::FeedV2Builder(
       signal_calculator_(publishers_controller,
                          channels_controller,
                          prefs,
-                         history_service) {}
+                         history_service) {
+  listeners_.set_disconnect_handler(
+      base::BindRepeating([](mojo::RemoteSetElementId id) {
+        LOG(ERROR) << "Listener disconnected! " << id;
+      }));
+}
 
 FeedV2Builder::~FeedV2Builder() = default;
+
+void FeedV2Builder::AddListener(
+    mojo::PendingRemote<mojom::FeedListener> listener) {
+  listeners_.Add(std::move(listener));
+}
 
 void FeedV2Builder::BuildChannelFeed(const std::string& channel,
                                      BuildFeedCallback callback) {
@@ -806,7 +848,12 @@ void FeedV2Builder::GenerateFeed(
 
             builder->last_feed_ = std::move(build_feed).Run();
             builder->last_feed_->type = std::move(type);
+            builder->last_feed_->hash = GetFeedHash(builder->last_feed_);
             std::move(callback).Run(builder->last_feed_->Clone());
+
+            for (const auto& listener : builder->listeners_) {
+              listener->OnUpdateAvailable(builder->last_feed_->hash);
+            }
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type),
           std::move(build_feed), std::move(callback)));

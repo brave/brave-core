@@ -69,7 +69,6 @@ bool GetIsEnabled(PrefService* prefs) {
   bool is_enabled = (should_show && opted_in);
   base::WeakPtr<TopicsFetcher> ptr;
   if (ptr) {
-    
   }
   return is_enabled;
 }
@@ -527,9 +526,12 @@ void BraveNewsController::IsFeedUpdateAvailable(
 
 void BraveNewsController::AddFeedListener(
     mojo::PendingRemote<mojom::FeedListener> listener) {
-  feed_controller_.AddListener(std::move(listener));
+  if (MaybeInitFeedV2()) {
+    feed_controller_.AddListener(std::move(listener));
+  } else {
+    feed_controller_.AddListener(std::move(listener));
+  }
 }
-
 void BraveNewsController::SetConfiguration(
     mojom::ConfigurationPtr configuration,
     SetConfigurationCallback callback) {
@@ -694,7 +696,12 @@ void BraveNewsController::CheckForFeedsUpdate() {
 
 void BraveNewsController::Prefetch() {
   VLOG(1) << "PREFETCHING: ensuring feed has been retrieved";
-  feed_controller_.EnsureFeedIsCached();
+
+  if (MaybeInitFeedV2()) {
+    feed_v2_builder_->BuildAllFeed(base::DoNothing());
+  } else {
+    feed_controller_.EnsureFeedIsCached();
+  }
 }
 
 void BraveNewsController::OnOptInChange() {
@@ -749,6 +756,7 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     VLOG(1) << "REMOVING DATA FROM MEMORY";
     feed_controller_.ClearCache();
     publishers_controller_.ClearCache();
+    feed_v2_builder_ = nullptr;
   }
 }
 
