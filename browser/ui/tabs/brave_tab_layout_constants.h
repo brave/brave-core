@@ -54,6 +54,10 @@ constexpr int kTabBorderRadius = 8;
 // The size of the group header slot when the title is empty.
 constexpr int kEmptyGroupTitleSize = 22;
 
+// The amount of padding at the top and bottom of tab group header "chips"
+// (i.e. the rectangle enclosing the tab group title).
+constexpr int kTabGroupTitleVerticalInset = 6;
+
 }  // namespace brave_tabs
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_LAYOUT_CONSTANTS_H_

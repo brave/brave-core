@@ -461,6 +461,9 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
 
+  mixer[kColorTabGroupBackgroundAlpha] = {
+      SkColorSetA(SK_ColorBLACK, 0.15 * 255)};
+
   tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -568,6 +571,9 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0xC6, 0xC8, 0xD0)};
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
+
+  mixer[kColorTabGroupBackgroundAlpha] = {
+      SkColorSetA(SK_ColorBLACK, 0.25 * 255)};
 
   tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
 

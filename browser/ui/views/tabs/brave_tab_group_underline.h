@@ -17,6 +17,8 @@ class BraveTabGroupUnderline : public TabGroupUnderline {
                          const TabGroupStyle& style);
   ~BraveTabGroupUnderline() override;
 
+  static int GetStrokeInset();
+
   // TabGroupUnderline:
   void UpdateBounds(const views::View* leading_view,
                     const views::View* trailing_view) override;

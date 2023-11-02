@@ -21,6 +21,7 @@
     E_CPONLY(kColorLocationBarHoveredShadow)         \
     E_CPONLY(kColorDialogDontAskAgainButton)         \
     E_CPONLY(kColorDialogDontAskAgainButtonHovered)  \
+    E_CPONLY(kColorTabGroupBackgroundAlpha)          \
     E_CPONLY(kColorWebDiscoveryInfoBarBackground)    \
     E_CPONLY(kColorWebDiscoveryInfoBarMessage)       \
     E_CPONLY(kColorWebDiscoveryInfoBarLink)          \

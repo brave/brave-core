@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_
 
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace tab_groups {
 class TabGroupId;
@@ -24,11 +25,14 @@ class BraveTabGroupHeader : public TabGroupHeader {
   // TabGroupHeader:
   void AddedToWidget() override;
   void VisualsChanged() override;
+  int GetDesiredWidth() const override;
   void Layout() override;
 
  private:
   bool ShouldShowVerticalTabs() const;
   void LayoutTitleChipForVerticalTabs();
+  SkColor GetGroupColor() const;
+  absl::optional<SkColor> GetChipBackgroundColor() const;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_
