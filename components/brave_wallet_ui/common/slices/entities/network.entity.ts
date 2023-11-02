@@ -88,13 +88,6 @@ export const selectMainnetNetworksFromQueryResult = createDraftSafeSelector(
   (registry) => getEntitiesListFromEntityState(registry, registry.mainnetIds)
 )
 
-export const selectTestNetworksFromQueryResult = createDraftSafeSelector(
-  // inputs
-  [selectNetworksRegistryFromQueryResult],
-  // output
-  (registry) => getEntitiesListFromEntityState(registry, registry.testnetIds)
-)
-
 export const selectOnRampNetworksFromQueryResult = createDraftSafeSelector(
   // inputs
   [selectNetworksRegistryFromQueryResult],
