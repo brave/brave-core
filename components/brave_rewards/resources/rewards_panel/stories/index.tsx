@@ -268,6 +268,25 @@ export function Notification () {
   )
 }
 
+export function ExternalWalletDisconnectedNotification () {
+  return (
+    <LocaleContext.Provider value={locale}>
+      <WithThemeVariables>
+        <div style={{ width: '375px' }}>
+          <NotificationCard
+            notification={{
+              type: 'external-wallet-disconnected',
+              id: '123',
+              timeStamp: Date.now(),
+              provider: 'Uphold'
+            } as any}
+          />
+        </div>
+      </WithThemeVariables>
+    </LocaleContext.Provider>
+  )
+}
+
 export function GrantNotification () {
   return (
     <LocaleContext.Provider value={locale}>
