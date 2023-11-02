@@ -107,6 +107,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue) {
   content::TitleWatcher watcher(web_contents(), expected_title);
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
+
+  LOG(ERROR) << web_contents()->GetLastCommittedURL();
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
@@ -134,6 +136,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse) {
   content::TitleWatcher watcher(web_contents(), expected_title);
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
+  LOG(ERROR) << web_contents()->GetLastCommittedURL();
+
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
@@ -161,6 +165,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, NoMatch) {
   content::TitleWatcher watcher(web_contents(), expected_title);
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
+  LOG(ERROR) << web_contents()->GetLastCommittedURL();
+
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
@@ -180,6 +186,8 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTestDisabled, DoesNotInjectScript) {
   content::TitleWatcher watcher(web_contents(), expected_title);
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
+  LOG(ERROR) << web_contents()->GetLastCommittedURL();
+
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
