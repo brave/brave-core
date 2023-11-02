@@ -1,0 +1,29 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "psst_tab_helper_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_shields/browser",
+    "//brave/components/cosmetic_filters/browser",
+    "//brave/components/psst/browser/core",
+    "//brave/components/psst/common",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//url",
+  ]
+
+  if (is_android) {
+    deps += [ "//chrome/test:test_support_ui_android" ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui" ]
+  }
+}
