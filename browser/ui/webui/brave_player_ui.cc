@@ -9,7 +9,7 @@
 
 #include "base/strings/strcat.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/brave_player/resources/grit/brave_player_generated_map.h"
+#include "brave/components/brave_player/browser/resources/grit/brave_player_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"

@@ -18,7 +18,7 @@
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_player/buildflags/buildflags.h"
+#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -89,7 +89,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
 #include "brave/browser/ui/webui/brave_player_ui.h"
-#include "brave/components/brave_player/features.h"
+#include "brave/components/brave_player/common/features.h"
 #endif
 
 using content::WebUI;

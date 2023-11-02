@@ -20,7 +20,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_news/common/features.h"
-#include "brave/components/brave_player/buildflags/buildflags.h"
+#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -84,7 +84,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-#include "brave/components/brave_player/features.h"
+#include "brave/components/brave_player/common/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,

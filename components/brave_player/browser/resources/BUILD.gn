@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_player/buildflags/buildflags.gni")
+import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 
 assert(enable_brave_player)
@@ -24,6 +24,6 @@ transpile_web_ui("brave_player_webui") {
 
 pack_web_resources("generated_resources") {
   resource_name = "brave_player"
-  output_dir = "$root_gen_dir/brave/components/brave_player/resources"
+  output_dir = "$root_gen_dir/brave/components/brave_player/browser/resources"
   deps = [ ":brave_player_webui" ]
 }

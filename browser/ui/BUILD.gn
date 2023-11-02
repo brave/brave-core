@@ -7,7 +7,7 @@ import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-import("//brave/components/brave_player/buildflags/buildflags.gni")
+import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
@@ -1106,8 +1106,8 @@ source_set("ui") {
       ]
     }
     deps += [
-      "//brave/components/brave_player",
-      "//brave/components/brave_player/resources:generated_resources",
+      "//brave/components/brave_player/browser/resources:generated_resources",
+      "//brave/components/brave_player/common",
     ]
   }
 }

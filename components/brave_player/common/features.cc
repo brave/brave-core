@@ -3,16 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_PLAYER_FEATURES_H_
-#define BRAVE_COMPONENTS_BRAVE_PLAYER_FEATURES_H_
-
-#include "base/component_export.h"
-#include "base/feature_list.h"
+#include "brave/components/brave_player/common/features.h"
 
 namespace brave_player::features {
 
-COMPONENT_EXPORT(BRAVE_PLAYER) BASE_DECLARE_FEATURE(kBravePlayer);
+BASE_FEATURE(kBravePlayer, "BravePlayer", base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave_player::features
-
-#endif  // BRAVE_COMPONENTS_BRAVE_PLAYER_FEATURES_H_

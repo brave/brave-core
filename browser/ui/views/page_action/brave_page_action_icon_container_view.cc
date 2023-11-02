@@ -7,7 +7,7 @@
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
-#include "brave/components/brave_player/buildflags/buildflags.h"
+#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -15,7 +15,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-#include "brave/components/brave_player/features.h"
+#include "brave/components/brave_player/common/features.h"
 #endif
 
 namespace {
