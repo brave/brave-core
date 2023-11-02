@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "components/prefs/pref_member.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -101,6 +102,8 @@ class PlaylistTabHelper
                                 std::vector<mojom::PlaylistItemPtr> items);
   void OnAddedItems(std::vector<mojom::PlaylistItemPtr> items);
 
+  void OnPlaylistEnabledPrefChanged();
+
   raw_ptr<PlaylistService> service_;
 
   GURL target_url;
@@ -115,6 +118,8 @@ class PlaylistTabHelper
 
   mojo::Receiver<mojom::PlaylistServiceObserver> playlist_observer_receiver_{
       this};
+
+  BooleanPrefMember playlist_enabled_pref_;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 };

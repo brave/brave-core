@@ -39,8 +39,13 @@
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #else
+#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -97,6 +102,46 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
         std::move(image),
         base::BindOnce(&PlaylistServiceDelegateImpl::EncodeAsPNG,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  }
+
+  void EnabledStateChanged(bool enabled) override {
+#if !BUILDFLAG(IS_ANDROID)
+    // Before removing the Playlist item from the service, close all active
+    // Playlist panels.
+    for (auto* browser : *BrowserList::GetInstance()) {
+      if (!browser->is_type_normal() || browser->profile() != profile_) {
+        continue;
+      }
+
+      auto* side_panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser);
+      if (!side_panel_ui ||
+          side_panel_ui->GetCurrentEntryId() != SidePanelEntryId::kPlaylist) {
+        continue;
+      }
+
+      side_panel_ui->Close();
+    }
+
+    auto* service =
+        sidebar::SidebarServiceFactory::GetForProfile(profile_.get());
+    if (enabled) {
+      const auto hidden_items = service->GetHiddenDefaultSidebarItems();
+      const auto iter = base::ranges::find(
+          hidden_items, sidebar::SidebarItem::BuiltInItemType::kPlaylist,
+          &sidebar::SidebarItem::built_in_item_type);
+      if (iter != hidden_items.end()) {
+        service->AddItem(*iter);
+      }
+    } else {
+      const auto visible_items = service->items();
+      const auto iter = base::ranges::find(
+          visible_items, sidebar::SidebarItem::BuiltInItemType::kPlaylist,
+          &sidebar::SidebarItem::built_in_item_type);
+      if (iter != visible_items.end()) {
+        service->RemoveItemAt(iter - visible_items.begin());
+      }
+    }
+#endif  // !BUILDFLAG(IS_ANDROID)
   }
 
  private:
@@ -213,6 +258,7 @@ void PlaylistServiceFactory::RegisterProfilePrefs(
   registry->RegisterListPref(kPlaylistOrderPref, std::move(order_list));
 
   registry->RegisterDictionaryPref(kPlaylistItemsPref);
+  registry->RegisterBooleanPref(kPlaylistEnabledPref, true);
   registry->RegisterBooleanPref(kPlaylistCacheByDefault, true);
   registry->RegisterStringPref(kPlaylistDefaultSaveTargetListID,
                                kDefaultPlaylistID);

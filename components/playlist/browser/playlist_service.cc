@@ -71,6 +71,10 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   download_request_manager_ =
       std::make_unique<PlaylistDownloadRequestManager>(context, manager);
 
+  enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
+                     base::BindRepeating(&PlaylistService::OnEnabledPrefChanged,
+                                         weak_factory_.GetWeakPtr()));
+
   // This is for cleaning up malformed items during development. Once we
   // release Playlist feature officially, we should migrate items
   // instead of deleting them.
@@ -98,6 +102,8 @@ void PlaylistService::AddMediaFilesFromContentsToPlaylist(
     const std::string& playlist_id,
     content::WebContents* contents,
     bool cache) {
+  CHECK(*enabled_pref_) << "Playlist pref must be enabled";
+
   DCHECK(contents);
   if (!contents->GetPrimaryMainFrame()) {
     return;
@@ -417,6 +423,7 @@ base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
 void PlaylistService::FindMediaFilesFromContents(
     content::WebContents* contents,
     FindMediaFilesFromContentsCallback callback) {
+  CHECK(*enabled_pref_) << "Playlist pref must be enabled";
   DCHECK(contents);
 
   PlaylistDownloadRequestManager::Request request;
@@ -510,6 +517,8 @@ void PlaylistService::AddMediaFilesFromPageToPlaylist(
     const std::string& playlist_id,
     const GURL& url,
     bool can_cache) {
+  CHECK(*enabled_pref_) << "Playlist pref must be enabled";
+
   VLOG(2) << __func__ << " " << playlist_id << " " << url;
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = url.spec();
@@ -864,6 +873,8 @@ void PlaylistService::RecoverLocalDataForItem(
     const std::string& id,
     bool update_media_src_before_recovery,
     RecoverLocalDataForItemCallback callback) {
+  CHECK(*enabled_pref_) << "Playlist pref must be enabled";
+
   const auto* item_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   if (!item_value) {
     LOG(ERROR) << __func__ << ": Invalid playlist id for recovery: " << id;
@@ -1110,6 +1121,18 @@ void PlaylistService::OnMediaFileDownloadFinished(
   }
 }
 
+void PlaylistService::OnEnabledPrefChanged() {
+  if (!*enabled_pref_) {
+    download_request_manager_->ResetRequests();
+    thumbnail_downloader_->CancelAllDownloadRequests();
+    media_file_download_manager_->CancelAllDownloadRequests();
+  }
+
+  if (delegate_) {
+    delegate_->EnabledStateChanged(*enabled_pref_);
+  }
+}
+
 #if BUILDFLAG(IS_ANDROID)
 mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
   mojo::PendingRemote<mojom::PlaylistService> remote;
@@ -1125,6 +1148,10 @@ void PlaylistService::AddObserver(
 
 void PlaylistService::OnMediaUpdatedFromContents(
     content::WebContents* contents) {
+  if (!*enabled_pref_) {
+    return;
+  }
+
   if (download_request_manager_->background_contents() != contents) {
     return;
   }
