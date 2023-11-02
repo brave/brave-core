@@ -111,7 +111,7 @@ export function Item(props: { id: FeedType, name: string }) {
 }
 
 export default function Sidebar() {
-  const  {channels, publishers} = useBraveNews()
+  const { channels, publishers, setCustomizePage } = useBraveNews()
   const { signals } = useInspectContext()
 
   const [showingMoreChannels, setShowingMoreChannels] = React.useState(false)
@@ -133,7 +133,7 @@ export default function Sidebar() {
       <summary>
         {Marker}
         Channels
-        <CustomButton faint onClick={() => {/* TODO(fallaciousreasoning): When we're on the NTP wire this up */}}>
+        <CustomButton faint onClick={() => setCustomizePage('news')}>
           <Icon name='plus-add' />
           Add
         </CustomButton>
@@ -146,7 +146,7 @@ export default function Sidebar() {
         {Marker}
         Publishers
         <CustomButton faint>
-          <Icon name='plus-add' onClick={() => {/* TODO(fallaciousreasoning): When we're on the NTP wire this up */}} />
+          <Icon name='plus-add' onClick={() => setCustomizePage('news')} />
           Add
         </CustomButton>
       </summary>
