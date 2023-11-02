@@ -22,9 +22,9 @@ namespace script_injector {
  * This class is responsible for injecting async scripts into the renderer from
  * the browser process, and sending the result back to the browser process.
  */
-class COMPONENT_EXPORT(SCRIPT_INJECTOR) ScriptInjectorRenderFrameObserver
-    : public content::RenderFrameObserver,
-      public mojom::ScriptInjector {
+class COMPONENT_EXPORT(SCRIPT_INJECTOR_RENDERER)
+    ScriptInjectorRenderFrameObserver : public content::RenderFrameObserver,
+                                        public mojom::ScriptInjector {
  public:
   ScriptInjectorRenderFrameObserver();
   ScriptInjectorRenderFrameObserver(content::RenderFrame* render_frame);
