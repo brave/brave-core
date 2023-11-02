@@ -91,7 +91,16 @@ void MessageManager::Init(
                             base::Unretained(this), false, log_type),
         config_->randomize_upload_interval, config_->average_upload_interval);
     json_upload_schedulers_[log_type]->Start();
+  }
 
+  rotation_scheduler_ = std::make_unique<RotationScheduler>(
+      *local_state_, config_.get(),
+      base::BindRepeating(&MessageManager::DoJsonRotation,
+                          base::Unretained(this)),
+      base::BindRepeating(&MessageManager::DoConstellationRotation,
+                          base::Unretained(this)));
+
+  for (MetricLogType log_type : kAllMetricLogTypes) {
     if (features::IsConstellationEnabled()) {
       constellation_prep_schedulers_[log_type] = std::make_unique<Scheduler>(
           base::BindRepeating(&MessageManager::StartScheduledConstellationPrep,
@@ -106,12 +115,6 @@ void MessageManager::Init(
       constellation_helper_->UpdateRandomnessServerInfo(log_type);
     }
   }
-  rotation_scheduler_ = std::make_unique<RotationScheduler>(
-      *local_state_, config_.get(),
-      base::BindRepeating(&MessageManager::DoJsonRotation,
-                          base::Unretained(this)),
-      base::BindRepeating(&MessageManager::DoConstellationRotation,
-                          base::Unretained(this)));
 }
 
 void MessageManager::UpdateMetricValue(std::string_view histogram_name,

@@ -134,13 +134,19 @@ void StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(
   base::Value::Dict* typical_dict =
       update->EnsureDict(MetricLogTypeToString(MetricLogType::kTypical));
 
-  typical_dict->Set(kCurrentPKPrefKey,
-                    local_state->GetString(kCurrentPKPrefName));
-  typical_dict->Set(kCurrentEpochPrefKey,
-                    local_state->GetInteger(kCurrentEpochPrefName));
-  typical_dict->Set(
-      kNextEpochTimePrefKey,
-      base::TimeToValue(local_state->GetTime(kNextEpochTimePrefName)));
+  std::string current_pk = local_state->GetString(kCurrentPKPrefName);
+  int current_epoch = local_state->GetInteger(kCurrentEpochPrefName);
+  base::Time next_epoch_time = local_state->GetTime(kNextEpochTimePrefName);
+  if (!current_pk.empty() && current_epoch != -1 &&
+      !next_epoch_time.is_null()) {
+    typical_dict->Set(kCurrentPKPrefKey, current_pk);
+    typical_dict->Set(kCurrentEpochPrefKey, current_epoch);
+    typical_dict->Set(kNextEpochTimePrefKey,
+                      base::TimeToValue(next_epoch_time));
+    local_state->ClearPref(kCurrentPKPrefName);
+    local_state->ClearPref(kCurrentEpochPrefName);
+    local_state->ClearPref(kNextEpochTimePrefName);
+  }
 }
 
 bool StarRandomnessMeta::ShouldAttestEnclave() {
