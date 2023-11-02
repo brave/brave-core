@@ -1451,7 +1451,7 @@ Leo. This action cannot be undone.
     Automatically add files for offline viewing
   </message>
   <message name="IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_SUB_LABEL" desc="A description for setting to en/disable media cache behavior">
-    This option will automatically cache media files so you can play without an Internet connection.
+    This option will automatically cache media files so you can play them without an Internet connection.
   </message>
 
 <!-- Avatars. Generated via zsh and node:
