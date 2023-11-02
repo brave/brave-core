@@ -42,6 +42,7 @@ source_set("command_ids") {
     "//chrome/app:generated_resources",
     "//components/services/screen_ai/buildflags",
     "//components/strings:components_strings",
+    "//third_party/re2",
     "//ui/strings:ui_strings",
   ]
 
