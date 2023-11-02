@@ -8,14 +8,19 @@
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/testing_browser_process.h"
+#include "content/public/browser/web_ui_controller_interface_binder.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
@@ -27,6 +32,26 @@
 
 namespace psst {
 
+namespace {
+void BindCosmeticFiltersResourcesOnTaskRunner(
+    mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
+        receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
+          g_brave_browser_process->ad_block_service()),
+      std::move(receiver));
+}
+
+void BindCosmeticFiltersResources(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
+        receiver) {
+  g_brave_browser_process->ad_block_service()->GetTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
+                                std::move(receiver)));
+}
+}  // namespace
+
 class PsstTabHelperBrowserTest : public PlatformBrowserTest {
  public:
   PsstTabHelperBrowserTest()
@@ -36,10 +61,11 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
 
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
-    content::SetBrowserClientForTesting(&client_);
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+
+    content::SetBrowserClientForTesting(&test_content_browser_client_);
 
     // Also called in Disabled test.
     if (psst::PsstRuleRegistry::GetInstance()) {
@@ -76,9 +102,28 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
 
+  class TestContentBrowserClient : public ChromeContentBrowserClient {
+   public:
+    TestContentBrowserClient() = default;
+    TestContentBrowserClient(const TestContentBrowserClient&) = delete;
+    TestContentBrowserClient& operator=(const TestContentBrowserClient&) =
+        delete;
+    ~TestContentBrowserClient() override = default;
+
+    void RegisterBrowserInterfaceBindersForFrame(
+        content::RenderFrameHost* render_frame_host,
+        mojo::BinderMapWithContext<content::RenderFrameHost*>* map) override {
+      ChromeContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
+          render_frame_host, map);
+      map->Add<cosmetic_filters::mojom::CosmeticFiltersResources>(
+          base::BindRepeating(&BindCosmeticFiltersResources));
+    }
+  };
+  TestContentBrowserClient test_content_browser_client_;
+
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
-  BraveContentBrowserClient client_;
+  std::unique_ptr<TestContentBrowserClient> browser_content_client_;
 };
 
 // TESTS
@@ -105,10 +150,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptTrue) {
 
   std::u16string expected_title(u"testpolicy");
   content::TitleWatcher watcher(web_contents(), expected_title);
-  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
-                                                      true);
-
-  LOG(ERROR) << web_contents()->GetLastCommittedURL();
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
@@ -134,10 +176,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, RuleMatchTestScriptFalse) {
 
   std::u16string expected_title(u"test");
   content::TitleWatcher watcher(web_contents(), expected_title);
-  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
-                                                      true);
-  LOG(ERROR) << web_contents()->GetLastCommittedURL();
-
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
@@ -163,10 +202,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, NoMatch) {
 
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
-  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
-                                                      true);
-  LOG(ERROR) << web_contents()->GetLastCommittedURL();
-
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
@@ -184,10 +220,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTestDisabled, DoesNotInjectScript) {
 
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
-  content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
-                                                      true);
-  LOG(ERROR) << web_contents()->GetLastCommittedURL();
-
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
