@@ -25,6 +25,7 @@ import {
 import { getBalance } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
   auroraSupportedContractAddresses,
   getAssetIdKey
@@ -224,12 +225,12 @@ export const PortfolioAsset = (props: Props) => {
   )
 
   const candidateAccounts = React.useMemo(() => {
-    if (!selectedAssetFromParams) {
+    if (!selectedAssetFromParams || !selectedAssetsNetwork) {
       return []
     }
 
-    return accounts.filter(
-      (account) => account.accountId.coin === selectedAssetFromParams.coin
+    return accounts.filter((account) =>
+      networkSupportsAccount(selectedAssetsNetwork, account.accountId)
     )
   }, [accounts, selectedAssetFromParams])
 

@@ -15,6 +15,7 @@ import { getBatTokensFromList, getAssetIdKey } from '../../../utils/asset-utils'
 import { WalletActions } from '../../../common/slices/wallet.slice'
 import { WalletSelectors } from '../../../common/selectors'
 import { makeDepositFundsRoute } from '../../../utils/routes-utils'
+import { networkSupportsAccount } from '../../../utils/network-utils'
 
 // types
 import {
@@ -30,6 +31,7 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 // hooks
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import {
+  useGenerateReceiveAddressMutation,
   useGetNetworkQuery,
   useGetQrCodeImageQuery,
   useGetVisibleNetworksQuery
@@ -490,17 +492,16 @@ function DepositAccount() {
     selectedAsset ?? skipToken
   )
   const accountsForSelectedAssetCoinType = React.useMemo(() => {
-    return selectedAsset
-      ? selectedAsset.coin === BraveWallet.CoinType.FIL
-        ? accounts.filter((a) =>
-            a.accountId.coin === selectedAsset.coin &&
-            selectedAsset.chainId === BraveWallet.FILECOIN_TESTNET
-              ? a.accountId.address.startsWith('t')
-              : !a.accountId.address.startsWith('t')
-          )
-        : accounts.filter((a) => a.accountId.coin === selectedAsset.coin)
-      : []
-  }, [selectedAsset, accounts])
+    if (!selectedAssetNetwork) {
+      return []
+    }
+    return accounts.filter((a) =>
+      networkSupportsAccount(selectedAssetNetwork, a.accountId)
+    )
+  }, [selectedAssetNetwork, accounts])
+
+  // mutations
+  const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
 
   // search
   const [showAccountSearch, setShowAccountSearch] =
@@ -510,9 +511,10 @@ function DepositAccount() {
   // selected account
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
-  >(accountsForSelectedAssetCoinType[0])
+    >(accountsForSelectedAssetCoinType[0])
+  const [receiveAddress, setReceiveAddress] = React.useState<string>('')
   const { data: qrCode, isLoading: isLoadingQrCode } = useGetQrCodeImageQuery(
-    selectedAccount?.accountId.address || skipToken
+    receiveAddress || skipToken
   )
 
   // custom hooks
@@ -588,8 +590,8 @@ function DepositAccount() {
   )
 
   const copyAddressToClipboard = React.useCallback(() => {
-    copyToClipboard(selectedAccount?.address || '')
-  }, [copyToClipboard, selectedAccount?.address])
+    copyToClipboard(receiveAddress || '')
+  }, [copyToClipboard, receiveAddress])
 
   const onCopyKeyPress = React.useCallback(
     ({ key }: React.KeyboardEvent) => {
@@ -606,6 +608,18 @@ function DepositAccount() {
     // force selected account option state
     setSelectedAccount(accountsForSelectedAssetCoinType[0])
   }, [accountsForSelectedAssetCoinType[0]])
+
+  React.useEffect(() => {
+    ; (async () => {
+      if (!selectedAccount) {
+        return
+      }
+      const address = await generateReceiveAddress(
+        selectedAccount.accountId
+      ).unwrap()
+      setReceiveAddress(address)
+    })()
+  }, [selectedAccount])
 
   // render
   if (!selectedDepositAssetId) {
@@ -686,7 +700,7 @@ function DepositAccount() {
         <AddressTextLabel>Address:</AddressTextLabel>
 
         <Row gap={'12px'}>
-          <AddressText>{selectedAccount.address}</AddressText>
+          <AddressText>{receiveAddress}</AddressText>
           <CopyButton
             iconColor={'interactive05'}
             onKeyPress={onCopyKeyPress}

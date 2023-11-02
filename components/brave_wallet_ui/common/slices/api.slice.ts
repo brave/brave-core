@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { assertNotReached } from 'chrome://resources/js/assert_ts.js'
+import { assert, assertNotReached } from 'chrome://resources/js/assert_ts.js'
 import { batch } from 'react-redux'
 import { EntityId, Store } from '@reduxjs/toolkit'
 import { skipToken } from '@reduxjs/toolkit/query/react'
@@ -88,7 +88,8 @@ import {
 import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 import {
   getCoinFromTxDataUnion,
-  hasEIP1559Support
+  hasEIP1559Support,
+  networkSupportsAccount
 } from '../../utils/network-utils'
 import Amount from '../../utils/amount'
 import {
@@ -148,11 +149,9 @@ type GetTokenBalancesForChainIdArg =
   | GetSPLTokenBalancesForAddressAndChainIdArg
   | GetTokenBalancesForAddressAndChainIdArg
 
-type NetworkInfo = Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
-
 type GetTokenBalancesRegistryArg = {
   accountIds: BraveWallet.AccountId[]
-  networks: NetworkInfo[]
+  networks: BraveWallet.NetworkInfo[]
   useAnkrBalancesFeature: boolean
 }
 
@@ -452,7 +451,7 @@ export function createWalletApi() {
                 needsAccountForNetwork?: boolean
                 selectedAccountId?: BraveWallet.AccountId
               },
-              NetworkInfo
+              Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
             >({
               queryFn: async (
                 { chainId, coin },
@@ -1384,12 +1383,12 @@ export function createWalletApi() {
                     args.accountIds.length,
                     async (accountId: BraveWallet.AccountId) => {
                       const ankrSupportedAccountNetworks =
-                        ankrSupportedNetworks.filter(
-                          (network) => network.coin === accountId.coin
+                        ankrSupportedNetworks.filter((network) =>
+                          networkSupportsAccount(network, accountId)
                         )
                       const nonAnkrSupportedAccountNetworks =
-                        nonAnkrSupportedNetworks.filter(
-                          (network) => network.coin === accountId.coin
+                        nonAnkrSupportedNetworks.filter((network) =>
+                          networkSupportsAccount(network, accountId)
                         )
 
                       let ankrAssetBalances: BraveWallet.AnkrAssetBalance[] = []
@@ -1422,7 +1421,8 @@ export function createWalletApi() {
                         const nonAnkrBalancesRegistryArray = await mapLimit(
                           nonAnkrSupportedAccountNetworks,
                           3,
-                          async (network: NetworkInfo) => {
+                          async (network: BraveWallet.NetworkInfo) => {
+                            assert(coinTypesMapping[network.coin] !== undefined)
                             const partialRegistryQuery = dispatch(
                               getTokenBalancesForChainId.initiate(
                                 network.coin === CoinTypes.SOL
@@ -1433,8 +1433,7 @@ export function createWalletApi() {
                                         chainId: network.chainId
                                       }
                                     ]
-                                  : coinTypesMapping[network.coin]
-                                  ? [
+                                  : [
                                       {
                                         accountId,
                                         coin: coinTypesMapping[network.coin],
@@ -1449,8 +1448,7 @@ export function createWalletApi() {
                                           ]
                                         )
                                       }
-                                    ]
-                                  : [],
+                                    ],
                                 {
                                   forceRefetch: true
                                 }

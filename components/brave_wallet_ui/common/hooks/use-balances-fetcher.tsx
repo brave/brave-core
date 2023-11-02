@@ -36,10 +36,7 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
       arg.networks.length
       ? {
           accountIds: arg.accounts.map((account) => account.accountId),
-          networks: arg.networks.map(({ chainId, coin }) => ({
-            chainId,
-            coin
-          })),
+          networks: arg.networks,
           useAnkrBalancesFeature
         }
       : skipToken,
