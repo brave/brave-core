@@ -6,7 +6,7 @@
 component("renderer") {
   output_name = "script_injector_renderer"
 
-  defines = [ "IS_SCRIPT_INJECTOR_IMPL" ]
+  defines = [ "IS_SCRIPT_INJECTOR_RENDERER_IMPL" ]
 
   sources = [
     "script_injector_render_frame_observer.cc",
