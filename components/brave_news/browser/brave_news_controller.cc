@@ -66,11 +66,7 @@ constexpr base::TimeDelta kP3AEnabledReportTimeDelay = base::Seconds(3);
 bool GetIsEnabled(PrefService* prefs) {
   bool should_show = prefs->GetBoolean(prefs::kNewTabPageShowToday);
   bool opted_in = prefs->GetBoolean(prefs::kBraveNewsOptedIn);
-  bool is_enabled = (should_show && opted_in);
-  base::WeakPtr<TopicsFetcher> ptr;
-  if (ptr) {
-  }
-  return is_enabled;
+  return should_show && opted_in;
 }
 
 // static

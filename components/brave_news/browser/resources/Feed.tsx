@@ -11,6 +11,7 @@ import Article from "./feed/Article";
 import Cluster from "./feed/Cluster";
 import Discover from "./feed/Discover";
 import HeroArticle from "./feed/Hero";
+import { getHistoryValue, setHistoryState } from "./shared/history";
 
 const FeedContainer = styled.div`
   max-width: 540px;
@@ -37,7 +38,37 @@ const getKey = (feedItem: FeedItemV2, index: number): React.Key => {
 const PAGE_SIZE = 25;
 
 export default function Component({ feed }: Props) {
-  const [cardCount, setCardCount] = React.useState(PAGE_SIZE);
+  const [cardCount, setCardCount] = React.useState(getHistoryValue('bn-card-count', PAGE_SIZE));
+
+  // Store the number of cards we've loaded in history - otherwise when we
+  // navigate back we might not be able to scroll down far enough.
+  React.useEffect(() => {
+    setHistoryState({ 'bn-card-count': cardCount })
+  }, [cardCount])
+
+
+  // Track the feed scroll position - if we mount this component somewhere with
+  // a bn-scroll-pos saved in the state, try and restore the scroll position.
+  React.useEffect(() => {
+    const scrollPos = getHistoryValue('bn-scroll-pos', 0)
+    if (scrollPos) {
+      // TODO: Once we work out what else is scrolling us, this should be okay to remove.
+      setTimeout(() => {
+        document.scrollingElement!.scrollTo({
+          behavior: 'smooth',
+          top: scrollPos
+        })
+      })
+    }
+
+    const handler = () => {
+      setHistoryState({ 'bn-scroll-pos': document.scrollingElement!.scrollTop })
+    }
+    document.addEventListener('scroll', handler, { passive: true })
+    return () => {
+      document.removeEventListener('scroll', handler)
+    }
+  }, [])
   const loadMoreObserver = React.useRef(new IntersectionObserver(entries => {
     // While the feed is loading we get some notifications for fully
     // visible/invisible cards.

@@ -836,10 +836,14 @@ void FeedV2Builder::GenerateFeed(
               std::move(callback).Run(mojom::FeedV2::New());
               return;
             }
-            
-            const auto& publishers = builder->publishers_controller_->GetLastPublishers();
-            auto channels = builder->channels_controller_->GetChannelsFromPublishers(publishers, &*builder->prefs_);
-            auto source_hash = GetFeedHash(channels, publishers, builder->feed_etags_);
+
+            const auto& publishers =
+                builder->publishers_controller_->GetLastPublishers();
+            auto channels =
+                builder->channels_controller_->GetChannelsFromPublishers(
+                    publishers, &*builder->prefs_);
+            auto source_hash =
+                GetFeedHash(channels, publishers, builder->feed_etags_);
 
             auto feed = std::move(build_feed).Run();
             feed->type = std::move(type);
