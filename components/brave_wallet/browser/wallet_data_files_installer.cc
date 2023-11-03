@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/json/json_converter.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -32,6 +33,8 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer_android_util.h"
 #endif
+
+using brave::json::JsonConverter;
 
 namespace brave_wallet {
 
@@ -95,19 +98,20 @@ void OnSanitizedDappLists(data_decoder::JsonSanitizer::Result result) {
     return;
   }
 
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(*result, ""));
-  if (converted_json.empty()) {
-    return;
-  }
+  JsonConverter::GetJsonConverter().ConvertAllNumbersToString(
+      *result, "", base::BindOnce([](const std::string& converted_json) {
+        if (converted_json.empty()) {
+          return;
+        }
 
-  absl::optional<DappListMap> lists = ParseDappLists(converted_json);
-  if (!lists) {
-    VLOG(1) << "Can't parse dapp lists.";
-    return;
-  }
+        absl::optional<DappListMap> lists = ParseDappLists(converted_json);
+        if (!lists) {
+          VLOG(1) << "Can't parse dapp lists.";
+          return;
+        }
 
-  BlockchainRegistry::GetInstance()->UpdateDappList(std::move(*lists));
+        BlockchainRegistry::GetInstance()->UpdateDappList(std::move(*lists));
+      }));
 }
 
 void OnSanitizedRampTokenLists(data_decoder::JsonSanitizer::Result result) {

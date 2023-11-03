@@ -3,8 +3,49 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//mojo/public/tools/bindings/mojom.gni")
 import("//testing/test.gni")
 
+component("json_converter") {
+  public = [ "json_converter.h" ]
+
+  sources = [ "json_converter.cc" ]
+
+  public_deps = [
+    ":mojom",
+    "//base",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  deps = [ ":lib" ]
+
+  defines = [ "IS_JSON_CONVERTER_IMPL" ]
+}
+
+mojom("mojom") {
+  sources = [ "json_converter.mojom" ]
+
+  public_deps = [ "//sandbox/policy/mojom" ]
+}
+
+source_set("lib") {
+  visibility = [
+    ":*",
+    "//chrome/utility",
+  ]
+  sources = [
+    "json_converter_impl.cc",
+    "json_converter_impl.h",
+  ]
+
+  deps = [
+    ":mojom",
+    "//brave/components/json/rs:rust_lib",
+  ]
+
+  defines = [ "IS_JSON_CONVERTER_IMPL" ]
+}
 source_set("brave_json_unit_tests") {
   testonly = true
   sources = [ "//brave/components/json/json_parser_unittest.cc" ]
