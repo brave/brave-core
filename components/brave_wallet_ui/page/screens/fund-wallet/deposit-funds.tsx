@@ -609,6 +609,7 @@ function DepositAccount() {
   }, [accountsForSelectedAssetCoinType[0]])
 
   React.useEffect(() => {
+    let ignore = false
     ;(async () => {
       if (!selectedAccount) {
         return
@@ -616,8 +617,15 @@ function DepositAccount() {
       const address = await generateReceiveAddress(
         selectedAccount.accountId
       ).unwrap()
-      setReceiveAddress(address)
+      if (!ignore) {
+        setReceiveAddress(address)
+      }
     })()
+
+    // cleanup
+    return () => {
+      ignore = true
+    }
   }, [selectedAccount])
 
   // render
