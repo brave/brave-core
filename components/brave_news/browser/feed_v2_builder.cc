@@ -33,6 +33,7 @@
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "components/prefs/pref_service.h"
@@ -65,31 +66,31 @@ struct ArticleWeight {
 using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
 
-std::string GetFeedHash(const mojom::FeedV2Ptr& feed) {
+std::string GetFeedHash(const Channels& channels,
+                        const Publishers& publishers,
+                        const ETags& etags) {
+  std::vector<std::string> hash_items;
+  for (const auto& [channel_id, channel] : channels) {
+    if (!channel->subscribed_locales.empty()) {
+      hash_items.push_back(channel_id);
+    }
+  }
+
+  for (const auto& [id, publisher] : publishers) {
+    if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED) {
+      hash_items.push_back(id);
+    }
+  }
+
+  for (const auto& [region, etag] : etags) {
+    hash_items.push_back(region + etag);
+  }
+
   std::hash<std::string> hasher;
   std::string hash;
 
-  for (const auto& item : feed->items) {
-    std::string hash_item_prop;
-    if (item->is_advert()) {
-      hash_item_prop = "ad";
-    } else if (item->is_article()) {
-      hash_item_prop = item->get_article()->data->url.spec();
-    } else if (item->is_hero()) {
-      hash_item_prop = item->get_hero()->data->url.spec();
-    } else if (item->is_discover()) {
-      hash_item_prop = "discover";
-    } else if (item->is_cluster()) {
-      hash_item_prop += item->get_cluster()->id;
-      for (const auto& cluster_item : item->get_cluster()->articles) {
-        if (cluster_item->is_hero()) {
-          hash_item_prop += cluster_item->get_hero()->data->url.spec();
-        } else if (cluster_item->is_article()) {
-          hash_item_prop += cluster_item->get_article()->data->url.spec();
-        }
-      }
-    }
-    hash = base::NumberToString(hasher(hash + hash_item_prop));
+  for (const auto& hash_item : hash_items) {
+    hash = base::NumberToString(hasher(hash + hash_item));
   }
 
   return hash;
@@ -564,12 +565,7 @@ FeedV2Builder::FeedV2Builder(
       signal_calculator_(publishers_controller,
                          channels_controller,
                          prefs,
-                         history_service) {
-  listeners_.set_disconnect_handler(
-      base::BindRepeating([](mojo::RemoteSetElementId id) {
-        LOG(ERROR) << "Listener disconnected! " << id;
-      }));
-}
+                         history_service) {}
 
 FeedV2Builder::~FeedV2Builder() = default;
 
@@ -848,11 +844,15 @@ void FeedV2Builder::GenerateFeed(
 
             builder->last_feed_ = std::move(build_feed).Run();
             builder->last_feed_->type = std::move(type);
-            builder->last_feed_->hash = GetFeedHash(builder->last_feed_);
+
+            const auto& publishers = builder->publishers_controller_->GetLastPublishers();
+            auto channels = builder->channels_controller_->GetChannelsFromPublishers(publishers, &*builder->prefs_);
+            builder->last_feed_->source_hash = GetFeedHash(channels, publishers, builder->feed_etags_);
+
             std::move(callback).Run(builder->last_feed_->Clone());
 
             for (const auto& listener : builder->listeners_) {
-              listener->OnUpdateAvailable(builder->last_feed_->hash);
+              listener->OnUpdateAvailable(builder->last_feed_->source_hash);
             }
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type),
