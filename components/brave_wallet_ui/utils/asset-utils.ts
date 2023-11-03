@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // Types
-import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 
 // utils
 import Amount from './amount'
@@ -171,28 +171,35 @@ export const getBatTokensFromList = (
 ) => {
   // separate BAT from other tokens in the list so they can be placed higher in
   // the list
-  const { bat, nonBat } = tokenList.reduce(
+  const { bat, nonBat, testnetAssets } = tokenList.reduce(
     (acc, t) => {
-      if (
-        t.symbol.toLowerCase() === 'bat' ||
-        t.symbol.toLowerCase() === 'wbat' || // wormhole BAT
-        t.symbol.toLowerCase() === 'bat.e' // Avalanche C-Chain BAT
-      ) {
-        acc.bat.push(t)
+      if (SupportedTestNetworks.includes(t.chainId)) {
+        acc.testnetAssets.push(t)
+        return acc
+      } else {
+        if (
+          t.symbol.toLowerCase() === 'bat' ||
+          t.symbol.toLowerCase() === 'wbat' || // wormhole BAT
+          t.symbol.toLowerCase() === 'bat.e' // Avalanche C-Chain BAT
+        ) {
+          acc.bat.push(t)
+          return acc
+        }
+        acc.nonBat.push(t)
         return acc
       }
-      acc.nonBat.push(t)
-      return acc
     },
     {
       bat: [] as BraveWallet.BlockchainToken[],
-      nonBat: [] as BraveWallet.BlockchainToken[]
+      nonBat: [] as BraveWallet.BlockchainToken[],
+      testnetAssets: [] as BraveWallet.BlockchainToken[]
     }
   )
 
   return {
     bat,
-    nonBat
+    nonBat,
+    testnetAssets
   }
 }
 
@@ -208,12 +215,12 @@ export type GetBlockchainTokenIdArg = Pick<
 export const getAssetIdKey = (
   asset: Pick<
     GetBlockchainTokenIdArg,
-    'contractAddress' | 'chainId' | 'tokenId'
+    'contractAddress' | 'chainId' | 'tokenId' | 'coin'
   >
 ) => {
   return asset.tokenId
-    ? `${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`
-    : `${asset.contractAddress}-${asset.chainId}`
+    ? `${asset.coin}-${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`
+    : `${asset.coin}-${asset.contractAddress}-${asset.chainId}`
 }
 
 export const findTokenByContractAddress = <
