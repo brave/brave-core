@@ -19,12 +19,12 @@ export const HardwareWalletDerivationPathLocaleMapping = {
   [LedgerDerivationPaths.Legacy]: 'Legacy (MEW/MyCrypto)',
   [LedgerDerivationPaths.Deprecated]: 'Deprecated (Not recommended)',
   [TrezorDerivationPaths.Default]: 'Default'
-}
+} as const
 
 export const HardwareWalletDerivationPathsMapping = {
   [BraveWallet.LEDGER_HARDWARE_VENDOR]: LedgerDerivationPaths,
   [BraveWallet.TREZOR_HARDWARE_VENDOR]: TrezorDerivationPaths
-}
+} as const
 
 // TODO(apaymyshev): strings below need localization.
 export const SolHardwareWalletDerivationPathLocaleMapping = {

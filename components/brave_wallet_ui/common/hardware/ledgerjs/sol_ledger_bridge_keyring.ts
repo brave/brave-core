@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { assert } from 'chrome://resources/js/assert_ts.js'
 import { BraveWallet } from '../../../constants/types'
 import { LedgerSolanaKeyring } from '../interfaces'
 import {
@@ -25,6 +24,7 @@ import {
 
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
+import { getPathForSolLedgerIndex } from '../../../utils/derivation_path_utils'
 
 export default class SolanaLedgerBridgeKeyring
   extends LedgerBridgeKeyring
@@ -170,18 +170,5 @@ export default class SolanaLedgerBridgeKeyring
     return { success: true, payload: accounts }
   }
 
-  private readonly getPathForIndex = (
-    index: number,
-    scheme: SolDerivationPaths
-  ): string => {
-    if (scheme === SolDerivationPaths.Bip44Root) {
-      return `44'/501'`
-    }
-    if (scheme === SolDerivationPaths.LedgerLive) {
-      return `44'/501'/${index}'`
-    }
-    assert(scheme === SolDerivationPaths.Default, '')
-
-    return `44'/501'/${index}'/0'`
-  }
+  private readonly getPathForIndex = getPathForSolLedgerIndex
 }
