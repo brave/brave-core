@@ -3150,11 +3150,9 @@ extension BrowserViewController: PreferencesObserver {
       Preferences.Rewards.rewardsToggledOnce.key:
       updateRewardsButtonState()
     case Preferences.Playlist.webMediaSourceCompatibility.key:
-      if UIDevice.isIpad {
-        tabManager.allTabs.forEach {
-          $0.setScript(script: .playlistMediaSource, enabled: Preferences.Playlist.webMediaSourceCompatibility.value)
-          $0.webView?.reload()
-        }
+      tabManager.allTabs.forEach {
+        $0.setScript(script: .playlistMediaSource, enabled: Preferences.Playlist.webMediaSourceCompatibility.value)
+        $0.webView?.reload()
       }
     case Preferences.General.mediaAutoBackgrounding.key:
       tabManager.allTabs.forEach {
