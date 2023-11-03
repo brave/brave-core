@@ -113,6 +113,9 @@
         "components/permissions/permission_request_data.h": [
             "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE",
         ],
+        "components/translate/core/browser/translate_manager.cc": [
+            "BRAVE_P3A_RECORD_PAGE_TRANSLATION",
+        ],
         "sandbox/win/src/interceptors_64.h": [
             "TargetGetModuleFileNameExA64",
             "TargetGetModuleFileNameExW64",

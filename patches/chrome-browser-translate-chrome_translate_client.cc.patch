@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/translate/chrome_translate_client.cc b/chrome/browser/translate/chrome_translate_client.cc
+index e8a07117109a05b1249478664924d106f98a99fb..f12214b2d633193640a4f7e3c5591fb4b48adf19 100644
+--- a/chrome/browser/translate/chrome_translate_client.cc
++++ b/chrome/browser/translate/chrome_translate_client.cc
+@@ -129,6 +129,7 @@ ChromeTranslateClient::ChromeTranslateClient(content::WebContents* web_contents)
+               ->GetPrimaryModel())) {
+   translate_driver_->AddLanguageDetectionObserver(this);
+   translate_driver_->set_translate_manager(translate_manager_.get());
++  BRAVE_P3A_REGISTER_TRANSLATE_METRICS
+ }
+ 
+ ChromeTranslateClient::~ChromeTranslateClient() {

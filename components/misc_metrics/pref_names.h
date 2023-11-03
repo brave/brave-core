@@ -51,6 +51,10 @@ inline constexpr char kMiscMetricsNewTabLocationBarEntriesStorage[] =
     "brave.misc_metrics.new_tab_location_bar_entries_storage";
 inline constexpr char kMiscMetricsTotalLocationBarEntriesStorage[] =
     "brave.misc_metrics.total_location_bar_entries_storage";
+
+inline constexpr char kMiscMetricsTranslationPageCount[] =
+    "brave.misc_metrics.translation_page_count";
+
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

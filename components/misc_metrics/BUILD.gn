@@ -16,6 +16,8 @@ static_library("misc_metrics") {
     "privacy_hub_metrics.h",
     "tab_metrics.cc",
     "tab_metrics.h",
+    "translate_metrics.cc",
+    "translate_metrics.h",
   ]
 
   deps = [
