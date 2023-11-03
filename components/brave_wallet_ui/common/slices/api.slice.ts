@@ -151,7 +151,9 @@ type GetTokenBalancesForChainIdArg =
 
 type GetTokenBalancesRegistryArg = {
   accountIds: BraveWallet.AccountId[]
-  networks: BraveWallet.NetworkInfo[]
+  networks: Array<
+    Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin' | 'supportedKeyrings'>
+  >
   useAnkrBalancesFeature: boolean
 }
 

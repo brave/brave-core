@@ -492,12 +492,11 @@ function DepositAccount() {
     selectedAsset ?? skipToken
   )
   const accountsForSelectedAssetCoinType = React.useMemo(() => {
-    if (!selectedAssetNetwork) {
-      return []
-    }
-    return accounts.filter((a) =>
-      networkSupportsAccount(selectedAssetNetwork, a.accountId)
-    )
+    return selectedAssetNetwork
+      ? accounts.filter((a) =>
+          networkSupportsAccount(selectedAssetNetwork, a.accountId)
+        )
+      : []
   }, [selectedAssetNetwork, accounts])
 
   // mutations
@@ -511,7 +510,7 @@ function DepositAccount() {
   // selected account
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
-    >(accountsForSelectedAssetCoinType[0])
+  >(accountsForSelectedAssetCoinType[0])
   const [receiveAddress, setReceiveAddress] = React.useState<string>('')
   const { data: qrCode, isLoading: isLoadingQrCode } = useGetQrCodeImageQuery(
     receiveAddress || skipToken
@@ -610,7 +609,7 @@ function DepositAccount() {
   }, [accountsForSelectedAssetCoinType[0]])
 
   React.useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       if (!selectedAccount) {
         return
       }
