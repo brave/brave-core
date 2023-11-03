@@ -5,6 +5,49 @@
 import * as React from 'react'
 import { EntityId } from '@reduxjs/toolkit'
 import { Checkbox, Select } from 'brave-ui/components'
+
+// Types
+import {
+  LedgerDerivationPath,
+  SolDerivationPaths,
+  TrezorDerivationPath,
+  TrezorDerivationPaths
+} from '../../../../../common/hardware/types'
+import { BraveWallet, FilecoinNetwork } from '../../../../../constants/types'
+import {
+  HardwareWalletDerivationPathLocaleMapping,
+  HardwareWalletDerivationPathsMapping,
+  SolHardwareWalletDerivationPathLocaleMapping
+} from './types'
+import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
+
+// Utils
+import { getLocale } from '../../../../../../common/locale'
+import { reduceAddress } from '../../../../../utils/reduce-address'
+import Amount from '../../../../../utils/amount'
+import {
+  useGetHardwareAccountDiscoveryBalanceQuery,
+  useGetNetworksRegistryQuery
+} from '../../../../../common/slices/api.slice'
+import { useAddressOrb } from '../../../../../common/hooks/use-orb'
+import { makeNetworkAsset } from '../../../../../options/asset-options'
+import {
+  networkEntityAdapter //
+} from '../../../../../common/slices/entities/network.entity'
+import {
+  getPathForEthLedgerIndex,
+  getPathForSolLedgerIndex,
+  getPathForTrezorIndex
+} from '../../../../../utils/derivation_path_utils'
+
+// Components
+import { NavButton } from '../../../../extension/buttons/nav-button/index'
+import { SearchBar } from '../../../../shared/search-bar/index'
+import { NetworkFilterSelector } from '../../../network-filter-selector'
+import { Skeleton } from '../../../../shared/loading-skeleton/styles'
+
+// Styles
+import { DisclaimerText } from '../style'
 import {
   ButtonsContainer,
   DisclaimerWrapper,
@@ -19,35 +62,9 @@ import {
   AddressBalanceWrapper,
   NoSearchResultText
 } from './style'
-import {
-  HardwareWalletDerivationPathLocaleMapping,
-  HardwareWalletDerivationPathsMapping,
-  SolHardwareWalletDerivationPathLocaleMapping
-} from './types'
-import { SolDerivationPaths } from '../../../../../common/hardware/types'
-import { BraveWallet, FilecoinNetwork } from '../../../../../constants/types'
-import { getLocale } from '../../../../../../common/locale'
-import { NavButton } from '../../../../extension/buttons/nav-button/index'
-import { SearchBar } from '../../../../shared/search-bar/index'
-import { NetworkFilterSelector } from '../../../network-filter-selector'
-import { DisclaimerText } from '../style'
-import { Skeleton } from '../../../../shared/loading-skeleton/styles'
-
-// Utils
-import { reduceAddress } from '../../../../../utils/reduce-address'
-import Amount from '../../../../../utils/amount'
-import {
-  useGetHardwareAccountDiscoveryBalanceQuery,
-  useGetNetworksRegistryQuery
-} from '../../../../../common/slices/api.slice'
-import { useAddressOrb } from '../../../../../common/hooks/use-orb'
-import { makeNetworkAsset } from '../../../../../options/asset-options'
-import {
-  networkEntityAdapter //
-} from '../../../../../common/slices/entities/network.entity'
 
 interface Props {
-  hardwareWallet: string
+  hardwareWallet: HardwareVendor
   accounts: BraveWallet.HardwareWalletAccount[]
   preAddedHardwareWalletAccounts: BraveWallet.AccountInfo[]
   onLoadMore: () => void
@@ -195,17 +212,28 @@ export const HardwareWalletAccountsList = ({
             <Select
               value={selectedDerivationScheme}
               onChange={setSelectedDerivationScheme}
+              showAllContents
             >
-              {Object.keys(ethDerivationPathsEnum).map((path, index) => {
-                const pathValue = ethDerivationPathsEnum[path]
+              {Object.keys(ethDerivationPathsEnum).map((path) => {
+                const pathValue: LedgerDerivationPath | TrezorDerivationPath =
+                  ethDerivationPathsEnum[path]
+
                 const pathLocale =
                   HardwareWalletDerivationPathLocaleMapping[pathValue]
+
+                const isTrezorPath = pathValue === TrezorDerivationPaths.Default
+
                 return (
                   <div
                     data-value={pathValue}
-                    key={index}
+                    key={pathValue}
                   >
-                    {pathLocale}
+                    {pathLocale}{' '}
+                    {`"${
+                      isTrezorPath
+                        ? getPathForTrezorIndex(undefined, pathValue)
+                        : getPathForEthLedgerIndex(undefined, pathValue)
+                    }"`}
                   </div>
                 )
               })}
@@ -215,15 +243,20 @@ export const HardwareWalletAccountsList = ({
             <Select
               value={selectedDerivationScheme}
               onChange={setSelectedDerivationScheme}
+              showAllContents
             >
-              {Object.keys(solDerivationPathsEnum).map((path, index) => {
+              {Object.keys(solDerivationPathsEnum).map((path) => {
                 const pathLocale = solDerivationPathsEnum[path]
                 return (
                   <div
                     data-value={path}
-                    key={index}
+                    key={path}
                   >
-                    {pathLocale}
+                    {pathLocale}{' '}
+                    {`"${getPathForSolLedgerIndex(
+                      undefined,
+                      path as SolDerivationPaths
+                    )}"`}
                   </div>
                 )
               })}

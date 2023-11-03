@@ -41,6 +41,7 @@ import {
 import { Unsuccessful } from './trezor-connect-types'
 import { TrezorKeyring } from '../interfaces'
 import { HardwareVendor } from '../../api/hardware_keyrings'
+import { getPathForTrezorIndex } from '../../../utils/derivation_path_utils'
 
 export default class TrezorBridgeKeyring implements TrezorKeyring {
   private unlocked: boolean = false
@@ -92,7 +93,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   getAccounts = async (
     from: number,
     to: number,
-    scheme: string
+    scheme: TrezorDerivationPaths
   ): Promise<GetAccountsHardwareOperationResult> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
@@ -393,11 +394,5 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     }
   }
 
-  private readonly getPathForIndex = (index: number, scheme: string) => {
-    if (scheme === TrezorDerivationPaths.Default) {
-      return `m/44'/60'/0'/0/${index}`
-    } else {
-      throw Error(getLocale('braveWalletDeviceUnknownScheme'))
-    }
-  }
+  private readonly getPathForIndex = getPathForTrezorIndex
 }
