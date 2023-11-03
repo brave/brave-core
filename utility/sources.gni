@@ -27,6 +27,8 @@ brave_utility_deps = [
   "//brave/components/services/bat_ads/public/interfaces",
   "//brave/components/services/bat_rewards:lib",
   "//brave/components/services/bat_rewards/public/interfaces",
+  "//brave/components/services/brave_wallet",
+  "//brave/components/services/brave_wallet/public/mojom",
   "//brave/components/tor/buildflags",
   "//mojo/public/cpp/bindings",
 ]

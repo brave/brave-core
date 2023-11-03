@@ -13,6 +13,8 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "brave/components/services/bat_rewards/rewards_engine_factory.h"
+#include "brave/components/services/brave_wallet/public/mojom/third_party_service.mojom.h"
+#include "brave/components/services/brave_wallet/third_party_service_impl.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/service_factory.h"
 
@@ -63,6 +65,13 @@ auto RunBatAdsService(
   return std::make_unique<bat_ads::BatAdsServiceImpl>(std::move(receiver));
 }
 
+auto RunBraveWalletThirdPartyService(
+    mojo::PendingReceiver<
+        brave_wallet::third_party_service::mojom::ThirdPartyService> receiver) {
+  return std::make_unique<brave_wallet::ThirdPartyServiceImpl>(
+      std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentUtilityClient::BraveContentUtilityClient() = default;
@@ -85,6 +94,8 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
   services.Add(RunRewardsEngineFactory);
 
   services.Add(RunBatAdsService);
+
+  services.Add(RunBraveWalletThirdPartyService);
 
   return ChromeContentUtilityClient::RegisterMainThreadServices(services);
 }

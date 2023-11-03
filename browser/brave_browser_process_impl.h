@@ -94,6 +94,10 @@ class BraveStatsHelper;
 class ResourceComponent;
 }  // namespace brave_ads
 
+namespace brave_wallet {
+class ThirdPartyServiceLauncher;
+}
+
 class BraveBrowserProcessImpl : public BraveBrowserProcess,
                                 public BrowserProcessImpl {
  public:
@@ -226,6 +230,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
   std::unique_ptr<misc_metrics::ProcessMiscMetrics> process_misc_metrics_;
   std::unique_ptr<brave_ads::BraveStatsHelper> brave_stats_helper_;
+
+  std::unique_ptr<brave_wallet::ThirdPartyServiceLauncher>
+      third_party_service_launcher_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

@@ -1,0 +1,50 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("brave_wallet") {
+  sources = [
+    "filecoin_utility_impl.cc",
+    "filecoin_utility_impl.h",
+    "third_party_service_impl.cc",
+    "third_party_service_impl.h",
+  ]
+
+  visibility = [
+    ":*",
+    "//brave/components/services/brave_wallet/content",
+    "//chrome/utility",
+  ]
+
+  public_deps = [ "//brave/components/services/brave_wallet/public/mojom" ]
+
+  deps = [
+    "//brave/components/filecoin/rs:rust_lib",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  defines = [ "IS_BRAVE_WALLET_SERVICE_IMPL" ]
+}
+
+component("in_process_third_party_service_launcher") {
+  testonly = !is_ios
+
+  sources = [
+    "in_process_third_party_service_launcher.cc",
+    "in_process_third_party_service_launcher.h",
+  ]
+
+  deps = [
+    ":brave_wallet",
+    "//base",
+    "//brave/components/services/brave_wallet/public/cpp",
+  ]
+
+  public_deps = [
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  defines = [ "IS_BRAVE_WALLET_SERVICE_IMPL" ]
+}
