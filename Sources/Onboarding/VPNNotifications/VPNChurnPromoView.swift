@@ -107,9 +107,9 @@ public struct VPNChurnPromoView: View {
   
   public var churnPromoType: VPNChurnPromoType
   
-  private let descriptionItems = [Strings.VPN.checkboxBlockAdsAlternate,
+  private let descriptionItems = [Strings.VPN.popupCheckboxBlockAdsAlternate,
                           Strings.VPN.popupCheckmarkSecureConnections,
-                          Strings.VPN.checkboxFastAlternate,
+                          Strings.VPN.popupCheckboxFastAlternate,
                           Strings.VPN.popupCheckmark247Support]
   
   public init(churnPromoType: VPNChurnPromoType) {

@@ -2626,44 +2626,35 @@ extension Strings {
         comment: "It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value'")
 
     // MARK: Checkboxes
-    public static let checkboxBlockAds =
-      NSLocalizedString("vpn.checkboxBlockAds", tableName: "BraveShared", bundle: .module,
-        value: "Blocks unwanted network connections",
+    
+    public static let checkboxProtectYourDevices =
+      NSLocalizedString("vpn.checkboxProtectYourDevices", tableName: "BraveShared", bundle: .module,
+        value: "Protect every app & your whole device",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN")
     
-    public static let checkboxBlockAdsAlternate =
-      NSLocalizedString("vpn.checkboxBlockAdsAlternate", tableName: "BraveShared", bundle: .module,
-        value: "Block ads & trackers across all apps ",
+    public static let checkboxSaferWifi =
+      NSLocalizedString("vpn.checkboxSaferWifi", tableName: "BraveShared", bundle: .module,
+        value: "Safer for home or public Wi-Fi",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN")
 
-    public static let checkboxGeoSelector =
-      NSLocalizedString("vpn.checkboxGeoSelector", tableName: "BraveShared", bundle: .module,
+    public static let checkboxSpeedFast =
+      NSLocalizedString("vpn.checkboxSpeedFast", tableName: "BraveShared", bundle: .module,
+        value: "Lightning-fast, up to 100 Mbps",
+        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
+
+    public static let checkboxGeoLocation =
+      NSLocalizedString("vpn.checkboxGeoLocation", tableName: "BraveShared", bundle: .module,
         value: "Choose your geo/country location",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
-
-    public static let checkboxFast =
-      NSLocalizedString("vpn.checkboxFast", tableName: "BraveShared", bundle: .module,
-        value: "Supports speeds of up to 100 Mbps",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
-
-    public static let checkboxFastAlternate =
-      NSLocalizedString("vpn.checkboxFastAlternate", tableName: "BraveShared", bundle: .module,
-        value: "Fast and unlimited up to 100 Mbps",
-        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
-    
-    public static let checkboxNoSellout =
-      NSLocalizedString("vpn.checkboxNoSellout", tableName: "BraveShared", bundle: .module,
-        value: "We never share or sell your info",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN")
 
     public static let checkboxNoIPLog =
       NSLocalizedString("vpn.checkboxNoIPLog", tableName: "BraveShared", bundle: .module,
-        value: "Keeps you anonymous online",
+        value: "Brave never logs your activity",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN")
-
-    public static let checkboxEncryption =
-      NSLocalizedString("vpn.checkboxEncryption", tableName: "BraveShared", bundle: .module,
-        value: "Uses secure encrypted VPN tunnels",
+    
+    public static let checkboxDevicesProtect =
+      NSLocalizedString("vpn.checkboxDevicesProtect", tableName: "BraveShared", bundle: .module,
+        value: "Protect 5 devices on 1 subscription",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN")
 
     public static let installTitle =
@@ -2684,6 +2675,26 @@ extension Strings {
     public static let popupCheckmark247Support =
       NSLocalizedString("vpn.popupCheckmark247Support", tableName: "BraveShared", bundle: .module,
         value: "24/7 support",
+        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
+    
+    public static let popupCheckboxBlockAds =
+      NSLocalizedString("vpn.popupCheckboxBlockAds", tableName: "BraveShared", bundle: .module,
+        value: "Blocks unwanted network connections",
+        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
+
+    public static let popupCheckboxBlockAdsAlternate =
+      NSLocalizedString("vpn.popupCheckboxBlockAdsAlternate", tableName: "BraveShared", bundle: .module,
+        value: "Block ads & trackers across all apps ",
+        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
+    
+    public static let popupCheckboxFast =
+      NSLocalizedString("vpn.popupCheckboxFast", tableName: "BraveShared", bundle: .module,
+        value: "Supports speeds of up to 100 Mbps",
+        comment: "Text for a checkbox to present the user benefits for using Brave VPN")
+    
+    public static let popupCheckboxFastAlternate =
+      NSLocalizedString("vpn.popupCheckboxFastAlternate", tableName: "BraveShared", bundle: .module,
+        value: "Fast and unlimited up to 100 Mbps",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN")
 
     public static let installProfileBody =

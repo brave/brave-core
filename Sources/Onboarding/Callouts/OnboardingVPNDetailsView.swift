@@ -11,9 +11,9 @@ import BraveShared
 public struct OnboardingVPNDetailsView: View {
   public var learnMore: (() -> Void)?
   
-  private let descriptionItems = [Strings.VPN.checkboxBlockAds,
+  private let descriptionItems = [Strings.VPN.popupCheckboxBlockAds,
                           Strings.VPN.popupCheckmarkSecureConnections,
-                          Strings.VPN.checkboxFast,
+                          Strings.VPN.popupCheckboxFast,
                           Strings.VPN.popupCheckmark247Support]
 
   public init() {}

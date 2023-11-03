@@ -23,12 +23,12 @@ class BuyVPNView: UIView {
 
   private let checkmarkViewStrings =
     [
-      Strings.VPN.checkboxBlockAds,
-      Strings.VPN.checkboxGeoSelector,
+      Strings.VPN.checkboxProtectYourDevices,
+      Strings.VPN.checkboxSaferWifi,
+      Strings.VPN.checkboxSpeedFast,
+      Strings.VPN.checkboxGeoLocation,
       Strings.VPN.checkboxNoIPLog,
-      Strings.VPN.checkboxFast,
-      Strings.VPN.checkboxEncryption,
-      Strings.VPN.checkboxNoSellout,
+      Strings.VPN.checkboxDevicesProtect,
     ]
 
   private var checkmarksPage = 0 {
