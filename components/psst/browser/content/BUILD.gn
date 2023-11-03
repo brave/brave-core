@@ -1,0 +1,25 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("content") {
+  output_name = "psst_browser_content"
+
+  defines = [ "IS_PSST_BROWSER_CONTENT_IMPL" ]
+
+  sources = [
+    "psst_tab_helper.cc",
+    "psst_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/psst/browser/core",
+    "//brave/components/psst/common",
+    "//brave/components/script_injector/common/mojom",
+    "//components/sessions",
+    "//content/public/browser",
+    "//url",
+  ]
+}

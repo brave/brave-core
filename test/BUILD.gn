@@ -844,6 +844,7 @@ test("brave_browser_tests") {
     "//brave/browser/net:browser_tests",
     "//brave/browser/permissions:browser_tests",
     "//brave/browser/profiles",
+    "//brave/browser/psst:browser_tests",
     "//brave/browser/sandbox:browser_tests",
     "//brave/browser/sessions:browser_tests",
     "//brave/browser/test:browser_tests",
