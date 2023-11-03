@@ -493,17 +493,26 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
 
   const [getBuyUrl] = useLazyGetBuyUrlQuery()
 
+  const accountsForSelectedAssetCoinType = React.useMemo(() => {
+    return selectedAsset
+      ? selectedAsset.coin === BraveWallet.CoinType.FIL
+        ? accounts.filter((a) =>
+            a.accountId.coin === selectedAsset.coin &&
+            selectedAsset.chainId === BraveWallet.FILECOIN_TESTNET
+              ? a.accountId.address.startsWith('t')
+              : !a.accountId.address.startsWith('t')
+          )
+        : accounts.filter((a) => a.accountId.coin === selectedAsset.coin)
+      : []
+  }, [selectedAsset, accounts])
+
   // state
   const [showAccountSearch, setShowAccountSearch] =
     React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [selectedAccount, setSelectedAccount] = React.useState<
     BraveWallet.AccountInfo | undefined
-  >(
-    assetNetwork
-      ? accounts.find((a) => a.accountId.coin === assetNetwork.coin)
-      : undefined
-  )
+  >(accountsForSelectedAssetCoinType[0])
 
   // memos
   const accountsForSelectedAssetNetwork = React.useMemo(() => {
@@ -645,6 +654,12 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
     [selectedAsset, assetNetwork, selectedAccount, selectedCurrency]
   )
 
+  // effects
+  React.useEffect(() => {
+    // force selected account option state
+    setSelectedAccount(accountsForSelectedAssetCoinType[0])
+  }, [accountsForSelectedAssetCoinType[0]])
+
   // render
   if (!selectedOnRampAssetId) {
     return <Redirect to={WalletRoutes.FundWalletPageStart} />
@@ -674,7 +689,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
             onCancel={() => history.back()}
             onCreated={setSelectedAccount}
           />
-        ) : showAccountSearch ? (
+        ) : (showAccountSearch || !selectedAccount) ? (
           <SearchWrapper>
             <SelectHeader
               title={getLocale('braveWalletSelectAccount')}

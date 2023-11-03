@@ -150,6 +150,7 @@ export class BaseQueryCache {
       const idsByCoinType: Record<EntityId, EntityId[]> = {}
       const hiddenIdsByCoinType: Record<EntityId, string[]> = {}
       const mainnetIds: string[] = []
+      const testnetIds: string[] = []
       const onRampIds: string[] = []
       const offRampIds: string[] = []
 
@@ -196,8 +197,9 @@ export class BaseQueryCache {
               })
               .toString()
 
-            if (!SupportedTestNetworks.includes(chainId)) {
-              // skip testnet & localhost chains
+            if (SupportedTestNetworks.includes(chainId)) {
+              testnetIds.push(networkId)
+            } else {
               mainnetIds.push(networkId)
             }
 
@@ -238,7 +240,8 @@ export class BaseQueryCache {
           visibleIds,
           onRampIds,
           offRampIds,
-          mainnetIds
+          mainnetIds,
+          testnetIds
         },
         networksList
       )

@@ -34,6 +34,7 @@ export type NetworksRegistry = ReturnType<
   hiddenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
   idsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
   mainnetIds: string[]
+  testnetIds: string[]
   onRampIds: string[]
   offRampIds: string[]
   visibleIds: string[]
@@ -45,6 +46,7 @@ export const emptyNetworksRegistry: NetworksRegistry = {
   hiddenIdsByCoinType: {},
   idsByCoinType: {},
   mainnetIds: [],
+  testnetIds: [],
   onRampIds: [],
   offRampIds: [],
   visibleIds: []
