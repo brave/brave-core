@@ -360,7 +360,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Read and modify IPFS settings
       </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
-        .onion
+        onion
       </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT" desc="The tooltip text for onion available button.">
         Open using .onion address
