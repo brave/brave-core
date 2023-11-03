@@ -12,6 +12,7 @@
       const net::CanonicalCookie& cookie, const GURL& url,            \
       const net::SiteForCookies& site_for_cookies,                    \
       const std::optional<url::Origin>& top_frame_origin,             \
+      const net::FirstPartySetMetadata& first_party_set_metadata,     \
       net::CookieSettingOverrides overrides,                          \
       net::CookieInclusionStatus* cookie_inclusion_status) const;     \
   net::NetworkDelegate::PrivacySetting IsEphemeralPrivacyModeEnabled( \
