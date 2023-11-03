@@ -406,4 +406,12 @@ bool BraveWalletPermissionContext::ResetWebSitePermission(
   return true;
 }
 
+void BraveWalletPermissionContext::ResetAllPermissions(
+    content::BrowserContext* context) {
+  HostContentSettingsMap* map =
+      PermissionsClient::Get()->GetSettingsMap(context);
+  map->ClearSettingsForOneType(ContentSettingsType::BRAVE_ETHEREUM);
+  map->ClearSettingsForOneType(ContentSettingsType::BRAVE_SOLANA);
+}
+
 }  // namespace permissions

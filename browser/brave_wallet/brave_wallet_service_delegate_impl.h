@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -27,7 +28,7 @@ class WebContents;
 
 namespace brave_wallet {
 
-class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
+class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
                                        public TabStripModelObserver,
                                        public BrowserTabStripTrackerDelegate {
  public:
@@ -49,15 +50,6 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
   void GetImportInfoFromExternalWallet(mojom::ExternalWalletType type,
                                        const std::string& password,
                                        GetImportInfoCallback callback) override;
-
-  bool HasPermission(mojom::CoinType coin,
-                     const url::Origin& origin,
-                     const std::string& account) override;
-  bool ResetPermission(mojom::CoinType coin,
-                       const url::Origin& origin,
-                       const std::string& account) override;
-  bool IsPermissionDenied(mojom::CoinType coin,
-                          const url::Origin& origin) override;
 
   absl::optional<url::Origin> GetActiveOrigin() override;
 
@@ -92,7 +84,6 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
   absl::optional<url::Origin> GetActiveOriginInternal();
   void FireActiveOriginChanged();
 
-  raw_ptr<content::BrowserContext> context_ = nullptr;
   base::flat_map<mojom::ExternalWalletType,
                  std::unique_ptr<ExternalWalletsImporter>>
       importers_;
